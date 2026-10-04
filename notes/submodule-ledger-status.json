@@ -1098,6 +1098,195 @@
    "subject": "修复组件崩溃",
    "old": "TODO",
    "status": "COVERED"
+  },
+  {
+   "row": 123,
+   "sub": "TerraFurniture",
+   "commit": "d08fb3230",
+   "date": "2026-07-04",
+   "subject": "able to start game",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 124,
+   "sub": "TerraFurniture",
+   "commit": "ae0621561",
+   "date": "2026-08-08",
+   "subject": "同步1.21.1的修改",
+   "old": "TODO",
+   "status": "REVERSE-ALIGNED"
+  },
+  {
+   "row": 125,
+   "sub": "TerraFurniture",
+   "commit": "3176c2ac0",
+   "date": "2026-08-23",
+   "subject": "调整版本",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 126,
+   "sub": "TerraFurniture",
+   "commit": "c4eb231f0",
+   "date": "2026-08-23",
+   "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子",
+   "old": "TODO",
+   "status": "REVERSE-ALIGNED"
+  },
+  {
+   "row": 127,
+   "sub": "TerraFurniture",
+   "commit": "89b641939",
+   "date": "2026-09-02",
+   "subject": "删除一些Extension类",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 128,
+   "sub": "TerraFurniture",
+   "commit": "996bcbf97",
+   "date": "2026-09-03",
+   "subject": "渔夫任务系统修改",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 129,
+   "sub": "TerraFurniture",
+   "commit": "4bbc937be",
+   "date": "2026-09-06",
+   "subject": "静态方法改接口",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 130,
+   "sub": "TerraFurniture",
+   "commit": "eacdaad1c",
+   "date": "2026-09-06",
+   "subject": "属性静态字段注入",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 131,
+   "sub": "TerraFurniture",
+   "commit": "81db6984a",
+   "date": "2026-09-07",
+   "subject": "生产环境修复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 132,
+   "sub": "TerraFurniture",
+   "commit": "4946ac82a",
+   "date": "2026-09-10",
+   "subject": "修汇流熔炉不能放燃料的问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 133,
+   "sub": "TerraFurniture",
+   "commit": "ef098a90a",
+   "date": "2026-09-10",
+   "subject": "修复mixin，修复跳跃属性",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 134,
+   "sub": "TerraFurniture",
+   "commit": "3a4b2e990",
+   "date": "2026-09-11",
+   "subject": "一些修复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 135,
+   "sub": "TerraFurniture",
+   "commit": "1c894ac05",
+   "date": "2026-09-11",
+   "subject": "portlib升级为1.2.2",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 136,
+   "sub": "TerraFurniture",
+   "commit": "7264bacb3",
+   "date": "2026-09-12",
+   "subject": "JEI兼容恢复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 137,
+   "sub": "TerraFurniture",
+   "commit": "fc3779532",
+   "date": "2026-09-13",
+   "subject": "版本更新",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 138,
+   "sub": "TerraFurniture",
+   "commit": "ae2d6f2f2",
+   "date": "2026-09-16",
+   "subject": "extension",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 139,
+   "sub": "TerraFurniture",
+   "commit": "80a9b93c1",
+   "date": "2026-09-17",
+   "subject": "修复portlib的注册表",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 140,
+   "sub": "TerraFurniture",
+   "commit": "797379213",
+   "date": "2026-09-18",
+   "subject": "使用neoforge风味的网络包注册与发送",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 142,
+   "sub": "TerraFurniture",
+   "commit": "d060e05de",
+   "date": "2026-09-20",
+   "subject": "仔细研究后我发现实际上这种对称的桌子可以把花边单独分开，但是已经这样写了，先提交吧，我后面再改，绷不住了",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 143,
+   "sub": "TerraFurniture",
+   "commit": "bf35ef75d",
+   "date": "2026-09-20",
+   "subject": "改成组件模式",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 144,
+   "sub": "TerraFurniture",
+   "commit": "3b1e55c09",
+   "date": "2026-09-20",
+   "subject": "改腿渲染逻辑",
+   "old": "TODO",
+   "status": "COVERED"
   }
  ]
 }

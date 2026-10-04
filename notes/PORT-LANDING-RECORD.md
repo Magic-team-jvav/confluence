@@ -4792,3 +4792,57 @@ public ResourceLocation getAnimationResource(AccessoryGeoModel animatable) { ret
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 123–148（TerraFurniture 全部：拟对账 `CherryChestBlock`／`CherryChestGeoModel`／`ModelLightBlock` 的"架构差异 vs 真缺口"，以及 `4d327715d`「单腿桌子」+1218、`b5f856c95`「加点」+6753 两个大提交）**。
 
+## 一百二十四、子模块行走 行 123–148（TerraFurniture 全部）⇒ 17 `COVERED` + 2 `REVERSE-ALIGNED` + 2 `SKIP-PORTLIB` + **5 行真缺口**
+>
+> **子模块全量行走到此收口**：148 行中 143 行落定，仅 TerraFurniture 的 5 行（141／145–148）为**已裁定的真缺口、待移植**。
+
+### 124.1 清单
+
+| 行 | 提交 | 日期 | 主题 | GAP/文件 | 裁定 |
+| --- | --- | --- | --- | --- | --- |
+| 123 | `d08fb3230` | 2026-07-04 | able to start game | 2 / 2 | `COVERED` |
+| 124 | `ae0621561` | 2026-08-08 | 同步 1.21.1 的修改 | 1 / 1 | `REVERSE-ALIGNED` |
+| 125 | `3176c2ac0` | 2026-08-23 | 调整版本 | 0 / 0 | `COVERED` |
+| 126 | `c4eb231f0` | 2026-08-23 | 同步 1.21.1 翅膀迁移，部分饰品添加粒子 | 0 / 0（纯删除） | `REVERSE-ALIGNED` |
+| 127 | `89b641939` | 2026-09-02 | 删除一些 Extension 类 | 3 / 1 | `COVERED` |
+| 128 | `996bcbf97` | 2026-09-03 | 渔夫任务系统修改 | 0 / 0 | `COVERED` |
+| 129 | `4bbc937be` | 2026-09-06 | 静态方法改接口 | 1 / 1 | `COVERED` |
+| 130 | `eacdaad1c` | 2026-09-06 | 属性静态字段注入 | 0 / 0 | `COVERED` |
+| 131 | `81db6984a` | 2026-09-07 | 生产环境修复 | 2 / 1 | `COVERED` |
+| 132 | `4946ac82a` | 2026-09-10 | 修汇流熔炉不能放燃料 | 0 / 0 | `COVERED` |
+| 133 | `ef098a90a` | 2026-09-10 | 修复 mixin，修复跳跃属性 | 18 / 2 | `COVERED` |
+| 134 | `3a4b2e990` | 2026-09-11 | 一些修复 | 0 / 0 | `COVERED` |
+| 135 | `1c894ac05` | 2026-09-11 | **portlib 升级为 1.2.2** | 0 / 0 | **`SKIP-PORTLIB`** |
+| 136 | `7264bacb3` | 2026-09-12 | JEI 兼容恢复 | 3 / 2 | `COVERED` |
+| 137 | `fc3779532` | 2026-09-13 | 版本更新 | 0 / 0 | `COVERED` |
+| 138 | `ae2d6f2f2` | 2026-09-16 | extension | 0 / 0 | `COVERED` |
+| 139 | `80a9b93c1` | 2026-09-17 | **修复 portlib 的注册表** | 2 / 1 | **`SKIP-PORTLIB`** |
+| 140 | `797379213` | 2026-09-18 | 使用 neoforge 风味的网络包注册与发送 | 2 / 2 | `COVERED` |
+| **141** | `4d327715d` | 2026-09-19 | 单腿桌子 | 21 / 1 | **TODO（真缺口）** |
+| 142 | `d060e05de` | 2026-09-20 | 对称桌子花边（作者自注"先提交吧"） | 0 / 0 | `COVERED` |
+| 143 | `bf35ef75d` | 2026-09-20 | 改成组件模式 | 0 / 0 | `COVERED` |
+| 144 | `3b1e55c09` | 2026-09-20 | 改腿渲染逻辑 | 0 / 0 | `COVERED` |
+| **145** | `3e45ca5a6` | 2026-09-20 | 添加方块 | 443 / 12 | **TODO（真缺口）** |
+| **146** | `df868f5ac` | 2026-09-22 | 家具 | 69 / 2 | **TODO（真缺口）** |
+| **147** | `62d4c7027` | 2026-09-27 | 传一点 | 359 / 10 | **TODO（真缺口）** |
+| **148** | `b5f856c95` | 2026-10-03 | 加点 | **6714 / 37** | **TODO（真缺口）** |
+
+### 124.2 五行的缺口清单（可直接当移植批次用）
+
+| 行 | 缺失符号（1.21 同子模块 0 命中） | gap 主要文件（行数） | 性质 |
+| --- | --- | --- | --- |
+| 141 | `OneLegTableGeoModel`／`TabletopRenderer`／`ModelVariant` | `one_leg_table.json`(21) | 1.21 已有 `OneLegTableLegGeoModel`（`OneLeg` 命中 29 处）⇒ **缺桌面模型与渲染器**（半成品） |
+| 145 | `SinkBlock` 的 `IRON_BASE`／`SPRUCE_BASE` | `candelabras.json`(155)、`sink.json`(112+86)、`SinkBlock.java`(28)、`iron_sink.json`(19)、`spruce_sink.json`(19)、`TFBlockTagsProvider`(7)、`TFBlocks`(5) | **水槽方块（铁/云杉）与其模型、烛台资源**整批未迁 |
+| 146 | `BLUE_DUNGEON_FLAMES`／`GLASS_FLAMES`／`SPRUCE_FLAMES`／`SPRUCE_SHAPE`／`OAK_CANDLE_SHAPE` | `CandelabraBlock.java`(50)、`SwitchableLightBlock.java`(19) | 两个类 1.21 **都在**，差的是**变体常量集**（1.21 变体更少） |
+| 147 | `SPRUCE_BASE` | `bathtub.json`(134)、`base.json`(88)、`forward.json`(49)、`bed.json`(26)、`BathtubBlock.java`(21) | **浴缸方块与模型**未迁 + 变体资源 |
+| 148 | `CherryChestBlock`／`CherryChestGeoModel`／`CHERRY_CHEST`／`CHERRY_CHEST_ENTITY`／`CHERRY_CHEST_ITEM`／`ModelLightBlock`／`SPRUCE_CANDLESTICK_ONE｜TWO｜THREE` | `spruce_candlestick_three_lit.json`(1385)、`three_unlit`(1103)、`two_lit`(1040)、`two_unlit`(852)、`one_lit`(535)、`spruce_lamp_lit`(497)、`one_unlit`(441)、`spruce_lamp_unlit`(403)、`toilet.json`(147)、`CherryChestBlock.java`(48)、`cherry_chest.geo.json`(41)、`ModelLightBlock.java`(24) | **樱花木箱（方块+实体+物品+GeckoLib 模型）／模型光源方块／云杉烛台（1~3 支、明/灭）／云杉灯／马桶**整批未迁 |
+
+文件面佐证：`*Chest*` 1.20 = **2** → 1.21 = **0**；`*Light*` 1.20 = 2 → 1.21 = 1；而 `*Table*`／`*Chair*`／`*Sofa*`／`*Bed*` 两侧相等（6/2/1/1）⇒ 缺口集中在上面这批。
+
+### 124.3 状态
+
+- 台账（双写）：行 123–148 落状态。表头已补语义：**本台账 `TODO` = 已裁定为真缺口、待移植**（当前仅 141／145–148）。
+- 全量统计（148 行）：`COVERED` 122、`SKIP-PORTLIB` 12、`REVERSE-ALIGNED` 6、`DEFER-ASSETS` 2、`TODO` 5，另 lib 行 60 为 `COVERED`。
+- **三个子模块的行走全部完成**；`fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 148（6714 行，樱花木箱 + 模型光源 + 云杉烛台/灯 + 马桶）** ⇒ 按资产/方块/注册/语言分步落地，先落 Java 侧（`CherryChestBlock`／`ModelLightBlock`／`TFBlocks` 注册），再搬 GeckoLib JSON，最后 tags/lang。
+

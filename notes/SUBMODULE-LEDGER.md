@@ -8,6 +8,10 @@
 >
 > 状态取值：TODO / PORTED / COVERED / SKIP-PLATFORM / SKIP-PORTLIB / SKIP-1.20-REVERTED / REVERSE-ALIGNED /
 > DEFER-ASSETS / DEFER-ARCH / DO-NOT-PORT / LOST?。回填见 `notes/submodule-ledger-status.json`。
+> **本台账中 `TODO` 的语义已收敛为「已按两问法裁定为真缺口、待移植」**——其余行均已落
+> `COVERED`／`SKIP-PORTLIB`／`REVERSE-ALIGNED`／`DEFER-ASSETS`。当前仅 TerraFurniture 5 行（141／145–148）为 TODO，
+> 缺口清单见 `PORT-LANDING-RECORD.md` §124。
+> DEFER-ASSETS / DEFER-ARCH / DO-NOT-PORT / LOST?。回填见 `notes/submodule-ledger-status.json`。
 
 | 行 | 子模块 | 提交 | 日期 | 主题 | 文件 | +/− | 标记 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -133,28 +137,28 @@
 | 120 | TerraCurio | `ef4356518` | 2026-09-27 | 修复构建问题 | 1 | +6 −0 |  | COVERED |
 | 121 | TerraCurio | `df37454c2` | 2026-09-27 | 平衡性调整，权重调整，贴图补充 | 6 | +0 −0 | 资源only | COVERED |
 | 122 | TerraCurio | `f00e8f541` | 2026-10-03 | 修复组件崩溃 | 1 | +1 −1 |  | COVERED |
-| 123 | TerraFurniture | `d08fb3230` | 2026-07-04 | able to start game | 2 | +2 −60 |  | TODO |
-| 124 | TerraFurniture | `ae0621561` | 2026-08-08 | 同步1.21.1的修改 | 2 | +3 −3 | PortLib×2 | TODO |
-| 125 | TerraFurniture | `3176c2ac0` | 2026-08-23 | 调整版本 | 2 | +4 −4 | PortLib×7 | TODO |
-| 126 | TerraFurniture | `c4eb231f0` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 1 | +0 −4 | 纯删除 | TODO |
-| 127 | TerraFurniture | `89b641939` | 2026-09-02 | 删除一些Extension类 | 2 | +8 −8 | PortLib×13 | TODO |
-| 128 | TerraFurniture | `996bcbf97` | 2026-09-03 | 渔夫任务系统修改 | 1 | +2 −3 | PortLib×6 | TODO |
-| 129 | TerraFurniture | `4bbc937be` | 2026-09-06 | 静态方法改接口 | 1 | +2 −2 | PortLib×2 | TODO |
-| 130 | TerraFurniture | `eacdaad1c` | 2026-09-06 | 属性静态字段注入 | 1 | +1 −1 | PortLib×2 | TODO |
-| 131 | TerraFurniture | `81db6984a` | 2026-09-07 | 生产环境修复 | 1 | +2 −1 | PortLib×4 | TODO |
-| 132 | TerraFurniture | `4946ac82a` | 2026-09-10 | 修汇流熔炉不能放燃料的问题 | 2 | +5 −3 |  | TODO |
-| 133 | TerraFurniture | `ef098a90a` | 2026-09-10 | 修复mixin，修复跳跃属性 | 3 | +23 −11 | PortLib×14 | TODO |
-| 134 | TerraFurniture | `3a4b2e990` | 2026-09-11 | 一些修复 | 1 | +1 −1 |  | TODO |
-| 135 | TerraFurniture | `1c894ac05` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | TODO |
-| 136 | TerraFurniture | `7264bacb3` | 2026-09-12 | JEI兼容恢复 | 2 | +7 −7 |  | TODO |
-| 137 | TerraFurniture | `fc3779532` | 2026-09-13 | 版本更新 | 1 | +2 −2 | PortLib×2 | TODO |
-| 138 | TerraFurniture | `ae2d6f2f2` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | TODO |
-| 139 | TerraFurniture | `80a9b93c1` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×8 | TODO |
-| 140 | TerraFurniture | `797379213` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 6 | +14 −20 | PortLib×11 | TODO |
+| 123 | TerraFurniture | `d08fb3230` | 2026-07-04 | able to start game | 2 | +2 −60 |  | COVERED |
+| 124 | TerraFurniture | `ae0621561` | 2026-08-08 | 同步1.21.1的修改 | 2 | +3 −3 | PortLib×2 | REVERSE-ALIGNED |
+| 125 | TerraFurniture | `3176c2ac0` | 2026-08-23 | 调整版本 | 2 | +4 −4 | PortLib×7 | COVERED |
+| 126 | TerraFurniture | `c4eb231f0` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 1 | +0 −4 | 纯删除 | REVERSE-ALIGNED |
+| 127 | TerraFurniture | `89b641939` | 2026-09-02 | 删除一些Extension类 | 2 | +8 −8 | PortLib×13 | COVERED |
+| 128 | TerraFurniture | `996bcbf97` | 2026-09-03 | 渔夫任务系统修改 | 1 | +2 −3 | PortLib×6 | COVERED |
+| 129 | TerraFurniture | `4bbc937be` | 2026-09-06 | 静态方法改接口 | 1 | +2 −2 | PortLib×2 | COVERED |
+| 130 | TerraFurniture | `eacdaad1c` | 2026-09-06 | 属性静态字段注入 | 1 | +1 −1 | PortLib×2 | COVERED |
+| 131 | TerraFurniture | `81db6984a` | 2026-09-07 | 生产环境修复 | 1 | +2 −1 | PortLib×4 | COVERED |
+| 132 | TerraFurniture | `4946ac82a` | 2026-09-10 | 修汇流熔炉不能放燃料的问题 | 2 | +5 −3 |  | COVERED |
+| 133 | TerraFurniture | `ef098a90a` | 2026-09-10 | 修复mixin，修复跳跃属性 | 3 | +23 −11 | PortLib×14 | COVERED |
+| 134 | TerraFurniture | `3a4b2e990` | 2026-09-11 | 一些修复 | 1 | +1 −1 |  | COVERED |
+| 135 | TerraFurniture | `1c894ac05` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | SKIP-PORTLIB |
+| 136 | TerraFurniture | `7264bacb3` | 2026-09-12 | JEI兼容恢复 | 2 | +7 −7 |  | COVERED |
+| 137 | TerraFurniture | `fc3779532` | 2026-09-13 | 版本更新 | 1 | +2 −2 | PortLib×2 | COVERED |
+| 138 | TerraFurniture | `ae2d6f2f2` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | COVERED |
+| 139 | TerraFurniture | `80a9b93c1` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×8 | SKIP-PORTLIB |
+| 140 | TerraFurniture | `797379213` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 6 | +14 −20 | PortLib×11 | COVERED |
 | 141 | TerraFurniture | `4d327715d` | 2026-09-19 | 单腿桌子 | 22 | +1218 −0 |  | TODO |
-| 142 | TerraFurniture | `d060e05de` | 2026-09-20 | 仔细研究后我发现实际上这种对称的桌子可以把花边单独分开，但是已经这样写了，先提交吧，我后面再改，绷不住了 | 1 | +14 −12 |  | TODO |
-| 143 | TerraFurniture | `bf35ef75d` | 2026-09-20 | 改成组件模式 | 18 | +277 −754 |  | TODO |
-| 144 | TerraFurniture | `3b1e55c09` | 2026-09-20 | 改腿渲染逻辑 | 1 | +50 −11 |  | TODO |
+| 142 | TerraFurniture | `d060e05de` | 2026-09-20 | 仔细研究后我发现实际上这种对称的桌子可以把花边单独分开，但是已经这样写了，先提交吧，我后面再改，绷不住了 | 1 | +14 −12 |  | COVERED |
+| 143 | TerraFurniture | `bf35ef75d` | 2026-09-20 | 改成组件模式 | 18 | +277 −754 |  | COVERED |
+| 144 | TerraFurniture | `3b1e55c09` | 2026-09-20 | 改腿渲染逻辑 | 1 | +50 −11 |  | COVERED |
 | 145 | TerraFurniture | `3e45ca5a6` | 2026-09-20 | 添加方块 | 15 | +513 −1 |  | TODO |
 | 146 | TerraFurniture | `df868f5ac` | 2026-09-22 | 家具 | 2 | +94 −1 |  | TODO |
 | 147 | TerraFurniture | `62d4c7027` | 2026-09-27 | 传一点 | 14 | +427 −69 | PortLib×1 | TODO |

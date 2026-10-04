@@ -4890,3 +4890,47 @@ public ResourceLocation getAnimationResource(AccessoryGeoModel animatable) { ret
 - `fix_eol --check` 候选 6；本批**无代码落地**（落地按 125.3 的顺序从下一批开始）。
 - 下一批：**125.3 第 1 步**（`ModelLightBlock` + 云杉烛台/灯的 Java 侧）。
 
+## 一百二十六、落地第 1 步**按纪律中止**：行 145–148 的资产面是用户在建 WIP
+
+### 126.1 发现过程与证据
+
+按 §125.3 执行第 1 步（`ModelLightBlock` + 云杉烛台/灯的 Java 侧）时，先做资产搬运，结果拷贝脚本报告**目标文件"已存在且内容完全相同"**（12 个烛台资产），只有 3 个贴图（`spruce_lamp.png`／`spruce_sink.png`／`spruce_toilet.png`）不存于 1.21 工作区。遂查 `git -C TerraFurniture status`：
+
+| 项 | 实测 |
+| --- | --- |
+| `TerraFurniture` 工作区未跟踪条目 | **17 条，全部为 resource**（`?? src/main/resources/...`），**无任何 `.java`** |
+| 内容 | `blockstates/spruce_candlestick_{one,two,three}.json`、`models/block/spruce_candlestick_{one,two,three}_{lit,unlit}.json`（6 个）、`models/item/spruce_candlestick_{one,two,three}.json`、`textures/block/spruce/{fire.png, fire.png.mcmeta, spruce_candelabras.png, spruce_candlestick.png}`、`textures/block/spruce/spruce_bathtub/`（目录）等 |
+| 与 1.20 HEAD 的关系 | 已存在的 12 个烛台资产与 1.20 HEAD **字节相同** ⇒ 用户已按 1.20 侧成品铺好资产 |
+| HEAD 侧 | 这些文件在 1.21 HEAD **未被跟踪**（`git ls-files '*spruce_candlestick*'` 为空）⇒ 本台账把行 145–148 判为缺口的结论**与 HEAD 一致、并未判错** |
+
+⇒ **行 145–148 的"资产面"正在用户手里推进**（未提交的工作区文件）。按工作流纪律「用户在建文件不碰不提交」，我**中止该批落地**，并已把本轮不小心新建的 3 个贴图（`spruce_lamp.png`／`spruce_sink.png`／`spruce_toilet.png`，均为 1.20 的字节拷贝）**删除撤回**，工作区恢复为其原有 17 条未跟踪资源。
+
+### 126.2 由此得到的结论（对行 145–148 的落地面重新划界）
+
+| 面 | 状态 | 归属 |
+| --- | --- | --- |
+| 资产（blockstate／model／texture） | 已有 17 条未跟踪文件在工作区（烛台 12 项 + 若干贴图 + `spruce_bathtub/` 目录） | **用户在建**（勿重复、勿提交） |
+| Java 侧（`ModelLightBlock`／云杉烛台与灯的注册／`SinkBlock` 变体／`BathtubBlock`／`CherryChestBlock`＋`CherryChestGeoModel`／`ModelLightBlock` 等） | **0 个 java 未跟踪文件** ⇒ 尚未开始 | 待定：我接手 或 用户自行推进（见 126.3） |
+| tags／lang／item model 生成 | 由 `TFBlockTagsProvider`／`TFChineseProvider` 等 datagen 覆盖 | 随 Java 侧一并处理 |
+
+### 126.3 需要用户决定的分工
+
+本轮已把 Java 侧的落地材料全部备齐（可直接开工，均经核实）：
+
+| 项 | 结论 |
+| --- | --- |
+| `ModelLightBlock` 可移植性 | 1.21 `SwitchableLightBlock` 构造器与 1.20 同签名；`getShape` 在 1.21 为 `protected`（Java 允许放宽为 `public`，两种写法都能编译）；`getGenerator()` 返回类型两侧一致（`@Nullable BlockDataGenerator<? super SwitchableLightBlock>`）；`TFBlockSetType`／`BlockDataGenerator` 的包路径两侧**完全相同** |
+| 注册助手 | 1.21 `TFBlocks.registerWithItem(String, Supplier<B>)`（`:299`）与 1.20 同名同形 |
+| 变体常量 | 1.21 `TFBlocks` 已 `import static …TFBlockSetTypes.*`（`:42`）⇒ `SPRUCE` 可直接用 |
+| 光照属性函数 | `litBlockEmission(int)` 两侧都在（1.21 `TFBlocks:331`，1.20 `:368`）⇒ 可在本类内直接调用 |
+| 1.20 三条烛台的注册原文 | 已抄录（`BlockShapeType.CANDLE` + `Block.box(6.5,0,6.5,9.5,13,9.5)`／`(3.5,0,6.5,12.5,13,9.5)`／`(2.5,0,6.5,13.5,13,9.5)`，`lightLevel(litBlockEmission(15))`、`noOcclusion()`） |
+
+**待用户指示**：① 由我推进 Java 侧（不动你的 17 条资源、不提交它们）；② 整个 TerraFurniture 家具移植（行 145–148）由你自己推进，我把台账 4 行改为已移交/登记；③ 我改做别的（如 §125.4 里那三项可选对齐）。
+
+### 126.4 状态
+
+- 台账（双写）：本轮**未改状态**（行 145–148 仍为 `TODO`：HEAD 侧确为缺口）。
+- `TerraFurniture` 工作区：恢复为用户原有 17 条未跟踪资源（我新建的 3 个贴图已删）。
+- 父仓：本批仅改 `notes/`（§126 本节）；`fix_eol --check` 候选 6。
+- 其他子模块无用户在建改动（lib／TerraCurio 工作区干净）。
+

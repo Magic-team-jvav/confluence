@@ -7,19 +7,20 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
-import net.minecraft.world.level.Level;
-import org.confluence.mod.common.gameevent.MartianEventHelper;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/** 由可再生护盾保护的战士 */
+/**
+ * 由可再生护盾保护的战士
+ */
 public final class MartianOfficer extends BaseWarriorMonster {
     public static final float MAX_SHIELD = 200.0F;
     public static final int RECOVERY_TICKS = 60;
@@ -41,19 +42,25 @@ public final class MartianOfficer extends BaseWarriorMonster {
         super(type, level, 0.05D);
     }
 
-    @Override protected void defineSynchedData() {
+    @Override
+    protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(SHIELD, MAX_SHIELD);
         entityData.define(IMPACT_SEQUENCE, 0);
     }
 
-    public float getShieldHealth() { return entityData.get(SHIELD); }
-    public boolean hasShield() { return getShieldHealth() > 0.0F; }
-    public float shieldFormation(float partialTick) { return Math.min(1, (visualShieldTicks + partialTick) / 12.0F); }
-    public float shieldDissolve(float partialTick) { return Math.min(1, (visualBrokenTicks + partialTick) / 8.0F); }
-    public float shieldImpactAge(float partialTick) { return visualImpactTicks + partialTick; }
+    public float getShieldHealth() {return entityData.get(SHIELD);}
 
-    @Override public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+    public boolean hasShield() {return getShieldHealth() > 0.0F;}
+
+    public float shieldFormation(float partialTick) {return Math.min(1, (visualShieldTicks + partialTick) / 12.0F);}
+
+    public float shieldDissolve(float partialTick) {return Math.min(1, (visualBrokenTicks + partialTick) / 8.0F);}
+
+    public float shieldImpactAge(float partialTick) {return visualImpactTicks + partialTick;}
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (!level().isClientSide) return;
         if (key.equals(IMPACT_SEQUENCE)) visualImpactTicks = 0;
@@ -69,7 +76,8 @@ public final class MartianOfficer extends BaseWarriorMonster {
         entityData.set(IMPACT_SEQUENCE, entityData.get(IMPACT_SEQUENCE) + 1);
     }
 
-    @Override public void tick() {
+    @Override
+    public void tick() {
         super.tick();
         if (level().isClientSide) {
             visualShieldTicks = Math.min(20, visualShieldTicks + 1);
@@ -77,7 +85,7 @@ public final class MartianOfficer extends BaseWarriorMonster {
             visualImpactTicks = Math.min(20, visualImpactTicks + 1);
             return;
         }
-        if (level().isClientSide || !isAlive() || MartianEventHelper.removeIfEventInactive(this)) return;
+        if (!isAlive()) return;
         if (shieldHitTicks > 0) shieldHitTicks--;
         if (!hasShield() && ++recoveryTicks >= RECOVERY_TICKS) {
             entityData.set(SHIELD, MAX_SHIELD);
@@ -88,15 +96,18 @@ public final class MartianOfficer extends BaseWarriorMonster {
         tickOfficerContact();
     }
 
-    @Override protected MeleeAttackGoal createMeleeGoal(double speed) {
+    @Override
+    protected MeleeAttackGoal createMeleeGoal(double speed) {
         return new MeleeAttackGoal(this, speed, true) {
-            @Override protected void checkAndPerformAttack(LivingEntity target, double distance) {
+            @Override
+            protected void checkAndPerformAttack(LivingEntity target, double distance) {
                 // 仅用于寻路：伤害完全由下方的物理接触判定造成。
             }
         };
     }
 
-    @Override public boolean doHurtTarget(Entity target) {
+    @Override
+    public boolean doHurtTarget(Entity target) {
         return isPerformingContactAttack() && super.doHurtTarget(target);
     }
 
@@ -107,8 +118,8 @@ public final class MartianOfficer extends BaseWarriorMonster {
         final Vec3 start = previous;
         var targets = hasShield()
                 ? level().getEntities(this, OfficerShieldGeometry.bounds(start, getScale())
-                        .minmax(OfficerShieldGeometry.bounds(position(), getScale())), entity -> canContactAttack(entity)
-                        && OfficerShieldGeometry.intersects(start, position(), getScale(), entity.getBoundingBox()))
+                .minmax(OfficerShieldGeometry.bounds(position(), getScale())), entity -> canContactAttack(entity)
+                && OfficerShieldGeometry.intersects(start, position(), getScale(), entity.getBoundingBox()))
                 : SweptContactAttack.findTargets(this, previous, 0, maximumContactSweepDistance(), this::canContactAttack);
         boolean hit = false;
         for (Entity target : targets) {
@@ -117,9 +128,12 @@ public final class MartianOfficer extends BaseWarriorMonster {
         if (hit) contactCooldown = contactAttackInterval();
     }
 
-    @Override public boolean hurt(DamageSource source, float amount) {
-        if (!hasShield() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return super.hurt(source, amount);
-        if (level().isClientSide || !isAlive() || isInvulnerableTo(source) || !(amount > 0.0F)) return false;
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (!hasShield() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            return super.hurt(source, amount);
+        if (level().isClientSide || !isAlive() || isInvulnerableTo(source) || !(amount > 0.0F))
+            return false;
         if (source.is(DamageTypeTags.IS_FIRE)) return false;
         // 护盾防御 20 -> 4，采用泰拉瑞亚的半数防御固定减伤。
         float damage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount : Math.max(0.2F, amount - 2.0F);
@@ -135,30 +149,40 @@ public final class MartianOfficer extends BaseWarriorMonster {
         entityData.set(SHIELD, Math.max(0.0F, getShieldHealth() - damage));
         showShieldImpact();
         recoveryTicks = 0;
-        if (source.getEntity() instanceof net.minecraft.world.entity.LivingEntity attacker) setLastHurtByMob(attacker);
+        if (source.getEntity() instanceof net.minecraft.world.entity.LivingEntity attacker)
+            setLastHurtByMob(attacker);
         level().broadcastEntityEvent(this, (byte) 2);
         return true;
     }
 
-    @Override public void knockback(double strength, double x, double z) {
+    @Override
+    public void knockback(double strength, double x, double z) {
         if (!hasShield()) super.knockback(strength, x, z);
     }
-    @Override public boolean isPushable() { return !hasShield() && super.isPushable(); }
-    @Override public boolean canBeAffected(MobEffectInstance effect) {
+
+    @Override
+    public boolean isPushable() {return !hasShield() && super.isPushable();}
+
+    @Override
+    public boolean canBeAffected(MobEffectInstance effect) {
         return !hasShield() && super.canBeAffected(effect);
     }
 
-    @Override public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "officer", 4, state -> state.setAndContinue(
                 state.isMoving() ? (isSprinting() ? DASH : WALK) : STAND)));
     }
 
-    @Override public void addAdditionalSaveData(CompoundTag tag) {
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putFloat("Shield", getShieldHealth());
         tag.putInt("ShieldRecoveryTicks", recoveryTicks);
     }
-    @Override public void readAdditionalSaveData(CompoundTag tag) {
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         float shield = tag.contains("Shield") ? tag.getFloat("Shield") : MAX_SHIELD;
         entityData.set(SHIELD, Float.isFinite(shield) ? Math.max(0, Math.min(MAX_SHIELD, shield)) : MAX_SHIELD);

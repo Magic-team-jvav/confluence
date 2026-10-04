@@ -2,15 +2,11 @@ package org.confluence.mod.client.summoner;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
-import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.core.object.Color;
 import software.bernie.geckolib.model.GeoModel;
@@ -19,7 +15,6 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Function;
 
 public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEntity> extends AbstractAttachmentEntityRenderer<T> implements GeoRenderer<T> {
@@ -62,33 +57,30 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
         };
     }
 
+    /**
+     * 第一人称下按距离淡出：基类用 {@code context.visualNode / partialTick / model.alphaDistanceFactor} 计算，
+     * 这里把结果缓存进 {@link #currentAlpha}，供 {@link #getRenderColor} 与 {@link #getRenderType} 使用。
+     */
     @Override
-    protected float getAlphaModify(RenderContext<T> config, PathNode visualNode, float partialTick) {
-        currentAlpha = super.getAlphaModify(config, visualNode, partialTick);
+    protected float getAlphaModify() {
+        currentAlpha = super.getAlphaModify();
         return currentAlpha;
     }
 
+    /**
+     * Geo 模型本体提交。
+     * <p>
+     * 基类 {@code modelModify} 已经在调用本方法之前施加了
+     * visualNode 朝向 + {@code model} 三轴缩放/平移，因此这里必须<b>直接在当前姿态下</b>提交
+     * delegate，绝不能再重复施加同一套变换（否则会双重变换）。
+     * </p>
+     */
     @Override
-    protected void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<T> context, float partialTick, int packedLight, float alpha) {
-        RenderType renderType = getRenderType(entity, getTextureLocation(entity), bufferSource, partialTick);
+    protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
+        T entity = context.entity;
+        RenderType renderType = getRenderType(entity, getTextureLocation(entity), bufferSource, context.partialTick);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-        delegate.render(poseStack, entity, bufferSource, renderType, vertexConsumer, packedLight);
-    }
-
-    @Override
-    protected void modelModify(T entity, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<T> context, float partialTick, int packedLight, float alpha) {
-        ModelConfig<T> model = context.model;
-        poseStack.pushPose();
-        poseStack.mulPose(new Quaternionf(Axis.YN.rotationDegrees(visualNode.yaw()))
-                .mul(Axis.XP.rotationDegrees(visualNode.pitch()))
-                .mul(Axis.ZP.rotationDegrees(visualNode.roll()))
-                .mul(Axis.YN.rotationDegrees(model.yawOffset))
-                .mul(Axis.XP.rotationDegrees(model.pitchOffset))
-                .mul(Axis.ZP.rotationDegrees(model.rollOffset)));
-        poseStack.scale(model.scale, model.scale, model.scale);
-        poseStack.translate(model.translateX, model.translateY, model.translateZ);
-        render(entity, poseStack, bufferSource, visualNode, context, partialTick, packedLight, alpha);
-        poseStack.popPose();
+        delegate.render(poseStack, entity, bufferSource, renderType, vertexConsumer, context.packedLight);
     }
 
     @Override

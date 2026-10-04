@@ -1,4 +1,10 @@
 {
+    "zenith": {
+        "sounds": [
+            "confluence:zenith"
+        ],
+        "subtitle": "confluence.subtitle.zenith"
+    },
     "use_minion_weapon": {
         "sounds": [
             "confluence:summon/use_minion_weapon"

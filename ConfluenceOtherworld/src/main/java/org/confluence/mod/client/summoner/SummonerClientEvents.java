@@ -10,31 +10,55 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.confluence.lib.client.DynamicLightDispatcher;
+import org.confluence.lib.client.DynamicLightProvider;
+import org.confluence.lib.client.DynamicLightRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
-import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
-import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
-import org.confluence.mod.client.summoner.renderer.minion.*;
+import org.confluence.mod.client.summoner.particle.GenericParticle;
+import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.SculkWispRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.SanguineBatRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.DeadlySphereRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.DesertTigerRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.ImpRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.TerraprismaRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.SlimeMinionRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.SnowFlinxRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.SpiderRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.VampireFrogRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.RuinRelicRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.EyeLaserTurretRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.EyeFireballRenderer;
-import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.ImpFireballRenderer;
+import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
+import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
+import org.confluence.mod.client.summoner.renderer.projectile.ZenithRenderer;
+import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
+import org.confluence.mod.client.summoner.particle.ZenithParticleProvider;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
-import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
+import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.mesdag.portlib.diff.mixin.ParticleAccessor;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
 import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 
 public final class SummonerClientEvents {
 
     public static void init() {
         PortEventHandler.addListener((RegisterParticleProvidersEvent event) ->
                 event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new));
+        PortEventHandler.addListener((RegisterParticleProvidersEvent event) ->
+                event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new));
         PortEventHandler.addListener((PortItemTooltipEvent event) -> {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
@@ -81,6 +105,7 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.RUIN_RELIC.get(), new RuinRelicRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.EYE_LASER_TURRET.get(), new EyeLaserTurretRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.EYE_FIREBALL.get(), new EyeFireballRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.ZENITH.get(), new ZenithRenderer());
         }));
         PortEventHandler.addListener((PortEntityRenderersEvent.AddLayers event) -> {
             for (PortEntityRenderersEvent.AddLayers.PortModel skin : PortEntityRenderersEvent.AddLayers.PortModel.values()) {

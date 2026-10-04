@@ -5,6 +5,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.minion.FinchMinion;
@@ -29,6 +30,7 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -38,6 +40,10 @@ public class SummonItems {
     public static void init() {}
     // 取wiki 75%的数值为基础再调
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+
+    // 天顶剑：由每 tick 驱动的挥砍逻辑发射附着弹幕，行为见 ZenithData
+    public static final PortDeferredItem<BaseSwordItem> ZENITH = ITEMS.register("zenith",
+            () -> new BaseSwordItem(Tiers.NETHERITE, ModRarity.RED, 190, 1.6F));
 
     public static final PortDeferredItem<SummonerWeaponItem<FinchMinion>> FINCH_STAFF = ITEMS.register("finch_staff",
             () -> new SummonerWeaponItem<>(

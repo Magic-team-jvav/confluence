@@ -12,6 +12,7 @@ import org.confluence.mod.common.summoner.projectile.EyeFireball;
 import org.confluence.mod.common.summoner.projectile.ForbiddenOrb;
 import org.confluence.mod.common.summoner.projectile.HornetStinger;
 import org.confluence.mod.common.summoner.projectile.ImpFireball;
+import org.confluence.mod.common.summoner.projectile.Zenith;
 
 import java.util.function.Supplier;
 
@@ -56,6 +57,9 @@ public final class SummonerAttachmentEntityTypes {
     public static final RegistryObject<AttachmentEntityType<ForbiddenOrb>> FORBIDDEN_ORB = register("forbidden_orb", ForbiddenOrb::new);
 
     public static final RegistryObject<AttachmentEntityType<EyeFireball>> EYE_FIREBALL = register("eye_fireball", EyeFireball::new);
+
+    /** 天顶剑飞剑 */
+    public static final RegistryObject<AttachmentEntityType<Zenith>> ZENITH = register("zenith", Zenith::new);
 
     private static <T extends AttachmentEntity> RegistryObject<AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<>(id, supplier));

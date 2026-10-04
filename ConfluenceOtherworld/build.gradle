@@ -285,6 +285,20 @@ tasks.withType(ProcessResources).configureEach {
     }
 }
 
+// Zenith JSON 模型资源镜像：assets/confluence/lyra_model/** → models/ + textures/。
+// 独立的 tasks.named 块，避免覆盖上面的 expand replaceProperties 配置。
+tasks.named('processResources', ProcessResources).configure {
+    from("src/main/resources/assets/confluence/lyra_model/json") {
+        include '**/*.json'; into "assets/confluence/models/lyra_model/json"
+    }
+    from("src/main/resources/assets/confluence/lyra_model/json") {
+        include '**/*.png'; into "assets/confluence/textures/lyra_model/json"
+    }
+    from("src/main/resources/assets/confluence/lyra_model/textures") {
+        into "assets/confluence/textures/lyra_model/textures"
+    }
+}
+
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 tasks.withType(Jar).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 

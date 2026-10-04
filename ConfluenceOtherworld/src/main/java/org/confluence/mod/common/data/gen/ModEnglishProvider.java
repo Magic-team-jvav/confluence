@@ -70,6 +70,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MountItems.BLESSED_APPLE.get(), "Blessed Apple");
         add(MountItems.SUPERHEATED_BLOOD.get(), "Superheated Blood");
         add("tooltip.confluence.rideable_item.desc", "Press %s to ride.");
+        add(SummonItems.ZENITH.get(), "Zenith");
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
         add("summon.confluence.finch", "Finch");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");
@@ -1346,6 +1347,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.routine_summon", "Summon: Summon");
         add("confluence.subtitle.use_minion_weapon", "Minion Staff: Use");
         add("confluence.subtitle.use_terraprism", "Terraprisma: Use");
+        add("confluence.subtitle.zenith", "Zenith: Swing");
         add("confluence.subtitle.summon_eye", "Flying Summon: Summon");
         add("confluence.subtitle.summon_imp", "Imp: Summon");
         addCreatureSoundTranslations();

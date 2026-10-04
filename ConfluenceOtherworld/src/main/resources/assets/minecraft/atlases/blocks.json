@@ -1,0 +1,13 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "forge:white"
+    },
+    {
+      "type": "minecraft:directory",
+      "source": "lyra_model",
+      "prefix": "lyra_model/"
+    }
+  ]
+}

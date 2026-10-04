@@ -66,6 +66,7 @@ import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.init.model.WhipModelRegister;
+import org.confluence.mod.client.summoner.model.ZenithSwordModels;
 import org.confluence.mod.client.model.block.GardenGnomeBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
@@ -202,6 +203,7 @@ public final class ModClientEvents {
     private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
         event.register(TongueRenderer.SEGMENT_MODEL);
         WhipModelRegister.register(event);
+        ZenithSwordModels.register(event);
     }
 
     private static void registerMenuScreens(PortRegisterMenuScreensEvent event) {

@@ -2,8 +2,9 @@ package org.confluence.mod.client.summoner.renderer.minion;
 
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityGeoRenderer;
+import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.RuinRelicMinion;
 
 public class RuinRelicRenderer extends AbstractAttachmentEntityGeoRenderer<RuinRelicMinion> {
@@ -13,13 +14,12 @@ public class RuinRelicRenderer extends AbstractAttachmentEntityGeoRenderer<RuinR
     }
 
     @Override
-    protected RenderContext<RuinRelicMinion> createContext(RuinRelicMinion relic, float partialTick) {
-        return RenderContext.<RuinRelicMinion>builder()
-                .model(new ModelConfig<RuinRelicMinion>()
+    protected RenderContext<RuinRelicMinion> createContext(RuinRelicMinion relic, PathNode visualNode, float partialTick, int packedLight) {
+        return new RenderContext<>(relic, visualNode, partialTick, packedLight)
+                .model(new ModelContext()
                         .translateOffset(0, -0.35f, 0.015f)
                         .rotationOffset(90, 0, 0)
                         .scale((float) (0.95f + Math.sin((relic.getTickCount() + partialTick) * 0.1) * 0.1f))
-                        .alphaDistanceFactor(1.5F))
-                .build();
+                        .alphaDistanceFactor(1.5F));
     }
 }

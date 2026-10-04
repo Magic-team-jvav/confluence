@@ -20,6 +20,12 @@ public final class SummonerSoundEvents {
             () -> SoundEvent.createVariableRangeEvent(Confluence.asResource("use_terraprism"))
     );
 
+    /** 天顶剑挥砍时播放的音效 */
+    public static final RegistryObject<SoundEvent> ZENITH = SOUNDS.register(
+            "zenith",
+            () -> SoundEvent.createVariableRangeEvent(Confluence.asResource("zenith"))
+    );
+
     private SummonerSoundEvents() {
     }
 

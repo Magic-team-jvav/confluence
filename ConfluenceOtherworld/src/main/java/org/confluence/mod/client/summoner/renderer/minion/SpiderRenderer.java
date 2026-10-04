@@ -3,8 +3,9 @@ package org.confluence.mod.client.summoner.renderer.minion;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityGeoRenderer;
+import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.SpiderMinion;
 
 public class SpiderRenderer extends AbstractAttachmentEntityGeoRenderer<SpiderMinion> {
@@ -24,11 +25,10 @@ public class SpiderRenderer extends AbstractAttachmentEntityGeoRenderer<SpiderMi
     }
 
     @Override
-    protected RenderContext<SpiderMinion> createContext(SpiderMinion spider, float partialTick) {
-        return RenderContext.<SpiderMinion>builder()
-                .model(new ModelConfig<SpiderMinion>()
+    protected RenderContext<SpiderMinion> createContext(SpiderMinion spider, PathNode visualNode, float partialTick, int packedLight) {
+        return new RenderContext<>(spider, visualNode, partialTick, packedLight)
+                .model(new ModelContext()
                         .rotationOffset(180, 0, 0)
-                        .alphaDistanceFactor(1.5F))
-                .build();
+                        .alphaDistanceFactor(1.5F));
     }
 }

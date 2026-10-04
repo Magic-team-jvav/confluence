@@ -65,6 +65,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
+        // 天顶剑使用召唤武器贴图目录下的手持模型
+        handheldTextureAlias(SummonItems.ZENITH, Confluence.asResource("item/summon/zenith"));
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
         separateModel(SwordItems.MURAMASA, templateReverse24x, "sword/");
         separateModel(SwordItems.LIGHTS_BANE, templateReverse24x, "sword/");

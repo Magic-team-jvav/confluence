@@ -175,6 +175,7 @@ public final class GameClientEvents {
             DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
             SwordProjectileInputHandler.handle(player, attackHeld);
+            ZenithInputHandler.handle(player);
             LeftClickItemHandler.tick(player, attackHeld);
             FlailHandler.handle(player, attackHeld);
             HouseSelectHud.updatePlayerRegionAt(player);

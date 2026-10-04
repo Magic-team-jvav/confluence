@@ -5264,6 +5264,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FlailItems.ANCHOR.get(), "锚");
 
         // 战斗召唤物
+        add(SummonItems.ZENITH.get(), "天顶剑");
         add(SummonItems.FINCH_STAFF.get(), "雀杖");
         add("summon.confluence.finch", "小鸟");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");
@@ -5391,6 +5392,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.routine_summon", "召唤物：召唤");
         add("confluence.subtitle.use_minion_weapon", "召唤杖：使用");
         add("confluence.subtitle.use_terraprism", "泰拉棱镜：使用");
+        add("confluence.subtitle.zenith", "天顶剑：挥砍");
         add("confluence.subtitle.summon_eye", "飞行召唤物：召唤");
         add("confluence.subtitle.summon_imp", "小鬼：召唤");
         add("confluence.subtitle.summon_money_trough", "钱币槽：出现");

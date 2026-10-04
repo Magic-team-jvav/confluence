@@ -2,8 +2,9 @@ package org.confluence.mod.client.summoner.renderer.minion;
 
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityGeoRenderer;
+import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.IronGolemMinion;
 
 public class IronGolemRenderer extends AbstractAttachmentEntityGeoRenderer<IronGolemMinion> {
@@ -13,10 +14,9 @@ public class IronGolemRenderer extends AbstractAttachmentEntityGeoRenderer<IronG
     }
 
     @Override
-    protected RenderContext<IronGolemMinion> createContext(IronGolemMinion golem, float partialTick) {
-        return RenderContext.<IronGolemMinion>builder()
-                .model(new ModelConfig<IronGolemMinion>()
-                        .rotationOffset(180, 0, 0))
-                .build();
+    protected RenderContext<IronGolemMinion> createContext(IronGolemMinion golem, PathNode visualNode, float partialTick, int packedLight) {
+        return new RenderContext<>(golem, visualNode, partialTick, packedLight)
+                .model(new ModelContext()
+                        .rotationOffset(180, 0, 0));
     }
 }

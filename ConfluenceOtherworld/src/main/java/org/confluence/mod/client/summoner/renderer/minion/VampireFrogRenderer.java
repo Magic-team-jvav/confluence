@@ -2,8 +2,9 @@ package org.confluence.mod.client.summoner.renderer.minion;
 
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityGeoRenderer;
+import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.VampireFrogMinion;
 
 public class VampireFrogRenderer extends AbstractAttachmentEntityGeoRenderer<VampireFrogMinion> {
@@ -13,11 +14,10 @@ public class VampireFrogRenderer extends AbstractAttachmentEntityGeoRenderer<Vam
     }
 
     @Override
-    protected RenderContext<VampireFrogMinion> createContext(VampireFrogMinion frog, float partialTick) {
-        return RenderContext.<VampireFrogMinion>builder()
-                .model(new ModelConfig<VampireFrogMinion>()
+    protected RenderContext<VampireFrogMinion> createContext(VampireFrogMinion frog, PathNode visualNode, float partialTick, int packedLight) {
+        return new RenderContext<>(frog, visualNode, partialTick, packedLight)
+                .model(new ModelContext()
                         .rotationOffset(180, 0, 0)
-                        .alphaDistanceFactor(1.5F))
-                .build();
+                        .alphaDistanceFactor(1.5F));
     }
 }

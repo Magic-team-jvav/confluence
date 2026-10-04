@@ -27,17 +27,32 @@ public class SimpleRenderer<T extends AttachmentEntity> extends AbstractAttachme
     }
 
     @Override
-    protected RenderContext<T> createContext(T entity, float partialTick) {
-        return RenderContext.<T>builder()
-                .build();
+    protected RenderContext<T> createContext(T entity, PathNode visualNode, float partialTick, int packedLight) {
+        return new RenderContext<>(entity, visualNode, partialTick, packedLight);
+    }
+
+    /**
+     * 本渲染器绘制的是<b>面向相机的贴图</b>（{@code RenderUtil.renderImage} 内部再乘 cameraOrientation）
+     * 与<b>面向相机的文本</b>，方向完全由相机决定。
+     * <p>
+     * 因此这里刻意不施加基类的 visualNode 朝向 / model 缩放平移变换：叠加后贴图会随实体朝向翻滚，
+     * 与旧实现（{@code modelModify} 覆写里不带任何姿态变换）保持一致。
+     * </p>
+     */
+    @Override
+    protected void modelModify(PoseStack poseStack, MultiBufferSource bufferSource) {
+        poseStack.pushPose();
+        renderModel(poseStack, bufferSource);
+        render(poseStack, bufferSource);
+        poseStack.popPose();
     }
 
     @Override
-    protected void modelModify(T entity, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<T> context, float partialTick, int packedLight, float alpha) {
+    protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
         if (renderer != null) {
-            renderer.render(entity, poseStack, bufferSource, visualNode, context, partialTick, alpha);
+            renderer.render(context.entity, poseStack, bufferSource, context.visualNode, context, context.partialTick, context.color.getAlphaFloat());
         } else {
-            ResourceLocation location = entity.getType().location();
+            ResourceLocation location = context.entity.getType().location();
             String key = "summon." + location.getNamespace() + "." + location.getPath();
             Component component = Component.translatable(key).withStyle(ChatFormatting.DARK_AQUA);
             Minecraft minecraft = Minecraft.getInstance();
@@ -56,6 +71,6 @@ public class SimpleRenderer<T extends AttachmentEntity> extends AbstractAttachme
     }
 
     @Override
-    protected void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<T> context, float partialTick, int packedLight, float alpha) {
+    protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
     }
 }

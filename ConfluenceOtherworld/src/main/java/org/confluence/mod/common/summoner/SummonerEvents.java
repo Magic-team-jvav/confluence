@@ -36,6 +36,7 @@ public final class SummonerEvents {
             Player player = event.getEntity();
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE).tick();
+                serverPlayer.getData(SummonerAttachmentTypes.ZENITH_DATA).tick();
             }
             player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tick();
             SummonerHelper.get(player).getEntityData().tick(player);

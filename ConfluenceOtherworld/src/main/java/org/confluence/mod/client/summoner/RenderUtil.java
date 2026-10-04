@@ -2,6 +2,8 @@ package org.confluence.mod.client.summoner;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -9,6 +11,8 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 /**
  * 通用顶点与贴图渲染工具（26.2 行为对齐）。
@@ -19,7 +23,6 @@ import org.joml.Matrix4f;
  * 其他实现回退逐顶点 addVertex。
  * </p>
  */
-@SuppressWarnings("deprecation")
 public final class RenderUtil {
 
     /** 全亮光照常量（packed）。 */
@@ -55,6 +58,48 @@ public final class RenderUtil {
         vertex(consumer, pose, tintColor, halfWidth, halfHeight, 0.0F, 1.0F, 0.0F);
         vertex(consumer, pose, tintColor, -halfWidth, halfHeight, 0.0F, 0.0F, 0.0F);
         poseStack.popPose();
+    }
+
+    /**
+     * 在世界坐标处渲染始终面向相机的贴图（Lyra 1.21.1 同名方法，顶点变换等价）。
+     * <p>
+     * 与 {@link #renderImageInWorld} 的区别：本方法直接接受世界坐标中心，不使用调用者的
+     * PoseStack，自己用「相机朝向 × {@code Axis.XN.rotationDegrees(180)}」（原版实体名牌同款）
+     * 构造四边形并把中心平移到相机相对坐标。
+     * </p>
+     *
+     * @param texture       贴图路径
+     * @param center        世界坐标中心
+     * @param width         宽
+     * @param height        高
+     * @param bufferSource  渲染缓冲源
+     * @param alwaysVisible true = 无深度测试变体
+     * @param tintColor     整体染色 ARGB
+     */
+    public static void renderImage(ResourceLocation texture, Vec3 center, float width, float height, MultiBufferSource bufferSource, boolean alwaysVisible, int tintColor) {
+        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+        VertexConsumer consumer = bufferSource.getBuffer(LyraRenderTypes.texture(texture, alwaysVisible));
+        Vec3 cameraPos = camera.getPosition();
+        Quaternionf rotation = new Quaternionf(camera.rotation()).mul(Axis.XN.rotationDegrees(180.0F), new Quaternionf());
+        Matrix4f matrix = new Matrix4f().rotate(rotation).setTranslation(
+                (float) (center.x - cameraPos.x), (float) (center.y - cameraPos.y), (float) (center.z - cameraPos.z));
+        float halfWidth = width * 0.5F;
+        float halfHeight = height * 0.5F;
+        worldVertex(consumer, matrix, tintColor, -halfWidth, -halfHeight, 0.0F, 0.0F);
+        worldVertex(consumer, matrix, tintColor, -halfWidth, halfHeight, 0.0F, 1.0F);
+        worldVertex(consumer, matrix, tintColor, halfWidth, halfHeight, 1.0F, 1.0F);
+        worldVertex(consumer, matrix, tintColor, halfWidth, -halfHeight, 1.0F, 0.0F);
+    }
+
+    private static void worldVertex(VertexConsumer consumer, Matrix4f matrix, int tintColor, float x, float y, float u, float v) {
+        Vector3f position = matrix.transformPosition(x, y, 0.0F, new Vector3f());
+        consumer.vertex(position.x, position.y, position.z)
+                .color(tintColor)
+                .uv(u, v)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(FULL_LIGHT)
+                .normal(0.0F, 0.0F, 1.0F)
+                .endVertex();
     }
 
     /**

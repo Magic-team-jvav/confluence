@@ -8,14 +8,13 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
+import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
-import org.confluence.mod.client.summoner.trail.RibbonTrailConfig;
+import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
 
@@ -28,30 +27,30 @@ public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<Terrap
     private TerraprismaModel model;
 
     @Override
-    protected RenderContext<TerraprismaMinion> createContext(TerraprismaMinion prism, float partialTick) {
-        return RenderContext.<TerraprismaMinion>builder()
-                .trail(new RibbonTrailConfig<TerraprismaMinion>()
+    protected RenderContext<TerraprismaMinion> createContext(TerraprismaMinion prism, PathNode visualNode, float partialTick, int packedLight) {
+        int color = prism.getColor(partialTick);
+        return new RenderContext<>(prism, visualNode, partialTick, packedLight)
+                .color(color)
+                .trail(new RibbonTrailContext<TerraprismaMinion>()
+                        .upOffset(1.015F)
                         .timer(prism.trailTimer)
-                        .colorRGB(prism.getColor(partialTick))
+                        .colorRGB(color)
                         .segmentsPerNode(4)
-                        .historyLength(6)
-                        .upOffset(1.015F))
-                .model(new ModelConfig<TerraprismaMinion>()
-                        .scale(1.5f)
-                        .translateOffset(0, 0, 0.3f)
+                        .historyLength(6))
+                .model(new ModelContext()
+                        .scale(1.5F)
+                        .translateOffset(0, 0, 0.3F)
                         .rotationOffset(180, 0, 90)
-                        .alphaDistanceFactor(1.5F))
-                .build();
+                        .alphaDistanceFactor(1.5F));
     }
 
     @Override
-    protected void render(TerraprismaMinion prism, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<TerraprismaMinion> context, float partialTick, int packedLight, float alpha) {
-        DynamicLightDispatcher.INSTANCE.addLightSource(visualNode.pos(), 0.5f);
-        int color = prism.getColor(partialTick);
+    protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
+        DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5f);
         if (model == null) {
             model = new TerraprismaModel(Minecraft.getInstance().getEntityModels().bakeLayer(TerraprismaModel.LAYER_LOCATION));
         }
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(TEXTURE));
-        model.renderToBuffer(poseStack, consumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.red(color) / 255.0F, FastColor.ARGB32.green(color) / 255.0F, FastColor.ARGB32.blue(color) / 255.0F, alpha);
+        model.renderToBuffer(poseStack, consumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, context.color.getRedFloat(), context.color.getGreenFloat(), context.color.getBlueFloat(), context.color.getAlphaFloat());
     }
 }

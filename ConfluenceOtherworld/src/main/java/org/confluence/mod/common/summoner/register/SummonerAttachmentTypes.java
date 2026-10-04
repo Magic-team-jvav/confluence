@@ -27,6 +27,10 @@ public final class SummonerAttachmentTypes {
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<InfoData>> INFO =
             TYPES.registerSimple("summoner_info", () -> PortAttachmentType.builder(InfoData::new));
 
+    /** 天顶剑：玩家侧蓄力与挥砍状态 */
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ZenithData>> ZENITH_DATA =
+            TYPES.registerSimple("zenith_data", () -> PortAttachmentType.builder(ZenithData::new));
+
     public static void init() {
     }
 }

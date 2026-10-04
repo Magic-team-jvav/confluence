@@ -1,14 +1,12 @@
 package org.confluence.mod.client.summoner.renderer.minion;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityGeoRenderer;
-import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
 import org.confluence.mod.client.summoner.IAttachmentEntityRenderer;
+import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.EyeLaserTurretMinion;
 
@@ -31,11 +29,10 @@ public class EyeLaserTurretRenderer implements IAttachmentEntityRenderer<EyeLase
         }
 
         @Override
-        protected RenderContext<EyeLaserTurretMinion> createContext(EyeLaserTurretMinion turret, float partialTick) {
-            return RenderContext.<EyeLaserTurretMinion>builder()
-                    .model(new ModelConfig<EyeLaserTurretMinion>()
-                            .translateOffset(0.0F, -1.699f, 0.0F))
-                    .build();
+        protected RenderContext<EyeLaserTurretMinion> createContext(EyeLaserTurretMinion turret, PathNode visualNode, float partialTick, int packedLight) {
+            return new RenderContext<>(turret, visualNode, partialTick, packedLight)
+                    .model(new ModelContext()
+                            .translateOffset(0.0F, -1.699f, 0.0F));
         }
     }
 
@@ -46,12 +43,11 @@ public class EyeLaserTurretRenderer implements IAttachmentEntityRenderer<EyeLase
         }
 
         @Override
-        protected RenderContext<EyeLaserTurretMinion> createContext(EyeLaserTurretMinion turret, float partialTick) {
-            return RenderContext.<EyeLaserTurretMinion>builder()
-                    .model(new ModelConfig<EyeLaserTurretMinion>()
+        protected RenderContext<EyeLaserTurretMinion> createContext(EyeLaserTurretMinion turret, PathNode visualNode, float partialTick, int packedLight) {
+            return new RenderContext<>(turret, visualNode, partialTick, packedLight)
+                    .model(new ModelContext()
                             .translateOffset(0.0F, -1.81f, 0.0F)
-                            .rotationOffset(180, 0, 0))
-                    .build();
+                            .rotationOffset(180, 0, 0));
         }
     }
 }

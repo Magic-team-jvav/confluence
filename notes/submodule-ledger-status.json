@@ -1262,6 +1262,15 @@
    "status": "COVERED"
   },
   {
+   "row": 141,
+   "sub": "TerraFurniture",
+   "commit": "4d327715d",
+   "date": "2026-09-19",
+   "subject": "单腿桌子",
+   "old": "TODO",
+   "status": "DEFER-ASSETS"
+  },
+  {
    "row": 142,
    "sub": "TerraFurniture",
    "commit": "d060e05de",

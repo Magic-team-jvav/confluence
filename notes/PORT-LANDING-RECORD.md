@@ -4846,3 +4846,47 @@ public ResourceLocation getAnimationResource(AccessoryGeoModel animatable) { ret
 - **三个子模块的行走全部完成**；`fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 148（6714 行，樱花木箱 + 模型光源 + 云杉烛台/灯 + 马桶）** ⇒ 按资产/方块/注册/语言分步落地，先落 Java 侧（`CherryChestBlock`／`ModelLightBlock`／`TFBlocks` 注册），再搬 GeckoLib JSON，最后 tags/lang。
 
+## 一百二十五、行 141 改判 `DEFER-ASSETS` + 余下四行（145–148）落地前置勘察
+
+### 125.1 行 141「单腿桌子」：三个"缺符号"全是 DEAD，代码侧本就齐备
+
+| 符号 | 1.20 HEAD 定义 | 1.21 定义 | 说明 |
+| --- | --- | --- | --- |
+| `OneLegTableGeoModel` | **0** | 0 | 该提交加入后由 1.20 自己改名 |
+| `TabletopRenderer` | **0** | 0 | 同上 |
+| `ModelVariant` | **0** | 0 | 同上 |
+| `OneLegTableLegGeoModel` | **1** | **1** | 现名，两侧同名文件 |
+
+两侧文件集与资源**逐一对应**：`OneLegTableLegGeoModel.java`／`OneLegTableGeoRenderer.java`／`OneLegTableBlock.java`／`TableBDG.java`／`TableBlock.java`／`TFLootTableProvider.java`，资源 `one_leg_table.json`（blockstates）**104 行 / 104 行**、`models/item/one_leg_table.json` **58 行 / 58 行**、掉落表 22 行 / 22 行（1.21 用的目录名是 1.21 数据包布局 `loot_table/`）。
+
+⇒ 代码与文件面均已覆盖，仅 21 行 JSON **内容**不同 ⇒ 改判 **`DEFER-ASSETS`**（与行 84／97 同类）。台账 TODO 由 5 行降为 **4 行（145／146／147／148）**。
+
+### 125.2 余下四行的落地前置（已核实，可直接开工）
+
+| 前置项 | 现状 |
+| --- | --- |
+| 1.21 `SwitchableLightBlock` 构造器 | **与 1.20 同签名** `SwitchableLightBlock(TFBlockSetType type, Properties properties, BlockShapeType shapeType)`（`:43`），`getGenerator()` 也在（`:117`）；差异仅访问修饰（1.21 为 `protected getShape`／`useWithoutItem`）与基类（1.21 用原生 `CopperBulbBlock`，1.20 用 `PortCopperBulbBlock`） |
+| 1.21 依赖类 | `BlockDataGenerator`（2 文件/20 引用）、`BlockShapeType`（1/4）、`TFBlockSetType`（1/18）、`AutoGenBlockData`（1/7）**全在** |
+| 1.20 `ModelLightBlock`（31 行，待移植源） | `extends SwitchableLightBlock`，持 `VoxelShape shape`，覆写 `getShape` 返回固定形状、`getGenerator()` 返回 `null`（"模型/方块态/碰撞箱全部手工提供"语义） |
+| 1.20 `TFBlocks` 的用法 | `setGetterFor(TFBlockType.LAMP, (properties, applier) -> new ModelLightBlock(SPRUCE, properties, …))`；`registerWithItem("spruce_candlestick_one", () -> new ModelLightBlock(SPRUCE, Properties.copy(Blocks.SPRUCE_PLANKS).noOcclusion().lightLevel(…), …))` |
+| 1.21 `TFBlocks` 现状 | 已用 NeoForge `DeferredBlock`／`DeferredRegister`，并已有 `TFBlockSet`／`TFBlockType` 机制与 `LargeChandelierBlock`／`CandelabraBlock`／`ClockBlock`／`HangingPotBlock` 等 ⇒ 注册点可沿用 |
+
+### 125.3 落地顺序（下一批起执行）
+
+| 步 | 内容 | 规模（1.20 侧） | 依赖 |
+| --- | --- | --- | --- |
+| 1 | **行 148 第一批**：`ModelLightBlock`（31 行）类 + `spruce_candlestick_one/two/three` 与 `spruce_lamp` 的注册与 Java 侧 | 类 31 行 + `TFBlocks` 若干条 | 前置已满足（125.2） |
+| 2 | 行 148 第二批：樱花木箱 `CherryChestBlock`(61) + `CherryChestGeoModel` + `CHERRY_CHEST(_ENTITY/_ITEM)` 注册 + `cherry_chest.geo.json`(41) | ~120 行 + 资产 | 照 `ChestBlock` 现成实现 |
+| 3 | 行 148 第三批：`spruce_candlestick_{one,two,three}_{lit,unlit}.json`（441／535／852／1040／1103／1385 行）、`spruce_lamp_{lit,unlit}.json`（403／497）、`toilet.json`(147) 等资产 | ~6.1k 行资产 | 第 1 步的方块 id |
+| 4 | 行 145：`SinkBlock` 补 `IRON_BASE`／`SPRUCE_BASE` 变体（1.21 已有 89 行版，1.20 为 133 行）+ `iron_sink`／`spruce_sink` 资源 + `candelabras.json`(155) + tags/TFBlocks 注册 | ~500 行 | — |
+| 5 | 行 147：`BathtubBlock`(106) 整批 + `bathtub.json`(134)/`base.json`(88)/`forward.json`(49)/`bed.json`(26) + `SPRUCE_BASE` | ~360 行 | 与行 145 共享 `SPRUCE_BASE` |
+| 6 | 行 146：`CandelabraBlock`／`SwitchableLightBlock` 的变体常量集补齐（`BLUE_DUNGEON_FLAMES`／`GLASS_FLAMES`／`SPRUCE_FLAMES`／`SPRUCE_SHAPE`／`OAK_CANDLE_SHAPE`，1.20 分别 143／174 行 vs 1.21 75／136 行） | ~110 行 | 第 1／3 步的变体命名 |
+
+> 每步落地前先确认同批次涉及的 **tags／lang／item model／blockstate**（`TFBlockTagsProvider`、`TFChineseProvider`、`TFBlockSet` 的自动生成面），并在子模块提交后更新父仓 gitlink。
+
+### 125.4 状态
+
+- 台账（双写）：行 141 → `DEFER-ASSETS`；剩余 TODO **4**（145／146／147／148）。全量：`COVERED` 122、`SKIP-PORTLIB` 12、`REVERSE-ALIGNED` 6、`DEFER-ASSETS` 3、`TODO` 4。
+- `fix_eol --check` 候选 6；本批**无代码落地**（落地按 125.3 的顺序从下一批开始）。
+- 下一批：**125.3 第 1 步**（`ModelLightBlock` + 云杉烛台/灯的 Java 侧）。
+

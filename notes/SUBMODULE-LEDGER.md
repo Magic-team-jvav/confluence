@@ -155,7 +155,7 @@
 | 138 | TerraFurniture | `ae2d6f2f2` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | COVERED |
 | 139 | TerraFurniture | `80a9b93c1` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×8 | SKIP-PORTLIB |
 | 140 | TerraFurniture | `797379213` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 6 | +14 −20 | PortLib×11 | COVERED |
-| 141 | TerraFurniture | `4d327715d` | 2026-09-19 | 单腿桌子 | 22 | +1218 −0 |  | TODO |
+| 141 | TerraFurniture | `4d327715d` | 2026-09-19 | 单腿桌子 | 22 | +1218 −0 |  | DEFER-ASSETS |
 | 142 | TerraFurniture | `d060e05de` | 2026-09-20 | 仔细研究后我发现实际上这种对称的桌子可以把花边单独分开，但是已经这样写了，先提交吧，我后面再改，绷不住了 | 1 | +14 −12 |  | COVERED |
 | 143 | TerraFurniture | `bf35ef75d` | 2026-09-20 | 改成组件模式 | 18 | +277 −754 |  | COVERED |
 | 144 | TerraFurniture | `3b1e55c09` | 2026-09-20 | 改腿渲染逻辑 | 1 | +50 −11 |  | COVERED |

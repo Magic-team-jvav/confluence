@@ -1,0 +1,2308 @@
+﻿{
+    "generatedFrom":  "Hand-authored against the PortLib sources in D:\\Minecraft\\1.20forge\\confluence\\PortLib\\src\\main\\java and verified against build\\_nfsrc_219 (NeoForge 21.1.219 / MC 1.21.1) plus fancymodloader:loader:4.0.42 and bus:8.0.5",
+    "kinds":  {
+                  "safe":  "Mechanical and signature-compatible: the replacement compiles and behaves the same.",
+                  "review":  "The rewrite is a best guess. A human MUST check it; the converter also emits these into the TODO report."
+              },
+    "rules":  [
+                  {
+                      "id":  "port-streamcodec-composite",
+                      "pattern":  "PortStreamCodec\\.composite\\(",
+                      "replace":  "StreamCodec.composite(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Identical: vanilla StreamCodec declares composite for 1..6 values - 3/5/7/9/11/13 parameters (StreamCodec.java:112,:127,:150,:177,:208,:243). PortLib mirrors the same arities."
+                  },
+                  {
+                      "id":  "port-streamcodec-of",
+                      "pattern":  "PortStreamCodec\\.of\\(",
+                      "replace":  "StreamCodec.of(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "StreamCodec.of(StreamEncoder,StreamDecoder) at StreamCodec.java:15."
+                  },
+                  {
+                      "id":  "port-streamcodec-ofMember",
+                      "pattern":  "PortStreamCodec\\.ofMember\\(",
+                      "replace":  "StreamCodec.ofMember(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "StreamCodec.ofMember EXISTS at StreamCodec.java:29. Note the argument order (value, output), which is the reverse of StreamEncoder."
+                  },
+                  {
+                      "id":  "port-streamcodec-unit",
+                      "pattern":  "PortStreamCodec\\.unit\\(",
+                      "replace":  "StreamCodec.unit(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "StreamCodec.unit(V expectedValue) at StreamCodec.java:43."
+                  },
+                  {
+                      "id":  "port-streamcodec-map",
+                      "pattern":  "PortStreamCodec\\.map\\(",
+                      "replace":  "StreamCodec.map(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "DANGER: map is a DEFAULT INSTANCE method on vanilla StreamCodec (StreamCodec.java:63) and its argument order is (factory, getter) - the REVERSE of the java.util.stream convention. PortLib declares it as a static taking a codec first: PortStreamCodec.map(codec, factory, getter). A literal replacement produces an uncompilable call; the receiver must move to the front."
+                  },
+                  {
+                      "id":  "port-streamcodec-dispatch",
+                      "pattern":  "PortStreamCodec\\.dispatch\\(",
+                      "replace":  "StreamCodec.dispatch(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Same problem as map: native dispatch is a default instance method (StreamCodec.java:91) taking (keyGetter, codecGetter), while PortLib exposes it statically with the codec first."
+                  },
+                  {
+                      "id":  "port-streamcodec-apply",
+                      "pattern":  "PortStreamCodec\\.apply\\(",
+                      "replace":  "StreamCodec.apply(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Native apply is a default instance method taking a StreamCodec.CodecOperation (StreamCodec.java:59); PortLib exposes it statically with the codec first. Receiver must move to the front."
+                  },
+                  {
+                      "id":  "port-streamcodec-mapStream",
+                      "pattern":  "PortStreamCodec\\.mapStream\\(",
+                      "replace":  "StreamCodec.mapStream(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Native mapStream is a default instance method (StreamCodec.java:77). Receiver must move to the front."
+                  },
+                  {
+                      "id":  "port-streamcodec-cast",
+                      "pattern":  "PortStreamCodec\\.cast\\(",
+                      "replace":  "StreamCodec.cast(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Native cast() is a default instance method (StreamCodec.java:298). Receiver must move to the front."
+                  },
+                  {
+                      "id":  "port-streamcodec-operation",
+                      "pattern":  "PortStreamCodec\\.PortCodecOperation",
+                      "replace":  "StreamCodec.CodecOperation",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Nested interface CodecOperation\u003cB,S,T\u003e with apply(StreamCodec) at StreamCodec.java:303."
+                  },
+                  {
+                      "id":  "port-streamdecoder",
+                      "pattern":  "PortStreamDecoder",
+                      "replace":  "StreamDecoder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamDecoder"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "net.minecraft.network.codec.StreamDecoder (StreamDecoder.java:4)."
+                  },
+                  {
+                      "id":  "port-streamencoder",
+                      "pattern":  "PortStreamEncoder",
+                      "replace":  "StreamEncoder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamEncoder"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "net.minecraft.network.codec.StreamEncoder (StreamEncoder.java:4)."
+                  },
+                  {
+                      "id":  "port-streammemberencoder",
+                      "pattern":  "PortStreamMemberEncoder",
+                      "replace":  "StreamMemberEncoder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamMemberEncoder"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "net.minecraft.network.codec.StreamMemberEncoder (StreamMemberEncoder.java:4); note encode(T value, O output)."
+                  },
+                  {
+                      "id":  "port-streamcodec-lambda-decode-encode",
+                      "pattern":  "new PortStreamCodec\u003c",
+                      "replace":  "new StreamCodec\u003c",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.StreamCodec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Anonymous StreamCodec implementations keep working; only the interface name changes."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-qualifier",
+                      "pattern":  "PortByteBufCodecs\\.",
+                      "replace":  "ByteBufCodecs.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Qualifier swap. ByteBufCodecs is an INTERFACE (ByteBufCodecs.java:43), so all members are implicitly public static."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-UUID",
+                      "pattern":  "PortByteBufCodecs\\.UUID\\b",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ByteBufCodecs has NO UUID codec. The verified native is net.minecraft.core.UUIDUtil.STREAM_CODEC (UUIDUtil.java:43, StreamCodec\u003cByteBuf,UUID\u003e)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-list",
+                      "pattern":  "PortByteBufCodecs\\.list\\b",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ByteBufCodecs.list() returns a StreamCodec.CodecOperation (ByteBufCodecs.java:384), NOT a StreamCodec - so it is applied with codec.apply(...) rather than used as a codec. PortLib exposes it as a direct codec factory. Rewrite shape."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-VECTOR4F",
+                      "pattern":  "PortByteBufCodecs\\.VECTOR4F\\b",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ByteBufCodecs has NO VECTOR4F. Verified natives: VECTOR3F (ByteBufCodecs.java:149) and QUATERNIONF (:158) - a Vector4f codec must be written (e.g. from the Quaternionf codec) or the field dropped."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-UNBOUNDED_BYTE_ARRAY",
+                      "pattern":  "PortByteBufCodecs\\.UNBOUNDED_BYTE_ARRAY\\b",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ByteBufCodecs has NO UNBOUNDED_BYTE_ARRAY. The native constant is net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs.UNBOUNDED_BYTE_ARRAY (NeoForgeStreamCodecs.java:20) - a DIFFERENT CLASS, so the qualifier must change too."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-BLOCK_POS",
+                      "pattern":  "PortByteBufCodecs\\.BLOCK_POS\\b",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ByteBufCodecs has NO BLOCK_POS. The verified native is net.minecraft.core.BlockPos.STREAM_CODEC (BlockPos.java:40)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-collection",
+                      "pattern":  "PortByteBufCodecs\\.collection\\b",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ByteBufCodecs.collection(IntFunction) is a CodecOperation overload (:380) alongside the two codec-returning overloads (:351,:355). Overload resolution may silently change; verify each call."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-json",
+                      "pattern":  "PortByteBufCodecs\\.json\\b",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortByteBufCodecs.json(...) has NO native twin: the string \"json\"/\"Json\" does not occur anywhere in ByteBufCodecs.java. Fall back to ByteBufCodecs.fromCodec(Codec) with a JSON codec, or drop the field."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-BOOL",
+                      "pattern":  "PortByteBufCodecs\\.BOOL\\b",
+                      "replace":  "ByteBufCodecs.BOOL",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-BYTE",
+                      "pattern":  "PortByteBufCodecs\\.BYTE\\b",
+                      "replace":  "ByteBufCodecs.BYTE",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-SHORT",
+                      "pattern":  "PortByteBufCodecs\\.SHORT\\b",
+                      "replace":  "ByteBufCodecs.SHORT",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-UNSIGNED_SHORT",
+                      "pattern":  "PortByteBufCodecs\\.UNSIGNED_SHORT\\b",
+                      "replace":  "ByteBufCodecs.UNSIGNED_SHORT",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-INT",
+                      "pattern":  "PortByteBufCodecs\\.INT\\b",
+                      "replace":  "ByteBufCodecs.INT",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-VAR_INT",
+                      "pattern":  "PortByteBufCodecs\\.VAR_INT\\b",
+                      "replace":  "ByteBufCodecs.VAR_INT",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-VAR_LONG",
+                      "pattern":  "PortByteBufCodecs\\.VAR_LONG\\b",
+                      "replace":  "ByteBufCodecs.VAR_LONG",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-FLOAT",
+                      "pattern":  "PortByteBufCodecs\\.FLOAT\\b",
+                      "replace":  "ByteBufCodecs.FLOAT",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-DOUBLE",
+                      "pattern":  "PortByteBufCodecs\\.DOUBLE\\b",
+                      "replace":  "ByteBufCodecs.DOUBLE",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-BYTE_ARRAY",
+                      "pattern":  "PortByteBufCodecs\\.BYTE_ARRAY\\b",
+                      "replace":  "ByteBufCodecs.BYTE_ARRAY",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-STRING_UTF8",
+                      "pattern":  "PortByteBufCodecs\\.STRING_UTF8\\b",
+                      "replace":  "ByteBufCodecs.STRING_UTF8",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-TAG",
+                      "pattern":  "PortByteBufCodecs\\.TAG\\b",
+                      "replace":  "ByteBufCodecs.TAG",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-TRUSTED_TAG",
+                      "pattern":  "PortByteBufCodecs\\.TRUSTED_TAG\\b",
+                      "replace":  "ByteBufCodecs.TRUSTED_TAG",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-COMPOUND_TAG",
+                      "pattern":  "PortByteBufCodecs\\.COMPOUND_TAG\\b",
+                      "replace":  "ByteBufCodecs.COMPOUND_TAG",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-TRUSTED_COMPOUND_TAG",
+                      "pattern":  "PortByteBufCodecs\\.TRUSTED_COMPOUND_TAG\\b",
+                      "replace":  "ByteBufCodecs.TRUSTED_COMPOUND_TAG",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-VECTOR3F",
+                      "pattern":  "PortByteBufCodecs\\.VECTOR3F\\b",
+                      "replace":  "ByteBufCodecs.VECTOR3F",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-QUATERNIONF",
+                      "pattern":  "PortByteBufCodecs\\.QUATERNIONF\\b",
+                      "replace":  "ByteBufCodecs.QUATERNIONF",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-GAME_PROFILE",
+                      "pattern":  "PortByteBufCodecs\\.GAME_PROFILE\\b",
+                      "replace":  "ByteBufCodecs.GAME_PROFILE",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-GAME_PROFILE_PROPERTIES",
+                      "pattern":  "PortByteBufCodecs\\.GAME_PROFILE_PROPERTIES\\b",
+                      "replace":  "ByteBufCodecs.GAME_PROFILE_PROPERTIES",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified to exist in vanilla ByteBufCodecs."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-byteArray",
+                      "pattern":  "PortByteBufCodecs\\.byteArray\\(",
+                      "replace":  "ByteBufCodecs.byteArray(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-stringUtf8",
+                      "pattern":  "PortByteBufCodecs\\.stringUtf8\\(",
+                      "replace":  "ByteBufCodecs.stringUtf8(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-tagCodec",
+                      "pattern":  "PortByteBufCodecs\\.tagCodec\\(",
+                      "replace":  "ByteBufCodecs.tagCodec(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-compoundTagCodec",
+                      "pattern":  "PortByteBufCodecs\\.compoundTagCodec\\(",
+                      "replace":  "ByteBufCodecs.compoundTagCodec(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-fromCodec",
+                      "pattern":  "PortByteBufCodecs\\.fromCodec\\(",
+                      "replace":  "ByteBufCodecs.fromCodec(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-fromCodecTrusted",
+                      "pattern":  "PortByteBufCodecs\\.fromCodecTrusted\\(",
+                      "replace":  "ByteBufCodecs.fromCodecTrusted(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-fromCodecWithRegistries",
+                      "pattern":  "PortByteBufCodecs\\.fromCodecWithRegistries\\(",
+                      "replace":  "ByteBufCodecs.fromCodecWithRegistries(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-fromCodecWithRegistriesTrusted",
+                      "pattern":  "PortByteBufCodecs\\.fromCodecWithRegistriesTrusted\\(",
+                      "replace":  "ByteBufCodecs.fromCodecWithRegistriesTrusted(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-optional",
+                      "pattern":  "PortByteBufCodecs\\.optional\\(",
+                      "replace":  "ByteBufCodecs.optional(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-collection",
+                      "pattern":  "PortByteBufCodecs\\.collection\\(",
+                      "replace":  "ByteBufCodecs.collection(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-list",
+                      "pattern":  "PortByteBufCodecs\\.list\\(",
+                      "replace":  "ByteBufCodecs.list(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-map",
+                      "pattern":  "PortByteBufCodecs\\.map\\(",
+                      "replace":  "ByteBufCodecs.map(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-either",
+                      "pattern":  "PortByteBufCodecs\\.either\\(",
+                      "replace":  "ByteBufCodecs.either(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-idMapper",
+                      "pattern":  "PortByteBufCodecs\\.idMapper\\(",
+                      "replace":  "ByteBufCodecs.idMapper(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-registry",
+                      "pattern":  "PortByteBufCodecs\\.registry\\(",
+                      "replace":  "ByteBufCodecs.registry(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-holderRegistry",
+                      "pattern":  "PortByteBufCodecs\\.holderRegistry\\(",
+                      "replace":  "ByteBufCodecs.holderRegistry(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-holder",
+                      "pattern":  "PortByteBufCodecs\\.holder\\(",
+                      "replace":  "ByteBufCodecs.holder(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-bytebufcodecs-holderSet",
+                      "pattern":  "PortByteBufCodecs\\.holderSet\\(",
+                      "replace":  "ByteBufCodecs.holderSet(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.codec.ByteBufCodecs"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Method verified to exist in vanilla ByteBufCodecs with a compatible arity (see the verification dossier line numbers in the notes file)."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToPlayersTrackingEntityAndSelf",
+                      "pattern":  "PortPacketDistributor\\.sendToPlayersTrackingEntityAndSelf\\(",
+                      "replace":  "PacketDistributor.sendToPlayersTrackingEntityAndSelf(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Receiver becomes net.neoforged.neoforge.network.PacketDistributor; payload arguments are CustomPacketPayload varargs."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToAllPlayers",
+                      "pattern":  "PortPacketDistributor\\.sendToAllPlayers\\(",
+                      "replace":  "PacketDistributor.sendToAllPlayers(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Receiver becomes net.neoforged.neoforge.network.PacketDistributor; payload arguments are CustomPacketPayload varargs."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToPlayer",
+                      "pattern":  "PortPacketDistributor\\.sendToPlayer\\(",
+                      "replace":  "PacketDistributor.sendToPlayer(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Receiver becomes net.neoforged.neoforge.network.PacketDistributor; payload arguments are CustomPacketPayload varargs."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToPlayersInDimension",
+                      "pattern":  "PortPacketDistributor\\.sendToPlayersInDimension\\(",
+                      "replace":  "PacketDistributor.sendToPlayersInDimension(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "SIGNATURE BREAK: PortLib takes ResourceKey\u003cLevel\u003e, the native takes ServerLevel (PacketDistributor.java:57). The caller must supply a ServerLevel."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToServer",
+                      "pattern":  "PortPacketDistributor\\.sendToServer\\(",
+                      "replace":  "PacketDistributor.sendToServer(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Receiver becomes net.neoforged.neoforge.network.PacketDistributor; payload arguments are CustomPacketPayload varargs."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToPlayersTrackingChunk",
+                      "pattern":  "PortPacketDistributor\\.sendToPlayersTrackingChunk\\(",
+                      "replace":  "PacketDistributor.sendToPlayersTrackingChunk(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Receiver becomes net.neoforged.neoforge.network.PacketDistributor; payload arguments are CustomPacketPayload varargs."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToPlayersTrackingEntity",
+                      "pattern":  "PortPacketDistributor\\.sendToPlayersTrackingEntity\\(",
+                      "replace":  "PacketDistributor.sendToPlayersTrackingEntity(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Receiver becomes net.neoforged.neoforge.network.PacketDistributor; payload arguments are CustomPacketPayload varargs."
+                  },
+                  {
+                      "id":  "port-packetdistributor-sendToPlayersNear",
+                      "pattern":  "PortPacketDistributor\\.sendToPlayersNear\\(",
+                      "replace":  "PacketDistributor.sendToPlayersNear(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.PacketDistributor"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "SIGNATURE BREAK: PortLib takes ResourceKey\u003cLevel\u003e; the native takes ServerLevel plus explicit (excluded, x, y, z, radius) (PacketDistributor.java:65). Also the native method is sendToPlayersNear, not sendToNearbyPlayers."
+                  },
+                  {
+                      "id":  "port-ipacket-identifier",
+                      "pattern":  "IPortPacket\\b",
+                      "replace":  "CustomPacketPayload",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.protocol.common.custom.CustomPacketPayload"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "A payload implements CustomPacketPayload and must implement type() returning CustomPacketPayload.Type\u003cT\u003e. PortLib identifier() (a ResourceLocation) becomes the payload Type, constructed with CustomPacketPayload.createType(String) (CustomPacketPayload.java:20) - there is NO Type#create. The Type record holds the ResourceLocation (CustomPacketPayload.java:79)."
+                  },
+                  {
+                      "id":  "port-ipacket-context-type",
+                      "pattern":  "IPortPacket\\.Context",
+                      "replace":  "IPayloadContext",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.handling.IPayloadContext"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Method-for-method identical for player()/connection()/enqueueWork(Runnable)/reply(...)/disconnect(...)/channelHandlerContext() (IPayloadContext.java:35-131)."
+                  },
+                  {
+                      "id":  "port-ipacket-context-enqueuework",
+                      "pattern":  "\\.enqueueWork\\(",
+                      "replace":  ".enqueueWork(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.handling.IPayloadContext"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AMBIGUITY HAZARD: the native interface overloads enqueueWork(Runnable) (IPayloadContext.java:81) and enqueueWork(Supplier\u003cT\u003e) (:86). A lambda whose body yields a value now resolves to the Supplier overload and changes its return type from void to CompletableFuture\u003cT\u003e. Pin the argument type."
+                  },
+                  {
+                      "id":  "port-ipacket-handle",
+                      "pattern":  "\\bvoid handle\\(IPortPacket\\.Context",
+                      "replace":  "void handle(IPayloadContext",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.handling.IPayloadContext"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "The handler is no longer a payload method: it is supplied at registration as an IPayloadHandler\u003cT\u003e (IPayloadHandler.java:18). The body of handle(Context) becomes that handler lambda."
+                  },
+                  {
+                      "id":  "port-ipacket-s2c",
+                      "pattern":  "IPortPacket\\.S2C",
+                      "replace":  "CustomPacketPayload",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.protocol.common.custom.CustomPacketPayload"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "The direction marker disappears. At registration the payload must use PayloadRegistrar.playToClient (PayloadRegistrar.java:44), configurationToClient (:70) or commonToClient (:96). PortLib work(Player) becomes the IPayloadHandler body."
+                  },
+                  {
+                      "id":  "port-ipacket-c2s",
+                      "pattern":  "IPortPacket\\.C2S",
+                      "replace":  "CustomPacketPayload",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.network.protocol.common.custom.CustomPacketPayload"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Mirror of S2C: registration must use playToServer (:52), configurationToServer (:78) or commonToServer (:104). There is no login phase - login-era payloads are common* with versioned()."
+                  },
+                  {
+                      "id":  "port-payloadhandler-ctor",
+                      "pattern":  "new PortPayloadHandler\\(",
+                      "replace":  "PayloadRegistrar.create(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.registration.PayloadRegistrar"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "SIGNATURE BREAK: PayloadRegistrar has NO static create(...) factory. It is obtained from RegisterPayloadHandlersEvent.registrar(String) (RegisterPayloadHandlersEvent.java:40), and its only public ctor takes just the version (PayloadRegistrar.java:31). PortPayloadHandler(namespace, version) must be restructured."
+                  },
+                  {
+                      "id":  "port-payloadhandler-registerInGameS2C",
+                      "pattern":  "\\.registerInGameS2C\\(",
+                      "replace":  ".playToClient(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.registration.PayloadRegistrar"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Method RENAME: registerInGameS2C/registerInGameC2S -\u003e playToClient/playToServer; registerLoginS2C/registerLoginC2S -\u003e configurationToClient/configurationToServer (PortLib used the login phase to emulate 1.20.2+ configuration). The registered key also changes: a CustomPacketPayload.Type instead of (Class, ResourceLocation). Codec bound is StreamCodec\u003c? super RegistryFriendlyByteBuf,T\u003e for play*, but StreamCodec\u003c? super FriendlyByteBuf,T\u003e for configuration*/common*."
+                  },
+                  {
+                      "id":  "port-payloadhandler-registerInGameC2S",
+                      "pattern":  "\\.registerInGameC2S\\(",
+                      "replace":  ".playToServer(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.registration.PayloadRegistrar"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "See registerInGameS2C."
+                  },
+                  {
+                      "id":  "port-payloadhandler-registerLoginS2C",
+                      "pattern":  "\\.registerLoginS2C\\(",
+                      "replace":  ".configurationToClient(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.registration.PayloadRegistrar"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "See registerInGameS2C."
+                  },
+                  {
+                      "id":  "port-payloadhandler-registerLoginC2S",
+                      "pattern":  "\\.registerLoginC2S\\(",
+                      "replace":  ".configurationToServer(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.registration.PayloadRegistrar"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "See registerInGameS2C."
+                  },
+                  {
+                      "id":  "port-payloadhandler-registerInGameBidirectional",
+                      "pattern":  "\\.registerInGameBidirectional\\(",
+                      "replace":  ".playBidirectional(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.registration.PayloadRegistrar"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Method RENAME (playBidirectional, PayloadRegistrar.java:62)."
+                  },
+                  {
+                      "id":  "port-payloadhandler-versioned",
+                      "pattern":  "\\.versioned\\(|PortRegisterPayloadHandlersEvent",
+                      "replace":  "RegisterPayloadHandlersEvent",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortLib calls event.registrar(\"1\"); the native RegisterPayloadHandlersEvent is mod-bus (RegisterPayloadHandlersEvent.java:31 implements IModBusEvent) and exposes registrar(String version) at :40. versioned(...) exists on PayloadRegistrar (:145) but is normally not needed."
+                  },
+                  {
+                      "id":  "port-registerhandler-armorMaterial",
+                      "pattern":  "PortRegisterHandler\\.armorMaterial\\(",
+                      "replace":  "DeferredRegister.create(Registries.ARMOR_MATERIAL, ",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.armorMaterial(namespace) becomes the corresponding DeferredRegister factory. Vanilla key Registries.ARMOR_MATERIAL (Registries.java:202) - SINGULAR. There is no ARMOR_MATERIALS. The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-item",
+                      "pattern":  "PortRegisterHandler\\.item\\(",
+                      "replace":  "DeferredRegister.createItems(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.item(namespace) becomes the corresponding DeferredRegister factory. DeferredRegister.createItems(String modid) at DeferredRegister.java:142. The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-particleType",
+                      "pattern":  "PortRegisterHandler\\.particleType\\(",
+                      "replace":  "DeferredRegister.create(Registries.PARTICLE_TYPE, ",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.particleType(namespace) becomes the corresponding DeferredRegister factory. Vanilla key Registries.PARTICLE_TYPE. The registered object must still be an abstract ParticleType subclass implementing codec() (ParticleType.java:18) and streamCodec() (:20). The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-attachment",
+                      "pattern":  "PortRegisterHandler\\.attachment\\(",
+                      "replace":  "DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.attachment(namespace) becomes the corresponding DeferredRegister factory. ATTACHMENT_TYPES key verified at NeoForgeRegistries.Keys (NeoForgeRegistries.java:58); the registry field is NeoForgeRegistries.ATTACHMENT_TYPES (:43). The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-attribute",
+                      "pattern":  "PortRegisterHandler\\.attribute\\(",
+                      "replace":  "DeferredRegister.create(Registries.ATTRIBUTE, ",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.attribute(namespace) becomes the corresponding DeferredRegister factory. Vanilla key Registries.ATTRIBUTE (Registries.java:115). The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-block",
+                      "pattern":  "PortRegisterHandler\\.block\\(",
+                      "replace":  "DeferredRegister.createBlocks(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.block(namespace) becomes the corresponding DeferredRegister factory. DeferredRegister.createBlocks(String modid) at DeferredRegister.java:155. The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-dataComponent",
+                      "pattern":  "PortRegisterHandler\\.dataComponent\\(",
+                      "replace":  "DeferredRegister.createDataComponents(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.dataComponent(namespace) becomes the corresponding DeferredRegister factory. DeferredRegister.createDataComponents(ResourceKey\u003cRegistry\u003cDataComponentType\u003c?\u003e\u003e\u003e, String) at DeferredRegister.java:169 - the registry is vanilla BuiltInRegistries.DATA_COMPONENT_TYPE (BuiltInRegistries.java:264), NOT NeoForgeRegistries. The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-ingredientType",
+                      "pattern":  "PortRegisterHandler\\.ingredientType\\(",
+                      "replace":  "DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, ",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.ingredientType(namespace) becomes the corresponding DeferredRegister factory. NeoForgeRegistries.Keys.INGREDIENT_TYPES (NeoForgeRegistries.java:55). The returned value is a DeferredRegister (or one of its nested Blocks/Items/DataComponents types), not a PortRegistration - so every subsequent .register(...) must be checked against the new receiver type."
+                  },
+                  {
+                      "id":  "port-registerhandler-custom",
+                      "pattern":  "PortRegisterHandler\\.custom\\(",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.custom has no native equivalent: custom(namespace, registryKey, consumer) maps onto DeferredRegister.create(key, namespace) plus makeRegistry(Consumer\u003cRegistryBuilder\u003cT\u003e\u003e) (DeferredRegister.java:259), and init(IEventBus) disappears because DeferredRegister.register(IEventBus) (:315) is called per register instead. A human must restructure each site."
+                  },
+                  {
+                      "id":  "port-registerhandler-init",
+                      "pattern":  "PortRegisterHandler\\.init\\(",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortRegisterHandler.init has no native equivalent: custom(namespace, registryKey, consumer) maps onto DeferredRegister.create(key, namespace) plus makeRegistry(Consumer\u003cRegistryBuilder\u003cT\u003e\u003e) (DeferredRegister.java:259), and init(IEventBus) disappears because DeferredRegister.register(IEventBus) (:315) is called per register instead. A human must restructure each site."
+                  },
+                  {
+                      "id":  "port-registryentry-isPresent",
+                      "pattern":  "\\.isPresent",
+                      "replace":  ".isBound()",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder has NO isPresent() - it implements Holder and Supplier, neither of which declares it. Use isBound() (DeferredHolder.java:197) or asOptional() (:125). The polarity is the same, so the rewrite is mechanical but must be verified per site."
+                  },
+                  {
+                      "id":  "port-registryentry-unwrapKey",
+                      "pattern":  "\\.unwrapKey",
+                      "replace":  ".unwrapKey()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.unwrapKey() at DeferredHolder.java:285."
+                  },
+                  {
+                      "id":  "port-registryentry-tags",
+                      "pattern":  "\\.tags",
+                      "replace":  ".tags()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.tags() at DeferredHolder.java:262."
+                  },
+                  {
+                      "id":  "port-registryentry-getId",
+                      "pattern":  "\\.getId",
+                      "replace":  ".getId()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.getId() returns ResourceLocation (DeferredHolder.java:162)."
+                  },
+                  {
+                      "id":  "port-registryentry-canSerializeIn",
+                      "pattern":  "\\.canSerializeIn",
+                      "replace":  ".canSerializeIn(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.canSerializeIn(HolderOwner\u003cR\u003e) at DeferredHolder.java:295."
+                  },
+                  {
+                      "id":  "port-registryentry-getKey",
+                      "pattern":  "\\.getKey",
+                      "replace":  ".getKey()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.getKey() returns ResourceKey\u003cR\u003e (DeferredHolder.java:170)."
+                  },
+                  {
+                      "id":  "port-registryentry-value",
+                      "pattern":  "\\.value",
+                      "replace":  ".value()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.value() returns T (DeferredHolder.java:100)."
+                  },
+                  {
+                      "id":  "port-registryentry-get",
+                      "pattern":  "\\.get",
+                      "replace":  ".get()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.get() returns T (DeferredHolder.java:116) via Supplier\u003cT\u003e."
+                  },
+                  {
+                      "id":  "port-registryentry-kind",
+                      "pattern":  "\\.kind",
+                      "replace":  ".kind()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.kind() at DeferredHolder.java:290."
+                  },
+                  {
+                      "id":  "port-registryentry-getRegisteredName",
+                      "pattern":  "\\.getRegisteredName",
+                      "replace":  ".getRegisteredName()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. Holder#getRegisteredName() is a default method (Holder.java:40) returning \"[unregistered]\" when unbound, so DeferredHolder inherits it."
+                  },
+                  {
+                      "id":  "port-registryentry-unwrap",
+                      "pattern":  "\\.unwrap",
+                      "replace":  ".unwrap()",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistryEntry -\u003e DeferredHolder/DeferredItem/DeferredBlock. DeferredHolder.unwrap() at DeferredHolder.java:273."
+                  },
+                  {
+                      "id":  "port-deferreditem-tostack",
+                      "pattern":  "\\.toStack\\(",
+                      "replace":  ".toStack(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredItem",
+                                          "net.neoforged.neoforge.registries.DeferredBlock"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DeferredItem.toStack()/toStack(int) (DeferredItem.java:24,:33) and DeferredBlock.toStack()/toStack(int) (DeferredBlock.java:25,:34) exist."
+                  },
+                  {
+                      "id":  "port-deferred-asitem",
+                      "pattern":  "\\.asItem\\(",
+                      "replace":  ".asItem(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredItem",
+                                          "net.neoforged.neoforge.registries.DeferredBlock"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Both implement ItemLike; asItem() verified (DeferredItem.java:65, DeferredBlock.java:66)."
+                  },
+                  {
+                      "id":  "port-registration-key",
+                      "pattern":  "\\.key\\(\\)",
+                      "replace":  ".getRegistryKey()",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortRegistration.key() returns ResourceKey\u003c? extends Registry\u003cR\u003e\u003e; the native DeferredRegister.getRegistryKey() does the same (DeferredRegister.java:333). getRegistryName() (:340) returns the ResourceLocation."
+                  },
+                  {
+                      "id":  "port-registration-register",
+                      "pattern":  "\\.register\\(",
+                      "replace":  ".register(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DeferredRegister.register(String, Supplier) at DeferredRegister.java:214 and register(String, Function\u003cResourceLocation,? extends I\u003e) at :225; DeferredRegister.Blocks.register :404/:416; DeferredRegister.Items.register :501/:514."
+                  },
+                  {
+                      "id":  "port-registration-addalias",
+                      "pattern":  "\\.addAlias\\(",
+                      "replace":  ".addAlias(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DeferredRegister.addAlias(ResourceLocation from, ResourceLocation to) at DeferredRegister.java:303. NOTE: Registry#addAlias does NOT exist in 1.21.1 (grep -i alias over net/minecraft/core/Registry.java: 0 matches) - the alias API is on DeferredRegister only."
+                  },
+                  {
+                      "id":  "port-datacomponentregistration-builder",
+                      "pattern":  "\\.builder\\(",
+                      "replace":  ".registerComponentType(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister.DataComponents"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortDataComponentRegistration.builder(name, consumer) becomes DeferredRegister.DataComponents.registerComponentType(String, UnaryOperator\u003cDataComponentType.Builder\u003cD\u003e\u003e) (DeferredRegister.java:667). The consumer becomes a UnaryOperator lambda returning the builder."
+                  },
+                  {
+                      "id":  "port-deferredregistration-getentries",
+                      "pattern":  "\\.getEntries\\(",
+                      "replace":  ".getEntries(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredRegister"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DeferredRegister.getEntries() returns Collection\u003cDeferredHolder\u003cT,? extends T\u003e\u003e (DeferredRegister.java:326)."
+                  },
+                  {
+                      "id":  "port-eventhandler-addlistener-1",
+                      "pattern":  "PortEventHandler\\.addListener\\(\\s*([A-Za-z_$][\\w$]*)\\s*-\u003e",
+                      "replace":  "BUS.addListener(\\1 -\u003e",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.IEventBus",
+                                          "net.neoforged.neoforge.common.NeoForge"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "BUS is NOT a constant: resolve the lambda parameter type through types.json/event-bus.json. binder \"game\" -\u003e NeoForge.EVENT_BUS (NeoForge.java:17); \"mod\" -\u003e the IEventBus injected into the @Mod constructor (ModContainer#getEventBus(), fml-src ModContainer.java:145). PortEventHandler chooses the bus at runtime from IModBusEvent; on 1.21.1 that choice must be baked in per call site. A wrong choice compiles but the listener never fires."
+                  },
+                  {
+                      "id":  "port-eventhandler-addlistener-priority",
+                      "pattern":  "PortEventHandler\\.addListener\\(\\s*PortEventPriority\\.",
+                      "replace":  "BUS.addListener(EventPriority.",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.IEventBus",
+                                          "net.neoforged.bus.api.EventPriority",
+                                          "net.neoforged.neoforge.common.NeoForge"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortEventPriority -\u003e net.neoforged.bus.api.EventPriority (HIGHEST/HIGH/NORMAL/LOW/LOWEST, EventPriority.java:34-:38). IEventBus.addListener(EventPriority, Consumer\u003cT\u003e) at fml/bus IEventBus.java:78. Same bus decision as port-eventhandler-addlistener-1."
+                  },
+                  {
+                      "id":  "port-eventhandler-addlistener-receivecancelled",
+                      "pattern":  "PortEventHandler\\.addListener\\((PortEventPriority\\.[\\w.]+)\\s*,\\s*(true|false)\\s*,",
+                      "replace":  "BUS.addListener(\\1, \\2,",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.IEventBus",
+                                          "net.neoforged.bus.api.EventPriority"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "IEventBus.addListener(EventPriority, boolean, Consumer\u003cT\u003e) exists (IEventBus.java:101). CAUTION: there are EIGHT addListener overloads including addListener(boolean, Consumer) at :124 and addListener(boolean, Class, Consumer) at :137 - a bare boolean as the first argument selects a receiveCanceled overload, so keep the priority argument present."
+                  },
+                  {
+                      "id":  "port-eventhandler-addlistener-class",
+                      "pattern":  "PortEventHandler\\.addListener\\((PortEventPriority\\.[\\w.]+)\\s*,\\s*(true|false)\\s*,\\s*([\\w.$]+)\\.class\\s*,",
+                      "replace":  "BUS.addListener(\\1, \\2, \\3.class,",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.IEventBus",
+                                          "net.neoforged.bus.api.EventPriority"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "IEventBus.addListener(EventPriority, boolean, Class\u003cT\u003e, Consumer\u003cT\u003e) exists (IEventBus.java:115). This is the form that avoids reflective type inference, so prefer it when the inferred form is ambiguous."
+                  },
+                  {
+                      "id":  "port-eventhandler-postevent",
+                      "pattern":  "PortEventHandler\\.postEvent\\(",
+                      "replace":  "BUS.post(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.IEventBus",
+                                          "net.neoforged.neoforge.common.NeoForge"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "postEvent picks the bus from IModBusEvent at runtime. Replace with NeoForge.EVENT_BUS.post(...) for game-bus events or modBus.post(...) for mod-bus events, using event-bus.json. post(Event) is at IEventBus.java:158."
+                  },
+                  {
+                      "id":  "port-eventhandler-posteventwithreturn",
+                      "pattern":  "PortEventHandler\\.postEventWithReturn\\(",
+                      "replace":  "BUS.post(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.IEventBus",
+                                          "net.neoforged.neoforge.common.NeoForge"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "IEventBus.post returns the event, so the \"WithReturn\" wrapper disappears. Same bus decision as port-eventhandler-postevent."
+                  },
+                  {
+                      "id":  "port-eventhandler-wrapevent",
+                      "pattern":  "PortEventHandler\\.wrapEvent\\(",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortEventHandler.wrapEvent registers a translation listener from a Forge event to a Port event. On 1.21.1 the mod listens to the NATIVE event directly, so every wrapEvent call should be deleted rather than translated. A human must confirm the call has no other purpose."
+                  },
+                  {
+                      "id":  "port-eventpriority",
+                      "pattern":  "PortEventPriority\\.",
+                      "replace":  "EventPriority.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.EventPriority"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortEventPriority -\u003e net.neoforged.bus.api.EventPriority; constants are name-identical."
+                  },
+                  {
+                      "id":  "port-eventbus",
+                      "pattern":  "PortBus\\.",
+                      "replace":  "NeoForge.EVENT_BUS",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.NeoForge"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortBus.MOD/GAME disappears: the mod bus is the IEventBus injected into the @Mod constructor (ModContainer#getEventBus()) and the game bus is NeoForge.EVENT_BUS (NeoForge.java:17). A human must choose per use."
+                  },
+                  {
+                      "id":  "port-cancellableevent",
+                      "pattern":  "IPortCancellableEvent",
+                      "replace":  "ICancellableEvent",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.bus.api.ICancellableEvent"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ICancellableEvent declares setCanceled(boolean) (:29) and isCanceled() (:37) - same shape as the PortLib interface."
+                  },
+                  {
+                      "id":  "port-modbusevent",
+                      "pattern":  "IPortModBusEvent",
+                      "replace":  "IModBusEvent",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.fml.event.IModBusEvent"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "IModBusEvent is an empty marker in net.neoforged.fml.event (fml-src IModBusEvent.java:11). VERIFIED CORRECTION to the inventory: the PortLib marker does NOT track the native one. PortEvent itself only does `extends Event` (PortEvent.java:11), and of the 62 client event files only 5 even mention IPortModBusEvent (3 on the top-level class: PortRegisterColorHandlersEvent, PortRegisterGuiLayersEvent, PortRenderLevelStageEvent; 2 only on nested classes). The inventory said \"16 of the 62\"; that list is really the set of NATIVES that are mod-bus. Consequence: never infer the bus from the PortLib marker - use event-bus.json, which is derived from the native classes."
+                  },
+                  {
+                      "id":  "port-datamaptype-builder",
+                      "pattern":  "\\.builder\\(",
+                      "replace":  ".builder(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-synced",
+                      "pattern":  "\\.synced\\(",
+                      "replace":  ".synced(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-build",
+                      "pattern":  "\\.build\\(",
+                      "replace":  ".build(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-registryKey",
+                      "pattern":  "\\.registryKey\\(",
+                      "replace":  ".registryKey(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-networkCodec",
+                      "pattern":  "\\.networkCodec\\(",
+                      "replace":  ".networkCodec(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-mandatorySync",
+                      "pattern":  "\\.mandatorySync\\(",
+                      "replace":  ".mandatorySync(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-codec",
+                      "pattern":  "\\.codec\\(",
+                      "replace":  ".codec(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-id",
+                      "pattern":  "\\.id\\(",
+                      "replace":  ".id(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-remover",
+                      "pattern":  "\\.remover\\(",
+                      "replace":  ".remover(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-datamaptype-merger",
+                      "pattern":  "\\.merger\\(",
+                      "replace":  ".merger(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.datamaps.DataMapType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataMapType/AdvancedDataMapType expose the same member names (DataMapType.java:85,:152,:161,:92,:113,:120,:106,:99; AdvancedDataMapType.java:69,:76). synced(Codec,boolean) is the ONLY synced overload - there is no single-argument synced(Codec)."
+                  },
+                  {
+                      "id":  "port-attachmenttype-builder",
+                      "pattern":  "\\.builder\\(",
+                      "replace":  ".builder(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-serializable",
+                      "pattern":  "\\.serializable\\(",
+                      "replace":  ".serializable(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-serialize",
+                      "pattern":  "\\.serialize\\(",
+                      "replace":  ".serialize(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-copyOnDeath",
+                      "pattern":  "\\.copyOnDeath\\(",
+                      "replace":  ".copyOnDeath(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-copyHandler",
+                      "pattern":  "\\.copyHandler\\(",
+                      "replace":  ".copyHandler(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-sync",
+                      "pattern":  "\\.sync\\(",
+                      "replace":  ".sync(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-build",
+                      "pattern":  "\\.build\\(",
+                      "replace":  ".build(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-read",
+                      "pattern":  "\\.read\\(",
+                      "replace":  ".read(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-write",
+                      "pattern":  "\\.write\\(",
+                      "replace":  ".write(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachmenttype-sendToPlayer",
+                      "pattern":  "\\.sendToPlayer\\(",
+                      "replace":  ".sendToPlayer(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "AttachmentType.Builder has the same member names: serialize x3 (AttachmentType.java:168,:184,:196), copyOnDeath :224, copyHandler :238, sync x3 (:250,:261,:273), build :294. The sync(BiPredicate\u003cIAttachmentHolder,ServerPlayer\u003e, StreamCodec) overload replaces PortLib sync(BiPredicate\u003cIPortAttachmentHolder,...\u003e, ...) - the predicate parameter type changes with the holder interface."
+                  },
+                  {
+                      "id":  "port-attachment-getAttach",
+                      "pattern":  "\\.getAttach\\(",
+                      "replace":  ".getData(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.getData(AttachmentType\u003cT\u003e) at :39, Supplier overload at :46. Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-syncAttach",
+                      "pattern":  "\\.syncAttach\\(",
+                      "replace":  ".syncData(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.syncData(AttachmentType\u003c?\u003e) at :125, Supplier overload at :137. Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-hasAttach",
+                      "pattern":  "\\.hasAttach\\(",
+                      "replace":  ".hasData(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.hasData(AttachmentType\u003c?\u003e) at :24, plus a Supplier\u003cAttachmentType\u003cT\u003e\u003e overload at :29 (note: not AttachmentType, unlike the others). Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-getExistingAttach",
+                      "pattern":  "\\.getExistingAttach\\(",
+                      "replace":  ".getExistingData(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.getExistingData(AttachmentType\u003cT\u003e) at :55, Supplier overload at :64. Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-hasAttaches",
+                      "pattern":  "\\.hasAttaches\\(",
+                      "replace":  ".hasAttachments(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.hasAttachments() at IAttachmentHolder.java:19. Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-setAttach",
+                      "pattern":  "\\.setAttach\\(",
+                      "replace":  ".setData(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.setData(AttachmentType\u003cT\u003e,T) at :90, Supplier overload at :97. Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-removeAttach",
+                      "pattern":  "\\.removeAttach\\(",
+                      "replace":  ".removeData(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.removeData(AttachmentType\u003cT\u003e) at :106, Supplier overload at :113. Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-getExistingAttachOrNull",
+                      "pattern":  "\\.getExistingAttachOrNull\\(",
+                      "replace":  ".getExistingDataOrNull(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "METHOD RENAME. IAttachmentHolder.getExistingDataOrNull(AttachmentType\u003cT\u003e) at :71, Supplier overload at :81. Also retarget the argument when it is a PortRegistryEntry\u003c...\u003e: the native overload takes Supplier\u003cAttachmentType\u003cT\u003e\u003e, and DeferredHolder implements Supplier, so the value still compiles - but a DeferredHolder is NOT an AttachmentType."
+                  },
+                  {
+                      "id":  "port-attachment-cast",
+                      "pattern":  "\\(IPortAttachmentHolder\\)\\s*",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.IAttachmentHolder"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "The cast usually becomes unnecessary on 1.21.1: Entity/Level/BlockEntity implement IAttachmentHolder natively, so ((IPortAttachmentHolder) player).getData(...) is simply player.getData(...). A human must confirm the static type actually implements the interface."
+                  },
+                  {
+                      "id":  "port-attachment-serializable",
+                      "pattern":  "PortAttachmentType\\.serializable\\(",
+                      "replace":  "AttachmentType.serializable(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.attachment.AttachmentType"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "AttachmentType.serializable(Supplier)/serializable(Function\u003cIAttachmentHolder,T\u003e) at AttachmentType.java:119,:132. PortLib binds T to IPortNBTSerializable while native binds it to net.neoforged.neoforge.common.util.INBTSerializable - change the bound type at the declaration."
+                  },
+                  {
+                      "id":  "port-datacomponenttype-persistent",
+                      "pattern":  "\\.persistent\\(",
+                      "replace":  ".persistent(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.core.component.DataComponentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataComponentType.Builder.persistent(Codec\u003cT\u003e) at DataComponentType.java:57 - name-identical to PortLib."
+                  },
+                  {
+                      "id":  "port-datacomponenttype-networksynchronized",
+                      "pattern":  "\\.networkSynchronized\\(",
+                      "replace":  ".networkSynchronized(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.core.component.DataComponentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataComponentType.Builder.networkSynchronized(StreamCodec\u003c? super RegistryFriendlyByteBuf,T\u003e) at DataComponentType.java:62 - name and bounds identical."
+                  },
+                  {
+                      "id":  "port-datacomponenttype-builder",
+                      "pattern":  "PortDataComponentType\\.Builder",
+                      "replace":  "DataComponentType.Builder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.core.component.DataComponentType"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "DataComponentType.Builder (DataComponentType.java:50) with persistent :57, networkSynchronized :62, cacheEncoding :67, build :72. The native entry point is the static DataComponentType.builder() (:28)."
+                  },
+                  {
+                      "id":  "port-datacomponentmap-builder",
+                      "pattern":  "PortDataComponentMap\\.Builder",
+                      "replace":  "DataComponentMap.Builder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.core.component.DataComponentMap"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "DataComponentMap.Builder (DataComponentMap.java:137) with set :143, addAll :156, build :164. There is NO DataComponentMap.entrySet()."
+                  },
+                  {
+                      "id":  "port-datacomponentpatch-builder",
+                      "pattern":  "PortDataComponentPatch\\.Builder",
+                      "replace":  "DataComponentPatch.Builder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.core.component.DataComponentPatch"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "DataComponentPatch.Builder (DataComponentPatch.java:235) with set :241, remove :247, set(TypedDataComponent) :252, build :256."
+                  },
+                  {
+                      "id":  "port-datacomponentpatch-empty",
+                      "pattern":  "PortDataComponentPatch\\.EMPTY",
+                      "replace":  "DataComponentPatch.EMPTY",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.core.component.DataComponentPatch"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "DataComponentPatch.EMPTY at DataComponentPatch.java:22."
+                  },
+                  {
+                      "id":  "port-itemstack-component-accessors",
+                      "pattern":  "\\.getOrDefault\\(|\\.has\\(|\\.get\\(",
+                      "replace":  "SAME",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.core.component.DataComponentType"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "The component accessors get/has/getOrDefault are NOT declared on ItemStack - they are inherited defaults from net.minecraft.core.component.DataComponentHolder (:9,:13,:17). A bare .get(x) on an ItemStack compiles, but watch for the same-named Map/List methods resolving instead; add the DataComponentHolder context when in doubt. ItemStack itself only declares set (:716), remove (:732) and two update(...) overloads (:721,:726)."
+                  },
+                  {
+                      "id":  "port-configspec-qualifier",
+                      "pattern":  "PortConfigSpec",
+                      "replace":  "ModConfigSpec",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.ModConfigSpec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Pure rename. ModConfigSpec (ModConfigSpec.java:56) exposes Builder :300, ConfigValue :1186, BooleanValue :1284, IntValue :1303, LongValue :1319, DoubleValue :1335, EnumValue :1352."
+                  },
+                  {
+                      "id":  "port-configspec-define",
+                      "pattern":  "\\.define(List|InRange|InList|Enum|AllowEmpty)?\\(",
+                      "replace":  ".define(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.ModConfigSpec"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "The whole define/defineInRange/defineInList/defineList/defineListAllowEmpty/defineEnum family exists on ModConfigSpec.Builder (ModConfigSpec.java:309-:799) with matching overload shapes, as do comment :803, translation :820, push :842, pop :860, worldRestart :829, build :877."
+                  },
+                  {
+                      "id":  "port-configspec-listvalue",
+                      "pattern":  "PortConfigSpec\\.ListValue",
+                      "replace":  "ModConfigSpec.ConfigValue\u003cList\u003c? extends Object\u003e\u003e",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.ModConfigSpec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "SIGNATURE BREAK: ModConfigSpec has NO ListValue type. defineList/defineListAllowEmpty return ConfigValue\u003cList\u003c? extends T\u003e\u003e (ModConfigSpec.java:397,:501). The declared field type must be widened to ConfigValue\u003cList\u003c? extends T\u003e\u003e."
+                  },
+                  {
+                      "id":  "port-configspec-numbervalue",
+                      "pattern":  "PortConfigSpec\\.NumberValue",
+                      "replace":  "ModConfigSpec.IntValue",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.ModConfigSpec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "SIGNATURE BREAK: no NumberValue exists. Choose IntValue (:1303), LongValue (:1319) or DoubleValue (:1335) according to the primitive the site actually uses; .get()/.getAsX() differ per choice."
+                  },
+                  {
+                      "id":  "port-configspec-stringvalue",
+                      "pattern":  "PortConfigSpec\\.StringValue",
+                      "replace":  "ModConfigSpec.ConfigValue\u003cString\u003e",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.ModConfigSpec"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "SIGNATURE BREAK: no StringValue exists. A string config value is ConfigValue\u003cString\u003e (ModConfigSpec.java:1186)."
+                  },
+                  {
+                      "id":  "port-sprites",
+                      "pattern":  "PortWidgetSprites",
+                      "replace":  "WidgetSprites",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.client.gui.components.WidgetSprites"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Exact rename: record WidgetSprites(enabled, disabled, enabledFocused, disabledFocused) at WidgetSprites.java:8, get(boolean,boolean) at :17."
+                  },
+                  {
+                      "id":  "port-imagebutton-ctor",
+                      "pattern":  "new PortImageButton\\(",
+                      "replace":  "new ImageButton(",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.client.gui.components.ImageButton"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ImageButton (ImageButton.java:11) has ctors (int,int,int,int,WidgetSprites,OnPress) :14, the same plus Component :18, and (int,int,WidgetSprites,OnPress,Component) :23. PortLib constructor argument order must be checked against these - particularly the trailing message Component."
+                  },
+                  {
+                      "id":  "port-sprite",
+                      "pattern":  "PortSprite",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortSprite has NO native peer (it bundles a ResourceLocation with a width/height). Split each use site: keep the ResourceLocation and pass the dimensions to GuiGraphics.blitSprite(ResourceLocation,int,int,int,int) (GuiGraphics.java:677), or use the 9-argument overload (:706) when the caller was doing manual UV maths."
+                  },
+                  {
+                      "id":  "port-deltaticker",
+                      "pattern":  "PortDeltaTicker",
+                      "replace":  "DeltaTracker",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.client.DeltaTracker"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "DeltaTracker (DeltaTracker.java:8) with getGameTimeDeltaTicks :12, getGameTimeDeltaPartialTick(boolean) :14, getRealtimeDeltaTicks :16. RenderTickCounter does NOT exist in 21.1.219."
+                  },
+                  {
+                      "id":  "port-guilayer",
+                      "pattern":  "PortGuiLayer",
+                      "replace":  "LayeredDraw.Layer",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.client.gui.LayeredDraw"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "LayeredDraw.Layer (LayeredDraw.java:42) with render(GuiGraphics,DeltaTracker) :43."
+                  },
+                  {
+                      "id":  "port-configurationscreen",
+                      "pattern":  "PortConfigurationScreen",
+                      "replace":  "net.neoforged.neoforge.client.gui.ConfigurationScreen",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.client.gui.ConfigurationScreen"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ConfigurationScreen.java:110; ctors :270,:274,:279 all take a ModContainer, which PortLib did not."
+                  },
+                  {
+                      "id":  "port-componentserialization",
+                      "pattern":  "PortComponentSerialization\\.",
+                      "replace":  "ComponentSerialization.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.network.chat.ComponentSerialization"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "CODEC :40, STREAM_CODEC :41, OPTIONAL_STREAM_CODEC :42, TRUSTED_STREAM_CODEC :43, TRUSTED_OPTIONAL_STREAM_CODEC :44, TRUSTED_CONTEXT_FREE_STREAM_CODEC :47 (bound to ByteBuf, not RegistryFriendlyByteBuf)."
+                  },
+                  {
+                      "id":  "port-attributemodifier-operation-static-import",
+                      "pattern":  "import static org\\.mesdag\\.portlib\\.wrapper\\.world\\.entity\\.ai\\.attributes\\.PortAttributeModifier\\.Operation\\.",
+                      "replace":  "import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "STATIC IMPORT rewrite. PortLib mirrors the 1.21 constant names exactly (ADD_VALUE/ADD_MULTIPLIED_BASE/ADD_MULTIPLIED_TOTAL), and unwraps them to the 1.20 Forge names internally - so the mod source already uses the native spelling and no constant renaming is needed. Native: AttributeModifier.java:64,:65,:66."
+                  },
+                  {
+                      "id":  "port-attributemodifier-operation-ADD_VALUE",
+                      "pattern":  "PortAttributeModifier\\.Operation\\.ADD_VALUE",
+                      "replace":  "AttributeModifier.Operation.ADD_VALUE",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified (AttributeModifier.java:64,:65,:66). Operation#id() exists (:81); Operation.BY_ID exists (:68) - Operation#fromId does NOT."
+                  },
+                  {
+                      "id":  "port-attributemodifier-operation-ADD_MULTIPLIED_BASE",
+                      "pattern":  "PortAttributeModifier\\.Operation\\.ADD_MULTIPLIED_BASE",
+                      "replace":  "AttributeModifier.Operation.ADD_MULTIPLIED_BASE",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified (AttributeModifier.java:64,:65,:66). Operation#id() exists (:81); Operation.BY_ID exists (:68) - Operation#fromId does NOT."
+                  },
+                  {
+                      "id":  "port-attributemodifier-operation-ADD_MULTIPLIED_TOTAL",
+                      "pattern":  "PortAttributeModifier\\.Operation\\.ADD_MULTIPLIED_TOTAL",
+                      "replace":  "AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Constant verified (AttributeModifier.java:64,:65,:66). Operation#id() exists (:81); Operation.BY_ID exists (:68) - Operation#fromId does NOT."
+                  },
+                  {
+                      "id":  "port-operation-legacy-ADDITION",
+                      "pattern":  "Operation\\.ADDITION\\b",
+                      "replace":  "Operation.ADD_VALUE",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "LEGACY NAME: ADDITION does NOT exist on net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation in 21.1.219 (only ADD_VALUE/ADD_MULTIPLIED_BASE/ADD_MULTIPLIED_TOTAL at AttributeModifier.java:64-:66). A PortLib-era call site using ADDITION is really the FORGE spelling leaking through, so rewrite to ADD_VALUE - but confirm the semantics, because PortLib\u0027s own unwrap() mapped ADD_MULTIPLIED_BASE-\u003eMULTIPLY_BASE and ADD_MULTIPLIED_TOTAL-\u003eMULTIPLY_TOTAL."
+                  },
+                  {
+                      "id":  "port-operation-legacy-MULTIPLY_BASE",
+                      "pattern":  "Operation\\.MULTIPLY_BASE\\b",
+                      "replace":  "Operation.ADD_MULTIPLIED_BASE",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "LEGACY NAME: MULTIPLY_BASE does NOT exist on net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation in 21.1.219 (only ADD_VALUE/ADD_MULTIPLIED_BASE/ADD_MULTIPLIED_TOTAL at AttributeModifier.java:64-:66). A PortLib-era call site using MULTIPLY_BASE is really the FORGE spelling leaking through, so rewrite to ADD_MULTIPLIED_BASE - but confirm the semantics, because PortLib\u0027s own unwrap() mapped ADD_MULTIPLIED_BASE-\u003eMULTIPLY_BASE and ADD_MULTIPLIED_TOTAL-\u003eMULTIPLY_TOTAL."
+                  },
+                  {
+                      "id":  "port-operation-legacy-MULTIPLY_TOTAL",
+                      "pattern":  "Operation\\.MULTIPLY_TOTAL\\b",
+                      "replace":  "Operation.ADD_MULTIPLIED_TOTAL",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "LEGACY NAME: MULTIPLY_TOTAL does NOT exist on net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation in 21.1.219 (only ADD_VALUE/ADD_MULTIPLIED_BASE/ADD_MULTIPLIED_TOTAL at AttributeModifier.java:64-:66). A PortLib-era call site using MULTIPLY_TOTAL is really the FORGE spelling leaking through, so rewrite to ADD_MULTIPLIED_TOTAL - but confirm the semantics, because PortLib\u0027s own unwrap() mapped ADD_MULTIPLIED_BASE-\u003eMULTIPLY_BASE and ADD_MULTIPLIED_TOTAL-\u003eMULTIPLY_TOTAL."
+                  },
+                  {
+                      "id":  "port-attributemodifier",
+                      "pattern":  "PortAttributeModifier\\b",
+                      "replace":  "AttributeModifier",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "AttributeModifier is a RECORD (ResourceLocation id, double amount, Operation operation) at AttributeModifier.java:22, so it has id()/amount()/operation() accessors. PortLib.uuid2rl/rl2uuid helpers have NO native peer."
+                  },
+                  {
+                      "id":  "port-attributemodifier-id",
+                      "pattern":  "\\.getId\\(\\)",
+                      "replace":  ".id()",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.AttributeModifier"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "On an AttributeModifier the component accessor is id() (record accessor), not getId(). But getId() IS correct on DeferredHolder (DeferredHolder.java:162) - the converter must know the receiver type before applying this rule, which is why it is marked review."
+                  },
+                  {
+                      "id":  "port-attributeholder",
+                      "pattern":  "AttributeHolder",
+                      "replace":  "Holder\u003cAttribute\u003e",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.core.Holder"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "PortLib\u0027s AttributeHolder wrapper has NO native class. Each use becomes net.minecraft.core.Holder\u003cnet.minecraft.world.entity.ai.attributes.Attribute\u003e, or DeferredHolder\u003cAttribute,Y\u003e when it comes from a DeferredRegister. A type alias cannot express the type argument, so this needs a per-site rewrite."
+                  },
+                  {
+                      "id":  "port-spawnplacementtype",
+                      "pattern":  "PortSpawnPlacementType\\b",
+                      "replace":  "SpawnPlacementType",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.SpawnPlacementType"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "SpawnPlacementType (SpawnPlacementType.java:7); SpawnPlacementTypes constants NO_RESTRICTIONS :12, IN_WATER :13, IN_LAVA :21, ON_GROUND :24."
+                  },
+                  {
+                      "id":  "port-spawnplacementtypes-qualifier",
+                      "pattern":  "PortSpawnPlacementTypes\\.",
+                      "replace":  "SpawnPlacementTypes.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.SpawnPlacementTypes"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Qualifier swap; all four constants verified."
+                  },
+                  {
+                      "id":  "port-equipmentslotgroup",
+                      "pattern":  "PortEquipmentSlotGroup",
+                      "replace":  "EquipmentSlotGroup",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.EquipmentSlotGroup"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "EquipmentSlotGroup enum (EquipmentSlotGroup.java:12) with ANY/MAINHAND/OFFHAND/HAND/FEET/LEGS/CHEST/HEAD/ARMOR/BODY (:13-:22)."
+                  },
+                  {
+                      "id":  "port-existingdata-holder-arg",
+                      "pattern":  "PortRegistryEntry",
+                      "replace":  "DeferredHolder",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.registries.DeferredHolder"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "When a PortRegistryEntry is passed where an attachment/data-map accessor expects a type, prefer passing the DeferredHolder itself: it implements Supplier\u003cAttachmentType\u003cT\u003e\u003e-compatible semantics on 1.21.1 and the Supplier overloads of IAttachmentHolder accept it directly."
+                  },
+                  {
+                      "id":  "port-tristate",
+                      "pattern":  "PortTriState",
+                      "replace":  "TriState",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.util.TriState"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "net.neoforged.neoforge.common.util.TriState (TriState.java:11) with TRUE/DEFAULT/FALSE (:15,:19,:23). WRONG namespace risk: net.minecraft.util.TriState does not exist in 1.21.1."
+                  },
+                  {
+                      "id":  "port-tristate-unwrap",
+                      "pattern":  "\\.unwrapState\\(|\\.wrapState\\(|\\.unwrapResult\\(",
+                      "replace":  "SAME",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.util.TriState"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortTriState\u0027s unwrapState/wrapState/unwrapResult helpers convert to and from Boolean for the 1.20 Forge API. TriState only declares isTrue/isDefault/isFalse (TriState.java:27,:31,:35), so these helper calls must be inlined by hand."
+                  },
+                  {
+                      "id":  "port-effectcures-qualifier",
+                      "pattern":  "PortEffectCures\\.",
+                      "replace":  "EffectCures.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.EffectCures"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "EffectCures.MILK :14, HONEY :18, PROTECTED_BY_TOTEM :22, DEFAULT_CURES :24. The singular EffectCure declares no constants of its own."
+                  },
+                  {
+                      "id":  "port-itemabilities-qualifier",
+                      "pattern":  "PortItemAbilities\\.",
+                      "replace":  "ItemAbilities.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.ItemAbilities"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "ItemAbilities declares 24 constants (ItemAbilities.java:23-:149). Code-level names match PortLib, but note HOE_TILL is registered under the STRING \"till\" (:116) - string-keyed lookups must not assume \"hoe_till\"."
+                  },
+                  {
+                      "id":  "port-datamap-provider-builder",
+                      "pattern":  "PortDataMapProvider\\.Builder|PortDataMapProvider\\.AdvancedBuilder",
+                      "replace":  "DataMapProvider.Builder",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.common.data.DataMapProvider"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "DataMapProvider.Builder (DataMapProvider.java:116) and AdvancedBuilder (:178) with add/remove/replace/conditions/build (:130-:173) - same surface, but the AdvancedBuilder generic arity is \u003cT,R,VR\u003e."
+                  },
+                  {
+                      "id":  "port-nbtio",
+                      "pattern":  "PortNbtIo\\.",
+                      "replace":  "NbtIo.",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.nbt.NbtIo"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "NbtIo.readAnyTag(DataInput,NbtAccounter) :166 and writeAnyTag(Tag,DataOutput) :171."
+                  },
+                  {
+                      "id":  "port-advancementholder",
+                      "pattern":  "PortAdvancementHolder",
+                      "replace":  "AdvancementHolder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.advancements.AdvancementHolder"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "record AdvancementHolder(ResourceLocation id, Advancement value) exists in 1.21.1."
+                  },
+                  {
+                      "id":  "port-recipeholder",
+                      "pattern":  "PortRecipeHolder",
+                      "replace":  "RecipeHolder",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.minecraft.world.item.crafting.RecipeHolder"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "record RecipeHolder\u003cT extends Recipe\u003c?\u003e\u003e(ResourceLocation id, T value) at RecipeHolder.java:7."
+                  },
+                  {
+                      "id":  "port-contextawareredlistener",
+                      "pattern":  "PortContextAwareReloadListener",
+                      "replace":  "PreparableReloadListener",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.server.packs.resources.PreparableReloadListener"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "The native listener interface exists, but PortLib\u0027s condition-context/registry-lookup plumbing is an invention layered on ConditionalOps; a human must decide how much of it survives (ConditionalOps.retrieveContext() at ConditionalOps.java:37 is the native hook)."
+                  },
+                  {
+                      "id":  "port-javaops",
+                      "pattern":  "PortJavaOps",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortJavaOps is a 419-line DynamicOps\u003cObject\u003e implementation with no 21.1.219 equivalent and no drop-in replacement. Marked unknown in types.json: a human must decide whether to carry a loader-independent copy or migrate the affected codecs to NbtOps/JsonOps."
+                  },
+                  {
+                      "id":  "port-tags-qualifier",
+                      "pattern":  "PortTags\\.",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortTags is 514 lines of TagKey constants, many in the vanished forge: namespace. Every constant needs an individual decision: vanilla net.minecraft.tags.ItemTags/BlockTags, NeoForge net.neoforged.neoforge.common.Tags.Items (Tags.java:312) / Tags.Blocks (:30), or delete. There is no blanket rule - the converter must emit a TODO per occurrence."
+                  },
+                  {
+                      "id":  "port-backported-blocks",
+                      "pattern":  "PortCopperBulbBlock|PortTransparentBlock",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.world.level.block.CopperBulbBlock",
+                                          "net.minecraft.world.level.block.TransparentBlock"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Backported 1.21 blocks that are VANILLA on this branch: CopperBulbBlock.java:15 and TransparentBlock.java:12. Replace extends/imports with the vanilla classes; the PortLib import is deleted."
+                  },
+                  {
+                      "id":  "port-backported-sounds",
+                      "pattern":  "PortSoundEvents\\.|SoundEventHolder",
+                      "replace":  "",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.sounds.SoundEvents",
+                                          "net.minecraft.core.registries.BuiltInRegistries"
+                                      ],
+                      "addImports":  false,
+                      "notes":  "All 26 backported sound constants are vanilla in 1.21.1 (e.g. SoundEvents.TUFF_BRICKS_BREAK :1410, COPPER_BULB_TURN_ON :355, WET_SPONGE_BREAK :1529). Retarget each constant reference to net.minecraft.sounds.SoundEvents; the holder wrapper is no longer needed because Sounds live in BuiltInRegistries.SOUND_EVENT (BuiltInRegistries.java:137)."
+                  },
+                  {
+                      "id":  "port-tuff-constants",
+                      "pattern":  "PortLib\\.(CHISELED_TUFF|TUFF_BRICKS|POLISHED_TUFF|TUFF_SLAB|TUFF_STAIRS|TUFF_WALL|CHISELED_TUFF_BRICKS)",
+                      "replace":  "Blocks.$1",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.world.level.block.Blocks"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "The tuff family is vanilla in 1.21.1: Blocks.TUFF_SLAB :6866, TUFF_STAIRS :6867, TUFF_WALL :6868, POLISHED_TUFF :6869, CHISELED_TUFF :6877, TUFF_BRICKS :6878, CHISELED_TUFF_BRICKS :6884. Also retarget the 16 backported attributes onto net.minecraft.world.entity.ai.attributes.Attributes."
+                  },
+                  {
+                      "id":  "port-portlib-attributes",
+                      "pattern":  "PortLib\\.(BLOCK_BREAK_SPEED|BURNING_TIME|EXPLOSION_KNOCKBACK_RESISTANCE|FALL_DAMAGE_MULTIPLIER|JUMP_STRENGTH|MAX_ABSORPTION|MINING_EFFICIENCY|MOVEMENT_EFFICIENCY|OXYGEN_BONUS|SAFE_FALL_DISTANCE|SCALE|SNEAKING_SPEED|SUBMERGED_MINING_SPEED|SWEEPING_DAMAGE_RATIO|WATER_MOVEMENT_EFFICIENCY|CREATIVE_FLIGHT)",
+                      "replace":  "Attributes.$1",
+                      "kind":  "review",
+                      "typeImports":  [
+                                          "net.minecraft.world.entity.ai.attributes.Attributes"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "15 of the 16 backported attributes are vanilla in 1.21.1 (Attributes.java: SCALE :124, JUMP_STRENGTH :80, MAX_ABSORPTION :96, SAFE_FALL_DISTANCE :121, OXYGEN_BONUS :118, BURNING_TIME :48, EXPLOSION_KNOCKBACK_RESISTANCE :52, MOVEMENT_EFFICIENCY :108, WATER_MOVEMENT_EFFICIENCY :145, SUBMERGED_MINING_SPEED :139, SNEAKING_SPEED :127, MINING_EFFICIENCY :105, BLOCK_BREAK_SPEED :42, SWEEPING_DAMAGE_RATIO :142, FALL_DAMAGE_MULTIPLIER :58). CREATIVE_FLIGHT is NOT vanilla: it is NeoForgeMod.CREATIVE_FLIGHT (NeoForgeMod.java:212) built on BooleanAttribute, so that one call site needs a different qualifier."
+                  },
+                  {
+                      "id":  "list-extension-addfirst",
+                      "pattern":  "\\bPortListExtension\\.addFirst\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*,",
+                      "replace":  "\\1.addFirst(",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Java 21 SequencedCollection: List#addFirst(E) on java.util.List - no PortLib helper needed. Writer-first AND writer-last forms both collapse: addFirst(list, e) -\u003e list.addFirst(e), addLast(list, e) -\u003e list.addLast(e)."
+                  },
+                  {
+                      "id":  "list-extension-getlast",
+                      "pattern":  "\\bPortListExtension\\.getLast\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*\\)",
+                      "replace":  "\\1.getLast()",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Java 21 SequencedCollection: List#getLast() on java.util.List - no PortLib helper needed. Reader form only: PortListExtension.X(list) -\u003e list.X(). Review because the receiver group matches simple expressions only."
+                  },
+                  {
+                      "id":  "list-extension-removefirst",
+                      "pattern":  "\\bPortListExtension\\.removeFirst\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*\\)",
+                      "replace":  "\\1.removeFirst()",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Java 21 SequencedCollection: List#removeFirst() on java.util.List - no PortLib helper needed. Reader form only: PortListExtension.X(list) -\u003e list.X(). Review because the receiver group matches simple expressions only."
+                  },
+                  {
+                      "id":  "list-extension-getfirst",
+                      "pattern":  "\\bPortListExtension\\.getFirst\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*\\)",
+                      "replace":  "\\1.getFirst()",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Java 21 SequencedCollection: List#getFirst() on java.util.List - no PortLib helper needed. Reader form only: PortListExtension.X(list) -\u003e list.X(). Review because the receiver group matches simple expressions only."
+                  },
+                  {
+                      "id":  "list-extension-removelast",
+                      "pattern":  "\\bPortListExtension\\.removeLast\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*\\)",
+                      "replace":  "\\1.removeLast()",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Java 21 SequencedCollection: List#removeLast() on java.util.List - no PortLib helper needed. Reader form only: PortListExtension.X(list) -\u003e list.X(). Review because the receiver group matches simple expressions only."
+                  },
+                  {
+                      "id":  "list-extension-addlast",
+                      "pattern":  "\\bPortListExtension\\.addLast\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*,",
+                      "replace":  "\\1.addLast(",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "Java 21 SequencedCollection: List#addLast(E) on java.util.List - no PortLib helper needed. Writer-first AND writer-last forms both collapse: addFirst(list, e) -\u003e list.addFirst(e), addLast(list, e) -\u003e list.addLast(e)."
+                  },
+                  {
+                      "id":  "dataresult-extension-getorthrow",
+                      "pattern":  "\\bPortDataResultExtension\\.getOrThrow\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*,",
+                      "replace":  "$1.getOrThrow(",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataResult.getOrThrow is vanilla DataFixerUpper (verified in datafixerupper-10.0.21-sources.jar: getOrThrow() default at DataResult.java:80, ifSuccess(Consumer) at :92, mapOrElse(Function,Function) at :90). PortLib exposed it statically with the DataResult first; the receiver must move to the front. Review because a complex receiver expression is not matched by the regex."
+                  },
+                  {
+                      "id":  "dataresult-extension-ifsuccess",
+                      "pattern":  "\\bPortDataResultExtension\\.ifSuccess\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*,",
+                      "replace":  "$1.ifSuccess(",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataResult.ifSuccess is vanilla DataFixerUpper (verified in datafixerupper-10.0.21-sources.jar: getOrThrow() default at DataResult.java:80, ifSuccess(Consumer) at :92, mapOrElse(Function,Function) at :90). PortLib exposed it statically with the DataResult first; the receiver must move to the front. Review because a complex receiver expression is not matched by the regex."
+                  },
+                  {
+                      "id":  "dataresult-extension-maporelse",
+                      "pattern":  "\\bPortDataResultExtension\\.mapOrElse\\(\\s*([A-Za-z_$][\\w$.\\[\\]]*)\\s*,",
+                      "replace":  "$1.mapOrElse(",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "DataResult.mapOrElse is vanilla DataFixerUpper (verified in datafixerupper-10.0.21-sources.jar: getOrThrow() default at DataResult.java:80, ifSuccess(Consumer) at :92, mapOrElse(Function,Function) at :90). PortLib exposed it statically with the DataResult first; the receiver must move to the front. Review because a complex receiver expression is not matched by the regex."
+                  },
+                  {
+                      "id":  "fluidstack-extension-issamefluidsamecomponents",
+                      "pattern":  "\\bPortFluidStackExtension\\.isSameFluidSameComponents\\(",
+                      "replace":  "FluidStack.isSameFluidSameComponents(",
+                      "kind":  "safe",
+                      "typeImports":  [
+                                          "net.neoforged.neoforge.fluids.FluidStack"
+                                      ],
+                      "addImports":  true,
+                      "notes":  "Verified static: net.neoforged.neoforge.fluids.FluidStack.isSameFluidSameComponents(FluidStack,FluidStack) at FluidStack.java:349. Same argument order and arity, so this is a pure qualifier swap."
+                  },
+                  {
+                      "id":  "portextensions-import-strip",
+                      "pattern":  "\\bPortLib\\.extensions\\.(?:com|java|net)\\.([\\w.]+?)\\.(Port\\w+Extension|DispatchedMapCodec|StrictUnboundedMapCodec)\\b",
+                      "replace":  "\\2",
+                      "kind":  "review",
+                      "typeImports":  [
+
+                                      ],
+                      "addImports":  false,
+                      "notes":  "PortLib.extensions.** holds plain static-helper classes (there is no Manifold plugin). For a VENDORED helper the fully-qualified reference can collapse to the simple name; for a DROPPED helper the call itself must be rewritten by the specific callsite rule (e.g. PortListExtension -\u003e List#getFirst, PortDataResultExtension -\u003e DataResult#getOrThrow). Applying this rule alone leaves broken calls, so review and pair it with the type-level disposition from types.json."
+                  }
+              ]
+}

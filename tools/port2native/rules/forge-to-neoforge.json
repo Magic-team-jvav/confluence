@@ -1,0 +1,1316 @@
+{
+  "generatedFrom": "Direct net.minecraftforge.* imports found in the four 1.20.1 module source trees (ConfluenceOtherworld, Confluence-Magic-Lib, TerraCurio, TerraFurniture); every native value checked against build\\_nfsrc_219 (NeoForge 21.1.219 / MC 1.21.1) plus fancymodloader:loader:4.0.42, bus:8.0.5 and mergetool:2.0.0:api",
+  "scope": "Rules for source that bypasses PortLib and imports Forge directly. Same schema as types.json; `port` holds the Forge FQN. `occurrences` is how many import lines in the four modules reference it.",
+  "types": [
+    {
+      "port": "net.minecraftforge.api.distmarker.Dist",
+      "kind": "alias",
+      "native": "net.neoforged.api.distmarker.Dist",
+      "confidence": "high",
+      "notes": "Pure namespace move: net.minecraftforge.api.distmarker -> net.neoforged.api.distmarker. 3 uses. NOT in _nfsrc_219 (distmarker is not part of the decompiled mod sources); verified as the zip entry net/neoforged/api/distmarker/Dist.class inside mergetool-2.0.0-api.jar, the version neoforge-21.1.219-moddev-config.json pins.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.api.distmarker.OnlyIn",
+      "kind": "alias",
+      "native": "net.neoforged.api.distmarker.OnlyIn",
+      "confidence": "high",
+      "notes": "Pure namespace move. 2 uses, all `@OnlyIn(Dist.CLIENT)`. Verified as net/neoforged/api/distmarker/OnlyIn.class in mergetool-2.0.0-api.jar.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.client.ChunkRenderTypeSet",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.ChunkRenderTypeSet",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.ConfigScreenHandler",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Removed. 5 uses: `ConfigScreenHandler.ConfigScreenFactory` (4) -> net.neoforged.neoforge.client.gui.IConfigScreenFactory (verified, :22), and `ConfigScreenHandler.getScreenFactoryFor(modInfo)` (1) -> IConfigScreenFactory.getForMod(IModInfo) (:28). NOTE the interface method signature CHANGED: IConfigScreenFactory declares `Screen createScreen(ModContainer container, Screen modListScreen)` (:26), whereas Forge took (Minecraft, Screen) - so each factory body must be re-typed. Registration is now `modContainer.registerExtensionPoint(IConfigScreenFactory.class, ...)`.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.client.DimensionSpecialEffectsManager",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.DimensionSpecialEffectsManager",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.*",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.*",
+      "confidence": "medium",
+      "notes": "WILDCARD IMPORT REWRITE (3 files: GameClientEvents, ModClientEvents, LibClientGameEvents). The package exists natively, but a handful of Forge client events were removed or renamed - the ones this codebase resolves through the wildcard are RegisterShadersEvent, EntityRenderersEvent, RegisterClientReloadListenersEvent, RegisterKeyMappingsEvent, RegisterParticleProvidersEvent, ModelEvent, ViewportEvent, CustomizeGuiOverlayEvent, InputEvent, RenderLivingEvent, RenderPlayerEvent, ClientPlayerNetworkEvent, MovementInputUpdateEvent, ComputeFovModifierEvent (all verified present). TickEvent.RenderTickEvent does NOT exist - it is RenderFrameEvent.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.client.event.ClientPlayerNetworkEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.ComputeFovModifierEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.ComputeFovModifierEvent",
+      "confidence": "high",
+      "notes": "Verified present. Note the Forge/NeoForge property pair changed (Forge used fovModifier/newFov; NeoForge exposes getFovModifier/setFovModifier) - check each accessor.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.CustomizeGuiOverlayEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.InputEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.InputEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.ModelEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.ModelEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.client.event.MovementInputUpdateEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.MovementInputUpdateEvent",
+      "confidence": "high",
+      "notes": "Verified present under the client event package; this is one of the client events PortLib never had a wrapper for.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.RegisterClientReloadListenersEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.RegisterKeyMappingsEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.client.event.RegisterParticleProvidersEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.client.event.RenderLevelStageEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.RenderLevelStageEvent",
+      "confidence": "high",
+      "notes": "Verified present. 18 uses. The nested `RegisterStageEvent` and `Stage` survive, but note Stage gained/lost entries between Forge 47 and NeoForge 21 - check each Stage constant used.",
+      "occurrences": 18
+    },
+    {
+      "port": "net.minecraftforge.client.event.RenderLivingEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.RenderLivingEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.RenderPlayerEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.RenderPlayerEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.event.ViewportEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.event.ViewportEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.extensions.common.IClientBlockExtensions",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.extensions.common.IClientItemExtensions",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.extensions.common.IClientItemExtensions",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 33
+    },
+    {
+      "port": "net.minecraftforge.client.extensions.common.IClientMobEffectExtensions",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.gui.overlay.ForgeGui",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "The whole net.neoforged.neoforge.client.gui.overlay package DOES NOT EXIST in 21.1.219. 4 uses, all of the form `((ForgeGui) minecraft.gui).leftHeight` / `.rightHeight` (TerraStyle*Hud). Those mutable layout cursors are gone: 1.21 positions HUD elements through the vanilla LayeredDraw/RegisterGuiLayersEvent ordering instead. Rewrite by registering each HUD relative to a vanilla layer id (RegisterGuiLayersEvent.registerAbove/registerBelow with a net.neoforged.neoforge.client.gui.VanillaGuiLayers constant) or by computing an absolute Y offset; the stacking arithmetic must be deleted. net.neoforged.neoforge.client.gui.GuiLayerManager exists if layer bookkeeping is needed.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.client.gui.overlay.VanillaGuiOverlay",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Replaced by net.neoforged.neoforge.client.gui.VanillaGuiLayers (verified, VanillaGuiLayers.java:17), whose constants are ResourceLocations rather than enum members - so `.id()` is DROPPED: `VanillaGuiOverlay.CROSSHAIR.id()` -> `VanillaGuiLayers.CROSSHAIR`. Constant-level changes found in this codebase usage: PLAYER_HEALTH -> PLAYER_HEALTH (VanillaGuiLayers.java:23), FOOD_LEVEL -> FOOD_LEVEL (:25), ARMOR_LEVEL -> ARMOR_LEVEL (:24), CROSSHAIR -> CROSSHAIR (:19), HOTBAR -> HOTBAR (:20) all keep their names; BOSS_EVENT_PROGRESS -> BOSS_OVERLAY (:32) and SUBTITLES -> SUBTITLE_OVERLAY (:41) are RENAMED; HELMET (TerraCurio TCModClientEvent.java:74) has NO equivalent - there is no helmet layer in 1.21, so that registration must be re-anchored (e.g. registerBelow VanillaGuiLayers.PLAYER_HEALTH) or dropped.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.client.IArmPoseTransformer",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.IArmPoseTransformer",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.IItemDecorator",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.IItemDecorator",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.model.BakedModelWrapper",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.BakedModelWrapper",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.model.data.ModelData",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.data.ModelData",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 5
+    },
+    {
+      "port": "net.minecraftforge.client.model.data.ModelProperty",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.data.ModelProperty",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.client.model.ForgeItemModelShaper",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Removed. 1 use. The 1.21 model pipeline has no ItemModelShaper replacement at this level (models are resolved through ModelManager/ItemModelResolver), so the call site must be re-authored against the vanilla renderer path rather than renamed.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.model.generators.*",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.generators.*",
+      "confidence": "medium",
+      "notes": "WILDCARD IMPORT REWRITE (3 datagen files: DefaultBlockDataGenerator, TableBDG, HorizontalBDG). The individually imported members of this package (ModelFile, BlockStateProvider, ItemModelProvider, ItemModelBuilder, ConfiguredModel, SeparateTransformsModelBuilder) were each verified to exist natively, but the datagen model API is the area where Forge-1.20-style code most often needs hand work (BlockModelProvider/ItemModelProvider behaviour changed in 1.21), so treat each generator body as review.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.client.model.generators.BlockStateProvider",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.generators.BlockStateProvider",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 5
+    },
+    {
+      "port": "net.minecraftforge.client.model.generators.ConfiguredModel",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.generators.ConfiguredModel",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.client.model.generators.ItemModelBuilder",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.generators.ItemModelBuilder",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.client.model.generators.ItemModelProvider",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.generators.ItemModelProvider",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.client.model.generators.loaders.SeparateTransformsModelBuilder",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.generators.loaders.SeparateTransformsModelBuilder",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.client.model.generators.ModelFile",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.model.generators.ModelFile",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 5
+    },
+    {
+      "port": "net.minecraftforge.client.settings.KeyConflictContext",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.client.settings.KeyConflictContext",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.common.BasicItemListing",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.BasicItemListing",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.brewing.IBrewingRecipe",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.brewing.IBrewingRecipe",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.capabilities.Capability",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Forge capabilities are gone in 1.21. There is no native Capability class; capabilities are now BlockCapability / ItemCapability / EntityCapability registered on the MOD bus via net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent, and looked up with level.getCapability(...)/stack.getCapability(...). Verified native types: capabilities.ICapabilityProvider, capabilities.Capabilities, capabilities.BlockCapability, capabilities.ItemCapability. Per-use rewrite, not a rename.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.capabilities.ForgeCapabilities",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.capabilities.Capabilities (verified). But the fields changed shape: ForgeCapabilities.ITEM_HANDLER was a Capability<IItemHandler>, while Capabilities.ItemHandler.ITEM is an ItemCapability. Handle the field references when substituting.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.capabilities.ICapabilityProvider",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.capabilities.ICapabilityProvider",
+      "confidence": "high",
+      "notes": "Same simple name in the new capabilities package (verified present). Note the method set changed from Forge hasCapability/getCapability to the getCapability(...) form taking the capability object.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.common.crafting.conditions.ICondition",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.conditions.ICondition",
+      "confidence": "high",
+      "notes": "PACKAGE SIMPLIFIED: common.crafting.conditions -> common.conditions (verified, ICondition.java, plus nested ICondition.IContext). 1 use. A namespace substitution alone yields a non-existent package, so this rule must be applied explicitly.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.crafting.conditions.ModLoadedCondition",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.conditions.ModLoadedCondition",
+      "confidence": "high",
+      "notes": "Package simplified: common.crafting.conditions -> common.conditions (verified). 1 use.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.crafting.conditions.NotCondition",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.conditions.NotCondition",
+      "confidence": "high",
+      "notes": "Package simplified: common.crafting.conditions -> common.conditions (verified). 1 use. Beware the unrelated vanilla net.minecraft.world.level.levelgen.SurfaceRules.NotCondition.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.crafting.CraftingHelper",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.crafting.CraftingHelper",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.data.BlockTagsProvider",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.data.BlockTagsProvider",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 10
+    },
+    {
+      "port": "net.minecraftforge.common.data.DatapackBuiltinEntriesProvider",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.common.data.ExistingFileHelper",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.data.ExistingFileHelper",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 32
+    },
+    {
+      "port": "net.minecraftforge.common.data.GlobalLootModifierProvider",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.data.GlobalLootModifierProvider",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.common.data.LanguageProvider",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.data.LanguageProvider",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 6
+    },
+    {
+      "port": "net.minecraftforge.common.extensions.IForgeAbstractMinecart",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "The 1.20 IForge* extension interfaces became the NeoForge I*Extension interfaces: use net.neoforged.neoforge.common.extensions.IAbstractMinecartExtension (verified present in the extensions package). 1 use. Note the members were renamed from getComparatorLevel/setComparatorLevel style to the 1.21 names, so check each call.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.extensions.IForgeMenuType",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Replaced by net.neoforged.neoforge.common.extensions.IMenuTypeExtension (verified present). 1 use. Forge exposed a static `IForgeMenuType.create(...)`; in NeoForge the helper is IMenuTypeExtension.create(...) - verify the factory signature, which also moved to the new MenuType ctor form.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeConfigSpec",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Closest native type is net.neoforged.neoforge.common.ModConfigSpec (verified), and the nested value classes map 1:1 with the SAME names (ModConfigSpec.Builder :300, ConfigValue :1186, BooleanValue :1284, IntValue :1303, LongValue :1319, DoubleValue :1335, EnumValue :1352). Marked manual per the brief rather than alias because the type is only half the change: the REGISTRATION path differs - 1.20 `ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC)` becomes `modContainer.registerConfig(ModConfig.Type.COMMON, SPEC)` on the ModContainer injected into the @Mod constructor (fml-src ModContainer.java:102,:119). Also there is no ModConfigSpec.ListValue. Note the imported nested forms ForgeConfigSpec.Builder / .ConfigValue / .BooleanValue / .IntValue / .EnumValue all have exact native counterparts.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeConfigSpec.*",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.ModConfigSpec.*",
+      "confidence": "medium",
+      "notes": "WILDCARD STATIC IMPORT REWRITE (CommonConfigs.java: `import static net.minecraftforge.common.ForgeConfigSpec.*;`). All the imported names (Builder, ConfigValue, BooleanValue, IntValue, LongValue, DoubleValue, EnumValue) exist with the SAME names on ModConfigSpec, so this one is clean - see the ForgeConfigSpec entry for the registration-side change.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeConfigSpec.BooleanValue",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.ModConfigSpec.BooleanValue",
+      "confidence": "high",
+      "notes": "ForgeConfigSpec.BooleanValue -> ModConfigSpec.BooleanValue (verified, ModConfigSpec.java:1284; getAsBoolean :1290, isTrue :1294, isFalse :1298). 9 uses.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeConfigSpec.Builder",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.ModConfigSpec.Builder",
+      "confidence": "high",
+      "notes": "Class renamed AND nested: ForgeConfigSpec.Builder -> ModConfigSpec.Builder (verified, ModConfigSpec.java:300). 5 uses. Same define/comment/push/pop/build surface. See the ForgeConfigSpec entry for the registration-side change.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeConfigSpec.EnumValue",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.ModConfigSpec.EnumValue",
+      "confidence": "high",
+      "notes": "ForgeConfigSpec.EnumValue -> ModConfigSpec.EnumValue (verified, ModConfigSpec.java:1352). 1 use.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeConfigSpec.IntValue",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.ModConfigSpec.IntValue",
+      "confidence": "high",
+      "notes": "ForgeConfigSpec.IntValue -> ModConfigSpec.IntValue (verified, ModConfigSpec.java:1303, getAsInt :1314). 2 uses.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeHooks",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.common.CommonHooks. 6 uses - check each member, since CommonHooks dropped the Forge-only helpers and moved several onto the vanilla classes or onto the *Extension interfaces.",
+      "occurrences": 6
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeMod",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed class, same role: net.neoforged.neoforge.common.NeoForgeMod (NeoForgeMod.java). Do NOT alias blindly - 8 uses, and NeoForgeMod moved/renamed several members (e.g. the creative-flight attribute is NeoForgeMod.CREATIVE_FLIGHT, NeoForgeMod.java:212, built on BooleanAttribute) while the 15 attributes Forge kept in ForgeMod are VANILLA in 1.21 (net.minecraft.world.entity.ai.attributes.Attributes). Check each member name against NeoForgeMod.",
+      "occurrences": 8
+    },
+    {
+      "port": "net.minecraftforge.common.ForgeSpawnEggItem",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.common.DeferredSpawnEggItem (verified present). 2 uses. It is the deferred-colour spawn egg; the constructor form changed (NeoForge takes the DeferredHolder<EntityType> suppliers), so verify each argument.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.common.IExtensibleEnum",
+      "kind": "alias",
+      "native": "net.neoforged.fml.common.asm.enumextension.IExtensibleEnum",
+      "confidence": "high",
+      "notes": "MOVED INTO FML: the enum-extension machinery now lives in net.neoforged.fml.common.asm.enumextension (verified in the loader 4.0.42 sources). 2 uses. The companion annotations were also renamed/replaced (NamedEnum / IndexedEnum / NetworkedEnum / EnumParameters / ReservedConstructor).",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.common.IForgeShearable",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Forge-only interface that vanilla absorbed: 1.21 has net.minecraft.world.entity.Shearable (verified). 3 uses. The method set differs (Forge had onSheared/isShearable/getShearableDrops with Player/ItemStack args; vanilla Shearable is a marker that routes through the SHEARS ItemAbility), so re-author the implementation rather than renaming.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.common.loot.LootTableIdCondition",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.loot.LootTableIdCondition",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.common.MinecraftForge",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.common.NeoForge (verified, NeoForge.java:12, whose only member is `public static final IEventBus EVENT_BUS` at :17). 3 uses. `MinecraftForge.EVENT_BUS` -> `NeoForge.EVENT_BUS` is mechanical, but check for any other MinecraftForge static - it had no other member worth keeping and the mod-bus equivalent is the injected IEventBus.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.common.SoundActions",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.SoundActions",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.Tags",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.Tags",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 18
+    },
+    {
+      "port": "net.minecraftforge.common.ToolAction",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.common.ItemAbility (final class, ItemAbility.get(String) :31, CODEC :17). 10 uses. Same API shape as ToolAction, so `ItemAbility` works as a type parameter - but the ITEM-side hook moved: 1.20 IForgeItem#getToolModifiedState(ToolAction) is gone, replaced by ItemAbility-driven behaviour plus the canPerformAction/isCorrectToolForDrops paths, so any handler that reacted to a ToolAction needs re-authoring, not renaming.",
+      "occurrences": 10
+    },
+    {
+      "port": "net.minecraftforge.common.ToolActions",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.common.ItemAbilities, and the constants ARE name-identical - verified used ones: SHOVEL_FLATTEN (ItemAbilities.java:68), SWORD_SWEEP (:80), AXE_STRIP (:53), HOE_TILL (:116), SHEARS_CARVE (:99), plus DEFAULT_AXE_ACTIONS / DEFAULT_HOE_ACTIONS / DEFAULT_SHOVEL_ACTIONS / DEFAULT_PICKAXE_ACTIONS (:152-:164). Marked manual per the brief; a converter may safely treat this as a qualifier swap. TRAP: HOE_TILL is registered under the string \"till\", not \"hoe_till\" (ItemAbilities.java:116), so string-keyed ItemAbility.get(...) lookups must not be rewritten by name.",
+      "occurrences": 11
+    },
+    {
+      "port": "net.minecraftforge.common.util.ForgeSoundType",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.common.util.DeferredSoundType (verified present). 1 use. Same idea (a SoundType whose SoundEvents are resolved lazily), but the constructor argument list changed between the two, so check it.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.util.Lazy",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.util.Lazy",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 5
+    },
+    {
+      "port": "net.minecraftforge.common.util.LazyOptional",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Removed; there is no net.neoforged.neoforge.common.util.LazyOptional. 1 use. 1.21 replaced it with plain nullability plus Optional at the API boundary: `LazyOptional.of(supplier)` -> hold the value/`Lazy` directly; `LazyOptional.empty()` -> null or Optional.empty(); `.ifPresent/.orElse/.map/.isPresent` on the result become Optional/null checks. Lazy itself DOES survive (net.neoforged.neoforge.common.util.Lazy, 5 uses, alias).",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.util.MutableHashedLinkedMap",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.util.MutableHashedLinkedMap",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.world.BiomeModifier",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.world.BiomeModifier",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.common.world.ForgeBiomeModifiers",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.common.world.BiomeModifiers",
+      "confidence": "high",
+      "notes": "RENAMED CLASS: ForgeBiomeModifiers -> BiomeModifiers (verified, BiomeModifiers.java:26). 1 use. The nested records were reshaped too: the ADD_CARVERS equivalent is BiomeModifiers.AddCarversBiomeModifier (:226), registered as NeoForgeMod.ADD_CARVERS_BIOME_MODIFIER_TYPE (NeoForgeMod.java:276).",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.data.event.GatherDataEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.data.event.GatherDataEvent",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.entity.IEntityAdditionalSpawnData",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed and re-signatured: net.neoforged.neoforge.entity.IEntityWithComplexSpawn (verified, package at :6, declaration :14). 2 uses. The methods now take RegistryFriendlyByteBuf, not FriendlyByteBuf (writeSpawnData :21 / readSpawnData :29), so the overrides change parameter type.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.entity.PartEntity",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.entity.PartEntity",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 6
+    },
+    {
+      "port": "net.minecraftforge.event.AddPackFindersEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.AddPackFindersEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.BuildCreativeModeTabContentsEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.EntityAttributeCreationEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.EntityAttributeModificationEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.event.entity.EntityJoinLevelEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.EntityJoinLevelEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.event.entity.EntityLeaveLevelEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.EntityMountEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.EntityMountEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.item.ItemEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.item.ItemEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.item.ItemTossEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.item.ItemTossEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.event.entity.living.*",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.living.*",
+      "confidence": "medium",
+      "notes": "WILDCARD IMPORT REWRITE (LibGameEvents, LivingEntityEvents). CAUTION: Forge nested several events that 1.21 hoisted to top level - `MobSpawnEvent.FinalizeSpawn` (used at LivingEntityEvents.java:525) becomes the TOP-LEVEL net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent, and `LivingEvent.LivingTickEvent` was REMOVED entirely (0 occurrences in 21.1.219; it does not exist on the PortLib side either). MobSpawnEvent.PositionCheck and MobSpawnEvent.SpawnPlacementCheck remain nested. LivingEvent itself survives.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.event.entity.living.LivingBreatheEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.living.LivingBreatheEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.event.entity.living.LivingDeathEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.living.LivingDeathEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.event.entity.living.LivingEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.living.LivingEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.event.entity.living.LivingFallEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.living.LivingFallEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.living.MobSpawnEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.living.MobSpawnEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.player.*",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.player.*",
+      "confidence": "high",
+      "notes": "WILDCARD IMPORT REWRITE (PlayerEvents). The package exists natively with the same event names; PlayerEvent and its nested classes survive.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.player.ItemTooltipEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.player.ItemTooltipEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.entity.player.PlayerEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.player.PlayerEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 13
+    },
+    {
+      "port": "net.minecraftforge.event.entity.player.PlayerInteractEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.ForgeEventFactory",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Renamed to net.neoforged.neoforge.event.EventHooks. 8 uses, all distinct methods - verify each: getMobGriefingEvent, onFinalizeSpawn, getExperienceDrop, onExplosionDetonate, onExplosionStart, onEntityStruckByLightning, onArrowLoose, onPlayerDestroyItem. EventHooks exists but did not keep all of them under the same names/signatures (onFinalizeSpawn in particular became the FinalizeSpawnEvent path).",
+      "occurrences": 8
+    },
+    {
+      "port": "net.minecraftforge.event.ItemStackedOnOtherEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.ItemStackedOnOtherEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.level.BlockEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.level.BlockEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.level.ChunkEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.level.ChunkEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.level.ChunkWatchEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.level.ChunkWatchEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.event.level.ExplosionEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.level.ExplosionEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.level.LevelEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.level.LevelEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.RegisterCommandsEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.RegisterCommandsEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.server.ServerAboutToStartEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.server.ServerAboutToStartEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.server.ServerStartedEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.server.ServerStartedEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.server.ServerStartingEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.server.ServerStartingEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.server.ServerStoppedEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.server.ServerStoppedEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.event.server.ServerStoppingEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.server.ServerStoppingEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.event.TickEvent",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Genuine refactor, not a rename: there is NO native TickEvent. Verified native replacements - TickEvent.ClientTickEvent -> net.neoforged.neoforge.client.event.ClientTickEvent; TickEvent.ServerTickEvent -> net.neoforged.neoforge.event.tick.ServerTickEvent; TickEvent.LevelTickEvent -> net.neoforged.neoforge.event.tick.LevelTickEvent; TickEvent.PlayerTickEvent -> net.neoforged.neoforge.event.tick.PlayerTickEvent; TickEvent.RenderTickEvent -> net.neoforged.neoforge.client.event.RenderFrameEvent. TickEvent.Phase does NOT exist at all (15 uses); the phase became the event class, so `if (event.phase != TickEvent.Phase.END) return;` is DELETED and the handler moves to the `.Post` variant (`.Pre` for START). The mod already names its handlers clientTick$Pre / clientTick$Post etc., so the split is mechanical per handler. NOTE TickEvent.LevelTickEvent.Pre and .Post are NOT cancellable natively.",
+      "occurrences": 8
+    },
+    {
+      "port": "net.minecraftforge.event.village.VillagerTradesEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.event.village.VillagerTradesEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.eventbus.api.Cancelable",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "`@Cancelable` no longer exists: there is no net.neoforged.bus.api.Cancelable in bus-8.0.5 (the package declares only Event, EventListener, EventPriority, ICancellableEvent, IEventBus, IEventClassChecker, IEventExceptionHandler, SubscribeEvent, BusBuilder). 12 uses. Rewrite: drop the annotation and declare the event class as `implements net.neoforged.bus.api.ICancellableEvent` (methods setCanceled(boolean) :29 / isCanceled() :37).",
+      "occurrences": 12
+    },
+    {
+      "port": "net.minecraftforge.eventbus.api.Event",
+      "kind": "alias",
+      "native": "net.neoforged.bus.api.Event",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 28
+    },
+    {
+      "port": "net.minecraftforge.eventbus.api.IEventBus",
+      "kind": "alias",
+      "native": "net.neoforged.bus.api.IEventBus",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 15
+    },
+    {
+      "port": "net.minecraftforge.eventbus.api.SubscribeEvent",
+      "kind": "alias",
+      "native": "net.neoforged.bus.api.SubscribeEvent",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 7
+    },
+    {
+      "port": "net.minecraftforge.fluids.capability.IFluidHandlerItem",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.fluids.capability.IFluidHandlerItem",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fluids.FluidInteractionRegistry",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.fluids.FluidInteractionRegistry",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fluids.FluidStack",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.fluids.FluidStack",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fluids.FluidType",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.fluids.FluidType",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 10
+    },
+    {
+      "port": "net.minecraftforge.fluids.ForgeFlowingFluid",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.fluids.BaseFlowingFluid",
+      "confidence": "high",
+      "notes": "RENAMED CLASS: ForgeFlowingFluid -> BaseFlowingFluid (verified, nested Flowing / Properties / Source match the Forge nested names). 1 use. The Properties builder methods were trimmed in 1.21, so check each builder call.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fml.common.Mod",
+      "kind": "alias",
+      "native": "net.neoforged.fml.common.Mod",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 11
+    },
+    {
+      "port": "net.minecraftforge.fml.config.ModConfig",
+      "kind": "alias",
+      "native": "net.neoforged.fml.config.ModConfig",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 8
+    },
+    {
+      "port": "net.minecraftforge.fml.event.config.ModConfigEvent",
+      "kind": "alias",
+      "native": "net.neoforged.fml.event.config.ModConfigEvent",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.fml.event.IModBusEvent",
+      "kind": "alias",
+      "native": "net.neoforged.fml.event.IModBusEvent",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 16
+    },
+    {
+      "port": "net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent",
+      "kind": "alias",
+      "native": "net.neoforged.fml.event.lifecycle.FMLClientSetupEvent",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent",
+      "kind": "alias",
+      "native": "net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent",
+      "kind": "alias",
+      "native": "net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext",
+      "kind": "drop",
+      "native": "",
+      "confidence": "high",
+      "notes": "Removed. There is no FMLJavaModLoadingContext in fancymodloader:loader:4.0.42 (verified: the javafmlmod package contains only AutomaticEventSubscriber, FMLJavaModLanguageProvider, FMLModContainer). 9 uses. Replace `FMLJavaModLoadingContext.get().getModEventBus()` by taking the bus as a constructor parameter of the @Mod class - NeoForge injects IEventBus (and ModContainer / Dist) directly. The @Mod annotation itself is unchanged.",
+      "occurrences": 9
+    },
+    {
+      "port": "net.minecraftforge.fml.loading.FMLEnvironment",
+      "kind": "alias",
+      "native": "net.neoforged.fml.loading.FMLEnvironment",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.fml.loading.FMLPaths",
+      "kind": "alias",
+      "native": "net.neoforged.fml.loading.FMLPaths",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fml.loading.LoadingModList",
+      "kind": "alias",
+      "native": "net.neoforged.fml.loading.LoadingModList",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.fml.LogicalSide",
+      "kind": "alias",
+      "native": "net.neoforged.fml.LogicalSide",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.fml.ModContainer",
+      "kind": "alias",
+      "native": "net.neoforged.fml.ModContainer",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.fml.ModList",
+      "kind": "alias",
+      "native": "net.neoforged.fml.ModList",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution; confirmed in the fancymodloader:loader:4.0.42 / bus:8.0.5 extracted sources (the versions neoforge-21.1.219-moddev-config.json pins). _nfsrc_219 does NOT contain net/neoforged/fml or net/neoforged/bus.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.forgespi.language.IModFileInfo",
+      "kind": "alias",
+      "native": "net.neoforged.neoforgespi.language.IModFileInfo",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.forgespi.locating.IModFile",
+      "kind": "alias",
+      "native": "net.neoforged.neoforgespi.locating.IModFile",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.items.IItemHandler",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.items.IItemHandler",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.items.IItemHandlerModifiable",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.items.IItemHandlerModifiable",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.items.ItemStackHandler",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.items.ItemStackHandler",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 4
+    },
+    {
+      "port": "net.minecraftforge.network.NetworkHooks",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Removed; no native NetworkHooks. 7 uses, two distinct methods: `NetworkHooks.openScreen(...)` -> `serverPlayer.openMenu(MenuProvider, ...)` (vanilla, with NeoForge overloads taking extra data) ; `NetworkHooks.getEntitySpawningPacket(entity)` (6 uses) -> DELETE the call and let the entity implement net.neoforged.neoforge.entity.IEntityWithComplexSpawn (writeSpawnData/readSpawnData over RegistryFriendlyByteBuf, :21/:29); NeoForge 1.21 then ships the spawn data itself via AdvancedAddEntityPayload (net.neoforged.neoforge.network.payload.AdvancedAddEntityPayload, verified present).",
+      "occurrences": 7
+    },
+    {
+      "port": "net.minecraftforge.network.PacketDistributor",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.network.PacketDistributor",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.network.PlayMessages",
+      "kind": "drop",
+      "native": "",
+      "confidence": "high",
+      "notes": "Removed. 1 use (PlayMessages.SpawnEntity). The 1.20 custom spawn-packet path is replaced by IEntityWithComplexSpawn + AdvancedAddEntityPayload, so the import and the packet class are deleted rather than renamed.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.registries.DeferredRegister",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.registries.DeferredRegister",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 38
+    },
+    {
+      "port": "net.minecraftforge.registries.ForgeRegistries",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "Do NOT blanket-map to NeoForgeRegistries: that compiles for the NeoForge-only registries but is WRONG for every vanilla one, and this codebase uses ONLY vanilla registries. Verified usage (26 occurrences): Keys.BIOME_MODIFIERS (7), Keys.FLUID_TYPES (2), ENTITY_TYPES (7), ITEMS (7), MOB_EFFECTS (6), BLOCKS (4), FLUIDS (2), SOUND_EVENTS (1), ATTRIBUTES (1). Field-by-field destination: Keys.BIOME_MODIFIERS -> NeoForgeRegistries.Keys.BIOME_MODIFIERS (NeoForgeRegistries.java:61); Keys.FLUID_TYPES -> NeoForgeRegistries.Keys.FLUID_TYPES (:53); ENTITY_TYPES -> BuiltInRegistries.ENTITY_TYPE (SINGULAR); ITEMS -> BuiltInRegistries.ITEM (singular); MOB_EFFECTS -> BuiltInRegistries.MOB_EFFECT (singular); BLOCKS -> BuiltInRegistries.BLOCK (singular); FLUIDS -> BuiltInRegistries.FLUID (singular); SOUND_EVENTS -> BuiltInRegistries.SOUND_EVENT (singular); ATTRIBUTES -> BuiltInRegistries.ATTRIBUTE (singular). Only the 10 fields on NeoForgeRegistries (:34-:43 ENTITY_DATA_SERIALIZERS, GLOBAL_LOOT_MODIFIER_SERIALIZERS, BIOME_MODIFIER_SERIALIZERS, STRUCTURE_MODIFIER_SERIALIZERS, FLUID_TYPES, HOLDER_SET_TYPES, INGREDIENT_TYPES, FLUID_INGREDIENT_TYPES, CONDITION_SERIALIZERS, ATTACHMENT_TYPES) keep a NeoForge qualifier.",
+      "occurrences": 26
+    },
+    {
+      "port": "net.minecraftforge.registries.ForgeRegistry",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "No native ForgeRegistry. 1 use, and it is a hard break: LibModEvents.java:64,69 does `((ForgeRegistry<Block>) ForgeRegistries.BLOCKS).addAlias(from, to)`. In 1.21 Registry has NO addAlias (verified: grep -i alias over net/minecraft/core/Registry.java => 0 matches; aliases are a 1.21.2+ API). The equivalent is DeferredRegister.addAlias(ResourceLocation from, ResourceLocation to) (DeferredRegister.java:303), so the alias registration must be moved onto the DeferredRegister that owns the registry.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.registries.holdersets.AndHolderSet",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.registries.holdersets.AndHolderSet",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.registries.holdersets.AnyHolderSet",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.registries.holdersets.AnyHolderSet",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.registries.holdersets.NotHolderSet",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.registries.holdersets.NotHolderSet",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.registries.holdersets.OrHolderSet",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.registries.holdersets.OrHolderSet",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 3
+    },
+    {
+      "port": "net.minecraftforge.registries.RegisterEvent",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.registries.RegisterEvent",
+      "confidence": "medium",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 2
+    },
+    {
+      "port": "net.minecraftforge.registries.RegistryObject",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "NeoForge has NO RegistryObject (53 imports - the single most frequent Forge type in this codebase). Per-use rewrite, verified against Forge 1.20.1 / NeoForge 21.1.219: (1) FIELD DECLARATION `RegistryObject<X> F = REG.register(\"n\", ...)` becomes `DeferredHolder<RegistryType, X> F = ...` - note the EXTRA type argument, so this is a type-arity change, not a rename; use DeferredItem<X> / DeferredBlock<X> when registering items/blocks. (2) `.get()` -> `.get()` (DeferredHolder.java:116, unchanged). (3) `.getId()` -> `.getId()` (DeferredHolder.java:162, still ResourceLocation). (4) `.isPresent()` -> `isBound()` (DeferredHolder.java:197) - DeferredHolder implements Holder + Supplier and neither declares isPresent; `.asOptional()` (:125) is the Optional form. (5) `.map(f)` -> `.asOptional().map(f)`. (6) `.getKey()` -> `.getKey()`. (7) `.ifPresent(c)` -> `if (isBound()) c.accept(get())`. (8) PASSING AS A CONSTRUCTOR/METHOD ARGUMENT: DeferredHolder implements Supplier<X> and Holder<RegistryType>, so an argument typed X can still be supplied - but an argument typed `RegistryObject<X>` in the callee must be widened to `Supplier<X>` or `Holder<X>`. (9) STATIC `RegistryObject.create(ResourceLocation, IForgeRegistry)` (3 uses) -> `DeferredHolder.create(ResourceKey)` or `DeferredHolder.create(registryKey, valueName)` (DeferredHolder.java:62,:41).",
+      "occurrences": 53
+    },
+    {
+      "port": "net.minecraftforge.resource.PathPackResources",
+      "kind": "alias",
+      "native": "net.minecraft.server.packs.PathPackResources",
+      "confidence": "high",
+      "notes": "Forge re-declared a vanilla class; in 1.21 it is simply vanilla net.minecraft.server.packs.PathPackResources (verified). 1 use. Not a namespace swap - the class moved INTO net.minecraft.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.server.command.EnumArgument",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.server.command.EnumArgument",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 1
+    },
+    {
+      "port": "net.minecraftforge.server.ServerLifecycleHooks",
+      "kind": "alias",
+      "native": "net.neoforged.neoforge.server.ServerLifecycleHooks",
+      "confidence": "high",
+      "notes": "Resolved by namespace substitution (net.minecraftforge.* -> net.neoforged.neoforge.* / net.neoforged.*) and confirmed present in the native type table.",
+      "occurrences": 16
+    },
+    {
+      "port": "net.minecraftforge.eventbus.api.EventPriority",
+      "kind": "alias",
+      "native": "net.neoforged.bus.api.EventPriority",
+      "confidence": "high",
+      "notes": "NOT CURRENTLY IMPORTED by the four modules (included because it is the natural companion of the imported SubscribeEvent). Verified: EventPriority.java:26 with HIGHEST :34, HIGH :35, NORMAL :36, LOW :37, LOWEST :38.",
+      "occurrences": 0
+    },
+    {
+      "port": "net.minecraftforge.common.extensions.IForgeItem",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "NOT CURRENTLY IMPORTED (0 occurrences in the four modules) - included because the brief names it. Note the correct Forge FQN is net.minecraftforge.common.extensions.IForgeItem. In 1.21 it is net.neoforged.neoforge.common.extensions.IItemExtension (verified present), and it is no longer implemented BY items: the members became default methods on Item, so call sites change from `((IForgeItem) item).getBurnTime(...)` to plain `item.getBurnTime(...)`. Same story for IForgeBlock -> IBlockExtension (verified).",
+      "occurrences": 0
+    },
+    {
+      "port": "net.minecraftforge.common.extensions.IForgeBlock",
+      "kind": "manual",
+      "native": "",
+      "confidence": "high",
+      "notes": "NOT CURRENTLY IMPORTED (0 occurrences) - see IForgeItem. Correct Forge FQN is net.minecraftforge.common.extensions.IForgeBlock; native twin is net.neoforged.neoforge.common.extensions.IBlockExtension (verified), whose members are default methods on Block/BlockBehaviour.",
+      "occurrences": 0
+    }
+  ],
+  "rules": [
+    {
+      "id": "porttranslatableenum-native",
+      "pattern": "org\\.mesdag\\.portlib\\.wrapper\\.common\\.PortTranslatableEnum",
+      "replace": "net.neoforged.neoforge.common.TranslatableEnum",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "PortTranslatableEnum 是 1.20 侧 PortLib 的 7 行小接口（Component getTranslatedName()）；1.21 的 NeoForge 自带 TranslatableEnum，方法名相同，且 1.21 现有代码有 8 处已经在用它（TerraStyle*Hud、ClientConfigs、AchievementOffset 等）。"
+    },
+    {
+      "id": "porttranslatableenum-simple",
+      "pattern": "\\bPortTranslatableEnum\\b",
+      "replace": "TranslatableEnum",
+      "kind": "safe",
+      "typeImports": [
+        "net.neoforged.neoforge.common.TranslatableEnum"
+      ],
+      "addImports": true,
+      "notes": "简名形式；import 由 addImports 补。"
+    }
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "generatedFrom": "geckolib 包布局跨版本重组：两侧 gradle.properties 都写 4.8.4，但 1.20.1 分支的产物保留旧布局 software.bernie.geckolib.core.**，1.21.1 分支的产物是重组后的 software.bernie.geckolib.**。逐条按「两侧实际 import 统计」核对（见 notes 里的统计：1.20 core.* 共 300+ 处，1.21 全部落在重组后的包）。",
+  "kinds": {
+    "safe": "1.21.1 侧存在同名类，包路径不同，可直接改写",
+    "review": "simple name 也变了或语义存疑，列进 manual-todo 人工裁决"
+  },
+  "rules": [
+    {
+      "id": "geckolib-animatable-instance",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.animatable\\.instance\\.",
+      "replace": "software.bernie.geckolib.animatable.instance.",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "AnimatableInstanceCache / InstancedAnimatableInstanceCache / SingletonAnimatableInstanceCache 三个简单名两边一致，只是去掉 core。"
+    },
+    {
+      "id": "geckolib-animatable-geoanimmutable",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.animatable\\.GeoAnimatable",
+      "replace": "software.bernie.geckolib.animatable.GeoAnimatable",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "GeoAnimatable 移到 animatable 包（1.21 侧 27 处使用）。"
+    },
+    {
+      "id": "geckolib-core-animation",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.animation\\.",
+      "replace": "software.bernie.geckolib.animation.",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "AnimatableManager / AnimationController / RawAnimation / AnimationState / EasingType / Animation / AnimationProcessor 全部只换了包（逐个核对 1.21 侧同名类存在）。"
+    },
+    {
+      "id": "geckolib-core-keyframe",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.keyframe\\.",
+      "replace": "software.bernie.geckolib.animation.keyframe.",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "AnimationPoint / Keyframe 移到 animation.keyframe（1.21 侧同名类存在）。"
+    },
+    {
+      "id": "geckolib-core-state-bonesnapshot",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.state\\.BoneSnapshot",
+      "replace": "software.bernie.geckolib.animation.state.BoneSnapshot",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "BoneSnapshot 移到 animation.state。"
+    },
+    {
+      "id": "geckolib-core-object-playstate",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.object\\.PlayState",
+      "replace": "software.bernie.geckolib.animation.PlayState",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "core.object.PlayState -> animation.PlayState。"
+    },
+    {
+      "id": "geckolib-core-object-color",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.object\\.Color",
+      "replace": "software.bernie.geckolib.util.Color",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "core.object.Color -> util.Color。"
+    },
+    {
+      "id": "geckolib-core-object-dataticket",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.object\\.DataTicket",
+      "replace": "software.bernie.geckolib.constant.dataticket.DataTicket",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "core.object.DataTicket -> constant.dataticket.DataTicket。"
+    },
+    {
+      "id": "geckolib-renderutils",
+      "pattern": "software\\.bernie\\.geckolib\\.util\\.RenderUtils",
+      "replace": "software.bernie.geckolib.util.RenderUtil",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "注意是**单数** RenderUtil（1.21 侧 7 处使用）。"
+    },
+    {
+      "id": "geckolib-dyeable-armor-renderer",
+      "pattern": "software\\.bernie\\.geckolib\\.renderer\\.DyeableGeoArmorRenderer",
+      "replace": "software.bernie.geckolib.renderer.specialty.DyeableGeoArmorRenderer",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "移到 renderer.specialty。"
+    },
+    {
+      "id": "geckolib-stopTriggeredAnimation-rename",
+      "pattern": "\\bstopTriggeredAnimation\\b",
+      "replace": "stopTriggeredAnim",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "同一版本号（4.8.4）两侧**方法名**也不同：1.20.1 产物是 GeoEntity#stopTriggeredAnimation(String,String)（geckolib-forge-1.20.1-4.8.4-sources.jar -> software/bernie/geckolib/animatable/GeoEntity.java:81），1.21.1 是 GeoEntity#stopTriggeredAnim(String,String)（geckolib-neoforge-1.21.1-4.8.4-sources.jar -> 同文件 :96；GeoBlockEntity / GeoReplacedEntity / SingletonGeoAnimatable 同步改名）。只有名字变、参数不变，可自动改。"
+    },
+    {
+      "id": "geckolib-coregeomodel-bone",
+      "pattern": "software\\.bernie\\.geckolib\\.core\\.animatable\\.model\\.CoreGeoBone",
+      "replace": "software.bernie.geckolib.cache.object.GeoBone",
+      "kind": "review",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "**simple name 也变了**（CoreGeoBone -> GeoBone），且 CoreGeoBone 是只读视图、GeoBone 是可变实现，不能机械替换：需人工确认该处是否依赖只读语义。1.20 侧 14 处使用。"
+    }
+  ]
+}

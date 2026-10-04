@@ -1,0 +1,62 @@
+{
+  "generatedFrom": "1.20 侧 PortLib 用接口/字段注入暴露的「1.21.1 API 名字」垫片（*1211 后缀）。人工核对 1.21.1 原生签名后写成规则；垫片定义位置见 notes。",
+  "kinds": {
+    "safe": "1.21.1 原生等价物已逐个核对，可直接自动替换"
+  },
+  "rules": [
+    {
+      "id": "shim-getrandom1211",
+      "pattern": "\\bgetRandom1211\\s*\\(\\s*\\)",
+      "replace": "getRandom()",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "垫片定义 PortLib/wrapper/common/extensions/IPortEntityExtension.java:138 `default RandomSource getRandom1211() { return self().random; }`。1.21.1 原生：net/minecraft/world/entity/Entity.java:3835 `public RandomSource getRandom()`——同一个字段、同一个类型，直接换名。1.20 侧用量最大（94 个文件）。"
+    },
+    {
+      "id": "shim-getgravity1211",
+      "pattern": "\\bgetGravity1211\\s*\\(\\s*\\)",
+      "replace": "getGravity()",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "垫片定义 IPortEntityExtension.java:148 `isNoGravity() ? 0.0 : getDefaultGravity()`。1.21.1 原生 Entity.java:1173 起就是 `getGravity()`，实现逐字相同（getDefaultGravity 在 :1169，protected）。"
+    },
+    {
+      "id": "shim-jumpstrength1211",
+      "pattern": "\\bJUMP_STRENGTH_1211\\b",
+      "replace": "JUMP_STRENGTH",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "垫片 PortLib/wrapper/common/extensions/IPortAttributesExtension.java:17 `Holder<Attribute> JUMP_STRENGTH_1211 = AttributeHolder.lazy(...)`，被注入到 vanilla Attributes。1.21.1 原生 Attributes.java:80 `public static final Holder<Attribute> JUMP_STRENGTH`——类型一致（1.20.1 的 Attributes.JUMP_STRENGTH 是 Attribute 而非 Holder，这正是需要垫片的原因）。"
+    },
+    {
+      "id": "shim-applyeffecttick1211",
+      "pattern": "\\bapplyEffectTick1211\\b",
+      "replace": "applyEffectTick",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "垫片 PortLib/wrapper/world/effect/PortMobEffect.java（1.20.1 的 MobEffect#applyEffectTick 返回 void，1.21.1 返回 boolean，故垫片）。1.21.1 原生 MobEffect.java:74 `public boolean applyEffectTick(LivingEntity, int)`。"
+    },
+    {
+      "id": "shim-positionrider1211",
+      "pattern": "\\bpositionRider1211\\b",
+      "replace": "positionRider",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "垫片 IPortEntityExtension.java:175 `default void positionRider1211(Entity, Entity.MoveFunction)`。1.21.1 原生 Entity.java:2065 `protected void positionRider(Entity passenger, Entity.MoveFunction callback)`，签名一致。"
+    },
+    {
+      "id": "shim-releaseusing1211",
+      "pattern": "\\breleaseUsing1211\\b",
+      "replace": "releaseUsing",
+      "kind": "safe",
+      "typeImports": [],
+      "addImports": false,
+      "notes": "垫片 PortLib/wrapper/common/extensions/IPortBowItemExtension.java:21 `default void releaseUsing1211(ItemStack, Level, LivingEntity, int)`（1.20.1 的 Item#releaseUsing 在 1.20.1 是不同入口）。1.21.1 原生 Item.java:329 `public void releaseUsing(ItemStack, Level, LivingEntity, int)`。"
+    }
+  ]
+}

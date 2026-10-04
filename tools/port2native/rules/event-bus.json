@@ -1,0 +1,2562 @@
+﻿{
+    "generatedFrom":  "net.neoforged.fml.event.IModBusEvent membership resolved transitively over the decompiled NeoForge 21.1.219 sources in build\\_nfsrc_219 plus fancymodloader:loader:4.0.42 and bus:8.0.5 sources",
+    "busRule":  "bus = \"mod\" when the NATIVE event class implements net.neoforged.fml.event.IModBusEvent (directly or via a supertype), else \"game\". The mod bus is ModContainer#getEventBus() (fml-src ModContainer.java:145, @Nullable, abstract); the game bus is NeoForge.EVENT_BUS (NeoForge.java:17).",
+    "events":  [
+                   {
+                       "port":  "org.mesdag.portlib.event.brewing.PortPlayerBrewedPotionEvent",
+                       "native":  "net.neoforged.neoforge.event.brewing.PlayerBrewedPotionEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.brewing.PortPotionBrewEvent",
+                       "native":  "net.neoforged.neoforge.event.brewing.PotionBrewEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.brewing.PortPotionBrewEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.brewing.PotionBrewEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.brewing.PortPotionBrewEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.brewing.PotionBrewEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.brewing.PortRegisterBrewingRecipesEvent",
+                       "native":  "net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent",
+                       "native":  "net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.AddAttributeTooltipsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortAddSectionGeometryEvent",
+                       "native":  "net.neoforged.neoforge.client.event.AddSectionGeometryEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortAddSectionGeometryEvent.PortAdditionalSectionRenderer",
+                       "native":  "net.neoforged.neoforge.client.event.AddSectionGeometryEvent.AdditionalSectionRenderer",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortAddSectionGeometryEvent.PortSectionRenderingContext",
+                       "native":  "net.neoforged.neoforge.client.event.AddSectionGeometryEvent.SectionRenderingContext",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortCalculateDetachedCameraDistanceEvent",
+                       "native":  "net.neoforged.neoforge.client.event.CalculateDetachedCameraDistanceEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortCalculatePlayerTurnEvent",
+                       "native":  "net.neoforged.neoforge.client.event.CalculatePlayerTurnEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientChatEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ClientChatEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientChatReceivedEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ClientChatReceivedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientChatReceivedEvent.Player",
+                       "native":  "net.neoforged.neoforge.client.event.ClientChatReceivedEvent.Player",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientChatReceivedEvent.System",
+                       "native":  "net.neoforged.neoforge.client.event.ClientChatReceivedEvent.System",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPauseChangeEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPauseChangeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPauseChangeEvent.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPauseChangeEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPauseChangeEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPauseChangeEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPlayerChangeGameTypeEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPlayerChangeGameTypeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPlayerNetworkEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPlayerNetworkEvent.Clone",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.Clone",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPlayerNetworkEvent.LoggingIn",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingIn",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientPlayerNetworkEvent.LoggingOut",
+                       "native":  "net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent.LoggingOut",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientTickEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ClientTickEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientTickEvent.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ClientTickEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortClientTickEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ClientTickEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortComputeFovModifierEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ComputeFovModifierEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortContainerScreenEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ContainerScreenEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortContainerScreenEvent.PortRender",
+                       "native":  "net.neoforged.neoforge.client.event.ContainerScreenEvent.Render",
+                       "bus":  "game",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortContainerScreenEvent.PortRender.Background",
+                       "native":  "net.neoforged.neoforge.client.event.ContainerScreenEvent.Render.Background",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortContainerScreenEvent.PortRender.Foreground",
+                       "native":  "net.neoforged.neoforge.client.event.ContainerScreenEvent.Render.Foreground",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortCustomizeGuiOverlayEvent",
+                       "native":  "net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortCustomizeGuiOverlayEvent.BossEventProgress",
+                       "native":  "net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent.BossEventProgress",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortCustomizeGuiOverlayEvent.Chat",
+                       "native":  "net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent.Chat",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortCustomizeGuiOverlayEvent.DebugText",
+                       "native":  "net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent.DebugText",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortEntityRenderersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.EntityRenderersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortEntityRenderersEvent.AddLayers",
+                       "native":  "net.neoforged.neoforge.client.event.EntityRenderersEvent.AddLayers",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortEntityRenderersEvent.AddLayers.PortModel",
+                       "native":  "",
+                       "bus":  "",
+                       "notes":  "could not resolve nested \u0027PortModel\u0027 under native \u0027net.neoforged.neoforge.client.event.EntityRenderersEvent.AddLayers\u0027"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortEntityRenderersEvent.CreateSkullModels",
+                       "native":  "net.neoforged.neoforge.client.event.EntityRenderersEvent.CreateSkullModels",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortEntityRenderersEvent.RegisterLayerDefinitions",
+                       "native":  "net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterLayerDefinitions",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortEntityRenderersEvent.RegisterRenderers",
+                       "native":  "net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortGatherEffectScreenTooltipsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.GatherEffectScreenTooltipsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortGatherSkippedAttributeTooltipsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.GatherSkippedAttributeTooltipsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortInputEvent",
+                       "native":  "net.neoforged.neoforge.client.event.InputEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortInputEvent.InteractionKeyMappingTriggered",
+                       "native":  "net.neoforged.neoforge.client.event.InputEvent.InteractionKeyMappingTriggered",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortInputEvent.Key",
+                       "native":  "net.neoforged.neoforge.client.event.InputEvent.Key",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortInputEvent.MouseScrollingEvent",
+                       "native":  "net.neoforged.neoforge.client.event.InputEvent.MouseScrollingEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortInputEvent.PortMouseButton",
+                       "native":  "net.neoforged.neoforge.client.event.InputEvent.MouseButton",
+                       "bus":  "game",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortInputEvent.PortMouseButton.Post",
+                       "native":  "net.neoforged.neoforge.client.event.InputEvent.MouseButton.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortInputEvent.PortMouseButton.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.InputEvent.MouseButton.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortModelEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ModelEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortModelEvent.BakingCompleted",
+                       "native":  "net.neoforged.neoforge.client.event.ModelEvent.BakingCompleted",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortModelEvent.ModifyBakingResult",
+                       "native":  "net.neoforged.neoforge.client.event.ModelEvent.ModifyBakingResult",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortModelEvent.RegisterAdditional",
+                       "native":  "net.neoforged.neoforge.client.event.ModelEvent.RegisterAdditional",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortModelEvent.RegisterGeometryLoaders",
+                       "native":  "net.neoforged.neoforge.client.event.ModelEvent.RegisterGeometryLoaders",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRecipesUpdatedEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RecipesUpdatedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterClientCommandsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterClientCommandsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterClientReloadListenersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterClientTooltipComponentFactoriesEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterClientTooltipComponentFactoriesEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterColorHandlersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterColorHandlersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterColorHandlersEvent.Block",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterColorHandlersEvent.ColorResolvers",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.ColorResolvers",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterColorHandlersEvent.Item",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Item",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterDimensionSpecialEffectsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterEntitySpectatorShadersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterEntitySpectatorShadersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterGuiLayersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterGuiLayersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterItemDecorationsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterKeyMappingsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterMaterialAtlasesEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterMaterialAtlasesEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterMenuScreensEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterMenuScreensEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterNamedRenderTypesEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterNamedRenderTypesEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterParticleProvidersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterPresetEditorsEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterPresetEditorsEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterRecipeBookCategoriesEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterRecipeBookCategoriesEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterRenderBuffersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterRenderBuffersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterShadersEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterShadersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRegisterSpriteSourceTypesEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RegisterSpriteSourceTypesEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderArmEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderArmEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderBlockScreenEffectEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderBlockScreenEffectEvent.PortOverlayType",
+                       "native":  "net.neoforged.neoforge.client.event.RenderBlockScreenEffectEvent.OverlayType",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderFrameEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderFrameEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderFrameEvent.Post",
+                       "native":  "net.neoforged.neoforge.client.event.RenderFrameEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderFrameEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.RenderFrameEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderGuiEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderGuiEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderGuiEvent.Post",
+                       "native":  "net.neoforged.neoforge.client.event.RenderGuiEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderGuiEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.RenderGuiEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderGuiLayerEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderGuiLayerEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderGuiLayerEvent.Post",
+                       "native":  "net.neoforged.neoforge.client.event.RenderGuiLayerEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderGuiLayerEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.RenderGuiLayerEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderHandEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderHandEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderHighlightEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderHighlightEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderHighlightEvent.Block",
+                       "native":  "net.neoforged.neoforge.client.event.RenderHighlightEvent.Block",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderHighlightEvent.Entity",
+                       "native":  "net.neoforged.neoforge.client.event.RenderHighlightEvent.Entity",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderItemInFrameEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderItemInFrameEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderLevelStageEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderLevelStageEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderLevelStageEvent.RegisterStageEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderLevelStageEvent.RegisterStageEvent",
+                       "bus":  "mod",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderLevelStageEvent.Stage",
+                       "native":  "net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage",
+                       "bus":  "",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderLivingEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderLivingEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderLivingEvent.Post",
+                       "native":  "net.neoforged.neoforge.client.event.RenderLivingEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderLivingEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.RenderLivingEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderNameTagEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderNameTagEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderPlayerEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderPlayerEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderPlayerEvent.Post",
+                       "native":  "net.neoforged.neoforge.client.event.RenderPlayerEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderPlayerEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.RenderPlayerEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderTooltipEvent",
+                       "native":  "net.neoforged.neoforge.client.event.RenderTooltipEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderTooltipEvent.Color",
+                       "native":  "net.neoforged.neoforge.client.event.RenderTooltipEvent.Color",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderTooltipEvent.GatherComponents",
+                       "native":  "net.neoforged.neoforge.client.event.RenderTooltipEvent.GatherComponents",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortRenderTooltipEvent.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.RenderTooltipEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.CharacterTyped",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.CharacterTyped",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.CharacterTyped.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.CharacterTyped.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.CharacterTyped.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.CharacterTyped.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Closing",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Closing",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Init",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Init",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Init.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Init.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Init.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Init.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.KeyPressed",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.KeyPressed",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.KeyPressed.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.KeyPressed.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.KeyPressed.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.KeyPressed.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.KeyReleased",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.KeyReleased",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.KeyReleased.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.KeyReleased.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.KeyReleased.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.KeyReleased.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonPressed",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonPressed",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonPressed.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonPressed.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonPressed.Post.PortResult",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonPressed.Post.Result",
+                       "bus":  "",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonPressed.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonPressed.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonReleased",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonReleased",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonReleased.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonReleased.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonReleased.Post.PortResult",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonReleased.Post.Result",
+                       "bus":  "",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseButtonReleased.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseButtonReleased.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseDragged",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseDragged",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseDragged.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseDragged.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseDragged.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseDragged.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseScrolled",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseScrolled",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseScrolled.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseScrolled.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.MouseScrolled.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.MouseScrolled.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Opening",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Opening",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Render",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Render",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Render.Post",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Render.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.Render.Pre",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.Render.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenEvent.RenderInventoryMobEffects",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenEvent.RenderInventoryMobEffects",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortScreenshotEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ScreenshotEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortSelectMusicEvent",
+                       "native":  "net.neoforged.neoforge.client.event.SelectMusicEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortTextureAtlasStitchedEvent",
+                       "native":  "net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortToastAddEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ToastAddEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortViewportEvent",
+                       "native":  "net.neoforged.neoforge.client.event.ViewportEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortViewportEvent.ComputeCameraAngles",
+                       "native":  "net.neoforged.neoforge.client.event.ViewportEvent.ComputeCameraAngles",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortViewportEvent.ComputeFogColor",
+                       "native":  "net.neoforged.neoforge.client.event.ViewportEvent.ComputeFogColor",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortViewportEvent.ComputeFov",
+                       "native":  "net.neoforged.neoforge.client.event.ViewportEvent.ComputeFov",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.PortViewportEvent.RenderFog",
+                       "native":  "net.neoforged.neoforge.client.event.ViewportEvent.RenderFog",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.sound.PortPlaySoundEvent",
+                       "native":  "net.neoforged.neoforge.client.event.sound.PlaySoundEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.sound.PortPlaySoundSourceEvent",
+                       "native":  "net.neoforged.neoforge.client.event.sound.PlaySoundSourceEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.sound.PortPlayStreamingSourceEvent",
+                       "native":  "net.neoforged.neoforge.client.event.sound.PlayStreamingSourceEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.sound.PortSoundEngineLoadEvent",
+                       "native":  "net.neoforged.neoforge.client.event.sound.SoundEngineLoadEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.sound.PortSoundEvent",
+                       "native":  "net.neoforged.neoforge.client.event.sound.SoundEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.client.sound.PortSoundEvent.SoundSourceEvent",
+                       "native":  "net.neoforged.neoforge.client.event.sound.SoundEvent.SoundSourceEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.enchanting.PortEnchantmentLevelSetEvent",
+                       "native":  "net.neoforged.neoforge.event.enchanting.EnchantmentLevelSetEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.enchanting.PortGetEnchantmentLevelEvent",
+                       "native":  "net.neoforged.neoforge.event.enchanting.GetEnchantmentLevelEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.item.PortItemEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.item.ItemEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.item.PortItemExpireEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.item.ItemExpireEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.item.PortItemTossEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.item.ItemTossEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortAnimalTameEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.AnimalTameEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortArmorHurtEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.ArmorHurtEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortArmorHurtEvent.ArmorEntry",
+                       "native":  "net.neoforged.neoforge.event.entity.living.ArmorHurtEvent.ArmorEntry",
+                       "bus":  "",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortBabyEntitySpawnEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortEffectParticleModificationEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.EffectParticleModificationEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortEnderManAngerEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.EnderManAngerEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortFinalizeSpawnEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingBreatheEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingBreatheEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingChangeTargetEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingChangeTargetEvent.IPortLivingTargetType",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent.ILivingTargetType",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingChangeTargetEvent.IPortLivingTargetType.Delegate",
+                       "native":  "",
+                       "bus":  "",
+                       "notes":  "could not resolve nested \u0027Delegate\u0027 under native \u0027net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent.ILivingTargetType\u0027"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingChangeTargetEvent.PortLivingTargetType",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent.LivingTargetType",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingConversionEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingConversionEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingConversionEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingConversionEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingConversionEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingConversionEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingDamageEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingDamageEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingDamageEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingDamageEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingDeathEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingDeathEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingDestroyBlockEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingDropsEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingDropsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingDrownEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingDrownEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEntityUseItemEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEntityUseItemEvent.Finish",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent.Finish",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEntityUseItemEvent.Start",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent.Start",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEntityUseItemEvent.Stop",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent.Stop",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEntityUseItemEvent.Tick",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent.Tick",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEquipmentChangeEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEvent.LivingJumpEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEvent.LivingJumpEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingEvent.LivingVisibilityEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingEvent.LivingVisibilityEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingExperienceDropEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingFallEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingFallEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingGetProjectileEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingGetProjectileEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingHealEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingHealEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingIncomingDamageEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingKnockBackEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingShieldBlockEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingShieldBlockEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingSwapItemsEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingSwapItemsEvent.Hands",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingSwapItemsEvent.Hands",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortLivingUseTotemEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.LivingUseTotemEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobDespawnEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobDespawnEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobDespawnEvent.PortResult",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobDespawnEvent.Result",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobEffectEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobEffectEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobEffectEvent.Added",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobEffectEvent.Added",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobEffectEvent.Applicable",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobEffectEvent.Applicable",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobEffectEvent.Applicable.PortResult",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobEffectEvent.Applicable.Result",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobEffectEvent.Expired",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobEffectEvent.Expired",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobEffectEvent.Remove",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobEffectEvent.Remove",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobSpawnEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobSpawnEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobSpawnEvent.PositionCheck",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobSpawnEvent.PositionCheck.PortResult",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck.Result",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobSpawnEvent.SpawnPlacementCheck",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobSpawnEvent.SpawnPlacementCheck",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobSpawnEvent.SpawnPlacementCheck.PortResult",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobSpawnEvent.SpawnPlacementCheck.Result",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortMobSplitEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.MobSplitEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.living.PortSpawnClusterSizeEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.living.SpawnClusterSizeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortAdvancementEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.AdvancementEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortAdvancementEvent.AdvancementEarnEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.AdvancementEvent.AdvancementEarnEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortAdvancementEvent.AdvancementProgressEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.AdvancementEvent.AdvancementProgressEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortAdvancementEvent.AdvancementProgressEvent.PortProgressType",
+                       "native":  "net.neoforged.neoforge.event.entity.player.AdvancementEvent.AdvancementProgressEvent.ProgressType",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortAnvilRepairEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.AnvilRepairEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortArrowLooseEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ArrowLooseEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortArrowNockEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ArrowNockEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortAttackEntityEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.AttackEntityEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortBonemealEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.BonemealEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortCanContinueSleepingEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.CanContinueSleepingEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortCanPlayerSleepEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.CanPlayerSleepEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortClientInformationUpdatedEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ClientInformationUpdatedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortCriticalHitEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.CriticalHitEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortItemEntityPickupEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortItemEntityPickupEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortItemEntityPickupEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortItemFishedEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ItemFishedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortItemTooltipEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.ItemTooltipEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPermissionsChangedEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PermissionsChangedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerContainerEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerContainerEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerContainerEvent.Close",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerContainerEvent.Close",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerContainerEvent.Open",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerContainerEvent.Open",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerDestroyItemEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerDestroyItemEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEnchantItemEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEnchantItemEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.BreakSpeed",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.BreakSpeed",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.Clone",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.Clone",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.HarvestCheck",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.HarvestCheck",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.ItemCraftedEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.ItemCraftedEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.ItemSmeltedEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.ItemSmeltedEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.LoadFromFile",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.LoadFromFile",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.NameFormat",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.NameFormat",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.PlayerChangedDimensionEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.PlayerChangeGameModeEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangeGameModeEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.PlayerLoggedInEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.PlayerLoggedOutEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.PlayerRespawnEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.SaveToFile",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.SaveToFile",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.StartTracking",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.StartTracking",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.StopTracking",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.StopTracking",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerEvent.TabListNameFormat",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerEvent.TabListNameFormat",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerFlyableFallEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerFlyableFallEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerHeartTypeEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerHeartTypeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.EntityInteract",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteract",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.EntityInteractSpecific",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.EntityInteractSpecific",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.LeftClickBlock",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.LeftClickBlock.PortAction",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock.Action",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.LeftClickEmpty",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickEmpty",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.RightClickBlock",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.RightClickEmpty",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickEmpty",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent.RightClickItem",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickItem",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerRespawnPositionEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerRespawnPositionEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerSetSpawnEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerSetSpawnEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerSpawnPhantomsEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerSpawnPhantomsEvent.PortResult",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerSpawnPhantomsEvent.Result",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerWakeUpEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerXpEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerXpEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerXpEvent.LevelChange",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerXpEvent.LevelChange",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerXpEvent.PickupXp",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerXpEvent.PickupXp",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortPlayerXpEvent.XpChange",
+                       "native":  "net.neoforged.neoforge.event.entity.player.PlayerXpEvent.XpChange",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortSweepAttackEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.SweepAttackEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortTradeWithVillagerEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.TradeWithVillagerEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortUseItemOnBlockEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.player.PortUseItemOnBlockEvent.PortUsePhase",
+                       "native":  "net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityAttributeCreationEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityAttributeModificationEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityInvulnerabilityCheckEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityJoinLevelEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityJoinLevelEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityLeaveLevelEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityMobGriefingEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityMobGriefingEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityMountEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityMountEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityStruckByLightningEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityTeleportEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityTeleportEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityTeleportEvent.ChorusFruit",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityTeleportEvent.ChorusFruit",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityTeleportEvent.EnderEntity",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderEntity",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityTeleportEvent.EnderPearl",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderPearl",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityTeleportEvent.SpreadPlayersCommand",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityTeleportEvent.SpreadPlayersCommand",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityTeleportEvent.TeleportCommand",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortEntityTravelToDimensionEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.EntityTravelToDimensionEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortProjectileImpactEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.ProjectileImpactEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent",
+                       "native":  "net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent.Operation",
+                       "native":  "net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.Operation",
+                       "bus":  "",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.furnace.PortFurnaceFuelBurnTimeEvent",
+                       "native":  "net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.IPortCancellableEvent",
+                       "native":  "net.neoforged.bus.api.ICancellableEvent",
+                       "bus":  "",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.IPortModBusEvent",
+                       "native":  "net.neoforged.fml.event.IModBusEvent",
+                       "bus":  "",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.block.PortCreateFluidSourceEvent",
+                       "native":  "net.neoforged.neoforge.event.level.block.CreateFluidSourceEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.block.PortCropGrowEvent",
+                       "native":  "net.neoforged.neoforge.event.level.block.CropGrowEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.block.PortCropGrowEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.level.block.CropGrowEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.block.PortCropGrowEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.level.block.CropGrowEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.block.PortCropGrowEvent.Pre.PortResult",
+                       "native":  "net.neoforged.neoforge.event.level.block.CropGrowEvent.Pre.Result",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockDropsEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockDropsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.BlockToolModificationEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.BlockToolModificationEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.BreakEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.BreakEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.EntityMultiPlaceEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.EntityMultiPlaceEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.EntityPlaceEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.EntityPlaceEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.FarmlandTrampleEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.FarmlandTrampleEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.FluidPlaceBlockEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.FluidPlaceBlockEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.NeighborNotifyEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.NeighborNotifyEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockEvent.PortalSpawnEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockEvent.PortalSpawnEvent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortBlockGrowFeatureEvent",
+                       "native":  "net.neoforged.neoforge.event.level.BlockGrowFeatureEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkDataEvent",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkDataEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkDataEvent.Load",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkDataEvent.Load",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkDataEvent.Save",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkDataEvent.Save",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkEvent",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkEvent.Load",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkEvent.Load",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkEvent.Unload",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkEvent.Unload",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkTicketLevelUpdatedEvent",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkTicketLevelUpdatedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkWatchEvent",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkWatchEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkWatchEvent.Sent",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkWatchEvent.Sent",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkWatchEvent.UnWatch",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkWatchEvent.UnWatch",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortChunkWatchEvent.Watch",
+                       "native":  "net.neoforged.neoforge.event.level.ChunkWatchEvent.Watch",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortExplosionEvent",
+                       "native":  "net.neoforged.neoforge.event.level.ExplosionEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortExplosionEvent.Detonate",
+                       "native":  "net.neoforged.neoforge.event.level.ExplosionEvent.Detonate",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortExplosionEvent.Start",
+                       "native":  "net.neoforged.neoforge.event.level.ExplosionEvent.Start",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortExplosionKnockbackEvent",
+                       "native":  "net.neoforged.neoforge.event.level.ExplosionKnockbackEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortLevelEvent",
+                       "native":  "net.neoforged.neoforge.event.level.LevelEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortLevelEvent.CreateSpawnPosition",
+                       "native":  "net.neoforged.neoforge.event.level.LevelEvent.CreateSpawnPosition",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortLevelEvent.Load",
+                       "native":  "net.neoforged.neoforge.event.level.LevelEvent.Load",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortLevelEvent.PotentialSpawns",
+                       "native":  "net.neoforged.neoforge.event.level.LevelEvent.PotentialSpawns",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortLevelEvent.Save",
+                       "native":  "net.neoforged.neoforge.event.level.LevelEvent.Save",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortLevelEvent.Unload",
+                       "native":  "net.neoforged.neoforge.event.level.LevelEvent.Unload",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortModifyCustomSpawnersEvent",
+                       "native":  "net.neoforged.neoforge.event.level.ModifyCustomSpawnersEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortNoteBlockEvent",
+                       "native":  "net.neoforged.neoforge.event.level.NoteBlockEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortNoteBlockEvent.Change",
+                       "native":  "net.neoforged.neoforge.event.level.NoteBlockEvent.Change",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortNoteBlockEvent.Play",
+                       "native":  "net.neoforged.neoforge.event.level.NoteBlockEvent.Play",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortNoteBlockEvent.PortNote",
+                       "native":  "net.neoforged.neoforge.event.level.NoteBlockEvent.Note",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortNoteBlockEvent.PortOctave",
+                       "native":  "net.neoforged.neoforge.event.level.NoteBlockEvent.Octave",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortPistonEvent",
+                       "native":  "net.neoforged.neoforge.event.level.PistonEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortPistonEvent.PortPistonMoveType",
+                       "native":  "net.neoforged.neoforge.event.level.PistonEvent.PistonMoveType",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortPistonEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.level.PistonEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortPistonEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.level.PistonEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.level.PortSleepFinishedTimeEvent",
+                       "native":  "net.neoforged.neoforge.event.level.SleepFinishedTimeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort",
+                       "native":  "net.neoforged.fml.event.lifecycle.FMLClientSetupEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortFMLCommonSetupEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortFMLConstructModEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.FMLConstructModEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortFMLDedicatedServerSetupEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.FMLDedicatedServerSetupEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortFMLLoadCompleteEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortInterModEnqueueEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.InterModEnqueueEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortInterModProcessEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.InterModProcessEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortModLifecycleEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.ModLifecycleEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.lifecycle.PortParallelDispatchEvent",
+                       "native":  "net.neoforged.fml.event.lifecycle.ParallelDispatchEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.network.PortRegisterPayloadHandlersEvent",
+                       "native":  "net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortAddPackFindersEvent",
+                       "native":  "net.neoforged.neoforge.event.AddPackFindersEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortAddReloadListenerEvent",
+                       "native":  "net.neoforged.neoforge.event.AddReloadListenerEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortAddReloadListenerEvent.WrappedStateAwareListener",
+                       "native":  "net.neoforged.neoforge.event.AddReloadListenerEvent.WrappedStateAwareListener",
+                       "bus":  "",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortAnvilUpdateEvent",
+                       "native":  "net.neoforged.neoforge.event.AnvilUpdateEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortBlockEntityTypeAddBlocksEvent",
+                       "native":  "net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortBuildCreativeModeTabContentsEvent",
+                       "native":  "net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortCommandEvent",
+                       "native":  "net.neoforged.neoforge.event.CommandEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortDifficultyChangeEvent",
+                       "native":  "net.neoforged.neoforge.event.DifficultyChangeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortGameShuttingDownEvent",
+                       "native":  "net.neoforged.neoforge.event.GameShuttingDownEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortGrindstoneEvent",
+                       "native":  "net.neoforged.neoforge.event.GrindstoneEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortGrindstoneEvent.OnPlaceItem",
+                       "native":  "net.neoforged.neoforge.event.GrindstoneEvent.OnPlaceItem",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortGrindstoneEvent.OnTakeItem",
+                       "native":  "net.neoforged.neoforge.event.GrindstoneEvent.OnTakeItem",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortItemAttributeModifierEvent",
+                       "native":  "net.neoforged.neoforge.event.ItemAttributeModifierEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortItemStackedOnOtherEvent",
+                       "native":  "net.neoforged.neoforge.event.ItemStackedOnOtherEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortLootTableLoadEvent",
+                       "native":  "net.neoforged.neoforge.event.LootTableLoadEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortModifyDefaultComponentsEvent",
+                       "native":  "net.neoforged.neoforge.event.ModifyDefaultComponentsEvent",
+                       "bus":  "mod",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortOnDatapackSyncEvent",
+                       "native":  "net.neoforged.neoforge.event.OnDatapackSyncEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortPlayLevelSoundEvent",
+                       "native":  "net.neoforged.neoforge.event.PlayLevelSoundEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortPlayLevelSoundEvent.AtEntity",
+                       "native":  "net.neoforged.neoforge.event.PlayLevelSoundEvent.AtEntity",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortPlayLevelSoundEvent.AtPosition",
+                       "native":  "net.neoforged.neoforge.event.PlayLevelSoundEvent.AtPosition",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortRegisterCapabilitiesEvent",
+                       "native":  "net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortRegisterCommandsEvent",
+                       "native":  "net.neoforged.neoforge.event.RegisterCommandsEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortServerChatEvent",
+                       "native":  "net.neoforged.neoforge.event.ServerChatEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortStatAwardEvent",
+                       "native":  "net.neoforged.neoforge.event.StatAwardEvent",
+                       "bus":  "game",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortTagsUpdatedEvent",
+                       "native":  "net.neoforged.neoforge.event.TagsUpdatedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortTagsUpdatedEvent.PortUpdateCause",
+                       "native":  "net.neoforged.neoforge.event.TagsUpdatedEvent.UpdateCause",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.other.PortVanillaGameEvent",
+                       "native":  "net.neoforged.neoforge.event.VanillaGameEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.PortBus",
+                       "native":  "",
+                       "bus":  "",
+                       "notes":  "no native counterpart - the PortLib adapter type disappears on 1.21.1"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.PortEvent",
+                       "native":  "net.neoforged.bus.api.Event",
+                       "bus":  "",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.PortEventHandler",
+                       "native":  "",
+                       "bus":  "",
+                       "notes":  "no native counterpart - the PortLib adapter type disappears on 1.21.1"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.PortEventHooks",
+                       "native":  "",
+                       "bus":  "",
+                       "notes":  "no native counterpart - the PortLib adapter type disappears on 1.21.1"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.PortEventPriority",
+                       "native":  "net.neoforged.bus.api.EventPriority",
+                       "bus":  "",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortDataMapsUpdatedEvent",
+                       "native":  "net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent",
+                       "bus":  "game",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortDataMapsUpdatedEvent.UpdateCause",
+                       "native":  "net.neoforged.neoforge.registries.datamaps.DataMapsUpdatedEvent.UpdateCause",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortDataPackRegistryEvent",
+                       "native":  "net.neoforged.neoforge.registries.DataPackRegistryEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortDataPackRegistryEvent.PortNewRegistry",
+                       "native":  "net.neoforged.neoforge.registries.DataPackRegistryEvent.NewRegistry",
+                       "bus":  "mod",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortModifyRegistriesEvent",
+                       "native":  "net.neoforged.neoforge.registries.ModifyRegistriesEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortNewRegistryEvent",
+                       "native":  "net.neoforged.neoforge.registries.NewRegistryEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortRegisterDataMapTypesEvent",
+                       "native":  "net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortRegisterEvent",
+                       "native":  "net.neoforged.neoforge.registries.RegisterEvent",
+                       "bus":  "mod",
+                       "notes":  "top-level override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortRegisterEvent.PortRegisterHelper",
+                       "native":  "net.neoforged.neoforge.registries.RegisterEvent.RegisterHelper",
+                       "bus":  "",
+                       "notes":  "nested-path override (hand-verified)"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.registries.PortRegisterEvent.PortRegisterHelper.Delegate",
+                       "native":  "",
+                       "bus":  "",
+                       "notes":  "could not resolve nested \u0027Delegate\u0027 under native \u0027net.neoforged.neoforge.registries.RegisterEvent.RegisterHelper\u0027"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.server.PortServerAboutToStartEvent",
+                       "native":  "net.neoforged.neoforge.event.server.ServerAboutToStartEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.server.PortServerLifecycleEvent",
+                       "native":  "net.neoforged.neoforge.event.server.ServerLifecycleEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.server.PortServerStartedEvent",
+                       "native":  "net.neoforged.neoforge.event.server.ServerStartedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.server.PortServerStartingEvent",
+                       "native":  "net.neoforged.neoforge.event.server.ServerStartingEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.server.PortServerStoppedEvent",
+                       "native":  "net.neoforged.neoforge.event.server.ServerStoppedEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.server.PortServerStoppingEvent",
+                       "native":  "net.neoforged.neoforge.event.server.ServerStoppingEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortEntityTickEvent",
+                       "native":  "net.neoforged.neoforge.event.tick.EntityTickEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortEntityTickEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.tick.EntityTickEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortEntityTickEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.tick.EntityTickEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortLevelTickEvent",
+                       "native":  "net.neoforged.neoforge.event.tick.LevelTickEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortLevelTickEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.tick.LevelTickEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortLevelTickEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.tick.LevelTickEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortPlayerTickEvent",
+                       "native":  "net.neoforged.neoforge.event.tick.PlayerTickEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortPlayerTickEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.tick.PlayerTickEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortPlayerTickEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.tick.PlayerTickEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortServerTickEvent",
+                       "native":  "net.neoforged.neoforge.event.tick.ServerTickEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortServerTickEvent.Post",
+                       "native":  "net.neoforged.neoforge.event.tick.ServerTickEvent.Post",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.tick.PortServerTickEvent.Pre",
+                       "native":  "net.neoforged.neoforge.event.tick.ServerTickEvent.Pre",
+                       "bus":  "game",
+                       "notes":  "nested name matched inside the native parent"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.village.PortVillagerTradesEvent",
+                       "native":  "net.neoforged.neoforge.event.village.VillagerTradesEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.village.PortVillageSiegeEvent",
+                       "native":  "net.neoforged.neoforge.event.village.VillageSiegeEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   },
+                   {
+                       "port":  "org.mesdag.portlib.event.village.PortWandererTradesEvent",
+                       "native":  "net.neoforged.neoforge.event.village.WandererTradesEvent",
+                       "bus":  "game",
+                       "notes":  "package map + Port-prefix strip, verified against the native event table"
+                   }
+               ]
+}

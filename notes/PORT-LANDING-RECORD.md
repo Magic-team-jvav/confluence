@@ -4739,3 +4739,56 @@ public ResourceLocation getAnimationResource(AccessoryGeoModel animatable) { ret
 - `fix_eol --check` 候选 6；本批**无代码落地**（两处资源差按 `DEFER-ASSETS` 登记）。
 - 下一批：**行 101–122（TerraCurio 收尾：JEI 恢复、第一人称动画、粒子绕序、饰品能力数据图化、重铸价格、构建修复）**。
 
+## 一百二十三、子模块行走 行 101–122（TerraCurio 收尾）⇒ 20 `COVERED` + 2 `SKIP-PORTLIB`（**TerraCurio 68–122 走完**）
+
+### 123.1 清单
+
+| 行 | 提交 | 日期 | 主题 | GAP/文件 | 裁定 |
+| --- | --- | --- | --- | --- | --- |
+| 101 | `25eb4545d` | 2026-09-12 | JEI 兼容恢复 | 6 / 3 | `COVERED` |
+| 102 | `aa3c27be4` | 2026-09-13 | 版本更新 | 0 / 0 | `COVERED` |
+| 103 | `b638adcd5` | 2026-09-14 | 为新增怪物补全需要的东西 | 0 / 0（资源 only） | `COVERED` |
+| 104 | `efb867308` | 2026-09-15 | 微调 | 0 / 0 | `COVERED` |
+| 105 | `e911661de` | 2026-09-15 | 更新粒子 | 0 / 0 | `COVERED` |
+| 106 | `2c55cf65f` | 2026-09-16 | 调整末地高度 | 1 / 1 | `COVERED` |
+| 107 | `717a424d6` | 2026-09-16 | extension | 0 / 0 | `COVERED` |
+| 108 | `b9b221844` | 2026-09-16 | curios 属性显示兼容 | 55 / 3 | **`SKIP-PORTLIB`** |
+| 109 | `b5b775e93` | 2026-09-17 | 修改纹理/模型问题，挪贴图位置 | 0 / 0（资源 only） | `COVERED` |
+| 110 | `2f2f24793` | 2026-09-17 | **修复 portlib 的注册表** | 2 / 1 | **`SKIP-PORTLIB`** |
+| 111 | `5d64f259a` | 2026-09-18 | 使用 neoforge 风味的网络包注册与发送 | 35 / 10 | `COVERED` |
+| 112 | `e678ff8fc` | 2026-09-19 | 修复粒子的顶点绕序问题 | 0 / 0 | `COVERED` |
+| 113 | `577a5d955` | 2026-09-20 | 第一人称动画功能移到 lib | 0 / 0 | `COVERED` |
+| 114 | `83efd2c63` | 2026-09-20 | IdentityHashMap 换 Reference2ObjectOpenHashMap | 2 / 1 | `COVERED` |
+| 115 | `79351d003` | 2026-09-22 | 改 | 1 / 1 | `COVERED` |
+| 116 | `a1a803d74` | 2026-09-22 | 删除 Ponder 的 nbt，升级粒子 | 0 / 0 | `COVERED` |
+| 117 | `83f19c9db` | 2026-09-23 | fall_damage_multiplier 属性不再导致摔落声音 | 1 / 1 | `COVERED` |
+| 118 | `252bb9caa` | 2026-09-26 | 调整种子特性 | 0 / 0（资源 only） | `COVERED` |
+| 119 | `5666e140a` | 2026-09-27 | 修重铸价格（没对接心情） | 0 / 0 | `COVERED` |
+| 120 | `ef4356518` | 2026-09-27 | 修复构建问题 | 1 / 1 | `COVERED` |
+| 121 | `df37454c2` | 2026-09-27 | 平衡性调整，权重调整，贴图补充 | 0 / 0（资源 only） | `COVERED` |
+| 122 | `f00e8f541` | 2026-10-03 | 修复组件崩溃 | 0 / 0 | `COVERED` |
+
+### 123.2 行 108：PortLib 的 curios 集成 mixin（`SKIP-PORTLIB`），标签面已同步
+
+| 1.20 加的东西 | 1.21 |
+| --- | --- |
+| `ClientEventHandlerMixin`（`org.confluence.terra_curio.mixin.integration.curios`，用 PortLib `IPortAttribute`）+ `terra_curio.mixins.json` 注册项 | **1.21 TerraCurio 无该类**（`ClientEventHandler` 0 命中）——PortLib 专有，按口径不移植 |
+| `TCItemTagsProvider`：`tag(LibTags.Items.WIP).add(TCItems.FROZEN_WINGS.get(), JETPACK, LEAF_WINGS, BAT_WINGS, …)` | **1.21 同名 provider 同类写法**（`TCItemTagsProvider.java:51` `tag(LibTags.Items.WIP).add(`）；1.21 lib 的 `LibTags.Items.WIP`（`LibTags.java:14`）有 3 个消费方（`LibClientGameEvents:80`、`GuiGraphicsMixin:34`、`WipNotDisplayOutput:35`）；翅膀/喷气背包条目在 `TCItems`／`TCItemTagsProvider`／`TCLanguageProvider` 各 4 处 |
+
+### 123.3 其余各行的 gap 归类
+
+| 类别 | 实例 |
+| --- | --- |
+| **构建脚本/版本号** | 行 106 `jarJar(mixinextras-forge)`；行 110 `boolean subproject = true` 分支；行 115 `mod_version=1.3.1.5`；行 120 `includeGroupByRegex "com\.bawnorton.*"`；行 101 `jei_version=15.56.0.205`；行 111 `portlib_version=1.2.5` |
+| **1.20 自造包注册助手 → 1.21 原生** | 行 111 `TCModEvents` 的 `.registerInGameC2S(X.class, X.ID, X.STREAM_CODEC)` 链与各包的 `sendToClient(ServerPlayer)`；1.21 用 `registerPayloadHandlers` + `IPacketS2C`（0 缺失符号，与 lib 行 45 同源） |
+| **NeoForge 事件形态** | 行 114 `TCGameClientEvents` 的 `ComputeFovModifierEvent`／`InputEvent.InteractionKeyMappingTriggered` |
+| **配方/JEI 访问器** | 行 101 `WorkshopMenu`／`WorkshopCategory` 的 `recipe.getResult()`（1.21 同名 API 在） |
+| **实现细节** | 行 117 `BaseSpeedBoots` 的 `player.onGround() && !player.swinging` 判断 |
+
+### 123.4 状态：TerraCurio 段走完
+
+- 台账（双写）：行 101–122 落状态，**TerraCurio 行 68–122 全部判定完毕**（`COVERED` 45、`SKIP-PORTLIB` 5、`REVERSE-ALIGNED` 2、`DEFER-ASSETS` 2）。
+- 剩余 TODO **26**：仅 **TerraFurniture 行 123–148**。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 123–148（TerraFurniture 全部：拟对账 `CherryChestBlock`／`CherryChestGeoModel`／`ModelLightBlock` 的"架构差异 vs 真缺口"，以及 `4d327715d`「单腿桌子」+1218、`b5f856c95`「加点」+6753 两个大提交）**。
+

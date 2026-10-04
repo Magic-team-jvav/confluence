@@ -900,6 +900,204 @@
    "subject": "portlib升级为1.2.2",
    "old": "TODO",
    "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 101,
+   "sub": "TerraCurio",
+   "commit": "25eb4545d",
+   "date": "2026-09-12",
+   "subject": "JEI兼容恢复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 102,
+   "sub": "TerraCurio",
+   "commit": "aa3c27be4",
+   "date": "2026-09-13",
+   "subject": "版本更新",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 103,
+   "sub": "TerraCurio",
+   "commit": "b638adcd5",
+   "date": "2026-09-14",
+   "subject": "为现有新增的怪物补全点需要的东西",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 104,
+   "sub": "TerraCurio",
+   "commit": "efb867308",
+   "date": "2026-09-15",
+   "subject": "微调",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 105,
+   "sub": "TerraCurio",
+   "commit": "e911661de",
+   "date": "2026-09-15",
+   "subject": "更新粒子",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 106,
+   "sub": "TerraCurio",
+   "commit": "2c55cf65f",
+   "date": "2026-09-16",
+   "subject": "调整末地高度",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 107,
+   "sub": "TerraCurio",
+   "commit": "717a424d6",
+   "date": "2026-09-16",
+   "subject": "extension",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 108,
+   "sub": "TerraCurio",
+   "commit": "b9b221844",
+   "date": "2026-09-16",
+   "subject": "curios属性显示兼容",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 109,
+   "sub": "TerraCurio",
+   "commit": "b5b775e93",
+   "date": "2026-09-17",
+   "subject": "修改一些纹理和模型上的问题，挪贴图位置",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 110,
+   "sub": "TerraCurio",
+   "commit": "2f2f24793",
+   "date": "2026-09-17",
+   "subject": "修复portlib的注册表",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 111,
+   "sub": "TerraCurio",
+   "commit": "5d64f259a",
+   "date": "2026-09-18",
+   "subject": "使用neoforge风味的网络包注册与发送",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 112,
+   "sub": "TerraCurio",
+   "commit": "e678ff8fc",
+   "date": "2026-09-19",
+   "subject": "修复粒子的顶点绕序问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 113,
+   "sub": "TerraCurio",
+   "commit": "577a5d955",
+   "date": "2026-09-20",
+   "subject": "第一人称动画功能移到lib",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 114,
+   "sub": "TerraCurio",
+   "commit": "83efd2c63",
+   "date": "2026-09-20",
+   "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 115,
+   "sub": "TerraCurio",
+   "commit": "79351d003",
+   "date": "2026-09-22",
+   "subject": "改",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 116,
+   "sub": "TerraCurio",
+   "commit": "a1a803d74",
+   "date": "2026-09-22",
+   "subject": "删除Ponder的nbt，升级粒子",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 117,
+   "sub": "TerraCurio",
+   "commit": "83f19c9db",
+   "date": "2026-09-23",
+   "subject": "fall_damage_multiplier属性不再导致摔落声音",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 118,
+   "sub": "TerraCurio",
+   "commit": "252bb9caa",
+   "date": "2026-09-26",
+   "subject": "调整种子特性",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 119,
+   "sub": "TerraCurio",
+   "commit": "5666e140a",
+   "date": "2026-09-27",
+   "subject": "修重铸价格（没对接心情）",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 120,
+   "sub": "TerraCurio",
+   "commit": "ef4356518",
+   "date": "2026-09-27",
+   "subject": "修复构建问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 121,
+   "sub": "TerraCurio",
+   "commit": "df37454c2",
+   "date": "2026-09-27",
+   "subject": "平衡性调整，权重调整，贴图补充",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 122,
+   "sub": "TerraCurio",
+   "commit": "f00e8f541",
+   "date": "2026-10-03",
+   "subject": "修复组件崩溃",
+   "old": "TODO",
+   "status": "COVERED"
   }
  ]
 }

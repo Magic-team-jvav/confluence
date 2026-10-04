@@ -111,28 +111,28 @@
 | 98 | TerraCurio | `b797d87e8` | 2026-09-10 | 修复mixin，修复跳跃属性 | 6 | +32 −24 | PortLib×9 | COVERED |
 | 99 | TerraCurio | `eebc21cbe` | 2026-09-11 | 修复与Bigger Stacks的Mixin冲突 | 1 | +4 −1 |  | COVERED |
 | 100 | TerraCurio | `feded30e6` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | SKIP-PORTLIB |
-| 101 | TerraCurio | `25eb4545d` | 2026-09-12 | JEI兼容恢复 | 3 | +7 −8 | PortLib×2 | TODO |
-| 102 | TerraCurio | `aa3c27be4` | 2026-09-13 | 版本更新 | 1 | +2 −1 | PortLib×2 | TODO |
-| 103 | TerraCurio | `b638adcd5` | 2026-09-14 | 为现有新增的怪物补全点需要的东西 | 1 | +0 −0 | 资源only | TODO |
-| 104 | TerraCurio | `efb867308` | 2026-09-15 | 微调 | 1 | +1 −1 |  | TODO |
-| 105 | TerraCurio | `e911661de` | 2026-09-15 | 更新粒子 | 1 | +1 −1 | PortLib×1 | TODO |
-| 106 | TerraCurio | `2c55cf65f` | 2026-09-16 | 调整末地高度 | 1 | +1 −4 |  | TODO |
-| 107 | TerraCurio | `717a424d6` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | TODO |
-| 108 | TerraCurio | `b9b221844` | 2026-09-16 | curios属性显示兼容 | 3 | +60 −0 | PortLib×3 | TODO |
-| 109 | TerraCurio | `b5b775e93` | 2026-09-17 | 修改一些纹理和模型上的问题，挪贴图位置 | 5 | +0 −0 | 资源only | TODO |
-| 110 | TerraCurio | `2f2f24793` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×7 | TODO |
-| 111 | TerraCurio | `5d64f259a` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 24 | +90 −72 | PortLib×89 | TODO |
-| 112 | TerraCurio | `e678ff8fc` | 2026-09-19 | 修复粒子的顶点绕序问题 | 1 | +1 −1 | PortLib×1 | TODO |
-| 113 | TerraCurio | `577a5d955` | 2026-09-20 | 第一人称动画功能移到lib | 1 | +1 −1 | PortLib×1 | TODO |
-| 114 | TerraCurio | `83efd2c63` | 2026-09-20 | IdentityHashMap换成Reference2ObjectOpenHashMap | 2 | +7 −7 | PortLib×3 | TODO |
-| 115 | TerraCurio | `79351d003` | 2026-09-22 | 改 | 1 | +1 −1 |  | TODO |
-| 116 | TerraCurio | `a1a803d74` | 2026-09-22 | 删除Ponder的nbt，升级粒子 | 1 | +1 −1 | PortLib×1 | TODO |
-| 117 | TerraCurio | `83f19c9db` | 2026-09-23 | fall_damage_multiplier属性不再导致摔落声音 | 3 | +40 −42 |  | TODO |
-| 118 | TerraCurio | `252bb9caa` | 2026-09-26 | 调整种子特性 | 1 | +3 −3 | 资源only | TODO |
-| 119 | TerraCurio | `5666e140a` | 2026-09-27 | 修重铸价格（没对接心情） | 1 | +1 −1 | PortLib×1 | TODO |
-| 120 | TerraCurio | `ef4356518` | 2026-09-27 | 修复构建问题 | 1 | +6 −0 |  | TODO |
-| 121 | TerraCurio | `df37454c2` | 2026-09-27 | 平衡性调整，权重调整，贴图补充 | 6 | +0 −0 | 资源only | TODO |
-| 122 | TerraCurio | `f00e8f541` | 2026-10-03 | 修复组件崩溃 | 1 | +1 −1 |  | TODO |
+| 101 | TerraCurio | `25eb4545d` | 2026-09-12 | JEI兼容恢复 | 3 | +7 −8 | PortLib×2 | COVERED |
+| 102 | TerraCurio | `aa3c27be4` | 2026-09-13 | 版本更新 | 1 | +2 −1 | PortLib×2 | COVERED |
+| 103 | TerraCurio | `b638adcd5` | 2026-09-14 | 为现有新增的怪物补全点需要的东西 | 1 | +0 −0 | 资源only | COVERED |
+| 104 | TerraCurio | `efb867308` | 2026-09-15 | 微调 | 1 | +1 −1 |  | COVERED |
+| 105 | TerraCurio | `e911661de` | 2026-09-15 | 更新粒子 | 1 | +1 −1 | PortLib×1 | COVERED |
+| 106 | TerraCurio | `2c55cf65f` | 2026-09-16 | 调整末地高度 | 1 | +1 −4 |  | COVERED |
+| 107 | TerraCurio | `717a424d6` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | COVERED |
+| 108 | TerraCurio | `b9b221844` | 2026-09-16 | curios属性显示兼容 | 3 | +60 −0 | PortLib×3 | SKIP-PORTLIB |
+| 109 | TerraCurio | `b5b775e93` | 2026-09-17 | 修改一些纹理和模型上的问题，挪贴图位置 | 5 | +0 −0 | 资源only | COVERED |
+| 110 | TerraCurio | `2f2f24793` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×7 | SKIP-PORTLIB |
+| 111 | TerraCurio | `5d64f259a` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 24 | +90 −72 | PortLib×89 | COVERED |
+| 112 | TerraCurio | `e678ff8fc` | 2026-09-19 | 修复粒子的顶点绕序问题 | 1 | +1 −1 | PortLib×1 | COVERED |
+| 113 | TerraCurio | `577a5d955` | 2026-09-20 | 第一人称动画功能移到lib | 1 | +1 −1 | PortLib×1 | COVERED |
+| 114 | TerraCurio | `83efd2c63` | 2026-09-20 | IdentityHashMap换成Reference2ObjectOpenHashMap | 2 | +7 −7 | PortLib×3 | COVERED |
+| 115 | TerraCurio | `79351d003` | 2026-09-22 | 改 | 1 | +1 −1 |  | COVERED |
+| 116 | TerraCurio | `a1a803d74` | 2026-09-22 | 删除Ponder的nbt，升级粒子 | 1 | +1 −1 | PortLib×1 | COVERED |
+| 117 | TerraCurio | `83f19c9db` | 2026-09-23 | fall_damage_multiplier属性不再导致摔落声音 | 3 | +40 −42 |  | COVERED |
+| 118 | TerraCurio | `252bb9caa` | 2026-09-26 | 调整种子特性 | 1 | +3 −3 | 资源only | COVERED |
+| 119 | TerraCurio | `5666e140a` | 2026-09-27 | 修重铸价格（没对接心情） | 1 | +1 −1 | PortLib×1 | COVERED |
+| 120 | TerraCurio | `ef4356518` | 2026-09-27 | 修复构建问题 | 1 | +6 −0 |  | COVERED |
+| 121 | TerraCurio | `df37454c2` | 2026-09-27 | 平衡性调整，权重调整，贴图补充 | 6 | +0 −0 | 资源only | COVERED |
+| 122 | TerraCurio | `f00e8f541` | 2026-10-03 | 修复组件崩溃 | 1 | +1 −1 |  | COVERED |
 | 123 | TerraFurniture | `d08fb3230` | 2026-07-04 | able to start game | 2 | +2 −60 |  | TODO |
 | 124 | TerraFurniture | `ae0621561` | 2026-08-08 | 同步1.21.1的修改 | 2 | +3 −3 | PortLib×2 | TODO |
 | 125 | TerraFurniture | `3176c2ac0` | 2026-08-23 | 调整版本 | 2 | +4 −4 | PortLib×7 | TODO |

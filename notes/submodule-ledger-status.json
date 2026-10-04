@@ -2,6 +2,96 @@
  "note": "submodule ledger status",
  "rows": [
   {
+   "row": 1,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "02525eea4",
+   "date": "2026-07-04",
+   "subject": "able to start game",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 2,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "df79b045c",
+   "date": "2026-07-04",
+   "subject": "able to into world",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 3,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "31f79abbc",
+   "date": "2026-08-08",
+   "subject": "同步1.21.1的修改",
+   "old": "TODO",
+   "status": "REVERSE-ALIGNED"
+  },
+  {
+   "row": 4,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "d77f87c92",
+   "date": "2026-08-15",
+   "subject": "feat: 对齐 1.21 内容与运行时行为",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 5,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "781e94002",
+   "date": "2026-08-16",
+   "subject": "注释 杀杀杀",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 6,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "acbd70715",
+   "date": "2026-08-18",
+   "subject": "药水效果（未完成）",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 7,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "1802b4488",
+   "date": "2026-08-19",
+   "subject": "refactor(otherworld): 拉通生物、NPC与战斗系统迁移",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 8,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "1c97b2e51",
+   "date": "2026-08-22",
+   "subject": "refactor(confluence): 拉通 1.21 战斗、召唤与实体体系",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 9,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "0718c593a",
+   "date": "2026-08-22",
+   "subject": "将饰品的药水效果转移至lib",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 10,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "5f2d48bbf",
+   "date": "2026-08-22",
+   "subject": "可开关的药水效果移到lib",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
    "row": 60,
    "sub": "Confluence-Magic-Lib",
    "commit": "e9b848c93",

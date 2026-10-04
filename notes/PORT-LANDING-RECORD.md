@@ -4397,3 +4397,60 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**（仅新增跟踪台账与工具）。
 - 下一批：**行 1–10（lib 开局 `able to start game`／`able to into world`／对齐提交）+ 行 123–126（TerraFurniture 开局）**，并把 §116.2 的「仅 1.20 有」文件按批对账。
 
+## 一百一十七、子模块行走 行 1–10（Confluence-Magic-Lib 开局）⇒ 9 `COVERED` + 1 `SKIP-PORTLIB` + 1 `REVERSE-ALIGNED`
+
+### 117.1 清单
+
+| 行 | 提交 | 日期 | 主题 | 真实GAP/文件 | 符号/缺失 | 裁定 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | `02525eea4` | 2026-07-04 | able to start game | 6 / 2 | 2 / 0 | `COVERED` |
+| 2 | `df79b045c` | 2026-07-04 | able to into world | 113 / 8 | 10 / 5 | `SKIP-PORTLIB` |
+| 3 | `31f79abbc` | 2026-08-08 | 同步 1.21.1 的修改 | 5 / 3 | 13 / 0 | `REVERSE-ALIGNED` |
+| 4 | `d77f87c92` | 2026-08-15 | feat: 对齐 1.21 内容与运行时行为 | 13 / 7 | 53 / 52 | `COVERED` |
+| 5 | `781e94002` | 2026-08-16 | 注释 杀杀杀（=行 4 的逆操作） | 4 / 4 | 0 / 0 | `COVERED` |
+| 6 | `acbd70715` | 2026-08-18 | 药水效果（未完成） | 0 / 0 | 1 / 0 | `COVERED` |
+| 7 | `1802b4488` | 2026-08-19 | refactor：拉通生物、NPC 与战斗系统迁移 | 8 / 3 | 14 / 0 | `COVERED` |
+| 8 | `1c97b2e51` | 2026-08-22 | refactor：拉通 1.21 战斗、召唤与实体体系 | 6 / 1 | 0 / 0 | `COVERED` |
+| 9 | `0718c593a` | 2026-08-22 | 将饰品的药水效果转移至 lib | 137 / 18 | 28 / 2 | `COVERED` |
+| 10 | `5f2d48bbf` | 2026-08-22 | 可开关的药水效果移到 lib | 37 / 11 | 14 / 1 | `COVERED` |
+
+### 117.2 行 2：`Sup*` 与 `SimpleFinishedRecipe` 属 PortLib 时代产物（`SKIP-PORTLIB`）
+
+113 行 gap 中 **104 行**落在 4 个文件：`SupStemBlock`(41)、`SupAttachedStemBlock`(24)、`SimpleFinishedRecipe`(22)、`SupBrushableBlock`(17) —— 四者都带 `org.mesdag.portlib.diff.Diff`，且 **1.21 的 lib 与主仓两侧都不存在**（实测 `Sup*` 0 命中）。1.21 侧改由各自具体类承载同一能力：`StemBlock` 18 处（`BalloonStemBlock`／`BalloonAttachedStemBlock`／`BalloonMelonBlock`）、`BrushableBlock` 4 处（`OpalOreBlock`）。
+
+其余 9 行全部有等价物：
+
+| 1.20 行 | 1.21 |
+| --- | --- |
+| `AbstractRecipeProvider`（5 行） | **1.21 lib 有 `AbstractRecipeProvider.java` + `CollectRecipeProvider.java`**；主仓 10 个 provider 用 `RecipeOutput`（`FinishedRecipe` 两侧皆 0） |
+| `StateProperties.HUMIDITY`（2 行） | 1.21 lib 无、**主仓 43 处 `HUMIDITY`**（`LunarCoralBlock`／`LunarCoralFanBlock`…）+ `humidity` 62 处 ⇒ 属性落在主仓 |
+| `LibDamageTypeTagsProvider` 构造器（含 `ExistingFileHelper`） | 1.21 数据生成器已无 EFH ⇒ 平台 |
+| `accesstransformer.cfg` 的 SRG 行 | 1.21 AT 用 named ⇒ 平台 |
+
+### 117.3 行 9／10：药水效果与「可开关效果」整条链在 1.21 的落点
+
+1.20 把「饰品药水效果」搬进 lib（137 行/18 文件），2 个"缺符号"经查都是**换了落点**：
+
+| 1.20 lib | 1.21 |
+| --- | --- |
+| `MouseHandlerMixin`（重力翻转的鼠标/视角处理，19 行） | **TerraCurio** `terra_curio/mixin/client/MouseHandlerMixin.java`（该特性 1.21 侧本就住在 TerraCurio 的 `GravitationHandler`，7 个文件引用） |
+| `HoneyBottleItemMixin`（18 行） | **主仓** `mod/mixin/world/item/HoneyBottleItemMixin.java`（`@Mixin(HoneyBottleItem.class)`），lib 侧改由 `HoneyEffect.applyHoneyEffect(LivingEntity)` 提供能力 |
+| `LibLanguageProvider`（21 行） | 1.21 lib 有 `LibLanguageProvider.java` + `LanguageFixer.java`，datagen 入口在 `LibDataGenerator` |
+| `GravitationHandler`／`GravitationEffect`／`GravitationPacketC2S`／`BroadcastGravitationRotPacketS2C`／`LibKeyBindings`／`EntityMixin`／`LocalPlayerMixin` | 1.21 lib 同名文件**全在**（`GravitationHandler` 逐字搬运，见 117.4） |
+| 包类 `identifier()`／`ID` 形态 | 1.21 用 `IPacketC2S`／`IPacketS2C` + `STREAM_CODEC`（6 个文件），仅 `SingleJsonFileReloadListener` 还留 1.20 式写法 |
+| 行 10 的 `extends Event` + `@Cancelable`（`OnGatherEffectScreenTooltipsEvent`） | NeoForge 事件形态；「可开关效果」整链在 1.21 齐备：`ILibMobEffectInstance`（11 文件）／`ILibAbstractContainerScreen`／`ILibClientboundUpdateMobEffectPacket`／`SwitchEffectEnabledPackedC2S`／`ClientboundUpdateMobEffectPacketMixin`／`MobEffectInstanceMixin` |
+
+### 117.4 两个「假警报」记下来（避免下次误判）
+
+1. **`LibUtils.damageSource` 不是缺 API，而是改了落点/名字**：1.20 lib `LibUtils.java:308/312/316` 有 3 个重载 `damageSource(Level, ResourceKey<DamageType>[, Entity[, Entity]])`；1.21 lib 的 `LibUtils` **0 命中**，但 `LibDamageTypes` 提供**同签名的 3 个 `of(...)` 重载**（`of(Level, key)`／`of(Level, key, causing)`／`of(Level, key, direct, causing)`）。主仓里 `damageSource(` 的 4 处命中是**投射物自己的实例方法** `public DamageSource damageSource()`（`SpearProjectile:342` 等），与 lib 助手无关。
+   ⇒ 记一条**命名/落点漂移待裁**：1.20 = `LibUtils.damageSource`，1.21 = `LibDamageTypes.of`。（本行按"等价"判 `COVERED`；若要像 `ID_MAP→TIER` 那样统一名字，属另一次 API 决策，涉及 lib + 主仓调用面。）
+2. **`LibDamageTypes.hurtWithoutKnockback` 也已落地**：1.21 **主仓** `Immunity.java:104` 自己实现了 `static boolean hurtWithoutKnockback(...)`（`FirecrackerItem:115` 调用）⇒ 能力在，1.21 lib 不再持有它。
+
+顺带登记（**用户自己的注记，本轮不动**）：1.21 lib 的 `GravitationHandler.java:15–31` 由 `659c8c82`（2026-09-28，作者 westernat）写明「本类已落地但**尚未接线**，接线见 WP6c 第二步」，三个接线口为 ①`LibKeyBindings.init(...)` 无人调用 ②两个包未在 `LibModEvents#registerPayloadHandlers` 注册 ③`LibClientGameEvents` 的调用点未补（现仅一行 `// todo 类似1.20.1 GravitationHandler.reset();`）；且该特性目前在 TerraCurio 另有一份。这是**有意的中间态**，不属行走缺口。
+
+### 117.5 状态
+
+- 台账（双写）：`SUBMODULE-LEDGER.md` 行 1–10 落状态（`COVERED` 8、`SKIP-PORTLIB` 1、`REVERSE-ALIGNED` 1）；剩余 TODO **137**。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 11–20（lib 中段：药水效果/战斗/饰品 datamap 系列）**，随后转 TerraFurniture 行 123–148（含 `CherryChestBlock`／`ModelLightBlock` 疑似缺口）。
+

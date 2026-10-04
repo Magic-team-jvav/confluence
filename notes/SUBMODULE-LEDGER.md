@@ -11,16 +11,16 @@
 
 | 行 | 子模块 | 提交 | 日期 | 主题 | 文件 | +/− | 标记 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | Confluence-Magic-Lib | `02525eea4` | 2026-07-04 | able to start game | 4 | +53 −10 | PortLib×1 | TODO |
-| 2 | Confluence-Magic-Lib | `df79b045c` | 2026-07-04 | able to into world | 12 | +231 −17 | PortLib×6 | TODO |
-| 3 | Confluence-Magic-Lib | `31f79abbc` | 2026-08-08 | 同步1.21.1的修改 | 13 | +163 −134 | PortLib×6 | TODO |
-| 4 | Confluence-Magic-Lib | `d77f87c92` | 2026-08-15 | feat: 对齐 1.21 内容与运行时行为 | 59 | +3549 −180 | PortLib×25 | TODO |
-| 5 | Confluence-Magic-Lib | `781e94002` | 2026-08-16 | 注释 杀杀杀 | 59 | +180 −3549 | PortLib×25 | TODO |
-| 6 | Confluence-Magic-Lib | `acbd70715` | 2026-08-18 | 药水效果（未完成） | 1 | +4 −0 |  | TODO |
-| 7 | Confluence-Magic-Lib | `1802b4488` | 2026-08-19 | refactor(otherworld): 拉通生物、NPC与战斗系统迁移 | 6 | +69 −23 | PortLib×3 | TODO |
-| 8 | Confluence-Magic-Lib | `1c97b2e51` | 2026-08-22 | refactor(confluence): 拉通 1.21 战斗、召唤与实体体系 | 2 | +17 −2 |  | TODO |
-| 9 | Confluence-Magic-Lib | `0718c593a` | 2026-08-22 | 将饰品的药水效果转移至lib | 30 | +803 −122 | PortLib×23 | TODO |
-| 10 | Confluence-Magic-Lib | `5f2d48bbf` | 2026-08-22 | 可开关的药水效果移到lib | 23 | +520 −11 | PortLib×19 | TODO |
+| 1 | Confluence-Magic-Lib | `02525eea4` | 2026-07-04 | able to start game | 4 | +53 −10 | PortLib×1 | COVERED |
+| 2 | Confluence-Magic-Lib | `df79b045c` | 2026-07-04 | able to into world | 12 | +231 −17 | PortLib×6 | SKIP-PORTLIB |
+| 3 | Confluence-Magic-Lib | `31f79abbc` | 2026-08-08 | 同步1.21.1的修改 | 13 | +163 −134 | PortLib×6 | REVERSE-ALIGNED |
+| 4 | Confluence-Magic-Lib | `d77f87c92` | 2026-08-15 | feat: 对齐 1.21 内容与运行时行为 | 59 | +3549 −180 | PortLib×25 | COVERED |
+| 5 | Confluence-Magic-Lib | `781e94002` | 2026-08-16 | 注释 杀杀杀 | 59 | +180 −3549 | PortLib×25 | COVERED |
+| 6 | Confluence-Magic-Lib | `acbd70715` | 2026-08-18 | 药水效果（未完成） | 1 | +4 −0 |  | COVERED |
+| 7 | Confluence-Magic-Lib | `1802b4488` | 2026-08-19 | refactor(otherworld): 拉通生物、NPC与战斗系统迁移 | 6 | +69 −23 | PortLib×3 | COVERED |
+| 8 | Confluence-Magic-Lib | `1c97b2e51` | 2026-08-22 | refactor(confluence): 拉通 1.21 战斗、召唤与实体体系 | 2 | +17 −2 |  | COVERED |
+| 9 | Confluence-Magic-Lib | `0718c593a` | 2026-08-22 | 将饰品的药水效果转移至lib | 30 | +803 −122 | PortLib×23 | COVERED |
+| 10 | Confluence-Magic-Lib | `5f2d48bbf` | 2026-08-22 | 可开关的药水效果移到lib | 23 | +520 −11 | PortLib×19 | COVERED |
 | 11 | Confluence-Magic-Lib | `389b3c230` | 2026-08-23 | 调整版本 | 2 | +3 −3 | PortLib×8 | TODO |
 | 12 | Confluence-Magic-Lib | `1dc696fc5` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | 1 | +1 −5 |  | TODO |
 | 13 | Confluence-Magic-Lib | `d4e048a89` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 5 | +15 −22 |  | TODO |

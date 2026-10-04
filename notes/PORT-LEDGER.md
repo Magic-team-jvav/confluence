@@ -327,7 +327,7 @@
 | 167 | `3f2eb3be2` | 2026-08-23 | fix: 重构悠悠球系统与客户端武器输入架构 | ConfluenceOtherworld | +7 ~8 -0 |  |  | ⚠️ 1 | content |  | COVERED |
 | 168 | `c2935419b` | 2026-08-23 | docs: 清理源码注释中的冗余 HTML 段落标签 | ConfluenceOtherworld | +0 ~298 -0 |  |  |  | content |  | COVERED |
 | 169 | `4ef159bf9` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~79 -9 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 22 | content+submodule |  | REVERSE-ALIGNED |
-| 170 | `9645da98c` | 2026-08-24 | feat(otherworld): 重构城镇 NPC 战斗体系并补全生物相关内容 | ConfluenceOtherworld | +12 ~42 -5 |  |  | ⚠️ 1 | content |  | LOST? |
+| 170 | `9645da98c` | 2026-08-24 | feat(otherworld): 重构城镇 NPC 战斗体系并补全生物相关内容 | ConfluenceOtherworld | +12 ~42 -5 |  |  | ⚠️ 1 | content |  | COVERED |
 | 171 | `4557b85fc` | 2026-08-24 | 玩家动画测试 | Confluence-Magic-Lib, TerraCurio | +0 ~2 -0 |  | Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only | （1.20 已撤销） — 玩家动画测试：新增行**全部**引用 Port 类型（行级可计数新增为 0）；主体是 Magic-Lib 的 integration/animation 实验代码（PlayerGeoModel/PlayerGeoAnimatable 等 6 个文件），这批文件在 1.20 HEAD 已删除（ghost 6），残留的 mixin 侧在 1.21 已 IN-SYNC（89~100%）。 | COVERED |
 | 172 | `9057f178c` | 2026-08-28 | 玩家动画（未注册永夜动画） | (repo-root), Confluence-Magic-Lib, PortLib, TerraCurio | +0 ~4 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | assets+submodule | （本轮不处理） — 机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理 | DEFER-ASSETS |
 | 173 | `a6fd78681` | 2026-08-30 | feat(entity): 完善普通敌怪、NPC与召唤物的行为和渲染 | Confluence-Magic-Lib, ConfluenceOtherworld | +5 ~87 -0 |  | Confluence-Magic-Lib×1 | ⚠️ 3 | content+submodule |  | COVERED |

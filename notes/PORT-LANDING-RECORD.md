@@ -4289,3 +4289,16 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 遗留登记（非台账行债务，需另开工作面）：`SpearProjectileComponent` 孤儿类、附魔/模型 datagen 产物需跑 `runData`、`LOST?` 1 行的复核。
 
+### 一百一十四、`LOST?` 行（170）复核 ⇒ `COVERED`（台账不再有 TODO／LOST?）
+
+行 170 `9645da98c`（2026-08-24，feat(otherworld)：重构城镇 NPC 战斗体系并补全生物相关内容）此前被标 `LOST?`（待复核），本轮顺手走完同一条流水线：
+
+| 项 | 实测 |
+| --- | --- |
+| 筛查 | 真实 GAP = 44（14 个文件）；平台噪音过滤 20 |
+| 缺符号 6 个 | `BLAZING_WHEEL_SPAWN_EGG`／`EVIL_SLIME_SPAWN_EGG`／`HONEY_SLIME_SPAWN_EGG`／`POSSESS_ARMOR_VOID_VESSEL_SPAWN_EGG`／`SPIKE_BALL_SPAWN_EGG` **在 1.20 HEAD 与 1.21 两侧都是 0 命中** ⇒ DEAD（该提交加入后又改名/移除）；`ZOMBIE_SPAWN_EGG` 两侧各 12 处（符号抽取的假阳性） |
+| spawn egg 生态 | `SpawnEggItems.java` + `class SpawnEggItems` 两侧均在，引用文件同为 7 个（`ModChineseProvider`／`ModEnglishProvider`／`ModItemModelProvider`／`ModItemTagsProvider`／`ModTabs`…），`SPAWN_EGG` 命中面两侧同为 9 文件 |
+| gap 落点 | `NPCCombatProgression`（1.21 有 `common/entity/npc/ai/NPCCombatProgression.java`）、`GeoSwordItem`（手臂姿态 `ModArmPoses`）、`MutableRenderTypeItemExtension`（物品渲染层）、`LivingInvulnerableEffectsSubProvider`（§113 已验证在场）、`DryadsBlessingEffect` —— 均为写法/平台差异 |
+
+⇒ 行 170 = `COVERED`。**台账 400/400 全部有确定状态，TODO 与 `LOST?` 均为 0。**
+

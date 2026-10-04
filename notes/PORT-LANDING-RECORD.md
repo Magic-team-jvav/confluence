@@ -4541,3 +4541,63 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 46–67（lib 收尾：`IdentityHashMap` 替换、动态群系、蜘蛛洞、肉山/悠悠球重构、动态光照系列）**。
 
+## 一百二十、子模块行走 行 46–67（Confluence-Magic-Lib 收尾）⇒ 21 行全 `COVERED`（**lib 1–67 走完**）
+
+### 120.1 清单
+
+| 行 | 提交 | 日期 | 主题 | GAP/文件 | 裁定 |
+| --- | --- | --- | --- | --- | --- |
+| 46 | `ee7122937` | 2026-09-18 | 合并 stream codec | 0 / 0 | `COVERED` |
+| 47 | `35147c5ed` | 2026-09-19 | 修复粒子的顶点绕序问题 | 0 / 0 | `COVERED` |
+| 48 | `b8f5bde2b` | 2026-09-19 | 修复部分物品无法搜索的问题 | 0 / 0 | `COVERED` |
+| 49 | `95b09e6cd` | 2026-09-19 | 移除动态光源至 MagicLib | 3 / 1 | `COVERED` |
+| 50 | `53e9a1de4` | 2026-09-20 | 动态群系修改与 client tick 事件大一统 | 17 / 2 | `COVERED` |
+| 51 | `82af813f1` | 2026-09-20 | 修改一股味的代码 | 5 / 3 | `COVERED` |
+| 52 | `c6b57b9a5` | 2026-09-20 | 第一人称动画功能移到 lib | 0 / 0 | `COVERED` |
+| 53 | `4d3f299e9` | 2026-09-20 | IdentityHashMap 换成 Reference2ObjectOpenHashMap | 0 / 0 | `COVERED` |
+| 54 | `b95445c3c` | 2026-09-20 | feat: 完善动态群系覆盖与迷你群系判定 | 3 / 1 | `COVERED` |
+| 55 | `6a56e90ad` | 2026-09-20 | 修复暴击率问题 | 13 / 2 | `COVERED` |
+| 56 | `0b4b61ae1` | 2026-09-21 | 修复一些问题 | 4 / 1 | `COVERED` |
+| 57 | `b9d59de31` | 2026-09-21 | feat(worldgen): 重构蜘蛛洞生成并接入蜘蛛巢方块 | 4 / 1 | `COVERED` |
+| 58 | `351cec5be` | 2026-09-22 | feat: 重构肉山肉墙与悠悠球实现，更新 NPC 交互界面… | 2 / 1 | `COVERED` |
+| 59 | `303308900` | 2026-09-22 | 删除 Ponder 的 nbt，升级粒子 | 0 / 0 | `COVERED` |
+| 61 | `8378b03ff` | 2026-09-25 | 彩色火把 | 0 / 0 | `COVERED` |
+| 62 | `4688a2983` | 2026-09-25 | 1.2.7 | 0 / 0（纯删除） | `COVERED` |
+| 63 | `c711de55f` | 2026-09-25 | feat(magiclib): 支持直接注册动态光源 | 0 / 0（7 符号） | `COVERED` |
+| 64 | `777e96ae8` | 2026-09-27 | 修重铸价格（没对接心情） | 0 / 0 | `COVERED` |
+| 65 | `addf529ec` | 2026-10-02 | 优化动态光照，移除可携带仆从接口行为 | 157 / 6 | `COVERED` |
+| 66 | `413d62d1f` | 2026-10-02 | 添加动态光照注册行为与 ParticleAccessor | 75 / 5 | `COVERED`（**粒子光源属可选增强，另登记**） |
+| 67 | `595159d71` | 2026-10-03 | 修复组件崩溃 | 0 / 0 | `COVERED` |
+
+### 120.2 行 49／63／65／66：动态光照在 1.21 **已同步且改成静态 API**（本批唯一的"大 gap"）
+
+1.21 侧的文件历史给出了决定性证据：`Confluence-Magic-Lib` 的 `DynamicLightDispatcher.java` 由 **`28cc0fe`（2026-10-01「feat(1.20→1.21 同步): 移植 IntegerRange、CraftingLootItemCondition、EntityRendererMixin，**动态光源归位 MagicLib**」）**引入。
+
+| 项 | 1.20 lib（行 49→66 的演进） | 1.21 lib |
+| --- | --- | --- |
+| `DynamicLightDispatcher` | 221 行、实例式（`INSTANCE`、`addLightSource(LightSource)`、`update(LevelRendererAccessor)`、内部 `LightSource` 类） | **325 行、静态 API**：`addLightSources(Vec3,Vec3,int)`／`addLightSource(long,Vec3,int)`／`registerLightSource(long,Supplier<Vec3>,IntSupplier)`／`unregisterLightSource`／`registerEntityLight(EntityType,ToIntFunction)`／`unregisterEntityLight`／`clearWorld`／`update(RenderLevelStageEvent)`／`getDynamicLight(…)`×2，内部 `Snapshot`／`Long2IntOpenHashMap`／`RegisteredSource` 等 record |
+| 钩入渲染 | `chunk.LevelRendererAccessor`（`@Invoker`）+ `LevelRendererMixin` + `LevelChunkMixin` + `EntityRendererMixin` + `ParticleEngineMixin` | **`LevelRendererMixin:18`**（`cir.setReturnValue(DynamicLightDispatcher.getDynamicLight(level,state,pos,…))`）与 **`EntityRendererMixin:15`**（`getDynamicLight(entity.getLightProbePosition(partialTicks), original)`），二者均已注册进 `confluence_magic_lib.mixins.json`（`chunk.LevelChunkMixin` 亦在）；**不需要 Accessor**（改用 `cir`）也不走 `ParticleEngineMixin` |
+| 注册 API | `DynamicLightProvider<T>`（`@FunctionalInterface`）+ `DynamicLightRegister` | 由 `registerLightSource`／`registerEntityLight` 承载（1.20 的两个类在 1.21 无对应，属 API 收敛） |
+| 调用面（1.21 实测） | — | lib：`LibClientGameEvents:165 clearWorld()`；主仓：`AttachmentEntityRenderDispatcher:88 getDynamicLight`、`SanguineBatRenderer:34 addLightSources(…,8)`、`TerraprismaRenderer:49 addLightSources(…,8)` |
+
+**遗留登记（可选增强，不阻断）**：行 66 的 `ParticleAccessor`／`ParticleEngineMixin`（粒子光源）在 1.21 无落点——1.21 的 `DynamicLightDispatcher` 只暴露实体/位置/注册式光源；粒子自发光若要支持，需要补 accessor + 粒子侧登记。属**视觉增强**，与 §116.2 的"仅 1.20 有"清单同源。
+
+### 120.3 其余各行的落点
+
+| 行 | gap 内容 | 1.21 |
+| --- | --- | --- |
+| 49 | `DynamicLightDispatcher` 的 3 条 fastutil/ArrayList import | 1.21 用 `Long2IntOpenHashMap`／`HashMap`／`Snapshot` ⇒ 同效 |
+| 50 | `ChunkSerializerMixin`（`@Final Logger`／`@Local codec`）+ `PalettedContainer$Data` 的 SRG AT（`f_188032_ # data`） | 1.21 lib 已注册 `chunk.ChunkSerializerMixin`／`chunk.PalettedContainerMixin`；AT 走 named ⇒ 平台 |
+| 51 | `LibClientGameEvents` 的 `CameraAnimation.clear()/apply(event)`／`capture(CoreGeoBone)`；`HandAnimationAction` | 1.21 lib 有 `CameraAnimation` + **整套** `HandAnimationApi`／`HandAnimationChannel`／`HandAnimationClip`／`HandAnimationProfile`（`api/animation/` 13 个文件）；`HandAnimationAction` 在 **1.20 HEAD 亦 0 命中** ⇒ DEAD |
+| 54 | `ChunkEvent.Load`／`ChunkEvent.Unload`／`LevelEvent.Unload` 处理器 | NeoForge 同名事件在，注册形态不同 ⇒ 平台 |
+| 55／56 | `PlayerMixin` 用 `ILibDamageSource`；`ILibDamageSource.of(damageSource).confluence$setCritical(…)` | 1.21 lib 有 `ILibDamageSource`（符号核查 0 缺失） |
+| 57 | `ChunkWatchEvent.Watch/UnWatch`、`PlayerEvent.PlayerLoggedOut/Clone` | NeoForge 同名事件 ⇒ 平台 |
+| 58 | `ItemEntityMixin` 的 `ModRarity.getModRarity(getItem(), false)` 与 `WHITE`／`GRAY` 比较 | 1.21 `ModRarity` 有 `getModRarity(ItemStack, boolean)` 与同名常量、`equals(name,color)` ⇒ 等价（与 §115 的 `TIER` 改动同类但已是同形） |
+
+### 120.4 状态：lib 段走完
+
+- 台账（双写）：行 46–67 落状态，**`Confluence-Magic-Lib` 行 1–67 全部判定完毕**（`COVERED` 62、`SKIP-PORTLIB` 3、`REVERSE-ALIGNED` 2）。
+- 剩余 TODO **81**：TerraCurio 行 68–122（55）、TerraFurniture 行 123–148（26）。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 68–82（TerraCurio 开局）**。
+

@@ -56,28 +56,28 @@
 | 43 | Confluence-Magic-Lib | `454b5938f` | 2026-09-17 | 修改一些纹理和模型上的问题，挪贴图位置 | 5 | +0 −0 | 资源only | COVERED |
 | 44 | Confluence-Magic-Lib | `067209093` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×7 | SKIP-PORTLIB |
 | 45 | Confluence-Magic-Lib | `b61a6ee57` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 9 | +40 −32 | PortLib×36 | COVERED |
-| 46 | Confluence-Magic-Lib | `ee7122937` | 2026-09-18 | 合并stream codec | 1 | +7 −0 |  | TODO |
-| 47 | Confluence-Magic-Lib | `35147c5ed` | 2026-09-19 | 修复粒子的顶点绕序问题 | 1 | +1 −1 | PortLib×1 | TODO |
-| 48 | Confluence-Magic-Lib | `b8f5bde2b` | 2026-09-19 | 修复部分物品无法搜索的问题 | 1 | +3 −0 |  | TODO |
-| 49 | Confluence-Magic-Lib | `95b09e6cd` | 2026-09-19 | 移除动态光源至MagicLib | 5 | +309 −1 |  | TODO |
-| 50 | Confluence-Magic-Lib | `53e9a1de4` | 2026-09-20 | 动态群系修改与client tick事件大一统 | 16 | +1121 −0 |  | TODO |
-| 51 | Confluence-Magic-Lib | `82af813f1` | 2026-09-20 | 修改一股味的代码 | 26 | +325 −29 | PortLib×5 | TODO |
-| 52 | Confluence-Magic-Lib | `c6b57b9a5` | 2026-09-20 | 第一人称动画功能移到lib | 5 | +19 −37 | PortLib×1 | TODO |
-| 53 | Confluence-Magic-Lib | `4d3f299e9` | 2026-09-20 | IdentityHashMap换成Reference2ObjectOpenHashMap | 2 | +7 −4 |  | TODO |
-| 54 | Confluence-Magic-Lib | `b95445c3c` | 2026-09-20 | feat: 完善动态群系覆盖与迷你群系判定 | 10 | +526 −195 |  | TODO |
-| 55 | Confluence-Magic-Lib | `6a56e90ad` | 2026-09-20 | 修复暴击率问题 | 3 | +23 −5 |  | TODO |
-| 56 | Confluence-Magic-Lib | `0b4b61ae1` | 2026-09-21 | 修复一些问题 | 1 | +6 −26 |  | TODO |
-| 57 | Confluence-Magic-Lib | `b9d59de31` | 2026-09-21 | feat(worldgen): 重构蜘蛛洞生成并接入蜘蛛巢方块 | 2 | +68 −2 |  | TODO |
-| 58 | Confluence-Magic-Lib | `351cec5be` | 2026-09-22 | feat: 重构肉山肉墙与悠悠球实现，更新 NPC 交互界面并统一敌怪射弹伤害 | 1 | +2 −2 |  | TODO |
-| 59 | Confluence-Magic-Lib | `303308900` | 2026-09-22 | 删除Ponder的nbt，升级粒子 | 1 | +1 −1 | PortLib×1 | TODO |
+| 46 | Confluence-Magic-Lib | `ee7122937` | 2026-09-18 | 合并stream codec | 1 | +7 −0 |  | COVERED |
+| 47 | Confluence-Magic-Lib | `35147c5ed` | 2026-09-19 | 修复粒子的顶点绕序问题 | 1 | +1 −1 | PortLib×1 | COVERED |
+| 48 | Confluence-Magic-Lib | `b8f5bde2b` | 2026-09-19 | 修复部分物品无法搜索的问题 | 1 | +3 −0 |  | COVERED |
+| 49 | Confluence-Magic-Lib | `95b09e6cd` | 2026-09-19 | 移除动态光源至MagicLib | 5 | +309 −1 |  | COVERED |
+| 50 | Confluence-Magic-Lib | `53e9a1de4` | 2026-09-20 | 动态群系修改与client tick事件大一统 | 16 | +1121 −0 |  | COVERED |
+| 51 | Confluence-Magic-Lib | `82af813f1` | 2026-09-20 | 修改一股味的代码 | 26 | +325 −29 | PortLib×5 | COVERED |
+| 52 | Confluence-Magic-Lib | `c6b57b9a5` | 2026-09-20 | 第一人称动画功能移到lib | 5 | +19 −37 | PortLib×1 | COVERED |
+| 53 | Confluence-Magic-Lib | `4d3f299e9` | 2026-09-20 | IdentityHashMap换成Reference2ObjectOpenHashMap | 2 | +7 −4 |  | COVERED |
+| 54 | Confluence-Magic-Lib | `b95445c3c` | 2026-09-20 | feat: 完善动态群系覆盖与迷你群系判定 | 10 | +526 −195 |  | COVERED |
+| 55 | Confluence-Magic-Lib | `6a56e90ad` | 2026-09-20 | 修复暴击率问题 | 3 | +23 −5 |  | COVERED |
+| 56 | Confluence-Magic-Lib | `0b4b61ae1` | 2026-09-21 | 修复一些问题 | 1 | +6 −26 |  | COVERED |
+| 57 | Confluence-Magic-Lib | `b9d59de31` | 2026-09-21 | feat(worldgen): 重构蜘蛛洞生成并接入蜘蛛巢方块 | 2 | +68 −2 |  | COVERED |
+| 58 | Confluence-Magic-Lib | `351cec5be` | 2026-09-22 | feat: 重构肉山肉墙与悠悠球实现，更新 NPC 交互界面并统一敌怪射弹伤害 | 1 | +2 −2 |  | COVERED |
+| 59 | Confluence-Magic-Lib | `303308900` | 2026-09-22 | 删除Ponder的nbt，升级粒子 | 1 | +1 −1 | PortLib×1 | COVERED |
 | 60 | Confluence-Magic-Lib | `e9b848c93` | 2026-09-23 | 大改修饰语 | 1 | +11 −53 | PortLib×3 | COVERED |
-| 61 | Confluence-Magic-Lib | `8378b03ff` | 2026-09-25 | 彩色火把 | 1 | +2 −0 | PortLib×2 | TODO |
-| 62 | Confluence-Magic-Lib | `4688a2983` | 2026-09-25 | 1.2.7 | 1 | +0 −2 | PortLib×2 纯删除 | TODO |
-| 63 | Confluence-Magic-Lib | `c711de55f` | 2026-09-25 | feat(magiclib): 支持直接注册动态光源 | 2 | +151 −93 |  | TODO |
-| 64 | Confluence-Magic-Lib | `777e96ae8` | 2026-09-27 | 修重铸价格（没对接心情） | 1 | +1 −1 | PortLib×1 | TODO |
-| 65 | Confluence-Magic-Lib | `addf529ec` | 2026-10-02 | 优化动态光照，移除可携带仆从接口行为 | 7 | +191 −268 |  | TODO |
-| 66 | Confluence-Magic-Lib | `413d62d1f` | 2026-10-02 | 添加动态光照注册行为与ParticleAccessor | 5 | +148 −57 | PortLib×5 | TODO |
-| 67 | Confluence-Magic-Lib | `595159d71` | 2026-10-03 | 修复组件崩溃 | 1 | +2 −0 | PortLib×1 | TODO |
+| 61 | Confluence-Magic-Lib | `8378b03ff` | 2026-09-25 | 彩色火把 | 1 | +2 −0 | PortLib×2 | COVERED |
+| 62 | Confluence-Magic-Lib | `4688a2983` | 2026-09-25 | 1.2.7 | 1 | +0 −2 | PortLib×2 纯删除 | COVERED |
+| 63 | Confluence-Magic-Lib | `c711de55f` | 2026-09-25 | feat(magiclib): 支持直接注册动态光源 | 2 | +151 −93 |  | COVERED |
+| 64 | Confluence-Magic-Lib | `777e96ae8` | 2026-09-27 | 修重铸价格（没对接心情） | 1 | +1 −1 | PortLib×1 | COVERED |
+| 65 | Confluence-Magic-Lib | `addf529ec` | 2026-10-02 | 优化动态光照，移除可携带仆从接口行为 | 7 | +191 −268 |  | COVERED |
+| 66 | Confluence-Magic-Lib | `413d62d1f` | 2026-10-02 | 添加动态光照注册行为与ParticleAccessor | 5 | +148 −57 | PortLib×5 | COVERED |
+| 67 | Confluence-Magic-Lib | `595159d71` | 2026-10-03 | 修复组件崩溃 | 1 | +2 −0 | PortLib×1 | COVERED |
 | 68 | TerraCurio | `3a3ce762c` | 2026-07-04 | able to start game | 7 | +27 −27 | PortLib×4 | TODO |
 | 69 | TerraCurio | `a9f3c48eb` | 2026-07-04 | able to into world | 4 | +8 −31 |  | TODO |
 | 70 | TerraCurio | `fc5713120` | 2026-07-22 | 修崩溃 | 1 | +1 −1 |  | TODO |

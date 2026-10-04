@@ -407,11 +407,200 @@
    "status": "COVERED"
   },
   {
+   "row": 46,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "ee7122937",
+   "date": "2026-09-18",
+   "subject": "合并stream codec",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 47,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "35147c5ed",
+   "date": "2026-09-19",
+   "subject": "修复粒子的顶点绕序问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 48,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "b8f5bde2b",
+   "date": "2026-09-19",
+   "subject": "修复部分物品无法搜索的问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 49,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "95b09e6cd",
+   "date": "2026-09-19",
+   "subject": "移除动态光源至MagicLib",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 50,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "53e9a1de4",
+   "date": "2026-09-20",
+   "subject": "动态群系修改与client tick事件大一统",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 51,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "82af813f1",
+   "date": "2026-09-20",
+   "subject": "修改一股味的代码",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 52,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "c6b57b9a5",
+   "date": "2026-09-20",
+   "subject": "第一人称动画功能移到lib",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 53,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "4d3f299e9",
+   "date": "2026-09-20",
+   "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 54,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "b95445c3c",
+   "date": "2026-09-20",
+   "subject": "feat: 完善动态群系覆盖与迷你群系判定",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 55,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "6a56e90ad",
+   "date": "2026-09-20",
+   "subject": "修复暴击率问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 56,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "0b4b61ae1",
+   "date": "2026-09-21",
+   "subject": "修复一些问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 57,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "b9d59de31",
+   "date": "2026-09-21",
+   "subject": "feat(worldgen): 重构蜘蛛洞生成并接入蜘蛛巢方块",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 58,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "351cec5be",
+   "date": "2026-09-22",
+   "subject": "feat: 重构肉山肉墙与悠悠球实现，更新 NPC 交互界面并统一敌怪射弹伤害",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 59,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "303308900",
+   "date": "2026-09-22",
+   "subject": "删除Ponder的nbt，升级粒子",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
    "row": 60,
    "sub": "Confluence-Magic-Lib",
    "commit": "e9b848c93",
    "date": "2026-09-23",
    "subject": "大改修饰语",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 61,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "8378b03ff",
+   "date": "2026-09-25",
+   "subject": "彩色火把",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 62,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "4688a2983",
+   "date": "2026-09-25",
+   "subject": "1.2.7",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 63,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "c711de55f",
+   "date": "2026-09-25",
+   "subject": "feat(magiclib): 支持直接注册动态光源",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 64,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "777e96ae8",
+   "date": "2026-09-27",
+   "subject": "修重铸价格（没对接心情）",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 65,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "addf529ec",
+   "date": "2026-10-02",
+   "subject": "优化动态光照，移除可携带仆从接口行为",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 66,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "413d62d1f",
+   "date": "2026-10-02",
+   "subject": "添加动态光照注册行为与ParticleAccessor",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 67,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "595159d71",
+   "date": "2026-10-03",
+   "subject": "修复组件崩溃",
    "old": "TODO",
    "status": "COVERED"
   }

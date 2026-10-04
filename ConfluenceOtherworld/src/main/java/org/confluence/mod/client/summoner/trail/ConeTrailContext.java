@@ -4,36 +4,22 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.summoner.LyraRenderTypes;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.RenderUtil;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.List;
 
-/**
- * 圆锥拖尾上下文：相邻平滑节点间画截面壳面，头粗尾细。
- * <p>
- * 适用于球状、圆形、能量弹、魔法球等实体。
- * </p>
- * <p>
- * 形态对齐 Lyra 1.21.1.13（{@code first.lyra.client.render.trail.ConeTrailContext}）。
- * </p>
- *
- * @param <T> 实体类型
- */
 public class ConeTrailContext<T extends AttachmentEntity> extends TrailContext<T> {
 
-    /** 拖尾头部最大半径 */
     public float maxRadius = 0.2F;
 
-    /** 最小半径比例，控制尾端不会完全缩成一点 */
-    public float minRadiusRatio = 0.0F;
+    public float minRadiusRatio = 0.1F;
 
-    /** 圆锥截面正多边形边数 */
     public int resolution = 6;
 
     public ConeTrailContext<T> maxRadius(float radius) {
@@ -56,31 +42,15 @@ public class ConeTrailContext<T extends AttachmentEntity> extends TrailContext<T
         renderCone(poseStack, bufferSource, context, buildSmoothNodes(context.entity, context.visualNode, context.partialTick));
     }
 
-    /**
-     * 渲染圆锥主体：相邻平滑节点间画 {@link #resolution} 边截面壳面。
-     * <p>
-     * 半径 = maxRadius × (minRadiusRatio + (1 - minRadiusRatio) × fadeOut(progress))，
-     * 头粗尾细；颜色与透明度由 {@link #colorFunction} / {@link #fadeOut} 决定。
-     * 子类可传入自己构建的平滑节点以复用主体渲染。
-     * </p>
-     */
     protected void renderCone(PoseStack poseStack, MultiBufferSource bufferSource, RenderContext<T> context, List<InterpolatedNode> nodes) {
         int nodeCount = nodes.size();
         if (nodeCount > 1) {
-            int quadCount = (nodeCount - 1) * resolution;
-            int vertexCount = quadCount * 4;
             VertexConsumer buffer = bufferSource.getBuffer(LyraRenderTypes.getTrail());
             Matrix4f matrix = new Matrix4f(poseStack.last().pose());
             Vec3 renderPos = context.visualNode.pos();
             float[] cosArr = getCosArray(resolution);
             float[] sinArr = getSinArray(resolution);
             Vector3f currV1 = new Vector3f(), currV2 = new Vector3f(), prevV1 = new Vector3f(), prevV2 = new Vector3f();
-            // 与 RibbonTrailContext 相同的提交方式：收集后交给 RenderUtil.writeVertices，
-            // 避免 VertexConsumer#addVertex(pose, …) 链与 NEW_ENTITY 的 7 个元素不匹配。
-            float[] xyzuv = new float[vertexCount * 5];
-            int[] colors = new int[vertexCount];
-            int v = 0;
-
             for (int i = 0; i < nodeCount - 1; i++) {
                 InterpolatedNode curr = nodes.get(i);
                 InterpolatedNode prev = nodes.get(i + 1);
@@ -105,13 +75,25 @@ public class ConeTrailContext<T extends AttachmentEntity> extends TrailContext<T
                     prevV1.set(cos1 * prevRadius, sin1 * prevRadius, 0).rotate(prev.rot());
                     prevV2.set(cos2 * prevRadius, sin2 * prevRadius, 0).rotate(prev.rot());
 
-                    v = putVertex(xyzuv, colors, v, matrix, crx + currV1.x, cry + currV1.y, crz + currV1.z, 0F, 0F, currARGB);
-                    v = putVertex(xyzuv, colors, v, matrix, crx + currV2.x, cry + currV2.y, crz + currV2.z, 1F, 0F, currARGB);
-                    v = putVertex(xyzuv, colors, v, matrix, prx + prevV2.x, pry + prevV2.y, prz + prevV2.z, 1F, 1F, prevARGB);
-                    v = putVertex(xyzuv, colors, v, matrix, prx + prevV1.x, pry + prevV1.y, prz + prevV1.z, 0F, 1F, prevARGB);
+                    Vector3f v1 = matrix.transformPosition(crx + currV1.x, cry + currV1.y, crz + currV1.z, new Vector3f());
+                    Vector3f v2 = matrix.transformPosition(crx + currV2.x, cry + currV2.y, crz + currV2.z, new Vector3f());
+                    Vector3f v3 = matrix.transformPosition(prx + prevV2.x, pry + prevV2.y, prz + prevV2.z, new Vector3f());
+                    Vector3f v4 = matrix.transformPosition(prx + prevV1.x, pry + prevV1.y, prz + prevV1.z, new Vector3f());
+
+                    Vector3f normal = new Vector3f(v3).sub(v1).cross(new Vector3f(v2).sub(v1));
+                    if (normal.lengthSquared() > 1.0E-6F) {
+                        normal.normalize();
+                    } else {
+                        normal.set(0, 1, 0);
+                    }
+                    Vector3f direction = matrix.transformDirection(normal, new Vector3f());
+
+                    buffer.vertex(v1.x, v1.y, v1.z).color(currARGB).uv(0F, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(direction.x, direction.y, direction.z).endVertex();
+                    buffer.vertex(v2.x, v2.y, v2.z).color(currARGB).uv(1F, 0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(direction.x, direction.y, direction.z).endVertex();
+                    buffer.vertex(v3.x, v3.y, v3.z).color(prevARGB).uv(1F, 1F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(direction.x, direction.y, direction.z).endVertex();
+                    buffer.vertex(v4.x, v4.y, v4.z).color(prevARGB).uv(0F, 1F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(LightTexture.FULL_BRIGHT).normal(direction.x, direction.y, direction.z).endVertex();
                 }
             }
-            RenderUtil.writeVertices(buffer, xyzuv, colors, LightTexture.FULL_BRIGHT, v);
         }
     }
 }

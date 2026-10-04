@@ -41,9 +41,8 @@ public class SummonItems {
     // 取wiki 75%的数值为基础再调
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    // 天顶剑：由每 tick 驱动的挥砍逻辑发射附着弹幕，行为见 ZenithData
     public static final PortDeferredItem<BaseSwordItem> ZENITH = ITEMS.register("zenith",
-            () -> new BaseSwordItem(Tiers.NETHERITE, ModRarity.RED, 190, 1.6F));
+            () -> new BaseSwordItem(Tiers.NETHERITE, ModRarity.RED, 125, 1.6F));
 
     public static final PortDeferredItem<SummonerWeaponItem<FinchMinion>> FINCH_STAFF = ITEMS.register("finch_staff",
             () -> new SummonerWeaponItem<>(

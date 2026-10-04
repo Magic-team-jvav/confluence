@@ -1,12 +1,5 @@
 package org.confluence.mod.client.summoner;
 
-/**
- * 模型渲染上下文：缩放、平移、朝向偏移与透明度距离修正系数，链式配置。
- * <p>
- * 对齐 Lyra 1.21.1.13（{@code first.lyra.client.render.ModelContext}），
- * 取代原先位于 {@code trail} 包下的 {@code ModelConfig}。
- * </p>
- */
 public class ModelContext {
 
     public float scaleX = 1.0F;
@@ -21,7 +14,6 @@ public class ModelContext {
     public float pitchOffset = 0.0F;
     public float rollOffset = 0.0F;
 
-    /** 透明度距离修正系数 */
     public float alphaDistanceFactor = 1.0F;
 
     public ModelContext scale(float scale) {

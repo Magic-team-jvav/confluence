@@ -30,25 +30,12 @@ public class LyraRenderTypes extends RenderType {
         return create("lyra_texture_no_depth", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, true, state);
     });
 
-    /**
-     * 拖尾渲染类型。
-     * <p>
-     * 直接复用原版 {@link RenderType#entityTranslucentEmissive(ResourceLocation)}，与 Lyra 的
-     * {@code LyraRenderTypes.TRAIL} 做法完全一致：该类型自带
-     * {@code shader + texture + TRANSLUCENT + NO_CULL + COLOR_WRITE + OVERLAY}、不取光照图、
-     * {@code setupRenderState} 里显式关闭剔除，是经过验证可用的一条路径。
-     * </p>
-     * <p>
-     * 之前这里是手搓的 {@code create(...)} 等价实现，各项参数虽逐项对齐，但属于自己拼的
-     * 组合状态；拖尾长期不显示又查不出原因，故改回原版方法，消除这一处不确定性。
-     * </p>
-     */
     public static final RenderType TRAIL = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/trail.png"));
 
     public static final RenderType MODEL = RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS);
 
     public static RenderType getTrail() {
-        return RenderType.entityTranslucent(Confluence.asResource("textures/trail.png"));
+        return TRAIL;
     }
 
     public static RenderType getModel() {

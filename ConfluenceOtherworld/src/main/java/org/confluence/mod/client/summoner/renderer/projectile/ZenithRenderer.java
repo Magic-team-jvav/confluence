@@ -16,14 +16,6 @@ import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.projectile.Zenith;
 
-/**
- * 天顶剑飞剑渲染器：按剑型渲染对应 JSON 模型 + 丝带拖尾 + 挥砍爆发贴图。
- * <p>
- * 行为对齐源实现 {@code first.summoner.client.attachmentEntityRenderer.projectile.ZenithRenderer}：
- * 出生 tick 不渲染；拖尾长度随 tick 先伸后收（{@code <=6} 用 tickCount，{@code >8} 用 {@code 13-tickCount}）；
- * 仅当 {@code alpha > 0.5} 时挂拖尾；tick 4~6 之间在剑尖绘制一次爆发贴图。
- * </p>
- */
 public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
 
     private static final ResourceLocation BURST_TEXTURE = Confluence.asResource("textures/zenith.png");
@@ -39,27 +31,37 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
         } else if (zenith.getTickCount() > 8) {
             historyLength = 13 - zenith.getTickCount();
         }
-        float alpha = tickAlpha(zenith, partialTick);
+        float tick = zenith.getTickCount() + partialTick;
+        float alpha = 1;
+        if (tick < 4) {
+            alpha = Math.max(0.21F, Math.min(1F, tick / 4F));
+        }
+        if (tick > 8) {
+            alpha = Math.max(0.102F, Math.min(1F, (12 - tick) / 4F));
+        }
+        if (zenith.alpha < alpha) {
+            alpha = zenith.alpha;
+        }
         RenderContext<Zenith> context = new RenderContext<>(zenith, visualNode, partialTick, packedLight);
         if (zenith.alpha > 0.5) {
-            // upOffset 返回 RibbonTrailContext，基类链式方法返回 TrailContext，故子类方法需先调用
-            context = context.trail(new RibbonTrailContext<Zenith>()
-                    .upOffset(1.32575F)
-                    .timer(12)
-                    .colorRGB(zenith.renderType.getColorARBG(alpha))
-                    .segmentsPerNode(6)
-                    .historyLength(historyLength));
+            context.trail(new RibbonTrailContext<Zenith>()
+                                  .upOffset(1.32575F)
+                                  .timer(12)
+                                  .colorRGB(zenith.renderType.getColorARBG(alpha))
+                                  .segmentsPerNode(6)
+                                  .historyLength(historyLength));
         }
         return context.model(new ModelContext()
-                .scale(2)
-                .translateOffset(-0.5F, -0.5F, -0.5F)
-                .rotationOffset(0, 90, 45));
+                                     .scale(2)
+                                     .translateOffset(-0.5F, -0.5F, -0.5F)
+                                     .rotationOffset(0, 90, 45));
     }
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5f);
-        LyraModelRenderer.json(Confluence.asResource("projectile/zenith/" + context.entity.renderType.textureName()))
+        Zenith zenith = context.entity;
+        DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 8);
+        LyraModelRenderer.json(Confluence.asResource("projectile/zenith/" + zenith.renderType.textureName()))
                 .color(context.color.argbInt())
                 .light(RenderUtil.FULL_LIGHT)
                 .render(poseStack, bufferSource);
@@ -67,41 +69,39 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
 
     @Override
     protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
-        if (context.trail == null) {
-            return;
+        if (context.trail != null) {
+            Zenith zenith = context.entity;
+            float tick = zenith.getTickCount() + context.partialTick;
+            float alpha = 0;
+            if (tick >= 4 && tick <= 5) {
+                alpha = tick - 4F;
+            }
+            if (tick >= 5 && tick <= 6) {
+                alpha = 6 - tick;
+            }
+            if (alpha > 0) {
+                PathNode renderNode = zenith.getRenderNode(context.partialTick);
+                Vec3 pos = renderNode.pos().add(zenith.getLookAngle().scale(1.15));
+                RenderUtil.renderImage(BURST_TEXTURE, pos, 3 * alpha, 0.75F * alpha, bufferSource, false,
+                        zenith.renderType.getColorARBG(alpha));
+            }
         }
-        Zenith zenith = context.entity;
-        float tick = zenith.getTickCount() + context.partialTick;
-        float alpha = 0;
-        if (tick >= 4 && tick <= 5) {
-            alpha = tick - 4F;
-        }
-        if (tick >= 5 && tick <= 6) {
-            alpha = 6 - tick;
-        }
-        if (alpha <= 0) {
-            return;
-        }
-        PathNode renderNode = zenith.getRenderNode(context.partialTick);
-        Vec3 pos = renderNode.pos().add(zenith.getLookAngle().scale(1.15));
-        RenderUtil.renderImage(BURST_TEXTURE, pos, 3 * alpha, 0.75F * alpha, bufferSource, false, zenith.renderType.getColorARBG(alpha));
     }
 
     @Override
     protected float getAlphaModify() {
         Zenith zenith = context.entity;
-        float alpha = Minecraft.getInstance().options.getCameraType().isFirstPerson() ? super.getAlphaModify() : tickAlpha(zenith, context.partialTick);
-        return Math.min(alpha, zenith.alpha);
-    }
-
-    private static float tickAlpha(Zenith zenith, float partialTick) {
-        float tick = zenith.getTickCount() + partialTick;
+        if (Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
+            return Math.min(super.getAlphaModify(), zenith.alpha);
+        }
+        float tick = zenith.getTickCount() + context.partialTick;
+        float alpha = 1;
         if (tick < 4) {
-            return Math.max(0.21F, Math.min(1F, tick / 4F));
+            alpha = Math.max(0.21F, Math.min(1F, tick / 4F));
         }
         if (tick > 8) {
-            return Math.max(0.102F, Math.min(1F, (12 - tick) / 4F));
+            alpha = Math.max(0.102F, Math.min(1F, (12 - tick) / 4F));
         }
-        return 1F;
+        return Math.min(alpha, zenith.alpha);
     }
 }

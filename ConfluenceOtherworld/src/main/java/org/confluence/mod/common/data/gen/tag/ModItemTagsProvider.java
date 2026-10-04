@@ -512,8 +512,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> tools_repeater = tag(ModTags.Items.TOOLS_REPEATER);
         IntrinsicTagAppender<Item> repeater_crossbow = tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW);
 
+        IntrinsicTagAppender<Item> yoyo = tag(ModTags.Items.YOYO);
+        YoyoItems.ITEMS.getEntries().forEach(item -> yoyo.add(item.get()));
+
         tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
-                .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
+                .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW, ModTags.Items.YOYO)
                 .add(BoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
                 .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL)

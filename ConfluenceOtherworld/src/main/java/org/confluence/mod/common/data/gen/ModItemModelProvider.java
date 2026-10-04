@@ -187,6 +187,10 @@ public class ModItemModelProvider extends ItemModelProvider {
             if (hasHandwrittenModel(Confluence.asResource("item/" + item.getId().getPath())))
                 skip.add(item.get());
         });
+        SwordItems.ITEMS.getEntries().forEach(item -> {
+            if (hasHandwrittenModel(Confluence.asResource("item/" + item.getId().getPath())))
+                skip.add(item.get());
+        });
 
         CreateHelper.acceptModels(reg -> customModels.add(createDir(reg, "materials/")));
 

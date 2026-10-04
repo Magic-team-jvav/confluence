@@ -227,13 +227,13 @@
 | 67 | `fac72523a` | 2026-07-02 | part critters | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +51 ~39 -0 | `Fairy.java`→`Dragonfly.java` 等5处 | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 14 | content+submodule+integration |  | PORTED |
 | 68 | `911437e03` | 2026-07-04 | able to start game | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +3 ~351 -71 | `RegistryAwareItemModelShaperMixin.java`→`ForgeItemModelShaperMixin.java` 等2处 | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 49 | content+submodule+integration |  | PORTED |
 | 69 | `1284d08a9` | 2026-07-04 | able to into world | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +816 ~76 -2 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 27 | content+submodule+integration |  | PORTED |
-| 70 | `c8e4e6416` | 2026-07-05 | fix IncompatibleClassChangeError | ConfluenceOtherworld | +0 ~5 -0 |  |  |  | content |  | TODO |
+| 70 | `c8e4e6416` | 2026-07-05 | fix IncompatibleClassChangeError | ConfluenceOtherworld | +0 ~5 -0 |  |  |  | content |  | COVERED |
 | 71 | `cf4b3d201` | 2026-07-05 | fix IncompatibleClassChangeError | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （无代码改动） — 该提交在两侧都没有 java 改动（改动落在 PortLib 子模块指针与构建文件上），无源码可移植。依据：notes/COMMIT-LAG.md（NO-JAVA） | DEFER-ASSETS |
 | 72 | `0a575062b` | 2026-07-06 | docs: 修正PointedDripstoneBlockMixin中@ModifyVariable注释 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-1（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
 | 73 | `150b32bb4` | 2026-07-06 | docs: 修正PointedDripstoneBlockMixin中@ModifyVariable注释 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-1（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
-| 74 | `97fc3ed2e` | 2026-07-08 | npc goal | ConfluenceOtherworld | +0 ~11 -0 |  |  |  | content |  | TODO |
+| 74 | `97fc3ed2e` | 2026-07-08 | npc goal | ConfluenceOtherworld | +0 ~11 -0 |  |  |  | content |  | COVERED |
 | 75 | `63916265b` | 2026-07-08 | feat: 新增实体并修复命名空间引用 | ConfluenceOtherworld | +7 ~31 -0 |  |  | ⚠️ 9 | content |  | PORTED |
-| 76 | `bd006659b` | 2026-07-11 | refactor: 重命名饿鬼实体类为HillHungry | ConfluenceOtherworld | +0 ~1 -0 |  |  |  | content |  | TODO |
+| 76 | `bd006659b` | 2026-07-11 | refactor: 重命名饿鬼实体类为HillHungry | ConfluenceOtherworld | +0 ~1 -0 |  |  |  | content |  | COVERED |
 | 77 | `5dac72b22` | 2026-07-11 | 改coremod | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +8/-3（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
 | 78 | `6ffa7c374` | 2026-07-11 | refactor: 重命名PortPlayerEvent内部类引用 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-2（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
 | 79 | `f9332ca42` | 2026-07-12 | refactor: 修正PortLib插入脚本中的方法调用指令 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-2（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
@@ -241,7 +241,7 @@
 | 81 | `c378879f4` | 2026-07-22 | chore: 将所有子模块远程切换为 SSH | (repo-root) | +0 ~1 -0 |  |  |  | platform | （本轮不处理） — 机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理 | DEFER-ASSETS |
 | 82 | `4b9200a0f` | 2026-07-22 | ssh doc | (repo-root) | +1 ~0 -0 |  |  |  | assets/other | （本轮不处理） — 机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理 | DEFER-ASSETS |
 | 83 | `09601301f` | 2026-07-25 | fix | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +6/-1（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
-| 84 | `a6f8f089d` | 2026-07-25 | fix world selection | ConfluenceOtherworld, PortLib | +0 ~51 -0 |  | PortLib×1 | ⚠️ 13 | content+submodule |  | TODO |
+| 84 | `a6f8f089d` | 2026-07-25 | fix world selection | ConfluenceOtherworld, PortLib | +0 ~51 -0 |  | PortLib×1 | ⚠️ 13 | content+submodule |  | COVERED |
 | 85 | `0fa73dd79` | 2026-07-29 | truly fix | PortLib, TerraCurio | +0 ~2 -0 |  | PortLib×1, TerraCurio×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 2 文件 +5/-10（PortLib,TerraCurio），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
 | 86 | `77f3b047e` | 2026-07-29 | feat: 新增步高度属性并完善跨版本桥接功能 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 该提交改动的 36 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py | SKIP-PORTLIB |
 | 87 | `b375ad22b` | 2026-07-29 | refactor: 优化网络包系统并完善跨版本桥接 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 该提交改动的 8 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py | SKIP-PORTLIB |

@@ -4150,3 +4150,49 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - 剩余 TODO：**70／74／76／84／93／97–100／102–103／105–106／108–110／159–162／166／168–169**（23 行）。
 - 下一批：**行 70／74／76／84**（2026-07-05 之后）。
 
+## 一百一十一、台账续走：行 70／74／76／84 四行 ⇒ 全部 `COVERED`
+
+### 111.1 筛查与符号核查总表
+
+| 行 | 提交 | 日期 | 说明 | 筛查后 real | 定义型符号 | 全仓缺失 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 70 | `c8e4e6416` | 2026-07-05 | fix IncompatibleClassChangeError | 3 / 2 文件 | 1 | 0 |
+| 74 | `97fc3ed2e` | 2026-07-08 | npc goal | 18 / 4 文件 | 1 | 1 `DEFAULT_IMMUNITY_DURATINO` |
+| 76 | `bd006659b` | 2026-07-11 | refactor：实体类改名 HillHungry | 0 / 0 文件 | 1 | 0 |
+| 84 | `a6f8f089d` | 2026-07-25 | fix world selection | 49 / 49 文件 | 1 | 0 |
+
+### 111.2 免疫时长机制（行 70／74）
+
+| 项 | 1.21 | 1.20 HEAD |
+| --- | --- | --- |
+| `interface Immunity` | `Immunity.java` ✓ | `Immunity.java` ✓ |
+| `getImmunityDuration` 出现次数 | **35** | 34 |
+| 1.20 的拼写错常量 `DEFAULT_IMMUNITY_DURATINO` | 0（1.21 改走 `Immunity.super.confluence$getImmunityDuration(damageSource)`，见 `mixin/world/item/ItemStackMixin.java:34`） | 4（`IEntity`／`Immunity`／`ItemStackMixin`） |
+| `EntityTypeMixin implements Immunity`（行 70） | `EntityTypeMixin.java` ✓（`getImmunityDuration` 命中） | ✓ |
+
+⇒ 机制在 1.21 完整（含物品侧 `ItemStackMixin:30` 的 `confluence$getImmunityDuration(DamageSource)` 实现），唯一"缺符号"是 1.20 打错字的默认值常量，1.21 用 `Immunity.super` 取代。
+
+### 111.3 行 84 的 49 行 = 模型加载器命名空间迁移
+
+| 1.20 写法 | 1.21 |
+| --- | --- |
+| `"loader": "forge:obj"`（15 个 `emerald_coins_*.json` + `obelisk.json`） | 已改 `neoforge:obj`（1.21 全仓 16 文件，`emerald_coins_0.json` 实测 `"loader": "neoforge:obj"`） |
+| `"loader": "forge:separate_transforms"`（27 件武器／工具：`adamantite_chainsaw`／`spear`／`zombie_arm`／`tragic_umbrella`…） | 已改 `neoforge:separate_transforms`（1.21 58 文件） |
+| `context.registerConfig(ModConfig.Type.COMMON, SPEC = builder.build())` | `CommonConfigs.java` 在 1.21 ✓（同族 `StartupConfigs.java:27`／`ClientConfigs.java:267` 均为 `container.registerConfig(ModConfig.Type.…, builder.build())`） |
+| `WorldSelectionList$WorldListEntryMixin.java` 的 `validateAndCreateAccess(summary.getLevelId())` | 同名 mixin 在 1.21 ✓（`mixin/client/gui/screens/worldselection/`） |
+
+> 说明：`git grep 'forge:separate_transforms'` 在 1.21 也会命中 `neoforge:separate_transforms`（子串），故统计时两串文件集相同属预期——真正的判定看文件内 `"loader"` 的实际取值。
+
+### 111.4 行 76
+
+`HillHungry.java` 在 **1.20 HEAD 与 1.21 均存在**（`common/entity/monster/HillHungry.java`，1.21 侧另被 `MonsterEntities` 与 `HillOfFleshMouth` 引用），refactor 改名已落 ⇒ 0 行待办。
+
+⇒ 行 70／74／76／84 **全部 `COVERED`**。
+
+### 111.5 状态
+
+- 台账（双写）：上述四行 = `COVERED`（状态条目 377 → **381**，剩余 TODO **23 → 19**）。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 剩余 TODO：**93／97–100／102–103／105–106／108–110／159–162／166／168–169**（19 行）。
+- 下一批：**行 93／97–100**。
+

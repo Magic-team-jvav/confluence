@@ -3968,3 +3968,58 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - 台账（双写）：上述九行 = `COVERED`；剩余 TODO **47** 个（下一批自 40 起）。
 - `fix_eol --check` 候选 6；本轮无代码落地。
 - 下一批：**行 40–43（partN 系列继续）→ 45–49 → 51–55 → 57–66**（57–66 是最大的一段，10 行）。
+## 一百零八、台账续走：行 40–49 **九行一次核完** ⇒ 全部 `COVERED`（行 44 早前已判）
+
+> 同一套流水线：`batch_rows.py 40 41 42 43 45 46 47 48 49` → `rowaudit` → `screen_full`（全文筛选）→ `symrow.py`（提交新增的定义型符号 × 1.21 全仓语料）→ 逐候选查证 → 小行直接读待办行。
+
+### 108.1 筛查与符号核查总表
+
+| 行 | 提交 | 说明 | 筛查后 real | 定义型符号 | 全仓缺失 |
+| --- | --- | --- | --- | --- | --- |
+| 40 | `5481344ca` | something2（submodule-only） | 0 / 0 文件 | 0 | 0 |
+| 41 | `b33c206fa` | something3 | 8 / 5 文件 | 64 | 0 |
+| 42 | `f7996a657` | rename（⚠️8） | 0 / 0 文件 | 70 | 0 |
+| 43 | `4dcf95cfe` | 移植家具 | 61 / 8 文件 | 0 | 0 |
+| 45 | `c5e9f9be5` | part18 | 132 / 13 文件 | 13 | 0 |
+| 46 | `10705abc7` | part19（⚠️7） | 154 / 34 文件 | 9 | 3 |
+| 47 | `d17dc7c9a` | fix crash | 4 / 1 文件 | 0 | 0 |
+| 48 | `4ab2d42ad` | fix crash | 7 / 2 文件 | 0 | 0 |
+| 49 | `c9f3af990` | extensions（⚠️10） | 40 / 22 文件 | 10 | 7 |
+
+> 行 40 是 **submodule-only**（PortLib ×1、Confluence-Magic-Lib ×1、TerraCurio ×1），ConfluenceOtherworld 侧 0 行新增，无移植物。
+> 行 46 的 34 个文件、行 49 的 22 个文件在 1.21 **逐一存在**（脚本核对，`NO` 数 = 0）。
+
+### 108.2 候选裁定
+
+| 候选 | 实测 | 裁定 |
+| --- | --- | --- |
+| `BSlab`／`BStair`／`BWall`（行 46，**本批唯一真候选**） | 1.20 是 `HellStoneBlock`／`DecorativeBlocks` 里的嵌套静态类（各 3 处命中）；1.21 **全仓无 `class B?Slab`**，改为 `HellStoneBlock` 的静态工厂 `hotStair`／`hotSlab`／`hotWall`（`common/block/natural/HellStoneBlock.java:50/63/76`，分别返回 `StairBlock`／`SlabBlock`／`WallBlock`），由 `DecoBlockSet.builder("hellstone_bricks", …).stair(HellStoneBlock::hotStair).slab(HellStoneBlock::hotSlab).wall(HellStoneBlock::hotWall)` 装配（`init/block/DecorativeBlocks.java:170–172`）；1.21 全仓 `extends SlabBlock`／`StairBlock` 只出现在 `DecoBlockSet`／`LogBlockSet` | 等价（嵌套类 → 工厂方法 + 通用 `DecoBlockSet`） |
+| 行 49 的 7 个"缺符号"：`IMPORT_RE`／`IMPORT_REMOVE`／`REPLACEMENTS`／`SKIP_METHODS`／`SKIP_WHOLE`／`SRC_DIR` 等 | 出自该提交带进来的一次性转换脚本 `convert_extensions.py`／`convert_magic_lib.py`／`fix_remaining.py`（同提交还含 `GameClientEvents.java.bak`）⇒ PortLib→native 的一次性工具，**运行期零影响** | 平台／工具，不移植（1.21 原生 NeoForge 无 PortLib 可转；1.21 侧亦无这些 `.py`／`.bak`） |
+| `EnchantmentPredicate(Enchantments.FIRE_ASPECT, …)`（行 47） | 1.20 直接传 `Enchantments.FIRE_ASPECT`；1.21 附魔入注册表 ⇒ `AddEntityLootConfluenceSubProvider.java:77` 用 `registries.lookupOrThrow(Registries.ENCHANTMENT)` 取 holder 后构造谓词 | 等价（注册表化改写） |
+| `CommonComponents.EMPTY`（行 48） | 1.21 用 `Component.empty()`：`AddChestLootConfluenceSubProvider.java:130/132/134/135` 四处 `.addLine(Component.empty())`；`NavTab.java:26` 的 super 消息同样为 `Component.empty()` | 等价（1.21 首选 API） |
+| `pack.mcmeta`／`recipe/special/package-info.java`（行 43） | 1.21 侧 `git ls-files 'pack.mcmeta'` **为空**（NeoForge 自行生成）；`package-info.java` 为纯文档（1.21 有 93 个同类文件） | 平台／非内容 |
+| 5 条 SRG 式 AT（行 45） | 1.20 写法 `m_286081_()V`／`m_155232_(…)V`／`m_21198_(…)`／`f_45029_`／`f_151427_`；1.21 AT 用 named 形式且**已存在**：`flushIfUnmanaged`／`setChanged`／`getLastArmorItem` 均命中，SRG 名 0 命中 | 平台格式差异（已覆盖） |
+| 行 41／42 的实体改名 | `BeeArrowEntity.java`／`DriveAwayArrowEntity.java` 在 1.21 `common/entity/projectile/arrow/` **均存在** | 等价（改名已落） |
+
+### 108.3 抽验：行 45／49 的 API 漂移类 gap（1.20 写法 vs 1.21 改写）
+
+| 1.20 行（gap） | 1.21 实测 | 文件行数 |
+| --- | --- | --- |
+| `RecipeManager.CachedCheck<Container, BlastingRecipe>`／`BlastingRecipe recipe`／`doBlasting(recipe, …)` | `RecipeManager.CachedCheck<RecipeInput, T>`／`RecipeHolder<BlastingRecipe>`／`doBlasting(recipeholder, …)`（`EnhancedForgeBlock.java:116/231–267`） | 592 |
+| `ItemTransmutationRecipe` 的字段 + `setId/getId` + `getResultItem(RegistryAccess)` | 1.21 改为 `record ItemTransmutationRecipe(Ingredient source, List<ItemStack> target, int shrink, GamePhase gamePhase)`，`getResultItem(HolderLookup.Provider)`（`:22/33/43`） | 110 |
+| `CauldronInteraction.EMPTY.put(…)`／`defaulted(Map<Item, CauldronInteraction>)`／`PotionUtils.getPotion`／`InteractionResult` | `CauldronInteraction.INTERACTIONS.values().forEach(map -> map.map())`／`DataComponents.POTION_CONTENTS` + `PotionContents`／`ItemInteractionResult.sidedSuccess(level.isClientSide)`（`ModUtils.java:128/304–338`） | 380 |
+| `HardmodeForgeBlock` 的 `T recipeholder` | `RecipeHolder<T> recipeholder` + `holder.value().getCookingTime()`（`:49/105–106`） | 111 |
+| `stack.getDyedColor()`／`setDyedColor(rgb)`（行 49） | `stack.get/set(DataComponents.DYED_COLOR, new DyedItemColor(rgb, true))`（`BaseDyeItem.java:20/29`、`PaintItem.java:19/28`） | 32／45 |
+| `arrow.setup(PICKUP_ITEM_STACK, null)`（行 49） | `new Arrow(pLevel, x, y, z, PICKUP_ITEM_STACK, null); arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;`（`DartTrapBlock.java:33–35`，同样出现在 `SuperDartTrapBlock`） | 50 |
+| `breaker.getRandom()`（行 49，平台改名 `getRandom1211()`→`getRandom()`） | `breaker.getRandom().nextIntBetweenInclusive(0, 2)`（`StaffOfRegrowth.java:118/121`） | 128 |
+| `new AttributeModifier(…)`（行 49） | `attributeInstance.addOrReplacePermanentModifier(new AttributeModifier(id, value, Operation.…))`（1.21 record 构造，`EverBeneficialItem.java:41–82`） | 160 |
+| `guiGraphics.blitSprite(… textureW, textureH, …)`（行 49） | `blitSprite(ModClientSetups.LEGACY_SPRITE, LEGACY_SIZE, LEGACY_SIZE, …)`（`TerraStyleHealthHud.java:80–118`，1.21 签名变化） | 191 |
+
+⇒ 行 40／41／42／43／45／46／47／48／49 **全部 `COVERED`**。
+
+### 108.4 状态
+
+- 台账（双写）：上述九行 = `COVERED`（状态条目 353 → **362**，剩余 TODO **47 → 38**）。
+- `fix_eol --check` 候选 6（未变）；本轮**无代码落地**。
+- 下一批：**行 51–55 → 57–66**（57–66 是最大的一段，10 行）→ 70／74／76／84…
+

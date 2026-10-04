@@ -197,16 +197,16 @@
 | 37 | `fbcb8e783` | 2026-06-16 | fix crash | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +0 ~23 -0 |  | PortLib×1, Confluence-Magic-Lib×1 |  | content+submodule |  | COVERED |
 | 38 | `8bcc392be` | 2026-06-16 | mob effect | ConfluenceOtherworld, PortLib | +0 ~17 -0 |  | PortLib×1 |  | content+submodule |  | COVERED |
 | 39 | `5c56e83b2` | 2026-06-17 | something | ConfluenceOtherworld, TerraCurio | +0 ~3 -0 |  | TerraCurio×1 |  | content+submodule | 1.21 已存在 — 机器判定：新增 3 行中 3 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查 | COVERED |
-| 40 | `5481344ca` | 2026-06-18 | something2 | Confluence-Magic-Lib, PortLib, TerraCurio | +0 ~3 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only |  | TODO |
-| 41 | `b33c206fa` | 2026-06-18 | something3 | (repo-root), ConfluenceOtherworld | +29 ~19 -2 | `BeeArrow.java`→`BeeArrowEntity.java` 等3处 |  |  | content+integration |  | TODO |
-| 42 | `f7996a657` | 2026-06-18 | rename | ConfluenceOtherworld | +1 ~55 -0 | `DriveAwayArrow.java`→`DriveAwayArrowEntity.java` |  | ⚠️ 8 | content+integration |  | TODO |
-| 43 | `4dcf95cfe` | 2026-06-18 | 移植家具 | (repo-root), ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +2 ~11 -0 |  | PortLib×1, TerraCurio×1, TerraFurniture×1 |  | content+submodule |  | TODO |
+| 40 | `5481344ca` | 2026-06-18 | something2 | Confluence-Magic-Lib, PortLib, TerraCurio | +0 ~3 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only |  | COVERED |
+| 41 | `b33c206fa` | 2026-06-18 | something3 | (repo-root), ConfluenceOtherworld | +29 ~19 -2 | `BeeArrow.java`→`BeeArrowEntity.java` 等3处 |  |  | content+integration |  | COVERED |
+| 42 | `f7996a657` | 2026-06-18 | rename | ConfluenceOtherworld | +1 ~55 -0 | `DriveAwayArrow.java`→`DriveAwayArrowEntity.java` |  | ⚠️ 8 | content+integration |  | COVERED |
+| 43 | `4dcf95cfe` | 2026-06-18 | 移植家具 | (repo-root), ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +2 ~11 -0 |  | PortLib×1, TerraCurio×1, TerraFurniture×1 |  | content+submodule |  | COVERED |
 | 44 | `1e77c5edc` | 2026-06-18 | remove BOM | ConfluenceOtherworld, TerraCurio | +0 ~15 -0 |  | TerraCurio×1 |  | content+submodule | 1.21 已存在 — 机器判定：新增 14 行中 14 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查 | COVERED |
-| 45 | `c5e9f9be5` | 2026-06-19 | part18 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +0 ~37 -0 |  | PortLib×1, Confluence-Magic-Lib×1 |  | content+submodule |  | TODO |
-| 46 | `10705abc7` | 2026-06-21 | part19 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~68 -3 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 7 | content+submodule |  | TODO |
-| 47 | `d17dc7c9a` | 2026-06-21 | fix crash | (repo-root), ConfluenceOtherworld, PortLib, TerraCurio | +0 ~4 -0 |  | PortLib×1, TerraCurio×1 |  | content+submodule |  | TODO |
-| 48 | `4ab2d42ad` | 2026-06-21 | fix crash | ConfluenceOtherworld, PortLib, TerraCurio | +0 ~5 -0 |  | PortLib×1, TerraCurio×1 |  | content+submodule |  | TODO |
-| 49 | `c9f3af990` | 2026-06-21 | extensions | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +3 ~121 -0 | `GameClientEvents.java`→`GameClientEvents.java.bak` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 10 | content+submodule |  | TODO |
+| 45 | `c5e9f9be5` | 2026-06-19 | part18 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +0 ~37 -0 |  | PortLib×1, Confluence-Magic-Lib×1 |  | content+submodule |  | COVERED |
+| 46 | `10705abc7` | 2026-06-21 | part19 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~68 -3 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 7 | content+submodule |  | COVERED |
+| 47 | `d17dc7c9a` | 2026-06-21 | fix crash | (repo-root), ConfluenceOtherworld, PortLib, TerraCurio | +0 ~4 -0 |  | PortLib×1, TerraCurio×1 |  | content+submodule |  | COVERED |
+| 48 | `4ab2d42ad` | 2026-06-21 | fix crash | ConfluenceOtherworld, PortLib, TerraCurio | +0 ~5 -0 |  | PortLib×1, TerraCurio×1 |  | content+submodule |  | COVERED |
+| 49 | `c9f3af990` | 2026-06-21 | extensions | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +3 ~121 -0 | `GameClientEvents.java`→`GameClientEvents.java.bak` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 10 | content+submodule |  | COVERED |
 | 50 | `c7e4f8fab` | 2026-06-21 | extensions2 | (repo-root), PortLib, TerraCurio | +1 ~2 -0 |  | PortLib×1, TerraCurio×1 |  | assets+submodule | （本轮不处理） — 机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理 | DEFER-ASSETS |
 | 51 | `f6b8f73b0` | 2026-06-22 | part20 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +8 ~133 -0 | `ModEntities.java`→`ModEntities.java` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 18 | content+submodule+integration |  | TODO |
 | 52 | `dffefea8d` | 2026-06-23 | feat: 添加多个怪物实体类、AI系统和相关工具类 | ConfluenceOtherworld | +156 ~45 -0 |  |  | ⚠️ 8 | content |  | TODO |

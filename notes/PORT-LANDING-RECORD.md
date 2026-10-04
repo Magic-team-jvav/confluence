@@ -3784,3 +3784,91 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6。
 - 本行平台族（不移植）：`FMLJavaModLoadingContext` 构造器与 `registerConfig(...)`（`Confluence`／`StartupConfigs`／`CommonConfigs`／`ClientConfigs`）、AT 的 SRG 写法、`.gitignore` 的 1.20 专属子模块条目。
 - 下一批：**行 14–15**（`14` `?`／`15` `?`，均为 2026-06-10 的 part 系列）。
+
+
+## 一百零四、台账续走：行 14、15 ⇒ `COVERED`（并把 21–24 的取证数入档）
+
+### 104.1 行 14 `395003423`（fix3，submodule-only）⇒ `COVERED`
+
+- 该提交主仓只有 **2 个指针跳变**：`Confluence-Magic-Lib 698b1b92e→24e875251`、`TerraCurio 9f9e1536d→20e2cc7d8`。
+- 按台账口径"进子模块仓库按 `旧SHA..新SHA` 找真实改动"实测：两侧子仓的区间里**各只有 1 条提交，且 SHA 完全相同**（`24e8752 fix3`、`20e2cc7 fix3`）——即 1.21 侧子模块**本就包含同一对象**（`git log old..new` 在 1.21 子仓同样返回这 1 条）⇒ 无需移植。
+
+### 104.2 行 15 `00b72167d`（枪械合并，2026-06-10，⚠️ 污染残留 19）⇒ `COVERED`
+
+- 取证：`rowaudit` GAP 数 175 → 筛选后 **95 条 / 32 文件**；符号级三分类 A=8 / B=0 / C=87（无缺符号）。
+- 逐文件核对 234 个 java 路径 + 核心文件逐行比对：
+
+| 文件 | 1.20 HEAD | 1.21 HEAD | 判读 |
+| --- | --- | --- | --- |
+| `api/event/GunEvent.java` | 294 行，嵌套 `Use`／`ShotConfirmed`／`Fire`／`AmmoSelection`／`InventoryExtra`／`AmmoData`／`ProjectileCreation`／`ShrinkBullet` | 293 行，**同名嵌套类全在**，差异仅 `Use`／`ShrinkBullet` 加 `implements ICancellableEvent` | 等价（NeoForge 事件接口换代） |
+| `common/item/BaseBullet.java` | 80 行（`BaseBullet` + 内部 `Dummy`） | 81 行，同结构 | 等价 |
+| `common/init/item/GunItems.java` | 136 行 | 137 行 | 等价 |
+| `common/entity/projectile/CustomBulletEntity.java` | 63 行，`IPortEntityExtension` | 63 行，`IEntityExtension` | 等价（PortLib→NeoForge 接口改名） |
+
+- ⚠️ 该提交被标"污染残留 19"，按 `notes/POISON-dfcc5c041.md` 口径本就**不得照抄 1.20 实现**；上表证据显示 1.21 侧枪械系统已由后续枪械专批落地 ⇒ 行 15 = `COVERED`。
+
+### 104.3 工具修正（本轮踩到）
+
+- `triage_row.py` 的路径解析写错（`R21` 变量本身已含 `src/main/java`，又在前面拼了一次）⇒ 一次全报"文件不存在"；修正为"仓库根 + `ConfluenceOtherworld/` + 相对路径"后恢复正常。
+- 另注意：三分类的 **B（缺符号）桶仍会误报**——它只在**同一文件**里找标识符，而 `UUID`／`AABB`／`ARGB32`／`POSITIVE_INT`／`LOGGER`／`INSTANCE` 这类来自 vanilla 或其它类，会一律记成"缺"。本轮据此逐条复核 4 个核心文件后，全部是误报。
+
+### 104.4 已取证、待逐条裁定的下一批（21–24，均为 2026-06-13/14 的 partN）
+
+| 行 | 提交 | 说明 | 筛查后 real | 三分类 A/B/C |
+| --- | --- | --- | --- | --- |
+| 21 | `182149f52` | part10（+1 ~100 -1） | 227 / 57 文件 | A=89 / B=9（vanilla 常量） / C=129 |
+| 22 | `b3f13d405` | part11（+2 ~48 -3） | 118 / 28 文件 | A=34 / B=6（vanilla 常量） / C=78 |
+| 23 | `7d1fff5b6` | part12（+0 ~98 -0） | 394 / 75 文件 | A=50 / B=21（vanilla 常量） / C=323 |
+| 24 | `b0716f0c9` | part13（+2 ~54 -2） | 74 / 32 文件 | A=21 / B=5（vanilla 常量） / C=48 |
+
+### 104.5 状态
+
+- 台账（双写）：**行 14／15 = `COVERED`**；剩余 TODO **60** 个（区间自 21 起）。
+- `fix_eol --check` 候选 6。
+- 下一批：**行 21–24**（上表数字已备，按族抽样核验后逐行裁定）。
+
+
+## 一百零五、用户报告的游戏内问题：三症状修复 + 生物页签 + 装甲译名 + AT 纠正
+
+> 本节的改动来自用户实测反馈（含对我上一批 AT 判断的纠正），按台账口径不计入行状态，但与 §100/§103 同属"接线/驱动缺失"类缺陷。
+
+### 105.1 悠悠球无法使用（提交 `73aaaaf49`）
+
+- **根因**：`ModTags.Items.YOYO` 在 1.21 有定义（`ModTags:436`）却**从未被任何 tag provider 填充**——全仓 87 个 `ModTags.Items` 里**唯一**一个；而 `YoyoSession.press` 第一道门就是 `if (!stack.is(ModTags.Items.YOYO) …) return false;`（同一个 gate 还用于 `ClientConfigs` 的按键映射与 `PrefixType`）⇒ 按键永远失败。
+- 修：`ModItemTagsProvider` 补 `yoyo = tag(ModTags.Items.YOYO); YoyoItems.ITEMS…add`，并把 `YOYO` 并入 `PREFIX_UNIVERSAL_ONLY`（对齐 1.20 `:516-526`）。
+- 附注：悠悠球默认绑**左键**（`yoyoUseButton = LEFT`），且 `YoyoInputHandler.blocksUse` 吞右键 ⇒ 修好后需按住左键丢球。
+
+### 105.2 phasesaber 不在创造页签（提交 `73aaaaf49`）
+
+- 1.21 只收了 7 个 phaseblade（`ModTabs:1883-1889`），**phasesaber 一个都没收**（16 个物品在 `SwordItems` 里注册齐全）。1.20 的归属：8 phaseblade → `pre_hardmode_broadswords`、7 phasesaber → `hardmode_broadswords`、`PINK_PHASESABER` → pre。
+- 修：补 `PINK_PHASEBLADE`（pre）+ 7 phasesaber（hardmode）+ `PINK_PHASESABER`（pre），顺序逐条对齐 1.20 `:1775/1783-1790`。
+
+### 105.3 相位剑在物品栏无 2D 贴图（提交 `73aaaaf49`）
+
+- **两个原因叠加**：①手写模型是 `builtin/entity`（3D，靠 Geo 渲染器），GUI 里没有 2D 贴图；②datagen 的通用剑循环 `handheld.add(createDir(SwordItems.ITEMS, "sword/"))` 会为同一路径再生成 `item/handheld` + `confluence:item/sword/<name>` 的模型，而该贴图**不存在** ⇒ 兜底 `MISSING_ITEM = confluence:item/item_icon`（实测用户盘 `src/generated/.../models/item/blue_phasesaber.json`、`red_phaseblade.json` 正是 `parent=confluence:item/item_icon`），生成物在运行时压过手写模型 ⇒ 只显示占位图标。
+- 修：`ModItemModelProvider` 让手写模型优先（`SwordItems` 走与 `YoyoItems` 相同的 `hasHandwrittenModel → skip` 流程，该机制的文档注释本就为此而设）；16 个相位剑模型 `perspectives.gui` 由 `builtin/entity` 改为 `item/generated` + `confluence:item/<kind>/<name>_item`，其中 7 个仍是裸 Blockbench 的 phaseblade 一并包成 `separate_transforms`（`base` = 原内容）。
+- ⚠️ 生效前提：重跑 datagen **并删除 `src/generated` 下这 16 个陈旧模型**（datagen 不清理已不再生成的输出）。
+
+### 105.4 生物（entity）创造页签（提交 `9d83e2480`）
+
+- 1.21 此前**没有** `entity` 页签（自基点 `795ac9ccc` 起就没有），且 `IconItems.ENTITY_ICON` 也不存在（`entity_icon` 贴图两侧本来都有）—— 这正是 §679/§3269 登记的 WP7 挂起项。
+- 修：`IconItems` 补 `ENTITY_ICON`；`ModTabs` 新增 `ENTITY = TABS.register("entity", …)`（图标 `ENTITY_ICON::toStack`、标题键 `creativetab.confluence.entity`、`.withTabsBefore(SUMMONERS.getId())`，位置在 SUMMONERS 与 DEVELOPER 之间），内容**整块搬 1.20 `:1921-2238`**：21 个分组 + **290 条刷怪蛋**（逐条核对 1.21 `SpawnEggItems` 常量 ⇒ 0 条缺失）。
+- 自检：`ModTabs` 括号平衡（22/22、3631/3631）。
+
+### 105.5 装甲分组译名（提交 `40a12b345`）
+
+- 1.21 的 `ModTabs` 共 156 个分组，其中 **14 个装甲分组在 CN/EN 两个 provider 里都没有 `itemGroup.confluence.<id>` 键**（页签显示原始键）。
+- 6 条**逐字取上游分支** `origin/neoforge/1.21.1`：`clown_set 小丑套装`／`sailor_set 水手套装`／`evocation_robe_armor 唤魔长袍盔甲`／`ember_robe_armor 余烬长袍盔甲`／`verdant_robe_armor 碧绿长袍盔甲`／`highland_armor 高地盔甲`（另修掉上游带进的两个前导空格）。
+- 8 条为**新增译名（无权威源，待复核）**：`wolf_armor 狼套装`／`root_rot_armor 腐根盔甲`／`black_spot_armor 黑斑盔甲`／`entertainers_garb_armor 演艺家礼服`／`mercenary_armor 雇佣兵盔甲`／`renegade_armor 叛军盔甲`／`stalwart_armor 坚毅盔甲`／`troubadour_armor 吟游诗人套装`。
+- 遗留：这些 1.21 独有套装共 **48 件盔甲物品**尚无中文名（英文由 `addAll(ArmorItems.ITEMS)` 自动命名覆盖）⇒ 待补 CN 条目。
+
+### 105.6 AT 纠正（提交 `9d83e2480`）
+
+- 用户指出：**NeoForge 里 `FireBlock#setFlammable` 默认就是 public，不需要 AT**。§103.2 我按 1.20 的 SRG 写法加了 `public … FireBlock setFlammable(...)`，属多余 ⇒ 已删除（AT 文件回到 175 行）。
+- 教训：1.20（Forge）的 AT 条目**不能直接翻译过来用**，要先确认 1.21/NeoForge 侧该成员是否已放开。
+
+### 105.7 `ModRarity` 为何仍是 `ID_MAP`（结论，未改动）
+
+- 史实（实测两仓 lib）：1.20 lib 的 `TIER`（只含 -1..11 色阶）+ `record` 形态来自 lib 提交 **`e9b848c`（2026-09-23，post-fork）**；1.21 lib 的 `git log -S TIER` 为**空**，即该改名**从未同步**到 1.21 侧（1.21 lib 最近仍在同步 1.20 lib 的其它提交，如 `9e09d50 refactor(1.20→1.21 同步)`）。
+- 因此 `PrefixUtils` 里我用 `ModRarity.ID_MAP` + `if (tier < -1) tier = -2;` 做语义等价（1.21 的 `ID_MAP` 比 `TIER` 多 7 个负 id）。
+- **建议**（待用户决定是否改子仓）：把 1.21 lib 的 `ID_MAP` 更名为 `TIER` 并去掉那 7 个负 id（保留 1.21 自有的 `special`／`asTextColor` 形态，不回退），随后删掉那行 shim、使 `PrefixUtils` 与 1.20 逐字一致。

@@ -171,8 +171,8 @@
 | 11 | `e7b826680` | 2026-06-10 | part9 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraGuns | +7 ~122 -0 |  | Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 11 | content+submodule+integration |  | COVERED |
 | 12 | `4b004c160` | 2026-06-10 | fix2 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +2 ~29 -1 |  | PortLib×1, Confluence-Magic-Lib×1 | ⚠️ 4 | content+submodule |  | COVERED |
 | 13 | `45fefd336` | 2026-06-10 | datamap datagen | ConfluenceOtherworld, PortLib, TerraCurio | +0 ~6 -1 |  | PortLib×1, TerraCurio×1 |  | content+submodule | （不动 1.21） — 机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port41/-Port0），属把原生写法换成 Port 写法，1.21 保留原生即可 | SKIP-PLATFORM |
-| 14 | `395003423` | 2026-06-10 | fix3 | Confluence-Magic-Lib, TerraCurio | +0 ~2 -0 |  | Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only |  | TODO |
-| 15 | `00b72167d` | 2026-06-10 | 枪械合并 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld | +80 ~216 -2 |  | Confluence-Magic-Lib×1 | ⚠️ 19 | content+submodule |  | TODO |
+| 14 | `395003423` | 2026-06-10 | fix3 | Confluence-Magic-Lib, TerraCurio | +0 ~2 -0 |  | Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only |  | COVERED |
+| 15 | `00b72167d` | 2026-06-10 | 枪械合并 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld | +80 ~216 -2 |  | Confluence-Magic-Lib×1 | ⚠️ 19 | content+submodule |  | COVERED |
 | 16 | `d194600b9` | 2026-06-12 | remove: 删除 TerraGuns 子模块 | TerraGuns | +0 ~0 -1 |  |  |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动） | SKIP-PLATFORM |
 | 17 | `57d824a9d` | 2026-06-12 | remove: 删除 TerraGuns 子模块配置 | (repo-root) | +0 ~1 -0 |  |  |  | platform | （本轮不处理） — 机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理 | DEFER-ASSETS |
 | 18 | `41c27595c` | 2026-06-12 | feat: 合并 TerraGuns 模块并迁移至 PortLib API | ConfluenceOtherworld, PortLib | +0 ~513 -2 | `GunRenderTypes.java`→`ModRenderTypes.java` | PortLib×1 | ⚠️ 52 | content+submodule+integration | 1.21 已存在 — 机器判定：新增 12854 行中 10885 行（85%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查 | COVERED |

@@ -46,7 +46,7 @@ public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<Terrap
 
     @Override
     protected void render(TerraprismaMinion prism, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<TerraprismaMinion> context, float partialTick, int packedLight, float alpha) {
-        DynamicLightDispatcher.INSTANCE.addLightSource(new DynamicLightDispatcher.LightSource(visualNode.pos(), 8));
+        DynamicLightDispatcher.INSTANCE.addLightSource(visualNode.pos(), 0.5f);
         int color = prism.getColor(partialTick);
         if (model == null) {
             model = new TerraprismaModel(Minecraft.getInstance().getEntityModels().bakeLayer(TerraprismaModel.LAYER_LOCATION));

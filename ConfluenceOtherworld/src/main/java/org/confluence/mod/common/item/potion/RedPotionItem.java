@@ -13,11 +13,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.terra_curio.common.init.TCEffects;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class RedPotionItem extends AbstractPotionItem {
             MobEffects.DARKNESS,
             ModEffects.CURSED,
             ModEffects.BLEEDING,
-            TCEffects.CONFUSED,
+            LibEffects.CONFUSED,
             MobEffects.MOVEMENT_SLOWDOWN,
             MobEffects.WEAKNESS,
             ModEffects.SILENCED,

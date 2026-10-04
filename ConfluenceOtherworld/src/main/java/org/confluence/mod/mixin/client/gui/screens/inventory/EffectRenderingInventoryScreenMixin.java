@@ -12,7 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.neoforge.common.util.TriState;
-import org.confluence.mod.mixed.IAbstractContainerScreen;
+import org.confluence.lib.mixed.ILibAbstractContainerScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EffectRenderingInventoryScreen.class)
-public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements IAbstractContainerScreen {
+public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements ILibAbstractContainerScreen {
     @Unique
     private boolean confluence$mouseClicked = false;
 
@@ -37,7 +37,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.AFTER))
     private void switchEnabled(CallbackInfo ci, @Local(ordinal = 0) MobEffectInstance instance) {
         if (confluence$mouseClicked) {
-            IAbstractContainerScreen.switchEnabled(instance);
+            ILibAbstractContainerScreen.switchEnabled(instance);
         }
     }
 
@@ -58,7 +58,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
         }
         if (instance != null) {
             if (confluence$mouseClicked) {
-                IAbstractContainerScreen.switchEnabled(instance);
+                ILibAbstractContainerScreen.switchEnabled(instance);
             }
         }
     }
@@ -70,6 +70,6 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
 
     @WrapOperation(method = "renderIcons", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(IIIIILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"))
     private void makeTranslucent(GuiGraphics guiGraphics, int x, int y, int blitOffset, int width, int height, TextureAtlasSprite sprite, Operation<Void> original, @Local MobEffectInstance instance) {
-        IAbstractContainerScreen.makeTranslucent(guiGraphics, instance, () -> original.call(guiGraphics, x, y, blitOffset, width, height, sprite));
+        ILibAbstractContainerScreen.makeTranslucent(guiGraphics, instance, () -> original.call(guiGraphics, x, y, blitOffset, width, height, sprite));
     }
 }

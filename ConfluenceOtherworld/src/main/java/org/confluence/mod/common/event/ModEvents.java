@@ -37,7 +37,6 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
@@ -62,7 +61,11 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
-import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.data.saved.Bestiary;
+import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.confluence.mod.common.data.saved.HardmodeConvertor;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
@@ -70,11 +73,14 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.entity.CreatureSpawnPlacements;
+import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.gun.GunSounds;
+import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.confluence.mod.integration.terra_entity.TEEvents;
-import org.confluence.mod.integration.terra_entity.TEHelper;
-import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 import org.confluence.mod.network.task.AchievementsTask;
 import org.confluence.mod.util.DateUtils;
@@ -83,12 +89,8 @@ import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.mixed.IZombie;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 import static org.confluence.mod.Confluence.MODID;
 
@@ -98,6 +100,8 @@ public final class ModEvents {
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModGunProperties.init();
+            GunSounds.init();
+            GunTrailColors.init();
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
@@ -145,7 +149,6 @@ public final class ModEvents {
             LogBlockSet.setFlammable();
             ModRecipes.Brewing.initialize();
             ModUtils.registerCauldronInteractions();
-            TEHelper.redirectLootTable();
             MagicMailBox.registerVariants();
             ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(
@@ -204,11 +207,7 @@ public final class ModEvents {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
         event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
-    }
-
-    @SubscribeEvent
-    public static void entityAttributeModification(EntityAttributeModificationEvent event) {
-        TEEvents.modifyAttributes(event);
+        ModEntities.registerAttributes(event);
     }
 
     @SubscribeEvent
@@ -237,7 +236,6 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
-        TEItemComponentModify.modifyDefaultComponents(event);
         event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, LibUtils.MAX_STACK_SIZE));
     }
 
@@ -278,7 +276,7 @@ public final class ModEvents {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void registerSpawnReplacements(RegisterSpawnPlacementsEvent event) {
-        event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
+        event.register(MonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
             if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
                 int y = pos.getY();
                 return y > 30 && y < 260 && LibDateUtils.isDay(level) && serverLevel.canSeeSky(pos);
@@ -286,37 +284,20 @@ public final class ModEvents {
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        CreatureSpawnPlacements.register(event);
 
         ModLoader.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
     }
 
     @SubscribeEvent
     public static void registerBestiaryKey(RegisterBestiaryKeyEvent event) {
-        Function<Integer, String> i2s = i -> Integer.toString(i);
-        event.register(TEAnimals.JEWEL_BUNNY.get(), RegisterBestiaryKeyEvent.terraVariant(i2s));
-        event.register(TEAnimals.SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.JEWEL_SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.GRASSHOPPER.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.BUTTERFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.WORM.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.DRAGONFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.LADYBUG.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEMonsterEntities.DEMON_EYE.get(), (type, eye) -> {
+        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + bunny.getBunnyVariant().getSerializedName());
+        event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> {
             String key = type.getDescriptionId() + '.';
-            if (eye.minion_getOwnerUUID() != null) {
-                return key + "minion";
-            }
             return key + eye.getVariant().getSerializedName();
         });
         event.register(EntityType.ZOMBIE, ((type, zombie) -> {
             String key = type.getDescriptionId();
-            if (IZombie.of(zombie).terra_entity$isSlimeZombie()) {
-                return key + ".slime";
-            }
             Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
             if (chest == ArmorItems.RAINCOAT.get()) {
                 return key + ".raincoat";
@@ -327,12 +308,6 @@ public final class ModEvents {
             }
             return key;
         }));
-        event.register(TEMonsterEntities.BLACK_SLIME.get(), (type, slime) -> {
-            int size = slime.getSize();
-            if (size == 1) return "entity.terra_entity.baby_slime";
-            if (size == 4) return "entity.terra_entity.mother_slime";
-            return type.getDescriptionId();
-        });
         event.register(EntityType.SKELETON, (type, skeleton) -> {
             if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE)) {
                 return "entity.confluence.undead_miner";

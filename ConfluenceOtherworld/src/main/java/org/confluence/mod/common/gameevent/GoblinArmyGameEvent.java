@@ -1,5 +1,6 @@
 package org.confluence.mod.common.gameevent;
 
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -19,12 +20,14 @@ import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEv
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.network.s2c.GoblinArmyProgressPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public enum GoblinArmyGameEvent implements GameEvent {
@@ -57,14 +60,18 @@ public enum GoblinArmyGameEvent implements GameEvent {
     public void open(MinecraftServer server) {
         this.server = server;
         this.level = OverworldUtils.getLevel(server);
-        this.spawnerData = NeoForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_ARCHER.get(), 360, 2, 4),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_PEON.get(), 480, 2, 3),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_WARRIOR.get(), 360, 2, 3),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SORCERER.get(), 240, 1, 1),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_GOBLIN.get(), 240, 1, 2)
-        )).create();
+        List<MobSpawnSettings.SpawnerData> entries = Lists.newArrayList(
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_ARCHER.get(), 360, 2, 4),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_PEON.get(), 480, 2, 3),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_WARRIOR.get(), 360, 2, 3),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_SORCERER.get(), 240, 1, 1),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.ANGER_GOBLIN.get(), 240, 1, 2)
+        );
+        if (IMinecraftServer.isHardmode(server)) {
+            entries.add(new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_WARLOCK.get(), 60, 1, 1));
+        }
+        this.spawnerData = NeoForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level, entries.toArray(MobSpawnSettings.SpawnerData[]::new))).create();
     }
 
     @Override
@@ -155,6 +162,7 @@ public enum GoblinArmyGameEvent implements GameEvent {
 
     @Override
     public void onStart() {
+        open(server);
         this.started = true;
         this.forceStart = false;
         this.ready = 53 * 20;

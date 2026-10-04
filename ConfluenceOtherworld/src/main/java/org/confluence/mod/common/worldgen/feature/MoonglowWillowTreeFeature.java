@@ -18,9 +18,10 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
-import org.confluence.lib.util.VectorUtils;
-import org.joml.Vector3d;
+import org.confluence.lib.util.LibFeatureUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibMathUtils;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,13 +52,13 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
         int height = random.nextInt(5, 15);
 
         BlockPos endPos = basePos.offset(random.nextInt(-5, 6), height, random.nextInt(-5, 6));
-        Vector3d baseVct = new Vector3d(basePos.getX(), basePos.getY(), basePos.getZ());
-        Vector3d endVct = new Vector3d(endPos.getX(), endPos.getY(), endPos.getZ());
-        List<Vector3d> trunkList = new ArrayList<>(List.of(baseVct, endVct));
-        VectorUtils.lightningPathList(trunkList, 0.5, 0.2F, random);
+        Vector3f baseVct = new Vector3f(basePos.getX(), basePos.getY(), basePos.getZ());
+        Vector3f endVct = new Vector3f(endPos.getX(), endPos.getY(), endPos.getZ());
+        List<Vector3f> trunkList = new ArrayList<>(List.of(baseVct, endVct));
+        LibGeometryUtils.lightningPathList(trunkList, 0.5F, 0.2F, random);
 
-        for (Vector3d pos : trunkList) {
-            BlockPos bPos = VectorUtils.fromVector3d(pos);
+        for (Vector3f pos : trunkList) {
+            BlockPos bPos = LibMathUtils.fromVector3f(pos);
             if (!level.getBlockState(bPos).canBeReplaced()) return false;
             trunkSet.add(bPos.asLong());
         }
@@ -125,7 +126,7 @@ public class MoonglowWillowTreeFeature extends Feature<MoonglowWillowTreeFeature
         vineSet.forEach(p -> level.setBlock(BlockPos.of(p), vineBlock, 3));
         leavesSet.forEach(p -> level.setBlock(BlockPos.of(p), leavesBlock, 3));
         trunkSet.forEach(p -> level.setBlock(BlockPos.of(p), trunkBlock, 3));
-        FeatureUtils.updateLeavesOptimized(level, trunkSet, leavesSet, true, false);
+        LibFeatureUtils.updateLeavesOptimized(level, trunkSet, leavesSet, true, false);
         for (Long debugLong : vineSet) {
             BlockPos debugPos = BlockPos.of(debugLong);
             BlockState debugState = level.getBlockState(debugPos.above());

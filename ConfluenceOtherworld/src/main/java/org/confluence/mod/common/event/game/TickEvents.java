@@ -17,12 +17,17 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.attachment.YoyoSession;
 import org.confluence.mod.common.block.functional.network.PathService;
+import org.confluence.mod.common.data.*;
 import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
+import org.confluence.mod.common.item.whip.WhipSession;
+import org.confluence.mod.common.mount.MountManager;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -80,6 +85,8 @@ public final class TickEvents {
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
             ExtraInventory.of(player).sync(player);
+            MountManager.validate(player); // 1.20 `TickEvents:82`（同位置：紧跟 ExtraInventory 同步）
+            YoyoSession.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);
@@ -107,5 +114,6 @@ public final class TickEvents {
     @SubscribeEvent
     public static void serverTick$Post(ServerTickEvent.Post event) {
         PathService.INSTANCE.pathFindingTick();
+        WhipSession.handle();
     }
 }

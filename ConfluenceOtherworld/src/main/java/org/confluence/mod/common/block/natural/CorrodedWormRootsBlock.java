@@ -27,7 +27,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.terraentity.init.TETags;
 
 import java.util.Map;
 
@@ -96,7 +95,7 @@ public class CorrodedWormRootsBlock extends Block {
         if (!level.isClientSide && entity instanceof Player player && player.isAlive()) {
             player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1000, 1));
             player.addEffect(new MobEffectInstance(MobEffects.POISON, 1000, 1));
-            for (Mob mob : level.getEntitiesOfClass(Mob.class, new AABB(pos).inflate(radius), e -> e.getType().is(TETags.EntityTypes.CORRUPT))) {
+            for (Mob mob : level.getEntitiesOfClass(Mob.class, new AABB(pos).inflate(radius), e -> e.getType().is(ModTags.EntityTypes.CORRUPT))) {
                 mob.setTarget(player);
             }
         }

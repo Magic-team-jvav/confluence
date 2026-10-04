@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -56,13 +57,17 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
+import org.confluence.mod.client.security.SecurityFace;
+import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModArmPoses;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -71,12 +76,16 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.summoner.SummonerHelper;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -352,6 +361,12 @@ public final class ModClientSetups {
 
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
+        ItemProperties.register(SummonItems.FINCH_STAFF.get(), enable, ((itemStack, clientLevel, livingEntity, seed) -> {
+            if (livingEntity instanceof Player player && !SummonerHelper.get(player).getEntityData().get(SummonerAttachmentEntityTypes.FINCH.get()).isEmpty()) {
+                return 0;
+            }
+            return 1;
+        }));
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
@@ -360,18 +375,10 @@ public final class ModClientSetups {
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
 
-    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
-            RenderType.CompositeState.builder()
-                    .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .setCullState(NO_CULL)
-                    .setOverlayState(OVERLAY)
-                    .createCompositeState(false));
+    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderStateShardAccessor.ENTITY_TRANSLUCENT_EMISSIVE;
 
-    public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
-    public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
+    public static final ColoredGlintContext GLINT_FF0000 = RenderStateShardAccessor.GLINT_FF0000;
+    public static final ColoredGlintContext GLINT_RAINBOW = RenderStateShardAccessor.GLINT_RAINBOW;
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
@@ -389,17 +396,17 @@ public final class ModClientSetups {
             ItemProperties.register(item.get(), pulling, bowPulling);
         });
 
-        ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
-            if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
+        ClampedItemPropertyFunction repeaterPulling = (itemStack, clientLevel, living, speed) -> {
+            if (!(itemStack.getItem() instanceof BaseTerraRepeaterItem)) {
                 return 0.0F;
             }
-            var projectiles = repeater.getHandler(itemStack);
-            if (projectiles != null && !projectiles.isEmpty()) {
+            if (living != null && living.isUsingItem() && living.getUseItem() == itemStack) {
                 return 1.0F;
             }
-            return 0.0F;
+            RepeaterContents contents = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+            return contents.isEmpty() ? 0.0F : 1.0F;
         };
-        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, crossbowPulling));
+        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, repeaterPulling));
     }
 
     public static void registerFishingPoleProperties() {
@@ -415,5 +422,35 @@ public final class ModClientSetups {
             }
         };
         FishingPoleItems.ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
+    }
+
+    private static Supplier<String> seKey;
+
+    private static boolean shouldSe(ResourceLocation location, String result) {
+        String namespace = location.getNamespace();
+        if (!namespace.equals(Confluence.MODID)) {
+            return false;
+        }
+        return !result.startsWith("{");
+    }
+
+    public static String wrapFile(String result, ResourceLocation location) {
+        // Please respect the copyright of the model and do not attempt to publicly disseminate encrypted files.
+        // 请尊重模型的著作权，加密文件请不要试图公开传播。
+        if (shouldSe(location, result)) {
+            if (seKey == null) {
+                seKey = Suppliers.memoize(() -> {
+                    try {
+                        ResourceLocation location1 = Confluence.asResource("license.bin");
+                        InputStream inputStream = Minecraft.getInstance().getResourceManager().open(location1);
+                        return SecurityFace.readKey(inputStream, i -> location1.hashCode());
+                    } catch (IOException e) {
+                        throw new RuntimeException("License Key Error");
+                    }
+                });
+            }
+            return SecurityFace.S3.decrypt(result, seKey.get());
+        }
+        return result;
     }
 }

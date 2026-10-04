@@ -25,6 +25,7 @@ import org.confluence.mod.common.effect.flask.FlaskOfGoldEffect;
 import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
+import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
@@ -157,6 +158,29 @@ public final class ModEffects {
     // TODO 需要细调
     public static final DeferredHolder<MobEffect, MobEffect> DIMENSIONAL_OVERLAP = EFFECTS.register("dimensional_overlap", id -> new DimensionalOverlapEffect()
             .addAttributeModifier(ConfluenceMagicLib.VOID_EROSION_DELTA, id, AttributeModifier.Operation.ADD_VALUE, i -> i <= 0 ? -128.0f : -220.0f));
+
+    // ------------------------------------------------------------------
+    // ------------------------------------------------------------------
+    public static final DeferredHolder<MobEffect, MobEffect> JUNGLES_FURY = EFFECTS.register("jungles_fury",
+            id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x669933));
+    public static final DeferredHolder<MobEffect, MobEffect> ELECTRIFIED = EFFECTS.register("electrified", ElectrifiedEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> GARDEN_GNOME_LUCK = EFFECTS.register("garden_gnome_luck", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8B8B8B)
+            .addAttributeModifier(Attributes.LUCK, id, 0.2, ADD_VALUE));
+    public static final DeferredHolder<MobEffect, MobEffect> SPARKLE_SLIME = EFFECTS.register("sparkle_slime", SparkleSlimeEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> WEBBED = EFFECTS.register("webbed", id -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xDDDDCC)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, -1.0, ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.JUMP_STRENGTH, id, -1.0, ADD_MULTIPLIED_TOTAL));
+    public static final DeferredHolder<MobEffect, MobEffect> DEMONIC_THOUGHTS = EFFECTS.register("demonic_toughts", DemonicThoughtsEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> FROST_BURN = EFFECTS.register("frost_burn", FrostburnEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> HELLFIRE = EFFECTS.register("hellfire", HellFireEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> DRYADS_BANE = EFFECTS.register("dryads_bane", DryadsBaneEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> DRYADS_BLESSING = EFFECTS.register("dryads_blessing", DryadsBlessingEffect::new);
+
+    public static final DeferredHolder<MobEffect, MobEffect> THE_TONGUE = EFFECTS.register("the_tongue", TheTongueEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> HORRIFIED = EFFECTS.register("horrified", HorrifiedEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> CRIMSON_STORM = EFFECTS.register("crimson_storm", CrimsonStormEffect::new);
+    public static final DeferredHolder<MobEffect, DriveAwayEffect> SCARED = EFFECTS.register("scared",
+            () -> new DriveAwayEffect(0.3, 200.0, 0.8, 1.2, 1.5, 0.0));
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {
         if (v == 1) return v1;

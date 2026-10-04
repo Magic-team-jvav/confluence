@@ -24,8 +24,11 @@ import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
@@ -36,9 +39,10 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -48,7 +52,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.AskForSoftcorePacket;
@@ -314,6 +317,54 @@ public final class PlayerUtils {
         return true;
     }
 
+    /// 扣款：先用手上的钱（背包 + 钱币栏），不够再动存钱罐。
+    ///
+    /// 1.20 侧同名方法在 `common/util/PlayerUtils.java:329`；1.21 侧此前只有
+    /// `tryCostMoney(...)`，NPC 商店（`NPCTradeMenu` / `NurseNPC`）用的是 1.20 这套命名，
+    /// 所以按 1.20 逐字补上 `debit` / `purchase` / `credit` / `creditFromInventory` 四个入口。
+    public static boolean debit(Player player, long cost, boolean withPiggyBank) {
+        return tryCostMoney(player, cost, withPiggyBank);
+    }
+
+    /// 买下商品：扣款成功后把商品塞进背包，塞不下就掉在脚边。
+    public static boolean purchase(Player player, long cost, boolean withPiggyBank, ItemStack result) {
+        if (result.isEmpty() || !tryCostMoney(player, cost, withPiggyBank)) return false;
+        ItemStack stack = result.copy();
+        if (!player.getInventory().add(stack)) player.drop(stack, false);
+        return true;
+    }
+
+    /// 售出所得按面额发到背包。
+    public static boolean credit(Player player, long amount) {
+        if (amount < 0) return false;
+        giveCoins(player, amount);
+        return true;
+    }
+
+    /// 从玩家背包的指定槽位卖出物品：槽位内容与卖出时不一致就整笔取消。
+    public static boolean creditFromInventory(Player player, int slotIndex, ItemStack expected, long amount, boolean withPiggyBank) {
+        if (expected.isEmpty() || slotIndex < 0 || slotIndex >= player.getInventory().getContainerSize()) return false;
+        ItemStack source = player.getInventory().getItem(slotIndex);
+        // 1.21 把 `ItemStack#isSameItemSameTags` 改名为 `isSameItemSameComponents`（数据组件化的改名，语义相同）。
+        if (!ItemStack.isSameItemSameComponents(source, expected) || source.getCount() < expected.getCount()) return false;
+        source.shrink(expected.getCount());
+        if (source.isEmpty()) player.getInventory().setItem(slotIndex, ItemStack.EMPTY);
+        player.getInventory().setChanged();
+        giveCoins(player, amount);
+        return true;
+    }
+
+    /// 按面额把钱币发到背包；背包放不下就掉在脚边。
+    public static void giveCoins(Player player, long amount) {
+        if (amount <= 0) return;
+        for (Object2IntMap.Entry<CoinItem> entry : decodeCoin(amount).copper2PlatinumEntries()) {
+            int count = entry.getIntValue();
+            if (count <= 0) continue;
+            ItemStack stack = new ItemStack(entry.getKey(), count);
+            if (!player.getInventory().add(stack)) player.drop(stack, false);
+        }
+    }
+
     public static Coins decodeCoin(long money) {
         if (money < 0) throw new IllegalArgumentException("Money cannot be negative");
 
@@ -384,7 +435,7 @@ public final class PlayerUtils {
         ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
 
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
-            LibUtils.getOrCreatePersistedData(player).putLong("confluence:drops_money", drops);
+            LibEntityUtils.getOrCreatePersistedData(player).putLong("confluence:drops_money", drops);
         }
     }
 
@@ -430,7 +481,7 @@ public final class PlayerUtils {
         if (!player.isAutoSpinAttack()) {
             ItemStack stack = player.getMainHandItem();
             if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
-            return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
+            return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.hasSpecialSweep();
         }
         return false;
     }
@@ -456,7 +507,7 @@ public final class PlayerUtils {
     public static void applySunflowerEffect(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 200 == 0) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
-            if (iSection != null && iSection.confluence$getBlockCounts().sunflower > 0) {
+            if (iSection != null && ModBlockCounters.SUNFLOWER.get(iSection.confluence$getBlockCounts()) > 0) {
                 player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
             }
         }

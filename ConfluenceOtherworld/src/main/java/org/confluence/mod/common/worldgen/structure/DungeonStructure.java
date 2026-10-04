@@ -35,27 +35,27 @@ import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibGeometryUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.mixed.IStructureStart;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terraentity.entity.boss.DungeonGuardian;
-import org.confluence.terraentity.init.TESounds;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.Predicate;
 
-import static org.confluence.lib.util.StructureUtils.*;
-import static org.confluence.lib.util.VectorUtils.*;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class DungeonStructure extends Structure {
     public static final ResourceKey<ConfiguredFeature<?, ?>> DUNGEON_LOST_PAPER = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_lost_paper");
@@ -134,7 +134,7 @@ public class DungeonStructure extends Structure {
             Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
 
             Rotation rotation = Util.getRandom(Rotation.values(), random);
-            List<Vector3d> firstChannel = new ArrayList<>();
+            List<Vector3f> firstChannel = new ArrayList<>();
             IntArrayList housesList = new IntArrayList();
             int goldenCount = random.nextInt(7, 9);
             int commonCount = random.nextInt(5, 7);
@@ -150,15 +150,15 @@ public class DungeonStructure extends Structure {
                 housesList.add(random.nextInt(housesList.size()), 1);
             }
 
-            firstChannel.add(new Vector3d(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ()));
-            Vector3d vct = new Vector3d(centerPos.getX(), random.nextInt(-15, -10), centerPos.getZ());
-            firstChannel.add(new Vector3d(vct.x, vct.y + outRoomSizeHeight + 10, vct.z));
-            VectorUtils.lightningPathList(firstChannel, 2, 0.125F, random);
-            lineSet(firstChannel, 5.5, 5.5, 1, true, blockMap);
+            firstChannel.add(new Vector3f(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ()));
+            Vector3f vct = new Vector3f(centerPos.getX(), random.nextInt(-15, -10), centerPos.getZ());
+            firstChannel.add(new Vector3f(vct.x, vct.y + outRoomSizeHeight + 10, vct.z));
+            LibGeometryUtils.lightningPathList(firstChannel, 2, 0.125F, random);
+            lineSet(firstChannel, 5.5F, 5.5F, 1, true, blockMap);
 
             BlockPos underCenter = new BlockPos(centerPos.getX(), Mth.floor(vct.y), centerPos.getZ());
 
-            Map<Vector3d, BooleanStorage4> mazeMap = mazePos(new Vector3d(underCenter.getX(), underCenter.getY(), underCenter.getZ()), 40, 2, random, 1.0F);
+            Map<Vector3f, BooleanStorage4> mazeMap = LibGeometryUtils.mazePos(new Vector3f(underCenter.getX(), underCenter.getY(), underCenter.getZ()), 40, 2, random, 1.0F);
 
             rectangular(underCenter.offset(-103, -4, -103), underCenter.offset(103, 51, 103), 1, blockMap, 0);
             rectangular(underCenter.offset(-99, 47, -99), underCenter.offset(99, 47, 99), 15, blockMap, 0);
@@ -166,13 +166,13 @@ public class DungeonStructure extends Structure {
             rectangular(underCenter.offset(-10, 46, -10), underCenter.offset(10, 55, 10), 1, blockMap, 0);
             rectangular(underCenter.offset(-99, 0, -99), underCenter.offset(99, 45, 99), 0, blockMap, 0);
             rectangular(underCenter.offset(-6, 45, -6), underCenter.offset(6, 51, 6), 0, blockMap, 0);
-            List<Vector3d> groundFeaturePos = rectangularPos(underCenter.offset(-99, 0, -99), underCenter.offset(99, 0, 99), 0.03F, random);
-            for (Vector3d pos : groundFeaturePos) {
-                featureMap.put(VectorUtils.fromVector3d(pos), Util.getRandom(GROUND_FEATURE, random));
+            List<Vector3f> groundFeaturePos = LibGeometryUtils.rectangularPos(underCenter.offset(-99, 0, -99), underCenter.offset(99, 0, 99), 0.03F, random);
+            for (Vector3f pos : groundFeaturePos) {
+                featureMap.put(LibMathUtils.fromVector3f(pos), Util.getRandom(GROUND_FEATURE, random));
             }
 
-            for (Map.Entry<Vector3d, BooleanStorage4> entry : mazeMap.entrySet()) {
-                Vector3d key = entry.getKey();
+            for (Map.Entry<Vector3f, BooleanStorage4> entry : mazeMap.entrySet()) {
+                Vector3f key = entry.getKey();
 
                 BooleanStorage4 value = entry.getValue();
                 valueB.set((byte) ~value.getValue());
@@ -180,7 +180,7 @@ public class DungeonStructure extends Structure {
                 mazeRotatePos.set(Mth.floor(key.x), Mth.floor(key.y), Mth.floor(key.z));
 
                 if ((mazeRotatePos.getX() == underCenter.getX()) && (mazeRotatePos.getZ() == underCenter.getZ()))
-                    stairsFacing = listRandom(valueB, random);
+                    stairsFacing = LibUtils.listRandom(valueB, random);
 
                 rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 4, blockMap, 0);
                 rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 16, blockMap, 0, 0.03F, random);
@@ -296,7 +296,7 @@ public class DungeonStructure extends Structure {
 
             builder.addPiece(new SimpleTemplatePiece(manager, UG, underCenter.offset(-96, -41, -96), true, true, Rotation.NONE));
 
-            lineSet(firstChannel, 2.5, 2.5, 0, true, blockMap);
+            lineSet(firstChannel, 2.5F, 2.5F, 0, true, blockMap);
             rectangular(underCenter.offset(-2, 48, -2), underCenter.offset(2, 48, 2), 6, blockMap, 0);
             rectangular(underCenter.offset(-1, 48, -1), underCenter.offset(1, 48, 1), 1, blockMap, 0);
             rectangular(underCenter.offset(-6, -1, -6), underCenter.offset(6, -5, 6), 7, blockMap, 0);
@@ -557,22 +557,22 @@ public class DungeonStructure extends Structure {
         if (player.isAlive() &&
                 player.gameMode.getGameModeForPlayer().isSurvival() &&
                 level.getGameTime() % 100 == 1 &&
-                !KillBoard.INSTANCE.isDefeated(TEBossEntities.SKELETRON.get())
+                !KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())
         ) {
             iterateDungeon(level, player.chunkPosition(), structureStart -> {
                 BoundingBox boundingBox = IStructureStart.of(structureStart).confluence$cachedBoundingBox();
                 boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
                 if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + getUpperBoundsFloor1()) {
-                    level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
+                    level.playSound(null, player.blockPosition(), ModSoundEvents.ROAR.get(), SoundSource.HOSTILE);
                     if (shouldAlert) {
-                        byte alert = LibUtils.getOrCreatePersistedData(player).getByte("confluence:dungeon_guardian_alert");
-                        LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
+                        byte alert = LibEntityUtils.getOrCreatePersistedData(player).getByte("confluence:dungeon_guardian_alert");
+                        LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
                         if (alert < 3) return true;
                     }
-                    ModUtils.summonBoss(level, player.blockPosition(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
+                    ModUtils.summonBoss(level, player.blockPosition(), BossEntities.DUNGEON_GUARDIAN.get().create(level));
                 }
                 if (shouldAlert)
-                    LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
+                    LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
                 return true;
             });
         }

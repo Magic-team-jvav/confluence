@@ -13,21 +13,35 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
+import org.jetbrains.annotations.Nullable;
 
-public class NPCReforgeMenu extends AbstractContainerMenu {
+///
+///
+public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceMenu {
     public static final int DATA_PREFIX_TYPE = 0;
     public static final int DATA_PREFIX_ID = 1;
     public static final int DATA_REFORGE_COST = 2;
     private final Player player;
+    private final @Nullable BaseNPC npc;
     private final int[] data = {PrefixType.UNKNOWN.ordinal(), -1, 0x3F3F3F3F};
     public final SimpleContainer container = new SimpleContainer(1);
 
     public NPCReforgeMenu(int containerId, Inventory inventory) {
+        this(containerId, inventory, null);
+    }
+
+    /// 创建由 NPC 交易会话授权的重铸菜单。
+    ///
+    /// 客户端注册工厂使用无 NPC 的构造器；服务端生产路径必须保留来源 NPC，
+    /// 以便实体死亡、跨维度或玩家离开交互距离时立即关闭菜单。
+    public NPCReforgeMenu(int containerId, Inventory inventory, @Nullable BaseNPC npc) {
         super(ModMenuTypes.REFORGE_MENU.get(), containerId);
         this.player = inventory.player;
+        this.npc = npc;
         container.addListener(this::slotsChanged);
 
         addSlot(new Slot(container, 0, 39, 44) {
@@ -58,17 +72,17 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
     public void slotsChanged(Container container) {
         // 提前决定下一个词条
         if (!player.level().isClientSide) {
-            ItemStack itemStack = getReforgeItem();
-            if (PrefixUtils.couldReforge(itemStack)) {
-                RandomSource randomSource = RandomSource.create(itemStack.hashCode() | player.getRandom().nextInt());
-                PrefixType prefixType = PrefixUtils.getPrefixType(itemStack);
-                data[0] = prefixType.ordinal();
-                data[1] = ModPrefix.ID_MAP.inverse().getOrDefault(prefixType.randomPrefix(randomSource), -1);
-                data[2] = PrefixUtils.getReforgeCost(player, itemStack);
+            ItemStack stack = getReforgeItem();
+            if (PrefixUtils.couldReforge(stack)) {
+                RandomSource random = RandomSource.create(stack.hashCode() | player.getRandom().nextInt());
+                PrefixType type = PrefixUtils.getPrefixType(stack);
+                data[DATA_PREFIX_TYPE] = type.ordinal();
+                data[DATA_PREFIX_ID] = ModPrefix.ID_MAP.inverse().getOrDefault(type.randomPrefix(random, stack), -1);
+                data[DATA_REFORGE_COST] = PrefixUtils.getReforgeCost(player, stack);
             } else {
-                data[0] = PrefixType.UNKNOWN.ordinal();
-                data[1] = -1;
-                data[2] = 0x3F3F3F3F;
+                data[DATA_PREFIX_TYPE] = PrefixType.UNKNOWN.ordinal();
+                data[DATA_PREFIX_ID] = -1;
+                data[DATA_REFORGE_COST] = 0x3F3F3F3F;
             }
         }
         super.slotsChanged(container);
@@ -77,22 +91,23 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
     @Override
     public boolean clickMenuButton(Player player, int id) {
         // 重铸
+        if (id != 0 || !stillValid(player) || player.containerMenu != this) return false;
         int cost = data[DATA_REFORGE_COST];
         if (cost >= 0x3F3F3F3F) return false;
-        PrefixType prefixType = PrefixType.byId(data[DATA_PREFIX_TYPE]);
-        if (prefixType == PrefixType.UNKNOWN) return false;
-        ItemStack itemStack = getReforgeItem();
-        if (PrefixUtils.couldReforge(itemStack)) {
-            ModPrefix modPrefix = ModPrefix.ID_MAP.get(data[DATA_PREFIX_ID]);
-            if (modPrefix == null) return false;
+        PrefixType type = PrefixType.byId(data[DATA_PREFIX_TYPE]);
+        if (type == PrefixType.UNKNOWN) return false;
+        ItemStack stack = getReforgeItem();
+        if (PrefixUtils.couldReforge(stack)) {
+            ModPrefix prefix = ModPrefix.ID_MAP.get(data[DATA_PREFIX_ID]);
+            if (prefix == null) return false;
             if (!(player instanceof ServerPlayer)) {
                 return PlayerUtils.getMoney(player, true) >= cost;
             } else if (!PlayerUtils.tryCostMoney(player, cost, true)) {
                 return false;
             }
-            PrefixUtils.setAndUpdate(itemStack, prefixType, modPrefix);
-            setRemoteSlot(0, itemStack);
-            ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, itemStack));
+            PrefixUtils.setAndUpdate(stack, type, prefix);
+            setRemoteSlot(0, stack);
+            ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, stack));
             slotsChanged(container);
         }
         return true;
@@ -106,8 +121,13 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
         return data[DATA_REFORGE_COST];
     }
 
+    public @Nullable BaseNPC getNPC() {
+        return npc;
+    }
+
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
+        if (index < 0 || index >= slots.size()) return ItemStack.EMPTY;
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -121,11 +141,11 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
                 if (!moveItemStackTo(itemstack1, 0, 1, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= 1 && index < 28) {
+            } else if (index < 28) {
                 if (!moveItemStackTo(itemstack1, 28, 37, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= 28 && index < 38 && !moveItemStackTo(itemstack1, 1, 28, false)) {
+            } else if (index < 38 && !moveItemStackTo(itemstack1, 1, 28, false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -147,12 +167,16 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return player.level().isClientSide || npc != null && npc.isAlive()
+                && player.isAlive()
+                && player.level() == npc.level()
+                && player.distanceToSqr(npc) <= 64.0;
     }
 
     @Override
     public void removed(Player player) {
         super.removed(player);
         clearContainer(player, container);
+        if (npc != null) npc.endServiceSession(player, this);
     }
 }

@@ -7,12 +7,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
@@ -20,16 +22,17 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FlailItems;
+import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.entity.boss.EaterOfWorlds;
+import org.confluence.mod.common.entity.boss.EaterOfWorlds;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class ShadowOrbBlock extends Block {
@@ -45,28 +48,41 @@ public class ShadowOrbBlock extends Block {
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        boolean removed = super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        if (removed) onPlayerBroken(level, pos);
+        return removed;
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        boolean present = level.getBlockState(pos).is(this);
+        super.onBlockExploded(state, level, pos, explosion);
+        if (present && !level.getBlockState(pos).is(this) && explosion.getIndirectSourceEntity() instanceof Player)
+            onPlayerBroken(level, pos);
+    }
+
+    private void onPlayerBroken(Level level, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel) {
             Vec3 center = pos.getCenter();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(GunItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(GunItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(LightPetItems.SHADOW_ORB.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(LightPetItems.SHADOW_ORB.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(ManaWeaponItems.VILETHRON.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(ManaWeaponItems.VILETHRON.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(FlailItems.BALL_O_HURT.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(FlailItems.BALL_O_HURT.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.toStack(), center.x, center.y, center.z, level, 0);
+                LibEntityUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {
@@ -79,7 +95,7 @@ public class ShadowOrbBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(level, true), false);
+                ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level), false);
             }
         }
     }

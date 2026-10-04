@@ -18,16 +18,15 @@ import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.npc.AnglerNPC;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.mixed.IEntity;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -187,14 +186,12 @@ public abstract class EntityMixin implements IEntity {
                     livingTarget.setHealth(livingTarget.getMaxHealth() * ratio);
                 }
                 event.setTarget(target);
-                if (sourceEntity instanceof AbstractTerraNPC sourceNpc && target instanceof AbstractTerraNPC targetNpc) {
+                if (sourceEntity instanceof BaseNPC sourceNpc && target instanceof BaseNPC targetNpc) {
                     targetNpc.setHouse(sourceNpc.getHouse());
                     event.setSpeedY(0.7);
-                    NPCSpawner.INSTANCE.setNPCAlive(((IAbstractTerraNPC) sourceNpc).confluence$getRegion(), sourceNpc.getType(), false);
+                    NPCSpawner.INSTANCE.forgetNPC(sourceNpc);
                     if (target instanceof AnglerNPC anglerNPC) {
                         anglerNPC.setWakeUp(true);
-                        anglerNPC.initName();
-                        anglerNPC.refreshBrain((ServerLevel) sourceEntity.level());
                         anglerNPC.refreshDimensions();
                     }
                 }

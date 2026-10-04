@@ -6,8 +6,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class VilethronProjectile extends StripedProjectile {
     public VilethronProjectile(EntityType<? extends StripedProjectile> entityType, Level level) {
@@ -15,16 +15,16 @@ public class VilethronProjectile extends StripedProjectile {
     }
 
     public VilethronProjectile(LivingEntity living) {
-        super(ModEntities.VILETHRON_PROJECTILE.get(), living);
+        super(ModEntities.VILETHRON.get(), living);
     }
 
     public VilethronProjectile(LivingEntity living, Vec3 pos) {
-        super(ModEntities.VILETHRON_PROJECTILE.get(), living, pos);
+        super(ModEntities.VILETHRON.get(), living, pos);
     }
 
     @Override
     protected void onTouchEntity(EntityHitResult result) {
-        result.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), getCalculatedDamage());
+        result.getEntity().hurt(LibDamageTypes.of(level(), LibDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), getCalculatedDamage());
     }
 
     @Override

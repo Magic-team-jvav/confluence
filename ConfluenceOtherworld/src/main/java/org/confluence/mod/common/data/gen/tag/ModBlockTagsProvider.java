@@ -18,7 +18,6 @@ import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.integration.mrcrayfish.furniture.MrCrayfishFurnitureHelper;
-import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -188,7 +187,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.LEAVES).add(YELLOW_WILLOW_DROOPING_LEAVES.get());
         tag(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE).addTag(BlockTags.LEAVES);
-        tag(TETags.Blocks.HONEY).add(HONEY.get());
+        tag(ModTags.Blocks.HONEY).add(HONEY.get());
 
         tag(ModTags.Blocks.CATTAIL_CAN_SURVIVE).add(
                 Blocks.GRASS_BLOCK,
@@ -1974,10 +1973,34 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANCTIFICATION_DEMONITE_ORE.get(),
                 SANCTIFICATION_CRIMTANE_ORE.get()
         );
-        tag(TETags.Blocks.NPC_HOUSE_CONSTITUTE).add(
+        tag(ModTags.Blocks.NPC_HOUSE_CONSTITUTE).add(
                 WHITE_PAPER_PANE_LAMP.get(),
                 MALACHITE_PAPER_PANE_LAMP.get()
-        );
+                )
+                .addTag(ModTags.Blocks.NPC_HOUSE_CHAIR)
+                .addTag(ModTags.Blocks.NPC_HOUSE_TABLE)
+                .add(
+                        Blocks.TORCH,
+                        Blocks.WALL_TORCH,
+                        Blocks.LIGHT,
+                        Blocks.SHROOMLIGHT,
+                        Blocks.LANTERN,
+                        Blocks.SEA_LANTERN,
+                        Blocks.SOUL_LANTERN,
+                        Blocks.JACK_O_LANTERN,
+                        Blocks.PEARLESCENT_FROGLIGHT,
+                        Blocks.OCHRE_FROGLIGHT,
+                        Blocks.VERDANT_FROGLIGHT,
+                        Blocks.REDSTONE_LAMP
+                )
+                /// 模组火把同样算作 NPC 房屋的光源，直立与墙挂都要加进来。
+                .add(TorchBlocks.BLOCKS.getEntries().stream().map(entry -> (Block) entry.get()).toArray(Block[]::new));
+        tag(ModTags.Blocks.NPC_HOUSE_CHAIR)
+                .addTag(BlockTags.BEDS)
+                .addOptionalTag(ResourceLocation.parse("terra_furniture:house_chair"));
+        tag(ModTags.Blocks.NPC_HOUSE_TABLE)
+                .add(Blocks.CRAFTING_TABLE)
+                .addOptionalTag(ResourceLocation.parse("terra_furniture:house_table"));
         tag(ModTags.Blocks.CACTUS).add(
                 Blocks.CACTUS,
                 CRIMSON_CACTUS.get(),

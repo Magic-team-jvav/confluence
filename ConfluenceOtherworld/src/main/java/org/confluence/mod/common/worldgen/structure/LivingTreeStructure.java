@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
-import static org.confluence.lib.util.StructureUtils.getHeight;
+import static org.confluence.lib.util.LibStructureUtils.getHeight;
 
 public class LivingTreeStructure extends Structure {
     public static final MapCodec<LivingTreeStructure> CODEC = simpleCodec(LivingTreeStructure::new);
@@ -54,8 +54,8 @@ public class LivingTreeStructure extends Structure {
                     random,
                     random.nextInt(55, 65),
                     4,
-                    5.9D,
-                    1.0D,
+                    5.9F,
+                    1.0F,
                     1,
                     20,
                     15,
@@ -78,8 +78,8 @@ public class LivingTreeStructure extends Structure {
                     true,
                     random.nextInt(65, 95),
                     4,
-                    4.9D,
-                    1.0D,
+                    4.9F,
+                    1.0F,
                     1,
                     true,
                     20,

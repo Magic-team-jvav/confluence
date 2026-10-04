@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
@@ -18,7 +19,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.*;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terra_curio.common.init.TCEffects;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -51,7 +51,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> FLIPPER_POTION = ITEMS.register("flipper_potion", () -> new EffectPotionItem(ModEffects.FLIPPER, 9600));
     public static final DeferredItem<AbstractPotionItem> FISHING_POTION = ITEMS.register("fishing_potion", () -> new EffectPotionItem(ModEffects.FISHING, 9600));
     public static final DeferredItem<AbstractPotionItem> GILLS_POTION = ITEMS.register("gills_potion", () -> new EffectPotionItem(MobEffects.WATER_BREATHING, 4800));
-    public static final DeferredItem<AbstractPotionItem> GRAVITATION_POTION = ITEMS.register("gravitation_potion", () -> new EffectPotionItem(TCEffects.GRAVITATION, 3600));
+    public static final DeferredItem<AbstractPotionItem> GRAVITATION_POTION = ITEMS.register("gravitation_potion", () -> new EffectPotionItem(LibEffects.GRAVITATION, 3600));
     public static final DeferredItem<AbstractPotionItem> HEART_REACH_POTION = ITEMS.register("heart_reach_potion", () -> new EffectPotionItem(ModEffects.HEART_REACH, 9600));
     public static final DeferredItem<AbstractPotionItem> HUNTER_POTION = ITEMS.register("hunter_potion", () -> new EffectPotionItem(ModEffects.HUNTER, 9600));
     public static final DeferredItem<AbstractPotionItem> INFERNO_POTION = ITEMS.register("inferno_potion", () -> new EffectPotionItem(ModEffects.INFERNO, 4800));

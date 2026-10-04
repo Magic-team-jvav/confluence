@@ -14,14 +14,18 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -32,6 +36,26 @@ import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
+    /// 统一处理所有生成路径最终都会触发的实体加入事件。
+    ///
+    ///
+    @SubscribeEvent
+    public static void joinLevel(EntityJoinLevelEvent event) {
+        Entity entity = event.getEntity();
+        if (!event.isCanceled() && entity instanceof LivingEntity living) {
+            MonsterAttributeScaling.apply(living, !event.loadedFromDisk());
+        }
+        if (!(entity instanceof Boss boss) || entity.level().isClientSide) {
+            return;
+        }
+        if (!event.loadedFromDisk()) {
+            Boss.sendBossSpawnMessage(entity);
+        }
+        if (boss.isMainBody() && boss.shouldEnhanceMultiplayer() && entity instanceof LivingEntity living) {
+            BossMultiplayerEnhancement.apply(living);
+        }
+    }
+
     @SubscribeEvent
     public static void mount(EntityMountEvent event) {
         Entity beingMounted = event.getEntityBeingMounted();
@@ -69,7 +93,7 @@ public final class EntityEvents {
         }
         @Nullable Entity attacker = damageSource.getEntity();
 
-        if (damageSource.is(ModDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
+        if (damageSource.is(LibDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true); // boss 免疫巨石
             return;
         }
@@ -78,6 +102,11 @@ public final class EntityEvents {
             return;
         }
         if (damageSource.is(DamageTypeTags.IS_FIRE)) {
+            if (victim.getVehicle() instanceof org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity) {
+                victim.clearFire();
+                event.setInvulnerable(true);
+                return;
+            }
             if (victim.hasEffect(ModEffects.OBSIDIAN_SKIN) || (victim instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
                 victim.clearFire();
                 event.setInvulnerable(true); // 免疫熔岩/着火
@@ -87,7 +116,7 @@ public final class EntityEvents {
         if (attacker instanceof Player player &&
                 !PlayerSpecialData.of(player).isCouldHurtCritters() &&
                 !victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
-                (LibUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+                (LibEntityUtils.isAnimal(victim) || victim.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
         ) {
             event.setInvulnerable(true);
             return;
@@ -98,7 +127,7 @@ public final class EntityEvents {
         }
         if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
                 victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER) &&
-                LibUtils.getOwner(damageSource) instanceof Player player &&
+                LibEntityUtils.getOwner(damageSource) instanceof Player player &&
                 !player.isCreative()
         ) {
             event.setInvulnerable(true);

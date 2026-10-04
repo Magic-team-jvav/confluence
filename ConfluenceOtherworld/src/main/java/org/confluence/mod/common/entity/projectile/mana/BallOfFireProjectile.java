@@ -7,9 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.terraentity.init.TEEffects;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class BallOfFireProjectile extends AbstractManaProjectile {
     public BallOfFireProjectile(EntityType<BallOfFireProjectile> entityType, Level level) {
@@ -18,7 +18,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
     }
 
     public BallOfFireProjectile(LivingEntity living) {
-        this(ModEntities.BALL_OF_FIRE_PROJECTILE.get(), living.level());
+        this(ModEntities.BALL_OF_FIRE.get(), living.level());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
         Entity entity = result.getEntity();
         if (random.nextBoolean()) {
             if (ModSecretSeeds.DONT_DIG_UP.match() && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(TEEffects.HELLFIRE, 100));
+                living.addEffect(new MobEffectInstance(ModEffects.HELLFIRE, 100));
             } else {
                 entity.setRemainingFireTicks(100);
             }

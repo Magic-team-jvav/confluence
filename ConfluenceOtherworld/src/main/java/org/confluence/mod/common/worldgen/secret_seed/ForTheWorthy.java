@@ -10,10 +10,10 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class ForTheWorthy extends SecretSeed {
     public static final BlockState LAVA = Blocks.LAVA.defaultBlockState();
@@ -37,8 +37,8 @@ public class ForTheWorthy extends SecretSeed {
     }
 
     public static boolean summonPoweredCreeper(ServerLevel level, BlockPos pos) {
-        if (ModSecretSeeds.FOR_THE_WORTHY.match(level) && level.random.nextFloat() < 0.25F) {
-            return EntityType.CREEPER.spawn(level, LibUtils::poweringCreeper, pos, MobSpawnType.TRIGGERED, true, false) != null;
+        if (ModSecretSeeds.FOR_THE_WORTHY.match(level) && level.random.nextInt(6) == 0) {
+            return EntityType.CREEPER.spawn(level, LibEntityUtils::poweringCreeper, pos, MobSpawnType.TRIGGERED, true, false) != null;
         }
         return false;
     }

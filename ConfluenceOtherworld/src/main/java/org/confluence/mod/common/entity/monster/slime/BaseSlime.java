@@ -1,0 +1,486 @@
+package org.confluence.mod.common.entity.monster.slime;
+
+import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
+import org.confluence.mod.common.entity.boss.BossOwnerTracker;
+import org.confluence.mod.common.entity.monster.BaseMonster;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.util.OverworldUtils;
+import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.entity.*;
+
+
+public class BaseSlime extends BaseMonster implements BossOwnedEntity {
+    protected static final String SIZE_KEY = "SlimeSize";
+    private static final int HONEY_SOAK_CHECK_INTERVAL = 20;
+    private static final int HONEY_SOAK_CHECKS_REQUIRED = 120;
+    private static final EntityDataAccessor<Integer> DATA_SIZE = SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
+    protected final boolean passiveByDay;
+    private final boolean honeyConvertible;
+    private final int fixedSize;
+    private float oldSquish;
+    private float squish;
+    private float targetSquish;
+
+    public boolean isFullBright() {
+        return false;
+    }
+
+    private boolean wasOnGround;
+    private int honeySoakTime;
+    private final BossOwnerTracker<BaseBoss> bossOwnerTracker = new BossOwnerTracker<>(BaseBoss.class);
+
+    public BaseSlime(EntityType<? extends BaseSlime> type, Level level) {
+        this(type, level, false, 2, false);
+    }
+
+    protected BaseSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay) {
+        this(type, level, passiveByDay, 2, false);
+    }
+
+    public BaseSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay, int size) {
+        this(type, level, passiveByDay, size, false);
+    }
+
+    public BaseSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay, int size, boolean honeyConvertible) {
+        this(type, level, passiveByDay, size, honeyConvertible, false);
+    }
+
+    public BaseSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay, int size, boolean honeyConvertible, boolean fixedSize) {
+        super(type, level);
+        this.passiveByDay = passiveByDay;
+        this.honeyConvertible = honeyConvertible;
+        this.fixedSize = fixedSize ? size : 0;
+        this.moveControl = new SlimeMoveControl(this);
+        setSlimeSize(size);
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return 0.0F;
+    }
+
+    /// 史莱姆的主动索敌规则。
+    ///
+    /// 白天被动的颜色变体不会主动寻找玩家，但受击反击仍由
+    /// {@link HurtByTargetGoal} 独立处理；玩家与史莱姆的高度差也必须不超过四格。
+    /// 铁傀儡使用较低优先级，避免同时存在玩家时改变原有目标选择。
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        targetSelector.removeAllGoals(goal -> true);
+        targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::canProactivelyTargetPlayer));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+    }
+
+    /// 判断玩家是否满足史莱姆的主动索敌条件；受击反击不经过此方法。
+    protected boolean canProactivelyTargetPlayer(LivingEntity player) {
+        return Math.abs(player.getY() - getY()) <= 4.0 && (!passiveByDay || level().isNight() || getY() < OverworldUtils.getSurfaceY());
+    }
+
+    @Override
+    protected boolean canTargetPlayer(LivingEntity player) {return canProactivelyTargetPlayer(player);}
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_SIZE, 2);
+    }
+
+    /// 返回服务端权威并同步到客户端的史莱姆大小。
+    ///
+    /// 该值同时驱动碰撞箱和模型尺寸；特殊变体只需修改这一处，不能再分别维护渲染缩放和逻辑体积。
+    public int getSlimeSize() {
+        return entityData.get(DATA_SIZE);
+    }
+
+    public void setBossOwner(BaseBoss owner) {
+        bossOwnerTracker.bind(this, owner);
+        setPersistenceRequired();
+        setTarget(owner.getTarget());
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
+    }
+
+    @Override
+    public @Nullable BaseBoss getBossOwner() {
+        return bossOwnerTracker.resolve(this);
+    }
+
+    public @Nullable UUID getBossOwnerUUID() {
+        return bossOwnerTracker.getOwnerUUID();
+    }
+
+    public void setSlimeSize(int size) {
+        int clampedSize = Mth.clamp(fixedSize > 0 ? fixedSize : size, 1, 127);
+        entityData.set(DATA_SIZE, clampedSize);
+        refreshDimensions();
+        var movementSpeed = getAttribute(Attributes.MOVEMENT_SPEED);
+        if (movementSpeed != null) {
+            movementSpeed.setBaseValue(0.2F + 0.1F * clampedSize);
+        }
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (DATA_SIZE.equals(key)) {
+            refreshDimensions();
+        }
+    }
+
+    ///
+    @Override
+    protected EntityDimensions getDefaultDimensions(Pose pose) {
+        float logicalSize = 0.52F * getSlimeSize();
+        return EntityDimensions.scalable(logicalSize, logicalSize).scale(getVisualScale());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt(SIZE_KEY, getSlimeSize());
+        bossOwnerTracker.save(tag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains(SIZE_KEY, net.minecraft.nbt.Tag.TAG_INT)) {
+            setSlimeSize(tag.getInt(SIZE_KEY));
+        }
+        bossOwnerTracker.load(tag);
+    }
+
+    @Override
+    protected BTRoot createBT() {
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                return new SlimeLocomotionAction(BaseSlime.this);
+            }
+        };
+    }
+
+    /// 返回下一次落地起跳前的等待时间。
+    ///
+    /// 普通史莱姆沿用原版的十至二十九刻随机间隔；进入攻击状态后，移动控制器会把
+    /// 该间隔缩短为三分之一。仅金史莱姆等具有独立跳跃节奏的变体需要重写。
+    protected int getJumpDelay() {
+        return random.nextInt(20) + 10;
+    }
+
+    @Override
+    public void tick() {
+        if (!level().isClientSide && tickCount % 5 == 0 && TownSlimeNPC.tryEquipSquire(this))
+            return;
+        LivingEntity inheritedTarget = null;
+        boolean bossOwned = !level().isClientSide && getBossOwnerUUID() != null;
+        if (bossOwned) {
+            bossOwnerTracker.tickDependent(this, true, 100);
+            inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        }
+        if (!level().isClientSide) {
+            if (tickCount % HONEY_SOAK_CHECK_INTERVAL == 0) updateHoneySoaking();
+            if (isRemoved()) {
+                return;
+            }
+        }
+        oldSquish = squish;
+        boolean groundedBeforeTick = onGround();
+        super.tick();
+        if (bossOwned && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
+        }
+        if (onGround() && !groundedBeforeTick) {
+            targetSquish = -0.5F;
+            onLanded();
+        } else if (!onGround() && wasOnGround) {
+            targetSquish = 1.0F;
+        }
+        squish += (targetSquish - squish) * 0.5F;
+        targetSquish *= 0.6F;
+        wasOnGround = onGround();
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        BaseBoss owner = getBossOwner();
+        return target != owner && (owner == null || owner.canAttack(target)) && super.canAttack(target);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        bossOwnerTracker.unbind(this);
+        super.remove(reason);
+    }
+
+    /// 连续驱动史莱姆移动的行为节点。
+    ///
+    /// 它同时承担漂浮、攻击、随机转向和持续跳跃四项职责，但仍作为单一行为树节点执行。
+    /// 节点不会把一次跳跃拆成“蓄力—起跳—落地—
+    /// 长时间等待”的离散任务，因此转向、追击速度和落地后的下一跳节奏与原实现一致。
+    private static final class SlimeLocomotionAction extends BTNode {
+        private final BaseSlime slime;
+        private float idleDirection;
+        private int directionChangeDelay;
+
+        private SlimeLocomotionAction(BaseSlime slime) {
+            this.slime = slime;
+            this.idleDirection = slime.getYRot();
+        }
+
+        @Override
+        public BTStatus execute() {
+            if (!(slime.getMoveControl() instanceof SlimeMoveControl control)) {
+                return BTStatus.FAILURE;
+            }
+
+            if (slime.isInWater() || slime.isInLava()) {
+                if (slime.getRandom().nextFloat() < 0.8F) {
+                    slime.getJumpControl().jump();
+                }
+                control.setWantedMovement(1.2);
+                return BTStatus.RUNNING;
+            }
+
+            LivingEntity target = slime.getTarget();
+            if (target != null && target.isAlive() && slime.canAttack(target)) {
+                Vec3 pursuit = slime.getPursuitPosition(target);
+                Vec3 horizontal = new Vec3(
+                        pursuit.x - slime.getX(), 0.0D, pursuit.z - slime.getZ());
+                if (horizontal.lengthSqr() > 1.0E-7D) {
+                    float wantedYaw = (float) (Mth.atan2(-horizontal.x, horizontal.z) * Mth.RAD_TO_DEG);
+                    control.setDirection(wantedYaw, slime.isEffectiveAi());
+                } else {
+                    control.setDirection(slime.getYRot(), slime.isEffectiveAi());
+                }
+                control.setWantedMovement(1.0);
+                return BTStatus.RUNNING;
+            }
+
+            if (!slime.isPassenger() && (slime.onGround() || slime.hasEffect(net.minecraft.world.effect.MobEffects.LEVITATION))) {
+                if (--directionChangeDelay <= 0) {
+                    directionChangeDelay = 40 + slime.getRandom().nextInt(60);
+                    idleDirection = slime.getRandom().nextInt(360);
+                }
+                control.setDirection(idleDirection, false);
+                control.setWantedMovement(1.0);
+            }
+            return BTStatus.RUNNING;
+        }
+    }
+
+    protected Vec3 getPursuitPosition(LivingEntity target) {
+        return getBossOwnerUUID() == null
+                ? target.position()
+                : BossMinionCoordinator.predict(target, 3.0D, 2.5D);
+    }
+
+    /// 复刻原版史莱姆的移动控制器。行为树只提供朝向、速度和是否处于攻击状态；真正的
+    /// 落地等待、起跳和空中续速都在这里连续推进，避免每一刻直接改写水平速度造成弹跳。
+    private static final class SlimeMoveControl extends MoveControl {
+        private final BaseSlime slime;
+        private float wantedYRot;
+        private int jumpDelay;
+        private boolean aggressive;
+
+        private SlimeMoveControl(BaseSlime slime) {
+            super(slime);
+            this.slime = slime;
+            this.wantedYRot = slime.getYRot();
+        }
+
+        private void setDirection(float yRot, boolean aggressive) {
+            this.wantedYRot = yRot;
+            this.aggressive = aggressive;
+        }
+
+        private void setWantedMovement(double speed) {
+            speedModifier = speed;
+            operation = Operation.MOVE_TO;
+        }
+
+        @Override
+        public void tick() {
+            if (operation != Operation.MOVE_TO) {
+                mob.setZza(0.0F);
+                return;
+            }
+
+            mob.setYRot(rotlerp(mob.getYRot(), wantedYRot, 90.0F));
+            mob.setYHeadRot(mob.getYRot());
+            mob.setYBodyRot(mob.getYRot());
+            operation = Operation.WAIT;
+            float speed = (float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            if (!mob.onGround()) {
+                mob.setSpeed(speed);
+                return;
+            }
+
+            mob.setSpeed(speed);
+            if (jumpDelay-- <= 0) {
+                jumpDelay = slime.getJumpDelay();
+                if (aggressive) {
+                    jumpDelay /= 3;
+                }
+                slime.getJumpControl().jump();
+                slime.playSound(SoundEvents.SLIME_JUMP, slime.getSoundVolume(), ((slime.getRandom().nextFloat() - slime.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
+                return;
+            }
+
+            slime.setXxa(0.0F);
+            slime.setZza(0.0F);
+            mob.setSpeed(0.0F);
+        }
+    }
+
+    // === 子类可重写的行为钩子 ===
+
+    /// 从空中落地时触发，用于特殊史莱姆补充落地效果。
+    protected void onLanded() {}
+
+    /// 对目标造成接触伤害。
+    protected void dealContactDamage(LivingEntity target) {
+        if (!level().isClientSide && isAlive() && isEffectiveAi() && isWithinMeleeAttackRange(target) && hasLineOfSight(target) && doContactHurtTarget(target)) {
+            playSound(SoundEvents.SLIME_ATTACK, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        }
+    }
+
+    /// 每秒检查一次蜂蜜浸泡状态。只有绿、蓝、紫三种史莱姆参与转化，
+    /// 离开蜂蜜后进度立即清零；完成时由服务端原位替换为二号甜蜜史莱姆。
+    private void updateHoneySoaking() {
+        if (!canConvertFromHoney() || !level().getBlockState(blockPosition()).is(ModTags.Blocks.HONEY)) {
+            honeySoakTime = 0;
+            return;
+        }
+        if (++honeySoakTime < HONEY_SOAK_CHECKS_REQUIRED) {
+            return;
+        }
+
+        SweetSlime sweetSlime = MonsterEntities.SWEET_SLIME.get().create(level());
+        if (sweetSlime == null) {
+            return;
+        }
+        sweetSlime.setSlimeSize(2);
+        sweetSlime.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
+        sweetSlime.setNoAi(isNoAi());
+        sweetSlime.setInvulnerable(isInvulnerable());
+        if (isPersistenceRequired()) sweetSlime.setPersistenceRequired();
+        if (hasCustomName()) {
+            sweetSlime.setCustomName(getCustomName());
+            sweetSlime.setCustomNameVisible(isCustomNameVisible());
+        }
+        if (level().addFreshEntity(sweetSlime)) discard();
+        else sweetSlime.discard();
+    }
+
+    private boolean canConvertFromHoney() {
+        return honeyConvertible;
+    }
+
+    @Override
+    public void playerTouch(Player player) {
+        dealContactDamage(player);
+    }
+
+    @Override
+    public void push(Entity entity) {
+        super.push(entity);
+        if (entity instanceof IronGolem ironGolem) {
+            dealContactDamage(ironGolem);
+        }
+    }
+
+    /// 是否免疫火焰伤害
+    protected boolean isFireImmune() {
+        return false;
+    }
+
+    @Override
+    public boolean fireImmune() {
+        return isFireImmune();
+    }
+
+    /// 在水中是否受伤
+    protected boolean hurtByWater() {
+        return false;
+    }
+
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (onGround()) {
+            resetFallDistance();
+        }
+        if (hurtByWater() && isInWater()) {
+            hurt(damageSources().freeze(), 0.8F);
+        }
+    }
+
+    /// 客户端模型缩放值，供使用同一实体类型表达不同年龄的史莱姆家族使用。
+    public float getVisualScale() {
+        return 1.0F;
+    }
+
+    /// 普通史莱姆使用尺寸 2；年龄或特殊变体可继续通过
+    /// {@link #getVisualScale()} 调整最终大小。
+    public float getVisualSize() {
+        return getSlimeSize() * getVisualScale();
+    }
+
+    /// 上一游戏刻的挤压值，供客户端在两刻之间插值。
+    public float getOldSquish() {
+        return oldSquish;
+    }
+
+    /// 当前游戏刻的挤压值。
+    public float getSquish() {
+        return squish;
+    }
+
+    // === 属性工厂方法 ===
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
+
+}

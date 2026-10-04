@@ -3,20 +3,16 @@ package org.confluence.mod.common.item.flail;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.component.ModRarity;
@@ -24,72 +20,36 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.client.renderer.item.BaseFlailItemRenderer;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
-/**
- * <h1>连枷物品基类</h1>
- */
+/// 链锤物品的共享输入与状态转换入口。
+///
+/// 按下主动作键时创建并旋转链锤，松开时投出；再次按下可让投出或回收中的链锤落入停留阶段，
+/// 再次松开则收回。
 public class BaseFlailItem extends TooltipItem implements GeoItem {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final FlailComponent component;
-    @Nullable
-    private final Supplier<FlailStrategy> strategySupplier;
+    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+    private final FlailComponent flailComponent;
 
-    public BaseFlailItem(@NotNull FlailComponent component, @NotNull ModRarity rarity) {
-        this(component, rarity, null);
-    }
-
-    /** 带复杂行为的连枷（如守卫者激光、花瓣射击） */
-    public BaseFlailItem(@NotNull FlailComponent component, @NotNull ModRarity rarity,
-                         @Nullable Supplier<FlailStrategy> strategySupplier) {
-        super(new Properties().stacksTo(1), rarity, "");
-        this.component = component;
-        this.strategySupplier = strategySupplier;
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
-        // 注册属性修饰器，使物品栏主手下方显示攻击伤害/攻速
-        addAttributeModifiers(builder -> builder
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
-                        component.damageFactor - 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_ID,
-                        component.spinSpeed - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
+    public BaseFlailItem(FlailComponent flailComponent, ModRarity rarity) {
+        super(new Properties()
+                        .stacksTo(1)
+                        .component(ModDataComponentTypes.FLAIL, flailComponent),
+                rarity,
+                "");
+        this.flailComponent = flailComponent;
     }
 
     public FlailComponent getComponent() {
-        return component;
-    }
-
-    /**
-     * 左键触发连枷状态机：
-     * <ul>
-     *   <li>无连枷 → 创建并开始 SPIN</li>
-     *   <li>SPIN 中 → 发射 THROWN</li>
-     *   <li>THROWN 中 → 掉落 STAY</li>
-     *   <li>STAY 中 → 收回 RETRACT</li>
-     * </ul>
-     */
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context,
-                                 @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-        FlailComponent comp = component;
-
-        tooltipComponents.add(Component.translatable("tooltip.confluence.flail.spin_speed")
-                .append(": " + String.format("%.1f", comp.spinSpeed))
-                .withColor(0x57cdfb));
-        tooltipComponents.add(Component.translatable("tooltip.confluence.flail.max_distance")
-                .append(": " + String.format("%.1f", comp.maxDistance))
-                .withColor(0x57cdfb));
+        return flailComponent;
     }
 
     @Override
@@ -97,147 +57,138 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         return InteractionResultHolder.pass(player.getItemInHand(hand));
     }
 
-    /** 连枷状态机核心逻辑：创建或推进连枷。子类（如 FlaironItem）可复用。 */
-    protected void useFlail(Level level, Player player, ItemStack stack) {
-        FlailComponent comp = getComponent();
+    /// 按下主动作键时创建链锤，或让已投出与回收中的链锤落入停留阶段。
+    public static void press(Player player, ItemStack stack) {
+        FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
+        if (component == null) {
+            return;
+        }
         BaseFlailEntity existing = findExistingFlail(player);
-
-        if (existing == null) {
-            spawnFlail(level, player, stack, comp, comp.launchMode || isProjectileMode(stack));
-        } else {
-            // 同步 ItemStack 模式到现有实体
-            existing.setLaunchMode(comp.launchMode || isProjectileMode(stack));
-            switch (existing.getPhase()) {
-                case BaseFlailEntity.PHASE_SPIN -> existing.launch(player);
-                case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT -> existing.playerDrop();
-                case BaseFlailEntity.PHASE_STAY -> existing.forceRetract();
-                default -> {}
+        if (existing != null) {
+            if (existing.getPhase() == BaseFlailEntity.PHASE_THROWN || existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
+                existing.playerDrop();
             }
+            return;
+        }
+
+        spawnFlail(player, stack, component);
+    }
+
+    /// 松开主动作键时投出旋转中的链锤，或收回停留中的链锤。
+    public static void release(Player player, ItemStack stack) {
+        FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
+        BaseFlailEntity existing = findExistingFlail(player);
+        if (component == null || existing == null) {
+            return;
+        }
+        if (existing.getPhase() == BaseFlailEntity.PHASE_SPIN) {
+            existing.launch(player);
+            player.getCooldowns().addCooldown(stack.getItem(), component.getCooldown(player));
+        } else if (existing.getPhase() == BaseFlailEntity.PHASE_STAY) {
+            existing.forceRetract();
+        } else if (existing.getPhase()
+                == BaseFlailEntity.PHASE_RETRACT) {
+            existing.playerDrop();
         }
     }
 
-    /**
-     * 创建并生成一枚连枷实体，不检查同主人是否已有连枷。
-     *
-     * @param launch true 使用 {@link BaseFlailEntity#initLaunch}（跳过 SPIN/STAY，直接沿视线射出）
-     * @return 生成的连枷实体；找不到注册实体类型或类型不匹配时返回 {@code null}
-     */
-    @Nullable
-    protected BaseFlailEntity spawnFlail(Level level, Player player, ItemStack stack, FlailComponent comp, boolean launch) {
-        EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(comp.projType);
+    /// 查找当前玩家唯一仍在世界中的链锤实体。
+    public static @Nullable BaseFlailEntity findExistingFlail(Player player) {
+        return player.level().getEntitiesOfClass(BaseFlailEntity.class, player.getBoundingBox().inflate(30.0), entity -> entity.getOwner() == player)
+                .stream()
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static @Nullable BaseFlailEntity spawnFlail(Player player, ItemStack stack, FlailComponent component) {
+        if (!(stack.getItem() instanceof BaseFlailItem item)) return null;
+        EntityType<?> entityType = item.getFlailEntityType(component);
         if (entityType == null) return null;
-        Entity entity = entityType.create(level);
+        Entity entity = entityType.create(player.level());
         if (!(entity instanceof BaseFlailEntity flail)) return null;
 
-        if (launch) {
-            flail.initLaunch(player, stack, comp);
+        if (component.behavior().launchMode() || item.isProjectileMode(stack)) {
+            flail.initLaunch(player, stack, component);
         } else {
-            flail.init(player, stack, comp);
+            flail.init(player, stack, component);
         }
-
-        FlailStrategy strategy = getAttackStrategy();
-        if (strategy != null) {
-            flail.setAttackStrategy(strategy);
-        }
-        level.addFreshEntity(flail);
-        level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                comp.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        player.level().addFreshEntity(flail);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), component.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
         return flail;
     }
 
-    /**
-     * 是否为自动挥舞类连枷：按住攻击键时由客户端持续发送攻击请求。
-     * <p>由 {@link FlailComponent#autoSwing} 驱动（铁链血滴子、石巨人之拳、致胜炮）。
-     */
+    protected @Nullable EntityType<?> getFlailEntityType(FlailComponent component) {
+        return BuiltInRegistries.ENTITY_TYPE.get(component.projType());
+    }
+
     public boolean isAutoSwing() {
-        return getComponent().autoSwing;
+        return flailComponent.behavior().autoSwing();
     }
 
-    /**
-     * 当前是否可以发起一次自动挥舞：不在冷却中，且未达到同时存在的射弹上限。
-     * <p>客户端与服务端使用同一判定，客户端据此减少无效请求。
-     */
-    public boolean canAutoSwing(Player player) {
-        if (player.getCooldowns().isOnCooldown(this)) return false;
-        FlailComponent comp = getComponent();
-        return comp.autoSwingMaxActive <= 0 || countActiveFlails(player, comp) < comp.autoSwingMaxActive;
-    }
-
-    /**
-     * 统计该玩家当前由本武器生成的活跃连枷数量。
-     */
-    protected int countActiveFlails(Player player, FlailComponent comp) {
-        return player.level().getEntitiesOfClass(BaseFlailEntity.class,
-                player.getBoundingBox().inflate(comp.maxDistance + 2),
-                e -> e.getOwner() == player && e.getComponent() == comp
-        ).size();
-    }
-
-    /**
-     * 自动挥舞的一次攻击：冷却结束且未达到同时存在上限时射出一枚新的连枷实体。
-     * <p>与 {@link #useFlail} 不同，此方法不复用已有的连枷实体，因此多枚射弹可以同时存在。
-     * 组件 {@link FlailComponent#autoSwingInterval} 为 0 时不施加冷却，射速完全由射弹回收时机决定。
-     *
-     * @return 是否成功发射
-     */
-    public boolean tryAutoSwing(ServerPlayer player, ItemStack stack) {
-        FlailComponent comp = getComponent();
-        if (!canAutoSwing(player)) return false;
-
-        if (spawnFlail(player.level(), player, stack, comp, comp.launchMode || isProjectileMode(stack)) == null) {
-            return false;
-        }
-
-        int interval = comp.getAutoSwingInterval(player);
-        if (interval > 0) {
-            player.getCooldowns().addCooldown(this, interval);
-        }
-        player.swing(InteractionHand.MAIN_HAND, true);
-        return true;
-    }
-
-    /** 子类覆盖以支持模式切换（如 FlaironItem），默认返回 false */
     public boolean isProjectileMode(ItemStack stack) {
         return false;
     }
 
-    @Nullable
-    protected static BaseFlailEntity findExistingFlail(Player player) {
-        return player.level().getEntitiesOfClass(BaseFlailEntity.class,
-                player.getBoundingBox().inflate(30),
-                e -> e.getOwner() == player
-        ).stream().findFirst().orElse(null);
+    public float getLaunchDamageRatio(ItemStack stack) {
+        return 1.0F;
     }
 
-    /**
-     * 返回此连枷物品绑定的攻击策略。
-     * 默认返回 {@code null}，表示使用实体自身的默认策略。
-     * 子类（如守卫者链球、猪鲨链球）可覆盖此方法返回专属策略实例。
-     * @return 攻击策略，null 表示不覆盖实体默认策略
-     */
-    @Nullable
-    public FlailStrategy getAttackStrategy() {
-        return strategySupplier != null ? strategySupplier.get() : null;
+    public boolean canAutoSwing(Player player) {
+        if (player.getCooldowns().isOnCooldown(this)) return false;
+        FlailComponent component = player.getMainHandItem().get(ModDataComponentTypes.FLAIL);
+        if (component == null) return false;
+        int maxActive = component.behavior().autoSwingMaxActive();
+        if (maxActive <= 0) return true;
+        return player.level().getEntitiesOfClass(
+                BaseFlailEntity.class,
+                player.getBoundingBox().inflate(component.maxDistance() + 2.0),
+                entity -> entity.getOwner() == player && component.equals(entity.getComponent())
+        ).size() < maxActive;
     }
 
-    /**
-     * 持有连枷时始终禁用挖掘
-     */
+    public boolean tryAutoSwing(ServerPlayer player, ItemStack stack) {
+        FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
+        if (component == null || !canAutoSwing(player) || spawnFlail(player, stack, component) == null) {
+            return false;
+        }
+        int interval = component.getAutoSwingInterval(player);
+        if (interval > 0) {
+            player.getCooldowns().addCooldown(this, interval);
+        }
+        return true;
+    }
+
+    /// 链锤实体成功造成伤害后的物品扩展点。
+    ///
+    /// 普通链锤保持空实现；拥有点燃、减益或附属弹幕的链锤通过具体物品子类覆盖。
+    /// 该回调只在服务端真实伤害成功后执行一次，不参与组件序列化。
+    public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
+    }
+
+    /// 持有连枷时始终禁用挖掘
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;
     }
 
-    // ── GeoItem 实现 ──
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
+        return true;
+    }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
+        return animationCache;
     }
 
+    /// 手持时仅由公共 Geo 渲染器绘制连枷手柄。
+    ///
+    /// 弹头和锁链属于世界中的连枷实体，不能再次作为完整物品贴在玩家手上；物品栏、掉落物
+    /// 与展示框仍由物品模型中的二维图标负责。
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {

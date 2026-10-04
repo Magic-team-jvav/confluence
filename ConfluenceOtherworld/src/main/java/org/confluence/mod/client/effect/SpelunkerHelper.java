@@ -32,12 +32,12 @@ import nowebsite.makertechno.the_trackers.api.component.ComponentBuilder;
 import nowebsite.makertechno.the_trackers.api.component.StaticComponent;
 import nowebsite.makertechno.the_trackers.core.track.TrackersMonitor;
 import nowebsite.makertechno.the_trackers.core.track.WorldSingletonTracker;
+import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
@@ -49,7 +49,6 @@ import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLO
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_FRUIT;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
-import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
 
 /// 方块探测类，处理矿物探测与危险方块探测
 public class SpelunkerHelper extends AbstractBufferManager {
@@ -528,10 +527,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     boolean east = !(player.level().getBlockState(blockPos.east()).getBlock() == self);
                     boolean west = !(player.level().getBlockState(blockPos.west()).getBlock() == self);
                     if (up || down || north || south || east || west)
-                        renderDebugBlock(buffer, blockPos, size, r, g, b, a, up, down, north, south, east, west);
+                        LibRenderUtils.renderDebugBlock(buffer, blockPos, size, r, g, b, a, up, down, north, south, east, west);
                 } else {
                     cachedPointers.values().forEach(controller -> controller.component.setVisible(false));
-                    renderDebugBlock(buffer, blockPos, size, r, g, b, a);
+                    LibRenderUtils.renderDebugBlock(buffer, blockPos, size, r, g, b, a);
                 }
             }
             centerCacheFrame.keySet().forEach(pos -> tryComputePointers(pos, target));

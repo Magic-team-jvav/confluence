@@ -14,8 +14,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -68,10 +67,10 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
             hitSet.add(entity.getUUID());
             this.damage -= deltaDamage;
-            VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate >= 3) {
                 if (random.nextBoolean()) {
-                    LibUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
+                    LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
                 }
                 discard();
             } else {
@@ -84,7 +83,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (random.nextBoolean()) {
-            LibUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
+            LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
         }
         discard();
     }

@@ -9,7 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 
 import java.util.List;

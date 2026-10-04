@@ -19,9 +19,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -38,7 +38,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     }
 
     public BaseManaStaffProjectileEntity(LivingEntity living, Variant variant) {
-        this(ModEntities.BASE_MANA_STAFF_PROJECTILE.get(), living, living.level(), variant);
+        this(ModEntities.BASE_MANA_STAFF.get(), living, living.level(), variant);
     }
 
     public BaseManaStaffProjectileEntity(EntityType<? extends BaseManaStaffProjectileEntity> entityType, LivingEntity living, Level level, Variant variant) {
@@ -121,7 +121,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         if (target.hurt(getDamageSource(), damage)) {
             float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
             if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
-                VectorUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
+                LibEntityUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
             }
             afterHurtTarget(target);
             return true;

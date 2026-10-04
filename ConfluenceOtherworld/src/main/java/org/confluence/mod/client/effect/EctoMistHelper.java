@@ -10,9 +10,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.confluence.mod.mixed.ILevelChunkSection;
-import org.confluence.mod.util.DynamicBiomeUtils;
 import software.bernie.geckolib.animation.EasingType;
 
 @EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
@@ -34,8 +33,7 @@ public class EctoMistHelper {
         }
         turnOn = true;
         if (player.level().getGameTime() % 40 == 2) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
-            effectiveTombstones = iSection == null ? 0 : iSection.confluence$getBlockCounts().tomb - iSection.confluence$getBlockCounts().sunflower;
+            effectiveTombstones = ModBlockCounters.effectiveTombstones(player.level(), player.blockPosition());
         }
         if (isGraveyard() && !minecraft.isPaused() && player.getRandom().nextInt(10) == 0) {
             player.level().addParticle(ModParticleTypes.ECTO_MIST.get(),

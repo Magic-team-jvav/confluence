@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.loot;
 
-import com.google.common.collect.Streams;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -23,27 +22,19 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.GamePhase;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
+import org.confluence.mod.common.loot.DifficultyChanceLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.TEEntities;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TEPetItems;
-import org.confluence.terraentity.init.item.TESummonItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -78,7 +69,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         LootPoolSingletonContainer.Builder<?> emptyWeight98 = EmptyLootItem.emptyItem().setWeight(98);
         LootPoolSingletonContainer.Builder<?> boneWeight2 = LootItem.lootTableItem(Items.BONE).setWeight(2);
 
-        add(TEBossEntities.EATER_OF_WORLDS.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/eater_of_worlds"), LootTable.lootTable()
+        add(BossEntities.EATER_OF_WORLDS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
@@ -89,7 +80,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(TEBossEntities.EATER_OF_WORLDS_SEGMENT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/eater_of_worlds_segment"), LootTable.lootTable()
+        add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
@@ -100,7 +91,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(TEMonsterEntities.VISUAL_NEURON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/visual_neuron"), LootTable.lootTable()
+        add(BossEntities.THE_DESTROYER_PROBE.get(), LootTable.lootTable());
+        add(BossEntities.LUNATIC_CULTIST_CLONE.get(), LootTable.lootTable());
+        add(MonsterEntities.VISUAL_NEURON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem())))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
@@ -111,12 +104,39 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(TEMonsterEntities.GOBLIN_SCOUT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_scout"), LootTable.lootTable()
+        add(MonsterEntities.GOBLIN_SCOUT.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.TATTERED_CLOTH).apply(count1To2)).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.ANTLION_SWARMER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/antlion_swarmer"), LootTable.lootTable()
+        add(MonsterEntities.JUNGLE_CREEPER.get(), LootTable.lootTable());
+        // 沙漠幽魂 缺少未加入物品：沙漠幽魂灯(Desert Spirit Lamp, 2.5%)、神灯诅咒(Djinn's Curse, 3.25%)、生命吞噬者(Eater Of Life, 0.67%)
+        add(MonsterEntities.DESERT_SPIRIT.get(), LootTable.lootTable());
+        add(MonsterEntities.WALL_CREEPER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.FRIED_EGG)).add(EmptyLootItem.emptyItem().setWeight(29)))
+        );
+        // 黑隐士 缺少未加入物品：毒刺法杖(Poison Staff, 2.5%)
+        add(MonsterEntities.BLACK_RECLUSE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SPIDER_FANG).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                        .when(() -> new DifficultyChanceLootItemCondition(0.5F, 0.9F)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.FRIED_EGG)).add(EmptyLootItem.emptyItem().setWeight(29)))
+        );
+        add(MonsterEntities.ANTLION.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2)).add(EmptyLootItem.emptyItem().setWeight(2)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2)).add(emptyWeight98))
+        );
+        add(MonsterEntities.ANTLION_LARVA.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE))
+                        .add(EmptyLootItem.emptyItem().setWeight(5))));
+        add(MonsterEntities.ANTLION_CHARGER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2)).add(emptyWeight98))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE).setWeight(2)).add(emptyWeight98))
+        );
+        add(MonsterEntities.ANTLION_SWARMER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(2))
@@ -130,7 +150,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_antlion_swarmer"), LootTable.lootTable()
+        add(MonsterEntities.GIANT_ANTLION_SWARMER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2).apply(random0To1))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
@@ -144,7 +164,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/anger_bones"), LootTable.lootTable()
+        add(MonsterEntities.ANGER_BONES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -158,7 +178,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BIG_ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_anger_bones"), LootTable.lootTable()
+        add(MonsterEntities.BIG_ANGER_BONES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -172,7 +192,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BIG_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_bones"), LootTable.lootTable()
+        add(MonsterEntities.BIG_BONES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -186,7 +206,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BIG_HELMET_ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_helmet_anger_bones"), LootTable.lootTable()
+        add(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -200,7 +220,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_muscle_anger_bones"), LootTable.lootTable()
+        add(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -214,7 +234,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.SHORT_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/short_bones"), LootTable.lootTable()
+        add(MonsterEntities.SHORT_BONES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -228,7 +248,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.DARK_CASTER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dark_caster"), LootTable.lootTable()
+        add(MonsterEntities.WATER_BOLT_MIMIC.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ManaWeaponItems.WATER_BOLT)).add(EmptyLootItem.emptyItem().setWeight(39)))
+        );
+        add(MonsterEntities.DARK_CASTER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -242,7 +265,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.CURSED_SKULL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cursed_skull"), LootTable.lootTable()
+        add(MonsterEntities.CURSED_SKULL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
@@ -260,7 +283,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(197))
                 )
         );
-        add(TEMonsterEntities.BLOOD_CRAWLER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blood_crawler"), LootTable.lootTable()
+        add(MonsterEntities.BLOOD_CRAWLER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -270,7 +293,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
-        add(TEMonsterEntities.BLOOD_ZOMBIE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blood_zombie"), LootTable.lootTable()
+        add(MonsterEntities.BLOOD_ZOMBIE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).setWeight(67).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(9933))
@@ -280,11 +303,23 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEPetItems.WALLET.get()).setWeight(5))
+                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get()).setWeight(5))
                         .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );
-        add(TEMonsterEntities.DRIPPLER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/drippler"), LootTable.lootTable()
+        // 僵尸新娘 缺少未加入物品：婚纱(Wedding Dress, 100%)
+        add(MonsterEntities.THE_BRIDE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR)).add(EmptyLootItem.emptyItem().setWeight(4)))
+        );
+        // 僵尸新郎 缺少未加入物品：大脑(Brain, 75%)（高顶礼帽、血泪已实现）
+        add(MonsterEntities.THE_GROOM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.TOP_HAT)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR))
+                        .add(EmptyLootItem.emptyItem().setWeight(4))
+                )
+        );
+        add(MonsterEntities.DRIPPLER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).setWeight(67).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(9933))
@@ -294,11 +329,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEPetItems.WALLET.get()).setWeight(5))
+                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get()).setWeight(5))
                         .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );
-        add(TEMonsterEntities.BLOODY_SPORE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bloody_spore"), LootTable.lootTable()
+        add(MonsterEntities.BLOODY_SPORE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.BLOOD_CLOT_POWDER)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
                 )
@@ -311,15 +346,38 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
-        add(TEMonsterEntities.CAVE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cave_bat"), batCommon()
+        add(MonsterEntities.CAVE_BAT.get(), batCommon()
         );
-        add(TEMonsterEntities.SPORE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spore_bat"), batCommon()
+        add(MonsterEntities.GIANT_BAT.get(), batCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.TRIFOLD_MAP))
+                        .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
+        // 巨型蝙蝠 缺少未加入物品：深度计(Depth Meter, 1%)（三折地图已实现）
+        // 装甲骷髅 缺少未加入物品：光束剑(Beam Sword, 0.67%)
+        add(MonsterEntities.ARMORED_SKELETON.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ARMOR_POLISH))
+                        .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
+        // 岩石巨人 缺少未加入物品：岩石巨人头(Rock Golem Head, 33.33%)
+        add(MonsterEntities.ROCK_GOLEM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.STONE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20)))));
+        // 狼人 缺少未加入物品：狼牙(Wolf Fang, 1.5%)
+        add(MonsterEntities.WEREWOLF.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.MOON_CHARM)).add(EmptyLootItem.emptyItem().setWeight(59)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ADHESIVE_BANDAGE))
+                        .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
+        // 夜明蝙蝠 缺少未加入物品：结晶(Crystallize, 0.67%)（苹果派、蝙蝠棍已实现）
+        add(MonsterEntities.ILLUMINANT_BAT.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.APPLE_PIE)).add(EmptyLootItem.emptyItem().setWeight(149)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.BAT_BAT)).add(EmptyLootItem.emptyItem().setWeight(299))));
+        add(MonsterEntities.LAVA_BAT.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.MAGMA_STONE)).add(EmptyLootItem.emptyItem().setWeight(49)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.BAT_BAT)).add(EmptyLootItem.emptyItem().setWeight(299))));
+        add(MonsterEntities.SPORE_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEBoomerangItems.SHROOMERANG).setWeight(5).setQuality(1))
+                        .add(LootItem.lootTableItem(BoomerangItems.SHROOMERANG).setWeight(5).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(195))
                 )
         );
-        add(TEMonsterEntities.SPORE_ZOMBIE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spore_zombie"), LootTable.lootTable()
+        add(MonsterEntities.SPORE_ZOMBIE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
                 )
                 .withPool(LootPool.lootPool()
@@ -329,7 +387,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
                 )
         );
-        add(TEMonsterEntities.HAT_SPORE_ZOMBIE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hat_spore_zombie"), LootTable.lootTable()
+        add(MonsterEntities.HAT_SPORE_ZOMBIE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
                 )
                 .withPool(LootPool.lootPool()
@@ -339,7 +397,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
                 )
         );
-        add(TEMonsterEntities.SPORE_SKELETON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spore_skeleton"), LootTable.lootTable()
+        add(MonsterEntities.ZOMBIE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
+                )
+        );
+        add(MonsterEntities.SPORE_SKELETON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
                 )
@@ -352,7 +415,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9995))
                 )
         );
-        add(TEMonsterEntities.UNDEAD_VIKING.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/undead_viking"), LootTable.lootTable()
+        add(MonsterEntities.UNDEAD_VIKING.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
                 )
@@ -369,7 +432,34 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(96))
                 )
         );
-        add(TEMonsterEntities.CRIMERA.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimera"), LootTable.lootTable()
+        // 冰雪巨人 缺少未加入物品：冰雪羽(Ice Feather, 33.3%)
+        add(MonsterEntities.ICE_GOLEM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.FROST_CORE)))
+        );
+        // 装甲维京海盗 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（罗盘已实现）
+        add(MonsterEntities.ARMORED_VIKING.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS))
+                        .add(EmptyLootItem.emptyItem().setWeight(99)))
+        );
+        // 冰雪鱼人 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
+        add(MonsterEntities.ICY_MERMAN.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.MILKSHAKE).apply(random0To1))
+                        .add(EmptyLootItem.emptyItem().setWeight(74)))
+        );
+        // 冰雪精 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
+        add(MonsterEntities.ICE_ELEMENTAL.get(), LootTable.lootTable());
+        // 冰雪陆龟 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（龟壳、奶昔已实现）
+        add(MonsterEntities.ICE_TORTOISE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.FROZEN_TURTLE_SHELL).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.MILKSHAKE).apply(random0To1))
+                        .add(EmptyLootItem.emptyItem().setWeight(74)))
+        );
+        add(MonsterEntities.CRIMERA.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -383,7 +473,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
-        add(TEMonsterEntities.FACE_MONSTER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/face_monster"), LootTable.lootTable()
+        add(MonsterEntities.FACE_MONSTER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -393,7 +483,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
-        add(TEMonsterEntities.DECAYEDER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/decayeder"), LootTable.lootTable()
+        add(MonsterEntities.DECAYEDER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -406,7 +496,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
-        add(TEMonsterEntities.DEMON_EYE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/demon_eye"), LootTable.lootTable()
+        add(MonsterEntities.DEMON_EYE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.LENS).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -416,7 +506,15 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
-        add(TEMonsterEntities.DEVOURER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/devourer"), LootTable.lootTable()
+        // 僵尸鱼人 缺少未加入物品：血雨弓(Blood Rain Bow, 12.5%)、钱币槽(Money Trough, 6.67%)、鱼饵桶(Chum Bucket, 50%)
+        add(MonsterEntities.ZOMBIE_MERMAN.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF)).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FishingPoleItems.CHUM_CASTER)).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR)).add(EmptyLootItem.emptyItem().setWeight(24))));
+        add(MonsterEntities.WANDERING_EYE_FISH.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF)).add(EmptyLootItem.emptyItem().setWeight(7)))
+        );
+        add(MonsterEntities.DEVOURER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).apply(count1To2).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -429,33 +527,42 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
-        add(TEMonsterEntities.DUNGEON_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dungeon_slime"), LootTable.lootTable()
+        add(MonsterEntities.DUNGEON_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY)).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.HONEY_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/honey_slime"), LootTable.lootTable()
+        add(MonsterEntities.DUNGEON_SPIRIT.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ECTOPLASM)).apply(count1To2))
+        );
+        add(MonsterEntities.SWEET_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.HONEY_GUMMI)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 7))).apply(random3To4)
                 )
         );
-        add(TEMonsterEntities.GOLDEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/golden_slime"), LootTable.lootTable()
+        add(MonsterEntities.GOLDEN_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.GOLD_COIN)).apply(SetItemCountFunction.setCount(ConstantValue.exactly(15)))
                 )
         );
-        add(TEMonsterEntities.NYMPH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/nymph"), LootTable.lootTable()
+        add(MonsterEntities.NYMPH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.METAL_DETECTOR))
                 )
         );
-        add(TEMonsterEntities.SNATCHER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/snatcher"), LootTable.lootTable()
+        add(MonsterEntities.SNATCHER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.COFFEE).setWeight(333).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
-        add(TEMonsterEntities.MAN_EATER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/man_eater"), LootTable.lootTable()
+        add(MonsterEntities.FUNGI_BULB.get(), LootTable.lootTable());
+        add(MonsterEntities.GIANT_FUNGI_BULB.get(), LootTable.lootTable());
+        // 爬藤怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)（诅咒焰已实现，但缺专家掉率提升）
+        add(MonsterEntities.CLINGER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.CURSED_FLAME)).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FunctionalBlocks.MEAT_GRINDER)).add(EmptyLootItem.emptyItem().setWeight(199))));
+        add(MonsterEntities.MAN_EATER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.MAN_EATER_VINE)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem())
@@ -465,13 +572,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
-        add(TEMonsterEntities.FLYING_FISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/flying_fish"), LootTable.lootTable()
+        add(MonsterEntities.FLYING_FISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.FILAMENTOUS_FIN).setWeight(33).setQuality(1)).apply(count1To2).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
                 )
         );
-        add(TEMonsterEntities.EATER_OF_SOULS.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/eater_of_souls"), LootTable.lootTable()
+        add(MonsterEntities.EATER_OF_SOULS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -489,7 +596,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
-        add(TEMonsterEntities.GIANT_SHELLY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_shelly"), LootTable.lootTable()
+        add(MonsterEntities.GIANT_SHELLY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(123))
                         .add(EmptyLootItem.emptyItem().setWeight(9877))
@@ -503,11 +610,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9867))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(667))
+                        .add(LootItem.lootTableItem(YoyoItems.RALLY).setWeight(667))
                         .add(EmptyLootItem.emptyItem().setWeight(9333))
                 )
         );
-        add(TEMonsterEntities.CRAWDAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crawdad"), LootTable.lootTable()
+        add(MonsterEntities.CRAWDAD.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(123))
                         .add(EmptyLootItem.emptyItem().setWeight(9877))
@@ -521,17 +628,39 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9867))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(667))
+                        .add(LootItem.lootTableItem(YoyoItems.RALLY).setWeight(667))
                         .add(EmptyLootItem.emptyItem().setWeight(9333))
                 )
         );
-        add(TEMonsterEntities.GIANT_WORM.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_worm"), LootTable.lootTable()
+        add(MonsterEntities.GIANT_WORM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).setWeight(2))
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.HARPY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/harpy"), LootTable.lootTable()
+        // 挖掘怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、可疑苹果(Suspicious Looking Apple, 40%)
+        add(MonsterEntities.DIGGER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).setWeight(2))
+                        .add(emptyWeight98)
+                )
+        );
+        // 吞世怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)、吞世怪风筝(World Feeder Kite, 4%)、可疑苹果(Suspicious Looking Apple, 45%)
+        add(MonsterEntities.WORLD_FEEDER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.CURSED_FLAME))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
+                )
+        );
+        // 符文法师 缺少未加入物品：符文帽(Rune Hat, 100%)、符文长袍(Rune Robe, 100%)
+        add(MonsterEntities.RUNE_WIZARD.get(), LootTable.lootTable());
+        add(MonsterEntities.TIM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArmorItems.WIZARD_HAT)))
+        );
+        add(MonsterEntities.DOCTOR_BONES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.ARCHAEOLOGISTS_HAT)))
+        );
+        add(MonsterEntities.HARPY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.GIANT_HARPY_FEATHER))
                         .add(EmptyLootItem.emptyItem().setWeight(149))
@@ -545,29 +674,37 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.HELL_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hell_bat"), batCommon()
+        add(MonsterEntities.HELL_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.MAGMA_STONE).setWeight(34))
                         .add(EmptyLootItem.emptyItem().setWeight(966))
                 )
                 .withPool(LootPool.lootPool().when(afterSkeletronBehindWallOfFlesh)
-                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(LootItem.lootTableItem(YoyoItems.CASCADE))
                         .add(EmptyLootItem.emptyItem().setWeight(399))
                 )
         );
-        add(TEMonsterEntities.FIRE_IMP.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/fire_imp"), LootTable.lootTable()
+        add(MonsterEntities.FIRE_IMP.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE))
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool().when(afterSkeletronBehindWallOfFlesh)
-                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(LootItem.lootTableItem(YoyoItems.CASCADE))
                         .add(EmptyLootItem.emptyItem().setWeight(399))
                 )
         );
-        add(TEMonsterEntities.DEMON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/demon"), LootTable.lootTable()
+        add(MonsterEntities.ANGRY_TUMBLER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS)).add(EmptyLootItem.emptyItem().setWeight(29))));
+        add(MonsterEntities.WINDY_BALLOON.get(), LootTable.lootTable());
+        add(MonsterEntities.OLD_SHAKING_CHEST.get(), LootTable.lootTable());
+        add(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), LootTable.lootTable());
+        // 红魔鬼 缺少未加入物品：火焰羽(Fire Feather, 2%)、烈火之花(Flower of Fire, 3.33%)（热狗、邪恶三叉戟已实现）
+        add(MonsterEntities.RED_DEVIL.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.HOTDOG)).add(EmptyLootItem.emptyItem().setWeight(29))));
+        add(MonsterEntities.DEMON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().when(afterSkeletronBehindWallOfFlesh)
-                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(LootItem.lootTableItem(YoyoItems.CASCADE))
                         .add(EmptyLootItem.emptyItem().setWeight(399))
                 )
                 .withPool(LootPool.lootPool()
@@ -575,12 +712,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9714))
                 )
         );
-        add(TEMonsterEntities.VOODOO_DEMON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/voodoo_demon"), LootTable.lootTable()
+        add(MonsterEntities.VOODOO_DEMON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.GUIDE_VOODOO_DOLL))
                 )
                 .withPool(LootPool.lootPool().when(afterSkeletronBehindWallOfFlesh)
-                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(LootItem.lootTableItem(YoyoItems.CASCADE))
                         .add(EmptyLootItem.emptyItem().setWeight(399))
                 )
                 .withPool(LootPool.lootPool()
@@ -588,7 +725,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9714))
                 )
         );
-        add(TEMonsterEntities.HORNET.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hornet"), LootTable.lootTable()
+        // 青苔黄蜂 缺少未加入物品：破碎蜂翼(Tattered Bee Wing, 1%)（蜂刺、牛黄已实现）
+        add(MonsterEntities.MOSS_HORNET.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.STINGER)).add(EmptyLootItem.emptyItem().setWeight(5)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BEZOAR))
+                        .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
+        add(MonsterEntities.HORNET.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.STINGER)).apply(random0To1)
                 )
@@ -597,13 +739,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.ICE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_bat"), batCommon()
+        add(MonsterEntities.ICE_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.ICE_CREAM)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(149))
                 )
         );
-        add(TEMonsterEntities.SNOW_FLINX.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/snow_flinx"), LootTable.lootTable()
+        add(MonsterEntities.SNOW_FLINX.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
@@ -612,9 +754,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.FLINX_FUR)).apply(random0To1).apply(count1To2)
                 )
         );
-        add(TEMonsterEntities.JUNGLE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_bat"), batCommon()
+        add(MonsterEntities.JUNGLE_BAT.get(), batCommon()
         );
-        add(TEMonsterEntities.PIRANHA.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/piranha"), LootTable.lootTable()
+        add(MonsterEntities.PIRANHA.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(133))
                         .add(EmptyLootItem.emptyItem().setWeight(9867))
@@ -624,7 +766,31 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(967))
                 )
         );
-        add(TEMonsterEntities.SHARK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/shark"), LootTable.lootTable()
+        add(MonsterEntities.CORRUPT_GOLDFISH.get(), LootTable.lootTable());
+        add(MonsterEntities.VICIOUS_GOLDFISH.get(), LootTable.lootTable());
+        // 琵琶鱼 缺少未加入物品：机器人帽(Robot Hat, 0.4%)（粘性绷带已实现）
+        add(MonsterEntities.ANGLER_FISH.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.ROBOT_HAT)).add(EmptyLootItem.emptyItem().setWeight(249)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ADHESIVE_BANDAGE))
+                        .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F)))
+        );
+        // 沙鲨 / 腐化沙鲨 / 猩红沙鲨 / 神圣沙鲨 缺少未加入物品：沙鲨风筝(Sand Shark Kite, 4%)
+        add(MonsterEntities.SAND_SHARK.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN)).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS)).add(EmptyLootItem.emptyItem().setWeight(29))));
+        add(MonsterEntities.BONE_BITER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN)).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS)).add(EmptyLootItem.emptyItem().setWeight(29)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.DARK_SHARD)).add(EmptyLootItem.emptyItem().setWeight(24))));
+        add(MonsterEntities.FLESH_REAVER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN)).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS)).add(EmptyLootItem.emptyItem().setWeight(29)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.DARK_SHARD)).add(EmptyLootItem.emptyItem().setWeight(24))));
+        add(MonsterEntities.CRYSTAL_THRESHER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN)).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS)).add(EmptyLootItem.emptyItem().setWeight(29)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD)).add(EmptyLootItem.emptyItem().setWeight(24))));
+        add(MonsterEntities.SHARK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY).setWeight(2))
                         .add(emptyWeight98)
@@ -634,12 +800,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.SHARK_FIN).setWeight(19))
                 )
         );
-        add(TEMonsterEntities.TOMB_CRAWLER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tomb_crawler"), LootTable.lootTable()
+        add(MonsterEntities.TOMB_CRAWLER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL)).apply(count1To2).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BONE_SERPENT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bone_serpent"), LootTable.lootTable()
+        add(MonsterEntities.BONE_SERPENT.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BONE_BLOCK)).apply(count1To2).apply(random0To1)
                 )
@@ -648,7 +814,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(667))
                 )
         );
-        add(TEMonsterEntities.WITHER_BONE_SERPENT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wither_bone_serpent"), LootTable.lootTable()
+        add(MonsterEntities.WITHER_BONE_SERPENT.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BONE_BLOCK)).apply(count1To2).apply(random0To1)
                 )
@@ -660,83 +826,167 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(667))
                 )
         );
-        add(TEMonsterEntities.ANGER_GOBLIN.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/anger_goblin"), goblinCommon()
+        add(MonsterEntities.ANGER_GOBLIN.get(), goblinCommon()
         );
-        add(TEMonsterEntities.GOBLIN_ARCHER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_archer"), goblinCommon()
+        add(MonsterEntities.GOBLIN_ARCHER.get(), goblinCommon()
         );
-        add(TEMonsterEntities.GOBLIN_PEON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_peon"), goblinCommon()
+        add(MonsterEntities.GOBLIN_PEON.get(), goblinCommon()
         );
-        add(TEMonsterEntities.GOBLIN_SORCERER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_sorcerer"), goblinCommon()
+        add(MonsterEntities.GOBLIN_SORCERER.get(), goblinCommon()
         );
-        add(TEMonsterEntities.GOBLIN_THIEF.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_thief"), goblinCommon()
+        // 哥布林术士 缺少未加入物品：暗影焰弓(Shadowflame Bow, 33.3%)、暗影焰巫术娃娃(Shadowflame Hex Doll, 33.3%)、暗影焰刀(Shadowflame Knife, 33.3%)
+        add(MonsterEntities.GOBLIN_WARLOCK.get(), goblinCommon());
+        add(MonsterEntities.SHADOWFLAME_APPARITION.get(), LootTable.lootTable());
+        add(MonsterEntities.GNOME.get(), LootTable.lootTable());
+        add(MonsterEntities.GOBLIN_THIEF.get(), goblinCommon()
         );
-        add(TEMonsterEntities.GOBLIN_WARRIOR.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_warrior"), goblinCommon()
+        add(MonsterEntities.GOBLIN_WARRIOR.get(), goblinCommon()
         );
-        add(TENpcEntities.MECHANIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/mechanic"), LootTable.lootTable()
+        // 海盗七怪（水手/私船海盗/神射手/弩手/船长/诅咒/鹦鹉）缺少未加入物品：钱币枪、桶式发射器、海盗法杖、弯刀、水手帽/眼罩/水手上衣/水手裤、金平台、船长帽、诅咒之眼等
+        add(MonsterEntities.PIRATE_DECKHAND.get(), pirateCommon(1));
+        add(MonsterEntities.PIRATE_DEADEYE.get(), pirateCommon(1));
+        add(MonsterEntities.PIRATE_CROSSBOWER.get(), pirateCommon(1));
+        add(MonsterEntities.PIRATE_CORSAIR.get(), pirateCommon(1));
+        add(MonsterEntities.PIRATE_CAPTAIN.get(), pirateCommon(4));
+        add(MonsterEntities.PIRATE_PARROT.get(), LootTable.lootTable());
+        add(MonsterEntities.PIRATES_CURSE.get(), LootTable.lootTable());
+        add(MonsterEntities.MARTIAN_PROBE.get(), LootTable.lootTable());
+        //火星人事件
+        add(MonsterEntities.MARTIAN_ENGINEER.get(), LootTable.lootTable());
+        add(MonsterEntities.MARTIAN_OFFICER.get(), LootTable.lootTable());
+        add(MonsterEntities.MARTIAN_WALKER.get(), LootTable.lootTable());
+        add(MonsterEntities.WALKER_WEAPON.get(), LootTable.lootTable());
+        add(MonsterEntities.TESLA_TURRET.get(), LootTable.lootTable());
+        add(MonsterEntities.RAY_GUNNER.get(), LootTable.lootTable());
+        add(MonsterEntities.SCUTLIX.get(), LootTable.lootTable());
+        add(NpcEntities.MECHANIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEBoomerangItems.COMBAT_WRENCH))
+                        .add(LootItem.lootTableItem(BoomerangItems.COMBAT_WRENCH))
                         .add(EmptyLootItem.emptyItem().setWeight(7))
                 )
         );
-        add(TENpcEntities.DYE_TRADER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dye_trader"), LootTable.lootTable()
+        add(NpcEntities.STYLIST.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.STYLISH_SCISSORS))
+                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                )
+        );
+        add(NpcEntities.DYE_TRADER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.EXOTIC_SCIMITAR))
                         .add(EmptyLootItem.emptyItem().setWeight(7))
                 )
         );
-        add(TENpcEntities.TRAVELING_MERCHANT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/traveling_merchant"), LootTable.lootTable()
+        add(NpcEntities.TRAVELING_MERCHANT.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(VanityArmorItems.PEDDLERS_HAT))
                 )
         );
-        add(TENpcEntities.CLOTHIER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/clothier"), LootTable.lootTable()
+        add(NpcEntities.CLOTHIER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(VanityArmorItems.CLOTHIERS_HAT))
                 )
         );
-        add(TEAnimals.DUCK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/duck"), LootTable.lootTable()
+        add(CritterEntities.CLOUD_SHEEP.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.MUTTON).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).apply(SmeltItemFunction.smelted().when(shouldSmeltLoot()))))
+        );
+        add(CritterEntities.GLOWING_MOOSHROOM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.BEEF).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(SmeltItemFunction.smelted().when(shouldSmeltLoot()))))
+        );
+        add(CritterEntities.CLUCKSHROOM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.FEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.CHICKEN).apply(SmeltItemFunction.smelted().when(shouldSmeltLoot()))))
+        );
+        add(CritterEntities.GLOWING_CLUCKSHROOM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.FEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.CHICKEN).apply(SmeltItemFunction.smelted().when(shouldSmeltLoot()))))
+        );
+        add(CritterEntities.DUCK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_DUCK).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
                         )
                 )
         );
-        add(TEAnimals.BIRD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bird"), LootTable.lootTable()
+        add(CritterEntities.BIRD.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
                         )
                 )
         );
-        add(TEAnimals.BLUE_JAY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_jay"), LootTable.lootTable()
+        add(CritterEntities.BLUE_JAY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
                         )
                 )
         );
-        add(TEAnimals.SQUIRREL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/squirrel"), LootTable.lootTable()
+        add(CritterEntities.SQUIRREL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
                         )
                 )
         );
-        add(TEAnimals.CARDINAL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cardinal"), LootTable.lootTable()
+        add(CritterEntities.RED_SQUIRREL.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(CritterEntities.CARDINAL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
                         )
                 )
         );
-        add(TEAnimals.BUNNY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bunny"), LootTable.lootTable()
+        add(CritterEntities.BUNNY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RABBIT).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
                         )
                 )
         );
-        add(TEAnimals.CRAB.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crab"), LootTable.lootTable()
+        add(CritterEntities.EXPLOSIVE_BUNNY.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.RABBIT).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(CritterEntities.CRAB.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY).setWeight(2))
                         .add(emptyWeight98).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.GRANITE_ELEMENTAL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/granite_elemental"), LootTable.lootTable()
+        add(CritterEntities.HOSTILE_BUNNY.get(), LootTable.lootTable());
+        add(CritterEntities.PENGUIN.get(), LootTable.lootTable());
+        add(CritterEntities.MYSTIC_FROG.get(), LootTable.lootTable());
+        add(CritterEntities.GOLDFISH.get(), LootTable.lootTable());
+        // 腐化企鹅 / 猩红企鹅 缺少未加入物品：Pedguin 套装（兜帽/夹克/裤子，各 0.67%）
+        add(MonsterEntities.CORRUPT_PENGUIN.get(), LootTable.lootTable());
+        add(MonsterEntities.VICIOUS_PENGUIN.get(), LootTable.lootTable());
+        add(CritterEntities.STINKBUG.get(), LootTable.lootTable());
+        add(CritterEntities.FIREFLY.get(), LootTable.lootTable());
+        add(CritterEntities.TRUFFLE_WORM.get(), LootTable.lootTable());
+        add(CritterEntities.BUGGY.get(), LootTable.lootTable());
+        add(CritterEntities.LIGHTNING_BUG.get(), LootTable.lootTable());
+        add(MonsterEntities.ANGRY_NIMBUS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ManaWeaponItems.NIMBUS_ROD)).add(EmptyLootItem.emptyItem().setWeight(14)))
+        );
+        add(MonsterEntities.ANGRY_DANDELION.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.DAYBLOOM).apply(count1To2))
+                        .add(EmptyLootItem.emptyItem())
+                )
+        );
+        // 花岗岩巨人 缺少未加入物品：晶洞(Geode, 5%)、夜视头盔(Night Vision Helmet, 3.3%)、响石(Snapping Stone, 1.25%)（花岗岩、意大利面已实现）
+        add(MonsterEntities.GRANITE_GOLEM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(NatureBlocks.GRANITE))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.SPAGHETTI).setWeight(2))
+                        .add(emptyWeight98)
+                )
+        );
+        add(MonsterEntities.GRANITE_ELEMENTAL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.SPAGHETTI).setWeight(2))
                         .add(emptyWeight98).apply(random0To1)
@@ -745,27 +995,42 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.METEOR_HEAD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/meteor_head"), LootTable.lootTable()
+        // 装甲步兵 缺少未加入物品：压力球(Stress Ball, 1%)、角斗士胸甲(Gladiator Breastplate, 4.76%)（标枪、角斗士头盔/护腿、短剑、钩爪、披萨已实现）
+        add(MonsterEntities.HOPLITE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PIZZA).setWeight(2)).add(emptyWeight98))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.JAVELIN)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 80)))).add(EmptyLootItem.emptyItem()))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_HELMET))
+                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_CHESTPLATE))
+                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_LEGGINGS))
+                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_BOOTS))
+                        .add(EmptyLootItem.emptyItem().setWeight(18)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.GLADIUS).setWeight(5)).add(EmptyLootItem.emptyItem().setWeight(95)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HOOK).setWeight(4)).add(EmptyLootItem.emptyItem().setWeight(96)))
+        );
+        add(MonsterEntities.METEOR_HEAD.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().when(beforeSkeletronBehindWallOfFlesh)
                         .add(LootItem.lootTableItem(MaterialItems.RAW_METEORITE).setWeight(2))
                         .add(emptyWeight98).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10644993));
-        add(TEMonsterEntities.DESERT_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/desert_slime"), slimeCommon(-2727));
-        add(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_dumpling_slime"), slimeCommon(-8470674)
+        add(MonsterEntities.BLUE_SLIME.get(), slimeCommon(-10644993));
+        add(MonsterEntities.DESERT_SLIME.get(), slimeCommon(-2727));
+        add(MonsterEntities.GREEN_DUMPLING_SLIME.get(), slimeCommon(-8470674)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get()))
                         .apply(random0To1)
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(TEMonsterEntities.GREEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_slime"), slimeCommon(-8470674));
-        add(TEMonsterEntities.PURPLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/purple_slime"), slimeCommon(-6326333));
-        add(TEMonsterEntities.RED_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/red_slime"), slimeCommon(-1079407));
-        add(TEMonsterEntities.YELLOW_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/yellow_slime"), slimeCommon(-871089));
-        add(TEMonsterEntities.JUNGLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_slime"), slimeCommon(-6570130));
-        add(TEMonsterEntities.ICE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_slime"), slimeCommon(-10628609)
+        add(MonsterEntities.GREEN_SLIME.get(), slimeCommon(-8470674));
+        add(MonsterEntities.PURPLE_SLIME.get(), slimeCommon(-6326333));
+        add(MonsterEntities.RED_SLIME.get(), slimeCommon(-1079407));
+        add(MonsterEntities.YELLOW_SLIME.get(), slimeCommon(-871089));
+        add(MonsterEntities.SLIMELING.get(), corruptionSlimeLoot(-6522185));
+        add(MonsterEntities.JUNGLE_SLIME.get(), slimeCommon(-6570130));
+        add(MonsterEntities.ICE_SLIME.get(), slimeCommon(-10628609)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
                         .apply(random0To1)
@@ -799,25 +1064,53 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
         );
-        add(TEMonsterEntities.BLACK_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/black_slime"), slimeCommon(-7697782)
+        // 岩浆史莱姆不携带额外物品也不掉落凝胶，只保留其独立的稀有史莱姆法杖掉落。
+        add(MonsterEntities.LAVA_SLIME.get(), LootTable.lootTable().withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF))
+                .add(EmptyLootItem.emptyItem().setWeight(7999))
+        ));
+        add(MonsterEntities.BLACK_SLIME.get(), slimeCommon(-7697782)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
-        add(TEMonsterEntities.TROPIC_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tropic_slime"), slimeCommon(-10644993)
+        // 史莱姆之母不携带随机物品，但保留凝胶、史莱姆法杖和指南针掉落。
+        add(MonsterEntities.MOTHER_SLIME.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(6999))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(random0To1)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -7697782))))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+        );
+        add(MonsterEntities.BABY_SLIME.get(), slimeCommon(-7697782)
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+        );
+        add(MonsterEntities.TROPIC_SLIME.get(), slimeCommon(-10644993)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.TROPICAL_FISH))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        add(TEMonsterEntities.PINK_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/pink_slime"), LootTable.lootTable()
+        add(MonsterEntities.PINK_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(NestedLootTable.lootTableReference(ModLootTables.SLIME_CARRY))
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setQuality(1))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
@@ -829,13 +1122,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 30)))
                 )
         );
-        add(TEMonsterEntities.SWAMP_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/swamp_slime"), LootTable.lootTable()
+        add(MonsterEntities.SWAMP_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(NestedLootTable.lootTableReference(ModLootTables.SLIME_CARRY))
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setQuality(1))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(6999))
                 )
                 .withPool(LootPool.lootPool()
@@ -848,36 +1141,36 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                 )
         );
-        add(TEMonsterEntities.SPIKED_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spiked_slime"), slimeCommon(-10644993)
+        add(MonsterEntities.SPIKED_SLIME.get(), slimeCommon(-10644993)
         );
-        add(TEMonsterEntities.SPIKED_ICE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spiked_ice_slime"), slimeCommon(-10628609)
+        add(MonsterEntities.SPIKED_ICE_SLIME.get(), slimeCommon(-10628609)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
                         .apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(933))
                 )
         );
-        add(TEMonsterEntities.SPIKED_JUNGLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spiked_jungle_slime"), slimeCommon(-6570130)
+        add(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), slimeCommon(-6570130)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.STINGER.get()))
                         .apply(random0To1)
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(TEMonsterEntities.BLUE_JELLYFISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_jellyfish"), LootTable.lootTable()
+        add(MonsterEntities.BLUE_JELLYFISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
-        add(TEMonsterEntities.PINK_JELLYFISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/pink_jellyfish"), LootTable.lootTable()
+        add(MonsterEntities.PINK_JELLYFISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
         // 肉后怪
-        add(TEMonsterEntities.WYVERN.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wyvern"), LootTable.lootTable()
+        add(MonsterEntities.WYVERN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.GOLD_COIN)).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))
                 )
@@ -885,7 +1178,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_FLIGHT)).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20))).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.PIXIE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/pixie"), LootTable.lootTable()
+        add(MonsterEntities.PIXIE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
                         .add(emptyWeight98)
@@ -898,13 +1191,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.PIXIE_DUST)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.WRAITH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wraith"), LootTable.lootTable()
+        add(MonsterEntities.WRAITH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.GREEN_JELLYFISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_jellyfish"), LootTable.lootTable()
+        // 血水母 缺少未加入物品：怪物肉(Monster Meat, 0.07%)
+        add(MonsterEntities.BLOOD_JELLY.get(), LootTable.lootTable());
+        add(MonsterEntities.FUNGO_FISH.get(), LootTable.lootTable());
+        add(MonsterEntities.GREEN_JELLYFISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).setWeight(2))
                         .add(emptyWeight98)
@@ -914,9 +1210,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
-        add(TEMonsterEntities.LUMINOUS_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/luminous_slime"), LootTable.lootTable()
+        add(MonsterEntities.LUMINOUS_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setQuality(14))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setQuality(14))
                         .add(EmptyLootItem.emptyItem().setWeight(9986))
                 )
                 .withPool(LootPool.lootPool()
@@ -930,7 +1226,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -4040988))))
                 )
         );
-        add(TEMonsterEntities.CRIMSLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimslime"), LootTable.lootTable()
+        add(MonsterEntities.CRIMSLIME.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(6999))
+                )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLINDFOLD).setWeight(2))
                         .add(emptyWeight98)
@@ -942,7 +1242,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -3386287))))
                 )
         );
-        add(TEMonsterEntities.CORRUPT_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/corrupt_slime"), LootTable.lootTable()
+        add(MonsterEntities.CORRUPT_SLIME.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(6999))
+                )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLINDFOLD).setWeight(2))
                         .add(emptyWeight98)
@@ -954,14 +1258,15 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -6522185))))
                 )
         );
+        add(MonsterEntities.WINGLESS_SLIMER.get(), corruptionSlimeLoot(-6522185));
         // 宝箱怪
-        add(TEMonsterEntities.WOODEN_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wooden_mimic"), mimicCommon()
+        add(MonsterEntities.WOODEN_MIMIC.get(), mimicCommon()
         );
-        add(TEMonsterEntities.GOLDEN_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/golden_mimic"), mimicCommon()
+        add(MonsterEntities.GOLDEN_MIMIC.get(), mimicCommon()
         );
-        add(TEMonsterEntities.SHADOW_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/shadow_mimic"), mimicCommon()
+        add(MonsterEntities.SHADOW_MIMIC.get(), mimicCommon()
         );
-        add(TEMonsterEntities.ICE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_mimic"), LootTable.lootTable()
+        add(MonsterEntities.ICE_MIMIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         // 冰雪弓
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FROST))
@@ -972,13 +1277,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         // todo秘密种子冰雪宝箱怪使用这个common
         /*
-        add(TEMonsterEntities.ICE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_mimic"),LootTable.lootTable()
+        add(MonsterEntities.ICE_MIMIC.get(),LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         // 玩具雪橇
                         // 冰雪弓
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES))
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG))
+                        .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE))
                         .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE))
                 )
@@ -987,7 +1292,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 ))
         );
         */
-        add(TEMonsterEntities.CRIMSON_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimson_mimic"), bigMimicCommon()
+        add(MonsterEntities.CRIMSON_MIMIC.get(), bigMimicCommon()
                 .withPool(LootPool.lootPool()
                         // 夺命杖
                         // 飞镖手枪
@@ -996,7 +1301,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.FLESH_KNUCKLES))
                 )
         );
-        add(TEMonsterEntities.CORRUPT_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/corrupt_mimic"), bigMimicCommon()
+        add(MonsterEntities.CORRUPT_MIMIC.get(), bigMimicCommon()
                 .withPool(LootPool.lootPool()
                         // 爬藤怪法杖
                         // 飞镖步枪
@@ -1005,7 +1310,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.PUTRID_SCENT))
                 )
         );
-        add(TEMonsterEntities.HALLOWED_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hallowed_mimic"), bigMimicCommon()
+        add(MonsterEntities.HALLOWED_MIMIC.get(), bigMimicCommon()
                 .withPool(LootPool.lootPool()
                         // 飞刀
                         .add(LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_VILE_SHARD))
@@ -1013,7 +1318,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(HookItems.ILLUMINANT_HOOK))
                 )
         );
-        add(TEMonsterEntities.JUNGLE_MIMIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_mimic"), LootTable.lootTable()
+        add(MonsterEntities.JUNGLE_MIMIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FART_IN_A_JAR))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
@@ -1051,13 +1356,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2)
                         ))
         );
-        add(TEMonsterEntities.MUMMY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/mummy"), mummyCommon()
+        add(MonsterEntities.MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
-        add(TEMonsterEntities.DARK_MUMMY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dark_mummy"), mummyCommon()
+        add(MonsterEntities.DARK_MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLINDFOLD))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
@@ -1071,7 +1376,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
         );
-        add(TEMonsterEntities.BLOOD_MUMMY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blood_mummy"), mummyCommon()
+        add(MonsterEntities.BLOOD_MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLINDFOLD))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
@@ -1085,7 +1390,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
         );
-        add(TEMonsterEntities.LIGHT_MUMMY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/light_mummy"), mummyCommon()
+        add(MonsterEntities.LIGHT_MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.TRIFOLD_MAP))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
@@ -1095,16 +1400,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
         );
-        add(TEMonsterEntities.DERPLING.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/derpling"), LootTable.lootTable()
+        add(MonsterEntities.DERPLING.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.GRAPE).setWeight(25))
                         .apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(975))
                 )
         );
-        add(TEMonsterEntities.GHOUL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ghoul"), ghoulCommon()
+        // 蛇蜥怪 缺少未加入物品：远古号角(Ancient Horn, 2%)（坚固化石已实现）
+        add(MonsterEntities.BASILISK.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))));
+        add(MonsterEntities.GHOUL.get(), ghoulCommon()
         );
-        add(TEMonsterEntities.VILE_GHOUL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/vile_ghoul"), ghoulCommon()
+        add(MonsterEntities.VILE_GHOUL.get(), ghoulCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD))
                         .add(EmptyLootItem.emptyItem().setWeight(9))
@@ -1119,7 +1427,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        add(TEMonsterEntities.TAINTED_GHOUL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tainted_ghoul"), ghoulCommon()
+        add(MonsterEntities.TAINTED_GHOUL.get(), ghoulCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD))
                         .add(EmptyLootItem.emptyItem().setWeight(9))
@@ -1134,7 +1442,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        add(TEMonsterEntities.DREAMER_GHOUL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dreamer_ghoul"), ghoulCommon()
+        add(MonsterEntities.DREAMER_GHOUL.get(), ghoulCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).setWeight(667))
                         .add(EmptyLootItem.emptyItem().setWeight(9333))
@@ -1145,24 +1453,66 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        add(TEMonsterEntities.DREAMER_GHOUL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dreamer_ghoul"), ghoulCommon()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).setWeight(667))
-                        .add(EmptyLootItem.emptyItem().setWeight(9333))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ICHOR))
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
-                )
-        );
-        add(TEMonsterEntities.SAND_POACHER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/sand_poacher"), LootTable.lootTable()
+        add(MonsterEntities.SAND_POACHER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.FRIED_EGG).setWeight(333))
                         .apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
+        add(MonsterEntities.GIANT_TORTOISE.get(), LootTable.lootTable().withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.TURTLE_SHELL).setWeight(833))
+                        .add(EmptyLootItem.emptyItem().setWeight(9167))
+                )
+        );
+        add(MonsterEntities.GIANT_FLYING_FOX.get(), batCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.GRAPE))
+                        .add(EmptyLootItem.emptyItem().setWeight(39))
+                ));
+        add(MonsterEntities.CORRUPTOR.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1)).apply(random0To1)
+                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.VITAMINS).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+        );
+        add(MonsterEntities.SLIMER.get(), LootTable.lootTable());
+        add(MonsterEntities.BLOOD_FEEDER.get(), LootTable.lootTable());
+        add(MonsterEntities.UNICORN.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.UNICORN_HORN)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MountItems.BLESSED_APPLE))
+                        .when(() -> new DifficultyChanceLootItemCondition(1.0F / 40.0F, 1.0F / 30.0F))));
+        add(MonsterEntities.GASTROPOD.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
+                        .apply(random0To1)));
+        // 混沌精 缺少未加入物品：混乱之杖(Rod of Discord, 0.25%)（苹果派已实现，需要补 0.67% 概率）
+        add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable()
+                // 混沌传送杖
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.APPLE_PIE).setWeight(67))
+                        .add(EmptyLootItem.emptyItem().setWeight(9933)).apply(random0To1)
+                )
+        );
+        add(MonsterEntities.ENCHANTED_SWORD.get(), LootTable.lootTable());
+        add(MonsterEntities.PALADIN.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.PALADINS_SHIELD))
+                        .add(EmptyLootItem.emptyItem().setWeight(14))));
+        add(MonsterEntities.BONE_LEE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BLACK_BELT))
+                        .add(EmptyLootItem.emptyItem().setWeight(11))));
+        // 死灵法师 缺少未加入物品：暗影束法杖(Shadowbeam Staff, 9.75%)
+        add(MonsterEntities.NECROMANCER.get(), LootTable.lootTable());
+        add(MonsterEntities.DIABOLIST.get(), LootTable.lootTable());
+        add(MonsterEntities.RAGGED_CASTER.get(), LootTable.lootTable());
+        add(MonsterEntities.ARCH_WYVERN.get(), LootTable.lootTable());
         LootPool.Builder rainbowSheep = LootPool.lootPool()
                 .add(LootItem.lootTableItem(Items.MUTTON)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
@@ -1268,7 +1618,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setQuality(1))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(6999))
                 )
                 .withPool(LootPool.lootPool()
@@ -1277,6 +1627,38 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                         .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", gelColor))))
                 );
+    }
+
+    /**
+     * 腐化、猩红和恶翼史莱姆族系共用凝胶、黑暗免疫饰品与史莱姆法杖掉落。
+     */
+    private LootTable.Builder corruptionSlimeLoot(int gelColor) {
+        EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(6999))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(random0To1)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
+                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", gelColor))))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                );
+    }
+
+    private static LootTable.Builder pirateCommon(int multiplier) {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.LUCKY_COIN))
+                        .when(LootItemRandomChanceCondition.randomChance(0.0005F * multiplier)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.DISCOUNT_CARD))
+                        .when(LootItemRandomChanceCondition.randomChance(0.001F * multiplier)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.GOLD_RING))
+                        .when(LootItemRandomChanceCondition.randomChance(0.002F * multiplier)));
     }
 
     private LootTable.Builder goblinCommon() {
@@ -1292,10 +1674,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
 
     @Override
     protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
-        return Streams.concat(
-                ModEntities.ENTITIES.getEntries().stream(),
-                TEEntities.getEntities().map(DeferredRegister::getEntries).flatMap(Collection::stream)
-        ).map(DeferredHolder::get);
+        return Stream.of(ModEntities.ENTITIES, BossEntities.ENTITIES, CritterEntities.ENTITIES, MonsterEntities.ENTITIES, NpcEntities.ENTITIES)
+                .map(DeferredRegister::getEntries).flatMap(Collection::stream).map(DeferredHolder::get);
     }
 
     @Override

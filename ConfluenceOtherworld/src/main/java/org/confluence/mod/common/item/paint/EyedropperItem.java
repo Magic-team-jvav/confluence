@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import org.confluence.mod.common.attachment.ChunkBrushData;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.init.item.PaintItems;
 
 public class EyedropperItem extends Item {

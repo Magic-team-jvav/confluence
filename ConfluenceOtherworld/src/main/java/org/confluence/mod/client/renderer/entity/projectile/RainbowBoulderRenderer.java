@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.projectile.boulder.RainbowBoulderEntity;
-import org.confluence.terra_guns.client.init.TGRenderTypes;
 import org.joml.Matrix4f;
 
 import java.util.List;
@@ -40,7 +40,7 @@ public class RainbowBoulderRenderer extends BoulderRenderer<RainbowBoulderEntity
 
         poseStack.pushPose();
         Matrix4f matrix4f = poseStack.last().pose();
-        VertexConsumer buffer = bufferSource.getBuffer(TGRenderTypes.coloredTrail());
+        VertexConsumer buffer = bufferSource.getBuffer(RenderStateShardAccessor.TRAIL_RENDER_TYPE);
 
         Minecraft mc = Minecraft.getInstance();
         Vec3 camDir = new Vec3(mc.gameRenderer.getMainCamera().getLookVector());

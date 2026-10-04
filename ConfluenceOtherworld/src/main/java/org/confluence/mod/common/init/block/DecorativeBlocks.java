@@ -39,6 +39,9 @@ public class DecorativeBlocks {
 
     public static final DeferredBlock<LostPaperBlock> LOST_PAPER_BLOCK = registerWithItem("lost_paper", LostPaperBlock::new);
 
+    public static final DeferredBlock<GardenGnomeBlock> GARDEN_GNOME = registerWithItem("garden_gnome", () -> new GardenGnomeBlock(BlockBehaviour.Properties.ofFullCopy(STONE).strength(0.5F).noOcclusion()));
+    public static final Supplier<BlockEntityType<GardenGnomeBlock.BEntity>> GARDEN_GNOME_ENTITY = ModBlocks.BLOCK_ENTITIES.register("garden_gnome", () -> BlockEntityType.Builder.of(GardenGnomeBlock.BEntity::new, GARDEN_GNOME.get()).build(DSL.remainderType()));
+
     public static final DeferredBlock<CarvedPumpkinBlock> CARVED_WHITE_PUMPKIN = registerWithItem("carved_white_pumpkin", () -> new CarvedPumpkinBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).instrument(NoteBlockInstrument.DIDGERIDOO).strength(1.0F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<CarvedPumpkinBlock> JOHNNY_O_LANTERN = registerWithItem("johnny_o_lantern", () -> new CarvedPumpkinBlock(BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).mapColor(MapColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).lightLevel(p_187437_ -> 15).isValidSpawn(Blocks::always).pushReaction(PushReaction.DESTROY)));
 

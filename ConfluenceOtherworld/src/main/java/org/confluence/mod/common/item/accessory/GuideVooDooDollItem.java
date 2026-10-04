@@ -29,12 +29,13 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.entity.boss.HillOfFlesh;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terraentity.entity.boss.hillofflesh.HillOfFlesh;
-import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
-import org.confluence.terraentity.init.TESounds;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 
@@ -85,10 +86,6 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     @Override
     public void onDestroyed(ItemEntity itemEntity, DamageSource damageSource) {
         if (damageSource.is(DamageTypes.LAVA) && itemEntity.level() instanceof ServerLevel level) {
-            if (level.dimension() != OverworldUtils.underworld()) {
-                level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.confluence.guide_voo_doo_doll.fail").withStyle(ChatFormatting.RED), false);
-                return;
-            }
             CompoundTag tag = LibUtils.getItemStackNbtNoCopy(itemEntity.getItem());
             summon(itemEntity, level, isWall(tag), () -> tag.contains(DIRECTION_KEY) ? Direction.CODEC.parse(NbtOps.INSTANCE, tag.get(DIRECTION_KEY)).result().orElse(Direction.WEST) : null);
         }
@@ -117,8 +114,14 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     }
 
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
-        EntityType<WallOfFlesh> wof = TEBossEntities.WALL_OF_FLESH.get();
-        EntityType<HillOfFlesh> hof = TEBossEntities.HILL_OF_FLESH.get();
+        if (level.dimension() != OverworldUtils.underworld() && !CommonConfigs.ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD.get()) {
+            if (entity instanceof ItemEntity) {
+                level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.confluence.guide_voo_doo_doll.fail").withStyle(ChatFormatting.RED), false);
+            }
+            return;
+        }
+        EntityType<WallOfFlesh> wof = BossEntities.WALL_OF_FLESH.get();
+        EntityType<HillOfFlesh> hof = BossEntities.HILL_OF_FLESH.get();
         if (Streams.stream(level.getAllEntities()).anyMatch(entity1 -> {
             EntityType<?> type = entity1.getType();
             return type == wof || type == hof;
@@ -156,7 +159,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
             hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
         }
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
-            player.connection.send(new ClientboundSoundPacket(TESounds.WALL_OF_FLESH_ROAR, SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));
+            player.connection.send(new ClientboundSoundPacket(ModSoundEvents.WALL_OF_FLESH_ROAR, SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));
         }
     }
 

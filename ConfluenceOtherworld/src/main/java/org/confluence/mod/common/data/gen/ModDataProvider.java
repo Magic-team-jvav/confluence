@@ -17,11 +17,14 @@ import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.util.valueproviders.*;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
+import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -78,6 +81,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
 import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.natural.PalmLeaves;
@@ -88,6 +92,9 @@ import org.confluence.mod.common.enchantment.SummonItemEffect;
 import org.confluence.mod.common.enchantment.WindBurstEnchantments;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.BannedBiomeNoiseBasedChunkGenerator;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
@@ -96,8 +103,7 @@ import org.confluence.mod.common.worldgen.feature.*;
 import org.confluence.mod.common.worldgen.structure.*;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -106,7 +112,6 @@ import java.util.stream.Stream;
 
 public class ModDataProvider {
     public static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
             .add(Registries.BIOME, Biomes::boostrap)
             .add(Registries.PROCESSOR_LIST, ProcessorListz::bootstrap)
             .add(Registries.TEMPLATE_POOL, TemplatePools::bootstrap)
@@ -167,6 +172,9 @@ public class ModDataProvider {
     }
 
     public static class WorldPresetz {
+        public static final ResourceKey<WorldPreset> THE_CORRUPTION = Confluence.asResourceKey(Registries.WORLD_PRESET, "the_corruption");
+        public static final ResourceKey<WorldPreset> THE_CRIMSON = Confluence.asResourceKey(Registries.WORLD_PRESET, "the_crimson");
+
         private static void bootstrap(BootstrapContext<WorldPreset> context) {
             HolderGetter<DimensionType> dimensionType = context.lookup(Registries.DIMENSION_TYPE);
             HolderGetter<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterList = context.lookup(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST);
@@ -182,7 +190,7 @@ public class ModDataProvider {
                     noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.END)
             ));
 
-            context.register(Confluence.asResourceKey(Registries.WORLD_PRESET, "the_corruption"), new WorldPreset(Map.of(
+            context.register(THE_CORRUPTION, new WorldPreset(Map.of(
                     LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
                             overworldMultiNoiseBiomeSource,
                             overworldNoiseGeneratorSettings,
@@ -192,7 +200,7 @@ public class ModDataProvider {
                     LevelStem.NETHER, nether,
                     LevelStem.END, end
             )));
-            context.register(Confluence.asResourceKey(Registries.WORLD_PRESET, "the_crimson"), new WorldPreset(Map.of(
+            context.register(THE_CRIMSON, new WorldPreset(Map.of(
                     LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
                             overworldMultiNoiseBiomeSource,
                             overworldNoiseGeneratorSettings,
@@ -250,6 +258,7 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> DEMON_ALTAR = key("demon_altar");
         private static final ResourceKey<ConfiguredFeature<?, ?>> DESERT_FOSSIL = key("desert_fossil");
         private static final ResourceKey<ConfiguredFeature<?, ?>> FALLING_SAND_TRAP = key("falling_sand_trap");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> ANTLION_EGGS = key("antlion_eggs");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_CHESTS = key("cave_chests"); // 洞穴金箱
         private static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROUND_CHESTS = key("underground_chests"); // 地下木箱
         private static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_DROOPING_VINE = key("forest_drooping_vine");
@@ -601,6 +610,10 @@ public class ModDataProvider {
             register(context, THIN_ICE_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(3, 4, 32, 32, 0.5F, BlockStateProvider.simple(NatureBlocks.THIN_ICE_BLOCK.get())));
             register(context, POWDER_SNOW_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(0, 2, 10, 32, 0.3F, BlockStateProvider.simple(Blocks.POWDER_SNOW)));
             register(context, FALLING_SAND_TRAP, ModFeatures.FALLING_SAND_TRAP.get(), new FallingSandTrapFeature.Config(BlockStateProvider.simple(Blocks.SAND), 4, 4, 4, 16));
+            register(context, ANTLION_EGGS, Feature.RANDOM_PATCH, new RandomPatchConfiguration(24, 7, 3, direct(
+                    Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(NatureBlocks.ANTLION_EGGS.get())),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.matchesBlocks(Blocks.AIR),
+                            BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.SANDSTONE, Blocks.RED_SANDSTONE))))));
             register(context, CAVE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(ChestBlocks.GOLDEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/cave_chests")));
             register(context, UNDERGROUND_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(Blocks.CHEST.defaultBlockState(), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/underground_chests")));
             register(context, FOREST_DROOPING_VINE, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(NatureBlocks.FOREST_DROOPING_VINE.get()), false, 1, 9, Direction.DOWN, false));
@@ -830,6 +843,7 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> DEMON_ALTAR_WORLD = key("demon_altar_world");
         private static final ResourceKey<PlacedFeature> DESERT_FOSSIL = key("desert_fossil");
         private static final ResourceKey<PlacedFeature> FALLING_SAND_TRAP = key("falling_sand_trap");
+        private static final ResourceKey<PlacedFeature> ANTLION_EGGS = key("antlion_eggs");
         private static final ResourceKey<PlacedFeature> FOREST_POT = key("forest_pot");
         private static final ResourceKey<PlacedFeature> JUNGLE_POT = key("jungle_pot");
         private static final ResourceKey<PlacedFeature> CORRUPTION_POT = key("corruption_pot");
@@ -1013,6 +1027,7 @@ public class ModDataProvider {
             register(context, POWDER_SNOW_PATCH, configured.getOrThrow(ConfiguredFeatures.POWDER_SNOW_PATCH), RarityFilter.onAverageOnceEvery(2), inSquare, throughUnderground, biome);
             register(context, DESERT_FOSSIL, configured.getOrThrow(ConfiguredFeatures.DESERT_FOSSIL), count14, inSquare, bottomThroughTop, biome);
             register(context, FALLING_SAND_TRAP, configured.getOrThrow(ConfiguredFeatures.FALLING_SAND_TRAP), inSquare, bottomThroughUnderground, biome);
+            register(context, ANTLION_EGGS, configured.getOrThrow(ConfiguredFeatures.ANTLION_EGGS), CountPlacement.of(12), inSquare, bottomThroughUnderground, biome);
             register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -80), biome);
             register(context, FOREST_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.FOREST_DROOPING_VINE), CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.STONE), air, 12), ySpreadN1, biome);
             register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
@@ -1262,7 +1277,8 @@ public class ModDataProvider {
                     PlacedFeatures.AMBER_ORE
             ), GenerationStep.Decoration.UNDERGROUND_ORES);
             addFeatures(context, "desert_ud", desert, HolderSet.direct(factory,
-                    PlacedFeatures.FALLING_SAND_TRAP
+                    PlacedFeatures.FALLING_SAND_TRAP,
+                    PlacedFeatures.ANTLION_EGGS
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "desert_vd", desert, HolderSet.direct(factory,
                     PlacedFeatures.WATERLEAF
@@ -1376,138 +1392,185 @@ public class ModDataProvider {
             register(context, createModifierKey("common_beach"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_BEACH),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEAnimals.CRAB.get(), 7, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.TROPIC_SLIME.get(), 7, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 15, 1, 1)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.CRAB.get(), 7, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.TROPIC_SLIME.get(), 7, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_SCOUT.get(), 15, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_desert"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     desertBadlands,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEAnimals.SCORPION.get(), 15, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DESERT_SLIME.get(), 15, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.TOMB_CRAWLER.get(), 180, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANTLION_SWARMER.get(), 500, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.MUMMY.get(), 35, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GHOUL.get(), 35, 2, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SAND_POACHER.get(), 45, 1, 1)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.SCORPION.get(), 15, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DESERT_SLIME.get(), 15, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.TOMB_CRAWLER.get(), 180, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ANTLION_SWARMER.get(), 500, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.MUMMY.get(), 35, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GHOUL.get(), 35, 2, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SAND_POACHER.get(), 45, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     snowyIcy,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_BAT.get(), 140, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.UNDEAD_VIKING.get(), 140, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNOW_FLINX.get(), 130, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPIKED_ICE_SLIME.get(), 130, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_SLIME.get(), 15, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_MIMIC.get(), 6, 1, 1)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ICE_BAT.get(), 140, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.PENGUIN.get(), 10, 1, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.UNDEAD_VIKING.get(), 140, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SNOW_FLINX.get(), 130, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SPIKED_ICE_SLIME.get(), 130, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ICE_SLIME.get(), 15, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ICE_MIMIC.get(), 6, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_jungle"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     jungleAndLush,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HORNET.get(), 170, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_BAT.get(), 40, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_SLIME.get(), 40, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPIKED_JUNGLE_SLIME.get(), 100, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.MAN_EATER.get(), 150, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNATCHER.get(), 50, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIRANHA.get(), 40, 2, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ARAPAIMA.get(), 40, 2, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DERPLING.get(), 80, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1)
-                            // todo 仅 Celebrationmk10 和 Get fixed boi 世界生成 new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_MIMIC.get(), 3, 1, 1)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.MYSTIC_FROG.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.HORNET.get(), 170, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.JUNGLE_BAT.get(), 40, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.JUNGLE_SLIME.get(), 40, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), 100, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.MAN_EATER.get(), 150, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SNATCHER.get(), 50, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.PIRANHA.get(), 40, 2, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ARAPAIMA.get(), 40, 2, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DERPLING.get(), 80, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1)
+                            // todo 仅 Celebrationmk10 和 Get fixed boi 世界生成 new MobSpawnSettings.SpawnerData(MonsterEntities.JUNGLE_MIMIC.get(), 3, 1, 1)
 
                     )
             ));
             register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     overworld,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 3, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 3, 1, 1)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.NYMPH.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ARMORED_SKELETON.get(), 40, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ROCK_GOLEM.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GIANT_BAT.get(), 40, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WEREWOLF.get(), 40, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ANGLER_FISH.get(), 20, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.CORRUPT_GOLDFISH.get(), 20, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.VICIOUS_GOLDFISH.get(), 20, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BLOOD_JELLY.get(), 20, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.FUNGO_FISH.get(), 20, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.FUNGI_BULB.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GIANT_FUNGI_BULB.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.CLINGER.get(), 15, 1, 1),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.FAIRY.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.OLD_SHAKING_CHEST.get(), 1, 1, 1),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.GOLDFISH.get(), 10, 1, 3)
                     )
+            ));
+            register(context, createModifierKey("common_highlevel"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    overworld,
+                    List.of(new MobSpawnSettings.SpawnerData(MonsterEntities.HARPY.get(), 60, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), 1, 1, 1))
             ));
             register(context, createModifierKey("common_swamp"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_SWAMP),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SWAMP_SLIME.get(), 90, 1, 3)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SWAMP_SLIME.get(), 90, 1, 3)
                     )
             ));
             register(context, createModifierKey("only_forest"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_FOREST),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEAnimals.BUNNY.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.SQUIRREL.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.DUCK.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.BIRD.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.BLUE_JAY.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.CARDINAL.get(), 10, 1, 2)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BUNNY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.CLOUD_SHEEP.get(), 2, 2, 3),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.DUCK.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BIRD.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BLUE_JAY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.CARDINAL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.STINKBUG.get(), 5, 1, 3)
                     )
             ));
             register(context, createModifierKey("common_forest"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(ModTags.Biomes.IS_FOREST),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLACK_SLIME.get(), 60, 1, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 145, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 90, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRAWDAD.get(), 90, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_WORM.get(), 60, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), 30, 1, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 45, 3, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_SLIME.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PURPLE_SLIME.get(), 15, 1, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.RED_SLIME.get(), 45, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.YELLOW_SLIME.get(), 45, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON_EYE.get(), 65, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FLYING_FISH.get(), 60, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.BUNNY.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.SQUIRREL.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.DUCK.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.BIRD.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.BLUE_JAY.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.CARDINAL.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.SNAIL.get(), 10, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEAnimals.WORM.get(), 15, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_JELLYFISH.get(), 5, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_JELLYFISH.get(), 5, 1, 1)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BLACK_SLIME.get(), 60, 1, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.CAVE_BAT.get(), 145, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GIANT_SHELLY.get(), 90, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.CRAWDAD.get(), 90, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GIANT_WORM.get(), 60, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DIGGER.get(), 30, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.TIM.get(), 5, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.RUNE_WIZARD.get(), 1, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DOCTOR_BONES.get(), 1, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.THE_GROOM.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.THE_BRIDE.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ANGRY_DANDELION.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WINDY_BALLOON.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GNOME.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ANGRY_NIMBUS.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GREEN_DUMPLING_SLIME.get(), 30, 1, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GREEN_SLIME.get(), 45, 3, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.PINK_SLIME.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.PURPLE_SLIME.get(), 15, 1, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.RED_SLIME.get(), 45, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.YELLOW_SLIME.get(), 45, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DEMON_EYE.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WRAITH.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.FLYING_FISH.get(), 60, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BUNNY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.DUCK.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BIRD.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BLUE_JAY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.CARDINAL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.SNAIL.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.WORM.get(), 15, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BLUE_JELLYFISH.get(), 5, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GREEN_JELLYFISH.get(), 5, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_nether_wastes"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_NETHER),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 25, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 20, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 13, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BONE_SERPENT.get(), 1, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHADOW_MIMIC.get(), 1, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 7, 1, 1)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.LAVA_SLIME.get(), 25, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.HELL_BAT.get(), 20, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.LAVA_BAT.get(), 20, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.RED_DEVIL.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.FIRE_IMP.get(), 13, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BONE_SERPENT.get(), 1, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SHADOW_MIMIC.get(), 1, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DEMON.get(), 7, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_ocean"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_OCEAN),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_JELLYFISH.get(), 1, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHARK.get(), 1, 1, 1)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.PINK_JELLYFISH.get(), 1, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SHARK.get(), 1, 1, 1)
                     )
             ));
             register(context, createModifierKey("flower_forest"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_FLOWER_FOREST),
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEAnimals.BUTTERFLY.get(), 30, 1, 3)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BUTTERFLY.get(), 30, 1, 3)
                     )
             ));
+            register(context, createModifierKey("hallow_monsters"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(ModTags.Biomes.THE_HALLOW),
+                    List.of(new MobSpawnSettings.SpawnerData(MonsterEntities.CHAOS_ELEMENTAL.get(), 20, 1, 1), new MobSpawnSettings.SpawnerData(MonsterEntities.ILLUMINANT_BAT.get(), 30, 1, 2))
+            ));
+            register(context, createModifierKey("night_glow_bugs"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    overworld, List.of(new MobSpawnSettings.SpawnerData(CritterEntities.FIREFLY.get(), 5, 1, 5), new MobSpawnSettings.SpawnerData(CritterEntities.LIGHTNING_BUG.get(), 5, 1, 5))));
+            register(context, createModifierKey("truffle_worm"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    HolderSet.direct(biome.getOrThrow(ModBiomes.GLOWING_MUSHROOM)), List.of(new MobSpawnSettings.SpawnerData(CritterEntities.TRUFFLE_WORM.get(), 2, 1, 1))));
+            register(context, createModifierKey("mushroom_animals"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    HolderSet.direct(biome.getOrThrow(ModBiomes.GLOWING_MUSHROOM)), List.of(new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_MOOSHROOM.get(), 5, 2, 3), new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_CLUCKSHROOM.get(), 5, 2, 4))));
+            register(context, createModifierKey("cluckshroom"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    HolderSet.direct(biome.getOrThrow(net.minecraft.world.level.biome.Biomes.MUSHROOM_FIELDS)), List.of(new MobSpawnSettings.SpawnerData(CritterEntities.CLUCKSHROOM.get(), 8, 2, 4))));
         }
 
         private static void addFeatures(BootstrapContext<BiomeModifier> context, String path, HolderSet<Biome> biomes, HolderSet<PlacedFeature> features, GenerationStep.Decoration step) {
@@ -1537,11 +1600,12 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_CORRUPTION, new Biome.BiomeBuilder().hasPrecipitation(true).temperature(1).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-9030507).grassColorOverride(-9351806).skyColor(-10726554).fogColor(-10726554).waterColor(-12837542).waterFogColor(-11055776).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 30, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEVOURER.get(), 3, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DECAYEDER.get(), 30, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DEVOURER.get(), 3, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WORLD_FEEDER.get(), 9, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
@@ -1558,14 +1622,15 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_CORRUPTION_DESERT, new Biome.BiomeBuilder().temperature(2).downfall(0).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-9030507).grassColorOverride(-9351806).skyColor(-10726554).fogColor(-10726554).waterColor(-12837542).waterFogColor(-11055776).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 22, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEVOURER.get(), 3, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_MUMMY.get(), 35, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VILE_GHOUL.get(), 35, 2, 3))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DECAYEDER.get(), 22, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DEVOURER.get(), 3, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WORLD_FEEDER.get(), 9, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DARK_MUMMY.get(), 35, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.VILE_GHOUL.get(), 35, 2, 3))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1573,11 +1638,12 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_CORRUPTION_TUNDRA, new Biome.BiomeBuilder().temperature(0).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-9030507).grassColorOverride(-9351806).skyColor(-10726554).fogColor(-10726554).waterColor(-12837542).waterFogColor(-11055776).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 22, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEVOURER.get(), 3, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DECAYEDER.get(), 22, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DEVOURER.get(), 3, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WORLD_FEEDER.get(), 9, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CORRUPT_MIMIC.get(), 1, 1, 1))
                             .build())
                     .mobSpawnSettings(MobSpawnSettings.EMPTY)
                     .generationSettings(BiomeGenerationSettings.EMPTY)
@@ -1586,13 +1652,13 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_CRIMSON, new Biome.BiomeBuilder().hasPrecipitation(true).temperature(0.5F).downfall(0.5F)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-2282195).grassColorOverride(-4436402).skyColor(-8827314).fogColor(-8827314).waterColor(-7069664).waterFogColor(-7451572).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMERA.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HERPLING.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMERA.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMSLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HERPLING.get(), 60, 1, 1))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
@@ -1609,16 +1675,16 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_CRIMSON_DESERT, new Biome.BiomeBuilder().temperature(2).downfall(0).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-2282195).grassColorOverride(-4436402).skyColor(-8827314).fogColor(-8827314).waterColor(-7069664).waterFogColor(-7451572).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMERA.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_MUMMY.get(), 35, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HERPLING.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.TAINTED_GHOUL.get(), 35, 2, 3))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMERA.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMSLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BLOOD_MUMMY.get(), 35, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DARK_LAMIA.get(), 45, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HERPLING.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.TAINTED_GHOUL.get(), 35, 2, 3))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1626,13 +1692,13 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_CRIMSON_TUNDRA, new Biome.BiomeBuilder().temperature(0).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-2282195).grassColorOverride(-4436402).skyColor(-8827314).fogColor(-8827314).waterColor(-7069664).waterFogColor(-7451572).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMERA.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HERPLING.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMERA.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.FACE_MONSTER.get(), 60, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMSLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.CRIMSON_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HERPLING.get(), 60, 1, 1))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1640,9 +1706,9 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_HALLOW, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-16711703).grassColorOverride(-3999757).fogColor(-3346188).waterColor(-1554953).waterFogColor(-3345167).skyColor(-3346188).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIXIE.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.PIXIE.get(), 60, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1650,12 +1716,12 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_HALLOW_DESERT, new Biome.BiomeBuilder().temperature(2).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-16711703).grassColorOverride(-3999757).fogColor(-3347468).waterColor(-1554953).waterFogColor(-3345167).skyColor(-3346188).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIXIE.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_MUMMY.get(), 35, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DREAMER_GHOUL.get(), 35, 2, 3))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.PIXIE.get(), 60, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.LIGHT_MUMMY.get(), 35, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.LIGHT_LAMIA.get(), 45, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DREAMER_GHOUL.get(), 35, 2, 3))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1663,9 +1729,9 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_HALLOW_TUNDRA, new Biome.BiomeBuilder().temperature(0f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-16711703).grassColorOverride(-3999757).fogColor(-3347468).waterColor(-1554953).waterFogColor(-3345167).skyColor(-3346188).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIXIE.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.PIXIE.get(), 60, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.LUMINOUS_SLIME.get(), 35, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HALLOWED_MIMIC.get(), 1, 1, 1))
                             .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
@@ -1673,15 +1739,15 @@ public class ModDataProvider {
             context.register(ModBiomes.ASH_FOREST, new Biome.BiomeBuilder().hasPrecipitation(false).temperature(2).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(10387789).grassColorOverride(9470285).fogColor(-10541025).waterColor(-10541025).waterFogColor(4159204).skyColor(-4592650).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 10, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 4, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 25, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BONE_SERPENT.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 80, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHADOW_MIMIC.get(), 1, 1, 1))
-                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.MAGMA_SNAIL.get(), 20, 1, 2))  //todo 地狱中小动物生成
-                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.HELL_BUTTERFLY.get(), 20, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DEMON.get(), 10, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.VOODOO_DEMON.get(), 4, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.FIRE_IMP.get(), 25, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BONE_SERPENT.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HELL_BAT.get(), 60, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.LAVA_SLIME.get(), 80, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SHADOW_MIMIC.get(), 1, 1, 1))
+                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.MAGMA_SNAIL.get(), 20, 1, 2))  //todo 地狱中小动物生成
+                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.HELL_BUTTERFLY.get(), 20, 1, 2))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.FIREBLOSSOM);
@@ -1693,15 +1759,15 @@ public class ModDataProvider {
             context.register(ModBiomes.ASH_WASTELAND, new Biome.BiomeBuilder().hasPrecipitation(false).temperature(2).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(10387789).grassColorOverride(9470285).fogColor(-10541025).waterColor(-10541025).waterFogColor(4159204).skyColor(-4592650).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 15, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 5, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 20, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BONE_SERPENT.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 40, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 40, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHADOW_MIMIC.get(), 1, 1, 1))
-                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.MAGMA_SNAIL.get(), 20, 1, 2)) //todo 地狱中小动物生成
-                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.HELL_BUTTERFLY.get(), 20, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.DEMON.get(), 15, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.VOODOO_DEMON.get(), 5, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.FIRE_IMP.get(), 20, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.BONE_SERPENT.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HELL_BAT.get(), 40, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.LAVA_SLIME.get(), 40, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SHADOW_MIMIC.get(), 1, 1, 1))
+                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.MAGMA_SNAIL.get(), 20, 1, 2)) //todo 地狱中小动物生成
+                            // .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.HELL_BUTTERFLY.get(), 20, 1, 2))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, PlacedFeatures.ASH_HELLSTONE);
@@ -1711,13 +1777,13 @@ public class ModDataProvider {
             context.register(ModBiomes.GLOWING_MUSHROOM, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(12638463).waterColor(4159204).waterFogColor(329011).skyColor(12638463).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPORE_BAT.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.WOODEN_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOLDEN_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.GLOWING_SNAIL.get(), 10, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_BAT.get(), 60, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 1, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_SNAIL.get(), 10, 1, 2))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
@@ -2011,6 +2077,46 @@ public class ModDataProvider {
                             ))
                     .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.FLAIL_EXCLUSIVE))
             );
+            register(context, ModEnchantments.WHIP_SWEEP, Enchantment.enchantment(
+                    Enchantment.definition(
+                            item.getOrThrow(ModTags.Items.WHIP),
+                            2,
+                            1,
+                            Enchantment.dynamicCost(10, 8),
+                            Enchantment.dynamicCost(18, 8),
+                            4,
+                            EquipmentSlotGroup.MAINHAND
+                    ))
+            );
+            register(context, ModEnchantments.MULTI_BOOMERANG, Enchantment.enchantment(
+                    Enchantment.definition(
+                            item.getOrThrow(ModTags.Items.BOOMERANG),
+                            2,
+                            3,
+                            Enchantment.dynamicCost(10, 8),
+                            Enchantment.dynamicCost(18, 8),
+                            4,
+                            EquipmentSlotGroup.MAINHAND
+                    ))
+            );
+            register(context, ModEnchantments.SUMMONER_PACT, Enchantment.enchantment(
+                            Enchantment.definition(
+                                    item.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
+                                    2,
+                                    3,
+                                    Enchantment.dynamicCost(10, 8),
+                                    Enchantment.dynamicCost(18, 8),
+                                    4,
+                                    EquipmentSlotGroup.HEAD
+                            ))
+                    .withEffect(
+                            EnchantmentEffectComponents.ATTRIBUTES,
+                            new EnchantmentAttributeEffect(
+                                    Confluence.asResource("enchantment.summoner_pact"),
+                                    ConfluenceMagicLib.MINION_CAPACITY,
+                                    LevelBasedValue.perLevel(1, 0.5F),
+                                    AttributeModifier.Operation.ADD_VALUE))
+            );
         }
 
         private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {
@@ -2124,12 +2230,23 @@ public class ModDataProvider {
                     JigsawStructure.DEFAULT_DIMENSION_PADDING,
                     LiquidSettings.APPLY_WATERLOGGING
             ));
+            context.register(ModStructures.Keys.SPIDER_NEST, new SpiderNestStructure(new Structure.StructureSettings(overworld, Map.of(
+                    MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WALL_CREEPER.get(), 80, 2, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BLACK_RECLUSE.get(), 80, 2, 3)
+                    ))
+            ), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.GRANITE_CAVE, new GraniteCaveStructure(new Structure.StructureSettings(overworld, Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GRANITE_ELEMENTAL.get(), 30, 1, 1)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GRANITE_ELEMENTAL.get(), 30, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.GRANITE_GOLEM.get(), 30, 1, 1)
                     ))
             ), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
-            context.register(ModStructures.Keys.MARBLE_CAVE, new MarbleCaveStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
+            context.register(ModStructures.Keys.MARBLE_CAVE, new MarbleCaveStructure(new Structure.StructureSettings(overworld, Map.of(
+                    MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.HOPLITE.get(), 30, 1, 2)
+                    ))
+            ), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.DESERT_UNDERGROUND_CABINS, new JigsawStructure(
                     new Structure.StructureSettings(desertBadlands, Map.of(), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN),
                     templatePool.getOrThrow(TemplatePools.DESERT_UNDERGROUND_CABINS$DESERT_UNDERGROUND_CABINS),
@@ -2145,15 +2262,16 @@ public class ModDataProvider {
             ));
             context.register(ModStructures.Keys.DUNGEON, new DungeonStructure(new Structure.StructureSettings(notAquatic, Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_BONES.get(), 240, 8, 9),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_ANGER_BONES.get(), 240, 8, 9),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_BONES.get(), 240, 8, 9),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_HELMET_ANGER_BONES.get(), 240, 8, 9),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), 240, 8, 9),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHORT_BONES.get(), 240, 8, 9),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_CASTER.get(), 240, 2, 3),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CURSED_SKULL.get(), 200, 3, 4),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DUNGEON_SLIME.get(), 120, 1, 2)
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BIG_ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BIG_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.SHORT_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DARK_CASTER.get(), 240, 2, 3),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.WATER_BOLT_MIMIC.get(), 15, 1, 1),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.CURSED_SKULL.get(), 200, 3, 4),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.DUNGEON_SLIME.get(), 120, 1, 2)
                     ))
             ), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.DUNGEON_ALTAR, new JigsawStructure(
@@ -2184,7 +2302,7 @@ public class ModDataProvider {
             ));
             context.register(ModStructures.Keys.SHIMMER_LAKE, new ShimmerLakeStructure(new Structure.StructureSettings(overworld, Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
-                            new MobSpawnSettings.SpawnerData(TEAnimals.FEALING.get(), 30, 1, 2)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.FEALING.get(), 30, 1, 2)
                     ))
             ), GenerationStep.Decoration.VEGETAL_DECORATION, TerrainAdjustment.NONE)));
         }
@@ -2221,6 +2339,11 @@ public class ModDataProvider {
                     Optional.of(new StructurePlacement.ExclusionZone(villages, 8)),
                     34, 8,
                     RandomSpreadType.TRIANGULAR
+            )));
+            register(context, "spider_nest", new StructureSet(structure.getOrThrow(ModStructures.Keys.SPIDER_NEST), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    83512741, Optional.of(new StructurePlacement.ExclusionZone(villages, 8)),
+                    24, 10, RandomSpreadType.TRIANGULAR
             )));
             register(context, "caves", new StructureSet(List.of(
                     new StructureSet.StructureSelectionEntry(structure.getOrThrow(ModStructures.Keys.GRANITE_CAVE), 1),
@@ -2267,6 +2390,35 @@ public class ModDataProvider {
                     50, 30,
                     RandomSpreadType.TRIANGULAR
             )));
+            registerStructureSet(context, structure, structureSet, "enchanted_sword_shrine", ModStructures.Keys.ENCHANTED_SWORD_SHRINE, 22, 17, 80383093, SHIMMER_LAKE, 10);
+            registerStructureSet(context, structure, structureSet, "heaven_islands", ModStructures.Keys.HEAVEN_ISLANDS, 57, 1, 61782648, AIR, 16);
+            registerStructureSet(context, structure, structureSet, "ice_thorn", ModStructures.Keys.ICE_THORN, 24, 18, 46576271, BuiltinStructureSets.VILLAGES, 8);
+            registerStructureSet(context, structure, structureSet, "ice_underground_cabins", ModStructures.Keys.ICE_UNDERGROUND_CABINS, 5, 3, 52440119, SHIMMER_LAKE, 10);
+            registerStructureSet(context, structure, structureSet, "jungle_shrine", ModStructures.Keys.JUNGLE_SHRINE, 5, 3, 24802245, AIR, 10);
+            registerStructureSet(context, structure, structureSet, "jungle_underground_cabins", ModStructures.Keys.JUNGLE_UNDERGROUND_CABINS, 5, 3, 62840809, SHIMMER_LAKE, 10);
+            registerStructureSet(context, structure, structureSet, "living_mahogany_tree", ModStructures.Keys.LIVING_MAHOGANY_TREE, 26, 12, 59155800, BuiltinStructureSets.VILLAGES, 8);
+            registerStructureSet(context, structure, structureSet, "living_tree", ModStructures.Keys.LIVING_TREE, 30, 16, 88092714, BuiltinStructureSets.VILLAGES, 8);
+            registerStructureSet(context, structure, structureSet, "mine_tunnels", ModStructures.Keys.MINE_TUNNELS, 10, 7, 24836848, SHIMMER_LAKE, 10);
+            registerStructureSet(context, structure, structureSet, "nether_tower", ModStructures.Keys.NETHER_TOWER, 15, 10, 61943871, BuiltinStructureSets.VILLAGES, 10);
+            registerStructureSet(context, structure, structureSet, "oasis", ModStructures.Keys.OASIS, 30, 16, 70166617, BuiltinStructureSets.VILLAGES, 8);
+            registerStructureSet(context, structure, structureSet, "obsidian_castle", ModStructures.Keys.OBSIDIAN_CASTLE, 30, 28, 26518570, key("nether_tower"), 5);
+            registerStructureSet(context, structure, structureSet, "obsidian_pillar", ModStructures.Keys.OBSIDIAN_PILLAR, 30, 5, 15740802, null, 0);
+            registerStructureSet(context, structure, structureSet, "queen_bee_hive", ModStructures.Keys.QUEEN_BEE_HIVE, 13, 8, 23234854, BuiltinStructureSets.VILLAGES, 8);
+            registerStructureSet(context, structure, structureSet, "sky_village", ModStructures.Keys.SKY_VILLAGE, 80, 70, 17846607, AIR, 16);
+            registerStructureSet(context, structure, structureSet, "small_living_mahogany_tree", ModStructures.Keys.SMALL_LIVING_MAHOGANY_TREE, 22, 7, 42961406, BuiltinStructureSets.VILLAGES, 8);
+            registerStructureSet(context, structure, structureSet, "underground_cabins", ModStructures.Keys.UNDERGROUND_CABINS, 5, 3, 61041867, SHIMMER_LAKE, 10);
+        }
+
+        private static ResourceKey<StructureSet> key(String path) {
+            return Confluence.asResourceKey(Registries.STRUCTURE_SET, path);
+        }
+
+        private static void registerStructureSet(BootstrapContext<StructureSet> context, HolderGetter<Structure> structures, HolderGetter<StructureSet> sets,
+                                                 String path, ResourceKey<Structure> structure, int spacing, int separation, int salt,
+                                                 @Nullable ResourceKey<StructureSet> excludedSet, int exclusionChunks) {
+            Optional<StructurePlacement.ExclusionZone> exclusion = excludedSet == null ? Optional.empty() : Optional.of(new StructurePlacement.ExclusionZone(sets.getOrThrow(excludedSet), exclusionChunks));
+            register(context, path, new StructureSet(structures.getOrThrow(structure), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F, salt, exclusion, spacing, separation, RandomSpreadType.TRIANGULAR)));
         }
 
         private static void register(BootstrapContext<StructureSet> context, String path, StructureSet set) {

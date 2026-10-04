@@ -23,12 +23,14 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.data.saved.SpaceSpawner;
+import org.confluence.mod.common.data.spawner.MeteoriteSpawner;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
+import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -100,7 +102,7 @@ public final class LevelEvents {
             }
 
             BlockPos pos = event.getPos();
-            NoTraps.dropBombWhenLeavesDestroy(serverPlayer, state, pos);
+            NoTraps.dropPoweredCreeperWhenLeavesDestroy(serverPlayer, state, pos);
             BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, state, pos);
             BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
             LucyTheAxe.onDestroyBlock(serverPlayer, state);
@@ -119,8 +121,11 @@ public final class LevelEvents {
         if (event.getLevel().dimension() == OverworldUtils.dimension()) {
             event.addCustomSpawner(BloodMoonGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(GoblinArmyGameEvent.INSTANCE.spawner);
+            if (Confluence.UNRELEASED_SPAWNS)
+                event.addCustomSpawner(PirateInvasionGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(MeteorShowerGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(new SpaceSpawner());
+            event.addCustomSpawner(new MeteoriteSpawner());
         }
     }
 }

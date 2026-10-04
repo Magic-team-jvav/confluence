@@ -38,6 +38,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.server.command.EnumArgument;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkBrushData;
@@ -47,16 +48,17 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.GameEventArgument;
 import org.confluence.mod.common.data.PrefixArgument;
+import org.confluence.mod.common.data.*;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
-import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -315,7 +317,7 @@ public final class ModCommands {
         return builder;
     }
 
-    private static boolean cannotBeReforged(CommandSourceStack source, ServerPlayer player) {
+    private static boolean cannotBeReforged(CommandSourceStack source, @Nullable ServerPlayer player) {
         if (player == null) return true;
         if (!PrefixUtils.couldReforge(player.getMainHandItem())) {
             source.sendFailure(Component.translatable("commands.confluence.reforge.cannot_be_reforged").withStyle(ChatFormatting.RED));
@@ -325,7 +327,7 @@ public final class ModCommands {
     }
 
     @Contract("_, null -> true")
-    private static boolean unknownPrefixType(CommandSourceStack source, PrefixComponent prefix) {
+    private static boolean unknownPrefixType(CommandSourceStack source, @Nullable PrefixComponent prefix) {
         if (prefix == null) {
             source.sendFailure(Component.translatable("commands.confluence.reforge.unknown_prefix_type").withStyle(ChatFormatting.RED));
             return true;

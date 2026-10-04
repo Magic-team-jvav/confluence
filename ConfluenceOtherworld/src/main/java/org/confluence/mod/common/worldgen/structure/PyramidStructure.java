@@ -13,11 +13,11 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.mod.common.init.ModStructures;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.Optional;
 
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class PyramidStructure extends Structure {
     public static final MapCodec<PyramidStructure> CODEC = simpleCodec(PyramidStructure::new);
@@ -44,8 +44,8 @@ public class PyramidStructure extends Structure {
             for (int i = 0; i < 8; i++) {
                 mazeSet(centerPos.offset(0, 1 + (10 * i), 0), 10, 10 - i, 0, 3, 8, random, 1.0F, blockMap);
             }
-            frustumSet(new Vector3d(centerPos.getX(), centerPos.getY() + 1, centerPos.getZ()), new Vector3d(centerPos.getX(), centerPos.getY() + 82.5, centerPos.getZ()), 23.5, 23.5, 0, blockMap);
-            frustumSet(new Vector3d(centerPos.getX(), centerPos.getY() + 81, centerPos.getZ()), new Vector3d(centerPos.getX(), centerPos.getY() + 92.5, centerPos.getZ()), 4.5, 4.5, 0, blockMap);
+            frustumSet(new Vector3f(centerPos.getX(), centerPos.getY() + 1, centerPos.getZ()), new Vector3f(centerPos.getX(), centerPos.getY() + 82.5F, centerPos.getZ()), 23.5F, 23.5F, 0, blockMap);
+            frustumSet(new Vector3f(centerPos.getX(), centerPos.getY() + 81, centerPos.getZ()), new Vector3f(centerPos.getX(), centerPos.getY() + 92.5F, centerPos.getZ()), 4.5F, 4.5F, 0, blockMap);
             pyramidSet(centerPos.offset(0, 90, 0), 0, 23, blockMap);
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

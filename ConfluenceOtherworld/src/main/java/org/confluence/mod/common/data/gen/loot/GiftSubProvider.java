@@ -18,7 +18,7 @@ import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -29,8 +29,6 @@ import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.item.*;
 
 import java.util.Calendar;
 import java.util.function.BiConsumer;
@@ -57,6 +55,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_crate"), environmentLavaCrateCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD).setWeight(19))
+                        .add(EmptyLootItem.emptyItem().setWeight(81)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
@@ -103,10 +103,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                         .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
-                        .add(LootItem.lootTableItem(TGItems.HAND_GUN))
+                        .add(LootItem.lootTableItem(GunItems.HAND_GUN))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
-                        .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
+                        .add(LootItem.lootTableItem(YoyoItems.VALOR))
                         .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
                         .add(LootItem.lootTableItem(FlailItems.BLUE_MOON))
                 )
@@ -142,7 +142,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/corrupt_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
-                        .add(LootItem.lootTableItem(TGItems.MUSKET))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
                         .add(LootItem.lootTableItem(FlailItems.BALL_O_HURT))
                 )
@@ -153,8 +153,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS))
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON))
+                        .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/jungle_crate"), environmentCrateCommon()
@@ -164,7 +164,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(19))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(19))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(19))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(19))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
@@ -203,7 +203,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/crimson_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
-                        .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
+                        .add(LootItem.lootTableItem(GunItems.THE_UNDERTAKER))
                         .add(LootItem.lootTableItem(SpearItems.THE_ROTTED_FORK))
                         .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
                 )
@@ -366,6 +366,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hellstone_crate"), environmentLavaCrateHardModeCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD).setWeight(19))
+                        .add(EmptyLootItem.emptyItem().setWeight(81)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
@@ -430,7 +432,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/defiled_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
-                        .add(LootItem.lootTableItem(TGItems.MUSKET))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
                         .add(LootItem.lootTableItem(FlailItems.BALL_O_HURT))
                 )
@@ -445,8 +447,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS))
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON))
+                        .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/bramble_crate"), environmentCrateHardModeCommon()
@@ -456,7 +458,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(19))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(19))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(19))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(19))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
@@ -495,7 +497,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hematic_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
-                        .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
+                        .add(LootItem.lootTableItem(GunItems.THE_UNDERTAKER))
                         .add(LootItem.lootTableItem(SpearItems.THE_ROTTED_FORK))
                         .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
                 )
@@ -1233,7 +1235,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TERideableItems.HONEYED_GOGGLES))
+                        .add(LootItem.lootTableItem(MountItems.HONEYED_GOGGLES))
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
@@ -1252,7 +1254,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ModItems.HIVE_WAND))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TERideableItems.HONEYED_GOGGLES).setWeight(11))
+                        .add(LootItem.lootTableItem(MountItems.HONEYED_GOGGLES).setWeight(11))
                         .add(EmptyLootItem.emptyItem().setWeight(89))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1274,7 +1276,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ModItems.HIVE_WAND))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TERideableItems.HONEYED_GOGGLES).setWeight(11))
+                        .add(LootItem.lootTableItem(MountItems.HONEYED_GOGGLES).setWeight(11))
                         .add(EmptyLootItem.emptyItem().setWeight(89))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1390,7 +1392,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TERideableItems.SLIMY_SADDLE))
+                        .add(LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
                         .add(EmptyLootItem.emptyItem().setWeight(3))
                 )
         );
@@ -1414,7 +1416,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                         ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TERideableItems.SLIMY_SADDLE))
+                        .add(LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
                         .add(EmptyLootItem.emptyItem())
                 )
         );
@@ -1438,7 +1440,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TERideableItems.SLIMY_SADDLE))
+                        .add(LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.KING_SLIME_RELIC)))
@@ -1611,7 +1613,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.BREAKER_BLADE))
-                        .add(LootItem.lootTableItem(TEWhipItems.FIRECRACKER))
+                        .add(LootItem.lootTableItem(WhipItems.FIRECRACKER))
                         // todo 另外三个
                 );
     }
@@ -1631,7 +1633,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setWeight(333))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setWeight(333))
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 );
     }
@@ -1662,13 +1664,14 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TEPetItems.CHESTER_STAFF))
+                        .add(LootItem.lootTableItem(PetItems.CHESTER_STAFF))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.WEATHER_PAIN))
                         .add(LootItem.lootTableItem(AxeItems.LUCY_THE_AXE))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(LootItem.lootTableItem(SummonItems.EYE_LASER_TURRET_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(1))
                 );
     }
 

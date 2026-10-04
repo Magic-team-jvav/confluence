@@ -1,6 +1,11 @@
 package org.confluence.mod.util;
 
+import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -14,8 +19,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.api.npc.trade.ITradeHolder;
-import org.confluence.terraentity.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 
 public final class PrefixUtils {
@@ -28,10 +31,11 @@ public final class PrefixUtils {
 
     public static boolean couldReforge(ItemStack stack) {
         return !stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX) &&
-                (stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
+                (stack.is(ModTags.Items.SUMMONER_WEAPON) || stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_MELEE_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_RANGED_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_MAGIC_ONLY) ||
+                        stack.is(ModTags.Items.PREFIX_SUMMON_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY));
     }
 
@@ -69,10 +73,23 @@ public final class PrefixUtils {
             return PrefixType.RANGED;
         } else if (itemStack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
             return PrefixType.MAGIC;
+        } else if (itemStack.is(ModTags.Items.PREFIX_SUMMON_ONLY)) {
+            return PrefixType.SUMMON;
         } else if (itemStack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
             return PrefixType.ACCESSORY;
         }
         return PrefixType.UNKNOWN;
+    }
+
+    ///
+    public static int calculateUseTime(Player player, int baseTicks) {
+        if (baseTicks <= 0) return 0;
+        double baseSpeed = player.getAttributeBaseValue(Attributes.ATTACK_SPEED);
+        double attackSpeed = player.getAttributeValue(Attributes.ATTACK_SPEED);
+        if (baseSpeed <= 0.0 || attackSpeed <= 0.0) {
+            return baseTicks;
+        }
+        return Math.max(1, (int) Math.ceil(baseTicks * baseSpeed / attackSpeed));
     }
 
     public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
@@ -87,6 +104,35 @@ public final class PrefixUtils {
 
     public static @Nullable PrefixComponent getPrefix(ItemStack itemStack) {
         return itemStack.isEmpty() ? null : itemStack.get(ModDataComponentTypes.PREFIX);
+    }
+
+    /// 取实体在指定属性上的加成，并剔除手持物品自身对该属性的贡献。
+    ///
+    /// 1.20 侧 `PrefixUtils:95-115`；1.21 侧此前**没有**这两个方法（坐骑内容要用到，
+    /// 属「1.21 那份更窄」的常见形态）—— 逐字搬过来，只有两处 API 改名：
+    /// ① 修饰符表的键在 1.21 是 `Holder<Attribute>`（TerraCurio `AttributeModifiersValue:16`，1.20 是裸 `Attribute`）；
+    /// ② `Operation` 枚举改名 `ADDITION/MULTIPLY_BASE/MULTIPLY_TOTAL` →
+    /// `ADD_VALUE/ADD_MULTIPLIED_BASE/ADD_MULTIPLIED_TOTAL`（`AttributeModifier.java:64-66`）。
+    public static double attributeWithoutHeldItem(LivingEntity entity, Holder<Attribute> attribute, ItemStack heldItem) {
+        double heldValue = PrefixUtils.heldItemContribution(heldItem, 1, attribute);
+        return heldValue > 0 ? entity.getAttributeValue(attribute) / heldValue : entity.getAttributeValue(attribute);
+    }
+
+    /// 以基准值反推手持物品在该属性上的贡献，等价于原版对物品修饰符的结算。
+    public static double heldItemContribution(ItemStack heldItem, double baseValue, Holder<Attribute> attribute) {
+        double value = baseValue;
+        PrefixComponent component = getPrefix(heldItem);
+        if (component != null) {
+            for (AttributeModifier modifier : component.modifiers().get().get(attribute)) {
+                // 1.21 的 AttributeModifier 是 record（`AttributeModifier.java:22`）：`amount()` / `operation()`
+                value += switch (modifier.operation()) {
+                    case ADD_VALUE -> modifier.amount();
+                    case ADD_MULTIPLIED_BASE -> modifier.amount() * baseValue;
+                    case ADD_MULTIPLIED_TOTAL -> modifier.amount() * value;
+                };
+            }
+        }
+        return value;
     }
 
     public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack) {
@@ -401,7 +447,9 @@ public final class PrefixUtils {
             else if (rarity > 11) rarity = 11;
         }
         itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
-        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(itemStack, 50, true) * num14 * num14)));
+        int value = ValueComponent.getValue(itemStack, 50, true);
+        float finalValue = value + value * num14;
+        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) finalValue));
         return prefix;
     }
 
@@ -420,11 +468,6 @@ public final class PrefixUtils {
         if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }
-        ITradeHolder holder = ((IPlayer) player).terra_entity$getTradeHolder();
-        float priceAdjustment = 1.0F;
-        if (holder != null && holder.getMood() != null) {
-            priceAdjustment = 100.0F / holder.getMood().getValue();
-        }
-        return (int) (price * priceAdjustment / 3);
+        return price / 3;
     }
 }

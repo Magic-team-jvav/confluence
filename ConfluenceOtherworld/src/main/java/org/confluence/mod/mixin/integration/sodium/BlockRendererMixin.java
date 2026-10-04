@@ -13,7 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.integration.sodium.IMutableQuadViewImpl;
 import org.confluence.mod.mixin.client.renderer.block.ModelBlockRendererMixin;
 import org.spongepowered.asm.mixin.Mixin;

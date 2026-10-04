@@ -9,7 +9,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -61,7 +60,7 @@ public class DeadBodyPartEntity extends Entity {
         this.dyingEntity = dyingEntity;
         this.cube = cube;
         this.minSide = minSide;
-        if (dyingEntity instanceof AbstractTerraBossBase || dyingEntity instanceof Boss) {
+        if (dyingEntity instanceof Boss) {
             lifetime = level.random.nextInt(60, 75);
         } else {
             lifetime = level.random.nextInt(20, 30);

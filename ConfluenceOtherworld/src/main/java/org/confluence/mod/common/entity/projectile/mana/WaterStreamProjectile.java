@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class WaterStreamProjectile extends AbstractManaProjectile {
     public WaterStreamProjectile(EntityType<WaterStreamProjectile> entityType, Level level) {
@@ -16,7 +16,7 @@ public class WaterStreamProjectile extends AbstractManaProjectile {
     }
 
     public WaterStreamProjectile(LivingEntity living) {
-        this(ModEntities.WATER_STREAM_PROJECTILE.get(), living.level());
+        this(ModEntities.WATER_STREAM.get(), living.level());
     }
 
     @Override

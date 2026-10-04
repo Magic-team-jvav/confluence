@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerDataHolder;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
-import org.apache.commons.lang3.IntegerRange;
+import org.confluence.lib.util.range.IntegerRange;
 import org.confluence.mod.common.init.ModVillagers;
 import org.jetbrains.annotations.Nullable;
 

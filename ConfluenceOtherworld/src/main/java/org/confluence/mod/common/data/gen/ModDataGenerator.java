@@ -15,6 +15,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.gen.angler.AnglerQuestProvider;
 import org.confluence.mod.common.data.gen.recipe.*;
 import org.confluence.mod.common.data.gen.tag.*;
 import org.confluence.mod.common.init.ModTags;
@@ -50,6 +51,7 @@ public final class ModDataGenerator {
         generator.addProvider(client, new ModEnUdProvider(output, lookup));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
+        generator.addProvider(client, new ModOpalDataProvider(output, lookup));
         generator.addProvider(client, new CollectRecipeProvider(Confluence.asPlainId("client"), output, lookup,
                 ModClientBestiaryEntryProvider::new,
                 ModAchievementOffsetProvider::client
@@ -60,9 +62,10 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModWorldPresetTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModEntityTypeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModFluidTagsProvider(output, lookup, helper));
         generator.addProvider(server, new CollectRecipeProvider(Confluence.asPlainId("server"), output, lookup,
-                NPCShopProvider::new,
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,
                 HeavyWorkBenchProvider::new,
@@ -73,6 +76,12 @@ public final class ModDataGenerator {
                 SawmillRecipeProvider::new,
                 HardmodeAnvilRecipeProvider::new
         ));
+        generator.addProvider(server, new NPCShopProvider(output));
+        generator.addProvider(server, new NPCMoodProvider(output));
+        generator.addProvider(server, new NPCNameProvider(output));
+        generator.addProvider(server, new NPCChatProvider(output));
+        generator.addProvider(server, new NPCDialogProvider(output));
+        generator.addProvider(server, new AnglerQuestProvider(output));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModEnchantmentTagsProvider(output, lookup, helper));

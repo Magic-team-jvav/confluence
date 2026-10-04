@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.mana.BeeGunBullet;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.util.AchievementUtils;
@@ -35,7 +35,7 @@ public class BeeGunItem extends ManaGunItem {
     }
 
     private static void notTheBees(Player player) {
-        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
         if (!data.getBoolean("confluence:not_the_bees")) {
             if (player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.BEE_HELMET.get()) ||
                     player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.BEE_CHESTPLATE.get()) ||

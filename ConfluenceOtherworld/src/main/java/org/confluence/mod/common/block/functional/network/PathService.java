@@ -17,14 +17,10 @@ import static org.confluence.mod.common.block.functional.network.INetworkBlock.i
 
 public class PathService {
     public static final PathService INSTANCE = new PathService();
-    private Queue<NetworkNode> queue;
-
-    public void onServerStart() {
-        this.queue = new ArrayDeque<>();
-    }
+    private final Queue<NetworkNode> queue = new ArrayDeque<>();
 
     public void onServerStop() {
-        this.queue = null;
+        this.queue.clear();
     }
 
     // 方块加载时,创捷网络结点

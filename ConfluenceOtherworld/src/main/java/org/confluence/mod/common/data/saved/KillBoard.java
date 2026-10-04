@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import org.confluence.mod.common.data.GamePhase;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
@@ -12,6 +13,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
@@ -25,7 +27,7 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.KillBoardSyncPacketS2C;
-import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.confluence.mod.common.init.entity.BossEntities;
 
 import java.util.Set;
 
@@ -55,10 +57,23 @@ public enum KillBoard implements IGlobalData {
         return false;
     }
 
+    ///
+    public boolean isDefeated(ResourceLocation id) {
+        EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(id);
+        return entityType != null && isDefeated(entityType);
+    }
+
+    public boolean isAnyDefeated(ResourceLocation... ids) {
+        for (ResourceLocation id : ids) {
+            if (isDefeated(id)) return true;
+        }
+        return false;
+    }
+
     public boolean isAnyMechBossDefeated() {
-        return isDefeated(TEBossEntities.THE_TWINS.get()) ||
-                isDefeated(TEBossEntities.THE_DESTROYER.get()) ||
-                isDefeated(TEBossEntities.SKELETRON_PRIME.get());
+        return isDefeated(BossEntities.THE_TWINS.get()) ||
+                isDefeated(BossEntities.THE_DESTROYER.get()) ||
+                isDefeated(BossEntities.SKELETRON_PRIME.get());
     }
 
     public int countDefeated(EntityType<?>... entityTypes) {
@@ -91,9 +106,9 @@ public enum KillBoard implements IGlobalData {
         if (!defeated) {
             LanternNightGameEvent.INSTANCE.schedule();
         }
-        if (entityType == TEBossEntities.SKELETRON.get()) {
+        if (entityType == BossEntities.SKELETRON.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
-        } else if (entityType == TEBossEntities.WALL_OF_FLESH.get() || entityType == TEBossEntities.HILL_OF_FLESH.get()) {
+        } else if (entityType == BossEntities.WALL_OF_FLESH.get() || entityType == BossEntities.HILL_OF_FLESH.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         } else {
             KillBoardSyncPacketS2C.sendToAll();

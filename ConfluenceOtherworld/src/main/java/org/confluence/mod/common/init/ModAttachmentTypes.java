@@ -21,4 +21,7 @@ public final class ModAttachmentTypes {
 
     public static final Supplier<AttachmentType<ChunkBrushData>> CHUNK_BRUSH_DATA = TYPES.register("chunk_brush_data", () -> AttachmentType.serializable(ChunkBrushData::new).build());
     public static final Supplier<AttachmentType<ChunkDropletsData>> CHUNK_DROPLETS_DATA = TYPES.register("chunk_droplets_data", () -> AttachmentType.serializable(ChunkDropletsData::new).build());
+
+    public static final Supplier<AttachmentType<YoyoSession>> YOYO_SESSION = TYPES.register("yoyo_session", () -> AttachmentType.builder(YoyoSession::new).build());
+    public static final Supplier<AttachmentType<LeftClickState>> LEFT_CLICK_STATE = TYPES.register("left_click_state", () -> AttachmentType.builder(LeftClickState::new).build());
 }

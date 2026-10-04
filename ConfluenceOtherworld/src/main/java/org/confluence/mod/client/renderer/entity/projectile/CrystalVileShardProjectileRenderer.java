@@ -7,16 +7,17 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.entity.renderer.GeoNegativeVolumeRenderer;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import software.bernie.geckolib.util.Color;
 
 import java.util.List;
 
 public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRenderer<CrystalVileShardProjectile> {
     public CrystalVileShardProjectileRenderer(EntityRendererProvider.Context context) {
-        super(context, ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.getId(), false);
+        // 实体注册名与资源名并不相同，必须明确指定模型和纹理共同使用的资源路径。
+        super(context, Confluence.asResource("crystal_vile_shard_projectile"));
         setBoneToGlow(List.of("Outline"), List.of("Internal"));
     }
 

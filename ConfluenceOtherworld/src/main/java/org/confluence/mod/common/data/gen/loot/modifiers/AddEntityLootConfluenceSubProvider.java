@@ -26,7 +26,7 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.item.TESummonItems;
+import org.confluence.mod.common.init.item.SummonItems;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -161,14 +161,14 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                                 .add(EmptyLootItem.emptyItem().setWeight(98))
                 ).withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setWeight(1))
+                                .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setWeight(1))
                                 .add(EmptyLootItem.emptyItem().setWeight(6999))
                 )
         ));
         entries.add(new AddedEntityLoot(EntityType.WARDEN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TESummonItems.SCULK_WISP_STAFF).setWeight(1))
+                                .add(LootItem.lootTableItem(SummonItems.SCULK_WISP_STAFF).setWeight(1))
                                 .add(EmptyLootItem.emptyItem().setWeight(4))
                 )
         ));

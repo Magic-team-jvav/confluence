@@ -6,16 +6,17 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.entity.projectile.bomb.BaseGrenadeEntity;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
@@ -31,13 +32,11 @@ public class NoTraps extends SecretSeed {
         return "notraps".equals(seed) || "no traps".equals(seed);
     }
 
-    public static void dropBombWhenLeavesDestroy(ServerPlayer serverPlayer, BlockState blockState, BlockPos pos) {
+    public static void dropPoweredCreeperWhenLeavesDestroy(ServerPlayer serverPlayer, BlockState blockState, BlockPos pos) {
         if (blockState.is(BlockTags.LEAVES) && (!blockState.hasProperty(BlockStateProperties.PERSISTENT) || !blockState.getValue(BlockStateProperties.PERSISTENT))) {
             ServerLevel level = serverPlayer.serverLevel();
-            if (ModSecretSeeds.FOR_THE_WORTHY.match(serverPlayer.server) && blockState.is(BlockTags.LEAVES) && level.random.nextFloat() < 0.25F) {
-                BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
-                bomb.setPos(pos.getCenter());
-                level.addFreshEntity(bomb);
+            if (ModSecretSeeds.FOR_THE_WORTHY.match(serverPlayer.server) && level.random.nextFloat() < 0.05F) {
+                EntityType.CREEPER.spawn(level, LibEntityUtils::poweringCreeper, pos, MobSpawnType.TRIGGERED, true, false);
             }
         }
     }
@@ -62,10 +61,10 @@ public class NoTraps extends SecretSeed {
             if (nearestPlayer != null) {
                 BaseGrenadeEntity grenade = new BaseGrenadeEntity(living);
                 grenade.setItem(ConsumableItems.GRENADE.get().getDefaultInstance());
-                Vec3 vectorA2B = VectorUtils.getVectorA2B(living, nearestPlayer);
+                Vec3 vectorA2B = LibMathUtils.getVectorA2B(living, nearestPlayer);
                 double size = living.getBoundingBox().getSize() + 1.5;
                 grenade.moveTo(living.position().add(vectorA2B.x * size, vectorA2B.y * size + 0.5, vectorA2B.z * size));
-                float[] rots = VectorUtils.dirToRot(vectorA2B, true);
+                float[] rots = LibMathUtils.dirToRot(vectorA2B, true);
                 grenade.shootFromRotation(living, rots[1], rots[0], 0.0F, living.distanceTo(nearestPlayer) / 4, 0);
                 serverLevel.addFreshEntity(grenade);
             }

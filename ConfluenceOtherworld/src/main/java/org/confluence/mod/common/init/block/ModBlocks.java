@@ -158,5 +158,6 @@ public final class ModBlocks {
         PotBlocks.BLOCKS.register(eventBus);
         PylonBlocks.BLOCKS.register(eventBus);
         StatueBlocks.BLOCKS.register(eventBus);
+        TorchBlocks.BLOCKS.register(eventBus);
     }
 }

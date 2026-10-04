@@ -24,7 +24,7 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -244,10 +244,14 @@ public final class ClientUtils {
     }
 
     public static Component formatPrice(int price) {
-        int platinum = 0;
-        int gold = 0;
-        int silver = 0;
-        int copper;
+        return formatPrice((long) price);
+    }
+
+    public static Component formatPrice(long price) {
+        long platinum = 0;
+        long gold = 0;
+        long silver = 0;
+        long copper;
         if (price >= 1000000) {
             platinum = price / 1000000;
             price -= platinum * 1000000;

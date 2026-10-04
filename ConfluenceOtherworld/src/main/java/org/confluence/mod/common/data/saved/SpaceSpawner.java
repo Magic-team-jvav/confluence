@@ -20,22 +20,22 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.lib.util.function.ints.ToIntFunction4;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 
 import java.util.Optional;
 
 public class SpaceSpawner implements CustomSpawner {
     private int nextTick;
     private final WeightedRandomList<Pair> spawnerData = WeightedRandomList.create(
-            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 3, 1, 1), (level, pos, csd, sd) -> {
+            new Pair(new MobSpawnSettings.SpawnerData(MonsterEntities.HARPY.get(), 3, 1, 1), (level, pos, csd, sd) -> {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
                 if (difficulty.getEffectiveDifficulty() * csd.speedMultiplier() > random.nextFloat() * 3) {
                     BlockPos spawnPos = pos.offset(
-                            -10 + random.nextInt(21),
-                            10 + random.nextInt(15),
-                            -10 + random.nextInt(21)
+                            -25 + random.nextInt(51),
+                            15 + random.nextInt(15),
+                            -25 + random.nextInt(51)
                     );
                     if (level.getEntities(sd.type, new AABB(spawnPos).inflate(36.0, 36.0, 36.0), EntitySelector.NO_SPECTATORS).size() < csd.getCount(8)) {
                         BlockState blockState = level.getBlockState(spawnPos);
@@ -63,15 +63,15 @@ public class SpaceSpawner implements CustomSpawner {
                 }
                 return i;
             }),
-            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 2, 1, 1), (level, pos, csd, sd) -> {
+            new Pair(new MobSpawnSettings.SpawnerData(MonsterEntities.WYVERN.get(), 2, 1, 1), (level, pos, csd, sd) -> {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
                 if (difficulty.getEffectiveDifficulty() * csd.speedMultiplier() > random.nextFloat() * 3) {
                     BlockPos spawnPos = pos.offset(
-                            -10 + random.nextInt(21),
-                            10 + random.nextInt(15),
-                            -10 + random.nextInt(21)
+                            -25 + random.nextInt(51),
+                            15 + random.nextInt(15),
+                            -25 + random.nextInt(51)
                     );
                     if (level.getEntities(sd.type, new AABB(spawnPos).inflate(36.0, 36.0, 36.0), EntitySelector.NO_SPECTATORS).size() < csd.getCount(6)) {
                         BlockState blockState = level.getBlockState(spawnPos);

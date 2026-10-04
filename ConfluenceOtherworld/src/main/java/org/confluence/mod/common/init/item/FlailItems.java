@@ -6,91 +6,67 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
-import org.confluence.mod.common.item.flail.FlailStrategy;
+import org.confluence.mod.common.item.flail.DaoOfPowItem;
 import org.confluence.mod.common.item.flail.FlaironItem;
+import org.confluence.mod.common.item.flail.IgnitingFlailItem;
 
-/**
- * 连枷物品注册
- */
+/// 连枷物品注册
 public class FlailItems {
+    public static void init() {}
+
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-        /** 链锤 */
-        public static final DeferredItem<BaseFlailItem> MACE = ITEMS.register("mace", () ->
-                new BaseFlailItem(FlailComponent.MACE, ModRarity.WHITE));
+    /// 致伤球
+    public static final DeferredItem<BaseFlailItem> MACE = ITEMS.register("mace", () -> new BaseFlailItem(FlailComponent.MACE.get(), ModRarity.WHITE));
 
-        /** 火焰链锤 */
-        public static final DeferredItem<BaseFlailItem> FLAMING_MACE = ITEMS.register("flaming_mace", () ->
-                new BaseFlailItem(FlailComponent.FLAMING_MACE, ModRarity.BLUE));
+    /// 火焰链锤。
+    public static final DeferredItem<IgnitingFlailItem> FLAMING_MACE = ITEMS.register("flaming_mace", () -> new IgnitingFlailItem(FlailComponent.FLAMING_MACE.get(), ModRarity.BLUE, 1.0F / 6.0F));
 
-        /** 风锚 */
-        public static final DeferredItem<BaseFlailItem> WIND_ANCHOR = ITEMS.register("wind_anchor", () ->
-                new BaseFlailItem(FlailComponent.WIND_ANCHOR, ModRarity.BLUE));
+    /// 风锚。
+    public static final DeferredItem<BaseFlailItem> WIND_ANCHOR = ITEMS.register("wind_anchor", () -> new BaseFlailItem(FlailComponent.WIND_ANCHOR.get(), ModRarity.BLUE));
 
-        /** 守卫链球 */
-        public static final DeferredItem<BaseFlailItem> GUARDIAN_FLAIL = ITEMS.register("guardian_flail", () ->
-                new BaseFlailItem(FlailComponent.GUARDIAN_FLAIL, ModRarity.GREEN,() ->
-                new FlailStrategy.GuardianAttackStrategy(false)));
+    /// 守卫者链锤。
+    public static final DeferredItem<BaseFlailItem> GUARDIAN_FLAIL = ITEMS.register("guardian_flail", () -> new BaseFlailItem(FlailComponent.GUARDIAN_FLAIL.get(), ModRarity.GREEN));
 
-        /** 远古守卫链球 */
-        public static final DeferredItem<BaseFlailItem> ANCIENT_GUARDIAN_FLAIL = ITEMS.register("ancient_guardian_flail", () ->
-                new BaseFlailItem(FlailComponent.ANCIENT_GUARDIAN_FLAIL, ModRarity.ORANGE,() ->
-                new FlailStrategy.GuardianAttackStrategy(true)));//三激光
+    /// 远古守卫者链锤。
+    public static final DeferredItem<BaseFlailItem> ANCIENT_GUARDIAN_FLAIL = ITEMS.register("ancient_guardian_flail", () -> new BaseFlailItem(FlailComponent.ANCIENT_GUARDIAN_FLAIL.get(), ModRarity.ORANGE));
 
-        /** 链球 */
-        public static final DeferredItem<BaseFlailItem> BALL_O_HURT = ITEMS.register("ball_o_hurt", () ->
-                new BaseFlailItem(FlailComponent.BALL_O_HURT, ModRarity.BLUE));
+    /// 致伤球。
+    public static final DeferredItem<BaseFlailItem> BALL_O_HURT = ITEMS.register("ball_o_hurt", () -> new BaseFlailItem(FlailComponent.BALL_O_HURT.get(), ModRarity.BLUE));
 
-        /** 血肉之球 */
-        public static final DeferredItem<BaseFlailItem> THE_MEATBALL = ITEMS.register("the_meatball", () ->
-                new BaseFlailItem(FlailComponent.THE_MEATBALL, ModRarity.BLUE));
+    /// 血肉之球。
+    public static final DeferredItem<BaseFlailItem> THE_MEATBALL = ITEMS.register("the_meatball", () -> new BaseFlailItem(FlailComponent.THE_MEATBALL.get(), ModRarity.BLUE));
 
-        /** 蓝月 */
-        public static final DeferredItem<BaseFlailItem> BLUE_MOON = ITEMS.register("blue_moon", () ->
-                new BaseFlailItem(FlailComponent.BLUE_MOON, ModRarity.GREEN));
+    /// 蓝月。
+    public static final DeferredItem<BaseFlailItem> BLUE_MOON = ITEMS.register("blue_moon", () -> new BaseFlailItem(FlailComponent.BLUE_MOON.get(), ModRarity.GREEN));
 
-        /** 阳炎之怒 */
-        public static final DeferredItem<BaseFlailItem> SUNFURY = ITEMS.register("sunfury", () ->
-                new BaseFlailItem(FlailComponent.SUNFURY, ModRarity.ORANGE));
+    /// 阳炎之怒。
+    public static final DeferredItem<IgnitingFlailItem> SUNFURY = ITEMS.register("sunfury", () -> new IgnitingFlailItem(FlailComponent.SUNFURY.get(), ModRarity.ORANGE, 0.25F));
 
-        /** 太极连枷 */
-        public static final DeferredItem<BaseFlailItem> DAO_OF_POW = ITEMS.register("dao_of_pow", () ->
-                new BaseFlailItem(FlailComponent.DAO_OF_POW, ModRarity.PINK));
+    /// 太极连枷。
+    public static final DeferredItem<DaoOfPowItem> DAO_OF_POW = ITEMS.register("dao_of_pow", () -> new DaoOfPowItem(FlailComponent.DAO_OF_POW.get(), ModRarity.PINK));
 
-        /** 花之力 */
-        public static final DeferredItem<BaseFlailItem> FLOWER_POWER = ITEMS.register("flower_power", () ->
-                new BaseFlailItem(FlailComponent.FLOWER_POWER, ModRarity.BLUE,
-                        FlailStrategy.FlowerAttackStrategy::new));
+    /// 花之力。
+    public static final DeferredItem<BaseFlailItem> FLOWER_POWER = ITEMS.register("flower_power", () -> new BaseFlailItem(FlailComponent.FLOWER_POWER.get(), ModRarity.BLUE));
 
-        /** 滴滴怪致残者 */
-        public static final DeferredItem<BaseFlailItem> DRIPPLER_CRIPPLER = ITEMS.register("drippler_crippler", () ->
-                new BaseFlailItem(FlailComponent.DRIPPLER_CRIPPLER, ModRarity.BLUE,
-                        FlailStrategy.DripplerCripplerAttackStrategy::new));
+    /// 滴滴怪致残者。
+    public static final DeferredItem<BaseFlailItem> DRIPPLER_CRIPPLER = ITEMS.register("drippler_crippler", () -> new BaseFlailItem(FlailComponent.DRIPPLER_CRIPPLER.get(), ModRarity.BLUE));
 
-        /** 猪鲨链球 */
-        public static final DeferredItem<FlaironItem> Flairon = ITEMS.register("flairon", () ->
-                new FlaironItem(FlailComponent.Flairon, ModRarity.ORANGE,
-                        FlailStrategy.FlaironAttackStrategy::new));
+    /// 猪鲨链球。
+    public static final DeferredItem<FlaironItem> FLAIRON = ITEMS.register("flairon", () -> new FlaironItem(FlailComponent.FLAIRON.get(), ModRarity.ORANGE));
 
-        /** 链刃 */
-        public static final DeferredItem<BaseFlailItem> CHAIN_KNIFE = ITEMS.register("chain_knife", () ->
-                new BaseFlailItem(FlailComponent.CHAIN_KNIFE, ModRarity.COMMON));
+    /// 链刃。
+    public static final DeferredItem<BaseFlailItem> CHAIN_KNIFE = ITEMS.register("chain_knife", () -> new BaseFlailItem(FlailComponent.CHAIN_KNIFE.get(), ModRarity.WHITE));
 
-        /** 铁链血滴子 — 自动挥舞，连续射出连在链条上的刀刃，最大射程 32 图格 */
-        public static final DeferredItem<BaseFlailItem> CHAIN_GUILLOTINES = ITEMS.register("chain_guillotines", () ->
-                new BaseFlailItem(FlailComponent.CHAIN_GUILLOTINES, ModRarity.PINK));
+    /// 铁链血滴子：自动挥舞，可同时维持多枚往返射弹。
+    public static final DeferredItem<BaseFlailItem> CHAIN_GUILLOTINES = ITEMS.register("chain_guillotines", () -> new BaseFlailItem(FlailComponent.CHAIN_GUILLOTINES.get(), ModRarity.PINK));
 
-        /** 石巨人之拳 — 自动挥舞，延伸超过 9.375 图格命中时产生冲击波，最大射程 31.25 图格 */
-        public static final DeferredItem<BaseFlailItem> GOLEM_FIST = ITEMS.register("golem_fist", () ->
-                new BaseFlailItem(FlailComponent.GOLEM_FIST, ModRarity.LIME,
-                        FlailStrategy.GolemFistAttackStrategy::new));
+    /// 石巨人之拳：延伸足够远后命中会产生冲击波。
+    public static final DeferredItem<BaseFlailItem> GOLEM_FIST = ITEMS.register("golem_fist", () -> new BaseFlailItem(FlailComponent.GOLEM_FIST.get(), ModRarity.LIME));
 
-        /** 致胜炮 — 自动开火且无冷却，手套回收后立即再次发射（最大射程 17 图格） */
-        public static final DeferredItem<BaseFlailItem> KO_CANNON = ITEMS.register("ko_cannon", () ->
-                new BaseFlailItem(FlailComponent.KO_CANNON, ModRarity.LIGHT_RED));
+    /// 致胜炮：拳套回收后可立即再次发射。
+    public static final DeferredItem<BaseFlailItem> KO_CANNON = ITEMS.register("ko_cannon", () -> new BaseFlailItem(FlailComponent.KO_CANNON.get(), ModRarity.LIGHT_RED));
 
-        /** 锚 */
-        public static final DeferredItem<BaseFlailItem> ANCHOR = ITEMS.register("anchor", () ->
-                new BaseFlailItem(FlailComponent.ANCHOR, ModRarity.COMMON,
-                        FlailStrategy.AnchorAttackStrategy::new));
+    /// 锚。
+    public static final DeferredItem<BaseFlailItem> ANCHOR = ITEMS.register("anchor", () -> new BaseFlailItem(FlailComponent.ANCHOR.get(), ModRarity.WHITE));
 }

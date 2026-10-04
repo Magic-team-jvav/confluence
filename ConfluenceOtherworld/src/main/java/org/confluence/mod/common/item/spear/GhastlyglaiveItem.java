@@ -8,10 +8,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
 import java.util.Comparator;
@@ -35,7 +34,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.31, 0.2);
+        LibEntityUtils.knockBackA2B(owner, victim, 0.31, 0.2);
 
         // 生成恶魂弹射物
         if (!owner.level().isClientSide && owner.level() instanceof ServerLevel serverLevel) {
@@ -52,7 +51,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
                 victimPos.add(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE));
 
         List<LivingEntity> enemies = level.getEntitiesOfClass(LivingEntity.class, searchBox,
-                e -> e.isAlive() && e != owner && LibUtils.canHitEntity(e, owner));
+                e -> e.isAlive() && e != owner && LibEntityUtils.canHitEntity(e, owner));
 
         if (enemies.isEmpty()) return;
 
@@ -91,7 +90,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
      */
     private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction) {
         GhastlyProjectile projectile = new GhastlyProjectile(
-                ModEntities.GHASTLY_PROJECTILE.get(), level);
+                ModEntities.GHASTLY.get(), level);
         projectile.setOwner(owner);
         projectile.setWeapon(owner.getMainHandItem());
         projectile.initFromOwner(owner);

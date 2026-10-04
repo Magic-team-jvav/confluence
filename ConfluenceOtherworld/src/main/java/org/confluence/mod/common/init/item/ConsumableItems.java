@@ -14,16 +14,20 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.component.LootComponent;
+import org.confluence.mod.common.entity.boss.*;
+import org.confluence.mod.common.entity.projectile.SparkleSlimeBalloonProjectile;
 import org.confluence.mod.common.entity.projectile.ThrownWaterProjectile;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
 import org.confluence.mod.common.item.mana.RecallManaCrystalItem;
-import org.confluence.terraentity.entity.boss.*;
 
 public class ConsumableItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -52,6 +56,7 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableItem<SmokeBombEntity>> SMOKE_BOMB = ITEMS.register("smoke_bomb", () -> new ThrowableItem<>(0.8F, SmokeBombEntity::new));
     public static final DeferredItem<ThrowableItem<BombFishEntity>> BOMB_FISH = ITEMS.register("bomb_fish", () -> new ThrowableItem<>(0.8F, BombFishEntity::new));
     public static final DeferredItem<ThrowableItem<ScarabBombEntity>> SCARAB_BOMB = ITEMS.register("scarab_bomb", () -> new ThrowableItem<>(0.8F, ScarabBombEntity::new));
+    public static final DeferredItem<ThrowableItem<SparkleSlimeBalloonProjectile>> SPARKLE_SLIME_BALLOON = ITEMS.register("sparkle_slime_balloon", () -> new ThrowableItem<>(0.8F, SparkleSlimeBalloonProjectile::new));
     public static final DeferredItem<ThrowableItem<BaseDynamiteEntity>> DYNAMITE = ITEMS.register("dynamite", () -> new ThrowableItem<>(0.75F, BaseDynamiteEntity::new));
     public static final DeferredItem<ThrowableItem<BouncyDynamiteEntity>> BOUNCY_DYNAMITE = ITEMS.register("bouncy_dynamite", () -> new ThrowableItem<>(0.75F, BouncyDynamiteEntity::new));
     public static final DeferredItem<ThrowableItem<StickyDynamiteEntity>> STICKY_DYNAMITE = ITEMS.register("sticky_dynamite", () -> new ThrowableItem<>(0.75F, StickyDynamiteEntity::new));
@@ -65,12 +70,12 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableItem<LiquidBombEntity>> WET_BOMB = ITEMS.register("wet_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.WET_BOMB.get(), player, Fluids.WATER, 3)));
     public static final DeferredItem<ThrowableItem<LiquidBombEntity>> LAVA_BOMB = ITEMS.register("lava_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.LAVA_BOMB.get(), player, Fluids.LAVA, 3)));
     public static final DeferredItem<ThrowableItem<LiquidBombEntity>> HONEY_BOMB = ITEMS.register("honey_bomb", () -> new ThrowableItem<>(0.8F, player -> new LiquidBombEntity(ModEntities.HONEY_BOMB.get(), player, ModFluids.HONEY.fluid().get(), 3)));
-    public static final DeferredItem<ThrowableDropSelfItem> SHURIKEN = ITEMS.register("shuriken", () -> new ThrowableDropSelfItem(ModEntities.SHURIKEN_PROJECTILE.get(), 4.2f, 1.2f, 0.5f, 5, 3, true));
-    public static final DeferredItem<ThrowableDropSelfItem> THROWING_KNIVE = ITEMS.register("throwing_knive", () -> new ThrowableDropSelfItem(ModEntities.THROWN_KNIVE_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 3, true));
-    public static final DeferredItem<ThrowableDropSelfItem> BONE_THROWING_KNIFE = ITEMS.register("bone_throwing_knife", () -> new ThrowableDropSelfItem(ModEntities.BONE_THROWN_KNIVE_PROJECTILE.get(), 6f, 1.2f, 0.5f, 5, 3, false));
-    public static final DeferredItem<ThrowableDropSelfItem> FROST_DAGGERFISH = ITEMS.register("frost_daggerfish", () -> new ThrowableDropSelfItem(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), 7f, 1.7f, 0.5f, 5, 3, false));
-    public static final DeferredItem<ThrowableDropSelfItem> DUNGEON_DEMON_BONE = ITEMS.register("dungeon_demon_bone", () -> new ThrowableDropSelfItem(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), 5f, 1.2f, 0.5f, 3, 3, false));
-    public static final DeferredItem<ThrowableDropSelfItem> JAVELIN = ITEMS.register("javelin", () -> new ThrowableDropSelfItem(ModEntities.JAVELIN_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 5, true));
+    public static final DeferredItem<ThrowableDropSelfItem> SHURIKEN = ITEMS.register("shuriken", () -> new ThrowableDropSelfItem(ModEntities.SHURIKEN.get(), 4.2f, 1.2f, 0.5f, 5, 3, true));
+    public static final DeferredItem<ThrowableDropSelfItem> THROWING_KNIVE = ITEMS.register("throwing_knive", () -> new ThrowableDropSelfItem(ModEntities.THROWN_KNIVE.get(), 5f, 1.2f, 0.5f, 5, 3, true));
+    public static final DeferredItem<ThrowableDropSelfItem> BONE_THROWING_KNIFE = ITEMS.register("bone_throwing_knife", () -> new ThrowableDropSelfItem(ModEntities.BONE_THROWN_KNIVE.get(), 6f, 1.2f, 0.5f, 5, 3, false));
+    public static final DeferredItem<ThrowableDropSelfItem> FROST_DAGGERFISH = ITEMS.register("frost_daggerfish", () -> new ThrowableDropSelfItem(ModEntities.FROST_DAGGERFISH.get(), 7f, 1.7f, 0.5f, 5, 3, false));
+    public static final DeferredItem<ThrowableDropSelfItem> DUNGEON_DEMON_BONE = ITEMS.register("dungeon_demon_bone", () -> new ThrowableDropSelfItem(ModEntities.DUNGEON_DEMON_BONE.get(), 5f, 1.2f, 0.5f, 3, 3, false));
+    public static final DeferredItem<ThrowableDropSelfItem> JAVELIN = ITEMS.register("javelin", () -> new ThrowableDropSelfItem(ModEntities.JAVELIN.get(), 5f, 1.2f, 0.5f, 5, 5, true));
     public static final DeferredItem<SpikyBallItem> SPIKY_BALL = ITEMS.register("spiky_ball", SpikyBallItem::new);
     public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> HOLY_WATER = ITEMS.register("holy_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.PURE)));
     public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> UNHOLY_WATER = ITEMS.register("unholy_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.CORRUPT)));
@@ -93,22 +98,27 @@ public class ConsumableItems {
     public static final DeferredItem<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", () -> new ModBoneMealItem(ModRarity.BLUE, "rotten_bone_dust"));
     public static final DeferredItem<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", () -> new ModBoneMealItem(ModRarity.BLUE, "bloodstained_powder"));
 
-    public static final DeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), EyeOfCthulhu::new, TooltipItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
-    public static final DeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, KingSlime::new, TooltipItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));
-    public static final DeferredItem<BossSummoningItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(level, true), TooltipItem.getTooltipsFromString("worm_food", 3, ChatFormatting.DARK_PURPLE)));
-    public static final DeferredItem<BossSummoningItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), BrainOfCthulhu::new, TooltipItem.getTooltipsFromString("bloody_spine", 3, ChatFormatting.RED)));
+    public static final DeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), level -> new EyeOfCthulhu(BossEntities.EYE_OF_CTHULHU.get(), level), TooltipItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
+    public static final DeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, level -> new KingSlime(BossEntities.KING_SLIME.get(), level), TooltipItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));
+    public static final DeferredItem<BossSummoningItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level), TooltipItem.getTooltipsFromString("worm_food", 3, ChatFormatting.DARK_PURPLE)));
+    public static final DeferredItem<BossSummoningItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level), TooltipItem.getTooltipsFromString("bloody_spine", 3, ChatFormatting.RED)));
     public static final DeferredItem<BossSummoningItem> ABEEMINATION = ITEMS.register("abeemination", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(Tags.Biomes.IS_JUNGLE) || biome.is(Tags.Biomes.IS_LUSH);
-    }, QueenBee::new, BossSummoningItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
+    }, level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level), BossSummoningItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
     public static final DeferredItem<BossSummoningItem> DEER_THING = ITEMS.register("deer_thing", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY);
-    }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
+    }, level -> new DeerClops(BossEntities.DEERCLOPS.get(), level), BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
 
     public static final DeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));
 
     public static final DeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
     public static final DeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
+    public static final DeferredItem<GameEventItem> PIRATE_MAP = ITEMS.register("pirate_map", () -> new GameEventItem(new Item.Properties(), ModRarity.LIGHT_RED, TooltipItem.getTooltipsFromString("pirate_map", 1, ChatFormatting.GRAY), PirateInvasionGameEvent.KEY));
+
+    // todo
+    public static final DeferredItem<Item> GLOWSTICK = ITEMS.registerSimpleItem("glowstick", new Item.Properties().stacksTo(9999));
+    public static final DeferredItem<Item> STICKY_GLOWSTICK = ITEMS.registerSimpleItem("sticky_glowstick", new Item.Properties().stacksTo(9999));
 }

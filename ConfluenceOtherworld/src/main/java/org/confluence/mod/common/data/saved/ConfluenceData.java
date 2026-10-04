@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import org.confluence.mod.common.data.StarPhase;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;

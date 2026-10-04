@@ -2,7 +2,6 @@ package org.confluence.mod.mixin.world.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -16,13 +15,13 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.common.effect.HoneyEffect;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
@@ -35,10 +34,8 @@ import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
-import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
-import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -54,9 +51,6 @@ import static org.confluence.mod.common.util.VoidSeaConstants.*;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
-    @Shadow
-    public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
-
     @Shadow
     public abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
@@ -119,7 +113,9 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
-            ShimmerEffect.applyShimmerEffect(self);
+            if (self.getEyeInFluidType() == ModFluids.SHIMMER.type().get()) {
+                ShimmerEffect.applyShimmerEffect(self, 0);
+            }
             instance = instance.add(0, -0.03, 0);
         }
         if (self.hasEffect(ModEffects.FLIPPER)) {
@@ -197,21 +193,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))
     private boolean discardWhenHasAnyHooked(boolean original) {
         return original || (confluence$self() instanceof Player player && !player.isCrouching() && BaseHookItem.hasAnyHooked(player));
-    }
-
-    @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
-    private boolean shouldAdd(MobEffect mobEffect, AttributeMap entry, int i, @Local(argsOnly = true) MobEffectInstance instance) {
-        return IMobEffectInstance.of(instance).confluence$isEnabled();
-    }
-
-    @WrapMethod(method = "hasEffect")
-    private boolean hasEffect(Holder<MobEffect> effect, Operation<Boolean> original) {
-        return ILivingEntity.hasEffect(getActiveEffectsMap(), effect);
-    }
-
-    @WrapMethod(method = "getEffect")
-    private MobEffectInstance getEffect(Holder<MobEffect> effect, Operation<MobEffectInstance> original) {
-        return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
     }
 
     @Inject(method = "handleEquipmentChanges", at = @At("HEAD"))

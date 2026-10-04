@@ -3,15 +3,11 @@ package org.confluence.mod.network.c2s;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
-import org.confluence.mod.common.item.flail.FlailStrategy;
 
 /**
  * <h1>连枷控制包C2S</h1>
@@ -54,69 +50,20 @@ public final class FlailControlPacketC2S implements IPacketC2S {
     @Override
     public void work(ServerPlayer player) {
         ItemStack stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof BaseFlailItem flailItem)) return;
-
-        FlailComponent component = flailItem.getComponent();
-        if (component == null) return;
-
-        // 自动挥舞类连枷：按住即持续发射，每次攻击生成独立射弹，松开不影响已射出的射弹
+        if (!(stack.getItem() instanceof BaseFlailItem flailItem)) {
+            return;
+        }
         if (flailItem.isAutoSwing()) {
             if (action == Action.HOLD) {
                 flailItem.tryAutoSwing(player, stack);
             }
             return;
         }
-
-        // 查找现有连枷实体
-        BaseFlailEntity existing = findExistingFlail(player);
-
-        switch (action) {
-            case HOLD -> {
-                if (existing == null) {
-                    // 创建新连枷并开始 SPIN
-                    var projType = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.get(component.projType);
-                    if (projType == null) return;
-                    var entity = projType.create(player.level());
-                    if (!(entity instanceof BaseFlailEntity flail)) return;
-                    if(component.launchMode || flailItem.isProjectileMode(stack)){
-                        flail.initLaunch(player, stack, component);
-                    }
-                    else{
-                        flail.init(player, stack, component);
-                    }
-                    // 注入物品绑定的攻击策略
-                    FlailStrategy strategy = ((BaseFlailItem) stack.getItem()).getAttackStrategy();
-                    if (strategy != null) {
-                        flail.setAttackStrategy(strategy);
-                    }
-                    player.level().addFreshEntity(flail);
-                    player.swing(InteractionHand.MAIN_HAND, true);
-                } else if (existing.getPhase() == BaseFlailEntity.PHASE_THROWN
-                        || existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
-                    // THROWN / RETRACT 中按键 → 掉落 STAY
-                    existing.playerDrop();
-                }
-            }
-            case RELEASE -> {
-                if (existing == null) return;
-                if (existing.getPhase() == BaseFlailEntity.PHASE_SPIN) {
-                    existing.launch(player);
-                } else if (existing.getPhase() == BaseFlailEntity.PHASE_STAY) {
-                    existing.forceRetract();
-                } else if (existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
-                    // RETRACT 中松开 → 回到 STAY 重新掉落
-                    existing.playerDrop();
-                }
-            }
+        if (action == Action.HOLD) {
+            BaseFlailItem.press(player, stack);
+        } else {
+            BaseFlailItem.release(player, stack);
         }
-    }
-
-    @org.jetbrains.annotations.Nullable
-    private BaseFlailEntity findExistingFlail(ServerPlayer player) {
-        return player.level().getEntitiesOfClass(BaseFlailEntity.class,
-                        player.getBoundingBox().inflate(30),
-                        e -> e.getOwner() != null && e.getOwner().is(player))
-                .stream().findFirst().orElse(null);
     }
 
     public static void sendHold() {

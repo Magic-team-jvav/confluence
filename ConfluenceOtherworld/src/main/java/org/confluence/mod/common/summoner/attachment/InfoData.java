@@ -1,0 +1,108 @@
+package org.confluence.mod.common.summoner.attachment;
+
+import java.util.ArrayList;
+import java.util.List;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.summoner.info.NumberInfo;
+import org.confluence.mod.client.summoner.info.TextInfo;
+import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+
+
+public final class InfoData {
+
+    public static void record(Level level, float amount, Vec3 pos, Vec3 velocity, Type type) {
+        if (!level.isClientSide()) {
+            InfoData data = level.getData(SummonerAttachmentTypes.INFO);
+            data.pendingNumbers.add(new SummonerBatchedInfoPayload.Number(type, amount, pos, velocity));
+        }
+    }
+
+    public static void record(Level level, Component text, Vec3 pos, Vec3 velocity) {
+        if (!level.isClientSide()) {
+            InfoData data = level.getData(SummonerAttachmentTypes.INFO);
+            data.pendingTexts.add(new SummonerBatchedInfoPayload.Text(text, pos, velocity));
+        }
+    }
+
+    public static void sync(Player player, List<SummonerBatchedInfoPayload.Number> numbers, List<SummonerBatchedInfoPayload.Text> texts) {
+        InfoData infoData = player.level().getData(SummonerAttachmentTypes.INFO);
+        Vec3 eye = player.getEyePosition();
+        for (SummonerBatchedInfoPayload.Number entry : numbers) {
+            // 粒子信息模式下这些数字由原版指示粒子显示，同步时直接不接受，渲染时不再逐帧判断。
+            // 1.20 侧是 `IndicatorMode#isParticle()`（PARTICLE/VIRTUAL 二选一）；
+            // 1.21 侧的 `ClientConfigs` 只有 boolean（`ClientConfigs.java:64-65`，true = 显示数值），
+            // 因此 PARTICLE 等价于「该开关关闭」。
+            boolean enabled = entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator;
+            if (!enabled) continue;
+            NumberInfo info = new NumberInfo(entry.type(), entry.amount(), entry.pos(), entry.velocity());
+            if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
+                infoData.numbers.add(info);
+            }
+        }
+        for (SummonerBatchedInfoPayload.Text entry : texts) {
+            TextInfo info = new TextInfo(entry.text(), entry.pos(), entry.velocity());
+            if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
+                infoData.texts.add(info);
+            }
+        }
+    }
+
+    public enum Type {
+        DAMAGE(0xff9400),
+        CRITICAL(0xFF0421),
+        HEAL(0x55FF55);
+
+        private final int color;
+
+        Type(int color) {
+            this.color = color;
+        }
+
+        public int color() {
+            return color;
+        }
+    }
+
+    /// 服务端：本 tick 待发包的两类条目
+    public final List<SummonerBatchedInfoPayload.Number> pendingNumbers = new ArrayList<>();
+    public final List<SummonerBatchedInfoPayload.Text> pendingTexts = new ArrayList<>();
+    /// 客户端：两类活跃渲染数据
+    public final List<NumberInfo> numbers = new ArrayList<>();
+    public final List<TextInfo> texts = new ArrayList<>();
+
+    public static void tick(LevelTickEvent.Post event) {
+        Level level = event.getLevel();
+        InfoData data = level.getData(SummonerAttachmentTypes.INFO);
+        if (level.isClientSide()) {
+            data.numbers.removeIf(NumberInfo::tick);
+            data.texts.removeIf(TextInfo::tick);
+        } else if (!data.pendingNumbers.isEmpty() || !data.pendingTexts.isEmpty()) {
+            SummonerBatchedInfoPayload payload = new SummonerBatchedInfoPayload(List.copyOf(data.pendingNumbers), List.copyOf(data.pendingTexts));
+            data.pendingNumbers.clear();
+            data.pendingTexts.clear();
+            if (level instanceof ServerLevel serverLevel) {
+                PacketDistributor.sendToPlayersInDimension(serverLevel, payload);
+            }
+        }
+    }
+
+    public boolean isEmpty() {
+        return numbers.isEmpty() && texts.isEmpty();
+    }
+
+    public List<NumberInfo> getNumbers() {
+        return numbers;
+    }
+
+    public List<TextInfo> getTexts() {
+        return texts;
+    }
+}

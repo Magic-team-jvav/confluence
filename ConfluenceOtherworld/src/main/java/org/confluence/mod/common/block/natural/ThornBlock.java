@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
-import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,7 +69,7 @@ public class ThornBlock extends PipeBlock {
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (pLevel.isClientSide()) return;
         if (pEntity instanceof ServerPlayer player) {
-            player.hurt(ModDamageTypes.of(pLevel, DamageTypes.THORNS), damageAmount);
+            player.hurt(LibDamageTypes.of(pLevel, DamageTypes.THORNS), damageAmount);
             pLevel.destroyBlock(pPos, false);
         }
         if (pEntity instanceof Projectile) {

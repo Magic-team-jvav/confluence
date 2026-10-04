@@ -14,7 +14,10 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -24,18 +27,16 @@ import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.client.DummyMultiBufferSource;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.entity.renderer.WallOfFleshRenderer;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixed.IModelPart;
 import org.confluence.mod.mixin.client.model.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererMixin;
-import org.confluence.terraentity.client.boss.renderer.WallOfFleshRenderer;
-import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
-import org.confluence.terraentity.entity.util.DeathAnimOptions;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -49,7 +50,6 @@ import java.lang.reflect.InaccessibleObjectException;
 import java.util.*;
 
 public final class DeathAnimUtils {
-    public static final Map<EntityType<? extends LivingEntity>, DeathAnimOptions> options = new HashMap<>();
     public static final List<Pair<ResourceKey<Level>, Entity>> toBeAdded = new ArrayList<>();
     public static final List<Entity> toBeDiscarded = new ArrayList<>();
 
@@ -94,11 +94,6 @@ public final class DeathAnimUtils {
             return findAnyModelPart(model, finding.getSuperclass());
         }
         return null;
-    }
-
-    @Nullable
-    public static DeathAnimOptions getDeathAnimOptions(Entity entity) {
-        return entity instanceof DeathAnimOptions r ? r : entity == null ? null : options.get(entity.getType());
     }
 
     public static int calcParticleCount(AABB range) {

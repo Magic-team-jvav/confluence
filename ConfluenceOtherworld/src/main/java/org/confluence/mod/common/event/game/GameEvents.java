@@ -15,6 +15,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.AnglerQuestLoader;
+import org.confluence.mod.common.entity.npc.NPCNames;
+import org.confluence.mod.common.entity.npc.chat.ChatManager;
+import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
+import org.confluence.mod.common.entity.npc.mood.MoodData;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
@@ -69,5 +75,11 @@ public final class GameEvents {
     @SubscribeEvent
     public static void addReloadListener(AddReloadListenerEvent event) {
         event.addListener(AchievementOffsetLoader.getInstance());
+        event.addListener(NPCDialogLoader.getInstance());
+        event.addListener(NPCNames.Loader.getInstance());
+        event.addListener(ChatManager.getLoader());
+        event.addListener(new MoodData.Loader());
+        event.addListener(NPCTradeList.Loader.getInstance());
+        event.addListener(AnglerQuestLoader.getInstance());
     }
 }

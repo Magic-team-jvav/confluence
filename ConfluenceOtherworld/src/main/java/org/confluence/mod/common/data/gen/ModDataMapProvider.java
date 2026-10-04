@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.confluence.mod.common.data.gen.data_map.*;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.mixin.neoforge.common.data.DataMapProviderAccessor;
+import org.confluence.terra_curio.common.init.TCDataMaps;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -27,9 +28,12 @@ public class ModDataMapProvider extends DataMapProvider {
         DiggingPowerProvider.gather(() -> builder(ModDataMaps.DIGGING_POWER));
         BugNetEntityToItemSubProvider.gather(builder(ModDataMaps.BUG_NET_ENTITY_TO_ITEM, BugNetEntityToItemSubProvider.Builder::new));
         FurnaceFuelSubProvider.gather(() -> builder(NeoForgeDataMaps.FURNACE_FUELS));
+        CompostableSubProvider.gather(() -> builder(NeoForgeDataMaps.COMPOSTABLES));
         LivingInvulnerableEffectsSubProvider.gather(builder(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, LivingInvulnerableEffectsSubProvider.Builder::new), provider);
+        AttackEffectsSubProvider.gather(builder(ModDataMaps.ATTACK_EFFECTS, AttackEffectsSubProvider.Builder::new));
         BlockBreakSpawnsSubProvider.gather(builder(ModDataMaps.BLOCK_BREAK_SPAWNS, BlockBreakSpawnsSubProvider.Builder::new), provider);
         GamePhase2AttributeModifiersSubProvider.gather(builder(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, GamePhase2AttributeModifiersSubProvider.Builder::new));
+        AccessoriesSubProvider.gather(builder(TCDataMaps.ACCESSORIES, AccessoriesSubProvider.Builder::new));
     }
 
     @SuppressWarnings("unchecked")

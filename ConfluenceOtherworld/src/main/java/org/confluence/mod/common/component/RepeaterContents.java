@@ -57,7 +57,7 @@ public final class RepeaterContents implements TooltipComponent {
         this.isEmpty = nonEmptyStream().toList().isEmpty();
         this.isFull = getItemsTotalCount() >= this.getMaxItemCapacity();
         this.slotSize = this.items.size();
-        this.hashCode = ItemStack.hashStackList(this.items);
+        this.hashCode = 31 * ItemStack.hashStackList(this.items) + maxItemCapacity;
     }
 
     public static RepeaterContents fromItems(int capacity) {
@@ -99,8 +99,12 @@ public final class RepeaterContents implements TooltipComponent {
         return slotSize;
     }
 
-    public int getUedSlotSize() {
-        return nonEmptyStream().toList().size();
+    public int getUsedSlotSize() {
+        int used = 0;
+        for (ItemStack item : items) {
+            if (!item.isEmpty()) used++;
+        }
+        return used;
     }
 
     @Override
@@ -132,7 +136,8 @@ public final class RepeaterContents implements TooltipComponent {
         if (!(other instanceof RepeaterContents itemcontainercontents)) {
             return false;
         }
-        return ItemStack.listMatches(this.items, itemcontainercontents.items);
+        return maxItemCapacity == itemcontainercontents.maxItemCapacity
+                && ItemStack.listMatches(this.items, itemcontainercontents.items);
     }
 
     public ItemStack getStackInSlot(int slot) {

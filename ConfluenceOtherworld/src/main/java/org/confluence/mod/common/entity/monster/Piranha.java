@@ -1,0 +1,163 @@
+package org.confluence.mod.common.entity.monster;
+
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.mod.common.entity.MoneyDropSource;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.confluence.mod.common.entity.ai.goal.AquaticRandomSwimmingGoal;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.constant.DefaultAnimations;
+
+/// 食人鱼及其共用水生近战变体。
+///
+/// 移动和离水扑腾由水生基类处理；食人鱼本身补充持续咬合表现、攻击动作周期
+/// 与长时间水下供气。持续设置挥击状态用于让嘴部和尾部
+/// 始终播放快速咬合动画，并不代表每 tick 都结算一次伤害。
+public class Piranha extends BaseAquaticMonster implements MoneyDropSource {
+    private final AnimationProfile animationProfile;
+    private boolean suppressMoneyDrops;
+
+    public Piranha(EntityType<? extends Piranha> type, Level level) {
+        this(type, level, AnimationProfile.PIRANHA);
+    }
+
+    public Piranha(EntityType<? extends Piranha> type, Level level, AnimationProfile animationProfile) {
+        super(type, level);
+        this.animationProfile = animationProfile;
+    }
+
+    /// 食人鱼族的攻击只由近战目标结算。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
+    @Override
+    protected BTRoot createBT() {
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                return SelectorNode.of(
+                        new VanillaGoalAction(new TryFindWaterGoal(Piranha.this)),
+                        new VanillaGoalAction(new MeleeAttackGoal(Piranha.this, 1.2, true)),
+                        new VanillaGoalAction(new AquaticRandomSwimmingGoal(Piranha.this, 1.0, 10)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(Piranha.this)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(Piranha.this, Player.class, 6.0F)));
+            }
+        };
+    }
+
+    public void suppressMoneyDrops() {
+        suppressMoneyDrops = true;
+    }
+
+    @Override
+    public boolean allowsMoneyDrops() {
+        return !suppressMoneyDrops;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("SuppressMoneyDrops", suppressMoneyDrops);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        suppressMoneyDrops = tag.getBoolean("SuppressMoneyDrops");
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
+        setAirSupply(getMaxAirSupply());
+        setXRot(0.0F);
+        return super.finalizeSpawn(level, difficulty, spawnType, data);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        swinging = true;
+        updateSwingTime();
+        if (isNoAi()) {
+            setAirSupply(getMaxAirSupply());
+        }
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean hit = super.doHurtTarget(target);
+        if (hit) {
+            playSound(SoundEvents.DOLPHIN_ATTACK, 1.0F, 1.0F);
+        }
+        return hit;
+    }
+
+    @Override
+    public int getMaxAirSupply() {
+        return 4800;
+    }
+
+    @Override
+    protected int increaseAirSupply(int currentAir) {
+        return getMaxAirSupply();
+    }
+
+    @Override
+    public int getCurrentSwingDuration() {
+        return 12;
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id != 38) {
+            super.handleEntityEvent(id);
+            return;
+        }
+        for (int i = 0; i < 7; i++) {
+            level().addParticle(ParticleTypes.HAPPY_VILLAGER, getRandomX(1.0), getRandomY() + 0.2, getRandomZ(1.0), random.nextGaussian() * 0.01, random.nextGaussian() * 0.01, random.nextGaussian() * 0.01);
+        }
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(
+                this,
+                "Swim/Attack",
+                5,
+                state -> {
+                    if (animationProfile == AnimationProfile.PIRANHA && swinging) {
+                        return state.setAndContinue(DefaultAnimations.ATTACK_STRIKE);
+                    }
+                    if (animationProfile == AnimationProfile.GOLDFISH || isInWater() && state.isMoving()) {
+                        return state.setAndContinue(DefaultAnimations.SWIM);
+                    }
+                    return state.setAndContinue(DefaultAnimations.IDLE);
+                }));
+    }
+
+    public enum AnimationProfile {
+        PIRANHA,
+        GOLDFISH
+    }
+}

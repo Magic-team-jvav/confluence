@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LightningBolt;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.AccumulatingEnergyEntity;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;

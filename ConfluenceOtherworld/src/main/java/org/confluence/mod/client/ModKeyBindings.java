@@ -28,6 +28,30 @@ public final class ModKeyBindings {
         keyMappings = null;
     }
 
+    public static final Lazy<KeyMapping> GUN_SHOOT = register(() -> new KeyMapping(
+            "key.confluence.shoot",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.MOUSE,
+            GLFW.GLFW_MOUSE_BUTTON_LEFT,
+            KEY_BINDINGS_CATEGORY
+    ));
+
+    public static final Lazy<KeyMapping> GUN_AIM = register(() -> new KeyMapping(
+            "key.confluence.aim",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.MOUSE,
+            GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+            KEY_BINDINGS_CATEGORY
+    ));
+
+    public static final Lazy<KeyMapping> GUN_INSPECT = register(() -> new KeyMapping(
+            "key.confluence.inspect",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_R,
+            KEY_BINDINGS_CATEGORY
+    ));
+
     //region 魔法系列
 
     /// 灵魂总览
@@ -64,6 +88,22 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
+            KEY_BINDINGS_CATEGORY
+    ));
+
+    public static final Lazy<KeyMapping> MOUNT = register(() -> new KeyMapping(
+            "key.confluence.mount",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_R,
+            KEY_BINDINGS_CATEGORY
+    ));
+
+    public static final Lazy<KeyMapping> MOUNT_DESCEND = register(() -> new KeyMapping(
+            "key.confluence.mount_descend",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_LEFT_CONTROL,
             KEY_BINDINGS_CATEGORY
     ));
 

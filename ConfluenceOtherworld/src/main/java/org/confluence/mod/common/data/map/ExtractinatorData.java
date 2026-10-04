@@ -27,7 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModDataMaps;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public record ExtractinatorData(List<Pool> pools) {
         RandomSource random = player.getRandom();
         for (Pool pool : data.pools) {
             for (ItemStack item : pool.getRandomItems(random)) {
-                LibUtils.createItemEntity(item, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, level, 40);
+                LibEntityUtils.createItemEntity(item, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, level, 40);
             }
         }
 

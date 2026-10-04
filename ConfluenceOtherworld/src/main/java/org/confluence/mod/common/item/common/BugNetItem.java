@@ -20,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
 import org.confluence.mod.common.init.item.ModItems;
@@ -87,12 +88,16 @@ public class BugNetItem extends TooltipItem {
                 player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
         );
         if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr) l:{
-            if (!(LibUtils.tryFindBeImpacted(entityHitResult.getEntity()) instanceof LivingEntity interactionTarget)) {
+            if (!(LibEntityUtils.tryFindBeImpacted(entityHitResult.getEntity()) instanceof LivingEntity interactionTarget)) {
                 break l;
             }
             if (player.isLocalPlayer()) {
                 ((LocalPlayer) player).connection.send(ServerboundInteractPacket.createInteractionPacket(interactionTarget, false, InteractionHand.MAIN_HAND));
             } else if (predicate.test(interactionTarget) && interactionTarget.getBoundingBox().getSize() <= maxSize) {
+                if (interactionTarget instanceof org.confluence.mod.common.entity.animal.MysticFrog frog) {
+                    frog.escapeNet();
+                    break l;
+                }
                 ItemStack itemStack = BugNetEntityToItem.getItem((ServerPlayer) player, interactionTarget);
                 if (itemStack == null) {
                     itemStack = ModItems.ENTITY_DISPLAY.get().getDefaultInstance();

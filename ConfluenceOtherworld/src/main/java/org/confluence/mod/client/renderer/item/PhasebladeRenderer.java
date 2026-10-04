@@ -2,45 +2,117 @@ package org.confluence.mod.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.item.PhasebladeModel;
-import org.confluence.mod.common.item.sword.Phaseblade;
-import org.confluence.terraentity.data.component.SingleBooleanComponent;
-import org.confluence.terraentity.init.TEDataComponentTypes;
+import org.confluence.mod.common.item.sword.BasePhasebladeItem;
+import org.confluence.mod.common.item.sword.Phasesaber;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class PhasebladeRenderer extends GeoItemRenderer<Phaseblade> {
+public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
+    private static final ResourceLocation LIGHTNING = Confluence.asResource("textures/particle/phaseblade/phaseblade_lightling.png");
+    private final boolean forceBladeOn;
+    private boolean bladeOn;
 
-    private boolean isTurningOn = false;
-    public PhasebladeRenderer(String color) {
-        super(new PhasebladeModel(color));
-        addRenderLayer(autoGlowingGeoLayer);
+    public PhasebladeRenderer() {
+        this(false);
     }
 
-    AutoGlowingGeoLayer<Phaseblade> autoGlowingGeoLayer = new AutoGlowingGeoLayer<>(this){
-        @Override
-        protected RenderType getRenderType(Phaseblade animatable, @Nullable MultiBufferSource bufferSource)  {
-            // todo frame应该存itemstack
-            animatable.frame++;
-            return RenderType.energySwirl(((PhasebladeModel)this.getGeoModel()).texture, 0, (float) (Math.cos(animatable.frame * 0.001F)/4+Math.cos(animatable.frame * 0.002F)/2 + Math.cos(animatable.frame * 0.004F)));
-        }
+    public PhasebladeRenderer(boolean forceBladeOn) {
+        super(new PhasebladeModel(forceBladeOn));
+        this.forceBladeOn = forceBladeOn;
+        addRenderLayer(new AutoGlowingGeoLayer<>(this) {
+            @Override
+            protected RenderType getRenderType(BasePhasebladeItem item, @Nullable MultiBufferSource bufferSource) {
+                return RenderStateShardAccessor.EYES.apply(item.emissiveResource(), RenderType.TRANSLUCENT_TRANSPARENCY);
+            }
 
-        @Override
-        public void render(PoseStack poseStack, Phaseblade animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-            if(!isTurningOn) return;
-            super.render(poseStack, animatable, bakedModel, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
-        }
-    };
+            @Override
+            public void render(PoseStack poseStack, BasePhasebladeItem item, BakedGeoModel model, RenderType renderType,
+                               MultiBufferSource buffers, VertexConsumer buffer, float partialTick,
+                               int packedLight, int packedOverlay) {
+                if (bladeOn)
+                    super.render(poseStack, item, model, renderType, buffers, buffer, partialTick, packedLight, packedOverlay);
+            }
+        });
+        addRenderLayer(new GeoRenderLayer<>(this) {
+            @Override
+            public void render(PoseStack poses, BasePhasebladeItem item, BakedGeoModel model, RenderType renderType,
+                               MultiBufferSource buffers, VertexConsumer buffer, float partialTick, int light, int overlay) {
+                renderLightning(poses, item, buffers, partialTick, overlay);
+            }
+        });
+    }
 
+    private void renderLightning(PoseStack poses, BasePhasebladeItem item, MultiBufferSource buffers, float partialTick, int overlay) {
+        if (forceBladeOn || !bladeOn || Minecraft.getInstance().level == null) return;
+        if (renderPerspective != ItemDisplayContext.FIRST_PERSON_LEFT_HAND
+                && renderPerspective != ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
+                && renderPerspective != ItemDisplayContext.THIRD_PERSON_LEFT_HAND
+                && renderPerspective != ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) return;
+        double time = BladeItemVisualState.time(partialTick);
+        int frame = BladeItemVisualState.get(getCurrentItemStack(), time).lightningFrame(time);
+        if (frame < 0) return;
+        var geometry = item.projectileGeometry();
+        float centerY = geometry.maxY() - geometry.bladeLength() * 0.5F;
+        float radius = geometry.bladeLength() * 0.6F;
+        float u = geometry.centerX();
+        float z = geometry.maxZ() + 0.02F;
+        float v0 = frame / 7.0F;
+        float v1 = (frame + 1) / 7.0F;
+        VertexConsumer vertices = buffers.getBuffer(RenderType.entityTranslucentEmissive(LIGHTNING));
+        var pose = poses.last();
+        vertices.addVertex(pose.pose(), u - radius, centerY - radius, z).setColor(255, 255, 255, 255).setUv(0, v1).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+        vertices.addVertex(pose.pose(), u + radius, centerY - radius, z).setColor(255, 255, 255, 255).setUv(1, v1).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+        vertices.addVertex(pose.pose(), u + radius, centerY + radius, z).setColor(255, 255, 255, 255).setUv(1, v0).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+        vertices.addVertex(pose.pose(), u - radius, centerY + radius, z).setColor(255, 255, 255, 255).setUv(0, v0).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+    }
 
     @Override
-    public void actuallyRender(PoseStack poseStack, Phaseblade animatable, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int color) {
-        isTurningOn = getCurrentItemStack().getComponents().getOrDefault(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.FALSE).value();
-        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, color);
+    public void actuallyRender(PoseStack poseStack, BasePhasebladeItem item, BakedGeoModel model, RenderType renderType,
+                               MultiBufferSource buffers, VertexConsumer buffer, boolean isReRender,
+                               float partialTick, int packedLight, int packedOverlay,
+                               int colour) {
+        bladeOn = forceBladeOn || BasePhasebladeItem.isTurnOn(getCurrentItemStack());
+        if (!forceBladeOn)
+            BladeItemVisualState.get(getCurrentItemStack(), BladeItemVisualState.time(partialTick));
+        super.actuallyRender(poseStack, item, model, renderType, buffers, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
     }
 
+    @Override
+    public @Nullable RenderType getRenderType(BasePhasebladeItem item, ResourceLocation texture, @Nullable MultiBufferSource buffers, float partialTick) {
+        return RenderType.text(texture);
+    }
+
+    @Override
+    protected void renderInGui(ItemDisplayContext context, PoseStack poses, MultiBufferSource buffers, int light, int overlay, float partialTick) {
+        if (forceBladeOn) {
+            super.renderInGui(context, poses, buffers, light, overlay, partialTick);
+            return;
+        }
+        Minecraft minecraft = Minecraft.getInstance();
+        double time = BladeItemVisualState.time(minecraft.getTimer().getGameTimeDeltaPartialTick(false));
+        double extension = minecraft.screen == null ? BladeItemVisualState.get(getCurrentItemStack(), time).extension(time) : 1;
+        String suffix = extension <= 0 ? "inactive" : extension >= 1 ? "item" : "activation";
+        String family = animatable instanceof Phasesaber ? "phasesaber" : "phaseblade";
+        ResourceLocation texture = Confluence.asResource("textures/item/" + family + "/" + animatable.color().resourceName() + "_" + family + "_" + suffix + ".png");
+        int frame = Math.min(6, (int) (extension * 7));
+        float v0 = suffix.equals("activation") ? frame / 7.0F : 0;
+        float v1 = suffix.equals("activation") ? (frame + 1) / 7.0F : 1;
+        var pose = poses.last();
+        VertexConsumer vertices = buffers.getBuffer(RenderType.entityTranslucentEmissive(texture));
+        vertices.addVertex(pose.pose(), 0, 0, 0.5F).setColor(255, 255, 255, 255).setUv(0, v1).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+        vertices.addVertex(pose.pose(), 1, 0, 0.5F).setColor(255, 255, 255, 255).setUv(1, v1).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+        vertices.addVertex(pose.pose(), 1, 1, 0.5F).setColor(255, 255, 255, 255).setUv(1, v0).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+        vertices.addVertex(pose.pose(), 0, 1, 0.5F).setColor(255, 255, 255, 255).setUv(0, v0).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
+    }
 }

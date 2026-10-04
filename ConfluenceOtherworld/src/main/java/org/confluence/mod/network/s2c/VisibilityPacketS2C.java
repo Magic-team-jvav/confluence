@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.item.IFunctionCouldEnable;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -61,7 +61,7 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
                     }
                     return false;
                 });
-        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
         if (data.getBoolean("confluence:has_echo_visibility") != visible) {
             data.putBoolean("confluence:has_echo_visibility", visible);
             PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(ECHO, visible));

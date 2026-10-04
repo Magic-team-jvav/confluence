@@ -18,10 +18,10 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibGeometryUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,8 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
         int radius = config.radius + random.nextInt(config.radiusMore + 1);
         float residueProbability = config.residueProbability;
         ResidueType residueType = config.residueType;
-        List<Vector3d> posList = VectorUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
-        List<BlockPos> movePos = VectorUtils.getBlocksInConvexHull(posList);
+        List<Vector3f> posList = LibGeometryUtils.ballPos(radius, basePos, 0.006F, worldgenRandom);
+        List<BlockPos> movePos = LibGeometryUtils.getBlocksInConvexHull(posList);
         List<BlockPos> placePos = new ArrayList<>();
 
         if (movePos.isEmpty()) return false;
@@ -82,9 +82,9 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
             radius -= 4;
             for (int i = 0; i < height - 10; i++) {
                 if (random.nextFloat() < 0.05F) {
-                    double smallRadius = radius * ((double) i / height);
+                    float smallRadius = radius * ((float) i / height);
                     int intSmallRadius = (int) smallRadius;
-                    placePos.addAll(VectorUtils.getBlocksInConvexHull(VectorUtils.ballPos(smallRadius, basePos.offset(random.nextInt(-intSmallRadius, intSmallRadius + 1), i, random.nextInt(-intSmallRadius, intSmallRadius + 1)), 0.06F, worldgenRandom)));
+                    placePos.addAll(LibGeometryUtils.getBlocksInConvexHull(LibGeometryUtils.ballPos(smallRadius, basePos.offset(random.nextInt(-intSmallRadius, intSmallRadius + 1), i, random.nextInt(-intSmallRadius, intSmallRadius + 1)), 0.06F, worldgenRandom)));
                 }
             }
         }
@@ -112,8 +112,8 @@ public class BrokenStoneFeature extends Feature<BrokenStoneFeature.Config> {
 
     private static void spiral(int height, RandomSource random, int radius, BlockPos basePos, WorldGenLevel level, BlockState residue) {
         for (float i = 0; i < height; i += 0.5F) {
-            double smallRadius = radius * 0.5 * ((double) i / height);
-            if (random.nextFloat() < ( i / height)) {
+            float smallRadius = radius * 0.5F * i / height;
+            if (random.nextFloat() < i / height) {
                 float rotate = i * Mth.PI * 0.2F;
                 BlockPos pos = basePos.offset((int) (Mth.sin(rotate) * smallRadius), (int) i, (int) (Mth.cos(rotate) * smallRadius));
                 if (level.getBlockState(pos).canBeReplaced()) level.setBlock(pos, residue, 3);

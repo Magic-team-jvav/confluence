@@ -18,7 +18,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.apache.commons.lang3.IntegerRange;
+import org.confluence.lib.util.range.IntegerRange;
 import org.confluence.mod.common.entity.npc.RandomItemListing;
 import org.confluence.mod.common.entity.npc.SkyVillagerItemListing;
 import org.confluence.mod.common.init.block.DecorativeBlocks;

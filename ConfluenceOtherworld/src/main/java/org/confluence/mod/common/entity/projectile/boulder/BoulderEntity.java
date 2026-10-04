@@ -27,14 +27,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
-import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.util.TrapDamageHelper;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
+import org.confluence.mod.util.TrapDamageHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -266,7 +266,7 @@ public class BoulderEntity extends Projectile {
 
     protected void verticalHitRebound(BlockHitResult blockHitResult, Direction direction) {
         if (fallDistance > 5) {
-            Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
+            Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
             if (Math.abs(motion.y) < 0.03) motion = new Vec3(motion.x, 0.0, motion.z);
             setDeltaMovement(motion.scale(frictionFactor));
             super.onHitBlock(blockHitResult);
@@ -286,7 +286,7 @@ public class BoulderEntity extends Projectile {
             if (entity instanceof LivingEntity living) {
                 damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
             }
-            entity.hurt(ModDamageTypes.of(entity.level(), ModDamageTypes.BOULDER, this), damage);
+            entity.hurt(LibDamageTypes.of(entity.level(), LibDamageTypes.BOULDER, this), damage);
             hitHistory.put(uuid1, 5);
         }
     }

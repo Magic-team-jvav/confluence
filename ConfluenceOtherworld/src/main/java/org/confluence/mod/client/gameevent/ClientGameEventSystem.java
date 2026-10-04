@@ -13,7 +13,7 @@ import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
 import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
-import org.confluence.mod.common.data.saved.SpecificMoonVariant;
+import org.confluence.mod.common.data.SpecificMoonVariant;
 import org.confluence.mod.common.gameevent.*;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;

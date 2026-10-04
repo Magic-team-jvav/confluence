@@ -1,0 +1,50 @@
+package org.confluence.mod.common.entity.npc.trade;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import java.util.List;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+
+
+/// 数据包声明的 NPC 商品。
+///
+/// 未声明材料花费时，价格在成交时由物品的 ValueComponent 和 NPC 心情计算。
+public record NPCTradeOffer(ItemStack stack, List<ItemStack> costs, TradeCondition condition) {
+    public static final Codec<NPCTradeOffer> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ItemStack.CODEC.fieldOf("item").forGetter(NPCTradeOffer::stack),
+            ItemStack.CODEC.listOf().lenientOptionalFieldOf("costs", List.of()).forGetter(NPCTradeOffer::costs),
+            TradeCondition.CODEC.lenientOptionalFieldOf("condition", TradeCondition.alwaysTrue()).forGetter(NPCTradeOffer::condition)
+    ).apply(instance, NPCTradeOffer::new));
+
+    public NPCTradeOffer(ItemStack stack, TradeCondition condition) {
+        this(stack, List.of(), condition);
+    }
+
+    public NPCTradeOffer {
+        if (stack.isEmpty()) {
+            throw new IllegalArgumentException("NPC trade result cannot be empty");
+        }
+        if (costs.stream().anyMatch(ItemStack::isEmpty)) {
+            throw new IllegalArgumentException("NPC trade costs cannot contain empty stacks");
+        }
+    }
+
+    /// 返回商品结果的独立副本。
+    ///
+    /// 外部调用方不能通过修改返回值污染已经加载的商店表。
+    @Override
+    public ItemStack stack() {
+        return stack.copy();
+    }
+
+    @Override
+    public List<ItemStack> costs() {
+        return costs.stream().map(ItemStack::copy).toList();
+    }
+
+    public boolean isAvailable(ServerPlayer player, BaseNPC npc) {
+        return condition.test(player, npc);
+    }
+}

@@ -8,7 +8,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -20,6 +19,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -49,40 +49,44 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.EffectSwitchableCheckEvent;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.component.LootComponent;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.entity.MoneyDropSource;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.common.init.TCEffects;
-import org.confluence.terra_guns.TerraGuns;
-import org.confluence.terraentity.TerraEntity;
-import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.utils.TEUtils;
-import org.jetbrains.annotations.ApiStatus;
+import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -91,7 +95,7 @@ import java.util.Set;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 public final class ModUtils {
-    public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraEntity.MODID, TerraGuns.MODID);
+    public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraFurniture.MODID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
@@ -101,10 +105,10 @@ public final class ModUtils {
         int j = ((i - silver_count) / UPGRADES_COUNT);
         int golden_count = j % UPGRADES_COUNT;
         int k = (j - golden_count) / UPGRADES_COUNT;
-        LibUtils.createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
-        LibUtils.createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
-        LibUtils.createItemEntity(ModItems.GOLD_COIN.get(), golden_count, x, y, z, level, 0);
-        LibUtils.createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.GOLD_COIN.get(), golden_count, x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
     }
 
     public static void dropMoney(long amount, double x, double y, double z, Level level) {
@@ -124,7 +128,7 @@ public final class ModUtils {
         return itemStack.is(PotionItems.BOTTLED_WATER) || itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
+    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, boolean onSurface) {
         double x = LibMathUtils.randomFromTo(level.random, pos.getX() + 0.5, 30.0, 50.0);
         double z = LibMathUtils.randomFromTo(level.random, pos.getZ() + 0.5, 30.0, 50.0);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
@@ -132,12 +136,10 @@ public final class ModUtils {
             y = pos.getY();
         }
         boss.setPos(x, y, z);
-        if (TEUtils.internalSpawnEntity(boss, level)) {
-            level.addFreshEntityWithPassengers(boss);
-        }
+        level.addFreshEntityWithPassengers(boss);
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
+    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss) {
         summonBoss(level, pos, boss, true);
     }
 
@@ -158,16 +160,16 @@ public final class ModUtils {
 
         EntityType<?> type = living.getType();
         KillBoard.INSTANCE.defeat(type);
-        boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
-        if (isEaterOfWorlds || type == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
+        boolean isEaterOfWorlds = type == BossEntities.EATER_OF_WORLDS.get();
+        if (isEaterOfWorlds || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
             }
         }
-        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
-        boolean is$WallOrHill$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get() || type == TEBossEntities.HILL_OF_FLESH.get();
+        boolean stickySituation = type == BossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
+        boolean is$WallOrHill$OfFlesh = type == BossEntities.WALL_OF_FLESH.get() || type == BossEntities.HILL_OF_FLESH.get();
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);
@@ -181,7 +183,7 @@ public final class ModUtils {
         });
     }
 
-    public static void enemyDropMoney(LivingEntity living, ServerLevel level) {
+    public static void enemyDropMoney(LivingEntity living, ServerLevel level, DamageSource damageSource) {
         double amount = getLivingBaseMoneyDrops(living, level);
 
         if (living.hasEffect(ModEffects.MIDAS)) {
@@ -193,11 +195,25 @@ public final class ModUtils {
         if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.PLANTERA)) {
             amount *= 1.5;
         }
-
-        dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
+        if (amount > 0 && damageSource instanceof AttachmentEntityDamageSource source && source.getOwner() != null && TCUtils.hasType(source.getOwner(), AccessoryItems.AUTO$GET$COIN)) {
+            Coins coins = PlayerUtils.decodeCoin((long) amount);
+            if (coins.platinum() > 0 || coins.gold() > 0) {
+                living.playSound(ModSoundEvents.COINS_LARGE.get());
+            } else if (coins.silver() > 0) {
+                living.playSound(ModSoundEvents.COINS_MEDIUM.get());
+            } else {
+                living.playSound(ModSoundEvents.COINS_SMALL.get());
+            }
+            amount = PlayerPiggyBankContainer.placeCoins(PlayerPiggyBankContainer.of(source.getOwner()), (int) amount);
+        }
+        if (amount > 0) {
+            Vec3 position = living instanceof WallOfFlesh wall ? wall.getCoinDropPosition(damageSource) : new Vec3(living.getX(), living.getEyeY() - 0.3, living.getZ());
+            dropMoney((int) amount, position.x, position.y, position.z, level);
+        }
     }
 
     public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {
+        if (living instanceof MoneyDropSource source && !source.allowsMoneyDrops()) return 0.0;
         AttributeInstance attack = living.getAttribute(LibAttributes.getAttackDamage());
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
@@ -212,7 +228,7 @@ public final class ModUtils {
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
         if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
-            if (type == TEMonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+            if (type == MonsterEntities.VISUAL_NEURON.get() || (type == BossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
                 boolean master = LibUtils.isMaster(level, living.blockPosition());
                 Holder<MobEffect> debuff;
                 float min;
@@ -230,7 +246,7 @@ public final class ModUtils {
                     debuff = ModEffects.BLEEDING;
                     min = master ? 9.38F : 7.5F;
                 } else if (i < 37) {
-                    debuff = TCEffects.CONFUSED;
+                    debuff = LibEffects.CONFUSED;
                     min = master ? 1.88F : 1.5F;
                 } else if (i < 48) {
                     debuff = MobEffects.MOVEMENT_SLOWDOWN;
@@ -248,18 +264,6 @@ public final class ModUtils {
                 living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
             }
         }
-    }
-
-    public static void applyCursedSkullDebuff(@Nullable Entity attacker, LivingEntity living) {
-        if (attacker != null && attacker.getType() == TEMonsterEntities.CURSED_SKULL.get() && attacker.getRandom().nextFloat() < 0.33F) {
-            living.addEffect(new MobEffectInstance(ModEffects.CURSED, 80));
-        }
-    }
-
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static Component formatPrice(int price) {
-        return ClientUtils.formatPrice(price);
     }
 
     /// 不可破坏物品无法附魔耐久与经验修补
@@ -349,12 +353,6 @@ public final class ModUtils {
     /// 决定护士是否能治疗
     public static boolean isDebuff(MobEffectInstance instance) {
         return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
-    }
-
-    public static boolean isSwitchableEffect(MobEffectInstance instance) {
-        MobEffect effect = instance.getEffect().value();
-        boolean switchable = effect == TCEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
-        return NeoForge.EVENT_BUS.post(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
     }
 
     public static boolean useKey(ItemStack carried, ItemStack onSlot, Player player) {

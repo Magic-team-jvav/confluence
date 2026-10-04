@@ -5,13 +5,14 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.entity.renderer.GeoNegativeVolumeRenderer;
 import org.confluence.mod.common.entity.projectile.mana.MagicDaggerProjectile;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 
 public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerProjectile> {
     public MagicDaggerRenderer(EntityRendererProvider.Context context) {
-        super(context, ModEntities.MAGIC_DAGGER_PROJECTILE.getId(), false);
+        // 魔法飞刀的实体注册名不含 projectile，而资源文件名包含该后缀。
+        super(context, Confluence.asResource("magic_dagger_projectile"));
     }
 
     @Override

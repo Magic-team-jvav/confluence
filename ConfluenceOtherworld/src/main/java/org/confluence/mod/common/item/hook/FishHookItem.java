@@ -2,7 +2,7 @@ package org.confluence.mod.common.item.hook;
 
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class FishHookItem extends BaseHookItem implements IHookFastThrow {
     public FishHookItem() {

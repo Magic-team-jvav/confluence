@@ -27,6 +27,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -36,13 +38,13 @@ import java.util.function.Supplier;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
-public class BaitItem extends Item implements IBait {
+public class BaitItem extends CustomRarityItem implements IBait {
     private final float bonus;
     private final @Nullable Supplier<? extends EntityType<?>> supplier;
     private final Consumer<Entity> consumer;
 
     public BaitItem(ModRarity rarity, float bonus, @Nullable Supplier<? extends EntityType<?>> supplier, Consumer<Entity> consumer) {
-        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(9999));
+        super(new Properties().stacksTo(LibUtils.MAX_STACK_SIZE), rarity);
         this.bonus = bonus;
         this.supplier = supplier;
         this.consumer = consumer;

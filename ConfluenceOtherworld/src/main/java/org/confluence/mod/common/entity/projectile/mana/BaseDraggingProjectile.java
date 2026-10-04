@@ -10,10 +10,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
-import org.confluence.terraentity.api.entity.ITrackType;
-import org.confluence.terraentity.registries.track.variant.BasisTrack;
-import org.confluence.terraentity.utils.TEUtils;
+import org.confluence.mod.util.track.variant.BasisTrack;
 
 public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
     protected boolean shot;
@@ -45,11 +46,11 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
     protected abstract ResourceLocation getParticleId();
 
     protected void doTracking() {
-        LivingEntity target = TEUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getTrackingRange(), 30, this::canHitEntity);
+        LivingEntity target = LibEntityUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getTrackingRange(), 30, this::canHitEntity);
         if (target != null) {
             Vec3 motion = getDeltaMovement();
             Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());
-            double angle = TEUtils.angleBetween(motion, dir);
+            double angle = LibMathUtils.angleBetween(motion, dir);
             Vec3 movement = trackType.calDeltaMovement(getDeltaMovement(), dir, angle);
             setDeltaMovement(movement);
         }

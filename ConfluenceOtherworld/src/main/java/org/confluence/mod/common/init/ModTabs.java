@@ -15,17 +15,16 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.util.EnchantmentUtils;
+import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFRegistries;
-import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.TEItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESummonItems;
-import org.confluence.terraentity.init.item.TEWhipItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
+import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.BoomerangItems;
+import org.confluence.mod.common.init.item.SummonItems;
+import org.confluence.mod.common.init.item.WhipItems;
+import org.confluence.mod.common.init.item.YoyoItems;
 
 import java.util.Collection;
 import java.util.List;
@@ -86,6 +85,7 @@ public final class ModTabs {
                         natural_environment.accept(NatureBlocks.GRANITE_TAPERED_BLOCK);
                         natural_environment.accept(NatureBlocks.MARBLE);
                         natural_environment.accept(NatureBlocks.MARBLE_TAPERED_BLOCK);
+                        natural_environment.accept(NatureBlocks.SPIDER_NEST_STONE);
                         natural_environment.accept(NatureBlocks.SMALL_STONE_PILES);
                         natural_environment.accept(NatureBlocks.SMALL_GRANITE_PILES);
                         natural_environment.accept(NatureBlocks.SMALL_MARBLE_PILES);
@@ -1050,6 +1050,7 @@ public final class ModTabs {
                         boss_event_summons.accept(AccessoryItems.GUIDE_VOODOO_DOLL.get());
                         boss_event_summons.accept(ConsumableItems.BLOOD_TEAR.get());
                         boss_event_summons.accept(ConsumableItems.GOBLIN_BATTLE_STANDARD.get());
+                        boss_event_summons.accept(ConsumableItems.PIRATE_MAP.get());
 
                         CreativeModeTab.Output environment_items = GroupItem.belongsTo("environment_items", output);
                         environment_items.accept(ConsumableItems.HOLY_WATER.get());
@@ -1815,17 +1816,19 @@ public final class ModTabs {
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",
-            () -> CreativeModeTab.builder().icon(IconItems.MELEE_ICON::toStack)
+            () -> CreativeModeTab.builder().icon(IconItems.WARRIOR_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
                         //附魔书
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 1));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 2));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 3));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 1));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.WHIP_SWEEP, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MULTI_BOOMERANG, 3));
 
                         CreativeModeTab.Output short_swords = GroupItem.belongsTo("short_swords", output);
                         short_swords.accept(SwordItems.COPPER_SHORT_SWORD.get());
@@ -1901,16 +1904,16 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
 
                         CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
-                        yoyo.accept(TEYoyosItems.AMAZON.get());
-                        yoyo.accept(TEYoyosItems.ARTERY.get());
-                        yoyo.accept(TEYoyosItems.CASCADE.get());
-                        yoyo.accept(TEYoyosItems.CODE_1.get());
-                        yoyo.accept(TEYoyosItems.HIVE_FIVE.get());
-                        yoyo.accept(TEYoyosItems.MALAISE.get());
-                        yoyo.accept(TEYoyosItems.RALLY.get());
-                        yoyo.accept(TEYoyosItems.VALOR.get());
-                        yoyo.accept(TEYoyosItems.WOODEN_YOYO.get());
-                        acceptAll(TEBoomerangItems.ITEMS, output, "boomerang");
+                        yoyo.accept(YoyoItems.AMAZON.get());
+                        yoyo.accept(YoyoItems.ARTERY.get());
+                        yoyo.accept(YoyoItems.CASCADE.get());
+                        yoyo.accept(YoyoItems.CODE_1.get());
+                        yoyo.accept(YoyoItems.HIVE_FIVE.get());
+                        yoyo.accept(YoyoItems.MALAISE.get());
+                        yoyo.accept(YoyoItems.RALLY.get());
+                        yoyo.accept(YoyoItems.VALOR.get());
+                        yoyo.accept(YoyoItems.WOODEN_YOYO.get());
+                        acceptAll(BoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");
                         acceptAll(FlailItems.ITEMS, output, "flail");
@@ -1918,8 +1921,8 @@ public final class ModTabs {
                     .withTabsBefore(ARMORS.getId())
                     .build());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("rangers",
-            () -> CreativeModeTab.builder().icon(IconItems.REMOTE_ICON::toStack)
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> RANGERS = TABS.register("rangers",
+            () -> CreativeModeTab.builder().icon(IconItems.RANGER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.rangers"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
@@ -1967,45 +1970,48 @@ public final class ModTabs {
                         acceptAll(ArrowItems.ITEMS, output, "arrow");
 
                         CreativeModeTab.Output gun = GroupItem.belongsTo("gun", output);
-                        acceptAll(TGItems.GUNS, gun);
+                        GunItems.GUN_ITEMS.forEach(gun::accept);
                         acceptAll(GunItems.ITEMS, gun);
                         gun.accept(ManaWeaponItems.BEE_GUN);
                         gun.accept(ManaWeaponItems.SPACE_GUN);
-                        acceptAll(TGItems.BULLETS, output, "bullet");
+                        CreativeModeTab.Output bullet = GroupItem.belongsTo("bullet", output);
+                        GunItems.BULLET_ITEMS.forEach(bullet::accept);
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
-            () -> CreativeModeTab.builder().icon(IconItems.MAGIC_ICON::toStack)
+            () -> CreativeModeTab.builder().icon(IconItems.SORCERER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.mages"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
                         acceptAll(ManaWeaponItems.ITEMS, output);
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_REGENERATION, 3));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.EFFICIENT_MAGIC, 1));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_MENDING, 3));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CELESTIAL_ABSORPTION, 2));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOOTHED_MANA, 2));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.ARCANE_PROTECTION, 4));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SPELL_DESPERATION, 2));
-                        output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MYSTIC_SURGE, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_REGENERATION, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.EFFICIENT_MAGIC, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_MENDING, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CELESTIAL_ABSORPTION, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOOTHED_MANA, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.ARCANE_PROTECTION, 4));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SPELL_DESPERATION, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MYSTIC_SURGE, 2));
                     })
-                    .withTabsBefore(SHOOTERS.getId())
+                    .withTabsBefore(RANGERS.getId())
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SUMMONERS = TABS.register("summoners",
-            () -> CreativeModeTab.builder().icon(IconItems.SUMMON_ICON::toStack)
+            () -> CreativeModeTab.builder().icon(IconItems.SUMMONER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        acceptAll(TESummonItems.ITEMS, output);
-                        acceptAll(TEWhipItems.ITEMS, output);
+                        acceptAll(SummonItems.ITEMS, output);
+                        acceptAll(WhipItems.ITEMS, output);
                         acceptAll(LightPetItems.ITEMS, output);
+                        acceptAll(MountItems.ITEMS, output);
+                        HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SUMMONER_PACT, 3));
                     })
-                    .withTabsAfter(TEItems.NEO_TERRA.getId())
                     .withTabsBefore(MAGES.getId())
                     .build());
     /* 生物 */
@@ -2020,17 +2026,17 @@ public final class ModTabs {
                         output.accept(FoodItems.PINK_COLA);
                         output.accept(FoodItems.DONGDONGS_FLATBREAD);
                         output.accept(FoodItems.PIGLIN_STEW);
-                        output.accept(TEBoomerangItems.BeiDou_BOOMERANG);
+                        output.accept(BoomerangItems.BEIDOU_BOOMERANG);
                         output.accept(ToolItems.DEV_BUG_NET);
                         output.accept(SwordItems.DEVELOPER_SWORD);
-                        output.accept(TEBoomerangItems.DEVELOPER_BOOMERANG);
+                        output.accept(BoomerangItems.DEVELOPER_BOOMERANG);
                         output.accept(BowItems.DEVELOPER_BOW);
                         output.accept(FishingPoleItems.DEV_FISHING_ROD);
                         output.accept(ModBlocks.TEST_BLOCK);
                         output.accept(ModBlocks.AETHERIUM_CAULDRON);
                         output.accept(ModBlocks.HONEY_CAULDRON);
                     })
-                    .withTabsBefore(TEItems.NEO_TERRA.getId())
+                    .withTabsBefore(SUMMONERS.getId())
                     .build());
 
     private static void acceptAll(DeferredRegister.Items register, CreativeModeTab.Output output) {

@@ -18,7 +18,7 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.terraentity.init.entity.TEAnimals;
+import org.confluence.mod.common.init.entity.CritterEntities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,42 +30,42 @@ public final class BlockBreakSpawnsSubProvider {
 
         appender.create()
                 .push(Blocks.SHORT_GRASS)
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.01F)
-                .expand(TEAnimals.WORM.get(), 0.0025F)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.01F)
+                .expand(CritterEntities.WORM.get(), 0.0025F)
                 .pop()
                 .push(NatureBlocks.SMALL_STONE_PILES.get())
-                .expand(TEAnimals.WORM.get(), 0.0025F)
+                .expand(CritterEntities.WORM.get(), 0.0025F)
                 .pop()
                 .push(Blocks.FERN)
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.01F)
-                .expand(TEAnimals.WORM.get(), 0.0025F)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.01F)
+                .expand(CritterEntities.WORM.get(), 0.0025F)
                 .pop()
                 .push(Blocks.TALL_GRASS)
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.01F)
-                .expand(TEAnimals.WORM.get(), 0.0025F)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.01F)
+                .expand(CritterEntities.WORM.get(), 0.0025F)
                 .pop()
                 .push(NatureBlocks.LIFE_MUSHROOM.get())
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.02F)
-                .expand(TEAnimals.WORM.get(), 0.005F)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.02F)
+                .expand(CritterEntities.WORM.get(), 0.005F)
                 .pop()
                 .push(NatureBlocks.ASH_GRASS.get())
-                .expand(TEAnimals.HELL_BUTTERFLY.get(), 0.07F)
-                .expand(TEAnimals.MAGMA_SNAIL.get(), 0.07F)
+                .expand(CritterEntities.HELL_BUTTERFLY.get(), 0.07F)
+                .expand(CritterEntities.MAGMA_SNAIL.get(), 0.07F)
                 .pop()
                 .push(Blocks.CRIMSON_ROOTS)
-                .expand(TEAnimals.HELL_BUTTERFLY.get(), 0.01F)
-                .expand(TEAnimals.MAGMA_SNAIL.get(), 0.01F)
+                .expand(CritterEntities.HELL_BUTTERFLY.get(), 0.01F)
+                .expand(CritterEntities.MAGMA_SNAIL.get(), 0.01F)
                 .pop()
                 .push(Blocks.WARPED_ROOTS)
-                .expand(TEAnimals.HELL_BUTTERFLY.get(), 0.01F)
-                .expand(TEAnimals.MAGMA_SNAIL.get(), 0.01F)
+                .expand(CritterEntities.HELL_BUTTERFLY.get(), 0.01F)
+                .expand(CritterEntities.MAGMA_SNAIL.get(), 0.01F)
                 .pop()
         ;
 
         SimpleWeightedRandomList<EntityType<?>> jungleBugs = SimpleWeightedRandomList.<EntityType<?>>builder()
-                .add(TEAnimals.GRUBBY.get(), 8)
-                .add(TEAnimals.SLUGGY.get(), 3)
-                .add(TEAnimals.GRUBBY.get(), 1) // todo 改成蚜虫
+                .add(CritterEntities.GRUBBY.get(), 8)
+                .add(CritterEntities.SLUGGY.get(), 3)
+                .add(CritterEntities.GRUBBY.get(), 1) // todo 改成蚜虫
                 .build();
         appender.create()
                 .push(NatureBlocks.JUNGLE_ROSE.get())

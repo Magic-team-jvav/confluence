@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.client.render.visual_effects.ThunderboltVFX;
-import org.confluence.mod.common.entity.EmptyEntity;
+import org.confluence.lib.common.entitiy.EmptyEntity;
 
 public class EmptyEntityRenderer extends EntityRenderer<EmptyEntity> {
     private final ThunderboltVFX thunderboltVFX;

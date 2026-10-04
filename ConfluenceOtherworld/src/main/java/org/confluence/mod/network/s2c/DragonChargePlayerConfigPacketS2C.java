@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.network.IPacketS2C;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 
@@ -34,7 +34,7 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPac
     }
 
     public static void sendToPlayer(ServerPlayer player) {
-        if (LibUtils.isSingleplayerOwner(player)) return;
+        if (LibEntityUtils.isSingleplayerOwner(player)) return;
         PacketDistributor.sendToPlayer(player, new DragonChargePlayerConfigPacketS2C());
     }
 
@@ -43,7 +43,7 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPac
         if (server == null) return;
         ClientboundCustomPayloadPacket payload = new ClientboundCustomPayloadPacket(new DragonChargePlayerConfigPacketS2C());
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            if (LibUtils.isSingleplayerOwner(player)) continue;
+            if (LibEntityUtils.isSingleplayerOwner(player)) continue;
             player.connection.send(payload);
         }
     }

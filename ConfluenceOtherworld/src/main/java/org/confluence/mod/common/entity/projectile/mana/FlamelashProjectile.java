@@ -11,7 +11,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.common.item.mana.FlamelashItem;
@@ -27,7 +27,7 @@ public class FlamelashProjectile extends BaseDraggingProjectile {
     }
 
     public FlamelashProjectile(LivingEntity living) {
-        this(ModEntities.FLAMELASH_PROJECTILE.get(), living.level());
+        this(ModEntities.FLAMELASH.get(), living.level());
     }
 
     @Override

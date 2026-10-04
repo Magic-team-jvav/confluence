@@ -4,15 +4,15 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
-import org.confluence.lib.util.VectorUtils;
-import org.joml.Vector3d;
+import org.confluence.lib.util.LibMathUtils;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.confluence.lib.util.StructureUtils.*;
-import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
-import static org.confluence.lib.util.VectorUtils.lightningPathList;
+import static org.confluence.lib.util.LibStructureUtils.*;
+import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
+import static org.confluence.lib.util.LibGeometryUtils.lightningPathList;
 
 public class BaseStructures {
     public static BlockPos livingTree(
@@ -21,8 +21,8 @@ public class BaseStructures {
             WorldgenRandom random,
             int treeTrunkHeight,
             int treeTrunkEndOffset,
-            double treeTrunkStartRadius,
-            double treeTrunkEndRadius,
+            float treeTrunkStartRadius,
+            float treeTrunkEndRadius,
             int treeTrunkBlocks,
             int treeBranchLength,
             int treeBranchLengthRandomAddition,
@@ -45,24 +45,24 @@ public class BaseStructures {
             boolean isGenerateTreeRoot,
             int largeTreeRootLength,
             int largeTreeRootEndOffset,
-            double largeTreeRootStartRadius,
-            double largeTreeRootEndRadius,
+            float largeTreeRootStartRadius,
+            float largeTreeRootEndRadius,
             int largeTreeRootBlocks,
             boolean isGenerateLargeTreeRoot,
-            double branchLeafGenerationRadiusXZ,
-            double branchLeafGenerationRadiusY,
-            double trunkLeafGenerationRadiusXZ,
-            double trunkLeafGenerationRadiusY,
-            double leafBlobGenerationRadiusXZ,
-            double leafBlobGenerationRadiusY,
+            float branchLeafGenerationRadiusXZ,
+            float branchLeafGenerationRadiusY,
+            float trunkLeafGenerationRadiusXZ,
+            float trunkLeafGenerationRadiusY,
+            float leafBlobGenerationRadiusXZ,
+            float leafBlobGenerationRadiusY,
             float leafPosDensity,
             float leafDensity,
             int leafBlocks,
             int rootEndBlocks
     ) {
-        List<Vector3d> locationList = new ArrayList<>();
-        Vector3d locationStart = new Vector3d();
-        Vector3d locationEnd = new Vector3d();
+        List<Vector3f> locationList = new ArrayList<>();
+        Vector3f locationStart = new Vector3f();
+        Vector3f locationEnd = new Vector3f();
 
         locationStart.x = (centerPos.getX());
         locationStart.y = (centerPos.getY());
@@ -73,7 +73,7 @@ public class BaseStructures {
 
         locationList.add(locationStart);
         locationList.add(locationEnd);
-        List<Vector3d> leavesTop = ellipsoidPos(trunkLeafGenerationRadiusXZ, trunkLeafGenerationRadiusY, trunkLeafGenerationRadiusXZ, VectorUtils.fromVector3d(locationEnd), leafPosDensity, random);
+        List<Vector3f> leavesTop = ellipsoidPos(trunkLeafGenerationRadiusXZ, trunkLeafGenerationRadiusY, trunkLeafGenerationRadiusXZ, LibMathUtils.fromVector3f(locationEnd), leafPosDensity, random);
         lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, true, blockMap, leafDensity, random);
         lightningPathList(locationList, 1, 0.125F, random);
 
@@ -137,15 +137,15 @@ public class BaseStructures {
             locationList.add(locationEnd);
             lightningPathList(locationList, 1, 0.083F, random);
             lineSet(locationList, largeTreeRootStartRadius, largeTreeRootEndRadius, largeTreeRootBlocks, true, blockMap);
-            ball(4.9, centerPos, 0, true, blockMap);
-            lineSet(locationList, largeTreeRootStartRadius * 2.0D / 5.0D, largeTreeRootEndRadius - 0.1D, 0, true, blockMap);
+            ball(4.9F, centerPos, 0, true, blockMap);
+            lineSet(locationList, largeTreeRootStartRadius * 2 / 5, largeTreeRootEndRadius - 0.1F, 0, true, blockMap);
         }
-        return VectorUtils.fromVector3d(locationList.get(locationList.size() / 2 + random.nextInt(-locationList.size() / 4, locationList.size() / 4 + 1)));
+        return LibMathUtils.fromVector3f(locationList.get(locationList.size() / 2 + random.nextInt(-locationList.size() / 4, locationList.size() / 4 + 1)));
     }
 
     private static void stick(
             WorldgenRandom random,
-            List<Vector3d> locationList,
+            List<Vector3f> locationList,
             Object2IntMap<BlockPos> blockMap,
             boolean branch,
             int len,
@@ -157,51 +157,51 @@ public class BaseStructures {
             int blocks,
             int count,
             int countRandomAddition,
-            double branchLeafGenerationRadiusXZ,
-            double branchLeafGenerationRadiusY,
-            double leafBlobGenerationRadiusXZ,
-            double leafBlobGenerationRadiusY,
+            float branchLeafGenerationRadiusXZ,
+            float branchLeafGenerationRadiusY,
+            float leafBlobGenerationRadiusXZ,
+            float leafBlobGenerationRadiusY,
             float leafPosDensity,
             float leafDensity,
             int leafBlocks,
             int endBlocks
     ) {
-        List<Vector3d> leavesTop = new ArrayList<>();
+        List<Vector3f> leavesTop = new ArrayList<>();
         int stickCount = count + random.nextInt(countRandomAddition);
         int length;
-        double anCs;
-        double everyA;
-        double everyB;
-        double endX;
-        double endY;
-        double endZ;
-        Vector3d rootEnd;
+        float anCs;
+        float everyA;
+        float everyB;
+        float endX;
+        float endY;
+        float endZ;
+        Vector3f rootEnd;
         for (int stickPlace = 0; stickPlace < stickCount; stickPlace++) {
-            anCs = 360.0 / stickCount;
+            anCs = 360.0F / stickCount;
             everyA = anCs * stickPlace * Mth.DEG_TO_RAD;
-            everyB = ((((double) random.nextInt(110) - 20) * Math.pow((double) random.nextInt(101) / 100, 3)) * Mth.DEG_TO_RAD);
+            everyB = ((((float) random.nextInt(110) - 20) * (float) Math.pow(random.nextDouble(), 3)) * Mth.DEG_TO_RAD);
             length = len + random.nextInt(lenRandom);
-            endX = length * Math.cos(everyA) * Math.cos(everyB);
-            endY = length * Math.sin(everyB);
-            endZ = length * Math.sin(everyA) * Math.cos(everyB);
-            Vector3d stickStart = locationList.get(branch ? Math.max((locationList.size() - (locationList.size() / 11 * 7) - random.nextInt(locationList.size() / 9)), 0) : (random.nextInt(locationList.size() / 9)));
-            Vector3d stickEnd = new Vector3d();
+            endX = length * Mth.cos(everyA) * Mth.cos(everyB);
+            endY = length * Mth.sin(everyB);
+            endZ = length * Mth.sin(everyA) * Mth.cos(everyB);
+            Vector3f stickStart = locationList.get(branch ? Math.max((locationList.size() - (locationList.size() / 11 * 7) - random.nextInt(locationList.size() / 9)), 0) : (random.nextInt(locationList.size() / 9)));
+            Vector3f stickEnd = new Vector3f();
             stickEnd.x = branch ? (locationList.getLast().x + endX) : (locationList.getFirst().x + endX / 2);
             stickEnd.y = branch ? (locationList.getLast().y + endY + offset) : (locationList.getFirst().y - endY + offset);
             stickEnd.z = branch ? (locationList.getLast().z + endZ) : (locationList.getFirst().z + endZ / 2);
-            List<Vector3d> stickList = new ArrayList<>();
+            List<Vector3f> stickList = new ArrayList<>();
             stickList.add(stickStart);
             stickList.add(stickEnd);
-            lightningPathList(stickList, 1.0, 0.125F, random);
+            lightningPathList(stickList, 1.0F, 0.125F, random);
 
             lineSet(stickList, startRadius + random.nextInt(startRadiusRandomAddition), endRadius, blocks, true, blockMap);
             if (branch) {
                 leavesTop.clear();
-                leavesTop = ellipsoidPos(branchLeafGenerationRadiusXZ, branchLeafGenerationRadiusY, branchLeafGenerationRadiusXZ, VectorUtils.fromVector3d(stickEnd), leafPosDensity, random);
+                leavesTop = ellipsoidPos(branchLeafGenerationRadiusXZ, branchLeafGenerationRadiusY, branchLeafGenerationRadiusXZ, LibMathUtils.fromVector3f(stickEnd), leafPosDensity, random);
                 lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, false, blockMap, leafDensity, random);
             } else {
                 rootEnd = stickList.getLast();
-                ball(endRadius, VectorUtils.fromVector3d(rootEnd), endBlocks, true, blockMap);
+                ball(endRadius, LibMathUtils.fromVector3f(rootEnd), endBlocks, true, blockMap);
             }
         }
     }

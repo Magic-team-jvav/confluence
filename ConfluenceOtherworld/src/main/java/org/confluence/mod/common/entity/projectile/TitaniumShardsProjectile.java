@@ -13,10 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 
@@ -40,7 +39,7 @@ public class TitaniumShardsProjectile extends Projectile {
     }
 
     public TitaniumShardsProjectile(Player player) {
-        this(ModEntities.TITANIUM_SHARDS_PROJECTILE.get(), player.level());
+        this(ModEntities.TITANIUM_SHARDS.get(), player.level());
         setPos(player.position());
         setOwner(player);
     }
@@ -85,7 +84,7 @@ public class TitaniumShardsProjectile extends Projectile {
         if (amount != shardPos.size()) {
             List<Vector3d> shardPos = new ArrayList<>();
             List<Vector3d> shardPosO = new ArrayList<>();
-            double d = Math.TAU / amount;
+            double d = Math.PI * 2 / amount;
             for (int i = 0; i < amount; i++) {
                 Vector3d e = new Vector3d(1 + amount / 10.0, 0, 0).rotateY(d * i);
                 shardPos.add(e);
@@ -107,7 +106,7 @@ public class TitaniumShardsProjectile extends Projectile {
                 AABB aabb = new AABB(startVec, endVec).inflate(0.5);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, startVec, endVec, aabb, this::canHitEntity);
                 if (hitResult != null && hitResult.getEntity().hurt(damageSources().playerAttack(player), 25)) {
-                    VectorUtils.knockBackA2B(this, hitResult.getEntity(), 1, 0.4);
+                    LibEntityUtils.knockBackA2B(this, hitResult.getEntity(), 1, 0.4);
                     entityData.set(DATA_SHARDS_AMOUNT, amount - 1);
                 }
             }
@@ -116,7 +115,7 @@ public class TitaniumShardsProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHitEntity(target, getOwner());
     }
 
     @Override

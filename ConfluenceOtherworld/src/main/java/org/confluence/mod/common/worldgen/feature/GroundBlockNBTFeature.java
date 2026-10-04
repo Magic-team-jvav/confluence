@@ -12,7 +12,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.lib.util.FeatureUtils;
+import org.confluence.lib.util.LibFeatureUtils;
 
 import java.util.function.Consumer;
 
@@ -46,7 +46,7 @@ public class GroundBlockNBTFeature extends Feature<GroundBlockNBTFeature.Config>
 
         if (placed) {
             level.setBlock(baseBlockPos.offset(0, yPlace, 0), blockState, 3);
-            BlockEntity blockEntity = FeatureUtils.getBlockEntity(level, baseBlockPos.offset(0, yPlace, 0));
+            BlockEntity blockEntity = LibFeatureUtils.getBlockEntity(level, baseBlockPos.offset(0, yPlace, 0));
             if (blockEntity != null) blockEntity.loadWithComponents(config.nbt, level.registryAccess());
             return true;
         }

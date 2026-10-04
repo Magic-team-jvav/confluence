@@ -4,28 +4,105 @@ import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.YoyoItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static org.confluence.mod.common.component.prefix.ModPrefix.*;
 
 public enum PrefixType implements StringRepresentable {
-    UNIVERSAL("universal"),
-    MELEE("universal", "common", "melee"),
-    RANGED("universal", "common", "ranged"),
-    MAGIC("universal", "common", "magic"),
-    ACCESSORY("accessory"),
+    UNIVERSAL("universal") {
+        @Override
+        public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
+            if (stack.is(ModTags.Items.YOYO)) {
+                int index = random.nextInt(available.length + (stack.is(YoyoItems.TERRARIAN) ? 1 : 0));
+                return index == available.length ? Melee.LEGENDARY2 : available[index];
+            }
+            return super.randomPrefix(random, stack);
+        }
+
+        @Override
+        public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            return random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
+        }
+    },
+    MELEE("universal", "common", "melee") {
+        @Override
+        public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            if (stack.is(ItemTags.SWORDS)) return Melee.LEGENDARY;
+            if (stack.is(YoyoItems.TERRARIAN)) {
+                return Melee.LEGENDARY2;
+            }
+            return random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
+        }
+    },
+    RANGED("universal", "common", "ranged") {
+        @Override
+        public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            if (hasKnockback(stack)) {
+                return Ranged.UNREAL;
+            }
+            return Universal.DEMONIC;
+        }
+    },
+    MAGIC("universal", "common", "magic") {
+        @Override
+        public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            if (hasKnockback(stack)) {
+                return Magic.MYTHICAL;
+            }
+            return Universal.DEMONIC;
+        }
+    },
+    SUMMON("universal", "summon") {
+        {
+            available = Arrays.stream(available).filter(prefix -> prefix instanceof Universal universal && universal.criticalChance() != 0).toArray(ModPrefix[]::new);
+        }
+
+        @Override
+        public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
+            if (hasKnockback(stack)) {
+                return super.randomPrefix(random, stack);
+            }
+            int i = random.nextInt(available.length);
+            for (int j = i; j < available.length; j++) {
+                ModPrefix prefix = available[j];
+                if (prefix instanceof Summon summon && summon.knockBack() != 0) continue;
+                if (prefix instanceof Universal universal && universal.knockBack() != 0) continue;
+                return prefix;
+            }
+            return Summon.FABLED;
+        }
+
+        @Override
+        public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            return Summon.FABLED;
+        }
+    },
+    ACCESSORY("accessory") {
+        @Override
+        public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            return switch (random.nextInt(6)) {
+                case 0 -> Accessory.WARDING;
+                case 1 -> Accessory.ARCANE;
+                case 2 -> Accessory.LUCKY;
+                case 3 -> Accessory.MENACING;
+                case 4 -> Accessory.QUICK;
+                case 5 -> Accessory.VIOLENT;
+                default -> null;
+            };
+        }
+    },
     UNKNOWN {
         @Override
         public boolean isGroupAvailable(String group) {
@@ -38,6 +115,11 @@ public enum PrefixType implements StringRepresentable {
         }
 
         @Override
+        public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            return null;
+        }
+
+        @Override
         public void updatePrefix(ModPrefix[] prefixes) {}
     };
 
@@ -45,7 +127,7 @@ public enum PrefixType implements StringRepresentable {
     public static final StreamCodec<ByteBuf, PrefixType> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.INT, PrefixType::ordinal, PrefixType::byId);
     private static PrefixType[] VALUES;
     public final String[] groups;
-    private ModPrefix[] available;
+    protected ModPrefix[] available;
 
     PrefixType(String... groups) {
         this.groups = groups;
@@ -80,23 +162,15 @@ public enum PrefixType implements StringRepresentable {
         return available[random.nextInt(available.length)];
     }
 
-    public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack itemStack) {
-        return switch (this) { // todo 没有击退的远程和魔法武器
-            case UNIVERSAL -> random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
-            case MELEE -> itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) ? Melee.LEGENDARY : Melee.LIGHT;
-            case RANGED -> Ranged.UNREAL;
-            case MAGIC -> itemStack.is(ModTags.Items.MANA_WEAPON) ? Magic.MYTHICAL : Universal.RUTHLESS;
-            case ACCESSORY -> switch (random.nextInt(6)) {
-                case 0 -> Accessory.WARDING;
-                case 1 -> Accessory.ARCANE;
-                case 2 -> Accessory.LUCKY;
-                case 3 -> Accessory.MENACING;
-                case 4 -> Accessory.QUICK;
-                case 5 -> Accessory.VIOLENT;
-                default -> null;
-            };
-            case UNKNOWN -> null;
-        };
+    ///
+    public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
+        return randomPrefix(random);
+    }
+
+    public abstract @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack);
+
+    private static boolean hasKnockback(ItemStack stack) {
+        return stack.getAttributeModifiers().modifiers().stream().anyMatch(entry -> entry.slot().test(EquipmentSlot.MAINHAND) && entry.attribute().is(Attributes.ATTACK_KNOCKBACK));
     }
 
     public void updatePrefix(ModPrefix[] prefixes) {

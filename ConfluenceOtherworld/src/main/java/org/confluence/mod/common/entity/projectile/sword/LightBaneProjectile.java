@@ -1,53 +1,66 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LightBaneProjectile extends SwordProjectile {
-    private final List<Entity> hits = new ArrayList<>();
+    private static final EntityDataAccessor<Boolean> BIG_SLASH = SynchedEntityData.defineId(LightBaneProjectile.class, EntityDataSerializers.BOOLEAN);
+    private final Set<UUID> hitTargets = new HashSet<>();
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BIG_SLASH, false);
+    }
+
+    public void makeBigSlash() {entityData.set(BIG_SLASH, true);}
+
+    public boolean isBigSlash() {return entityData.get(BIG_SLASH);}
 
     public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
-        hitCount = 99999;
-
+        remainingHits = 2;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (direction != null) {
-            float f = 10;
-            float control = Math.min(Math.abs(tickCount - f), f) * (tickCount < f ? -0.02f : 0.02f);
-            this.setDeltaMovement(direction.normalize().scale(control));
-            lookAt(EntityAnchorArgument.Anchor.EYES, getEyePosition().subtract(direction));
-        }
+        if (isRemoved() || direction.lengthSqr() <= 1.0E-8) return;
+        float midpoint = 10.0F;
+        float speed = Math.min(Math.abs(tickCount - midpoint), midpoint) * (tickCount < midpoint ? -0.02F : 0.02F);
+        setDeltaMovement(direction.normalize().scale(speed));
+        lookAt(EntityAnchorArgument.Anchor.EYES, getEyePosition().subtract(direction));
     }
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return !hits.contains(target) && super.canHitEntity(target);
+        Entity identity = ProjectileHitRules.dedupeIdentity(target);
+        return !hitTargets.contains(identity.getUUID()) && super.canHitEntity(target);
     }
 
     @Override
-    protected boolean doHurt(Entity target) {
-        if (super.doHurt(target)) {
-            hits.add(target);
-            ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(), getX(), getY(), getZ(), 1, 0, 0, 0, 0);
-            return true;
-        }
-        return false;
+    protected boolean hurtTarget(Entity target) {
+        Entity identity = ProjectileHitRules.dedupeIdentity(target);
+        if (!super.hurtTarget(target)) return false;
+        hitTargets.add(identity.getUUID());
+        ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(), getX(), getY(), getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+        return true;
     }
 
-    @Nullable
+    @Override
     protected ParticleOptions getTrailParticle() {
         return random.nextBoolean() ? ModParticleTypes.LIGHT_BANE_FADE.get() : ModParticleTypes.LIGHT_BANE_DUST.get();
     }

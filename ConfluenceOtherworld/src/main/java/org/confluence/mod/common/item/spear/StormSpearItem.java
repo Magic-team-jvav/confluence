@@ -7,9 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
 public class StormSpearItem extends AbstractSpearItem {
@@ -28,14 +28,14 @@ public class StormSpearItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, knockBackScale, knockBackMotionY);
+        LibEntityUtils.knockBackA2B(owner, victim, knockBackScale, knockBackMotionY);
     }
 
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
             StormSpearProjectile projectile = new StormSpearProjectile(
-                    ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
+                    ModEntities.STORM_SPEAR_SHOT.get(), level);
 
             projectile.setOwner(owner);
             projectile.setWeapon(owner.getMainHandItem());

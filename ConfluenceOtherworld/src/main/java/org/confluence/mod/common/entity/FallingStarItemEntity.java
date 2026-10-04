@@ -15,15 +15,15 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
-import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4x3f;
@@ -42,7 +42,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public FallingStarItemEntity(Level level, Vec3 pos) {
-        this(ModEntities.FALLING_STAR_ITEM_ENTITY.get(), level);
+        this(ModEntities.FALLING_STAR.get(), level);
         setPos(pos);
         setDeltaMovement(level.random.nextDouble(), -8.0, level.random.nextDouble());
         setItem(MaterialItems.FALLING_STAR.get().getDefaultInstance());
@@ -83,7 +83,7 @@ public class FallingStarItemEntity extends ItemEntity {
             level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
         } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
             if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
-                entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
+                entityHitResult.getEntity().hurt(LibDamageTypes.of(level(), LibDamageTypes.FALLING_STAR), 100);
                 onRemove();
                 return;
             }

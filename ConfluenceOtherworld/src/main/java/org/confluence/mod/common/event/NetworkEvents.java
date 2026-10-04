@@ -4,6 +4,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
+import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
@@ -49,24 +51,41 @@ public final class NetworkEvents {
                 .playToClient(AchievementsDataSyncPacketS2C.TYPE, AchievementsDataSyncPacketS2C.STREAM_CODEC, AchievementsDataSyncPacketS2C::handle)
                 .playToClient(DragonChargePlayerConfigPacketS2C.TYPE, DragonChargePlayerConfigPacketS2C.STREAM_CODEC, DragonChargePlayerConfigPacketS2C::handle)
                 .playToClient(WormholePlayerDataSyncPacketS2C.TYPE, WormholePlayerDataSyncPacketS2C.STREAM_CODEC, WormholePlayerDataSyncPacketS2C::handle)
-                .playToClient(GuardianFlailBeamPacketS2C.TYPE, GuardianFlailBeamPacketS2C.STREAM_CODEC, GuardianFlailBeamPacketS2C::handle)
+                .playToClient(BossBarSyncPacketS2C.TYPE, BossBarSyncPacketS2C.STREAM_CODEC, BossBarSyncPacketS2C::handle)
+                .playToClient(SummonerBatchedInfoPayload.TYPE, SummonerBatchedInfoPayload.STREAM_CODEC, SummonerBatchedInfoPayload::handle)
+                .playToClient(SummonerBatchedParticlesPayload.TYPE, SummonerBatchedParticlesPayload.STREAM_CODEC, SummonerBatchedParticlesPayload::handle)
+                .playToClient(OpenNPCDialogPacketS2C.TYPE, OpenNPCDialogPacketS2C.STREAM_CODEC, OpenNPCDialogPacketS2C::handle)
+                .playToClient(OpenAnglerDialogPacketS2C.TYPE, OpenAnglerDialogPacketS2C.STREAM_CODEC, OpenAnglerDialogPacketS2C::handle)
+                .playToClient(BulletImpactPacketS2C.TYPE, BulletImpactPacketS2C.STREAM_CODEC, BulletImpactPacketS2C::handle)
+                .playToClient(ShotFeedbackPacketS2C.TYPE, ShotFeedbackPacketS2C.STREAM_CODEC, ShotFeedbackPacketS2C::handle)
 
                 .playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle)
                 .playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle)
                 .playToServer(KeyRequestPacketC2S.TYPE, KeyRequestPacketC2S.STREAM_CODEC, KeyRequestPacketC2S::handle)
                 .playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle)
                 .playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle)
-                .playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle)
                 .playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle)
                 .playToServer(SpearAttackPacketC2S.TYPE, SpearAttackPacketC2S.STREAM_CODEC, SpearAttackPacketC2S::handle)
-                .playToServer(SwitchEffectEnabledPackedC2S.TYPE, SwitchEffectEnabledPackedC2S.STREAM_CODEC, SwitchEffectEnabledPackedC2S::handle)
                 .playToServer(DyeMixPacketC2S.TYPE, DyeMixPacketC2S.STREAM_CODEC, DyeMixPacketC2S::handle)
+                .playToServer(ElectrifiedInputPacketC2S.TYPE, ElectrifiedInputPacketC2S.STREAM_CODEC, ElectrifiedInputPacketC2S::handle)
                 .playToServer(HouseSelectPacketC2S.TYPE, HouseSelectPacketC2S.STREAM_CODEC, HouseSelectPacketC2S::handle)
                 .playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle)
                 .playToServer(SwordProjectilePacketC2S.TYPE, SwordProjectilePacketC2S.STREAM_CODEC, SwordProjectilePacketC2S::handle)
                 .playToServer(FlailControlPacketC2S.TYPE, FlailControlPacketC2S.STREAM_CODEC, FlailControlPacketC2S::handle)
+                .playToServer(WhipControlPacketC2S.TYPE, WhipControlPacketC2S.STREAM_CODEC, WhipControlPacketC2S::handle)
+                .playToServer(WhipPlaybackCompletePacketC2S.TYPE, WhipPlaybackCompletePacketC2S.STREAM_CODEC, WhipPlaybackCompletePacketC2S::handle)
+                .playToServer(YoyoControlPacketC2S.TYPE, YoyoControlPacketC2S.STREAM_CODEC, YoyoControlPacketC2S::handle)
+                .playToServer(LeftClickItemActionPacketC2S.TYPE, LeftClickItemActionPacketC2S.STREAM_CODEC, LeftClickItemActionPacketC2S::handle)
+                .playToServer(MountInputPacketC2S.TYPE, MountInputPacketC2S.STREAM_CODEC, MountInputPacketC2S::handle)
+                .playToServer(MountTogglePacketC2S.TYPE, MountTogglePacketC2S.STREAM_CODEC, MountTogglePacketC2S::handle)
                 .playToServer(GiveBannerPacketC2S.TYPE, GiveBannerPacketC2S.STREAM_CODEC, GiveBannerPacketC2S::handle)
                 .playToServer(WormholeRequestPlayerDataPacketC2S.TYPE, WormholeRequestPlayerDataPacketC2S.STREAM_CODEC, WormholeRequestPlayerDataPacketC2S::handle)
+                .playToServer(NPCDialogSessionPacketC2S.TYPE, NPCDialogSessionPacketC2S.STREAM_CODEC, NPCDialogSessionPacketC2S::handle)
+                .playToServer(OpenNPCServicePacketC2S.TYPE, OpenNPCServicePacketC2S.STREAM_CODEC, OpenNPCServicePacketC2S::handle)
+                .playToServer(SummonSkeletronPacketC2S.TYPE, SummonSkeletronPacketC2S.STREAM_CODEC, SummonSkeletronPacketC2S::handle)
+                // 枪械内联 G4′：开火与检视（1.20 `network/c2s/{ShootPacketC2S,InspectPacketC2S}`）。
+                .playToServer(ShootPacketC2S.TYPE, ShootPacketC2S.STREAM_CODEC, ShootPacketC2S::handle)
+                .playToServer(InspectPacketC2S.TYPE, InspectPacketC2S.STREAM_CODEC, InspectPacketC2S::handle)
 
                 .playBidirectional(TeamPacket.TYPE, TeamPacket.STREAM_CODEC, TeamPacket::handle)
                 .playBidirectional(AskForSoftcorePacket.TYPE, AskForSoftcorePacket.STREAM_CODEC, AskForSoftcorePacket::handle)

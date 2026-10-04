@@ -7,6 +7,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -35,28 +36,36 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.TorchBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
+import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.IntSupplier;
 
+import static org.confluence.mod.common.init.block.PotBlocks.CORRUPTION_POT;
+import static org.confluence.mod.common.init.block.PotBlocks.CRIMSON_POT;
+import static org.confluence.mod.common.init.block.PotBlocks.JUNGLE_POT;
+import static org.confluence.mod.common.init.block.PotBlocks.TUNDRA_POT;
 import static org.confluence.mod.common.init.block.PotBlocks.UNDERGROUND_DESERT_POT;
 import static org.confluence.mod.common.init.item.PotionItems.*;
 
@@ -64,13 +73,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final VoxelShape voxelShape;
     private final float moneyRatio;
-    private final float moneyHoleChance;
+    private final IntSupplier invMoneyHoleChance;
 
-    public BasePotBlock(float moneyRatio, float moneyHoleChance, VoxelShape voxelShape) {
+    public BasePotBlock(float moneyRatio, IntSupplier invMoneyHoleChance, VoxelShape voxelShape) {
         super(Properties.of().sound(SoundType.DECORATED_POT).instabreak().noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
         this.voxelShape = voxelShape;
         this.moneyRatio = moneyRatio;
-        this.moneyHoleChance = moneyHoleChance;
+        this.invMoneyHoleChance = invMoneyHoleChance;
         registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
@@ -128,7 +137,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
         BlockPos blockPos = hit.getBlockPos();
-        Entity entity = LibUtils.getOwner(projectile.getOwner());
+        Entity entity = LibEntityUtils.getOwner(projectile.getOwner());
         if (level.destroyBlock(blockPos, true, entity)) {
             if (entity instanceof Player player) {
                 player.awardStat(Stats.BLOCK_MINED.get(this));
@@ -159,7 +168,8 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean summonHole(ServerLevel level, Vec3 center) {
-        if (level.random.nextFloat() < moneyHoleChance) {
+        int i = invMoneyHoleChance.getAsInt();
+        if (i > 0 && level.random.nextInt(i) == 0) {
             CoinPortalEntity moneyHole = new CoinPortalEntity(level, center);
             moneyHole.setDeltaMovement(0.0, 0.2, 0.0);
             level.addFreshEntity(moneyHole);
@@ -169,7 +179,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropGoldKey(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.random.nextFloat() < 0.0286F) {
+        if (level.random.nextInt(35) == 0) {
             Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.DUNGEON);
             if (structure != null) {
                 int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
@@ -179,7 +189,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     SectionPos sectionPos = SectionPos.of(new ChunkPos(i), level.getMinSection());
                     StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
                     if (structureStart != null && structureStart.isValid() && structureStart.getBoundingBox().isInside(blockPos)) { // getBoundingBox已优化过缓存
-                        LibUtils.createItemEntity(ToolItems.GOLDEN_DUNGEON_KEY.toStack(), center, level, 0);
+                        LibEntityUtils.createItemEntity(ToolItems.GOLDEN_DUNGEON_KEY.toStack(), center, level, 0);
                         return true;
                     }
                 }
@@ -189,7 +199,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropPotion(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.random.nextFloat() < (LibUtils.isAtLeastExpert(level, blockPos) ? 0.0444F : 0.0222F)) {
+        if (level.random.nextInt(45) < (LibUtils.isAtLeastExpert(level, blockPos) ? 2 : 1)) {
             double y = center.y;
             Item item = null;
             if (level.dimension() == Level.NETHER) {
@@ -254,7 +264,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 };
             }
             if (item != null) {
-                LibUtils.createItemEntity(item.getDefaultInstance(), center, level, 0);
+                LibEntityUtils.createItemEntity(item.getDefaultInstance(), center, level, 0);
                 return true;
             }
         }
@@ -262,8 +272,8 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropWormhole(ServerLevel level, Vec3 center) {
-        if (level.players().size() > 1 && level.random.nextFloat() < 0.0333F) {
-            LibUtils.createItemEntity(WORMHOLE_POTION.toStack(), center, level, 0);
+        if (level.players().size() > 1 && level.random.nextInt(3) == 0) {
+            LibEntityUtils.createItemEntity(WORMHOLE_POTION.toStack(), center, level, 0);
             return true;
         }
         return false;
@@ -280,7 +290,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     if (level.random.nextBoolean()) amount++;
                     if (level.random.nextBoolean()) amount++;
                 }
-                LibUtils.createItemEntity(DateUtils.getHeartItem(), amount, center, level, 0);
+                LibEntityUtils.createItemEntity(DateUtils.getHeartItem(), amount, center, level, 0);
             } else if (player.getInventory().hasAnyMatching(itemStack -> itemStack.getCount() < 20 && itemStack.is(ModTags.Items.TORCH))) {
                 return dropTorch(level, blockPos, center);
             } else {
@@ -290,33 +300,33 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return false;
     }
 
-    // todo 掉火把
     private boolean dropTorch(ServerLevel level, BlockPos blockPos, Vec3 center) {
-//        boolean tundra = this == TUNDRA_POTS.get();
-        int amount = /*tundra ? level.random.nextInt(2, 7) : */level.random.nextInt(4, 13);
+        int amount = this == TUNDRA_POT.get()
+                ? level.random.nextInt(2, 7)
+                : level.random.nextInt(4, 13);
         Item item;
-//        if (level.getFluidState(blockPos).is(FluidTags.WATER)) {
-//            if (tundra) {
-//                item = ModItems.STICKY_GLOW_STICK.get();
-//            } else {
-//                item = ModItems.GLOW_STICK.get();
-//            }
-//        } else {
-//            if (tundra) {
-//                item = Torches.ICE_TORCH.item.get();
-//            } else if (this == TR_CRIMSON_POTS.get()) {
-//                item = Torches.CRIMSON_TORCH.item.get();
-//            } else if (this == JUNGLE_POTS.get()) {
-//                item = Torches.JUNGLE_TORCH.item.get();
-//            } else if (this == CORRUPTION_POTS.get()) {
-//                item = Torches.CORRUPT_TORCH.item.get();
-//            } else if (this == UNDERGROUND_DESERT_POTS.get()) {
-//                item = Torches.DESERT_TORCH.item.get();
-//            } else {
-        item = Items.TORCH;
-//            }
-//        }
-        LibUtils.createItemEntity(item, amount, center, level, 0);
+        if (level.getFluidState(blockPos).is(FluidTags.WATER)) {
+            if (this == TUNDRA_POT.get()) {
+                item = ConsumableItems.STICKY_GLOWSTICK.get();
+            } else {
+                item = ConsumableItems.GLOWSTICK.get();
+            }
+        } else {
+            if (this == TUNDRA_POT.get()) {
+                item = TorchBlocks.ICE_TORCH.asItem();
+            } else if (this == CRIMSON_POT.get()) {
+                item = TorchBlocks.CRIMSON_TORCH.asItem();
+            } else if (this == JUNGLE_POT.get()) {
+                item = TorchBlocks.JUNGLE_TORCH.asItem();
+            } else if (this == CORRUPTION_POT.get()) {
+                item = TorchBlocks.CORRUPT_TORCH.asItem();
+            } else if (this == UNDERGROUND_DESERT_POT.get()) {
+                item = TorchBlocks.DESERT_TORCH.asItem();
+            } else {
+                item = Items.TORCH;
+            }
+        }
+        LibEntityUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -332,12 +342,12 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             if (level.random.nextBoolean()) {
                 item = ArrowItems.UNHOLY_ARROW.get();
             } else {
-                item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
+                item = level.random.nextBoolean() ? GunItems.SILVER_BULLET.get() : GunItems.TUNGSTEN_BULLET.get();
             }
         } else {
             item = Items.ARROW;
         }
-        LibUtils.createItemEntity(item, amount, center, level, 0);
+        LibEntityUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -349,10 +359,10 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             item = PotionItems.LESSER_HEALING_POTION.get();
         }
         int amount = 1;
-        if (LibUtils.isAtLeastExpert(level, blockPos) && level.random.nextFloat() < 0.3333F) {
+        if (LibUtils.isAtLeastExpert(level, blockPos) && level.random.nextInt(3) == 0) {
             amount++;
         }
-        LibUtils.createItemEntity(item, amount, center, level, 0);
+        LibEntityUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }
 
@@ -365,7 +375,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else {
             return dropRope(level, blockPos, center);
         }
-        LibUtils.createItemEntity(item, level.random.nextInt(1, LibUtils.isAtLeastExpert(level, blockPos) ? 5 : 8), center, level, 0);
+        LibEntityUtils.createItemEntity(item, level.random.nextInt(1, LibUtils.isAtLeastExpert(level, blockPos) ? 5 : 8), center, level, 0);
         return true;
     }
 
@@ -373,7 +383,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (level.dimension() == Level.NETHER || KillBoard.INSTANCE.getGamePhase().isHardmode()) {
             return dropMoney(level, blockPos, center);
         } else {
-            LibUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), level.random.nextInt(5, 11), center, level, 0);
+            LibEntityUtils.createItemEntity(ModBlocks.ROPE.asItem(), level.random.nextInt(20, 41), center, level, 0);
             return true;
         }
     }
@@ -412,18 +422,21 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             }
         }
         int defeated = KillBoard.INSTANCE.countDefeated(
-                TEBossEntities.EYE_OF_CTHULHU.get(),
-                TEBossEntities.EATER_OF_WORLDS.get(),
-                TEBossEntities.BRAIN_OF_CTHULHU.get(),
-                TEBossEntities.QUEEN_BEE.get(),
-                TEBossEntities.SKELETRON.get(),
-                TEBossEntities.THE_TWINS.get(),
-                TEBossEntities.PLANTERA.get()
+                BossEntities.EYE_OF_CTHULHU.get(),
+                BossEntities.EATER_OF_WORLDS.get(),
+                BossEntities.BRAIN_OF_CTHULHU.get(),
+                BossEntities.QUEEN_BEE.get(),
+                BossEntities.SKELETRON.get(),
+                BossEntities.THE_TWINS.get(),
+                BossEntities.THE_DESTROYER.get(),
+                BossEntities.SKELETRON_PRIME.get(),
+                BossEntities.PLANTERA.get()
         ) + KillBoard.INSTANCE.countDefeated(
-                GoblinArmyGameEvent.KEY
+                GoblinArmyGameEvent.KEY,
+                PirateInvasionGameEvent.KEY
         );
         for (int i = 0; i < defeated; i++) {
-            ratio *= 1.1F; // todo 毁灭者、机械骷髅王、石巨人、海盗入侵、雪人军团
+            ratio *= 1.1F; // todo 石巨人、雪人军团
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);

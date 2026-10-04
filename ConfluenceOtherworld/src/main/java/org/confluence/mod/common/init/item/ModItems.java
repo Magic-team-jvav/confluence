@@ -32,9 +32,9 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.natural.JungleHiveBlock;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
 import org.confluence.mod.integration.sodium.iris.IrisHelper;
@@ -166,6 +166,7 @@ public final class ModItems {
         AxeItems.ITEMS.register(eventBus);
         BaitItems.ITEMS.register(eventBus);
         BoatItems.register(eventBus);
+        BoomerangItems.ITEMS.register(eventBus);
         BowItems.ITEMS.register(eventBus);
         ChainsawItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
@@ -187,17 +188,23 @@ public final class ModItems {
         ManaWeaponItems.ITEMS.register(eventBus);
         MaterialItems.ITEMS.register(eventBus);
         MinecartItems.ITEMS.register(eventBus);
+        MountItems.ITEMS.register(eventBus);
+        PetItems.ITEMS.register(eventBus);
         PaintItems.ITEMS.register(eventBus);
         PickaxeAxeItems.ITEMS.register(eventBus);
         PickaxeItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);
         QuestedFishes.ITEMS.register(eventBus);
         ShovelItems.ITEMS.register(eventBus);
+        SpawnEggItems.ITEMS.register(eventBus);
         SpearItems.ITEMS.register(eventBus);
+        SummonItems.ITEMS.register(eventBus);
         SwordItems.ITEMS.register(eventBus);
         ToolItems.ITEMS.register(eventBus);
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
+        WhipItems.ITEMS.register(eventBus);
+        YoyoItems.ITEMS.register(eventBus);
 
         if (LibUtils.isModLoaded("iris")) {
             IrisHelper.register(HIDDEN);

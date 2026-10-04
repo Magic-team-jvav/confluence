@@ -16,7 +16,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,65 +33,73 @@ import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
+import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
+import org.confluence.mod.common.data.map.AttackEffects;
+import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
+import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.EnemyTargeting;
+import org.confluence.mod.common.entity.PartHitTarget;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
+import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.entity.monster.Decayeder;
+import org.confluence.mod.common.entity.monster.TheHungry;
+import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
+import org.confluence.mod.common.entity.mount.AbstractMountEntity;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
+import org.confluence.mod.common.entity.yoyo.BaseYoyoProjectile;
+import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
+import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
+import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
+import org.confluence.mod.common.item.whip.WhipDamageSource;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
-import org.confluence.mod.integration.terra_entity.TEHelper;
-import org.confluence.mod.mixed.ILevelChunkSection;
-import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.api.entity.IMinion;
-import org.confluence.terraentity.entity.animal.SimpleVariantAnimal;
-import org.confluence.terraentity.entity.boss.Skeletron;
-import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.summon.AbstractSummonMob;
-import org.confluence.terraentity.init.TETags;
-import org.confluence.terraentity.init.entity.TEAnimals;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -110,18 +117,26 @@ public final class LivingEntityEvents {
 
         if (victim.level() instanceof ServerLevel level) {
             GameEventSystem.INSTANCE.countKilled(victim);
+            if (victim instanceof Enemy && !(victim instanceof OwnedSummon)
+                    && !(victim instanceof TheHungry hungry && hungry.isLootSuppressed())
+                    && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
+                    && KillBoard.INSTANCE.getGamePhase().isHardmode()
+                    && level.getBiome(victim.blockPosition()).is(Tags.Biomes.IS_OCEAN)
+                    && victim.getRandom().nextInt(100) == 0) {
+                victim.spawnAtLocation(ConsumableItems.PIRATE_MAP.get());
+            }
             TombstoneBoulderEntity.createTombstoneEntity(victim);
-            Entity attacker = LibUtils.getOwner(damageSource);
+            Entity attacker = LibEntityUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
                         CommonConfigs.ENEMY_DROPS_MONEY.get() &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
-                        (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)
-                ) ModUtils.enemyDropMoney(victim, level);
+                        !(victim instanceof OwnedSummon)
+                ) ModUtils.enemyDropMoney(victim, level, damageSource);
                 Bestiary.INSTANCE.updateEntry(victim, true);
             }
-            if (attacker != null && attacker.getType().is(TETags.EntityTypes.CORRUPT)) {
+            if (attacker != null && attacker.getType().is(ModTags.EntityTypes.CORRUPT)) {
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, victim);
             }
             if (victim instanceof Boss boss && boss.shouldShowMessage()) {
@@ -134,23 +149,23 @@ public final class LivingEntityEvents {
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;
                 if (ManaStorage.of(player).canReceive() && player.getRandom().nextFloat() < 0.083F) {
-                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victim.position(), level, 0);
+                    LibEntityUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victim.position(), level, 0);
                     break;
                 }
             }
-            if (victim instanceof AbstractTerraNPC npc) {
+            if (victim instanceof BaseNPC npc) {
                 NPCSpawner.INSTANCE.onNPCRemoved(npc);
-                if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
+                if (attacker != null && npc.getType() == NpcEntities.CLOTHIER.get() &&
                         attacker instanceof Player player &&
                         LibDateUtils.isNight(level) && // 晚上杀死才生成
                         TCUtils.hasType(player, AccessoryItems.CLOTHIER$KILLER)
                 ) {
-                    Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
+                    Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level);
                     skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);
                     ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
 
-                if (npc.getType() == TENpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
+                if (npc.getType() == NpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
                     GuideVooDooDollItem.summon(npc, level, npc.getRandom().nextBoolean(), () -> null);
                 }
             }
@@ -187,14 +202,40 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
+        if (EnemyDamageRules.blocks(event.getEntity(), event.getSource())) {
+            event.setCanceled(true);
+            return;
+        }
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
+
+        applyBossDefinitionDamage(event, living, damageSource);
 
         if (living instanceof ServerPlayer player) {
             AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
         }
         if (Immunity.getCause(event.getSource()) != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
+        }
+    }
+
+    /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。
+    ///
+    /// 该入口位于护甲、抗性和暴击等后续减伤之前，因此普通近战、固定接触伤害以及
+    /// Boss 所有的弹幕共享完全相同的基础伤害倍率，不需要每个攻击类重复读取 JSON。
+    private static void applyBossDefinitionDamage(LivingIncomingDamageEvent event, LivingEntity victim, DamageSource source) {
+        Entity attacker = LibEntityUtils.getOwner(source);
+        if (attacker instanceof PartHitTarget part) {
+            attacker = part.encounterOwner();
+        }
+        if (attacker instanceof BossOwnedEntity owned) {
+            attacker = owned.getBossOwner();
+        }
+        if (!(attacker instanceof BaseBoss boss) || boss == victim) return;
+
+        double multiplier = CreatureDefinition.get(boss.getType()).boss().damageMultiplierOr(1.0D) * CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get();
+        if (multiplier != 1.0D) {
+            event.setAmount((float) Math.max(0.0D, event.getAmount() * multiplier));
         }
     }
 
@@ -209,7 +250,6 @@ public final class LivingEntityEvents {
         @Nullable Entity attacker = damageSource.getEntity();
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
-        ModUtils.applyCursedSkullDebuff(attacker, victim);
 
         if (attacker instanceof ServerPlayer player) {
             EnchantmentUtils.dropsStar(player, victim, damageSource);
@@ -225,10 +265,13 @@ public final class LivingEntityEvents {
         }
         amount = ArcheryEffect.apply(victim, damageSource, amount);
         // 芦苇呼吸管对溺水伤害减半
-        if (damageSource.is(DamageTypes.DROWN) && LibUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
+        if (damageSource.is(DamageTypes.DROWN) && LibEntityUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
             amount *= 0.5F;
         }
         amount = SwordItems.processEffect(damageSource, attacker, victim, amount);
+        if (victim.getVehicle() instanceof AbstractMountEntity mount) {
+            amount = mount.modifyRiderDamage(damageSource, amount);
+        }
         event.setNewDamage(amount);
     }
 
@@ -237,16 +280,30 @@ public final class LivingEntityEvents {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
-        if (!(victim.level() instanceof ServerLevel serverLevel)) return;
+        if (!(victim.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
+        SwordItems.afterSuccessfulDamage(damageSource, damageSource.getEntity(), victim);
+        AttackEffects.afterDamage(victim, damageSource);
+        if (victim instanceof Mob mob && EnemyTargeting.isConfluenceEnemy(mob)) {
+            LivingEntity retaliateAgainst = EnemyTargeting.attacker(damageSource);
+            if (retaliateAgainst != null && retaliateAgainst != victim && !EnemyDamageRules.isEnemy(retaliateAgainst)) {
+                mob.setLastHurtByMob(retaliateAgainst);
+                if (EnemyTargeting.applies(mob))
+                    mob.setTarget(EnemyTargeting.select(mob, retaliateAgainst));
+                if (mob instanceof BossOwnedEntity dependent && dependent.getBossOwner() != null)
+                    dependent.getBossOwner().onEncounterHurt(damageSource);
+            }
+        }
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
             return;
         }
         @Nullable Entity attacker = damageSource.getEntity();
 
+        if (attacker instanceof Decayeder decayeder) decayeder.onDamageDealt(level, victim, damageSource);
+
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
-        DamageIndicatorOptions.sendDamageParticle(serverLevel, damageSource, amount, victim);
+        DamageIndicatorOptions.sendDamageParticle(level, damageSource, amount, victim);
         if (victim instanceof ServerPlayer player) {
             AchievementUtils.luckyBreak_watchYourStep(player, damageSource, attacker);
             BaseLanceItem.cancelSting(player);
@@ -261,7 +318,19 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void processCriticalDamage(ProcessCriticalDamageEvent event) {
-        if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
+        Entity directEntity = event.getDamageSource().getDirectEntity();
+        if (directEntity instanceof BeeKeeperProjectile bee) {
+            event.setCritical(bee.getRandom().nextFloat() < bee.getCriticalChance());
+        } else if (directEntity instanceof YoyoEntity yoyo) {
+            event.setCritical(yoyo.getRandom().nextFloat() < yoyo.getCriticalChance());
+            if (!yoyo.isCounterweight() && yoyo.getYoyoItem() != null) {
+                event.setCriticalDamageMultiplier(yoyo.getYoyoItem().criticalDamageMultiplier());
+            }
+        } else if (directEntity instanceof BaseYoyoProjectile shot) {
+            event.setCritical(shot.getRandom().nextFloat() < shot.getCriticalChance());
+        } else if (directEntity instanceof TerrarianProjectile shot) {
+            event.setCritical(shot.getRandom().nextFloat() < shot.getCriticalChance());
+        } else if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
         }
     }
@@ -302,6 +371,12 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (event.getSlot() == EquipmentSlot.MAINHAND && event.getFrom().getItem() instanceof BaseGun gun) {
+            gun.putAwayAnimator(event.getFrom(), player);
+        }
+        if (event.getSlot() == EquipmentSlot.MAINHAND && event.getTo().getItem() instanceof BaseGun gun) {
+            gun.pickAnimator(event.getTo(), player);
+        }
         AchievementUtils.matchingAttire_fashionStatement(event.getSlot().getType(), player);
         if (event.getSlot().getType() == EquipmentSlot.Type.HAND) {
             VisibilityPacketS2C.sendSignal(player, event.getTo().is(ModTags.Items.SHOW_SIGNAL));
@@ -340,7 +415,7 @@ public final class LivingEntityEvents {
         boolean isEnemy = living instanceof Enemy;
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
                 isEnemy &&
-                (!(living instanceof IMinion minion) || minion.minion_getOwnerUUID() == null) &&
+                !(living instanceof OwnedSummon) &&
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom().nextFloat() < (LibUtils.isAtLeastExpert(level, living.blockPosition()) ? 0.36F : 0.2F)
@@ -357,7 +432,7 @@ public final class LivingEntityEvents {
             }
         }
         if (isEnemy && level.dimension() == OverworldUtils.underworld() && living.getRandom().nextInt(400) == 0) { // 掉落喷流球
-            drops.add(new ItemEntity(level, x, y, z, TEYoyosItems.CASCADE.toStack()));
+            drops.add(new ItemEntity(level, x, y, z, YoyoItems.CASCADE.toStack()));
         }
 
         for (ItemEntity entity : drops) {
@@ -387,7 +462,7 @@ public final class LivingEntityEvents {
 
         if (b && living.hasEffect(ModEffects.SHIMMER)) {
             event.setCanBreathe(true);
-        } else if (LibUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED))) {
+        } else if (LibEntityUtils.anyHandHasItem(living, itemStack -> !itemStack.isEmpty() && itemStack.is(SwordItems.BREATHING_REED))) {
             if (living.canDrownInFluidType(living.level().getFluidState(living.blockPosition().offset(0, 2, 0)).getFluidType())) {
                 event.setConsumeAirAmount(living.getRandom().nextInt(2) > 0 ? 0 : 1);
             } else {
@@ -408,16 +483,16 @@ public final class LivingEntityEvents {
             DifficultyInstance difficulty = event.getDifficulty();
             if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
                 mob.addTag("frozen_zombie");
                 event.setCanceled(true);
             } else if (ModUtils.isRainingAt(level, blockPos)) {
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
                 mob.addTag("raincoat_zombie");
                 event.setCanceled(true);
@@ -425,28 +500,22 @@ public final class LivingEntityEvents {
         } else if (type == EntityType.SKELETON) {
             DifficultyInstance difficulty = event.getDifficulty();
             if (!level.canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom().nextFloat() < 0.01F) {
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
-                LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
                 mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
                 mob.addTag("undead_miner");
                 event.setCanceled(true);
             }
-        } else if (event.getSpawnType() == MobSpawnType.NATURAL && mob instanceof Slime slime) {
-            if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom().nextInt(140) == 1) {
-                event.setCanceled(true);
-                GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(level);
+        } else if (event.getSpawnType() == MobSpawnType.NATURAL && mob.getType().is(ModTags.EntityTypes.GOLDEN_SLIME_REPLACEABLE)) {
+            if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom().nextInt(180) == 0) {
+                GoldenSlime goldenSlime = MonsterEntities.GOLDEN_SLIME.get().create(level);
                 if (goldenSlime != null) {
-                    goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-                    level.addFreshEntity(goldenSlime);
+                    goldenSlime.moveTo(mob.getX(), mob.getY(), mob.getZ(), mob.getYRot(), mob.getXRot());
+                    if (level.addFreshEntity(goldenSlime)) event.setCanceled(true);
                 }
-            }
-        } else if (type == TEAnimals.WORM.get()) {
-            SimpleVariantAnimal worm = TEAnimals.WORM.get().tryCast(mob);
-            if (worm != null) {
-                TEHelper.finalizeWormSpawn(worm);
             }
         } else if (type == ModEntities.INVERSE_ENDERMAN.get()) {
             mob.moveTo(mob.getX(), mob.getY() - mob.getBbHeight(), mob.getZ());
@@ -454,6 +523,9 @@ public final class LivingEntityEvents {
 
         if (!event.isCanceled()) {
             GamePhase2AttributeModifiers.applyModifiers(mob);
+            if (mob instanceof Boss boss && boss.isMainBody() && boss.shouldEnhanceMultiplayer()) {
+                BossMultiplayerEnhancement.apply(mob);
+            }
         }
     }
 
@@ -499,6 +571,21 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
+    public static void mobDespawn(MobDespawnEvent event) {
+        Mob mob = event.getEntity();
+        if (event.getResult() != MobDespawnEvent.Result.DEFAULT || !mob.isAlive()
+                || mob.getType().getCategory() != MobCategory.MONSTER
+                || mob.hasCustomName() || mob instanceof Boss
+                || mob instanceof BossOwnedEntity owned && owned.getBossOwner() != null
+                || !mob.removeWhenFarAway(Double.POSITIVE_INFINITY)
+                || !mob.level().players().isEmpty()) {
+            return;
+        }
+        if (mob.getNoActionTime() > 600 && mob.getRandom().nextInt(800) == 0)
+            event.setResult(MobDespawnEvent.Result.ALLOW);
+    }
+
+    @SubscribeEvent
     public static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
         if (event.getSpawnType() != MobSpawnType.NATURAL) return;
         Mob mob = event.getEntity();
@@ -509,8 +596,7 @@ public final class LivingEntityEvents {
             event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
         }
         if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
-            if (iSection != null && iSection.confluence$isGraveyard()) {
+            if (ModBlockCounters.isGraveyard(event.getLevel(), mob.blockPosition())) {
                 event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
             }
         }
@@ -518,27 +604,25 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void mobSpawn$SpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event) {
+        if ((event.getSpawnType() == MobSpawnType.NATURAL || event.getSpawnType() == MobSpawnType.CHUNK_GENERATION)
+                && !DevelopmentSpawnPolicy.allowsAutomaticSpawn(event.getEntityType())) {
+            event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
+            return;
+        }
+        if (event.getResult() == MobSpawnEvent.SpawnPlacementCheck.Result.FAIL) return;
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
-//            if (entityType == TEMonsterEntities.GHOST.get()) {
+//            if (entityType == MonsterEntities.GHOST.get()) {
 //                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
 //                event.setResult(iSection != null && iSection.confluence$isGraveyard()
 //                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
 //                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
 //            } else
             if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
-                if (iSection != null && iSection.confluence$isGraveyard()) {
+                if (ModBlockCounters.isGraveyard(event.getLevel(), event.getPos())) {
                     event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED);
                 }
             }
-        }
-    }
-
-    @SubscribeEvent
-    public static void effectParticleModification(EffectParticleModificationEvent event) {
-        if (event.isVisible() && !IMobEffectInstance.of(event.getEffect()).confluence$isEnabled()) {
-            event.setVisible(false);
         }
     }
 
@@ -571,13 +655,13 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
         LivingEntity living = event.getEntity();
-        if (living instanceof AbstractSummonMob) {
+        if (living instanceof OwnedSummon) {
             event.setCanceled(true);
         } else {
             EntityType<?> type = living.getType();
             if (type.is(ModTags.EntityTypes.BESTIARY_BLACKLIST)) {
                 event.setCanceled(true);
-            } else if (type == TEBossEntities.SKELETRON_HAND.get()) {
+            } else if (type == BossEntities.SKELETRON_HAND.get()) {
                 event.setCanceled(true);
             }
         }
@@ -586,10 +670,18 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void armorPenetration(ArmorPenetrationEvent event) {
         DamageSource damageSource = event.getDamageSource();
+        if (damageSource instanceof WhipDamageSource whipSource) {
+            event.setPenetration(event.getPenetration() + whipSource.armorPenetration());
+        }
 
         @Nullable Entity direct = damageSource.getDirectEntity();
-        if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD_PROJECTILE.get()) {
+        if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD.get()) {
             event.setPenetration(event.getPenetration() + CrystalVileShardItem.ARMOR_PENETRATION);
+        }
+        if (direct instanceof org.confluence.mod.common.entity.projectile.sword.GrassSwordProjectile) {
+            event.setPenetration(event.getPenetration() + 20.0F);
+        } else if (direct instanceof org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile) {
+            event.setPenetration(event.getPenetration() + 5.0F);
         }
 
         if (damageSource.getEntity() instanceof LivingEntity living &&

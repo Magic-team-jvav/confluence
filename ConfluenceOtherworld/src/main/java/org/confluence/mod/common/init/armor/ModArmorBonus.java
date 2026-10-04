@@ -32,7 +32,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
@@ -49,7 +49,6 @@ import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.TEEffects;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -424,7 +423,7 @@ public final class ModArmorBonus {
         }
         if (hasType(player, FLOWER$PETAL)) flowerPetal:{
             if (damageSource.getDirectEntity() instanceof FlowerPetalProjectile) break flowerPetal;
-            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
             long gameTime = player.level().getGameTime();
             if (gameTime - tag.getLong("confluence:last_flower_petal_attack") < 6) {
                 break flowerPetal;
@@ -460,7 +459,7 @@ public final class ModArmorBonus {
             }
         }
         if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
-            victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
+            victim.addEffect(new MobEffectInstance(ModEffects.FROST_BURN, 100));
         }
     }
 

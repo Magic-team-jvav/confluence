@@ -14,15 +14,23 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 public interface Immunity {
+    ThreadLocal<Deque<Immunity>> EXPLICIT_CAUSES = ThreadLocal.withInitial(ArrayDeque::new);
+
     @Nullable
     static Immunity getCause(DamageSource damageSource) {
+        Deque<Immunity> causes = EXPLICIT_CAUSES.get();
+        if (!causes.isEmpty()) return causes.peek();
         Entity directEntity = damageSource.getDirectEntity();
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if (weaponItemStack != null) {
@@ -60,6 +68,70 @@ public interface Immunity {
             if (time != 0) {
                 invTicks.put(cause, time);
             }
+        }
+    }
+
+    ///
+    static boolean isActive(Immunity cause, LivingEntity victim) {
+        return ILivingEntity.of(victim).confluence$getImmunityTicks().containsKey(cause);
+    }
+
+    /// 为无法从 {@link DamageSource} 反查来源对象的伤害写入无敌时间。
+    ///
+    /// 非实体召唤物没有可放入伤害来源的直接实体，因此由运行对象在成功命中后显式调用；
+    /// 普通实体与弹幕仍由伤害事件自动调用 {@link #calculateInvTicks(DamageSource, LivingEntity)}。
+    static void apply(Immunity cause, DamageSource damageSource, LivingEntity victim) {
+        int duration = cause.confluence$getImmunityDuration(damageSource);
+        if (duration > 0) {
+            ILivingEntity.of(victim).confluence$getImmunityTicks().put(cause, duration);
+        }
+    }
+
+    /// 在同步伤害结算期间显式指定局部无敌帧来源。
+    /// 非实体运行对象不能写入 DamageSource 的直接实体字段，通过这个作用域仍可复用全局受伤事件与无敌帧存储。
+    static <T> T withCause(Immunity cause, Supplier<T> action) {
+        Deque<Immunity> causes = EXPLICIT_CAUSES.get();
+        causes.push(cause);
+        try {
+            return action.get();
+        } finally {
+            causes.pop();
+            if (causes.isEmpty()) EXPLICIT_CAUSES.remove();
+        }
+    }
+
+    /// 1.20 没有 1.21 的 `minecraft:no_knockback` 伤害类型标签，结算后恢复原速度以保持等效行为。
+    static boolean hurtWithoutKnockback(Entity target, DamageSource source, float amount) {
+        Vec3 movement = target.getDeltaMovement();
+        boolean hurt = target.hurt(source, amount);
+        target.setDeltaMovement(movement);
+        return hurt;
+    }
+
+    /// 使用项目局部无敌帧结算伤害，同时保留目标原有的原版受伤帧。
+    static boolean hurt(Immunity cause, LivingEntity target, DamageSource source, float amount) {
+        if (isActive(cause, target)) return false;
+        int invulnerableTime = target.invulnerableTime;
+        target.invulnerableTime = 0;
+        try {
+            return withCause(cause, () -> hurtWithoutKnockback(target, source, amount));
+        } finally {
+            target.invulnerableTime = invulnerableTime;
+        }
+    }
+
+    // 非生命体部件仍由部件接收伤害，无敌帧统一存放在其生命体所属者上。
+    static boolean hurt(Immunity cause, Entity recipient, LivingEntity owner, DamageSource source, float amount) {
+        if (recipient instanceof LivingEntity living) return hurt(cause, living, source, amount);
+        if (isActive(cause, owner)) return false;
+        int invulnerableTime = owner.invulnerableTime;
+        owner.invulnerableTime = 0;
+        try {
+            boolean hurt = withCause(cause, () -> hurtWithoutKnockback(recipient, source, amount));
+            if (hurt) apply(cause, source, owner);
+            return hurt;
+        } finally {
+            owner.invulnerableTime = invulnerableTime;
         }
     }
 

@@ -1,7 +1,7 @@
 package org.confluence.mod.integration.jei;
 
 import net.minecraft.client.KeyMapping;
-import org.confluence.lib.mixin.accessor.KeyMappingAccessor;
+import org.confluence.lib.mixin.client.KeyMappingAccessor;
 import org.confluence.lib.util.LibUtils;
 
 public class JeiHelper {

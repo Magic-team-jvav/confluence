@@ -14,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -149,7 +149,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
             ResourceLocation type = ResourceLocation.tryParse(compound.getString("RainType"));
             this.rainType = (EntityType<? extends RainProjectile>) BuiltInRegistries.ENTITY_TYPE.get(type);
         } catch (Exception ignored) {
-            this.rainType = ModEntities.BLOOD_RAIN_PROJECTILE.get();
+            this.rainType = ModEntities.BLOOD_RAIN.get();
         }
         this.duration = compound.getInt("Duration");
     }
@@ -161,7 +161,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
             compound.putUUID("TargetUUID", targetUUID);
         }
         if (rainType == null) {
-            compound.putString("RainType", "confluence:blood_rain_projectile");
+            compound.putString("RainType", "confluence:blood_rain");
         } else {
             compound.putString("RainType", BuiltInRegistries.ENTITY_TYPE.getKey(rainType).toString());
         }

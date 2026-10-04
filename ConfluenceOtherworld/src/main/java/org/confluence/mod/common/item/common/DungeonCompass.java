@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -90,7 +91,7 @@ public class DungeonCompass extends TooltipItem {
                         BlockPos pos = pair.getFirst();
                         tag.putIntArray("pos", new int[]{pos.getX(), pos.getY(), pos.getZ()});
                     });
-                    LibUtils.createItemEntity(stack, blockPos.getX() + 0.5, blockPos.getY() + 1.5, blockPos.getZ() + 0.5, level, 0);
+                    LibEntityUtils.createItemEntity(stack, blockPos.getX() + 0.5, blockPos.getY() + 1.5, blockPos.getZ() + 0.5, level, 0);
                 }
             }
             player.swing(hand);

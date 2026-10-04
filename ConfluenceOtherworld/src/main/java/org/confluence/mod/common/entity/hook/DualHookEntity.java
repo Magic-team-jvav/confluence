@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 
 import java.util.function.IntFunction;
@@ -64,7 +64,7 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
         private static final IntFunction<Variant> BY_ID = ByIdMap.continuous(Variant::getId, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         final int id;
         private final String name;
-        
+
         Variant(int id, String name) {
             this.id = id;
             this.name = name;

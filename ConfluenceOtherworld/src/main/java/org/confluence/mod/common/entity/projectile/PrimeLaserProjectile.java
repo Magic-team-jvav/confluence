@@ -1,0 +1,26 @@
+package org.confluence.mod.common.entity.projectile;
+
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+
+/// 机械骷髅王激光臂发射的直线弹幕。
+///
+/// 弹幕仅在生成时计算一次方向，之后保持匀速飞行并正常与方块、实体碰撞。
+/// 目标后续移动不会改变弹道，因此玩家可以通过走位躲避，而不是承受无法规避的瞬时射线。
+public final class PrimeLaserProjectile extends StraightMonsterProjectile {
+    public PrimeLaserProjectile(EntityType<? extends PrimeLaserProjectile> type, Level level) {
+        super(type, level);
+    }
+
+    /// 按当前目标位置配置弹道，不在后续 tick 中重新索敌。
+    public void configure(Mob owner, Vec3 origin, LivingEntity target, float damage) {
+        Vec3 direction = target.getEyePosition().subtract(origin);
+        if (direction.lengthSqr() <= 1.0E-7) {
+            direction = owner.getLookAngle();
+        }
+        super.configure(owner, origin, direction.normalize().scale(1.55), damage, 80);
+    }
+}

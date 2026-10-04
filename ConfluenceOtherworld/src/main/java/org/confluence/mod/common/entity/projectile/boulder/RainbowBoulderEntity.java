@@ -13,11 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.lib.color.IntegerRGB;
-import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.lib.util.LibMathUtils;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.terra_curio.common.init.TCCommonConfigs;
-import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -197,14 +195,8 @@ public class RainbowBoulderEntity extends BoulderEntity {
         } else if (direction == Direction.DOWN) {
             setDeltaMovement(x, -1.5f, z);
         } else {
-            Vec3 motion = VectorUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
+            Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
             setDeltaMovement(motion);
-        }
-        if (targetPos != null){
-            if (targetPos.equals(blockHitResult.getBlockPos())) {
-                IntegerRGB rgb = IntegerRGB.of(getGlowingColor());
-                DebugBlocksHelper.Singleton().addDebugBlock(targetPos, new DebugBlocksHelper.DebugInfo(rgb.red(), rgb.green(), rgb.blue(), 200));
-            }
         }
         target = null;
         targetPos = null;

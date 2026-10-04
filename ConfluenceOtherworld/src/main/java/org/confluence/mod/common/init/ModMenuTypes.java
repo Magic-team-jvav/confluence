@@ -3,8 +3,10 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.menu.*;
 
 import java.util.function.Supplier;
@@ -29,6 +31,6 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<DyeMixMenu>> DYE_MIX = TYPES.register("dye_mix", () -> new MenuType<>(DyeMixMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<PiggyBankMenu>> PIGGY_BANK = TYPES.register("piggy_bank", () -> new MenuType<>(PiggyBankMenu::new, FeatureFlags.VANILLA_SET));
 
-    public static final Supplier<MenuType<NPCTradesForgeMenu>> NPC_TRADES_MENU = TYPES.register("npc_trades", () -> new MenuType<>(NPCTradesForgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<NPCTradeMenu>> NPC_TRADE = TYPES.register("npc_trade", () -> IMenuTypeExtension.create(NPCTradeMenu::fromNetwork));
 }

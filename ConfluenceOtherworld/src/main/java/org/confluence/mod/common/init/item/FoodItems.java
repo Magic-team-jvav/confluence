@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.EffectCures;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
@@ -21,9 +22,8 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.HerbSeedItem;
 import org.confluence.mod.common.item.food.BaseFoodItem;
 import org.confluence.mod.common.item.food.ModFoodProperties;
-import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder.EffectData;
-import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -359,13 +359,13 @@ public class FoodItems {
             builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f)
             ).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES_CHUNKS = registerFood("honey_mooncakes_chunks",
-            builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.noEffectProperties(1, 0.75f)
+            builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.noEffectProperties(2, 1.25f)
             ).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES = registerFood("egg_yolk_mooncakes",
             builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f)
             ).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> EGG_YOLK_MOONCAKES_CHUNKS = registerFood("egg_yolk_mooncakes_chunks",
-            builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.plentySatisfiedProperties(6000, 6, 3.5f)
+            builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.plentySatisfiedProperties(6000, 3, 1.75f)
             ).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
 
     public static final DeferredItem<BaseFoodItem> LONGEVITY_NOODLES = registerNormalFood("longevity_noodles", ModRarity.RED,
@@ -376,7 +376,7 @@ public class FoodItems {
             ).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
 
     public static final DeferredItem<BaseFoodItem> HONEY_GUMMI = registerFood("honey_gummi",
-            builder -> builder.rarity(ModRarity.ORANGE).food(hasEffectProperties(12, 6.0f, new ModFoodPropertiesBuilder.EffectData(TCEffects.HONEY, 200, 0, 1.0f)))
+            builder -> builder.rarity(ModRarity.ORANGE).food(hasEffectProperties(12, 6.0f, new ModFoodPropertiesBuilder.EffectData(LibEffects.HONEY, 200, 0, 1.0f)))
                     .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT));
 
     public static final DeferredItem<BaseFoodItem> ICE_MELON_SLICE = registerFood("ice_melon_slice", builder -> builder.rarity(ModRarity.BLUE)

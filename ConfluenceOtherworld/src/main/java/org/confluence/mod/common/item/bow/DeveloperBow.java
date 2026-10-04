@@ -1,0 +1,21 @@
+package org.confluence.mod.common.item.bow;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
+import org.confluence.mod.common.entity.projectile.arrow.DeveloperArrowEntity;
+import org.confluence.mod.common.init.entity.ModEntities;
+
+import static org.confluence.lib.common.component.ModRarity.MASTER;
+
+public class DeveloperBow extends BaseTerraBowItem {
+    public DeveloperBow() {
+        super(9999F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, MASTER));
+    }
+
+    @Override
+    public BaseArrowEntity createCustomArrow(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
+        return new DeveloperArrowEntity(ModEntities.DEVELOPER_ARROW.get(), shooter, ammo, weapon);
+    }
+}

@@ -11,7 +11,7 @@ import net.minecraft.core.BlockPos;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

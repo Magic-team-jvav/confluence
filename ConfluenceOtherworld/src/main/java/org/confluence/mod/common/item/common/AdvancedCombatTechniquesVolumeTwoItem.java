@@ -17,9 +17,9 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
     public AdvancedCombatTechniquesVolumeTwoItem() {
@@ -33,7 +33,7 @@ public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
             if (!NPCSpawner.INSTANCE.isAdvancedCombatTechniquesVolumeTwoUsed()) {
                 NPCSpawner.INSTANCE.setAdvancedCombatTechniquesVolumeTwoUsed(true);
                 ResourceLocation id = Confluence.asResource("advanced_combat_techniques_volume_two");
-                serverLevel.getEntities().get(EntityTypeTest.forClass(AbstractTerraNPC.class), npc -> {
+                serverLevel.getEntities().get(EntityTypeTest.forClass(BaseNPC.class), npc -> {
                     NPCSpawner.applyAdvancedCombatTechniques(npc, id);
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });

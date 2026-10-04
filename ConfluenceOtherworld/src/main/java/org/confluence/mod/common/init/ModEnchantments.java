@@ -31,11 +31,15 @@ public final class ModEnchantments {
     public static final ResourceKey<Enchantment> ARCANE_PROTECTION = Confluence.asResourceKey(Registries.ENCHANTMENT, "arcane_protection");
     public static final ResourceKey<Enchantment> SPELL_DESPERATION = Confluence.asResourceKey(Registries.ENCHANTMENT, "spell_desperation");
     public static final ResourceKey<Enchantment> MYSTIC_SURGE = Confluence.asResourceKey(Registries.ENCHANTMENT, "mystic_surge");
+    public static final ResourceKey<Enchantment> WHIP_SWEEP = Confluence.asResourceKey(Registries.ENCHANTMENT, "whip_sweep");
+    public static final ResourceKey<Enchantment> SUMMONER_PACT = Confluence.asResourceKey(Registries.ENCHANTMENT, "summoner_pact");
 
     /** 暴风锤 — 连枷专属风爆附魔，仅实体命中触发 */
     public static final ResourceKey<Enchantment> FLAIL_WIND_BURST = Confluence.asResourceKey(Registries.ENCHANTMENT, "flail_wind_burst");
     /** 涡轮 — 连枷专属附魔，挥舞越久伤害和速度越高 */
     public static final ResourceKey<Enchantment> FLAIL_TURBINE = Confluence.asResourceKey(Registries.ENCHANTMENT, "flail_turbine");
+
+    public static final ResourceKey<Enchantment> MULTI_BOOMERANG = Confluence.asResourceKey(Registries.ENCHANTMENT, "multi_boomerang");
 
     public static final class EffectComponentTypes {
         public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, Confluence.MODID);

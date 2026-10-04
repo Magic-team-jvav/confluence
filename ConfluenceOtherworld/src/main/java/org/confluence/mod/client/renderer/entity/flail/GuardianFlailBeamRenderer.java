@@ -9,130 +9,105 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.client.handler.ClientBeamCache;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
+import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
 
-/**
- * <h1>守卫连枷光束渲染</h1>
- */
+/// 使用原版守卫者光束纹理渲染链锤与同步目标之间的实体光束。
 public final class GuardianFlailBeamRenderer {
-
-    private static final ResourceLocation BEAM_TEXTURE =
-            ResourceLocation.withDefaultNamespace("textures/entity/guardian_beam.png");
+    private static final ResourceLocation BEAM_TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/guardian_beam.png");
     private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(BEAM_TEXTURE);
 
-    private GuardianFlailBeamRenderer() {}
+    private GuardianFlailBeamRenderer() {
+    }
 
-    /**
-     * 渲染连枷的所有守卫者激光束
-     */
-    public static void renderGuardianBeams(BaseFlailEntity entity, PoseStack poseStack,
-                                           MultiBufferSource bufferSource, float partialTick) {
-        ClientBeamCache.BeamEntry entry = ClientBeamCache.get(entity.getId());
-        if (entry == null || entry.targetIds.length == 0) return;
-
-        Level level = entity.level();
-        Vec3 flailEye = new Vec3(0, 0.25, 0);
-        // 原版攻击进度暖机渐变：暗紫→亮金
-        float warmup = Mth.clamp((System.currentTimeMillis() - entry.startTimeMs) / 1000.0F, 0.0F, 1.0F);
-        float f8 = warmup * warmup;
-        int r, g, b;
-        if (entry.elder) {
-            r = (int) (f8 * 128);
-            g = (int) (f8 * 128);
-            b = (int) (128 + f8 * 127);
+    public static void render(GuardianFlailEntity entity, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick) {
+        float warmup = entity.getAttackProgress(partialTick);
+        float intensity = warmup * warmup;
+        int red;
+        int green;
+        int blue;
+        if (entity.isElder()) {
+            red = (int) (intensity * 128.0F);
+            green = (int) (intensity * 128.0F);
+            blue = (int) (128.0F + intensity * 127.0F);
         } else {
-            r = 64 + (int) (f8 * 191.0F);
-            g = 32 + (int) (f8 * 191.0F);
-            b = 128 - (int) (f8 * 64.0F);
+            red = 64 + (int) (intensity * 191.0F);
+            green = 32 + (int) (intensity * 191.0F);
+            blue = 128 - (int) (intensity * 64.0F);
         }
-        int outerColor = 0xFF000000 | (r << 16) | (g << 8) | b;
+        int color = 0xFF000000 | red << 16 | green << 8 | blue;
 
-        for (int targetId : entry.targetIds) {
-            Entity target = level.getEntity(targetId);
-            if (target instanceof LivingEntity living) {
-                Vec3 targetCenter = living.getBoundingBox().getCenter();
-                Vec3 beamVec = targetCenter.subtract(entity.getPosition(partialTick));
-                renderSingleBeam(poseStack, bufferSource, flailEye, beamVec, outerColor,
-                        entity.tickCount + partialTick);
-            }
+        Vec3 renderPosition = entity.getPosition(partialTick);
+        for (LivingEntity target : entity.getBeamTargets()) {
+            Vec3 beam = target.getBoundingBox().getCenter().subtract(renderPosition);
+            renderSingleBeam(poseStack, bufferSource, new Vec3(0.0, 0.25, 0.0), beam, color, entity.tickCount + partialTick);
         }
     }
 
-    private static void renderSingleBeam(PoseStack poseStack, MultiBufferSource bufferSource,
-                                         Vec3 beamSource, Vec3 beamVec, int color, float time) {
-        double length = beamVec.length();
-        if (length < 0.01) return;
+    private static void renderSingleBeam(PoseStack poseStack, MultiBufferSource bufferSource, Vec3 source, Vec3 beam, int color, float time) {
+        double length = beam.length();
+        if (length < 0.01) {
+            return;
+        }
 
-        int r = FastColor.ARGB32.red(color);
-        int g = FastColor.ARGB32.green(color);
-        int b = FastColor.ARGB32.blue(color);
-
+        int red = FastColor.ARGB32.red(color);
+        int green = FastColor.ARGB32.green(color);
+        int blue = FastColor.ARGB32.blue(color);
         poseStack.pushPose();
-        poseStack.translate(beamSource.x, beamSource.y, beamSource.z);
+        poseStack.translate(source.x, source.y, source.z);
 
-        Vec3 n = beamVec.normalize();
-        float f5 = (float) Math.acos(n.y);
-        float f6 = (float) Math.atan2(n.z, n.x);
-        poseStack.mulPose(Axis.YP.rotationDegrees((((float) Math.PI / 2F) - f6) * (180F / (float) Math.PI)));
-        poseStack.mulPose(Axis.XP.rotationDegrees(f5 * (180F / (float) Math.PI)));
+        Vec3 direction = beam.normalize();
+        float pitch = (float) Math.acos(direction.y);
+        float yaw = (float) Math.atan2(direction.z, direction.x);
+        poseStack.mulPose(Axis.YP.rotationDegrees(((float) Math.PI / 2.0F - yaw) * Mth.RAD_TO_DEG));
+        poseStack.mulPose(Axis.XP.rotationDegrees(pitch * Mth.RAD_TO_DEG));
 
-        float f4 = (float) (length + 1.0);
-        float f7 = time * 0.05F * -1.5F;
-        float f2 = time * 0.5F % 1.0F;
-        float f29 = -1.0F + f2;
-        float f30 = f4 * 2.5F + f29;
-
+        float end = (float) length + 1.0F;
+        float rotation = time * -0.075F;
+        float startV = -1.0F + time * 0.5F % 1.0F;
+        float endV = end * 2.5F + startV;
         PoseStack.Pose pose = poseStack.last();
-        VertexConsumer vc = bufferSource.getBuffer(BEAM_RENDER_TYPE);
+        VertexConsumer consumer = bufferSource.getBuffer(BEAM_RENDER_TYPE);
 
-        float f19 = Mth.cos(f7 + (float) Math.PI) * 0.2F;
-        float f20 = Mth.sin(f7 + (float) Math.PI) * 0.2F;
-        float f21 = Mth.cos(f7 + 0.0F) * 0.2F;
-        float f22 = Mth.sin(f7 + 0.0F) * 0.2F;
-        float f23 = Mth.cos(f7 + ((float) Math.PI / 2F)) * 0.2F;
-        float f24 = Mth.sin(f7 + ((float) Math.PI / 2F)) * 0.2F;
-        float f25 = Mth.cos(f7 + ((float) Math.PI * 1.5F)) * 0.2F;
-        float f26 = Mth.sin(f7 + ((float) Math.PI * 1.5F)) * 0.2F;
+        float firstX = Mth.cos(rotation + (float) Math.PI) * 0.2F;
+        float firstZ = Mth.sin(rotation + (float) Math.PI) * 0.2F;
+        float secondX = Mth.cos(rotation) * 0.2F;
+        float secondZ = Mth.sin(rotation) * 0.2F;
+        float thirdX = Mth.cos(rotation + Mth.HALF_PI) * 0.2F;
+        float thirdZ = Mth.sin(rotation + Mth.HALF_PI) * 0.2F;
+        float fourthX = Mth.cos(rotation + Mth.HALF_PI * 3.0F) * 0.2F;
+        float fourthZ = Mth.sin(rotation + Mth.HALF_PI * 3.0F) * 0.2F;
 
-        vertex(vc, pose, f19, f4, f20, r, g, b, 0.4999F, f30);
-        vertex(vc, pose, f19, 0.0F, f20, r, g, b, 0.4999F, f29);
-        vertex(vc, pose, f21, 0.0F, f22, r, g, b, 0.0F, f29);
-        vertex(vc, pose, f21, f4, f22, r, g, b, 0.0F, f30);
+        vertex(consumer, pose, firstX, end, firstZ, red, green, blue, 0.4999F, endV);
+        vertex(consumer, pose, firstX, 0.0F, firstZ, red, green, blue, 0.4999F, startV);
+        vertex(consumer, pose, secondX, 0.0F, secondZ, red, green, blue, 0.0F, startV);
+        vertex(consumer, pose, secondX, end, secondZ, red, green, blue, 0.0F, endV);
 
-        vertex(vc, pose, f23, f4, f24, r, g, b, 0.4999F, f30);
-        vertex(vc, pose, f23, 0.0F, f24, r, g, b, 0.4999F, f29);
-        vertex(vc, pose, f25, 0.0F, f26, r, g, b, 0.0F, f29);
-        vertex(vc, pose, f25, f4, f26, r, g, b, 0.0F, f30);
+        vertex(consumer, pose, thirdX, end, thirdZ, red, green, blue, 0.4999F, endV);
+        vertex(consumer, pose, thirdX, 0.0F, thirdZ, red, green, blue, 0.4999F, startV);
+        vertex(consumer, pose, fourthX, 0.0F, fourthZ, red, green, blue, 0.0F, startV);
+        vertex(consumer, pose, fourthX, end, fourthZ, red, green, blue, 0.0F, endV);
+        // 封住光束末端，避免从目标方向观察时看到中空截面。
+        float endFrameV = ((int) time & 1) == 0 ? 0.5F : 0.0F;
+        float endFirstX = Mth.cos(rotation + 2.3561945F) * 0.282F;
+        float endFirstZ = Mth.sin(rotation + 2.3561945F) * 0.282F;
+        float endSecondX = Mth.cos(rotation + (float) Math.PI / 4.0F) * 0.282F;
+        float endSecondZ = Mth.sin(rotation + (float) Math.PI / 4.0F) * 0.282F;
+        float endThirdX = Mth.cos(rotation + 3.926991F) * 0.282F;
+        float endThirdZ = Mth.sin(rotation + 3.926991F) * 0.282F;
+        float endFourthX = Mth.cos(rotation + 5.4977875F) * 0.282F;
+        float endFourthZ = Mth.sin(rotation + 5.4977875F) * 0.282F;
 
-        float f31 = ((int) time) % 2 == 0 ? 0.5F : 0.0F;
-
-        float f11 = Mth.cos(f7 + 2.3561945F) * 0.282F;
-        float f12 = Mth.sin(f7 + 2.3561945F) * 0.282F;
-        float f13 = Mth.cos(f7 + ((float) Math.PI / 4F)) * 0.282F;
-        float f14 = Mth.sin(f7 + ((float) Math.PI / 4F)) * 0.282F;
-        float f15 = Mth.cos(f7 + 3.926991F) * 0.282F;
-        float f16 = Mth.sin(f7 + 3.926991F) * 0.282F;
-        float f17 = Mth.cos(f7 + 5.4977875F) * 0.282F;
-        float f18 = Mth.sin(f7 + 5.4977875F) * 0.282F;
-
-        vertex(vc, pose, f11, f4, f12, r, g, b, 0.5F, f31 + 0.5F);
-        vertex(vc, pose, f13, f4, f14, r, g, b, 1.0F, f31 + 0.5F);
-        vertex(vc, pose, f17, f4, f18, r, g, b, 1.0F, f31);
-        vertex(vc, pose, f15, f4, f16, r, g, b, 0.5F, f31);
-
+        vertex(consumer, pose, endFirstX, end, endFirstZ, red, green, blue, 0.5F, endFrameV);
+        vertex(consumer, pose, endSecondX, end, endSecondZ, red, green, blue, 1.0F, endFrameV);
+        vertex(consumer, pose, endFourthX, end, endFourthZ, red, green, blue, 1.0F, endFrameV + 0.5F);
+        vertex(consumer, pose, endThirdX, end, endThirdZ, red, green, blue, 0.5F, endFrameV + 0.5F);
         poseStack.popPose();
     }
 
-    private static void vertex(VertexConsumer consumer, PoseStack.Pose pose,
-                                float x, float y, float z,
-                                int red, int green, int blue,
-                                float u, float v) {
-        consumer.addVertex(pose, x, y, z)
+    private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, float x, float y, float z, int red, int green, int blue, float u, float v) {
+        consumer.addVertex(pose.pose(), x, y, z)
                 .setColor(red, green, blue, 255)
                 .setUv(u, v)
                 .setOverlay(OverlayTexture.NO_OVERLAY)

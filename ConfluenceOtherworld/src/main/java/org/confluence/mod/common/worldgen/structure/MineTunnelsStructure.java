@@ -28,7 +28,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import java.util.*;
 
 import static net.minecraft.world.level.block.PoweredRailBlock.SHAPE;
-import static org.confluence.lib.util.StructureUtils.*;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class MineTunnelsStructure extends Structure {
     public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_SUPPORT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_support");
@@ -97,7 +97,7 @@ public class MineTunnelsStructure extends Structure {
             tunnels(maxY, minY, 0, length, 7, 6, 20, tunnelsMap, translationMap, switchMap, random, underPos.offset(0, 0, -3));
             for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
                 tunnelPos = tunnel.getKey();
-                ball(2.9D + 2.0D * random.nextDouble(), tunnelPos, 0, true, blockMap);
+                ball(2.9F + 2.0F * random.nextFloat(), tunnelPos, 0, true, blockMap);
             }
             for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
                 tunnelPos = tunnel.getKey();
@@ -157,9 +157,9 @@ public class MineTunnelsStructure extends Structure {
                         featureMap.put(translationPos, RAIL_DART.location());
                         break;
                     default:
-                        ellipsoid(4.9, 10.9, 4.9, translationPos.offset(0, -6, 0), 0, true, blockMap);
-                        ball(7.9, translationPos.offset(0, -12, 0), 0, 22, true, blockMap, translationPos.getY() - 12);
-                        ball(6.4, translationPos.offset(0, -12, 0), 0, 23, true, blockMap, translationPos.getY() - 12);
+                        ellipsoid(4.9F, 10.9F, 4.9F, translationPos.offset(0, -6, 0), 0, true, blockMap);
+                        ball(7.9F, translationPos.offset(0, -12, 0), 0, 22, true, blockMap, translationPos.getY() - 12);
+                        ball(6.4F, translationPos.offset(0, -12, 0), 0, 23, true, blockMap, translationPos.getY() - 12);
                 }
             }
             if (setGate) {

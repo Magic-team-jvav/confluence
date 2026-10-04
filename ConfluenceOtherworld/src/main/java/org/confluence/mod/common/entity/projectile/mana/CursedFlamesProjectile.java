@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class CursedFlamesProjectile extends AbstractManaProjectile {
     private int penetrateCount = 0;
@@ -20,7 +20,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
     }
 
     public CursedFlamesProjectile(LivingEntity living) {
-        this(ModEntities.CURSED_FLAMES_PROJECTILE.get(), living.level());
+        this(ModEntities.CURSED_FLAMES.get(), living.level());
     }
 
     @Override

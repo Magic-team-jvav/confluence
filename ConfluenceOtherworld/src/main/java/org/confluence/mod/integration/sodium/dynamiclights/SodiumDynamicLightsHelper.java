@@ -5,23 +5,22 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.terra_curio.api.primitive.IntegerValue;
-import org.confluence.terraentity.init.entity.TEProjectileEntities;
 
 public class SodiumDynamicLightsHelper {
     public static final boolean IS_LOADED = LibUtils.isModLoaded("sodiumdynamiclights");
 
     public static void registerDynamicLight() {
         if (IS_LOADED) {
-            DynamicLightHandlers.registerDynamicLightHandler(ModEntities.ARROW_PROJECTILE.get(), entity -> entity.modify.getLuminance());
-            DynamicLightHandlers.registerDynamicLightHandler(ModEntities.CURSED_FLAMES_PROJECTILE.get(), entity -> 15);
+            DynamicLightHandlers.registerDynamicLightHandler(ModEntities.BASE_ARROW.get(), entity -> entity.getLuminance());
+            DynamicLightHandlers.registerDynamicLightHandler(ModEntities.CURSED_FLAMES.get(), entity -> 15);
             DynamicLightHandlers.registerDynamicLightHandler(ModEntities.STAR_CANNON_BULLET.get(), entity -> 10);
-            DynamicLightHandlers.registerDynamicLightHandler(TEProjectileEntities.BOOMERANG_PROJECTILE.get(), entity -> entity.getModifier().luminance);
         }
     }
 
@@ -38,7 +37,7 @@ public class SodiumDynamicLightsHelper {
             if (living.hasEffect(ModEffects.SHINE) || living.hasEffect(MobEffects.GLOWING)) {
                 luminance = IntegerValue.absMax(luminance, 10);
             }
-            if (LibUtils.anyHandHasItem(living, ModTags.Items.PROVIDE_LIGHT)) {
+            if (LibEntityUtils.anyHandHasItem(living, ModTags.Items.PROVIDE_LIGHT)) {
                 luminance = IntegerValue.absMax(luminance, 10);
             }
         }

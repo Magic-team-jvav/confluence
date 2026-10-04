@@ -5,19 +5,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
+import org.confluence.mod.common.data.saved.HouseHandler;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.house.House;
+import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.entity.npc.house.House;
-import org.confluence.terraentity.entity.npc.house.HouseManager;
-import org.confluence.terraentity.entity.npc.house.IHouseDetector;
 
 import java.util.Comparator;
 import java.util.function.Consumer;
@@ -40,38 +41,44 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacke
 
     @Override
     public void work(ServerPlayer player) {
-        House house = HouseManager.getInstance().isInsideHouse(pos);
+        if (selected < 0 || selected >= AvailableHouseSelectPacketS2C.getTypes().length) return;
+        if (!player.serverLevel().hasChunkAt(pos)) return;
+        // 房屋工具只允许操作玩家附近的已加载区域，不能借坐标包跨区修改远处存档。
+        double maxDistance = Math.max(64.0, player.blockInteractionRange());
+        if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > maxDistance * maxDistance)
+            return;
+
+        ResourceKey<Level> dimension = player.level().dimension();
+        House house = HouseHandler.INSTANCE.findHouseAt(dimension, pos);
         boolean isEmptyHouse = house == null || house.uuid().isEmpty();
-        IHouseDetector detect = IHouseDetector.detect(pos, player.level());
+        HouseValidater.Result result = HouseValidater.scan(player.level(), pos);
         EntityType<?> type = AvailableHouseSelectPacketS2C.getTypes()[selected]; // 正在检测的NPC类型
         NPCSpawner.Region region = new NPCSpawner.Region(pos); // 房屋所处区域
 
         if (selected == 0) { // 检测模式
             if (isEmptyHouse) { // 如果是空房子，输出消息
-                player.sendSystemMessage(Component.translatable(detect.message()));
-            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof AbstractTerraNPC npc) { // 如果不是空房子，获取所有者并告知已被占领
+                player.sendSystemMessage(result.message());
+            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 如果不是空房子，获取所有者并告知已被占领
                 player.sendSystemMessage(Component.translatable("message.confluence.house_detect.occupied", npc.getType().getDescription(), npc.getDisplayName()));
             } else {
-                HouseManager.getInstance().removeHouse(house.uuid().get());
-                player.sendSystemMessage(Component.translatable(detect.message()));
+                HouseHandler.INSTANCE.removeHouse(dimension, house.uuid().get());
+                player.sendSystemMessage(result.message());
             }
-        } else if (detect.isError()) { // 添加、删除房屋模式，但房屋检测失败
-            player.sendSystemMessage(Component.translatable(detect.message()));
+        } else if (!result.isValid()) { // 添加、删除房屋模式，但房屋检测失败
+            player.sendSystemMessage(result.message());
         } else { // 添加、删除房屋模式
             if (isEmptyHouse) { // 如果是空房子就为该类型的npc添加房屋
                 getNpc(player, type, region, npc -> {
-                    House house1 = detect.getHouse(npc.getUUID());
-                    if (HouseManager.getInstance().tryAddHouse(house1)) {
-                        NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, IAbstractTerraNPC.of(npc).confluence$getRegion(), new NPCSpawner.Region(pos));
-                        npc.setHouse(house1);
-                        player.sendSystemMessage(Component.translatable("tooltip.terra_entity.house_detect.mode.add.success"));
-                    }
+                    House maked = result.make(npc.getUUID());
+                    HouseHandler.INSTANCE.setHouse(npc, maked);
+                    npc.setHouse(maked);
+                    player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.add.success"));
                 });
-            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof AbstractTerraNPC npc) { // 不是空房子，可以通过uuid获取到所有者
+            } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 不是空房子，可以通过uuid获取到所有者
                 if (npc.getType() == type) { // 是该NPC的房屋时删除房屋
-                    HouseManager.getInstance().removeHouse(npc.getUUID());
+                    HouseHandler.INSTANCE.removeHouse(dimension, npc.getUUID());
                     npc.setHouse(House.EMPTY);
-                    player.sendSystemMessage(Component.translatable("tooltip.terra_entity.house_detect.mode.delete.success"));
+                    player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.delete.success"));
                 } else { // 告知已被占领
                     player.sendSystemMessage(Component.translatable("message.confluence.house_detect.occupied", npc.getType().getDescription(), npc.getDisplayName()));
                 }
@@ -82,10 +89,10 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacke
     }
 
     /// 获取在region内的特定type的npc
-    private void getNpc(ServerPlayer player, EntityType<?> type, NPCSpawner.Region region, Consumer<AbstractTerraNPC> ifSuccess) {
-        player.serverLevel().getEntitiesOfClass(AbstractTerraNPC.class, new AABB(pos).inflate(player.requestedViewDistance() * 16)).stream()
+    private void getNpc(ServerPlayer player, EntityType<?> type, NPCSpawner.Region region, Consumer<BaseNPC> ifSuccess) {
+        player.serverLevel().getEntitiesOfClass(BaseNPC.class, new AABB(pos).inflate(player.requestedViewDistance() * 16)).stream()
                 .filter(npc -> npc.getType() == type)
-                .filter(npc -> npc.getSpawnAtPos() != null && region.isOnRegion(npc.getSpawnAtPos()))
+                .filter(npc -> /*npc.getSpawnAtPos() != null && */region.isOnRegion(npc.getSpawnAtPos()))
                 .min(Comparator.comparingDouble(npc -> npc.distanceToSqr(player)))
                 .ifPresentOrElse(ifSuccess, () -> player.sendSystemMessage(Component.translatable("message.confluence.house_detect.npc_not_fount")));
     }

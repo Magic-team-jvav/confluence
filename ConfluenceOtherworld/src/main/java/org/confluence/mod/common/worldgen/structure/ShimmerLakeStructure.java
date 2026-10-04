@@ -16,13 +16,13 @@ import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import java.util.*;
 
-import static org.confluence.lib.util.StructureUtils.*;
-import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
-import static org.confluence.lib.util.VectorUtils.roundPos;
+import static org.confluence.lib.util.LibStructureUtils.*;
+import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
+import static org.confluence.lib.util.LibGeometryUtils.roundPos;
 
 public class ShimmerLakeStructure extends Structure {
     public static final MapCodec<ShimmerLakeStructure> CODEC = simpleCodec(ShimmerLakeStructure::new);
@@ -54,13 +54,13 @@ public class ShimmerLakeStructure extends Structure {
             BlockPos centerPos = startChunk.getMiddleBlockPosition(random.nextInt(-40, 10));
             Object2IntMap<BlockPos> blockMap = new Object2IntOpenHashMap<>();
             Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
-            List<Vector3d> vctPosList = new LinkedList<>();
+            List<Vector3f> vctPosList = new LinkedList<>();
 
-            List<Vector3d> posOut = ellipsoidPos(36, 12, 36, centerPos, 0.03F, random);
-            List<Vector3d> posIn = ellipsoidPos(24, 9, 24, centerPos, 0.03F, random);
-            lineSet(posOut, 11.5, 11.5, 1, true, blockMap);
-            lineSet(posOut, 8.5, 8.5, 0, 1, true, blockMap, centerPos.getY() - 2);
-            lineSet(posIn, 6.5, 6.5, 0, 2, true, blockMap, centerPos.getY() - 2);
+            List<Vector3f> posOut = ellipsoidPos(36, 12, 36, centerPos, 0.03F, random);
+            List<Vector3f> posIn = ellipsoidPos(24, 9, 24, centerPos, 0.03F, random);
+            lineSet(posOut, 11.5F, 11.5F, 1, true, blockMap);
+            lineSet(posOut, 8.5F, 8.5F, 0, 1, true, blockMap, centerPos.getY() - 2);
+            lineSet(posIn, 6.5F, 6.5F, 0, 2, true, blockMap, centerPos.getY() - 2);
             roundPos(centerPos.offset(0, -1, 0), 34, random, vctPosList, 3, random.nextInt(14, 17), 0.0F);
             lineSetFeature(vctPosList, featureMap, feature, random);
 

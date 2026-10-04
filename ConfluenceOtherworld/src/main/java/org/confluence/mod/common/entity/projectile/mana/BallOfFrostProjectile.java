@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 import java.util.function.UnaryOperator;
 
@@ -20,7 +20,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
     }
 
     public BallOfFrostProjectile(LivingEntity living) {
-        super(ModEntities.BALL_OF_FROST_PROJECTILE.get(), living.level());
+        super(ModEntities.BALL_OF_FROST.get(), living.level());
     }
 
     @Override

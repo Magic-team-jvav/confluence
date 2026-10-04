@@ -28,9 +28,8 @@ import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.mod.common.recipe.special.DragonPepperExtractingRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terraentity.init.TEItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
+import org.confluence.mod.common.init.item.BoomerangItems;
+import org.confluence.mod.common.init.item.YoyoItems;
 
 import java.util.List;
 import java.util.Map;
@@ -135,15 +134,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " i ",
                 "iii"
         )), FunctionalBlocks.LEAD_ANVIL.toStack());
-        // 房屋探测器
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                'B', Ingredient.of(ItemTags.PLANKS),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                " B ",
-                "B/B",
-                "/ /"
-        )), TEItems.HOUSE_DETECTOR.toStack());
         // 蛛网
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(Items.STRING)
@@ -407,7 +397,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " SS",
                 "/SS",
                 "/  "
-        )), TEYoyosItems.WOODEN_YOYO.toStack());
+        )), YoyoItems.WOODEN_YOYO.toStack());
         // 园艺剪
         registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_COBALT), GardenShearsItems.COBALT_GARDEN_SHEARS);
         registerShearsRecipe(output, Ingredient.of(ModTags.Items.INGOTS_PALLADIUM), GardenShearsItems.PALLADIUM_GARDEN_SHEARS);
@@ -612,8 +602,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ConsumableItems.STICKY_DYNAMITE.toStack(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.GEL));
         shapeless(output, ConsumableItems.STICKY_GRENADE.toStack(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.GEL));
         shapeless(output, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
-        shapeless(output, TEBoomerangItems.TRIMARANG.toStack(), Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(TEBoomerangItems.ICE_BOOMERANG), Ingredient.of(TEBoomerangItems.SHROOMERANG));
-        shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, BoomerangItems.TRIMARANG.toStack(), Ingredient.of(BoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(BoomerangItems.ICE_BOOMERANG), Ingredient.of(BoomerangItems.SHROOMERANG));
+        shapeless(output, BoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(BoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
         shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM), Ingredient.of(MaterialItems.FALLING_STAR));
         // 宝石树苗
         shapeless(output, NatureBlocks.RUBY_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_RUBY));

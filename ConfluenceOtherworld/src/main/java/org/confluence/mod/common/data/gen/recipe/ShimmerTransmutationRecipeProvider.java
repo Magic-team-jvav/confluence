@@ -17,13 +17,13 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terraentity.init.item.TESummonItems;
+import org.confluence.mod.common.init.item.SummonItems;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -277,7 +277,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, ConsumableItems.CAN_OF_WORMS, ConsumableItems.HERB_BAG);
         item(recipeOutput, FunctionalBlocks.ALCHEMY_TABLE, FunctionalBlocks.BEWITCHING_TABLE);
         item(recipeOutput, FunctionalBlocks.BEWITCHING_TABLE, FunctionalBlocks.ALCHEMY_TABLE);
-        item(recipeOutput, TESummonItems.FINCH_STAFF, ModItems.LIVING_WOOD_WAND);
+        item(recipeOutput, SummonItems.FINCH_STAFF, ModItems.LIVING_WOOD_WAND);
         item(recipeOutput, MaterialItems.SPELL_TOME, ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO);
 
         item(recipeOutput, NatureBlocks.GRANITE, NatureBlocks.MARBLE);

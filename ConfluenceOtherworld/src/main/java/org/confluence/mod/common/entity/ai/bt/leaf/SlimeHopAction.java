@@ -1,0 +1,85 @@
+package org.confluence.mod.common.entity.ai.bt.leaf;
+
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
+
+/// 史莱姆跳跃：蓄力→起跳→落地。towardTarget 决定向目标跳还是随机跳。
+public class SlimeHopAction extends BTNode {
+    protected final Mob mob;
+    protected final boolean towardTarget;
+    protected final int preJumpTicks;
+    protected int tick;
+    protected static final int TIMEOUT = 60;
+
+    public SlimeHopAction(Mob mob, boolean towardTarget) {
+        this(mob, towardTarget, 5);
+    }
+
+    public SlimeHopAction(Mob mob, boolean towardTarget, int preJumpTicks) {
+        if (preJumpTicks < 0) {
+            throw new IllegalArgumentException("Slime hop windup must be non-negative");
+        }
+        this.mob = mob;
+        this.towardTarget = towardTarget;
+        this.preJumpTicks = preJumpTicks;
+    }
+
+    @Override
+    public void start() {
+        tick = 0;
+    }
+
+    @Override
+    public BTStatus execute() {
+        tick++;
+
+        if (tick <= preJumpTicks) {
+            return BTStatus.RUNNING;
+        }
+
+        if (tick == preJumpTicks + 1) {
+            var target = mob.getTarget();
+            Vec3 dir;
+            if (towardTarget && target != null) {
+                Vec3 toTarget = target.position().subtract(mob.position());
+                double hDist = Math.sqrt(toTarget.x * toTarget.x + toTarget.z * toTarget.z);
+                dir = hDist > 0.01
+                        ? new Vec3(toTarget.x / hDist, 0, toTarget.z / hDist)
+                        : Vec3.ZERO;
+            } else {
+                float yaw = mob.getRandom().nextFloat() * (float) Math.PI * 2;
+                dir = new Vec3(-Math.sin(yaw), 0, Math.cos(yaw));
+            }
+
+            // 1.21.1 的 LivingEntity#getJumpPower() 变成了 getJumpPower(float multiplier)
+            // （反编译源码 LivingEntity.java:2168 就是 getJumpPower() { return getJumpPower(1.0F); }），
+            // 所以这里显式传 1.0F 才与原 1.20.1 的无参调用等价。
+            double jumpPower = ((LivingEntityAccessor) mob).callGetJumpPower(1.0F);
+            double h = jumpPower * 0.7;
+            if (dir.lengthSqr() > 1.0E-6) {
+                // 跳跃节点直接写入速度，不会像原版 MoveControl 那样自动更新朝向，因此必须在起跳时同步身体方向。
+                float wantedYaw = (float) (Mth.atan2(-dir.x, dir.z) * Mth.RAD_TO_DEG);
+                mob.setYRot(wantedYaw);
+                mob.setYBodyRot(wantedYaw);
+                mob.setYHeadRot(wantedYaw);
+            }
+            mob.setDeltaMovement(dir.x * h, jumpPower, dir.z * h);
+            mob.hasImpulse = true;
+            return BTStatus.RUNNING;
+        }
+
+        if (mob.onGround() && tick > preJumpTicks + 2) {
+            return BTStatus.SUCCESS;
+        }
+
+        if (tick > TIMEOUT) {
+            return BTStatus.SUCCESS;
+        }
+
+        return BTStatus.RUNNING;
+    }
+}

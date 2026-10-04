@@ -7,9 +7,12 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.*;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
+import org.confluence.mod.common.entity.npc.NPCAttackBlacklist;
 import org.confluence.mod.network.s2c.DragonChargePlayerConfigPacketS2C;
 
 import java.util.HashSet;
@@ -24,6 +27,8 @@ public final class CommonConfigs {
     public static IntValue ANNOUNCEMENT_BOX_DISTANCE;
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
     public static BooleanValue STAR_PHASE;
+    public static BooleanValue AUTO_RELEASE_ALL_BOWS;
+    public static BooleanValue AUTO_FIRE_ALL_GUNS;
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
     public static BooleanValue TERRA_STYLE_EXPLOSION;
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
@@ -34,6 +39,18 @@ public final class CommonConfigs {
     public static BooleanValue TERRA_STYLE_LIGHTNING_BOLT;
     public static IntValue TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER;
 
+    public static BooleanValue ENHANCE_ALL_MONSTER;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE;
+
+    public static ModConfigSpec SPEC;
+
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
     public static BooleanValue ALTAR_TIPS;
@@ -41,12 +58,24 @@ public final class CommonConfigs {
     public static BooleanValue DO_FALLING_STAR_SPAWNING;
     public static IntValue FALLING_STAR_INTERVAL;
 
+    /// 是否让本体敌怪跳过原版亮度门槛（1.20 `CommonConfigs:63`，配置键 `spawnWithoutLight`）。
+    ///
+    /// 该开关只移除暗度判断，方块碰撞、世界边界、刷怪类型和各实体自己的高度、天气及维度
+    /// 条件仍由放置谓词继续校验。
+    public static BooleanValue SPAWN_WITHOUT_LIGHT;
+
     public static BooleanValue DO_NPC_SPAWNING;
     public static IntValue NPC_SPAWN_INTERVAL;
+    private static ConfigValue<List<? extends String>> NPC_ATTACK_BLACKLIST;
     public static BooleanValue BROADCAST_NPC_MSG;
 
     public static BooleanValue EYE_OF_CTHULHU_NATURE_SPAWNING;
     public static BooleanValue DEERCLOPS_NATURE_SPAWNING;
+    public static BooleanValue BOSS_CLEAR_WHEN_NO_TARGET;
+    public static BooleanValue KING_SLIME_LARGE_MINIONS;
+    public static BooleanValue ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_HEALTH;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE;
 
     public static BooleanValue DO_METEORITE_SPAWNING;
 
@@ -119,6 +148,8 @@ public final class CommonConfigs {
         }
         ammoSlotsItemBlackList = a;
         ammoSlotsTagBlackList = b;
+        MonsterAttributeScaling.reload();
+        NPCAttackBlacklist.reload(NPC_ATTACK_BLACKLIST.get());
 
         if (isSingleplayerOwner) {
             dragonChargePlayer = DRAGON_CHARGE_PLAYER.get();
@@ -151,6 +182,8 @@ public final class CommonConfigs {
             ANNOUNCEMENT_BOX_DISTANCE = builder.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
             ALERT_PLAYER_IN_DUNGEON = builder.define("alertPlayerDungeon", false);
             STAR_PHASE = builder.define("starPhase", false);
+            AUTO_RELEASE_ALL_BOWS = builder.define("autoReleaseAllBows", false);
+            AUTO_FIRE_ALL_GUNS = builder.define("autoFireAllGuns", false);
             AMMO_SLOTS_BLACKLIST = builder.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
                 if (o instanceof String s) {
                     if (s.startsWith("#")) {
@@ -166,6 +199,37 @@ public final class CommonConfigs {
             ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
             DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
             STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
+            {
+                builder.push("MonsterAttributes");
+                ENHANCE_ALL_MONSTER = builder
+                        .comment("Apply these multipliers to vanilla and other mods' hostile mobs as well. Otherwise only Confluence enemies are affected. Bosses, summons and friendly creatures are excluded.")
+                        .define("enhanceAllMonster", false);
+                MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH = builder
+                        .comment("Maximum health multiplier. Does not refill wounded enemies when reloaded.")
+                        .defineInRange("monsterAttributesMultiplierHealth", 1.0D, 0.0625D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE = builder
+                        .comment("Attack damage attribute multiplier. Projectiles derived from that attribute inherit it once; independently configured projectile damage is unchanged.")
+                        .defineInRange("monsterAttributesMultiplierDamage", 1.0D, 0.0625D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR = builder
+                        .comment("Armor multiplier. Multiplication cannot give armor to an enemy whose armor is zero.")
+                        .defineInRange("monsterAttributesMultiplierArmor", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS = builder
+                        .comment("Armor toughness multiplier. Zero toughness remains zero.")
+                        .defineInRange("monsterAttributesMultiplierArmorToughness", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED = builder
+                        .comment("Movement speed attribute multiplier; does not alter AI movement implemented with fixed velocities.")
+                        .defineInRange("monsterAttributesMultiplierMovementSpeed", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED = builder
+                        .comment("Flying speed attribute multiplier; only affects enemies that use this attribute.")
+                        .defineInRange("monsterAttributesMultiplierFlyingSpeed", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE = builder
+                        .comment("Knockback resistance multiplier, clamped by the attribute's own allowed range.")
+                        .defineInRange("monsterAttributesMultiplierKnockbackResistance", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = builder
+                        .comment("Follow range attribute multiplier; existing line-of-sight and AI-specific range checks still apply.")
+                        .defineInRange("monsterAttributesMultiplierFollowRange", 1.0D, 0.0D, 100.0D);
+                builder.pop();
+            }
             {
                 builder.push("LightningBolt");
                 TERRA_STYLE_LIGHTNING_BOLT = builder.define("terraStyleLightningBolt", true);
@@ -183,6 +247,7 @@ public final class CommonConfigs {
         }
         {
             builder.push("Spawning");
+            SPAWN_WITHOUT_LIGHT = builder.define("spawnWithoutLight", true);
             {
                 builder.push("Falling Star");
                 DO_FALLING_STAR_SPAWNING = builder.define("doFallingStarSpawning", true);
@@ -193,6 +258,7 @@ public final class CommonConfigs {
                 builder.push("NPC");
                 DO_NPC_SPAWNING = builder.define("doNPCSpawning", true);
                 NPC_SPAWN_INTERVAL = builder.defineInRange("npcSpawnInterval", 2400, 20, 20000);
+                NPC_ATTACK_BLACKLIST = builder.defineListAllowEmpty("npcAttackBlacklist", List::of, value -> value instanceof String entry && NPCAttackBlacklist.isValid(entry));
                 BROADCAST_NPC_MSG = builder.define("broadcastNpcMsg", true);
                 builder.pop();
             }
@@ -200,6 +266,11 @@ public final class CommonConfigs {
                 builder.push("Boss");
                 EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
                 DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
+                BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
+                KING_SLIME_LARGE_MINIONS = builder.define("kingSlimeLargeMinions", false);
+                ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD = builder.define("allowFleshBossesOutsideUnderworld", false);
+                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder.defineInRange("bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder.defineInRange("bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
                 builder.pop();
             }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);
@@ -297,6 +368,6 @@ public final class CommonConfigs {
             }
             builder.pop();
         }
-        container.registerConfig(ModConfig.Type.COMMON, builder.build());
+        container.registerConfig(ModConfig.Type.COMMON, SPEC = builder.build());
     }
 }

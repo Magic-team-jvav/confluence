@@ -16,11 +16,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.TombstoneBlock;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
@@ -94,7 +94,7 @@ public class TombstoneBoulderEntity extends BoulderEntity {
         boolean isGolden;
         if (living instanceof Player player) {
             isGolden = PlayerUtils.getMoney(player, true) >= 100 * 100 * 10;
-        } else if (living instanceof AbstractTerraNPC && living.level().getLevelData().isHardcore()) {
+        } else if (living instanceof BaseNPC && living.level().getLevelData().isHardcore()) {
             isGolden = false;
         } else {
             return null;

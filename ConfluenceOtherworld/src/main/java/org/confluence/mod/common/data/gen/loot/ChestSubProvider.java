@@ -26,10 +26,9 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESummonItems;
-import org.confluence.terraentity.init.item.TEYoyosItems;
+import org.confluence.mod.common.init.item.BoomerangItems;
+import org.confluence.mod.common.init.item.SummonItems;
+import org.confluence.mod.common.init.item.YoyoItems;
 
 import java.util.function.BiConsumer;
 
@@ -56,8 +55,8 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(SpearItems.SPEAR))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.BLOWGUN))
+                        .add(LootItem.lootTableItem(BoomerangItems.WOOD_BOOMERANG))
+                        .add(LootItem.lootTableItem(GunItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
                         .add(LootItem.lootTableItem(ManaWeaponItems.WAND_OF_SPARKING))
@@ -70,8 +69,8 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/living_wood_chests"), initialWorldSurfaceCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.BLOWGUN))
+                        .add(LootItem.lootTableItem(BoomerangItems.WOOD_BOOMERANG))
+                        .add(LootItem.lootTableItem(GunItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
                         .add(LootItem.lootTableItem(ManaWeaponItems.WAND_OF_SPARKING))
@@ -84,7 +83,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.FINCH_STAFF))
+                        .add(LootItem.lootTableItem(SummonItems.FINCH_STAFF))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
@@ -124,8 +123,8 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS).setWeight(15))
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES).setWeight(15))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE).setWeight(15))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG).setWeight(15))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON).setWeight(15))
+                        .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG).setWeight(15))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON).setWeight(15))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(5))
                 )
                 .withPool(LootPool.lootPool()
@@ -140,8 +139,8 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS).setWeight(15))
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES).setWeight(15))
                         .add(LootItem.lootTableItem(SwordItems.ICE_BLADE).setWeight(15))
-                        .add(LootItem.lootTableItem(TEBoomerangItems.ICE_BOOMERANG).setWeight(15))
-                        .add(LootItem.lootTableItem(TGItems.SNOWBALL_CANNON).setWeight(15))
+                        .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG).setWeight(15))
+                        .add(LootItem.lootTableItem(GunItems.SNOWBALL_CANNON).setWeight(15))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(5))
                 )
                 .withPool(LootPool.lootPool()
@@ -223,7 +222,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.ANKLET_OF_THE_WIND).setWeight(21))
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(21))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(21))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(21))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(21))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(7))
                 )
                 .withPool(LootPool.lootPool()
@@ -238,7 +237,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.ANKLET_OF_THE_WIND).setWeight(21))
                         .add(LootItem.lootTableItem(TCItems.FERAL_CLAWS).setWeight(21))
                         .add(LootItem.lootTableItem(ToolItems.STAFF_OF_REGROWTH).setWeight(21))
-                        .add(LootItem.lootTableItem(TGItems.BOOMSTICK).setWeight(21))
+                        .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(21))
                         .add(LootItem.lootTableItem(FishingPoleItems.FIBERGLASS_FISHING_POLE).setWeight(7))
                 )
                 .withPool(LootPool.lootPool()
@@ -338,7 +337,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(Items.ARROW)).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TGItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
@@ -393,8 +392,8 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
-                        .add(LootItem.lootTableItem(TGItems.HAND_GUN))
-                        .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
+                        .add(LootItem.lootTableItem(GunItems.HAND_GUN))
+                        .add(LootItem.lootTableItem(YoyoItems.VALOR))
                         .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
                         .add(LootItem.lootTableItem(FlailItems.BLUE_MOON))
                 )
@@ -488,7 +487,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(ArrowItems.HELLFIRE_ARROW)).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 74)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TGItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 74)))
+                        .add(LootItem.lootTableItem(GunItems.MUSKET_BULLET)).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 74)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.TORCH)

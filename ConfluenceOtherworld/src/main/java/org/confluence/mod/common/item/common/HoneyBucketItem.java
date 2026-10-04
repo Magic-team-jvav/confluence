@@ -12,8 +12,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.mod.common.init.ModFluids;
-import org.confluence.terra_curio.common.init.TCEffects;
 
 public class HoneyBucketItem extends BucketItem {
     public HoneyBucketItem() {
@@ -23,7 +23,7 @@ public class HoneyBucketItem extends BucketItem {
     @Override
     public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pEntityLiving) {
         if (!pLevel.isClientSide) {
-            pEntityLiving.addEffect(new MobEffectInstance(TCEffects.HONEY, 900));
+            pEntityLiving.addEffect(new MobEffectInstance(LibEffects.HONEY, 900));
             pEntityLiving.removeEffect(MobEffects.POISON);
         }
         if (pEntityLiving instanceof ServerPlayer serverplayer) {

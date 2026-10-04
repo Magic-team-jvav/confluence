@@ -1,13 +1,13 @@
 package org.confluence.mod.api.event.bestiary;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.VariantHolder;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
-import org.confluence.terraentity.api.entity.IVariant;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -26,16 +26,17 @@ public class RegisterBestiaryKeyEvent extends Event implements IModBusEvent {
     public static String getKey(LivingEntity living) {
         EntityType type = living.getType();
         Factory factory = factories.get(type);
-        if (factory == null) return type.getDescriptionId();
+        if (factory == null) {
+            if (living instanceof VariantHolder<?> holder && holder.getVariant() instanceof StringRepresentable variant) {
+                return type.getDescriptionId() + '.' + variant.getSerializedName();
+            }
+            return type.getDescriptionId();
+        }
         return factory.get(type, living);
     }
 
     public static <V, T extends LivingEntity & VariantHolder<V>> Factory<T> vanillaVariant(Function<V, String> toString) {
         return (type, living) -> type.getDescriptionId() + '.' + toString.apply(living.getVariant());
-    }
-
-    public static <V, T extends LivingEntity & IVariant<V>> Factory<T> terraVariant(Function<V, String> toString) {
-        return (type, living) -> type.getDescriptionId() + '.' + toString.apply(living.getTEVariant());
     }
 
     @FunctionalInterface

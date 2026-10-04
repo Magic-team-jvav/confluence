@@ -1,0 +1,58 @@
+package org.confluence.mod.common.entity.monster;
+
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.Level;
+import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
+import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
+import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.SpawnProjectileAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+
+/// 以环绕目标和周期性弹幕为主要战斗方式的飞行怪物基类。
+///
+/// 构造参数提供没有数据包覆盖时的射击间隔与伤害倍率，行为树创建时再读取当前
+/// {@link CreatureDefinition}。因此数据包可以调整同一实体的盘旋速度、盘旋半径、射击节奏
+/// 和游荡范围，而实体注册代码仍保留一套始终可用的安全默认值。
+///
+/// 射击行为复用实体攻击伤害属性生成弹幕快照；本类只编排移动与发射时机，不重复实现
+/// 弹幕命中、暴击或伤害结算。
+public abstract class RangedFlyingMonster extends BaseFlyingMonster {
+    private final int shotCooldown;
+
+    protected RangedFlyingMonster(EntityType<? extends RangedFlyingMonster> type, Level level, int shotCooldown) {
+        super(type, level);
+        if (shotCooldown <= 0)
+            throw new IllegalArgumentException("Flying ranged attack cooldown must be positive");
+        setDiscardFriction(true);
+        this.shotCooldown = shotCooldown;
+    }
+
+    @Override
+    protected BTRoot createBT() {
+        CreatureDefinition.BehaviorOverrides behavior = creatureDefinition().behavior();
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                return SelectorNode.of(
+                        SequenceNode.of(new HasTargetCondition(RangedFlyingMonster.this),
+                                new CircleAroundTargetAction(RangedFlyingMonster.this,
+                                        behavior.orbitSpeedOr(0.28), behavior.orbitRadiusOr(7)),
+                                new SpawnProjectileAction(
+                                        RangedFlyingMonster.this,
+                                        RangedFlyingMonster.this::createProjectile),
+                                new WaitAction(behavior.shotCooldownOr(shotCooldown))),
+                        new LookForwardWanderFlyAction(RangedFlyingMonster.this, behavior.wanderSpeedOr(0.18), 0.0F));
+            }
+        };
+    }
+
+    protected abstract Projectile createProjectile(LivingEntity target);
+
+}

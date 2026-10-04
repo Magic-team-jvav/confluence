@@ -9,10 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.spear.MushroomProjectile;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 import software.bernie.geckolib.animation.keyframe.Keyframe;
 import software.bernie.geckolib.loading.math.MathValue;
@@ -77,7 +77,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.3, 0.2);
+        LibEntityUtils.knockBackA2B(owner, victim, 0.3, 0.2);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
 
     private void spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction) {
         MushroomProjectile projectile = new MushroomProjectile(
-                ModEntities.MUSHROOM_PROJECTILE.get(), level);
+                ModEntities.MUSHROOM.get(), level);
         projectile.setOwner(owner);
         projectile.setWeapon(owner.getMainHandItem());
         projectile.initFromOwner(owner);

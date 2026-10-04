@@ -28,6 +28,9 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.ARCANE_PROTECTION,
                 ModEnchantments.SPELL_DESPERATION,
                 ModEnchantments.MYSTIC_SURGE,
+                ModEnchantments.WHIP_SWEEP,
+                ModEnchantments.MULTI_BOOMERANG,
+                ModEnchantments.SUMMONER_PACT,
                 ModEnchantments.FLAIL_WIND_BURST,
                 ModEnchantments.FLAIL_TURBINE
         );
@@ -46,6 +49,9 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.ARCANE_PROTECTION,
                 ModEnchantments.SPELL_DESPERATION,
                 ModEnchantments.MYSTIC_SURGE,
+                ModEnchantments.WHIP_SWEEP,
+                ModEnchantments.MULTI_BOOMERANG,
+                ModEnchantments.SUMMONER_PACT,
                 ModEnchantments.FLAIL_WIND_BURST,
                 ModEnchantments.FLAIL_TURBINE
         );

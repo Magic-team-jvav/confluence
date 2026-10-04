@@ -1,0 +1,149 @@
+package org.confluence.mod.common.entity.boss;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.init.ModSoundEvents;
+
+/// 地牢守卫。
+///
+/// 该实体不是常规 Boss 战，而是阻止玩家过早深入地牢的追杀单位。它不会显示 Boss 条、
+/// 不发送 Boss 战败消息、不保存到区块，并以固定速度直接追向玩家。生成后的五十 tick 内若
+/// 始终找不到存活玩家便立即撤销，避免触发方离场后留下无目标守卫。
+///
+/// 接触伤害使用独立伤害类型并绕过护甲，不能用普通生物攻击再依赖夸张攻击数值间接模拟；
+/// 溺水伤害被明确忽略。行为树只保留永久等待节点，防止通用冲锋动作改写追击速度。
+public class DungeonGuardian extends BaseBoss {
+    // 出生后允许 50 tick 找到玩家；追击速度单位为方块/tick。
+    private static final int INITIAL_PLAYER_CHECK_TICKS = 50;
+    private static final double PURSUIT_SPEED = 0.80;
+
+    private int playerCheckTicks = INITIAL_PLAYER_CHECK_TICKS;
+
+    public DungeonGuardian(EntityType<? extends Monster> type, Level level) {
+        super(type, level);
+        moveControl = new FlyingMoveControl(this, 10, false);
+        setNoGravity(true);
+        noPhysics = true;
+        xpReward = 0;
+    }
+
+    /// 地牢守卫的直线追击不叠加原版重力。
+    @Override
+    public boolean isNoGravity() {
+        return true;
+    }
+
+    @Override
+    protected BTRoot createBT() {
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                return new WaitAction(Integer.MAX_VALUE);
+            }
+        };
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!isAlive() || level().isClientSide) {
+            return;
+        }
+
+        LivingEntity target = getTarget();
+        if (target != null && target.isAlive()) {
+            Vec3 direction = target.position().subtract(position());
+            if (direction.lengthSqr() > 1.0E-6) {
+                Vec3 velocity = direction.normalize().scale(PURSUIT_SPEED);
+                setDeltaMovement(velocity);
+                faceCombatDirection(velocity, 180.0F, 180.0F);
+            }
+            for (Entity contact : SweptContactAttack.findTargets(this, 0.25D,
+                    maximumContactSweepDistance(), entity -> entity instanceof LivingEntity living && canAttack(living))) {
+                doHurtTarget(contact);
+                break;
+            }
+        } else {
+            setDeltaMovement(getDeltaMovement().scale(0.75));
+        }
+
+        /// 成功命中会重新开始一次检查；计数越过零后不会反复扫描或因稍后失去目标而直接撤销。
+        if (--playerCheckTicks == 0) {
+            Player nearbyPlayer = level().getNearestPlayer(this, 100.0);
+            if (nearbyPlayer == null || !nearbyPlayer.isAlive()) {
+                discard();
+            }
+        }
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        // 命中会重置本类的玩家检查计时，只能保留这一条定制伤害路径。
+        return false;
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.DUNGEON_GUARDIAN, this);
+        boolean hurt = target.hurt(source, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        if (hurt) {
+            playerCheckTicks = INITIAL_PLAYER_CHECK_TICKS;
+        }
+        return hurt;
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypeTags.IS_DROWNING)) {
+            return false;
+        }
+        return super.hurt(source, amount);
+    }
+
+    @Override
+    public boolean shouldShowMessage() {
+        return false;
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        bossEvent.removePlayer(player);
+    }
+
+    int getPlayerCheckTicks() {
+        return playerCheckTicks;
+    }
+
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.TR_SKELETON_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.SOUL_DEATH.get();
+    }
+
+}

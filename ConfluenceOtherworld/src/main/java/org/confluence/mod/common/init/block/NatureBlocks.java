@@ -267,6 +267,9 @@ public class NatureBlocks {
     public static final DeferredBlock<MudPathBlock> MUSHROOM_PATH = registerWithItem("mushroom_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
     public static final DeferredBlock<AshPathBlock> ASH_PATH = registerWithItem("ash_path", () -> new AshPathBlock(BlockBehaviour.Properties.ofFullCopy(NatureBlocks.ASH_BLOCK.get()).mapColor(MapColor.COLOR_GRAY)));
 
+    //蜘蛛洞
+    public static final DeferredBlock<Block> SPIDER_NEST_STONE = registerWithItem("spider_nest_stone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).strength(1.5F, 6.0F)));
+
     // 末地 - 通用
     public static final DeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", EndDirtBlock::new);
     public static final DeferredBlock<Block> END_MUD = registerWithItem("end_mud", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_PURPLE)));

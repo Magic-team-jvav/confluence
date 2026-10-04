@@ -21,6 +21,9 @@ public final class ModTags {
         public static final TagKey<Block> NEEDS_3_LEVEL = register("needs_3_level");
         public static final TagKey<Block> NEEDS_4_LEVEL = register("needs_4_level");
         public static final TagKey<Block> NEEDS_5_LEVEL = register("needs_5_level");
+        public static final TagKey<Block> NPC_HOUSE_CHAIR = register("npc_house_chair");
+        public static final TagKey<Block> NPC_HOUSE_TABLE = register("npc_house_table");
+        public static final TagKey<Block> NPC_HOUSE_CONSTITUTE = register("npc_house_constitute");
         public static final TagKey<Block> NEEDS_6_LEVEL = register("needs_6_level");
         public static final TagKey<Block> NEEDS_7_LEVEL = register("needs_7_level");
         public static final TagKey<Block> NEEDS_8_LEVEL = register("needs_8_level");
@@ -198,6 +201,7 @@ public final class ModTags {
         public static final TagKey<Block> STORAGE_BLOCKS_COLD_CRYSTAL = common("storage_blocks/cold_crystal");
 
         public static final TagKey<Block> STORAGE_BLOCKS_FLOATING_WHEAT_BALE = common("storage_blocks/floating_wheat_bale");
+        public static final TagKey<Block> HONEY = register("honey");
 
         private static TagKey<Block> common(String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -416,6 +420,7 @@ public final class ModTags {
         public static final TagKey<Item> PREFIX_MELEE_ONLY = register("prefix_melee_only");
         public static final TagKey<Item> PREFIX_RANGED_ONLY = register("prefix_ranged_only");
         public static final TagKey<Item> PREFIX_MAGIC_ONLY = register("prefix_magic_only");
+        public static final TagKey<Item> PREFIX_SUMMON_ONLY = register("prefix_summon_only"); // 没有鞭子
         public static final TagKey<Item> PREFIX_ACCESSORY_ONLY = register("prefix_accessory_only");
 
         public static final TagKey<Item> COBALT_ORE_SMELTING = common("cobalt_ore_smelting");
@@ -427,14 +432,24 @@ public final class ModTags {
 
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
+        public static final TagKey<Item> WHIP = register("whip");
+        public static final TagKey<Item> YOYO = register("yoyo");
+        public static final TagKey<Item> BOOMERANG = register("boomerang");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
+        public static final TagKey<Item> AUTOMATIC_BOW = register("automatic_bow");
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
         public static final TagKey<Item> EXPLOSIVE = register("explosive"); // 爆炸物，用于爆破专家入住
         public static final TagKey<Item> SHOW_SIGNAL = register("show_signal"); // 手持可以显示信号连线
         public static final TagKey<Item> ROBE = register("robe"); // 用于巫师套装
         public static final TagKey<Item> MIMIC_SUMMON_KEY = register("mimic_summon_key"); // 宝箱怪召唤钥匙，用于计数
+        public static final TagKey<Item> AUTOMATIC_GUN = register("automatic_gun");
+        public static final TagKey<Item> GUN = register("gun");
+        public static final TagKey<Item> MANUAL_GUN = register("manual_gun");
+        public static final TagKey<Item> SEED_AMMO = register("seed_ammo");
+        public static final TagKey<Item> SNOW_AMMO = register("snow_ammo");
+        public static final TagKey<Item> BULLET = register("bullet");
 
         public static final TagKey<Item> DEATH = register("death");
         public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
@@ -474,8 +489,9 @@ public final class ModTags {
     }
 
     public static class Fluids {
-        public static final TagKey<Fluid> FISHING_ABLE = register("fishing_able");
-        public static final TagKey<Fluid> NOT_LAVA = register("not_lava");
+        public static final TagKey<Fluid> FISHING_ABLE_ALL = register("fishing_able/all");
+        public static final TagKey<Fluid> FISHING_ABLE_NOT_LAVA = register("fishing_able/not_lava");
+        public static final TagKey<Fluid> SHIMMER = register("shimmer");
 
         private static TagKey<Fluid> register(String id) {
             return Confluence.asTagKey(Registries.FLUID, id);
@@ -490,12 +506,16 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> DO_NOT_DROPS_EVIL_SOUL = register("do_not_drops_evil_soul"); // 不掉落光明或暗影之魂
         public static final TagKey<EntityType<?>> BESTIARY_WHITELIST = register("bestiary_whitelist"); // 怪物图鉴白名单
         public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
+        public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance");
+        public static final TagKey<EntityType<?>> JELLY_FISH = register("jelly_fish");
+        public static final TagKey<EntityType<?>> GOLDEN_SLIME_REPLACEABLE = register("golden_slime_replaceable"); // 特殊世界中可被金史莱姆替换的普通史莱姆
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_WHITELIST = register("critter_companionship_whitelist"); // 小动物保护指南白名单
         public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_WHITELIST = register("enemy_banner_whitelist"); // 旗帜白名单
         public static final TagKey<EntityType<?>> ENEMY_BANNER_BLACKLIST = register("enemy_banner_blacklist"); // 旗帜黑名单
         public static final TagKey<EntityType<?>> GORE_EFFECT_BLACKLIST = register("gore_effect_blacklist"); // 肢解效果黑名单
         public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
+        public static final TagKey<EntityType<?>> CORRUPT = register("corrupt");
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

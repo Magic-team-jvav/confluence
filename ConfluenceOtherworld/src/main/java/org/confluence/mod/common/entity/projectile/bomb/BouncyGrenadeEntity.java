@@ -3,7 +3,7 @@ package org.confluence.mod.common.entity.projectile.bomb;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class BouncyGrenadeEntity extends BaseGrenadeEntity {
     public BouncyGrenadeEntity(EntityType<? extends BaseGrenadeEntity> pEntityType, Level pLevel) {

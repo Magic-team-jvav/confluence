@@ -1,0 +1,187 @@
+package org.confluence.mod.common.entity.animal;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import javax.annotation.Nullable;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.mod.common.entity.IVariant;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.confluence.mod.common.init.ModSoundEvents;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.util.GeckoLibUtil;
+import net.minecraft.world.entity.*;
+
+import net.minecraft.world.entity.ai.goal.*;
+
+
+/// 小动物基类 —— 不可繁殖、无食物、行为树驱动。
+public abstract class BaseCritter extends Animal implements CritterVisual {
+    protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private boolean behaviorTreeRegistered;
+
+    public BaseCritter(EntityType<? extends Animal> type, Level level) {
+        super(type, level);
+    }
+
+    /// 1.21 删掉了 `finalizeSpawn` 的第 5 个形参 `@Nullable CompoundTag tag`
+    /// （1.20.1 `Mob.java:1097` 有，1.21.1 `Mob.java:1192` 没有）。
+    /// 1.20 用它判断「本次生成是否已经带了变体 NBT」（`tag == null || !tag.contains(key)`）；
+    /// `SummonCommand.java:86-95` 的 `loadEntityRecursive`（会走 `readAdditionalSaveData`）
+    /// 仍在本方法**之前**执行，所以改用下面的标记位，判断等价。
+    /// 这与 `DemonEye` / `humanoid/Zombie` / `WaterBoltMimic` 是同一处 API 差异的第 4 例
+    /// （前两例用标记位、第三例只透传所以直接删参）。
+    private boolean variantLoadedFromSave;
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        String key = variantSaveKey();
+        if (key != null && tag.contains(key)) {
+            variantLoadedFromSave = true;
+        }
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data);
+        String key = variantSaveKey();
+        if (key != null && !variantLoadedFromSave) {
+            initializeSpawnVariant();
+        }
+        return result;
+    }
+
+    /// 用于区分“明确请求的变体”和普通自然生成的 NBT 键。
+    protected @Nullable String variantSaveKey() {
+        return null;
+    }
+
+    /// 为没有显式变体数据的自然生成实体选择初始外观。
+    ///
+    /// 具有变体的环境生物只需覆盖该方法；已有 NBT 明确指定变体时不会再次随机选择。
+    protected void initializeSpawnVariant() {}
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide && tickCount % 5 == 0 && hasGoldenSparkles()) {
+            level().addParticle(ParticleTypes.ELECTRIC_SPARK, getRandomX(0.8), getRandomY(), getRandomZ(0.8), 0.0, 0.01, 0.0);
+        }
+    }
+
+    /// 金色小动物使用统一闪光表现；只有明确持有 gold 变体的实体会启用。
+    protected boolean hasGoldenSparkles() {
+        return this instanceof VariantHolder<?> holder && holder.getVariant() instanceof IVariant variant && "gold".equals(variant.getSerializedName());
+    }
+
+    @Override
+    public void onAddedToLevel() {
+        super.onAddedToLevel();
+        if (!level().isClientSide && !behaviorTreeRegistered) {
+            BTRoot behaviorTree = Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
+            goalSelector.addGoal(0, behaviorTree);
+            behaviorTreeRegistered = true;
+        }
+    }
+
+    /// 子类重写以提供自己的行为树
+    protected abstract BTRoot createBT();
+
+    /// 为被动小动物包装可抢占的恐慌分支。
+    ///
+    /// 原版 Panic 使用受伤时间戳区分一次新的攻击；不能只检查攻击者引用，否则小动物会在
+    /// 受击结束后仍永久重复逃跑。优先级选择器每 tick 探测该目标，既能立即抢占巡游，也会
+    /// 在一轮逃生完成后恢复日常行为，并保留着火时寻找水源等原版处理。
+    protected final BTNode withPassivePanic(BTNode routine, double panicSpeed) {
+        return SelectorNode.of(new VanillaGoalAction(new PanicGoal(this, panicSpeed)), routine);
+    }
+
+    /// 创建地面小动物共用的日常行为。
+    ///
+    /// 漂浮始终具有最高优先级；物种可把逃跑、跳跃或攀爬等专属动作插入其后；
+    /// 最后再执行避水巡游、观察玩家和随机转头。共享顺序集中在基类中，新增同类生物
+    /// 不需要复制一整套原版动作，也不会遗漏落水逃生。
+    protected final BTNode createGroundCritterRoutine(double strollSpeed, BTNode... speciesActions) {
+        List<BTNode> actions = new ArrayList<>();
+        actions.add(new VanillaGoalAction(new FloatGoal(this)));
+        actions.addAll(List.of(speciesActions));
+        actions.add(new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(this, strollSpeed)));
+        actions.add(new VanillaGoalAction(new LookAtPlayerGoal(this, Player.class, 6.0F)));
+        actions.add(new VanillaGoalAction(new RandomLookAroundGoal(this)));
+        return new SelectorNode(actions);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
+
+    /// 地面小动物使用较低的声音音量。
+    ///
+    /// 飞行动物和鸭子的原版继承值不同，由对应中间基类或具体实体覆盖；
+    /// 这样新增地面小动物无需重复声明相同常量。
+    @Override
+    protected float getSoundVolume() {
+        return 0.4F;
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other) {
+        return null;
+    }
+
+    /// 创建昆虫与同尺寸小型生物的基础属性。
+    ///
+    /// 该配置独立于普通小动物，避免新增昆虫时误用十点生命的通用配置。
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(DefaultAnimations.genericWalkController(this));
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return super.hurt(source, amount);
+    }
+
+    public ResourceLocation getModelPath() {
+        return getType().builtInRegistryHolder().key().location().withPrefix("geo/entity/animal/");
+    }
+
+    public ResourceLocation getTexturePath() {
+        return getType().builtInRegistryHolder().key().location().withPrefix("textures/entity/animal/").withSuffix(".png");
+    }
+}

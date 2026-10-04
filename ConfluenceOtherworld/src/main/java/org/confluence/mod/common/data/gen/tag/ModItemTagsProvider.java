@@ -29,13 +29,9 @@ import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terra_guns.common.init.TGTags;
-import org.confluence.terraentity.init.TEItems;
-import org.confluence.terraentity.init.TETags;
-import org.confluence.terraentity.init.block.TEFigureBlocks;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESpawnEggItems;
-import org.confluence.terraentity.init.item.TESummonItems;
+import org.confluence.mod.common.init.item.BoomerangItems;
+import org.confluence.mod.common.init.item.SpawnEggItems;
+import org.confluence.mod.common.init.item.SummonItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -90,10 +86,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.REPEATER_ENCHANTABLE);
         tag(ModTags.Items.TOOLS_REPEATER);
-        tag(ModTags.Items.MOUNT).addOptionalTag(TETags.Items.CURIOS_MOUNT);
-        tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
-        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
-        LightPetItems.ITEMS.getEntries().forEach(item -> tag(TETags.Items.CURIOS_LIGHT_PET).add(item.get()));
+        tag(ModTags.Items.MOUNT).add(MountItems.SLIMY_SADDLE.get(), MountItems.HONEYED_GOGGLES.get(), MountItems.BLESSED_APPLE.get(), MountItems.SUPERHEATED_BLOOD.get());
+        PetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.PET).add(item.get()));
+        LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
 
         IntrinsicTagAppender<Item> boats = tag(ItemTags.BOATS);
         BoatItems.BOAT_ITEMS.getEntries().forEach(item -> boats.add(item.get()));
@@ -128,6 +123,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),
                 FoodItems.TROUT.get()
+        );
+        tag(Tags.Items.FOODS_COOKED_FISH).add(
+                FoodItems.COOKED_SHRIMP.get(),
+                FoodItems.COOK_FISH.get()
         );
         tag(ModTags.Items.SEAFOOD_DINNER_MATERIALS).add(
                 FoodItems.FROSTY_MINNOW.get(),
@@ -515,15 +514,18 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
                 .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
-                .add(TEBoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+                .add(BoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
                 .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL)
                 .add(Items.MACE);
         tag(ModTags.Items.PREFIX_RANGED_ONLY)
-                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, TGTags.GUN)
+                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
-                .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
+                .addTags(ModTags.Items.MANA_WEAPON);
+        IntrinsicTagAppender<Item> prefix_summon_only = tag(ModTags.Items.PREFIX_SUMMON_ONLY);
+        SummonItems.ITEMS.getEntries().forEach(item -> prefix_summon_only.add(item.get()));
+        tag(ModTags.Items.SUMMONER_WEAPON).addTags(ModTags.Items.PREFIX_SUMMON_ONLY);
         tag(ModTags.Items.PREFIX_ACCESSORY_ONLY)
                 .addTag(TCTags.Items.ACCESSORY);
 
@@ -541,7 +543,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> arrows = tag(ItemTags.ARROWS);
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
 
-        IntrinsicTagAppender<Item> gun = tag(TGTags.GUN);
+        // G4′（枪械内联）：`TGTags.GUN` → `ModTags.Items.GUN`，
+        // 依据 1.20 `ModItemTagsProvider.java:570`（`IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);`）。
+        IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);
         GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
@@ -677,6 +681,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.FLAIL_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
 
+        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
+        WhipItems.ITEMS.getEntries().forEach(item -> whip.add(item.get()));
+
+        IntrinsicTagAppender<Item> boomerang = tag(ModTags.Items.BOOMERANG);
+        BoomerangItems.ITEMS.getEntries().forEach(item -> boomerang.add(item.get()));
+
         IntrinsicTagAppender<Item> spear = tag(ModTags.Items.SPEAR);
         skip_reset_strength.addTag(ModTags.Items.SPEAR);
         melee_weapon_tools.addTag(ModTags.Items.SPEAR);
@@ -691,7 +701,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
 
-        TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
+        SummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 
         copy(ModTags.Blocks.COINS, ModTags.Items.COINS);
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
@@ -945,8 +955,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.AMMO)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())
-                .addTag(ItemTags.ARROWS)
-                .addOptionalTag(TGTags.AMMO);
+                .addTag(ItemTags.ARROWS);
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
@@ -964,6 +973,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                         QuestedFishes.UNICORN_FISH.get()
                 );
 
+        // 标签本身即为公开扩展点；本体目前没有额外的普通自动发射弓。
+        tag(ModTags.Items.AUTOMATIC_BOW);
         tag(ModTags.Items.ABLE_TO_DESTROY_ALTAR).add(
                 HammerItems.PWNHAMMER.get(),
                 HammerItems.HAMMUSH.get()
@@ -987,6 +998,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.RAW_SQUIRREL.get(),
                 FoodItems.RAW_BIRD.get(),
                 FoodItems.RAW_DUCK.get()
+        );
+        tag(Tags.Items.FOODS_COOKED_MEAT).add(
+                FoodItems.COOKED_FROG.get(),
+                FoodItems.COOKED_SQUIRREL.get(),
+                FoodItems.COOKED_BIRD.get(),
+                FoodItems.COOKED_DUCK.get(),
+                FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get()
         );
         tag(Tags.Items.FERTILIZERS).add(ConsumableItems.FERTILIZER.get());
         tag(ItemTags.PARROT_POISONOUS_FOOD).add(
@@ -1387,28 +1405,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HookItems.ANTI_GRAVITY_HOOK.get(),
                 HookItems.LUNAR_HOOK.get(),
                 HookItems.STATIC_HOOK.get(),
-                TEItems.DEBUG_ITEM.get(),
                 DrillItems.CHLOROPHYTE_DRILL.get(),
                 DrillItems.DRAX.get(),
                 DrillItems.SOLAR_FLARE_DRILL.get(),
                 DrillItems.VORTEX_DRILL.get(),
                 DrillItems.NEBULA_DRILL.get(),
                 DrillItems.STARDUST_DRILL.get(),
-                TEFigureBlocks.FIGURE.asItem(),
-                TEFigureBlocks.FIGURE2.asItem(),
-                TEFigureBlocks.FIGURE3.asItem(),
                 NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 DecorativeBlocks.THE_TWINS_RELIC.asItem(),
                 DecorativeBlocks.SKELETRON_PRIME_RELIC.asItem(),
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),
                 LanceItems.SHADOW_JOUSTING_LANCE.get(),
                 CrossbowItems.STAKE_LAUNCHER.get(),
-                TESpawnEggItems.RETINAZER_SPAWN_EGG.get(),
-                TESpawnEggItems.SPAZMATISM_SPAWN_EGG.get(),
-                TESpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(),
-                TESpawnEggItems.THE_TWINS_SPAWN_EGG.get(),
-                TESpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
-                TESpawnEggItems.PLANTERA_SPAWN_EGG.get(),
+                SpawnEggItems.RETINAZER_SPAWN_EGG.get(),
+                SpawnEggItems.SPAZMATISM_SPAWN_EGG.get(),
+                SpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(),
+                SpawnEggItems.THE_TWINS_SPAWN_EGG.get(),
+                SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
+                SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
                 TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
                 TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
                 HoeShovelItems.COBALT_HOE_SHOVEL.get(),
@@ -1418,19 +1432,45 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HoeShovelItems.ADAMANTITE_HOE_SHOVEL.get(),
                 HoeShovelItems.TITANIUM_HOE_SHOVEL.get(),
                 HoeShovelItems.HALLOWED_HOE_SHOVEL.get(),
-                HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get()
+                HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get(),
+                MountItems.FUZZY_CARROT.get(),
+                ConsumableItems.GLOWSTICK.get(),
+                ConsumableItems.STICKY_GLOWSTICK.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
-        tag(TGTags.AUTOMATIC_GUN).add(
+        tag(ModTags.Items.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
                 ManaWeaponItems.SPACE_GUN.get(),
-                GunItems.STAR_CANNON.get()
+                GunItems.STAR_CANNON.get(),
+                GunItems.MINISHARK.get(),
+                GunItems.SNOWBALL_CANNON.get(),
+                GunItems.BLOWGUN.get(),
+                GunItems.TACTICAL_SHOTGUN.get()
         );
-        tag(TGTags.AMMO).add(
-                MaterialItems.FALLING_STAR.get()
+        // G4′ 标签层补全：下面 4 块 + AMMO 汇总在 1.20 侧就有（1.20 `ModItemTagsProvider.java:1492-1507`），
+        // 1.21 侧此前**整段缺失**（连带 `ModTags.Items.{MANUAL_GUN,SEED_AMMO,SNOW_AMMO}` 也不存在，本批一并补）。
+        tag(ModTags.Items.MANUAL_GUN).add(
+                GunItems.HAND_GUN.get(),
+                GunItems.PHOENIX_BLASTER.get(),
+                GunItems.SHOTGUN.get(),
+                GunItems.FLINTLOCK_PISTOL.get(),
+                GunItems.BOOMSTICK.get(),
+                GunItems.THE_UNDERTAKER.get(),
+                GunItems.MUSKET.get()
         );
+        // 这里原来还有一句 `tag(TGTags.AMMO).add(MaterialItems.FALLING_STAR.get());` —— 它把陨星加进
+        // **TE 的** `#terra_guns:ammo`（跨模组桥）。直接改成 `ModTags.Items.AMMO` 会与上方那块 AMMO
+        // （`add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())`）重复，而
+        // `TagsProvider.TagAppender` 走 `TagBuilder.addElement` **不去重**，生成的 `confluence:ammo`
+        // 会把 `confluence:falling_star` 列两遍 → 按 1.20 删除该句（内容已被上方那块覆盖，零丢失）。
+        IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
+        GunItems.BULLET_ITEMS.forEach(item -> bullet.add(item.get()));
+        tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);
+        tag(ModTags.Items.SEED_AMMO).addTag(Tags.Items.SEEDS);
+        tag(ModTags.Items.AMMO)
+                .addTags(ModTags.Items.SEED_AMMO, ModTags.Items.SNOW_AMMO, ModTags.Items.BULLET);
         IntrinsicTagAppender<Item> death = tag(ModTags.Items.DEATH);
         death.add(
                 FunctionalBlocks.SHIMMER_TRAP.asItem(),

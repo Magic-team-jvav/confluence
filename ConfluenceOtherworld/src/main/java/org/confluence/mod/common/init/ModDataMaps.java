@@ -35,6 +35,8 @@ public final class ModDataMaps {
     public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
     public static final DataMapType<EntityType<?>, BugNetEntityToItem> BUG_NET_ENTITY_TO_ITEM = register("bug_net_entity_to_item", Registries.ENTITY_TYPE, BugNetEntityToItem.CODEC, false);
     public static final DataMapType<EntityType<?>, LivingInvulnerableEffects> LIVING_INVULNERABLE_EFFECTS = register("living_invulnerable_effects", Registries.ENTITY_TYPE, LivingInvulnerableEffects.CODEC, true);
+    public static final DataMapType<EntityType<?>, AttackEffects> ATTACK_EFFECTS = register("attack_effects", Registries.ENTITY_TYPE, AttackEffects.CODEC, false);
+    public static final DataMapType<EntityType<?>, CreatureDefinition> CREATURE_DEFINITION = register("creature_definition", Registries.ENTITY_TYPE, CreatureDefinition.CODEC, false);
     public static final AdvancedDataMapType<EntityType<?>, GamePhase2AttributeModifiers, GamePhase2AttributeModifiers.Remover> GAME_PHASE_2_ATTRIBUTE_MODIFIERS = register(
             "game_phase_2_attribute_modifiers",
             Registries.ENTITY_TYPE,

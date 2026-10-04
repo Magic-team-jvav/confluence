@@ -10,8 +10,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.common.init.entity.ModEntities;
 /**
  * <h1>北极矛弹射物</h1>
  * 直线弹射物，有重力，不可穿墙，间歇生成子弹射物。
@@ -78,7 +78,7 @@ public class NorthPoleProjectile extends SpearProjectile {
 
     private void spawnSubProjectile() {
         NorthPoleSubProjectile sub = new NorthPoleSubProjectile(
-                ModEntities.NORTH_POLE_SUB_PROJECTILE.get(), level());
+                ModEntities.NORTH_POLE_SUB.get(), level());
         sub.setOwner(getOwner());
         sub.setWeapon(getWeaponItem());
         sub.setPos(getX(), getY(), getZ());

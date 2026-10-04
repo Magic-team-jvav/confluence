@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
 public class ThrownWaterProjectile extends ThrowableItemProjectile {
@@ -21,7 +21,7 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
     }
 
     public ThrownWaterProjectile(LivingEntity shooter, ISpreadable.Type type) {
-        super(ModEntities.THROWN_WATER_PROJECTILE.get(), shooter, shooter.level());
+        super(ModEntities.THROWN_WATER.get(), shooter, shooter.level());
         this.type = type;
     }
 

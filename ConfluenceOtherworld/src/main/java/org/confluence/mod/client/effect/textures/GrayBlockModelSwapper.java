@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 import org.confluence.mod.client.effect.connected.BakedModelWrapperWithData;
 import org.confluence.mod.client.effect.connected.BakedQuadHelper;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

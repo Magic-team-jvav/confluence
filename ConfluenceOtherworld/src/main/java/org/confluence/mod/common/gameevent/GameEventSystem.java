@@ -27,6 +27,8 @@ import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.CustomGameEventRegisterEvent;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.monster.Scutlix;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.network.s2c.GameEventSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,12 +42,18 @@ public enum GameEventSystem implements IGlobalData {
         map.put(SlimeRainGameEvent.KEY, SlimeRainGameEvent.INSTANCE);
         map.put(BloodMoonGameEvent.KEY, BloodMoonGameEvent.INSTANCE);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
+        if (Confluence.UNRELEASED_SPAWNS)
+            map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerGameEvent.INSTANCE);
         map.put(LanternNightGameEvent.KEY, LanternNightGameEvent.INSTANCE);
         map.put(SpecificMoonGameEvent.KEY, SpecificMoonGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
         map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
         map.put(BoulderRainGameEvent.KEY, BoulderRainGameEvent.INSTANCE);
+        if (Confluence.UNRELEASED_SPAWNS) {
+            map.put(SandstormGameEvent.KEY, SandstormGameEvent.INSTANCE);
+            map.put(PartyGameEvent.KEY, PartyGameEvent.INSTANCE);
+        }
         ModLoader.postEvent(new CustomGameEventRegisterEvent(map));
     });
     private transient int startedEventAmount;
@@ -174,8 +182,10 @@ public enum GameEventSystem implements IGlobalData {
 
     public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
+        if (Confluence.UNRELEASED_SPAWNS)
+            map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
-        // todo 海盗，火星
+        // todo 火星
     });
 
     public static boolean isInvasionEvent(ResourceKey<? extends GameEvent> key) {
@@ -235,8 +245,10 @@ public enum GameEventSystem implements IGlobalData {
             if (random.isEmpty()) continue;
             Vec3 position = player.position();
             MobSpawnSettings.SpawnerData spawnerData = random.get();
+            if (!DevelopmentSpawnPolicy.allowsAutomaticSpawn(spawnerData.type)) continue;
             int count = data.getCount(level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount));
             for (int j = 0; j < count; j++) {
+                if (!event.canSpawnEntity(level, spawnerData.type)) break;
                 double x = LibMathUtils.randomFromTo(level.random, position.x, 24, 32);
                 double z = LibMathUtils.randomFromTo(level.random, position.z, 24, 32);
                 int cx = SectionPos.blockToSectionCoord(x);
@@ -247,11 +259,16 @@ public enum GameEventSystem implements IGlobalData {
                 BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
                 Entity entity = spawnerData.type.spawn(level, pos, MobSpawnType.EVENT);
                 if (entity != null) {
-                    entity.addTag(entityTag);
-                    spawned.add(entity);
-                    if (setTarget && entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
-                        mob.setTarget(player);
+                    if (entity instanceof Scutlix scutlix && !scutlix.ensureRider(level)) {
+                        entity.getPassengers().forEach(Entity::discard);
+                        entity.discard();
+                        continue;
                     }
+                    entity.getSelfAndPassengers().forEach(member -> {
+                        member.addTag(entityTag);
+                        spawned.add(member);
+                        if (setTarget && member instanceof Mob mob && player.canBeSeenAsEnemy()) mob.setTarget(player);
+                    });
                 }
             }
         }

@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModEffects;
@@ -122,7 +122,7 @@ public abstract class PlayerMixin implements IPlayer {
     private void touch(Entity entity, CallbackInfo ci) {
         if (confluence$self().isLocalPlayer()) return;
         if (!(entity instanceof LivingEntity living)) return;
-        if (!LibUtils.isAnimal(living)) return;
+        if (!LibEntityUtils.isAnimal(living)) return;
         if (Bestiary.INSTANCE.containsKey(living)) return;
         Bestiary.INSTANCE.updateEntry(living, false);
     }

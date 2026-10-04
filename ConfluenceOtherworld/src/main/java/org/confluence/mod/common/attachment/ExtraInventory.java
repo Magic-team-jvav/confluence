@@ -26,7 +26,6 @@ import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terraentity.integration.curios.CuriosHelper;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -35,7 +34,6 @@ import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
@@ -171,6 +169,10 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         return getEquipment(PET_INDEX, dye);
     }
 
+    public ItemStack getMount(boolean dye) {
+        return getEquipment(MOUNT_INDEX, dye);
+    }
+
     public ItemStack getLightPet(boolean dye) {
         return getEquipment(LIGHT_PET_INDEX, dye);
     }
@@ -261,12 +263,6 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
             return accessory == null ? 0 : accessory.getSlots();
         }).orElse(0));
-        inventory.ifPresent(handler -> {
-            BiConsumer<Integer, ICurioStacksHandler> function = (i, t) -> equipment.set(i, new CurioStackWithDye(0, t, equipment.get(i)));
-            handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> function.accept(PET_INDEX, t));
-            handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> function.accept(LIGHT_PET_INDEX, t));
-            handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> function.accept(MOUNT_INDEX, t));
-        });
         this.initialized = true;
     }
 
@@ -304,7 +300,6 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         tag.put("Equipment", t);
         tag.put("Trash", encode(trash, ops));
         tag.put("AccessoryDye", encodeList(accessoryDye, ops));
-        tag.putBoolean("confluence:fixed", true);
         return tag;
     }
 
@@ -320,47 +315,20 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        if (nbt.getBoolean("confluence:fixed")) {
-            RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
-            ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
-            for (int i = 0; i < vanityArmor.size(); i++) {
-                vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
-            }
-            decodeList(coin, nbt.getList("Coin", Tag.TAG_COMPOUND), ops);
-            decodeList(ammo, nbt.getList("Ammo", Tag.TAG_COMPOUND), ops);
-            t = nbt.getList("Equipment", Tag.TAG_COMPOUND);
-            for (int i = 0; i < equipment.size(); i++) {
-                equipment.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
-            }
-            this.trash = decode(nbt.getCompound("Trash"), ops);
-            t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
-            encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
-        } else { // todo 1.3.0时删除
-            int size = nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : getContainerSize();
-            this.accessoryDye = NonNullList.withSize(size - 25, ItemStack.EMPTY);
-            ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
-            for (int i = 0; i < tagList.size(); i++) {
-                CompoundTag itemTags = tagList.getCompound(i);
-                int slot = itemTags.getInt("Slot");
-                if (slot < 0 || slot >= size) continue;
-                ItemStack.parse(provider, itemTags).ifPresent(stack -> {
-                    if (slot < 4) setVanityArmor(slot, stack, false);
-                    else if (slot < 8) setCoins(slot - 4, stack);
-                    else if (slot < 12) setAmmo(slot - 8, stack);
-                    else if (slot == 12) setEquipment(PET_INDEX, stack, false);
-                    else if (slot == 13) setEquipment(LIGHT_PET_INDEX, stack, false);
-                    else if (slot == 14) setEquipment(MINECART_INDEX, stack, false);
-                    else if (slot == 15) setEquipment(HOOK_INDEX, stack, false);
-                    else if (slot == 16) setTrash(stack);
-                    else if (slot < 21) setVanityArmor(slot - 17, stack, true);
-                    else if (slot == 21) setEquipment(PET_INDEX, stack, true);
-                    else if (slot == 22) setEquipment(LIGHT_PET_INDEX, stack, true);
-                    else if (slot == 23) setEquipment(MINECART_INDEX, stack, true);
-                    else if (slot == 24) setEquipment(HOOK_INDEX, stack, true);
-                    else if (slot < 25 + accessoryDye.size()) setAccessoryDye(slot - 25, stack);
-                });
-            }
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+        ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
+        for (int i = 0; i < vanityArmor.size(); i++) {
+            vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
         }
+        decodeList(coin, nbt.getList("Coin", Tag.TAG_COMPOUND), ops);
+        decodeList(ammo, nbt.getList("Ammo", Tag.TAG_COMPOUND), ops);
+        t = nbt.getList("Equipment", Tag.TAG_COMPOUND);
+        for (int i = 0; i < equipment.size(); i++) {
+            equipment.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
+        }
+        this.trash = decode(nbt.getCompound("Trash"), ops);
+        t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
+        encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
     }
 
     private static void decodeList(NonNullList<ItemStack> list, ListTag tag, DynamicOps<Tag> ops) {

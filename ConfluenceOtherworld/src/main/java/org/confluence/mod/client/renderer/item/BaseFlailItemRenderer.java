@@ -18,15 +18,14 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * <h1>连枷物品手持渲染器</h1>
- * 使用 Geo 模型渲染连枷物品的手持外观。
- */
-public class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> {
-    /** 手持模型回退：通用手柄模型 */
+/// 连枷物品手持渲染器。
+///
+/// 1.21 侧会优先使用单个连枷自己的 Geo 模型，缺失时才回退到公共手柄。1.20
+/// 现在暂时只有公共手柄资源，但这里仍保留同样的解析流程，避免以后补资源时还要改代码。
+public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> {
     private static final ResourceLocation HANDLE_MODEL = Confluence.asResource("geo/item/flail/handle.geo.json");
-    /** 回退贴图：使用实体连枷默认贴图 */
-    private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/flail/flail.png");
+    private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/flail.png");
+
     private final FlailItemModel model;
     private final Map<String, ResourceLocation> modelCache = new HashMap<>();
 
@@ -35,78 +34,61 @@ public class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> {
         this.model = (FlailItemModel) getGeoModel();
     }
 
-    /**
-     * 根据物品 ID 更新模型和贴图：
-     * 优先使用 {@code geo/item/flail/<name>.geo.json}，
-     * 若不存在则回退到 {@code handle.geo.json}
-     */
-    public void updateModelForStack(ItemStack stack) {
+    /// 按当前物品更新模型和贴图。
+    ///
+    /// 模型优先查找 {@code geo/item/flail/<物品名>.geo.json}，没有时回退到
+    /// {@code handle.geo.json}；贴图优先查找 {@code textures/item/flail/<物品名>.png}，
+    /// 没有时使用实体连枷默认贴图。
+    private void updateModelForStack(ItemStack stack) {
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         String name = itemId.getPath();
-        ResourceLocation resolvedModel = modelCache.computeIfAbsent(name, key -> {
+        model.model = modelCache.computeIfAbsent(name, key -> {
             ResourceLocation specific = Confluence.asResource("geo/item/flail/" + key + ".geo.json");
-            if (resourceExists(specific)) {
-                return specific;
-            }
-            return HANDLE_MODEL;
+            return resourceExists(specific) ? specific : HANDLE_MODEL;
         });
-        model.model = resolvedModel;
 
-        // 贴图：优先物品专属贴图，回退到实体默认贴图
         ResourceLocation texture = Confluence.asResource("textures/item/flail/" + name + ".png");
         model.texture = resourceExists(texture) ? texture : FALLBACK_TEXTURE;
     }
 
-    /** 检查资源是否存在 */
+    /// 检查客户端资源是否存在；缺资源只回退，不在渲染帧里抛错。
     private static boolean resourceExists(ResourceLocation location) {
-        try {
-            return Minecraft.getInstance().getResourceManager().getResource(location).isPresent();
-        } catch (Exception e) {
-            return false;
-        }
+        return Minecraft.getInstance().getResourceManager().getResource(location).isPresent();
     }
 
-    /** 获取活跃连枷实体的当前阶段，无活跃连枷时返回 -1 */
-    private static int getActiveFlailPhase(Player player) {
-        return player.level().getEntitiesOfClass(BaseFlailEntity.class,
-                        player.getBoundingBox().inflate(30),
-                        e -> e.getOwner() == player)
+    @Override
+    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        updateModelForStack(stack);
+        if (isHand(displayContext)) {
+            Player player = Minecraft.getInstance().player;
+            if (player == null || activePhase(player) != BaseFlailEntity.PHASE_SPIN) {
+                return;
+            }
+        }
+        super.renderByItem(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
+    }
+
+    private static boolean isHand(ItemDisplayContext context) {
+        return context == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
+                || context == ItemDisplayContext.FIRST_PERSON_LEFT_HAND
+                || context == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND
+                || context == ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+    }
+
+    private static int activePhase(Player player) {
+        return player.level().getEntitiesOfClass(BaseFlailEntity.class, player.getBoundingBox().inflate(30.0), entity -> entity.getOwner() == player)
                 .stream()
                 .findFirst()
                 .map(BaseFlailEntity::getPhase)
                 .orElse(-1);
     }
 
+    /// 运行时切换模型和贴图路径的轻量 GeoModel。
+    private static final class FlailItemModel extends GeoModel<BaseFlailItem> {
+        private ResourceLocation model;
+        private ResourceLocation texture;
 
-    //渲染入口
-    @Override
-    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack,
-                             MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        updateModelForStack(stack);
-
-        if (displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND
-                || displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND
-                || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND
-                || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND) {
-            Player player = Minecraft.getInstance().player;
-            if (player == null) return;
-
-            int phase = getActiveFlailPhase(player);
-            if (phase != BaseFlailEntity.PHASE_SPIN) return; // 仅 SPIN 阶段显示手持模型
-
-            super.renderByItem(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
-            return;
-        }
-
-        super.renderByItem(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
-    }
-
-    /** 内部 GeoModel，支持运行时切换模型/贴图路径 */
-    static class FlailItemModel extends GeoModel<BaseFlailItem> {
-        ResourceLocation model;
-        ResourceLocation texture;
-
-        FlailItemModel(ResourceLocation model, ResourceLocation texture) {
+        private FlailItemModel(ResourceLocation model, ResourceLocation texture) {
             this.model = model;
             this.texture = texture;
         }

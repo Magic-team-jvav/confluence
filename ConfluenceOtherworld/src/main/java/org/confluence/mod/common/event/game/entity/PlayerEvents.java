@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ParticleUtils;
 import net.minecraft.world.Difficulty;
@@ -19,6 +20,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -46,30 +48,38 @@ import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
-import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
+import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
+import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.menu.FletchingTableMenu;
+import org.confluence.mod.common.mount.MountManager;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
@@ -87,9 +97,6 @@ import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.entity.monster.WoodenMimic;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Objects;
 
@@ -136,6 +143,7 @@ public final class PlayerEvents {
         GameEventSystem.INSTANCE.clearAll(player);
         PlayerSpecialData.of(player).setPvP(false);
         CommonConfigs.reset();
+        MountManager.dismiss(player); // 1.20 `PlayerEvents:166`（同位置）
     }
 
     @SubscribeEvent
@@ -249,10 +257,12 @@ public final class PlayerEvents {
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
             ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
             StarSteelSword.onManaStarPickup(player);
+            itemStack.setCount(0);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
             player.heal(itemStack.getCount() * 4.0F);
+            itemStack.setCount(0);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         }
@@ -274,7 +284,28 @@ public final class PlayerEvents {
         if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
             player.level().playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
             event.setCanceled(true);
+            return;
         }
+        if (!(player instanceof ServerPlayer serverPlayer) || !BloodMoonGameEvent.INSTANCE.started()) return;
+        var hook = event.getHookEntity();
+        if (!hook.getInBlockState().getFluidState().is(FluidTags.WATER)) return;
+        if (player.getRandom().nextInt(10) == 0) {
+            TownSlimeNPC slime = TownSlimeNPC.unlock(serverPlayer.serverLevel(), NpcEntities.SURLY_SLIME.get(), hook.position());
+            if (slime != null) {
+                slime.setDeltaMovement(player.position().subtract(slime.position()).normalize().scale(0.4));
+                event.getDrops().clear();
+                return;
+            }
+        }
+        int chance = hook.getType() == ModEntities.BLOODY_FISHING_HOOK.get() ? 6 : 12;
+        if (player.getRandom().nextInt(chance) != 0) return;
+        var type = player.getRandom().nextBoolean() ? MonsterEntities.WANDERING_EYE_FISH.get() : MonsterEntities.ZOMBIE_MERMAN.get();
+        if (!DevelopmentSpawnPolicy.allowsAutomaticSpawn(type)) return;
+        var enemy = type.spawn(serverPlayer.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
+        if (enemy == null) return;
+        enemy.setTarget(serverPlayer);
+        enemy.setDeltaMovement(serverPlayer.position().subtract(enemy.position()).normalize().scale(0.35));
+        event.getDrops().clear();
     }
 
     @SubscribeEvent
@@ -319,7 +350,8 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
         }
-        if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
+        ItemStack stack = player.getMainHandItem();
+        if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL) || stack.is(ModTags.Items.YOYO)) {
             event.setCanceled(true);
         }
     }
@@ -339,6 +371,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+        MountManager.dismiss(player); // 1.20 `PlayerEvents:396`（同位置）
         EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() != 0, player);
         EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
@@ -379,7 +412,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!LibUtils.isSingleplayerOwner(player) &&
+        if (!LibEntityUtils.isSingleplayerOwner(player) &&
                 AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
         ) {
             AchievementsDataSyncPacketS2C.sendToPlayer(player);
@@ -391,7 +424,7 @@ public final class PlayerEvents {
         if (event.getTarget() instanceof ServerPlayer target) {
             ServerPlayer sendTo = (ServerPlayer) event.getEntity();
             PlayerUtils.flushLocalData(sendTo, target);
-        } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
+        } else if (event.getTarget() instanceof BaseNPC npc) {
             NPCSpawner.INSTANCE.applyBenedictions(npc);
         }
     }
@@ -399,6 +432,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+        MountManager.dismiss(player); // 1.20 `PlayerEvents:442`（同位置）
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
     }
@@ -426,7 +460,7 @@ public final class PlayerEvents {
             }
             if (key == null) break mimic;
             if (key.is(ToolItems.KEY_OF_LIGHT)) {
-                WoodenMimic mimic = TEMonsterEntities.HALLOWED_MIMIC.get().create(level);
+                BaseMimic mimic = MonsterEntities.HALLOWED_MIMIC.get().create(level);
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
                 }
@@ -437,11 +471,11 @@ public final class PlayerEvents {
                 } else {
                     summonCorruption = (level.getGameTime() / 24000L) % 2 == 0;
                 }
-                WoodenMimic mimic;
+                BaseMimic mimic;
                 if (summonCorruption) {
-                    mimic = TEMonsterEntities.CORRUPT_MIMIC.get().create(level);
+                    mimic = MonsterEntities.CORRUPT_MIMIC.get().create(level);
                 } else {
-                    mimic = TEMonsterEntities.CRIMSON_MIMIC.get().create(level);
+                    mimic = MonsterEntities.CRIMSON_MIMIC.get().create(level);
                 }
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);

@@ -25,11 +25,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.block.functional.TuffBoothBlock;
-import org.joml.Vector3d;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 
-import static org.confluence.lib.util.RenderUtils.drawCube;
+import static org.confluence.lib.util.LibRenderUtils.drawCube;
 
 public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBlock.TuffBoothBlockEntity> {
     private static final Minecraft MC = Minecraft.getInstance();
@@ -41,9 +41,9 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
         if (player == null || boothEntity.getLevel() == null) return;
 
         BlockPos pos = boothEntity.getBlockPos();
-        Vector3d posVct = new Vector3d(pos.getX(), pos.getY(), pos.getZ());
+        Vector3f posVct = new Vector3f(pos.getX(), pos.getY(), pos.getZ());
         VertexConsumer quadBuffer = bufferSource.getBuffer(RenderType.debugQuads());
-        //drawCube(poseStack, 1, 255, 255, 255, 255, posVct, new Vector3d(0, 0, 0), false, 0, 0, quadBuffer);
+        //drawCube(poseStack, 1, 255, 255, 255, 255, posVct, new Vector3f(0, 0, 0), false, 0, 0, quadBuffer);
 
         ItemStack playHand = player.getMainHandItem();
         ItemStack displayStack = boothEntity.getItemHandler().getStackInSlot(0);
@@ -105,22 +105,22 @@ public class TuffBoothBlockRenderer implements BlockEntityRenderer<TuffBoothBloc
         if (booth.getLevel() != null) {
             time = booth.getLevel().getGameTime();
         }
-        double renderTime = time + partial;
-        float ySwing = (float) (Math.sin(renderTime / 60.0 * Math.TAU) * 0.08);
+        float renderTime = time + partial;
+        float ySwing = (float) (Mth.sin(renderTime / 60.0F * Mth.TWO_PI) * 0.08);
 
         poseStack.pushPose();
         poseStack.translate(0.5, 1.25 + ySwing, 0.5);
         if (!stack.isEmpty() && booth.getBlockState().getValue(TuffBoothBlock.SHOW_NAME)) {
             renderLabel(poseStack, buffer, stack);
         }
-        poseStack.mulPose(Axis.YP.rotation((float) ((renderTime % 360) / 60.0F * Mth.TWO_PI)));
+        poseStack.mulPose(Axis.YP.rotation((renderTime % 360) / 60.0F * Mth.TWO_PI));
 
         if (hit != null && !hand.isEmpty() && hit.y > 0.5) {
-            float cubeAlpha = (float) Math.sin((renderTime / 60.0 * Math.TAU) * 1.5);
+            float cubeAlpha = (float) Math.sin((renderTime / 60.0 * Mth.TWO_PI) * 1.5);
             VertexConsumer quadBuffer = buffer.getBuffer(RenderType.debugQuads());
 
-            drawCube(poseStack, 0.52, 255, 255, 255, (int) ((cubeAlpha + 1F) / 8F * 255),
-                    new Vector3d(0, 0, 0), new Vector3d(0, 0.125, 0), true, Math.PI * 0.25F, 0, quadBuffer);
+            drawCube(poseStack, 0.52F, 255, 255, 255, (int) ((cubeAlpha + 1F) / 8F * 255),
+                    new Vector3f(0, 0, 0), new Vector3f(0, 0.125F, 0), true, Mth.PI * 0.25F, 0, quadBuffer);
 
             LevelRenderer.renderLineBox(poseStack, buffer.getBuffer(RenderType.lines()), -0.26, -0.135, -0.26, 0.26, 0.385, 0.26, 1, 1, 1, (cubeAlpha + 1F) / 4F);
         }

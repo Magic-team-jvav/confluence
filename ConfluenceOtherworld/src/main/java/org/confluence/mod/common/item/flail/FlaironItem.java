@@ -1,21 +1,18 @@
 package org.confluence.mod.common.item.flail;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.FlailComponent;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Supplier;
 
 /**
  * <h1>猪鲨链球物品</h1>
@@ -24,9 +21,8 @@ import java.util.function.Supplier;
 public class FlaironItem extends BaseFlailItem {
     private static final String TAG_PROJECTILE_MODE = "confluence:flairon_projectile";
 
-    public FlaironItem(@NotNull FlailComponent component, @NotNull ModRarity rarity,
-                       @NotNull Supplier<FlailStrategy> strategySupplier) {
-        super(component, rarity, strategySupplier);
+    public FlaironItem(@NotNull FlailComponent component, @NotNull ModRarity rarity) {
+        super(component, rarity);
     }
 
     @Override
@@ -36,7 +32,6 @@ public class FlaironItem extends BaseFlailItem {
         if (level.isClientSide()) return InteractionResultHolder.consume(stack);
 
         if (findExistingFlail(player) == null) {
-            // 无活跃连枷：切换模式
             boolean current = isProjectileMode(stack);
             setProjectileMode(stack, !current);
         }
@@ -45,35 +40,22 @@ public class FlaironItem extends BaseFlailItem {
 
     @Override
     public boolean isProjectileMode(ItemStack stack) {
-        return stack.getOrDefault(DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.EMPTY)
-                .copyTag().getBoolean(TAG_PROJECTILE_MODE);
+        return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getBoolean(TAG_PROJECTILE_MODE);
     }
 
-    /** 设置投射模式并同步更新面板伤害属性 */
     private void setProjectileMode(ItemStack stack, boolean mode) {
-        stack.update(DataComponents.CUSTOM_DATA,
-                net.minecraft.world.item.component.CustomData.EMPTY,
-                data -> data.update(tag -> tag.putBoolean(TAG_PROJECTILE_MODE, mode)));
-        syncDamageAttribute(stack, mode);
+        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        tag.putBoolean(TAG_PROJECTILE_MODE, mode);
+        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
 
-    /** 根据当前模式更新 ItemStack 的 ATTACK_DAMAGE 属性修饰器 */
-    private void syncDamageAttribute(ItemStack stack, boolean projectileMode) {
-        FlailComponent comp = getComponent();
-        float effectiveDamage = projectileMode
-                ? comp.damageFactor * comp.launchDamageRatio
-                : comp.damageFactor;
+    @Override
+    public float getLaunchDamageRatio(ItemStack stack) {
+        return 33.0F / 67.0F;
+    }
 
-        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE,
-                        new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
-                                effectiveDamage - 1, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_SPEED,
-                        new AttributeModifier(Item.BASE_ATTACK_SPEED_ID,
-                                comp.spinSpeed - 4, AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND)
-                .build());
+    @Override
+    protected EntityType<?> getFlailEntityType(FlailComponent component) {
+        return ModEntities.FLAIRON_FLAIL.get();
     }
 }

@@ -31,10 +31,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.GuiSprite;
+import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.network.c2s.HouseSelectPacketC2S;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
-import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
-import org.confluence.terraentity.entity.npc.house.IHouseDetector;
 import org.jetbrains.annotations.Nullable;
 
 public class HouseSelectHud implements LayeredDraw.Layer {
@@ -147,13 +146,7 @@ public class HouseSelectHud implements LayeredDraw.Layer {
         if (selected < 0) return;
         BlockHitResult result = Item.getPlayerPOVHitResult(player.level(), player, ClipContext.Fluid.NONE);
         BlockPos pos = result.getBlockPos().relative(result.getDirection());
-        IHouseDetector detect = IHouseDetector.detect(pos, player.level());
-        if (selected == 0 && !detect.isError()) {
-            for (BlockPos blockPos : detect.list()) {
-                DebugBlocksHelper.Singleton().addDebugBlock(blockPos, new DebugBlocksHelper.DebugInfo(255, 255, 30, 100));
-            }
-            DebugBlocksHelper.Singleton().addDebugBlock(pos, new DebugBlocksHelper.DebugInfo(255, 0, 120, 120));
-        }
+        HouseValidater.Result detect = HouseValidater.scan(player.level(), pos);
         HouseSelectPacketC2S.sendToServer(selected, pos);
     }
 

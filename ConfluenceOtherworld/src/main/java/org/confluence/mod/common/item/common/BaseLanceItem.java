@@ -23,15 +23,15 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.api.item.ILeftClickStateItem;
+import org.confluence.mod.common.attachment.LeftClickState;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.terraentity.api.item.ILeftClickStateItem;
-import org.confluence.terraentity.attachment.WeaponStorage;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -100,7 +100,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (isSelected &&
                 entity instanceof ServerPlayer owner &&
-                WeaponStorage.of(owner).leftClicking &&
+                LeftClickState.of(owner).isPressed(stack) &&
                 !owner.getCooldowns().isOnCooldown(this) &&
                 (attackInterval <= 1 || owner.level().getGameTime() % attackInterval == 0)
         ) {
@@ -108,22 +108,22 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
             Vec3 lanceDirection = owner.getViewVector(1.0F);
             Vec3 endVec = startVec.add(lanceDirection.scale(attackDistance));
 
-            for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> LibUtils.canHitEntity(target, owner))) {
+            for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> LibEntityUtils.canHitEntity(target, owner))) {
                 if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
-                victim = LibUtils.tryFindBeImpacted(victim);
+                victim = LibEntityUtils.tryFindBeImpacted(victim);
                 owner.setLastHurtMob(victim);
-                DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, owner);
+                DamageSource damageSource = LibDamageTypes.of(level, DamageTypes.STING, owner);
 
                 Vec3 attackerVelocity = new Vec3(IServerPlayer.of(owner).confluence$getMovementSpeed()); // 使用者速度
                 Vec3 relativeVelocity = attackerVelocity.subtract(victim.getPosition(1).subtract(victim.getPosition(0))); // 计算相对速度，不再使用加速度
-                Vec3 projectedVelocity = VectorUtils.vectorProjection(relativeVelocity, lanceDirection); // 计算投影速度(投影到剑的方向上)
+                Vec3 projectedVelocity = LibMathUtils.vectorProjection(relativeVelocity, lanceDirection); // 计算投影速度(投影到剑的方向上)
                 double impactSpeed = projectedVelocity.length() * 30; // 获得向量长度，第一次乘系数
 
                 victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F))); // 第二次乘系数，+0.1f在乘baseAttackDamage后得到的是基础数值(其实这里的计算逻辑有点问题)
 
                 if (!victim.getType().is(Tags.EntityTypes.BOSSES)) {
                     double kb = impactSpeed * baseKnockback * 4 / 105;
-                    VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
+                    LibEntityUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
                 }
                 EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }

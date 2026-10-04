@@ -8,6 +8,8 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import org.confluence.lib.util.consumer.NonNullBiConsumer;
+import org.confluence.lib.util.function.NonNullFunction;
 
 import java.util.Map;
 import java.util.Set;

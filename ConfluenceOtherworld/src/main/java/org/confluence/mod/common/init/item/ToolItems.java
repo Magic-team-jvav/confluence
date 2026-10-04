@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
@@ -70,9 +70,9 @@ public class ToolItems {
     public static final DeferredItem<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
     public static final DeferredItem<DemonConch> DEMON_CONCH = ITEMS.register("demon_conch", DemonConch::new);
 
-    public static final DeferredItem<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, TooltipItem.getTooltipsFromString("bug_net", 1, ChatFormatting.GRAY), 0.5, living -> LibUtils.isAnimal(living) && !living.getType().is(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS)));
-    public static final DeferredItem<BugNetItem> LAVAPROOF_BUG_NET = ITEMS.register("lavaproof_bug_net", () -> new BugNetItem(ModRarity.ORANGE, TooltipItem.getTooltipsFromString("lavaproof_bug_net", 1, ChatFormatting.GRAY), 0.5, LibUtils::isAnimal));
-    public static final DeferredItem<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, TooltipItem.getTooltipsFromString("golden_bug_net", 2, ChatFormatting.GRAY), 1.1, LibUtils::isAnimal));
+    public static final DeferredItem<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, TooltipItem.getTooltipsFromString("bug_net", 1, ChatFormatting.GRAY), 0.5, living -> LibEntityUtils.isAnimal(living) && !living.getType().is(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS)));
+    public static final DeferredItem<BugNetItem> LAVAPROOF_BUG_NET = ITEMS.register("lavaproof_bug_net", () -> new BugNetItem(ModRarity.ORANGE, TooltipItem.getTooltipsFromString("lavaproof_bug_net", 1, ChatFormatting.GRAY), 0.5, LibEntityUtils::isAnimal));
+    public static final DeferredItem<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, TooltipItem.getTooltipsFromString("golden_bug_net", 2, ChatFormatting.GRAY), 1.1, LibEntityUtils::isAnimal));
     public static final DeferredItem<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, TooltipItem.getTooltipsFromString("dev_bug_net", 1, ChatFormatting.GRAY), Double.MAX_VALUE, living -> !(living instanceof Player)));
 
     public static final DeferredItem<RopeCoilItem> ROPE_COIL = ITEMS.register("rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.ROPE.get()));

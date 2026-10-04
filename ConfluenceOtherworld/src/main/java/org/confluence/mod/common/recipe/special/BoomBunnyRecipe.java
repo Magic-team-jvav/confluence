@@ -21,7 +21,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.terraentity.init.entity.TEAnimals;
+import org.confluence.mod.common.init.entity.CritterEntities;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -51,7 +51,7 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
                 CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
                 if (tag == null) continue;
                 String id = tag.getString(Entity.ID_TAG);
-                if ("terra_entity:bunny".equals(id) || "minecraft:rabbit".equals(id)) {
+                if ("confluence:bunny".equals(id) || "minecraft:rabbit".equals(id)) {
                     return true;
                 }
             }
@@ -68,7 +68,7 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
             CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
             if (tag == null) continue;
             tag = tag.copy();
-            tag.putString(Entity.ID_TAG, BuiltInRegistries.ENTITY_TYPE.getKey(TEAnimals.EXPLOSIVE_BUNNY.get()).toString());
+            tag.putString(Entity.ID_TAG, BuiltInRegistries.ENTITY_TYPE.getKey(CritterEntities.EXPLOSIVE_BUNNY.get()).toString());
             tag.putUUID(Entity.UUID_TAG, Mth.createInsecureUUID());
             assemble.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
             assemble.set(DataComponents.CUSTOM_NAME, itemStack.get(DataComponents.CUSTOM_NAME));

@@ -14,8 +14,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
-import static org.confluence.lib.util.FeatureUtils.rectangular;
-import static org.confluence.lib.util.FeatureUtils.rectangularCheck;
+import static org.confluence.lib.util.LibFeatureUtils.rectangular;
+import static org.confluence.lib.util.LibFeatureUtils.rectangularCheck;
 
 public class MushroomTreeFeature extends Feature<MushroomTreeFeature.Config> {
     public MushroomTreeFeature(Codec<Config> pCodec) {

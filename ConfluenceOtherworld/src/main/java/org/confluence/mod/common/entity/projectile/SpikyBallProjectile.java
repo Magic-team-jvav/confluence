@@ -13,9 +13,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.init.ModEntities;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.HashSet;
@@ -24,13 +24,15 @@ import java.util.Set;
 public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
     public final Rotate rotate = new Rotate();
     private final Set<Entity> passThrough = new HashSet<>();
+    ///
+    private float damage = 3.2F;
 
     public SpikyBallProjectile(EntityType<SpikyBallProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
     public SpikyBallProjectile(LivingEntity shooter) {
-        super(ModEntities.SPIKY_BALL_PROJECTILE.get(), shooter.level());
+        super(ModEntities.SPIKY_BALL.get(), shooter.level());
         setPos(shooter.getX(), shooter.getEyeY() - 0.1F, shooter.getZ());
         setOwner(shooter);
     }
@@ -55,8 +57,8 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
-                if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), 3.2F)) {
-                    VectorUtils.knockBackA2B(this, entity, 0.1, 0.02);
+                if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), damage)) {
+                    LibEntityUtils.knockBackA2B(this, entity, 0.1, 0.02);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 7) {
                     discard();
@@ -72,9 +74,16 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
         }
     }
 
+    public void setDamage(float damage) {
+        this.damage = Math.max(0, damage);
+    }
+
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibUtils.canHitEntity(target, getOwner());
+        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living)) {
+            return false;
+        }
+        return LibEntityUtils.canHitEntity(target, getOwner());
     }
 
     @Override
@@ -86,12 +95,14 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.tickCount = compound.getInt("Age");
+        this.damage = compound.contains("Damage") ? Math.max(0, compound.getFloat("Damage")) : 3.2F;
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Age", tickCount);
+        compound.putFloat("Damage", damage);
     }
 
     @Override

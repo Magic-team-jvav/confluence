@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.common.init.TCItems;
 
@@ -28,7 +28,7 @@ public class ReallySmall extends SecretSeed {
     }
 
     public static void giveStepStool(ServerPlayer player) {
-        CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+        CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
         if (!tag.getBoolean("confluence:initial_step_stool")) {
             player.addItem(TCItems.STEP_STOOL.toStack());
             tag.putBoolean("confluence:initial_step_stool", true);

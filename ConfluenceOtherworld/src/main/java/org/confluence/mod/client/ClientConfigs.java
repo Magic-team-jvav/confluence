@@ -1,12 +1,14 @@
 package org.confluence.mod.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
@@ -15,14 +17,15 @@ import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.confluence.mod.client.handler.SoulSkillClientHandler;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
@@ -42,6 +45,8 @@ public final class ClientConfigs {
     public static boolean achievementToast = true;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
     public static int customTitle = 71;
+    public static CustomBossBarRenderer.Style bossBarStyle = CustomBossBarRenderer.Style.STATIC;
+    public static boolean bossBarNumbersVisible = true;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -63,6 +68,11 @@ public final class ClientConfigs {
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
     public static boolean damageIndicator = true;
     public static boolean healIndicator = true;
+    public static WeaponUseButton staffUseButton = WeaponUseButton.RIGHT;
+    public static WeaponUseButton whipUseButton = WeaponUseButton.LEFT;
+    public static WeaponUseButton yoyoUseButton = WeaponUseButton.LEFT;
+    public static WeaponUseButton gunUseButton = WeaponUseButton.LEFT;
+    public static WeaponUseButton flailUseButton = WeaponUseButton.LEFT;
     public static boolean voidSeaDepthIntersectionOutline = false;
 
     private static IntValue SHOW_WIND_PARTICLES;
@@ -79,6 +89,8 @@ public final class ClientConfigs {
     private static BooleanValue ACHIEVEMENT_TOAST;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
     private static IntValue CUSTOM_TITLE;
+    private static EnumValue<CustomBossBarRenderer.Style> BOSS_BAR_STYLE;
+    private static BooleanValue BOSS_BAR_NUMBERS_VISIBLE;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -100,6 +112,11 @@ public final class ClientConfigs {
     private static EnumValue<GoreEffect> GORE_EFFECT;
     private static BooleanValue DAMAGE_INDICATOR;
     private static BooleanValue HEAL_INDICATOR;
+    private static EnumValue<WeaponUseButton> STAFF_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> WHIP_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> YOYO_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> GUN_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> FLAIL_USE_BUTTON;
     private static BooleanValue VOID_SEA_DEPTH_INTERSECTION_OUTLINE;
 
     public static void onLoad() {
@@ -117,6 +134,8 @@ public final class ClientConfigs {
         achievementToast = ACHIEVEMENT_TOAST.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
         customTitle = CUSTOM_TITLE.get();
+        bossBarStyle = BOSS_BAR_STYLE.get();
+        bossBarNumbersVisible = BOSS_BAR_NUMBERS_VISIBLE.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -140,6 +159,11 @@ public final class ClientConfigs {
         goreEffect = GORE_EFFECT == null ? GoreEffect.OFF : GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
+        staffUseButton = STAFF_USE_BUTTON.get();
+        whipUseButton = WHIP_USE_BUTTON.get();
+        yoyoUseButton = YOYO_USE_BUTTON.get();
+        gunUseButton = GUN_USE_BUTTON.get();
+        flailUseButton = FLAIL_USE_BUTTON.get();
         voidSeaDepthIntersectionOutline = VOID_SEA_DEPTH_INTERSECTION_OUTLINE.get();
     }
 
@@ -165,6 +189,13 @@ public final class ClientConfigs {
         }
         {
             builder.push("HUD");
+            {
+                builder.push("Boss");
+                BOSS_BAR_STYLE = builder.defineEnum("bossBarStyle", CustomBossBarRenderer.Style.STATIC);
+                BOSS_BAR_NUMBERS_VISIBLE = builder.comment("Show exact health values on custom boss bars.")
+                        .define("bossBarNumbersVisible", true);
+                builder.pop();
+            }
             {
                 builder.push("Health");
                 TERRA_STYLE_HEALTH = builder.define("terraStyleHealth", true);
@@ -223,7 +254,48 @@ public final class ClientConfigs {
         VOID_SEA_DEPTH_INTERSECTION_OUTLINE = builder.comment("Enables the experimental depth intersection outline for the void sea. Shader pack compatibility depends on the active shader pack.")
                 .define("voidSeaDepthIntersectionOutline", false);
 
+        {
+            builder.push("WeaponInput");
+            STAFF_USE_BUTTON = builder.defineEnum("staffUseButton", WeaponUseButton.RIGHT);
+            WHIP_USE_BUTTON = builder.defineEnum("whipUseButton", WeaponUseButton.LEFT);
+            YOYO_USE_BUTTON = builder.defineEnum("yoyoUseButton", WeaponUseButton.LEFT);
+            GUN_USE_BUTTON = builder.defineEnum("gunUseButton", WeaponUseButton.LEFT);
+            FLAIL_USE_BUTTON = builder.defineEnum("flailUseButton", WeaponUseButton.LEFT);
+            builder.pop();
+        }
+
         container.registerConfig(ModConfig.Type.CLIENT, builder.build());
+    }
+
+    /// 返回当前物品配置的主要动作键；不属于这五类武器时返回 {@code null}。
+    public static @Nullable WeaponUseButton weaponUseButton(ItemStack stack) {
+        Holder<Item> holder = stack.getItem().builtInRegistryHolder();
+        if (holder.is(ModTags.Items.MANA_WEAPON)) {
+            return staffUseButton;
+        } else if (holder.is(ModTags.Items.WHIP)) {
+            return whipUseButton;
+        } else if (holder.is(ModTags.Items.YOYO)) {
+            return yoyoUseButton;
+        } else if (holder.is(ModTags.Items.GUN)) {
+            return gunUseButton;
+        } else if (holder.is(ModTags.Items.FLAIL)) {
+            return flailUseButton;
+        }
+        return null;
+    }
+
+    public static boolean usesLeftWeaponButton(ItemStack stack) {
+        return weaponUseButton(stack) == WeaponUseButton.LEFT;
+    }
+
+    public enum WeaponUseButton implements TranslatableEnum {
+        LEFT,
+        RIGHT;
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.weaponInputButton." + name().toLowerCase(Locale.ROOT));
+        }
     }
 
     public enum GoreEffect implements TranslatableEnum {
@@ -298,7 +370,8 @@ public final class ClientConfigs {
         TRADE_SCREEN {
             @Override
             public boolean test() {
-                return Minecraft.getInstance().screen instanceof TETradeScreen<?>;
+                return Minecraft.getInstance().player != null
+                        && Minecraft.getInstance().player.containerMenu instanceof NPCTradeMenu;
             }
         };
 

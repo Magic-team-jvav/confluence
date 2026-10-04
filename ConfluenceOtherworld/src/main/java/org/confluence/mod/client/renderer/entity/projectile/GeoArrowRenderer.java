@@ -5,15 +5,15 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
-import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.mod.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.mod.common.entity.projectile.arrow.HellBatArrowEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
 
 
     public GeoArrowRenderer(EntityRendererProvider.Context renderManager, ResourceLocation path) {
-        super(renderManager, path, false);
+        super(renderManager, path);
     }
 
     public GeoArrowRenderer(EntityRendererProvider.Context renderManager, ResourceLocation path, float scale, float offsetY) {

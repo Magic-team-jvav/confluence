@@ -3872,3 +3872,55 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - 史实（实测两仓 lib）：1.20 lib 的 `TIER`（只含 -1..11 色阶）+ `record` 形态来自 lib 提交 **`e9b848c`（2026-09-23，post-fork）**；1.21 lib 的 `git log -S TIER` 为**空**，即该改名**从未同步**到 1.21 侧（1.21 lib 最近仍在同步 1.20 lib 的其它提交，如 `9e09d50 refactor(1.20→1.21 同步)`）。
 - 因此 `PrefixUtils` 里我用 `ModRarity.ID_MAP` + `if (tier < -1) tier = -2;` 做语义等价（1.21 的 `ID_MAP` 比 `TIER` 多 7 个负 id）。
 - **建议**（待用户决定是否改子仓）：把 1.21 lib 的 `ID_MAP` 更名为 `TIER` 并去掉那 7 个负 id（保留 1.21 自有的 `special`／`asTextColor` 形态，不回退），随后删掉那行 shim、使 `PrefixUtils` 与 1.20 逐字一致。
+
+
+## 一百零六、台账续走：行 21–24（part10–13）⇒ 全部 `COVERED`
+
+### 106.1 新增的**全仓级符号核查**（本轮主证据）
+
+`triage_row.py` 只在**同一文件**里找符号（对 vanilla 常量会误报）。本轮改用 `sym2124.py`：
+
+1. 从 1.20 提交的新增行里抽出**定义型符号**（`class|interface|enum|record X` 与 `UPPER_CASE =`）；
+2. 拿这些符号到 **1.21 全仓 java 语料**（2613 文件、约 53 MB，一次读入）里查 `\b符号\b`；
+3. 只有全仓都找不到的才算候选缺口。
+
+| 行 | 提交 | 定义型符号 | 1.21 全仓缺失 |
+| --- | --- | --- | --- |
+| 21 | `182149f52` part10 | 95 | **1**：`ACTIONS` |
+| 22 | `b3f13d405` part11 | 42 | **1**：`AskForSoftcoreLayer` |
+| 23 | `7d1fff5b6` part12 | 48 | **0** |
+| 24 | `b0716f0c9` part13 | 4 | **0** |
+
+### 106.2 两个候选的裁定（都不是缺口）
+
+| 候选 | 实测 | 裁定 |
+| --- | --- | --- |
+| `GardenShearsItem.ACTIONS`（行 21） | 1.20 新增行是 `private static final Set<ToolAction> ACTIONS = Stream.of(…)`，用 **Forge** `ToolAction`/`ToolActions`/`PortItemAbilities`；1.21 该文件 88 行（1.20 93 行）且已无 `ACTIONS` —— 属工具能力系统的平台机制 | **SKIP-PLATFORM**（1.21 已另写） |
+| `AskForSoftcoreLayer`（行 22） | 该类在 **1.20 HEAD 里也已不存在**（本提交之后被删/改）⇒ 属"1.20 自己后来撤了"，无移植物；且 softcore 功能两侧都在（`AskForSoftcoreScreen` 各 5 处引用） | 无效条目（dead） |
+
+### 106.3 C 桶抽样（文件级行数对比）
+
+按 triage 的 C 计数取每行最大的 6 个文件，比较 1.20 HEAD 与 1.21 HEAD 行数（平台差异导致的缩减属正常）：
+
+| 行 | 抽样结果（节选） |
+| --- | --- |
+| 21 | `ModLootTables` 129→105、`Confluence` 163→147（`FMLJavaModLoadingContext` 等 Forge 构造器被删）、`LivingEntityEvents` 710→695、`GroundBlockNBTFeature` 81→74 |
+| 22 | `EverBeneficialItem` 182→160、`OverviewNode` 215→198、`HotbarWidget` **202→202**、`TerraStyleHealthHud` 193→191、`GameClientEvents` 557→598（1.21 侧另有扩展） |
+| 23 | `VoidBlockRenderer` 519→476、`SoulOverviewScreen` 1259→1260、`BackgroundLayer` 517→527、`SecretSeedsSelectionScreen` 593→578 |
+| 24 | `BodyPartRenderer` 233→224、`DungeonCompassRenderer` **128→128**、`EntityDisplayItemRenderer` **104→104**、`SpearProjectileRenderer` 66→70 |
+
+- 行 23 的 `PlayerAdvancementsMixin`（triage 报 89→63）经查是**抽样匹配到了同名兄弟文件** `LocalPlayerAdvancementsMixin`；正确路径 `mixin/server/PlayerAdvancementsMixin.java` 为 1.20 `88` 行 → 1.21 `62` 行：1.21 用 `AdvancementHolder`（1.21 API）并去掉 Forge 时代的 `LOGGER`／`startProgress`／`markForVisibilityUpdate` 影子方法，成就存取由 `PlayerAdvancementsMixin` + `LocalPlayerAdvancementsMixin` 两个 mixin 共同承担 ⇒ 等价。
+
+⇒ 行 21／22／23／24 全部 **`COVERED`**。
+
+### 106.4 工具教训（两条，已写进方法学）
+
+1. **符号核查要全仓级**：同文件检查会把 `UUID`／`AABB`／`ARGB32`／`POSITIVE_INT`／`LOGGER`／`INSTANCE` 这类 vanilla／其它类常量一律记成"缺"；本轮改成"提交新增的定义型符号 × 1.21 全仓语料"后才收敛到 2 个候选，且这 2 个经查都不是缺口。
+2. **"提交新增符号"包含 1.20 后来删掉的东西**：`AskForSoftcoreLayer` 就是这种（1.20 HEAD 已无该类）⇒ 抽符号时必须与 rowaudit 的 alive/DEAD 判定**一起**看，单看新增行会误报。
+3. **按文件名子串匹配路径会串**：`LocalPlayerAdvancementsMixin.java` 也以 `PlayerAdvancementsMixin.java` 结尾，本轮抽样因此取错文件、行数差看起来异常。
+
+### 106.5 状态
+
+- 台账（双写）：**行 21／22／23／24 = `COVERED`**；剩余 TODO **56** 个。
+- `fix_eol --check` 候选 6；本轮无代码落地。
+- 下一批：**行 29–33**（2026-06 中旬的 partN 系列）。

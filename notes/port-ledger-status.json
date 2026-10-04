@@ -1700,6 +1700,26 @@
       "status": "COVERED",
       "target": "（1.21 已有等价实现）",
       "note": "台账行 15；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "182149f523c679016e868765bbc358b6c4fff98c": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 21；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "b3f13d405f0fdf1dd3b67bae16a53c969835a280": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 22；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7d1fff5b6f24d72d6cf6e1a2da9cddbe4c4cc645": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 23；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "b0716f0c91ee2d99fca19a8bf5e61948c2ba0ff5": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 24；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
     }
   }
 }

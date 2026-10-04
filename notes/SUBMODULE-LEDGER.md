@@ -41,21 +41,21 @@
 | 28 | Confluence-Magic-Lib | `e3d54fe60` | 2026-09-08 | fix(otherworld): 修复战斗结算并统一生物属性与鞭子判定 | 1 | +2 −1 | PortLib×4 | COVERED |
 | 29 | Confluence-Magic-Lib | `e1757f1c1` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题 | 2 | +4 −5 | PortLib×1 | COVERED |
 | 30 | Confluence-Magic-Lib | `361c05c8d` | 2026-09-08 | 修复灯笼粒子往下掉的问题 | 1 | +1 −1 | PortLib×1 | COVERED |
-| 31 | Confluence-Magic-Lib | `efe1372ad` | 2026-09-08 | 修复右键功能物品失效问题 | 4 | +45 −35 | PortLib×23 | TODO |
-| 32 | Confluence-Magic-Lib | `6b7b52517` | 2026-09-10 | 修汇流熔炉不能放燃料的问题 | 1 | +2 −1 |  | TODO |
-| 33 | Confluence-Magic-Lib | `fb10030ce` | 2026-09-10 | 修复mixin，修复跳跃属性 | 3 | +15 −7 | PortLib×8 | TODO |
-| 34 | Confluence-Magic-Lib | `445f76396` | 2026-09-11 | 一些修复 | 2 | +6 −5 |  | TODO |
-| 35 | Confluence-Magic-Lib | `3ae3a9fc3` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | TODO |
-| 36 | Confluence-Magic-Lib | `5e6625bab` | 2026-09-12 | JEI兼容恢复 | 7 | +41 −20 |  | TODO |
-| 37 | Confluence-Magic-Lib | `6e9d87bae` | 2026-09-13 | 版本更新 | 1 | +2 −1 | PortLib×2 | TODO |
-| 38 | Confluence-Magic-Lib | `f8363c053` | 2026-09-14 | 修 | 1 | +5 −1 |  | TODO |
-| 39 | Confluence-Magic-Lib | `e0b02d2f0` | 2026-09-15 | 修事件 | 1 | +1 −1 |  | TODO |
-| 40 | Confluence-Magic-Lib | `87aa1992a` | 2026-09-15 | 更新粒子 | 1 | +1 −1 | PortLib×1 | TODO |
-| 41 | Confluence-Magic-Lib | `0cf2c0fa3` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | TODO |
-| 42 | Confluence-Magic-Lib | `5187258a6` | 2026-09-16 | curios属性显示兼容 | 1 | +3 −4 | PortLib×5 | TODO |
-| 43 | Confluence-Magic-Lib | `454b5938f` | 2026-09-17 | 修改一些纹理和模型上的问题，挪贴图位置 | 5 | +0 −0 | 资源only | TODO |
-| 44 | Confluence-Magic-Lib | `067209093` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×7 | TODO |
-| 45 | Confluence-Magic-Lib | `b61a6ee57` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 9 | +40 −32 | PortLib×36 | TODO |
+| 31 | Confluence-Magic-Lib | `efe1372ad` | 2026-09-08 | 修复右键功能物品失效问题 | 4 | +45 −35 | PortLib×23 | COVERED |
+| 32 | Confluence-Magic-Lib | `6b7b52517` | 2026-09-10 | 修汇流熔炉不能放燃料的问题 | 1 | +2 −1 |  | COVERED |
+| 33 | Confluence-Magic-Lib | `fb10030ce` | 2026-09-10 | 修复mixin，修复跳跃属性 | 3 | +15 −7 | PortLib×8 | COVERED |
+| 34 | Confluence-Magic-Lib | `445f76396` | 2026-09-11 | 一些修复 | 2 | +6 −5 |  | COVERED |
+| 35 | Confluence-Magic-Lib | `3ae3a9fc3` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | SKIP-PORTLIB |
+| 36 | Confluence-Magic-Lib | `5e6625bab` | 2026-09-12 | JEI兼容恢复 | 7 | +41 −20 |  | COVERED |
+| 37 | Confluence-Magic-Lib | `6e9d87bae` | 2026-09-13 | 版本更新 | 1 | +2 −1 | PortLib×2 | COVERED |
+| 38 | Confluence-Magic-Lib | `f8363c053` | 2026-09-14 | 修 | 1 | +5 −1 |  | COVERED |
+| 39 | Confluence-Magic-Lib | `e0b02d2f0` | 2026-09-15 | 修事件 | 1 | +1 −1 |  | COVERED |
+| 40 | Confluence-Magic-Lib | `87aa1992a` | 2026-09-15 | 更新粒子 | 1 | +1 −1 | PortLib×1 | COVERED |
+| 41 | Confluence-Magic-Lib | `0cf2c0fa3` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | COVERED |
+| 42 | Confluence-Magic-Lib | `5187258a6` | 2026-09-16 | curios属性显示兼容 | 1 | +3 −4 | PortLib×5 | COVERED |
+| 43 | Confluence-Magic-Lib | `454b5938f` | 2026-09-17 | 修改一些纹理和模型上的问题，挪贴图位置 | 5 | +0 −0 | 资源only | COVERED |
+| 44 | Confluence-Magic-Lib | `067209093` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×7 | SKIP-PORTLIB |
+| 45 | Confluence-Magic-Lib | `b61a6ee57` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 9 | +40 −32 | PortLib×36 | COVERED |
 | 46 | Confluence-Magic-Lib | `ee7122937` | 2026-09-18 | 合并stream codec | 1 | +7 −0 |  | TODO |
 | 47 | Confluence-Magic-Lib | `35147c5ed` | 2026-09-19 | 修复粒子的顶点绕序问题 | 1 | +1 −1 | PortLib×1 | TODO |
 | 48 | Confluence-Magic-Lib | `b8f5bde2b` | 2026-09-19 | 修复部分物品无法搜索的问题 | 1 | +3 −0 |  | TODO |

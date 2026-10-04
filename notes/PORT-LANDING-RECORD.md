@@ -4500,3 +4500,44 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 31–45（lib 后段：端口表注册、`IPort` 清理、JEI 兼容、动态光照系列）**。
 
+## 一百一十九、子模块行走 行 31–45（Confluence-Magic-Lib 后段之一）⇒ 13 `COVERED` + 2 `SKIP-PORTLIB`
+
+### 119.1 清单
+
+| 行 | 提交 | 日期 | 主题 | GAP/文件 | 裁定 |
+| --- | --- | --- | --- | --- | --- |
+| 31 | `efe1372ad` | 2026-09-08 | 修复右键功能物品失效问题 | 23 / 3 | `COVERED` |
+| 32 | `6b7b52517` | 2026-09-10 | 修汇流熔炉不能放燃料的问题 | 0 / 0 | `COVERED` |
+| 33 | `fb10030ce` | 2026-09-10 | 修复 mixin，修复跳跃属性 | 11 / 2 | `COVERED` |
+| 34 | `445f76396` | 2026-09-11 | 一些修复 | 0 / 0 | `COVERED` |
+| 35 | `3ae3a9fc3` | 2026-09-11 | **portlib 升级为 1.2.2** | 0 / 0 | **`SKIP-PORTLIB`** |
+| 36 | `5e6625bab` | 2026-09-12 | JEI 兼容恢复 | 23 / 6 | `COVERED` |
+| 37 | `6e9d87bae` | 2026-09-13 | 版本更新 | 0 / 0 | `COVERED` |
+| 38 | `f8363c053` | 2026-09-14 | 修 | 2 / 1 | `COVERED` |
+| 39 | `e0b02d2f0` | 2026-09-15 | 修事件 | 0 / 0 | `COVERED` |
+| 40 | `87aa1992a` | 2026-09-15 | 更新粒子 | 0 / 0 | `COVERED` |
+| 41 | `0cf2c0fa3` | 2026-09-16 | extension | 0 / 0 | `COVERED` |
+| 42 | `5187258a6` | 2026-09-16 | curios 属性显示兼容 | 0 / 0（3 符号） | `COVERED` |
+| 43 | `454b5938f` | 2026-09-17 | 修改纹理/模型问题，挪贴图位置 | 0 / 0（资源 only） | `COVERED` |
+| 44 | `067209093` | 2026-09-17 | **修复 portlib 的注册表** | 3 / 1（gradle only） | **`SKIP-PORTLIB`** |
+| 45 | `b61a6ee57` | 2026-09-18 | 使用 neoforge 风味的网络包注册与发送 | 10 / 2 | `COVERED` |
+
+### 119.2 关键落点
+
+| 1.20 行 | 1.21 |
+| --- | --- |
+| 行 31：`LibModEvents.spawnClusterSize(LivingPackSizeEvent event)` | **`LivingPackSizeEvent` 在 1.21 的 lib 与主仓都是 0 命中**（Forge 独有、NeoForge 已删）⇒ 1.21 改由实体自身承载，如 `MeleeSkeleton.getMaxSpawnClusterSize()` 覆写返回 8（§109 已见） |
+| 行 31：`EntityAttributeModificationEvent` | 1.21 lib 有（`LibGameEvents`／`LibModEvents` 各 1 处） |
+| 行 31：`LibAttributes.registerAttribute(Holder<Attribute>, BiConsumer<EntityType<? extends LivingEntity>, Attribute>)` | 1.21 `LibAttributes.java:52` 同方法，**形参升级为 `Holder<Attribute>`**（1.21 属性本身即 Holder；`hasCustomAttribute` 逻辑保留） |
+| 行 33：`mods.toml` 的 `modId = "portlib"` 依赖块 + `mixinextras-forge:0.5.3` + `jarJar(...)` + `portlib_version` | 1.21 无 PortLib 依赖、MixInExtras 走 neoforge 变体 ⇒ 平台 |
+| 行 36：`AbstractAmountRecipe` 的 `protected final ItemStack result`／`getResult()`／`ItemStack.STRICT_CODEC.fieldOf("result")`／`INGREDIENTS_CODEC` | 1.21 lib 的 `AbstractAmountRecipe` 有 `INGREDIENTS_CODEC`（5 处）与 `LibStreamCodecUtils`（8 处），配方编解码体系在；JEI 侧 1.21 有 `LibJeiPlugin` |
+| 行 38：`ILibExtraSyncedData.defaultSetData(...)` | 1.21 同名接口在（`ILibExtraSyncedData.java`），默认方法排布不同 |
+| 行 44：`build.gradle` 的 `boolean subproject = true` 分支 | 构建脚本自身 ⇒ 平台（该提交实质内容即 PortLib 注册表修复） |
+| 行 45：`handler.registerInGameC2S(GravitationPacketC2S.class, ….ID, ….STREAM_CODEC)` | 1.21 用 `registerPayloadHandlers`（2 文件）+ `IPacketC2S`／`IPacketS2C` 的 `TYPE`；`registerInGameC2S` 0 命中 ⇒ 同一批包、换管道 |
+
+### 119.3 状态
+
+- 台账（双写）：行 31–45 落状态（`COVERED` 13、`SKIP-PORTLIB` 2）；剩余 TODO **102**（lib 余 22 行、TerraCurio 55、TerraFurniture 26，含已判的 60）。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 46–67（lib 收尾：`IdentityHashMap` 替换、动态群系、蜘蛛洞、肉山/悠悠球重构、动态光照系列）**。
+

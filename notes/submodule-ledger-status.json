@@ -272,6 +272,141 @@
    "status": "COVERED"
   },
   {
+   "row": 31,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "efe1372ad",
+   "date": "2026-09-08",
+   "subject": "修复右键功能物品失效问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 32,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "6b7b52517",
+   "date": "2026-09-10",
+   "subject": "修汇流熔炉不能放燃料的问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 33,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "fb10030ce",
+   "date": "2026-09-10",
+   "subject": "修复mixin，修复跳跃属性",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 34,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "445f76396",
+   "date": "2026-09-11",
+   "subject": "一些修复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 35,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "3ae3a9fc3",
+   "date": "2026-09-11",
+   "subject": "portlib升级为1.2.2",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 36,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "5e6625bab",
+   "date": "2026-09-12",
+   "subject": "JEI兼容恢复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 37,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "6e9d87bae",
+   "date": "2026-09-13",
+   "subject": "版本更新",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 38,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "f8363c053",
+   "date": "2026-09-14",
+   "subject": "修",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 39,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "e0b02d2f0",
+   "date": "2026-09-15",
+   "subject": "修事件",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 40,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "87aa1992a",
+   "date": "2026-09-15",
+   "subject": "更新粒子",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 41,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "0cf2c0fa3",
+   "date": "2026-09-16",
+   "subject": "extension",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 42,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "5187258a6",
+   "date": "2026-09-16",
+   "subject": "curios属性显示兼容",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 43,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "454b5938f",
+   "date": "2026-09-17",
+   "subject": "修改一些纹理和模型上的问题，挪贴图位置",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 44,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "067209093",
+   "date": "2026-09-17",
+   "subject": "修复portlib的注册表",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 45,
+   "sub": "Confluence-Magic-Lib",
+   "commit": "b61a6ee57",
+   "date": "2026-09-18",
+   "subject": "使用neoforge风味的网络包注册与发送",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
    "row": 60,
    "sub": "Confluence-Magic-Lib",
    "commit": "e9b848c93",

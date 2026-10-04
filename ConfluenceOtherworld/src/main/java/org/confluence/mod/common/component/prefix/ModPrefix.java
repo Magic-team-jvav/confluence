@@ -41,6 +41,10 @@ public interface ModPrefix {
 
     ResourceLocation getModifierId();
 
+    int tier();
+
+    float value();
+
     record Accessory(
             String name,
             float armor,

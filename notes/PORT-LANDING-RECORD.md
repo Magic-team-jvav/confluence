@@ -3707,3 +3707,41 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - 本批**无代码落地**（两行均为"1.21 已有等价实现/平台差异"）。
 - `fix_eol --check` 候选 6（未动源码）。
 - 下一批：**行 10** `f4b42537c`（part8，筛选后 **217 条 / 35 文件**，是本区间最大的几行之一）。
+
+
+## 一百零二、`PrefixUtils` / `ModRarity` 收口：**1.21 的 300 行旧倍率表换成 1.20 HEAD 的现行实现**
+
+> 用户点名：`PrefixUtils` 与 `ModRarity` 是**非常重要的近期提交**（对应台账行 359 `2f44045a8`「大改修饰语」与行 380 `fcd2368c6`「修重铸价格」）。本节把 §75.4① 登记的那条"被 lib `ModRarity.TIER` 卡住"的债务结清。
+
+### 102.1 分叉面（实测）
+
+| 文件 | 1.20 HEAD | 1.21 HEAD | 判读 |
+| --- | --- | --- | --- |
+| `ModPrefix.java` | 615 行（接口有 `int tier();` `float value();`） | 611 行（**记录已带 `tier`/`value` 字段**，接口缺两个访问器声明） | 只差 2 行声明 |
+| `PrefixComponent.java` | 59 行 | 82 行 | 1.21 侧自带扩展（`manaCost` 等） |
+| `PrefixType.java` | 186 行 | 190 行 | 基本同步 |
+| **`PrefixUtils.java`** | **175 行** | **473 行** | **1.21 多出的 298 行就是那张旧表** |
+
+- 1.20 的「大改修饰语」把倍率**搬进了数据**：`ModPrefix` 各 record 增加 `tier`/`value`，`setAndUpdate` 收成 17 行，只做「稀有度分层位移 + 价值按 `value()` 放大」。
+- 1.21 仍是旧实现：`switch (ModPrefix.ID_MAP.inverse().getOrDefault(modPrefix, 0))` 80+ 分支硬编码 `num2…num8`，再按 `num14` 阈值调 `rarity`、`ModRarity.WHITE` 兜底（`:150-454`）。
+
+### 102.2 lib `ModRarity` 的分叉与**方向裁定**
+
+| | 1.20 lib（`595159d`） | 1.21 lib（`181c2d2`） |
+| --- | --- | --- |
+| 形态 | `record ModRarity(String name, int color)` | `class ModRarity implements DataComponentType<ModRarity>`，多 `special` 字段与 `asTextColor()`/`isSpecial()` |
+| 映射表名 | `TIER`（**13 项**：-1..11 色阶） | `ID_MAP`（**20 项**：-13..-11、-10..-7 再 + -1..11） |
+| 编码器 | PortLib `PortStreamCodec` | 原生 NeoForge `StreamCodec` |
+
+⇒ **不回退 1.21 的 lib**（`class`→`record`、`ID_MAP`→`TIER` 会抹掉 1.21 侧自有的 `special`/`asTextColor` 演进，违反方向规则）。改为**在调用侧做语义等价表达**：1.20 的 `TIER` 只含色阶 -1..11，而 1.21 的 `ID_MAP` 还含 MASTER/EXPERT/QUEST/COMMON/UNCOMMON/RARE/EPIC（-13..-7）——直接换名会让这些稀有度被误调进色阶，因此补一行 `if (tier < -1) tier = -2;` 把"非色阶"归回 1.20 的"未登记"语义。
+
+### 102.3 落地（2 文件 +16/−299）
+
+1. `common/component/prefix/ModPrefix`：在 `ResourceLocation getModifierId();` 之后补 `int tier();` 与 `float value();`（与 1.20 `:38/:40` 同位置；各 record 已有同名字段，访问器由 record 自动生成，声明即可满足接口）。
+2. `common/util/PrefixUtils.setAndUpdate`：**305 行 → 18 行**，按 1.20 HEAD 逐条搬（`createComponent` → 写 `PREFIX` → 按 `modPrefix.tier()` 位移并 clamp 到 [-1,11] → 写 `MOD_RARITY` → 按 `modPrefix.value()` 放大价值 → 写 `VALUE`），保留 1.21 原有的 `prefixType == null` 守卫。
+3. 核验：`switch (num1)`/`num14` 残留 **0**；两文件 `{}`/`()` 计数平衡；`setAndUpdate` 的 3 处外部调用点（`ModCommands:311`、`NPCReforgeMenu:108`、内部 `:61/:147`）签名未变；`ModPrefix.ID_MAP` 仍被 `NPCReforgeMenu` 使用（未变成死代码）；`fix_eol --check` 仍候选 6。
+
+### 102.4 语义提示（留待用户确认）
+
+- 按 1.20 HEAD 的口径：**稀有度不在色阶（-1..11）内的物品被重铸时，`MOD_RARITY` 组件会被清空**（1.20 里 `TIER.get(-2)` 返回 `null` ⇒ `set(type, null)` 即移除）。1.21 旧表则把 COMMON/UNCOMMON/RARE/EPIC 折成色阶再调整 —— 两者行为不同，本次以 **1.20 HEAD 为权威**。
+- 台账：行 359／380 状态不变（仍为 `PORTED`）；本节只结清它们遗留的实现债。

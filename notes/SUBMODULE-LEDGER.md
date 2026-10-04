@@ -78,21 +78,21 @@
 | 65 | Confluence-Magic-Lib | `addf529ec` | 2026-10-02 | 优化动态光照，移除可携带仆从接口行为 | 7 | +191 −268 |  | COVERED |
 | 66 | Confluence-Magic-Lib | `413d62d1f` | 2026-10-02 | 添加动态光照注册行为与ParticleAccessor | 5 | +148 −57 | PortLib×5 | COVERED |
 | 67 | Confluence-Magic-Lib | `595159d71` | 2026-10-03 | 修复组件崩溃 | 1 | +2 −0 | PortLib×1 | COVERED |
-| 68 | TerraCurio | `3a3ce762c` | 2026-07-04 | able to start game | 7 | +27 −27 | PortLib×4 | TODO |
-| 69 | TerraCurio | `a9f3c48eb` | 2026-07-04 | able to into world | 4 | +8 −31 |  | TODO |
-| 70 | TerraCurio | `fc5713120` | 2026-07-22 | 修崩溃 | 1 | +1 −1 |  | TODO |
-| 71 | TerraCurio | `063dffb70` | 2026-07-29 | truly fix | 1 | +1 −1 |  | TODO |
-| 72 | TerraCurio | `aab92e201` | 2026-07-29 | 整理 | 2 | +2 −4 | PortLib×5 | TODO |
-| 73 | TerraCurio | `d52bc12dc` | 2026-08-07 | portlib v1.0.0 | 2 | +5 −7 | PortLib×4 | TODO |
-| 74 | TerraCurio | `9c96d2d04` | 2026-08-07 | TerraCurio依赖 | 1 | +7 −0 | PortLib×1 资源only | TODO |
-| 75 | TerraCurio | `7b0cbe520` | 2026-08-08 | 同步1.21.1的修改 | 14 | +643 −868 | PortLib×2 | TODO |
-| 76 | TerraCurio | `841f9933c` | 2026-08-16 | 调整逻辑 | 3 | +6 −34 |  | TODO |
-| 77 | TerraCurio | `ddfcd27e0` | 2026-08-22 | 将饰品的药水效果转移至lib | 50 | +167 −716 | PortLib×30 | TODO |
-| 78 | TerraCurio | `b38d16d66` | 2026-08-22 | 可开关的药水效果移到lib | 12 | +39 −99 |  | TODO |
-| 79 | TerraCurio | `82e2636f0` | 2026-08-22 | 同步粒子 | 3 | +17 −7 |  | TODO |
-| 80 | TerraCurio | `b1af28359` | 2026-08-23 | 升级粒子 | 7 | +35 −31 | PortLib×1 | TODO |
-| 81 | TerraCurio | `99dc4ccf1` | 2026-08-23 | 调整版本 | 2 | +5 −4 | PortLib×8 | TODO |
-| 82 | TerraCurio | `45beb4784` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | 11 | +786 −497 | PortLib×14 | TODO |
+| 68 | TerraCurio | `3a3ce762c` | 2026-07-04 | able to start game | 7 | +27 −27 | PortLib×4 | COVERED |
+| 69 | TerraCurio | `a9f3c48eb` | 2026-07-04 | able to into world | 4 | +8 −31 |  | COVERED |
+| 70 | TerraCurio | `fc5713120` | 2026-07-22 | 修崩溃 | 1 | +1 −1 |  | COVERED |
+| 71 | TerraCurio | `063dffb70` | 2026-07-29 | truly fix | 1 | +1 −1 |  | COVERED |
+| 72 | TerraCurio | `aab92e201` | 2026-07-29 | 整理 | 2 | +2 −4 | PortLib×5 | COVERED |
+| 73 | TerraCurio | `d52bc12dc` | 2026-08-07 | portlib v1.0.0 | 2 | +5 −7 | PortLib×4 | SKIP-PORTLIB |
+| 74 | TerraCurio | `9c96d2d04` | 2026-08-07 | TerraCurio依赖 | 1 | +7 −0 | PortLib×1 资源only | SKIP-PORTLIB |
+| 75 | TerraCurio | `7b0cbe520` | 2026-08-08 | 同步1.21.1的修改 | 14 | +643 −868 | PortLib×2 | REVERSE-ALIGNED |
+| 76 | TerraCurio | `841f9933c` | 2026-08-16 | 调整逻辑 | 3 | +6 −34 |  | COVERED |
+| 77 | TerraCurio | `ddfcd27e0` | 2026-08-22 | 将饰品的药水效果转移至lib | 50 | +167 −716 | PortLib×30 | COVERED |
+| 78 | TerraCurio | `b38d16d66` | 2026-08-22 | 可开关的药水效果移到lib | 12 | +39 −99 |  | COVERED |
+| 79 | TerraCurio | `82e2636f0` | 2026-08-22 | 同步粒子 | 3 | +17 −7 |  | COVERED |
+| 80 | TerraCurio | `b1af28359` | 2026-08-23 | 升级粒子 | 7 | +35 −31 | PortLib×1 | COVERED |
+| 81 | TerraCurio | `99dc4ccf1` | 2026-08-23 | 调整版本 | 2 | +5 −4 | PortLib×8 | COVERED |
+| 82 | TerraCurio | `45beb4784` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | 11 | +786 −497 | PortLib×14 | COVERED |
 | 83 | TerraCurio | `a3f1cbca7` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 285 | +2500 −324 | PortLib×14 | TODO |
 | 84 | TerraCurio | `06d637298` | 2026-08-24 | 玩家动画测试 | 27 | +259 −30 |  | TODO |
 | 85 | TerraCurio | `6ee91b55b` | 2026-08-28 | 玩家动画（未注册永夜动画） | 1 | +1 −1 | PortLib×1 | TODO |

@@ -4601,3 +4601,68 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 68–82（TerraCurio 开局）**。
 
+## 一百二十一、子模块行走 行 68–82（TerraCurio 开局）⇒ 12 `COVERED` + 2 `SKIP-PORTLIB` + 1 `REVERSE-ALIGNED`
+
+### 121.1 清单
+
+| 行 | 提交 | 日期 | 主题 | GAP/文件 | 符号/缺失 | 裁定 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 68 | `3a3ce762c` | 2026-07-04 | able to start game | 0 / 0 | 1 / 0 | `COVERED` |
+| 69 | `a9f3c48eb` | 2026-07-04 | able to into world | 5 / 1 | 1 / 0 | `COVERED` |
+| 70 | `fc5713120` | 2026-07-22 | 修崩溃 | 0 / 0 | 0 / 0 | `COVERED` |
+| 71 | `063dffb70` | 2026-07-29 | truly fix | 0 / 0 | 0 / 0 | `COVERED` |
+| 72 | `aab92e201` | 2026-07-29 | 整理 | 0 / 0 | 0 / 0 | `COVERED` |
+| 73 | `d52bc12dc` | 2026-08-07 | **portlib v1.0.0** | 1 / 1 | 0 / 0 | **`SKIP-PORTLIB`** |
+| 74 | `9c96d2d04` | 2026-08-07 | **TerraCurio 依赖**（mods.toml 的 portlib 块） | 5 / 1 | 0 / 0 | **`SKIP-PORTLIB`** |
+| 75 | `7b0cbe520` | 2026-08-08 | 同步 1.21.1 的修改 | 518 / 5 | 65 / 0 | `REVERSE-ALIGNED` |
+| 76 | `841f9933c` | 2026-08-16 | 调整逻辑 | 0 / 0 | 1 / 0 | `COVERED` |
+| 77 | `ddfcd27e0` | 2026-08-22 | 将饰品的药水效果转移至 lib | 34 / 11 | 9 / 0 | `COVERED` |
+| 78 | `b38d16d66` | 2026-08-22 | 可开关的药水效果移到 lib | 18 / 3 | 0 / 0 | `COVERED` |
+| 79 | `82e2636f0` | 2026-08-22 | 同步粒子 | 6 / 2 | 0 / 0 | `COVERED` |
+| 80 | `b1af28359` | 2026-08-23 | 升级粒子 | 7 / 1 | 0 / 0 | `COVERED` |
+| 81 | `99dc4ccf1` | 2026-08-23 | 调整版本 | 0 / 0 | 0 / 0 | `COVERED` |
+| 82 | `45beb4784` | 2026-08-23 | 饰品能力全改为 datamap，修复潜行属性 | 308 / 8 | 159 / 0 | `COVERED`（**架构不同，见 121.3**） |
+
+### 121.2 行 75：518 行 gap 的成因（`REVERSE-ALIGNED`）
+
+标题即「同步 1.21.1 的修改」，方向 1.21 → 1.20。gap 集中在 5 个 datagen 文件，两侧同族文件的**规模相当**，差异是 1.20 侧为 PortLib/Forge 形态：
+
+| 文件 | 1.20 TerraCurio | 1.21 TerraCurio |
+| --- | --- | --- |
+| `TCRecipeProvider.java` | 422 行（`FinishedRecipe` 11 处、`RecipeOutput` 0） | 381 行（`RecipeOutput` **9**、`FinishedRecipe` **0**） |
+| `TCLootTableProvider.java` | 1010 行（`tables.accept(` 62） | **1013 行（62）** |
+| `TCLanguageProvider.java` | 1068 行（`add(` 124） | **1068 行（153）** |
+| `TCDataGenerator.java` / `TCGameEvents.java` | 小改 | 同在 |
+
+⇒ 内容已同步，gap 属平台形态与行级重排。
+
+### 121.3 行 82：308 行 gap 的实质 = **饰品数据的承载方式不同，不是功能缺口**
+
+初看很可疑：`TCDataMapProvider.java` 1.20 侧 **778 行 / `add(TCItems.` 197 处**，1.21 侧仅 **130 行 / 6 处**。深查后确认（这是本行判定的关键证据）：
+
+| 证据 | 结果 |
+| --- | --- |
+| 1.21 `TCDataMapProvider.java`（`common/data/gen/TCDataMapProvider.java`） | **确实在用数据图**：`add(TCItems.ICE_SKATES, helper -> helper.unit(TCItems.ICE$SPEED))`、`helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(...))`、`helper.of(TCItems.MAY$FLY, MayFlyAbilityValue.of(...))`、`helper.of(TCItems.FLUID$WALK, Set.of(TCTags.…))` |
+| 1.21 的饰品数据主要落在**物品 builder 链** | `SunStone.java`（1.21 44 行 vs 1.20 35 行）：`super(builder("sun_stone").rarity(ModRarity.LIME).attribute(Attributes.ATTACK_SPEED, 0.1, ADD_MULTIPLIED_TOTAL)…)`；`DuneriderBoots` 35↔23、`CellPhone` 36↔30 —— **1.21 的类更大**，正说明数据写在类里 |
+| 数据图机制在使用 | 1.21 TerraCurio：`EFFECT$IMMUNITIES` 21 处、`TCDataMaps` 8 处、`DataMapType` 5 处（`TerraCurio`／`TCDataMaps`／`BaseCurioItem`…） |
+| 行 69 的 gap 佐证 | 1.20 新加的 `TCDataMapProvider.add(ItemLike, Consumer<Helper>)`／`wrap(Item, Consumer<Helper>)` 助手，在 1.21 有同构的 `add(TCItems.X, helper -> …)` 写法 |
+
+⇒ 1.20 侧（2026-08-23）把约 200 件饰品的数据**搬进 datamap provider**，1.21 侧仍是"物品 builder 链 + 少量数据图"的写法；**能力等价、架构不同** ⇒ `COVERED`。
+**登记（可选对齐）**：若要与 1.20 的"全量数据图化"看齐，需要把 1.21 TerraCurio 的饰品数据从 item builder 迁到 `TCDataMapProvider`（约 200 条）——属**架构迁移**，非缺失，未擅动。
+
+### 121.4 其余各行
+
+| 行 | gap 内容 | 1.21 |
+| --- | --- | --- |
+| 69 | 数据图 provider 的 `add(ItemLike,…)`／`wrap(Item,…)` 5 行 | 1.21 有同构写法（见 121.3） |
+| 73／74 | `archivesName = "TerraCurio-forge"`；`mods.toml` 的 `modId = "portlib"` 依赖块 | 平台（PortLib 不移植） |
+| 77 | `TCGameEvents` 的 `LivingFallEvent`／`LivingDeathEvent`／`EntityJoinLevelEvent`／`PlayerEvent.*`；`StepStoolHandler` 的台阶逻辑；`ITCLivingEntity.of`／`ITCClientLivingEntity.of`；`LivingEntityRendererMixin`／`ClientLivingEntityMixin` 的 cosmetic 显隐 | 同名事件/接口在 1.21（0 缺失符号） ⇒ 平台与行级重排 |
+| 78 | `RamRune.cancel(victim)`／`TCUtils.applyFireAttack`／`applyHoneyComb` | 1.21 有（0 缺失符号） |
+| 79／80 | 粒子相关小 gap | 平台（无缺符号） |
+
+### 121.5 状态
+
+- 台账（双写）：行 68–82 落状态；剩余 TODO **66**（TerraCurio 余 40 行 83–122、TerraFurniture 26）。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 83–100（TerraCurio 中段：翅膀迁移、玩家动画、Extension 清理、mixin 修复）**。
+

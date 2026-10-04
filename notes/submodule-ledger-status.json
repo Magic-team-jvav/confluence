@@ -603,6 +603,141 @@
    "subject": "修复组件崩溃",
    "old": "TODO",
    "status": "COVERED"
+  },
+  {
+   "row": 68,
+   "sub": "TerraCurio",
+   "commit": "3a3ce762c",
+   "date": "2026-07-04",
+   "subject": "able to start game",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 69,
+   "sub": "TerraCurio",
+   "commit": "a9f3c48eb",
+   "date": "2026-07-04",
+   "subject": "able to into world",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 70,
+   "sub": "TerraCurio",
+   "commit": "fc5713120",
+   "date": "2026-07-22",
+   "subject": "修崩溃",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 71,
+   "sub": "TerraCurio",
+   "commit": "063dffb70",
+   "date": "2026-07-29",
+   "subject": "truly fix",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 72,
+   "sub": "TerraCurio",
+   "commit": "aab92e201",
+   "date": "2026-07-29",
+   "subject": "整理",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 73,
+   "sub": "TerraCurio",
+   "commit": "d52bc12dc",
+   "date": "2026-08-07",
+   "subject": "portlib v1.0.0",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 74,
+   "sub": "TerraCurio",
+   "commit": "9c96d2d04",
+   "date": "2026-08-07",
+   "subject": "TerraCurio依赖",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
+  },
+  {
+   "row": 75,
+   "sub": "TerraCurio",
+   "commit": "7b0cbe520",
+   "date": "2026-08-08",
+   "subject": "同步1.21.1的修改",
+   "old": "TODO",
+   "status": "REVERSE-ALIGNED"
+  },
+  {
+   "row": 76,
+   "sub": "TerraCurio",
+   "commit": "841f9933c",
+   "date": "2026-08-16",
+   "subject": "调整逻辑",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 77,
+   "sub": "TerraCurio",
+   "commit": "ddfcd27e0",
+   "date": "2026-08-22",
+   "subject": "将饰品的药水效果转移至lib",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 78,
+   "sub": "TerraCurio",
+   "commit": "b38d16d66",
+   "date": "2026-08-22",
+   "subject": "可开关的药水效果移到lib",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 79,
+   "sub": "TerraCurio",
+   "commit": "82e2636f0",
+   "date": "2026-08-22",
+   "subject": "同步粒子",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 80,
+   "sub": "TerraCurio",
+   "commit": "b1af28359",
+   "date": "2026-08-23",
+   "subject": "升级粒子",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 81,
+   "sub": "TerraCurio",
+   "commit": "99dc4ccf1",
+   "date": "2026-08-23",
+   "subject": "调整版本",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 82,
+   "sub": "TerraCurio",
+   "commit": "45beb4784",
+   "date": "2026-08-23",
+   "subject": "饰品能力全改为datamap，修复潜行属性",
+   "old": "TODO",
+   "status": "COVERED"
   }
  ]
 }

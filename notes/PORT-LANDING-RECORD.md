@@ -4346,3 +4346,54 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 
 其余（映射取 tier、`tier > -2` 分支、`tier += prefix.tier()` 与 `-1..11` 夹取、`TIER.get(tier)` 落组件、`ValueComponent` 计算）**逐字一致**。
 
+## 一百一十六、子模块对齐工作面启动（用户裁定：不止主模块需要重构）
+
+> 用户指示：「并非只有 confluence 模块才需要重构，其它子模块一并需要」。故把主台账（§1–§115 的 `PORT-LEDGER.md` 逐行行走）的同一套口径推广到三个子模块。移植源 = **1.20 侧子模块 HEAD**；1.21 侧子模块保持原生 NeoForge（PortLib 一律不移植）。
+
+### 116.1 侦察：三个子模块都是「活」的，PortLib 残留只是注释
+
+| 子模块 | 1.21 HEAD | 1.20 HEAD | 1.21 java 数 | 1.20 分叉后提交 |
+| --- | --- | --- | --- | --- |
+| Confluence-Magic-Lib | `babbb51`（2026-10-04 本次改名） | `595159d`（2026-10-03） | 263 | **67** |
+| TerraCurio | `195ef2b`（2026-10-04） | `f00e8f5`（2026-10-03） | 222 | **55** |
+| TerraFurniture | `3852337`（2026-10-04） | `b5f856c`（2026-10-03） | 123 | **26** |
+
+- **PortLib 残留核查**：1.21 侧 `org.mesdag.portlib` 仅 lib 的 `GravitationEffect.java` 注释提及；`build.gradle` 与 `PlayerGeoAnimatable` 命中的 `org.mesdag:ParticleStorm` 是**第三方依赖 ParticleStorm**（同作者、非 PortLib）。TerraCurio／TerraFurniture 两侧 `portlib`／`net.minecraftforge`／`IForge*`／`FMLJavaModLoadingContext` **全为 0**。
+- 那 5 处 PortLib 说明文字经 `git blame` 确认是**用户自己写的**（`659c8c82` 2026-09-28、`480f342f` 2026-09-27，作者 westernat）⇒ 本轮**不动**（不是我该清理的移植注记）。
+
+### 116.2 文件清单差的初判
+
+| 子模块 | 仅 1.20 有 | 仅 1.21 有 | 分类 |
+| --- | --- | --- | --- |
+| lib | 13 | 9 | 7 个是 PortLib 时代产物（`SimpleFinishedRecipe`／`UnitFinishedRecipe`／`FriendlyByteBufMixin`／`Sup*Block`，均带 `org.mesdag.portlib.diff.Diff`）⇒ **继续不移植**；另 6 个属**动态光照**（`DynamicLightProvider`／`DynamicLightRegister`／`ParticleEngineMixin`／`LevelRendererAccessor`／`MouseHandlerMixin`／`ItemEntityMixin`）需逐条对账（1.21 侧 `TerraCurio` 有自研 `DynamicLightHandlersMixin`） | 9 个是 1.21 原生基建（`IPacket`／`IPacketC2S`／`IPacketS2C` 取代 PortLib 的 `IPortPacket`、`ConfluenceResources`、`LibJeiPlugin`…） |
+| TerraCurio | 4 | 17 | 仅 1.20：`ClientEventHandlerMixin`（PortLib `IPortAttribute`）⇒ 不移植；`BowItemMixin`／`InventoryChangeTriggerMixin`／`ObsidianSkullRenderer` 需对账 | 1.21 原生新增（气球物理、`TCTriggers`、`BetterCombatHelper`、多个 mixin 等） |
+| TerraFurniture | 3 | 7 | 仅 1.20：`CherryChestBlock`／`CherryChestGeoModel`／`ModelLightBlock` ⇒ **疑似功能缺口** | 1.21 原生新增（三个 JEI 分类、`TentBlock`、`TFStateProperties` 等） |
+
+### 116.3 新建的跟踪与工具
+
+| 产物 | 说明 |
+| --- | --- |
+| `notes/SUBMODULE-LEDGER.md` | **148 行**清单台账（lib 1–67、TerraCurio 68–122、TerraFurniture 123–148），列为 行／子模块／提交／日期／主题／文件数／+/−／标记／状态；标记含 `PortLib×N`（该提交 diff 提及次数）、`资源only`、`纯删除`、`merge` |
+| `notes/submodule-ledger-status.json` | 状态双写目标（与主台账同构） |
+| `build/_cmp231/sub_rows.py` | 行走驱动：复用 `rowaudit`（仅把 `R20`/`R21` 指向子模块根）→ `screen_full`（该脚本与路径无关）→ 子模块语料级符号核查；产出 `sub_r<hash>.txt`／`sub_s<hash>.txt`／`sub_sym_<hash>.txt`／`sub_batch_summary.txt` |
+| `build/_cmp231/sub_status.py` | 状态回填（双写台账末列 + JSON），用法 `sub_status.py 60=COVERED …` |
+
+### 116.4 第一行（行 60 = lib `e9b848c93`「大改修饰语」）的裁定：`COVERED`
+
+该提交即 §115 那个 `ID_MAP`→`TIER` + 删 7 个负键的提交（11 增 53 删，单文件）。行走器实测 real GAP = **9 行 / 1 文件**，逐条落在：
+
+| gap 行 | 判定 |
+| --- | --- |
+| `import io.netty.buffer.ByteBuf;` | 平台差异（1.21 用 `RegistryFriendlyByteBuf`） |
+| `public record ModRarity(String name, int color) {` | **1.21 原生设计**：保持 `class ModRarity implements DataComponentType<ModRarity>`（§105.7 既定：不回退成 record） |
+| `EXPERT = new ModRarity("expert", -1)`／`MASTER = new ModRarity("master", -2)` | 同上：1.21 用三参构造 + `special` 标志（`color()` 交给 `ExpertColorAnimation`／`MasterColorAnimation`），1.20 是拿 -1/-2 当颜色 |
+| `withColor` 的 2 条签名 + 3 条正文（共 5 行） | **形参改名假阳性**：1.20 写 `stack`，1.21 写 `itemStack`；`ModRarity.withColor(ItemStack, Style)`／`(ItemStack, MutableComponent)` 在 1.21 `:147`／`:160` **都在**（调用面 1.21 侧 8 处 vs 1.20 侧同形） |
+
+> **方法学补记（新增假阳性类）**：`rowaudit` 的 token 比对只归一 `this.`／`.get()`／`getRandom1211()`，**不归一形参改名**，故 `stack`→`itemStack`、`prefix`→`modPrefix` 这类会成批报 GAP。子模块行走中此类一律判「等价（形参改名）」，必要时在记录里列出而不是逐行动手。
+
+### 116.5 状态
+
+- 台账（双写）：`SUBMODULE-LEDGER.md` 148 行，行 60 = `COVERED`，剩余 TODO **147**。
+- `fix_eol --check` 候选 6；本批**无代码落地**（仅新增跟踪台账与工具）。
+- 下一批：**行 1–10（lib 开局 `able to start game`／`able to into world`／对齐提交）+ 行 123–126（TerraFurniture 开局）**，并把 §116.2 的「仅 1.20 有」文件按批对账。
+

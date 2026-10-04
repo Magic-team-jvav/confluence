@@ -3666,3 +3666,44 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - **根因是我在 §93 批次里的失误**：当时把新条目插到 `List.of(...)` 的**末尾**，却让插入的最后一行沿用了 1.20 行的尾逗号 ⇒ `f(a, b,)` 在 Java 里**非法**（Java 只允许数组初始化式与枚举常量表有尾逗号，实参表不允许）。当时只检查了"锚行是否曾是末条"，没检查"我插入的最后一行是否成了新的末条"。
 - 复查：对本次会话改过的 8 个文件做了两种形态的扫描（跨行 `,\n)` 与同行 `, )`）⇒ **0 处**残留；`ModStructures` 的 29 键重建未引入此类问题。
 - 结论：与 §100.4 同一类问题——**"不编译"会让语法级缺陷潜伏**；凡"向参数表尾部插条目"必须同时检查插入行的尾逗号。
+
+
+## 一百零一、台账续走（新目标首批）：行 11、12 **逐条核完 ⇒ `COVERED`**
+
+> 背景：231–400 已归零后，台账仍剩 **65 个 TODO**，全部集中在最早那批（行 10–110 与 159–169）。本批处理其中最小的两行。
+> 取证口径：`rowaudit.py <1.20 提交>` 出全量 GAP → 平台噪音筛选（`screen_full.py`，**不做 8 条截断**）→ 逐条到 1.21 侧查等价物。
+
+### 101.1 行 11 `e7b826680`（part9，2026-06-10）：GAP 15 → 筛选后 13（7 文件）
+
+| 条目 | 1.21 侧实测 | 裁定 |
+| --- | --- | --- |
+| `.gitmodules` ×5 `branch = forge-dev/1.20.1` | 1.21 的 `.gitmodules` 三个子模块全部是 `branch = neoforge-dev/1.21.1` | 平台差异 |
+| `BaobabTreeFeature` ×2 `LibFeatureUtils.leaves(boxDown/boxUp, …)` | 1.21 该文件已重写：`leavesPlace(...)`（`:296`）+ `LibFeatureUtils.updateLeavesOptimized(...)`（`:184`） | 等价实现（结构不同） |
+| `OasisStructure` 静态导入 `LibStructureUtils.getHeight/lineSet` | 1.21 `:27` 有 `LibStructureUtils`，`:46` 用 `getHeight(`、`:68` 用 `lineSet(` | 等价（限定名调用） |
+| `PlayerMixin` `LibEntityUtils.isAnimal(living)` | 1.21 `:125` 同一调用存在 | 等价 |
+| `DungeonStructure` `import org.confluence.lib.util.*` | 1.21 `:58` 用 `LibStructureUtils`／`LibFeatureUtils`／`LibBlockUtils` | 等价（显式导入） |
+| `SpearProjectile` `import LibMathUtils`、`EnchantmentUtils` `import EnchantmentHelper` | 均为纯导入行；1.21 对应文件按新 API 导入 | 噪音 |
+
+⇒ **行 11 = `COVERED`**。
+
+### 101.2 行 12 `4b004c160`（fix2，2026-06-10）：GAP 82 → 筛选后 24（12 文件）
+
+| 条目 | 1.21 侧实测（全仓 `git grep`） | 裁定 |
+| --- | --- | --- |
+| `SyncEnemyBannerEntriesPacketS2C`／`VisibilityPacketS2C` 的 `ID` + `identifier()` | 两个类都在（8／27 处引用）；`identifier()` 仅 4 处，是 PortLib 包惯用法 | 等价（1.21 走 `CustomPacketPayload` 原生注册） |
+| `IPortNBTSerializable<CompoundTag>`（`ExtraInventory`／`ChunkBrushData`／`ChunkDropletsData`／`EverBeneficial`／`ManaStorage`） | 该接口 **0 命中**；这些类都在且已实现 `INBTSerializable<CompoundTag>`（如 `ChunkBrushData:20`） | 平台差异（PortLib→NeoForge） |
+| `AdditionalManaEvent extends PlayerEvent` + `@Cancelable` | 1.21 同类存在且已改为 `implements ICancellableEvent`（`AdditionalManaEvent:8`） | 等价（事件 API 换代） |
+| `ModUtils.isWaterBottle`／`supportsEnchantment` | 都在（12／29 处）；1.21 签名改为 `supportsEnchantment(ItemStack, Holder<Enchantment>)` | 等价 |
+| `ITrackType.TYPED_CODEC` | 1.21 `ITrackType:25` **逐字同构**（`ModCustomRegistries.TRACK_TYPE_PROVIDERS.byNameCodec().dispatch(...)`） | 等价（审计只因末尾 lambda 写法不同而报） |
+| `BaseTerraBowItem.canApplyAtEnchantingTable` | **0 命中**（1.21 已移除该方法，附魔改数据驱动） | 平台差异 |
+| `BaseTerraRepeaterItem.shoot(ServerLevel, …)` | 1.21 `:301` 同签名存在 | 等价 |
+| `getSupportedHeldProjectiles`／`ExtraInventory` | 都在（2／153 处） | 等价 |
+
+⇒ **行 12 = `COVERED`**。
+
+### 101.3 状态
+
+- 台账（双写）：`11=COVERED`、`12=COVERED`；**剩余 TODO 63 个**（区间：10、14-15、21-24、29-33、35-38、40-43、45-49、51-55、57-66、70、74、76、84、93、97-100、102-103、105-106、108-110、159-162、166、168-169）。
+- 本批**无代码落地**（两行均为"1.21 已有等价实现/平台差异"）。
+- `fix_eol --check` 候选 6（未动源码）。
+- 下一批：**行 10** `f4b42537c`（part8，筛选后 **217 条 / 35 文件**，是本区间最大的几行之一）。

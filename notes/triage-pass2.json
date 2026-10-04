@@ -1,0 +1,3045 @@
+{
+  "counts": {
+    "TODO": 91,
+    "REVIEW": 38,
+    "COVERED": 56
+  },
+  "proposals": [
+    {
+      "hash": "f4b42537ca0ee008794a0c04a1c67cdb07d3533b",
+      "date": "2026-06-10",
+      "subject": "part8",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "PARTIAL": 1081,
+        "IN-SYNC": 563,
+        "LAGGING": 2611,
+        "TINY": 14
+      },
+      "badWeight": 2611,
+      "totalWeight": 4269,
+      "deadPaths": 4
+    },
+    {
+      "hash": "e7b82668035d562746e0a8e7575bff41ed6a74cf",
+      "date": "2026-06-10",
+      "subject": "part9",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 685,
+        "IN-SYNC": 457,
+        "LAGGING": 154,
+        "MISSING": 299
+      },
+      "badWeight": 453,
+      "totalWeight": 1595,
+      "deadPaths": 13
+    },
+    {
+      "hash": "4b004c160640c18d49033ff8c1cdca72655ae7a3",
+      "date": "2026-06-10",
+      "subject": "fix2",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 53,
+        "IN-SYNC": 218,
+        "TINY": 21,
+        "LAGGING": 26,
+        "MISSING": 14
+      },
+      "badWeight": 40,
+      "totalWeight": 332,
+      "deadPaths": 19
+    },
+    {
+      "hash": "39500342350ec7325971a997a99ecdf788773c8e",
+      "date": "2026-06-10",
+      "subject": "fix3",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 186,
+        "PARTIAL": 134,
+        "LAGGING": 27
+      },
+      "badWeight": 27,
+      "totalWeight": 347,
+      "deadPaths": 0
+    },
+    {
+      "hash": "00b72167de9faf8b3ca6a0d27303e8508df32207",
+      "date": "2026-06-10",
+      "subject": "枪械合并",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 794,
+        "IN-SYNC": 2141,
+        "LAGGING": 203,
+        "TINY": 4
+      },
+      "badWeight": 203,
+      "totalWeight": 3142,
+      "deadPaths": 22
+    },
+    {
+      "hash": "182149f523c679016e868765bbc358b6c4fff98c",
+      "date": "2026-06-13",
+      "subject": "part10",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 537,
+        "IN-SYNC": 319,
+        "LAGGING": 137,
+        "TINY": 4,
+        "MISSING": 30
+      },
+      "badWeight": 167,
+      "totalWeight": 1027,
+      "deadPaths": 25
+    },
+    {
+      "hash": "b3f13d405f0fdf1dd3b67bae16a53c969835a280",
+      "date": "2026-06-13",
+      "subject": "part11",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 200,
+        "IN-SYNC": 427
+      },
+      "badWeight": 0,
+      "totalWeight": 627,
+      "deadPaths": 16
+    },
+    {
+      "hash": "7d1fff5b6f24d72d6cf6e1a2da9cddbe4c4cc645",
+      "date": "2026-06-13",
+      "subject": "part12",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 572,
+        "PARTIAL": 230,
+        "LAGGING": 48
+      },
+      "badWeight": 48,
+      "totalWeight": 850,
+      "deadPaths": 16
+    },
+    {
+      "hash": "b0716f0c91ee2d99fca19a8bf5e61948c2ba0ff5",
+      "date": "2026-06-14",
+      "subject": "part13",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 201,
+        "PARTIAL": 21,
+        "LAGGING": 61,
+        "TINY": 10
+      },
+      "badWeight": 61,
+      "totalWeight": 293,
+      "deadPaths": 10
+    },
+    {
+      "hash": "15afa497b1661abfee285738bf95982f66203213",
+      "date": "2026-06-14",
+      "subject": "fix magic mirror",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 2,
+        "PARTIAL": 3,
+        "LAGGING": 21
+      },
+      "badWeight": 21,
+      "totalWeight": 26,
+      "deadPaths": 3
+    },
+    {
+      "hash": "a779580be43ac67a393c66d4e9650680f5f643cf",
+      "date": "2026-06-14",
+      "subject": "part16",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 350,
+        "IN-SYNC": 167,
+        "LAGGING": 135
+      },
+      "badWeight": 135,
+      "totalWeight": 652,
+      "deadPaths": 14
+    },
+    {
+      "hash": "a8fc8c2c65341c7a4964499844bea4283afda221",
+      "date": "2026-06-15",
+      "subject": "语法降级",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 24,
+        "LAGGING": 30,
+        "IN-SYNC": 39
+      },
+      "badWeight": 30,
+      "totalWeight": 93,
+      "deadPaths": 15
+    },
+    {
+      "hash": "f30688d174aa798f3290a4a28a78d8eb8bbbc55d",
+      "date": "2026-06-15",
+      "subject": "update: 将多个方块迁移至 PortLib API 并调整方法签名",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 721,
+        "IN-SYNC": 315,
+        "LAGGING": 50,
+        "MISSING": 59
+      },
+      "badWeight": 109,
+      "totalWeight": 1145,
+      "deadPaths": 8
+    },
+    {
+      "hash": "7646c55055b6a87a8f2b68de6f4a31a3f0fd4b61",
+      "date": "2026-06-15",
+      "subject": "物品移植",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 317,
+        "LAGGING": 101,
+        "TINY": 12,
+        "PARTIAL": 279,
+        "MISSING": 33
+      },
+      "badWeight": 134,
+      "totalWeight": 742,
+      "deadPaths": 9
+    },
+    {
+      "hash": "093eda09f45201870a02fcb37da6bea354e8c923",
+      "date": "2026-06-16",
+      "subject": "part17",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 222,
+        "IN-SYNC": 97,
+        "LAGGING": 46,
+        "TINY": 7,
+        "MISSING": 20
+      },
+      "badWeight": 66,
+      "totalWeight": 392,
+      "deadPaths": 23
+    },
+    {
+      "hash": "17af6914e263dfd8319364a37ded2da93c8e9a94",
+      "date": "2026-06-16",
+      "subject": "一点点粒子",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "LAGGING": 78,
+        "PARTIAL": 62
+      },
+      "badWeight": 78,
+      "totalWeight": 140,
+      "deadPaths": 1
+    },
+    {
+      "hash": "fbcb8e783f73e98c1c0bcefa6f57c4bb4dd48040",
+      "date": "2026-06-16",
+      "subject": "fix crash",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 80,
+        "LAGGING": 5,
+        "IN-SYNC": 11
+      },
+      "badWeight": 5,
+      "totalWeight": 96,
+      "deadPaths": 9
+    },
+    {
+      "hash": "8bcc392be97784512664ffc2dae9ca666f18ec09",
+      "date": "2026-06-16",
+      "subject": "mob effect",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 57,
+        "IN-SYNC": 8,
+        "LAGGING": 18
+      },
+      "badWeight": 18,
+      "totalWeight": 83,
+      "deadPaths": 3
+    },
+    {
+      "hash": "5481344ca3093a622fa17fcc15e06d71419ea173",
+      "date": "2026-06-18",
+      "subject": "something2",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 2,
+        "PARTIAL": 8
+      },
+      "badWeight": 0,
+      "totalWeight": 10,
+      "deadPaths": 5
+    },
+    {
+      "hash": "b33c206fa556ee9a402414756d479373618e9809",
+      "date": "2026-06-18",
+      "subject": "something3",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 1167,
+        "PARTIAL": 21,
+        "LAGGING": 26
+      },
+      "badWeight": 26,
+      "totalWeight": 1214,
+      "deadPaths": 6
+    },
+    {
+      "hash": "f7996a657262e36ce70892a9e359366cd1951de6",
+      "date": "2026-06-18",
+      "subject": "rename",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 132,
+        "IN-SYNC": 115,
+        "LAGGING": 8
+      },
+      "badWeight": 8,
+      "totalWeight": 255,
+      "deadPaths": 2
+    },
+    {
+      "hash": "4dcf95cfe35b8d88d74dd443463243302d163e3c",
+      "date": "2026-06-18",
+      "subject": "移植家具",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 692,
+        "IN-SYNC": 267,
+        "TINY": 8,
+        "LAGGING": 54
+      },
+      "badWeight": 54,
+      "totalWeight": 1021,
+      "deadPaths": 28
+    },
+    {
+      "hash": "c5e9f9be5fb452de7bb7c7f5eb54226dd6ca63c3",
+      "date": "2026-06-19",
+      "subject": "part18",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 200,
+        "PARTIAL": 271,
+        "LAGGING": 145
+      },
+      "badWeight": 145,
+      "totalWeight": 616,
+      "deadPaths": 10
+    },
+    {
+      "hash": "10705abc75005d4b7ef56a81880a4e900f7da8f4",
+      "date": "2026-06-21",
+      "subject": "part19",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 98,
+        "PARTIAL": 379,
+        "LAGGING": 51,
+        "TINY": 4,
+        "MISSING": 8
+      },
+      "badWeight": 59,
+      "totalWeight": 540,
+      "deadPaths": 79
+    },
+    {
+      "hash": "d17dc7c9a01e1305280926a3dbb29933518eb282",
+      "date": "2026-06-21",
+      "subject": "fix crash",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 4
+      },
+      "badWeight": 0,
+      "totalWeight": 4,
+      "deadPaths": 0
+    },
+    {
+      "hash": "4ab2d42ad4579a2d0e07af2d7b0df13a47742c9c",
+      "date": "2026-06-21",
+      "subject": "fix crash",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 9,
+        "LAGGING": 2
+      },
+      "badWeight": 2,
+      "totalWeight": 11,
+      "deadPaths": 1
+    },
+    {
+      "hash": "c9f3af990085517c5873f0cccc6715244f6dbd16",
+      "date": "2026-06-21",
+      "subject": "extensions",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 116,
+        "PARTIAL": 117,
+        "LAGGING": 13
+      },
+      "badWeight": 13,
+      "totalWeight": 246,
+      "deadPaths": 46
+    },
+    {
+      "hash": "f6b8f73b09d34007aff282b4e217518eb6aa3fe0",
+      "date": "2026-06-22",
+      "subject": "part20",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 48,
+        "IN-SYNC": 669,
+        "LAGGING": 5
+      },
+      "badWeight": 5,
+      "totalWeight": 722,
+      "deadPaths": 22
+    },
+    {
+      "hash": "dffefea8dc4b73036f3e306d86de07659397480e",
+      "date": "2026-06-23",
+      "subject": "feat: 添加多个怪物实体类、AI系统和相关工具类",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 4422,
+        "LAGGING": 105,
+        "PARTIAL": 41
+      },
+      "badWeight": 105,
+      "totalWeight": 4568,
+      "deadPaths": 32
+    },
+    {
+      "hash": "0e370c928c3f020b3cc73a43e5c1c7c6262d8047",
+      "date": "2026-06-24",
+      "subject": "data component method rename",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 54,
+        "IN-SYNC": 23,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 78,
+      "deadPaths": 4
+    },
+    {
+      "hash": "4298126f93036624446f3d0a3306ae5c09506962",
+      "date": "2026-06-24",
+      "subject": "IPortItemExtension",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 120,
+        "PARTIAL": 76,
+        "LAGGING": 39
+      },
+      "badWeight": 39,
+      "totalWeight": 235,
+      "deadPaths": 13
+    },
+    {
+      "hash": "f6e114cdb6154b0eb0ebd148d02594019fab64e7",
+      "date": "2026-06-24",
+      "subject": "part21",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 167,
+        "TINY": 3,
+        "PARTIAL": 35,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 206,
+      "deadPaths": 158
+    },
+    {
+      "hash": "b20c0cefd5104f2957b42654d3e4627708ce5409",
+      "date": "2026-06-27",
+      "subject": "remove all entity part",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 46,
+        "PARTIAL": 3,
+        "TINY": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 50,
+      "deadPaths": 204
+    },
+    {
+      "hash": "7f83b379a6764a6563cffc23396d38e6fe734966",
+      "date": "2026-06-27",
+      "subject": "part23",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 1198,
+        "TINY": 27,
+        "PARTIAL": 56,
+        "LAGGING": 24
+      },
+      "badWeight": 24,
+      "totalWeight": 1305,
+      "deadPaths": 5
+    },
+    {
+      "hash": "c0c6a321d65df47de83545d7ae5e7ae46f0d7b0d",
+      "date": "2026-06-28",
+      "subject": "part24",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 1359,
+        "PARTIAL": 1241,
+        "LAGGING": 717,
+        "TINY": 6
+      },
+      "badWeight": 717,
+      "totalWeight": 3323,
+      "deadPaths": 29
+    },
+    {
+      "hash": "ac7767860c701975348cf2e19bd782bf367d8d38",
+      "date": "2026-06-28",
+      "subject": "part25",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 107
+      },
+      "badWeight": 0,
+      "totalWeight": 107,
+      "deadPaths": 0
+    },
+    {
+      "hash": "058000c5cbb5b0c42ef987cb814a1793c18f469e",
+      "date": "2026-06-29",
+      "subject": "part enchantment",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "PARTIAL": 169,
+        "MISSING": 153,
+        "TINY": 7,
+        "LAGGING": 39
+      },
+      "badWeight": 192,
+      "totalWeight": 368,
+      "deadPaths": 1
+    },
+    {
+      "hash": "1516cbd2ffae85762e69875101a5e7bfcbe82102",
+      "date": "2026-06-30",
+      "subject": "part fluid type",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 29,
+        "MISSING": 51,
+        "PARTIAL": 41,
+        "LAGGING": 44
+      },
+      "badWeight": 95,
+      "totalWeight": 165,
+      "deadPaths": 26
+    },
+    {
+      "hash": "231c505ca9abde720c36b9bcd051e8e1c4fb6b75",
+      "date": "2026-06-30",
+      "subject": "part npc",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 72,
+        "IN-SYNC": 1314,
+        "LAGGING": 33
+      },
+      "badWeight": 33,
+      "totalWeight": 1419,
+      "deadPaths": 3
+    },
+    {
+      "hash": "6568d3ad1b63a9f2dd9931da4f1a7cdcfc8a4a42",
+      "date": "2026-06-30",
+      "subject": "part critters & monsters",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 1854,
+        "PARTIAL": 61,
+        "LAGGING": 62
+      },
+      "badWeight": 62,
+      "totalWeight": 1977,
+      "deadPaths": 1
+    },
+    {
+      "hash": "8ce7f4d7f8ab5873f4f91b90ffe6fb5010ea3ddf",
+      "date": "2026-07-01",
+      "subject": "part recipe datagen",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 98,
+        "PARTIAL": 342,
+        "LAGGING": 1235,
+        "MISSING": 94
+      },
+      "badWeight": 1329,
+      "totalWeight": 1769,
+      "deadPaths": 6
+    },
+    {
+      "hash": "9a48d86198564eab0f5e71ee74fe3ce9a633ca69",
+      "date": "2026-07-01",
+      "subject": "part npc1",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 234,
+        "IN-SYNC": 1051,
+        "LAGGING": 24
+      },
+      "badWeight": 24,
+      "totalWeight": 1309,
+      "deadPaths": 27
+    },
+    {
+      "hash": "c8e4e6416a30bce2999752a2d996f4ebc89ed32b",
+      "date": "2026-07-05",
+      "subject": "fix IncompatibleClassChangeError",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 9,
+        "PARTIAL": 2,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 12,
+      "deadPaths": 0
+    },
+    {
+      "hash": "97fc3ed2e25d18da65f8118be992901c0c5cd6dd",
+      "date": "2026-07-08",
+      "subject": "npc goal",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 18,
+        "PARTIAL": 1,
+        "LAGGING": 18
+      },
+      "badWeight": 18,
+      "totalWeight": 37,
+      "deadPaths": 4
+    },
+    {
+      "hash": "bd006659be9e246753e4a1fc5cd80c9726b156e0",
+      "date": "2026-07-11",
+      "subject": "refactor: 重命名饿鬼实体类为HillHungry",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 1,
+      "deadPaths": 0
+    },
+    {
+      "hash": "a6f8f089d660f307ff180f892c8a273d57ae7111",
+      "date": "2026-07-25",
+      "subject": "fix world selection",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 11,
+        "IN-SYNC": 4
+      },
+      "badWeight": 0,
+      "totalWeight": 15,
+      "deadPaths": 2
+    },
+    {
+      "hash": "bad95470cda714d414a012aca6597d36bb3b9de0",
+      "date": "2026-08-08",
+      "subject": "同步1.21.1的修改",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "PARTIAL": 88,
+        "IN-SYNC": 203,
+        "LAGGING": 515
+      },
+      "badWeight": 515,
+      "totalWeight": 806,
+      "deadPaths": 6
+    },
+    {
+      "hash": "4af532ed11afe66bfde52643784eb68067a8c22a",
+      "date": "2026-08-16",
+      "subject": "`refactor: 回退错误公共架构并恢复 1.20 实现`",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "UNCLEAR",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 494,
+        "IN-SYNC": 1296,
+        "LAGGING": 51,
+        "TINY": 1
+      },
+      "badWeight": 51,
+      "totalWeight": 1842,
+      "deadPaths": 28
+    },
+    {
+      "hash": "1e03931784dcfd8f89671de2aed1cc764ab3d964",
+      "date": "2026-08-16",
+      "subject": "`refactor: 回退错误公共架构并恢复 1.20 实现`",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 455,
+        "PARTIAL": 277
+      },
+      "badWeight": 0,
+      "totalWeight": 732,
+      "deadPaths": 1
+    },
+    {
+      "hash": "c406dcc0b3d8d920e60a6b3b4028661892b2cd96",
+      "date": "2026-08-16",
+      "subject": "fix: 对齐城镇 NPC 敌我识别与恐慌行为",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 79
+      },
+      "badWeight": 0,
+      "totalWeight": 79,
+      "deadPaths": 4
+    },
+    {
+      "hash": "1e2f65769d38532f301a8b6d2cae375dbb525a50",
+      "date": "2026-08-16",
+      "subject": "fix: 对齐城镇 NPC 远程战斗与护士治疗行为",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 56
+      },
+      "badWeight": 0,
+      "totalWeight": 56,
+      "deadPaths": 2
+    },
+    {
+      "hash": "116edf1926cf53158878959b0554dc9ad5bf3974",
+      "date": "2026-08-16",
+      "subject": "fix: 对齐 NPC 住宅与旅商生命周期行为",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 71
+      },
+      "badWeight": 0,
+      "totalWeight": 71,
+      "deadPaths": 1
+    },
+    {
+      "hash": "fe090753f4f16fcf65d4c6bbb3bfb6d4ded747a7",
+      "date": "2026-08-16",
+      "subject": "fix: 对齐 NPC 交互与对话同步行为",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 256,
+        "LAGGING": 2
+      },
+      "badWeight": 2,
+      "totalWeight": 258,
+      "deadPaths": 0
+    },
+    {
+      "hash": "c6c2d493aa5cf3c63a62c9f6ffe26b4fc73a48bb",
+      "date": "2026-08-16",
+      "subject": "fix: 恢复 NPC 商店三态交易流程",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 171
+      },
+      "badWeight": 0,
+      "totalWeight": 171,
+      "deadPaths": 2
+    },
+    {
+      "hash": "7e8662bd407fbb69690b8df317667800e5dde7c0",
+      "date": "2026-08-16",
+      "subject": "refactor: 恢复 NPC 商品的组件定价模型",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 130
+      },
+      "badWeight": 0,
+      "totalWeight": 130,
+      "deadPaths": 0
+    },
+    {
+      "hash": "b861536ae50a52716e310ec328b2706b8915f499",
+      "date": "2026-08-16",
+      "subject": "refactor: 恢复 NPC 商店数据加载架构",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 217
+      },
+      "badWeight": 0,
+      "totalWeight": 217,
+      "deadPaths": 2
+    },
+    {
+      "hash": "7a3e9f664a1e7475fe1a4b4efe120672de1b7850",
+      "date": "2026-08-16",
+      "subject": "fix: 同步 NPC 商店权威价格显示",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 21
+      },
+      "badWeight": 0,
+      "totalWeight": 21,
+      "deadPaths": 1
+    },
+    {
+      "hash": "e7703e76d802804fa8a07647eb5f82c3e1962093",
+      "date": "2026-08-16",
+      "subject": "fix: 保证 NPC 商店报价与交易条件一致",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 45
+      },
+      "badWeight": 0,
+      "totalWeight": 45,
+      "deadPaths": 0
+    },
+    {
+      "hash": "1c012ccb1963d8521cb880a5d23ceaf9cceae438",
+      "date": "2026-08-22",
+      "subject": "将饰品的药水效果转移至lib",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 474,
+        "IN-SYNC": 283,
+        "LAGGING": 290,
+        "MISSING": 18
+      },
+      "badWeight": 308,
+      "totalWeight": 1065,
+      "deadPaths": 25
+    },
+    {
+      "hash": "100f6e0f2125fc5fd071f4cc94a80ffca1a15bf7",
+      "date": "2026-08-22",
+      "subject": "可开关的药水效果移到lib",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 245,
+        "LAGGING": 157,
+        "IN-SYNC": 83,
+        "MISSING": 98
+      },
+      "badWeight": 255,
+      "totalWeight": 583,
+      "deadPaths": 16
+    },
+    {
+      "hash": "2a4dfce2c998df64cce1b0e9dd4e57e1a491df33",
+      "date": "2026-08-22",
+      "subject": "同步粒子",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "PARTIAL": 20,
+        "IN-SYNC": 6,
+        "LAGGING": 77,
+        "MISSING": 8
+      },
+      "badWeight": 85,
+      "totalWeight": 111,
+      "deadPaths": 2
+    },
+    {
+      "hash": "12b6877be6c45b35e29a80f05c4f6e12b7dde17a",
+      "date": "2026-08-23",
+      "subject": "修复枪械动画报错",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 14
+      },
+      "badWeight": 0,
+      "totalWeight": 14,
+      "deadPaths": 1
+    },
+    {
+      "hash": "21b060ec6922d1cbbf20f13542947b16cb9ef4f8",
+      "date": "2026-08-23",
+      "subject": "饰品能力全改为datamap，修复潜行属性",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 7,
+        "LAGGING": 776,
+        "PARTIAL": 4
+      },
+      "badWeight": 776,
+      "totalWeight": 787,
+      "deadPaths": 3
+    },
+    {
+      "hash": "c2935419b838738d2a999b6a66636fc4f736f316",
+      "date": "2026-08-23",
+      "subject": "docs: 清理源码注释中的冗余 HTML 段落标签",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 676,
+        "PARTIAL": 80,
+        "LAGGING": 36,
+        "MISSING": 10
+      },
+      "badWeight": 46,
+      "totalWeight": 802,
+      "deadPaths": 17
+    },
+    {
+      "hash": "4ef159bf9b0c2a077ae985815ade5dc4948af8e0",
+      "date": "2026-08-23",
+      "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 459,
+        "PARTIAL": 410,
+        "LAGGING": 143,
+        "MISSING": 337
+      },
+      "badWeight": 480,
+      "totalWeight": 1349,
+      "deadPaths": 10
+    },
+    {
+      "hash": "673efd7d51fbabc47d9412000e7aaa736221ad52",
+      "date": "2026-09-12",
+      "subject": "调整标签 悠悠球无敌帧",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 22
+      },
+      "badWeight": 0,
+      "totalWeight": 22,
+      "deadPaths": 0
+    },
+    {
+      "hash": "4bd94d674e4d13e6a19b160b68134e3a0afd729a",
+      "date": "2026-09-12",
+      "subject": "关键帧多效果支持",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 167
+      },
+      "badWeight": 0,
+      "totalWeight": 167,
+      "deadPaths": 0
+    },
+    {
+      "hash": "a358494fa28d5ac673b341700a9f36e4b48929a7",
+      "date": "2026-09-12",
+      "subject": "修复敌怪生成与战斗行为，完善武器渲染、NPC 广播及翻译",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 1027,
+        "PARTIAL": 115,
+        "LAGGING": 3
+      },
+      "badWeight": 3,
+      "totalWeight": 1145,
+      "deadPaths": 3
+    },
+    {
+      "hash": "6084476d09bc850c5a54ab499ff050ba48257533",
+      "date": "2026-09-12",
+      "subject": "JEI兼容恢复",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 1482,
+        "IN-SYNC": 1187,
+        "LAGGING": 4,
+        "TINY": 6
+      },
+      "badWeight": 4,
+      "totalWeight": 2679,
+      "deadPaths": 5
+    },
+    {
+      "hash": "99902d9862e3358e5ceee849f2e79f991d462775",
+      "date": "2026-09-13",
+      "subject": "修复锁方块",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 31
+      },
+      "badWeight": 0,
+      "totalWeight": 31,
+      "deadPaths": 3
+    },
+    {
+      "hash": "5a25532932208f903f874d537ca091eadf5f1d1e",
+      "date": "2026-09-13",
+      "subject": "refactor(otherworld): 重构鞭子挥动流程并修复水生生物行为",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 606,
+        "PARTIAL": 34,
+        "LAGGING": 20
+      },
+      "badWeight": 20,
+      "totalWeight": 660,
+      "deadPaths": 3
+    },
+    {
+      "hash": "ac457ea835114f4988e92e359c586d23d3531ef9",
+      "date": "2026-09-13",
+      "subject": "fix: 修复敌怪行为、施法表现、NPC交互及鞭子回收",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 531,
+        "PARTIAL": 134,
+        "LAGGING": 2
+      },
+      "badWeight": 2,
+      "totalWeight": 667,
+      "deadPaths": 0
+    },
+    {
+      "hash": "91724b1cecf6623a9aafecda52e08cc26a70cf5b",
+      "date": "2026-09-13",
+      "subject": "为水生生物添加自然巡游",
+      "rule": "A5",
+      "proposal": "REVIEW",
+      "coverage": "NEEDS-PORT",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 69
+      },
+      "badWeight": 0,
+      "totalWeight": 69,
+      "deadPaths": 0
+    },
+    {
+      "hash": "d599373c3bc4c61fbcd673eb84f8a3c4f487ea59",
+      "date": "2026-09-13",
+      "subject": "修复8月15日遗留问题",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 206,
+        "IN-SYNC": 236,
+        "LAGGING": 26
+      },
+      "badWeight": 26,
+      "totalWeight": 468,
+      "deadPaths": 4
+    },
+    {
+      "hash": "a4b3214992230c7ea46c1acc06f69ff8e79c138b",
+      "date": "2026-09-14",
+      "subject": "补充，修改一部分模型，删除不该存在的生物，为ai已经注册了的生物补充模型",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 26,
+        "LAGGING": 5
+      },
+      "badWeight": 5,
+      "totalWeight": 31,
+      "deadPaths": 0
+    },
+    {
+      "hash": "62d4d191a6a1f7d37d5cf52cde85bc3cb813c1d1",
+      "date": "2026-09-14",
+      "subject": "翻新已经有的模型",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 22,
+        "LAGGING": 9
+      },
+      "badWeight": 9,
+      "totalWeight": 31,
+      "deadPaths": 0
+    },
+    {
+      "hash": "9090245f8b3fa338f3eae6cfe0264c37eb6ca779",
+      "date": "2026-09-14",
+      "subject": "修",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 2,
+        "PARTIAL": 7
+      },
+      "badWeight": 0,
+      "totalWeight": 9,
+      "deadPaths": 0
+    },
+    {
+      "hash": "856c0047fedf0f122d5a365832a6a7bb58ce4085",
+      "date": "2026-09-16",
+      "subject": "调整末地高度",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "UNCLEAR",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 39,
+        "IN-SYNC": 5
+      },
+      "badWeight": 0,
+      "totalWeight": 44,
+      "deadPaths": 4
+    },
+    {
+      "hash": "253bb8d7bcdba3bde209584cfed8b02f4afa0f3c",
+      "date": "2026-09-16",
+      "subject": "curios属性显示兼容",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NEEDS-PORT",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 31,
+        "LAGGING": 3,
+        "MISSING": 31
+      },
+      "badWeight": 34,
+      "totalWeight": 65,
+      "deadPaths": 6
+    },
+    {
+      "hash": "0bd4b205226b1a1f517364983be9f67250e359ee",
+      "date": "2026-09-17",
+      "subject": "修改一些纹理和模型上的问题，挪贴图位置",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 1,
+      "deadPaths": 0
+    },
+    {
+      "hash": "75c60a5fe4e77116630445c29204dcd481db89d6",
+      "date": "2026-09-17",
+      "subject": "fix(render): 修正生物薄片渲染、动画与坐骑表现",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 91,
+        "PARTIAL": 38,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 130,
+      "deadPaths": 0
+    },
+    {
+      "hash": "bcecc538225aee74e09bca136713016fa082bf6d",
+      "date": "2026-09-17",
+      "subject": "新版本图鉴",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "LAGGING": 505
+      },
+      "badWeight": 505,
+      "totalWeight": 505,
+      "deadPaths": 0
+    },
+    {
+      "hash": "17ca9b50f3510e61db154ddee1038258cb1efa63",
+      "date": "2026-09-17",
+      "subject": "fix(weapon): 调整光剑与晶光刃投掷交互及手持渲染",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 53,
+        "PARTIAL": 17,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 71,
+      "deadPaths": 2
+    },
+    {
+      "hash": "9a5d3a4a6b7a937616c29edac1a6475c2f53eb69",
+      "date": "2026-09-17",
+      "subject": "修复portlib的注册表",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 77,
+        "IN-SYNC": 6
+      },
+      "badWeight": 0,
+      "totalWeight": 83,
+      "deadPaths": 13
+    },
+    {
+      "hash": "389b7a7602ff451662c973122ed83323c3c48d23",
+      "date": "2026-09-17",
+      "subject": "修复网络包发送",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 2
+      },
+      "badWeight": 0,
+      "totalWeight": 2,
+      "deadPaths": 1
+    },
+    {
+      "hash": "cfe6ac100d4a31762e34b302d5cec0dcd2f615e1",
+      "date": "2026-09-18",
+      "subject": "同步",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 29,
+        "IN-SYNC": 207,
+        "LAGGING": 9
+      },
+      "badWeight": 9,
+      "totalWeight": 245,
+      "deadPaths": 0
+    },
+    {
+      "hash": "d3c7c32ff01168fd925c1737465704e704319c20",
+      "date": "2026-09-18",
+      "subject": "同步",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 265
+      },
+      "badWeight": 0,
+      "totalWeight": 265,
+      "deadPaths": 0
+    },
+    {
+      "hash": "f4ffadaa755e74833037edb3b10f3b5dced645c8",
+      "date": "2026-09-18",
+      "subject": "AttachmentEntity体系迁移",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 302,
+        "IN-SYNC": 5013
+      },
+      "badWeight": 0,
+      "totalWeight": 5315,
+      "deadPaths": 25
+    },
+    {
+      "hash": "27ee0313c101e04a2568f75c941e62478b318023",
+      "date": "2026-09-18",
+      "subject": "无敌帧体系接入",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 77
+      },
+      "badWeight": 0,
+      "totalWeight": 77,
+      "deadPaths": 4
+    },
+    {
+      "hash": "01f0936ac0457f4776bb0a1b5d0ff2ae0b70d20b",
+      "date": "2026-09-18",
+      "subject": "鞭子标记体系接入",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 2,
+        "IN-SYNC": 210
+      },
+      "badWeight": 0,
+      "totalWeight": 212,
+      "deadPaths": 7
+    },
+    {
+      "hash": "4a34367706f2491dec0461ec7911548e96519fbc",
+      "date": "2026-09-18",
+      "subject": "修复错误",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 13,
+        "IN-SYNC": 25,
+        "LAGGING": 19
+      },
+      "badWeight": 19,
+      "totalWeight": 57,
+      "deadPaths": 4
+    },
+    {
+      "hash": "641467c87102bc75a9b28a0b5dc18db22e5748d4",
+      "date": "2026-09-18",
+      "subject": "迁移黄蜂召唤物至 AttachmentEntity",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 78,
+        "IN-SYNC": 343,
+        "LAGGING": 28
+      },
+      "badWeight": 28,
+      "totalWeight": 449,
+      "deadPaths": 8
+    },
+    {
+      "hash": "40f02b002e8858b47eac275c3b886cf0566030df",
+      "date": "2026-09-18",
+      "subject": "补个蛋",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 56,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 57,
+      "deadPaths": 0
+    },
+    {
+      "hash": "041c8491538ec02d264d6a560afda21998a77c88",
+      "date": "2026-09-18",
+      "subject": "重命名钱币槽，生物初步调参",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 7,
+        "PARTIAL": 141,
+        "LAGGING": 11
+      },
+      "badWeight": 11,
+      "totalWeight": 159,
+      "deadPaths": 0
+    },
+    {
+      "hash": "33d89dd639f0150ab2a22f8f0c13ceee711b8952",
+      "date": "2026-09-18",
+      "subject": "黄蜂完成",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 49,
+        "PARTIAL": 1,
+        "LAGGING": 9
+      },
+      "badWeight": 9,
+      "totalWeight": 59,
+      "deadPaths": 1
+    },
+    {
+      "hash": "785b151f06d35e0d1d3bee02ad9541993d73df6e",
+      "date": "2026-09-18",
+      "subject": "小鸟完成",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 220,
+        "PARTIAL": 28,
+        "LAGGING": 3
+      },
+      "badWeight": 3,
+      "totalWeight": 251,
+      "deadPaths": 4
+    },
+    {
+      "hash": "87b93ede277428828ae7dfb66762b14c5ab0e1d7",
+      "date": "2026-09-18",
+      "subject": "合并stream codec",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 23,
+        "LAGGING": 1,
+        "IN-SYNC": 10
+      },
+      "badWeight": 1,
+      "totalWeight": 34,
+      "deadPaths": 2
+    },
+    {
+      "hash": "2eb9ce931baa3fc79fc552057713cf827abfc914",
+      "date": "2026-09-19",
+      "subject": "动态光源接入",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 4
+      },
+      "badWeight": 0,
+      "totalWeight": 4,
+      "deadPaths": 1
+    },
+    {
+      "hash": "348c877a41fbe006f9f6ca813162d4ee48f76e8d",
+      "date": "2026-09-19",
+      "subject": "统一生物属性与状态参数声明，修复敌怪行为、渲染及商店分页",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 1046,
+        "PARTIAL": 376,
+        "LAGGING": 781
+      },
+      "badWeight": 781,
+      "totalWeight": 2203,
+      "deadPaths": 0
+    },
+    {
+      "hash": "300bd6cfe83409e929941039a39f2e1335e46b40",
+      "date": "2026-09-19",
+      "subject": "重构敌怪效果与属性配置，修复生物行为和动画",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 821,
+        "PARTIAL": 169,
+        "LAGGING": 26
+      },
+      "badWeight": 26,
+      "totalWeight": 1016,
+      "deadPaths": 10
+    },
+    {
+      "hash": "67c51a778e800865b15eb23849397adc4f58acc3",
+      "date": "2026-09-19",
+      "subject": "小传一手神必青蛙模型",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 1,
+      "deadPaths": 1
+    },
+    {
+      "hash": "0fe39ec9239bba13bd8a1b0b98203ef5206e4982",
+      "date": "2026-09-19",
+      "subject": "移除Geo静态渲染器",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 246,
+        "PARTIAL": 3
+      },
+      "badWeight": 0,
+      "totalWeight": 249,
+      "deadPaths": 20
+    },
+    {
+      "hash": "c5b035680e4fdecd1e3c9ad9a7cba30f9671fd7f",
+      "date": "2026-09-19",
+      "subject": "移除动态光源至MagicLib",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 5,
+        "PARTIAL": 2
+      },
+      "badWeight": 0,
+      "totalWeight": 7,
+      "deadPaths": 2
+    },
+    {
+      "hash": "85cbebf7458fd2632b1c5ee52f3b6e48b083c47b",
+      "date": "2026-09-19",
+      "subject": "完成鸟巢叠加层",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 114
+      },
+      "badWeight": 0,
+      "totalWeight": 114,
+      "deadPaths": 1
+    },
+    {
+      "hash": "9a3c5798b77d992176ee3519ae8e5a87fdc80a92",
+      "date": "2026-09-19",
+      "subject": "完成铁傀儡",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 16,
+        "IN-SYNC": 505,
+        "LAGGING": 4
+      },
+      "badWeight": 4,
+      "totalWeight": 525,
+      "deadPaths": 7
+    },
+    {
+      "hash": "1d8a006102f725cc24f22272e798700a771b83b5",
+      "date": "2026-09-19",
+      "subject": "完成幽匿游灵",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 223,
+        "PARTIAL": 16,
+        "LAGGING": 3
+      },
+      "badWeight": 3,
+      "totalWeight": 242,
+      "deadPaths": 4
+    },
+    {
+      "hash": "157730424f6360014ba67c27dd78f7c320e22545",
+      "date": "2026-09-20",
+      "subject": "完成小鬼，致命球，血蝙蝠，棱镜",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 995,
+        "PARTIAL": 79,
+        "LAGGING": 15
+      },
+      "badWeight": 15,
+      "totalWeight": 1089,
+      "deadPaths": 16
+    },
+    {
+      "hash": "f212a001a97a215e14f28489f4f83032d2d8954e",
+      "date": "2026-09-20",
+      "subject": "fix: 修复生物渲染、蠕虫行为及特殊物品拾取",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 356,
+        "PARTIAL": 86,
+        "LAGGING": 16
+      },
+      "badWeight": 16,
+      "totalWeight": 458,
+      "deadPaths": 1
+    },
+    {
+      "hash": "a34060571bd3f94319d2688bfd6fb9bf1fa4fe12",
+      "date": "2026-09-20",
+      "subject": "移动到init",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 4,
+        "IN-SYNC": 7,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 12,
+      "deadPaths": 3
+    },
+    {
+      "hash": "2818e719b9e1d392c84a423b48db61efbb450939",
+      "date": "2026-09-20",
+      "subject": "蜘蛛爬墙",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 125,
+        "PARTIAL": 3
+      },
+      "badWeight": 0,
+      "totalWeight": 128,
+      "deadPaths": 0
+    },
+    {
+      "hash": "14425eb1ce738e9055848f5eff93727ae1722031",
+      "date": "2026-09-20",
+      "subject": "uv修复",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 25,
+        "PARTIAL": 11
+      },
+      "badWeight": 0,
+      "totalWeight": 36,
+      "deadPaths": 1
+    },
+    {
+      "hash": "b47adc3ce528cc99ac9891b56b3e8e30d8a1a694",
+      "date": "2026-09-20",
+      "subject": "光剑修改",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 1,
+        "PARTIAL": 3
+      },
+      "badWeight": 0,
+      "totalWeight": 4,
+      "deadPaths": 0
+    },
+    {
+      "hash": "81488b6d0fe1a5c5a1c4326eec6f18af257e5251",
+      "date": "2026-09-20",
+      "subject": "修改一股味的代码",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 466,
+        "PARTIAL": 60,
+        "LAGGING": 183,
+        "TINY": 2
+      },
+      "badWeight": 183,
+      "totalWeight": 711,
+      "deadPaths": 30
+    },
+    {
+      "hash": "d879d8ffccc7ea5d69ace92b5528387f214dfa04",
+      "date": "2026-09-20",
+      "subject": "第一人称动画功能移到lib",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 4,
+        "IN-SYNC": 43
+      },
+      "badWeight": 0,
+      "totalWeight": 47,
+      "deadPaths": 1
+    },
+    {
+      "hash": "c454b8d68fe1dcadf28d73431fe14356a565b616",
+      "date": "2026-09-20",
+      "subject": "fix(otherworld): 修复本源末影龙属性注册并调整蠕虫移动逻辑",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 156,
+        "LAGGING": 3
+      },
+      "badWeight": 3,
+      "totalWeight": 159,
+      "deadPaths": 0
+    },
+    {
+      "hash": "64b7bbe9e8af0c6c85089ded7267825906ef7779",
+      "date": "2026-09-20",
+      "subject": "完成吸血鬼青蛙，史莱姆，小雪怪，铁傀儡",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 712,
+        "PARTIAL": 45,
+        "LAGGING": 9
+      },
+      "badWeight": 9,
+      "totalWeight": 766,
+      "deadPaths": 8
+    },
+    {
+      "hash": "124baf17d21f54f010f8285be96775c33d81384a",
+      "date": "2026-09-20",
+      "subject": "完成蜘蛛，沙漠虎",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 486,
+        "PARTIAL": 57,
+        "LAGGING": 6
+      },
+      "badWeight": 6,
+      "totalWeight": 549,
+      "deadPaths": 4
+    },
+    {
+      "hash": "46e5e86268a10d4d442f3e9676cd725db996f6af",
+      "date": "2026-09-20",
+      "subject": "移除旧架构召唤体系",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 231,
+        "IN-SYNC": 10,
+        "LAGGING": 1,
+        "TINY": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 243,
+      "deadPaths": 40
+    },
+    {
+      "hash": "d3d8dcd24cc6f45348b367eedd4a954a032d3f57",
+      "date": "2026-09-20",
+      "subject": "清理导入",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 16,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 17,
+      "deadPaths": 0
+    },
+    {
+      "hash": "3e76867aad4830674799d4672c5737d71b93a7f3",
+      "date": "2026-09-20",
+      "subject": "迁移标记体系",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "PARTIAL": 10,
+        "IN-SYNC": 30,
+        "LAGGING": 50
+      },
+      "badWeight": 50,
+      "totalWeight": 90,
+      "deadPaths": 4
+    },
+    {
+      "hash": "701d48a089266057da367d09ea5e6f39b16b53ae",
+      "date": "2026-09-20",
+      "subject": "feat: 完善动态群系覆盖与迷你群系判定",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 659,
+        "PARTIAL": 34,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 694,
+      "deadPaths": 0
+    },
+    {
+      "hash": "c886cec0fcc6d388a611dcfa9014a233b606b5b2",
+      "date": "2026-09-20",
+      "subject": "修复暴击率问题",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 88,
+        "LAGGING": 15,
+        "IN-SYNC": 3
+      },
+      "badWeight": 15,
+      "totalWeight": 106,
+      "deadPaths": 1
+    },
+    {
+      "hash": "a45ef0a139e89e5fbb955f167d7c6444dc718436",
+      "date": "2026-09-20",
+      "subject": "修复暴击率问题",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 3,
+        "MISSING": 350,
+        "PARTIAL": 7
+      },
+      "badWeight": 350,
+      "totalWeight": 360,
+      "deadPaths": 0
+    },
+    {
+      "hash": "286102066a0860ad19a0347ee26545d1684def6f",
+      "date": "2026-09-20",
+      "subject": "fix: 完善植物茎部受击判定与坐骑行为",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 27,
+        "IN-SYNC": 348,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 376,
+      "deadPaths": 0
+    },
+    {
+      "hash": "6db8be065413001878bbfccaec21f4906cfded80",
+      "date": "2026-09-20",
+      "subject": "加点",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 58,
+        "IN-SYNC": 3
+      },
+      "badWeight": 0,
+      "totalWeight": 61,
+      "deadPaths": 0
+    },
+    {
+      "hash": "a086eeba6fb604c2ec3c6ee844ba7dc76ff15b0e",
+      "date": "2026-09-20",
+      "subject": "调整一部分生物的动画，碰撞箱，贴图",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "PARTIAL": 5,
+        "LAGGING": 16
+      },
+      "badWeight": 16,
+      "totalWeight": 21,
+      "deadPaths": 0
+    },
+    {
+      "hash": "1da5e0d268bf5dcce0504929cfb9b314571ffb33",
+      "date": "2026-09-21",
+      "subject": "修复一些问题",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 111,
+        "IN-SYNC": 9,
+        "MISSING": 22
+      },
+      "badWeight": 22,
+      "totalWeight": 142,
+      "deadPaths": 2
+    },
+    {
+      "hash": "7169379cdc985bd0af4105c7747c21ab31466598",
+      "date": "2026-09-21",
+      "subject": "精修碰撞箱，添加安卡十字与眼球激光塔",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 174,
+        "IN-SYNC": 1294,
+        "LAGGING": 34,
+        "TINY": 4
+      },
+      "badWeight": 34,
+      "totalWeight": 1506,
+      "deadPaths": 0
+    },
+    {
+      "hash": "e7cabcfea7303b7e12624a833f335e447f58b179",
+      "date": "2026-09-21",
+      "subject": "精修模型",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 41,
+        "PARTIAL": 4,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 46,
+      "deadPaths": 1
+    },
+    {
+      "hash": "c7aefbf009c565334039dd12a2aca635181f7c9f",
+      "date": "2026-09-21",
+      "subject": "添加翻译键",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 5,
+        "IN-SYNC": 7
+      },
+      "badWeight": 0,
+      "totalWeight": 12,
+      "deadPaths": 0
+    },
+    {
+      "hash": "46ae3a168c2c5f76c1fcb7556668b88733dac8e2",
+      "date": "2026-09-21",
+      "subject": "feat: 完善悠悠球及饰品功能，统一敌怪反击并修复附魔钓竿",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 295,
+        "IN-SYNC": 1050,
+        "LAGGING": 30
+      },
+      "badWeight": 30,
+      "totalWeight": 1375,
+      "deadPaths": 3
+    },
+    {
+      "hash": "900c068f7953a7ac0175866e6ef5a9c9a83761c0",
+      "date": "2026-09-21",
+      "subject": "音频大导入（第一批）",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 768,
+        "IN-SYNC": 707,
+        "LAGGING": 486
+      },
+      "badWeight": 486,
+      "totalWeight": 1961,
+      "deadPaths": 0
+    },
+    {
+      "hash": "892008ba0314c0bc6fc2b6d4b44af17da293328d",
+      "date": "2026-09-21",
+      "subject": "feat(worldgen): 重构蜘蛛洞生成并接入蜘蛛巢方块",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "LAGGING": 5,
+        "PARTIAL": 27,
+        "IN-SYNC": 106
+      },
+      "badWeight": 5,
+      "totalWeight": 138,
+      "deadPaths": 0
+    },
+    {
+      "hash": "da5b986bea0828754fd03fd265d6cd28ca2a4dd8",
+      "date": "2026-09-21",
+      "subject": "蜘蛛巢石",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "LAGGING": 2,
+        "PARTIAL": 2,
+        "IN-SYNC": 3
+      },
+      "badWeight": 2,
+      "totalWeight": 7,
+      "deadPaths": 0
+    },
+    {
+      "hash": "9074bb9e553001bea6bb8cb90a1742b53fdd14e0",
+      "date": "2026-09-21",
+      "subject": "fix(npc): 按地牢入口独立管理老人存续与补刷",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 191,
+        "PARTIAL": 14
+      },
+      "badWeight": 0,
+      "totalWeight": 205,
+      "deadPaths": 0
+    },
+    {
+      "hash": "9365516766eb195ef8d0f9c7583f87146884b64a",
+      "date": "2026-09-21",
+      "subject": "完成新的伤害信息",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 374,
+        "LAGGING": 3,
+        "PARTIAL": 73,
+        "TINY": 7
+      },
+      "badWeight": 3,
+      "totalWeight": 457,
+      "deadPaths": 0
+    },
+    {
+      "hash": "6d4f07298c09a8df89407bb472f807f71d54d157",
+      "date": "2026-09-21",
+      "subject": "悠悠球和召唤杖调参，外观调整",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 15,
+        "IN-SYNC": 9,
+        "LAGGING": 10
+      },
+      "badWeight": 10,
+      "totalWeight": 34,
+      "deadPaths": 0
+    },
+    {
+      "hash": "fecb245e5f5643cdac193f209dd6fb0a8e2eeacc",
+      "date": "2026-09-21",
+      "subject": "罐子掉钱逻辑补充",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 3,
+        "PARTIAL": 17,
+        "LAGGING": 22
+      },
+      "badWeight": 22,
+      "totalWeight": 42,
+      "deadPaths": 0
+    },
+    {
+      "hash": "bb189220154c36399e6ae507acefafebfaa57d7c",
+      "date": "2026-09-21",
+      "subject": "伤害粒子的更改",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 2,
+        "IN-SYNC": 3
+      },
+      "badWeight": 0,
+      "totalWeight": 5,
+      "deadPaths": 0
+    },
+    {
+      "hash": "9d66b34d0299de82086d7dd6f3603811badbf7aa",
+      "date": "2026-09-22",
+      "subject": "更新连枷",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 201,
+        "LAGGING": 2
+      },
+      "badWeight": 2,
+      "totalWeight": 203,
+      "deadPaths": 1
+    },
+    {
+      "hash": "8bb33454a1a72bc85eec88efbdea66c918c9dbb1",
+      "date": "2026-09-22",
+      "subject": "家具",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "LAGGING": 69,
+        "PARTIAL": 25
+      },
+      "badWeight": 69,
+      "totalWeight": 94,
+      "deadPaths": 0
+    },
+    {
+      "hash": "d5fd40bfff335b3bbe450b963ab29ab03830f93e",
+      "date": "2026-09-22",
+      "subject": "平衡锤",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 1,
+      "deadPaths": 0
+    },
+    {
+      "hash": "af1426bed2d4a94fcd4f45fc50893e67db5e98b6",
+      "date": "2026-09-22",
+      "subject": "完成召唤词缀",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 71
+      },
+      "badWeight": 0,
+      "totalWeight": 71,
+      "deadPaths": 0
+    },
+    {
+      "hash": "a94cf78dcdb55dbb17a438b4173e478c23b4669e",
+      "date": "2026-09-22",
+      "subject": "完成词缀提示与词缀属性",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "IN-SYNC": 11,
+        "PARTIAL": 3,
+        "LAGGING": 18
+      },
+      "badWeight": 18,
+      "totalWeight": 32,
+      "deadPaths": 0
+    },
+    {
+      "hash": "05b032399b4a78008e030f9c6e697e0c232edb7e",
+      "date": "2026-09-22",
+      "subject": "现在邪恶蘑菇，丛林孢子可以生成了",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "LAGGING": 34,
+        "IN-SYNC": 7
+      },
+      "badWeight": 34,
+      "totalWeight": 41,
+      "deadPaths": 0
+    },
+    {
+      "hash": "0776c451ceb44ae5f10e0cc4c4c15ebe6dcc1c4f",
+      "date": "2026-09-22",
+      "subject": "修复音效",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 1,
+      "deadPaths": 0
+    },
+    {
+      "hash": "e1cd9c8cb50cc32b390847e5ea5ef669fe5b2cde",
+      "date": "2026-09-22",
+      "subject": "添加配置文件，召唤词缀复制",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 55,
+        "PARTIAL": 13,
+        "LAGGING": 5
+      },
+      "badWeight": 5,
+      "totalWeight": 73,
+      "deadPaths": 0
+    },
+    {
+      "hash": "11a43615e66d80a2855ed2e5043ae3b177a5ec82",
+      "date": "2026-09-22",
+      "subject": "更改远程数值",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 30,
+        "LAGGING": 8
+      },
+      "badWeight": 8,
+      "totalWeight": 38,
+      "deadPaths": 0
+    },
+    {
+      "hash": "c0e8c4c758b552f1b8b258a14f9cd620f0055233",
+      "date": "2026-09-22",
+      "subject": "添加多召唤标记叠加支持",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 1,
+        "IN-SYNC": 152,
+        "LAGGING": 41,
+        "TINY": 1
+      },
+      "badWeight": 41,
+      "totalWeight": 195,
+      "deadPaths": 1
+    },
+    {
+      "hash": "ef1a4d1386a6bb6507da0a3e07d84c6518658615",
+      "date": "2026-09-22",
+      "subject": "feat: 重构肉山肉墙与悠悠球实现，更新 NPC 交互界面并统一敌怪射弹伤害",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 126,
+        "IN-SYNC": 1668,
+        "LAGGING": 192,
+        "TINY": 9
+      },
+      "badWeight": 192,
+      "totalWeight": 1995,
+      "deadPaths": 4
+    },
+    {
+      "hash": "5fe2c370b67521391a6dadbfafa657b2bde4568f",
+      "date": "2026-09-22",
+      "subject": "fix: 完善 NPC 区域生成、地表落点与存活记录管理",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 193
+      },
+      "badWeight": 0,
+      "totalWeight": 193,
+      "deadPaths": 0
+    },
+    {
+      "hash": "116bef809f9a085c27f2f0b24968eee5ff33d1c0",
+      "date": "2026-09-22",
+      "subject": "添加哨兵携带接口",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 169,
+        "TINY": 2
+      },
+      "badWeight": 0,
+      "totalWeight": 171,
+      "deadPaths": 0
+    },
+    {
+      "hash": "e6eace2b1553930828e02766209a00418db595fc",
+      "date": "2026-09-23",
+      "subject": "平衡性调整尝试",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "LAGGING": 227
+      },
+      "badWeight": 227,
+      "totalWeight": 227,
+      "deadPaths": 0
+    },
+    {
+      "hash": "9e32f0135e19f31dc4d0189e15872e2d63d344d8",
+      "date": "2026-09-23",
+      "subject": "fix: 修复 Boss 从属清理与击退问题，集中悠悠球射弹参数",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 118,
+        "LAGGING": 33
+      },
+      "badWeight": 33,
+      "totalWeight": 151,
+      "deadPaths": 0
+    },
+    {
+      "hash": "a037263e1d1b5a41335ba7f91c8905c9634051d2",
+      "date": "2026-09-23",
+      "subject": "feat: 整理 NPC 商店界面并修复渔夫任务筛选",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 3,
+        "IN-SYNC": 45
+      },
+      "badWeight": 0,
+      "totalWeight": 48,
+      "deadPaths": 4
+    },
+    {
+      "hash": "2f44045a8042ad204234e07237ca518e5d4a1177",
+      "date": "2026-09-23",
+      "subject": "大改修饰语",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 168,
+        "LAGGING": 64,
+        "IN-SYNC": 85
+      },
+      "badWeight": 64,
+      "totalWeight": 317,
+      "deadPaths": 0
+    },
+    {
+      "hash": "1f1c456ff6bc01154f96aedc6ca3ce3c3dc26603",
+      "date": "2026-09-23",
+      "subject": "染料商",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 2
+      },
+      "badWeight": 0,
+      "totalWeight": 2,
+      "deadPaths": 0
+    },
+    {
+      "hash": "e9501cf56ee764073864f4f4c114690f484fd364",
+      "date": "2026-09-23",
+      "subject": "fall_damage_multiplier属性不再导致摔落声音",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 44,
+        "LAGGING": 1,
+        "IN-SYNC": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 46,
+      "deadPaths": 2
+    },
+    {
+      "hash": "a2dfa30dac712e6d9a8a4f1a8766431ad2f79a80",
+      "date": "2026-09-24",
+      "subject": "refactor: 统一 NPC 心情配置与环境计算",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 261,
+        "PARTIAL": 28
+      },
+      "badWeight": 0,
+      "totalWeight": 289,
+      "deadPaths": 0
+    },
+    {
+      "hash": "6a3e17e867b7bde9af80de1eb985ed99538aef5e",
+      "date": "2026-09-25",
+      "subject": "feat: 完善剑类特效与剑气渲染，调整植物敌怪追击",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 65,
+        "IN-SYNC": 247
+      },
+      "badWeight": 0,
+      "totalWeight": 312,
+      "deadPaths": 1
+    },
+    {
+      "hash": "7a072d51bcf713702902ac7fa09f64ee1fd8bb82",
+      "date": "2026-09-25",
+      "subject": "添加爆破专家商店专用贴图及映射",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 2
+      },
+      "badWeight": 0,
+      "totalWeight": 2,
+      "deadPaths": 0
+    },
+    {
+      "hash": "3bc53d43d0a451b2ec27abd7c50de8abfe147fc0",
+      "date": "2026-09-25",
+      "subject": "火星探测器",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 438,
+        "PARTIAL": 8,
+        "LAGGING": 5
+      },
+      "badWeight": 5,
+      "totalWeight": 451,
+      "deadPaths": 0
+    },
+    {
+      "hash": "ac2ac442867aac1685d962d9aa3d9067e6540af8",
+      "date": "2026-09-25",
+      "subject": "fix: 统一生物生成检查并修正渔夫任务条件",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 558,
+        "PARTIAL": 96
+      },
+      "badWeight": 0,
+      "totalWeight": 654,
+      "deadPaths": 0
+    },
+    {
+      "hash": "e6d47c41219be8f0ab22eacac50fed0609217b41",
+      "date": "2026-09-25",
+      "subject": "修复连接材质",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 2
+      },
+      "badWeight": 0,
+      "totalWeight": 2,
+      "deadPaths": 0
+    },
+    {
+      "hash": "2ca9e2ac016af5695434a1786401d06affb90955",
+      "date": "2026-09-25",
+      "subject": "feat: 移植左键状态接口并添加 NPC 主动攻击黑名单",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 292,
+        "PARTIAL": 44,
+        "TINY": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 337,
+      "deadPaths": 0
+    },
+    {
+      "hash": "980615a95c25d9464c5d0629426b19c2cbaf97d1",
+      "date": "2026-09-25",
+      "subject": "彩色火把",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 1,
+      "deadPaths": 0
+    },
+    {
+      "hash": "801f95ff39ce6a9e9d99cb450e80559aa162e332",
+      "date": "2026-09-25",
+      "subject": "塞贴图",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 4
+      },
+      "badWeight": 0,
+      "totalWeight": 4,
+      "deadPaths": 0
+    },
+    {
+      "hash": "a6819f175bae21c95161fd010dd921323c1e7142",
+      "date": "2026-09-25",
+      "subject": "feat(magiclib): 支持直接注册动态光源",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 150,
+        "LAGGING": 1
+      },
+      "badWeight": 1,
+      "totalWeight": 151,
+      "deadPaths": 0
+    },
+    {
+      "hash": "566fde2d4a97874f83a92a436f1a7b5e05db0534",
+      "date": "2026-09-25",
+      "subject": "fix(confluence): 修复血肉墙墙后玩家处理并调整渔夫按钮布局",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 32,
+        "PARTIAL": 2
+      },
+      "badWeight": 0,
+      "totalWeight": 34,
+      "deadPaths": 0
+    },
+    {
+      "hash": "05380071a47dc2d5730e989d4a7890c6b7adabfd",
+      "date": "2026-09-26",
+      "subject": "调整种子特性",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 7,
+        "PARTIAL": 7,
+        "LAGGING": 4
+      },
+      "badWeight": 4,
+      "totalWeight": 18,
+      "deadPaths": 0
+    },
+    {
+      "hash": "75a6a63ad24895474c1720c2f48550bd32bcfe3a",
+      "date": "2026-09-26",
+      "subject": "feat(client): 添加 NPC 商店商品稀有度描边渲染组件",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "PARTIAL": 2,
+        "IN-SYNC": 140,
+        "LAGGING": 23
+      },
+      "badWeight": 23,
+      "totalWeight": 165,
+      "deadPaths": 0
+    },
+    {
+      "hash": "fa147c869b43ad697570aabaffeb4118863f348b",
+      "date": "2026-09-27",
+      "subject": "改一点",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 47,
+        "IN-SYNC": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 48,
+      "deadPaths": 0
+    },
+    {
+      "hash": "fcd2368c6f4c1f0d31c167725777ee5aceb93916",
+      "date": "2026-09-27",
+      "subject": "修重铸价格（没对接心情）",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "NEEDS-PORT",
+      "weights": {
+        "LAGGING": 4
+      },
+      "badWeight": 4,
+      "totalWeight": 4,
+      "deadPaths": 0
+    },
+    {
+      "hash": "2d21e33642b328592132f9566d48e66c38eab6c4",
+      "date": "2026-09-27",
+      "subject": "修bug",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 12
+      },
+      "badWeight": 0,
+      "totalWeight": 12,
+      "deadPaths": 0
+    },
+    {
+      "hash": "1038e97fe9465ad87dc2c443ba87b474522eeb37",
+      "date": "2026-09-27",
+      "subject": "链球防止攻击时肘击的正确修复方式",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 1,
+        "IN-SYNC": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 2,
+      "deadPaths": 1
+    },
+    {
+      "hash": "e6c0036c2cae584d8285be97dfa7b428906b19c0",
+      "date": "2026-09-27",
+      "subject": "防止悠悠球肘击地板",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "PARTIAL": 3
+      },
+      "badWeight": 0,
+      "totalWeight": 3,
+      "deadPaths": 0
+    },
+    {
+      "hash": "fc3fabfb9a595cd1a62df1aa6cbf9c0eecd2dc56",
+      "date": "2026-09-27",
+      "subject": "平衡性调整，权重调整，贴图补充",
+      "rule": "A4",
+      "proposal": "TODO",
+      "coverage": "NO-COV",
+      "lag": "PARTIAL",
+      "weights": {
+        "IN-SYNC": 22,
+        "PARTIAL": 44,
+        "LAGGING": 15
+      },
+      "badWeight": 15,
+      "totalWeight": 81,
+      "deadPaths": 0
+    },
+    {
+      "hash": "18221c3387e34e4eec56bc8ecfb232c5ad85b1e5",
+      "date": "2026-09-27",
+      "subject": "调整为标签",
+      "rule": "A3",
+      "proposal": "COVERED",
+      "coverage": "NO-COV",
+      "lag": "COVERED",
+      "weights": {
+        "IN-SYNC": 46,
+        "PARTIAL": 4,
+        "TINY": 1
+      },
+      "badWeight": 0,
+      "totalWeight": 51,
+      "deadPaths": 1
+    },
+    {
+      "hash": "0325341796b91ad491a4331880b46ccde8df793d",
+      "date": "2026-09-27",
+      "subject": "泡泡半透明渲染",
+      "rule": "A0",
+      "proposal": "REVIEW",
+      "coverage": "NO-COV",
+      "lag": "NO-ROW",
+      "weights": {},
+      "badWeight": 0,
+      "totalWeight": 0,
+      "deadPaths": 0
+    },
+    {
+      "hash": "437e53a843c26f5166dc01092e631da010f273a1",
+      "date": "2026-09-27",
+      "subject": "fix(portlib): 修复状态效果共用修改器 ID 时的属性曲线冲突",
+      "rule": "A0",
+      "proposal": "REVIEW",
+      "coverage": "NO-COV",
+      "lag": "NO-ROW",
+      "weights": {},
+      "badWeight": 0,
+      "totalWeight": 0,
+      "deadPaths": 0
+    },
+    {
+      "hash": "dafb03ee9526514fb7781b5036b32d4f1644527a",
+      "date": "2026-09-27",
+      "subject": "fix(block): 修复净化转换表将草植物错误转换为草方块",
+      "rule": "A0",
+      "proposal": "REVIEW",
+      "coverage": "NO-COV",
+      "lag": "NO-ROW",
+      "weights": {},
+      "badWeight": 0,
+      "totalWeight": 0,
+      "deadPaths": 0
+    },
+    {
+      "hash": "2de684965a7924d8d7be6b4c2bd8b3b48b767f5b",
+      "date": "2026-10-02",
+      "subject": "优化动态光照，移除可携带仆从接口行为",
+      "rule": "A0",
+      "proposal": "REVIEW",
+      "coverage": "NO-COV",
+      "lag": "NO-ROW",
+      "weights": {},
+      "badWeight": 0,
+      "totalWeight": 0,
+      "deadPaths": 0
+    },
+    {
+      "hash": "6cda0630323e98618d7d281042db09e08a900357",
+      "date": "2026-10-02",
+      "subject": "添加动态光照注册行为与ParticleAccessor",
+      "rule": "A0",
+      "proposal": "REVIEW",
+      "coverage": "NO-COV",
+      "lag": "NO-ROW",
+      "weights": {},
+      "badWeight": 0,
+      "totalWeight": 0,
+      "deadPaths": 0
+    },
+    {
+      "hash": "13376f960e2d44677d5c743933d83f748257137f",
+      "date": "2026-10-01",
+      "subject": "fix(worldgen): BilayerOreFeature 两个便利构造器把 outerOre 误传成 innerOre",
+      "rule": "A0",
+      "proposal": "REVIEW",
+      "coverage": "NO-COV",
+      "lag": "NO-ROW",
+      "weights": {},
+      "badWeight": 0,
+      "totalWeight": 0,
+      "deadPaths": 0
+    },
+    {
+      "hash": "9351a7e6b8b477f552630cb1e95b71d21b61709b",
+      "date": "2026-10-02",
+      "subject": "fix(entity): 修正改名后遗留的悬空实体 id 字符串",
+      "rule": "A0",
+      "proposal": "REVIEW",
+      "coverage": "NO-COV",
+      "lag": "NO-ROW",
+      "weights": {},
+      "badWeight": 0,
+      "totalWeight": 0,
+      "deadPaths": 0
+    }
+  ]
+}

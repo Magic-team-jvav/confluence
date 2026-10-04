@@ -1,0 +1,6254 @@
+{
+  "range": {
+    "base": "795ac9ccc",
+    "head": "18221c338"
+  },
+  "summary": {
+    "PortLib": {
+      "pointerBumps": 116,
+      "bumpsWithSubCommits": 115,
+      "subCommits": 115,
+      "errors": 0
+    },
+    "Confluence-Magic-Lib": {
+      "pointerBumps": 100,
+      "bumpsWithSubCommits": 96,
+      "subCommits": 99,
+      "errors": 4
+    },
+    "TerraCurio": {
+      "pointerBumps": 87,
+      "bumpsWithSubCommits": 87,
+      "subCommits": 87,
+      "errors": 0
+    },
+    "TerraFurniture": {
+      "pointerBumps": 35,
+      "bumpsWithSubCommits": 30,
+      "subCommits": 35,
+      "errors": 5
+    },
+    "TerraEntity": {
+      "pointerBumps": 5,
+      "bumpsWithSubCommits": 0,
+      "subCommits": 0,
+      "errors": 5
+    },
+    "TerraGuns": {
+      "pointerBumps": 6,
+      "bumpsWithSubCommits": 0,
+      "subCommits": 0,
+      "errors": 6
+    }
+  },
+  "links": {
+    "PortLib": [
+      {
+        "commit": "e7b82668035d562746e0a8e7575bff41ed6a74cf",
+        "date": "2026-06-10",
+        "subject": "part9",
+        "old": "",
+        "new": "e15c43577f37cd56e3cda0d1b097723fef01dd10",
+        "sub_commits": [],
+        "error": "",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "4b004c160640c18d49033ff8c1cdca72655ae7a3",
+        "date": "2026-06-10",
+        "subject": "fix2",
+        "old": "e15c43577f37cd56e3cda0d1b097723fef01dd10",
+        "new": "b459e14b39a3cf63e7f436b4982c81663bf93359",
+        "sub_commits": [
+          {
+            "hash": "b459e14b39a3cf63e7f436b4982c81663bf93359",
+            "date": "2026-06-10",
+            "subject": "fix2"
+          }
+        ],
+        "error": "",
+        "net_files": 14,
+        "net_add": 301,
+        "net_del": 3
+      },
+      {
+        "commit": "45fefd3360890a39038f93c6e49f635b4d5fd7ef",
+        "date": "2026-06-10",
+        "subject": "datamap datagen",
+        "old": "b459e14b39a3cf63e7f436b4982c81663bf93359",
+        "new": "7e1966ea79a8c2e3d90d07750f36efe3ab2944c3",
+        "sub_commits": [
+          {
+            "hash": "7e1966ea79a8c2e3d90d07750f36efe3ab2944c3",
+            "date": "2026-06-10",
+            "subject": "datamap datagen"
+          }
+        ],
+        "error": "",
+        "net_files": 49,
+        "net_add": 782,
+        "net_del": 264
+      },
+      {
+        "commit": "41c27595c5fbf71d1df062a87bda44ceb921f3cc",
+        "date": "2026-06-12",
+        "subject": "feat: 合并 TerraGuns 模块并迁移至 PortLib API",
+        "old": "7e1966ea79a8c2e3d90d07750f36efe3ab2944c3",
+        "new": "840418debf59934b79cf5af68e659e79ca18c7a1",
+        "sub_commits": [
+          {
+            "hash": "840418debf59934b79cf5af68e659e79ca18c7a1",
+            "date": "2026-06-12",
+            "subject": "feat: 合并 TerraGuns 模块并迁移至 PortLib API"
+          }
+        ],
+        "error": "",
+        "net_files": 56,
+        "net_add": 377,
+        "net_del": 226
+      },
+      {
+        "commit": "cb558bcf6f1e9fabbbf9a143f7a17addfdbb4f22",
+        "date": "2026-06-13",
+        "subject": "调整PortEnchantmentHelper",
+        "old": "840418debf59934b79cf5af68e659e79ca18c7a1",
+        "new": "49503fada967321a5176457933c12137c3862cc0",
+        "sub_commits": [
+          {
+            "hash": "49503fada967321a5176457933c12137c3862cc0",
+            "date": "2026-06-13",
+            "subject": "调整PortEnchantmentHelper"
+          }
+        ],
+        "error": "",
+        "net_files": 12,
+        "net_add": 111,
+        "net_del": 143
+      },
+      {
+        "commit": "182149f523c679016e868765bbc358b6c4fff98c",
+        "date": "2026-06-13",
+        "subject": "part10",
+        "old": "49503fada967321a5176457933c12137c3862cc0",
+        "new": "b614110c2794ddff378dfe70cde7a6ef3b3f9fae",
+        "sub_commits": [
+          {
+            "hash": "b614110c2794ddff378dfe70cde7a6ef3b3f9fae",
+            "date": "2026-06-13",
+            "subject": "part10"
+          }
+        ],
+        "error": "",
+        "net_files": 22,
+        "net_add": 549,
+        "net_del": 100
+      },
+      {
+        "commit": "b3f13d405f0fdf1dd3b67bae16a53c969835a280",
+        "date": "2026-06-13",
+        "subject": "part11",
+        "old": "b614110c2794ddff378dfe70cde7a6ef3b3f9fae",
+        "new": "886fecea8f19f1f2d95f3f73132e22439e6308c5",
+        "sub_commits": [
+          {
+            "hash": "886fecea8f19f1f2d95f3f73132e22439e6308c5",
+            "date": "2026-06-13",
+            "subject": "part11"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 226,
+        "net_del": 15
+      },
+      {
+        "commit": "7d1fff5b6f24d72d6cf6e1a2da9cddbe4c4cc645",
+        "date": "2026-06-13",
+        "subject": "part12",
+        "old": "886fecea8f19f1f2d95f3f73132e22439e6308c5",
+        "new": "67d81f81e356407c79079fce7db68e2443033a2a",
+        "sub_commits": [
+          {
+            "hash": "67d81f81e356407c79079fce7db68e2443033a2a",
+            "date": "2026-06-13",
+            "subject": "part12"
+          }
+        ],
+        "error": "",
+        "net_files": 20,
+        "net_add": 262,
+        "net_del": 4
+      },
+      {
+        "commit": "b0716f0c91ee2d99fca19a8bf5e61948c2ba0ff5",
+        "date": "2026-06-14",
+        "subject": "part13",
+        "old": "67d81f81e356407c79079fce7db68e2443033a2a",
+        "new": "6730f4a55e68e57b8a21a0e881871910a35ef0c0",
+        "sub_commits": [
+          {
+            "hash": "6730f4a55e68e57b8a21a0e881871910a35ef0c0",
+            "date": "2026-06-14",
+            "subject": "part13"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 14,
+        "net_del": 15
+      },
+      {
+        "commit": "0b38e2e69940eba0c01d396091151306d2a31b5b",
+        "date": "2026-06-14",
+        "subject": "part14",
+        "old": "6730f4a55e68e57b8a21a0e881871910a35ef0c0",
+        "new": "9613a42ccea1649d42435ce8f4714c89762300ba",
+        "sub_commits": [
+          {
+            "hash": "9613a42ccea1649d42435ce8f4714c89762300ba",
+            "date": "2026-06-14",
+            "subject": "part14"
+          }
+        ],
+        "error": "",
+        "net_files": 23,
+        "net_add": 426,
+        "net_del": 137
+      },
+      {
+        "commit": "15afa497b1661abfee285738bf95982f66203213",
+        "date": "2026-06-14",
+        "subject": "fix magic mirror",
+        "old": "9613a42ccea1649d42435ce8f4714c89762300ba",
+        "new": "3d88776f1a1bba60b9be4b79834c749bdc50e02e",
+        "sub_commits": [
+          {
+            "hash": "3d88776f1a1bba60b9be4b79834c749bdc50e02e",
+            "date": "2026-06-14",
+            "subject": "fix magic mirror"
+          }
+        ],
+        "error": "",
+        "net_files": 73,
+        "net_add": 444,
+        "net_del": 118
+      },
+      {
+        "commit": "a779580be43ac67a393c66d4e9650680f5f643cf",
+        "date": "2026-06-14",
+        "subject": "part16",
+        "old": "3d88776f1a1bba60b9be4b79834c749bdc50e02e",
+        "new": "bd6ac21cf908827632b6667b72d7a928e33884d9",
+        "sub_commits": [
+          {
+            "hash": "bd6ac21cf908827632b6667b72d7a928e33884d9",
+            "date": "2026-06-14",
+            "subject": "part16"
+          }
+        ],
+        "error": "",
+        "net_files": 13,
+        "net_add": 170,
+        "net_del": 16
+      },
+      {
+        "commit": "f30688d174aa798f3290a4a28a78d8eb8bbbc55d",
+        "date": "2026-06-15",
+        "subject": "update: 将多个方块迁移至 PortLib API 并调整方法签名",
+        "old": "bd6ac21cf908827632b6667b72d7a928e33884d9",
+        "new": "ffc8f6afa2814b89475b98dc6c49385c625dfb87",
+        "sub_commits": [
+          {
+            "hash": "ffc8f6afa2814b89475b98dc6c49385c625dfb87",
+            "date": "2026-06-15",
+            "subject": "update: 将多个方块迁移至 PortLib API 并调整方法签名"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 85,
+        "net_del": 0
+      },
+      {
+        "commit": "7646c55055b6a87a8f2b68de6f4a31a3f0fd4b61",
+        "date": "2026-06-15",
+        "subject": "物品移植",
+        "old": "ffc8f6afa2814b89475b98dc6c49385c625dfb87",
+        "new": "144fb9c91ad6dcb6e942057ccaf16cc695bdf272",
+        "sub_commits": [
+          {
+            "hash": "144fb9c91ad6dcb6e942057ccaf16cc695bdf272",
+            "date": "2026-06-15",
+            "subject": "物品移植"
+          }
+        ],
+        "error": "",
+        "net_files": 10,
+        "net_add": 73,
+        "net_del": 14
+      },
+      {
+        "commit": "093eda09f45201870a02fcb37da6bea354e8c923",
+        "date": "2026-06-16",
+        "subject": "part17",
+        "old": "144fb9c91ad6dcb6e942057ccaf16cc695bdf272",
+        "new": "e00172d3e1e4b4af85f068e69a2983030411fd8d",
+        "sub_commits": [
+          {
+            "hash": "e00172d3e1e4b4af85f068e69a2983030411fd8d",
+            "date": "2026-06-16",
+            "subject": "part17"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 113,
+        "net_del": 7
+      },
+      {
+        "commit": "fbcb8e783f73e98c1c0bcefa6f57c4bb4dd48040",
+        "date": "2026-06-16",
+        "subject": "fix crash",
+        "old": "e00172d3e1e4b4af85f068e69a2983030411fd8d",
+        "new": "1a4c2a2c6739a713217d8b578aa6ea527a1d2466",
+        "sub_commits": [
+          {
+            "hash": "1a4c2a2c6739a713217d8b578aa6ea527a1d2466",
+            "date": "2026-06-16",
+            "subject": "fix crash"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 24,
+        "net_del": 11
+      },
+      {
+        "commit": "8bcc392be97784512664ffc2dae9ca666f18ec09",
+        "date": "2026-06-16",
+        "subject": "mob effect",
+        "old": "1a4c2a2c6739a713217d8b578aa6ea527a1d2466",
+        "new": "a18a282665ca294c80fbdb473973284058b65f89",
+        "sub_commits": [
+          {
+            "hash": "a18a282665ca294c80fbdb473973284058b65f89",
+            "date": "2026-06-16",
+            "subject": "mob effect"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 60,
+        "net_del": 12
+      },
+      {
+        "commit": "5481344ca3093a622fa17fcc15e06d71419ea173",
+        "date": "2026-06-18",
+        "subject": "something2",
+        "old": "a18a282665ca294c80fbdb473973284058b65f89",
+        "new": "b1dd7963f078ca2608d8646338bfae6d4e373f14",
+        "sub_commits": [
+          {
+            "hash": "b1dd7963f078ca2608d8646338bfae6d4e373f14",
+            "date": "2026-06-18",
+            "subject": "something2"
+          }
+        ],
+        "error": "",
+        "net_files": 7,
+        "net_add": 77,
+        "net_del": 15
+      },
+      {
+        "commit": "4dcf95cfe35b8d88d74dd443463243302d163e3c",
+        "date": "2026-06-18",
+        "subject": "移植家具",
+        "old": "b1dd7963f078ca2608d8646338bfae6d4e373f14",
+        "new": "cfcb118c28e2236546b32eb35d8fc0a6fbd80bd4",
+        "sub_commits": [
+          {
+            "hash": "cfcb118c28e2236546b32eb35d8fc0a6fbd80bd4",
+            "date": "2026-06-18",
+            "subject": "移植家具"
+          }
+        ],
+        "error": "",
+        "net_files": 62,
+        "net_add": 1231,
+        "net_del": 39
+      },
+      {
+        "commit": "c5e9f9be5fb452de7bb7c7f5eb54226dd6ca63c3",
+        "date": "2026-06-19",
+        "subject": "part18",
+        "old": "cfcb118c28e2236546b32eb35d8fc0a6fbd80bd4",
+        "new": "04b74f5dca0352c3dea1dec2eadcab29bdd2595f",
+        "sub_commits": [
+          {
+            "hash": "04b74f5dca0352c3dea1dec2eadcab29bdd2595f",
+            "date": "2026-06-19",
+            "subject": "part18"
+          }
+        ],
+        "error": "",
+        "net_files": 14,
+        "net_add": 336,
+        "net_del": 157
+      },
+      {
+        "commit": "10705abc75005d4b7ef56a81880a4e900f7da8f4",
+        "date": "2026-06-21",
+        "subject": "part19",
+        "old": "04b74f5dca0352c3dea1dec2eadcab29bdd2595f",
+        "new": "eb11a911236a016ade62bfdbc13f4ded9215397b",
+        "sub_commits": [
+          {
+            "hash": "eb11a911236a016ade62bfdbc13f4ded9215397b",
+            "date": "2026-06-21",
+            "subject": "part19"
+          }
+        ],
+        "error": "",
+        "net_files": 76,
+        "net_add": 499,
+        "net_del": 406
+      },
+      {
+        "commit": "d17dc7c9a01e1305280926a3dbb29933518eb282",
+        "date": "2026-06-21",
+        "subject": "fix crash",
+        "old": "eb11a911236a016ade62bfdbc13f4ded9215397b",
+        "new": "0d22ad8a74b3b6a972bc1aa983927d8902e42d0c",
+        "sub_commits": [
+          {
+            "hash": "0d22ad8a74b3b6a972bc1aa983927d8902e42d0c",
+            "date": "2026-06-21",
+            "subject": "fix crash"
+          }
+        ],
+        "error": "",
+        "net_files": 9,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "4ab2d42ad4579a2d0e07af2d7b0df13a47742c9c",
+        "date": "2026-06-21",
+        "subject": "fix crash",
+        "old": "0d22ad8a74b3b6a972bc1aa983927d8902e42d0c",
+        "new": "b4ea6c736e2020dd24b858da7fa9755947f50ea8",
+        "sub_commits": [
+          {
+            "hash": "b4ea6c736e2020dd24b858da7fa9755947f50ea8",
+            "date": "2026-06-21",
+            "subject": "fix crash"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 6,
+        "net_del": 2
+      },
+      {
+        "commit": "c9f3af990085517c5873f0cccc6715244f6dbd16",
+        "date": "2026-06-21",
+        "subject": "extensions",
+        "old": "b4ea6c736e2020dd24b858da7fa9755947f50ea8",
+        "new": "5011e019f586fa51bbc03854e2dff6caa3e1e3ac",
+        "sub_commits": [
+          {
+            "hash": "5011e019f586fa51bbc03854e2dff6caa3e1e3ac",
+            "date": "2026-06-21",
+            "subject": "extensions"
+          }
+        ],
+        "error": "",
+        "net_files": 106,
+        "net_add": 1537,
+        "net_del": 49
+      },
+      {
+        "commit": "c7e4f8fab88d88b273af6d4d9207fe437c875a87",
+        "date": "2026-06-21",
+        "subject": "extensions2",
+        "old": "5011e019f586fa51bbc03854e2dff6caa3e1e3ac",
+        "new": "ea11e6c00ac7d1e656eb645c34cc96889e61f99b",
+        "sub_commits": [
+          {
+            "hash": "ea11e6c00ac7d1e656eb645c34cc96889e61f99b",
+            "date": "2026-06-21",
+            "subject": "extensions2"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 91,
+        "net_del": 14
+      },
+      {
+        "commit": "f6b8f73b09d34007aff282b4e217518eb6aa3fe0",
+        "date": "2026-06-22",
+        "subject": "part20",
+        "old": "ea11e6c00ac7d1e656eb645c34cc96889e61f99b",
+        "new": "c5238df28890744c6367503caf1a73496d8afd63",
+        "sub_commits": [
+          {
+            "hash": "c5238df28890744c6367503caf1a73496d8afd63",
+            "date": "2026-06-22",
+            "subject": "part20"
+          }
+        ],
+        "error": "",
+        "net_files": 18,
+        "net_add": 533,
+        "net_del": 59
+      },
+      {
+        "commit": "0e370c928c3f020b3cc73a43e5c1c7c6262d8047",
+        "date": "2026-06-24",
+        "subject": "data component method rename",
+        "old": "c5238df28890744c6367503caf1a73496d8afd63",
+        "new": "b8ddaf89b5182c34aab24527181ac9dbc023088e",
+        "sub_commits": [
+          {
+            "hash": "b8ddaf89b5182c34aab24527181ac9dbc023088e",
+            "date": "2026-06-24",
+            "subject": "data component method rename"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 51,
+        "net_del": 20
+      },
+      {
+        "commit": "4298126f93036624446f3d0a3306ae5c09506962",
+        "date": "2026-06-24",
+        "subject": "IPortItemExtension",
+        "old": "b8ddaf89b5182c34aab24527181ac9dbc023088e",
+        "new": "64477d5b0edd42aec1056c6e42506809c5497621",
+        "sub_commits": [
+          {
+            "hash": "64477d5b0edd42aec1056c6e42506809c5497621",
+            "date": "2026-06-24",
+            "subject": "IPortItemExtension"
+          }
+        ],
+        "error": "",
+        "net_files": 12,
+        "net_add": 161,
+        "net_del": 15
+      },
+      {
+        "commit": "f6e114cdb6154b0eb0ebd148d02594019fab64e7",
+        "date": "2026-06-24",
+        "subject": "part21",
+        "old": "64477d5b0edd42aec1056c6e42506809c5497621",
+        "new": "de319c5bc2b8cd11d441e1a851ce2ef5a026df8b",
+        "sub_commits": [
+          {
+            "hash": "de319c5bc2b8cd11d441e1a851ce2ef5a026df8b",
+            "date": "2026-06-24",
+            "subject": "part21"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 14,
+        "net_del": 0
+      },
+      {
+        "commit": "c0c6a321d65df47de83545d7ae5e7ae46f0d7b0d",
+        "date": "2026-06-28",
+        "subject": "part24",
+        "old": "de319c5bc2b8cd11d441e1a851ce2ef5a026df8b",
+        "new": "88537f7f0ea5c8cec5e4516e7c8b7ac3699550e4",
+        "sub_commits": [
+          {
+            "hash": "88537f7f0ea5c8cec5e4516e7c8b7ac3699550e4",
+            "date": "2026-06-28",
+            "subject": "part24"
+          }
+        ],
+        "error": "",
+        "net_files": 20,
+        "net_add": 193,
+        "net_del": 56
+      },
+      {
+        "commit": "1516cbd2ffae85762e69875101a5e7bfcbe82102",
+        "date": "2026-06-30",
+        "subject": "part fluid type",
+        "old": "88537f7f0ea5c8cec5e4516e7c8b7ac3699550e4",
+        "new": "28ea13e4423025128e29bef4919997ed5e076cbe",
+        "sub_commits": [
+          {
+            "hash": "28ea13e4423025128e29bef4919997ed5e076cbe",
+            "date": "2026-06-30",
+            "subject": "part fluid type"
+          }
+        ],
+        "error": "",
+        "net_files": 26,
+        "net_add": 285,
+        "net_del": 62
+      },
+      {
+        "commit": "8ce7f4d7f8ab5873f4f91b90ffe6fb5010ea3ddf",
+        "date": "2026-07-01",
+        "subject": "part recipe datagen",
+        "old": "28ea13e4423025128e29bef4919997ed5e076cbe",
+        "new": "f5c8dd08e1704fee5b89dc1fb3b694fc38f91528",
+        "sub_commits": [
+          {
+            "hash": "f5c8dd08e1704fee5b89dc1fb3b694fc38f91528",
+            "date": "2026-07-01",
+            "subject": "part recipe datagen"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 35,
+        "net_del": 8
+      },
+      {
+        "commit": "9a48d86198564eab0f5e71ee74fe3ce9a633ca69",
+        "date": "2026-07-01",
+        "subject": "part npc1",
+        "old": "f5c8dd08e1704fee5b89dc1fb3b694fc38f91528",
+        "new": "010fc0226cb873d370bebeaaea4ffd542041039f",
+        "sub_commits": [
+          {
+            "hash": "010fc0226cb873d370bebeaaea4ffd542041039f",
+            "date": "2026-07-01",
+            "subject": "part npc1"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 8,
+        "net_del": 0
+      },
+      {
+        "commit": "fac72523a8907a553ca28bc90358584647513efe",
+        "date": "2026-07-02",
+        "subject": "part critters",
+        "old": "010fc0226cb873d370bebeaaea4ffd542041039f",
+        "new": "2f4f924f9fcfd43cb005682a0b516a0f6f1befc5",
+        "sub_commits": [
+          {
+            "hash": "2f4f924f9fcfd43cb005682a0b516a0f6f1befc5",
+            "date": "2026-07-02",
+            "subject": "part critters"
+          }
+        ],
+        "error": "",
+        "net_files": 12,
+        "net_add": 236,
+        "net_del": 4
+      },
+      {
+        "commit": "911437e0343f2d13847a998c7e377a27bdc07858",
+        "date": "2026-07-04",
+        "subject": "able to start game",
+        "old": "2f4f924f9fcfd43cb005682a0b516a0f6f1befc5",
+        "new": "a26dada9d14798e8769ff2116613e928ac5f1283",
+        "sub_commits": [
+          {
+            "hash": "a26dada9d14798e8769ff2116613e928ac5f1283",
+            "date": "2026-07-04",
+            "subject": "able to start game"
+          }
+        ],
+        "error": "",
+        "net_files": 57,
+        "net_add": 604,
+        "net_del": 207
+      },
+      {
+        "commit": "1284d08a9cf043e8e204c15f9f081cfe245483a2",
+        "date": "2026-07-04",
+        "subject": "able to into world",
+        "old": "a26dada9d14798e8769ff2116613e928ac5f1283",
+        "new": "12e74eca758c4cf9b4114270fe4d83e9815cce1b",
+        "sub_commits": [
+          {
+            "hash": "12e74eca758c4cf9b4114270fe4d83e9815cce1b",
+            "date": "2026-07-04",
+            "subject": "able to into world"
+          }
+        ],
+        "error": "",
+        "net_files": 22,
+        "net_add": 1264,
+        "net_del": 273
+      },
+      {
+        "commit": "cf4b3d2013553cb3460f398231b225e065d3de34",
+        "date": "2026-07-05",
+        "subject": "fix IncompatibleClassChangeError",
+        "old": "12e74eca758c4cf9b4114270fe4d83e9815cce1b",
+        "new": "e66270fabcb4ec83f31bcbe9f97c28e941c1f695",
+        "sub_commits": [
+          {
+            "hash": "e66270fabcb4ec83f31bcbe9f97c28e941c1f695",
+            "date": "2026-07-05",
+            "subject": "fix IncompatibleClassChangeError"
+          }
+        ],
+        "error": "",
+        "net_files": 324,
+        "net_add": 2436,
+        "net_del": 0
+      },
+      {
+        "commit": "0a575062b9611515983cdad9daed062977933990",
+        "date": "2026-07-06",
+        "subject": "docs: 修正PointedDripstoneBlockMixin中@ModifyVariable注释",
+        "old": "e66270fabcb4ec83f31bcbe9f97c28e941c1f695",
+        "new": "f7e035e4dfc60dc706e0d2ffa484d40feae470e6",
+        "sub_commits": [
+          {
+            "hash": "f7e035e4dfc60dc706e0d2ffa484d40feae470e6",
+            "date": "2026-07-06",
+            "subject": "docs: 修正PointedDripstoneBlockMixin中@ModifyVariable注释"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "150b32bb4ce0a4aeb7df7f83fc14d71c646ea26d",
+        "date": "2026-07-06",
+        "subject": "docs: 修正PointedDripstoneBlockMixin中@ModifyVariable注释",
+        "old": "f7e035e4dfc60dc706e0d2ffa484d40feae470e6",
+        "new": "a399d323fc9ef4162f327dcba0755213bca835de",
+        "sub_commits": [
+          {
+            "hash": "a399d323fc9ef4162f327dcba0755213bca835de",
+            "date": "2026-07-06",
+            "subject": "docs: 修正PointedDripstoneBlockMixin中@ModifyVariable注释"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "5dac72b221fecf1c5525602cb8db2e5dc19bc75a",
+        "date": "2026-07-11",
+        "subject": "改coremod",
+        "old": "a399d323fc9ef4162f327dcba0755213bca835de",
+        "new": "e143cc053874df743fad46ce43fd3b02c8977c54",
+        "sub_commits": [
+          {
+            "hash": "e143cc053874df743fad46ce43fd3b02c8977c54",
+            "date": "2026-07-11",
+            "subject": "改coremod"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 8,
+        "net_del": 3
+      },
+      {
+        "commit": "6ffa7c374c3a01a8e39b4b4681e108980a6c3881",
+        "date": "2026-07-11",
+        "subject": "refactor: 重命名PortPlayerEvent内部类引用",
+        "old": "e143cc053874df743fad46ce43fd3b02c8977c54",
+        "new": "6b2cc1e752561dcc56d6a547b2e3490077aaa38e",
+        "sub_commits": [
+          {
+            "hash": "6b2cc1e752561dcc56d6a547b2e3490077aaa38e",
+            "date": "2026-07-11",
+            "subject": "refactor: 重命名PortPlayerEvent内部类引用"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "f9332ca42aa6c1f1af4627f50c7bcb45a9103ef0",
+        "date": "2026-07-12",
+        "subject": "refactor: 修正PortLib插入脚本中的方法调用指令",
+        "old": "6b2cc1e752561dcc56d6a547b2e3490077aaa38e",
+        "new": "298942ad93642109197f77ceb411b53d489069ce",
+        "sub_commits": [
+          {
+            "hash": "298942ad93642109197f77ceb411b53d489069ce",
+            "date": "2026-07-12",
+            "subject": "refactor: 修正PortLib插入脚本中的方法调用指令"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "d4d5d0fe1be53678ebaded5a9a126113ee2387ef",
+        "date": "2026-07-22",
+        "subject": "修崩溃",
+        "old": "298942ad93642109197f77ceb411b53d489069ce",
+        "new": "93ee2bf38810fd2ff8aeb8bcafe525e7ec50e625",
+        "sub_commits": [
+          {
+            "hash": "93ee2bf38810fd2ff8aeb8bcafe525e7ec50e625",
+            "date": "2026-07-22",
+            "subject": "修崩溃"
+          }
+        ],
+        "error": "",
+        "net_files": 7,
+        "net_add": 20,
+        "net_del": 15
+      },
+      {
+        "commit": "09601301fd4119466053256f186163ac2cebc315",
+        "date": "2026-07-25",
+        "subject": "fix",
+        "old": "93ee2bf38810fd2ff8aeb8bcafe525e7ec50e625",
+        "new": "6f2a8c13fc3a49315ef5ffef3e8d754f23ac1e9a",
+        "sub_commits": [
+          {
+            "hash": "6f2a8c13fc3a49315ef5ffef3e8d754f23ac1e9a",
+            "date": "2026-07-25",
+            "subject": "fix"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 6,
+        "net_del": 1
+      },
+      {
+        "commit": "a6f8f089d660f307ff180f892c8a273d57ae7111",
+        "date": "2026-07-25",
+        "subject": "fix world selection",
+        "old": "6f2a8c13fc3a49315ef5ffef3e8d754f23ac1e9a",
+        "new": "01feaecb600880a701fa6a1152441843123acd75",
+        "sub_commits": [
+          {
+            "hash": "01feaecb600880a701fa6a1152441843123acd75",
+            "date": "2026-07-25",
+            "subject": "fix world selection"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 3
+      },
+      {
+        "commit": "0fa73dd799e44ab25180e094dbeb833c52d3f551",
+        "date": "2026-07-29",
+        "subject": "truly fix",
+        "old": "01feaecb600880a701fa6a1152441843123acd75",
+        "new": "8be490a9fbce83d6adc1b3fd0b80d94e4b6bf686",
+        "sub_commits": [
+          {
+            "hash": "8be490a9fbce83d6adc1b3fd0b80d94e4b6bf686",
+            "date": "2026-07-29",
+            "subject": "truly fix"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 4,
+        "net_del": 9
+      },
+      {
+        "commit": "77f3b047e77d024630402f8a558aa26d06075fe1",
+        "date": "2026-07-29",
+        "subject": "feat: 新增步高度属性并完善跨版本桥接功能",
+        "old": "8be490a9fbce83d6adc1b3fd0b80d94e4b6bf686",
+        "new": "ce57f3a88c75904d60c888cbef88adb15fa8cf2c",
+        "sub_commits": [
+          {
+            "hash": "ce57f3a88c75904d60c888cbef88adb15fa8cf2c",
+            "date": "2026-07-29",
+            "subject": "feat: 新增步高度属性并完善跨版本桥接功能"
+          }
+        ],
+        "error": "",
+        "net_files": 40,
+        "net_add": 1183,
+        "net_del": 168
+      },
+      {
+        "commit": "b375ad22b8939ba245c742c9d952ce1a4eb3a277",
+        "date": "2026-07-29",
+        "subject": "refactor: 优化网络包系统并完善跨版本桥接",
+        "old": "ce57f3a88c75904d60c888cbef88adb15fa8cf2c",
+        "new": "c32b5779e467848104e0507bdc035b6be60c9c71",
+        "sub_commits": [
+          {
+            "hash": "c32b5779e467848104e0507bdc035b6be60c9c71",
+            "date": "2026-07-29",
+            "subject": "refactor: 优化网络包系统并完善跨版本桥接"
+          }
+        ],
+        "error": "",
+        "net_files": 8,
+        "net_add": 148,
+        "net_del": 69
+      },
+      {
+        "commit": "f02d012ad1055396d7248ce2d960697d89085b1f",
+        "date": "2026-07-29",
+        "subject": "整理",
+        "old": "c32b5779e467848104e0507bdc035b6be60c9c71",
+        "new": "c6e5fabd0ce2f0f46f2b5d44a2d1509eaf5e8ed1",
+        "sub_commits": [
+          {
+            "hash": "c6e5fabd0ce2f0f46f2b5d44a2d1509eaf5e8ed1",
+            "date": "2026-07-29",
+            "subject": "整理"
+          }
+        ],
+        "error": "",
+        "net_files": 32,
+        "net_add": 332,
+        "net_del": 972
+      },
+      {
+        "commit": "bf3b4f26edb128f74913746e70cce459b4ecd509",
+        "date": "2026-08-04",
+        "subject": "修吃东西崩溃 无法正常返还物品 堆叠数",
+        "old": "c6e5fabd0ce2f0f46f2b5d44a2d1509eaf5e8ed1",
+        "new": "b6cda02f690ddc991385bc8ace8a4f9e9b5cc1f2",
+        "sub_commits": [
+          {
+            "hash": "b6cda02f690ddc991385bc8ace8a4f9e9b5cc1f2",
+            "date": "2026-08-04",
+            "subject": "修吃东西崩溃 无法正常返还物品 堆叠数"
+          }
+        ],
+        "error": "",
+        "net_files": 10,
+        "net_add": 99,
+        "net_del": 52
+      },
+      {
+        "commit": "6c62927b5be78fd6deaca1b238c96bf04b8190f1",
+        "date": "2026-08-04",
+        "subject": "不懂",
+        "old": "b6cda02f690ddc991385bc8ace8a4f9e9b5cc1f2",
+        "new": "76cf96b9679c8ada34ad4f37b1f631ff288a9506",
+        "sub_commits": [
+          {
+            "hash": "76cf96b9679c8ada34ad4f37b1f631ff288a9506",
+            "date": "2026-08-04",
+            "subject": "不懂"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 4,
+        "net_del": 1
+      },
+      {
+        "commit": "83674802b1c95e2b44b8f9802afbf3961f620663",
+        "date": "2026-08-07",
+        "subject": "portlib v1.0.0",
+        "old": "76cf96b9679c8ada34ad4f37b1f631ff288a9506",
+        "new": "9198240685130d731a7cf1f15d9688179a058c2b",
+        "sub_commits": [
+          {
+            "hash": "9198240685130d731a7cf1f15d9688179a058c2b",
+            "date": "2026-08-07",
+            "subject": "portlib v1.0.0"
+          }
+        ],
+        "error": "",
+        "net_files": 12,
+        "net_add": 62,
+        "net_del": 138
+      },
+      {
+        "commit": "80378e047196844f91594eef00d59ad09e15f248",
+        "date": "2026-08-07",
+        "subject": "TerraCurio依赖",
+        "old": "9198240685130d731a7cf1f15d9688179a058c2b",
+        "new": "c0dbc8b513fd2d1b1c8c65e7461239883124218a",
+        "sub_commits": [
+          {
+            "hash": "c0dbc8b513fd2d1b1c8c65e7461239883124218a",
+            "date": "2026-08-07",
+            "subject": "TerraCurio依赖"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "bad95470cda714d414a012aca6597d36bb3b9de0",
+        "date": "2026-08-08",
+        "subject": "同步1.21.1的修改",
+        "old": "c0dbc8b513fd2d1b1c8c65e7461239883124218a",
+        "new": "3967401b1894404c839606e4b3f36e32d775ef34",
+        "sub_commits": [
+          {
+            "hash": "3967401b1894404c839606e4b3f36e32d775ef34",
+            "date": "2026-08-08",
+            "subject": "同步1.21.1的修改"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 3
+      },
+      {
+        "commit": "4fa8653223abe58ef1a63c55760d48e1d6e89ff4",
+        "date": "2026-08-11",
+        "subject": "修复重生事件逻辑",
+        "old": "3967401b1894404c839606e4b3f36e32d775ef34",
+        "new": "99cc1d3308696d306722619f8354017b120f4943",
+        "sub_commits": [
+          {
+            "hash": "99cc1d3308696d306722619f8354017b120f4943",
+            "date": "2026-08-11",
+            "subject": "修复重生事件逻辑"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 45,
+        "net_del": 34
+      },
+      {
+        "commit": "dfcc5c0410e33e310e6e98479b0fab8cb7d2d2fe",
+        "date": "2026-08-15",
+        "subject": "feat: 对齐 1.21 内容与运行时行为",
+        "old": "99cc1d3308696d306722619f8354017b120f4943",
+        "new": "f7c87cba2b34d484f197e2c3d8e636a6a11f3358",
+        "sub_commits": [
+          {
+            "hash": "f7c87cba2b34d484f197e2c3d8e636a6a11f3358",
+            "date": "2026-08-15",
+            "subject": "feat: 对齐 1.21 内容与运行时行为"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 39,
+        "net_del": 8
+      },
+      {
+        "commit": "dc57ba5c2d2a156873f9410e90765af3e4bb268c",
+        "date": "2026-08-16",
+        "subject": "注释 杀杀杀",
+        "old": "f7c87cba2b34d484f197e2c3d8e636a6a11f3358",
+        "new": "de60e6082e04521b97e637267594b0f17e8b9eae",
+        "sub_commits": [
+          {
+            "hash": "de60e6082e04521b97e637267594b0f17e8b9eae",
+            "date": "2026-08-16",
+            "subject": "注释 杀杀杀"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 8,
+        "net_del": 39
+      },
+      {
+        "commit": "4ac81edb7082b912dd54523e1b2d8bc3482fd494",
+        "date": "2026-08-18",
+        "subject": "药水效果（未完成）",
+        "old": "de60e6082e04521b97e637267594b0f17e8b9eae",
+        "new": "6977e3d354f3fdc67a6de4f41eb4f1b96c5b5f5f",
+        "sub_commits": [
+          {
+            "hash": "6977e3d354f3fdc67a6de4f41eb4f1b96c5b5f5f",
+            "date": "2026-08-18",
+            "subject": "药水效果（未完成）"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 66,
+        "net_del": 5
+      },
+      {
+        "commit": "1c012ccb1963d8521cb880a5d23ceaf9cceae438",
+        "date": "2026-08-22",
+        "subject": "将饰品的药水效果转移至lib",
+        "old": "6977e3d354f3fdc67a6de4f41eb4f1b96c5b5f5f",
+        "new": "9de76c9df93aa5e589c28de0be8c549126bb0f44",
+        "sub_commits": [
+          {
+            "hash": "9de76c9df93aa5e589c28de0be8c549126bb0f44",
+            "date": "2026-08-22",
+            "subject": "将饰品的药水效果转移至lib"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 36,
+        "net_del": 36
+      },
+      {
+        "commit": "863e8bef83eee5d71c68e8512dd38490ba56ccf1",
+        "date": "2026-08-23",
+        "subject": "调整版本",
+        "old": "9de76c9df93aa5e589c28de0be8c549126bb0f44",
+        "new": "fe68bb4e8763849be978d98fb4202a99f647fc6f",
+        "sub_commits": [
+          {
+            "hash": "fe68bb4e8763849be978d98fb4202a99f647fc6f",
+            "date": "2026-08-23",
+            "subject": "调整版本"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 5
+      },
+      {
+        "commit": "21b060ec6922d1cbbf20f13542947b16cb9ef4f8",
+        "date": "2026-08-23",
+        "subject": "饰品能力全改为datamap，修复潜行属性",
+        "old": "fe68bb4e8763849be978d98fb4202a99f647fc6f",
+        "new": "4de69c70f6f37a04eaa8f6f9b994d7c4244ff9a2",
+        "sub_commits": [
+          {
+            "hash": "4de69c70f6f37a04eaa8f6f9b994d7c4244ff9a2",
+            "date": "2026-08-23",
+            "subject": "饰品能力全改为datamap，修复潜行属性"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 17,
+        "net_del": 8
+      },
+      {
+        "commit": "4ef159bf9b0c2a077ae985815ade5dc4948af8e0",
+        "date": "2026-08-23",
+        "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子",
+        "old": "4de69c70f6f37a04eaa8f6f9b994d7c4244ff9a2",
+        "new": "354b465f391c2d1ba7473ca1bc55ef658bababe7",
+        "sub_commits": [
+          {
+            "hash": "354b465f391c2d1ba7473ca1bc55ef658bababe7",
+            "date": "2026-08-23",
+            "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 3,
+        "net_del": 4
+      },
+      {
+        "commit": "9057f178ca6da97651c79df115d27c0722c0742c",
+        "date": "2026-08-28",
+        "subject": "玩家动画（未注册永夜动画）",
+        "old": "354b465f391c2d1ba7473ca1bc55ef658bababe7",
+        "new": "536a65791908fe34d2ed11bf55cb8872f5061b4f",
+        "sub_commits": [
+          {
+            "hash": "536a65791908fe34d2ed11bf55cb8872f5061b4f",
+            "date": "2026-08-28",
+            "subject": "玩家动画（未注册永夜动画）"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 5,
+        "net_del": 3
+      },
+      {
+        "commit": "29c1459cf61c91fa924401200e8ae969b4c84530",
+        "date": "2026-09-02",
+        "subject": "删除一些Extension类",
+        "old": "536a65791908fe34d2ed11bf55cb8872f5061b4f",
+        "new": "be811d75df1631b6734ea4276e62d2169374b3c8",
+        "sub_commits": [
+          {
+            "hash": "be811d75df1631b6734ea4276e62d2169374b3c8",
+            "date": "2026-09-02",
+            "subject": "删除一些Extension类"
+          }
+        ],
+        "error": "",
+        "net_files": 84,
+        "net_add": 851,
+        "net_del": 2259
+      },
+      {
+        "commit": "7b3b5c28ec8b7dba2727941ca36da9c97b0e98cd",
+        "date": "2026-09-03",
+        "subject": "渔夫任务系统修改",
+        "old": "be811d75df1631b6734ea4276e62d2169374b3c8",
+        "new": "6033d52102f0682fbd60a3fb522aab9cfe8c2640",
+        "sub_commits": [
+          {
+            "hash": "6033d52102f0682fbd60a3fb522aab9cfe8c2640",
+            "date": "2026-09-03",
+            "subject": "渔夫任务系统修改"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 2
+      },
+      {
+        "commit": "4122dbcf0fa8a61644303f9446f00700b835fb50",
+        "date": "2026-09-04",
+        "subject": "修部分服务端报错",
+        "old": "6033d52102f0682fbd60a3fb522aab9cfe8c2640",
+        "new": "e05bc06d35376a73fb95eea66b3128aca49626d4",
+        "sub_commits": [
+          {
+            "hash": "e05bc06d35376a73fb95eea66b3128aca49626d4",
+            "date": "2026-09-04",
+            "subject": "修部分服务端报错"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "c83192cf6fc8e92dee28f2b1bb33a75c715ad230",
+        "date": "2026-09-05",
+        "subject": "暂存",
+        "old": "e05bc06d35376a73fb95eea66b3128aca49626d4",
+        "new": "300c8cf6b75ac59d29ff9b45223e4625c0737798",
+        "sub_commits": [
+          {
+            "hash": "300c8cf6b75ac59d29ff9b45223e4625c0737798",
+            "date": "2026-09-05",
+            "subject": "暂存"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 43,
+        "net_del": 162
+      },
+      {
+        "commit": "31896204bd178363411cdc039a2e2dfc18e70814",
+        "date": "2026-09-06",
+        "subject": "静态方法改接口",
+        "old": "300c8cf6b75ac59d29ff9b45223e4625c0737798",
+        "new": "b1719bf98ad70c107a3d04b2181c56d8d5758603",
+        "sub_commits": [
+          {
+            "hash": "b1719bf98ad70c107a3d04b2181c56d8d5758603",
+            "date": "2026-09-06",
+            "subject": "静态方法改接口"
+          }
+        ],
+        "error": "",
+        "net_files": 104,
+        "net_add": 1011,
+        "net_del": 886
+      },
+      {
+        "commit": "a0148b9fa59e38773fbade55180c2efc075ab2fc",
+        "date": "2026-09-06",
+        "subject": "修部分接口",
+        "old": "b1719bf98ad70c107a3d04b2181c56d8d5758603",
+        "new": "9ccd9c6826448cb5c728fdb68b183d007dde7b95",
+        "sub_commits": [
+          {
+            "hash": "9ccd9c6826448cb5c728fdb68b183d007dde7b95",
+            "date": "2026-09-06",
+            "subject": "修部分接口"
+          }
+        ],
+        "error": "",
+        "net_files": 26,
+        "net_add": 32,
+        "net_del": 47
+      },
+      {
+        "commit": "0cf629c1921cdd4b178845a7a797acb613c41c9a",
+        "date": "2026-09-06",
+        "subject": "属性静态字段注入",
+        "old": "9ccd9c6826448cb5c728fdb68b183d007dde7b95",
+        "new": "9dbd446e448c872ebce87c1f6a2b7f0a7a3a721a",
+        "sub_commits": [
+          {
+            "hash": "9dbd446e448c872ebce87c1f6a2b7f0a7a3a721a",
+            "date": "2026-09-06",
+            "subject": "属性静态字段注入"
+          }
+        ],
+        "error": "",
+        "net_files": 30,
+        "net_add": 151,
+        "net_del": 194
+      },
+      {
+        "commit": "609fba73273e2c0d00d72ba9a454324d984f8946",
+        "date": "2026-09-06",
+        "subject": "新增 IPortConfigValueExtension，提供配置值读取方法和接口转换入口",
+        "old": "9ccd9c6826448cb5c728fdb68b183d007dde7b95",
+        "new": "09a3e907252efa38e7071903c40f0a0d4a705cc5",
+        "sub_commits": [
+          {
+            "hash": "09a3e907252efa38e7071903c40f0a0d4a705cc5",
+            "date": "2026-09-06",
+            "subject": "新增 IPortConfigValueExtension，提供配置值读取方法和接口转换入口"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 533,
+        "net_del": 14
+      },
+      {
+        "commit": "5bdce306823d6e9cc9130e3293df0abe12bfa7c1",
+        "date": "2026-09-06",
+        "subject": "Merge remote-tracking branch 'origin/forge-dev/1.20.1' into forge-dev/1.20.1",
+        "old": "9dbd446e448c872ebce87c1f6a2b7f0a7a3a721a",
+        "new": "abd0c22df8af58b63cf5f8df35740a767015154e",
+        "sub_commits": [
+          {
+            "hash": "09a3e907252efa38e7071903c40f0a0d4a705cc5",
+            "date": "2026-09-06",
+            "subject": "新增 IPortConfigValueExtension，提供配置值读取方法和接口转换入口"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 532,
+        "net_del": 13
+      },
+      {
+        "commit": "2e7d30d15e8a47d3489434ea2e9ec69938e504ec",
+        "date": "2026-09-06",
+        "subject": "configuration task",
+        "old": "abd0c22df8af58b63cf5f8df35740a767015154e",
+        "new": "a805919cf540e723fccb036dd0b6e9243a064ca5",
+        "sub_commits": [
+          {
+            "hash": "a805919cf540e723fccb036dd0b6e9243a064ca5",
+            "date": "2026-09-06",
+            "subject": "configuration task"
+          }
+        ],
+        "error": "",
+        "net_files": 13,
+        "net_add": 852,
+        "net_del": 141
+      },
+      {
+        "commit": "ea0bb9c0fa512ccb9b72463d3da85358049a1124",
+        "date": "2026-09-06",
+        "subject": "优化",
+        "old": "a805919cf540e723fccb036dd0b6e9243a064ca5",
+        "new": "8c0d5d5ce7421272527a82e06dd4c7a1610d2093",
+        "sub_commits": [
+          {
+            "hash": "8c0d5d5ce7421272527a82e06dd4c7a1610d2093",
+            "date": "2026-09-06",
+            "subject": "优化"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 344,
+        "net_del": 89
+      },
+      {
+        "commit": "841165c47a87c7876e7763d0e59babec2efc07e5",
+        "date": "2026-09-06",
+        "subject": "删除多余内容",
+        "old": "8c0d5d5ce7421272527a82e06dd4c7a1610d2093",
+        "new": "5480dc122fcefddf38409de90073126c29c0dc05",
+        "sub_commits": [
+          {
+            "hash": "5480dc122fcefddf38409de90073126c29c0dc05",
+            "date": "2026-09-06",
+            "subject": "删除多余内容"
+          }
+        ],
+        "error": "",
+        "net_files": 13,
+        "net_add": 55,
+        "net_del": 132
+      },
+      {
+        "commit": "741f98d1e938b8e186637494dd2b8067fe7ed109",
+        "date": "2026-09-06",
+        "subject": "feat(otherworld): 完善生物行为、NPC交易与配置界面",
+        "old": "5480dc122fcefddf38409de90073126c29c0dc05",
+        "new": "011b119235af4f3a73df515c6f115a592aae515e",
+        "sub_commits": [
+          {
+            "hash": "011b119235af4f3a73df515c6f115a592aae515e",
+            "date": "2026-09-06",
+            "subject": "feat(otherworld): 完善生物行为、NPC交易与配置界面"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 31,
+        "net_del": 8
+      },
+      {
+        "commit": "5c99e970211f28efff02ff010b8695ba6ec14e0f",
+        "date": "2026-09-07",
+        "subject": "生产环境修复",
+        "old": "011b119235af4f3a73df515c6f115a592aae515e",
+        "new": "104a4786b3bbbbcb32f5bc9d23de50550c20d8f0",
+        "sub_commits": [
+          {
+            "hash": "104a4786b3bbbbcb32f5bc9d23de50550c20d8f0",
+            "date": "2026-09-07",
+            "subject": "生产环境修复"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 16,
+        "net_del": 34
+      },
+      {
+        "commit": "55cc8fc6b5101a4afb5c405d21d92c4b9277b1a6",
+        "date": "2026-09-07",
+        "subject": "生产环境修复",
+        "old": "104a4786b3bbbbcb32f5bc9d23de50550c20d8f0",
+        "new": "b72d09358d61843caa64282992d46517d8561266",
+        "sub_commits": [
+          {
+            "hash": "b72d09358d61843caa64282992d46517d8561266",
+            "date": "2026-09-07",
+            "subject": "生产环境修复"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "6f8d84cbec0e315afd05d837e8faddcd15fb097d",
+        "date": "2026-09-07",
+        "subject": "修数量合成",
+        "old": "b72d09358d61843caa64282992d46517d8561266",
+        "new": "9e962ef5130a7a653772280a5e1966e2802586e7",
+        "sub_commits": [
+          {
+            "hash": "9e962ef5130a7a653772280a5e1966e2802586e7",
+            "date": "2026-09-07",
+            "subject": "修数量合成"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 5,
+        "net_del": 4
+      },
+      {
+        "commit": "0af0c9e946484c3e2f03e6999da087e31a010f72",
+        "date": "2026-09-07",
+        "subject": "修创造模式标签页搜索",
+        "old": "9e962ef5130a7a653772280a5e1966e2802586e7",
+        "new": "ead22c5a0c3d3544c6bdde64adf88decf03cb1d6",
+        "sub_commits": [
+          {
+            "hash": "ead22c5a0c3d3544c6bdde64adf88decf03cb1d6",
+            "date": "2026-09-07",
+            "subject": "修创造模式标签页搜索"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 20,
+        "net_del": 2
+      },
+      {
+        "commit": "be6173c00203eab8d35970669874a4e37dbc21aa",
+        "date": "2026-09-07",
+        "subject": "修复CustomRarityItem的属性问题",
+        "old": "ead22c5a0c3d3544c6bdde64adf88decf03cb1d6",
+        "new": "fafe3b0360b020fb4fc102f103b1ea3aa724bc78",
+        "sub_commits": [
+          {
+            "hash": "fafe3b0360b020fb4fc102f103b1ea3aa724bc78",
+            "date": "2026-09-07",
+            "subject": "修复CustomRarityItem的属性问题"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 144,
+        "net_del": 54
+      },
+      {
+        "commit": "5c3978b013b55b4545bb08b544329d79550c4105",
+        "date": "2026-09-08",
+        "subject": "修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题",
+        "old": "fafe3b0360b020fb4fc102f103b1ea3aa724bc78",
+        "new": "3bba7d0c0b6f3399482e9f3e47c5d50407bbe65b",
+        "sub_commits": [
+          {
+            "hash": "3bba7d0c0b6f3399482e9f3e47c5d50407bbe65b",
+            "date": "2026-09-08",
+            "subject": "修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 206,
+        "net_del": 69
+      },
+      {
+        "commit": "046a6ad1c0d366ea485eff65426f1d9f2911c13f",
+        "date": "2026-09-08",
+        "subject": "修复右键功能物品失效问题",
+        "old": "3bba7d0c0b6f3399482e9f3e47c5d50407bbe65b",
+        "new": "f6f12f0a6b4d46f9e0da47bcc642162a9f35c019",
+        "sub_commits": [
+          {
+            "hash": "f6f12f0a6b4d46f9e0da47bcc642162a9f35c019",
+            "date": "2026-09-08",
+            "subject": "修复右键功能物品失效问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 3,
+        "net_del": 3
+      },
+      {
+        "commit": "bedb2af6e35ac78118ff63354ed61e3afb1e6d3e",
+        "date": "2026-09-08",
+        "subject": "修复微光无法自然清除的问题",
+        "old": "f6f12f0a6b4d46f9e0da47bcc642162a9f35c019",
+        "new": "817c68751e39dbda42ab3d0204c16b1e5d5191b5",
+        "sub_commits": [
+          {
+            "hash": "817c68751e39dbda42ab3d0204c16b1e5d5191b5",
+            "date": "2026-09-08",
+            "subject": "修复微光无法自然清除的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 11,
+        "net_del": 1
+      },
+      {
+        "commit": "38382758aa8f375b699258a31f4c46692da21918",
+        "date": "2026-09-09",
+        "subject": "fix(otherworld): 修复召唤物行为、蜗牛爬行与武器逻辑",
+        "old": "817c68751e39dbda42ab3d0204c16b1e5d5191b5",
+        "new": "cdf77e36c5ee558a27062ec5f583529bde1b163b",
+        "sub_commits": [
+          {
+            "hash": "cdf77e36c5ee558a27062ec5f583529bde1b163b",
+            "date": "2026-09-09",
+            "subject": "fix(otherworld): 修复召唤物行为、蜗牛爬行与武器逻辑"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "b1884f9a610adc570866ad5162324ba4cf558a03",
+        "date": "2026-09-10",
+        "subject": "1.21.1的凝灰岩系列，以及id修复",
+        "old": "cdf77e36c5ee558a27062ec5f583529bde1b163b",
+        "new": "4fe1ca5ca557767cb3cc78f188f6e3486a66cc67",
+        "sub_commits": [
+          {
+            "hash": "4fe1ca5ca557767cb3cc78f188f6e3486a66cc67",
+            "date": "2026-09-10",
+            "subject": "1.21.1的凝灰岩系列，以及id修复"
+          }
+        ],
+        "error": "",
+        "net_files": 159,
+        "net_add": 3175,
+        "net_del": 98
+      },
+      {
+        "commit": "6a24e6d1f2ba7200e1e38ca4af7ad90912cf70ba",
+        "date": "2026-09-10",
+        "subject": "恢复贴图",
+        "old": "4fe1ca5ca557767cb3cc78f188f6e3486a66cc67",
+        "new": "5c9f7cf3de299e700795559b15b31e416b6dcf3b",
+        "sub_commits": [
+          {
+            "hash": "5c9f7cf3de299e700795559b15b31e416b6dcf3b",
+            "date": "2026-09-10",
+            "subject": "恢复贴图"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 30,
+        "net_del": 0
+      },
+      {
+        "commit": "7a3593600be2c7ce5ee07b17ab4f8d45a0505b5e",
+        "date": "2026-09-10",
+        "subject": "修汇流熔炉不能放燃料的问题",
+        "old": "5c9f7cf3de299e700795559b15b31e416b6dcf3b",
+        "new": "d51862f8a598eb0fc2966ce8f77677cf26b99190",
+        "sub_commits": [
+          {
+            "hash": "d51862f8a598eb0fc2966ce8f77677cf26b99190",
+            "date": "2026-09-10",
+            "subject": "修汇流熔炉不能放燃料的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 61,
+        "net_del": 16
+      },
+      {
+        "commit": "aec2cd920feee341ad5a8e3a0354f7127b3cfac4",
+        "date": "2026-09-10",
+        "subject": "修复mixin，修复跳跃属性",
+        "old": "d51862f8a598eb0fc2966ce8f77677cf26b99190",
+        "new": "4f03455ece942bc7da286a3d7b4fa973fd761e2e",
+        "sub_commits": [
+          {
+            "hash": "4f03455ece942bc7da286a3d7b4fa973fd761e2e",
+            "date": "2026-09-10",
+            "subject": "修复mixin，修复跳跃属性"
+          }
+        ],
+        "error": "",
+        "net_files": 10,
+        "net_add": 25,
+        "net_del": 25
+      },
+      {
+        "commit": "8a961bc0c0f62651377e2c8afd0562c09528b540",
+        "date": "2026-09-11",
+        "subject": "一些修复",
+        "old": "4f03455ece942bc7da286a3d7b4fa973fd761e2e",
+        "new": "09b55defff8eedb27f7c9f88bbad21295a2607d6",
+        "sub_commits": [
+          {
+            "hash": "09b55defff8eedb27f7c9f88bbad21295a2607d6",
+            "date": "2026-09-11",
+            "subject": "一些修复"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 4,
+        "net_del": 5
+      },
+      {
+        "commit": "d15b521d22606083d596246ce786652f809081e5",
+        "date": "2026-09-11",
+        "subject": "修复战利品表的问题",
+        "old": "09b55defff8eedb27f7c9f88bbad21295a2607d6",
+        "new": "636f6f55209df8c29417d70ce565c5194e1cf1af",
+        "sub_commits": [
+          {
+            "hash": "636f6f55209df8c29417d70ce565c5194e1cf1af",
+            "date": "2026-09-11",
+            "subject": "修复战利品表的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 0,
+        "net_del": 232
+      },
+      {
+        "commit": "128469b81214d7f86857bc4651f785953f2163e5",
+        "date": "2026-09-11",
+        "subject": "修复药水效果的问题",
+        "old": "636f6f55209df8c29417d70ce565c5194e1cf1af",
+        "new": "d68622772f432bf1a01a6ddc76bfd1644ad3e14d",
+        "sub_commits": [
+          {
+            "hash": "d68622772f432bf1a01a6ddc76bfd1644ad3e14d",
+            "date": "2026-09-11",
+            "subject": "修复药水效果的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 44,
+        "net_del": 2
+      },
+      {
+        "commit": "0ceb3c2518915c9b261d2da8bf97294c98d11727",
+        "date": "2026-09-11",
+        "subject": "portlib升级为1.2.2",
+        "old": "d68622772f432bf1a01a6ddc76bfd1644ad3e14d",
+        "new": "80d13a85ffe775032f16b0f575b29a47779c0727",
+        "sub_commits": [
+          {
+            "hash": "80d13a85ffe775032f16b0f575b29a47779c0727",
+            "date": "2026-09-11",
+            "subject": "portlib升级为1.2.2"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 2
+      },
+      {
+        "commit": "6084476d09bc850c5a54ab499ff050ba48257533",
+        "date": "2026-09-12",
+        "subject": "JEI兼容恢复",
+        "old": "80d13a85ffe775032f16b0f575b29a47779c0727",
+        "new": "e7a696a354574c6051328b9c5a108c21d4b65130",
+        "sub_commits": [
+          {
+            "hash": "e7a696a354574c6051328b9c5a108c21d4b65130",
+            "date": "2026-09-12",
+            "subject": "JEI兼容恢复"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 66,
+        "net_del": 4
+      },
+      {
+        "commit": "99902d9862e3358e5ceee849f2e79f991d462775",
+        "date": "2026-09-13",
+        "subject": "修复锁方块",
+        "old": "e7a696a354574c6051328b9c5a108c21d4b65130",
+        "new": "b271c54f4186f551bbf6e8af14570ad1133de25e",
+        "sub_commits": [
+          {
+            "hash": "b271c54f4186f551bbf6e8af14570ad1133de25e",
+            "date": "2026-09-13",
+            "subject": "修复锁方块"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 1,
+        "net_del": 27
+      },
+      {
+        "commit": "d599373c3bc4c61fbcd673eb84f8a3c4f487ea59",
+        "date": "2026-09-13",
+        "subject": "修复8月15日遗留问题",
+        "old": "b271c54f4186f551bbf6e8af14570ad1133de25e",
+        "new": "604a3f8a3f14d4c854c5e46344ca288ae0b65bf8",
+        "sub_commits": [
+          {
+            "hash": "604a3f8a3f14d4c854c5e46344ca288ae0b65bf8",
+            "date": "2026-09-13",
+            "subject": "修复8月15日遗留问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 14,
+        "net_del": 14
+      },
+      {
+        "commit": "810fb6b14cf3c8b68ee8b700e3e4583841bbe467",
+        "date": "2026-09-13",
+        "subject": "版本更新",
+        "old": "604a3f8a3f14d4c854c5e46344ca288ae0b65bf8",
+        "new": "8bc763e6038e04c299cc8a24faa5b4b1d7bcbd9d",
+        "sub_commits": [
+          {
+            "hash": "8bc763e6038e04c299cc8a24faa5b4b1d7bcbd9d",
+            "date": "2026-09-13",
+            "subject": "版本更新"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "856c0047fedf0f122d5a365832a6a7bb58ce4085",
+        "date": "2026-09-16",
+        "subject": "调整末地高度",
+        "old": "8bc763e6038e04c299cc8a24faa5b4b1d7bcbd9d",
+        "new": "723b5227286a945f46d3d182b2f0091093c22051",
+        "sub_commits": [
+          {
+            "hash": "723b5227286a945f46d3d182b2f0091093c22051",
+            "date": "2026-09-16",
+            "subject": "调整末地高度"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 47,
+        "net_del": 10
+      },
+      {
+        "commit": "a78e2b42db05f95dd206bd92412722388bea6006",
+        "date": "2026-09-16",
+        "subject": "extension",
+        "old": "723b5227286a945f46d3d182b2f0091093c22051",
+        "new": "771336362500586f51cee8b3f79479a626c52c22",
+        "sub_commits": [
+          {
+            "hash": "771336362500586f51cee8b3f79479a626c52c22",
+            "date": "2026-09-16",
+            "subject": "extension"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 18,
+        "net_del": 4
+      },
+      {
+        "commit": "253bb8d7bcdba3bde209584cfed8b02f4afa0f3c",
+        "date": "2026-09-16",
+        "subject": "curios属性显示兼容",
+        "old": "771336362500586f51cee8b3f79479a626c52c22",
+        "new": "e9ecb022cb133b658502044d3300ff5d3f715543",
+        "sub_commits": [
+          {
+            "hash": "e9ecb022cb133b658502044d3300ff5d3f715543",
+            "date": "2026-09-16",
+            "subject": "curios属性显示兼容"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 38,
+        "net_del": 38
+      },
+      {
+        "commit": "b05c8dc3f8a15717d65920ecf202aa4663f20385",
+        "date": "2026-09-16",
+        "subject": "feat: 扩充生物与事件内容，完善召唤和鞭子系统并修复战斗与渲染问题",
+        "old": "e9ecb022cb133b658502044d3300ff5d3f715543",
+        "new": "a01cc34123dcfa9c6a097e02bb20f8921b2df6bf",
+        "sub_commits": [
+          {
+            "hash": "a01cc34123dcfa9c6a097e02bb20f8921b2df6bf",
+            "date": "2026-09-16",
+            "subject": "feat: 扩充生物与事件内容，完善召唤和鞭子系统并修复战斗与渲染问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 4,
+        "net_del": 0
+      },
+      {
+        "commit": "9a5d3a4a6b7a937616c29edac1a6475c2f53eb69",
+        "date": "2026-09-17",
+        "subject": "修复portlib的注册表",
+        "old": "a01cc34123dcfa9c6a097e02bb20f8921b2df6bf",
+        "new": "eca5ce474a63c77d26d5558f7833e8cfd72657d7",
+        "sub_commits": [
+          {
+            "hash": "eca5ce474a63c77d26d5558f7833e8cfd72657d7",
+            "date": "2026-09-17",
+            "subject": "修复portlib的注册表"
+          }
+        ],
+        "error": "",
+        "net_files": 13,
+        "net_add": 122,
+        "net_del": 67
+      },
+      {
+        "commit": "389b7a7602ff451662c973122ed83323c3c48d23",
+        "date": "2026-09-17",
+        "subject": "修复网络包发送",
+        "old": "eca5ce474a63c77d26d5558f7833e8cfd72657d7",
+        "new": "124ed70ddc4ea8b60c16d86dfdeb68b7fc60edc9",
+        "sub_commits": [
+          {
+            "hash": "124ed70ddc4ea8b60c16d86dfdeb68b7fc60edc9",
+            "date": "2026-09-17",
+            "subject": "修复网络包发送"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "417d561ecf626bd413243c2ea270785202e20ceb",
+        "date": "2026-09-18",
+        "subject": "使用neoforge风味的网络包注册与发送",
+        "old": "124ed70ddc4ea8b60c16d86dfdeb68b7fc60edc9",
+        "new": "ab0cb45efea4eee5c3cff3e6cd68a81edb45a089",
+        "sub_commits": [
+          {
+            "hash": "ab0cb45efea4eee5c3cff3e6cd68a81edb45a089",
+            "date": "2026-09-18",
+            "subject": "使用neoforge风味的网络包注册与发送"
+          }
+        ],
+        "error": "",
+        "net_files": 18,
+        "net_add": 281,
+        "net_del": 179
+      },
+      {
+        "commit": "87b93ede277428828ae7dfb66762b14c5ab0e1d7",
+        "date": "2026-09-18",
+        "subject": "合并stream codec",
+        "old": "ab0cb45efea4eee5c3cff3e6cd68a81edb45a089",
+        "new": "6d837d750894802b982574f53a851bd6f9051987",
+        "sub_commits": [
+          {
+            "hash": "6d837d750894802b982574f53a851bd6f9051987",
+            "date": "2026-09-18",
+            "subject": "合并stream codec"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 69
+      },
+      {
+        "commit": "6f638b9b4de7fbe97bff3312cb56e9c680b5fcd1",
+        "date": "2026-09-19",
+        "subject": "修复粒子的顶点绕序问题",
+        "old": "6d837d750894802b982574f53a851bd6f9051987",
+        "new": "878eb625a6c924d676fd997d75cf50d2ef517244",
+        "sub_commits": [
+          {
+            "hash": "878eb625a6c924d676fd997d75cf50d2ef517244",
+            "date": "2026-09-19",
+            "subject": "修复粒子的顶点绕序问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 4
+      },
+      {
+        "commit": "f212a001a97a215e14f28489f4f83032d2d8954e",
+        "date": "2026-09-20",
+        "subject": "fix: 修复生物渲染、蠕虫行为及特殊物品拾取",
+        "old": "878eb625a6c924d676fd997d75cf50d2ef517244",
+        "new": "fc2cb19e3568904f48195f22ee2516418601dd29",
+        "sub_commits": [
+          {
+            "hash": "fc2cb19e3568904f48195f22ee2516418601dd29",
+            "date": "2026-09-20",
+            "subject": "fix: 修复生物渲染、蠕虫行为及特殊物品拾取"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 0
+      },
+      {
+        "commit": "e145cafb5c7378e08ab087770db30c5fd3f7c455",
+        "date": "2026-09-20",
+        "subject": "动态群系修改与client tick事件大一统",
+        "old": "fc2cb19e3568904f48195f22ee2516418601dd29",
+        "new": "ee7e8f7e7cb79083b1377d9f124cad181ed4cfe0",
+        "sub_commits": [
+          {
+            "hash": "ee7e8f7e7cb79083b1377d9f124cad181ed4cfe0",
+            "date": "2026-09-20",
+            "subject": "动态群系修改与client tick事件大一统"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 5
+      },
+      {
+        "commit": "81488b6d0fe1a5c5a1c4326eec6f18af257e5251",
+        "date": "2026-09-20",
+        "subject": "修改一股味的代码",
+        "old": "ee7e8f7e7cb79083b1377d9f124cad181ed4cfe0",
+        "new": "92110aa846c84b222c29f59c1401fdebd73705d0",
+        "sub_commits": [
+          {
+            "hash": "92110aa846c84b222c29f59c1401fdebd73705d0",
+            "date": "2026-09-20",
+            "subject": "修改一股味的代码"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 11,
+        "net_del": 15
+      },
+      {
+        "commit": "ff7a62eead60d8a4bf6e8b801b7525b890254392",
+        "date": "2026-09-20",
+        "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap",
+        "old": "92110aa846c84b222c29f59c1401fdebd73705d0",
+        "new": "7732b4cee9852b08bd3814e0a9e6cd712c837138",
+        "sub_commits": [
+          {
+            "hash": "7732b4cee9852b08bd3814e0a9e6cd712c837138",
+            "date": "2026-09-20",
+            "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 6,
+        "net_del": 6
+      },
+      {
+        "commit": "c886cec0fcc6d388a611dcfa9014a233b606b5b2",
+        "date": "2026-09-20",
+        "subject": "修复暴击率问题",
+        "old": "7732b4cee9852b08bd3814e0a9e6cd712c837138",
+        "new": "2dbc05c9cd87c1f9a7924c1a5c1c3f95f40c7b50",
+        "sub_commits": [
+          {
+            "hash": "2dbc05c9cd87c1f9a7924c1a5c1c3f95f40c7b50",
+            "date": "2026-09-20",
+            "subject": "修复暴击率问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "1da5e0d268bf5dcce0504929cfb9b314571ffb33",
+        "date": "2026-09-21",
+        "subject": "修复一些问题",
+        "old": "2dbc05c9cd87c1f9a7924c1a5c1c3f95f40c7b50",
+        "new": "6dff27ce0a0c6aaa2c19dd42ea42385b705ca92e",
+        "sub_commits": [
+          {
+            "hash": "6dff27ce0a0c6aaa2c19dd42ea42385b705ca92e",
+            "date": "2026-09-21",
+            "subject": "修复一些问题"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 14,
+        "net_del": 10
+      },
+      {
+        "commit": "a037263e1d1b5a41335ba7f91c8905c9634051d2",
+        "date": "2026-09-23",
+        "subject": "feat: 整理 NPC 商店界面并修复渔夫任务筛选",
+        "old": "6dff27ce0a0c6aaa2c19dd42ea42385b705ca92e",
+        "new": "d0dabf4be55cf34ef71c6a462ded4305aeefb5e0",
+        "sub_commits": [
+          {
+            "hash": "d0dabf4be55cf34ef71c6a462ded4305aeefb5e0",
+            "date": "2026-09-23",
+            "subject": "feat: 整理 NPC 商店界面并修复渔夫任务筛选"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 5,
+        "net_del": 1
+      },
+      {
+        "commit": "e9501cf56ee764073864f4f4c114690f484fd364",
+        "date": "2026-09-23",
+        "subject": "fall_damage_multiplier属性不再导致摔落声音",
+        "old": "d0dabf4be55cf34ef71c6a462ded4305aeefb5e0",
+        "new": "c09400efed08ccbbd6bfd3454fd2540b561c7c7e",
+        "sub_commits": [
+          {
+            "hash": "c09400efed08ccbbd6bfd3454fd2540b561c7c7e",
+            "date": "2026-09-23",
+            "subject": "fall_damage_multiplier属性不再导致摔落声音"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 3,
+        "net_del": 3
+      },
+      {
+        "commit": "2472a2c1b3f0954128655df217afc535d79f1850",
+        "date": "2026-09-25",
+        "subject": "1.2.7",
+        "old": "c09400efed08ccbbd6bfd3454fd2540b561c7c7e",
+        "new": "4fd098d0b576153aae06801eaf872cdd23f49955",
+        "sub_commits": [
+          {
+            "hash": "4fd098d0b576153aae06801eaf872cdd23f49955",
+            "date": "2026-09-25",
+            "subject": "1.2.7"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "a75bda140a95c3c837f6a352ae04546c038b2eec",
+        "date": "2026-09-25",
+        "subject": "PortLib: PortSelectMusicEvent 置空时停止音乐并跳过本刻",
+        "old": "4fd098d0b576153aae06801eaf872cdd23f49955",
+        "new": "fc518eb862c8a377e3b91f5b0dc51d988b005a4d",
+        "sub_commits": [
+          {
+            "hash": "fc518eb862c8a377e3b91f5b0dc51d988b005a4d",
+            "date": "2026-09-25",
+            "subject": "PortSelectMusicEvent 置空时停止音乐并跳过本刻"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 35,
+        "net_del": 4
+      }
+    ],
+    "Confluence-Magic-Lib": [
+      {
+        "commit": "dbac6afed3738db4b36f335265ab199327e1e971",
+        "date": "2026-06-04",
+        "subject": "part",
+        "old": "154d1cf0a774cda3e0e53daa1f4e8d06be289ee5",
+        "new": "0c44ab0563c68e504f86cdad5e09642c171e3d78",
+        "sub_commits": [
+          {
+            "hash": "0c44ab0563c68e504f86cdad5e09642c171e3d78",
+            "date": "2026-06-04",
+            "subject": "part"
+          }
+        ],
+        "error": "",
+        "net_files": 108,
+        "net_add": 1539,
+        "net_del": 2380
+      },
+      {
+        "commit": "1d216237bafd9f230f73d7bdd56257cbc1ddf101",
+        "date": "2026-06-06",
+        "subject": "part2",
+        "old": "0c44ab0563c68e504f86cdad5e09642c171e3d78",
+        "new": "a7bacb34e1d3b305f186b48e11309cd3e675eaef",
+        "sub_commits": [
+          {
+            "hash": "a7bacb34e1d3b305f186b48e11309cd3e675eaef",
+            "date": "2026-06-06",
+            "subject": "part2"
+          }
+        ],
+        "error": "",
+        "net_files": 39,
+        "net_add": 308,
+        "net_del": 1165
+      },
+      {
+        "commit": "6c1a7a65677f73abf5e61b34ccd0abd6809a1c76",
+        "date": "2026-06-07",
+        "subject": "part3",
+        "old": "a7bacb34e1d3b305f186b48e11309cd3e675eaef",
+        "new": "940f479f3e6b661fbb21bd6c3e2e499d08df198e",
+        "sub_commits": [
+          {
+            "hash": "940f479f3e6b661fbb21bd6c3e2e499d08df198e",
+            "date": "2026-06-07",
+            "subject": "part3"
+          }
+        ],
+        "error": "",
+        "net_files": 34,
+        "net_add": 29,
+        "net_del": 77
+      },
+      {
+        "commit": "28e34a50050f1f24f3c4ded163ca056271cb5398",
+        "date": "2026-06-07",
+        "subject": "part5",
+        "old": "940f479f3e6b661fbb21bd6c3e2e499d08df198e",
+        "new": "6d07451fe0e671c4adbc53c902f10b5851efae56",
+        "sub_commits": [
+          {
+            "hash": "6d07451fe0e671c4adbc53c902f10b5851efae56",
+            "date": "2026-06-07",
+            "subject": "part5"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "48289ba27d48326d1bd1ecf16d007a3fe66f1f24",
+        "date": "2026-06-08",
+        "subject": "part6",
+        "old": "6d07451fe0e671c4adbc53c902f10b5851efae56",
+        "new": "4f7bdd4b14add8a5604eb8e0211e8e9c47c9a8e2",
+        "sub_commits": [
+          {
+            "hash": "4f7bdd4b14add8a5604eb8e0211e8e9c47c9a8e2",
+            "date": "2026-06-08",
+            "subject": "part6"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 33,
+        "net_del": 31
+      },
+      {
+        "commit": "72adcfeae65df55133363eb9150d2a4d168ffe48",
+        "date": "2026-06-08",
+        "subject": "part7",
+        "old": "4f7bdd4b14add8a5604eb8e0211e8e9c47c9a8e2",
+        "new": "65261585337abb566a57f2370070b774c26ccc7f",
+        "sub_commits": [
+          {
+            "hash": "65261585337abb566a57f2370070b774c26ccc7f",
+            "date": "2026-06-08",
+            "subject": "part7"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 5,
+        "net_del": 1
+      },
+      {
+        "commit": "f4b42537ca0ee008794a0c04a1c67cdb07d3533b",
+        "date": "2026-06-10",
+        "subject": "part8",
+        "old": "65261585337abb566a57f2370070b774c26ccc7f",
+        "new": "fc45e4a014c5a009b5e22487548b25d144671fb5",
+        "sub_commits": [
+          {
+            "hash": "fc45e4a014c5a009b5e22487548b25d144671fb5",
+            "date": "2026-06-10",
+            "subject": "part8"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 521,
+        "net_del": 2
+      },
+      {
+        "commit": "e7b82668035d562746e0a8e7575bff41ed6a74cf",
+        "date": "2026-06-10",
+        "subject": "part9",
+        "old": "fc45e4a014c5a009b5e22487548b25d144671fb5",
+        "new": "c69f0f6761e41f4efc0267d25e8fecc4c31d2d1f",
+        "sub_commits": [
+          {
+            "hash": "c69f0f6761e41f4efc0267d25e8fecc4c31d2d1f",
+            "date": "2026-06-10",
+            "subject": "part9"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 1215,
+        "net_del": 794
+      },
+      {
+        "commit": "4b004c160640c18d49033ff8c1cdca72655ae7a3",
+        "date": "2026-06-10",
+        "subject": "fix2",
+        "old": "c69f0f6761e41f4efc0267d25e8fecc4c31d2d1f",
+        "new": "698b1b92eba0f96a9ea8b4efafe6c9b734adc16a",
+        "sub_commits": [
+          {
+            "hash": "698b1b92eba0f96a9ea8b4efafe6c9b734adc16a",
+            "date": "2026-06-10",
+            "subject": "fix2"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 118,
+        "net_del": 106
+      },
+      {
+        "commit": "39500342350ec7325971a997a99ecdf788773c8e",
+        "date": "2026-06-10",
+        "subject": "fix3",
+        "old": "698b1b92eba0f96a9ea8b4efafe6c9b734adc16a",
+        "new": "24e8752512d7e8d85aaada58549ae9010e9d247a",
+        "sub_commits": [
+          {
+            "hash": "24e8752512d7e8d85aaada58549ae9010e9d247a",
+            "date": "2026-06-10",
+            "subject": "fix3"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 5,
+        "net_del": 1
+      },
+      {
+        "commit": "00b72167de9faf8b3ca6a0d27303e8508df32207",
+        "date": "2026-06-10",
+        "subject": "枪械合并",
+        "old": "24e8752512d7e8d85aaada58549ae9010e9d247a",
+        "new": "433ba325b49b30c0694771f6ebe0789a3e8a4e97",
+        "sub_commits": [
+          {
+            "hash": "433ba325b49b30c0694771f6ebe0789a3e8a4e97",
+            "date": "2026-06-10",
+            "subject": "枪械合并"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 99,
+        "net_del": 0
+      },
+      {
+        "commit": "182149f523c679016e868765bbc358b6c4fff98c",
+        "date": "2026-06-13",
+        "subject": "part10",
+        "old": "433ba325b49b30c0694771f6ebe0789a3e8a4e97",
+        "new": "811eca06e8714ae93315a15f42788c006882f879",
+        "sub_commits": [
+          {
+            "hash": "811eca06e8714ae93315a15f42788c006882f879",
+            "date": "2026-06-13",
+            "subject": "part10"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 31,
+        "net_del": 30
+      },
+      {
+        "commit": "b3f13d405f0fdf1dd3b67bae16a53c969835a280",
+        "date": "2026-06-13",
+        "subject": "part11",
+        "old": "811eca06e8714ae93315a15f42788c006882f879",
+        "new": "f06772d70c0af551eb7013e6d9807958a6fcf11d",
+        "sub_commits": [
+          {
+            "hash": "f06772d70c0af551eb7013e6d9807958a6fcf11d",
+            "date": "2026-06-13",
+            "subject": "part11"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 30,
+        "net_del": 0
+      },
+      {
+        "commit": "7d1fff5b6f24d72d6cf6e1a2da9cddbe4c4cc645",
+        "date": "2026-06-13",
+        "subject": "part12",
+        "old": "f06772d70c0af551eb7013e6d9807958a6fcf11d",
+        "new": "11aafb35a36a867660cfd01081d9660b26176612",
+        "sub_commits": [
+          {
+            "hash": "11aafb35a36a867660cfd01081d9660b26176612",
+            "date": "2026-06-13",
+            "subject": "part12"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "b0716f0c91ee2d99fca19a8bf5e61948c2ba0ff5",
+        "date": "2026-06-14",
+        "subject": "part13",
+        "old": "11aafb35a36a867660cfd01081d9660b26176612",
+        "new": "09dc98cf89e59d41158a8466629a43b71cd61a2f",
+        "sub_commits": [
+          {
+            "hash": "09dc98cf89e59d41158a8466629a43b71cd61a2f",
+            "date": "2026-06-14",
+            "subject": "part13"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 87,
+        "net_del": 61
+      },
+      {
+        "commit": "0b38e2e69940eba0c01d396091151306d2a31b5b",
+        "date": "2026-06-14",
+        "subject": "part14",
+        "old": "09dc98cf89e59d41158a8466629a43b71cd61a2f",
+        "new": "9e4fcab28785760def1db22a6e0bbc6bb9815988",
+        "sub_commits": [
+          {
+            "hash": "9e4fcab28785760def1db22a6e0bbc6bb9815988",
+            "date": "2026-06-14",
+            "subject": "part14"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 24,
+        "net_del": 8
+      },
+      {
+        "commit": "15afa497b1661abfee285738bf95982f66203213",
+        "date": "2026-06-14",
+        "subject": "fix magic mirror",
+        "old": "9e4fcab28785760def1db22a6e0bbc6bb9815988",
+        "new": "f8bbe365651ea93c13df90dc07f91e6ee1a9efae",
+        "sub_commits": [
+          {
+            "hash": "f8bbe365651ea93c13df90dc07f91e6ee1a9efae",
+            "date": "2026-06-14",
+            "subject": "fix magic mirror"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "7646c55055b6a87a8f2b68de6f4a31a3f0fd4b61",
+        "date": "2026-06-15",
+        "subject": "物品移植",
+        "old": "f8bbe365651ea93c13df90dc07f91e6ee1a9efae",
+        "new": "79ecf148c582291da978089af3a56e29ea213f7b",
+        "sub_commits": [
+          {
+            "hash": "79ecf148c582291da978089af3a56e29ea213f7b",
+            "date": "2026-06-15",
+            "subject": "物品移植"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 74,
+        "net_del": 7
+      },
+      {
+        "commit": "093eda09f45201870a02fcb37da6bea354e8c923",
+        "date": "2026-06-16",
+        "subject": "part17",
+        "old": "79ecf148c582291da978089af3a56e29ea213f7b",
+        "new": "915ba1269af08e7a084ff220ed2a6a23a6db7c0d",
+        "sub_commits": [
+          {
+            "hash": "915ba1269af08e7a084ff220ed2a6a23a6db7c0d",
+            "date": "2026-06-16",
+            "subject": "part17"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 9,
+        "net_del": 3
+      },
+      {
+        "commit": "fbcb8e783f73e98c1c0bcefa6f57c4bb4dd48040",
+        "date": "2026-06-16",
+        "subject": "fix crash",
+        "old": "915ba1269af08e7a084ff220ed2a6a23a6db7c0d",
+        "new": "dfdfefa7dcda5cc9a8f2858d143e72e7d240d774",
+        "sub_commits": [
+          {
+            "hash": "dfdfefa7dcda5cc9a8f2858d143e72e7d240d774",
+            "date": "2026-06-16",
+            "subject": "fix crash"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "5481344ca3093a622fa17fcc15e06d71419ea173",
+        "date": "2026-06-18",
+        "subject": "something2",
+        "old": "dfdfefa7dcda5cc9a8f2858d143e72e7d240d774",
+        "new": "44f5930c16b4495813abbd56d9b338fae3935f84",
+        "sub_commits": [
+          {
+            "hash": "44f5930c16b4495813abbd56d9b338fae3935f84",
+            "date": "2026-06-18",
+            "subject": "something2"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 8,
+        "net_del": 7
+      },
+      {
+        "commit": "c5e9f9be5fb452de7bb7c7f5eb54226dd6ca63c3",
+        "date": "2026-06-19",
+        "subject": "part18",
+        "old": "44f5930c16b4495813abbd56d9b338fae3935f84",
+        "new": "b2b051c01e101677ab2bbb3bad6b2706bb95ca8c",
+        "sub_commits": [
+          {
+            "hash": "b2b051c01e101677ab2bbb3bad6b2706bb95ca8c",
+            "date": "2026-06-19",
+            "subject": "part18"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 144,
+        "net_del": 0
+      },
+      {
+        "commit": "10705abc75005d4b7ef56a81880a4e900f7da8f4",
+        "date": "2026-06-21",
+        "subject": "part19",
+        "old": "b2b051c01e101677ab2bbb3bad6b2706bb95ca8c",
+        "new": "2ed9d7017e476118a44d2ca5f4c732b784559185",
+        "sub_commits": [
+          {
+            "hash": "2ed9d7017e476118a44d2ca5f4c732b784559185",
+            "date": "2026-06-21",
+            "subject": "part19"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 21,
+        "net_del": 20
+      },
+      {
+        "commit": "c9f3af990085517c5873f0cccc6715244f6dbd16",
+        "date": "2026-06-21",
+        "subject": "extensions",
+        "old": "2ed9d7017e476118a44d2ca5f4c732b784559185",
+        "new": "36fbcd45845b46bcb1879d11bb6ccff65f1c2ed5",
+        "sub_commits": [
+          {
+            "hash": "36fbcd45845b46bcb1879d11bb6ccff65f1c2ed5",
+            "date": "2026-06-21",
+            "subject": "extensions"
+          }
+        ],
+        "error": "",
+        "net_files": 17,
+        "net_add": 50,
+        "net_del": 67
+      },
+      {
+        "commit": "f6b8f73b09d34007aff282b4e217518eb6aa3fe0",
+        "date": "2026-06-22",
+        "subject": "part20",
+        "old": "36fbcd45845b46bcb1879d11bb6ccff65f1c2ed5",
+        "new": "9ceb5f7fcb7d621d9ab9fa737c707d71351f0182",
+        "sub_commits": [
+          {
+            "hash": "9ceb5f7fcb7d621d9ab9fa737c707d71351f0182",
+            "date": "2026-06-22",
+            "subject": "part20"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 5,
+        "net_del": 5
+      },
+      {
+        "commit": "0e370c928c3f020b3cc73a43e5c1c7c6262d8047",
+        "date": "2026-06-24",
+        "subject": "data component method rename",
+        "old": "9ceb5f7fcb7d621d9ab9fa737c707d71351f0182",
+        "new": "3d5a4463462912adc564c8040b6423b7a220b8a3",
+        "sub_commits": [
+          {
+            "hash": "3d5a4463462912adc564c8040b6423b7a220b8a3",
+            "date": "2026-06-24",
+            "subject": "data component method rename"
+          }
+        ],
+        "error": "",
+        "net_files": 7,
+        "net_add": 37,
+        "net_del": 33
+      },
+      {
+        "commit": "4298126f93036624446f3d0a3306ae5c09506962",
+        "date": "2026-06-24",
+        "subject": "IPortItemExtension",
+        "old": "3d5a4463462912adc564c8040b6423b7a220b8a3",
+        "new": "fa9145c591fd7d1795b655cd7d9fbc3aadf71c63",
+        "sub_commits": [
+          {
+            "hash": "fa9145c591fd7d1795b655cd7d9fbc3aadf71c63",
+            "date": "2026-06-24",
+            "subject": "IPortItemExtension"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 4
+      },
+      {
+        "commit": "2569be3614ff07909e47889a5c86a181b0d9ab4a",
+        "date": "2026-06-27",
+        "subject": "part22",
+        "old": "fa9145c591fd7d1795b655cd7d9fbc3aadf71c63",
+        "new": "6339a968ca86d02be5b0a1a5b04c02c4afbbef6b",
+        "sub_commits": [
+          {
+            "hash": "6339a968ca86d02be5b0a1a5b04c02c4afbbef6b",
+            "date": "2026-06-27",
+            "subject": "part22"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 7,
+        "net_del": 0
+      },
+      {
+        "commit": "c0c6a321d65df47de83545d7ae5e7ae46f0d7b0d",
+        "date": "2026-06-28",
+        "subject": "part24",
+        "old": "6339a968ca86d02be5b0a1a5b04c02c4afbbef6b",
+        "new": "992cc1c82a17863f713df994364190be6c423afa",
+        "sub_commits": [
+          {
+            "hash": "992cc1c82a17863f713df994364190be6c423afa",
+            "date": "2026-06-28",
+            "subject": "part24"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 13,
+        "net_del": 10
+      },
+      {
+        "commit": "1516cbd2ffae85762e69875101a5e7bfcbe82102",
+        "date": "2026-06-30",
+        "subject": "part fluid type",
+        "old": "992cc1c82a17863f713df994364190be6c423afa",
+        "new": "7f02f07cc9e12ae926126de18eb01ec5e5187fcc",
+        "sub_commits": [
+          {
+            "hash": "7f02f07cc9e12ae926126de18eb01ec5e5187fcc",
+            "date": "2026-06-30",
+            "subject": "part fluid type"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 39,
+        "net_del": 27
+      },
+      {
+        "commit": "8ce7f4d7f8ab5873f4f91b90ffe6fb5010ea3ddf",
+        "date": "2026-07-01",
+        "subject": "part recipe datagen",
+        "old": "7f02f07cc9e12ae926126de18eb01ec5e5187fcc",
+        "new": "37062b798ad0fe52b80465156a8154cc3c2a1709",
+        "sub_commits": [
+          {
+            "hash": "37062b798ad0fe52b80465156a8154cc3c2a1709",
+            "date": "2026-07-01",
+            "subject": "part recipe datagen"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 155,
+        "net_del": 10
+      },
+      {
+        "commit": "fac72523a8907a553ca28bc90358584647513efe",
+        "date": "2026-07-02",
+        "subject": "part critters",
+        "old": "37062b798ad0fe52b80465156a8154cc3c2a1709",
+        "new": "2d27ce21748d8e5a6b29aa817bdab5b4d24f52ad",
+        "sub_commits": [
+          {
+            "hash": "2d27ce21748d8e5a6b29aa817bdab5b4d24f52ad",
+            "date": "2026-07-02",
+            "subject": "part critters"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 18,
+        "net_del": 4
+      },
+      {
+        "commit": "911437e0343f2d13847a998c7e377a27bdc07858",
+        "date": "2026-07-04",
+        "subject": "able to start game",
+        "old": "2d27ce21748d8e5a6b29aa817bdab5b4d24f52ad",
+        "new": "02525eea4bf339ade0997a2598d9e576a5e5e5e2",
+        "sub_commits": [
+          {
+            "hash": "02525eea4bf339ade0997a2598d9e576a5e5e5e2",
+            "date": "2026-07-04",
+            "subject": "able to start game"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 53,
+        "net_del": 10
+      },
+      {
+        "commit": "1284d08a9cf043e8e204c15f9f081cfe245483a2",
+        "date": "2026-07-04",
+        "subject": "able to into world",
+        "old": "02525eea4bf339ade0997a2598d9e576a5e5e5e2",
+        "new": "df79b045c557e873c043d03e41fd454f247db667",
+        "sub_commits": [
+          {
+            "hash": "df79b045c557e873c043d03e41fd454f247db667",
+            "date": "2026-07-04",
+            "subject": "able to into world"
+          }
+        ],
+        "error": "",
+        "net_files": 12,
+        "net_add": 231,
+        "net_del": 17
+      },
+      {
+        "commit": "bad95470cda714d414a012aca6597d36bb3b9de0",
+        "date": "2026-08-08",
+        "subject": "同步1.21.1的修改",
+        "old": "df79b045c557e873c043d03e41fd454f247db667",
+        "new": "31f79abbcb37ff29f2360750c5d50f1fb689c798",
+        "sub_commits": [
+          {
+            "hash": "31f79abbcb37ff29f2360750c5d50f1fb689c798",
+            "date": "2026-08-08",
+            "subject": "同步1.21.1的修改"
+          }
+        ],
+        "error": "",
+        "net_files": 13,
+        "net_add": 163,
+        "net_del": 134
+      },
+      {
+        "commit": "dfcc5c0410e33e310e6e98479b0fab8cb7d2d2fe",
+        "date": "2026-08-15",
+        "subject": "feat: 对齐 1.21 内容与运行时行为",
+        "old": "31f79abbcb37ff29f2360750c5d50f1fb689c798",
+        "new": "d77f87c92c2c53697f02df403da5b2c9f8f2b174",
+        "sub_commits": [
+          {
+            "hash": "d77f87c92c2c53697f02df403da5b2c9f8f2b174",
+            "date": "2026-08-15",
+            "subject": "feat: 对齐 1.21 内容与运行时行为"
+          }
+        ],
+        "error": "",
+        "net_files": 59,
+        "net_add": 3549,
+        "net_del": 180
+      },
+      {
+        "commit": "dc57ba5c2d2a156873f9410e90765af3e4bb268c",
+        "date": "2026-08-16",
+        "subject": "注释 杀杀杀",
+        "old": "d77f87c92c2c53697f02df403da5b2c9f8f2b174",
+        "new": "781e9400222e5914befba9e04073f68c67360f34",
+        "sub_commits": [
+          {
+            "hash": "781e9400222e5914befba9e04073f68c67360f34",
+            "date": "2026-08-16",
+            "subject": "注释 杀杀杀"
+          }
+        ],
+        "error": "",
+        "net_files": 59,
+        "net_add": 180,
+        "net_del": 3549
+      },
+      {
+        "commit": "4ac81edb7082b912dd54523e1b2d8bc3482fd494",
+        "date": "2026-08-18",
+        "subject": "药水效果（未完成）",
+        "old": "781e9400222e5914befba9e04073f68c67360f34",
+        "new": "acbd707150e6b35621d3bc01cfd086b9a85861b6",
+        "sub_commits": [
+          {
+            "hash": "acbd707150e6b35621d3bc01cfd086b9a85861b6",
+            "date": "2026-08-18",
+            "subject": "药水效果（未完成）"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 4,
+        "net_del": 0
+      },
+      {
+        "commit": "9bc04295bc42a68d99396530cfe1c5689b52454a",
+        "date": "2026-08-19",
+        "subject": "refactor(otherworld): 拉通生物、NPC与战斗系统迁移",
+        "old": "acbd707150e6b35621d3bc01cfd086b9a85861b6",
+        "new": "1802b44887a853290b47168ab551e183175c4274",
+        "sub_commits": [
+          {
+            "hash": "1802b44887a853290b47168ab551e183175c4274",
+            "date": "2026-08-19",
+            "subject": "refactor(otherworld): 拉通生物、NPC与战斗系统迁移"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 69,
+        "net_del": 23
+      },
+      {
+        "commit": "ce1ca67f84dd26627a07d53dc153b1403b99976f",
+        "date": "2026-08-22",
+        "subject": "refactor(confluence): 拉通 1.21 战斗、召唤与实体体系",
+        "old": "1802b44887a853290b47168ab551e183175c4274",
+        "new": "1c97b2e5149d93f55716fb18add0a8a4570f7250",
+        "sub_commits": [
+          {
+            "hash": "1c97b2e5149d93f55716fb18add0a8a4570f7250",
+            "date": "2026-08-22",
+            "subject": "refactor(confluence): 拉通 1.21 战斗、召唤与实体体系"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 17,
+        "net_del": 2
+      },
+      {
+        "commit": "1c012ccb1963d8521cb880a5d23ceaf9cceae438",
+        "date": "2026-08-22",
+        "subject": "将饰品的药水效果转移至lib",
+        "old": "1c97b2e5149d93f55716fb18add0a8a4570f7250",
+        "new": "f6a10ca45334f0d804646cde4507e95c94c4585b",
+        "sub_commits": [
+          {
+            "hash": "f6a10ca45334f0d804646cde4507e95c94c4585b",
+            "date": "2026-08-22",
+            "subject": "将饰品的药水效果转移至lib"
+          }
+        ],
+        "error": "",
+        "net_files": 35,
+        "net_add": 828,
+        "net_del": 208
+      },
+      {
+        "commit": "100f6e0f2125fc5fd071f4cc94a80ffca1a15bf7",
+        "date": "2026-08-22",
+        "subject": "可开关的药水效果移到lib",
+        "old": "f6a10ca45334f0d804646cde4507e95c94c4585b",
+        "new": "2c66dc065a0a1602f474473046f629b26a0dc3bb",
+        "sub_commits": [
+          {
+            "hash": "2c66dc065a0a1602f474473046f629b26a0dc3bb",
+            "date": "2026-08-22",
+            "subject": "可开关的药水效果移到lib"
+          }
+        ],
+        "error": "",
+        "net_files": 23,
+        "net_add": 520,
+        "net_del": 11
+      },
+      {
+        "commit": "2a4dfce2c998df64cce1b0e9dd4e57e1a491df33",
+        "date": "2026-08-22",
+        "subject": "同步粒子",
+        "old": "2c66dc065a0a1602f474473046f629b26a0dc3bb",
+        "new": "5f2d48bbf21d96a37c8b2ba26d82152c5b4b89c0",
+        "sub_commits": [
+          {
+            "hash": "1802b44887a853290b47168ab551e183175c4274",
+            "date": "2026-08-19",
+            "subject": "refactor(otherworld): 拉通生物、NPC与战斗系统迁移"
+          },
+          {
+            "hash": "1c97b2e5149d93f55716fb18add0a8a4570f7250",
+            "date": "2026-08-22",
+            "subject": "refactor(confluence): 拉通 1.21 战斗、召唤与实体体系"
+          },
+          {
+            "hash": "0718c593a8eacf1e5e8ca2a6ddc21ee30755635b",
+            "date": "2026-08-22",
+            "subject": "将饰品的药水效果转移至lib"
+          },
+          {
+            "hash": "5f2d48bbf21d96a37c8b2ba26d82152c5b4b89c0",
+            "date": "2026-08-22",
+            "subject": "可开关的药水效果移到lib"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 86,
+        "net_del": 25
+      },
+      {
+        "commit": "863e8bef83eee5d71c68e8512dd38490ba56ccf1",
+        "date": "2026-08-23",
+        "subject": "调整版本",
+        "old": "5f2d48bbf21d96a37c8b2ba26d82152c5b4b89c0",
+        "new": "389b3c2304534441f88a5ede8b93c76ee15d6f96",
+        "sub_commits": [
+          {
+            "hash": "389b3c2304534441f88a5ede8b93c76ee15d6f96",
+            "date": "2026-08-23",
+            "subject": "调整版本"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 3
+      },
+      {
+        "commit": "21b060ec6922d1cbbf20f13542947b16cb9ef4f8",
+        "date": "2026-08-23",
+        "subject": "饰品能力全改为datamap，修复潜行属性",
+        "old": "389b3c2304534441f88a5ede8b93c76ee15d6f96",
+        "new": "1dc696fc5a052188e02bcec585394328fe69fa8a",
+        "sub_commits": [
+          {
+            "hash": "1dc696fc5a052188e02bcec585394328fe69fa8a",
+            "date": "2026-08-23",
+            "subject": "饰品能力全改为datamap，修复潜行属性"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 5
+      },
+      {
+        "commit": "4ef159bf9b0c2a077ae985815ade5dc4948af8e0",
+        "date": "2026-08-23",
+        "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子",
+        "old": "1dc696fc5a052188e02bcec585394328fe69fa8a",
+        "new": "d4e048a89c31d300634d73b197c706c47595fc05",
+        "sub_commits": [
+          {
+            "hash": "d4e048a89c31d300634d73b197c706c47595fc05",
+            "date": "2026-08-23",
+            "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 15,
+        "net_del": 22
+      },
+      {
+        "commit": "4557b85fccca4674021b78f5c359b7228821a479",
+        "date": "2026-08-24",
+        "subject": "玩家动画测试",
+        "old": "d4e048a89c31d300634d73b197c706c47595fc05",
+        "new": "ebad0b193250b01388032d7bbbbba3c56ae62c32",
+        "sub_commits": [
+          {
+            "hash": "ebad0b193250b01388032d7bbbbba3c56ae62c32",
+            "date": "2026-08-24",
+            "subject": "玩家动画测试"
+          }
+        ],
+        "error": "",
+        "net_files": 15,
+        "net_add": 1249,
+        "net_del": 4
+      },
+      {
+        "commit": "9057f178ca6da97651c79df115d27c0722c0742c",
+        "date": "2026-08-28",
+        "subject": "玩家动画（未注册永夜动画）",
+        "old": "ebad0b193250b01388032d7bbbbba3c56ae62c32",
+        "new": "92d3adbf300659de17ca2814a3351c7c04bd1089",
+        "sub_commits": [
+          {
+            "hash": "92d3adbf300659de17ca2814a3351c7c04bd1089",
+            "date": "2026-08-28",
+            "subject": "玩家动画（未注册永夜动画）"
+          }
+        ],
+        "error": "",
+        "net_files": 16,
+        "net_add": 405,
+        "net_del": 921
+      },
+      {
+        "commit": "a6fd7868199e0e48b2d778c92e67b65d9bb3ba19",
+        "date": "2026-08-30",
+        "subject": "feat(entity): 完善普通敌怪、NPC与召唤物的行为和渲染",
+        "old": "92d3adbf300659de17ca2814a3351c7c04bd1089",
+        "new": "e285014699b98010e562052069e203a89518554f",
+        "sub_commits": [
+          {
+            "hash": "e285014699b98010e562052069e203a89518554f",
+            "date": "2026-08-30",
+            "subject": "feat(entity): 完善普通敌怪、NPC与召唤物的行为和渲染"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 4,
+        "net_del": 2
+      },
+      {
+        "commit": "29c1459cf61c91fa924401200e8ae969b4c84530",
+        "date": "2026-09-02",
+        "subject": "删除一些Extension类",
+        "old": "e285014699b98010e562052069e203a89518554f",
+        "new": "b14b25a6610d57fdc9e54e7f9b1d14f0883cac42",
+        "sub_commits": [
+          {
+            "hash": "b14b25a6610d57fdc9e54e7f9b1d14f0883cac42",
+            "date": "2026-09-02",
+            "subject": "删除一些Extension类"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 19,
+        "net_del": 19
+      },
+      {
+        "commit": "7b3b5c28ec8b7dba2727941ca36da9c97b0e98cd",
+        "date": "2026-09-03",
+        "subject": "渔夫任务系统修改",
+        "old": "b14b25a6610d57fdc9e54e7f9b1d14f0883cac42",
+        "new": "3f1a8e5f9f874518516bc18cde847fee6d98916a",
+        "sub_commits": [
+          {
+            "hash": "3f1a8e5f9f874518516bc18cde847fee6d98916a",
+            "date": "2026-09-03",
+            "subject": "渔夫任务系统修改"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 12,
+        "net_del": 16
+      },
+      {
+        "commit": "4122dbcf0fa8a61644303f9446f00700b835fb50",
+        "date": "2026-09-04",
+        "subject": "修部分服务端报错",
+        "old": "3f1a8e5f9f874518516bc18cde847fee6d98916a",
+        "new": "9fd8ac59325064e1374d0bc2600b52bff65d1af9",
+        "sub_commits": [
+          {
+            "hash": "9fd8ac59325064e1374d0bc2600b52bff65d1af9",
+            "date": "2026-09-04",
+            "subject": "修部分服务端报错"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 7,
+        "net_del": 10
+      },
+      {
+        "commit": "31896204bd178363411cdc039a2e2dfc18e70814",
+        "date": "2026-09-06",
+        "subject": "静态方法改接口",
+        "old": "9fd8ac59325064e1374d0bc2600b52bff65d1af9",
+        "new": "9d5dee1a2aebcd9fd2caebb1e52765e7414d1ead",
+        "sub_commits": [
+          {
+            "hash": "9d5dee1a2aebcd9fd2caebb1e52765e7414d1ead",
+            "date": "2026-09-06",
+            "subject": "静态方法改接口"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 19,
+        "net_del": 27
+      },
+      {
+        "commit": "0cf629c1921cdd4b178845a7a797acb613c41c9a",
+        "date": "2026-09-06",
+        "subject": "属性静态字段注入",
+        "old": "9d5dee1a2aebcd9fd2caebb1e52765e7414d1ead",
+        "new": "8fe6eb9957ddd1289c547ab36ca767c065957511",
+        "sub_commits": [
+          {
+            "hash": "8fe6eb9957ddd1289c547ab36ca767c065957511",
+            "date": "2026-09-06",
+            "subject": "属性静态字段注入"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 10,
+        "net_del": 13
+      },
+      {
+        "commit": "841165c47a87c7876e7763d0e59babec2efc07e5",
+        "date": "2026-09-06",
+        "subject": "删除多余内容",
+        "old": "8fe6eb9957ddd1289c547ab36ca767c065957511",
+        "new": "0425c71c4f5f694c2f6edc09d6c4492d9c689643",
+        "sub_commits": [
+          {
+            "hash": "0425c71c4f5f694c2f6edc09d6c4492d9c689643",
+            "date": "2026-09-06",
+            "subject": "删除多余内容"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 15,
+        "net_del": 0
+      },
+      {
+        "commit": "c458f224d4c39da307ad9b9923fd5caa7da64af9",
+        "date": "2026-09-06",
+        "subject": "处理一些胡乱改动",
+        "old": "0425c71c4f5f694c2f6edc09d6c4492d9c689643",
+        "new": "30d45a9fae2164ae75e6628306648bad68ef1ee6",
+        "sub_commits": [
+          {
+            "hash": "30d45a9fae2164ae75e6628306648bad68ef1ee6",
+            "date": "2026-09-06",
+            "subject": "处理一些胡乱改动"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 15,
+        "net_del": 11
+      },
+      {
+        "commit": "55cc8fc6b5101a4afb5c405d21d92c4b9277b1a6",
+        "date": "2026-09-07",
+        "subject": "生产环境修复",
+        "old": "30d45a9fae2164ae75e6628306648bad68ef1ee6",
+        "new": "4ede8fad42363b06ddb3b6e6efd2ad99a5732554",
+        "sub_commits": [
+          {
+            "hash": "4ede8fad42363b06ddb3b6e6efd2ad99a5732554",
+            "date": "2026-09-07",
+            "subject": "生产环境修复"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 5,
+        "net_del": 5
+      },
+      {
+        "commit": "15a05d23454046ef954d7360fb1fb11fe5c4ce03",
+        "date": "2026-09-07",
+        "subject": "泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩",
+        "old": "4ede8fad42363b06ddb3b6e6efd2ad99a5732554",
+        "new": "80a53446f4597ab05cffbf6b2a75a331640555dc",
+        "sub_commits": [
+          {
+            "hash": "80a53446f4597ab05cffbf6b2a75a331640555dc",
+            "date": "2026-09-07",
+            "subject": "泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 50,
+        "net_del": 4
+      },
+      {
+        "commit": "6f8d84cbec0e315afd05d837e8faddcd15fb097d",
+        "date": "2026-09-07",
+        "subject": "修数量合成",
+        "old": "80a53446f4597ab05cffbf6b2a75a331640555dc",
+        "new": "f2ef458a282c977f77925f2a81435bc8956cad61",
+        "sub_commits": [
+          {
+            "hash": "f2ef458a282c977f77925f2a81435bc8956cad61",
+            "date": "2026-09-07",
+            "subject": "修数量合成"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 7,
+        "net_del": 0
+      },
+      {
+        "commit": "be6173c00203eab8d35970669874a4e37dbc21aa",
+        "date": "2026-09-07",
+        "subject": "修复CustomRarityItem的属性问题",
+        "old": "f2ef458a282c977f77925f2a81435bc8956cad61",
+        "new": "351847f014ce837f2f8cd4c5a285a7bf2d5eff7f",
+        "sub_commits": [
+          {
+            "hash": "351847f014ce837f2f8cd4c5a285a7bf2d5eff7f",
+            "date": "2026-09-07",
+            "subject": "修复CustomRarityItem的属性问题"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 13,
+        "net_del": 18
+      },
+      {
+        "commit": "84b1939df4cd795a89247e9514e29f4dce1411ca",
+        "date": "2026-09-08",
+        "subject": "fix(otherworld): 修复战斗结算并统一生物属性与鞭子判定",
+        "old": "351847f014ce837f2f8cd4c5a285a7bf2d5eff7f",
+        "new": "e3d54fe6060f1ab11be3af2ea2dd80398717ee94",
+        "sub_commits": [
+          {
+            "hash": "e3d54fe6060f1ab11be3af2ea2dd80398717ee94",
+            "date": "2026-09-08",
+            "subject": "fix(otherworld): 修复战斗结算并统一生物属性与鞭子判定"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "5c3978b013b55b4545bb08b544329d79550c4105",
+        "date": "2026-09-08",
+        "subject": "修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题",
+        "old": "e3d54fe6060f1ab11be3af2ea2dd80398717ee94",
+        "new": "e1757f1c1f7be66d71958af12f500e38b01b10d2",
+        "sub_commits": [
+          {
+            "hash": "e1757f1c1f7be66d71958af12f500e38b01b10d2",
+            "date": "2026-09-08",
+            "subject": "修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 4,
+        "net_del": 5
+      },
+      {
+        "commit": "b184c0a5ff2d5bb9de5bf735a86df4ff08ca7ee8",
+        "date": "2026-09-08",
+        "subject": "修复灯笼粒子往下掉的问题",
+        "old": "e1757f1c1f7be66d71958af12f500e38b01b10d2",
+        "new": "361c05c8d22ce4883892e33dd93b83d5df11e9ab",
+        "sub_commits": [
+          {
+            "hash": "361c05c8d22ce4883892e33dd93b83d5df11e9ab",
+            "date": "2026-09-08",
+            "subject": "修复灯笼粒子往下掉的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "046a6ad1c0d366ea485eff65426f1d9f2911c13f",
+        "date": "2026-09-08",
+        "subject": "修复右键功能物品失效问题",
+        "old": "361c05c8d22ce4883892e33dd93b83d5df11e9ab",
+        "new": "efe1372ade7a03c72e2f348a48743e47f6a78a02",
+        "sub_commits": [
+          {
+            "hash": "efe1372ade7a03c72e2f348a48743e47f6a78a02",
+            "date": "2026-09-08",
+            "subject": "修复右键功能物品失效问题"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 45,
+        "net_del": 35
+      },
+      {
+        "commit": "7a3593600be2c7ce5ee07b17ab4f8d45a0505b5e",
+        "date": "2026-09-10",
+        "subject": "修汇流熔炉不能放燃料的问题",
+        "old": "efe1372ade7a03c72e2f348a48743e47f6a78a02",
+        "new": "6b7b525176d9106a76bc8e246d699b0196b91c11",
+        "sub_commits": [
+          {
+            "hash": "6b7b525176d9106a76bc8e246d699b0196b91c11",
+            "date": "2026-09-10",
+            "subject": "修汇流熔炉不能放燃料的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "aec2cd920feee341ad5a8e3a0354f7127b3cfac4",
+        "date": "2026-09-10",
+        "subject": "修复mixin，修复跳跃属性",
+        "old": "6b7b525176d9106a76bc8e246d699b0196b91c11",
+        "new": "fb10030ce0983fcce92d23221d095e3cb0cd16fb",
+        "sub_commits": [
+          {
+            "hash": "fb10030ce0983fcce92d23221d095e3cb0cd16fb",
+            "date": "2026-09-10",
+            "subject": "修复mixin，修复跳跃属性"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 15,
+        "net_del": 7
+      },
+      {
+        "commit": "8a961bc0c0f62651377e2c8afd0562c09528b540",
+        "date": "2026-09-11",
+        "subject": "一些修复",
+        "old": "fb10030ce0983fcce92d23221d095e3cb0cd16fb",
+        "new": "445f76396a5bfce5f547cd1253a8bbc36bae2c3c",
+        "sub_commits": [
+          {
+            "hash": "445f76396a5bfce5f547cd1253a8bbc36bae2c3c",
+            "date": "2026-09-11",
+            "subject": "一些修复"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 6,
+        "net_del": 5
+      },
+      {
+        "commit": "0ceb3c2518915c9b261d2da8bf97294c98d11727",
+        "date": "2026-09-11",
+        "subject": "portlib升级为1.2.2",
+        "old": "445f76396a5bfce5f547cd1253a8bbc36bae2c3c",
+        "new": "3ae3a9fc3905680962cef7b5b28a9de519aa39d6",
+        "sub_commits": [
+          {
+            "hash": "3ae3a9fc3905680962cef7b5b28a9de519aa39d6",
+            "date": "2026-09-11",
+            "subject": "portlib升级为1.2.2"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "6084476d09bc850c5a54ab499ff050ba48257533",
+        "date": "2026-09-12",
+        "subject": "JEI兼容恢复",
+        "old": "3ae3a9fc3905680962cef7b5b28a9de519aa39d6",
+        "new": "5e6625bababda2ce177c83d7ba4cf9888bab7bb9",
+        "sub_commits": [
+          {
+            "hash": "5e6625bababda2ce177c83d7ba4cf9888bab7bb9",
+            "date": "2026-09-12",
+            "subject": "JEI兼容恢复"
+          }
+        ],
+        "error": "",
+        "net_files": 7,
+        "net_add": 41,
+        "net_del": 20
+      },
+      {
+        "commit": "810fb6b14cf3c8b68ee8b700e3e4583841bbe467",
+        "date": "2026-09-13",
+        "subject": "版本更新",
+        "old": "5e6625bababda2ce177c83d7ba4cf9888bab7bb9",
+        "new": "6e9d87baea3d84f3890d6776287a11ae57c4e486",
+        "sub_commits": [
+          {
+            "hash": "6e9d87baea3d84f3890d6776287a11ae57c4e486",
+            "date": "2026-09-13",
+            "subject": "版本更新"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "9090245f8b3fa338f3eae6cfe0264c37eb6ca779",
+        "date": "2026-09-14",
+        "subject": "修",
+        "old": "6e9d87baea3d84f3890d6776287a11ae57c4e486",
+        "new": "f8363c053d49abfc416aeca5d5d656d1eae0cb8e",
+        "sub_commits": [
+          {
+            "hash": "f8363c053d49abfc416aeca5d5d656d1eae0cb8e",
+            "date": "2026-09-14",
+            "subject": "修"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 5,
+        "net_del": 1
+      },
+      {
+        "commit": "6dcb832a02ef2685108ee4d02751f6dc3328c8ba",
+        "date": "2026-09-15",
+        "subject": "修事件",
+        "old": "f8363c053d49abfc416aeca5d5d656d1eae0cb8e",
+        "new": "e0b02d2f067f8932e3207086ba4cf5376b56af5c",
+        "sub_commits": [
+          {
+            "hash": "e0b02d2f067f8932e3207086ba4cf5376b56af5c",
+            "date": "2026-09-15",
+            "subject": "修事件"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "870e6966ae2844054afcf57beed1f16060817209",
+        "date": "2026-09-15",
+        "subject": "更新粒子",
+        "old": "e0b02d2f067f8932e3207086ba4cf5376b56af5c",
+        "new": "87aa1992ab43e4190625fa23c7f3ec1ab4d2e9e5",
+        "sub_commits": [
+          {
+            "hash": "87aa1992ab43e4190625fa23c7f3ec1ab4d2e9e5",
+            "date": "2026-09-15",
+            "subject": "更新粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "a78e2b42db05f95dd206bd92412722388bea6006",
+        "date": "2026-09-16",
+        "subject": "extension",
+        "old": "87aa1992ab43e4190625fa23c7f3ec1ab4d2e9e5",
+        "new": "0cf2c0fa3eb3714e368d1e4d7a3fe3bb21b80939",
+        "sub_commits": [
+          {
+            "hash": "0cf2c0fa3eb3714e368d1e4d7a3fe3bb21b80939",
+            "date": "2026-09-16",
+            "subject": "extension"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "253bb8d7bcdba3bde209584cfed8b02f4afa0f3c",
+        "date": "2026-09-16",
+        "subject": "curios属性显示兼容",
+        "old": "0cf2c0fa3eb3714e368d1e4d7a3fe3bb21b80939",
+        "new": "5187258a692a859b05782556b6f41025089e6fbe",
+        "sub_commits": [
+          {
+            "hash": "5187258a692a859b05782556b6f41025089e6fbe",
+            "date": "2026-09-16",
+            "subject": "curios属性显示兼容"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 3,
+        "net_del": 4
+      },
+      {
+        "commit": "ab2707f519ce93526b7ff192ae2eca0549f82643",
+        "date": "2026-09-17",
+        "subject": "修改一些纹理和模型上的问题，挪贴图位置",
+        "old": "5187258a692a859b05782556b6f41025089e6fbe",
+        "new": "454b5938f943bef08d41d1dfd0c2956403f7e3f6",
+        "sub_commits": [
+          {
+            "hash": "454b5938f943bef08d41d1dfd0c2956403f7e3f6",
+            "date": "2026-09-17",
+            "subject": "修改一些纹理和模型上的问题，挪贴图位置"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "9a5d3a4a6b7a937616c29edac1a6475c2f53eb69",
+        "date": "2026-09-17",
+        "subject": "修复portlib的注册表",
+        "old": "454b5938f943bef08d41d1dfd0c2956403f7e3f6",
+        "new": "067209093c365af13b682814b9a9f50742f2508d",
+        "sub_commits": [
+          {
+            "hash": "067209093c365af13b682814b9a9f50742f2508d",
+            "date": "2026-09-17",
+            "subject": "修复portlib的注册表"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 6,
+        "net_del": 1
+      },
+      {
+        "commit": "417d561ecf626bd413243c2ea270785202e20ceb",
+        "date": "2026-09-18",
+        "subject": "使用neoforge风味的网络包注册与发送",
+        "old": "067209093c365af13b682814b9a9f50742f2508d",
+        "new": "b61a6ee57cc42b27c6619a597c6a47d2b2cbbe82",
+        "sub_commits": [
+          {
+            "hash": "b61a6ee57cc42b27c6619a597c6a47d2b2cbbe82",
+            "date": "2026-09-18",
+            "subject": "使用neoforge风味的网络包注册与发送"
+          }
+        ],
+        "error": "",
+        "net_files": 9,
+        "net_add": 40,
+        "net_del": 32
+      },
+      {
+        "commit": "87b93ede277428828ae7dfb66762b14c5ab0e1d7",
+        "date": "2026-09-18",
+        "subject": "合并stream codec",
+        "old": "b61a6ee57cc42b27c6619a597c6a47d2b2cbbe82",
+        "new": "ee7122937859343077ffa4fb73e155d8a20b554c",
+        "sub_commits": [
+          {
+            "hash": "ee7122937859343077ffa4fb73e155d8a20b554c",
+            "date": "2026-09-18",
+            "subject": "合并stream codec"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 7,
+        "net_del": 0
+      },
+      {
+        "commit": "6f638b9b4de7fbe97bff3312cb56e9c680b5fcd1",
+        "date": "2026-09-19",
+        "subject": "修复粒子的顶点绕序问题",
+        "old": "ee7122937859343077ffa4fb73e155d8a20b554c",
+        "new": "35147c5ed823575f1066f495819f3098ccb973c7",
+        "sub_commits": [
+          {
+            "hash": "35147c5ed823575f1066f495819f3098ccb973c7",
+            "date": "2026-09-19",
+            "subject": "修复粒子的顶点绕序问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "c5b035680e4fdecd1e3c9ad9a7cba30f9671fd7f",
+        "date": "2026-09-19",
+        "subject": "移除动态光源至MagicLib",
+        "old": "ee7122937859343077ffa4fb73e155d8a20b554c",
+        "new": "4e883ecf1fb7cf95532131b83dfbb080c67c4bf1",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "c9d65226f9f5c37a0ce6e76fb63f9c5c9b44df5a",
+        "date": "2026-09-19",
+        "subject": "Merge remote-tracking branch 'origin/forge-dev/1.20.1' into forge-dev/1.20.1",
+        "old": "4e883ecf1fb7cf95532131b83dfbb080c67c4bf1",
+        "new": "c898a4bfad8ab83e99e7a14e4083555cf4333937",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "65c6d29855bc2add3d660e6932824e545f73e21e",
+        "date": "2026-09-19",
+        "subject": "修复部分物品无法搜索的问题",
+        "old": "35147c5ed823575f1066f495819f3098ccb973c7",
+        "new": "b8f5bde2b83f703a57edd8c6dffb321056f2a86d",
+        "sub_commits": [
+          {
+            "hash": "b8f5bde2b83f703a57edd8c6dffb321056f2a86d",
+            "date": "2026-09-19",
+            "subject": "修复部分物品无法搜索的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 3,
+        "net_del": 0
+      },
+      {
+        "commit": "06c41f66093a41f05165aa0e318556bcc04d0e57",
+        "date": "2026-09-19",
+        "subject": "Merge remote-tracking branch 'origin/forge-dev/1.20.1' into forge-dev/1.20.1",
+        "old": "c898a4bfad8ab83e99e7a14e4083555cf4333937",
+        "new": "089c2ee751768514698d2d6919f745c6fdaf3d20",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "ed36d3b0df253dd278afb44d8d22ee5caf7453a2",
+        "date": "2026-09-20",
+        "subject": "上传模块",
+        "old": "089c2ee751768514698d2d6919f745c6fdaf3d20",
+        "new": "95b09e6cd07b7099b6d106dcf66cdfe3490a562b",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "e145cafb5c7378e08ab087770db30c5fd3f7c455",
+        "date": "2026-09-20",
+        "subject": "动态群系修改与client tick事件大一统",
+        "old": "95b09e6cd07b7099b6d106dcf66cdfe3490a562b",
+        "new": "53e9a1de41f5df35bf583b1d5d420cccddcc4697",
+        "sub_commits": [
+          {
+            "hash": "53e9a1de41f5df35bf583b1d5d420cccddcc4697",
+            "date": "2026-09-20",
+            "subject": "动态群系修改与client tick事件大一统"
+          }
+        ],
+        "error": "",
+        "net_files": 16,
+        "net_add": 1121,
+        "net_del": 0
+      },
+      {
+        "commit": "81488b6d0fe1a5c5a1c4326eec6f18af257e5251",
+        "date": "2026-09-20",
+        "subject": "修改一股味的代码",
+        "old": "53e9a1de41f5df35bf583b1d5d420cccddcc4697",
+        "new": "82af813f1d83ba71d8f6c226f8c4e5b4daae9f95",
+        "sub_commits": [
+          {
+            "hash": "82af813f1d83ba71d8f6c226f8c4e5b4daae9f95",
+            "date": "2026-09-20",
+            "subject": "修改一股味的代码"
+          }
+        ],
+        "error": "",
+        "net_files": 26,
+        "net_add": 325,
+        "net_del": 29
+      },
+      {
+        "commit": "d879d8ffccc7ea5d69ace92b5528387f214dfa04",
+        "date": "2026-09-20",
+        "subject": "第一人称动画功能移到lib",
+        "old": "82af813f1d83ba71d8f6c226f8c4e5b4daae9f95",
+        "new": "c6b57b9a5a1a7173e1c5bb48c04d90bc59999cfe",
+        "sub_commits": [
+          {
+            "hash": "c6b57b9a5a1a7173e1c5bb48c04d90bc59999cfe",
+            "date": "2026-09-20",
+            "subject": "第一人称动画功能移到lib"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 19,
+        "net_del": 37
+      },
+      {
+        "commit": "ff7a62eead60d8a4bf6e8b801b7525b890254392",
+        "date": "2026-09-20",
+        "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap",
+        "old": "c6b57b9a5a1a7173e1c5bb48c04d90bc59999cfe",
+        "new": "4d3f299e96c9376449caf8a49f9383189f8fc041",
+        "sub_commits": [
+          {
+            "hash": "4d3f299e96c9376449caf8a49f9383189f8fc041",
+            "date": "2026-09-20",
+            "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 7,
+        "net_del": 4
+      },
+      {
+        "commit": "701d48a089266057da367d09ea5e6f39b16b53ae",
+        "date": "2026-09-20",
+        "subject": "feat: 完善动态群系覆盖与迷你群系判定",
+        "old": "4d3f299e96c9376449caf8a49f9383189f8fc041",
+        "new": "b95445c3c56ef4a8968f363787c3135121887e31",
+        "sub_commits": [
+          {
+            "hash": "b95445c3c56ef4a8968f363787c3135121887e31",
+            "date": "2026-09-20",
+            "subject": "feat: 完善动态群系覆盖与迷你群系判定"
+          }
+        ],
+        "error": "",
+        "net_files": 10,
+        "net_add": 526,
+        "net_del": 195
+      },
+      {
+        "commit": "c886cec0fcc6d388a611dcfa9014a233b606b5b2",
+        "date": "2026-09-20",
+        "subject": "修复暴击率问题",
+        "old": "b95445c3c56ef4a8968f363787c3135121887e31",
+        "new": "6a56e90ade7a105a404313f14c8be89efd8f4a8a",
+        "sub_commits": [
+          {
+            "hash": "6a56e90ade7a105a404313f14c8be89efd8f4a8a",
+            "date": "2026-09-20",
+            "subject": "修复暴击率问题"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 23,
+        "net_del": 5
+      },
+      {
+        "commit": "1da5e0d268bf5dcce0504929cfb9b314571ffb33",
+        "date": "2026-09-21",
+        "subject": "修复一些问题",
+        "old": "6a56e90ade7a105a404313f14c8be89efd8f4a8a",
+        "new": "0b4b61ae100af61d76caa0d0c30c49a85fd5c5f4",
+        "sub_commits": [
+          {
+            "hash": "0b4b61ae100af61d76caa0d0c30c49a85fd5c5f4",
+            "date": "2026-09-21",
+            "subject": "修复一些问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 6,
+        "net_del": 26
+      },
+      {
+        "commit": "892008ba0314c0bc6fc2b6d4b44af17da293328d",
+        "date": "2026-09-21",
+        "subject": "feat(worldgen): 重构蜘蛛洞生成并接入蜘蛛巢方块",
+        "old": "0b4b61ae100af61d76caa0d0c30c49a85fd5c5f4",
+        "new": "b9d59de31488ea989913f60c3d59ee926ec79751",
+        "sub_commits": [
+          {
+            "hash": "b9d59de31488ea989913f60c3d59ee926ec79751",
+            "date": "2026-09-21",
+            "subject": "feat(worldgen): 重构蜘蛛洞生成并接入蜘蛛巢方块"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 68,
+        "net_del": 2
+      },
+      {
+        "commit": "ef1a4d1386a6bb6507da0a3e07d84c6518658615",
+        "date": "2026-09-22",
+        "subject": "feat: 重构肉山肉墙与悠悠球实现，更新 NPC 交互界面并统一敌怪射弹伤害",
+        "old": "b9d59de31488ea989913f60c3d59ee926ec79751",
+        "new": "351cec5befda6d980fe7622d9db2ece5d3a05062",
+        "sub_commits": [
+          {
+            "hash": "351cec5befda6d980fe7622d9db2ece5d3a05062",
+            "date": "2026-09-22",
+            "subject": "feat: 重构肉山肉墙与悠悠球实现，更新 NPC 交互界面并统一敌怪射弹伤害"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "e2a096341fb6780bd76c9e29751d2dad4e3cecb2",
+        "date": "2026-09-22",
+        "subject": "删除Ponder的nbt，升级粒子",
+        "old": "351cec5befda6d980fe7622d9db2ece5d3a05062",
+        "new": "3033089009b3d8806ce90a3ecea803521bd5039b",
+        "sub_commits": [
+          {
+            "hash": "3033089009b3d8806ce90a3ecea803521bd5039b",
+            "date": "2026-09-22",
+            "subject": "删除Ponder的nbt，升级粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "2f44045a8042ad204234e07237ca518e5d4a1177",
+        "date": "2026-09-23",
+        "subject": "大改修饰语",
+        "old": "3033089009b3d8806ce90a3ecea803521bd5039b",
+        "new": "e9b848c93b8b9efaf48d33a8c830e19352ea4dff",
+        "sub_commits": [
+          {
+            "hash": "e9b848c93b8b9efaf48d33a8c830e19352ea4dff",
+            "date": "2026-09-23",
+            "subject": "大改修饰语"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 11,
+        "net_del": 53
+      },
+      {
+        "commit": "185a0fdbb8bf3cf2b50e16bdbeda8c0b82a46c63",
+        "date": "2026-09-25",
+        "subject": "彩色火把",
+        "old": "e9b848c93b8b9efaf48d33a8c830e19352ea4dff",
+        "new": "8378b03ff76c8c0ebb2569fc3a39ff39c8ed814c",
+        "sub_commits": [
+          {
+            "hash": "8378b03ff76c8c0ebb2569fc3a39ff39c8ed814c",
+            "date": "2026-09-25",
+            "subject": "彩色火把"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 0
+      },
+      {
+        "commit": "2472a2c1b3f0954128655df217afc535d79f1850",
+        "date": "2026-09-25",
+        "subject": "1.2.7",
+        "old": "8378b03ff76c8c0ebb2569fc3a39ff39c8ed814c",
+        "new": "4688a2983938d6d8cb07fbd8aaa0bf7bca5f994a",
+        "sub_commits": [
+          {
+            "hash": "4688a2983938d6d8cb07fbd8aaa0bf7bca5f994a",
+            "date": "2026-09-25",
+            "subject": "1.2.7"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 0,
+        "net_del": 2
+      },
+      {
+        "commit": "a6819f175bae21c95161fd010dd921323c1e7142",
+        "date": "2026-09-25",
+        "subject": "feat(magiclib): 支持直接注册动态光源",
+        "old": "4688a2983938d6d8cb07fbd8aaa0bf7bca5f994a",
+        "new": "c711de55fa13827b9ce6bffc8041379c04771389",
+        "sub_commits": [
+          {
+            "hash": "c711de55fa13827b9ce6bffc8041379c04771389",
+            "date": "2026-09-25",
+            "subject": "feat(magiclib): 支持直接注册动态光源"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 151,
+        "net_del": 93
+      },
+      {
+        "commit": "fcd2368c6f4c1f0d31c167725777ee5aceb93916",
+        "date": "2026-09-27",
+        "subject": "修重铸价格（没对接心情）",
+        "old": "c711de55fa13827b9ce6bffc8041379c04771389",
+        "new": "777e96ae833f9d995a8445a0d9dd64174717a0a4",
+        "sub_commits": [
+          {
+            "hash": "777e96ae833f9d995a8445a0d9dd64174717a0a4",
+            "date": "2026-09-27",
+            "subject": "修重铸价格（没对接心情）"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      }
+    ],
+    "TerraCurio": [
+      {
+        "commit": "dbac6afed3738db4b36f335265ab199327e1e971",
+        "date": "2026-06-04",
+        "subject": "part",
+        "old": "f8c93b71247ed39c504ef211572f7e550b875af9",
+        "new": "9c53efdfe7172f2c156e0f6f09ffea8b69826eea",
+        "sub_commits": [
+          {
+            "hash": "9c53efdfe7172f2c156e0f6f09ffea8b69826eea",
+            "date": "2026-06-04",
+            "subject": "part"
+          }
+        ],
+        "error": "",
+        "net_files": 15,
+        "net_add": 108,
+        "net_del": 569
+      },
+      {
+        "commit": "1d216237bafd9f230f73d7bdd56257cbc1ddf101",
+        "date": "2026-06-06",
+        "subject": "part2",
+        "old": "9c53efdfe7172f2c156e0f6f09ffea8b69826eea",
+        "new": "dc92aa2aadb0c5e5e484987d514848920234cb19",
+        "sub_commits": [
+          {
+            "hash": "dc92aa2aadb0c5e5e484987d514848920234cb19",
+            "date": "2026-06-06",
+            "subject": "part2"
+          }
+        ],
+        "error": "",
+        "net_files": 165,
+        "net_add": 1532,
+        "net_del": 1616
+      },
+      {
+        "commit": "6c1a7a65677f73abf5e61b34ccd0abd6809a1c76",
+        "date": "2026-06-07",
+        "subject": "part3",
+        "old": "dc92aa2aadb0c5e5e484987d514848920234cb19",
+        "new": "7789b553b3fadc88a63affcf10cd87133d7e48f3",
+        "sub_commits": [
+          {
+            "hash": "7789b553b3fadc88a63affcf10cd87133d7e48f3",
+            "date": "2026-06-07",
+            "subject": "part3"
+          }
+        ],
+        "error": "",
+        "net_files": 311,
+        "net_add": 2027,
+        "net_del": 5014
+      },
+      {
+        "commit": "00c759b638e49c5bdd7ea2ae121cecf118a84fdd",
+        "date": "2026-06-07",
+        "subject": "part4",
+        "old": "7789b553b3fadc88a63affcf10cd87133d7e48f3",
+        "new": "de12d0ad6bf83ba82e8969e4145ddbffa1cc1cc5",
+        "sub_commits": [
+          {
+            "hash": "de12d0ad6bf83ba82e8969e4145ddbffa1cc1cc5",
+            "date": "2026-06-07",
+            "subject": "part4"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 4,
+        "net_del": 4
+      },
+      {
+        "commit": "28e34a50050f1f24f3c4ded163ca056271cb5398",
+        "date": "2026-06-07",
+        "subject": "part5",
+        "old": "de12d0ad6bf83ba82e8969e4145ddbffa1cc1cc5",
+        "new": "ded6e0335fb4fabb283f24d0538dc1cf772dd350",
+        "sub_commits": [
+          {
+            "hash": "ded6e0335fb4fabb283f24d0538dc1cf772dd350",
+            "date": "2026-06-07",
+            "subject": "part5"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 27,
+        "net_del": 18
+      },
+      {
+        "commit": "bf1491b2c6cddb55cf24fecf3c74645d9f343375",
+        "date": "2026-06-07",
+        "subject": "fix",
+        "old": "ded6e0335fb4fabb283f24d0538dc1cf772dd350",
+        "new": "cb9f1a2bd0bba1c4fff91a44a773d79703e24fe6",
+        "sub_commits": [
+          {
+            "hash": "cb9f1a2bd0bba1c4fff91a44a773d79703e24fe6",
+            "date": "2026-06-07",
+            "subject": "fix"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 1,
+        "net_del": 3
+      },
+      {
+        "commit": "48289ba27d48326d1bd1ecf16d007a3fe66f1f24",
+        "date": "2026-06-08",
+        "subject": "part6",
+        "old": "cb9f1a2bd0bba1c4fff91a44a773d79703e24fe6",
+        "new": "0b83dc4b8c0b9e21fdadc1680cc8a13954f00e28",
+        "sub_commits": [
+          {
+            "hash": "0b83dc4b8c0b9e21fdadc1680cc8a13954f00e28",
+            "date": "2026-06-08",
+            "subject": "part6"
+          }
+        ],
+        "error": "",
+        "net_files": 15,
+        "net_add": 16,
+        "net_del": 20
+      },
+      {
+        "commit": "85475d011328698fdf82e34d3cc7349ee12ae39e",
+        "date": "2026-06-09",
+        "subject": "泰拉生物移植前",
+        "old": "0b83dc4b8c0b9e21fdadc1680cc8a13954f00e28",
+        "new": "a25fb0c6c3797993cca79deccdd94eaade9c9fb6",
+        "sub_commits": [
+          {
+            "hash": "a25fb0c6c3797993cca79deccdd94eaade9c9fb6",
+            "date": "2026-06-09",
+            "subject": "泰拉生物移植前"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "f4b42537ca0ee008794a0c04a1c67cdb07d3533b",
+        "date": "2026-06-10",
+        "subject": "part8",
+        "old": "a25fb0c6c3797993cca79deccdd94eaade9c9fb6",
+        "new": "e797be7ed45a00875bdea3cfaffb302a33397b0a",
+        "sub_commits": [
+          {
+            "hash": "e797be7ed45a00875bdea3cfaffb302a33397b0a",
+            "date": "2026-06-10",
+            "subject": "part8"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 28,
+        "net_del": 51
+      },
+      {
+        "commit": "e7b82668035d562746e0a8e7575bff41ed6a74cf",
+        "date": "2026-06-10",
+        "subject": "part9",
+        "old": "e797be7ed45a00875bdea3cfaffb302a33397b0a",
+        "new": "f82be4111293811be60d20add3d91b27193c8df1",
+        "sub_commits": [
+          {
+            "hash": "f82be4111293811be60d20add3d91b27193c8df1",
+            "date": "2026-06-10",
+            "subject": "part9"
+          }
+        ],
+        "error": "",
+        "net_files": 8,
+        "net_add": 21,
+        "net_del": 21
+      },
+      {
+        "commit": "45fefd3360890a39038f93c6e49f635b4d5fd7ef",
+        "date": "2026-06-10",
+        "subject": "datamap datagen",
+        "old": "f82be4111293811be60d20add3d91b27193c8df1",
+        "new": "9f9e1536d29d74d6a85e8dedfce35ec780ad47b0",
+        "sub_commits": [
+          {
+            "hash": "9f9e1536d29d74d6a85e8dedfce35ec780ad47b0",
+            "date": "2026-06-10",
+            "subject": "datamap datagen"
+          }
+        ],
+        "error": "",
+        "net_files": 7,
+        "net_add": 149,
+        "net_del": 118
+      },
+      {
+        "commit": "39500342350ec7325971a997a99ecdf788773c8e",
+        "date": "2026-06-10",
+        "subject": "fix3",
+        "old": "9f9e1536d29d74d6a85e8dedfce35ec780ad47b0",
+        "new": "20e2cc7d87e6d876e774e3c0a0d331804dfbd405",
+        "sub_commits": [
+          {
+            "hash": "20e2cc7d87e6d876e774e3c0a0d331804dfbd405",
+            "date": "2026-06-10",
+            "subject": "fix3"
+          }
+        ],
+        "error": "",
+        "net_files": 14,
+        "net_add": 355,
+        "net_del": 154
+      },
+      {
+        "commit": "cb558bcf6f1e9fabbbf9a143f7a17addfdbb4f22",
+        "date": "2026-06-13",
+        "subject": "调整PortEnchantmentHelper",
+        "old": "20e2cc7d87e6d876e774e3c0a0d331804dfbd405",
+        "new": "40165315b4987d3d9b4d3af157f71708ef6c429f",
+        "sub_commits": [
+          {
+            "hash": "40165315b4987d3d9b4d3af157f71708ef6c429f",
+            "date": "2026-06-13",
+            "subject": "调整PortEnchantmentHelper"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 24,
+        "net_del": 0
+      },
+      {
+        "commit": "b3f13d405f0fdf1dd3b67bae16a53c969835a280",
+        "date": "2026-06-13",
+        "subject": "part11",
+        "old": "40165315b4987d3d9b4d3af157f71708ef6c429f",
+        "new": "50d3c0053d5669a674445f2a37e61aad088626db",
+        "sub_commits": [
+          {
+            "hash": "50d3c0053d5669a674445f2a37e61aad088626db",
+            "date": "2026-06-13",
+            "subject": "part11"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 4,
+        "net_del": 4
+      },
+      {
+        "commit": "0b38e2e69940eba0c01d396091151306d2a31b5b",
+        "date": "2026-06-14",
+        "subject": "part14",
+        "old": "50d3c0053d5669a674445f2a37e61aad088626db",
+        "new": "25878491f315039f3221c6e80fa34da7bb1ab4b2",
+        "sub_commits": [
+          {
+            "hash": "25878491f315039f3221c6e80fa34da7bb1ab4b2",
+            "date": "2026-06-14",
+            "subject": "part14"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 33,
+        "net_del": 36
+      },
+      {
+        "commit": "15afa497b1661abfee285738bf95982f66203213",
+        "date": "2026-06-14",
+        "subject": "fix magic mirror",
+        "old": "25878491f315039f3221c6e80fa34da7bb1ab4b2",
+        "new": "65609e4b5aa108f29712e723a8c0e9ead6b54474",
+        "sub_commits": [
+          {
+            "hash": "65609e4b5aa108f29712e723a8c0e9ead6b54474",
+            "date": "2026-06-14",
+            "subject": "fix magic mirror"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 30,
+        "net_del": 25
+      },
+      {
+        "commit": "7646c55055b6a87a8f2b68de6f4a31a3f0fd4b61",
+        "date": "2026-06-15",
+        "subject": "物品移植",
+        "old": "65609e4b5aa108f29712e723a8c0e9ead6b54474",
+        "new": "1663a391f5e3dfeeae52b4ab450033626dab0f9e",
+        "sub_commits": [
+          {
+            "hash": "1663a391f5e3dfeeae52b4ab450033626dab0f9e",
+            "date": "2026-06-15",
+            "subject": "物品移植"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 17,
+        "net_del": 13
+      },
+      {
+        "commit": "5c56e83b298a134afcac76b9a068d0536180cd31",
+        "date": "2026-06-17",
+        "subject": "something",
+        "old": "1663a391f5e3dfeeae52b4ab450033626dab0f9e",
+        "new": "5ba42283e7c90843a359b60e0b9a863cff6ba38b",
+        "sub_commits": [
+          {
+            "hash": "5ba42283e7c90843a359b60e0b9a863cff6ba38b",
+            "date": "2026-06-17",
+            "subject": "something"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 4,
+        "net_del": 3
+      },
+      {
+        "commit": "5481344ca3093a622fa17fcc15e06d71419ea173",
+        "date": "2026-06-18",
+        "subject": "something2",
+        "old": "5ba42283e7c90843a359b60e0b9a863cff6ba38b",
+        "new": "80bba7012f372ea3e10b315ee7f751d27cb3e565",
+        "sub_commits": [
+          {
+            "hash": "80bba7012f372ea3e10b315ee7f751d27cb3e565",
+            "date": "2026-06-18",
+            "subject": "something2"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 1
+      },
+      {
+        "commit": "4dcf95cfe35b8d88d74dd443463243302d163e3c",
+        "date": "2026-06-18",
+        "subject": "移植家具",
+        "old": "80bba7012f372ea3e10b315ee7f751d27cb3e565",
+        "new": "e10aba5cd4e77125050914545ffdecf31ebb4bf7",
+        "sub_commits": [
+          {
+            "hash": "e10aba5cd4e77125050914545ffdecf31ebb4bf7",
+            "date": "2026-06-18",
+            "subject": "移植家具"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 4
+      },
+      {
+        "commit": "1e77c5edc55ac727095ed83c7a2a2d77e5e47fd3",
+        "date": "2026-06-18",
+        "subject": "remove BOM",
+        "old": "e10aba5cd4e77125050914545ffdecf31ebb4bf7",
+        "new": "37da87de99d6c45a7f92d7bc4c1fdae8fef1f00b",
+        "sub_commits": [
+          {
+            "hash": "37da87de99d6c45a7f92d7bc4c1fdae8fef1f00b",
+            "date": "2026-06-18",
+            "subject": "remove BOM"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "10705abc75005d4b7ef56a81880a4e900f7da8f4",
+        "date": "2026-06-21",
+        "subject": "part19",
+        "old": "37da87de99d6c45a7f92d7bc4c1fdae8fef1f00b",
+        "new": "7fcc7db90358b104b5f8003690326868c058c37e",
+        "sub_commits": [
+          {
+            "hash": "7fcc7db90358b104b5f8003690326868c058c37e",
+            "date": "2026-06-21",
+            "subject": "part19"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 16,
+        "net_del": 16
+      },
+      {
+        "commit": "d17dc7c9a01e1305280926a3dbb29933518eb282",
+        "date": "2026-06-21",
+        "subject": "fix crash",
+        "old": "7fcc7db90358b104b5f8003690326868c058c37e",
+        "new": "b251f11e24561257be36ab5c61eb1a14f49ac960",
+        "sub_commits": [
+          {
+            "hash": "b251f11e24561257be36ab5c61eb1a14f49ac960",
+            "date": "2026-06-21",
+            "subject": "fix crash"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 4,
+        "net_del": 3
+      },
+      {
+        "commit": "4ab2d42ad4579a2d0e07af2d7b0df13a47742c9c",
+        "date": "2026-06-21",
+        "subject": "fix crash",
+        "old": "b251f11e24561257be36ab5c61eb1a14f49ac960",
+        "new": "bf4bcb932d4b77fdbf8d560c652d42d5f7363b45",
+        "sub_commits": [
+          {
+            "hash": "bf4bcb932d4b77fdbf8d560c652d42d5f7363b45",
+            "date": "2026-06-21",
+            "subject": "fix crash"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 1
+      },
+      {
+        "commit": "c9f3af990085517c5873f0cccc6715244f6dbd16",
+        "date": "2026-06-21",
+        "subject": "extensions",
+        "old": "bf4bcb932d4b77fdbf8d560c652d42d5f7363b45",
+        "new": "20a7c2b215da65c40b6aac37a9ab855465c5b3c1",
+        "sub_commits": [
+          {
+            "hash": "20a7c2b215da65c40b6aac37a9ab855465c5b3c1",
+            "date": "2026-06-21",
+            "subject": "extensions"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 2
+      },
+      {
+        "commit": "c7e4f8fab88d88b273af6d4d9207fe437c875a87",
+        "date": "2026-06-21",
+        "subject": "extensions2",
+        "old": "20a7c2b215da65c40b6aac37a9ab855465c5b3c1",
+        "new": "1eedd6b08f036187cd83873ae211a4e65d786561",
+        "sub_commits": [
+          {
+            "hash": "1eedd6b08f036187cd83873ae211a4e65d786561",
+            "date": "2026-06-21",
+            "subject": "extensions2"
+          }
+        ],
+        "error": "",
+        "net_files": 8,
+        "net_add": 13,
+        "net_del": 23
+      },
+      {
+        "commit": "f6b8f73b09d34007aff282b4e217518eb6aa3fe0",
+        "date": "2026-06-22",
+        "subject": "part20",
+        "old": "1eedd6b08f036187cd83873ae211a4e65d786561",
+        "new": "ac41d9feaa422d3f02de071e4897db6641709215",
+        "sub_commits": [
+          {
+            "hash": "ac41d9feaa422d3f02de071e4897db6641709215",
+            "date": "2026-06-22",
+            "subject": "part20"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "0e370c928c3f020b3cc73a43e5c1c7c6262d8047",
+        "date": "2026-06-24",
+        "subject": "data component method rename",
+        "old": "ac41d9feaa422d3f02de071e4897db6641709215",
+        "new": "9c0ad9fbc64bddfb2534c418c0d3c68e3555da0d",
+        "sub_commits": [
+          {
+            "hash": "9c0ad9fbc64bddfb2534c418c0d3c68e3555da0d",
+            "date": "2026-06-24",
+            "subject": "data component method rename"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "4298126f93036624446f3d0a3306ae5c09506962",
+        "date": "2026-06-24",
+        "subject": "IPortItemExtension",
+        "old": "9c0ad9fbc64bddfb2534c418c0d3c68e3555da0d",
+        "new": "4be3e865ee0863c9e58d37baea8990735f3673e3",
+        "sub_commits": [
+          {
+            "hash": "4be3e865ee0863c9e58d37baea8990735f3673e3",
+            "date": "2026-06-24",
+            "subject": "IPortItemExtension"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 4,
+        "net_del": 5
+      },
+      {
+        "commit": "c0c6a321d65df47de83545d7ae5e7ae46f0d7b0d",
+        "date": "2026-06-28",
+        "subject": "part24",
+        "old": "4be3e865ee0863c9e58d37baea8990735f3673e3",
+        "new": "38d6ed3df6256adba3dfe30ae6325588c453680c",
+        "sub_commits": [
+          {
+            "hash": "38d6ed3df6256adba3dfe30ae6325588c453680c",
+            "date": "2026-06-28",
+            "subject": "part24"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 20,
+        "net_del": 10
+      },
+      {
+        "commit": "1516cbd2ffae85762e69875101a5e7bfcbe82102",
+        "date": "2026-06-30",
+        "subject": "part fluid type",
+        "old": "38d6ed3df6256adba3dfe30ae6325588c453680c",
+        "new": "4cec06b17a7dfba9394215b4bae67cc6050aedcc",
+        "sub_commits": [
+          {
+            "hash": "4cec06b17a7dfba9394215b4bae67cc6050aedcc",
+            "date": "2026-06-30",
+            "subject": "part fluid type"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "8ce7f4d7f8ab5873f4f91b90ffe6fb5010ea3ddf",
+        "date": "2026-07-01",
+        "subject": "part recipe datagen",
+        "old": "4cec06b17a7dfba9394215b4bae67cc6050aedcc",
+        "new": "7982a528ad530c17a2f65361d3a1ff971233cba1",
+        "sub_commits": [
+          {
+            "hash": "7982a528ad530c17a2f65361d3a1ff971233cba1",
+            "date": "2026-07-01",
+            "subject": "part recipe datagen"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 8,
+        "net_del": 45
+      },
+      {
+        "commit": "fac72523a8907a553ca28bc90358584647513efe",
+        "date": "2026-07-02",
+        "subject": "part critters",
+        "old": "7982a528ad530c17a2f65361d3a1ff971233cba1",
+        "new": "c9b4a9270c08ef435de16d152e718cd3032f9550",
+        "sub_commits": [
+          {
+            "hash": "c9b4a9270c08ef435de16d152e718cd3032f9550",
+            "date": "2026-07-02",
+            "subject": "part critters"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 4,
+        "net_del": 105
+      },
+      {
+        "commit": "911437e0343f2d13847a998c7e377a27bdc07858",
+        "date": "2026-07-04",
+        "subject": "able to start game",
+        "old": "c9b4a9270c08ef435de16d152e718cd3032f9550",
+        "new": "3a3ce762c7e62b099b45e494705e77b3484d43d1",
+        "sub_commits": [
+          {
+            "hash": "3a3ce762c7e62b099b45e494705e77b3484d43d1",
+            "date": "2026-07-04",
+            "subject": "able to start game"
+          }
+        ],
+        "error": "",
+        "net_files": 7,
+        "net_add": 27,
+        "net_del": 27
+      },
+      {
+        "commit": "1284d08a9cf043e8e204c15f9f081cfe245483a2",
+        "date": "2026-07-04",
+        "subject": "able to into world",
+        "old": "3a3ce762c7e62b099b45e494705e77b3484d43d1",
+        "new": "a9f3c48eb5df918b331984e6ad081e34f9d1ddb7",
+        "sub_commits": [
+          {
+            "hash": "a9f3c48eb5df918b331984e6ad081e34f9d1ddb7",
+            "date": "2026-07-04",
+            "subject": "able to into world"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 8,
+        "net_del": 31
+      },
+      {
+        "commit": "d4d5d0fe1be53678ebaded5a9a126113ee2387ef",
+        "date": "2026-07-22",
+        "subject": "修崩溃",
+        "old": "a9f3c48eb5df918b331984e6ad081e34f9d1ddb7",
+        "new": "fc57131200c5c5294008d327404440dda3ffb733",
+        "sub_commits": [
+          {
+            "hash": "fc57131200c5c5294008d327404440dda3ffb733",
+            "date": "2026-07-22",
+            "subject": "修崩溃"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "0fa73dd799e44ab25180e094dbeb833c52d3f551",
+        "date": "2026-07-29",
+        "subject": "truly fix",
+        "old": "fc57131200c5c5294008d327404440dda3ffb733",
+        "new": "063dffb7039561ac7b220727465b2f27303981f0",
+        "sub_commits": [
+          {
+            "hash": "063dffb7039561ac7b220727465b2f27303981f0",
+            "date": "2026-07-29",
+            "subject": "truly fix"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "f02d012ad1055396d7248ce2d960697d89085b1f",
+        "date": "2026-07-29",
+        "subject": "整理",
+        "old": "063dffb7039561ac7b220727465b2f27303981f0",
+        "new": "aab92e2016ee5227244aa6b688b3a7e2c0617d00",
+        "sub_commits": [
+          {
+            "hash": "aab92e2016ee5227244aa6b688b3a7e2c0617d00",
+            "date": "2026-07-29",
+            "subject": "整理"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 4
+      },
+      {
+        "commit": "83674802b1c95e2b44b8f9802afbf3961f620663",
+        "date": "2026-08-07",
+        "subject": "portlib v1.0.0",
+        "old": "aab92e2016ee5227244aa6b688b3a7e2c0617d00",
+        "new": "d52bc12dcc09eca2c12b9ed8eeccaa263bf76ef3",
+        "sub_commits": [
+          {
+            "hash": "d52bc12dcc09eca2c12b9ed8eeccaa263bf76ef3",
+            "date": "2026-08-07",
+            "subject": "portlib v1.0.0"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 5,
+        "net_del": 7
+      },
+      {
+        "commit": "80378e047196844f91594eef00d59ad09e15f248",
+        "date": "2026-08-07",
+        "subject": "TerraCurio依赖",
+        "old": "d52bc12dcc09eca2c12b9ed8eeccaa263bf76ef3",
+        "new": "9c96d2d0462cc78725120dcd6fb1558bf1cf3442",
+        "sub_commits": [
+          {
+            "hash": "9c96d2d0462cc78725120dcd6fb1558bf1cf3442",
+            "date": "2026-08-07",
+            "subject": "TerraCurio依赖"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 7,
+        "net_del": 0
+      },
+      {
+        "commit": "bad95470cda714d414a012aca6597d36bb3b9de0",
+        "date": "2026-08-08",
+        "subject": "同步1.21.1的修改",
+        "old": "9c96d2d0462cc78725120dcd6fb1558bf1cf3442",
+        "new": "7b0cbe52012e44cfadd013eaa0999b0b3c91f0f7",
+        "sub_commits": [
+          {
+            "hash": "7b0cbe52012e44cfadd013eaa0999b0b3c91f0f7",
+            "date": "2026-08-08",
+            "subject": "同步1.21.1的修改"
+          }
+        ],
+        "error": "",
+        "net_files": 14,
+        "net_add": 643,
+        "net_del": 868
+      },
+      {
+        "commit": "fd6f0910b507a2051d729220a41ab4f706121478",
+        "date": "2026-08-16",
+        "subject": "调整逻辑",
+        "old": "7b0cbe52012e44cfadd013eaa0999b0b3c91f0f7",
+        "new": "841f9933c0ccfb47eb51fe419f38f04a1d5327d5",
+        "sub_commits": [
+          {
+            "hash": "841f9933c0ccfb47eb51fe419f38f04a1d5327d5",
+            "date": "2026-08-16",
+            "subject": "调整逻辑"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 6,
+        "net_del": 34
+      },
+      {
+        "commit": "1c012ccb1963d8521cb880a5d23ceaf9cceae438",
+        "date": "2026-08-22",
+        "subject": "将饰品的药水效果转移至lib",
+        "old": "841f9933c0ccfb47eb51fe419f38f04a1d5327d5",
+        "new": "ddfcd27e0f2119a5cd03f4b7a51cae9f0a72cc7d",
+        "sub_commits": [
+          {
+            "hash": "ddfcd27e0f2119a5cd03f4b7a51cae9f0a72cc7d",
+            "date": "2026-08-22",
+            "subject": "将饰品的药水效果转移至lib"
+          }
+        ],
+        "error": "",
+        "net_files": 50,
+        "net_add": 167,
+        "net_del": 716
+      },
+      {
+        "commit": "100f6e0f2125fc5fd071f4cc94a80ffca1a15bf7",
+        "date": "2026-08-22",
+        "subject": "可开关的药水效果移到lib",
+        "old": "ddfcd27e0f2119a5cd03f4b7a51cae9f0a72cc7d",
+        "new": "b38d16d66051689c9fc0e47fb2b69527f8df95b1",
+        "sub_commits": [
+          {
+            "hash": "b38d16d66051689c9fc0e47fb2b69527f8df95b1",
+            "date": "2026-08-22",
+            "subject": "可开关的药水效果移到lib"
+          }
+        ],
+        "error": "",
+        "net_files": 12,
+        "net_add": 39,
+        "net_del": 99
+      },
+      {
+        "commit": "2a4dfce2c998df64cce1b0e9dd4e57e1a491df33",
+        "date": "2026-08-22",
+        "subject": "同步粒子",
+        "old": "b38d16d66051689c9fc0e47fb2b69527f8df95b1",
+        "new": "82e2636f04645edc24fdc9f5561d8dec603ff7cb",
+        "sub_commits": [
+          {
+            "hash": "82e2636f04645edc24fdc9f5561d8dec603ff7cb",
+            "date": "2026-08-22",
+            "subject": "同步粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 17,
+        "net_del": 7
+      },
+      {
+        "commit": "48be70c79e7a17eff0b5b1d8b9b7f7e61ddf1f39",
+        "date": "2026-08-23",
+        "subject": "升级粒子",
+        "old": "82e2636f04645edc24fdc9f5561d8dec603ff7cb",
+        "new": "b1af28359437c590b67ebf464e8253240d8fa262",
+        "sub_commits": [
+          {
+            "hash": "b1af28359437c590b67ebf464e8253240d8fa262",
+            "date": "2026-08-23",
+            "subject": "升级粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 7,
+        "net_add": 35,
+        "net_del": 31
+      },
+      {
+        "commit": "863e8bef83eee5d71c68e8512dd38490ba56ccf1",
+        "date": "2026-08-23",
+        "subject": "调整版本",
+        "old": "b1af28359437c590b67ebf464e8253240d8fa262",
+        "new": "99dc4ccf11bd90f56493d2d1aca99ff8ea791d0e",
+        "sub_commits": [
+          {
+            "hash": "99dc4ccf11bd90f56493d2d1aca99ff8ea791d0e",
+            "date": "2026-08-23",
+            "subject": "调整版本"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 5,
+        "net_del": 4
+      },
+      {
+        "commit": "21b060ec6922d1cbbf20f13542947b16cb9ef4f8",
+        "date": "2026-08-23",
+        "subject": "饰品能力全改为datamap，修复潜行属性",
+        "old": "99dc4ccf11bd90f56493d2d1aca99ff8ea791d0e",
+        "new": "45beb478487fdf5737f1286d7d0c549de4f7d8f4",
+        "sub_commits": [
+          {
+            "hash": "45beb478487fdf5737f1286d7d0c549de4f7d8f4",
+            "date": "2026-08-23",
+            "subject": "饰品能力全改为datamap，修复潜行属性"
+          }
+        ],
+        "error": "",
+        "net_files": 11,
+        "net_add": 786,
+        "net_del": 497
+      },
+      {
+        "commit": "4ef159bf9b0c2a077ae985815ade5dc4948af8e0",
+        "date": "2026-08-23",
+        "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子",
+        "old": "45beb478487fdf5737f1286d7d0c549de4f7d8f4",
+        "new": "a3f1cbca7a453c7da5a73b6049467aa4895ec68d",
+        "sub_commits": [
+          {
+            "hash": "a3f1cbca7a453c7da5a73b6049467aa4895ec68d",
+            "date": "2026-08-23",
+            "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 285,
+        "net_add": 2500,
+        "net_del": 324
+      },
+      {
+        "commit": "4557b85fccca4674021b78f5c359b7228821a479",
+        "date": "2026-08-24",
+        "subject": "玩家动画测试",
+        "old": "a3f1cbca7a453c7da5a73b6049467aa4895ec68d",
+        "new": "06d6372981fee8bf8041a324b491b7721b19b780",
+        "sub_commits": [
+          {
+            "hash": "06d6372981fee8bf8041a324b491b7721b19b780",
+            "date": "2026-08-24",
+            "subject": "玩家动画测试"
+          }
+        ],
+        "error": "",
+        "net_files": 27,
+        "net_add": 259,
+        "net_del": 30
+      },
+      {
+        "commit": "9057f178ca6da97651c79df115d27c0722c0742c",
+        "date": "2026-08-28",
+        "subject": "玩家动画（未注册永夜动画）",
+        "old": "06d6372981fee8bf8041a324b491b7721b19b780",
+        "new": "6ee91b55bd6f07fa48a80af784e581e3c8bf99ae",
+        "sub_commits": [
+          {
+            "hash": "6ee91b55bd6f07fa48a80af784e581e3c8bf99ae",
+            "date": "2026-08-28",
+            "subject": "玩家动画（未注册永夜动画）"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "29c1459cf61c91fa924401200e8ae969b4c84530",
+        "date": "2026-09-02",
+        "subject": "删除一些Extension类",
+        "old": "6ee91b55bd6f07fa48a80af784e581e3c8bf99ae",
+        "new": "3516ac33a77d85879f1e53d7a1a1a79bcb27885b",
+        "sub_commits": [
+          {
+            "hash": "3516ac33a77d85879f1e53d7a1a1a79bcb27885b",
+            "date": "2026-09-02",
+            "subject": "删除一些Extension类"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "31896204bd178363411cdc039a2e2dfc18e70814",
+        "date": "2026-09-06",
+        "subject": "静态方法改接口",
+        "old": "3516ac33a77d85879f1e53d7a1a1a79bcb27885b",
+        "new": "38fcb359547f2d7935ca0dbcc20364423e00737e",
+        "sub_commits": [
+          {
+            "hash": "38fcb359547f2d7935ca0dbcc20364423e00737e",
+            "date": "2026-09-06",
+            "subject": "静态方法改接口"
+          }
+        ],
+        "error": "",
+        "net_files": 10,
+        "net_add": 65,
+        "net_del": 67
+      },
+      {
+        "commit": "0cf629c1921cdd4b178845a7a797acb613c41c9a",
+        "date": "2026-09-06",
+        "subject": "属性静态字段注入",
+        "old": "38fcb359547f2d7935ca0dbcc20364423e00737e",
+        "new": "aae737d412b00cb11ab1487a7d1eb326b50959fe",
+        "sub_commits": [
+          {
+            "hash": "aae737d412b00cb11ab1487a7d1eb326b50959fe",
+            "date": "2026-09-06",
+            "subject": "属性静态字段注入"
+          }
+        ],
+        "error": "",
+        "net_files": 9,
+        "net_add": 55,
+        "net_del": 61
+      },
+      {
+        "commit": "841165c47a87c7876e7763d0e59babec2efc07e5",
+        "date": "2026-09-06",
+        "subject": "删除多余内容",
+        "old": "aae737d412b00cb11ab1487a7d1eb326b50959fe",
+        "new": "94c69f0bc8cfc75fada9cd980952f56f5ee63314",
+        "sub_commits": [
+          {
+            "hash": "94c69f0bc8cfc75fada9cd980952f56f5ee63314",
+            "date": "2026-09-06",
+            "subject": "删除多余内容"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 4,
+        "net_del": 1
+      },
+      {
+        "commit": "647400f442fc3fd0b65e3cfa17fe82f449817cda",
+        "date": "2026-09-06",
+        "subject": "封印魂",
+        "old": "94c69f0bc8cfc75fada9cd980952f56f5ee63314",
+        "new": "be87be1cbb4f176812a989ad1ecbd778648adef3",
+        "sub_commits": [
+          {
+            "hash": "be87be1cbb4f176812a989ad1ecbd778648adef3",
+            "date": "2026-09-06",
+            "subject": "封印魂"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 5,
+        "net_del": 6
+      },
+      {
+        "commit": "5c99e970211f28efff02ff010b8695ba6ec14e0f",
+        "date": "2026-09-07",
+        "subject": "生产环境修复",
+        "old": "be87be1cbb4f176812a989ad1ecbd778648adef3",
+        "new": "d4be8935de5e8f8bcb0cac4a9a4bc0f685e73f95",
+        "sub_commits": [
+          {
+            "hash": "d4be8935de5e8f8bcb0cac4a9a4bc0f685e73f95",
+            "date": "2026-09-07",
+            "subject": "生产环境修复"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "55cc8fc6b5101a4afb5c405d21d92c4b9277b1a6",
+        "date": "2026-09-07",
+        "subject": "生产环境修复",
+        "old": "d4be8935de5e8f8bcb0cac4a9a4bc0f685e73f95",
+        "new": "59730e912f4ade41b66115d465866ad2c1c91ca6",
+        "sub_commits": [
+          {
+            "hash": "59730e912f4ade41b66115d465866ad2c1c91ca6",
+            "date": "2026-09-07",
+            "subject": "生产环境修复"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "15a05d23454046ef954d7360fb1fb11fe5c4ce03",
+        "date": "2026-09-07",
+        "subject": "泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩",
+        "old": "59730e912f4ade41b66115d465866ad2c1c91ca6",
+        "new": "0b3846038b9d6be42e0ccf40d738d874ddca6400",
+        "sub_commits": [
+          {
+            "hash": "0b3846038b9d6be42e0ccf40d738d874ddca6400",
+            "date": "2026-09-07",
+            "subject": "泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 10,
+        "net_del": 1
+      },
+      {
+        "commit": "5c3978b013b55b4545bb08b544329d79550c4105",
+        "date": "2026-09-08",
+        "subject": "修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题",
+        "old": "0b3846038b9d6be42e0ccf40d738d874ddca6400",
+        "new": "ea3fe72d328be6345369dccfab14120d79fc9cc3",
+        "sub_commits": [
+          {
+            "hash": "ea3fe72d328be6345369dccfab14120d79fc9cc3",
+            "date": "2026-09-08",
+            "subject": "修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "b184c0a5ff2d5bb9de5bf735a86df4ff08ca7ee8",
+        "date": "2026-09-08",
+        "subject": "修复灯笼粒子往下掉的问题",
+        "old": "ea3fe72d328be6345369dccfab14120d79fc9cc3",
+        "new": "262f4dae5cf99bbdebd7b5f230391a433a64017b",
+        "sub_commits": [
+          {
+            "hash": "262f4dae5cf99bbdebd7b5f230391a433a64017b",
+            "date": "2026-09-08",
+            "subject": "修复灯笼粒子往下掉的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "5ebb835237e116c05fb8edefbc5e451921f10155",
+        "date": "2026-09-08",
+        "subject": "修复部分靴子没有自动上台阶功能的问题",
+        "old": "262f4dae5cf99bbdebd7b5f230391a433a64017b",
+        "new": "9a8c29d2b0712714bc520618ffada2f21ab917a3",
+        "sub_commits": [
+          {
+            "hash": "9a8c29d2b0712714bc520618ffada2f21ab917a3",
+            "date": "2026-09-08",
+            "subject": "修复部分靴子没有自动上台阶功能的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 0
+      },
+      {
+        "commit": "d7c19196417b4d0387aa674e07f722010544f933",
+        "date": "2026-09-10",
+        "subject": "修一些资源错误",
+        "old": "9a8c29d2b0712714bc520618ffada2f21ab917a3",
+        "new": "e9789b7c216de93e3bbafb864523ed99c4faac3d",
+        "sub_commits": [
+          {
+            "hash": "e9789b7c216de93e3bbafb864523ed99c4faac3d",
+            "date": "2026-09-10",
+            "subject": "修一些资源错误"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 14,
+        "net_del": 14
+      },
+      {
+        "commit": "aec2cd920feee341ad5a8e3a0354f7127b3cfac4",
+        "date": "2026-09-10",
+        "subject": "修复mixin，修复跳跃属性",
+        "old": "e9789b7c216de93e3bbafb864523ed99c4faac3d",
+        "new": "b797d87e80c77a95b6d15b1f1e5e666d2a7eee6e",
+        "sub_commits": [
+          {
+            "hash": "b797d87e80c77a95b6d15b1f1e5e666d2a7eee6e",
+            "date": "2026-09-10",
+            "subject": "修复mixin，修复跳跃属性"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 32,
+        "net_del": 24
+      },
+      {
+        "commit": "5d3cf72f6a2bd314e3cea8b40a2078677633d498",
+        "date": "2026-09-11",
+        "subject": "修复与Bigger Stacks的Mixin冲突",
+        "old": "b797d87e80c77a95b6d15b1f1e5e666d2a7eee6e",
+        "new": "eebc21cbe2bc7cc0f2efbce5bb7fcfc8f98f9e67",
+        "sub_commits": [
+          {
+            "hash": "eebc21cbe2bc7cc0f2efbce5bb7fcfc8f98f9e67",
+            "date": "2026-09-11",
+            "subject": "修复与Bigger Stacks的Mixin冲突"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 4,
+        "net_del": 1
+      },
+      {
+        "commit": "0ceb3c2518915c9b261d2da8bf97294c98d11727",
+        "date": "2026-09-11",
+        "subject": "portlib升级为1.2.2",
+        "old": "eebc21cbe2bc7cc0f2efbce5bb7fcfc8f98f9e67",
+        "new": "feded30e648024689824e668d92ab93ca3e39873",
+        "sub_commits": [
+          {
+            "hash": "feded30e648024689824e668d92ab93ca3e39873",
+            "date": "2026-09-11",
+            "subject": "portlib升级为1.2.2"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "6084476d09bc850c5a54ab499ff050ba48257533",
+        "date": "2026-09-12",
+        "subject": "JEI兼容恢复",
+        "old": "feded30e648024689824e668d92ab93ca3e39873",
+        "new": "25eb4545da52b117e35398de72610b008d205d98",
+        "sub_commits": [
+          {
+            "hash": "25eb4545da52b117e35398de72610b008d205d98",
+            "date": "2026-09-12",
+            "subject": "JEI兼容恢复"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 7,
+        "net_del": 8
+      },
+      {
+        "commit": "810fb6b14cf3c8b68ee8b700e3e4583841bbe467",
+        "date": "2026-09-13",
+        "subject": "版本更新",
+        "old": "25eb4545da52b117e35398de72610b008d205d98",
+        "new": "aa3c27be45528dcbf1d37d7f9b841ac0165fa0c5",
+        "sub_commits": [
+          {
+            "hash": "aa3c27be45528dcbf1d37d7f9b841ac0165fa0c5",
+            "date": "2026-09-13",
+            "subject": "版本更新"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "5359922330d377e6f0d625e86893ed20851df180",
+        "date": "2026-09-14",
+        "subject": "为现有新增的怪物补全点需要的东西",
+        "old": "aa3c27be45528dcbf1d37d7f9b841ac0165fa0c5",
+        "new": "b638adcd5f9aa6f9dc25f58f005b2a0eea866b1a",
+        "sub_commits": [
+          {
+            "hash": "b638adcd5f9aa6f9dc25f58f005b2a0eea866b1a",
+            "date": "2026-09-14",
+            "subject": "为现有新增的怪物补全点需要的东西"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "55262a7f28d9cc2eefe41350eebe17f1a28fbb02",
+        "date": "2026-09-15",
+        "subject": "微调",
+        "old": "b638adcd5f9aa6f9dc25f58f005b2a0eea866b1a",
+        "new": "efb8673088d66cba942b6545b9332c8a24241431",
+        "sub_commits": [
+          {
+            "hash": "efb8673088d66cba942b6545b9332c8a24241431",
+            "date": "2026-09-15",
+            "subject": "微调"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "870e6966ae2844054afcf57beed1f16060817209",
+        "date": "2026-09-15",
+        "subject": "更新粒子",
+        "old": "efb8673088d66cba942b6545b9332c8a24241431",
+        "new": "e911661dee570c0ab4a86a231414f3e0a6824412",
+        "sub_commits": [
+          {
+            "hash": "e911661dee570c0ab4a86a231414f3e0a6824412",
+            "date": "2026-09-15",
+            "subject": "更新粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "856c0047fedf0f122d5a365832a6a7bb58ce4085",
+        "date": "2026-09-16",
+        "subject": "调整末地高度",
+        "old": "e911661dee570c0ab4a86a231414f3e0a6824412",
+        "new": "2c55cf65f8a178293dff053d091ce4c578bf6c7f",
+        "sub_commits": [
+          {
+            "hash": "2c55cf65f8a178293dff053d091ce4c578bf6c7f",
+            "date": "2026-09-16",
+            "subject": "调整末地高度"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 4
+      },
+      {
+        "commit": "a78e2b42db05f95dd206bd92412722388bea6006",
+        "date": "2026-09-16",
+        "subject": "extension",
+        "old": "2c55cf65f8a178293dff053d091ce4c578bf6c7f",
+        "new": "717a424d67b4335bd5dafde3738846074d2746c5",
+        "sub_commits": [
+          {
+            "hash": "717a424d67b4335bd5dafde3738846074d2746c5",
+            "date": "2026-09-16",
+            "subject": "extension"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "253bb8d7bcdba3bde209584cfed8b02f4afa0f3c",
+        "date": "2026-09-16",
+        "subject": "curios属性显示兼容",
+        "old": "717a424d67b4335bd5dafde3738846074d2746c5",
+        "new": "b9b2218449489db816e56f6ab21d7f974fc4407a",
+        "sub_commits": [
+          {
+            "hash": "b9b2218449489db816e56f6ab21d7f974fc4407a",
+            "date": "2026-09-16",
+            "subject": "curios属性显示兼容"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 60,
+        "net_del": 0
+      },
+      {
+        "commit": "0bd4b205226b1a1f517364983be9f67250e359ee",
+        "date": "2026-09-17",
+        "subject": "修改一些纹理和模型上的问题，挪贴图位置",
+        "old": "b9b2218449489db816e56f6ab21d7f974fc4407a",
+        "new": "b5b775e93b575adf4075bfa3d94abeb9962e353c",
+        "sub_commits": [
+          {
+            "hash": "b5b775e93b575adf4075bfa3d94abeb9962e353c",
+            "date": "2026-09-17",
+            "subject": "修改一些纹理和模型上的问题，挪贴图位置"
+          }
+        ],
+        "error": "",
+        "net_files": 5,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "9a5d3a4a6b7a937616c29edac1a6475c2f53eb69",
+        "date": "2026-09-17",
+        "subject": "修复portlib的注册表",
+        "old": "b5b775e93b575adf4075bfa3d94abeb9962e353c",
+        "new": "2f2f2479310a22d17b5cfa29960907353a1b7ab7",
+        "sub_commits": [
+          {
+            "hash": "2f2f2479310a22d17b5cfa29960907353a1b7ab7",
+            "date": "2026-09-17",
+            "subject": "修复portlib的注册表"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 6,
+        "net_del": 1
+      },
+      {
+        "commit": "417d561ecf626bd413243c2ea270785202e20ceb",
+        "date": "2026-09-18",
+        "subject": "使用neoforge风味的网络包注册与发送",
+        "old": "2f2f2479310a22d17b5cfa29960907353a1b7ab7",
+        "new": "5d64f259acfa33d1ee76191e8fe90696e15143fa",
+        "sub_commits": [
+          {
+            "hash": "5d64f259acfa33d1ee76191e8fe90696e15143fa",
+            "date": "2026-09-18",
+            "subject": "使用neoforge风味的网络包注册与发送"
+          }
+        ],
+        "error": "",
+        "net_files": 24,
+        "net_add": 90,
+        "net_del": 72
+      },
+      {
+        "commit": "6f638b9b4de7fbe97bff3312cb56e9c680b5fcd1",
+        "date": "2026-09-19",
+        "subject": "修复粒子的顶点绕序问题",
+        "old": "5d64f259acfa33d1ee76191e8fe90696e15143fa",
+        "new": "e678ff8fc4868e647761b933e03f39d614c7f6ba",
+        "sub_commits": [
+          {
+            "hash": "e678ff8fc4868e647761b933e03f39d614c7f6ba",
+            "date": "2026-09-19",
+            "subject": "修复粒子的顶点绕序问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "d879d8ffccc7ea5d69ace92b5528387f214dfa04",
+        "date": "2026-09-20",
+        "subject": "第一人称动画功能移到lib",
+        "old": "e678ff8fc4868e647761b933e03f39d614c7f6ba",
+        "new": "577a5d955d4d93efc7713c9ff0eec62f42086cc6",
+        "sub_commits": [
+          {
+            "hash": "577a5d955d4d93efc7713c9ff0eec62f42086cc6",
+            "date": "2026-09-20",
+            "subject": "第一人称动画功能移到lib"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "ff7a62eead60d8a4bf6e8b801b7525b890254392",
+        "date": "2026-09-20",
+        "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap",
+        "old": "577a5d955d4d93efc7713c9ff0eec62f42086cc6",
+        "new": "83efd2c6364105f2ec6297209bfc793609f4b3b7",
+        "sub_commits": [
+          {
+            "hash": "83efd2c6364105f2ec6297209bfc793609f4b3b7",
+            "date": "2026-09-20",
+            "subject": "IdentityHashMap换成Reference2ObjectOpenHashMap"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 7,
+        "net_del": 7
+      },
+      {
+        "commit": "55aebf2f9ddcbe3b49ceeb61288cc7bf535f6faf",
+        "date": "2026-09-22",
+        "subject": "改",
+        "old": "83efd2c6364105f2ec6297209bfc793609f4b3b7",
+        "new": "79351d0032d5c5adb8a971ebb33759a5889387a8",
+        "sub_commits": [
+          {
+            "hash": "79351d0032d5c5adb8a971ebb33759a5889387a8",
+            "date": "2026-09-22",
+            "subject": "改"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "e2a096341fb6780bd76c9e29751d2dad4e3cecb2",
+        "date": "2026-09-22",
+        "subject": "删除Ponder的nbt，升级粒子",
+        "old": "79351d0032d5c5adb8a971ebb33759a5889387a8",
+        "new": "a1a803d741c75933ca556874b1aaf29ec75f82cd",
+        "sub_commits": [
+          {
+            "hash": "a1a803d741c75933ca556874b1aaf29ec75f82cd",
+            "date": "2026-09-22",
+            "subject": "删除Ponder的nbt，升级粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "e9501cf56ee764073864f4f4c114690f484fd364",
+        "date": "2026-09-23",
+        "subject": "fall_damage_multiplier属性不再导致摔落声音",
+        "old": "a1a803d741c75933ca556874b1aaf29ec75f82cd",
+        "new": "83f19c9dbbd9f6392cb74cb74bac09dc3bd20299",
+        "sub_commits": [
+          {
+            "hash": "83f19c9dbbd9f6392cb74cb74bac09dc3bd20299",
+            "date": "2026-09-23",
+            "subject": "fall_damage_multiplier属性不再导致摔落声音"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 40,
+        "net_del": 42
+      },
+      {
+        "commit": "05380071a47dc2d5730e989d4a7890c6b7adabfd",
+        "date": "2026-09-26",
+        "subject": "调整种子特性",
+        "old": "83f19c9dbbd9f6392cb74cb74bac09dc3bd20299",
+        "new": "252bb9caafd5996ae6cd9c875a73d511fa5851ea",
+        "sub_commits": [
+          {
+            "hash": "252bb9caafd5996ae6cd9c875a73d511fa5851ea",
+            "date": "2026-09-26",
+            "subject": "调整种子特性"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 3,
+        "net_del": 3
+      },
+      {
+        "commit": "fcd2368c6f4c1f0d31c167725777ee5aceb93916",
+        "date": "2026-09-27",
+        "subject": "修重铸价格（没对接心情）",
+        "old": "252bb9caafd5996ae6cd9c875a73d511fa5851ea",
+        "new": "5666e140a35d2efb3e60cefd8c988f56446c4430",
+        "sub_commits": [
+          {
+            "hash": "5666e140a35d2efb3e60cefd8c988f56446c4430",
+            "date": "2026-09-27",
+            "subject": "修重铸价格（没对接心情）"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "69a48adae744b7a1964f1f4903c57b70786daff1",
+        "date": "2026-09-27",
+        "subject": "修复构建问题",
+        "old": "5666e140a35d2efb3e60cefd8c988f56446c4430",
+        "new": "ef4356518c42ff222605715c0163a76ca16cd8ab",
+        "sub_commits": [
+          {
+            "hash": "ef4356518c42ff222605715c0163a76ca16cd8ab",
+            "date": "2026-09-27",
+            "subject": "修复构建问题"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 6,
+        "net_del": 0
+      },
+      {
+        "commit": "fc3fabfb9a595cd1a62df1aa6cbf9c0eecd2dc56",
+        "date": "2026-09-27",
+        "subject": "平衡性调整，权重调整，贴图补充",
+        "old": "ef4356518c42ff222605715c0163a76ca16cd8ab",
+        "new": "df37454c211eb591975f662a2c3532b06c249740",
+        "sub_commits": [
+          {
+            "hash": "df37454c211eb591975f662a2c3532b06c249740",
+            "date": "2026-09-27",
+            "subject": "平衡性调整，权重调整，贴图补充"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 0,
+        "net_del": 0
+      }
+    ],
+    "TerraFurniture": [
+      {
+        "commit": "dbac6afed3738db4b36f335265ab199327e1e971",
+        "date": "2026-06-04",
+        "subject": "part",
+        "old": "86e7fff68d6d0cce8a5eb443ccb24f2a7359b598",
+        "new": "c2a50014d70b915768db70f271b80e36508cf21a",
+        "sub_commits": [
+          {
+            "hash": "944c1ab6fe58e374fe331fdf86bc644cb335d16f",
+            "date": "2026-06-01",
+            "subject": "木床"
+          },
+          {
+            "hash": "11887f1aed419701e859f9b22f3232209acdbdb2",
+            "date": "2026-06-01",
+            "subject": "改光源方块datagen，添加蜡烛"
+          },
+          {
+            "hash": "c2a50014d70b915768db70f271b80e36508cf21a",
+            "date": "2026-06-04",
+            "subject": "part"
+          }
+        ],
+        "error": "",
+        "net_files": 31,
+        "net_add": 576,
+        "net_del": 571
+      },
+      {
+        "commit": "1d216237bafd9f230f73d7bdd56257cbc1ddf101",
+        "date": "2026-06-06",
+        "subject": "part2",
+        "old": "c2a50014d70b915768db70f271b80e36508cf21a",
+        "new": "1deac284762df59ef88fb2272265f9fade1436f8",
+        "sub_commits": [
+          {
+            "hash": "1deac284762df59ef88fb2272265f9fade1436f8",
+            "date": "2026-06-06",
+            "subject": "part2"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 7,
+        "net_del": 112
+      },
+      {
+        "commit": "28e34a50050f1f24f3c4ded163ca056271cb5398",
+        "date": "2026-06-07",
+        "subject": "part5",
+        "old": "1deac284762df59ef88fb2272265f9fade1436f8",
+        "new": "ca905e7fcd850d7973c5f7227e267b487c13bd32",
+        "sub_commits": [
+          {
+            "hash": "ca905e7fcd850d7973c5f7227e267b487c13bd32",
+            "date": "2026-06-07",
+            "subject": "part5"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "72adcfeae65df55133363eb9150d2a4d168ffe48",
+        "date": "2026-06-08",
+        "subject": "part7",
+        "old": "ca905e7fcd850d7973c5f7227e267b487c13bd32",
+        "new": "fa28e7fe4334ffee706bad0856a358b325495fec",
+        "sub_commits": [
+          {
+            "hash": "fa28e7fe4334ffee706bad0856a358b325495fec",
+            "date": "2026-06-08",
+            "subject": "part7"
+          }
+        ],
+        "error": "",
+        "net_files": 4,
+        "net_add": 66,
+        "net_del": 62
+      },
+      {
+        "commit": "0b38e2e69940eba0c01d396091151306d2a31b5b",
+        "date": "2026-06-14",
+        "subject": "part14",
+        "old": "fa28e7fe4334ffee706bad0856a358b325495fec",
+        "new": "d0bd3c3dda458c28325532b15ad85c8d4ed5ec6e",
+        "sub_commits": [
+          {
+            "hash": "d0bd3c3dda458c28325532b15ad85c8d4ed5ec6e",
+            "date": "2026-06-14",
+            "subject": "part14"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 30,
+        "net_del": 27
+      },
+      {
+        "commit": "15afa497b1661abfee285738bf95982f66203213",
+        "date": "2026-06-14",
+        "subject": "fix magic mirror",
+        "old": "d0bd3c3dda458c28325532b15ad85c8d4ed5ec6e",
+        "new": "4e74907ddf4c43bc9a9bdd13c9e5992f642a20a7",
+        "sub_commits": [
+          {
+            "hash": "4e74907ddf4c43bc9a9bdd13c9e5992f642a20a7",
+            "date": "2026-06-14",
+            "subject": "fix magic mirror"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "4dcf95cfe35b8d88d74dd443463243302d163e3c",
+        "date": "2026-06-18",
+        "subject": "移植家具",
+        "old": "4e74907ddf4c43bc9a9bdd13c9e5992f642a20a7",
+        "new": "f976722894403de864dc0ad50c79d54878cd3b93",
+        "sub_commits": [
+          {
+            "hash": "f976722894403de864dc0ad50c79d54878cd3b93",
+            "date": "2026-06-18",
+            "subject": "移植家具"
+          }
+        ],
+        "error": "",
+        "net_files": 68,
+        "net_add": 975,
+        "net_del": 782
+      },
+      {
+        "commit": "10705abc75005d4b7ef56a81880a4e900f7da8f4",
+        "date": "2026-06-21",
+        "subject": "part19",
+        "old": "f976722894403de864dc0ad50c79d54878cd3b93",
+        "new": "c42c500ddc2aa2519521ed5af765f16f47adac3c",
+        "sub_commits": [
+          {
+            "hash": "c42c500ddc2aa2519521ed5af765f16f47adac3c",
+            "date": "2026-06-21",
+            "subject": "part19"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "911437e0343f2d13847a998c7e377a27bdc07858",
+        "date": "2026-07-04",
+        "subject": "able to start game",
+        "old": "c42c500ddc2aa2519521ed5af765f16f47adac3c",
+        "new": "d08fb3230edd17edfbe52d75eecd478d0176f415",
+        "sub_commits": [
+          {
+            "hash": "d08fb3230edd17edfbe52d75eecd478d0176f415",
+            "date": "2026-07-04",
+            "subject": "able to start game"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 2,
+        "net_del": 60
+      },
+      {
+        "commit": "bad95470cda714d414a012aca6597d36bb3b9de0",
+        "date": "2026-08-08",
+        "subject": "同步1.21.1的修改",
+        "old": "d08fb3230edd17edfbe52d75eecd478d0176f415",
+        "new": "ae062156154d127215b1cfa7330f1fecc5cb09ec",
+        "sub_commits": [
+          {
+            "hash": "ae062156154d127215b1cfa7330f1fecc5cb09ec",
+            "date": "2026-08-08",
+            "subject": "同步1.21.1的修改"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 3,
+        "net_del": 3
+      },
+      {
+        "commit": "863e8bef83eee5d71c68e8512dd38490ba56ccf1",
+        "date": "2026-08-23",
+        "subject": "调整版本",
+        "old": "ae062156154d127215b1cfa7330f1fecc5cb09ec",
+        "new": "3176c2ac05f2b491ac757c0f4fe60d110b23ba32",
+        "sub_commits": [
+          {
+            "hash": "3176c2ac05f2b491ac757c0f4fe60d110b23ba32",
+            "date": "2026-08-23",
+            "subject": "调整版本"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 4,
+        "net_del": 4
+      },
+      {
+        "commit": "4ef159bf9b0c2a077ae985815ade5dc4948af8e0",
+        "date": "2026-08-23",
+        "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子",
+        "old": "3176c2ac05f2b491ac757c0f4fe60d110b23ba32",
+        "new": "c4eb231f0ddf67bec8e40497321131057753bc2d",
+        "sub_commits": [
+          {
+            "hash": "c4eb231f0ddf67bec8e40497321131057753bc2d",
+            "date": "2026-08-23",
+            "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 0,
+        "net_del": 4
+      },
+      {
+        "commit": "29c1459cf61c91fa924401200e8ae969b4c84530",
+        "date": "2026-09-02",
+        "subject": "删除一些Extension类",
+        "old": "c4eb231f0ddf67bec8e40497321131057753bc2d",
+        "new": "89b64193962eaf58b86e0cac492c9394e4766471",
+        "sub_commits": [
+          {
+            "hash": "89b64193962eaf58b86e0cac492c9394e4766471",
+            "date": "2026-09-02",
+            "subject": "删除一些Extension类"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 8,
+        "net_del": 8
+      },
+      {
+        "commit": "7b3b5c28ec8b7dba2727941ca36da9c97b0e98cd",
+        "date": "2026-09-03",
+        "subject": "渔夫任务系统修改",
+        "old": "89b64193962eaf58b86e0cac492c9394e4766471",
+        "new": "996bcbf9751ee578d8a2745eb08f8601e52da2b9",
+        "sub_commits": [
+          {
+            "hash": "996bcbf9751ee578d8a2745eb08f8601e52da2b9",
+            "date": "2026-09-03",
+            "subject": "渔夫任务系统修改"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 3
+      },
+      {
+        "commit": "31896204bd178363411cdc039a2e2dfc18e70814",
+        "date": "2026-09-06",
+        "subject": "静态方法改接口",
+        "old": "996bcbf9751ee578d8a2745eb08f8601e52da2b9",
+        "new": "4bbc937be16d77daaa1b0c6d781c829164480bcf",
+        "sub_commits": [
+          {
+            "hash": "4bbc937be16d77daaa1b0c6d781c829164480bcf",
+            "date": "2026-09-06",
+            "subject": "静态方法改接口"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "0cf629c1921cdd4b178845a7a797acb613c41c9a",
+        "date": "2026-09-06",
+        "subject": "属性静态字段注入",
+        "old": "4bbc937be16d77daaa1b0c6d781c829164480bcf",
+        "new": "eacdaad1c7f59a924e292adfe1963f826f865017",
+        "sub_commits": [
+          {
+            "hash": "eacdaad1c7f59a924e292adfe1963f826f865017",
+            "date": "2026-09-06",
+            "subject": "属性静态字段注入"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "5c99e970211f28efff02ff010b8695ba6ec14e0f",
+        "date": "2026-09-07",
+        "subject": "生产环境修复",
+        "old": "eacdaad1c7f59a924e292adfe1963f826f865017",
+        "new": "81db6984ad9bdf391742f92e758ce71857f6df9c",
+        "sub_commits": [
+          {
+            "hash": "81db6984ad9bdf391742f92e758ce71857f6df9c",
+            "date": "2026-09-07",
+            "subject": "生产环境修复"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 1
+      },
+      {
+        "commit": "7a3593600be2c7ce5ee07b17ab4f8d45a0505b5e",
+        "date": "2026-09-10",
+        "subject": "修汇流熔炉不能放燃料的问题",
+        "old": "81db6984ad9bdf391742f92e758ce71857f6df9c",
+        "new": "4946ac82a3056c1627673bb4e2946794a5d495aa",
+        "sub_commits": [
+          {
+            "hash": "4946ac82a3056c1627673bb4e2946794a5d495aa",
+            "date": "2026-09-10",
+            "subject": "修汇流熔炉不能放燃料的问题"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 5,
+        "net_del": 3
+      },
+      {
+        "commit": "aec2cd920feee341ad5a8e3a0354f7127b3cfac4",
+        "date": "2026-09-10",
+        "subject": "修复mixin，修复跳跃属性",
+        "old": "4946ac82a3056c1627673bb4e2946794a5d495aa",
+        "new": "ef098a90a2d27dd3483d0c38346320ddabccc339",
+        "sub_commits": [
+          {
+            "hash": "ef098a90a2d27dd3483d0c38346320ddabccc339",
+            "date": "2026-09-10",
+            "subject": "修复mixin，修复跳跃属性"
+          }
+        ],
+        "error": "",
+        "net_files": 3,
+        "net_add": 23,
+        "net_del": 11
+      },
+      {
+        "commit": "8a961bc0c0f62651377e2c8afd0562c09528b540",
+        "date": "2026-09-11",
+        "subject": "一些修复",
+        "old": "ef098a90a2d27dd3483d0c38346320ddabccc339",
+        "new": "3a4b2e99085b084566cdb5a0a0b17bbcff3fb478",
+        "sub_commits": [
+          {
+            "hash": "3a4b2e99085b084566cdb5a0a0b17bbcff3fb478",
+            "date": "2026-09-11",
+            "subject": "一些修复"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "0ceb3c2518915c9b261d2da8bf97294c98d11727",
+        "date": "2026-09-11",
+        "subject": "portlib升级为1.2.2",
+        "old": "3a4b2e99085b084566cdb5a0a0b17bbcff3fb478",
+        "new": "1c894ac05d2bbfaeff6e0b1290b9322923f1f35d",
+        "sub_commits": [
+          {
+            "hash": "1c894ac05d2bbfaeff6e0b1290b9322923f1f35d",
+            "date": "2026-09-11",
+            "subject": "portlib升级为1.2.2"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "6084476d09bc850c5a54ab499ff050ba48257533",
+        "date": "2026-09-12",
+        "subject": "JEI兼容恢复",
+        "old": "1c894ac05d2bbfaeff6e0b1290b9322923f1f35d",
+        "new": "7264bacb30d234072e800d00f621daeb670979e9",
+        "sub_commits": [
+          {
+            "hash": "7264bacb30d234072e800d00f621daeb670979e9",
+            "date": "2026-09-12",
+            "subject": "JEI兼容恢复"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 7,
+        "net_del": 7
+      },
+      {
+        "commit": "810fb6b14cf3c8b68ee8b700e3e4583841bbe467",
+        "date": "2026-09-13",
+        "subject": "版本更新",
+        "old": "7264bacb30d234072e800d00f621daeb670979e9",
+        "new": "fc3779532c1c6b94aab08e60b9113635a451fb21",
+        "sub_commits": [
+          {
+            "hash": "fc3779532c1c6b94aab08e60b9113635a451fb21",
+            "date": "2026-09-13",
+            "subject": "版本更新"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 2,
+        "net_del": 2
+      },
+      {
+        "commit": "a78e2b42db05f95dd206bd92412722388bea6006",
+        "date": "2026-09-16",
+        "subject": "extension",
+        "old": "fc3779532c1c6b94aab08e60b9113635a451fb21",
+        "new": "ae2d6f2f2661332439ab519643fb85ea1f26bfbc",
+        "sub_commits": [
+          {
+            "hash": "ae2d6f2f2661332439ab519643fb85ea1f26bfbc",
+            "date": "2026-09-16",
+            "subject": "extension"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 1,
+        "net_del": 1
+      },
+      {
+        "commit": "9a5d3a4a6b7a937616c29edac1a6475c2f53eb69",
+        "date": "2026-09-17",
+        "subject": "修复portlib的注册表",
+        "old": "ae2d6f2f2661332439ab519643fb85ea1f26bfbc",
+        "new": "80a9b93c1dd08b959198910d2a9b13e0011a0205",
+        "sub_commits": [
+          {
+            "hash": "80a9b93c1dd08b959198910d2a9b13e0011a0205",
+            "date": "2026-09-17",
+            "subject": "修复portlib的注册表"
+          }
+        ],
+        "error": "",
+        "net_files": 1,
+        "net_add": 6,
+        "net_del": 1
+      },
+      {
+        "commit": "417d561ecf626bd413243c2ea270785202e20ceb",
+        "date": "2026-09-18",
+        "subject": "使用neoforge风味的网络包注册与发送",
+        "old": "80a9b93c1dd08b959198910d2a9b13e0011a0205",
+        "new": "797379213f6c32c430218b469dada6b002c744e7",
+        "sub_commits": [
+          {
+            "hash": "797379213f6c32c430218b469dada6b002c744e7",
+            "date": "2026-09-18",
+            "subject": "使用neoforge风味的网络包注册与发送"
+          }
+        ],
+        "error": "",
+        "net_files": 6,
+        "net_add": 14,
+        "net_del": 20
+      },
+      {
+        "commit": "b12020ec99e199b3960b5a567a7b4890197a9438",
+        "date": "2026-09-19",
+        "subject": "更新家具",
+        "old": "797379213f6c32c430218b469dada6b002c744e7",
+        "new": "1428f0d7a7255fea09e3c3fdf25c1adcac88ee22",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "c2075d90fa93f25e7d6bf8b67a10f897547273b7",
+        "date": "2026-09-19",
+        "subject": "修复",
+        "old": "1428f0d7a7255fea09e3c3fdf25c1adcac88ee22",
+        "new": "202c1f257115e140ac6d0fb356160217f3302984",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "ed36d3b0df253dd278afb44d8d22ee5caf7453a2",
+        "date": "2026-09-20",
+        "subject": "上传模块",
+        "old": "202c1f257115e140ac6d0fb356160217f3302984",
+        "new": "797379213f6c32c430218b469dada6b002c744e7",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "a988279e7b6cb41d58a51eb661d23b4c10c483a2",
+        "date": "2026-09-20",
+        "subject": "改动",
+        "old": "797379213f6c32c430218b469dada6b002c744e7",
+        "new": "a1115863c83e42e2f2ec3285308c879ff0ee689f",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "e145cafb5c7378e08ab087770db30c5fd3f7c455",
+        "date": "2026-09-20",
+        "subject": "动态群系修改与client tick事件大一统",
+        "old": "a1115863c83e42e2f2ec3285308c879ff0ee689f",
+        "new": "797379213f6c32c430218b469dada6b002c744e7",
+        "sub_commits": [],
+        "error": "子模块对象缺失（需要 git submodule update / fetch）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "a45ef0a139e89e5fbb955f167d7c6444dc718436",
+        "date": "2026-09-20",
+        "subject": "修复暴击率问题",
+        "old": "797379213f6c32c430218b469dada6b002c744e7",
+        "new": "3b1e55c097c8f923f2e2f2a2b05f714520995094",
+        "sub_commits": [
+          {
+            "hash": "4d327715dbb5b915c14960b1762e33ba34d5f4f8",
+            "date": "2026-09-19",
+            "subject": "单腿桌子"
+          },
+          {
+            "hash": "d060e05de1a418aa89b65f05710c80fb1c88f8e9",
+            "date": "2026-09-20",
+            "subject": "仔细研究后我发现实际上这种对称的桌子可以把花边单独分开，但是已经这样写了，先提交吧，我后面再改，绷不住了"
+          },
+          {
+            "hash": "bf35ef75d92c0cbdf4d0adc05af4419a61dbf537",
+            "date": "2026-09-20",
+            "subject": "改成组件模式"
+          },
+          {
+            "hash": "3b1e55c097c8f923f2e2f2a2b05f714520995094",
+            "date": "2026-09-20",
+            "subject": "改腿渲染逻辑"
+          }
+        ],
+        "error": "",
+        "net_files": 21,
+        "net_add": 782,
+        "net_del": 0
+      },
+      {
+        "commit": "6db8be065413001878bbfccaec21f4906cfded80",
+        "date": "2026-09-20",
+        "subject": "加点",
+        "old": "3b1e55c097c8f923f2e2f2a2b05f714520995094",
+        "new": "3e45ca5a66356dfcebbd3f84012950e3b4c4315b",
+        "sub_commits": [
+          {
+            "hash": "3e45ca5a66356dfcebbd3f84012950e3b4c4315b",
+            "date": "2026-09-20",
+            "subject": "添加方块"
+          }
+        ],
+        "error": "",
+        "net_files": 15,
+        "net_add": 513,
+        "net_del": 1
+      },
+      {
+        "commit": "8bb33454a1a72bc85eec88efbdea66c918c9dbb1",
+        "date": "2026-09-22",
+        "subject": "家具",
+        "old": "3e45ca5a66356dfcebbd3f84012950e3b4c4315b",
+        "new": "df868f5ace31df9cf57fe5e0831962038715a57b",
+        "sub_commits": [
+          {
+            "hash": "df868f5ace31df9cf57fe5e0831962038715a57b",
+            "date": "2026-09-22",
+            "subject": "家具"
+          }
+        ],
+        "error": "",
+        "net_files": 2,
+        "net_add": 94,
+        "net_del": 1
+      },
+      {
+        "commit": "fa147c869b43ad697570aabaffeb4118863f348b",
+        "date": "2026-09-27",
+        "subject": "改一点",
+        "old": "df868f5ace31df9cf57fe5e0831962038715a57b",
+        "new": "62d4c70278666d4856d52dd67127e87ac0403be1",
+        "sub_commits": [
+          {
+            "hash": "62d4c70278666d4856d52dd67127e87ac0403be1",
+            "date": "2026-09-27",
+            "subject": "传一点"
+          }
+        ],
+        "error": "",
+        "net_files": 14,
+        "net_add": 427,
+        "net_del": 69
+      }
+    ],
+    "TerraEntity": [
+      {
+        "commit": "dbac6afed3738db4b36f335265ab199327e1e971",
+        "date": "2026-06-04",
+        "subject": "part",
+        "old": "5f88b22fa96231dabc537ecbe70e8bc9ea54c8ae",
+        "new": "1f32e5d76288a5c9f82b91217102dc26a2775d7c",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "1d216237bafd9f230f73d7bdd56257cbc1ddf101",
+        "date": "2026-06-06",
+        "subject": "part2",
+        "old": "1f32e5d76288a5c9f82b91217102dc26a2775d7c",
+        "new": "d29fcfc3e12b86f31fa484a7221a6e6eaeac84d1",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "28e34a50050f1f24f3c4ded163ca056271cb5398",
+        "date": "2026-06-07",
+        "subject": "part5",
+        "old": "d29fcfc3e12b86f31fa484a7221a6e6eaeac84d1",
+        "new": "301af76c8d8141d6758cb9148cf80e5a67822a9e",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "72adcfeae65df55133363eb9150d2a4d168ffe48",
+        "date": "2026-06-08",
+        "subject": "part7",
+        "old": "301af76c8d8141d6758cb9148cf80e5a67822a9e",
+        "new": "5d2c165945a0760716c22c9b7fca25bc06cdb975",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "f4b42537ca0ee008794a0c04a1c67cdb07d3533b",
+        "date": "2026-06-10",
+        "subject": "part8",
+        "old": "5d2c165945a0760716c22c9b7fca25bc06cdb975",
+        "new": "",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      }
+    ],
+    "TerraGuns": [
+      {
+        "commit": "dbac6afed3738db4b36f335265ab199327e1e971",
+        "date": "2026-06-04",
+        "subject": "part",
+        "old": "eb4936f5da401ced8d04aa20bbf0ebb174c6d33e",
+        "new": "9951ee5ab2266fb4ccb640d3e157a14abf1ff29a",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "28e34a50050f1f24f3c4ded163ca056271cb5398",
+        "date": "2026-06-07",
+        "subject": "part5",
+        "old": "9951ee5ab2266fb4ccb640d3e157a14abf1ff29a",
+        "new": "a5f8e9fabbaf5e49bf16d5bc29633bb443487e11",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "48289ba27d48326d1bd1ecf16d007a3fe66f1f24",
+        "date": "2026-06-08",
+        "subject": "part6",
+        "old": "a5f8e9fabbaf5e49bf16d5bc29633bb443487e11",
+        "new": "f507a4c5e4c0a0fd28ab3011d6ea42f192fea615",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "72adcfeae65df55133363eb9150d2a4d168ffe48",
+        "date": "2026-06-08",
+        "subject": "part7",
+        "old": "f507a4c5e4c0a0fd28ab3011d6ea42f192fea615",
+        "new": "e201abd57f5a4e9e88c63f07454e29d9d576f361",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "e7b82668035d562746e0a8e7575bff41ed6a74cf",
+        "date": "2026-06-10",
+        "subject": "part9",
+        "old": "e201abd57f5a4e9e88c63f07454e29d9d576f361",
+        "new": "e58f1295b43cce0ff3fd0adb2bc5aa1d4c7c7ac9",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      },
+      {
+        "commit": "d194600b9e3831466849a64b80a60df8b851bb6b",
+        "date": "2026-06-12",
+        "subject": "remove: 删除 TerraGuns 子模块",
+        "old": "e58f1295b43cce0ff3fd0adb2bc5aa1d4c7c7ac9",
+        "new": "",
+        "sub_commits": [],
+        "error": "子模块目录不存在（可能已被移除）",
+        "net_files": 0,
+        "net_add": 0,
+        "net_del": 0
+      }
+    ]
+  }
+}

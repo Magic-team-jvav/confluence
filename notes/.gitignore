@@ -1,0 +1,21 @@
+# 可重新生成的中间产物不入库（避免往仓库里塞 ~8.6 MB 机器数据）
+#
+# 重新生成的顺序（详见 tools/port2native/README.md）：
+#   1) git -C ..\..\1.20forge\confluence log --no-merges --numstat --format="C|%H" \
+#          795ac9ccc..18221c338 | Out-File -Encoding utf8 <tmp>\numstat.txt
+#   2) python tools\port2native\submodule_numstat.py --super <1.20仓库> --range 795ac9ccc..18221c338 --out <tmp>\sub-numstat.txt
+#   3) python tools\port2native\commit_direction.py ...
+#   4) python tools\port2native\commit_coverage.py ...
+#   5) python tools\port2native\commit_inventory.py --log <tmp>\gitlog.txt --out notes ...
+#   6) python tools\port2native\file_lag.py --src <1.20仓库> --ref . --out notes --log <tmp>\numstat-all.txt
+#
+# 台账结论（人写的）在 port-ledger-status.json / triage-pass2.json / commit-lag.json，
+# 说明文档在 *.md —— 这些入库。
+port-ledger.json
+commit-coverage.json
+commit-directions.json
+file-lag.json
+
+# 规则生成器的输入/输出草稿（含从 NeoForge jar 里解出来的第三方源码，不宜入库）
+_tmp/
+_tmp_*

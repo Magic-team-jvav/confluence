@@ -1,0 +1,1680 @@
+{
+  "$note": "移植状态；key = 1.20 侧提交全 hash。status: TODO/PORTED/COVERED/SKIP-PLATFORM/SKIP-1.21-KEEPS/SKIP-PORTLIB/SKIP-1.20-REVERTED/DEFER-ASSETS/DO-NOT-PORT。缺 KEY = TODO。判定依据见 notes/PORT-LEDGER.md、TRIAGE-PASS1.md、TRIAGE-PASS2.md、FILE-LAG.md",
+  "commits": {
+    "dbac6afed3738db4b36f335265ab199327e1e971": {
+      "status": "SKIP-1.21-KEEPS",
+      "target": "（不动 1.21）",
+      "note": "删了 98 个 integration 类 + 28 处拔集成调用 + mods.toml 改名 + build.gradle 重写；1.20 刻意删集成、1.21 保留（Q12），平台文件亦不需改"
+    },
+    "1d216237bafd9f230f73d7bdd56257cbc1ddf101": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "part2 整提交是「原生写法→Port 写法」：Entity#getInBlockState() → PortEntityExtension.getInBlockState(...)（4 个文件）、ByteBufCodecs.idMapper → PortByteBufCodecs.idMapper（GamePhase）；1.21 保留原生写法即正确。另含 settings.gradle（平台）、3 个子模块指针、1 个 integration 文件（Q12 跳过）"
+    },
+    "dfcc5c0410e33e310e6e98479b0fab8cb7d2d2fe": {
+      "status": "DO-NOT-PORT",
+      "target": "（永不移植）",
+      "note": "作者当面提醒：改动范围极大（1690 文件 / +105554 −20918）、大部分内容错误，部分已被 16 个回滚提交撤回（最大一次 dc57ba5c2 覆盖 663 文件），部分残留仍在影响正确逻辑（残留 992 文件，其中 java 172）。详见 notes/POISON-dfcc5c041.md 与 notes/poison-residue-files.txt"
+    },
+    "6c1a7a65677f73abf5e61b34ccd0abd6809a1c76": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "part3：① accessories.json 的 neoforge:conditions→forge:conditions 是 1.20 平台适配（1.21 保留 neoforge: ✓）；② 去掉 .get() 是 1.20 的类型差异（1.21 的 ModKeyBindings 仍是 Holder，需 .get() ✓）；③ RadioThing 加 super.onUnequip 是 1.20 lib 改动的连带（1.21 的 BaseCurioItem 没有 onUnequip 实现，且 1.21 的 onUnequip 本来就在发包）；④ 子模块侧：TerraCurio part3 = datagen 重构（删 DataGenerator/WorkshopProvider + 242 个手写数据文件，改由生成；1.21 对应物在 src/generated/resources ✓）、Magic-Lib part3 = 清理"
+    },
+    "00c759b638e49c5bdd7ea2ae121cecf118a84fdd": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "part4：TerraCurio 侧仅 1 文件 +4/-4，属 part 系列滚动（Port 化/构建接线）"
+    },
+    "28e34a50050f1f24f3c4ded163ca056271cb5398": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "part5：子模块侧全是 build.gradle 依赖接线（slim=true→false 分支、jarJar(project(:PortLib)) 等），1.20 构建配置，1.21 有自己的一套"
+    },
+    "bf1491b2c6cddb55cf24fecf3c74645d9f343375": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "fix：TerraCurio 两个 mixin 细节（BowItemMixin 删空行、SlimeBlockMixin 的 @Local 调整），属 1.20 侧 mixin 层微调"
+    },
+    "48289ba27d48326d1bd1ecf16d007a3fe66f1f24": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "part6：TerraCurio 把 common/data 包整体移到 common/datagen（15 文件）+ Magic-Lib 3 文件，属 datagen 包重组；1.21 的 datagen 布局自行成立"
+    },
+    "72adcfeae65df55133363eb9150d2a4d168ffe48": {
+      "status": "COVERED",
+      "target": "1.21 已是正确原生形态",
+      "note": "part7：改动方向是 1.20 对齐 1.21 API —— getComponents().getOrDefault()→PortItemStackExtension.getDataOrDefault()（Port 化）；actuallyRender 由 int color 改成 float r,g,b,a（对齐 1.21 geckolib 签名）；defineSynchedData(Builder)→defineSynchedData()（改回 1.20 签名）。1.21 侧本来就是 float RGBA + Builder 形态，无需动作"
+    },
+    "85475d011328698fdf82e34d3cc7349ee12ae39e": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "泰拉生物移植前：TerraCurio BowItemMixin 的 @At(target=...) 加 remap=false，属 mixin 平台细节（1.20/Forge 的 remap 要求在 1.21 侧有自己的写法）"
+    },
+    "41c27595c5fbf71d1df062a87bda44ceb921f3cc": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 12854 行中 10885 行（85%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "74a1fc885f9db8203ce159010a6e9b3fa7ff20e3": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 260 行中 259 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "2efa17a52e69050a845ac265d6a32d288f378b1a": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 10289 行中 10198 行（99%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "5c56e83b298a134afcac76b9a068d0536180cd31": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 3 行中 3 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "1e77c5edc55ac727095ed83c7a2a2d77e5e47fd3": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 14 行中 14 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "bfd32eae3c2d4cafe76f8b4b0b4e5d7c0005f252": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 2 行中 2 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "48be70c79e7a17eff0b5b1d8b9b7f7e61ddf1f39": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 9 行中 9 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "d24f247af21160bb04f9bc3d6c7f6766ee328a45": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 2 行中 2 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "255250cc1234822e1b58c19d254aeb6aadba3948": {
+      "status": "PORTED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 330 行中 304 行（92%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "3518ab86eb9086ad2d56d41c4ee33f24f2e2783d": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 1532 行中 1300 行（85%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "313ecb1352a22761faf1eca69baa6e5a37a56469": {
+      "status": "COVERED",
+      "target": "1.21 已存在",
+      "note": "机器判定：新增 980 行中 799 行（82%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查"
+    },
+    "45fefd3360890a39038f93c6e49f635b4d5fd7ef": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port41/-Port0），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "391e750d9117207834f1c5266e40898d784d496f": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port10/-Port0），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "cb558bcf6f1e9fabbbf9a143f7a17addfdbb4f22": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port19/-Port19），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "0b38e2e69940eba0c01d396091151306d2a31b5b": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port2149/-Port30），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "c85213f174e9a9b7c7305ae487f3b3ca97fa700e": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port518/-Port0），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "13a467d595e1cebad4e44aafeb607ad93f1983a2": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port114/-Port28），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "31896204bd178363411cdc039a2e2dfc18e70814": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port188/-Port241），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "0cf629c1921cdd4b178845a7a797acb613c41c9a": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 de-port（新增/删除行以 Port 引用为主，+Port33/-Port112），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "4ff55e760b3cf7e89bad65b396ea707aa93793b0": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port4/-Port4），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "b1884f9a610adc570866ad5162324ba4cf558a03": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port9/-Port0），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "a78e2b42db05f95dd206bd92412722388bea6006": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 de-port（新增/删除行以 Port 引用为主，+Port0/-Port2），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "417d561ecf626bd413243c2ea270785202e20ceb": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port165/-Port4），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "55aebf2f9ddcbe3b49ceeb61288cc7bf535f6faf": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port292/-Port289），属把原生写法换成 Port 写法，1.21 保留原生即可"
+    },
+    "d194600b9e3831466849a64b80a60df8b851bb6b": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动）"
+    },
+    "57d824a9d8b17dca98b6307a44dbc73738cb8b54": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "c7e4f8fab88d88b273af6d4d9207fe437c875a87": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "2569be3614ff07909e47889a5c86a181b0d9ab4a": {
+      "status": "DEFER-ARCH",
+      "target": "（归 Phase 1/3，不逐提交移植）",
+      "note": "part22：137 处改名（实体整体迁移到 util/entity），架构级搬迁 -> 归 Phase 1/3"
+    },
+    "0a575062b9611515983cdad9daed062977933990": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-1（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "150b32bb4ce0a4aeb7df7f83fc14d71c646ea26d": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-1（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "5dac72b221fecf1c5525602cb8db2e5dc19bc75a": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +8/-3（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "6ffa7c374c3a01a8e39b4b4681e108980a6c3881": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-2（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "f9332ca42aa6c1f1af4627f50c7bcb45a9103ef0": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +2/-2（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "d4d5d0fe1be53678ebaded5a9a126113ee2387ef": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 8 文件 +21/-16（PortLib,TerraCurio），属 part 系列接线/Port 化滚动"
+    },
+    "c378879f459846efb130d8649ee469630622fab7": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "4b9200a0fd955d6d2fb491a539c6e84515370da1": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "09601301fd4119466053256f186163ac2cebc315": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +6/-1（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "0fa73dd799e44ab25180e094dbeb833c52d3f551": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 2 文件 +5/-10（PortLib,TerraCurio），属 part 系列接线/Port 化滚动"
+    },
+    "6c62927b5be78fd6deaca1b238c96bf04b8190f1": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +4/-1（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "80378e047196844f91594eef00d59ad09e15f248": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 2 文件 +8/-1（PortLib,TerraCurio），属 part 系列接线/Port 化滚动"
+    },
+    "4fa8653223abe58ef1a63c55760d48e1d6e89ff4": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 5 文件 +45/-34（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "fd6f0910b507a2051d729220a41ab4f706121478": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 3 文件 +6/-34（TerraCurio），属 part 系列接线/Port 化滚动"
+    },
+    "159af78f9820d6f47060c60793d545844db0226e": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（19 个文件，无 java），随所属功能提交一起处理"
+    },
+    "40c630e6b3adfe4e31ccc0697f5b5a69305e549a": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（19 个文件，无 java），随所属功能提交一起处理"
+    },
+    "863e8bef83eee5d71c68e8512dd38490ba56ccf1": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（2 个文件，无 java），随所属功能提交一起处理"
+    },
+    "9057f178ca6da97651c79df115d27c0722c0742c": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "c83192cf6fc8e92dee28f2b1bb33a75c715ad230": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 11 文件 +43/-162（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "6f8d84cbec0e315afd05d837e8faddcd15fb097d": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 3 文件 +12/-4（Confluence-Magic-Lib,PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "0af0c9e946484c3e2f03e6999da087e31a010f72": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +20/-2（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "b184c0a5ff2d5bb9de5bf735a86df4ff08ca7ee8": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "046a6ad1c0d366ea485eff65426f1d9f2911c13f": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 5 文件 +48/-38（Confluence-Magic-Lib,PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "bedb2af6e35ac78118ff63354ed61e3afb1e6d3e": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 2 文件 +11/-1（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "5ebb835237e116c05fb8edefbc5e451921f10155": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +1/-0（TerraCurio），属 part 系列接线/Port 化滚动"
+    },
+    "6a24e6d1f2ba7200e1e38ca4af7ad90912cf70ba": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 6 文件 +30/-0（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "50ff9fe88caf2240f2bf6b909e682e0f249c114e": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "ea9708fb4206a386c67c2cb9ef1b02883435bcce": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（16 个文件，无 java），随所属功能提交一起处理"
+    },
+    "0ceb3c2518915c9b261d2da8bf97294c98d11727": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "7f159793dc5878bff719528af4b72a0fe7dbf7f6": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（3 个文件，无 java），随所属功能提交一起处理"
+    },
+    "7525f7829db7bbcd62959019bd350f5007f3d2ce": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（5 个文件，无 java），随所属功能提交一起处理"
+    },
+    "aa1e02f44fbe1b6148a2b164851219cce05205b6": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（3 个文件，无 java），随所属功能提交一起处理"
+    },
+    "6dcb832a02ef2685108ee4d02751f6dc3328c8ba": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +1/-1（Confluence-Magic-Lib），属 part 系列接线/Port 化滚动"
+    },
+    "870e6966ae2844054afcf57beed1f16060817209": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（2 个文件，无 java），随所属功能提交一起处理"
+    },
+    "ab2707f519ce93526b7ff192ae2eca0549f82643": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 5 文件 +0/-0（Confluence-Magic-Lib），属 part 系列接线/Port 化滚动"
+    },
+    "6f638b9b4de7fbe97bff3312cb56e9c680b5fcd1": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "65c6d29855bc2add3d660e6932824e545f73e21e": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +3/-0（Confluence-Magic-Lib），属 part 系列接线/Port 化滚动"
+    },
+    "b12020ec99e199b3960b5a567a7b4890197a9438": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动）"
+    },
+    "c2075d90fa93f25e7d6bf8b67a10f897547273b7": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动）"
+    },
+    "ed36d3b0df253dd278afb44d8d22ee5caf7453a2": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动）"
+    },
+    "a988279e7b6cb41d58a51eb661d23b4c10c483a2": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动）"
+    },
+    "e145cafb5c7378e08ab087770db30c5fd3f7c455": {
+      "status": "DEFER-ARCH",
+      "target": "（归 Phase 1/3，不逐提交移植）",
+      "note": "动态群系修改与 client tick 事件大一统：11 处改名 + 无新增行，属架构统一重构 -> 归 Phase 1/3"
+    },
+    "ddb08626b513aa1be5991e92198bfbb179f3d20b": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（120 个文件，无 java），随所属功能提交一起处理"
+    },
+    "9f57aa9cd25a242429fafabb05211e4232414ce2": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（120 个文件，无 java），随所属功能提交一起处理"
+    },
+    "1e71b3c126da80b1d47b32fb30d03a1e68f22378": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（120 个文件，无 java），随所属功能提交一起处理"
+    },
+    "5f3b80aea4b1a3b038d29973f1d14aa7a3ca2478": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（100 个文件，无 java），随所属功能提交一起处理"
+    },
+    "6756199b817929260b79c2567b41302233c25126": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（134 个文件，无 java），随所属功能提交一起处理"
+    },
+    "654e45653fd58689a52763acd5ba382fbdbbd8af": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（123 个文件，无 java），随所属功能提交一起处理"
+    },
+    "f38c08ae66bd9a25b16eb66e38b325a0fdbb367d": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "e2a096341fb6780bd76c9e29751d2dad4e3cecb2": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（5 个文件，无 java），随所属功能提交一起处理"
+    },
+    "b2ff1bdf0a88c3b71ec578051bf8e900d39ff869": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（5 个文件，无 java），随所属功能提交一起处理"
+    },
+    "a75bda140a95c3c837f6a352ae04546c038b2eec": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +35/-4（PortLib），属 part 系列接线/Port 化滚动"
+    },
+    "69a48adae744b7a1964f1f4903c57b70786daff1": {
+      "status": "DEFER-ASSETS",
+      "target": "（本轮不处理）",
+      "note": "机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理"
+    },
+    "cf4b3d2013553cb3460f398231b225e065d3de34": {
+      "status": "DEFER-ASSETS",
+      "target": "（无代码改动）",
+      "note": "该提交在两侧都没有 java 改动（改动落在 PortLib 子模块指针与构建文件上），无源码可移植。依据：notes/COMMIT-LAG.md（NO-JAVA）"
+    },
+    "77f3b047e77d024630402f8a558aa26d06075fe1": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 36 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "b375ad22b8939ba245c742c9d952ce1a4eb3a277": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 8 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "f02d012ad1055396d7248ce2d960697d89085b1f": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 28 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "bf3b4f26edb128f74913746e70cce459b4ecd509": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 9 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "83674802b1c95e2b44b8f9802afbf3961f620663": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 7 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "188ade36f77b598ccd1aa3e7cd8f3d9b0e84d147": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 1 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md"
+    },
+    "1c40b0ecca18310e1313e29fd06fa27c2d575166": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 1 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md"
+    },
+    "9729f1c306cbd81d1da122aea27284f3a95efcf4": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 1 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md"
+    },
+    "b8c9b7a075264a29e3f1203fc4a24d6caa543154": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 1 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md 该文件 BulletRuntimeState.java 在 1.21 树里从来不存在（1.20 自己加了又删，不是 1.21 的欠账）。"
+    },
+    "48c509684fa14038bd6a83aa73c4b21bd3ac4521": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 28 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md"
+    },
+    "4557b85fccca4674021b78f5c359b7228821a479": {
+      "status": "COVERED",
+      "target": "（1.20 已撤销）",
+      "note": "玩家动画测试：新增行**全部**引用 Port 类型（行级可计数新增为 0）；主体是 Magic-Lib 的 integration/animation 实验代码（PlayerGeoModel/PlayerGeoAnimatable 等 6 个文件），这批文件在 1.20 HEAD 已删除（ghost 6），残留的 mixin 侧在 1.21 已 IN-SYNC（89~100%）。"
+    },
+    "609fba73273e2c0d00d72ba9a454324d984f8946": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 5 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "2e7d30d15e8a47d3489434ea2e9ec69938e504ec": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 11 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "ea0bb9c0fa512ccb9b72463d3da85358049a1124": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 5 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py"
+    },
+    "810fb6b14cf3c8b68ee8b700e3e4583841bbe467": {
+      "status": "COVERED",
+      "target": "（1.21 已同步，有 1 处残留）",
+      "note": "版本更新：仅动 ExtraInventory.java。残留 `public ItemStack getMount(boolean dye)`（3 行新增中 2 行未命中）——1.21 有 getPet/getLightPet/getMinecart/getHook，**没有** getMount；记入 notes/PORT-RESIDUALS.md。"
+    },
+    "55262a7f28d9cc2eefe41350eebe17f1a28fbb02": {
+      "status": "COVERED",
+      "target": "（1.21 已同步）",
+      "note": "微调：34 行新增中 14 行未命中，全部是 ClientBiomeEffectSystem 里 `vertex(...).color(255,255,...)`（1.20 的 int RGBA）对 1.21 的 float RGBA 差异，属平台 API 差异。"
+    },
+    "d22a12fdc84eae499ea64f6c4ef562a8d599bab7": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "该提交改动的 8 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md"
+    },
+    "ac0d4a88d11c5ecd1fa43850034b050ae7a38a9e": {
+      "status": "COVERED",
+      "target": "（1.21 内容回流）",
+      "note": "标题即 Better Difficulty Asking Screen (**from 1.21.1**)：是 1.21 的内容被移植到 1.20，方向本来就相反。108 行新增中 4 行未命中，全是 1.20 侧 GuiGraphics#render/renderBackground/发包调用 的签名差异。"
+    },
+    "b9ccf1061bd3a2b618b912ff19380cafd48f75dc": {
+      "status": "COVERED",
+      "target": "（1.21 已同步，有 1 处语义待确认）",
+      "note": "Worldgen fix：MineTunnelsStructure/BlockPostFeature overlap 96~100%。残留 1 行：1.20 把 `context.heightAccessor().getMinBuildHeight()` 换成 `context.chunkGenerator().getGenDepth()`；1.21 的 ChunkGenerator 仍有 getGenDepth()，但恒为正数 → `worldMinY < 0` 分支永不触发，与 1.21 取 MinBuildHeight 的行为**不同**。疑似 1.20 侧写错，不按「1.20 为准」硬搬，记入 notes/PORT-RESIDUALS.md 待确认。"
+    },
+    "ff7a62eead60d8a4bf6e8b801b7525b890254392": {
+      "status": "COVERED",
+      "target": "（1.21 已是目标形态）",
+      "note": "IdentityHashMap→Reference2ObjectOpenHashMap：已核对 1.21 侧 GlobalCloakData.java 第 50/54/58/59/60 行**本来就是** Reference2ObjectOpenHashMap；未命中的 6 行只是 1.20 顺手加的 `final` 修饰符。"
+    },
+    "fc4498b8b7da5a7f98536c2e06d9d872e99ad1c6": {
+      "status": "COVERED",
+      "target": "已由 adb78dbae 一并带入",
+      "note": "改群系生成：BiomeRegionAllocator/BiomeRegionType/BiomeRegionTable/ConfluenceBiomeInjector 等 overlap 98~100%，行级复核 101 行新增**全部命中**。"
+    },
+    "1ab2b43ac0de1317b116517aab66e8781dfca507": {
+      "status": "COVERED",
+      "target": "已由 adb78dbae 前向移植",
+      "note": "群系注入修复（BiomeSourceMixin +109、其余 injector 文件全部 overlap 98~100%）。行级复核 128 行新增中 18 行未逐字命中，均为中文注释改写与 `for (Entry entry : list)` 一类格式差异。**本条是自检锚点**：工具独立复现了已手工移植的结论。"
+    },
+    "c22ea51d48fa0bcffcab33ba42e9f3b3a2e11ed6": {
+      "status": "COVERED",
+      "target": "（1.21 已同步）",
+      "note": "软核询问屏幕十秒后暂停游戏：8 行新增**全部命中** AskForSoftcoreScreen.java（overlap 96%）。"
+    },
+    "dc57ba5c2d2a156873f9410e90765af3e4bb268c": {
+      "status": "DO-NOT-PORT",
+      "target": "（永不移植）",
+      "note": "台账行 96；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "fac72523a8907a553ca28bc90358584647513efe": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 67；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "911437e0343f2d13847a998c7e377a27bdc07858": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 68；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "1284d08a9cf043e8e204c15f9f081cfe245483a2": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 69；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "63916265bbd097fc1389abc36ddbc5a92a71bff8": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 75；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5c3978b013b55b4545bb08b544329d79550c4105": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 208；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5359922330d377e6f0d625e86893ed20851df180": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 249；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7572f2ebd6a37ecb522329e1263262c99dc32d2e": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 331；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "185a0fdbb8bf3cf2b50e16bdbeda8c0b82a46c63": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 370；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2472a2c1b3f0954128655df217afc535d79f1850": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 373；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c2d92b019475e23ca85897d70d578d339a80adff": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 111；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "fc43577f2f7f4be3a212c5184b67a280d6b70476": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 113；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "24322f45a07e6aeb7ab9575a1a633e1681ab4703": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 114；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "aee0a94ca27315805a86eb3a1070624154b469f4": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 115；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "6ec97fb5255e8686604fdef8efd3dfdab91fb4c4": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 116；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "27e9e0ac33b953c619af219bb57f36642b9644cb": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 117；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a8c5395a67b6adc7f96e337389d8ba3467c6b75b": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 118；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "b2d1d939cc48ba947cecfca2493589716d5ce288": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 119；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e1cdbb3ff89d4566f99eb55f3a91f28fba215eb3": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 120；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d742dcf443e9eb16c032e79d52f1b5a49985b3c8": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 121；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "64950f063783f3fb43337d89be864bf208401355": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 124；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2a9014345c874c9db30f285aa5043591ff003f10": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 125；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "74346c9d29c83b395b7e822cfc242be034aabd96": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 126；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9e00dbf7b59347e6aa2711ad8717d910731c7212": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 127；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a640087eaaf9f6c8fbf7a1da037c37e0e642d6c9": {
+      "status": "SKIP-1.21-KEEPS",
+      "target": "（不动 1.21）",
+      "note": "台账行 128；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7d6b90edc61516e3cae2170d3e15d5f9f08e5def": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 129；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d0fe2049564442fa63383bb90012113fc87a601d": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 130；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5bd5b42110c8f96e2fb9764752ceccdca22dceae": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 131；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "441334efecf36274fcad03678aaef335adc454a1": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 132；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "4c65367a08bf09965a042c22fe15db15be6fd75a": {
+      "status": "REVERSE-ALIGNED",
+      "target": "（1.20 侧反向对齐 1.21 的提交，不作移植源）",
+      "note": "台账行 397；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "40fa4ff835bfcf2913efba911502747ba4068826": {
+      "status": "REVERSE-ALIGNED",
+      "target": "（1.20 侧反向对齐 1.21 的提交，不作移植源）",
+      "note": "台账行 398；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c61970e9c5f3e732af7b88fb5b890a919eabe4a1": {
+      "status": "REVERSE-ALIGNED",
+      "target": "（1.20 侧反向对齐 1.21 的提交，不作移植源）",
+      "note": "台账行 399；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "07c2ab5b598d13688f50b6f6617937ed99ea3f68": {
+      "status": "REVERSE-ALIGNED",
+      "target": "（1.20 侧反向对齐 1.21 的提交，不作移植源）",
+      "note": "台账行 400；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f4625b5c4b62e7ccac1f0ee16d2cd99e6eab88cf": {
+      "status": "PORTED",
+      "target": "（待复核）",
+      "note": "台账行 133；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "50bd06aabffd5cb5d3c90374b9e536c25984e334": {
+      "status": "DO-NOT-PORT",
+      "target": "（永不移植）",
+      "note": "台账行 134；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a86216cafcfc8407d679e6e7d7753482e8e8b168": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 135；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d6c99c740d638eeb77ea5accbb9050d8f19e1e04": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 136；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "08276f2cab32e3be2d7520838164a414ee3e2a35": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 141；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "ce6daf602d76c7d149cade2a99c725c7ae9ae6ba": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 387；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f9bda32a55c662b477bde248abd28896bec885ed": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 391；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "1780b9a88529f6a1b2c9378e1800a21e7e4dc171": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 394；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "72421955ab75fa61a2acf3cd095e8799b2057e41": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 137；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7163e1d052cffcb95fc7cd22600b5a85c34b2359": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 138；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "ab0d06315b9fd3bf2d661cd460281cfa6c164e72": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 140；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "acba5480fde174a916423e92a011c6ea0748c7f9": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 142；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a8e0b487f964bb58fb7134a45539f7d84c660325": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 143；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "3b8f62076970a6912de0b4ea7e9d9443eb4318d9": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 144；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7dc9244e48dd97e38420e29229a679af8cb5e815": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 145；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "0067364f092ba6ecc4819ed47bf3e76452b639ae": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 147；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "472be10daf078e01cefd9f36e38a74f00832e127": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 148；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d3ae224577d2fbb520fe671eeee1a78f2a8023cc": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 149；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "93e64b5b5203c611f9a707ffbdacf8c048034604": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 150；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "90dfd78045d5a296961c677e492e185f3dc72523": {
+      "status": "PORTED",
+      "target": "",
+      "note": "台账行 151；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "92e38df06c231ec09afbb8360620519d2dc30e5e": {
+      "status": "PORTED",
+      "target": "",
+      "note": "台账行 174；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "b05c8dc3f8a15717d65920ecf202aa4663f20385": {
+      "status": "PORTED",
+      "target": "",
+      "note": "台账行 256；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "4ac81edb7082b912dd54523e1b2d8bc3482fd494": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 152；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9bc04295bc42a68d99396530cfe1c5689b52454a": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 153；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "35424398b63b15ecb603c770644b111cad18b61d": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 154；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "ce1ca67f84dd26627a07d53dc153b1403b99976f": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 156；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "024a28ac794f77785bc86947475d5ba34e281606": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 157；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7cadcf9a8883f81e44e6f19ab1c576cf327ccbfd": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 158；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5bb8d5565bdee81006443e24cfe86538067b0ed1": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 163；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "3f2eb3be2460a12bde8438877fa56ac52e7b7b87": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 167；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9645da98c461938b015c5da22a9473311344a3c2": {
+      "status": "LOST?",
+      "target": "（待复核）",
+      "note": "台账行 170；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a6fd7868199e0e48b2d778c92e67b65d9bb3ba19": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 173；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "29c1459cf61c91fa924401200e8ae969b4c84530": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 175；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "19669033dd4eff0b51edfc8e4a4af03c32ef6abf": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 176；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "06415ab96d00b5a07a03c0b02665f38b68b807ea": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 177；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "8ca8275f66b1b100a23d3857e46a44c10b478412": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 178；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e2807cc12b1f276d814d2f0b134ffa8c8d96e168": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 179；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7003e58240f68ad9136056252414c7af493b3afd": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 180；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f68cf4b171875bd54b406a09402cfa85c09dabbc": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 181；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7b3b5c28ec8b7dba2727941ca36da9c97b0e98cd": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 182；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "4122dbcf0fa8a61644303f9446f00700b835fb50": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 183；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a0148b9fa59e38773fbade55180c2efc075ab2fc": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 186；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "841165c47a87c7876e7763d0e59babec2efc07e5": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "台账行 191；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "647400f442fc3fd0b65e3cfa17fe82f449817cda": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 193；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "3e7cc41a9cae91c658d02c818d7405633af28e3a": {
+      "status": "DEFER-ARCH",
+      "target": "（架构级，Phase 1/3）",
+      "note": "台账行 194；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c458f224d4c39da307ad9b9923fd5caa7da64af9": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 195；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "741f98d1e938b8e186637494dd2b8067fe7ed109": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 196；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5c99e970211f28efff02ff010b8695ba6ec14e0f": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 197；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "607470f043ca2eaaad89dee93069d6b75a4e5f8c": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 198；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "55cc8fc6b5101a4afb5c405d21d92c4b9277b1a6": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 199；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "15a05d23454046ef954d7360fb1fb11fe5c4ce03": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 200；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "446c689a4efd9fdfe17f7a939c8813e4eb0a2f03": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 203；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "be6173c00203eab8d35970669874a4e37dbc21aa": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "台账行 204；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "84b1939df4cd795a89247e9514e29f4dce1411ca": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 205；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c7dd86378fbd5692fca6f53e6a0c9fbca01009e7": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 206；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "95bb0294ea476264da43832c53713b4b2113e016": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 207；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "38382758aa8f375b699258a31f4c46692da21918": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 214；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7a3593600be2c7ce5ee07b17ab4f8d45a0505b5e": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 217；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d7c19196417b4d0387aa674e07f722010544f933": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 218；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "751055e450316a6efd8f6f66a1f670f3159339a5": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 220；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "aec2cd920feee341ad5a8e3a0354f7127b3cfac4": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 223；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5d3cf72f6a2bd314e3cea8b40a2078677633d498": {
+      "status": "SKIP-PORTLIB",
+      "target": "（不动 1.21）",
+      "note": "台账行 225；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9378868e57330f2c8208bdb2993da88d17bb25fa": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 226；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "8a961bc0c0f62651377e2c8afd0562c09528b540": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 227；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d15b521d22606083d596246ce786652f809081e5": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 228；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "128469b81214d7f86857bc4651f785953f2163e5": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 229；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d5cdb0f89836f16516f741a5c1f40f24ac3dfcb4": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 231；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "673efd7d51fbabc47d9412000e7aaa736221ad52": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 232；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "4bd94d674e4d13e6a19b160b68134e3a0afd729a": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 233；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "91724b1cecf6623a9aafecda52e08cc26a70cf5b": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 241；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "0776c451ceb44ae5f10e0cc4c4c15ebe6dcc1c4f": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 346；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "1f1c456ff6bc01154f96aedc6ca3ce3c3dc26603": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 360；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7a072d51bcf713702902ac7fa09f64ee1fd8bb82": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 365；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2d21e33642b328592132f9566d48e66c38eab6c4": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 381；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "40f02b002e8858b47eac275c3b886cf0566030df": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 273；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5a25532932208f903f874d537ca091eadf5f1d1e": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 239；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d3c7c32ff01168fd925c1737465704e704319c20": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 266；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "27ee0313c101e04a2568f75c941e62478b318023": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 268；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "01f0936ac0457f4776bb0a1b5d0ff2ae0b70d20b": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 269；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "0fe39ec9239bba13bd8a1b0b98203ef5206e4982": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 284；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9a3c5798b77d992176ee3519ae8e5a87fdc80a92": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 289；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "1d8a006102f725cc24f22272e798700a771b83b5": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 292；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2818e719b9e1d392c84a423b48db61efbb450939": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 299；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "64b7bbe9e8af0c6c85089ded7267825906ef7779": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 306；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "701d48a089266057da367d09ea5e6f39b16b53ae": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 311；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "286102066a0860ad19a0347ee26545d1684def6f": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 314；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9074bb9e553001bea6bb8cb90a1742b53fdd14e0": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 333；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9d66b34d0299de82086d7dd6f3603811badbf7aa": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 340；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "af1426bed2d4a94fcd4f45fc50893e67db5e98b6": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 343；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "5fe2c370b67521391a6dadbfafa657b2bde4568f": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 352；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "116bef809f9a085c27f2f0b24968eee5ff33d1c0": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 354；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a037263e1d1b5a41335ba7f91c8905c9634051d2": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 358；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "3bc53d43d0a451b2ec27abd7c50de8abfe147fc0": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 366；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "801f95ff39ce6a9e9d99cb450e80559aa162e332": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 372；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a6819f175bae21c95161fd010dd921323c1e7142": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 374；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "566fde2d4a97874f83a92a436f1a7b5e05db0534": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 375；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "18221c3387e34e4eec56bc8ecfb232c5ad85b1e5": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 386；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "85cbebf7458fd2632b1c5ee52f3b6e48b083c47b": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 288；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a358494fa28d5ac673b341700a9f36e4b48929a7": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 235；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "785b151f06d35e0d1d3bee02ad9541993d73df6e": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 276；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "157730424f6360014ba67c27dd78f7c320e22545": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 293；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d879d8ffccc7ea5d69ace92b5528387f214dfa04": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 303；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c454b8d68fe1dcadf28d73431fe14356a565b616": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 304；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "124baf17d21f54f010f8285be96775c33d81384a": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 307；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d3d8dcd24cc6f45348b367eedd4a954a032d3f57": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 309；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e7cabcfea7303b7e12624a833f335e447f58b179": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 320；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a2dfa30dac712e6d9a8a4f1a8766431ad2f79a80": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 363；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "cfe6ac100d4a31762e34b302d5cec0dcd2f615e1": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 265；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2ca9e2ac016af5695434a1786401d06affb90955": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 369；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "75a6a63ad24895474c1720c2f48550bd32bcfe3a": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 378；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f4ffadaa755e74833037edb3b10f3b5dced645c8": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 267；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7169379cdc985bd0af4105c7747c21ab31466598": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 319；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "ac2ac442867aac1685d962d9aa3d9067e6540af8": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 367；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "33d89dd639f0150ab2a22f8f0c13ceee711b8952": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 275；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "ef1a4d1386a6bb6507da0a3e07d84c6518658615": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 350；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9365516766eb195ef8d0f9c7583f87146884b64a": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 334；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "ac457ea835114f4988e92e359c586d23d3531ef9": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 240；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "300bd6cfe83409e929941039a39f2e1335e46b40": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 281；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "6a3e17e867b7bde9af80de1eb985ed99538aef5e": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 364；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "99902d9862e3358e5ceee849f2e79f991d462775": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 238；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9090245f8b3fa338f3eae6cfe0264c37eb6ca779": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 248；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "856c0047fedf0f122d5a365832a6a7bb58ce4085": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 253；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "0bd4b205226b1a1f517364983be9f67250e359ee": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 257；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9a5d3a4a6b7a937616c29edac1a6475c2f53eb69": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 263；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "389b7a7602ff451662c973122ed83323c3c48d23": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 264；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2eb9ce931baa3fc79fc552057713cf827abfc914": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 279；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "67c51a778e800865b15eb23849397adc4f58acc3": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 283；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "dafb03ee9526514fb7781b5036b32d4f1644527a": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 390；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e6d47c41219be8f0ab22eacac50fed0609217b41": {
+      "status": "REVERSE-ALIGNED",
+      "target": "（1.20 侧反向对齐 1.21 的提交，不作移植源）",
+      "note": "台账行 368；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "0325341796b91ad491a4331880b46ccde8df793d": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 388；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a45ef0a139e89e5fbb955f167d7c6444dc718436": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 313；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "6db8be065413001878bbfccaec21f4906cfded80": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 315；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "8bb33454a1a72bc85eec88efbdea66c918c9dbb1": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 341；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "fa147c869b43ad697570aabaffeb4118863f348b": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 379；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "437e53a843c26f5166dc01092e631da010f273a1": {
+      "status": "SKIP-PLATFORM",
+      "target": "（不动 1.21）",
+      "note": "台账行 389；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "980615a95c25d9464c5d0629426b19c2cbaf97d1": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 371；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "13376f960e2d44677d5c743933d83f748257137f": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 395；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "fcd2368c6f4c1f0d31c167725777ee5aceb93916": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 380；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e6c0036c2cae584d8285be97dfa7b428906b19c0": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 384；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "05b032399b4a78008e030f9c6e697e0c232edb7e": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 345；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a94cf78dcdb55dbb17a438b4173e478c23b4669e": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 344；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "62d4d191a6a1f7d37d5cf52cde85bc3cb813c1d1": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 247；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "253bb8d7bcdba3bde209584cfed8b02f4afa0f3c": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 255；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a086eeba6fb604c2ec3c6ee844ba7dc76ff15b0e": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 316；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c7aefbf009c565334039dd12a2aca635181f7c9f": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 321；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "892008ba0314c0bc6fc2b6d4b44af17da293328d": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 330；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "bb189220154c36399e6ae507acefafebfaa57d7c": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 338；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "11a43615e66d80a2855ed2e5043ae3b177a5ec82": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 348；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e9501cf56ee764073864f4f4c114690f484fd364": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 361；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "1038e97fe9465ad87dc2c443ba87b474522eeb37": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 383；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9351a7e6b8b477f552630cb1e95b71d21b61709b": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 396；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "da5b986bea0828754fd03fd265d6cd28ca2a4dd8": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 332；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "6d4f07298c09a8df89407bb472f807f71d54d157": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 335；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "75c60a5fe4e77116630445c29204dcd481db89d6": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 260；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "46e5e86268a10d4d442f3e9676cd725db996f6af": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 308；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "bcecc538225aee74e09bca136713016fa082bf6d": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 261；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "17ca9b50f3510e61db154ddee1038258cb1efa63": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 262；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "b47adc3ce528cc99ac9891b56b3e8e30d8a1a694": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 301；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "4a34367706f2491dec0461ec7911548e96519fbc": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 270；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c5b035680e4fdecd1e3c9ad9a7cba30f9671fd7f": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 286；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "6cda0630323e98618d7d281042db09e08a900357": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 393；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a34060571bd3f94319d2688bfd6fb9bf1fa4fe12": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 298；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "3e76867aad4830674799d4672c5737d71b93a7f3": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 310；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "641467c87102bc75a9b28a0b5dc18db22e5748d4": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 272；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "87b93ede277428828ae7dfb66762b14c5ab0e1d7": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 278；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "14425eb1ce738e9055848f5eff93727ae1722031": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 300；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d5fd40bfff335b3bbe450b963ab29ab03830f93e": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 342；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c0e8c4c758b552f1b8b258a14f9cd620f0055233": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 349；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "041c8491538ec02d264d6a560afda21998a77c88": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 274；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "05380071a47dc2d5730e989d4a7890c6b7adabfd": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 377；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "fecb245e5f5643cdac193f209dd6fb0a8e2eeacc": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 337；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f212a001a97a215e14f28489f4f83032d2d8954e": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 295；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "d599373c3bc4c61fbcd673eb84f8a3c4f487ea59": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 242；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e6eace2b1553930828e02766209a00418db595fc": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 355；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9e32f0135e19f31dc4d0189e15872e2d63d344d8": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 357；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "fc3fabfb9a595cd1a62df1aa6cbf9c0eecd2dc56": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 385；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "e1cd9c8cb50cc32b390847e5ea5ef669fe5b2cde": {
+      "status": "DEFER-ARCH",
+      "target": "（架构级，Phase 1/3）",
+      "note": "台账行 347；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2de684965a7924d8d7be6b4c2bd8b3b48b767f5b": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 392；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c886cec0fcc6d388a611dcfa9014a233b606b5b2": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 312；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "46ae3a168c2c5f76c1fcb7556668b88733dac8e2": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 322；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "81488b6d0fe1a5c5a1c4326eec6f18af257e5251": {
+      "status": "SKIP-1.20-REVERTED",
+      "target": "（不动 1.21）",
+      "note": "台账行 302；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "348c877a41fbe006f9f6ca813162d4ee48f76e8d": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 280；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "1da5e0d268bf5dcce0504929cfb9b314571ffb33": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 317；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "2f44045a8042ad204234e07237ca518e5d4a1177": {
+      "status": "PORTED",
+      "target": "已按 1.21 原生改写并提交（见 notes/PORT-LANDING-RECORD.md）",
+      "note": "台账行 359；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "6084476d09bc850c5a54ab499ff050ba48257533": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 237；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "a4b3214992230c7ea46c1acc06f69ff8e79c138b": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 244；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "900c068f7953a7ac0175866e6ef5a9c9a83761c0": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 323；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "confluence:block/magic_mails/magic_mail_box_oak",
+    "textures": {
+        "0": "minecraft:block/cherry_log_top",
+        "1": "minecraft:block/cherry_log",
+        "particle": "minecraft:block/cherry_planks"
+    }
+}

@@ -1,0 +1,48 @@
+{
+  "format_version": "1.12.0",
+  "minecraft:geometry": [
+    {
+      "description": {
+        "identifier": "geometry.bird_nest",
+        "texture_width": 48,
+        "texture_height": 48,
+        "visible_bounds_width": 2,
+        "visible_bounds_height": 1,
+        "visible_bounds_offset": [0, 0.125, 0]
+      },
+      "bones": [
+        {
+          "name": "nest",
+          "pivot": [0, 0, 0],
+          "cubes": [
+            {
+              "origin": [-6, 0, -6],
+              "size": [12, 4, 12],
+              "uv": {
+                "north": {"uv": [0, 26], "uv_size": [12, 4]},
+                "east": {"uv": [26, 0], "uv_size": [12, 4]},
+                "south": {"uv": [26, 5], "uv_size": [12, 4]},
+                "west": {"uv": [26, 10], "uv_size": [12, 4]},
+                "up": {"uv": [12, 12], "uv_size": [-12, -12]},
+                "down": {"uv": [12, 13], "uv_size": [-12, 12]}
+              }
+            },
+            {
+              "origin": [-6, 0, -6],
+              "size": [12, 4, 12],
+              "inflate": 0.2,
+              "uv": {
+                "north": {"uv": [13, 26], "uv_size": [12, 4]},
+                "east": {"uv": [26, 15], "uv_size": [12, 4]},
+                "south": {"uv": [26, 20], "uv_size": [12, 4]},
+                "west": {"uv": [26, 25], "uv_size": [12, 4]},
+                "up": {"uv": [25, 12], "uv_size": [-12, -12]},
+                "down": {"uv": [25, 13], "uv_size": [-12, 12]}
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "terra_entity:house_detector"
+            "id": "minecraft:oak_door"
         },
         "title": {
             "translate": "achievements.confluence.no_hobo.title"

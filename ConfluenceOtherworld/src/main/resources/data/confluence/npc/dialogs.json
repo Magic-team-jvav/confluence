@@ -1,5 +1,5 @@
 {
-  "terra_entity:guide": {
+  "confluence:guide": {
     "dialogs": [
       "dialogs.confluence.guide.0",
       "dialogs.confluence.guide.1",
@@ -14,7 +14,7 @@
       "dialogs.confluence.guide.10"
     ]
   },
-  "terra_entity:nurse": {
+  "confluence:nurse": {
     "dialogs": [
       "dialogs.confluence.nurse.0",
       "dialogs.confluence.nurse.1",
@@ -24,7 +24,7 @@
       "dialogs.confluence.nurse.5"
     ]
   },
-  "terra_entity:demolitionist": {
+  "confluence:demolitionist": {
     "dialogs": [
       "dialogs.confluence.demolitionist.0",
       "dialogs.confluence.demolitionist.1",
@@ -34,7 +34,7 @@
       "dialogs.confluence.demolitionist.5"
     ]
   },
-  "terra_entity:goblin_tinkerer": {
+  "confluence:goblin_tinkerer": {
     "dialogs": [
       "dialogs.confluence.goblin_tinkerer.0",
       "dialogs.confluence.goblin_tinkerer.1",
@@ -44,7 +44,7 @@
       "dialogs.confluence.goblin_tinkerer.5"
     ]
   },
-  "terra_entity:arms_dealer": {
+  "confluence:arms_dealer": {
     "dialogs": [
       "dialogs.confluence.arms_dealer.0",
       "dialogs.confluence.arms_dealer.1",
@@ -54,7 +54,7 @@
       "dialogs.confluence.arms_dealer.5"
     ]
   },
-  "terra_entity:merchant": {
+  "confluence:merchant": {
     "dialogs": [
       "dialogs.confluence.merchant.0",
       "dialogs.confluence.merchant.1",
@@ -64,7 +64,7 @@
       "dialogs.confluence.merchant.5"
     ]
   },
-  "terra_entity:painter": {
+  "confluence:painter": {
     "dialogs": [
       "dialogs.confluence.painter.0",
       "dialogs.confluence.painter.1",
@@ -74,7 +74,7 @@
       "dialogs.confluence.painter.5"
     ]
   },
-  "terra_entity:dryad": {
+  "confluence:dryad": {
     "dialogs": [
       "dialogs.confluence.dryad.0",
       "dialogs.confluence.dryad.1",
@@ -84,7 +84,7 @@
       "dialogs.confluence.dryad.5"
     ]
   },
-  "terra_entity:dye_trader": {
+  "confluence:dye_trader": {
     "dialogs": [
       "dialogs.confluence.dye_trader.0",
       "dialogs.confluence.dye_trader.1",
@@ -94,7 +94,7 @@
       "dialogs.confluence.dye_trader.5"
     ]
   },
-  "terra_entity:angler": {
+  "confluence:angler": {
     "dialogs": [
       "dialogs.confluence.angler.0",
       "dialogs.confluence.angler.1",
@@ -104,7 +104,7 @@
       "dialogs.confluence.angler.5"
     ]
   },
-  "terra_entity:female_angler": {
+  "confluence:female_angler": {
     "dialogs": [
       "dialogs.confluence.angler.0",
       "dialogs.confluence.angler.1",
@@ -114,7 +114,7 @@
       "dialogs.confluence.angler.5"
     ]
   },
-  "terra_entity:old_man": {
+  "confluence:old_man": {
     "dialogs": [
       "dialogs.confluence.old_man.0",
       "dialogs.confluence.old_man.1",
@@ -122,7 +122,7 @@
       "dialogs.confluence.old_man.3"
     ]
   },
-  "terra_entity:mechanic": {
+  "confluence:mechanic": {
     "dialogs": [
       "dialogs.confluence.mechanic.0",
       "dialogs.confluence.mechanic.1",
@@ -132,7 +132,7 @@
       "dialogs.confluence.mechanic.5"
     ]
   },
-  "terra_entity:traveling_merchant": {
+  "confluence:traveling_merchant": {
     "dialogs": [
       "dialogs.confluence.traveling_merchant.0",
       "dialogs.confluence.traveling_merchant.1",
@@ -145,7 +145,7 @@
       "dialogs.confluence.traveling_merchant.8"
     ]
   },
-  "terra_entity:witch_doctor": {
+  "confluence:witch_doctor": {
     "dialogs": [
       "dialogs.confluence.witch_doctor.0",
       "dialogs.confluence.witch_doctor.1",
@@ -153,7 +153,7 @@
       "dialogs.confluence.witch_doctor.3"
     ]
   },
-  "terra_entity:party_girl": {
+  "confluence:party_girl": {
     "dialogs": [
       "dialogs.confluence.party_girl.0",
       "dialogs.confluence.party_girl.1",
@@ -164,7 +164,7 @@
       "dialogs.confluence.party_girl.6"
     ]
   },
-  "terra_entity:clothier": {
+  "confluence:clothier": {
     "dialogs": [
       "dialogs.confluence.clothier.0",
       "dialogs.confluence.clothier.1",
@@ -175,7 +175,7 @@
       "dialogs.confluence.clothier.6"
     ]
   },
-  "terra_entity:truffle": {
+  "confluence:truffle": {
     "dialogs": [
       "dialogs.confluence.truffle.0",
       "dialogs.confluence.truffle.1",

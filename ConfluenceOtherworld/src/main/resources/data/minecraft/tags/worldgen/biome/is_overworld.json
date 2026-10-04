@@ -2,7 +2,14 @@
   "replace": false,
   "values": [
     "confluence:the_corruption",
+    "confluence:the_corruption_desert",
+    "confluence:the_corruption_tundra",
     "confluence:the_crimson",
-    "confluence:the_hallow"
+    "confluence:the_crimson_desert",
+    "confluence:the_crimson_tundra",
+    "confluence:the_hallow",
+    "confluence:the_hallow_desert",
+    "confluence:the_hallow_tundra",
+    "confluence:glowing_mushroom"
   ]
 }

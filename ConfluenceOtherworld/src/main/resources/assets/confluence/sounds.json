@@ -1,197 +1,3313 @@
 {
-    "transmission": {
-        "sounds": [
-            "confluence:transmission"
-        ],
-        "subtitle": "confluence.subtitle.transmission"
-    },
-    "lightsaber_open": {
-        "sounds": [
-            "confluence:lightsaber_open"
-        ],
-        "subtitle": "confluence.subtitle.lightsaber_open"
-    },
-    "regular_staff_shoot": {
-        "sounds": [
-            "confluence:regular_staff_shoot"
-        ],
-        "subtitle": "confluence.subtitle.regular_staff_shoot"
-    },
-    "life_crystal_use": {
-        "sounds": [
-            "confluence:life_crystal_use"
-        ],
-        "subtitle": "confluence.subtitle.life_crystal_use"
-    },
-    "mana_star_use": {
-        "sounds": [
-            "confluence:mana_star_use"
-        ],
-        "subtitle": "confluence.subtitle.mana_star_use"
-    },
-    "coins": {
-        "sounds": [
-            "confluence:coins"
-        ],
-        "subtitle": "confluence.subtitle.coins"
-    },
-    "regular_staff_shoot_2": {
-        "sounds": [
-            "confluence:regular_staff_shoot_2"
-        ],
-        "subtitle": "confluence.subtitle.regular_staff_shoot_2"
-    },
-    "regular_staff_shoot_3": {
-        "sounds": [
-            "confluence:regular_staff_shoot_3"
-        ],
-        "subtitle": "confluence.subtitle.regular_staff_shoot_3"
-    },
-    "frozen_broken": {
-        "sounds": [
-            "confluence:frozen_broken"
-        ],
-        "subtitle": "confluence.subtitle.frozen_broken"
-    },
-    "frozen_arrow": {
-        "sounds": [
-            "confluence:frozen_arrow"
-        ],
-        "subtitle": "confluence.subtitle.frozen_arrow"
-    },
-    "cooldown_recovery": {
-        "sounds": [
-            "confluence:cooldown_recovery"
-        ],
-        "subtitle": "confluence.subtitle.cooldown_recovery"
-    },
-    "shimmer_detachment": {
-        "sounds": [
-            "confluence:shimmer_detachment"
-        ],
-        "subtitle": "confluence.subtitle.shimmer_detachment"
-    },
-    "shimmer_evolution": {
-        "sounds": [
-            "confluence:shimmer_evolution"
-        ],
-        "subtitle": "confluence.subtitle.shimmer_evolution"
-    },
-    "shimmer_immersion": {
-        "sounds": [
-            "confluence:shimmer_immersion"
-        ],
-        "subtitle": "confluence.subtitle.shimmer_immersion"
-    },
-    "shimmer_item_interactions": {
-        "sounds": [
-            "confluence:shimmer_item_interactions"
-        ],
-        "subtitle": "confluence.subtitle.shimmer_item_interactions"
-    },
-    "star": {
-        "sounds": [
-            "confluence:star"
-        ],
-        "subtitle": "confluence.subtitle.star"
-    },
-    "star_lands": {
-        "sounds": [
-            "confluence:star_lands"
-        ],
-        "subtitle": "confluence.subtitle.star_lands"
-    },
-    "terra_operation": {
-        "sounds": [
-            "confluence:terra_operation"
-        ],
-        "subtitle": "confluence.subtitle.terra_operation"
-    },
-    "bow_cooldown_recovery": {
-        "sounds": [
-            "confluence:bow_cooldown_recovery"
-        ],
-        "subtitle": "confluence.subtitle.bow_cooldown_recovery"
-    },
-    "decoupling": {
-        "sounds": [
-            "confluence:decoupling"
-        ],
-        "subtitle": "confluence.subtitle.decoupling"
-    },
-    "achievements": {
-        "sounds": [
-            "confluence:achievements"
-        ],
-        "subtitle": "confluence.subtitle.achievements"
-    },
-    "transmutation_use": {
-        "sounds": [
-            "confluence:transmutation_use"
-        ],
-        "subtitle": "confluence.subtitle.transmutation_use"
-    },
-    "hook_attach": {
-        "sounds": [
-            "confluence:hook_attach_0",
-            "confluence:hook_attach_1",
-            "confluence:hook_attach_2"
-        ],
-        "subtitle": "confluence.subtitle.hook_attach"
-    },
-    "hook_shoot": {
-        "sounds": [
-            "confluence:hook_shoot_0",
-            "confluence:hook_shoot_1",
-            "confluence:hook_shoot_2"
-        ],
-        "subtitle": "confluence.subtitle.hook_shoot"
-    },
-    "coins_large": {
-        "sounds": [
-            "confluence:coins_large_0",
-            "confluence:coins_large_1",
-            "confluence:coins_large_2"
-        ],
-        "subtitle": "confluence.subtitle.coins_large"
-    },
-    "coins_medium": {
-        "sounds": [
-            "confluence:coins_medium_0",
-            "confluence:coins_medium_1",
-            "confluence:coins_medium_2"
-        ],
-        "subtitle": "confluence.subtitle.coins_medium"
-    },
-    "coins_small": {
-        "sounds": [
-            "confluence:coins_small_0",
-            "confluence:coins_small_1",
-            "confluence:coins_small_2"
-        ],
-        "subtitle": "confluence.subtitle.coins_small"
-    },
-    "lucyaxe_talk": {
-        "sounds": [
-            "confluence:lucyaxe_talk_0",
-            "confluence:lucyaxe_talk_1",
-            "confluence:lucyaxe_talk_2",
-            "confluence:lucyaxe_talk_3",
-            "confluence:lucyaxe_talk_4"
-        ],
-        "subtitle": "confluence.subtitle.lucyaxe_talk"
-    },
-    "repeater_item_aerial_shooting": {
-        "sounds": [
-            "confluence:repeater_item_aerial_shooting"
-        ],
-        "volume": 0.1,
-        "subtitle": "confluence.subtitle.repeater_item_aerial_shooting"
-    },
-    "crystal_vile_shard_shoot": {
-        "sounds": [
-            "confluence:crystal_vile_shard_shoot"
-        ],
-        "subtitle": "confluence.subtitle.crystal_vile_shard_shoot"
-    }
+  "transmission": {
+    "sounds": [
+      "confluence:transmission"
+    ],
+    "subtitle": "confluence.subtitle.transmission"
+  },
+  "lightsaber_open": {
+    "sounds": [
+      "confluence:lightsaber_open"
+    ],
+    "subtitle": "confluence.subtitle.lightsaber_open"
+  },
+  "regular_staff_shoot": {
+    "sounds": [
+      "confluence:regular_staff_shoot"
+    ],
+    "subtitle": "confluence.subtitle.regular_staff_shoot"
+  },
+  "life_crystal_use": {
+    "sounds": [
+      "confluence:life_crystal_use"
+    ],
+    "subtitle": "confluence.subtitle.life_crystal_use"
+  },
+  "mana_star_use": {
+    "sounds": [
+      "confluence:mana_star_use"
+    ],
+    "subtitle": "confluence.subtitle.mana_star_use"
+  },
+  "coins": {
+    "sounds": [
+      "confluence:coins"
+    ],
+    "subtitle": "confluence.subtitle.coins"
+  },
+  "regular_staff_shoot_2": {
+    "sounds": [
+      "confluence:regular_staff_shoot_2"
+    ],
+    "subtitle": "confluence.subtitle.regular_staff_shoot_2"
+  },
+  "regular_staff_shoot_3": {
+    "sounds": [
+      "confluence:regular_staff_shoot_3"
+    ],
+    "subtitle": "confluence.subtitle.regular_staff_shoot_3"
+  },
+  "frozen_broken": {
+    "sounds": [
+      "confluence:frozen_broken"
+    ],
+    "subtitle": "confluence.subtitle.frozen_broken"
+  },
+  "frozen_arrow": {
+    "sounds": [
+      "confluence:frozen_arrow"
+    ],
+    "subtitle": "confluence.subtitle.frozen_arrow"
+  },
+  "cooldown_recovery": {
+    "sounds": [
+      "confluence:cooldown_recovery"
+    ],
+    "subtitle": "confluence.subtitle.cooldown_recovery"
+  },
+  "shimmer_detachment": {
+    "sounds": [
+      "confluence:shimmer_detachment"
+    ],
+    "subtitle": "confluence.subtitle.shimmer_detachment"
+  },
+  "shimmer_evolution": {
+    "sounds": [
+      "confluence:shimmer_evolution"
+    ],
+    "subtitle": "confluence.subtitle.shimmer_evolution"
+  },
+  "shimmer_immersion": {
+    "sounds": [
+      "confluence:shimmer_immersion"
+    ],
+    "subtitle": "confluence.subtitle.shimmer_immersion"
+  },
+  "shimmer_item_interactions": {
+    "sounds": [
+      "confluence:shimmer_item_interactions"
+    ],
+    "subtitle": "confluence.subtitle.shimmer_item_interactions"
+  },
+  "star": {
+    "sounds": [
+      "confluence:star"
+    ],
+    "subtitle": "confluence.subtitle.star"
+  },
+  "star_lands": {
+    "sounds": [
+      "confluence:star_lands"
+    ],
+    "subtitle": "confluence.subtitle.star_lands"
+  },
+  "terra_operation": {
+    "sounds": [
+      "confluence:terra_operation"
+    ],
+    "subtitle": "confluence.subtitle.terra_operation"
+  },
+  "bow_cooldown_recovery": {
+    "sounds": [
+      "confluence:bow_cooldown_recovery"
+    ],
+    "subtitle": "confluence.subtitle.bow_cooldown_recovery"
+  },
+  "decoupling": {
+    "sounds": [
+      "confluence:decoupling"
+    ],
+    "subtitle": "confluence.subtitle.decoupling"
+  },
+  "achievements": {
+    "sounds": [
+      "confluence:achievements"
+    ],
+    "subtitle": "confluence.subtitle.achievements"
+  },
+  "transmutation_use": {
+    "sounds": [
+      "confluence:transmutation_use"
+    ],
+    "subtitle": "confluence.subtitle.transmutation_use"
+  },
+  "hook_attach": {
+    "sounds": [
+      "confluence:hook_attach_0",
+      "confluence:hook_attach_1",
+      "confluence:hook_attach_2"
+    ],
+    "subtitle": "confluence.subtitle.hook_attach"
+  },
+  "hook_shoot": {
+    "sounds": [
+      "confluence:hook_shoot_0",
+      "confluence:hook_shoot_1",
+      "confluence:hook_shoot_2"
+    ],
+    "subtitle": "confluence.subtitle.hook_shoot"
+  },
+  "coins_large": {
+    "sounds": [
+      "confluence:coins_large_0",
+      "confluence:coins_large_1",
+      "confluence:coins_large_2"
+    ],
+    "subtitle": "confluence.subtitle.coins_large"
+  },
+  "coins_medium": {
+    "sounds": [
+      "confluence:coins_medium_0",
+      "confluence:coins_medium_1",
+      "confluence:coins_medium_2"
+    ],
+    "subtitle": "confluence.subtitle.coins_medium"
+  },
+  "coins_small": {
+    "sounds": [
+      "confluence:coins_small_0",
+      "confluence:coins_small_1",
+      "confluence:coins_small_2"
+    ],
+    "subtitle": "confluence.subtitle.coins_small"
+  },
+  "lucyaxe_talk": {
+    "sounds": [
+      "confluence:lucyaxe_talk_0",
+      "confluence:lucyaxe_talk_1",
+      "confluence:lucyaxe_talk_2",
+      "confluence:lucyaxe_talk_3",
+      "confluence:lucyaxe_talk_4"
+    ],
+    "subtitle": "confluence.subtitle.lucyaxe_talk"
+  },
+  "repeater_item_aerial_shooting": {
+    "sounds": [
+      "confluence:repeater_item_aerial_shooting"
+    ],
+    "volume": 0.1,
+    "subtitle": "confluence.subtitle.repeater_item_aerial_shooting"
+  },
+  "crystal_vile_shard_shoot": {
+    "sounds": [
+      "confluence:crystal_vile_shard_shoot"
+    ],
+    "subtitle": "confluence.subtitle.crystal_vile_shard_shoot"
+  },
+  "use_minion_weapon": {
+    "subtitle": "confluence.subtitle.use_minion_weapon",
+    "sounds": [
+      "confluence:use_minion_weapon"
+    ]
+  },
+  "use_terraprism": {
+    "subtitle": "confluence.subtitle.use_terraprism",
+    "sounds": [
+      "confluence:use_terraprism"
+    ]
+  },
+  "gun_auto": {
+    "sounds": [
+      "confluence:gun_auto"
+    ]
+  },
+  "gun_fish": {
+    "sounds": [
+      "confluence:gun_fish"
+    ]
+  },
+  "blowgun_shot": {
+    "sounds": [
+      "confluence:blowgun_shot"
+    ]
+  },
+  "gun_space": {
+    "sounds": [
+      "confluence:gun_space"
+    ]
+  },
+  "gun_flamethrower": {
+    "sounds": [
+      "confluence:gun_flamethrower"
+    ]
+  },
+  "gun_generic": {
+    "sounds": [
+      "confluence:gun_generic"
+    ]
+  },
+  "gun_highpower": {
+    "sounds": [
+      "confluence:gun_highpower"
+    ]
+  },
+  "gun_nail": {
+    "sounds": [
+      "confluence:gun_nail"
+    ]
+  },
+  "gun_toxic": {
+    "sounds": [
+      "confluence:gun_toxic"
+    ]
+  },
+  "pistol_dart": {
+    "sounds": [
+      "confluence:pistol_dart"
+    ]
+  },
+  "rifle_burst": {
+    "sounds": [
+      "confluence:rifle_burst"
+    ]
+  },
+  "rifle_dart": {
+    "sounds": [
+      "confluence:rifle_dart"
+    ]
+  },
+  "shotgun_alien": {
+    "sounds": [
+      "confluence:shotgun_alien"
+    ]
+  },
+  "shotgun_alien_proj": {
+    "sounds": [
+      "confluence:shotgun_alien_proj"
+    ]
+  },
+  "shotgun_multi": {
+    "sounds": [
+      "confluence:shotgun_multi"
+    ]
+  },
+  "shotgun_tactical": {
+    "sounds": [
+      "confluence:shotgun_tactical"
+    ]
+  },
+  "routine_hurt": {
+    "subtitle": "confluence.subtitle.routine_hurt",
+    "sounds": [
+      "confluence:routine_hurt"
+    ]
+  },
+  "routine_death": {
+    "subtitle": "confluence.subtitle.routine_death",
+    "sounds": [
+      "confluence:routine_death"
+    ]
+  },
+  "roar": {
+    "subtitle": "confluence.subtitle.roar",
+    "sounds": [
+      "confluence:roar"
+    ]
+  },
+  "hurried_roaring": {
+    "subtitle": "confluence.subtitle.hurried_roaring",
+    "sounds": [
+      "confluence:hurried_roaring"
+    ]
+  },
+  "blood_crawler_death": {
+    "subtitle": "confluence.subtitle.blood_crawler_death",
+    "sounds": [
+      "confluence:blood_crawler_death"
+    ]
+  },
+  "blood_crawler_free": {
+    "subtitle": "confluence.subtitle.blood_crawler_free",
+    "sounds": [
+      "confluence:blood_crawler_free_0",
+      "confluence:blood_crawler_free_1"
+    ]
+  },
+  "blood_crawler_hurt": {
+    "subtitle": "confluence.subtitle.blood_crawler_hurt",
+    "sounds": [
+      "confluence:blood_crawler_hurt"
+    ]
+  },
+  "bloody_spore_death": {
+    "subtitle": "confluence.subtitle.bloody_spore_death",
+    "sounds": [
+      "confluence:bloody_spore_death"
+    ]
+  },
+  "bloody_spore_fuse": {
+    "subtitle": "confluence.subtitle.bloody_spore_fuse",
+    "sounds": [
+      "confluence:bloody_spore_fuse_0",
+      "confluence:bloody_spore_fuse_1"
+    ]
+  },
+  "bloody_spore_hit": {
+    "subtitle": "confluence.subtitle.bloody_spore_hit",
+    "sounds": [
+      "confluence:bloody_spore_hit_0",
+      "confluence:bloody_spore_hit_1",
+      "confluence:bloody_spore_hit_2",
+      "confluence:bloody_spore_hit_3"
+    ]
+  },
+  "drippler_death": {
+    "subtitle": "confluence.subtitle.drippler_death",
+    "sounds": [
+      "confluence:drippler_death"
+    ]
+  },
+  "drippler_hurt": {
+    "subtitle": "confluence.subtitle.drippler_hurt",
+    "sounds": [
+      "confluence:drippler_hurt"
+    ]
+  },
+  "metal_death": {
+    "subtitle": "confluence.subtitle.metal_death",
+    "sounds": [
+      "confluence:metal_death"
+    ]
+  },
+  "metal_hurt": {
+    "subtitle": "confluence.subtitle.metal_hurt",
+    "sounds": [
+      "confluence:metal_hurt"
+    ]
+  },
+  "visual_neuron_death": {
+    "subtitle": "confluence.subtitle.visual_neuron_death",
+    "sounds": [
+      "confluence:visual_neuron_death"
+    ]
+  },
+  "visual_neuron_hurt": {
+    "subtitle": "confluence.subtitle.visual_neuron_hurt",
+    "sounds": [
+      "confluence:visual_neuron_hurt"
+    ]
+  },
+  "dig_sound": {
+    "subtitle": "confluence.subtitle.dig_sound",
+    "sounds": [
+      "confluence:dig_sound"
+    ]
+  },
+  "giant_shelly_death": {
+    "subtitle": "confluence.subtitle.giant_shelly_death",
+    "sounds": [
+      "confluence:giant_shelly_death"
+    ]
+  },
+  "giant_shelly_free_0": {
+    "subtitle": "confluence.subtitle.giant_shelly_free_0",
+    "sounds": [
+      "confluence:giant_shelly_free_0"
+    ]
+  },
+  "giant_shelly_free_1": {
+    "subtitle": "confluence.subtitle.giant_shelly_free_1",
+    "sounds": [
+      "confluence:giant_shelly_free_1"
+    ]
+  },
+  "giant_shelly_hurt": {
+    "subtitle": "confluence.subtitle.giant_shelly_hurt",
+    "sounds": [
+      "confluence:giant_shelly_hurt"
+    ]
+  },
+  "face_hoot": {
+    "subtitle": "confluence.subtitle.face_hoot",
+    "sounds": [
+      "confluence:face_hoot"
+    ]
+  },
+  "tr_zombie_death": {
+    "subtitle": "confluence.subtitle.tr_zombie_death",
+    "sounds": [
+      "confluence:tr_zombie_death"
+    ]
+  },
+  "tr_skeleton_hurt": {
+    "subtitle": "confluence.subtitle.tr_skeleton_hurt",
+    "sounds": [
+      "confluence:tr_skeleton_hurt"
+    ]
+  },
+  "waving": {
+    "subtitle": "confluence.subtitle.waving",
+    "sounds": [
+      "confluence:waving"
+    ]
+  },
+  "use_mounts": {
+    "subtitle": "confluence.subtitle.use_mounts",
+    "sounds": [
+      "confluence:use_mounts"
+    ]
+  },
+  "decayeder_ambient": {
+    "subtitle": "confluence.subtitle.decayeder_ambient",
+    "sounds": [
+      "confluence:decayeder_ambient_0",
+      "confluence:decayeder_ambient_1",
+      "confluence:decayeder_ambient_2"
+    ]
+  },
+  "decayeder_death": {
+    "subtitle": "confluence.subtitle.decayeder_death",
+    "sounds": [
+      "confluence:decayeder_death"
+    ]
+  },
+  "decayeder_hurt": {
+    "subtitle": "confluence.subtitle.decayeder_hurt",
+    "sounds": [
+      "confluence:decayeder_hurt_0",
+      "confluence:decayeder_hurt_1",
+      "confluence:decayeder_hurt_2",
+      "confluence:decayeder_hurt_3"
+    ]
+  },
+  "decayeder_step": {
+    "subtitle": "confluence.subtitle.decayeder_step",
+    "sounds": [
+      "confluence:decayeder_step_0",
+      "confluence:decayeder_step_1",
+      "confluence:decayeder_step_2"
+    ]
+  },
+  "whip_attack": {
+    "subtitle": "confluence.subtitle.whip_attack",
+    "sounds": [
+      "confluence:whip_attack"
+    ]
+  },
+  "routine_summon": {
+    "subtitle": "confluence.subtitle.routine_summon",
+    "sounds": [
+      "confluence:routine_summon"
+    ]
+  },
+  "summon_eye": {
+    "subtitle": "confluence.subtitle.summon_eye",
+    "sounds": [
+      "confluence:summon_eye"
+    ]
+  },
+  "summon_imp": {
+    "subtitle": "confluence.subtitle.summon_imp",
+    "sounds": [
+      "confluence:summon_imp"
+    ]
+  },
+  "summon_money_trough": {
+    "subtitle": "confluence.subtitle.summon_money_trough",
+    "sounds": [
+      "confluence:summon_money_trough"
+    ]
+  },
+  "antlion_death": {
+    "subtitle": "confluence.subtitle.antlion_death",
+    "sounds": [
+      "confluence:antlion_death"
+    ]
+  },
+  "antlion_hurt": {
+    "subtitle": "confluence.subtitle.antlion_hurt",
+    "sounds": [
+      "confluence:antlion_hurt"
+    ]
+  },
+  "antlion_free": {
+    "subtitle": "confluence.subtitle.antlion_free",
+    "sounds": [
+      "confluence:antlion_free"
+    ]
+  },
+  "antlion_swarmer_death": {
+    "subtitle": "confluence.subtitle.antlion_swarmer_death",
+    "sounds": [
+      "confluence:antlion_swarmer_death"
+    ]
+  },
+  "antlion_swarmer_free": {
+    "subtitle": "confluence.subtitle.antlion_swarmer_free",
+    "sounds": [
+      "confluence:antlion_swarmer_free",
+      "confluence:antlion_swarmer_free_0"
+    ]
+  },
+  "bat_death": {
+    "subtitle": "confluence.subtitle.bat_death",
+    "sounds": [
+      "confluence:bat_death"
+    ]
+  },
+  "beetle_death": {
+    "subtitle": "confluence.subtitle.beetle_death",
+    "sounds": [
+      "confluence:beetle_death"
+    ]
+  },
+  "blood_jelly_death": {
+    "subtitle": "confluence.subtitle.blood_jelly_death",
+    "sounds": [
+      "confluence:blood_jelly_death"
+    ]
+  },
+  "blood_jelly_free": {
+    "subtitle": "confluence.subtitle.blood_jelly_free",
+    "sounds": [
+      "confluence:blood_jelly_free"
+    ]
+  },
+  "bone_serpent_death": {
+    "subtitle": "confluence.subtitle.bone_serpent_death",
+    "sounds": [
+      "confluence:bone_serpent_death",
+      "confluence:bone_snake_death"
+    ]
+  },
+  "demon_death": {
+    "subtitle": "confluence.subtitle.demon_death",
+    "sounds": [
+      "confluence:demon_death"
+    ]
+  },
+  "demon_free": {
+    "subtitle": "confluence.subtitle.demon_free",
+    "sounds": [
+      "confluence:demon_free",
+      "confluence:demon_free_0",
+      "confluence:demon_free_1",
+      "confluence:demon_free_2"
+    ]
+  },
+  "demon_hurt": {
+    "subtitle": "confluence.subtitle.demon_hurt",
+    "sounds": [
+      "confluence:demon_hurt"
+    ]
+  },
+  "dungeon_spirit_death": {
+    "subtitle": "confluence.subtitle.dungeon_spirit_death",
+    "sounds": [
+      "confluence:dungeon_spirit_death"
+    ]
+  },
+  "dungeon_spirit_free": {
+    "subtitle": "confluence.subtitle.dungeon_spirit_free",
+    "sounds": [
+      "confluence:dungeon_spirit_free",
+      "confluence:dungeon_spirit_free_0"
+    ]
+  },
+  "dungeon_spirit_hurt": {
+    "subtitle": "confluence.subtitle.dungeon_spirit_hurt",
+    "sounds": [
+      "confluence:dungeon_spirit_hurt"
+    ]
+  },
+  "granite_golem_death": {
+    "subtitle": "confluence.subtitle.granite_golem_death",
+    "sounds": [
+      "confluence:granite_golem_death"
+    ]
+  },
+  "granite_golem_hurt": {
+    "subtitle": "confluence.subtitle.granite_golem_hurt",
+    "sounds": [
+      "confluence:granite_golem_hurt"
+    ]
+  },
+  "granite_golem_free": {
+    "subtitle": "confluence.subtitle.granite_golem_free",
+    "sounds": [
+      "confluence:granite_golem_free",
+      "confluence:granite_golem_free_0",
+      "confluence:granite_golem_free_1"
+    ]
+  },
+  "jellyfish_death": {
+    "subtitle": "confluence.subtitle.jellyfish_death",
+    "sounds": [
+      "confluence:jellyfish_death"
+    ]
+  },
+  "jellyfish_free": {
+    "subtitle": "confluence.subtitle.jellyfish_free",
+    "sounds": [
+      "confluence:jellyfish_free",
+      "confluence:jellyfish_free_0"
+    ]
+  },
+  "jellyfish_hurt": {
+    "subtitle": "confluence.subtitle.jellyfish_hurt",
+    "sounds": [
+      "confluence:jellyfish_hurt"
+    ]
+  },
+  "pixie_death": {
+    "subtitle": "confluence.subtitle.pixie_death",
+    "sounds": [
+      "confluence:pixie_death"
+    ]
+  },
+  "pixie_free": {
+    "subtitle": "confluence.subtitle.pixie_free",
+    "sounds": [
+      "confluence:pixie_free"
+    ]
+  },
+  "pixie_hurt": {
+    "subtitle": "confluence.subtitle.pixie_hurt",
+    "sounds": [
+      "confluence:pixie_hurt"
+    ]
+  },
+  "sand_shoot": {
+    "subtitle": "confluence.subtitle.sand_shoot",
+    "sounds": [
+      "confluence:sand_shoot"
+    ]
+  },
+  "soul_death": {
+    "subtitle": "confluence.subtitle.soul_death",
+    "sounds": [
+      "confluence:soul_death"
+    ]
+  },
+  "tr_zombie_free": {
+    "subtitle": "confluence.subtitle.tr_zombie_free",
+    "sounds": [
+      "confluence:tr_zombie_free",
+      "confluence:tr_zombie_free_0",
+      "confluence:tr_zombie_free_1"
+    ]
+  },
+  "unicorn_death": {
+    "subtitle": "confluence.subtitle.unicorn_death",
+    "sounds": [
+      "confluence:unicorn_death"
+    ]
+  },
+  "unicorn_hurt": {
+    "subtitle": "confluence.subtitle.unicorn_hurt",
+    "sounds": [
+      "confluence:unicorn_hurt"
+    ]
+  },
+  "wyvern_death": {
+    "subtitle": "confluence.subtitle.wyvern_death",
+    "sounds": [
+      "confluence:wyvern_death"
+    ]
+  },
+  "wyvern_hurt": {
+    "subtitle": "confluence.subtitle.wyvern_hurt",
+    "sounds": [
+      "confluence:wyvern_hurt"
+    ]
+  },
+  "the_hungry_death": {
+    "subtitle": "confluence.subtitle.the_hungry_death",
+    "sounds": [
+      "confluence:the_hungry_death",
+      "confluence:the_hungry_death_0"
+    ]
+  },
+  "the_hungry_hurt": {
+    "subtitle": "confluence.subtitle.the_hungry_hurt",
+    "sounds": [
+      "confluence:the_hungry_hurt",
+      "confluence:hungry_ghost_hurt"
+    ]
+  },
+  "wall_of_flesh_hurt": {
+    "subtitle": "confluence.subtitle.wall_of_flesh_hurt",
+    "sounds": [
+      "confluence:wall_of_flesh_hurt"
+    ]
+  },
+  "wall_of_flesh_roar": {
+    "subtitle": "confluence.subtitle.wall_of_flesh_roar",
+    "sounds": [
+      "confluence:wall_of_flesh_roar",
+      "confluence:wall_of_flesh_hoot"
+    ]
+  },
+  "wall_of_flesh_summon": {
+    "subtitle": "confluence.subtitle.wall_of_flesh_summon",
+    "sounds": [
+      "confluence:wall_of_flesh_summon"
+    ]
+  },
+  "abigail_attack": {
+    "subtitle": "confluence.subtitle.abigail_attack",
+    "sounds": [
+      "confluence:abigail_attack"
+    ]
+  },
+  "abigail_cry": {
+    "subtitle": "confluence.subtitle.abigail_cry",
+    "sounds": [
+      "confluence:abigail_cry_0",
+      "confluence:abigail_cry_1",
+      "confluence:abigail_cry_2"
+    ]
+  },
+  "abigail_summon": {
+    "subtitle": "confluence.subtitle.abigail_summon",
+    "sounds": [
+      "confluence:abigail_summon"
+    ]
+  },
+  "abigail_upgrade": {
+    "subtitle": "confluence.subtitle.abigail_upgrade",
+    "sounds": [
+      "confluence:abigail_upgrade_0",
+      "confluence:abigail_upgrade_1",
+      "confluence:abigail_upgrade_2"
+    ]
+  },
+  "angry_nimbus_death": {
+    "subtitle": "confluence.subtitle.angry_nimbus_death",
+    "sounds": [
+      "confluence:angry_nimbus_death"
+    ]
+  },
+  "angry_nimbus_free": {
+    "subtitle": "confluence.subtitle.angry_nimbus_free",
+    "sounds": [
+      "confluence:angry_nimbus_free_0",
+      "confluence:angry_nimbus_free_1",
+      "confluence:angry_nimbus_free_2"
+    ]
+  },
+  "angry_nimbus_hurt": {
+    "subtitle": "confluence.subtitle.angry_nimbus_hurt",
+    "sounds": [
+      "confluence:angry_nimbus_hurt"
+    ]
+  },
+  "bird_free": {
+    "subtitle": "confluence.subtitle.bird_free",
+    "sounds": [
+      "confluence:bird_free_0",
+      "confluence:bird_free_1",
+      "confluence:bird_free_2",
+      "confluence:bird_free_3",
+      "confluence:bird_free_4"
+    ]
+  },
+  "black_recluse_death": {
+    "subtitle": "confluence.subtitle.black_recluse_death",
+    "sounds": [
+      "confluence:black_recluse_death"
+    ]
+  },
+  "black_recluse_hurt": {
+    "subtitle": "confluence.subtitle.black_recluse_hurt",
+    "sounds": [
+      "confluence:black_recluse_hurt"
+    ]
+  },
+  "blizzard_inside_building_loop": {
+    "subtitle": "confluence.subtitle.blizzard_inside_building_loop",
+    "sounds": [
+      "confluence:blizzard_inside_building_loop"
+    ]
+  },
+  "blizzard_strong_loop": {
+    "subtitle": "confluence.subtitle.blizzard_strong_loop",
+    "sounds": [
+      "confluence:blizzard_strong_loop"
+    ]
+  },
+  "blood_crawler_death_0": {
+    "subtitle": "confluence.subtitle.blood_crawler_death_0",
+    "sounds": [
+      "confluence:blood_crawler_death_0"
+    ]
+  },
+  "blood_jelly_hurt": {
+    "subtitle": "confluence.subtitle.blood_jelly_hurt",
+    "sounds": [
+      "confluence:blood_jelly_hurt"
+    ]
+  },
+  "blood_zombie_death": {
+    "subtitle": "confluence.subtitle.blood_zombie_death",
+    "sounds": [
+      "confluence:blood_zombie_death"
+    ]
+  },
+  "blood_zombie_free": {
+    "subtitle": "confluence.subtitle.blood_zombie_free",
+    "sounds": [
+      "confluence:blood_zombie_free_0",
+      "confluence:blood_zombie_free_1",
+      "confluence:blood_zombie_free_2"
+    ]
+  },
+  "blood_zombie_hurt": {
+    "subtitle": "confluence.subtitle.blood_zombie_hurt",
+    "sounds": [
+      "confluence:blood_zombie_hurt"
+    ]
+  },
+  "brain_scrambler_death": {
+    "subtitle": "confluence.subtitle.brain_scrambler_death",
+    "sounds": [
+      "confluence:brain_scrambler_death"
+    ]
+  },
+  "brain_scrambler_hurt": {
+    "subtitle": "confluence.subtitle.brain_scrambler_hurt",
+    "sounds": [
+      "confluence:brain_scrambler_hurt"
+    ]
+  },
+  "bubble_shield_death": {
+    "subtitle": "confluence.subtitle.bubble_shield_death",
+    "sounds": [
+      "confluence:bubble_shield_death"
+    ]
+  },
+  "bubble_shield_hurt": {
+    "subtitle": "confluence.subtitle.bubble_shield_hurt",
+    "sounds": [
+      "confluence:bubble_shield_hurt"
+    ]
+  },
+  "burning_sphere_hurt": {
+    "subtitle": "confluence.subtitle.burning_sphere_hurt",
+    "sounds": [
+      "confluence:burning_sphere_hurt"
+    ]
+  },
+  "butcher_death": {
+    "subtitle": "confluence.subtitle.butcher_death",
+    "sounds": [
+      "confluence:butcher_death"
+    ]
+  },
+  "butcher_hurt": {
+    "subtitle": "confluence.subtitle.butcher_hurt",
+    "sounds": [
+      "confluence:butcher_hurt"
+    ]
+  },
+  "camera": {
+    "subtitle": "confluence.subtitle.camera",
+    "sounds": [
+      "confluence:camera"
+    ]
+  },
+  "celestial_pillar_death": {
+    "subtitle": "confluence.subtitle.celestial_pillar_death",
+    "sounds": [
+      "confluence:celestial_pillar_death"
+    ]
+  },
+  "chat": {
+    "subtitle": "confluence.subtitle.chat",
+    "sounds": [
+      "confluence:chat"
+    ]
+  },
+  "chattering_teeth_free": {
+    "subtitle": "confluence.subtitle.chattering_teeth_free",
+    "sounds": [
+      "confluence:chattering_teeth_free"
+    ]
+  },
+  "chester_close": {
+    "subtitle": "confluence.subtitle.chester_close",
+    "sounds": [
+      "confluence:chester_close_0",
+      "confluence:chester_close_1"
+    ]
+  },
+  "chester_open": {
+    "subtitle": "confluence.subtitle.chester_open",
+    "sounds": [
+      "confluence:chester_open_0",
+      "confluence:chester_open_1"
+    ]
+  },
+  "clown_free": {
+    "subtitle": "confluence.subtitle.clown_free",
+    "sounds": [
+      "confluence:clown_free_0",
+      "confluence:clown_free_1",
+      "confluence:clown_free_2"
+    ]
+  },
+  "cockatiel_free": {
+    "subtitle": "confluence.subtitle.cockatiel_free",
+    "sounds": [
+      "confluence:cockatiel_free_0",
+      "confluence:cockatiel_free_1",
+      "confluence:cockatiel_free_2"
+    ]
+  },
+  "coin": {
+    "subtitle": "confluence.subtitle.coin",
+    "sounds": [
+      "confluence:coin_0",
+      "confluence:coin_1",
+      "confluence:coin_2",
+      "confluence:coin_3",
+      "confluence:coin_4"
+    ]
+  },
+  "crawdad_death": {
+    "subtitle": "confluence.subtitle.crawdad_death",
+    "sounds": [
+      "confluence:crawdad_death"
+    ]
+  },
+  "crawdad_free": {
+    "subtitle": "confluence.subtitle.crawdad_free",
+    "sounds": [
+      "confluence:crawdad_free"
+    ]
+  },
+  "crawdad_hurt": {
+    "subtitle": "confluence.subtitle.crawdad_hurt",
+    "sounds": [
+      "confluence:crawdad_hurt"
+    ]
+  },
+  "critter_free": {
+    "subtitle": "confluence.subtitle.critter_free",
+    "sounds": [
+      "confluence:critter_free"
+    ]
+  },
+  "dd2_ballista_tower_shot": {
+    "subtitle": "confluence.subtitle.dd2_ballista_tower_shot",
+    "sounds": [
+      "confluence:dd2_ballista_tower_shot_0",
+      "confluence:dd2_ballista_tower_shot_1",
+      "confluence:dd2_ballista_tower_shot_2"
+    ]
+  },
+  "dd2_betsy_death": {
+    "subtitle": "confluence.subtitle.dd2_betsy_death",
+    "sounds": [
+      "confluence:dd2_betsy_death_0",
+      "confluence:dd2_betsy_death_1",
+      "confluence:dd2_betsy_death_2"
+    ]
+  },
+  "dd2_betsy_fireball_impact": {
+    "subtitle": "confluence.subtitle.dd2_betsy_fireball_impact",
+    "sounds": [
+      "confluence:dd2_betsy_fireball_impact_0",
+      "confluence:dd2_betsy_fireball_impact_1",
+      "confluence:dd2_betsy_fireball_impact_2"
+    ]
+  },
+  "dd2_betsy_fireball_shot": {
+    "subtitle": "confluence.subtitle.dd2_betsy_fireball_shot",
+    "sounds": [
+      "confluence:dd2_betsy_fireball_shot_0",
+      "confluence:dd2_betsy_fireball_shot_1",
+      "confluence:dd2_betsy_fireball_shot_2"
+    ]
+  },
+  "dd2_betsy_flame_breath": {
+    "subtitle": "confluence.subtitle.dd2_betsy_flame_breath",
+    "sounds": [
+      "confluence:dd2_betsy_flame_breath"
+    ]
+  },
+  "dd2_betsy_flying_circle_attack": {
+    "subtitle": "confluence.subtitle.dd2_betsy_flying_circle_attack",
+    "sounds": [
+      "confluence:dd2_betsy_flying_circle_attack"
+    ]
+  },
+  "dd2_betsy_hurt": {
+    "subtitle": "confluence.subtitle.dd2_betsy_hurt",
+    "sounds": [
+      "confluence:dd2_betsy_hurt_0",
+      "confluence:dd2_betsy_hurt_1",
+      "confluence:dd2_betsy_hurt_2"
+    ]
+  },
+  "dd2_betsy_scream": {
+    "subtitle": "confluence.subtitle.dd2_betsy_scream",
+    "sounds": [
+      "confluence:dd2_betsy_scream"
+    ]
+  },
+  "dd2_betsy_summon": {
+    "subtitle": "confluence.subtitle.dd2_betsy_summon",
+    "sounds": [
+      "confluence:dd2_betsy_summon_0",
+      "confluence:dd2_betsy_summon_1",
+      "confluence:dd2_betsy_summon_2"
+    ]
+  },
+  "dd2_betsy_wind_attack": {
+    "subtitle": "confluence.subtitle.dd2_betsy_wind_attack",
+    "sounds": [
+      "confluence:dd2_betsy_wind_attack_0",
+      "confluence:dd2_betsy_wind_attack_1",
+      "confluence:dd2_betsy_wind_attack_2"
+    ]
+  },
+  "dd2_book_staff_cast": {
+    "subtitle": "confluence.subtitle.dd2_book_staff_cast",
+    "sounds": [
+      "confluence:dd2_book_staff_cast_0",
+      "confluence:dd2_book_staff_cast_1",
+      "confluence:dd2_book_staff_cast_2"
+    ]
+  },
+  "dd2_book_staff_twister_loop": {
+    "subtitle": "confluence.subtitle.dd2_book_staff_twister_loop",
+    "sounds": [
+      "confluence:dd2_book_staff_twister_loop"
+    ]
+  },
+  "dd2_crystal_cart_impact": {
+    "subtitle": "confluence.subtitle.dd2_crystal_cart_impact",
+    "sounds": [
+      "confluence:dd2_crystal_cart_impact_0",
+      "confluence:dd2_crystal_cart_impact_1",
+      "confluence:dd2_crystal_cart_impact_2"
+    ]
+  },
+  "dd2_dark_mage_attack": {
+    "subtitle": "confluence.subtitle.dd2_dark_mage_attack",
+    "sounds": [
+      "confluence:dd2_dark_mage_attack_0",
+      "confluence:dd2_dark_mage_attack_1",
+      "confluence:dd2_dark_mage_attack_2"
+    ]
+  },
+  "dd2_dark_mage_cast_heal": {
+    "subtitle": "confluence.subtitle.dd2_dark_mage_cast_heal",
+    "sounds": [
+      "confluence:dd2_dark_mage_cast_heal_0",
+      "confluence:dd2_dark_mage_cast_heal_1",
+      "confluence:dd2_dark_mage_cast_heal_2"
+    ]
+  },
+  "dd2_dark_mage_death": {
+    "subtitle": "confluence.subtitle.dd2_dark_mage_death",
+    "sounds": [
+      "confluence:dd2_dark_mage_death_0",
+      "confluence:dd2_dark_mage_death_1",
+      "confluence:dd2_dark_mage_death_2"
+    ]
+  },
+  "dd2_dark_mage_heal_impact": {
+    "subtitle": "confluence.subtitle.dd2_dark_mage_heal_impact",
+    "sounds": [
+      "confluence:dd2_dark_mage_heal_impact_0",
+      "confluence:dd2_dark_mage_heal_impact_1",
+      "confluence:dd2_dark_mage_heal_impact_2"
+    ]
+  },
+  "dd2_dark_mage_hurt": {
+    "subtitle": "confluence.subtitle.dd2_dark_mage_hurt",
+    "sounds": [
+      "confluence:dd2_dark_mage_hurt_0",
+      "confluence:dd2_dark_mage_hurt_1",
+      "confluence:dd2_dark_mage_hurt_2"
+    ]
+  },
+  "dd2_dark_mage_summon_skeleton": {
+    "subtitle": "confluence.subtitle.dd2_dark_mage_summon_skeleton",
+    "sounds": [
+      "confluence:dd2_dark_mage_summon_skeleton_0",
+      "confluence:dd2_dark_mage_summon_skeleton_1",
+      "confluence:dd2_dark_mage_summon_skeleton_2"
+    ]
+  },
+  "dd2_defeat_scene": {
+    "subtitle": "confluence.subtitle.dd2_defeat_scene",
+    "sounds": [
+      "confluence:dd2_defeat_scene"
+    ]
+  },
+  "dd2_defense_tower_spawn": {
+    "subtitle": "confluence.subtitle.dd2_defense_tower_spawn",
+    "sounds": [
+      "confluence:dd2_defense_tower_spawn"
+    ]
+  },
+  "dd2_drakin_breath_in": {
+    "subtitle": "confluence.subtitle.dd2_drakin_breath_in",
+    "sounds": [
+      "confluence:dd2_drakin_breath_in_0",
+      "confluence:dd2_drakin_breath_in_1",
+      "confluence:dd2_drakin_breath_in_2"
+    ]
+  },
+  "dd2_drakin_death": {
+    "subtitle": "confluence.subtitle.dd2_drakin_death",
+    "sounds": [
+      "confluence:dd2_drakin_death_0",
+      "confluence:dd2_drakin_death_1",
+      "confluence:dd2_drakin_death_2"
+    ]
+  },
+  "dd2_drakin_hurt": {
+    "subtitle": "confluence.subtitle.dd2_drakin_hurt",
+    "sounds": [
+      "confluence:dd2_drakin_hurt_0",
+      "confluence:dd2_drakin_hurt_1",
+      "confluence:dd2_drakin_hurt_2"
+    ]
+  },
+  "dd2_drakin_shot": {
+    "subtitle": "confluence.subtitle.dd2_drakin_shot",
+    "sounds": [
+      "confluence:dd2_drakin_shot_0",
+      "confluence:dd2_drakin_shot_1",
+      "confluence:dd2_drakin_shot_2"
+    ]
+  },
+  "dd2_etherian_portal_dryad_touch": {
+    "subtitle": "confluence.subtitle.dd2_etherian_portal_dryad_touch",
+    "sounds": [
+      "confluence:dd2_etherian_portal_dryad_touch"
+    ]
+  },
+  "dd2_etherian_portal_idle_loop": {
+    "subtitle": "confluence.subtitle.dd2_etherian_portal_idle_loop",
+    "sounds": [
+      "confluence:dd2_etherian_portal_idle_loop"
+    ]
+  },
+  "dd2_etherian_portal_open": {
+    "subtitle": "confluence.subtitle.dd2_etherian_portal_open",
+    "sounds": [
+      "confluence:dd2_etherian_portal_open"
+    ]
+  },
+  "dd2_etherian_portal_spawn_enemy": {
+    "subtitle": "confluence.subtitle.dd2_etherian_portal_spawn_enemy",
+    "sounds": [
+      "confluence:dd2_etherian_portal_spawn_enemy_0",
+      "confluence:dd2_etherian_portal_spawn_enemy_1",
+      "confluence:dd2_etherian_portal_spawn_enemy_2"
+    ]
+  },
+  "dd2_explosive_trap_explode": {
+    "subtitle": "confluence.subtitle.dd2_explosive_trap_explode",
+    "sounds": [
+      "confluence:dd2_explosive_trap_explode_0",
+      "confluence:dd2_explosive_trap_explode_1",
+      "confluence:dd2_explosive_trap_explode_2"
+    ]
+  },
+  "dd2_flameburst_tower_shot": {
+    "subtitle": "confluence.subtitle.dd2_flameburst_tower_shot",
+    "sounds": [
+      "confluence:dd2_flameburst_tower_shot_0",
+      "confluence:dd2_flameburst_tower_shot_1",
+      "confluence:dd2_flameburst_tower_shot_2"
+    ]
+  },
+  "dd2_ghastly_glaive_impact_ghost": {
+    "subtitle": "confluence.subtitle.dd2_ghastly_glaive_impact_ghost",
+    "sounds": [
+      "confluence:dd2_ghastly_glaive_impact_ghost_0",
+      "confluence:dd2_ghastly_glaive_impact_ghost_1",
+      "confluence:dd2_ghastly_glaive_impact_ghost_2"
+    ]
+  },
+  "dd2_ghastly_glaive_pierce": {
+    "subtitle": "confluence.subtitle.dd2_ghastly_glaive_pierce",
+    "sounds": [
+      "confluence:dd2_ghastly_glaive_pierce_0",
+      "confluence:dd2_ghastly_glaive_pierce_1",
+      "confluence:dd2_ghastly_glaive_pierce_2"
+    ]
+  },
+  "dd2_goblin_bomber_death": {
+    "subtitle": "confluence.subtitle.dd2_goblin_bomber_death",
+    "sounds": [
+      "confluence:dd2_goblin_bomber_death_0",
+      "confluence:dd2_goblin_bomber_death_1",
+      "confluence:dd2_goblin_bomber_death_2"
+    ]
+  },
+  "dd2_goblin_bomber_hurt": {
+    "subtitle": "confluence.subtitle.dd2_goblin_bomber_hurt",
+    "sounds": [
+      "confluence:dd2_goblin_bomber_hurt_0",
+      "confluence:dd2_goblin_bomber_hurt_1",
+      "confluence:dd2_goblin_bomber_hurt_2"
+    ]
+  },
+  "dd2_goblin_bomber_scream": {
+    "subtitle": "confluence.subtitle.dd2_goblin_bomber_scream",
+    "sounds": [
+      "confluence:dd2_goblin_bomber_scream_0",
+      "confluence:dd2_goblin_bomber_scream_1",
+      "confluence:dd2_goblin_bomber_scream_2"
+    ]
+  },
+  "dd2_goblin_bomber_throw": {
+    "subtitle": "confluence.subtitle.dd2_goblin_bomber_throw",
+    "sounds": [
+      "confluence:dd2_goblin_bomber_throw_0",
+      "confluence:dd2_goblin_bomber_throw_1",
+      "confluence:dd2_goblin_bomber_throw_2"
+    ]
+  },
+  "dd2_goblin_death": {
+    "subtitle": "confluence.subtitle.dd2_goblin_death",
+    "sounds": [
+      "confluence:dd2_goblin_death_0",
+      "confluence:dd2_goblin_death_1",
+      "confluence:dd2_goblin_death_2"
+    ]
+  },
+  "dd2_goblin_hurt": {
+    "subtitle": "confluence.subtitle.dd2_goblin_hurt",
+    "sounds": [
+      "confluence:dd2_goblin_hurt_0",
+      "confluence:dd2_goblin_hurt_1",
+      "confluence:dd2_goblin_hurt_2",
+      "confluence:dd2_goblin_hurt_3",
+      "confluence:dd2_goblin_hurt_4",
+      "confluence:dd2_goblin_hurt_5"
+    ]
+  },
+  "dd2_goblin_scream": {
+    "subtitle": "confluence.subtitle.dd2_goblin_scream",
+    "sounds": [
+      "confluence:dd2_goblin_scream_0",
+      "confluence:dd2_goblin_scream_1",
+      "confluence:dd2_goblin_scream_2"
+    ]
+  },
+  "dd2_javelin_throwers_attack": {
+    "subtitle": "confluence.subtitle.dd2_javelin_throwers_attack",
+    "sounds": [
+      "confluence:dd2_javelin_throwers_attack_0",
+      "confluence:dd2_javelin_throwers_attack_1",
+      "confluence:dd2_javelin_throwers_attack_2"
+    ]
+  },
+  "dd2_javelin_throwers_death": {
+    "subtitle": "confluence.subtitle.dd2_javelin_throwers_death",
+    "sounds": [
+      "confluence:dd2_javelin_throwers_death_0",
+      "confluence:dd2_javelin_throwers_death_1",
+      "confluence:dd2_javelin_throwers_death_2"
+    ]
+  },
+  "dd2_javelin_throwers_hurt": {
+    "subtitle": "confluence.subtitle.dd2_javelin_throwers_hurt",
+    "sounds": [
+      "confluence:dd2_javelin_throwers_hurt_0",
+      "confluence:dd2_javelin_throwers_hurt_1",
+      "confluence:dd2_javelin_throwers_hurt_2"
+    ]
+  },
+  "dd2_javelin_throwers_taunt": {
+    "subtitle": "confluence.subtitle.dd2_javelin_throwers_taunt",
+    "sounds": [
+      "confluence:dd2_javelin_throwers_taunt_0",
+      "confluence:dd2_javelin_throwers_taunt_1",
+      "confluence:dd2_javelin_throwers_taunt_2"
+    ]
+  },
+  "dd2_kobold_death": {
+    "subtitle": "confluence.subtitle.dd2_kobold_death",
+    "sounds": [
+      "confluence:dd2_kobold_death_0",
+      "confluence:dd2_kobold_death_1",
+      "confluence:dd2_kobold_death_2"
+    ]
+  },
+  "dd2_kobold_explosion": {
+    "subtitle": "confluence.subtitle.dd2_kobold_explosion",
+    "sounds": [
+      "confluence:dd2_kobold_explosion_0",
+      "confluence:dd2_kobold_explosion_1",
+      "confluence:dd2_kobold_explosion_2"
+    ]
+  },
+  "dd2_kobold_flyer_charge_scream": {
+    "subtitle": "confluence.subtitle.dd2_kobold_flyer_charge_scream",
+    "sounds": [
+      "confluence:dd2_kobold_flyer_charge_scream_0",
+      "confluence:dd2_kobold_flyer_charge_scream_1",
+      "confluence:dd2_kobold_flyer_charge_scream_2"
+    ]
+  },
+  "dd2_kobold_flyer_death": {
+    "subtitle": "confluence.subtitle.dd2_kobold_flyer_death",
+    "sounds": [
+      "confluence:dd2_kobold_flyer_death_0",
+      "confluence:dd2_kobold_flyer_death_1",
+      "confluence:dd2_kobold_flyer_death_2"
+    ]
+  },
+  "dd2_kobold_flyer_hurt": {
+    "subtitle": "confluence.subtitle.dd2_kobold_flyer_hurt",
+    "sounds": [
+      "confluence:dd2_kobold_flyer_hurt_0",
+      "confluence:dd2_kobold_flyer_hurt_1",
+      "confluence:dd2_kobold_flyer_hurt_2"
+    ]
+  },
+  "dd2_kobold_hurt": {
+    "subtitle": "confluence.subtitle.dd2_kobold_hurt",
+    "sounds": [
+      "confluence:dd2_kobold_hurt_0",
+      "confluence:dd2_kobold_hurt_1",
+      "confluence:dd2_kobold_hurt_2"
+    ]
+  },
+  "dd2_kobold_ignite": {
+    "subtitle": "confluence.subtitle.dd2_kobold_ignite",
+    "sounds": [
+      "confluence:dd2_kobold_ignite"
+    ]
+  },
+  "dd2_kobold_ignite_loop": {
+    "subtitle": "confluence.subtitle.dd2_kobold_ignite_loop",
+    "sounds": [
+      "confluence:dd2_kobold_ignite_loop"
+    ]
+  },
+  "dd2_kobold_scream_charge_loop": {
+    "subtitle": "confluence.subtitle.dd2_kobold_scream_charge_loop",
+    "sounds": [
+      "confluence:dd2_kobold_scream_charge_loop"
+    ]
+  },
+  "dd2_lightning_aura_zap": {
+    "subtitle": "confluence.subtitle.dd2_lightning_aura_zap",
+    "sounds": [
+      "confluence:dd2_lightning_aura_zap_0",
+      "confluence:dd2_lightning_aura_zap_1",
+      "confluence:dd2_lightning_aura_zap_2",
+      "confluence:dd2_lightning_aura_zap_3"
+    ]
+  },
+  "dd2_lightning_bug_death": {
+    "subtitle": "confluence.subtitle.dd2_lightning_bug_death",
+    "sounds": [
+      "confluence:dd2_lightning_bug_death_0",
+      "confluence:dd2_lightning_bug_death_1",
+      "confluence:dd2_lightning_bug_death_2"
+    ]
+  },
+  "dd2_lightning_bug_hurt": {
+    "subtitle": "confluence.subtitle.dd2_lightning_bug_hurt",
+    "sounds": [
+      "confluence:dd2_lightning_bug_hurt_0",
+      "confluence:dd2_lightning_bug_hurt_1",
+      "confluence:dd2_lightning_bug_hurt_2"
+    ]
+  },
+  "dd2_lightning_bug_zap": {
+    "subtitle": "confluence.subtitle.dd2_lightning_bug_zap",
+    "sounds": [
+      "confluence:dd2_lightning_bug_zap_0",
+      "confluence:dd2_lightning_bug_zap_1",
+      "confluence:dd2_lightning_bug_zap_2"
+    ]
+  },
+  "dd2_monk_staff_ground_impact": {
+    "subtitle": "confluence.subtitle.dd2_monk_staff_ground_impact",
+    "sounds": [
+      "confluence:dd2_monk_staff_ground_impact_0",
+      "confluence:dd2_monk_staff_ground_impact_1",
+      "confluence:dd2_monk_staff_ground_impact_2"
+    ]
+  },
+  "dd2_monk_staff_ground_miss": {
+    "subtitle": "confluence.subtitle.dd2_monk_staff_ground_miss",
+    "sounds": [
+      "confluence:dd2_monk_staff_ground_miss_0",
+      "confluence:dd2_monk_staff_ground_miss_1",
+      "confluence:dd2_monk_staff_ground_miss_2"
+    ]
+  },
+  "dd2_monk_staff_swing": {
+    "subtitle": "confluence.subtitle.dd2_monk_staff_swing",
+    "sounds": [
+      "confluence:dd2_monk_staff_swing_0",
+      "confluence:dd2_monk_staff_swing_1",
+      "confluence:dd2_monk_staff_swing_2",
+      "confluence:dd2_monk_staff_swing_3"
+    ]
+  },
+  "dd2_ogre_attack": {
+    "subtitle": "confluence.subtitle.dd2_ogre_attack",
+    "sounds": [
+      "confluence:dd2_ogre_attack_0",
+      "confluence:dd2_ogre_attack_1",
+      "confluence:dd2_ogre_attack_2"
+    ]
+  },
+  "dd2_ogre_death": {
+    "subtitle": "confluence.subtitle.dd2_ogre_death",
+    "sounds": [
+      "confluence:dd2_ogre_death_0",
+      "confluence:dd2_ogre_death_1",
+      "confluence:dd2_ogre_death_2"
+    ]
+  },
+  "dd2_ogre_ground_pound": {
+    "subtitle": "confluence.subtitle.dd2_ogre_ground_pound",
+    "sounds": [
+      "confluence:dd2_ogre_ground_pound"
+    ]
+  },
+  "dd2_ogre_hurt": {
+    "subtitle": "confluence.subtitle.dd2_ogre_hurt",
+    "sounds": [
+      "confluence:dd2_ogre_hurt_0",
+      "confluence:dd2_ogre_hurt_1",
+      "confluence:dd2_ogre_hurt_2"
+    ]
+  },
+  "dd2_ogre_roar": {
+    "subtitle": "confluence.subtitle.dd2_ogre_roar",
+    "sounds": [
+      "confluence:dd2_ogre_roar_0",
+      "confluence:dd2_ogre_roar_1",
+      "confluence:dd2_ogre_roar_2"
+    ]
+  },
+  "dd2_ogre_spit": {
+    "subtitle": "confluence.subtitle.dd2_ogre_spit",
+    "sounds": [
+      "confluence:dd2_ogre_spit"
+    ]
+  },
+  "dd2_phantom_phoenix_shot": {
+    "subtitle": "confluence.subtitle.dd2_phantom_phoenix_shot",
+    "sounds": [
+      "confluence:dd2_phantom_phoenix_shot_0",
+      "confluence:dd2_phantom_phoenix_shot_1",
+      "confluence:dd2_phantom_phoenix_shot_2"
+    ]
+  },
+  "dd2_skeleton_death": {
+    "subtitle": "confluence.subtitle.dd2_skeleton_death",
+    "sounds": [
+      "confluence:dd2_skeleton_death_0",
+      "confluence:dd2_skeleton_death_1",
+      "confluence:dd2_skeleton_death_2"
+    ]
+  },
+  "dd2_skeleton_hurt": {
+    "subtitle": "confluence.subtitle.dd2_skeleton_hurt",
+    "sounds": [
+      "confluence:dd2_skeleton_hurt_0",
+      "confluence:dd2_skeleton_hurt_1",
+      "confluence:dd2_skeleton_hurt_2"
+    ]
+  },
+  "dd2_skeleton_summoned": {
+    "subtitle": "confluence.subtitle.dd2_skeleton_summoned",
+    "sounds": [
+      "confluence:dd2_skeleton_summoned"
+    ]
+  },
+  "dd2_sky_dragons_fury_circle": {
+    "subtitle": "confluence.subtitle.dd2_sky_dragons_fury_circle",
+    "sounds": [
+      "confluence:dd2_sky_dragons_fury_circle_0",
+      "confluence:dd2_sky_dragons_fury_circle_1",
+      "confluence:dd2_sky_dragons_fury_circle_2"
+    ]
+  },
+  "dd2_sky_dragons_fury_shot": {
+    "subtitle": "confluence.subtitle.dd2_sky_dragons_fury_shot",
+    "sounds": [
+      "confluence:dd2_sky_dragons_fury_shot_0",
+      "confluence:dd2_sky_dragons_fury_shot_1",
+      "confluence:dd2_sky_dragons_fury_shot_2"
+    ]
+  },
+  "dd2_sky_dragons_fury_swing": {
+    "subtitle": "confluence.subtitle.dd2_sky_dragons_fury_swing",
+    "sounds": [
+      "confluence:dd2_sky_dragons_fury_swing_0",
+      "confluence:dd2_sky_dragons_fury_swing_1",
+      "confluence:dd2_sky_dragons_fury_swing_2",
+      "confluence:dd2_sky_dragons_fury_swing_3"
+    ]
+  },
+  "dd2_sonic_boom_blade_slash": {
+    "subtitle": "confluence.subtitle.dd2_sonic_boom_blade_slash",
+    "sounds": [
+      "confluence:dd2_sonic_boom_blade_slash_0",
+      "confluence:dd2_sonic_boom_blade_slash_1",
+      "confluence:dd2_sonic_boom_blade_slash_2"
+    ]
+  },
+  "dd2_win_scene": {
+    "subtitle": "confluence.subtitle.dd2_win_scene",
+    "sounds": [
+      "confluence:dd2_win_scene"
+    ]
+  },
+  "dd2_wither_beast_aura_pulse": {
+    "subtitle": "confluence.subtitle.dd2_wither_beast_aura_pulse",
+    "sounds": [
+      "confluence:dd2_wither_beast_aura_pulse_0",
+      "confluence:dd2_wither_beast_aura_pulse_1"
+    ]
+  },
+  "dd2_wither_beast_crystal_impact": {
+    "subtitle": "confluence.subtitle.dd2_wither_beast_crystal_impact",
+    "sounds": [
+      "confluence:dd2_wither_beast_crystal_impact_0",
+      "confluence:dd2_wither_beast_crystal_impact_1",
+      "confluence:dd2_wither_beast_crystal_impact_2"
+    ]
+  },
+  "dd2_wither_beast_death": {
+    "subtitle": "confluence.subtitle.dd2_wither_beast_death",
+    "sounds": [
+      "confluence:dd2_wither_beast_death_0",
+      "confluence:dd2_wither_beast_death_1",
+      "confluence:dd2_wither_beast_death_2"
+    ]
+  },
+  "dd2_wither_beast_hurt": {
+    "subtitle": "confluence.subtitle.dd2_wither_beast_hurt",
+    "sounds": [
+      "confluence:dd2_wither_beast_hurt_0",
+      "confluence:dd2_wither_beast_hurt_1",
+      "confluence:dd2_wither_beast_hurt_2"
+    ]
+  },
+  "dd2_wyvern_death": {
+    "subtitle": "confluence.subtitle.dd2_wyvern_death",
+    "sounds": [
+      "confluence:dd2_wyvern_death_0",
+      "confluence:dd2_wyvern_death_1",
+      "confluence:dd2_wyvern_death_2"
+    ]
+  },
+  "dd2_wyvern_dive_down": {
+    "subtitle": "confluence.subtitle.dd2_wyvern_dive_down",
+    "sounds": [
+      "confluence:dd2_wyvern_dive_down_0",
+      "confluence:dd2_wyvern_dive_down_1",
+      "confluence:dd2_wyvern_dive_down_2"
+    ]
+  },
+  "dd2_wyvern_hurt": {
+    "subtitle": "confluence.subtitle.dd2_wyvern_hurt",
+    "sounds": [
+      "confluence:dd2_wyvern_hurt_0",
+      "confluence:dd2_wyvern_hurt_1",
+      "confluence:dd2_wyvern_hurt_2"
+    ]
+  },
+  "dd2_wyvern_scream": {
+    "subtitle": "confluence.subtitle.dd2_wyvern_scream",
+    "sounds": [
+      "confluence:dd2_wyvern_scream_0",
+      "confluence:dd2_wyvern_scream_1",
+      "confluence:dd2_wyvern_scream_2"
+    ]
+  },
+  "deadly_sphere_death": {
+    "subtitle": "confluence.subtitle.deadly_sphere_death",
+    "sounds": [
+      "confluence:deadly_sphere_death"
+    ]
+  },
+  "deadly_sphere_free": {
+    "subtitle": "confluence.subtitle.deadly_sphere_free",
+    "sounds": [
+      "confluence:deadly_sphere_free_0",
+      "confluence:deadly_sphere_free_1"
+    ]
+  },
+  "deadly_sphere_hurt": {
+    "subtitle": "confluence.subtitle.deadly_sphere_hurt",
+    "sounds": [
+      "confluence:deadly_sphere_hurt"
+    ]
+  },
+  "deerclops_death": {
+    "subtitle": "confluence.subtitle.deerclops_death",
+    "sounds": [
+      "confluence:deerclops_death"
+    ]
+  },
+  "deerclops_hit": {
+    "subtitle": "confluence.subtitle.deerclops_hit",
+    "sounds": [
+      "confluence:deerclops_hit_0",
+      "confluence:deerclops_hit_1",
+      "confluence:deerclops_hit_2"
+    ]
+  },
+  "deerclops_ice_attack": {
+    "subtitle": "confluence.subtitle.deerclops_ice_attack",
+    "sounds": [
+      "confluence:deerclops_ice_attack_0",
+      "confluence:deerclops_ice_attack_1",
+      "confluence:deerclops_ice_attack_2"
+    ]
+  },
+  "deerclops_rubble_attack": {
+    "subtitle": "confluence.subtitle.deerclops_rubble_attack",
+    "sounds": [
+      "confluence:deerclops_rubble_attack"
+    ]
+  },
+  "deerclops_scream": {
+    "subtitle": "confluence.subtitle.deerclops_scream",
+    "sounds": [
+      "confluence:deerclops_scream_0",
+      "confluence:deerclops_scream_1",
+      "confluence:deerclops_scream_2"
+    ]
+  },
+  "deerclops_step": {
+    "subtitle": "confluence.subtitle.deerclops_step",
+    "sounds": [
+      "confluence:deerclops_step"
+    ]
+  },
+  "derpling_death": {
+    "subtitle": "confluence.subtitle.derpling_death",
+    "sounds": [
+      "confluence:derpling_death"
+    ]
+  },
+  "derpling_free": {
+    "subtitle": "confluence.subtitle.derpling_free",
+    "sounds": [
+      "confluence:derpling_free_0",
+      "confluence:derpling_free_1"
+    ]
+  },
+  "derpling_hurt": {
+    "subtitle": "confluence.subtitle.derpling_hurt",
+    "sounds": [
+      "confluence:derpling_hurt"
+    ]
+  },
+  "dig": {
+    "subtitle": "confluence.subtitle.dig",
+    "sounds": [
+      "confluence:dig_0",
+      "confluence:dig_1",
+      "confluence:dig_2"
+    ]
+  },
+  "dolphin_free": {
+    "subtitle": "confluence.subtitle.dolphin_free",
+    "sounds": [
+      "confluence:dolphin_free"
+    ]
+  },
+  "door_close": {
+    "subtitle": "confluence.subtitle.door_close",
+    "sounds": [
+      "confluence:door_close"
+    ]
+  },
+  "door_open": {
+    "subtitle": "confluence.subtitle.door_open",
+    "sounds": [
+      "confluence:door_open"
+    ]
+  },
+  "double_jump": {
+    "subtitle": "confluence.subtitle.double_jump",
+    "sounds": [
+      "confluence:double_jump"
+    ]
+  },
+  "dr_man_fly_death": {
+    "subtitle": "confluence.subtitle.dr_man_fly_death",
+    "sounds": [
+      "confluence:dr_man_fly_death"
+    ]
+  },
+  "dr_man_fly_free": {
+    "subtitle": "confluence.subtitle.dr_man_fly_free",
+    "sounds": [
+      "confluence:dr_man_fly_free_0",
+      "confluence:dr_man_fly_free_1",
+      "confluence:dr_man_fly_free_2"
+    ]
+  },
+  "dr_man_fly_hurt": {
+    "subtitle": "confluence.subtitle.dr_man_fly_hurt",
+    "sounds": [
+      "confluence:dr_man_fly_hurt"
+    ]
+  },
+  "drip": {
+    "subtitle": "confluence.subtitle.drip",
+    "sounds": [
+      "confluence:drip_0",
+      "confluence:drip_1",
+      "confluence:drip_2"
+    ]
+  },
+  "drone": {
+    "subtitle": "confluence.subtitle.drone",
+    "sounds": [
+      "confluence:drone"
+    ]
+  },
+  "drown": {
+    "subtitle": "confluence.subtitle.drown",
+    "sounds": [
+      "confluence:drown"
+    ]
+  },
+  "dst_female_hit": {
+    "subtitle": "confluence.subtitle.dst_female_hit",
+    "sounds": [
+      "confluence:dst_female_hit_0",
+      "confluence:dst_female_hit_1",
+      "confluence:dst_female_hit_2"
+    ]
+  },
+  "dst_male_hit": {
+    "subtitle": "confluence.subtitle.dst_male_hit",
+    "sounds": [
+      "confluence:dst_male_hit_0",
+      "confluence:dst_male_hit_1",
+      "confluence:dst_male_hit_2"
+    ]
+  },
+  "duck_free": {
+    "subtitle": "confluence.subtitle.duck_free",
+    "sounds": [
+      "confluence:duck_free_0",
+      "confluence:duck_free_1",
+      "confluence:duck_free_2"
+    ]
+  },
+  "duke_fishron_death": {
+    "subtitle": "confluence.subtitle.duke_fishron_death",
+    "sounds": [
+      "confluence:duke_fishron_death"
+    ]
+  },
+  "duke_fishron_free": {
+    "subtitle": "confluence.subtitle.duke_fishron_free",
+    "sounds": [
+      "confluence:duke_fishron_free"
+    ]
+  },
+  "duke_fishron_hurt": {
+    "subtitle": "confluence.subtitle.duke_fishron_hurt",
+    "sounds": [
+      "confluence:duke_fishron_hurt"
+    ]
+  },
+  "empress_of_light_death": {
+    "subtitle": "confluence.subtitle.empress_of_light_death",
+    "sounds": [
+      "confluence:empress_of_light_death"
+    ]
+  },
+  "female_hit": {
+    "subtitle": "confluence.subtitle.female_hit",
+    "sounds": [
+      "confluence:female_hit_0",
+      "confluence:female_hit_1",
+      "confluence:female_hit_2"
+    ]
+  },
+  "flying_snake_death": {
+    "subtitle": "confluence.subtitle.flying_snake_death",
+    "sounds": [
+      "confluence:flying_snake_death"
+    ]
+  },
+  "flying_snake_free": {
+    "subtitle": "confluence.subtitle.flying_snake_free",
+    "sounds": [
+      "confluence:flying_snake_free"
+    ]
+  },
+  "frankenstein_free": {
+    "subtitle": "confluence.subtitle.frankenstein_free",
+    "sounds": [
+      "confluence:frankenstein_free"
+    ]
+  },
+  "frog_free": {
+    "subtitle": "confluence.subtitle.frog_free",
+    "sounds": [
+      "confluence:frog_free"
+    ]
+  },
+  "ghoul_death": {
+    "subtitle": "confluence.subtitle.ghoul_death",
+    "sounds": [
+      "confluence:ghoul_death"
+    ]
+  },
+  "ghoul_free": {
+    "subtitle": "confluence.subtitle.ghoul_free",
+    "sounds": [
+      "confluence:ghoul_free_0",
+      "confluence:ghoul_free_1"
+    ]
+  },
+  "ghoul_hurt": {
+    "subtitle": "confluence.subtitle.ghoul_hurt",
+    "sounds": [
+      "confluence:ghoul_hurt"
+    ]
+  },
+  "giant_tortoise_death": {
+    "subtitle": "confluence.subtitle.giant_tortoise_death",
+    "sounds": [
+      "confluence:giant_tortoise_death"
+    ]
+  },
+  "giant_tortoise_free": {
+    "subtitle": "confluence.subtitle.giant_tortoise_free",
+    "sounds": [
+      "confluence:giant_tortoise_free"
+    ]
+  },
+  "giant_tortoise_hurt": {
+    "subtitle": "confluence.subtitle.giant_tortoise_hurt",
+    "sounds": [
+      "confluence:giant_tortoise_hurt"
+    ]
+  },
+  "gigazapper_free": {
+    "subtitle": "confluence.subtitle.gigazapper_free",
+    "sounds": [
+      "confluence:gigazapper_free_0",
+      "confluence:gigazapper_free_1"
+    ]
+  },
+  "glommer_bounce": {
+    "subtitle": "confluence.subtitle.glommer_bounce",
+    "sounds": [
+      "confluence:glommer_bounce_0",
+      "confluence:glommer_bounce_1"
+    ]
+  },
+  "goblin_warlock_death": {
+    "subtitle": "confluence.subtitle.goblin_warlock_death",
+    "sounds": [
+      "confluence:goblin_warlock_death"
+    ]
+  },
+  "goblin_warlock_free": {
+    "subtitle": "confluence.subtitle.goblin_warlock_free",
+    "sounds": [
+      "confluence:goblin_warlock_free_0",
+      "confluence:goblin_warlock_free_1"
+    ]
+  },
+  "goblin_warlock_hurt": {
+    "subtitle": "confluence.subtitle.goblin_warlock_hurt",
+    "sounds": [
+      "confluence:goblin_warlock_hurt"
+    ]
+  },
+  "grab": {
+    "subtitle": "confluence.subtitle.grab",
+    "sounds": [
+      "confluence:grab"
+    ]
+  },
+  "grass": {
+    "subtitle": "confluence.subtitle.grass",
+    "sounds": [
+      "confluence:grass"
+    ]
+  },
+  "item_ammo_box": {
+    "subtitle": "confluence.subtitle.item_ammo_box",
+    "sounds": [
+      "confluence:item_ammo_box"
+    ]
+  },
+  "item_axe_guitar": {
+    "subtitle": "confluence.subtitle.item_axe_guitar",
+    "sounds": [
+      "confluence:item_axe_guitar"
+    ]
+  },
+  "item_bees_knees": {
+    "subtitle": "confluence.subtitle.item_bees_knees",
+    "sounds": [
+      "confluence:item_bees_knees"
+    ]
+  },
+  "item_bell": {
+    "subtitle": "confluence.subtitle.item_bell",
+    "sounds": [
+      "confluence:item_bell"
+    ]
+  },
+  "item_blowgun": {
+    "subtitle": "confluence.subtitle.item_blowgun",
+    "sounds": [
+      "confluence:item_blowgun"
+    ]
+  },
+  "item_boomerang_throw": {
+    "subtitle": "confluence.subtitle.item_boomerang_throw",
+    "sounds": [
+      "confluence:item_boomerang_throw"
+    ]
+  },
+  "item_boot_hover": {
+    "subtitle": "confluence.subtitle.item_boot_hover",
+    "sounds": [
+      "confluence:item_boot_hover"
+    ]
+  },
+  "item_boulder_impact": {
+    "subtitle": "confluence.subtitle.item_boulder_impact",
+    "sounds": [
+      "confluence:item_boulder_impact"
+    ]
+  },
+  "item_brain_scrambler": {
+    "subtitle": "confluence.subtitle.item_brain_scrambler",
+    "sounds": [
+      "confluence:item_brain_scrambler"
+    ]
+  },
+  "item_bubble_gun": {
+    "subtitle": "confluence.subtitle.item_bubble_gun",
+    "sounds": [
+      "confluence:item_bubble_gun"
+    ]
+  },
+  "item_bubble_pop": {
+    "subtitle": "confluence.subtitle.item_bubble_pop",
+    "sounds": [
+      "confluence:item_bubble_pop"
+    ]
+  },
+  "item_celebration": {
+    "subtitle": "confluence.subtitle.item_celebration",
+    "sounds": [
+      "confluence:item_celebration"
+    ]
+  },
+  "item_chainsaw": {
+    "subtitle": "confluence.subtitle.item_chainsaw",
+    "sounds": [
+      "confluence:item_chainsaw"
+    ]
+  },
+  "item_clinger_staff": {
+    "subtitle": "confluence.subtitle.item_clinger_staff",
+    "sounds": [
+      "confluence:item_clinger_staff"
+    ]
+  },
+  "item_cracked_dungeon_brick": {
+    "subtitle": "confluence.subtitle.item_cracked_dungeon_brick",
+    "sounds": [
+      "confluence:item_cracked_dungeon_brick"
+    ]
+  },
+  "item_crystal_charge_impact": {
+    "subtitle": "confluence.subtitle.item_crystal_charge_impact",
+    "sounds": [
+      "confluence:item_crystal_charge_impact_0",
+      "confluence:item_crystal_charge_impact_1"
+    ]
+  },
+  "item_crystal_serpent": {
+    "subtitle": "confluence.subtitle.item_crystal_serpent",
+    "sounds": [
+      "confluence:item_crystal_serpent"
+    ]
+  },
+  "item_deadly_sphere_staff": {
+    "subtitle": "confluence.subtitle.item_deadly_sphere_staff",
+    "sounds": [
+      "confluence:item_deadly_sphere_staff"
+    ]
+  },
+  "item_death_laser": {
+    "subtitle": "confluence.subtitle.item_death_laser",
+    "sounds": [
+      "confluence:item_death_laser"
+    ]
+  },
+  "item_death_sickle": {
+    "subtitle": "confluence.subtitle.item_death_sickle",
+    "sounds": [
+      "confluence:item_death_sickle"
+    ]
+  },
+  "item_dreadnautilus": {
+    "subtitle": "confluence.subtitle.item_dreadnautilus",
+    "sounds": [
+      "confluence:item_dreadnautilus_0",
+      "confluence:item_dreadnautilus_1",
+      "confluence:item_dreadnautilus_2"
+    ]
+  },
+  "item_drill": {
+    "subtitle": "confluence.subtitle.item_drill",
+    "sounds": [
+      "confluence:item_drill"
+    ]
+  },
+  "item_drum_closed_hihat": {
+    "subtitle": "confluence.subtitle.item_drum_closed_hihat",
+    "sounds": [
+      "confluence:item_drum_closed_hihat"
+    ]
+  },
+  "item_drum_cymbal": {
+    "subtitle": "confluence.subtitle.item_drum_cymbal",
+    "sounds": [
+      "confluence:item_drum_cymbal_0",
+      "confluence:item_drum_cymbal_1"
+    ]
+  },
+  "item_drum_floor_tom": {
+    "subtitle": "confluence.subtitle.item_drum_floor_tom",
+    "sounds": [
+      "confluence:item_drum_floor_tom"
+    ]
+  },
+  "item_drum_hihat": {
+    "subtitle": "confluence.subtitle.item_drum_hihat",
+    "sounds": [
+      "confluence:item_drum_hihat"
+    ]
+  },
+  "item_drum_kick": {
+    "subtitle": "confluence.subtitle.item_drum_kick",
+    "sounds": [
+      "confluence:item_drum_kick"
+    ]
+  },
+  "item_drum_snare": {
+    "subtitle": "confluence.subtitle.item_drum_snare",
+    "sounds": [
+      "confluence:item_drum_snare"
+    ]
+  },
+  "item_drum_tom_high": {
+    "subtitle": "confluence.subtitle.item_drum_tom_high",
+    "sounds": [
+      "confluence:item_drum_tom_high"
+    ]
+  },
+  "item_drum_tom_low": {
+    "subtitle": "confluence.subtitle.item_drum_tom_low",
+    "sounds": [
+      "confluence:item_drum_tom_low"
+    ]
+  },
+  "item_drum_tom_mid": {
+    "subtitle": "confluence.subtitle.item_drum_tom_mid",
+    "sounds": [
+      "confluence:item_drum_tom_mid"
+    ]
+  },
+  "item_electrosphere_impact": {
+    "subtitle": "confluence.subtitle.item_electrosphere_impact",
+    "sounds": [
+      "confluence:item_electrosphere_impact"
+    ]
+  },
+  "item_empress_of_light": {
+    "subtitle": "confluence.subtitle.item_empress_of_light",
+    "sounds": [
+      "confluence:item_empress_of_light_0",
+      "confluence:item_empress_of_light_1",
+      "confluence:item_empress_of_light_2",
+      "confluence:item_empress_of_light_3",
+      "confluence:item_empress_of_light_4",
+      "confluence:item_empress_of_light_5",
+      "confluence:item_empress_of_light_6"
+    ]
+  },
+  "item_fart": {
+    "subtitle": "confluence.subtitle.item_fart",
+    "sounds": [
+      "confluence:item_fart"
+    ]
+  },
+  "item_fireball_impact": {
+    "subtitle": "confluence.subtitle.item_fireball_impact",
+    "sounds": [
+      "confluence:item_fireball_impact"
+    ]
+  },
+  "item_flame_cast": {
+    "subtitle": "confluence.subtitle.item_flame_cast",
+    "sounds": [
+      "confluence:item_flame_cast"
+    ]
+  },
+  "item_frost_impact": {
+    "subtitle": "confluence.subtitle.item_frost_impact",
+    "sounds": [
+      "confluence:item_frost_impact"
+    ]
+  },
+  "item_fuzzy_carrot": {
+    "subtitle": "confluence.subtitle.item_fuzzy_carrot",
+    "sounds": [
+      "confluence:item_fuzzy_carrot"
+    ]
+  },
+  "item_golf_ball_sunk": {
+    "subtitle": "confluence.subtitle.item_golf_ball_sunk",
+    "sounds": [
+      "confluence:item_golf_ball_sunk"
+    ]
+  },
+  "item_golf_club_swing": {
+    "subtitle": "confluence.subtitle.item_golf_club_swing",
+    "sounds": [
+      "confluence:item_golf_club_swing"
+    ]
+  },
+  "item_golf_whistle": {
+    "subtitle": "confluence.subtitle.item_golf_whistle",
+    "sounds": [
+      "confluence:item_golf_whistle"
+    ]
+  },
+  "item_grenade_explode": {
+    "subtitle": "confluence.subtitle.item_grenade_explode",
+    "sounds": [
+      "confluence:item_grenade_explode"
+    ]
+  },
+  "item_grenade_launch": {
+    "subtitle": "confluence.subtitle.item_grenade_launch",
+    "sounds": [
+      "confluence:item_grenade_launch"
+    ]
+  },
+  "item_guitar_am": {
+    "subtitle": "confluence.subtitle.item_guitar_am",
+    "sounds": [
+      "confluence:item_guitar_am"
+    ]
+  },
+  "item_guitar_bm": {
+    "subtitle": "confluence.subtitle.item_guitar_bm",
+    "sounds": [
+      "confluence:item_guitar_bm"
+    ]
+  },
+  "item_guitar_c": {
+    "subtitle": "confluence.subtitle.item_guitar_c",
+    "sounds": [
+      "confluence:item_guitar_c"
+    ]
+  },
+  "item_guitar_d": {
+    "subtitle": "confluence.subtitle.item_guitar_d",
+    "sounds": [
+      "confluence:item_guitar_d"
+    ]
+  },
+  "item_guitar_em": {
+    "subtitle": "confluence.subtitle.item_guitar_em",
+    "sounds": [
+      "confluence:item_guitar_em"
+    ]
+  },
+  "item_guitar_g": {
+    "subtitle": "confluence.subtitle.item_guitar_g",
+    "sounds": [
+      "confluence:item_guitar_g"
+    ]
+  },
+  "item_harp": {
+    "subtitle": "confluence.subtitle.item_harp",
+    "sounds": [
+      "confluence:item_harp"
+    ]
+  },
+  "item_hornet_shoot": {
+    "subtitle": "confluence.subtitle.item_hornet_shoot",
+    "sounds": [
+      "confluence:item_hornet_shoot"
+    ]
+  },
+  "item_ice_block_place": {
+    "subtitle": "confluence.subtitle.item_ice_block_place",
+    "sounds": [
+      "confluence:item_ice_block_place"
+    ]
+  },
+  "item_ice_break": {
+    "subtitle": "confluence.subtitle.item_ice_break",
+    "sounds": [
+      "confluence:item_ice_break"
+    ]
+  },
+  "item_ice_mist_summon": {
+    "subtitle": "confluence.subtitle.item_ice_mist_summon",
+    "sounds": [
+      "confluence:item_ice_mist_summon"
+    ]
+  },
+  "item_inferno_bolt_impact": {
+    "subtitle": "confluence.subtitle.item_inferno_bolt_impact",
+    "sounds": [
+      "confluence:item_inferno_bolt_impact"
+    ]
+  },
+  "item_inferno_fork": {
+    "subtitle": "confluence.subtitle.item_inferno_fork",
+    "sounds": [
+      "confluence:item_inferno_fork"
+    ]
+  },
+  "item_ko_cannon": {
+    "subtitle": "confluence.subtitle.item_ko_cannon",
+    "sounds": [
+      "confluence:item_ko_cannon"
+    ]
+  },
+  "item_larva_break": {
+    "subtitle": "confluence.subtitle.item_larva_break",
+    "sounds": [
+      "confluence:item_larva_break"
+    ]
+  },
+  "item_laser_drill": {
+    "subtitle": "confluence.subtitle.item_laser_drill",
+    "sounds": [
+      "confluence:item_laser_drill"
+    ]
+  },
+  "item_laser_machinegun": {
+    "subtitle": "confluence.subtitle.item_laser_machinegun",
+    "sounds": [
+      "confluence:item_laser_machinegun"
+    ]
+  },
+  "item_laser_shoot": {
+    "subtitle": "confluence.subtitle.item_laser_shoot",
+    "sounds": [
+      "confluence:item_laser_shoot"
+    ]
+  },
+  "item_life_crystal": {
+    "subtitle": "confluence.subtitle.item_life_crystal",
+    "sounds": [
+      "confluence:item_life_crystal"
+    ]
+  },
+  "item_lightning_orb_summon": {
+    "subtitle": "confluence.subtitle.item_lightning_orb_summon",
+    "sounds": [
+      "confluence:item_lightning_orb_summon"
+    ]
+  },
+  "item_lightning_ritual_summon": {
+    "subtitle": "confluence.subtitle.item_lightning_ritual_summon",
+    "sounds": [
+      "confluence:item_lightning_ritual_summon"
+    ]
+  },
+  "item_magic_missile": {
+    "subtitle": "confluence.subtitle.item_magic_missile",
+    "sounds": [
+      "confluence:item_magic_missile"
+    ]
+  },
+  "item_mana_crystal": {
+    "subtitle": "confluence.subtitle.item_mana_crystal",
+    "sounds": [
+      "confluence:item_mana_crystal"
+    ]
+  },
+  "item_meowmere_impact": {
+    "subtitle": "confluence.subtitle.item_meowmere_impact",
+    "sounds": [
+      "confluence:item_meowmere_impact_0",
+      "confluence:item_meowmere_impact_1"
+    ]
+  },
+  "item_meteor_impact": {
+    "subtitle": "confluence.subtitle.item_meteor_impact",
+    "sounds": [
+      "confluence:item_meteor_impact"
+    ]
+  },
+  "item_meteor_staff": {
+    "subtitle": "confluence.subtitle.item_meteor_staff",
+    "sounds": [
+      "confluence:item_meteor_staff"
+    ]
+  },
+  "item_minecart_bounce": {
+    "subtitle": "confluence.subtitle.item_minecart_bounce",
+    "sounds": [
+      "confluence:item_minecart_bounce"
+    ]
+  },
+  "item_minecart_ride": {
+    "subtitle": "confluence.subtitle.item_minecart_ride",
+    "sounds": [
+      "confluence:item_minecart_ride"
+    ]
+  },
+  "item_minecart_slow": {
+    "subtitle": "confluence.subtitle.item_minecart_slow",
+    "sounds": [
+      "confluence:item_minecart_slow"
+    ]
+  },
+  "item_minecart_track": {
+    "subtitle": "confluence.subtitle.item_minecart_track",
+    "sounds": [
+      "confluence:item_minecart_track"
+    ]
+  },
+  "item_missile_launch": {
+    "subtitle": "confluence.subtitle.item_missile_launch",
+    "sounds": [
+      "confluence:item_missile_launch"
+    ]
+  },
+  "item_music_box": {
+    "subtitle": "confluence.subtitle.item_music_box",
+    "sounds": [
+      "confluence:item_music_box"
+    ]
+  },
+  "item_nebula_arcanum": {
+    "subtitle": "confluence.subtitle.item_nebula_arcanum",
+    "sounds": [
+      "confluence:item_nebula_arcanum"
+    ]
+  },
+  "item_nimbus_rain": {
+    "subtitle": "confluence.subtitle.item_nimbus_rain",
+    "sounds": [
+      "confluence:item_nimbus_rain"
+    ]
+  },
+  "item_pet_summon": {
+    "subtitle": "confluence.subtitle.item_pet_summon",
+    "sounds": [
+      "confluence:item_pet_summon"
+    ]
+  },
+  "item_phantasm_dragon_summon": {
+    "subtitle": "confluence.subtitle.item_phantasm_dragon_summon",
+    "sounds": [
+      "confluence:item_phantasm_dragon_summon"
+    ]
+  },
+  "item_phantasmal_bolt": {
+    "subtitle": "confluence.subtitle.item_phantasmal_bolt",
+    "sounds": [
+      "confluence:item_phantasmal_bolt_0",
+      "confluence:item_phantasmal_bolt_1"
+    ]
+  },
+  "item_phaseblade": {
+    "subtitle": "confluence.subtitle.item_phaseblade",
+    "sounds": [
+      "confluence:item_phaseblade"
+    ]
+  },
+  "item_pogo_stick": {
+    "subtitle": "confluence.subtitle.item_pogo_stick",
+    "sounds": [
+      "confluence:item_pogo_stick"
+    ]
+  },
+  "item_poo": {
+    "subtitle": "confluence.subtitle.item_poo",
+    "sounds": [
+      "confluence:item_poo"
+    ]
+  },
+  "item_portal_gun": {
+    "subtitle": "confluence.subtitle.item_portal_gun",
+    "sounds": [
+      "confluence:item_portal_gun_0",
+      "confluence:item_portal_gun_1"
+    ]
+  },
+  "item_potion_drink": {
+    "subtitle": "confluence.subtitle.item_potion_drink",
+    "sounds": [
+      "confluence:item_potion_drink"
+    ]
+  },
+  "item_projectile_reflect": {
+    "subtitle": "confluence.subtitle.item_projectile_reflect",
+    "sounds": [
+      "confluence:item_projectile_reflect"
+    ]
+  },
+  "item_pulse_bow": {
+    "subtitle": "confluence.subtitle.item_pulse_bow",
+    "sounds": [
+      "confluence:item_pulse_bow"
+    ]
+  },
+  "item_queen_slime": {
+    "subtitle": "confluence.subtitle.item_queen_slime",
+    "sounds": [
+      "confluence:item_queen_slime_0",
+      "confluence:item_queen_slime_1",
+      "confluence:item_queen_slime_2"
+    ]
+  },
+  "item_rainbow_gun": {
+    "subtitle": "confluence.subtitle.item_rainbow_gun",
+    "sounds": [
+      "confluence:item_rainbow_gun"
+    ]
+  },
+  "item_razorblade_typhoon": {
+    "subtitle": "confluence.subtitle.item_razorblade_typhoon",
+    "sounds": [
+      "confluence:item_razorblade_typhoon"
+    ]
+  },
+  "item_reforge": {
+    "subtitle": "confluence.subtitle.item_reforge",
+    "sounds": [
+      "confluence:item_reforge"
+    ]
+  },
+  "item_scaly_truffle": {
+    "subtitle": "confluence.subtitle.item_scaly_truffle",
+    "sounds": [
+      "confluence:item_scaly_truffle"
+    ]
+  },
+  "item_sentry_beam": {
+    "subtitle": "confluence.subtitle.item_sentry_beam",
+    "sounds": [
+      "confluence:item_sentry_beam"
+    ]
+  },
+  "item_sentry_summon": {
+    "subtitle": "confluence.subtitle.item_sentry_summon",
+    "sounds": [
+      "confluence:item_sentry_summon"
+    ]
+  },
+  "item_shadowbeam": {
+    "subtitle": "confluence.subtitle.item_shadowbeam",
+    "sounds": [
+      "confluence:item_shadowbeam"
+    ]
+  },
+  "item_shadowflame_bow": {
+    "subtitle": "confluence.subtitle.item_shadowflame_bow",
+    "sounds": [
+      "confluence:item_shadowflame_bow"
+    ]
+  },
+  "item_shadowflame_hex": {
+    "subtitle": "confluence.subtitle.item_shadowflame_hex",
+    "sounds": [
+      "confluence:item_shadowflame_hex"
+    ]
+  },
+  "item_shimmer_use_2": {
+    "subtitle": "confluence.subtitle.item_shimmer_use_2",
+    "sounds": [
+      "confluence:item_shimmer_use_2"
+    ]
+  },
+  "item_slap_hand": {
+    "subtitle": "confluence.subtitle.item_slap_hand",
+    "sounds": [
+      "confluence:item_slap_hand"
+    ]
+  },
+  "item_slimy_saddle": {
+    "subtitle": "confluence.subtitle.item_slimy_saddle",
+    "sounds": [
+      "confluence:item_slimy_saddle"
+    ]
+  },
+  "item_snake_charmer_flute": {
+    "subtitle": "confluence.subtitle.item_snake_charmer_flute",
+    "sounds": [
+      "confluence:item_snake_charmer_flute"
+    ]
+  },
+  "item_snow_break": {
+    "subtitle": "confluence.subtitle.item_snow_break",
+    "sounds": [
+      "confluence:item_snow_break",
+      "confluence:item_snow_break_2"
+    ]
+  },
+  "item_snowball_impact": {
+    "subtitle": "confluence.subtitle.item_snowball_impact",
+    "sounds": [
+      "confluence:item_snowball_impact"
+    ]
+  },
+  "item_solar_eruption": {
+    "subtitle": "confluence.subtitle.item_solar_eruption",
+    "sounds": [
+      "confluence:item_solar_eruption"
+    ]
+  },
+  "item_spider_staff": {
+    "subtitle": "confluence.subtitle.item_spider_staff",
+    "sounds": [
+      "confluence:item_spider_staff"
+    ]
+  },
+  "item_staff_of_earth": {
+    "subtitle": "confluence.subtitle.item_staff_of_earth",
+    "sounds": [
+      "confluence:item_staff_of_earth"
+    ]
+  },
+  "item_star_wrath": {
+    "subtitle": "confluence.subtitle.item_star_wrath",
+    "sounds": [
+      "confluence:item_star_wrath"
+    ]
+  },
+  "item_swing": {
+    "subtitle": "confluence.subtitle.item_swing",
+    "sounds": [
+      "confluence:item_swing_2",
+      "confluence:item_swing_3"
+    ]
+  },
+  "item_terra_blade": {
+    "subtitle": "confluence.subtitle.item_terra_blade",
+    "sounds": [
+      "confluence:item_terra_blade"
+    ]
+  },
+  "item_toxic_flask": {
+    "subtitle": "confluence.subtitle.item_toxic_flask",
+    "sounds": [
+      "confluence:item_toxic_flask"
+    ]
+  },
+  "item_toxic_flask_impact": {
+    "subtitle": "confluence.subtitle.item_toxic_flask_impact",
+    "sounds": [
+      "confluence:item_toxic_flask_impact"
+    ]
+  },
+  "item_vampire_knives": {
+    "subtitle": "confluence.subtitle.item_vampire_knives",
+    "sounds": [
+      "confluence:item_vampire_knives"
+    ]
+  },
+  "item_void_bag": {
+    "subtitle": "confluence.subtitle.item_void_bag",
+    "sounds": [
+      "confluence:item_void_bag"
+    ]
+  },
+  "item_waffle_iron": {
+    "subtitle": "confluence.subtitle.item_waffle_iron",
+    "sounds": [
+      "confluence:item_waffle_iron"
+    ]
+  },
+  "item_water_bolt": {
+    "subtitle": "confluence.subtitle.item_water_bolt",
+    "sounds": [
+      "confluence:item_water_bolt"
+    ]
+  },
+  "item_whip_attack_0": {
+    "subtitle": "confluence.subtitle.item_whip_attack_0",
+    "sounds": [
+      "confluence:item_whip_attack_0"
+    ]
+  },
+  "item_wings": {
+    "subtitle": "confluence.subtitle.item_wings",
+    "sounds": [
+      "confluence:item_wings"
+    ]
+  },
+  "item_zapinator": {
+    "subtitle": "confluence.subtitle.item_zapinator",
+    "sounds": [
+      "confluence:item_zapinator"
+    ]
+  },
+  "lavafall": {
+    "subtitle": "confluence.subtitle.lavafall",
+    "sounds": [
+      "confluence:lavafall"
+    ]
+  },
+  "lihzahrd_death": {
+    "subtitle": "confluence.subtitle.lihzahrd_death",
+    "sounds": [
+      "confluence:lihzahrd_death"
+    ]
+  },
+  "lihzahrd_free": {
+    "subtitle": "confluence.subtitle.lihzahrd_free",
+    "sounds": [
+      "confluence:lihzahrd_free_0",
+      "confluence:lihzahrd_free_1"
+    ]
+  },
+  "lihzahrd_hurt": {
+    "subtitle": "confluence.subtitle.lihzahrd_hurt",
+    "sounds": [
+      "confluence:lihzahrd_hurt"
+    ]
+  },
+  "liquids_honey_lava": {
+    "subtitle": "confluence.subtitle.liquids_honey_lava",
+    "sounds": [
+      "confluence:liquids_honey_lava_0",
+      "confluence:liquids_honey_lava_1",
+      "confluence:liquids_honey_lava_2"
+    ]
+  },
+  "liquids_honey_water": {
+    "subtitle": "confluence.subtitle.liquids_honey_water",
+    "sounds": [
+      "confluence:liquids_honey_water_0",
+      "confluence:liquids_honey_water_1",
+      "confluence:liquids_honey_water_2"
+    ]
+  },
+  "liquids_water_lava": {
+    "subtitle": "confluence.subtitle.liquids_water_lava",
+    "sounds": [
+      "confluence:liquids_water_lava_0",
+      "confluence:liquids_water_lava_1",
+      "confluence:liquids_water_lava_2"
+    ]
+  },
+  "lunatic_cultist_death": {
+    "subtitle": "confluence.subtitle.lunatic_cultist_death",
+    "sounds": [
+      "confluence:lunatic_cultist_death"
+    ]
+  },
+  "lunatic_cultist_free": {
+    "subtitle": "confluence.subtitle.lunatic_cultist_free",
+    "sounds": [
+      "confluence:lunatic_cultist_free_0",
+      "confluence:lunatic_cultist_free_1",
+      "confluence:lunatic_cultist_free_2",
+      "confluence:lunatic_cultist_free_3"
+    ]
+  },
+  "lunatic_cultist_hurt": {
+    "subtitle": "confluence.subtitle.lunatic_cultist_hurt",
+    "sounds": [
+      "confluence:lunatic_cultist_hurt"
+    ]
+  },
+  "lunatic_cultist_summoned_free": {
+    "subtitle": "confluence.subtitle.lunatic_cultist_summoned_free",
+    "sounds": [
+      "confluence:lunatic_cultist_summoned_free"
+    ]
+  },
+  "macaw_free": {
+    "subtitle": "confluence.subtitle.macaw_free",
+    "sounds": [
+      "confluence:macaw_free_0",
+      "confluence:macaw_free_1",
+      "confluence:macaw_free_2"
+    ]
+  },
+  "martian_drone_death": {
+    "subtitle": "confluence.subtitle.martian_drone_death",
+    "sounds": [
+      "confluence:martian_drone_death"
+    ]
+  },
+  "martian_drone_free": {
+    "subtitle": "confluence.subtitle.martian_drone_free",
+    "sounds": [
+      "confluence:martian_drone_free_0",
+      "confluence:martian_drone_free_1",
+      "confluence:martian_drone_free_2"
+    ]
+  },
+  "martian_drone_hurt": {
+    "subtitle": "confluence.subtitle.martian_drone_hurt",
+    "sounds": [
+      "confluence:martian_drone_hurt"
+    ]
+  },
+  "martian_walker_free": {
+    "subtitle": "confluence.subtitle.martian_walker_free",
+    "sounds": [
+      "confluence:martian_walker_free_0",
+      "confluence:martian_walker_free_1",
+      "confluence:martian_walker_free_2",
+      "confluence:martian_walker_free_3"
+    ]
+  },
+  "max_mana": {
+    "subtitle": "confluence.subtitle.max_mana",
+    "sounds": [
+      "confluence:max_mana"
+    ]
+  },
+  "mech": {
+    "subtitle": "confluence.subtitle.mech",
+    "sounds": [
+      "confluence:mech"
+    ]
+  },
+  "menu_close": {
+    "subtitle": "confluence.subtitle.menu_close",
+    "sounds": [
+      "confluence:menu_close"
+    ]
+  },
+  "menu_open": {
+    "subtitle": "confluence.subtitle.menu_open",
+    "sounds": [
+      "confluence:menu_open"
+    ]
+  },
+  "menu_tick": {
+    "subtitle": "confluence.subtitle.menu_tick",
+    "sounds": [
+      "confluence:menu_tick"
+    ]
+  },
+  "mister_stabby_death": {
+    "subtitle": "confluence.subtitle.mister_stabby_death",
+    "sounds": [
+      "confluence:mister_stabby_death"
+    ]
+  },
+  "mister_stabby_hurt": {
+    "subtitle": "confluence.subtitle.mister_stabby_hurt",
+    "sounds": [
+      "confluence:mister_stabby_hurt"
+    ]
+  },
+  "moon_lord_death": {
+    "subtitle": "confluence.subtitle.moon_lord_death",
+    "sounds": [
+      "confluence:moon_lord_death_0",
+      "confluence:moon_lord_death_1"
+    ]
+  },
+  "moon_lord_free": {
+    "subtitle": "confluence.subtitle.moon_lord_free",
+    "sounds": [
+      "confluence:moon_lord_free_0",
+      "confluence:moon_lord_free_1",
+      "confluence:moon_lord_free_2",
+      "confluence:moon_lord_free_3",
+      "confluence:moon_lord_free_4",
+      "confluence:moon_lord_free_5",
+      "confluence:moon_lord_free_6"
+    ]
+  },
+  "moon_lord_hurt": {
+    "subtitle": "confluence.subtitle.moon_lord_hurt",
+    "sounds": [
+      "confluence:moon_lord_hurt"
+    ]
+  },
+  "moon_lord_summoned_free": {
+    "subtitle": "confluence.subtitle.moon_lord_summoned_free",
+    "sounds": [
+      "confluence:moon_lord_summoned_free"
+    ]
+  },
+  "mothron_death": {
+    "subtitle": "confluence.subtitle.mothron_death",
+    "sounds": [
+      "confluence:mothron_death"
+    ]
+  },
+  "mothron_free": {
+    "subtitle": "confluence.subtitle.mothron_free",
+    "sounds": [
+      "confluence:mothron_free"
+    ]
+  },
+  "mothron_hurt": {
+    "subtitle": "confluence.subtitle.mothron_hurt",
+    "sounds": [
+      "confluence:mothron_hurt"
+    ]
+  },
+  "mummy_free": {
+    "subtitle": "confluence.subtitle.mummy_free",
+    "sounds": [
+      "confluence:mummy_free_0",
+      "confluence:mummy_free_1"
+    ]
+  },
+  "mushi_ladybug_death": {
+    "subtitle": "confluence.subtitle.mushi_ladybug_death",
+    "sounds": [
+      "confluence:mushi_ladybug_death"
+    ]
+  },
+  "mushi_ladybug_free": {
+    "subtitle": "confluence.subtitle.mushi_ladybug_free",
+    "sounds": [
+      "confluence:mushi_ladybug_free_0",
+      "confluence:mushi_ladybug_free_1",
+      "confluence:mushi_ladybug_free_2",
+      "confluence:mushi_ladybug_free_3"
+    ]
+  },
+  "mushi_ladybug_hurt": {
+    "subtitle": "confluence.subtitle.mushi_ladybug_hurt",
+    "sounds": [
+      "confluence:mushi_ladybug_hurt"
+    ]
+  },
+  "npc_hurt_unused": {
+    "subtitle": "confluence.subtitle.npc_hurt_unused",
+    "sounds": [
+      "confluence:npc_hurt_unused"
+    ]
+  },
+  "owl_free": {
+    "subtitle": "confluence.subtitle.owl_free",
+    "sounds": [
+      "confluence:owl_free_0",
+      "confluence:owl_free_1",
+      "confluence:owl_free_2",
+      "confluence:owl_free_3",
+      "confluence:owl_free_4"
+    ]
+  },
+  "parrot_death": {
+    "subtitle": "confluence.subtitle.parrot_death",
+    "sounds": [
+      "confluence:parrot_death"
+    ]
+  },
+  "parrot_free": {
+    "subtitle": "confluence.subtitle.parrot_free",
+    "sounds": [
+      "confluence:parrot_free"
+    ]
+  },
+  "parrot_hurt": {
+    "subtitle": "confluence.subtitle.parrot_hurt",
+    "sounds": [
+      "confluence:parrot_hurt"
+    ]
+  },
+  "phantasm_dragon_death": {
+    "subtitle": "confluence.subtitle.phantasm_dragon_death",
+    "sounds": [
+      "confluence:phantasm_dragon_death"
+    ]
+  },
+  "phantasm_dragon_hurt": {
+    "subtitle": "confluence.subtitle.phantasm_dragon_hurt",
+    "sounds": [
+      "confluence:phantasm_dragon_hurt"
+    ]
+  },
+  "phantasmal_deathray_free": {
+    "subtitle": "confluence.subtitle.phantasmal_deathray_free",
+    "sounds": [
+      "confluence:phantasmal_deathray_free"
+    ]
+  },
+  "phantasmal_eye_free": {
+    "subtitle": "confluence.subtitle.phantasmal_eye_free",
+    "sounds": [
+      "confluence:phantasmal_eye_free"
+    ]
+  },
+  "phantasmal_sphere_free": {
+    "subtitle": "confluence.subtitle.phantasmal_sphere_free",
+    "sounds": [
+      "confluence:phantasmal_sphere_free"
+    ]
+  },
+  "pigron_death": {
+    "subtitle": "confluence.subtitle.pigron_death",
+    "sounds": [
+      "confluence:pigron_death"
+    ]
+  },
+  "pigron_free": {
+    "subtitle": "confluence.subtitle.pigron_free",
+    "sounds": [
+      "confluence:pigron_free_0",
+      "confluence:pigron_free_1",
+      "confluence:pigron_free_2",
+      "confluence:pigron_free_3"
+    ]
+  },
+  "pigron_hurt": {
+    "subtitle": "confluence.subtitle.pigron_hurt",
+    "sounds": [
+      "confluence:pigron_hurt"
+    ]
+  },
+  "player_death": {
+    "subtitle": "confluence.subtitle.player_death",
+    "sounds": [
+      "confluence:player_death"
+    ]
+  },
+  "player_hit": {
+    "subtitle": "confluence.subtitle.player_hit",
+    "sounds": [
+      "confluence:player_hit_0",
+      "confluence:player_hit_1",
+      "confluence:player_hit_2"
+    ]
+  },
+  "psycho_death": {
+    "subtitle": "confluence.subtitle.psycho_death",
+    "sounds": [
+      "confluence:psycho_death"
+    ]
+  },
+  "psycho_hurt": {
+    "subtitle": "confluence.subtitle.psycho_hurt",
+    "sounds": [
+      "confluence:psycho_hurt"
+    ]
+  },
+  "queen_bee_death": {
+    "subtitle": "confluence.subtitle.queen_bee_death",
+    "sounds": [
+      "confluence:queen_bee_death"
+    ]
+  },
+  "queen_bee_free": {
+    "subtitle": "confluence.subtitle.queen_bee_free",
+    "sounds": [
+      "confluence:queen_bee_free"
+    ]
+  },
+  "queen_slime_death": {
+    "subtitle": "confluence.subtitle.queen_slime_death",
+    "sounds": [
+      "confluence:queen_slime_death"
+    ]
+  },
+  "queen_slime_free": {
+    "subtitle": "confluence.subtitle.queen_slime_free",
+    "sounds": [
+      "confluence:queen_slime_free_0",
+      "confluence:queen_slime_free_1",
+      "confluence:queen_slime_free_2"
+    ]
+  },
+  "reaper_death": {
+    "subtitle": "confluence.subtitle.reaper_death",
+    "sounds": [
+      "confluence:reaper_death"
+    ]
+  },
+  "reaper_hurt": {
+    "subtitle": "confluence.subtitle.reaper_hurt",
+    "sounds": [
+      "confluence:reaper_hurt"
+    ]
+  },
+  "research": {
+    "subtitle": "confluence.subtitle.research",
+    "sounds": [
+      "confluence:research_1",
+      "confluence:research_2",
+      "confluence:research_3"
+    ]
+  },
+  "research_complete": {
+    "subtitle": "confluence.subtitle.research_complete",
+    "sounds": [
+      "confluence:research_complete"
+    ]
+  },
+  "roar_2": {
+    "subtitle": "confluence.subtitle.roar_2",
+    "sounds": [
+      "confluence:roar_2"
+    ]
+  },
+  "run": {
+    "subtitle": "confluence.subtitle.run",
+    "sounds": [
+      "confluence:run"
+    ]
+  },
+  "salamander_death": {
+    "subtitle": "confluence.subtitle.salamander_death",
+    "sounds": [
+      "confluence:salamander_death"
+    ]
+  },
+  "salamander_free": {
+    "subtitle": "confluence.subtitle.salamander_free",
+    "sounds": [
+      "confluence:salamander_free_0",
+      "confluence:salamander_free_1"
+    ]
+  },
+  "salamander_hurt": {
+    "subtitle": "confluence.subtitle.salamander_hurt",
+    "sounds": [
+      "confluence:salamander_hurt"
+    ]
+  },
+  "scutlix_death": {
+    "subtitle": "confluence.subtitle.scutlix_death",
+    "sounds": [
+      "confluence:scutlix_death"
+    ]
+  },
+  "scutlix_free": {
+    "subtitle": "confluence.subtitle.scutlix_free",
+    "sounds": [
+      "confluence:scutlix_free"
+    ]
+  },
+  "scutlix_hurt": {
+    "subtitle": "confluence.subtitle.scutlix_hurt",
+    "sounds": [
+      "confluence:scutlix_hurt"
+    ]
+  },
+  "seagull_free": {
+    "subtitle": "confluence.subtitle.seagull_free",
+    "sounds": [
+      "confluence:seagull_free_0",
+      "confluence:seagull_free_1",
+      "confluence:seagull_free_2"
+    ]
+  },
+  "shadowflame_apparition_death": {
+    "subtitle": "confluence.subtitle.shadowflame_apparition_death",
+    "sounds": [
+      "confluence:shadowflame_apparition_death"
+    ]
+  },
+  "shadowflame_apparition_hurt": {
+    "subtitle": "confluence.subtitle.shadowflame_apparition_hurt",
+    "sounds": [
+      "confluence:shadowflame_apparition_hurt"
+    ]
+  },
+  "shatter": {
+    "subtitle": "confluence.subtitle.shatter",
+    "sounds": [
+      "confluence:shatter"
+    ]
+  },
+  "splash": {
+    "subtitle": "confluence.subtitle.splash",
+    "sounds": [
+      "confluence:splash_0",
+      "confluence:splash_1",
+      "confluence:splash_2",
+      "confluence:splash_3",
+      "confluence:splash_4",
+      "confluence:splash_5"
+    ]
+  },
+  "target_dummy_hurt": {
+    "subtitle": "confluence.subtitle.target_dummy_hurt",
+    "sounds": [
+      "confluence:target_dummy_hurt_0",
+      "confluence:target_dummy_hurt_1",
+      "confluence:target_dummy_hurt_2"
+    ]
+  },
+  "tesla_turret_death": {
+    "subtitle": "confluence.subtitle.tesla_turret_death",
+    "sounds": [
+      "confluence:tesla_turret_death"
+    ]
+  },
+  "tesla_turret_hurt": {
+    "subtitle": "confluence.subtitle.tesla_turret_hurt",
+    "sounds": [
+      "confluence:tesla_turret_hurt"
+    ]
+  },
+  "the_possessed_death": {
+    "subtitle": "confluence.subtitle.the_possessed_death",
+    "sounds": [
+      "confluence:the_possessed_death"
+    ]
+  },
+  "the_possessed_free": {
+    "subtitle": "confluence.subtitle.the_possessed_free",
+    "sounds": [
+      "confluence:the_possessed_free_0",
+      "confluence:the_possessed_free_1"
+    ]
+  },
+  "the_possessed_hurt": {
+    "subtitle": "confluence.subtitle.the_possessed_hurt",
+    "sounds": [
+      "confluence:the_possessed_hurt"
+    ]
+  },
+  "thunder": {
+    "subtitle": "confluence.subtitle.thunder",
+    "sounds": [
+      "confluence:thunder_0",
+      "confluence:thunder_1",
+      "confluence:thunder_2",
+      "confluence:thunder_3",
+      "confluence:thunder_4",
+      "confluence:thunder_5",
+      "confluence:thunder_6"
+    ]
+  },
+  "tink": {
+    "subtitle": "confluence.subtitle.tink",
+    "sounds": [
+      "confluence:tink_0",
+      "confluence:tink_1",
+      "confluence:tink_2"
+    ]
+  },
+  "toucan_free": {
+    "subtitle": "confluence.subtitle.toucan_free",
+    "sounds": [
+      "confluence:toucan_free_0",
+      "confluence:toucan_free_1"
+    ]
+  },
+  "true_eye_of_cthulhu_free": {
+    "subtitle": "confluence.subtitle.true_eye_of_cthulhu_free",
+    "sounds": [
+      "confluence:true_eye_of_cthulhu_free_0",
+      "confluence:true_eye_of_cthulhu_free_1"
+    ]
+  },
+  "unlock": {
+    "subtitle": "confluence.subtitle.unlock",
+    "sounds": [
+      "confluence:unlock"
+    ]
+  },
+  "vampire_free": {
+    "subtitle": "confluence.subtitle.vampire_free",
+    "sounds": [
+      "confluence:vampire_free"
+    ]
+  },
+  "vile_spit_death": {
+    "subtitle": "confluence.subtitle.vile_spit_death",
+    "sounds": [
+      "confluence:vile_spit_death"
+    ]
+  },
+  "vulture_death": {
+    "subtitle": "confluence.subtitle.vulture_death",
+    "sounds": [
+      "confluence:vulture_death"
+    ]
+  },
+  "vulture_hurt": {
+    "subtitle": "confluence.subtitle.vulture_hurt",
+    "sounds": [
+      "confluence:vulture_hurt"
+    ]
+  },
+  "waterfall": {
+    "subtitle": "confluence.subtitle.waterfall",
+    "sounds": [
+      "confluence:waterfall"
+    ]
+  },
+  "werewolf_hurt": {
+    "subtitle": "confluence.subtitle.werewolf_hurt",
+    "sounds": [
+      "confluence:werewolf_hurt"
+    ]
+  },
+  "windy_balloon_death": {
+    "subtitle": "confluence.subtitle.windy_balloon_death",
+    "sounds": [
+      "confluence:windy_balloon_death"
+    ]
+  },
+  "wraith_death": {
+    "subtitle": "confluence.subtitle.wraith_death",
+    "sounds": [
+      "confluence:wraith_death"
+    ]
+  },
+  "wraith_free": {
+    "subtitle": "confluence.subtitle.wraith_free",
+    "sounds": [
+      "confluence:wraith_free_0",
+      "confluence:wraith_free_1",
+      "confluence:wraith_free_2"
+    ]
+  },
+  "wraith_hurt": {
+    "subtitle": "confluence.subtitle.wraith_hurt",
+    "sounds": [
+      "confluence:wraith_hurt"
+    ]
+  },
+  "zombie5_free": {
+    "subtitle": "confluence.subtitle.zombie5_free",
+    "sounds": [
+      "confluence:zombie5_free"
+    ]
+  },
+  "zombie87_free": {
+    "subtitle": "confluence.subtitle.zombie87_free",
+    "sounds": [
+      "confluence:zombie87_free"
+    ]
+  },
+  "antlion_swarmer_hurt": {
+    "subtitle": "confluence.subtitle.antlion_swarmer_hurt",
+    "sounds": [
+      "confluence:antlion_swarmer_hurt"
+    ]
+  },
+  "summon_hornet": {
+    "subtitle": "confluence.subtitle.summon_hornet",
+    "sounds": [
+      "confluence:summon_hornet"
+    ]
+  }
 }

@@ -1,0 +1,41 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"bait": {
+			"loop": true,
+			"animation_length": 1.8,
+			"bones": {
+				"bone25": {
+					"rotation": {
+						"0.0": {
+							"vector": [5.25, 0, 0]
+						},
+						"0.9": {
+							"vector": [-1.75, 0, 0]
+						},
+						"1.8": {
+							"vector": [5.25, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"bone30": {
+					"rotation": {
+						"0.0": {
+							"vector": [-5, 0, 0]
+						},
+						"0.9": {
+							"vector": [5, 0, 0],
+							"easing": "linear"
+						},
+						"1.8": {
+							"vector": [-5, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

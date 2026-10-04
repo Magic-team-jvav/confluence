@@ -1,0 +1,217 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "flying": {
+            "loop": true,
+            "animation_length": 0.7463,
+            "bones": {
+                "all": {
+                    "position": {
+                        "0.0": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.3731": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    3,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.7463": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        }
+                    }
+                },
+                "head": {
+                    "rotation": {
+                        "0.0": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.3731": {
+                            "post": {
+                                "vector": [
+                                    10,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.7463": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        }
+                    }
+                },
+                "wingR1": {
+                    "rotation": {
+                        "0.0": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.3731": {
+                            "post": {
+                                "vector": [
+                                    37.5,
+                                    0,
+                                    -77.5
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.7463": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        }
+                    }
+                },
+                "wingR2": {
+                    "rotation": {
+                        "0.0": {
+                            "vector": [
+                                27,
+                                -24.38,
+                                -12.75
+                            ]
+                        },
+                        "0.0933": {
+                            "vector": [
+                                36,
+                                -32.5,
+                                -17
+                            ],
+                            "easing": "easeOutSine"
+                        },
+                        "0.4664": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "easing": "easeInOutSine"
+                        },
+                        "0.7463": {
+                            "vector": [
+                                27,
+                                -24.38,
+                                -12.75
+                            ],
+                            "easing": "easeInSine"
+                        }
+                    }
+                },
+                "wingL2": {
+                    "rotation": {
+                        "0.0": {
+                            "vector": [
+                                27,
+                                24.37,
+                                12.75
+                            ]
+                        },
+                        "0.0933": {
+                            "vector": [
+                                36,
+                                32.5,
+                                17
+                            ],
+                            "easing": "easeOutSine"
+                        },
+                        "0.4664": {
+                            "vector": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "easing": "easeInOutSine"
+                        },
+                        "0.7463": {
+                            "vector": [
+                                27,
+                                24.37,
+                                12.75
+                            ],
+                            "easing": "easeInSine"
+                        }
+                    }
+                },
+                "wingL1": {
+                    "rotation": {
+                        "0.0": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.3731": {
+                            "post": {
+                                "vector": [
+                                    37.5,
+                                    0,
+                                    77.5
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        },
+                        "0.7463": {
+                            "post": {
+                                "vector": [
+                                    0,
+                                    0,
+                                    0
+                                ]
+                            },
+                            "lerp_mode": "catmullrom"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

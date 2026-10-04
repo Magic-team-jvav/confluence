@@ -1,0 +1,146 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "move.fly": {
+            "loop": true,
+            "bones": {
+                "body": {
+                    "rotation": {
+                        "vector": [
+                            20,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "left_wing": {
+                    "rotation": {
+                        "vector": [
+                            10,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "right_wing": {
+                    "rotation": {
+                        "vector": [
+                            10,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "left_leg": {
+                    "rotation": {
+                        "vector": [
+                            -20,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "right_leg": {
+                    "rotation": {
+                        "vector": [
+                            -20,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "head": {
+                    "rotation": {
+                        "vector": [
+                            7.5,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "all": {
+                    "position": {
+                        "vector": [
+                            0,
+                            -0.65,
+                            0
+                        ]
+                    }
+                }
+            }
+        },
+        "animation2": {
+            "loop": true,
+            "bones": {
+                "body": {
+                    "rotation": {
+                        "vector": [
+                            40,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "left_wing": {
+                    "rotation": {
+                        "vector": [
+                            0,
+                            -45,
+                            -67.5
+                        ]
+                    },
+                    "position": {
+                        "vector": [
+                            0,
+                            -1,
+                            2
+                        ]
+                    }
+                },
+                "right_wing": {
+                    "rotation": {
+                        "vector": [
+                            0,
+                            45,
+                            67.5
+                        ]
+                    },
+                    "position": {
+                        "vector": [
+                            0,
+                            -1,
+                            2
+                        ]
+                    }
+                },
+                "left_leg": {
+                    "rotation": {
+                        "vector": [
+                            -55,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "right_leg": {
+                    "rotation": {
+                        "vector": [
+                            -55,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "head": {
+                    "rotation": {
+                        "vector": [
+                            22.5,
+                            0,
+                            0
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

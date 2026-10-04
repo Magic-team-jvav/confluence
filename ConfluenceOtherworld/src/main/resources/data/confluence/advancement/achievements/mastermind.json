@@ -24,7 +24,7 @@
                         "condition": "minecraft:entity_properties",
                         "entity": "this",
                         "predicate": {
-                            "type": "terra_entity:brain_of_cthulhu"
+                            "type": "confluence:brain_of_cthulhu"
                         }
                     }
                 ]

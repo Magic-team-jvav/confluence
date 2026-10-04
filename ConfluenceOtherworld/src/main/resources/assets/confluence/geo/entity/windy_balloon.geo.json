@@ -1,0 +1,179 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:geometry": [
+        {
+            "description": {
+                "identifier": "geometry.windy_balloon",
+                "texture_width": 33,
+                "texture_height": 33,
+                "visible_bounds_width": 1,
+                "visible_bounds_height": 2,
+                "visible_bounds_offset": [
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "bones": [
+                {
+                    "name": "balloon",
+                    "pivot": [
+                        0,
+                        -2,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -2,
+                                -2,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                2,
+                                4
+                            ],
+                            "uv": {
+                                "north": {
+                                    "uv": [
+                                        17,
+                                        17
+                                    ],
+                                    "uv_size": [
+                                        4,
+                                        2
+                                    ]
+                                },
+                                "east": {
+                                    "uv": [
+                                        17,
+                                        17
+                                    ],
+                                    "uv_size": [
+                                        4,
+                                        2
+                                    ]
+                                },
+                                "south": {
+                                    "uv": [
+                                        17,
+                                        17
+                                    ],
+                                    "uv_size": [
+                                        4,
+                                        2
+                                    ]
+                                },
+                                "west": {
+                                    "uv": [
+                                        17,
+                                        17
+                                    ],
+                                    "uv_size": [
+                                        4,
+                                        2
+                                    ]
+                                },
+                                "up": {
+                                    "uv": [
+                                        17,
+                                        20
+                                    ],
+                                    "uv_size": [
+                                        4,
+                                        4
+                                    ]
+                                },
+                                "down": {
+                                    "uv": [
+                                        17,
+                                        24
+                                    ],
+                                    "uv_size": [
+                                        4,
+                                        -4
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "origin": [
+                                -8,
+                                0,
+                                -8
+                            ],
+                            "size": [
+                                16,
+                                16,
+                                16
+                            ],
+                            "uv": {
+                                "north": {
+                                    "uv": [
+                                        0,
+                                        0
+                                    ],
+                                    "uv_size": [
+                                        16,
+                                        16
+                                    ]
+                                },
+                                "east": {
+                                    "uv": [
+                                        0,
+                                        0
+                                    ],
+                                    "uv_size": [
+                                        16,
+                                        16
+                                    ]
+                                },
+                                "south": {
+                                    "uv": [
+                                        0,
+                                        0
+                                    ],
+                                    "uv_size": [
+                                        16,
+                                        16
+                                    ]
+                                },
+                                "west": {
+                                    "uv": [
+                                        0,
+                                        0
+                                    ],
+                                    "uv_size": [
+                                        16,
+                                        16
+                                    ]
+                                },
+                                "up": {
+                                    "uv": [
+                                        0,
+                                        17
+                                    ],
+                                    "uv_size": [
+                                        16,
+                                        16
+                                    ]
+                                },
+                                "down": {
+                                    "uv": [
+                                        17,
+                                        16
+                                    ],
+                                    "uv_size": [
+                                        16,
+                                        -16
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1685,6 +1685,11 @@
       "status": "COVERED",
       "target": "（1.21 已有等价实现）",
       "note": "台账行 12；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f4b42537ca0ee008794a0c04a1c67cdb07d3533b": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 10；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
     }
   }
 }

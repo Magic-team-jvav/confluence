@@ -3745,3 +3745,42 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 
 - 按 1.20 HEAD 的口径：**稀有度不在色阶（-1..11）内的物品被重铸时，`MOD_RARITY` 组件会被清空**（1.20 里 `TIER.get(-2)` 返回 `null` ⇒ `set(type, null)` 即移除）。1.21 旧表则把 COMMON/UNCOMMON/RARE/EPIC 折成色阶再调整 —— 两者行为不同，本次以 **1.20 HEAD 为权威**。
 - 台账：行 359／380 状态不变（仍为 `PORTED`）；本节只结清它们遗留的实现债。
+
+
+## 一百零三、台账续走：行 10 `f4b42537c`（part8）⇒ `COVERED`，并**修掉 1.21 AT 缺条目**导致的一处编译失败
+
+### 103.1 取证与三分类
+
+- `rowaudit`：files=93、新增代码 3833 行、ALIVE-in-20HEAD=779、DEAD=3054、GAP=400；平台噪音筛选后 **real=217 / 35 文件**（183 条被判噪音）。
+- 新增符号级三分类工具 `triage_row.py`（对每条 GAP 抽大写标识符，查 1.21 同名文件是否已含）：
+  **A（符号已在 1.21）=81 / B（缺符号）=15 / C（纯语句）=121**。
+  - B 的 15 条基本是**误报**：`accesstransformer.cfg`（非 java 路径）、`ModBlocks` 的 `BASEDRUM`/`TERRACOTTA_GRAY`/`TUFF`（vanilla 常量）、`EVERYTHING`（vanilla 枚举 `PressurePlateBlock.Sensitivity`）。
+- 抽样核验 6 处**行为性**条目（逐条比对两侧源码）：
+
+| 条目 | 1.21 侧 | 裁定 |
+| --- | --- | --- |
+| `ModEffects` 的 `Attributes.LUCK` 修饰符 | `:77` 同逻辑（仅把 `ATT_VALUE` 写成 `AttributeModifier.Operation.ADD_VALUE`） | 等价 |
+| `ModEffects` 的 `MOB_SPAWN_SPEED/COUNT_MULTIPLIER` | `:138/:143/:146/:149` 同数值 | 等价 |
+| `LogBlockSet.getAllItems()` / `function == null` | `:108` `Stream<Item> getAllItems()` | 等价（返回类型收窄） |
+| `StinkyEffect` 的 tick 覆写 | 1.21 用改名后的 `shouldApplyEffectTickThisTick` | 等价（API 改名） |
+| `LootComponent.open(ServerPlayer, ItemStack)` | `:25` 同名同参 | 等价 |
+| `BaseArmorItem.appendHoverText` | `:51` 1.21 签名（`TooltipContext` 取代 `Level`） | 等价 |
+
+- `ModBlocks.tuffProperties()`／`tuffBricksProperties()`：1.21 **没有** —— 但 1.21 的 `TUFF_BOOTH` 改用 `BlockBehaviour.Properties.ofFullCopy(TUFF_BRICKS)`（与 1.20 手写属性等价），且 `tuffProperties()` 在 1.20 侧**自身无调用者**（1.20 的死代码）⇒ **不移植**。
+
+⇒ 行 10 = **`COVERED`**（内容 1.21 均已有，差异为 API/写法；其余为 Forge 平台族）。
+
+### 103.2 顺带发现并修掉：1.21 AT 文件缺 `FireBlock.setFlammable`（**会编译失败**）
+
+- 1.21 `LogBlockSet:361/366/…` 仍在调用 `fireblock.setFlammable(...)`，而该方法在 vanilla 是 `protected`；
+- 1.20 的 AT 文件有 `public … FireBlock m_53444_(Lnet/minecraft/world/level/block/Block;II)V # setFlammable`，**1.21 的 AT 文件里没有**（`grep FireBlock|setFlammable` = 0 命中）⇒ 与 §100 的 `ModStructures.Keys` 同一类潜伏缺陷。
+- 修复：在 `### net.minecraft.world.level.block` 段、`CropBlock getGrowthSpeed(...)` 之后插入
+  `public net.minecraft.world.level.block.FireBlock setFlammable(Lnet/minecraft/world/level/block/Block;II)V`（沿用 1.21 AT 的**官方名语法**；文件保持 CRLF，175 → 176 行；`fix_eol --check` 仍候选 6）。
+- 同段另两条 1.20 AT（`Blocks.never`/`Blocks.always` = `m_50778_`/`m_50809_`）：1.21 代码**无对应调用** ⇒ 不需要；而 `Minecraft.isMultiplayerServer`／`Font.renderText`／`AdvancementToast.advancement` 三条 1.21 已有官方名等价条目（`:2`／`:4`／`:13`）。
+
+### 103.3 状态
+
+- 台账（双写）：**行 10 = `COVERED`**；剩余 TODO **62** 个。
+- `fix_eol --check` 候选 6。
+- 本行平台族（不移植）：`FMLJavaModLoadingContext` 构造器与 `registerConfig(...)`（`Confluence`／`StartupConfigs`／`CommonConfigs`／`ClientConfigs`）、AT 的 SRG 写法、`.gitignore` 的 1.20 专属子模块条目。
+- 下一批：**行 14–15**（`14` `?`／`15` `?`，均为 2026-06-10 的 part 系列）。

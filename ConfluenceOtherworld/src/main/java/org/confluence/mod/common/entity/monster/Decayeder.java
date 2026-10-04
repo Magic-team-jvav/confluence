@@ -2,9 +2,12 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -23,6 +26,8 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.BowCombatAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 
 /// 腐骴远程骷髅。
 ///
@@ -92,4 +97,21 @@ public class Decayeder extends BaseMonster {
         playSound(ModSoundEvents.DECAYEDER_STEP.get(), 0.15F, 1.0F);
     }
 
+    public void onDamageDealt(LivingEntity victim, DamageSource damageSource) {
+        if (!victim.hasEffect(ModEffects.DEMONIC_THOUGHTS.get())) {
+            victim.addEffect(new MobEffectInstance(ModEffects.DEMONIC_THOUGHTS.get(), 200), this);
+        } else {
+            victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
+            victim.hurt(damageSource, 6.0F);
+            if (level() instanceof ServerLevel serverLevel) {
+                EaterOfSouls eater = MonsterEntities.EATER_OF_SOULS.get().create(serverLevel);
+                if (eater != null) {
+                    eater.setPos(victim.getEyePosition());
+                    eater.setTarget(victim);
+                    serverLevel.addFreshEntity(eater);
+                }
+            }
+            victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
+        }
+    }
 }

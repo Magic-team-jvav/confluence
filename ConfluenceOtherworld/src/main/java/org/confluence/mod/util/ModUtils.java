@@ -256,12 +256,6 @@ public final class ModUtils {
         }
     }
 
-    public static void applyCursedSkullDebuff(@Nullable Entity attacker, LivingEntity living) {
-        if (attacker != null && attacker.getType() == MonsterEntities.CURSED_SKULL.get() && attacker.getRandom1211().nextFloat() < 0.33F) {
-            living.addEffect(new MobEffectInstance(ModEffects.CURSED.get(), 80));
-        }
-    }
-
     /// 不可破坏物品无法附魔耐久与经验修补
     public static boolean supportsEnchantment(ItemStack stack, Enchantment enchantment) {
         boolean supportedItem = enchantment.category.canEnchant(stack.getItem());

@@ -61,7 +61,7 @@ import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.monster.DungeonSpirit;
-import org.confluence.mod.common.entity.monster.EaterOfSouls;
+import org.confluence.mod.common.entity.monster.Decayeder;
 import org.confluence.mod.common.entity.monster.TheHungry;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
@@ -287,7 +287,6 @@ public final class LivingEntityEvents {
         @Nullable Entity attacker = damageSource.getEntity();
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
-        ModUtils.applyCursedSkullDebuff(attacker, victim);
         ThornsEffect.onMobHurt(victim, damageSource, amount);
         DryadsBlessingEffect.reflectDamage(victim, damageSource, amount);
 
@@ -339,21 +338,7 @@ public final class LivingEntityEvents {
         }
         @Nullable Entity attacker = damageSource.getEntity();
 
-        if (attacker != null && attacker.getType() == MonsterEntities.DECAYEDER.get()) {
-            if (!victim.hasEffect(ModEffects.DEMONIC_THOUGHTS.get())) {
-                victim.addEffect(new MobEffectInstance(ModEffects.DEMONIC_THOUGHTS.get(), 200), attacker);
-            } else {
-                victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
-                victim.hurt(damageSource, 6.0F);
-                EaterOfSouls eater = MonsterEntities.EATER_OF_SOULS.get().create(serverLevel);
-                if (eater != null) {
-                    eater.setPos(victim.getEyePosition());
-                    eater.setTarget(victim);
-                    serverLevel.addFreshEntity(eater);
-                }
-                victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
-            }
-        }
+        if (attacker instanceof Decayeder decayeder) decayeder.onDamageDealt(victim, damageSource);
 
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
@@ -371,23 +356,19 @@ public final class LivingEntityEvents {
     }
 
     private static void processCriticalDamage(ProcessCriticalDamageEvent event) {
-        if (event.getDamageSource().getDirectEntity() instanceof BeeKeeperProjectile bee) {
+        Entity directEntity = event.getDamageSource().getDirectEntity();
+        if (directEntity instanceof BeeKeeperProjectile bee) {
             event.setCritical(bee.getRandom1211().nextFloat() < bee.getCriticalChance());
-            return;
-        }
-        if (event.getDamageSource().getDirectEntity() instanceof YoyoEntity yoyo) {
+        } else if (directEntity instanceof YoyoEntity yoyo) {
             event.setCritical(yoyo.getRandom1211().nextFloat() < yoyo.getCriticalChance());
-            if (!yoyo.isCounterweight() && yoyo.getYoyoItem() != null)
+            if (!yoyo.isCounterweight() && yoyo.getYoyoItem() != null) {
                 event.setCriticalDamageMultiplier(yoyo.getYoyoItem().criticalDamageMultiplier());
-            return;
-        } else if (event.getDamageSource().getDirectEntity() instanceof BaseYoyoProjectile shot) {
+            }
+        } else if (directEntity instanceof BaseYoyoProjectile shot) {
             event.setCritical(shot.getRandom1211().nextFloat() < shot.getCriticalChance());
-            return;
-        } else if (event.getDamageSource().getDirectEntity() instanceof TerrarianProjectile shot) {
+        } else if (directEntity instanceof TerrarianProjectile shot) {
             event.setCritical(shot.getRandom1211().nextFloat() < shot.getCriticalChance());
-            return;
-        }
-        if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
+        } else if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
         }
     }

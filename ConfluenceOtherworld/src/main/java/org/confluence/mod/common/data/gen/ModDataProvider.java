@@ -84,6 +84,7 @@ import org.confluence.mod.common.worldgen.feature.*;
 import org.confluence.mod.common.worldgen.structure.*;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
+import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.common.world.PortAddCarversBiomeModifier;
 
@@ -2400,7 +2401,7 @@ public class ModDataProvider {
 
         private static void registerStructureSet(BootstapContext<StructureSet> context, HolderGetter<Structure> structures, HolderGetter<StructureSet> sets,
                                                  String path, ResourceKey<Structure> structure, int spacing, int separation, int salt,
-                                                 ResourceKey<StructureSet> excludedSet, int exclusionChunks) {
+                                                 @Nullable ResourceKey<StructureSet> excludedSet, int exclusionChunks) {
             Optional<StructurePlacement.ExclusionZone> exclusion = excludedSet == null ? Optional.empty() : Optional.of(new StructurePlacement.ExclusionZone(sets.getOrThrow(excludedSet), exclusionChunks));
             register(context, path, new StructureSet(structures.getOrThrow(structure), new RandomSpreadStructurePlacement(
                     Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F, salt, exclusion, spacing, separation, RandomSpreadType.TRIANGULAR)));

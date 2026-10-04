@@ -738,6 +738,168 @@
    "subject": "饰品能力全改为datamap，修复潜行属性",
    "old": "TODO",
    "status": "COVERED"
+  },
+  {
+   "row": 83,
+   "sub": "TerraCurio",
+   "commit": "a3f1cbca7",
+   "date": "2026-08-23",
+   "subject": "同步1.21.1翅膀迁移，部分饰品添加粒子",
+   "old": "TODO",
+   "status": "REVERSE-ALIGNED"
+  },
+  {
+   "row": 84,
+   "sub": "TerraCurio",
+   "commit": "06d637298",
+   "date": "2026-08-24",
+   "subject": "玩家动画测试",
+   "old": "TODO",
+   "status": "DEFER-ASSETS"
+  },
+  {
+   "row": 85,
+   "sub": "TerraCurio",
+   "commit": "6ee91b55b",
+   "date": "2026-08-28",
+   "subject": "玩家动画（未注册永夜动画）",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 86,
+   "sub": "TerraCurio",
+   "commit": "3516ac33a",
+   "date": "2026-09-02",
+   "subject": "删除一些Extension类",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 87,
+   "sub": "TerraCurio",
+   "commit": "38fcb3595",
+   "date": "2026-09-06",
+   "subject": "静态方法改接口",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 88,
+   "sub": "TerraCurio",
+   "commit": "aae737d41",
+   "date": "2026-09-06",
+   "subject": "属性静态字段注入",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 89,
+   "sub": "TerraCurio",
+   "commit": "94c69f0bc",
+   "date": "2026-09-06",
+   "subject": "删除多余内容",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 90,
+   "sub": "TerraCurio",
+   "commit": "be87be1cb",
+   "date": "2026-09-06",
+   "subject": "封印魂",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 91,
+   "sub": "TerraCurio",
+   "commit": "d4be8935d",
+   "date": "2026-09-07",
+   "subject": "生产环境修复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 92,
+   "sub": "TerraCurio",
+   "commit": "59730e912",
+   "date": "2026-09-07",
+   "subject": "生产环境修复",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 93,
+   "sub": "TerraCurio",
+   "commit": "0b3846038",
+   "date": "2026-09-07",
+   "subject": "泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 94,
+   "sub": "TerraCurio",
+   "commit": "ea3fe72d3",
+   "date": "2026-09-08",
+   "subject": "修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 95,
+   "sub": "TerraCurio",
+   "commit": "262f4dae5",
+   "date": "2026-09-08",
+   "subject": "修复灯笼粒子往下掉的问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 96,
+   "sub": "TerraCurio",
+   "commit": "9a8c29d2b",
+   "date": "2026-09-08",
+   "subject": "修复部分靴子没有自动上台阶功能的问题",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 97,
+   "sub": "TerraCurio",
+   "commit": "e9789b7c2",
+   "date": "2026-09-10",
+   "subject": "修一些资源错误",
+   "old": "TODO",
+   "status": "DEFER-ASSETS"
+  },
+  {
+   "row": 98,
+   "sub": "TerraCurio",
+   "commit": "b797d87e8",
+   "date": "2026-09-10",
+   "subject": "修复mixin，修复跳跃属性",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 99,
+   "sub": "TerraCurio",
+   "commit": "eebc21cbe",
+   "date": "2026-09-11",
+   "subject": "修复与Bigger Stacks的Mixin冲突",
+   "old": "TODO",
+   "status": "COVERED"
+  },
+  {
+   "row": 100,
+   "sub": "TerraCurio",
+   "commit": "feded30e6",
+   "date": "2026-09-11",
+   "subject": "portlib升级为1.2.2",
+   "old": "TODO",
+   "status": "SKIP-PORTLIB"
   }
  ]
 }

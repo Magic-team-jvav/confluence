@@ -4666,3 +4666,76 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 83–100（TerraCurio 中段：翅膀迁移、玩家动画、Extension 清理、mixin 修复）**。
 
+## 一百二十二、子模块行走 行 83–100（TerraCurio 中段）⇒ 14 `COVERED` + 2 `DEFER-ASSETS` + 1 `REVERSE-ALIGNED` + 1 `SKIP-PORTLIB`
+
+### 122.1 清单
+
+| 行 | 提交 | 日期 | 主题 | GAP/文件 | 裁定 |
+| --- | --- | --- | --- | --- | --- |
+| 83 | `a3f1cbca7` | 2026-08-23 | 同步 1.21.1 翅膀迁移，部分饰品添加粒子 | 330 / 18 | `REVERSE-ALIGNED` |
+| 84 | `06d637298` | 2026-08-24 | 玩家动画测试（含 4 个粒子 json 的 tint 渐变） | 33 / 5 | **`DEFER-ASSETS`** |
+| 85 | `6ee91b55b` | 2026-08-28 | 玩家动画（未注册永夜动画） | 0 / 0 | `COVERED` |
+| 86 | `3516ac33a` | 2026-09-02 | 删除一些 Extension 类 | 0 / 0 | `COVERED` |
+| 87 | `38fcb3595` | 2026-09-06 | 静态方法改接口 | 4 / 2 | `COVERED` |
+| 88 | `aae737d41` | 2026-09-06 | 属性静态字段注入 | 0 / 0 | `COVERED` |
+| 89 | `94c69f0bc` | 2026-09-06 | 删除多余内容 | 4 / 2 | `COVERED` |
+| 90 | `be87be1cb` | 2026-09-06 | 封印魂 | 3 / 1 | `COVERED` |
+| 91 | `d4be8935d` | 2026-09-07 | 生产环境修复 | 0 / 0 | `COVERED` |
+| 92 | `59730e912` | 2026-09-07 | 生产环境修复 | 0 / 0 | `COVERED` |
+| 93 | `0b3846038` | 2026-09-07 | 泰拉饰品掉落不再影响本体，为 screen 加遮罩 | 7 / 1 | `COVERED` |
+| 94 | `ea3fe72d3` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔等 | 0 / 0 | `COVERED` |
+| 95 | `262f4dae5` | 2026-09-08 | 修复灯笼粒子往下掉 | 0 / 0 | `COVERED` |
+| 96 | `9a8c29d2b` | 2026-09-08 | 修复部分靴子没有自动上台阶 | 0 / 0 | `COVERED` |
+| 97 | `e9789b7c2` | 2026-09-10 | 修一些资源错误 | 14 / 1 | **`DEFER-ASSETS`** |
+| 98 | `b797d87e8` | 2026-09-10 | 修复 mixin，修复跳跃属性 | 19 / 3 | `COVERED` |
+| 99 | `eebc21cbe` | 2026-09-11 | 修复与 Bigger Stacks 的 Mixin 冲突 | 1 / 1 | `COVERED` |
+| 100 | `feded30e6` | 2026-09-11 | **portlib 升级为 1.2.2** | 0 / 0 | **`SKIP-PORTLIB`** |
+
+### 122.2 行 83：翅膀（330 行 gap、唯一"缺符号"`DEFAULT_ANIMATION`）
+
+两侧 TerraCurio 的翅膀文件集**同为 12 个**（`NormalWingsGeoModel.java`／`WingsGeoRenderer.java`／`normal_wings.animation.json`／`fledgling_wings.geo.json`／7 张贴图 + 动画）。
+
+1.20 `NormalWingsGeoModel.java:13`：
+
+```java
+protected static final ResourceLocation DEFAULT_ANIMATION = TerraCurio.asResource("animations/accessory/normal_wings.animation.json");
+```
+
+1.21 同文件改**动态推导**（`:13/15/17/21`）：
+
+```java
+protected final ResourceLocation animation;
+public NormalWingsGeoModel(ResourceLocation id) {
+    this.animation = ResourceLocation.fromNamespaceAndPath(id.getNamespace(), "animations/accessory/" + id.getPath()…);
+}
+public ResourceLocation getAnimationResource(AccessoryGeoModel animatable) { return animation; }
+```
+
+⇒ 1.21 的设计更通用（按饰品 id 推导动画路径），**不需要** 1.20 的常量；该行标题即"同步 1.21.1 翅膀迁移"（方向 1.21 → 1.20）⇒ `REVERSE-ALIGNED`。
+
+### 122.3 两处**资源级真差**（`DEFER-ASSETS`）
+
+| 行 | 1.20 资源 | 1.21 资源 | 差异 |
+| --- | --- | --- | --- |
+| 84 | `blizzard.particle.json` 61 行／`cloud.json` 68／`sandstorm.particle.json` 61／`tsunami.particle.json` 54，**四个都含 `particle_appearance_tinting` + `gradient`**（`"0.0": "#00FFFFFF"`、`"0.15": "#E6FFFFFF"`… 按 `v.particle_age / v.particle_lifetime` 插值） | 同名四个文件 50／57／50／43 行，**tinting=N、gradient=N** | 1.20 给这 4 个粒子加了"随寿命渐隐/渐显"的着色渐变，1.21 尚未同步 ⇒ 属**资源增强**（ParticleStorm 两边同源，键名可直接搬） |
+| 97 | `fledgling_wings.geo.json` 的几何（`visible_bounds_width`、多组 `pivot`／`origin`） | 同名文件几何不同 | 该提交标题即"修一些资源错误"⇒ 1.20 侧的几何修正未进 1.21 |
+
+> 两行都按 `DEFER-ASSETS` 落账（账内术语：随所属功能提交处理）。搬运是机械的（4 个粒子 json 的 tinting 块 + 1 个 geo 的几何值），但会改视觉效果且**无法在本工作流内运行验证**（无编译/无 datagen），故本批不擅自改资源，登记为可执行项。
+
+### 122.4 其余各行
+
+| 行 | gap 内容 | 1.21 |
+| --- | --- | --- |
+| 84 | `ParticleTriggers` 用 `ForgeMod.EMPTY_TYPE.get()` | NeoForge 变体 ⇒ 平台 |
+| 87 | `Attribute.DIRECT_CODEC`／`Attribute.DIRECT_STREAM_CODEC`；`IPortResourceKeyExtension.streamCodec(…)` | 1.21 走注册表化 codec；`IPort*` 属 PortLib ⇒ 平台 |
+| 89 | `TerraCurio` 调 `LibClientUtils.registerConfigScreen(context)`；`IMultiFunctionCouldEnable` 用 `ConfluenceMagicLib.IS_CONFLUENCE_LOAD` | 1.21 `TerraCurio.java:27` **直接** `modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new)`（主仓 `Confluence.java:72` 同法）⇒ 不需要 lib 包装方法；`IS_CONFLUENCE_LOAD` 在 1.21 lib（2 文件） |
+| 90 | `MultiFunctionTooltip` 覆写 `getWidth(Font)`／`renderText(Font,int,int,Matrix4f,MultiBufferSource.BufferSource)`／`renderImage(Font,int,int,GuiGraphics)` | 同名 `TooltipComponent` 契约在 ⇒ 平台/行级 |
+| 93 | `TCGlobalLootModifierProvider` 的 `CraftingLootItemCondition`／`NotCondition`／`LootTableIdCondition.builder(…)` | 1.21 lib 有 `CraftingLootItemCondition`（§118 已核，codec 注册） |
+| 98／99 | `build.gradle`：`ParticleStorm-forge`、`mixinextras-forge`、`jarJar(…)`、`mixin:0.8.5:processor`、`project(":Confluence-Magic-Lib")`；`mods.toml`：portlib／geckolib 依赖块 | 平台 |
+
+### 122.5 状态
+
+- 台账（双写）：行 83–100 落状态；剩余 TODO **48**（TerraCurio 余 22 行 101–122、TerraFurniture 26 行 123–148）。
+- `fix_eol --check` 候选 6；本批**无代码落地**（两处资源差按 `DEFER-ASSETS` 登记）。
+- 下一批：**行 101–122（TerraCurio 收尾：JEI 恢复、第一人称动画、粒子绕序、饰品能力数据图化、重铸价格、构建修复）**。
+

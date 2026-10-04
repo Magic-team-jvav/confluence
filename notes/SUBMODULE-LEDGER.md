@@ -93,24 +93,24 @@
 | 80 | TerraCurio | `b1af28359` | 2026-08-23 | 升级粒子 | 7 | +35 −31 | PortLib×1 | COVERED |
 | 81 | TerraCurio | `99dc4ccf1` | 2026-08-23 | 调整版本 | 2 | +5 −4 | PortLib×8 | COVERED |
 | 82 | TerraCurio | `45beb4784` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | 11 | +786 −497 | PortLib×14 | COVERED |
-| 83 | TerraCurio | `a3f1cbca7` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 285 | +2500 −324 | PortLib×14 | TODO |
-| 84 | TerraCurio | `06d637298` | 2026-08-24 | 玩家动画测试 | 27 | +259 −30 |  | TODO |
-| 85 | TerraCurio | `6ee91b55b` | 2026-08-28 | 玩家动画（未注册永夜动画） | 1 | +1 −1 | PortLib×1 | TODO |
-| 86 | TerraCurio | `3516ac33a` | 2026-09-02 | 删除一些Extension类 | 1 | +1 −1 |  | TODO |
-| 87 | TerraCurio | `38fcb3595` | 2026-09-06 | 静态方法改接口 | 10 | +65 −67 | PortLib×20 | TODO |
-| 88 | TerraCurio | `aae737d41` | 2026-09-06 | 属性静态字段注入 | 9 | +55 −61 | PortLib×16 | TODO |
-| 89 | TerraCurio | `94c69f0bc` | 2026-09-06 | 删除多余内容 | 2 | +4 −1 |  | TODO |
-| 90 | TerraCurio | `be87be1cb` | 2026-09-06 | 封印魂 | 1 | +5 −6 |  | TODO |
-| 91 | TerraCurio | `d4be8935d` | 2026-09-07 | 生产环境修复 | 1 | +1 −1 |  | TODO |
-| 92 | TerraCurio | `59730e912` | 2026-09-07 | 生产环境修复 | 2 | +2 −2 |  | TODO |
-| 93 | TerraCurio | `0b3846038` | 2026-09-07 | 泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩 | 1 | +10 −1 | PortLib×1 | TODO |
-| 94 | TerraCurio | `ea3fe72d3` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题 | 1 | +1 −1 | PortLib×1 | TODO |
-| 95 | TerraCurio | `262f4dae5` | 2026-09-08 | 修复灯笼粒子往下掉的问题 | 1 | +1 −1 | PortLib×1 | TODO |
-| 96 | TerraCurio | `9a8c29d2b` | 2026-09-08 | 修复部分靴子没有自动上台阶功能的问题 | 1 | +1 −0 |  | TODO |
-| 97 | TerraCurio | `e9789b7c2` | 2026-09-10 | 修一些资源错误 | 1 | +14 −14 | 资源only | TODO |
-| 98 | TerraCurio | `b797d87e8` | 2026-09-10 | 修复mixin，修复跳跃属性 | 6 | +32 −24 | PortLib×9 | TODO |
-| 99 | TerraCurio | `eebc21cbe` | 2026-09-11 | 修复与Bigger Stacks的Mixin冲突 | 1 | +4 −1 |  | TODO |
-| 100 | TerraCurio | `feded30e6` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | TODO |
+| 83 | TerraCurio | `a3f1cbca7` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 285 | +2500 −324 | PortLib×14 | REVERSE-ALIGNED |
+| 84 | TerraCurio | `06d637298` | 2026-08-24 | 玩家动画测试 | 27 | +259 −30 |  | DEFER-ASSETS |
+| 85 | TerraCurio | `6ee91b55b` | 2026-08-28 | 玩家动画（未注册永夜动画） | 1 | +1 −1 | PortLib×1 | COVERED |
+| 86 | TerraCurio | `3516ac33a` | 2026-09-02 | 删除一些Extension类 | 1 | +1 −1 |  | COVERED |
+| 87 | TerraCurio | `38fcb3595` | 2026-09-06 | 静态方法改接口 | 10 | +65 −67 | PortLib×20 | COVERED |
+| 88 | TerraCurio | `aae737d41` | 2026-09-06 | 属性静态字段注入 | 9 | +55 −61 | PortLib×16 | COVERED |
+| 89 | TerraCurio | `94c69f0bc` | 2026-09-06 | 删除多余内容 | 2 | +4 −1 |  | COVERED |
+| 90 | TerraCurio | `be87be1cb` | 2026-09-06 | 封印魂 | 1 | +5 −6 |  | COVERED |
+| 91 | TerraCurio | `d4be8935d` | 2026-09-07 | 生产环境修复 | 1 | +1 −1 |  | COVERED |
+| 92 | TerraCurio | `59730e912` | 2026-09-07 | 生产环境修复 | 2 | +2 −2 |  | COVERED |
+| 93 | TerraCurio | `0b3846038` | 2026-09-07 | 泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩 | 1 | +10 −1 | PortLib×1 | COVERED |
+| 94 | TerraCurio | `ea3fe72d3` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题 | 1 | +1 −1 | PortLib×1 | COVERED |
+| 95 | TerraCurio | `262f4dae5` | 2026-09-08 | 修复灯笼粒子往下掉的问题 | 1 | +1 −1 | PortLib×1 | COVERED |
+| 96 | TerraCurio | `9a8c29d2b` | 2026-09-08 | 修复部分靴子没有自动上台阶功能的问题 | 1 | +1 −0 |  | COVERED |
+| 97 | TerraCurio | `e9789b7c2` | 2026-09-10 | 修一些资源错误 | 1 | +14 −14 | 资源only | DEFER-ASSETS |
+| 98 | TerraCurio | `b797d87e8` | 2026-09-10 | 修复mixin，修复跳跃属性 | 6 | +32 −24 | PortLib×9 | COVERED |
+| 99 | TerraCurio | `eebc21cbe` | 2026-09-11 | 修复与Bigger Stacks的Mixin冲突 | 1 | +4 −1 |  | COVERED |
+| 100 | TerraCurio | `feded30e6` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | SKIP-PORTLIB |
 | 101 | TerraCurio | `25eb4545d` | 2026-09-12 | JEI兼容恢复 | 3 | +7 −8 | PortLib×2 | TODO |
 | 102 | TerraCurio | `aa3c27be4` | 2026-09-13 | 版本更新 | 1 | +2 −1 | PortLib×2 | TODO |
 | 103 | TerraCurio | `b638adcd5` | 2026-09-14 | 为现有新增的怪物补全点需要的东西 | 1 | +0 −0 | 资源only | TODO |

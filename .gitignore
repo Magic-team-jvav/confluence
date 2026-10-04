@@ -35,3 +35,6 @@ run-data/
 generated/
 build/
 .vscode/settings.json
+
+#python
+__pycache__/

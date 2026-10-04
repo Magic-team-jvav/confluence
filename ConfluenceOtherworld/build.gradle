@@ -7,9 +7,7 @@ plugins {
 
 var projectName = [
         "Confluence-Magic-Lib",
-        "TerraEntity",
         "TerraCurio",
-        "TerraGuns",
         "TerraFurniture"
 ]
 
@@ -205,6 +203,7 @@ dependencies {
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation jarJar("org.mesdag:ParticleStorm-neoforge-${minecraft_version}:${particlestorm_version}")
     implementation jarJar("org.mesdag:ThreeDimensionParticle-neoforge-${minecraft_version}:${thr_dim_particle_version}")
+    implementation jarJar("org.mesdag:OpalLight-neoforge-${minecraft_version}:${opallight_version}")
     implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
@@ -214,7 +213,7 @@ dependencies {
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
     compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    if (true) {
+    if (false) {
         runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
         runtimeOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
         runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
@@ -274,7 +273,6 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
 //    runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    compileOnly "curse.maven:kubejs-238086:7278501"
     if (kubejs) {
         runtimeOnly "curse.maven:rhino-416294:7104526"
         runtimeOnly "curse.maven:kubejs-238086:7278501"
@@ -287,8 +285,6 @@ dependencies {
 //        runtimeOnly "maven.modrinth:balm:21.0.64+neoforge-1.21.1"
 //    }
 
-    compileOnly "curse.maven:xaeros-minimap-263420:7412188"
-    compileOnly "curse.maven:xaeros-world-map-317780:7412262"
     if (true) {
         runtimeOnly "curse.maven:xaeros-minimap-263420:7412188"
         runtimeOnly "curse.maven:xaeros-world-map-317780:7412262"
@@ -311,9 +307,8 @@ dependencies {
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }
 
-    compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+    compileOnly "curse.maven:dynamiclights-reforged-551736:5807536" // todo remove
 
-    compileOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
     if (bettercombat) {
         runtimeOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
     }

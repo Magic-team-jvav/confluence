@@ -152,14 +152,13 @@ public final class PrefixUtils {
         PrefixComponent component = modPrefix.createComponent(prefixType, itemStack);
         itemStack.set(ModDataComponentTypes.PREFIX, component);
 
-        int tier = ModRarity.ID_MAP.inverse().getOrDefault(ModRarity.getRarity(itemStack, true), -2);
-        if (tier < -1) tier = -2;
+        int tier = ModRarity.TIER.inverse().getOrDefault(ModRarity.getRarity(itemStack, true), -2);
         if (tier > -2) {
             tier += modPrefix.tier();
             if (tier < -1) tier = -1;
             else if (tier > 11) tier = 11;
         }
-        itemStack.set(ConfluenceMagicLib.MOD_RARITY, tier > -2 ? ModRarity.ID_MAP.get(tier) : null);
+        itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.TIER.get(tier));
         int value = ValueComponent.getValue(itemStack, 50, true);
         float finalValue = value + value * modPrefix.value();
         itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) finalValue));

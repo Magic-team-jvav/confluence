@@ -4302,3 +4302,47 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 
 ⇒ 行 170 = `COVERED`。**台账 400/400 全部有确定状态，TODO 与 `LOST?` 均为 0。**
 
+## 一百一十五、lib 对齐：`ModRarity.ID_MAP` → `TIER`（含删掉 7 个非色阶键、撤掉调用侧垫片）
+
+> 用户裁定：**1.21 lib 的 `ID_MAP` → `TIER` 改名是必须的**。此前 §105.7／§2781 只登记未动手，原因是 `Confluence-Magic-Lib` 为嵌套独立仓库；本轮按当时的建议方案执行（**只改映射名与键集，保留 1.21 自有的 `class`/`special`/`asTextColor` 形态，不回退成 1.20 的 record**）。
+
+### 115.1 权威依据
+
+| 证据 | 内容 |
+| --- | --- |
+| 1.20 lib 的 `e9b848c`（2026-09-23「大改修饰语」） | 对 `ModRarity.java` **11 增 53 删**：`ID_MAP` → `TIER`，并删除 `-13 MASTER`／`-12 EXPERT`／`-11 QUEST`／`-10 COMMON`／`-9 UNCOMMON`／`-8 RARE`／`-7 EPIC` 七条 |
+| 1.20 主仓 HEAD 钉的子模块提交 | `595159d718a5e1b47d51a9f71f0d03a180f70b33` = 1.20 lib HEAD，且 `merge-base --is-ancestor e9b848c 595159d` 成立 ⇒ **移植目标的 `ModRarity` 就是 13 项 `TIER`** |
+| 先后关系 | `6280189`（引入 `ID_MAP`）是 `e9b848c` 的祖先 ⇒ 改名为 1.20 侧**更新**的状态，不是回退 |
+| 1.21 引用面 | `ModRarity.ID_MAP` 的消费者**只有** `util/PrefixUtils.java:155/162` 两行；lib 自身零引用（`git grep ID_MAP` 于 lib 仅命中定义行，`.inverse()` 零命中） |
+
+### 115.2 改动
+
+| 文件 | 改动 |
+| --- | --- |
+| `Confluence-Magic-Lib`：`common/component/ModRarity.java` | 字段 `ID_MAP` → `TIER`；删除上述 7 条负键（保留 `-1 GRAY` 与 `0..11` 共 13 项，与 1.20 HEAD 逐项一致）；`class ModRarity implements DataComponentType<ModRarity>`、`special` 字段、`asTextColor()` 等 1.21 自有演进**不动** |
+| 主仓：`common/util/PrefixUtils.java` | `ModRarity.ID_MAP` → `ModRarity.TIER`；删掉垫片 `if (tier < -1) tier = -2;` 与三元 `tier > -2 ? ModRarity.ID_MAP.get(tier) : null`，改为 `ModRarity.TIER.get(tier)` |
+
+### 115.3 语义等价性（为何敢删垫片）
+
+1.20 的 `TIER` 只含色阶 `-1..11`，故 `TIER.inverse().getOrDefault(rarity, -2)` 对"未登记"稀有度一律给 `-2`，`TIER.get(-2)` = `null`（清空组件）。
+
+1.21 原来的 20 项表把 `EXPERT/MASTER/QUEST`（-13..-11）与 vanilla 的 `COMMON/UNCOMMON/RARE/EPIC`（-10..-7）也登记了，会把它们误判成色阶，因此当时补了 `if (tier < -1) tier = -2;` 归回"未登记"语义。键集对齐后该补偿**不再需要**：
+
+| `ModRarity.getRarity(itemStack, true)` 的取值 | 20 项表 + 垫片 | 13 项 `TIER`（现状） |
+| --- | --- | --- |
+| `GRAY`(-1) … `PURPLE`(11) | 键命中 → 进色阶分支 | 同 ✓ |
+| `EXPERT`／`MASTER`／`QUEST` | -12/-13/-11 → 垫片 -2 → null | 未命中 → -2 → null ✓ |
+| vanilla `COMMON`／`UNCOMMITTED`… | -10..-7 → 垫片 -2 → null | 未命中 → -2 → null ✓ |
+| `null`／其它 | 默认 -2 → null | 默认 -2 → null ✓ |
+
+核验：全仓（1.21）搜索 `-13..-7` 在 rarity/tier 语境下的补偿 **0 处**（`-10` 的 6 处命中全是矿脉 feature 名）；`git grep ModRarity.TIER` 于工作区命中 `PrefixUtils` 两行；两个改动文件 `{}`／`()` 计数平衡；`fix_eol --check` 仍候选 6（两文件保持纯 CRLF：167/185 行、0 裸 LF）。
+
+### 115.4 与 1.20 的逐字比对
+
+`setAndUpdate` 正文（归一 `stack/itemStack`、`prefix/modPrefix`、丢签名）difflib 结果**只剩两处 1.21 自有差异**：
+
+1. 多一行 `if (prefixType == null) return null;`（1.21 侧的空值守卫，保留）；
+2. 形参名 `prefixType`（1.20 叫 `type`）。
+
+其余（映射取 tier、`tier > -2` 分支、`tier += prefix.tier()` 与 `-1..11` 夹取、`TIER.get(tier)` 落组件、`ValueComponent` 计算）**逐字一致**。
+

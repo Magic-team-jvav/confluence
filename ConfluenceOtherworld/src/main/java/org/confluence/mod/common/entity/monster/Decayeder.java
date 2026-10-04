@@ -97,19 +97,17 @@ public class Decayeder extends BaseMonster {
         playSound(ModSoundEvents.DECAYEDER_STEP.get(), 0.15F, 1.0F);
     }
 
-    public void onDamageDealt(LivingEntity victim, DamageSource damageSource) {
+    public void onDamageDealt(ServerLevel serverLevel, LivingEntity victim, DamageSource damageSource) {
         if (!victim.hasEffect(ModEffects.DEMONIC_THOUGHTS.get())) {
             victim.addEffect(new MobEffectInstance(ModEffects.DEMONIC_THOUGHTS.get(), 200), this);
         } else {
             victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
             victim.hurt(damageSource, 6.0F);
-            if (level() instanceof ServerLevel serverLevel) {
-                EaterOfSouls eater = MonsterEntities.EATER_OF_SOULS.get().create(serverLevel);
-                if (eater != null) {
-                    eater.setPos(victim.getEyePosition());
-                    eater.setTarget(victim);
-                    serverLevel.addFreshEntity(eater);
-                }
+            EaterOfSouls eater = MonsterEntities.EATER_OF_SOULS.get().create(serverLevel);
+            if (eater != null) {
+                eater.setPos(victim.getEyePosition());
+                eater.setTarget(victim);
+                serverLevel.addFreshEntity(eater);
             }
             victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
         }

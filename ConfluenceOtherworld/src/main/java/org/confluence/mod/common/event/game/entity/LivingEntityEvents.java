@@ -338,7 +338,7 @@ public final class LivingEntityEvents {
         }
         @Nullable Entity attacker = damageSource.getEntity();
 
-        if (attacker instanceof Decayeder decayeder) decayeder.onDamageDealt(victim, damageSource);
+        if (attacker instanceof Decayeder decayeder) decayeder.onDamageDealt(serverLevel, victim, damageSource);
 
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);

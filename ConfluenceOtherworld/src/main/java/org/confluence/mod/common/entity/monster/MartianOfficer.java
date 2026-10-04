@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
+import org.confluence.lib.common.LibAttributes;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -21,8 +23,11 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /**
  * 由可再生护盾保护的战士
  */
-public final class MartianOfficer extends BaseWarriorMonster {
-    public static final float MAX_SHIELD = 200.0F;
+public final class MartianOfficer extends MartianHumanoidMonster {
+    // 护盾没有专家生命加成：1000 × 26%；防御 20 分别换算为护甲 9、韧性 4。
+    public static final float MAX_SHIELD = 260.0F;
+    public static final float SHIELD_ARMOR = 9.0F;
+    public static final float SHIELD_TOUGHNESS = 4.0F;
     public static final int RECOVERY_TICKS = 60;
     private static final EntityDataAccessor<Float> SHIELD = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> IMPACT_SEQUENCE = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.INT);
@@ -49,25 +54,43 @@ public final class MartianOfficer extends BaseWarriorMonster {
         entityData.define(IMPACT_SEQUENCE, 0);
     }
 
-    public float getShieldHealth() {return entityData.get(SHIELD);}
+    public float getShieldHealth() {
+        return entityData.get(SHIELD);
+    }
 
-    public boolean hasShield() {return getShieldHealth() > 0.0F;}
+    public boolean hasShield() {
+        return getShieldHealth() > 0.0F;
+    }
 
-    public float shieldFormation(float partialTick) {return Math.min(1, (visualShieldTicks + partialTick) / 12.0F);}
+    public float shieldFormation(float partialTick) {
+        return Math.min(1, (visualShieldTicks + partialTick) / 12.0F);
+    }
 
-    public float shieldDissolve(float partialTick) {return Math.min(1, (visualBrokenTicks + partialTick) / 8.0F);}
+    public float shieldDissolve(float partialTick) {
+        return Math.min(1, (visualBrokenTicks + partialTick) / 8.0F);
+    }
 
-    public float shieldImpactAge(float partialTick) {return visualImpactTicks + partialTick;}
+    public float shieldImpactAge(float partialTick) {
+        return visualImpactTicks + partialTick;
+    }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if (!level().isClientSide) return;
-        if (key.equals(IMPACT_SEQUENCE)) visualImpactTicks = 0;
+        if (!level().isClientSide) {
+            return;
+        }
+        if (key.equals(IMPACT_SEQUENCE)) {
+            visualImpactTicks = 0;
+        }
         if (key.equals(SHIELD)) {
             float health = getShieldHealth();
-            if (health <= 0 && previousShieldHealth > 0) visualBrokenTicks = 0;
-            if (health > 0 && previousShieldHealth <= 0) visualShieldTicks = 0;
+            if (health <= 0 && previousShieldHealth > 0) {
+                visualBrokenTicks = 0;
+            }
+            if (health > 0 && previousShieldHealth <= 0) {
+                visualShieldTicks = 0;
+            }
             previousShieldHealth = health;
         }
     }
@@ -85,14 +108,20 @@ public final class MartianOfficer extends BaseWarriorMonster {
             visualImpactTicks = Math.min(20, visualImpactTicks + 1);
             return;
         }
-        if (!isAlive()) return;
-        if (shieldHitTicks > 0) shieldHitTicks--;
+        if (!isAlive()) {
+            return;
+        }
+        if (shieldHitTicks > 0) {
+            shieldHitTicks--;
+        }
         if (!hasShield() && ++recoveryTicks >= RECOVERY_TICKS) {
             entityData.set(SHIELD, MAX_SHIELD);
             recoveryTicks = 0;
             shieldHitTicks = 0;
         }
-        if (hasShield()) clearFire();
+        if (hasShield()) {
+            clearFire();
+        }
         tickOfficerContact();
     }
 
@@ -112,9 +141,16 @@ public final class MartianOfficer extends BaseWarriorMonster {
     }
 
     private void tickOfficerContact() {
-        if (contactCooldown > 0) contactCooldown--;
+        if (contactCooldown > 0) {
+            contactCooldown--;
+        }
+        if (contactCooldown > 0) {
+            return;
+        }
         Vec3 previous = new Vec3(xo, yo, zo);
-        if (previous.distanceToSqr(position()) > 256) previous = position();
+        if (previous.distanceToSqr(position()) > 256) {
+            previous = position();
+        }
         final Vec3 start = previous;
         var targets = hasShield()
                 ? level().getEntities(this, OfficerShieldGeometry.bounds(start, getScale())
@@ -123,22 +159,34 @@ public final class MartianOfficer extends BaseWarriorMonster {
                 : SweptContactAttack.findTargets(this, previous, 0, maximumContactSweepDistance(), this::canContactAttack);
         boolean hit = false;
         for (Entity target : targets) {
-            if (contactCooldown == 0) hit |= doContactHurtTarget(target);
+            hit |= doContactHurtTarget(target);
         }
-        if (hit) contactCooldown = contactAttackInterval();
+        if (hit) {
+            contactCooldown = contactAttackInterval();
+        }
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!hasShield() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
-            return super.hurt(source, amount);
-        if (level().isClientSide || !isAlive() || isInvulnerableTo(source) || !(amount > 0.0F))
+        if (!Float.isFinite(amount) || amount <= 0.0F) {
             return false;
-        if (source.is(DamageTypeTags.IS_FIRE)) return false;
-        // 护盾防御 20 -> 4，采用泰拉瑞亚的半数防御固定减伤。
-        float damage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount : Math.max(0.2F, amount - 2.0F);
+        }
+        if (!hasShield() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return super.hurt(source, amount);
+        }
+        if (level().isClientSide || !isAlive() || isInvulnerableTo(source)) {
+            return false;
+        }
+        if (source.is(DamageTypeTags.IS_FIRE)) {
+            return false;
+        }
+        float damage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount
+                : CombatRules.getDamageAfterAbsorb(amount,
+                        LibAttributes.applyArmorPenetration(this, source, SHIELD_ARMOR), SHIELD_TOUGHNESS);
         if (shieldHitTicks > 10) {
-            if (damage <= lastShieldDamage) return false;
+            if (damage <= lastShieldDamage) {
+                return false;
+            }
             float previous = lastShieldDamage;
             lastShieldDamage = damage;
             damage -= previous;
@@ -149,19 +197,24 @@ public final class MartianOfficer extends BaseWarriorMonster {
         entityData.set(SHIELD, Math.max(0.0F, getShieldHealth() - damage));
         showShieldImpact();
         recoveryTicks = 0;
-        if (source.getEntity() instanceof net.minecraft.world.entity.LivingEntity attacker)
+        if (source.getEntity() instanceof LivingEntity attacker) {
             setLastHurtByMob(attacker);
+        }
         level().broadcastEntityEvent(this, (byte) 2);
         return true;
     }
 
     @Override
     public void knockback(double strength, double x, double z) {
-        if (!hasShield()) super.knockback(strength, x, z);
+        if (!hasShield()) {
+            super.knockback(strength, x, z);
+        }
     }
 
     @Override
-    public boolean isPushable() {return !hasShield() && super.isPushable();}
+    public boolean isPushable() {
+        return !hasShield() && super.isPushable();
+    }
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
@@ -170,8 +223,11 @@ public final class MartianOfficer extends BaseWarriorMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "officer", 4, state -> state.setAndContinue(
-                state.isMoving() ? (isSprinting() ? DASH : WALK) : STAND)));
+        AnimationController<MartianOfficer> controller = new AnimationController<>(this, "officer", 4, state -> {
+            RawAnimation movement = isSprinting() ? DASH : WALK;
+            return state.setAndContinue(state.isMoving() ? movement : STAND);
+        });
+        controllers.add(controller);
     }
 
     @Override

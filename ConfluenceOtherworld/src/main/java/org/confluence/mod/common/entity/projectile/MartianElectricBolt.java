@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -11,9 +12,13 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.init.ModEffects;
 
+import java.util.Objects;
+
 /** Imprecise Tesla shot; native projectile owner persistence prevents orphaned damage. */
 public final class MartianElectricBolt extends StraightMonsterProjectile {
-    public static final float SHOT_DAMAGE = 5.0F;
+    // 专家电击射弹 112 × 26%，向上取整。
+    public static final float SHOT_DAMAGE = 30.0F;
+    private static final int OWNER_GRACE_TICKS = 40;
     private int missingOwnerTicks;
 
     public MartianElectricBolt(EntityType<? extends MartianElectricBolt> type, Level level) {
@@ -21,7 +26,8 @@ public final class MartianElectricBolt extends StraightMonsterProjectile {
     }
 
     public void configureShot(Mob owner, LivingEntity target) {
-        if (owner == null || target == null) return;
+        Objects.requireNonNull(owner, "owner");
+        Objects.requireNonNull(target, "target");
         Vec3 origin = new Vec3(owner.getX(), owner.getEyeY() - 0.1D, owner.getZ());
         Vec3 aim = target.getEyePosition().subtract(origin);
         double horizontalSquared = aim.x * aim.x + aim.z * aim.z;
@@ -40,9 +46,13 @@ public final class MartianElectricBolt extends StraightMonsterProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide || isRemoved()) return;
+        if (level().isClientSide || isRemoved()) {
+            return;
+        }
         if (getOwner() == null) {
-            if (++missingOwnerTicks > 40) discard();
+            if (++missingOwnerTicks > OWNER_GRACE_TICKS) {
+                discard();
+            }
         } else {
             missingOwnerTicks = 0;
         }
@@ -56,7 +66,9 @@ public final class MartianElectricBolt extends StraightMonsterProjectile {
 
     @Override
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
-        if (random.nextInt(3) != 0) target.addEffect(new MobEffectInstance(ModEffects.ELECTRIFIED.get(), 100));
+        if (random.nextInt(3) != 0) {
+            target.addEffect(new MobEffectInstance(ModEffects.ELECTRIFIED.get(), 100));
+        }
     }
 
     @Override
@@ -68,6 +80,6 @@ public final class MartianElectricBolt extends StraightMonsterProjectile {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        missingOwnerTicks = tag.contains("MissingOwnerTicks") ? Math.max(0, tag.getInt("MissingOwnerTicks")) : 0;
+        missingOwnerTicks = Mth.clamp(tag.getInt("MissingOwnerTicks"), 0, OWNER_GRACE_TICKS);
     }
 }

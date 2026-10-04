@@ -429,6 +429,9 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.confluence.sand_elemental.desc", "The most intense sandstorms draw forth powerful earth elementals. With this feminine form, her tornadoes tear all asunder.");
         add("bestiary.entity.confluence.sand_shark.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.confluence.crab.desc", "This hard shelled coastal creature could snip the toes right off a man, among other things. They are not to be trifled with.");
+        add("bestiary.entity.confluence.brain_scrambler.desc", "A Martian gunner whose bolts scramble the victim's sense of direction.");
+        add("bestiary.entity.confluence.gray_grunt.desc", "A heavily built Martian shock trooper trained for close combat.");
+        add("bestiary.entity.confluence.gigazapper.desc", "A Martian assault soldier who charges an electrified energy spear.");
         add("bestiary.entity.confluence.martian_officer.desc", "A tactical officer protected by a regenerating personal shield.");
         add("bestiary.entity.confluence.martian_walker.desc", "A fast biomechanical walker that stops briefly to fire laser bursts.");
 //        add("bestiary.entity.confluence.sea_snail.desc", "This unusually large snail makes its home deep in the ocean. Its mucus can be manufactured into a purple dye.");
@@ -1219,6 +1222,9 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.confluence.sand_elemental.desc", "最强烈的沙尘暴会召唤出强大的土元素——沙尘精。以雌性形态显现的它，能召唤龙卷风撕碎一切。");
         add("bestiary.entity.confluence.sand_shark.desc", "远古时期曾有一条咸水河贯穿沙漠，如今这些沙鲨已进化出在干燥沙层中生存的能力。");
         add("bestiary.entity.confluence.crab.desc", "这种生活在海岸的硬壳生物，能轻易剪断人的脚趾，甚至造成更严重的伤害，绝不可轻视。");
+        add("bestiary.entity.confluence.brain_scrambler.desc", "其弹丸会扰乱受害者方向感的火星枪手。");
+        add("bestiary.entity.confluence.gray_grunt.desc", "体格强壮、擅长近身战斗的火星突击兵。");
+        add("bestiary.entity.confluence.gigazapper.desc", "能够蓄力刺出带电能量矛的火星突击兵。");
         add("bestiary.entity.confluence.martian_officer.desc", "受到可再生个人护盾保护的火星战术军官。");
         add("bestiary.entity.confluence.martian_walker.desc", "高速生物机械步行机，会短暂停下并连续发射激光。");
 //        add("bestiary.entity.confluence.sea_snail.desc", "这种异常巨大的海蜗牛栖息在深海之中，其分泌的黏液可被加工成紫色染料。");

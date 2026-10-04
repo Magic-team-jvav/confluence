@@ -5080,6 +5080,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.PIRATE_CAPTAIN.get(), "海盗船长");
         add(MonsterEntities.PIRATE_PARROT.get(), "海盗鹦鹉");
         add(MonsterEntities.PIRATES_CURSE.get(), "海盗诅咒");
+        add(MonsterEntities.BRAIN_SCRAMBLER.get(), "扰脑怪");
+        add(MonsterEntities.GRAY_GRUNT.get(), "灰咕噜");
+        add(MonsterEntities.GIGAZAPPER.get(), "电击怪");
+        add(ModEntities.ELECTRIC_SPEAR.get(), "电矛");
+        add(SpawnEggItems.BRAIN_SCRAMBLER_SPAWN_EGG.get(), "扰脑怪刷怪蛋");
+        add(SpawnEggItems.GRAY_GRUNT_SPAWN_EGG.get(), "灰咕噜刷怪蛋");
+        add(SpawnEggItems.GIGAZAPPER_SPAWN_EGG.get(), "电击怪刷怪蛋");
         add(MonsterEntities.MARTIAN_PROBE.get(), "火星探测器");
         add(MonsterEntities.MARTIAN_ENGINEER.get(), "火星工程师");
         add(MonsterEntities.MARTIAN_OFFICER.get(), "火星军官");

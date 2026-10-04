@@ -1836,6 +1836,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.giant_fungi_bulb_segment", "Giant Fungi Bulb Segment");
         addOverrides();
         add(MonsterEntities.WINGLESS_SLIMER.get(), "Slimer");
+        add(MonsterEntities.BRAIN_SCRAMBLER.get(), "Brain Scrambler");
+        add(MonsterEntities.GRAY_GRUNT.get(), "Gray Grunt");
+        add(MonsterEntities.GIGAZAPPER.get(), "Gigazapper");
+        add(ModEntities.ELECTRIC_SPEAR.get(), "Electric Spear");
+        add(SpawnEggItems.BRAIN_SCRAMBLER_SPAWN_EGG.get(), "Brain Scrambler Spawn Egg");
+        add(SpawnEggItems.GRAY_GRUNT_SPAWN_EGG.get(), "Gray Grunt Spawn Egg");
+        add(SpawnEggItems.GIGAZAPPER_SPAWN_EGG.get(), "Gigazapper Spawn Egg");
         add(MonsterEntities.MARTIAN_PROBE.get(), "Martian Probe");
         add(MonsterEntities.MARTIAN_ENGINEER.get(), "Martian Engineer");
         add(MonsterEntities.TESLA_TURRET.get(), "Tesla Turret");

@@ -306,6 +306,9 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> LUNATIC_CULTIST_SPAWN_EGG = register(BossEntities.LUNATIC_CULTIST);
     public static final PortDeferredItem<ForgeSpawnEggItem> PHANTASM_DRAGON_SPAWN_EGG = register(BossEntities.PHANTASM_DRAGON);
 
+    public static final PortDeferredItem<ForgeSpawnEggItem> BRAIN_SCRAMBLER_SPAWN_EGG = register(MonsterEntities.BRAIN_SCRAMBLER);
+    public static final PortDeferredItem<ForgeSpawnEggItem> GRAY_GRUNT_SPAWN_EGG = register(MonsterEntities.GRAY_GRUNT);
+    public static final PortDeferredItem<ForgeSpawnEggItem> GIGAZAPPER_SPAWN_EGG = register(MonsterEntities.GIGAZAPPER);
     public static final PortDeferredItem<ForgeSpawnEggItem> MARTIAN_OFFICER_SPAWN_EGG = register(MonsterEntities.MARTIAN_OFFICER);
     public static final PortDeferredItem<ForgeSpawnEggItem> MARTIAN_WALKER_SPAWN_EGG = register(MonsterEntities.MARTIAN_WALKER);
     public static void init() {}

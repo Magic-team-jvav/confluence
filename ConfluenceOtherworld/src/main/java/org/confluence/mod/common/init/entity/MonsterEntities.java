@@ -762,30 +762,47 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(10).attackDamage(39).add(LibAttributes.getArmorPenetration().get(), 12).movementSpeed(0.3).followRange(40).knockbackResistance(0.82).add(Attributes.ARMOR_TOUGHNESS, 4).build());
     //火星人事件
     public static final RegistryObject<EntityType<MartianProbe>> MARTIAN_PROBE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_probe", EntityType.Builder.of(MartianProbe::new, MobCategory.MONSTER).sized(1.4F, 1.0F).clientTrackingRange(12))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(5).attackDamage(5).followRange(48).movementSpeed(0.25).flyingSpeed(0.65).knockbackResistance(0.4).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(3).attackDamage(3).add(LibAttributes.getArmorPenetration().get(), 0).add(Attributes.ARMOR_TOUGHNESS, 1).followRange(48).movementSpeed(0.25).flyingSpeed(0.65).knockbackResistance(0.4).build());
     public static final RegistryObject<EntityType<MartianEngineer>> MARTIAN_ENGINEER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_engineer", EntityType.Builder.of(MartianEngineer::new, MobCategory.MONSTER).sized(0.8F, 2.0F).clientTrackingRange(10))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(20).attackDamage(16).followRange(40).movementSpeed(0.24).knockbackResistance(0.55).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(16).attackDamage(21).add(LibAttributes.getArmorPenetration().get(), 6).add(Attributes.ARMOR_TOUGHNESS, 6).followRange(40).movementSpeed(0.24).knockbackResistance(0.55).build());
     public static final RegistryObject<EntityType<TeslaTurret>> TESLA_TURRET = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("tesla_turret", EntityType.Builder.of(TeslaTurret::new, MobCategory.MONSTER).sized(1.0F, 1.2F).clientTrackingRange(10))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(24).attackDamage(28).followRange(36).movementSpeed(0.01).knockbackResistance(1.0).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(18).attackDamage(6).add(LibAttributes.getArmorPenetration().get(), 1).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(36).movementSpeed(0.01).knockbackResistance(1.0)
+                    .projectile(ModEntities.MARTIAN_ELECTRIC_BOLT, projectile -> projectile.damage(30))
+                    .build());
     public static final RegistryObject<EntityType<RayGunner>> RAY_GUNNER = withAttributes(registerEntity("ray_gunner", EntityType.Builder.of(RayGunner::new, MobCategory.MONSTER).sized(0.8F, 1.6F).clientTrackingRange(12)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(200).armor(16).attackDamage(20).followRange(44).movementSpeed(0.25).knockbackResistance(0.65)
-                    .state(RayGunner.CombatState.MOUNTED, state -> state.attackDamage(13).armor(18).knockbackResistance(0.0))
+            () -> CreatureAttributeBuilder.creature().maxHealth(182).armor(12).attackDamage(26).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 5).followRange(44).movementSpeed(0.25).knockbackResistance(0.65)
+                    .state(RayGunner.CombatState.MOUNTED, state -> state.attackDamage(34).armor(14).attribute(Attributes.ARMOR_TOUGHNESS, 6)
+                            .attribute(LibAttributes.getArmorPenetration().get(), 10).knockbackResistance(0.0))
+                    .projectile(ModEntities.MONSTER_LASER, projectile -> projectile.damage(32))
                     .build());
     public static final RegistryObject<EntityType<Scutlix>> SCUTLIX = withAttributes(registerEntity("scutlix", EntityType.Builder.of(Scutlix::new, MobCategory.MONSTER).sized(1.8F, 1.7F).clientTrackingRange(12)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(20).attackDamage(20).followRange(44).movementSpeed(0.32).knockbackResistance(0.9)
-                    .state(Scutlix.CombatState.MOUNTED, state -> state.attackDamage(13))
+            () -> CreatureAttributeBuilder.creature().maxHealth(312).armor(14).attackDamage(45).add(LibAttributes.getArmorPenetration().get(), 12).add(Attributes.ARMOR_TOUGHNESS, 6).followRange(44).movementSpeed(0.32).knockbackResistance(0.9)
+                    .state(Scutlix.CombatState.MOUNTED, state -> state.attackDamage(45))
                     .build());
     public static final RegistryObject<EntityType<MartianOfficer>> MARTIAN_OFFICER = withAttributes(registerEntity("martian_officer", EntityType.Builder.of(MartianOfficer::new, MobCategory.MONSTER).sized(0.85F, 2.05F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(60).armor(10).attackDamage(15).followRange(36).movementSpeed(0.25).knockbackResistance(0.75).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(23).attackDamage(39).add(LibAttributes.getArmorPenetration().get(), 12).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(36).movementSpeed(0.25).knockbackResistance(0.75).build());
     public static final RegistryObject<EntityType<MartianWalker>> MARTIAN_WALKER = withAttributes(registerEntity("martian_walker", EntityType.Builder.of(MartianWalker::new, MobCategory.MONSTER).sized(2.8F, 7.5F).clientTrackingRange(16)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(400).armor(8).attackDamage(12).followRange(48).movementSpeed(0.55).knockbackResistance(1).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(1040).armor(18).attackDamage(32).add(LibAttributes.getArmorPenetration().get(), 10).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(48).movementSpeed(0.55).knockbackResistance(1)
+                    .projectile(ModEntities.MONSTER_LASER, projectile -> projectile.damage(37))
+                    .build());
     public static final RegistryObject<EntityType<WalkerWeapon>> WALKER_WEAPON = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_walker_weapon", EntityType.Builder.of(WalkerWeapon::new, MobCategory.MONSTER).sized(0.8F, 1.0F).clientTrackingRange(16))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(100).armor(8).attackDamage(0).followRange(0).movementSpeed(0).knockbackResistance(1).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(18).attackDamage(0).add(LibAttributes.getArmorPenetration().get(), 0).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(0).movementSpeed(0).knockbackResistance(1).build());
 
     // 新年：大飞龙
     public static final RegistryObject<EntityType<BaseWormPart>> ARCH_WYVERN_SEGMENT = registerWormSegment("arch_wyvern_segment");
     public static final RegistryObject<EntityType<SimpleWormMonster>> ARCH_WYVERN = withAttributes(registerWorm("arch_wyvern", 12, 1.8F, 1.8F, SimpleWormMonster.Role.FLYING, () -> MonsterEntities.ARCH_WYVERN_SEGMENT.get()),
             () -> CreatureAttributeBuilder.creature().maxHealth(3120).armor(9).attackDamage(52).followRange(64).attackKnockback(1).knockbackResistance(0.37).add(Attributes.ARMOR_TOUGHNESS, 4).build());
+
+    public static final RegistryObject<EntityType<BrainScrambler>> BRAIN_SCRAMBLER = withAttributes(registerEntity("brain_scrambler", EntityType.Builder.of(BrainScrambler::new, MobCategory.MONSTER).sized(0.8F, 2.0F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.creature().maxHealth(182).armor(12).attackDamage(26).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 5).followRange(40).movementSpeed(0.24).knockbackResistance(0.65)
+                    .projectile(ModEntities.MONSTER_LASER, projectile -> projectile.damage(25))
+                    .build());
+    public static final RegistryObject<EntityType<GrayGrunt>> GRAY_GRUNT = withAttributes(registerEntity("gray_grunt", EntityType.Builder.of(GrayGrunt::new, MobCategory.MONSTER).sized(0.8F, 2.0F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.creature().maxHealth(390).armor(14).attackDamage(42).add(LibAttributes.getArmorPenetration().get(), 12).add(Attributes.ARMOR_TOUGHNESS, 6).followRange(36).movementSpeed(0.28).knockbackResistance(1.0).build());
+    public static final RegistryObject<EntityType<Gigazapper>> GIGAZAPPER = withAttributes(registerEntity("gigazapper", EntityType.Builder.of(Gigazapper::new, MobCategory.MONSTER).sized(0.9F, 2.1F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.creature().maxHealth(312).armor(18).attackDamage(39).add(LibAttributes.getArmorPenetration().get(), 12).add(Attributes.ARMOR_TOUGHNESS, 7).followRange(36).movementSpeed(0.26).knockbackResistance(0.7)
+                    .projectile(ModEntities.ELECTRIC_SPEAR, projectile -> projectile.damage(26))
+                    .build());
 
     // Boss 附属生物：克苏鲁之脑
     public static final RegistryObject<EntityType<VisualNeuron>> VISUAL_NEURON = withAttributes(registerEntity("visual_neuron", EntityType.Builder.of(VisualNeuron::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10)),

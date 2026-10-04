@@ -25,7 +25,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 /** Builds Tesla Turrets for the shared, world-wide four-per-engineer allowance. */
-public final class MartianEngineer extends BaseWarriorMonster {
+public final class MartianEngineer extends MartianHumanoidMonster {
     public static final String EVENT_TAG = "confluence:martian_madness";
     private static final int DEPLOY_RANGE = 5;
     private static final int DIAMETER = DEPLOY_RANGE * 2 + 1;

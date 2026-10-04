@@ -28,7 +28,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.UUID;
 
 /** Mounted or dismounted Martian marksman. */
-public final class RayGunner extends BaseWarriorMonster {
+public final class RayGunner extends MartianHumanoidMonster {
     public enum CombatState {
         MOUNTED
     }
@@ -213,7 +213,7 @@ public final class RayGunner extends BaseWarriorMonster {
         if (target == null || !ModEntities.MONSTER_LASER.isPresent()) return false;
         MonsterLaser laser = ModEntities.MONSTER_LASER.get().create(serverLevel);
         if (laser == null) return false;
-        laser.configureShot(this, target, new Vec3(getX(), getEyeY() - 0.1D, getZ()), MonsterLaser.Variant.RAY_GUNNER);
+        laser.configureShot(this, target, new Vec3(getX(), getEyeY() - 0.1D * getScale(), getZ()), MonsterLaser.Variant.RAY_GUNNER);
         if (!serverLevel.addFreshEntity(laser)) {
             laser.discard();
             return false;

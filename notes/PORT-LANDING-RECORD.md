@@ -3924,3 +3924,47 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - 台账（双写）：**行 21／22／23／24 = `COVERED`**；剩余 TODO **56** 个。
 - `fix_eol --check` 候选 6；本轮无代码落地。
 - 下一批：**行 29–33**（2026-06 中旬的 partN 系列）。
+
+
+## 一百零七、台账续走：行 29–33 与 35–38 **九行一次核完** ⇒ 全部 `COVERED`
+
+> 本轮用同一套流水线：`rowaudit` → `screen_full`（全文筛选）→ `symrow.py`（全仓级定义型符号核查）→ 逐候选查证 → 小行直接读待办行。
+
+### 107.1 筛查与符号核查总表
+
+| 行 | 提交 | 说明 | 筛查后 real | 定义型符号 | 全仓缺失 |
+| --- | --- | --- | --- | --- | --- |
+| 29 | `15afa497b` | fix magic mirror | 2 / 2 文件 | 0 | 0 |
+| 30 | `a779580be` | part16（⚠️7） | 227 / 51 文件 | 44 | 3 |
+| 31 | `a8fc8c2c6` | 语法降级（⚠️1） | 23 / 5 文件 | 8 | 0 |
+| 32 | `f30688d17` | 迁移至 PortLib API（⚠️7） | 721 / 157 文件 | 30 | 3 |
+| 33 | `7646c5505` | 物品移植（⚠️3） | 207 / 36 文件 | 15 | 0 |
+| 35 | `093eda09f` | part17（⚠️6） | 93 / 18 文件 | 34 | 2 |
+| 36 | `17af6914e` | 一点点粒子 | 58 / 2 文件 | 16 | 1 |
+| 37 | `fbcb8e783` | fix crash | 29 / 12 文件 | 4 | 1 |
+| 38 | `8bcc392be` | mob effect | 19 / 11 文件 | 10 | 0 |
+
+> 行 32（"迁移至 PortLib API"，721 条/157 文件）属**整提交性质的平台搬迁**，按 §1 口径不逐条移植。
+
+### 107.2 十一个候选的裁定（**全部不是缺口**）
+
+| 候选 | 实测 | 裁定 |
+| --- | --- | --- |
+| `WireCutterItem.BASE_ID`（行 30） | 1.20 用 `BASE_ID` + PortLib `PortAttributeModifier`；1.21 内联为 `new AttributeModifier(Confluence.asResource("wire_cutter"), 20, ADDITION)`（`:23`） | 等价（内联） |
+| `ModBlocks.FAILED_SKULL_WALL` / `VOID_ENTITY`（行 30） | 字面量 `failed_skull_wall` 在 1.21 **同样出现在 10 个文件**（含 `ModBlocks`／`ModChineseProvider`／五个语区 json）⇒ 常量改名；`VOID_ENTITY` → 1.21 的 `VOID_BLOCK_ENTITY` | 等价（改名） |
+| `AltarBlock.ALTAR_RENDERER`（行 32） | **1.20 HEAD 本身已无**该常量 ⇒ dead，无移植物 | 无效条目 |
+| `SimpleTreeGrower`／`SimpleMegaTreeGrower`（行 32） | 1.20 命中 4 处/2 文件；1.21 **31 处/4 文件**（`BaseSaplingBlock`／`ModFeatures`／`PineSaplingBlock`／`StoneSaplingBlock`）⇒ 1.21 用 `BaseSaplingBlock` 另实现 | 等价（设计不同） |
+| `AttributeRegistration`（行 35） | 1.20 HEAD 与 1.21 **两侧都没有该文件** ⇒ dead（属 TE 集成拆迁） | 无效条目 |
+| `SnowballItemMixin`（行 35） | 1.20 有 20 行 mixin（把 vanilla 雪球堆叠 16→`MAX_STACK_SIZE`，注册在 `confluence.mixins.json`）；1.21 **无该 mixin 也无 `SnowballItem` 引用**，但 `ModEvents:239` 用 NeoForge 原生 `event.modify(Items.SNOWBALL, …)` 达成同一效果 | 等价（原生 API 取代 mixin） |
+| `ModParticleTypes.PARTICLES`（行 36／37） | 1.20 是 PortLib 的 `PortParticleTypeRegistration` ⇒ 平台字段（1.21 用 `DeferredRegister`） | 平台差异 |
+| `TCCommonConfigs` 导入（行 29 的 2 条待办） | 1.20 与 1.21 **同为 5 处命中**（`RainbowBoulderEntity`／`TreasureBagItems`） | 等价（导入行写法差异） |
+| `IRandomCount` 的 `instanceof` 分支（行 31） | 1.20 203 行含 `instanceof ArrayRandom random` 等 4 类分支；1.21 **214 行且无任何 `instanceof`** ⇒ 用另一套写法实现同一分派；该提交本身是"语法降级"（1.20 工具链的写法回退） | 等价（1.21 另有实现；该提交价值低） |
+| `WholeItemParticleOptions`（行 36） | 两侧都有 `WholeItemParticle.java` + `WholeItemParticleOptions.java`，`WHOLE_ITEM` 均已在 `ModClientEvents` 注册粒子 Provider | 等价 |
+
+⇒ 行 29／30／31／32／33／35／36／37／38 **全部 `COVERED`**。
+
+### 107.3 状态
+
+- 台账（双写）：上述九行 = `COVERED`；剩余 TODO **47** 个（下一批自 40 起）。
+- `fix_eol --check` 候选 6；本轮无代码落地。
+- 下一批：**行 40–43（partN 系列继续）→ 45–49 → 51–55 → 57–66**（57–66 是最大的一段，10 行）。

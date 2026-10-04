@@ -186,16 +186,16 @@
 | 26 | `c85213f17` | 2026-06-14 | part15 | ConfluenceOtherworld | +0 ~24 -0 |  |  | ⚠️ 3 | content | （不动 1.21） — 机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port518/-Port0），属把原生写法换成 Port 写法，1.21 保留原生即可 | SKIP-PLATFORM |
 | 27 | `13a467d59` | 2026-06-14 | enum extend | ConfluenceOtherworld | +2 ~10 -1 |  |  |  | content | （不动 1.21） — 机器判定：方向为 port-ing（新增/删除行以 Port 引用为主，+Port114/-Port28），属把原生写法换成 Port 写法，1.21 保留原生即可 | SKIP-PLATFORM |
 | 28 | `74a1fc885` | 2026-06-14 | 移除BOM | (repo-root), ConfluenceOtherworld | +0 ~275 -1 |  |  | ⚠️ 43 | content+integration | 1.21 已存在 — 机器判定：新增 260 行中 259 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查 | COVERED |
-| 29 | `15afa497b` | 2026-06-14 | fix magic mirror | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~6 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 1 | content+submodule |  | TODO |
-| 30 | `a779580be` | 2026-06-14 | part16 | ConfluenceOtherworld, PortLib | +0 ~82 -1 |  | PortLib×1 | ⚠️ 7 | content+submodule |  | TODO |
-| 31 | `a8fc8c2c6` | 2026-06-15 | 语法降级 | ConfluenceOtherworld | +0 ~28 -0 |  |  | ⚠️ 1 | content+integration |  | TODO |
-| 32 | `f30688d17` | 2026-06-15 | update: 将多个方块迁移至 PortLib API 并调整方法签名 | ConfluenceOtherworld, PortLib | +2 ~173 -3 | `SimpleGeoItemRenderer.java`→`SimpleGeoItemRenderer.java` | PortLib×1 | ⚠️ 7 | content+submodule |  | TODO |
-| 33 | `7646c5505` | 2026-06-15 | 物品移植 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +4 ~76 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 3 | content+submodule |  | TODO |
+| 29 | `15afa497b` | 2026-06-14 | fix magic mirror | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~6 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 1 | content+submodule |  | COVERED |
+| 30 | `a779580be` | 2026-06-14 | part16 | ConfluenceOtherworld, PortLib | +0 ~82 -1 |  | PortLib×1 | ⚠️ 7 | content+submodule |  | COVERED |
+| 31 | `a8fc8c2c6` | 2026-06-15 | 语法降级 | ConfluenceOtherworld | +0 ~28 -0 |  |  | ⚠️ 1 | content+integration |  | COVERED |
+| 32 | `f30688d17` | 2026-06-15 | update: 将多个方块迁移至 PortLib API 并调整方法签名 | ConfluenceOtherworld, PortLib | +2 ~173 -3 | `SimpleGeoItemRenderer.java`→`SimpleGeoItemRenderer.java` | PortLib×1 | ⚠️ 7 | content+submodule |  | COVERED |
+| 33 | `7646c5505` | 2026-06-15 | 物品移植 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +4 ~76 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 3 | content+submodule |  | COVERED |
 | 34 | `2efa17a52` | 2026-06-16 | rollback1 | ConfluenceOtherworld | +2 ~32 -0 |  |  |  | content | 1.21 已存在 — 机器判定：新增 10289 行中 10198 行（99%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查 | COVERED |
-| 35 | `093eda09f` | 2026-06-16 | part17 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +2 ~45 -3 |  | PortLib×1, Confluence-Magic-Lib×1 | ⚠️ 6 | content+submodule+integration |  | TODO |
-| 36 | `17af6914e` | 2026-06-16 | 一点点粒子 | ConfluenceOtherworld | +0 ~4 -0 |  |  |  | content |  | TODO |
-| 37 | `fbcb8e783` | 2026-06-16 | fix crash | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +0 ~23 -0 |  | PortLib×1, Confluence-Magic-Lib×1 |  | content+submodule |  | TODO |
-| 38 | `8bcc392be` | 2026-06-16 | mob effect | ConfluenceOtherworld, PortLib | +0 ~17 -0 |  | PortLib×1 |  | content+submodule |  | TODO |
+| 35 | `093eda09f` | 2026-06-16 | part17 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +2 ~45 -3 |  | PortLib×1, Confluence-Magic-Lib×1 | ⚠️ 6 | content+submodule+integration |  | COVERED |
+| 36 | `17af6914e` | 2026-06-16 | 一点点粒子 | ConfluenceOtherworld | +0 ~4 -0 |  |  |  | content |  | COVERED |
+| 37 | `fbcb8e783` | 2026-06-16 | fix crash | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +0 ~23 -0 |  | PortLib×1, Confluence-Magic-Lib×1 |  | content+submodule |  | COVERED |
+| 38 | `8bcc392be` | 2026-06-16 | mob effect | ConfluenceOtherworld, PortLib | +0 ~17 -0 |  | PortLib×1 |  | content+submodule |  | COVERED |
 | 39 | `5c56e83b2` | 2026-06-17 | something | ConfluenceOtherworld, TerraCurio | +0 ~3 -0 |  | TerraCurio×1 |  | content+submodule | 1.21 已存在 — 机器判定：新增 3 行中 3 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查 | COVERED |
 | 40 | `5481344ca` | 2026-06-18 | something2 | Confluence-Magic-Lib, PortLib, TerraCurio | +0 ~3 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only |  | TODO |
 | 41 | `b33c206fa` | 2026-06-18 | something3 | (repo-root), ConfluenceOtherworld | +29 ~19 -2 | `BeeArrow.java`→`BeeArrowEntity.java` 等3处 |  |  | content+integration |  | TODO |

@@ -4196,3 +4196,96 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - 剩余 TODO：**93／97–100／102–103／105–106／108–110／159–162／166／168–169**（19 行）。
 - 下一批：**行 93／97–100**。
 
+## 一百一十二、台账续走：行 93／97–100 五行（含"长矛组件在 1.21 成孤儿类"的甄别）
+
+### 112.1 筛查与符号核查总表
+
+| 行 | 提交 | 日期 | 说明 | 筛查后 real | 定义型符号 | 全仓缺失 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 93 | `bad95470c` | 2026-08-08 | 同步 1.21.1 的修改 | 0 / 0 文件 | 0 | 0 |
+| 97 | `4af532ed1` | 2026-08-16 | refactor：回退错误公共架构并恢复 1.20 实现 | 58 / 14 文件 | 48 | 2 `DEFAULT_SOUNDS`／`GRAVITY_BULLET` |
+| 98 | `1e0393178` | 2026-08-16 | 同上 | 51 / 5 文件 | 23 | 1 `SummonStats` |
+| 99 | `c406dcc0b` | 2026-08-16 | fix：对齐城镇 NPC 敌我识别与恐慌行为 | 0 / 0 文件 | 0 | 0 |
+| 100 | `1e2f65769` | 2026-08-16 | fix：对齐城镇 NPC 远程战斗与护士治疗行为 | 0 / 0 文件 | 0 | 0 |
+
+> 行 97／98 的 2026-08-16 在 **1.21 分叉之后**（分叉点在行 67–69 的 2026-07-02…04），属"1.20 HEAD 侧继续演进"。三处缺符号经双向核查：`DEFAULT_SOUNDS`／`GRAVITY_BULLET`／`SummonStats` 的**出现位点均在 1.20 侧旧文件里**，1.21 用别的容器承载（见 112.2）。
+
+### 112.2 行 97：长矛配置容器不同（**不是功能缺口**）
+
+| 1.20 HEAD（row 97 恢复的实现） | 1.21 |
+| --- | --- |
+| `SpearProjectile.setProjComponent(SpearProjectileComponent, LivingEntity)`（`SpearProjectile.java:110`，`AbstractSpearItem.java:196` 调用） | `SpearProjectile`（486 行）自带 `Config` 内部类：`damageFactor`／`baseSpeed`／`existTicks`／`projGravity`／`pierceCount`／`acceleration`／`trackType`，子类构造时链式赋值（`GhastlyProjectile`／`MushroomProjectile`／`NorthPoleProjectile`／`NorthPoleSubProjectile`／`SporeCloudProjectile`／`StormSpearProjectile` 各自 `this.config = new Config()…`） |
+| `component/SpearProjectileComponent.java` 的 7 个预设（`STORM_SPEAR_PROJ`／`ORICHALCUM_HALBERD_PROJ`／`MUSHROOM_SPEAR_PROJ`／`NORTH_POLE_PROJ`／`SPORE_CLOUD_PROJ`／`GHASTLY_PROJECTILE`…） | 同一份 `SpearProjectileComponent.java` 文件在 1.21 **仍存在但已无引用者**（全仓仅该文件自身命中）⇒ 孤儿类；同等语义由上述 `Config` 承载 |
+
+> 登记（非本行债务）：`common/component/SpearProjectileComponent.java` 在 1.21 属可清理的孤儿类；清理涉及删文件，按"不碰"原则不在台账行内处理。
+
+其余 13 个文件的 gap 逐条对上 1.21：
+
+| 文件 | 1.20 行 | 1.21 |
+| --- | --- | --- |
+| `ThrowableDropSelfItem`（12 行） | `playSound(…WAVING…)`／`shootFromRotation`／`getCooldowns().addCooldown`／`awardStat`／`hasInfiniteMaterials`／`InteractionResultHolder.sidedSuccess` | 逐行同形（`:37–60`） |
+| `SpearProjectile`（18 行） | `entityData.define(DATA_INIT_SPEED…)` | `builder.define(DATA_INIT_SPEED/DATA_INIT_GRAVITY/DATA_DIRECTION)`（`:82–84`）；`getProjTexture()`／`getModelLayer()` 仍在（`:348`／`:351`） |
+| `AbstractSpearItem`（8 行） | `IntSet struckEntities`（fastutil） | `Set<Integer> struckEntities = new HashSet<>()`（`:67`），`clip(0.3)` 同形（`:151`） |
+| `DamageSettableProjectile`（4 行） | `modifier.getOperation() == MULTIPLY_BASE` | record 访问器 `modifier.operation() == ADD_MULTIPLIED_BASE/ADD_MULTIPLIED_TOTAL`（`:51`／`:54`，1.21 枚举改名） |
+| `BaseGun`／`ManaStaffItem`（各 1 行） | `appendHoverText(ItemStack, @Nullable Level, …)` | `appendHoverText(ItemStack, Item.TooltipContext, …)`（1.21 全仓 27 个文件；`BaseGun.java:99`） |
+| `ModUtils`（1 行） | `stack.getUnbreakable()` | `stack.has(DataComponents.UNBREAKABLE)`（`:272`） |
+| `ManaCrystalItem`／`PlayerEvents`／`CloudProjectile`／`SwordProjectile`／`NetworkEvents` 等 | `ManaStorage`／`EverBeneficial` 调用、`entityData.define`、包注册 | 1.21 `ManaStorage` 16 个文件；`NetworkEvents.java:73/87` 用 `.playToServer(TYPE, STREAM_CODEC, ::handle)` |
+
+### 112.3 行 98
+
+| 1.20 | 1.21 |
+| --- | --- |
+| `Beneficial(UUID id, String name, Predicate<EverBeneficial> pre, Post post)` + `DO_NOTHING` + `LIFE_CRYSTAL`／`LIFE_FRUITS`／`AEGIS_APPLE`／`AMBROSIA`／`GALAXY_PEARL`／`MINECART_UPGRADE_KIT`／`ARTISAN_LOAF` | `EverBeneficialItem`（160 行）同形：`Post DO_NOTHING`（`:34`）、同批 `Beneficial` 预设（`:35`–`61`，另多 `VITAL_CRYSTAL`） |
+| `new AttributeModifier(id, name, …)`（带名字的旧构造） | `new AttributeModifier(id, amount, Operation.…)`（1.21 record 构造，`:41`／`:47`／`:54`／`:61`…） |
+| `EverBeneficial implements IPortNBTSerializable<CompoundTag>` | `implements INBTSerializable<CompoundTag>`（`:10`，平台改名） |
+| `AbstractMountEntity`：`entityData.define(OWNER…)` + 无参 `defineMountSynchedData()` | `defineSynchedData(SynchedEntityData.Builder builder)`（`:88`）→ `defineMountSynchedData(builder)`（`:91`／`:101`），1.21 侧甚至留有说明该签名差异的注释块（`:96–98`） |
+| `SwordProjectilePacketC2S`／`ShootPacketC2S` 的 `ResourceLocation ID` + `identifier()` | 1.21 走 lib 的包框架：`implements IPacketC2S` + `STREAM_CODEC`（`SwordProjectilePacketC2S.java:12/15`、`ShootPacketC2S.java:17`），注册在 `NetworkEvents.java:73/87` |
+
+⇒ 行 93 = `REVERSE-ALIGNED`（标题即"同步 1.21.1 的修改"，且 0 行待办）；行 97／98／99／100 = `COVERED`。
+
+## 一百一十三、台账续走：行 102–169 十四行 ⇒ 收口（**台账 TODO 归零**）
+
+### 113.1 筛查与符号核查总表
+
+| 行 | 提交 | 说明 | 筛查后 real | 定义型符号 | 全仓缺失 |
+| --- | --- | --- | --- | --- | --- |
+| 102 | `116edf192` | fix：对齐 NPC 住宅与旅商生命周期行为 | 0 / 0 文件 | 1 | 1 `HOUSE_CHECK_MASK` |
+| 103 | `fe090753f` | fix：对齐 NPC 交互与对话同步行为 | 1 / 1 文件 | 2 | 0 |
+| 105 | `c6c2d493a` | fix：恢复 NPC 商店三态交易流程 | 1 / 1 文件 | 7 | 1 `SoldItem` |
+| 106 | `7e8662bd4` | refactor：恢复 NPC 商品的组件定价模型 | 0 / 0 文件 | 1 | 0 |
+| 108 | `b861536ae` | refactor：恢复 NPC 商店数据加载架构 | 1 / 1 文件 | 3 | 0 |
+| 109 | `7a3e9f664` | fix：同步 NPC 商店权威价格显示 | 7 / 1 文件 | 0 | 0 |
+| 110 | `e7703e76d` | fix：保证 NPC 商店报价与交易条件一致 | 0 / 0 文件 | 2 | 0 |
+| 159 | `1c012ccb1` | 将饰品的药水效果转移至 lib | 13 / 6 文件 | 3 | 0 |
+| 160 | `100f6e0f2` | 可开关的药水效果移到 lib | 5 / 2 文件 | 2 | 0 |
+| 161 | `2a4dfce2c` | 同步粒子 | 10 / 4 文件 | 1 | 0 |
+| 162 | `12b6877be` | 修复枪械动画报错 | 0 / 0 文件 | 1 | 0 |
+| 166 | `21b060ec6` | 饰品能力全改为 datamap，修复潜行属性 | 0 / 0 文件 | 0 | 0 |
+| 168 | `c2935419b` | docs：清理源码注释中的冗余 HTML 段落标签 | 0 / 0 文件 | 0 | 0 |
+| 169 | `4ef159bf9` | 同步 1.21.1 翅膀迁移，部分饰品添加粒子 | 25 / 3 文件 | 49 | 0 |
+
+> 两个"缺符号"`HOUSE_CHECK_MASK`（行 102）与 `SoldItem`（行 105）在 **1.20 HEAD 与 1.21 两侧都零命中**（连宽松匹配也是 0）⇒ 提交加入后又被 1.20 自己删掉，属 DEAD，不作移植源。
+
+### 113.2 逐行落点
+
+| 行 | 1.20 gap | 1.21 |
+| --- | --- | --- |
+| 103 | `BaseNPC.entityData.define(DATA_CHAT, new CompoundTag())` | `BaseNPC.java` 有 `DATA_CHAT`（1 文件命中）；`entityData.define` → `builder.define` |
+| 105 | `NPCTradeMenu.fromNetwork(int, Inventory, FriendlyByteBuf)` | `NPCTradeMenu.java:69` 同形但第三参为 `RegistryFriendlyByteBuf`（1.21 网络缓冲类型） |
+| 108 | `NPCTradeList` 的 `decoded.error().map(DataResult.PartialResult::message)` | `NPCTradeList.java` 在 1.21；`DataResult` 错误处理同族写法 |
+| 109 | 物品名/Lore 走 NBT（`getOrCreateTagElement("display")`／`getList("Lore", TAG_STRING)`） | 1.21 改数据组件（`CUSTOM_NAME`／`LORE`），故 NBT 写法整段不存在 |
+| 159 | `LivingInvulnerableEffectsSubProvider` 的 8 条免疫列表（`ICE_MIMIC`／`THE_TWINS`／`RETINAZER`／`SPAZMATISM`…）、`HoneyBucketItem` 的 `LibEffects.HONEY`、`EnvironmentLevelAccess$MatcherMixin`、lib 的 `SetEntityDataPacketS2C` | 1.21 `LivingInvulnerableEffects` 相关 **5 个文件**（`LivingInvulnerableEffects`／`LivingInvulnerableEffectsSubProvider`／`ModDataMaps`／`ModDataMapProvider`／`LivingEntityEvents`），`LivingInvulnerableEffectsSubProvider` 内同为 `.add(MonsterEntities.X, MobEffects.POISON, LibEffects.CONFUSED…)` 形态；lib 子模块有 `LibEffects.CONFUSED`（`ConfluenceMagicLib.java`）与 `SetEntityDataPacketS2C`（4 文件） |
+| 160 | `EffectRenderingInventoryScreenMixin implements ILibAbstractContainerScreen` + `ILibAbstractContainerScreen.switchEnabled(mobeffectinstance)` | lib 子模块有 `ILibAbstractContainerScreen`（3 文件，含 `AbstractContainerScreenMixin`／`CreativeModeInventoryScreenMixin`）；1.21 主仓有 `EffectRenderingInventoryScreenMixin` 与 `OnGatherEffectScreenTooltipsEvent`（`GameClientEvents`） |
+| 161 | `ShimmerTransmutationTrigger.INSTANCE` + `CriteriaTriggers.register(…)`（`Confluence.java`） | 1.21 有 `advancement/ShimmerTransmutationTrigger.java` + `init/ModAdvancements.java`；`CriteriaTriggers.register` **0 命中**（1.21 改注册表化：`Registries.TRIGGER_TYPES`） |
+| 169 | `AccessoryItems` 的 `MEDICATED_BANDAGE`／`POCKET_MIRROR`／`REFLECTIVE_SHADES`／`ARMOR_POLISH`／`ARMOR_BRACING`、`Lunar.yearZhiIndex`、`ParadoxInteractiveMedal` | 1.21 `AccessoryItems.java` 全部命中（各 5–7 处引用，含 `AccessoriesSubProvider`／`ValueSubProvider`／`ModRecipeProvider`），`api/lunar/Lunar.java` 有 `yearZhiIndex`，`item/sponsor/ParadoxInteractiveMedal.java` 在（`ModItems` 引用） |
+| 102／106／110／162／166／168 | 0 行待办 | 无需动作（其中 168 为注释清理、166 为饰品能力改 datamap） |
+
+⇒ 行 169 = `REVERSE-ALIGNED`（标题即"同步 1.21.1 翅膀迁移"）；其余十三行 = `COVERED`。
+
+### 113.3 状态：**台账逐行走线收口**
+
+- 台账（双写）：本批 19 行全部落状态，**TODO = 0**，400 行 100% 有状态（`ledger_status.py --check` 通过）。
+- 状态分布：`COVERED` 202、`SKIP-PLATFORM` 70、`PORTED` 56、`DEFER-ASSETS` 26、`SKIP-1.20-REVERTED` 16、`SKIP-PORTLIB` 13、`REVERSE-ALIGNED` 7、`DEFER-ARCH` 4、`DO-NOT-PORT` 3、`SKIP-1.21-KEEPS` 2、`LOST?` 1。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 遗留登记（非台账行债务，需另开工作面）：`SpearProjectileComponent` 孤儿类、附魔/模型 datagen 产物需跑 `runData`、`LOST?` 1 行的复核。
+

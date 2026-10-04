@@ -250,24 +250,24 @@
 | 90 | `6c62927b5` | 2026-08-04 | 不懂 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 1 文件 +4/-1（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
 | 91 | `83674802b` | 2026-08-07 | portlib v1.0.0 | PortLib, TerraCurio | +0 ~2 -0 |  | PortLib×1, TerraCurio×1 |  | submodule-only | （不动 1.21） — 该提交改动的 7 个 java 文件全部位于 PortLib 子模块内（这些路径在 1.20 HEAD 已随 PortLib 重构消失）。PortLib 是 1.20 专有的「在 1.20.1 上模拟 NeoForge 1.21.1 API」的模拟层，1.21 侧保持原生实现（决策 Q2），无对应物可移植。依据：notes/COMMIT-LAG.md（PORTLIB-ONLY）、tools/portnative/file_lag.py | SKIP-PORTLIB |
 | 92 | `80378e047` | 2026-08-07 | TerraCurio依赖 | PortLib, TerraCurio | +0 ~2 -0 |  | PortLib×1, TerraCurio×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 2 文件 +8/-1（PortLib,TerraCurio），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
-| 93 | `bad95470c` | 2026-08-08 | 同步1.21.1的修改 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~6 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 1 | content+submodule |  | TODO |
+| 93 | `bad95470c` | 2026-08-08 | 同步1.21.1的修改 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~6 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 1 | content+submodule |  | REVERSE-ALIGNED |
 | 94 | `4fa865322` | 2026-08-11 | 修复重生事件逻辑 | PortLib | +0 ~1 -0 |  | PortLib×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 5 文件 +45/-34（PortLib），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
 | 95 | `dfcc5c041` | 2026-08-15 | feat: 对齐 1.21 内容与运行时行为 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +649 ~712 -95 | `a_rare_realm.json`→`a_rare_realm.json` 等234处 | PortLib×1, Confluence-Magic-Lib×1 | ⚠️ 758 | content+submodule+integration | （永不移植） — 作者当面提醒：改动范围极大（1690 文件 / +105554 −20918）、大部分内容错误，部分已被 16 个回滚提交撤回（最大一次 dc57ba5c2 覆盖 663 文件），部分残留仍在影响正确逻辑（残留 992 文件，其中 java 172）。详见 notes/POISON-dfcc5c041.md 与 notes/poison-residue-files.txt | DO-NOT-PORT |
 | 96 | `dc57ba5c2` | 2026-08-16 | 注释 杀杀杀 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib | +0 ~663 -0 |  | PortLib×1, Confluence-Magic-Lib×1 |  | content+submodule+integration |  | DO-NOT-PORT |
-| 97 | `4af532ed1` | 2026-08-16 | `refactor: 回退错误公共架构并恢复 1.20 实现` | ConfluenceOtherworld | +0 ~89 -9 |  |  |  | content |  | TODO |
-| 98 | `1e0393178` | 2026-08-16 | `refactor: 回退错误公共架构并恢复 1.20 实现` | ConfluenceOtherworld | +6 ~0 -0 |  |  |  | content |  | TODO |
-| 99 | `c406dcc0b` | 2026-08-16 | fix: 对齐城镇 NPC 敌我识别与恐慌行为 | ConfluenceOtherworld | +0 ~5 -0 |  |  |  | content |  | TODO |
-| 100 | `1e2f65769` | 2026-08-16 | fix: 对齐城镇 NPC 远程战斗与护士治疗行为 | ConfluenceOtherworld | +0 ~5 -0 |  |  |  | content |  | TODO |
+| 97 | `4af532ed1` | 2026-08-16 | `refactor: 回退错误公共架构并恢复 1.20 实现` | ConfluenceOtherworld | +0 ~89 -9 |  |  |  | content |  | COVERED |
+| 98 | `1e0393178` | 2026-08-16 | `refactor: 回退错误公共架构并恢复 1.20 实现` | ConfluenceOtherworld | +6 ~0 -0 |  |  |  | content |  | COVERED |
+| 99 | `c406dcc0b` | 2026-08-16 | fix: 对齐城镇 NPC 敌我识别与恐慌行为 | ConfluenceOtherworld | +0 ~5 -0 |  |  |  | content |  | COVERED |
+| 100 | `1e2f65769` | 2026-08-16 | fix: 对齐城镇 NPC 远程战斗与护士治疗行为 | ConfluenceOtherworld | +0 ~5 -0 |  |  |  | content |  | COVERED |
 | 101 | `188ade36f` | 2026-08-16 | fix: 对齐城镇 NPC 远程战斗与护士治疗行为 | ConfluenceOtherworld | +1 ~0 -0 |  |  |  | content | （不动 1.21） — 该提交改动的 1 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md | SKIP-1.20-REVERTED |
-| 102 | `116edf192` | 2026-08-16 | fix: 对齐 NPC 住宅与旅商生命周期行为 | ConfluenceOtherworld | +0 ~4 -0 |  |  |  | content |  | TODO |
-| 103 | `fe090753f` | 2026-08-16 | fix: 对齐 NPC 交互与对话同步行为 | ConfluenceOtherworld | +0 ~7 -0 |  |  |  | content |  | TODO |
+| 102 | `116edf192` | 2026-08-16 | fix: 对齐 NPC 住宅与旅商生命周期行为 | ConfluenceOtherworld | +0 ~4 -0 |  |  |  | content |  | COVERED |
+| 103 | `fe090753f` | 2026-08-16 | fix: 对齐 NPC 交互与对话同步行为 | ConfluenceOtherworld | +0 ~7 -0 |  |  |  | content |  | COVERED |
 | 104 | `1c40b0ecc` | 2026-08-16 | fix: 补充 NPC 交互事件 | ConfluenceOtherworld | +1 ~0 -0 |  |  |  | content | （不动 1.21） — 该提交改动的 1 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md | SKIP-1.20-REVERTED |
-| 105 | `c6c2d493a` | 2026-08-16 | fix: 恢复 NPC 商店三态交易流程 | ConfluenceOtherworld | +0 ~2 -1 |  |  |  | content |  | TODO |
-| 106 | `7e8662bd4` | 2026-08-16 | refactor: 恢复 NPC 商品的组件定价模型 | ConfluenceOtherworld | +0 ~2 -0 |  |  |  | content |  | TODO |
+| 105 | `c6c2d493a` | 2026-08-16 | fix: 恢复 NPC 商店三态交易流程 | ConfluenceOtherworld | +0 ~2 -1 |  |  |  | content |  | COVERED |
+| 106 | `7e8662bd4` | 2026-08-16 | refactor: 恢复 NPC 商品的组件定价模型 | ConfluenceOtherworld | +0 ~2 -0 |  |  |  | content |  | COVERED |
 | 107 | `fd6f0910b` | 2026-08-16 | 调整逻辑 | TerraCurio | +0 ~1 -0 |  | TerraCurio×1 |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，子模块侧净改动仅 3 文件 +6/-34（TerraCurio），属 part 系列接线/Port 化滚动 | SKIP-PLATFORM |
-| 108 | `b861536ae` | 2026-08-16 | refactor: 恢复 NPC 商店数据加载架构 | ConfluenceOtherworld | +0 ~4 -2 |  |  |  | content |  | TODO |
-| 109 | `7a3e9f664` | 2026-08-16 | fix: 同步 NPC 商店权威价格显示 | ConfluenceOtherworld | +0 ~2 -0 |  |  |  | content |  | TODO |
-| 110 | `e7703e76d` | 2026-08-16 | fix: 保证 NPC 商店报价与交易条件一致 | ConfluenceOtherworld | +0 ~4 -0 |  |  |  | content |  | TODO |
+| 108 | `b861536ae` | 2026-08-16 | refactor: 恢复 NPC 商店数据加载架构 | ConfluenceOtherworld | +0 ~4 -2 |  |  |  | content |  | COVERED |
+| 109 | `7a3e9f664` | 2026-08-16 | fix: 同步 NPC 商店权威价格显示 | ConfluenceOtherworld | +0 ~2 -0 |  |  |  | content |  | COVERED |
+| 110 | `e7703e76d` | 2026-08-16 | fix: 保证 NPC 商店报价与交易条件一致 | ConfluenceOtherworld | +0 ~4 -0 |  |  |  | content |  | COVERED |
 | 111 | `c2d92b019` | 2026-08-16 | refactor: 按 Servantry 架构对齐召唤系统 | ConfluenceOtherworld | +0 ~24 -0 |  |  |  | content |  | SKIP-1.20-REVERTED |
 | 112 | `9729f1c30` | 2026-08-16 | refactor: 按 Servantry 架构对齐召唤系统 | ConfluenceOtherworld | +1 ~0 -0 |  |  |  | content | （不动 1.21） — 该提交改动的 1 个 java 文件在 1.20 HEAD 已经全部不存在——1.20 自己后来删掉/替换了这批代码（旧召唤体系被 AttachmentEntity 体系取代、子弹运行时状态架构被移除等），因此没有可移植物。依据：notes/COMMIT-LAG.md（DEAD-ONLY）、notes/FILE-LAG.md | SKIP-1.20-REVERTED |
 | 113 | `fc43577f2` | 2026-08-16 | style: 清理移植改动中的无意义格式变更 | ConfluenceOtherworld | +0 ~29 -0 |  |  | ⚠️ 4 | content |  | SKIP-PLATFORM |
@@ -316,17 +316,17 @@
 | 156 | `ce1ca67f8` | 2026-08-22 | refactor(confluence): 拉通 1.21 战斗、召唤与实体体系 | Confluence-Magic-Lib, ConfluenceOtherworld | +4 ~228 -0 |  | Confluence-Magic-Lib×1 | ⚠️ 8 | content+submodule |  | PORTED |
 | 157 | `024a28ac7` | 2026-08-22 | fix(confluence): 补齐 NPC 交互与实体属性对齐 | ConfluenceOtherworld | +0 ~2 -0 |  |  |  | content |  | SKIP-1.20-REVERTED |
 | 158 | `7cadcf9a8` | 2026-08-22 | fix(confluence): 补齐 NPC 交互与实体属性对齐 | ConfluenceOtherworld | +0 ~1 -0 |  |  |  | content |  | COVERED |
-| 159 | `1c012ccb1` | 2026-08-22 | 将饰品的药水效果转移至lib | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +1 ~22 -1 | `EnvironmentLevelAccess$MatcherMixin.java`→`EnvironmentLevelAccess$MatcherMixin.java` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 1 | content+submodule+integration |  | TODO |
-| 160 | `100f6e0f2` | 2026-08-22 | 可开关的药水效果移到lib | Confluence-Magic-Lib, ConfluenceOtherworld, TerraCurio | +1 ~13 -10 |  | Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 1 | content+submodule+integration |  | TODO |
-| 161 | `2a4dfce2c` | 2026-08-22 | 同步粒子 | Confluence-Magic-Lib, ConfluenceOtherworld, TerraCurio | +1 ~50 -2 |  | Confluence-Magic-Lib×4, TerraCurio×1 | ⚠️ 2 | content+submodule |  | TODO |
-| 162 | `12b6877be` | 2026-08-23 | 修复枪械动画报错 | ConfluenceOtherworld | +0 ~3 -0 |  |  | ⚠️ 1 | content |  | TODO |
+| 159 | `1c012ccb1` | 2026-08-22 | 将饰品的药水效果转移至lib | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +1 ~22 -1 | `EnvironmentLevelAccess$MatcherMixin.java`→`EnvironmentLevelAccess$MatcherMixin.java` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 1 | content+submodule+integration |  | COVERED |
+| 160 | `100f6e0f2` | 2026-08-22 | 可开关的药水效果移到lib | Confluence-Magic-Lib, ConfluenceOtherworld, TerraCurio | +1 ~13 -10 |  | Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 1 | content+submodule+integration |  | COVERED |
+| 161 | `2a4dfce2c` | 2026-08-22 | 同步粒子 | Confluence-Magic-Lib, ConfluenceOtherworld, TerraCurio | +1 ~50 -2 |  | Confluence-Magic-Lib×4, TerraCurio×1 | ⚠️ 2 | content+submodule |  | COVERED |
+| 162 | `12b6877be` | 2026-08-23 | 修复枪械动画报错 | ConfluenceOtherworld | +0 ~3 -0 |  |  | ⚠️ 1 | content |  | COVERED |
 | 163 | `5bb8d5565` | 2026-08-23 | refactor(entity): 拉通敌怪行为、肉墙机制与客户端渲染 | ConfluenceOtherworld | +7 ~46 -0 |  |  | ⚠️ 2 | content |  | PORTED |
 | 164 | `48be70c79` | 2026-08-23 | 升级粒子 | (repo-root), ConfluenceOtherworld, TerraCurio | +0 ~8 -0 |  | TerraCurio×1 | ⚠️ 1 | content+submodule | 1.21 已存在 — 机器判定：新增 9 行中 9 行（100%）已在 1.21 侧存在，属「1.20 从 1.21 抄回去」的内容，无需移植；待抽查 | COVERED |
 | 165 | `863e8bef8` | 2026-08-23 | 调整版本 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~6 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 |  | assets+submodule | （本轮不处理） — 机器快筛 R2：只改资源/数据（2 个文件，无 java），随所属功能提交一起处理 | DEFER-ASSETS |
-| 166 | `21b060ec6` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | Confluence-Magic-Lib, PortLib, TerraCurio | +0 ~3 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only |  | TODO |
+| 166 | `21b060ec6` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | Confluence-Magic-Lib, PortLib, TerraCurio | +0 ~3 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only |  | COVERED |
 | 167 | `3f2eb3be2` | 2026-08-23 | fix: 重构悠悠球系统与客户端武器输入架构 | ConfluenceOtherworld | +7 ~8 -0 |  |  | ⚠️ 1 | content |  | COVERED |
-| 168 | `c2935419b` | 2026-08-23 | docs: 清理源码注释中的冗余 HTML 段落标签 | ConfluenceOtherworld | +0 ~298 -0 |  |  |  | content |  | TODO |
-| 169 | `4ef159bf9` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~79 -9 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 22 | content+submodule |  | TODO |
+| 168 | `c2935419b` | 2026-08-23 | docs: 清理源码注释中的冗余 HTML 段落标签 | ConfluenceOtherworld | +0 ~298 -0 |  |  |  | content |  | COVERED |
+| 169 | `4ef159bf9` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +0 ~79 -9 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 22 | content+submodule |  | REVERSE-ALIGNED |
 | 170 | `9645da98c` | 2026-08-24 | feat(otherworld): 重构城镇 NPC 战斗体系并补全生物相关内容 | ConfluenceOtherworld | +12 ~42 -5 |  |  | ⚠️ 1 | content |  | LOST? |
 | 171 | `4557b85fc` | 2026-08-24 | 玩家动画测试 | Confluence-Magic-Lib, TerraCurio | +0 ~2 -0 |  | Confluence-Magic-Lib×1, TerraCurio×1 |  | submodule-only | （1.20 已撤销） — 玩家动画测试：新增行**全部**引用 Port 类型（行级可计数新增为 0）；主体是 Magic-Lib 的 integration/animation 实验代码（PlayerGeoModel/PlayerGeoAnimatable 等 6 个文件），这批文件在 1.20 HEAD 已删除（ghost 6），残留的 mixin 侧在 1.21 已 IN-SYNC（89~100%）。 | COVERED |
 | 172 | `9057f178c` | 2026-08-28 | 玩家动画（未注册永夜动画） | (repo-root), Confluence-Magic-Lib, PortLib, TerraCurio | +0 ~4 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | assets+submodule | （本轮不处理） — 机器快筛 R2：只改资源/数据（1 个文件，无 java），随所属功能提交一起处理 | DEFER-ASSETS |

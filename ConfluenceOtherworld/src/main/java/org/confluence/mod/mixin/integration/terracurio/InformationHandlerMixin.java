@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.integration.terracurio;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.network.chat.Component;
 import org.confluence.mod.client.handler.ClientPacketHandler;
@@ -23,8 +24,9 @@ public abstract class InformationHandlerMixin {
         cir.setReturnValue(Component.translatable("info.confluence.weather_radio." + weather, WeatherHandler.windSpeedInfo));
     }
 
-    @Inject(method = "hasMechanicalView", at = @At("RETURN"), cancellable = true)
-    private static void modifyView(CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue()) cir.setReturnValue(ClientPacketHandler.isShowSignal());
+    @ModifyReturnValue(method = "hasMechanicalView", at = @At("RETURN"))
+    private static boolean modifyView(boolean original) {
+        if (!original) return ClientPacketHandler.isShowSignal();
+        return true;
     }
 }

@@ -1,7 +1,7 @@
 package org.confluence.mod.mixin.world.entity.player;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -78,11 +78,9 @@ public abstract class InventoryMixin {
         }
     }
 
-    @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"), cancellable = true)
-    private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean simulate) {
-        int count = cir.getReturnValue();
-        count += ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - count, simulate);
-        cir.setReturnValue(count);
+    @ModifyReturnValue(method = "clearOrCountMatchingItems", at = @At("RETURN"))
+    private int withExtra(int original, Predicate<ItemStack> stackPredicate, int maxCount, @Local boolean simulate) {
+        return original + ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - original, simulate);
     }
 
     @Unique

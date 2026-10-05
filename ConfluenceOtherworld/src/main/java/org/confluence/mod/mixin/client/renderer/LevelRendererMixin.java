@@ -1,13 +1,13 @@
 package org.confluence.mod.mixin.client.renderer;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.ViewArea;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,9 +21,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
@@ -83,16 +81,16 @@ public abstract class LevelRendererMixin implements ILevelRenderer {
         return ClientGameEventSystem.moonTexture == null ? textureId : ClientGameEventSystem.moonTexture;
     }
 
-    @Inject(method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", at = @At("RETURN"), cancellable = true)
-    private static void makeHerbEmissive(BlockAndTintGetter level, BlockState state, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
+    @ModifyReturnValue(method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", at = @At("RETURN"))
+    private static int makeHerbEmissive(int original, @Local(argsOnly = true) BlockState state) {
         if (state.is(ModBlocks.SHIVERTHORN) && state.getValue(BaseHerbBlock.AGE) == 2) {
-            int packed = cir.getReturnValue();
-            int block = (packed >> 4) & 0xf;
+            int block = (original >> 4) & 0xf;
             if (block < 6) {
-                packed &= ~0xF0;
-                packed |= (6 << 4);
-                cir.setReturnValue(packed);
+                original &= ~0xF0;
+                original |= (6 << 4);
+                return original;
             }
         }
+        return original;
     }
 }

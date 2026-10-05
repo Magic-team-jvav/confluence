@@ -5115,3 +5115,38 @@ public static final TFBlockSet SPRUCE_SET = new TFBlockSet.Builder(SPRUCE, Block
 - 台账：行 145 仍 `TODO`（第一批已落地）；全量统计不变（`COVERED` 122／`SKIP-PORTLIB` 12／`REVERSE-ALIGNED` 6／`DEFER-ASSETS` 3／`TODO` 4）。
 - `fix_eol --check` 候选 6；下一步：行 147 第一批（`BathtubBlock` 自定义形状 31 行）或行 145 第二批（`SPRUCE_SET` 的 SINK 条目）。
 
+## 一百三十一、落地记录：行 147 第一批（`BathtubBlock` 自定义缸体形状）
+
+### 131.1 改动（`TerraFurniture` 子模块，1 个文件，+34 行）
+
+| 位置 | 内容 |
+| --- | --- |
+| import | `org.confluence.lib.common.block.StateProperties`、`org.jetbrains.annotations.Nullable` |
+| 字段 | `private final VoxelShape @Nullable [] customShapes;`（按开口方向排列，null 时用默认 12 像素缸体）、`private final boolean singleTexture;`（两半是否共用贴图）＋ 1.20 原文注释 |
+| 构造器 | 2 参改为 `this(type, properties, null, true);`；新增 4 参 `(TFBlockSetType, Properties, VoxelShape @Nullable[], boolean)` ＋ 1.20 原文 javadoc |
+| 新方法 | `public static VoxelShape[] tubShapes(int height, int thickness)`：`Shapes.join(outer, box(...), BooleanOp.ONLY_FIRST)` 四向缸体 |
+| `getShape` | 前置分支：`if (customShapes != null) { int openDirection = StateProperties.ForwardTwoPart.getConnectedDirection(state).get2DDataValue(); return customShapes[openDirection]; }`；**保留 1.21 的 `protected` 签名** |
+| 三处 | `isSingleTexture()`／`hasParticle(TFBedBlock)`／`needItemTexture()` 由 `return true;` 改为 `return singleTexture;` |
+
+### 131.2 核验（本批用「规范化行集比对」而非仅计数）
+
+| 项 | 结果 |
+| --- | --- |
+| 非空行集比对 | 1.20 = **91 行**，1.21 = **91 行**；**唯一差异**是 `public VoxelShape getShape(...)`（1.20）对 `protected VoxelShape getShape(...)`（1.21，刻意保留） ✓ |
+| 关键符号计数 | `customShapes` 4/4、`singleTexture` 8/8、`tubShapes` 2/2、`StateProperties` 2/2（两侧一致） |
+| `getConnectedDirection` 的 1.21 形态 | `StateProperties.ForwardTwoPart.getConnectedDirection(state)` 是 **1.21 原生写法**：lib `HorizontalDirectionalWithForwardTwoPartBlock:56`、TerraFurniture `TFBedBlock:140`、主仓 `BehaviourStatueBlock:90/138/157`（`StateProperties.VerticalTwoPart.…`） ⇒ 1.20 那行可原样使用，无需改造 |
+| 结构自检 | 107 行、纯 CRLF、`{}` 18/18、`()` 49/49；子模块已跟踪改动**仅**该文件（用户 17 条在建资源未动） |
+
+### 131.3 行 147 的剩余
+
+| 项 | 内容 |
+| --- | --- |
+| `SPRUCE_SET` 的 BATHTUB 条目 | 1.20：`.setAvailabilityFor(TFBlockType.BATHTUB, true)` ＋ `.setGetterFor(TFBlockType.BATHTUB, (properties, applier) -> new BathtubBlock(SPRUCE, properties, BathtubBlock.tubShapes(10, 2), false))` ＋ `.setPropertyFor(BATHTUB, noOcclusion())` ⇒ 本批完成后该条目可照搬 |
+| 资产 | `bathtub.json`(134)、`base.json`(88)、`forward.json`(49)、`bed.json`(26) 与 `textures/block/spruce/spruce_bathtub/`（用户工作区已有部分：`spruce_bathtub/` 目录在其实 17 条 WIP 内） |
+
+### 131.4 状态
+
+- `TerraFurniture` 子模块：本批 1 个文件已提交；父仓更新 gitlink。
+- 台账：行 147 仍 `TODO`（第一批已落地）；全量统计不变（`COVERED` 122／`SKIP-PORTLIB` 12／`REVERSE-ALIGNED` 6／`DEFER-ASSETS` 3／`TODO` 4）。
+- `fix_eol --check` 候选 6；下一步：行 146（`CandelabraBlock` 55 行：粒子与变体形状）或行 147 第二批（`SPRUCE_SET` 的 BATHTUB）。
+

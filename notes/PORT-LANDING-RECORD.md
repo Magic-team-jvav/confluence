@@ -5577,3 +5577,55 @@ TerraFurniture 四个文件的第 3 步**全部为 True（逐字节相同）**�
 - 剩余事项与子模块无关：用户侧 `runData`、16 个 `src/generated` 陈旧 `*_phaseblade`／`*_phasaber` 模型、9 批落地的编译验证。
 
 本轮**未改动任何仓库文件**（纯复核）；证据产物在 `build/_cmp231/`（gitignored）：`sub_full_report.txt`、`sub_full_rows.tsv`、`sub_sym_alive.txt`、`sub_path_report.txt`、`sub_path_detail.txt`、`sub_cross_module.txt`。
+
+## 一百四十、跨模块搬移再复查（用户要求「还有没有这种问题」）
+
+对上一次发现的「跨模块搬移被路径级检查误判」做了系统性复查，覆盖**四个模块、两个方向、三条轴**。
+
+### 140.1 三条轴与方法
+
+| 轴 | 做法 | 覆盖范围 |
+| --- | --- | --- |
+| 路径/同名 | 1.20 某模块 HEAD 有、1.21 同模块 HEAD 没有的文件，按 **basename 在全部四个 1.21 模块**检索（上一次只在同模块内检索，是误判根因） | 四模块全部文件 |
+| 内容哈希 | 用 `git ls-tree -r` 的 blob 哈希在全仓找「同内容不同路径」——改动过的搬移也能抓到（内容会变时失效，故需第三条轴） | 四模块全部文件（含二进制资产） |
+| 符号 | 两个台账（子模块 148 行 + 主台账 400 行）各提交新增行里定义的类/接口/枚举/常量，先在**本模块**查、再在**其它模块**查标识符集合（O(1) 判定） | 548 个提交 |
+
+### 140.2 跨模块命中（全部已覆盖，无新缺口）
+
+| 方向 | 对象 | 1.21 落点 | 结论 |
+| --- | --- | --- | --- |
+| lib → 主模块 | `HoneyBottleItemMixin` | `mod/mixin/world/item/HoneyBottleItemMixin` | 已覆盖（注入点随 1.21 改 `removeEffectsCuredBy`） |
+| lib → 主模块 | `ItemEntityMixin`（稀有度免火） | 主模块 `ItemStackMixin.fireResistant` | 已覆盖（1.21 判定移到 `ItemStack.canBeHurtBy`） |
+| lib → TerraCurio | `MouseHandlerMixin` | TC `mixin/client/MouseHandlerMixin` | 已覆盖（见 §139.4；**不得**在 lib 补，会双取反） |
+| **主模块 → TerraCurio** | `BeeProjectileRenderer` | TC `client/renderer/entity/BeeProjectileRenderer`（主模块 `ModClientEvents:133/521` import 它） | **本轮新发现**，搬移正确、引用已改指 |
+| 主模块 → lib（符号 16 处） | `SwitchEffectEnabledPackedC2S`、`HandAnimationClip`、`DynamicLightDispatcher`（`LightSource`/`Snapshot`/`SECTION_BITS`/`MAX_RADIUS_SQUARED`）、`EntityRendererMixin` 等 | lib | 均为已知的「移至 lib」类提交，主台账已裁定 |
+| 主模块 → TerraCurio | `CURIOS_EQUIPPED`（进度判据） | TC | 已覆盖 |
+
+**误报（记下来免得下次再查一遍）**：通用标识符 `State`／`States`／`Effect`／`VALUES`／`OWNER`／`JUMP_INPUT`／`PARTICLES`／`MAX_STEP`／`IDLING`／`MAX_OFFSET`；row 4（1.20 自己用 row 5 撤掉的提交）；`BowItemMixin` 只是**同名巧合**（TC 的功能实际在 `ProjectileWeaponItemMixin`）；`transmission.ogg` 哈希命中 TC，但本模块也有同名同内容文件。
+
+### 140.3 顺带查出的主模块残余（与跨模块无关，全部裁定为非缺口）
+
+主模块「1.20 独有」1202 个文件（.java 47）：935 个是同模块改名、230 个同名内容被改、**36 个名字在 1.21 完全不存在**、1 个跨模块（上表假阳性）。36 个逐个定性：
+
+| 明细 | 数 | 定性 |
+| --- | --- | --- |
+| `client/renderer/entity/hook/*Renderer` | 10 | 1.21 改为通用 `SimpleHookRenderer`／`BaseHookRenderer`／`DualHookRenderer`，在 `ModClientEvents:478-492` 逐个注册 |
+| `common/enchantment/*` | 10 | 1.21 重写为 `ModEnchantments`（13 个 `ResourceKey<Enchantment>` + 效果组件类型，另含 1.20 没有的连枷附魔 `FLAIL_WIND_BURST`/`FLAIL_TURBINE`）；`ProtectionEnchantmentMixin` 行 61 = `COVERED` |
+| `tools/` 脚本 | 4 | Blockbench 插件等构建工具，非 mod 内容（1.21 tools 另有 8 个） |
+| `common/block/natural/Simple{,Mega}TreeGrower` | 2 | 1.20 才有的 `AbstractTreeGrower` shim（行 400 给它们补了 `@Diff(reason = "1.20 API")`），1.21 直接用原版 `TreeGrower` |
+| `mixin/world/item/{BucketItem,SnowballItem}Mixin` | 2 | 分别为行 317 = `PORTED`（1.21 用 `BottomlessBucketItem` + `FluidBottomlessBucketWrapper`）、行 35 = `COVERED`（1.21 用 `ModEvents` 的 `ModifyDefaultComponentsEvent` 设 `MAX_STACK_SIZE`） |
+| `META-INF/{mods.toml,coremods.json}` | 2 | → `neoforge.mods.toml`、`enumextensions.json`（NeoForge 枚举扩展取代 ASM coremod） |
+| `integration/terra_curio/TCHelper` | 1 | integration 规则（Q12 不移植） |
+| `mixed/IBaseContainerBlockEntity` | 1 | **1.20 侧死代码**（接口只有自身 + 同一个 mixin 引用，无调用者） |
+| `mixin/forge/client/model/ForgeItemModelShaperMixin` | 1 | → `neoforge/client/model/RegistryAwareItemModelShaperMixin` |
+| `mixin/world/item/enchantment/ProtectionEnchantmentMixin` | 1 | 行 61 = `COVERED`（1.21 用附魔数据的互斥集表达） |
+| `mixin/world/level/block/entity/BaseContainerBlockEntityMixin` | 1 | 同上，配合死代码接口，无功能损失 |
+| `resources/coremods/confluence_enum.js` | 1 | → `enumextensions.json` |
+
+其余 7 个 .java 为同模块同名改名（`NPCReforgeScreen`、`GameEventArgument`、`PrefixArgument`、`BossDelaySpawner`、`SpaceSpawner`、`ItemStackHandlerMixin`→neoforge、`EnvironmentLevelAccess$MatcherMixin`→`common/recipe/`），9 个是 `package-info`。
+
+### 140.4 结论
+
+跨模块搬移**再无遗漏**：本轮新发现只有 `BeeProjectileRenderer`（主模块 → TerraCurio）1 例，且 1.21 侧引用已正确改指；其余命中都是已知的「移至 lib／TC」或通用标识符误报。主模块残余 36 个文件全部定性为非缺口。子模块口径仍为 **0 行未移植**（§139.5）。
+
+产物（gitignored）：`build/_cmp231/xmod_hash_report.txt`、`xmod_sym_report.txt`、`xmod_main_report.txt`、`xmod_asset_report.txt`、`sub_cross_module.txt`。

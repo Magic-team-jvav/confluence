@@ -4934,3 +4934,47 @@ public ResourceLocation getAnimationResource(AccessoryGeoModel animatable) { ret
 - 父仓：本批仅改 `notes/`（§126 本节）；`fix_eol --check` 候选 6。
 - 其他子模块无用户在建改动（lib／TerraCurio 工作区干净）。
 
+## 一百二十七、落地记录：行 148 第一批（`ModelLightBlock` + 三条云杉烛台注册）
+
+用户指示「继续」后，按 §126.3 的默认分工（**我推进 Java 侧，不碰也不提交工作区在建资源**）执行 §125.3 第 1 步。
+
+### 127.1 落地内容（`TerraFurniture` 子模块）
+
+| 文件 | 改动 |
+| --- | --- |
+| `common/block/light/ModelLightBlock.java`（**新增**） | `extends SwitchableLightBlock`；持 `private final VoxelShape shape`；构造器 `(TFBlockSetType, Properties, BlockShapeType, VoxelShape)` 转调 `super(type, properties, supportType)`；覆写 `protected VoxelShape getShape(...)` 返回固定形状；覆写 `public @Nullable BlockDataGenerator<? super SwitchableLightBlock> getGenerator()` 返回 `null`（"模型/方块态/碰撞箱手工提供"语义）。与 1.20 原文逐行对应，仅 `getShape` 可见性取 1.21 的 `protected`（该 javadoc 为 1.20 原作者所有，原样保留） |
+| `common/init/TFBlocks.java` | 新增两条 import（`…block.light.BlockShapeType`、`…block.light.ModelLightBlock`）；新增 `SPRUCE_CANDLESTICK_ONE/TWO/THREE` 三条 `registerWithItem(...)`，属性与碰撞箱照抄 1.20 注册原文：`BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS).noOcclusion().lightLevel(litBlockEmission(15))`、`BlockShapeType.CANDLE`、`Block.box(6.5,0,6.5,9.5,13,9.5)` / `(3.5,0,6.5,12.5,13,9.5)` / `(2.5,0,6.5,13.5,13,9.5)` |
+
+### 127.2 落地前核实的 API 依据（本工作流无编译验证，故逐项对证）
+
+| 项 | 结论 | 依据 |
+| --- | --- | --- |
+| 构造器 | `SwitchableLightBlock(TFBlockSetType, Properties, BlockShapeType)` 两侧同签名 | 1.21 `SwitchableLightBlock.java:43` |
+| `getShape` 可见性 | 1.21 为 `protected`（1.20 为 public，Java 允许放宽，这里取一致） | 1.21 `:51` |
+| `getGenerator` 返回类型 | `@Nullable BlockDataGenerator<? super SwitchableLightBlock>`，两侧一致 | 1.21 `:117` |
+| 包路径 | `TFBlockSetType` → `common.block.func.set`、`BlockDataGenerator` → `common.datagen.empowered`，**两侧完全相同** | 1.21 `SwitchableLightBlock` import `:30/:33` |
+| 注册助手 | `registerWithItem(String, Supplier<B>)` | 1.21 `TFBlocks:299` |
+| 变体常量 | `SPRUCE`（`TFBlockSetTypes.java:22`）由 `import static …TFBlockSetTypes.*`（`TFBlocks:42`）提供 | 实测 |
+| 光照函数 | `public static ToIntFunction<BlockState> litBlockEmission(int)` | 1.21 `TFBlocks:331` |
+| 属性工厂 | 1.21 用 `Properties.ofFullCopy(...)`（13 处），`Properties.copy(...)` **0 处** ⇒ 取 `ofFullCopy` | 实测 |
+| 形状枚举 | `BlockShapeType.CANDLE` 存在（`LAMP/CANDLE/CHANDELIER/LANTERN/DEFAULT`） | `BlockShapeType.java:15` |
+
+结构自检：新类 30 行（纯 CRLF）、`{}` 4/4；`TFBlocks` 插入后 352 行（纯 CRLF）、`{}` 8/8、`()` 375/375 平衡；子模块已跟踪改动仅这 2 个文件（工作区 17 条用户在建资源保持未跟踪、未触碰）。
+
+### 127.3 行 148 的剩余部分（台账仍为 `TODO`）
+
+| 批次 | 内容 | 状态 |
+| --- | --- | --- |
+| 第一批（本批） | `ModelLightBlock` + 三条云杉烛台注册 | **已落地** |
+| 第二批 | `SPRUCE_SET` 的 `TFBlockType.LAMP` 改由 `ModelLightBlock` 提供（1.20 用 `setGetterFor(TFBlockType.LAMP, …)`；1.21 `TFBlockSet.java:158` 现为 `new SwitchableLightBlock(..., BlockShapeType.LAMP)`，需查 1.21 `TFBlockSet.Builder` 是否提供同名 getter 覆盖） | 待做 |
+| 第三批 | 樱花木箱：`CherryChestBlock`(61 行) + `CherryChestGeoModel` + `CHERRY_CHEST(_ENTITY/_ITEM)` 注册（`TFBlockSetTypes.CHERRY` 已在 `:28`） | 待做 |
+| 第四批 | 马桶/浴缸/水槽：`ToiletBlock` 已存在，`BathtubBlock`(106)/`SinkBlock` 变体（`IRON_BASE`／`SPRUCE_BASE`）与 `candelabras.json`(155) | 待做 |
+
+> 资产（blockstates/models/textures 与 `spruce_bathtub/`）在用户工作区在建，按纪律既不提交也不改动；Java 侧落地后，用户提交资源即可整体生效。
+
+### 127.4 状态
+
+- `TerraFurniture` 子模块：已提交本批 2 个 Java 文件；父仓更新 gitlink。
+- 台账：行 148 仍为 `TODO`（本批为部分落地）；全量统计不变（`COVERED` 122 / `SKIP-PORTLIB` 12 / `REVERSE-ALIGNED` 6 / `DEFER-ASSETS` 3 / `TODO` 4）。
+- `fix_eol --check` 候选 6；下一步：行 148 第二批（`SPRUCE_SET` 的 LAMP getter 覆盖）。
+

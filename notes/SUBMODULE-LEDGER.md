@@ -98,7 +98,7 @@
 | 81 | TerraCurio | `99dc4ccf1` | 2026-08-23 | 调整版本 | 2 | +5 −4 | PortLib×8 | COVERED |
 | 82 | TerraCurio | `45beb4784` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | 11 | +786 −497 | PortLib×14 | COVERED |
 | 83 | TerraCurio | `a3f1cbca7` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 285 | +2500 −324 | PortLib×14 | REVERSE-ALIGNED |
-| 84 | TerraCurio | `06d637298` | 2026-08-24 | 玩家动画测试 | 27 | +259 −30 |  | DEFER-ASSETS |
+| 84 | TerraCurio | `06d637298` | 2026-08-24 | 玩家动画测试 | 27 | +259 −30 |  | COVERED |
 | 85 | TerraCurio | `6ee91b55b` | 2026-08-28 | 玩家动画（未注册永夜动画） | 1 | +1 −1 | PortLib×1 | COVERED |
 | 86 | TerraCurio | `3516ac33a` | 2026-09-02 | 删除一些Extension类 | 1 | +1 −1 |  | COVERED |
 | 87 | TerraCurio | `38fcb3595` | 2026-09-06 | 静态方法改接口 | 10 | +65 −67 | PortLib×20 | COVERED |
@@ -155,11 +155,11 @@
 | 138 | TerraFurniture | `ae2d6f2f2` | 2026-09-16 | extension | 1 | +1 −1 | PortLib×2 | COVERED |
 | 139 | TerraFurniture | `80a9b93c1` | 2026-09-17 | 修复portlib的注册表 | 1 | +6 −1 | PortLib×8 | SKIP-PORTLIB |
 | 140 | TerraFurniture | `797379213` | 2026-09-18 | 使用neoforge风味的网络包注册与发送 | 6 | +14 −20 | PortLib×11 | COVERED |
-| 141 | TerraFurniture | `4d327715d` | 2026-09-19 | 单腿桌子 | 22 | +1218 −0 |  | DEFER-ASSETS |
+| 141 | TerraFurniture | `4d327715d` | 2026-09-19 | 单腿桌子 | 22 | +1218 −0 |  | COVERED |
 | 142 | TerraFurniture | `d060e05de` | 2026-09-20 | 仔细研究后我发现实际上这种对称的桌子可以把花边单独分开，但是已经这样写了，先提交吧，我后面再改，绷不住了 | 1 | +14 −12 |  | COVERED |
 | 143 | TerraFurniture | `bf35ef75d` | 2026-09-20 | 改成组件模式 | 18 | +277 −754 |  | COVERED |
 | 144 | TerraFurniture | `3b1e55c09` | 2026-09-20 | 改腿渲染逻辑 | 1 | +50 −11 |  | COVERED |
-| 145 | TerraFurniture | `3e45ca5a6` | 2026-09-20 | 添加方块 | 15 | +513 −1 |  | DEFER-ASSETS |
+| 145 | TerraFurniture | `3e45ca5a6` | 2026-09-20 | 添加方块 | 15 | +513 −1 |  | PORTED |
 | 146 | TerraFurniture | `df868f5ac` | 2026-09-22 | 家具 | 2 | +94 −1 |  | PORTED |
 | 147 | TerraFurniture | `62d4c7027` | 2026-09-27 | 传一点 | 14 | +427 −69 | PortLib×1 | DEFER-ASSETS |
 | 148 | TerraFurniture | `b5f856c95` | 2026-10-03 | 加点 | 43 | +6753 −73 |  | DEFER-ASSETS |

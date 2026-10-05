@@ -5378,3 +5378,66 @@ public <T extends Block> Builder setPropertyFor(TFBlockType<T> key, Function<Pro
 
 云杉灯 4 个 json + 1 贴图、樱花木箱 5 个、`spruce_candlestick_*`（用户 WIP 已有）、`iron_sink`／`spruce_sink`／`candelabras.json`(155)、`bathtub`／`base`／`forward`／`bed` 模型、`oak/bed` 模型等。按分工未搬未提交；若用户同意由我搬运，可一次补齐并把这些行改为完成态。
 
+## 一百三十七、资产搬运（用户指示「搬资产」）与行状态收口
+
+### 137.1 搬运方法
+
+不再依赖 gap 清单逐条手抄，而是**由 audit 的剩余 gap 清单生成搬运计划**，并对每个文件判定：
+
+| 判定 | 规则 | 处理 |
+| --- | --- | --- |
+| `MISSING` | 1.21 不存在 | 1.20 **字节拷贝** |
+| `SAME` | 两侧字节相同（用户工作区已有） | 仅 `git add` 纳入提交，不改内容 |
+| `DIFF` | 两侧都有 | **仅当把两侧 JSON 解析并扁平化后「1.21 ⊆ 1.20」才覆盖**（保证不丢 1.21 侧内容） |
+| `SKIP-1.21更多` | 1.21 另有内容 | 不覆盖，登记待人工合并 |
+| `SKIP-1.20布局` | 1.20 目录布局（`loot_tables/`） | 不搬（1.21 用 `loot_table/`） |
+
+搬运结果：**COPY 29 项**（TerraCurio 4 个 particle json ＋ TerraFurniture 25 项）、**GIT-ADD 13 项**（烛台 12 项 ＋ `fire.png.mcmeta`，均为工作区已有且与 1.20 字节相同）、**SKIP 7 项**（5 个 `SKIP-1.21更多` ＋ 1 个布局 ＋ 1 个重复项）。
+
+### 137.2 搬运后**发现并补齐了 gap 清单看不到的 5 张贴图**
+
+搬运模型后做了一次**贴图引用完整性检查**：解析所有搬运进来的 block model 的 `textures` 段，逐个核对 1.21 是否存在对应 png（23 处 `terra_furniture:` 引用）。首轮报出 5 处缺失：
+
+`block/cherry_chest`、`block/iron/iron_sink`、`block/spruce/spruce_lamp`、`block/spruce/spruce_sink`、`block/spruce/spruce_toilet`
+
+——它们都是**二进制资产**，而 rowaudit 对二进制只标 `[binary-asset]`、不比对内容，所以从未出现在 gap 清单里。已按 1.20 字节拷贝补齐（1379／946／734／1262／2403 B），另把用户工作区已有的 5 张（`spruce/fire.png`、`spruce_bathtub/{base,forward}.png`、`spruce_candelabras.png`、`spruce_candlestick.png`）一并纳入提交。**复检：引用 23 处、缺失 0。**
+
+### 137.3 搬运后的 audit 复核
+
+| 行 | 搬运前 | 搬运后 | 剩余内容 |
+| --- | --- | --- | --- |
+| 84（TerraCurio） | 33 / 5 | **1 / 1** | `ParticleTriggers.java` 1 行（即 `ForgeMod.EMPTY_TYPE` 的平台差异） |
+| 97（TerraCurio） | 14 / 1 | 14 / 1 | `fledgling_wings.geo.json`（1.21 侧另有内容，需人工合并） |
+| 141 | 21 / 1 | 21 / 1 | **纯目录布局差异**：1.20 `loot_tables/blocks/one_leg_table.json` 与 1.21 `loot_table/blocks/one_leg_table.json` **内容完全相同**（22 行对 22 行） ⇒ 无实质缺口 |
+| 145 | 400 / 8 | **0 / 0** | 无 |
+| 147 | 327 / 6 | **56 / 3** | `oak/bed` 的 item/block(base,forward) 三个模型（1.21 侧另有 `elements` 内容，需人工合并） |
+| 148 | 6597 / 34 | **13 / 6** | 4 个 Java 文件共 7 行为**已登记的适配差异**（`ofFullCopy`×3、LAMP 合并属性、通配 import、`protected` 可见性、多余 import）；另 `oak/bed.json` 5 行与 `acacia/chair.json` 1 行为待合并项 |
+
+### 137.4 台账（双写）
+
+| 行 | 新状态 | 依据 |
+| --- | --- | --- |
+| 84 | `COVERED` | 资产已齐，余 1 行平台差异 |
+| 141 | `COVERED` | 掉落表两侧内容相同（仅目录布局不同） |
+| 145 | **`PORTED`** | 代码＋资产均落地，audit **gap 归零** |
+| 146 | `PORTED` | 见 §136（gap 归零） |
+| 97／147／148 | `DEFER-ASSETS` | 仅余「1.21 侧另有内容、需人工合并」的旧模型（见 137.5） |
+
+### 137.5 唯一剩余事项：5 个旧模型的合并（非本次新增方块，需人工判断哪侧为准）
+
+| 文件 | 1.20 / 1.21 | 差异要点 |
+| --- | --- | --- |
+| `models/item/oak/bed.json` | 145 / 137 行 | 1.20 多 `display` 段；1.21 另有 `elements` 内容 |
+| `models/block/oak/bed/base.json` | 90 / 64 行 | 1.20 多 `groups`＋`textures` |
+| `models/block/oak/bed/forward.json` | 94 / 77 行 | 1.20 多 `textures` |
+| `models/item/acacia/chair.json` | 385 / 384 行 | 仅 1 处差异（值级） |
+| `TerraCurio …/fledgling_wings.geo.json` | 115 / 115 行 | 同结构、`pivot`/`origin` 取值不同（1.20 侧提交标题为「修一些资源错误」） |
+
+> 这 5 个都是**既有**家具/饰品模型（与本次新增的水槽/浴缸/烛台/樱花木箱无关），其两侧内容互有出入，机械覆盖会丢内容，故保留原样、登记待定。若确认以 1.20 为准，我可在下一轮按「合并而非覆盖」的方式处理。
+
+### 137.6 提交
+
+- 子模块：TerraCurio `894f0cd`（4 个 particle json）→ 后接无；TerraFurniture `4753c4a`（38 个模型/方块态/geo/mcmeta）＋ `1f09657`（10 张贴图）。
+- 父仓：本次一并更新两个 gitlink 并提交本节记录。
+- 用户工作区：搬运后 TerraFurniture **未提交条目归零**（原 17 条 WIP 已作为资产纳入提交，内容未改动）；`Confluence-Magic-Lib` 的 `LibUtils.java` 与主仓 `Confluence.java` 为用户在建改动，**未触碰**。
+

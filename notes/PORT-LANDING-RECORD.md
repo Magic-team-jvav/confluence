@@ -5287,3 +5287,38 @@ public <T extends Block> Builder setPropertyFor(TFBlockType<T> key, Function<Pro
 - 下一步：重跑行 141／145／146／147／148 的 audit 以量化剩余 gap（预期只剩资产），据此更新台账状态（Java 已完结、余项为资产的行使 `DEFER-ASSETS`）。
 - `fix_eol --check` 候选 6。
 
+## 一百三十五、落地后的端到端复核（重跑 audit）＋ 剩余 gap 分类
+
+### 135.1 重跑 audit：行 141／145／146／147／148 的 gap 前后对比
+
+以落地后的 1.21 子模块 HEAD 重跑同一套 audit（`sub_rows.py TerraFurniture 141 145 146 147 148`）：
+
+| 行 | 落地前 GAP/文件 | 落地后 GAP/文件 | 缺符号（前→后） | 说明 |
+| --- | --- | --- | --- | --- |
+| 141 | 21 / 1 | 21 / 1 | 3 → 3 | 该行早已判为 `DEFER-ASSETS`（三个"缺符号"是 1.20 自己改名的旧名，DEAD），剩 `one_leg_table.json` 内容差 |
+| 145 | 443 / 12 | **400 / 8** | 2 → **0** | `SinkBlock` 变体（§130）＋ `IRON_SET`/`SPRUCE_SET` 的 SINK（§132）＋ tag/lang（§134）已落地 |
+| 146 | 69 / 2 | **19 / 1** | 5 → 1 | `CandelabraBlock` 的 50 行（§133）已落地 |
+| 147 | 359 / 10 | **327 / 6** | 1 → 0 | `BathtubBlock` 的 31 行（§131）＋ `SPRUCE_SET` 的 BATHTUB（§132）已落地 |
+| 148 | 6714 / 37 | **6597 / 34** | 9 → **0** | `ModelLightBlock`／三条烛台／樱花木箱／LAMP 等（§127–§133）＋ tag/lang（§134）已落地 |
+
+合计消除 **287 行** gap 与 10 个文件项；`SimpleGeoRenderedItem` 等缺符号全部归零。
+
+### 135.2 剩余 gap 的逐文件分类（决定台账状态）
+
+| 行 | 剩余 | 分类 |
+| --- | --- | --- |
+| 145 | 8 文件 400 行：`models/block/spruce/candelabras.json`(155)、`models/block/iron/sink.json`(112)、`models/block/spruce/sink.json`(86)、`blockstates/iron_sink.json`(19)、`blockstates/spruce_sink.json`(19)、`models/item/{iron_sink,spruce_sink,spruce_candelabras}.json`(3×3) | **纯资产** ⇒ `DEFER-ASSETS` |
+| 147 | 6 文件 327 行：`models/item/spruce/bathtub.json`(134)、`models/block/spruce/bathtub/{base,forward}.json`(88/49)、`models/item/oak/bed.json`(26)、`models/block/oak/bed/{base,forward}.json`(18/12) | **纯资产** ⇒ `DEFER-ASSETS` |
+| 146 | 1 文件 19 行：`common/block/light/SwitchableLightBlock.java`（含 `OAK_CANDLE_SHAPE`） | **Java 未完成** ⇒ 仍 `TODO` |
+| 148 | 34 文件：资产为主；Java 仅 5 个文件、13 行 —— 其中 **11 行是已登记的适配差异**（`Properties.ofFullCopy` ×3、LAMP 合并属性行、`TFModClient` 的通配 import、`ModelLightBlock` 的 `protected` 可见性、`CherryChestBlock` 在 1.20 多余的一条 `import ...Block`），**另 6 行是真实剩余特性**：`SimpleGeoRenderedItem` 的 `animated` 标志（1.20 为 4 参构造 ＋ `private final boolean animated` ＋ `registerControllers` 早退） | **Java 剩 6 行** ⇒ 仍 `TODO` |
+
+### 135.3 台账（双写）
+
+- 行 **145／147 → `DEFER-ASSETS`**（Java 面已完成，仅余资源）。
+- 行 **146／148 保持 `TODO`**（各余 19 行／6 行 Java）。
+- 全量：`COVERED` 122、`SKIP-PORTLIB` 12、`REVERSE-ALIGNED` 6、`DEFER-ASSETS` 5（含此二行与 84／97／141）、`TODO` 2。
+
+### 135.4 下一步
+
+最后一批 Java：`SwitchableLightBlock`（19 行，行 146）＋ `SimpleGeoRenderedItem` 的 `animated`（6 行，行 148）⇒ 完成后这四行的 Java 面全部收口，只剩资产（用户在建面）。
+

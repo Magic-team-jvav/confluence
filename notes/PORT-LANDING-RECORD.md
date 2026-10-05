@@ -5629,3 +5629,54 @@ TerraFurniture 四个文件的第 3 步**全部为 True（逐字节相同）**�
 跨模块搬移**再无遗漏**：本轮新发现只有 `BeeProjectileRenderer`（主模块 → TerraCurio）1 例，且 1.21 侧引用已正确改指；其余命中都是已知的「移至 lib／TC」或通用标识符误报。主模块残余 36 个文件全部定性为非缺口。子模块口径仍为 **0 行未移植**（§139.5）。
 
 产物（gitignored）：`build/_cmp231/xmod_hash_report.txt`、`xmod_sym_report.txt`、`xmod_main_report.txt`、`xmod_asset_report.txt`、`sub_cross_module.txt`。
+
+## 一百四十一、按「1.20 新修改必须同步到 1.21」补做结构镜像（MouseHandlerMixin 拆分等 3 处）
+
+用户指出：§139.4／§140.2 我只核对了「行为等价」，没有按 1.20 的**形态**同步 —— 1.20 已把 `MouseHandlerMixin` 拆成两个（lib 管重力取反、TerraCurio 管 Scope），1.21 却仍合在一个里。这正是规则「1.20 HEAD 的新修改要同步到 1.21」的漏做，本节补做并补上这条核查轴。
+
+### 141.1 新增核查轴：fork 之后的结构镜像
+
+对每个 1.20 模块仓库，取 fork 之后的 `--diff-filter=A`（新增）与 `--diff-filter=D`（删除）路径（fork：子模块 2026-07-04、主模块 2026-06-01），四分类判定：
+
+| 类别 | 判定 | 处理 |
+| --- | --- | --- |
+| A-跨模块 | 1.20 新增（且仍在 1.20 HEAD）的文件，1.21 同模块没有、但**别的模块**有同名 | **待镜像**（1.21 停在旧位置） |
+| A-同模块换路径 | 同模块内换了路径 | 视为已镜像（多为 1.21 自己的整理） |
+| A-全无 | 1.21 全仓全无 | 按 §139 的平台废弃/死代码逐项裁定 |
+| **D-残留** | 1.20 fork 后删掉的文件，1.21 **仍在精确路径** | **待镜像**（1.21 停在旧位置） |
+| D-同名换路径 | 1.21 在同模块另有同名文件 | 视为已镜像 |
+
+> 关键教训：**只比「行为是否等价」是不够的**——1.20 的结构性改动（拆出/移入/删除）也属于「新修改」，必须镜像。§139.4 我写的「不得在 lib 补 MouseHandlerMixin」只在「1.21 保持合并形态」的前提下成立；按规则正确做法是**拆分**。
+
+### 141.2 本次镜像的 3 处
+
+| # | 内容 | 1.20 依据 | 1.21 提交 |
+| --- | --- | --- | --- |
+| 1 | `MouseHandlerMixin` 拆分：lib 新建 `mixin/client/MouseHandlerMixin.java`（与 1.20 逐字节 885 B）＋ 在 lib `mixins.json` 的 client 列表登记；TC 侧删掉重力半（删后与 1.20 TC 逐字节 971 B） | lib `0718c59` 新建（21 行）＋ TC `ddfcd27` 删除 5 行（同一批「将饰品的药水效果转移至lib」） | lib `3133fd2`、TC `47329a1` |
+| 2 | `HoneyBottleItemMixin` 归位 lib：主模块 `1c012ccb1` **删掉**该文件（20 行）、lib `0718c59` 新建同名类 ⇒ 1.21 从主模块移入 lib（保留 1.21 原生注入点 `removeEffectsCuredBy`），主模块 `mixins.json` 同步移除 `world.item.HoneyBottleItemMixin` | 主模块 `1c012ccb1` + lib `0718c59` | lib `8059e6c` ＋ 父仓（主模块删除/登记） |
+| 3 | TC 删除 `common/item/MasterItem.java`：`STAR`／`ICON` 改 `new CustomRarityItem(MASTER)`、类型改 `DeferredItem<CustomRarityItem>`、补 import；删类 | TC `45beb47`（2026-08-23「饰品能力全改为datamap」） | TC `13fc6c4` |
+
+镜像后逐字核对：lib 的 MouseHandlerMixin 与 1.20 相同（885 B）；TC 的 MouseHandlerMixin 与 1.20 相同（971 B）；TC 的 STAR/ICON 两行与 1.20 仅差 `PortDeferredItem`→`DeferredItem`（平台用词）。
+
+### 141.3 复核数字
+
+| 项 | 镜像前 | 镜像后 |
+| --- | --- | --- |
+| 结构轴 · 子模块 A-跨模块 | lib 1（Honey）、TC 0、TF 0 | **全部 0** |
+| 结构轴 · 子模块 D-残留 | TC 1（MasterItem） | **全部 0** |
+| 台账行 9（lib `0718c59`）缺定义型符号 | 2（`HoneyBottleItemMixin`、`MouseHandlerMixin`） | **0**（gap 116/17 → 98/16） |
+| 台账行 77（TC `ddfcd27`）／行 82（TC `45beb47`） | 缺 0 ／ 缺 1（`MasterItem`） | 缺 0 ／ **缺 0** |
+
+子模块剩余「A-全无」共 6 项，均为平台废弃或死代码，非待镜像：lib 的 `DynamicLightProvider`／`DynamicLightRegister`（PortLib 事件层，1.20 内无调用者）、`mixin/client/ParticleEngineMixin`（1.20 自身方法体即注释）、`mixin/chunk/LevelRendererAccessor`（1.21 `setSectionDirty` 已公开）、TC 的 `mixin/integration/curios/ClientEventHandlerMixin`（PortLib `IPortAttribute` shim）、`animations/accessory/normal_wings.animation.json`（1.21 改由物品 id 动态拼路径 ⇒ `fledgling_wings.animation.json`；且该 1.20 提交本身是**反向同步** 1.21.1 的翅膀迁移）。
+
+### 141.4 主模块（ConfluenceOtherworld）同轴现状 —— 待用户决定
+
+| 类别 | 数 | 说明 |
+| --- | --- | --- |
+| A-跨模块 | 1 | `BeeProjectileRenderer`（1.21 主模块 `ModClientEvents` 已 import TC 的同名类，引用已改指 ⇒ 已镜像） |
+| A-同模块换路径 | 901 | 1.21 自己的资源整理（如 `sounds/*` ↔ `sounds/item/*` 互有取舍） |
+| A-全无 | 17 | 上一轮已逐项裁定（hook 渲染器、附魔类、TreeGrower shim 等） |
+| **D-残留（1.20 删除未镜像）** | **546** | 主要来自：`900c068f7` 音频大导入（把 `sounds/*.ogg` 挪入 `sounds/item/`）、`e2a096341` 删除 Ponder 的 nbt（1.21 仍保留 Create Ponder 集成与这些 nbt）、`2de684965` 移除 `ICarryMinion`、`e9501cf56` 删除 `BackgroundImageMakerScreen` 等 |
+| D-同名换路径 | 196 | 视为已镜像 |
+
+546 项**不宜机械镜像**：其中「音频大导入」是 1.20 的目录整理（1.21 侧 `sounds.json` 与文件布局自洽），而 Ponder nbt 的删除源于 1.20 放弃 Ponder，1.21 仍在用（`integration.create.ponder` 仍在混入列表里）。已登记为独立批次，等用户裁定后再动 —— 本批不触碰主模块资源。

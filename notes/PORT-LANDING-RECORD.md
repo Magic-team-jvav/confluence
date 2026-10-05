@@ -5150,3 +5150,51 @@ public static final TFBlockSet SPRUCE_SET = new TFBlockSet.Builder(SPRUCE, Block
 - 台账：行 147 仍 `TODO`（第一批已落地）；全量统计不变（`COVERED` 122／`SKIP-PORTLIB` 12／`REVERSE-ALIGNED` 6／`DEFER-ASSETS` 3／`TODO` 4）。
 - `fix_eol --check` 候选 6；下一步：行 146（`CandelabraBlock` 55 行：粒子与变体形状）或行 147 第二批（`SPRUCE_SET` 的 BATHTUB）。
 
+## 一百三十二、落地记录：行 145/147 第二批（`SPRUCE_SET` 的 BATHTUB/SINK/TOILET ＋ `IRON_SET` 的 SINK）
+
+### 132.1 改动（`TerraFurniture` 子模块，1 个文件 `TFBlocks.java`，+11 行）
+
+`SPRUCE_SET` 现与 1.20 同序（TABLE → CHAIR → **BATHTUB → SINK → TOILET** → LAMP）：
+
+```java
+.setAvailabilityFor(TFBlockType.BATHTUB, true)
+.setGetterFor(TFBlockType.BATHTUB, (properties, applier) -> new BathtubBlock(SPRUCE, properties, BathtubBlock.tubShapes(10, 2), false))
+.setPropertyFor(TFBlockType.BATHTUB, properties -> properties.noOcclusion())
+.setAvailabilityFor(TFBlockType.SINK, true)
+.setPropertyFor(TFBlockType.SINK, properties -> properties.noOcclusion())
+.setAvailabilityFor(TFBlockType.TOILET, true)
+.setPropertyFor(TFBlockType.TOILET, properties -> properties.noOcclusion())
+```
+
+`IRON_SET` 补 `SINK`（availability + `noOcclusion()`），即 1.20 的铁水槽；另加 import `common.block.sleep.BathtubBlock`。
+
+### 132.2 前置依赖（都在本线前面几批落地）
+
+| 依赖 | 批次 |
+| --- | --- |
+| `BathtubBlock` 4 参构造 + `tubShapes(int, int)` | §131（行 147-1） |
+| `SinkBlock` 的 `IRON_BASE`／`SPRUCE_BASE` 变体形状 | §130（行 145-1） |
+| `TFBlockType.BATHTUB`／`SINK`／`TOILET` 与 `TFBlockSet.Builder` 的 `setAvailabilityFor`／`setGetterFor`／`setPropertyFor` | 1.21 原有（§128.3 已核） |
+
+### 132.3 核验（与 1.20 的计数逐项对齐）
+
+| 符号 | 1.21 | 1.20 | 结果 |
+| --- | --- | --- | --- |
+| `BathtubBlock` | 3 | 3 | OK |
+| `TFBlockType.BATHTUB` | 3 | 3 | OK |
+| `TFBlockType.SINK` | 4 | 4 | OK（SPRUCE_SET 2 + IRON_SET 2） |
+| `TFBlockType.TOILET` | 3 | 3 | OK |
+| `ModelLightBlock` | 4 | —（1.20 为 `PortDeferredBlock<ModelLightBlock>` 体系，不作同项比较） | — |
+
+结构自检：`TFBlocks.java` 376 行、纯 CRLF、`{}` 8/8、`()` 416/416；子模块已跟踪改动**仅**该文件。
+
+### 132.4 本批刻意留下的一项
+
+1.20 的 `SPRUCE_SET` 末尾还有 `.setAvailabilityFor(TFBlockType.CANDELABRAS, true)` 与 `.doLightSetup(14, 14, 15, 15, 15)`。二者**留待行 146 批次**：`doLightSetup` 会对 LAMP 等类型再调一次 `setPropertyFor(lightLevel)`，若现在加进来会覆盖本线第二批给 LAMP 设置的 `noOcclusion`（§128.2 已记录该顺序陷阱）；与烛台变体（`SPRUCE_SHAPE`／粒子）一起处理更合适。
+
+### 132.5 状态
+
+- `TerraFurniture` 子模块：本批 1 个文件已提交；父仓更新 gitlink。
+- 台账：行 145／147 仍 `TODO`（各已完成两批/一批）；全量统计不变。
+- `fix_eol --check` 候选 6；下一步：行 146（`CandelabraBlock` 55 行：粒子 + `SPRUCE_SHAPE` 等变体形状 + CANDELABRAS/doLightSetup 条目）。
+

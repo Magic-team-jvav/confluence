@@ -1,5 +1,7 @@
 package org.confluence.mod.common.event.game.entity;
 
+import org.confluence.mod.common.data.AchievementOffset;
+
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
@@ -54,7 +56,7 @@ import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+
 import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
@@ -143,7 +145,7 @@ public final class PlayerEvents {
         GameEventSystem.INSTANCE.clearAll(player);
         PlayerSpecialData.of(player).setPvP(false);
         CommonConfigs.reset();
-        MountManager.dismiss(player); // 1.20 `PlayerEvents:166`（同位置）
+        MountManager.dismiss(player);
     }
 
     @SubscribeEvent
@@ -371,7 +373,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        MountManager.dismiss(player); // 1.20 `PlayerEvents:396`（同位置）
+        MountManager.dismiss(player);
         EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() != 0, player);
         EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
@@ -400,7 +402,7 @@ public final class PlayerEvents {
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
+        if (!advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(true) && AchievementOffset.Loader.getDisplayOffset().containsKey(advancement.id())) {
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
         }
 
@@ -413,7 +415,7 @@ public final class PlayerEvents {
     public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         if (!LibEntityUtils.isSingleplayerOwner(player) &&
-                AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
+                AchievementOffset.Loader.getDisplayOffset().containsKey(event.getAdvancement().id())
         ) {
             AchievementsDataSyncPacketS2C.sendToPlayer(player);
         }
@@ -432,7 +434,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        MountManager.dismiss(player); // 1.20 `PlayerEvents:442`（同位置）
+        MountManager.dismiss(player);
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
     }

@@ -1,5 +1,7 @@
 package org.confluence.mod.client.gui;
 
+import org.confluence.mod.common.data.saved.Bestiary;
+
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,7 +18,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.CheckBannerAvailableEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
+
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 import org.confluence.mod.integration.jei.JeiHelper;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
@@ -45,9 +47,9 @@ public class BestiaryScreen extends Screen {
 
     private int maxPage;
     private int page;
-    private Iterable<ClientBestiaryEntry> renderedEntries = List.of();
-    private Collection<ClientBestiaryEntry> entries = List.of();
-    private @Nullable ClientBestiaryEntry showedEntry;
+    private Iterable<ClientBestiary.Entry> renderedEntries = List.of();
+    private Collection<ClientBestiary.Entry> entries = List.of();
+    private @Nullable ClientBestiary.Entry showedEntry;
 
     private GuiSprite slider;
 
@@ -94,7 +96,7 @@ public class BestiaryScreen extends Screen {
         this.leftPos = (width - imageWidth) / 2;
         this.topPos = (height - imageHeight) / 2;
         this.entries = bestiary.getSortedEntries();
-        for (ClientBestiaryEntry entry : entries) {
+        for (ClientBestiary.Entry entry : entries) {
             entry.updateUnlockedProgress(getMinecraft().level); // 打开怪物图鉴再刷新
         }
         updateRenderedEntries(0);
@@ -222,7 +224,7 @@ public class BestiaryScreen extends Screen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         int x = leftPos + renderedEntryX;
         int y = topPos + renderedEntryY;
-        for (ClientBestiaryEntry entry : renderedEntries) {
+        for (ClientBestiary.Entry entry : renderedEntries) {
             if (mouseX >= x && mouseX < x + 36 && mouseY >= y && mouseY < y + 36) {
                 if (entry.isLocked()) return false;
                 this.showedEntry = entry;
@@ -343,7 +345,7 @@ public class BestiaryScreen extends Screen {
 
         int x1 = leftPos + renderedEntryX;
         int y1 = topPos + renderedEntryY;
-        for (ClientBestiaryEntry entry : renderedEntries) {
+        for (ClientBestiary.Entry entry : renderedEntries) {
             guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 220, 0, x1, y1, 36, 36);
             if (entry.isLocked()) {
                 renderFilter(guiGraphics, FilterEntry.UNKNOWN, x1, y1, 36, 36);

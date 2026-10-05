@@ -1,5 +1,9 @@
 package org.confluence.mod.common.data.gen;
 
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+
+import org.confluence.mod.common.data.saved.Bestiary;
+
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.HolderLookup;
@@ -13,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.extensions.IHolderExtension;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
+
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.animal.Bunny;
@@ -40,7 +44,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import static org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry.*;
+import static org.confluence.mod.client.handler.bestiary.ClientBestiary.Entry.*;
 
 public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
     private final PackOutput.PathProvider pathProvider;
@@ -54,7 +58,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider provider) {
         FilterEntry[] surfaceDaytime = {FilterEntry.SURFACE, FilterEntry.DAYTIME};
         FilterEntry[] surfaceNighttime = {FilterEntry.SURFACE, FilterEntry.NIGHTTIME};
-        recipe(Codec.unboundedMap(Codec.STRING, ClientBestiaryEntry.CODEC), pathProvider().json(Confluence.asResource("bestiary"))).addRecipe(new Builder()
+        recipe(Codec.unboundedMap(Codec.STRING, ClientBestiary.Entry.CODEC), pathProvider().json(Confluence.asResource("bestiary"))).addRecipe(new Builder()
                 .add(NpcEntities.GUIDE, builder -> builder.order(100).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE))
                 .add(NpcEntities.MERCHANT, builder -> builder.order(200).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE))
                 .add(NpcEntities.NURSE, builder -> builder.order(300).rarity(1).background(THE_HALLOW).filters(FilterEntry.THE_HALLOW))
@@ -731,7 +735,6 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 星尘柱
                 // 月亮领主  54000
 
-
                 // MC原版生物 从60000开始  和泰拉生物重合归上面的泰拉生物编号
                 .add(EntityType.ALLAY, builder -> builder.order(60000).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(EntityType.ARMADILLO, builder -> builder.order(60100).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
@@ -820,7 +823,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .map);
     }
 
-    private static void cave(ClientBestiaryEntry.Builder builder, int order, int rarity) {
+    private static void cave(ClientBestiary.Entry.Builder builder, int order, int rarity) {
         builder.order(order).rarity(rarity).background(CAVE).filters(FilterEntry.CAVE);
     }
 
@@ -830,47 +833,47 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
     }
 
     public static class Builder {
-        private final Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
+        private final Map<String, ClientBestiary.Entry> map = Maps.newHashMap();
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, String typeKey, String variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder add(IHolderExtension<EntityType<?>> holder, String typeKey, String variant, Consumer<ClientBestiary.Entry.Builder> consumer) {
             String key = variant.isEmpty() ? typeKey : typeKey + '.' + variant;
-            ClientBestiaryEntry.Builder builder = ClientBestiaryEntry.builderc(holder.getDelegate().value(), key);
+            ClientBestiary.Entry.Builder builder = ClientBestiary.Entry.builderc(holder.getDelegate().value(), key);
             consumer.accept(builder);
             builder.description(Component.translatable("bestiary." + key + ".desc"));
             map.put(key, builder.build());
             return this;
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, String variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder add(IHolderExtension<EntityType<?>> holder, String variant, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return add(holder, holder.getDelegate().value().getDescriptionId(), variant, consumer);
         }
 
-        public Builder add(EntityType<?> type, String variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder add(EntityType<?> type, String variant, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return add(type.builtInRegistryHolder(), variant, consumer);
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder add(IHolderExtension<EntityType<?>> holder, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return add(holder, "", consumer);
         }
 
-        public Builder add(EntityType<?> type, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder add(EntityType<?> type, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return add(type.builtInRegistryHolder(), consumer);
         }
 
-        public <E extends Enum<E> & IVariant> Builder numberedVariant(IHolderExtension<EntityType<?>> holder, int displayVariant, E entityVariant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public <E extends Enum<E> & IVariant> Builder numberedVariant(IHolderExtension<EntityType<?>> holder, int displayVariant, E entityVariant, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return numberedVariant(holder, holder.getDelegate().value().getDescriptionId(), displayVariant, entityVariant, consumer);
         }
 
-        public <E extends Enum<E> & IVariant> Builder numberedVariant(IHolderExtension<EntityType<?>> holder, String typeKey, int displayVariant, E entityVariant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public <E extends Enum<E> & IVariant> Builder numberedVariant(IHolderExtension<EntityType<?>> holder, String typeKey, int displayVariant, E entityVariant, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return add(holder, typeKey, Integer.toString(displayVariant), consumer.andThen(builder -> builder.entityNbt(entityVariant::serialize)));
         }
 
-        public Builder demonEyeVariant(DemonEye.Variant variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder demonEyeVariant(DemonEye.Variant variant, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return add(MonsterEntities.DEMON_EYE, variant.getSerializedName(), consumer.andThen(builder -> builder.entityNbt(variant::serialize)));
         }
 
         /// @param armorItems \[鞋子，裤子，衣服，帽子\]
-        public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String typeKey, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String typeKey, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiary.Entry.Builder> consumer) {
             if (armorItems.size() != 4) throw new IllegalArgumentException();
             return add(holder, typeKey, variant, consumer.andThen(builder -> builder.entityNbt(nbt -> {
                 ListTag listTag = new ListTag();
@@ -886,17 +889,17 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
         }
 
         /// @param armorItems \[鞋子，裤子，衣服，帽子\]
-        public Builder mobArmorItems(EntityType<?> type, String typeKey, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder mobArmorItems(EntityType<?> type, String typeKey, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return mobArmorItems(type.builtInRegistryHolder(), typeKey, variant, armorItems, provider, consumer);
         }
 
         /// @param armorItems \[鞋子，裤子，衣服，帽子\]
-        public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return mobArmorItems(holder, holder.getDelegate().value().getDescriptionId(), variant, armorItems, provider, consumer);
         }
 
         /// @param armorItems \[鞋子，裤子，衣服，帽子\]
-        public Builder mobArmorItems(EntityType<?> type, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
+        public Builder mobArmorItems(EntityType<?> type, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return mobArmorItems(type.builtInRegistryHolder(), variant, armorItems, provider, consumer);
         }
     }

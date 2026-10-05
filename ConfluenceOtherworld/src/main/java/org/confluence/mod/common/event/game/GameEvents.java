@@ -1,5 +1,7 @@
 package org.confluence.mod.common.event.game;
 
+import org.confluence.mod.common.data.AchievementOffset;
+
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -14,7 +16,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+
 import org.confluence.mod.common.data.AnglerQuestLoader;
 import org.confluence.mod.common.entity.npc.NPCNames;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;
@@ -74,7 +76,7 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void addReloadListener(AddReloadListenerEvent event) {
-        event.addListener(AchievementOffsetLoader.getInstance());
+        event.addListener(AchievementOffset.Loader.getInstance());
         event.addListener(NPCDialogLoader.getInstance());
         event.addListener(NPCNames.Loader.getInstance());
         event.addListener(ChatManager.getLoader());

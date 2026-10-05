@@ -1,5 +1,7 @@
 package org.confluence.mod.api.event.bestiary;
 
+import org.confluence.mod.common.data.saved.Bestiary;
+
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -41,7 +43,6 @@ public class RegisterCustomBestiaryEntryRendererEvent extends Event implements I
     public void registerBoneSerpent(DeferredHolder<EntityType<?>, EntityType<SimpleWormMonster>> holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer(context, holder.getId()));
     }
-
 
     public static void postEvent(EntityRendererProvider.Context context) {
         ModLoader.postEvent(new RegisterCustomBestiaryEntryRendererEvent(context));

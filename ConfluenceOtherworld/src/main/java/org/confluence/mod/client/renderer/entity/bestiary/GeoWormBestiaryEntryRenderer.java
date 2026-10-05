@@ -1,5 +1,7 @@
 package org.confluence.mod.client.renderer.entity.bestiary;
 
+import org.confluence.mod.common.data.saved.Bestiary;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

@@ -12,7 +12,6 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
 
 import java.util.Map;
 
@@ -28,12 +27,12 @@ public record AchievementOffsetSyncPacketS2C(Object2BooleanMap<ResourceLocation>
 
     @Override
     public void work(Player player) {
-        AchievementOffsetLoader.handle(value);
+        AchievementOffset.Loader.handle(value);
     }
 
     public static void sendToClient(ServerPlayer player) {
         Object2BooleanMap<ResourceLocation> map = new Object2BooleanOpenHashMap<>();
-        for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffsetLoader.getDisplayOffset().entrySet()) {
+        for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffset.Loader.getDisplayOffset().entrySet()) {
             map.put(entry.getKey(), entry.getValue().hideLink());
         }
         PacketDistributor.sendToPlayer(player, new AchievementOffsetSyncPacketS2C(map));

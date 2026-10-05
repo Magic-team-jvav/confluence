@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init;
 
+import org.confluence.mod.common.data.saved.Bestiary;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

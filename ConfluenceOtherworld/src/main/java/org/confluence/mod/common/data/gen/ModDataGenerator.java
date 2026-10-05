@@ -1,5 +1,9 @@
 package org.confluence.mod.common.data.gen;
 
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+
+import org.confluence.mod.common.data.saved.Bestiary;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;

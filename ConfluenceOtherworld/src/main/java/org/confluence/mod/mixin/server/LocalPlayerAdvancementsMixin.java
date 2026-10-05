@@ -1,5 +1,7 @@
 package org.confluence.mod.mixin.server;
 
+import org.confluence.mod.common.data.AchievementOffset;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
@@ -17,7 +19,7 @@ import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+
 import org.confluence.mod.util.AchievementUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -67,7 +69,7 @@ public abstract class LocalPlayerAdvancementsMixin {
         if (LibEntityUtils.isSingleplayerOwner(player)) {
             Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>();
             progress.forEach((holder, progress) -> {
-                if (progress.hasProgress() && AchievementOffsetLoader.getDisplayOffset().containsKey(holder.id())) {
+                if (progress.hasProgress() && AchievementOffset.Loader.getDisplayOffset().containsKey(holder.id())) {
                     map.put(holder.id(), progress);
                 }
             });

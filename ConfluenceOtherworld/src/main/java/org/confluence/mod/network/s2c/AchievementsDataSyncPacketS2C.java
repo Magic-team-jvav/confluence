@@ -1,5 +1,7 @@
 package org.confluence.mod.network.s2c;
 
+import org.confluence.mod.common.data.AchievementOffset;
+
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+
 import org.confluence.mod.util.AchievementUtils;
 
 import java.util.LinkedHashMap;
@@ -35,7 +37,7 @@ public record AchievementsDataSyncPacketS2C(PlayerAdvancements.Data data) implem
     public static void sendToPlayer(ServerPlayer player) {
         Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>();
         for (Map.Entry<AdvancementHolder, AdvancementProgress> entry : player.getAdvancements().progress.entrySet()) {
-            if (entry.getValue().hasProgress() && AchievementOffsetLoader.getDisplayOffset().containsKey(entry.getKey().id())) {
+            if (entry.getValue().hasProgress() && AchievementOffset.Loader.getDisplayOffset().containsKey(entry.getKey().id())) {
                 map.put(entry.getKey().id(), entry.getValue());
             }
         }

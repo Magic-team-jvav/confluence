@@ -1,12 +1,14 @@
 package org.confluence.mod.mixin.server;
 
+import org.confluence.mod.common.data.AchievementOffset;
+
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.advancements.*;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+
 import org.confluence.mod.mixed.IPlayerAdvancements;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -54,7 +56,7 @@ public abstract class PlayerAdvancementsMixin implements IPlayerAdvancements {
 
     @ModifyExpressionValue(method = "lambda$asData$1", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/AdvancementProgress;hasProgress()Z"))
     private static boolean skipConfluence(boolean original, @Local(argsOnly = true) AdvancementHolder holder) {
-        if (original && AchievementOffsetLoader.getDisplayOffset().containsKey(holder.id())) { // 跳过保存汇流来世成就
+        if (original && AchievementOffset.Loader.getDisplayOffset().containsKey(holder.id())) { // 跳过保存汇流来世成就
             return false;
         }
         return original;

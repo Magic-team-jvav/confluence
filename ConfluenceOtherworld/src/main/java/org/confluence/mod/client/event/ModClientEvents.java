@@ -559,9 +559,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
 
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), BossWormPartRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), MissingModelRenderer::new); // 1.20 todo：专用身体、尾部和受损资源已导出，待适配体节连接与侧翼展开状态
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), MissingModelRenderer::new); // todo：专用身体、尾部和受损资源已导出，待适配体节连接与侧翼展开状态
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds"), true, 2.2F, 0.0F));
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), MissingModelRenderer::new); // 1.20 todo：专用头部资源已导出，待与体节一起适配
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), MissingModelRenderer::new); // todo：专用头部资源已导出，待与体节一起适配
 
         event.registerEntityRenderer(MonsterEntities.SPIKED_SLIME.get(), c -> new GeoSpecialSlimeRenderer<>(c, Confluence.asResource("slime/spiked_slime")));
         event.registerEntityRenderer(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), c -> new GeoSpecialSlimeRenderer<>(c, Confluence.asResource("slime/spiked_jungle_slime")));
@@ -667,7 +667,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ANGLER_FISH.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.ANGLER_FISH.getId(), false), true, 1.0F, -0.1875F).addBoneToGlow("light"));
         event.registerEntityRenderer(MonsterEntities.GIANT_SHELLY.get(), c -> new GeoNormalRenderer<>(c, new VariantTextureGeoModel<>(Confluence.asResource("geo/entity/giant_shelly.geo.json"), Confluence.asResource("animations/entity/giant_shelly.animation.json"), shelly -> Confluence.asResource(shelly.getVariant() == 0 ? "textures/entity/giant_shelly/purple.png" : "textures/entity/giant_shelly/yellow.png"))));
         event.registerEntityRenderer(MonsterEntities.CRAWDAD.get(), c -> new GeoNormalRenderer<>(c, new VariantTextureGeoModel<>(Confluence.asResource("geo/entity/crawdad.geo.json"), Confluence.asResource("animations/entity/crawdad.animation.json"), crawdad -> Confluence.asResource(crawdad.getVariant() == 0 ? "textures/entity/crawdad/blue.png" : "textures/entity/crawdad/red.png"))));
-        event.registerEntityRenderer(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), MissingModelRenderer::new); // 1.20 `:835` todo 专用模型
+        event.registerEntityRenderer(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new BossGeoRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/boss/the_destroyer_probe.geo.json"), Confluence.asResource("textures/entity/boss/the_destroyer_probe.png"), null)));
         event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), QueenBeeRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhuRenderer::new);

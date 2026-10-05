@@ -8,10 +8,10 @@
 >
 > 状态取值：TODO / PORTED / COVERED / SKIP-PLATFORM / SKIP-PORTLIB / SKIP-1.20-REVERTED / REVERSE-ALIGNED /
 > DEFER-ASSETS / DEFER-ARCH / DO-NOT-PORT / LOST?。回填见 `notes/submodule-ledger-status.json`。
-> **本台账中 `TODO` 的语义已收敛为「已按两问法裁定为真缺口、待移植」**——其余行均已落
-> `COVERED`／`SKIP-PORTLIB`／`REVERSE-ALIGNED`／`DEFER-ASSETS`。当前仅 TerraFurniture 5 行（141／145–148）为 TODO，
-> 缺口清单见 `PORT-LANDING-RECORD.md` §124。
-> DEFER-ASSETS / DEFER-ARCH / DO-NOT-PORT / LOST?。回填见 `notes/submodule-ledger-status.json`。
+> **本台账中 `TODO` 的语义已收敛为「已按两问法裁定为真缺口、待移植」**——当前 **TODO = 0**：148 行全部落定
+> （`COVERED` 128 ／ `PORTED` 4 ／ `SKIP-PORTLIB` 10 ／ `REVERSE-ALIGNED` 6；`DEFER-ASSETS`／`DEFER-ARCH`／
+> `DO-NOT-PORT`／`LOST?` 均为 0）。缺口清单见 `PORT-LANDING-RECORD.md` §124，逐批判定见 §116 起，
+> 状态回填见 `notes/submodule-ledger-status.json`。
 
 | 行 | 子模块 | 提交 | 日期 | 主题 | 文件 | +/− | 标记 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -111,7 +111,7 @@
 | 94 | TerraCurio | `ea3fe72d3` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题 | 1 | +1 −1 | PortLib×1 | COVERED |
 | 95 | TerraCurio | `262f4dae5` | 2026-09-08 | 修复灯笼粒子往下掉的问题 | 1 | +1 −1 | PortLib×1 | COVERED |
 | 96 | TerraCurio | `9a8c29d2b` | 2026-09-08 | 修复部分靴子没有自动上台阶功能的问题 | 1 | +1 −0 |  | COVERED |
-| 97 | TerraCurio | `e9789b7c2` | 2026-09-10 | 修一些资源错误 | 1 | +14 −14 | 资源only | DEFER-ASSETS |
+| 97 | TerraCurio | `e9789b7c2` | 2026-09-10 | 修一些资源错误 | 1 | +14 −14 | 资源only | COVERED |
 | 98 | TerraCurio | `b797d87e8` | 2026-09-10 | 修复mixin，修复跳跃属性 | 6 | +32 −24 | PortLib×9 | COVERED |
 | 99 | TerraCurio | `eebc21cbe` | 2026-09-11 | 修复与Bigger Stacks的Mixin冲突 | 1 | +4 −1 |  | COVERED |
 | 100 | TerraCurio | `feded30e6` | 2026-09-11 | portlib升级为1.2.2 | 1 | +1 −1 | PortLib×2 | SKIP-PORTLIB |
@@ -161,5 +161,5 @@
 | 144 | TerraFurniture | `3b1e55c09` | 2026-09-20 | 改腿渲染逻辑 | 1 | +50 −11 |  | COVERED |
 | 145 | TerraFurniture | `3e45ca5a6` | 2026-09-20 | 添加方块 | 15 | +513 −1 |  | PORTED |
 | 146 | TerraFurniture | `df868f5ac` | 2026-09-22 | 家具 | 2 | +94 −1 |  | PORTED |
-| 147 | TerraFurniture | `62d4c7027` | 2026-09-27 | 传一点 | 14 | +427 −69 | PortLib×1 | DEFER-ASSETS |
-| 148 | TerraFurniture | `b5f856c95` | 2026-10-03 | 加点 | 43 | +6753 −73 |  | DEFER-ASSETS |
+| 147 | TerraFurniture | `62d4c7027` | 2026-09-27 | 传一点 | 14 | +427 −69 | PortLib×1 | PORTED |
+| 148 | TerraFurniture | `b5f856c95` | 2026-10-03 | 加点 | 43 | +6753 −73 |  | PORTED |

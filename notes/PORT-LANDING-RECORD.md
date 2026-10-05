@@ -5441,3 +5441,80 @@ public <T extends Block> Builder setPropertyFor(TFBlockType<T> key, Function<Pro
 - 父仓：本次一并更新两个 gitlink 并提交本节记录。
 - 用户工作区：搬运后 TerraFurniture **未提交条目归零**（原 17 条 WIP 已作为资产纳入提交，内容未改动）；`Confluence-Magic-Lib` 的 `LibUtils.java` 与主仓 `Confluence.java` 为用户在建改动，**未触碰**。
 
+
+## 一百三十八、核查「5 个旧模型哪侧更新」并按 1.20 整份覆盖（行 97／147／148 收口）
+
+用户提问：「查看 1.20.1 的这些模型更改是否比 1.21.1 新」。结论：**5 个文件在 1.20 侧的改动全部晚于 1.21 侧，且 1.21 分支对这些路径没有独占提交** —— 不是「两侧互有出入」，而是「1.21 停在旧版、1.20 在其上又走了两步」。
+
+### 138.1 核查方法（比分支归属，不比行数）
+
+对每个路径做三步，全部以 git 对象为准：
+
+1. 两分支各自 `git log --date=short -- <path>`，取下每个提交的哈希；
+2. 把 1.21 侧列出的哈希拿去 1.20 仓库 `git cat-file -e <sha>^{commit}` 判定「该提交在对方是否同一对象」，反之亦然 ⇒ 得到**各侧独占提交**；
+3. 把 1.21 HEAD 的文件内容与 1.20 那笔改动**之前**的版本（`git show <commit>^:<path>`）逐字节比对。
+
+TerraFurniture 四个文件的第 3 步**全部为 True（逐字节相同）**，第 2 步的「1.21 独占提交」**全部为 0 个**：
+
+| 文件 | 1.21 侧最后改动 | 1.21 独占提交 | 1.20 更新的提交 | 1.21 HEAD == 1.20 改动前 |
+| --- | --- | --- | --- | --- |
+| `models/item/oak/bed.json` | `944c1ab` 2026-06-01 木床 | **0** | `62d4c70` 09-27「传一点」、`b5f856c` 10-03「加点」 | 是 |
+| `models/block/oak/bed/base.json` | `944c1ab` | **0** | `62d4c70` | 是 |
+| `models/block/oak/bed/forward.json` | `944c1ab` | **0** | `62d4c70` | 是 |
+| `models/item/acacia/chair.json` | `6f87347` 2026-05-11 | **0** | `b5f856c` | 是 |
+
+⇒ 1.20 HEAD 的内容是 1.21 内容的**严格超集**，整份覆盖无损（不需要「合并」）。
+
+### 138.2 覆盖内容（均为纯资源）
+
+| 文件 | 依据提交 | 改动 |
+| --- | --- | --- |
+| `models/block/oak/bed/base.json` | `62d4c70` +26/−0 | 新增 element `bed4`（16×3×16 隔板）、`groups`、`textures.particle` |
+| `models/block/oak/bed/forward.json` | `62d4c70` +56/−39 | 新增 element `bed3`、`textures.particle` |
+| `models/item/oak/bed.json` | `62d4c70` ＋ `b5f856c` | `62d4c70` +26/−26（leg1 `from[-6,0,13]` → `[0,0,13]` 等镜像修正）；`b5f856c` +8/−1（新增 `display.gui`：rotation `[24,147,0]`、translation `[-0.25,2.25,0]`、scale `0.48`） |
+| `models/item/acacia/chair.json` | `b5f856c` +2/−2 | `display.gui.translation` `[0,-2,0]` → `[0,0,0]` |
+| `textures/block/oak/oak_bed/base.png` | `62d4c70` | 2091 → 1820 B |
+| `textures/block/oak/oak_bed/forward.png` | `62d4c70` | 2346 → 2037 B |
+
+两张贴图与 `models/*/oak/bed/*` 同属 `62d4c70`；`spruce_bathtub/{base,forward}.png` 两侧哈希一致（说明 §137 那轮已把该提交的浴缸资源搬对）。
+
+### 138.3 TerraCurio `fledgling_wings.geo.json`
+
+- 1.21 HEAD 的内容与 1.20 侧 `a3f1cbc`（2026-08-23「同步1.21.1翅膀迁移」）**逐字节相同** ⇒ 1.20 那条线已把 1.21.1 的翅膀模型原样同步过去；
+- 其后 1.20 另有 `e9789b7`（2026-09-10「修一些资源错误」，+14/−14）：全部 z 轴 `pivot`／`origin` **+3**（pivot `0→3`、`6→9`、`16→19`；origin `-1→2`、`4→7`、`11→14`），`visible_bounds_width` `5→6`；
+- 两分支 merge-base 为 `f8c93b7`（2026-05-26）。`e9789b7` 这个提交对象在两仓**同哈希**（`e9789b7c2…`），但 `git for-each-ref --contains` 显示它只在 `origin/forge-dev/1.20.1` 上，`neoforge-dev/1.21.1` 不可达 ⇒ 1.21 侧同样无独占内容，整份覆盖无损。
+
+### 138.4 覆盖结果与 audit 复核
+
+| 行 | 覆盖前 gap | 覆盖后 gap | 说明 |
+| --- | --- | --- | --- |
+| 97（TerraCurio） | 14 / 1 | **0 / 0** | `fledgling_wings.geo.json` 已对齐 1.20 HEAD |
+| 147 | 56 / 3 | **0 / 0** | 三个 `oak/bed` 模型已对齐 |
+| 148 | 13 / 6 | **7 / 4** | 剩余 7 行／4 文件即 §137.3 已登记的 Java 适配差异（`ofFullCopy`×3、LAMP 合并属性、通配 import、`protected` 可见性、多余 import），模型项已清零 |
+
+> 复核注意：`rowaudit` 读的是 `HEAD:path`（不是工作区），因此必须**先提交子模块再跑 audit**；本次先跑复核对不上（仍报 14/1、56/3、13/6），提交后即刻归零。
+
+### 138.5 台账（双写）
+
+| 行 | 原状态 | 新状态 | 依据 |
+| --- | --- | --- | --- |
+| 97 | `DEFER-ASSETS` | `COVERED` | 纯资源行，gap 归零 |
+| 147 | `DEFER-ASSETS` | `PORTED` | Java（`SinkBlock`／`BathtubBlock`／`TFBlocks`／`TFChineseProvider`）此前已落地 ＋ 本次资产补齐，gap 归零 |
+| 148 | `DEFER-ASSETS` | `PORTED` | 代码与资产均已落地，余项为已登记的适配差异 |
+
+分布：`COVERED` **128** ／ `PORTED` **4** ／ `SKIP-PORTLIB` 10 ／ `REVERSE-ALIGNED` 6，**TODO 0、DEFER-ASSETS 0**，合计 148 ✅。
+
+表头订正：`SUBMODULE-LEDGER.md` 表头原写「当前仅 TerraFurniture 5 行（141／145–148）为 TODO」（已过时，且其后还有一行重复的取值片段），改为「**TODO = 0**」并列出实际分布，重复片段一并并入。
+
+### 138.6 订正 §137.3／§137.4／§137.5
+
+- **§137.5 的判断有误**：「其两侧内容互有出入，机械覆盖会丢内容」是按**行数差**（145/137、90/64 等）推断的；按分支归属核查后，1.21 侧对这 5 个路径**均无独占提交**，1.20 HEAD 内容是 1.21 内容的严格超集，正确做法就是**整份覆盖**，不存在「合并」这一档。
+- **§137.3** 表中 97／147／148 的「1.21 侧另有内容、需人工合并」备注作废；**§137.4** 中 97／147／148 = `DEFER-ASSETS` 已按 138.5 更新。
+- **§137.1 的判据不完整**：SKIP 规则「`DIFF` 仅当 1.21 ⊆ 1.20 才覆盖」方向正确，但当时只做了「JSON 扁平化后的内容包含」检查，未检查**分支归属**这一更强证据（1.21 侧无独占提交 ⇒ 可整份覆盖）。后续同类判定统一以分支归属为准。
+- **§137.2 的贴图引用完整性检查有盲区**：它只能发现「本次搬运进来的模型所引用」的贴图，发现不了 oak bed 这 2 张（不在新增方块的引用链上）。二进制贴图缺口只能靠**逐文件哈希比对**（本轮做法）发现。
+
+### 138.7 提交
+
+- 子模块：TerraCurio `55a5e2d`（1 个 geo，14/14）；TerraFurniture `4868a61`（4 个模型 ＋ 2 张贴图，118/68）。
+- 父仓：更新两个 gitlink ＋ 台账 3 行状态 ＋ 状态 json 3 行 ＋ 本节记录。
+- 卫生：`fix_eol --check` 仍为**候选 6**（未新增，那 6 个是用户在建的 `geo/entity` 文件）；两个子模块工作区干净；用户 WIP（`Confluence.java`、`ContactEffectBoulderBlock.java`、lib `LibUtils.java`）**未触碰**。

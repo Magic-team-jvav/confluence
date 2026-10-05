@@ -872,7 +872,7 @@
    "date": "2026-09-10",
    "subject": "修一些资源错误",
    "old": "TODO",
-   "status": "DEFER-ASSETS"
+   "status": "COVERED"
   },
   {
    "row": 98,
@@ -1322,7 +1322,7 @@
    "date": "2026-09-27",
    "subject": "传一点",
    "old": "TODO",
-   "status": "DEFER-ASSETS"
+   "status": "PORTED"
   },
   {
    "row": 148,
@@ -1331,7 +1331,7 @@
    "date": "2026-10-03",
    "subject": "加点",
    "old": "TODO",
-   "status": "DEFER-ASSETS"
+   "status": "PORTED"
   }
  ]
 }

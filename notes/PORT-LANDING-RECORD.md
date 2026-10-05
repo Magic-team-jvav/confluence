@@ -5349,7 +5349,16 @@ public <T extends Block> Builder setPropertyFor(TFBlockType<T> key, Function<Pro
 | 145／147 | `DEFER-ASSETS` | 见 §135（纯资产） |
 | 141 | `DEFER-ASSETS` | 见 §125（仅 `one_leg_table.json` 内容差） |
 
-全量：**`COVERED` 122、`SKIP-PORTLIB` 12、`REVERSE-ALIGNED` 6、`DEFER-ASSETS` 6、`PORTED` 1、`TODO` 0**。
+全量（**权威统计**，由 `build/_cmp231/count_status.py` 直接读台账末列得出，148 行）：
+
+| 子模块 | 行数 | 分布 |
+| --- | --- | --- |
+| Confluence-Magic-Lib | 67 | `COVERED` 62、`SKIP-PORTLIB` 3、`REVERSE-ALIGNED` 2 |
+| TerraCurio | 55 | `COVERED` 46、`SKIP-PORTLIB` 5、`REVERSE-ALIGNED` 2、`DEFER-ASSETS` 2 |
+| TerraFurniture | 26 | `COVERED` 17、`REVERSE-ALIGNED` 2、`SKIP-PORTLIB` 2、`DEFER-ASSETS` 4、`PORTED` 1 |
+| **合计** | **148** | **`COVERED` 125、`SKIP-PORTLIB` 10、`REVERSE-ALIGNED` 6、`DEFER-ASSETS` 6、`PORTED` 1、`TODO` 0** |
+
+> **数值订正**：本节初稿把合计写成「`COVERED` 122、`SKIP-PORTLIB` 12」，与实际不符（两者相加也少 1 行）；§135.3 沿用了同一组错误数字。上表为按台账逐行统计的权威值。此类计数务必以脚本输出为准，勿凭记忆书写。
 
 ### 136.4 落地线总结（9 批）
 

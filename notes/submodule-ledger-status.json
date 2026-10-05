@@ -1307,11 +1307,29 @@
    "status": "DEFER-ASSETS"
   },
   {
+   "row": 146,
+   "sub": "TerraFurniture",
+   "commit": "df868f5ac",
+   "date": "2026-09-22",
+   "subject": "家具",
+   "old": "TODO",
+   "status": "PORTED"
+  },
+  {
    "row": 147,
    "sub": "TerraFurniture",
    "commit": "62d4c7027",
    "date": "2026-09-27",
    "subject": "传一点",
+   "old": "TODO",
+   "status": "DEFER-ASSETS"
+  },
+  {
+   "row": 148,
+   "sub": "TerraFurniture",
+   "commit": "b5f856c95",
+   "date": "2026-10-03",
+   "subject": "加点",
    "old": "TODO",
    "status": "DEFER-ASSETS"
   }

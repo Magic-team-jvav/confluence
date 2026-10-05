@@ -5322,3 +5322,50 @@ public <T extends Block> Builder setPropertyFor(TFBlockType<T> key, Function<Pro
 
 最后一批 Java：`SwitchableLightBlock`（19 行，行 146）＋ `SimpleGeoRenderedItem` 的 `animated`（6 行，行 148）⇒ 完成后这四行的 Java 面全部收口，只剩资产（用户在建面）。
 
+## 一百三十六、落地收口：行 146/148 最后一批 Java（橡木烛台 + `animated` 标志）
+
+### 136.1 改动（`TerraFurniture` 子模块，2 个文件）
+
+| 文件 | 内容 |
+| --- | --- |
+| `common/block/light/SwitchableLightBlock.java`（+22 行） | 新增 `OAK_CANDLE_SHAPE`（三段 `Block.box` 叠加）；`getShape` 前置分支 `type == TFBlockSetTypes.OAK && shapeType == BlockShapeType.CANDLE → OAK_CANDLE_SHAPE`；新增 `animateTick(...)`：同为 OAK+CANDLE、`LIT` 且非 `WATERLOGGED` 时在 (8.06, 12.6, 8.06)/16 处生成 `ParticleTypes.SMALL_FLAME`（照抄 1.20 原文，含其完全限定名写法）；补 `ParticleTypes`／`RandomSource`／`Shapes` 三条 import |
+| `common/item/SimpleGeoRenderedItem.java`（+12 行） | 新增 `private final boolean animated` 与四参构造 `(Block, Properties, boolean isNegative, boolean animated)`；三参构造改为委托 `this(block, properties, isNegative, true)`；`registerControllers` 前置 `if (!animated) { return; }` |
+
+### 136.2 核验
+
+| 项 | 结果 |
+| --- | --- |
+| 符号计数（`SwitchableLightBlock`） | `OAK_CANDLE_SHAPE` **2/2**、`animateTick` **1/1**、`TFBlockSetTypes.OAK` **2/2**（与 1.20 一致） |
+| `SimpleGeoRenderedItem` | `animated` 5 处、四参构造 1 处；1.21 既有的 `createGeoRenderer` 写法保留 |
+| 结构自检 | `SwitchableLightBlock` 161 行、`SimpleGeoRenderedItem` 49 行，均纯 CRLF、括号平衡 |
+| **重跑 audit** | 行 **146：19/1 → `0/0`（完全归零）**；行 148：6597/34 → **6591/33**（余为资产与我已登记的适配差异） |
+
+### 136.3 台账（双写）
+
+| 行 | 状态 | 依据 |
+| --- | --- | --- |
+| **146** | **`PORTED`** | 该行内容已按 1.21 原生写法落地并提交，重跑 audit **gap = 0** |
+| **148** | `DEFER-ASSETS` | Java 面全部落地（§127–§136），余 6591 行为资产（云杉烛台/灯、樱花木箱模型、马桶模型等）与我已登记的 7 行适配差异 |
+| 145／147 | `DEFER-ASSETS` | 见 §135（纯资产） |
+| 141 | `DEFER-ASSETS` | 见 §125（仅 `one_leg_table.json` 内容差） |
+
+全量：**`COVERED` 122、`SKIP-PORTLIB` 12、`REVERSE-ALIGNED` 6、`DEFER-ASSETS` 6、`PORTED` 1、`TODO` 0**。
+
+### 136.4 落地线总结（9 批）
+
+| 批 | 内容 | 子模块 → 父仓 |
+| --- | --- | --- |
+| 148-1 | `ModelLightBlock` + 三条云杉烛台（§127） | `5a84974` → `ec8670e26` |
+| 148-2 | `SPRUCE_SET` 的 LAMP（§128） | `089155e` → `6ee7cccb4` |
+| 148-3 | 樱花木箱 4 文件（§129） | `d5c365e` → `0f198d9f7` |
+| 145-1 | `SinkBlock` 铁/云杉变体（§130） | `3bb5a4a` → `f155ffb5b` |
+| 147-1 | `BathtubBlock` 自定义形状（§131） | `0474255` → `76903314d` |
+| 145/147-2 | `SPRUCE_SET` BATHTUB/SINK/TOILET + `IRON_SET` SINK（§132） | `1fe54f0` → `a07a41b0a` |
+| 146 | `CandelabraBlock` 粒子与形状 + CANDELABRAS/doLightSetup（§133） | `7a181a5` → `fb8f1b3f2` |
+| 收尾 | tag 与中文名（§134）＋ 复核（§135） | `68d5539` → `09ae682bb`；`6b5d2a41b`／`c6dabc4f6` |
+| **146/148-final** | 橡木烛台 + `animated`（§136） | **`c3c895a` → `404663ffd`** |
+
+### 136.5 仍缺（全部为资产，属用户在建面）
+
+云杉灯 4 个 json + 1 贴图、樱花木箱 5 个、`spruce_candlestick_*`（用户 WIP 已有）、`iron_sink`／`spruce_sink`／`candelabras.json`(155)、`bathtub`／`base`／`forward`／`bed` 模型、`oak/bed` 模型等。按分工未搬未提交；若用户同意由我搬运，可一次补齐并把这些行改为完成态。
+

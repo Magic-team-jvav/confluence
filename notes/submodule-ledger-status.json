@@ -1296,6 +1296,24 @@
    "subject": "改腿渲染逻辑",
    "old": "TODO",
    "status": "COVERED"
+  },
+  {
+   "row": 145,
+   "sub": "TerraFurniture",
+   "commit": "3e45ca5a6",
+   "date": "2026-09-20",
+   "subject": "添加方块",
+   "old": "TODO",
+   "status": "DEFER-ASSETS"
+  },
+  {
+   "row": 147,
+   "sub": "TerraFurniture",
+   "commit": "62d4c7027",
+   "date": "2026-09-27",
+   "subject": "传一点",
+   "old": "TODO",
+   "status": "DEFER-ASSETS"
   }
  ]
 }

@@ -159,7 +159,7 @@
 | 142 | TerraFurniture | `d060e05de` | 2026-09-20 | 仔细研究后我发现实际上这种对称的桌子可以把花边单独分开，但是已经这样写了，先提交吧，我后面再改，绷不住了 | 1 | +14 −12 |  | COVERED |
 | 143 | TerraFurniture | `bf35ef75d` | 2026-09-20 | 改成组件模式 | 18 | +277 −754 |  | COVERED |
 | 144 | TerraFurniture | `3b1e55c09` | 2026-09-20 | 改腿渲染逻辑 | 1 | +50 −11 |  | COVERED |
-| 145 | TerraFurniture | `3e45ca5a6` | 2026-09-20 | 添加方块 | 15 | +513 −1 |  | TODO |
+| 145 | TerraFurniture | `3e45ca5a6` | 2026-09-20 | 添加方块 | 15 | +513 −1 |  | DEFER-ASSETS |
 | 146 | TerraFurniture | `df868f5ac` | 2026-09-22 | 家具 | 2 | +94 −1 |  | TODO |
-| 147 | TerraFurniture | `62d4c7027` | 2026-09-27 | 传一点 | 14 | +427 −69 | PortLib×1 | TODO |
+| 147 | TerraFurniture | `62d4c7027` | 2026-09-27 | 传一点 | 14 | +427 −69 | PortLib×1 | DEFER-ASSETS |
 | 148 | TerraFurniture | `b5f856c95` | 2026-10-03 | 加点 | 43 | +6753 −73 |  | TODO |

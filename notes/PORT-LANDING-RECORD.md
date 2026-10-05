@@ -5758,3 +5758,43 @@ TerraFurniture 四个文件的第 3 步**全部为 True（逐字节相同）**�
 - 本次顺带夹带：`PlayerEvents.java` 同时含用户在建的注释清理（3 处 `MountManager.dismiss` 行尾注释），因引用改名必须与该文件同批落地，已随 `e3a92eb86` 一并提交（提交信息里注明）。
 - 用户侧修复：`PrefixUtils.java` 的 `PrefixComponent` 构造报错已消失（编译错误 8 → 7），`ModPrefix.java` 仍有 7 处同样的构造参数不匹配（在建改动，未触碰）。
 - §142.3 的挂起项**关闭**：三处内联已按 1.20 结构镜像完成。
+
+## 一百四十四、反向同步：1.21 的「改用ModifyReturnValue」同步到 1.20
+
+用户要求把 1.21 侧最新提交「改用ModifyReturnValue」同步到 1.20（方向为 1.21 → 1.20）。涉及的 1.21 提交：
+
+| 仓库 | 提交 | 内容 |
+| --- | --- | --- |
+| ConfluenceOtherworld（主仓） | `ce9e884b6` | 8 个 mixin + 2 个 gitlink |
+| Confluence-Magic-Lib | `81c8d77` | 4 个文件 |
+| TerraCurio | `6b27820` | 1 个文件 |
+
+统一改法：`@Inject(method = X, at = @At("RETURN"), cancellable = true)` + `cir.setReturnValue(v)` → MixinExtras `@ModifyReturnValue(method = X, at = @At("RETURN"))`，`original` 作首个形参、直接 `return`；`@Local(argsOnly = true)` 取原方法形参。
+
+### 144.1 落地（1.20 侧提交）
+
+| 1.20 仓库 | 提交 | 内容 |
+| --- | --- | --- |
+| Confluence-Magic-Lib | `7e9017b` | `mixin/EntityMixin#getOnPosAbove`、`mixin/client/ClientEntityMixin#eyeHeight`（同时按 1.21 改 `implements ILibEntity`，去掉 `SelfGetter` + `ILibEntity.of`）、`mixin/client/LevelRendererMixin#enhanceLightColor`、`mixin/client/LocalPlayerAccessor` 补 `// todo AT` |
+| TerraCurio | `4feae11` | `mixin/LivingEntityMixin#standOnFluid`（`canStandOnFluid`） |
+| ConfluenceOtherworld | `5285e30d2`（6 文件）＋ `ada2d904c`（2 gitlink） | `mixin/client/renderer/LevelRendererMixin#enhanceLightColor`、`mixin/integration/terracurio/InformationHandlerMixin#modifyView`、`mixin/world/DifficultyInstanceMixin#levelUp`、`mixin/world/DifficultyMixin#ftw`、`mixin/world/entity/player/InventoryMixin#withExtra`（去掉不再使用的 `inventory` 形参与 `Container` import）、`mixin/world/level/block/state/BlockBehaviourMixin#bypassCollision` |
+
+保留 1.20 既有形态之处：`DynamicLightDispatcher.INSTANCE.getDynamicLight(...)`（1.21 是静态调用）、`terra_curio$dimensionHeight`（1.21 侧已改名 `confluence$`）、方法名 `enhanceLightColor`（1.21 叫 `makeHerbEmissive`）—— 这些是两侧分支的既有差异，不属于本次改动。
+
+### 144.2 两处**有意不镜像**
+
+1. **`mixin/world/ContainerMixin`**：1.21 改成 `@ModifyReturnValue`，但 1.20 侧现在是 `@Overwrite`，其源码注释写明「1.20.1 的接口注入器无法作用于 `Container` 默认方法，只能在这里覆盖同一个默认值入口」。两者功能等价（都把容器上限交给 `LibUtils.getMaxStackSize`），故 1.20 保留 `@Overwrite`。若确认 1.20.1 下接口注入可用再改。
+2. **`mixin/integration/touhoulittlemaid/MaidFishingHookMixin`**：1.20 侧没有该集成，无对应文件。
+
+另：1.21 该提交顺带修了 `MaidFishingHookMixin` 里 `addExtraLoot` 的 `ServerLevel` 模式匹配嵌套，同样因文件不存在而未同步。
+
+### 144.3 校验方式（本次**未编译**）
+
+按用户要求本轮不跑 gradle，改用静态一致性检查（对 11 个改动文件逐个核对）：
+
+- `@ModifyReturnValue` 使用与 import 一致（用则必导、不用则不导）✓
+- `@Local` 使用与 `import …sugar.Local;` 一致 ✓
+- `CallbackInfoReturnable` 使用与 import 一致 ✓
+- 无遗留 `cir.getReturnValue()` / `cir.setReturnValue()`（3 个文件仍有 `cir.`，经逐处核对均属**未被 1.21 转换的其它 `@Inject` 方法**：`useTotemAbility`、`getWeatherInfo`、`add`）✓
+
+1.20 侧提交均按路径限定，未触碰用户在建文件（`LibUtils.java`、`gradle.properties`、`ContactEffectBoulderBlock.java`、`ReboundingFlyingMonster.java`、`GoblinArmyGameEvent.java`、`ModDataComponentTypes.java`、`EntityAccessor.java`、`accesstransformer.cfg`、`PortLib`）。

@@ -5184,7 +5184,7 @@ public static final TFBlockSet SPRUCE_SET = new TFBlockSet.Builder(SPRUCE, Block
 | `TFBlockType.BATHTUB` | 3 | 3 | OK |
 | `TFBlockType.SINK` | 4 | 4 | OK（SPRUCE_SET 2 + IRON_SET 2） |
 | `TFBlockType.TOILET` | 3 | 3 | OK |
-| `ModelLightBlock` | 4 | —（1.20 为 `PortDeferredBlock<ModelLightBlock>` 体系，不作同项比较） | — |
+| `ModelLightBlock` | **8**（import 1 + 3 条烛台 `DeferredBlock<ModelLightBlock>` + 3 处 `new ModelLightBlock(` + `SPRUCE_SET` 1 处） | 4（1.20 用 `PortDeferredBlock<…>` 体系与不同的注册点，**非同项**） | 不作数值比较（该行仅登记实测值） |
 
 结构自检：`TFBlocks.java` 376 行、纯 CRLF、`{}` 8/8、`()` 416/416；子模块已跟踪改动**仅**该文件。
 

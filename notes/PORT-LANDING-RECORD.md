@@ -5724,3 +5724,37 @@ TerraFurniture 四个文件的第 3 步**全部为 True（逐字节相同）**�
 ### 142.5 下一步
 
 行 194（gap 258/26）、行 347（32/8）、行 56（1/1），以及 546 项「1.20 删除未镜像」按类目裁定。
+
+## 一百四十三、按 1.20 结构把三个独立类内联为嵌套类（用户指定）
+
+用户答复 §142.3 的挂起项：「第一件你按 1.20 的方式重构 1.21」。即把 1.20 在 `e145cafb5` 里做的「独立类内联为嵌套类」镜像到 1.21。
+
+### 143.1 改动内容
+
+| 1.20 HEAD 结构 | 1.21 改前 | 1.21 改后 |
+| --- | --- | --- |
+| `Bestiary.Entry`（嵌套，+ `Builder`） | 独立类 `BestiaryEntry`（196 行） | 内联进 `enum Bestiary`（嵌套 `public static class Entry` + `Builder`），删原文件 |
+| `ClientBestiary.Entry extends Bestiary.Entry`（嵌套，+ `Builder`） | 独立类 `ClientBestiaryEntry`（227 行） | 内联进 `ClientBestiary`，删原文件 |
+| `AchievementOffset.Loader extends SingleJsonFileReloadListener`（嵌套） | 独立类 `AchievementOffsetLoader`（92 行） | 内联进 `record AchievementOffset`，删原文件 |
+
+工具：`build/_cmp231/inline_classes.py`（拆包名/import/类体 → 类体加 4 空格缩进并做自体改名 → 插到外层类最后一个 `}` 之前 → 合并 import 去重排序 → 删原文件 → 全仓改名改 import），`fix_inline_imports.py`（补回被删文件的 import）。
+
+引用改动：`BestiaryEntry` 20 个文件、`ClientBestiaryEntry` 7 个、`AchievementOffsetLoader` 8 个（去重后共 27 个引用文件 + 3 个外层文件 + 3 个删除）。提交 `e3a92eb86`（30 文件，+581/−652）与补交 `99978c1bd`。
+
+### 143.2 核验
+
+- **成员级比对**（1.20 HEAD 单文件 vs 合并后的 1.21 单文件）：`Bestiary` 30 方法/22 字段、`ClientBestiary` 44/97、`AchievementOffset` 14/12 —— **两侧完全相同**（无一方多、少成员）。
+- 行数：336 / 522 / 136（1.20 为 340 / 526 / 138）。
+- **编译门** `build_errors.py --module :ConfluenceOtherworld --maxerrs 2000`：本次重构 **0 错误**（见 143.4 的收尾数字）。
+- HEAD 复核：三个外层文件均含嵌套类、三个原文件均已删除（`git cat-file -e HEAD:<path>` 全为不存在）。
+
+### 143.3 过程中的两处失误与修正（记录在案）
+
+1. **import 丢失**：`inline_classes.py` 建 `all_imports` 时只从「外层 + 已剥掉 import 的类体」里收集，**没有把被删文件的 import 并进来**，首轮编译报 `package BuiltInRegistries does not exist` 等 33+31 处。修正：`fix_inline_imports.py` 从 `git show HEAD:<被删文件>` 取回 import 集合，与外层合并后重排写回（Bestiary +14、ClientBestiary +19、AchievementOffset +14）。
+2. **漏提交一个文件**：提交清单由脚本按「diff 含改名标记」筛出，`AchievementOffset.java` 的改动是**整体追加 `Loader` 类体**（正文里没有 `.Loader`/旧类名/import 行）⇒ 被漏筛，`e3a92eb86` 少了它；已用 `99978c1bd` 补交。教训：**清单筛选要用「结构特征」而不是「改名特征」**。
+
+### 143.4 其它
+
+- 本次顺带夹带：`PlayerEvents.java` 同时含用户在建的注释清理（3 处 `MountManager.dismiss` 行尾注释），因引用改名必须与该文件同批落地，已随 `e3a92eb86` 一并提交（提交信息里注明）。
+- 用户侧修复：`PrefixUtils.java` 的 `PrefixComponent` 构造报错已消失（编译错误 8 → 7），`ModPrefix.java` 仍有 7 处同样的构造参数不匹配（在建改动，未触碰）。
+- §142.3 的挂起项**关闭**：三处内联已按 1.20 结构镜像完成。

@@ -399,7 +399,7 @@
     "e145cafb5c7378e08ab087770db30c5fd3f7c455": {
       "status": "PORTED",
       "target": "（归 Phase 1/3，不逐提交移植）",
-      "note": "行 297：陨石部分按 1.20 收口（632dc45bc：placeLava 按个数 + Config.lavaCount + DEFAULT_RADIUS 23 + LANDING_CHUNK_RADIUS 3×3 强制加载）；其余 512 行残留经逐文件定性为平台差异（Forge→NeoForge/PortLib）与 1.20 侧「独立类内联为嵌套类」的纯结构改动（成员集合完全一致），见 PORT-LANDING-RECORD §142",
+      "note": "行 297：陨石部分按 1.20 收口（632dc45bc：placeLava 按个数 + Config.lavaCount + DEFAULT_RADIUS 23 + LANDING_CHUNK_RADIUS 3×3 强制加载）；其余 512 行残留经逐文件定性为平台差异（Forge→NeoForge/PortLib）与 1.20 侧「独立类内联为嵌套类」的纯结构改动（成员集合完全一致），见 PORT-LANDING-RECORD §142；三处「内联 vs 独立文件」已按 1.20 结构镜像（§143，独立类 BestiaryEntry/ClientBestiaryEntry/AchievementOffsetLoader 内联为嵌套类，commit e3a92eb86+99978c1bd）",
       "landed": "632dc45bc"
     },
     "ddb08626b513aa1be5991e92198bfbb179f3d20b": {

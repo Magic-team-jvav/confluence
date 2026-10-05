@@ -5076,3 +5076,42 @@ public static final TFBlockSet SPRUCE_SET = new TFBlockSet.Builder(SPRUCE, Block
 - 台账：行 148 仍 `TODO`（已完成第一、二、三批；余：马桶/浴缸/水槽）。
 - `fix_eol --check` 候选 6；下一步：行 148 第四批（`BathtubBlock`／`SinkBlock` 变体／马桶与烛台变体），或先补两批的资产。
 
+## 一百三十、落地记录：行 145 第一批（`SinkBlock` 铁/云杉变体形状）
+
+### 130.1 改动（`TerraFurniture` 子模块，1 个文件，+38 行）
+
+1.20 的 `SinkBlock` 是 133 行、1.21 只有 88 行，**1.20 独有 38 行**（行级差集实测）。本批把这 38 行按 1.21 风格合入：
+
+| 位置 | 内容 |
+| --- | --- |
+| import | `org.confluence.terra_furniture.common.init.TFBlockSetTypes` |
+| 字段 | `protected static final VoxelShape IRON_BASE;` / `SPRUCE_BASE;` |
+| `getShape` | 前置两个分支：`if (getType().equals(TFBlockSetTypes.IRON)) return modelFittedShape(IRON_BASE, state.getValue(FACING));` 与 SPRUCE 同理；其后维持原有 `switch (FACING)`（**1.21 的 `protected @NotNull` 签名与结构未动**） |
+| 新方法 | `private static VoxelShape modelFittedShape(VoxelShape base, Direction facing)`：四向各给直立管 `Block.box(…,14,…,19,…)` 与出水口 `Block.box(…,16,…,19,…)`，`Shapes.or(base, upright, spout)` |
+| 静态块 | `IRON_BASE = Shapes.or(三块叠加)`；`SPRUCE_BASE = Shapes.or(缸体 + 四边矮沿，五块叠加)` |
+
+### 130.2 核验
+
+| 项 | 结果 |
+| --- | --- |
+| 计数一致性 | `IRON_BASE`／`SPRUCE_BASE`／`modelFittedShape`／`TFBlockSetTypes` 在 **1.20 与 1.21 均各 3 处**，`getShape` 各 1 处 ✓ |
+| 变体常量存在性 | `TFBlockSetTypes.IRON`（`:42`）／`SPRUCE`（`:22`）在 1.21 均在 ✓ |
+| 结构自检 | 134 行、纯 CRLF、`{}` 25/25、`()` 72/72 ✓；子模块已跟踪改动**仅**该文件（用户 17 条在建资源未动） |
+| 平台面 | 用到的都是 vanilla（`Block.box`、`Shapes.or`、`Mirror`/`Rotation`）⇒ 已在本地 1.21.1 源树 `build/_nfsrc_219` 中确认存在 |
+
+> 说明：本批脚本末尾那条 `assert` 是我把期望值写成 4 而写错的（正确为 3：声明／使用／初始化各一处），补丁本身在 assert 之前已正确落盘，随后用计数复核确认无误。
+
+### 130.3 行 145 的剩余
+
+| 项 | 内容 |
+| --- | --- |
+| `SPRUCE_SET` 条目 | 1.20 的 `SPRUCE_SET` 还有 BATHTUB（`new BathtubBlock(SPRUCE, properties, BathtubBlock.tubShapes(10, 2), false)` + noOcclusion）、SINK（+ noOcclusion）、TOILET（+ noOcclusion）、CANDELABRAS、`doLightSetup(14,14,15,15,15)`；1.21 当前仅 TABLE／CHAIR／LAMP（本线第一、二批） |
+| 依赖 | BATHTUB 需要 `BathtubBlock` 的自定义形状支持（1.20 独有 31 行，下一批）；SINK 需要本批的变体形状 ✓ 已就绪 |
+| 资产 | `iron_sink.json`／`spruce_sink.json`／`candelabras.json`(155) 等仍未纳入 |
+
+### 130.4 状态
+
+- `TerraFurniture` 子模块：本批 1 个文件已提交；父仓更新 gitlink。
+- 台账：行 145 仍 `TODO`（第一批已落地）；全量统计不变（`COVERED` 122／`SKIP-PORTLIB` 12／`REVERSE-ALIGNED` 6／`DEFER-ASSETS` 3／`TODO` 4）。
+- `fix_eol --check` 候选 6；下一步：行 147 第一批（`BathtubBlock` 自定义形状 31 行）或行 145 第二批（`SPRUCE_SET` 的 SINK 条目）。
+

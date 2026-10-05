@@ -454,7 +454,7 @@
 | 294 | `ed36d3b0d` | 2026-09-20 | 上传模块 | Confluence-Magic-Lib, TerraFurniture | +0 ~2 -0 |  |  |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动） | SKIP-PLATFORM |
 | 295 | `f212a001a` | 2026-09-20 | fix: 修复生物渲染、蠕虫行为及特殊物品拾取 | ConfluenceOtherworld, PortLib | +2 ~33 -0 |  | PortLib×1 | ⚠️ 1 | content+submodule |  | PORTED |
 | 296 | `a988279e7` | 2026-09-20 | 改动 | TerraFurniture | +0 ~1 -0 |  |  |  | submodule-only | （不动 1.21） — 机器快筛 R4：主仓库只有子模块指针，且子模块侧无可枚举改动（对象不可得/无净改动） | SKIP-PLATFORM |
-| 297 | `e145cafb5` | 2026-09-20 | 动态群系修改与client tick事件大一统 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraFurniture | +9 ~120 -12 | `ScryingOrb.java`→`ScryingOrbHandler.java` 等11处 | PortLib×1, Confluence-Magic-Lib×1 | ⚠️ 11 | content+submodule+integration | （归 Phase 1/3，不逐提交移植） — 动态群系修改与 client tick 事件大一统：11 处改名 + 无新增行，属架构统一重构 -> 归 Phase 1/3 | DEFER-ARCH |
+| 297 | `e145cafb5` | 2026-09-20 | 动态群系修改与client tick事件大一统 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraFurniture | +9 ~120 -12 | `ScryingOrb.java`→`ScryingOrbHandler.java` 等11处 | PortLib×1, Confluence-Magic-Lib×1 | ⚠️ 11 | content+submodule+integration | （归 Phase 1/3，不逐提交移植） — 动态群系修改与 client tick 事件大一统：11 处改名 + 无新增行，属架构统一重构 -> 归 Phase 1/3 | PORTED |
 | 298 | `a34060571` | 2026-09-20 | 移动到init | ConfluenceOtherworld | +0 ~12 -0 | `ModBlockCounters.java`→`ModBlockCounters.java` 等3处 |  |  | content+integration |  | COVERED |
 | 299 | `2818e719b` | 2026-09-20 | 蜘蛛爬墙 | ConfluenceOtherworld | +1 ~2 -0 |  |  |  | content |  | COVERED |
 | 300 | `14425eb1c` | 2026-09-20 | uv修复 | ConfluenceOtherworld | +0 ~8 -0 |  |  |  | content |  | COVERED |

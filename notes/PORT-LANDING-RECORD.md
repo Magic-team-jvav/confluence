@@ -5680,3 +5680,47 @@ TerraFurniture 四个文件的第 3 步**全部为 True（逐字节相同）**�
 | D-同名换路径 | 196 | 视为已镜像 |
 
 546 项**不宜机械镜像**：其中「音频大导入」是 1.20 的目录整理（1.21 侧 `sounds.json` 与文件布局自洽），而 Ponder nbt 的删除源于 1.20 放弃 Ponder，1.21 仍在用（`integration.create.ponder` 仍在混入列表里）。已登记为独立批次，等用户裁定后再动 —— 本批不触碰主模块资源。
+
+## 一百四十二、主台账未收口行收口（一）：行 297（DEFER-ARCH → PORTED）
+
+用户要求把 Confluence 主模块（`notes/PORT-LEDGER.md`，400 行）遗留的未收口行清掉。前面只清了三个子模块（§139–§141），主模块**从未重跑 tally**：实际有 30 行未收口（26 `DEFER-ASSETS` + 4 `DEFER-ARCH`），重跑 audit 后 26 个 `DEFER-ASSETS` 里 25 行 gap 已是 0（资源批次其实早落地），残留 2 行是 `.gitmodules`/`build.gradle` 平台差异；**真残留集中在 4 个 `DEFER-ARCH` 行（gap 842 行 / 77 文件）**。本节收口行 297。
+
+### 142.1 收口方法（四步，可复用）
+
+| 步 | 工具 | 作用 |
+| --- | --- | --- |
+| ① 工单 | `build/_cmp231/defer_worklist.py <hash> <行号>` | 把 audit 的 gap 文件逐个点名：1.21 同路径/同名/类名是否存在 |
+| ② 基线判定 | `defer_baseline.py` | 1.21 HEAD 是否 == 该 1.20 提交的**父提交**版本（相等 ⇒ 纯增量可覆盖；分叉 ⇒ 需分辨） |
+| ③ 结构 vs 内容 | `defer_members.py` + `defer_union.py` | 成员集合差；并支持把 1.21 的**多个文件合并**后与 1.20 的单文件比 ⇒ 识别「内联/拆分」这类纯结构差异 |
+| ④ 小文件成对 diff | `defer_smalldiff.py` | gap ≤ N 的文件一次性导出 1.20/1.21 逐行 diff，人眼过目 |
+
+### 142.2 行 297 的定性结果
+
+`e145cafb5`（2026-09-20「动态群系修改与client tick事件大一统」，152 文件，audit 残留 **551 行 / 42 文件**）：
+
+- **基线**：38/42 文件分叉（1.21 不是提交前状态）；4 个文件（11 行）基线相同。
+- **纯结构差异（内容等价）**：1.20 在该提交里把三个独立类**内联为嵌套类**并删文件 —— `ClientBestiaryEntry`(255 行) → `ClientBestiary.Entry`、`BestiaryEntry`(197 行) → `Bestiary.Entry`、`AchievementOffsetLoader`(92 行) → `AchievementOffset.Loader`。把 1.21 的独立文件与主类**合并后**比对成员集合：**方法/字段/字面量 35/98/72、31/23/11、13/12/7 —— 两侧完全一致**，只差类名。1.21 侧至今仍是独立文件（该文件由 1.21 原生线 2026-02 建立，后被大移植提交 `8c304b214` 触碰）。
+- **真内容缺口 = 陨石**（已移植，提交 `632dc45bc`）：`MeteoriteFeature` 熔岩由「逐格概率 0.1」改为「按个数 + Fisher-Yates 洗牌」（新增 `placeLava`、`Config.lavaCount`、`DEFAULT_RADIUS = 23`、`DEFAULT_LAVA_COUNT = 9`、codec 半径范围 1..32）；`MeteoriteTracker` 新增 `LANDING_CHUNK_RADIUS = 1` 与「落地时强制加载整片 3×3 区块」（坑横跨 3 区块，隔未加载区块写方块会丢写入）；`ModDataProvider` 的注册改用新 `Config` 签名。成员级比对：两文件与 1.20 **完全一致**（9/33、9/32）。
+- **其余 ~500 行**：平台差异（`net.minecraftforge.*` → `net.neoforged.neoforge.*`、PortLib 包装 → lib/vanilla）+ 1.21 API 签名变化（`hasEffect(X.get())`→`hasEffect(X)`、`getUseDuration()`→`getUseDuration(player)`、`ModelResourceLocation` 变体常量、`getPartialTick()`→`getGameTimePartialTick(false)`、`SearchTree.plainText/empty`、`NbtUtils.readBlockPos` 返回 Optional…）+ 1.21 侧反而更全的实现（如 `ModDataProvider` 在 1.21 多出附魔组件等）。
+- **audit 复核**：551 行/42 文件 → **512 行/39 文件**（commit `632dc45bc` 后）。
+- **台账（双写）**：行 297 `DEFER-ARCH` → **`PORTED`**（`PORT-LEDGER.md` 末列 + `port-ledger-status.json`，后者新增 `landed: 632dc45bc`）。
+
+### 142.3 挂起待裁定：三处「内联 vs 独立文件」是否镜像
+
+按「1.20 新修改要同步」的字面要求，1.20 的内联重构也该镜像；但它与 §141 的 MouseHandlerMixin 不同：**那次两侧内容也有出入（lib 缺一整个 mixin、行为归属变了）**，这次三处是**成员集合完全一致的纯改名**，镜像要动 **130 处引用**（`BestiaryEntry` 40 + `ClientBestiaryEntry` 65 + `AchievementOffsetLoader` 25）且零功能收益。已如实登记、**未擅自改**，等用户一句话：要镜像我就照做（有编译门可验证），不镜像则在本文记为「已知的有意偏差」。
+
+### 142.4 顺带查明：主模块当前编译不过（非本次引入）
+
+`tools/port2native/build_errors.py --module :ConfluenceOtherworld --maxerrs 2000`：
+
+```
+总错误数: 8，涉及 2 个文件
+## ModPrefix.java (7 处)   constructor PrefixComponent in record PrefixComponent cannot be applied to given types
+## PrefixUtils.java (1 处) 同上
+```
+
+成因：用户提交 `c452577fd`（2026-10-04「PrefixUtils 旧倍率表换成 1.20 HEAD 新实现 + ModPrefix 补 tier()/value()」）给 `new PrefixComponent(...)` 传了 **7 个实参**（含 `tier, value`），而 `PrefixComponent` record（两侧都是）只有 **5 个组件**（type/name/modifiers/manaCost/additionalMana）。本次陨石移植前后错误数同为 8/2 文件 ⇒ **未引入新错误**；该 8 条属在建改动，未触碰。
+
+### 142.5 下一步
+
+行 194（gap 258/26）、行 347（32/8）、行 56（1/1），以及 546 项「1.20 删除未镜像」按类目裁定。

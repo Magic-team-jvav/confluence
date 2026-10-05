@@ -5240,3 +5240,50 @@ public <T extends Block> Builder setPropertyFor(TFBlockType<T> key, Function<Pro
 - 仍缺的**非 Java**面（下一批起）：`TFBlockTagsProvider`(+7)／`TFChineseProvider`(+3) 的新方块 tag/lang 条目（属 Java，但属"随功能收尾"，需按 1.20 的 provider 差异核对），以及各批资产（云杉灯、樱花木箱、`iron_sink`／`spruce_sink`／`candelabras`、`bathtub`/`base`/`forward`/`bed` 等）。
 - `fix_eol --check` 候选 6；下一步：**provider 差异批次**（tag/lang 收尾），随后视用户指示处理资产。
 
+## 一百三十四、落地记录：行 145/146/147/148 收尾（新方块的 tag 与中文名）
+
+### 134.1 改动（`TerraFurniture` 子模块，2 个文件）
+
+| 文件 | 内容 |
+| --- | --- |
+| `common/datagen/TFBlockTagsProvider.java` | `tag(TFTags.SINKS)` 增 `.add(SPRUCE_SET.SINK)`／`.add(IRON_SET.SINK)`；新增三组 `tag(...)`：`TFTags.SPRUCE_FURNITURE`（`SPRUCE_SET` 的 SINK/TOILET/LAMP ＋ 三条 `SPRUCE_CANDLESTICK`）、`TFTags.WOODEN_FURNITURE`（上述 ＋ `CHERRY_CHEST`）、`TFTags.IRON_FURNITURE`（`IRON_SET.SINK`）；`BlockTags.MINEABLE_WITH_PICKAXE` 增 `.add(IRON_SET.SINK)` |
+| `common/datagen/TFChineseProvider.java` | 10 条中文名（照抄 1.20 原文）：云杉木烛台／马桶／落地灯、云杉木单/双/三烛台、樱花木箱、云杉木水槽、云杉木浴缸、铁水槽 |
+
+### 134.2 核验（行集比对）
+
+| 文件 | 1.20 | 1.21 | 差异 |
+| --- | --- | --- | --- |
+| `TFBlockTagsProvider.java` | 77 行（非空） | **77 行** | **仅 2 处**：`net.minecraftforge.common.data.BlockTagsProvider`／`ExistingFileHelper` → `net.neoforged.neoforge.common.data.*` |
+| `TFChineseProvider.java` | 111 行 | **112 行** | 1.20 独有：`net.minecraftforge.common.data.LanguageProvider`（→ NeoForge 同名）；1.21 独有：同 import 的 NeoForge 版 ＋ **`add(TFBlocks.TENT.get(), "帐篷");`**（帐篷为 1.21 侧新增内容，**保留**） |
+
+前置核实：`TFTags.SPRUCE_FURNITURE`（`TFTags.java:11`）／`IRON_FURNITURE`（`:21`）／`WOODEN_FURNITURE`（`:87`）／`SINKS`（`:92`）在 1.21 均在；`TFBlockSet` 公开字段 `SINK`（`:45`）／`TOILET`（`:42`）／`BATHTUB`（`:44`）／`LAMP`（`:52`）／`CANDELABRAS`（`:53`）在 1.21 均在。
+
+### 134.3 里程碑：四个 TODO 行的 **Java 面全部落地**
+
+至此行 145／146／147／148 的 Java 面（方块类、注册、渲染器、tag、语言）均已落地：
+
+| 行 | Java 面完成情况 |
+| --- | --- |
+| 148 | `ModelLightBlock` ＋ 三条 `SPRUCE_CANDLESTICK_*`（§127）＋ `SPRUCE_SET` 的 LAMP（§128）＋ 樱花木箱 4 文件（§129）＋ CANDELABRAS/doLightSetup（§133）＋ tag/lang（§134） |
+| 145 | `SinkBlock` 铁/云杉变体（§130）＋ `SPRUCE_SET` 的 BATHTUB/SINK/TOILET 与 `IRON_SET` 的 SINK（§132）＋ tag/lang（§134） |
+| 147 | `BathtubBlock` 自定义形状（§131）＋ `SPRUCE_SET` 的 BATHTUB（§132）＋ tag/lang（§134） |
+| 146 | `CandelabraBlock` 粒子与 `SPRUCE_SHAPE`（§133）＋ CANDELABRAS 条目与 `doLightSetup`（§133）＋ tag/lang（§134） |
+
+### 134.4 仍缺：只剩资产
+
+| 批次 | 缺的资源 |
+| --- | --- |
+| 云杉灯（148） | `blockstates/spruce_lamp.json`、`models/block/spruce/spruce_lamp_{lit,unlit}.json`、`models/item/spruce_lamp.json`、`textures/block/spruce/spruce_lamp.png` |
+| 樱花木箱（148） | `blockstates/cherry_chest.json`、`geo/block/cherry_chest.geo.json`、`models/block/cherry_chest.json`、`models/item/cherry_chest.json`、`textures/block/cherry_chest.png` |
+| 烛台（148） | 用户工作区已有（12 个 json ＋ `spruce_candlestick.png`） |
+| 水槽（145） | `iron_sink.json`、`spruce_sink.json`、`candelabras.json`(155) 等 |
+| 浴缸（147） | `bathtub.json`(134)、`base.json`(88)、`forward.json`(49)、`bed.json`(26)（贴图目录 `spruce_bathtub/` 用户已有） |
+
+> 资产按分工属用户在建面（工作区 17 条 WIP 已覆盖烛台 12 项、`spruce_candelabras.png`、`spruce_bathtub/`），本轮**未搬未提交**。
+
+### 134.5 状态
+
+- `TerraFurniture` 子模块：本批 2 个文件已提交；父仓更新 gitlink。
+- 下一步：重跑行 141／145／146／147／148 的 audit 以量化剩余 gap（预期只剩资产），据此更新台账状态（Java 已完结、余项为资产的行使 `DEFER-ASSETS`）。
+- `fix_eol --check` 候选 6。
+

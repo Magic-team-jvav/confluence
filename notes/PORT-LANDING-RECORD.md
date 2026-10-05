@@ -4978,3 +4978,45 @@ public ResourceLocation getAnimationResource(AccessoryGeoModel animatable) { ret
 - 台账：行 148 仍为 `TODO`（本批为部分落地）；全量统计不变（`COVERED` 122 / `SKIP-PORTLIB` 12 / `REVERSE-ALIGNED` 6 / `DEFER-ASSETS` 3 / `TODO` 4）。
 - `fix_eol --check` 候选 6；下一步：行 148 第二批（`SPRUCE_SET` 的 LAMP getter 覆盖）。
 
+## 一百二十八、落地记录：行 148 第二批（`SPRUCE_SET` 的 LAMP 改由 `ModelLightBlock` 提供）
+
+### 128.1 改动（`TerraFurniture` 子模块，`common/init/TFBlocks.java`）
+
+```java
+public static final TFBlockSet SPRUCE_SET = new TFBlockSet.Builder(SPRUCE, Blocks.SPRUCE_PLANKS, true)
+        .disableAll()
+        .setAvailabilityFor(TFBlockType.TABLE, true)
+        .setAvailabilityFor(TFBlockType.CHAIR, true)
+        .setAvailabilityFor(TFBlockType.LAMP, true)                                  // 本批 +3
+        .setGetterFor(TFBlockType.LAMP, (properties, applier) -> new ModelLightBlock(
+                SPRUCE, properties, BlockShapeType.LAMP, Block.box(5, 0, 5, 11, 26, 11)))
+        .setPropertyFor(TFBlockType.LAMP, properties -> properties.noOcclusion().lightLevel(litBlockEmission(15)))
+        .build();
+```
+
+### 128.2 一处刻意的写法偏差（已在此登记）
+
+1.20 侧是分两步写：`setPropertyFor(LAMP, noOcclusion)`（`1.20 TFBlocks:180`）**之后** 再 `doLightSetup(14, 14, 15, 15, 15)`（`:182`），而 `doLightSetup` 内部对 LAMP 又调 `setPropertyFor(LAMP, lightLevel(...))`（1.21 `TFBlockSet:249` 同构）。在 1.21 的 Builder 里按同序书写，后一次 `setPropertyFor` 会**覆盖**前一次，灯的 `noOcclusion` 会丢；本批改为**一次 `setPropertyFor` 同时给足 `noOcclusion` 与 15 级亮度**，语义等价且与调用顺序无关（该集合内 CANDLE／LANTERN／CANDELABRAS／CHANDELIER 均 disabled，`doLightSetup` 的其余四项没有作用对象）。
+
+### 128.3 落地前核实（无编译验证，故逐项对证）
+
+| 项 | 结论 | 依据 |
+| --- | --- | --- |
+| `setAvailabilityFor(TFBlockType<T>, boolean)` | 存在 | 1.21 `TFBlockSet:188` |
+| `setGetterFor(TFBlockType<T>, BiFunction<Properties, Consumer<Properties>, T>)` | 存在，与 1.20 的 `(properties, applier) -> …` 用法匹配 | 1.21 `TFBlockSet:194` |
+| `setPropertyFor(TFBlockType<T>, Function<Properties, Properties>)` | 存在 | 1.21 `TFBlockSet:209` |
+| `TFBlockType.LAMP` 的类型 | 集合字段为 `DeferredBlock<SwitchableLightBlock>`（`TFBlockSet:52`），`ModelLightBlock` 是其子类 ⇒ 协变可用 | 实测 |
+| 1.21 默认 LAMP 提供者 | `putEntry(TFBlockType.LAMP, (p, a) -> new SwitchableLightBlock(materialType, p, BlockShapeType.LAMP))`（`:158`），本批用 getter 覆盖 | 实测 |
+
+结构自检：`TFBlocks.java` 357 行、纯 CRLF、`{}` 8/8、`()` 384/384 平衡；子模块已跟踪改动仍**仅**该文件，工作区 17 条用户在建资源未动。
+
+### 128.4 灯的资源仍缺（未纳入）
+
+1.20 侧灯的资源：`blockstates/spruce_lamp.json`（7 行）、`models/block/spruce/spruce_lamp_lit.json`（498 行）、`models/block/spruce/spruce_lamp_unlit.json`（404 行）、`models/item/spruce_lamp.json`（11 行）、`textures/block/spruce/spruce_lamp.png`（4 行）。它们**不在**用户工作区那 17 条 WIP 里 ⇒ 本批 Java 落地后，云杉灯在资源补齐前会缺模型。按「资源归用户在建面」的分工，本批不擅自搬运；如需我搬，说一声即可（1.20 侧字节拷贝，零编译风险）。
+
+### 128.5 状态
+
+- `TerraFurniture` 子模块：本批 1 个文件（`TFBlocks.java`）已提交；父仓更新 gitlink。
+- 台账：行 148 仍 `TODO`（已完成第一、二批；余：樱花木箱、马桶/浴缸/水槽）。
+- `fix_eol --check` 候选 6；下一步：行 148 第三批（樱花木箱 `CherryChestBlock` + `CherryChestGeoModel` + 注册）。
+

@@ -5518,3 +5518,62 @@ TerraFurniture 四个文件的第 3 步**全部为 True（逐字节相同）**�
 - 子模块：TerraCurio `55a5e2d`（1 个 geo，14/14）；TerraFurniture `4868a61`（4 个模型 ＋ 2 张贴图，118/68）。
 - 父仓：更新两个 gitlink ＋ 台账 3 行状态 ＋ 状态 json 3 行 ＋ 本节记录。
 - 卫生：`fix_eol --check` 仍为**候选 6**（未新增，那 6 个是用户在建的 `geo/entity` 文件）；两个子模块工作区干净；用户 WIP（`Confluence.java`、`ContactEffectBoulderBlock.java`、lib `LibUtils.java`）**未触碰**。
+
+## 一百三十九、子模块「还剩多少没移植」全量复核（三条轴 + 跨模块轴）与 MouseHandlerMixin 归属订正
+
+用户提问：「所有子模块还剩多少没移植」。除了重跑逐行 audit，本轮补了两条台账与逐行行走都**看不到**的轴，并把上轮误判的 1 项订正掉。
+
+### 139.1 轴一：行级（148 行全量重跑）
+
+`sub_full_sweep.py` 把三个子模块的 148 行全部重跑 `rowaudit` + `screen_full`。结果：**`gap = 0` 的行 72／148**；其余 76 行合计 **2187 行字面缺失**、报出**定义型符号 72 个**。
+
+这 2187 行不是"未移植"，而是 `rowaudit` 的 **token 级**判定（归一化后逐字比对）：包含 ① 1.21 用不同实现的地方（最大几笔正是 row 75／82／83 这类 REVERSE-ALIGNED 或 1.21 侧自研的能力值系统）② `screen_full.py` 噪音表没覆盖的平台差异。逐行裁定见 §116–§137。
+
+### 139.2 轴二：符号级（补做 Q1）
+
+对报出的 72 个符号中的 39 个（报告按行截断，其余为单行 >20 个的批次）补做**两问法第一问**——该符号在 **1.20 HEAD 是否还活着**（`sub_sym_alive.py`）：
+
+**候选缺口 0 个。** 典型如 row 4（`d77f87c92`「对齐 1.21 内容与运行时行为」+3549）报出的 14 个战斗常量（`CRITICAL_RESOLUTION_TAG`、`ARMOR_PENETRATION_TAG`、`PERMANENT_UPGRADES`、`PermanentUpgrade`…），全部被 1.20 自己的 row 5（`781e94002`「注释 杀杀杀」−3549）整批回滚 ⇒ 本来就无移植物。其余 8 个在 1.21 全仓仍以同名/同引用存在。
+
+### 139.3 轴三：路径级（新轴，逐行行走的盲区）
+
+统计「1.20 子模块 HEAD 有、1.21 同子模块 HEAD 完全没有」的文件：**39 个**（lib 19／TerraCurio 18／TerraFurniture 2）。这类缺口逐行行走永远看不到——文件若在分叉点（2026-07-04）之前就存在，且 1.20 之后没再改动，就不会出现在任何一行里。
+
+逐个定性后 **真缺口 0 个**：
+
+| 类别 | 数 | 明细 |
+| --- | --- | --- |
+| 改名／移位（同模块） | 12 | TC 的 10 个 datagen → `common/data/gen/`；`TCCommonConfigs` → `common/init/`；lib 两个 `network/s2c/*PacketS2C` → `lib/network/` |
+| 跨模块搬移 | 3 | 见 139.4 |
+| 平台废弃 | 12 | `FinishedRecipe`（1.21 已删接口 → `RecipeOutput`）；3 个 `Sup*Block`（1.20 的 supplier shim，1.21 主模块用 `ResourceKey` 重写）；`FriendlyByteBufMixin`（1.21 原生 `ItemStack.OPTIONAL_STREAM_CODEC` 第 149 行即 `writeVarInt(getCount())`）；`LevelRendererAccessor`（1.21 `setSectionDirty` 已公开）；`ItemEntityMixin`／`HoneyBottleItemMixin`（见 139.4）；`DynamicLightProvider`／`DynamicLightRegister`（PortLib 事件层，1.20 内**无任何调用者**）；`ClientEventHandlerMixin`（PortLib `IPortAttribute` sentiment shim；1.21 走原生 Curios 路径）；`ParticleEngineMixin`（1.20 自身方法体就是注释掉的空实现） |
+| 死代码 | 1 | `ObsidianSkullRenderer`——1.20 的 `CuriosClient` 里注册行与 layer 注册**都是注释状态**，两边 `ObsidianSkullModel` 都无人引用 |
+| 非缺口 | 8 | 4 个 `pack.mcmeta`（1.21 四个模块都没有该文件；1.20 的写 `pack_format: 15`，1.21 也不需要）；3 个 lib `package-info`（只含 `@ParametersAreNonnullByDefault`／`@MethodsReturnNonnullByDefault`，包本身在 1.21 都存在）；`normal_wings.animation.json`（1.21 `NormalWingsGeoModel` 改为按物品 id 动态拼路径 → 对应 `fledgling_wings.animation.json`，**1.21 比 1.20 更靠前**） |
+
+### 139.4 跨模块轴（本轮教训）+ MouseHandlerMixin 归属订正
+
+139.3 的"1.21 同名文件"最初**只在同一子模块内**检索，于是"被拆到别的模块去"的搬移会被误判成缺口。补做**全仓 basename 索引**后命中 3 例，全部为已覆盖：
+
+| 1.20 位置 | 1.21 实际位置 | 判据 |
+| --- | --- | --- |
+| lib `mixin/HoneyBottleItemMixin` | 主模块 `mod/mixin/world/item/HoneyBottleItemMixin` | 内容同款，仅注入点随 1.21 原生改为 `removeEffectsCuredBy(EffectCure)` |
+| lib `mixin/ItemEntityMixin`（稀有度免火） | 主模块 `ItemStackMixin.fireResistant` | 1.21 该判定移到 `ItemStack.canBeHurtBy`（原版 `return !this.has(FIRE_RESISTANT) || !damageSource.is(IS_FIRE)`），mixin 改的是 `has(...)` 那一项：稀有度非 WHITE/GRAY ⇒ 视为抗火。与 1.20（lib 改 `Item.canBeHurtBy` 调用点，稀有度非 WHITE/GRAY ⇒ 不受火损）语义一致 |
+| lib `mixin/client/MouseHandlerMixin` | **TerraCurio** `mixin/client/MouseHandlerMixin` | 见下 |
+
+**MouseHandlerMixin 订正**：上一轮我把它列为"唯一需人工确认"（以为 1.20 取反鼠标 vs 1.21 只做相机 roll）。查提交链后确认——它是**从 TerraCurio 拆出去的**：
+
+- 1.20 TC `mixin/client/MouseHandlerMixin` 原本**同时**含"重力取反"与"Scope 倍率"两半；TC 提交 `ddfcd27`（row 77，2026-08-22「将饰品的药水效果转移至lib」）删掉重力那 5 行并把 `GravitationHandler`（97 行）、效果类、包一并移入 lib；
+- 同日 lib 提交 `0718c59`（row 9，同名提交）**新建** `lib/mixin/client/MouseHandlerMixin.java`（21 行），hook 就是同一个 `MouseHandler.turnPlayer` + `GravitationHandler.isShouldRot()` 取反；
+- 1.21 侧这份实现在 **TerraCurio 的 `MouseHandlerMixin`** 里：1.21 原生线 `30b819c`（2024-11-09）起就有重力取反（当时指向 TC 本地的 `GravitationHandler`），`fc709c5`（WP6c 第 2/3 步）把它**改指到 `org.confluence.lib.client.handler.GravitationHandler`**，而该 handler 在 1.21 lib 里原样存在。
+
+⇒ 行为已覆盖。**且不得在 1.21 lib 补这个 mixin**：TC 的 `MouseHandlerMixin` 已在同一注入点取反一次，lib 再补一次就是**负负得正**（重力反转下鼠标失效）。这条判据当时已写进 `fc709c5` 的 `MouseHandlerMixin` javadoc（"若 Lib 按 1.20 补上这两半，必须删掉 TC 这些对应 hook"），本轮复核与之吻合。
+
+> 教训（写入方法学）：**路径级复核必须按 basename 全仓索引，不能只按同模块比对**；跨模块的"拆出／合回"（本篇 lib ↔ TerraCurio、lib ↔ 主模块共 3 例）会让路径级检查产生假缺口。反向的假阴性也存在：1.21 把两半合回一个 mixin 后，`lib/mixin/client/MouseHandlerMixin` 在 1.21 根本不该存在。
+
+### 139.5 结论
+
+- **台账口径：0 行未移植**（`TODO` 0、`DEFER-ASSETS` 0；`COVERED` 128／`PORTED` 4／`SKIP-PORTLIB` 10／`REVERSE-ALIGNED` 6 = 148）。
+- **符号口径：0 个候选缺口**（39 个抽样全部落在"1.21 有对应物"或"1.20 已自撤"）。
+- **路径口径：0 个真缺口**（39 个文件全部定性为改名/移位/跨模块搬移/平台废弃/死代码/非缺口）。
+- 剩余事项与子模块无关：用户侧 `runData`、16 个 `src/generated` 陈旧 `*_phaseblade`／`*_phasaber` 模型、9 批落地的编译验证。
+
+本轮**未改动任何仓库文件**（纯复核）；证据产物在 `build/_cmp231/`（gitignored）：`sub_full_report.txt`、`sub_full_rows.tsv`、`sub_sym_alive.txt`、`sub_path_report.txt`、`sub_path_detail.txt`、`sub_cross_module.txt`。

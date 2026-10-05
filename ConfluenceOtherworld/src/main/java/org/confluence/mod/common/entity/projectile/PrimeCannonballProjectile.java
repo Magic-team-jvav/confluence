@@ -14,14 +14,6 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;
 
-/// 机械炮管发射的小范围爆炸炮弹。
-///
-/// 爆炸只影响实体，不破坏地形，避免 Boss 攻击永久损坏玩家建筑与战斗场地。
-///
-/// 1.20 侧的 `IPortProjectileExtension` 是 PortLib 在 1.20.1 上模拟 **1.21 原生 API** 的垫片
-/// （`hitTargetOrDeflectSelf(HitResult)` 与 `deflect(...)` 在 1.21.1 已是 `Projectile` 自己的方法），
-/// 因此按约定不再实现该接口；弹幕命中事件改为直接投递 NeoForge 的 `ProjectileImpactEvent`，
-/// 与已移植的 `StraightMonsterProjectile` 保持一致。
 public final class PrimeCannonballProjectile extends Projectile {
     public static final int MAX_LIFETIME = 80;
     private static final double BLAST_RADIUS = 3.0;

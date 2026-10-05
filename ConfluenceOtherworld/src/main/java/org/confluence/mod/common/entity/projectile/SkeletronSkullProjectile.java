@@ -45,7 +45,6 @@ public final class SkeletronSkullProjectile extends StraightMonsterProjectile {
         return velocity.add(lateralCorrection.normalize().scale(TRACKING_STRENGTH));
     }
 
-    /// 1.21 在完成本刻位移后沿当前方向线性加速，下一刻再以新速度继续追踪。
     @Override
     public void tick() {
         super.tick();

@@ -117,7 +117,6 @@ public final class SandShark extends BaseMonster {
         return true;
     }
 
-    /// 1.21.1 的 `LivingEntity#canBreatheUnderwater()` 是 final，官方替代钩子是 `canDrownInFluidType`。
     @Override
     public boolean canDrownInFluidType(FluidType type) {
         return type != NeoForgeMod.WATER_TYPE.value() && super.canDrownInFluidType(type);

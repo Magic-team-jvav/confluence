@@ -100,7 +100,6 @@ public interface Immunity {
         }
     }
 
-    /// 1.20 没有 1.21 的 `minecraft:no_knockback` 伤害类型标签，结算后恢复原速度以保持等效行为。
     static boolean hurtWithoutKnockback(Entity target, DamageSource source, float amount) {
         Vec3 movement = target.getDeltaMovement();
         boolean hurt = target.hurt(source, amount);

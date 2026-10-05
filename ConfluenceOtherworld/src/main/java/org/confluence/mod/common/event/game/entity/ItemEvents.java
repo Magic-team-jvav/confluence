@@ -98,19 +98,6 @@ public final class ItemEvents {
         }
     }
 
-    /// 枪械事件处理器（**枪械内联 G4′**：按 1.20 `common/event/game/entity/ItemEvents.java:122-166`
-    /// 重写）。
-    ///
-    /// 1.21 侧此前这 6 个处理器绑的是 **TerraGuns** 的 `GunEvent` 嵌套类型
-    /// （`GunFireEvent`/`UseGunEvent`/`ShrinkBulletEvent`/`AmmoDataEvent`/`AmmoSelectionEvent`/
-    /// `InventoryExtraEvent`），与主模组已落地的 `GunEvent`（G2′ 搬的 1.20 形态：
-    /// `Fire`/`Use`/`ShrinkBullet`/`AmmoData`/`AmmoSelection`/`InventoryExtra`）**名字与语义都不同**，
-    /// 所以 `notes/GUNS-INLINE-MIGRATION.md` 第七节 7.3 说「不是换个 import 就行」。
-    /// 本批按 1.20 逐字重写，同时：
-    /// - 第 7 个处理器 `ProjectileCreation` **移出本类**，落进 1.20 的位置 `event/game/GunEvents.java`；
-    /// - `GunEvent.Use` 补回 1.20 的 `setCooldowns(PrefixUtils.calculateUseTime(...))`（TE 版本没有这行）；
-    /// - `GunEvent.AmmoSelection` 用 1.20 的 `GunItems.STAR_CANNON.get() == event.getGun()`（引用比较）；
-    /// - `GunEvent.AmmoData` 用 1.20 的紧凑写法（就地取属性值，不再预先算 modifier）。
     @SubscribeEvent
     public static void gunFire(GunEvent.Fire event) {
         if (event.getGun() instanceof ManaGunItem) {

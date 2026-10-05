@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.boss;
 
-import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -40,6 +39,7 @@ import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.network.s2c.BossBarSyncPacketS2C;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 /// 所有可独立结束战斗的 Boss 本体基类。
@@ -799,21 +799,10 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return nearest;
     }
 
-    /// 只有构成本体空间范围或共享胜负条件的实体才参与遭遇距离计算。
-    ///
-    /// TODO(WP3)：1.20 这里还有 `|| entity instanceof AbstractTwinEye`（双子魔眼是
-    /// `BaseFlyingMonster` 而不是部件，所以单列一支）。`AbstractTwinEye` 属 WP3 物种层
-    /// （它连带 `BaseFlyingMonster` / `BossOwnerTracker` / `TheTwins`），尚未移植；
-    /// 1.21 当前没有双子魔眼，该分支恒为 false，暂时删掉不影响可观察行为。
     protected boolean isCombatAnchor(Entity entity) {
-        return entity instanceof BaseBossPart<?> || entity instanceof BaseLivingBossPart<?>;
+        return entity instanceof BaseBossPart<?> || entity instanceof BaseLivingBossPart<?> || entity instanceof AbstractTwinEye;
     }
 
-    /// 在目标周围寻找适合飞行 Boss 的传送点。
-    ///
-    /// 这里不能使用世界高度图：高度图只返回整列最高表面，地下 Boss 会因此穿出洞穴或
-    /// 竞技场。候选点以目标当前高度为中心，并同时检查区块加载、实体碰撞和液体占用；
-    /// 找不到安全位置时返回 {@code null}，调用方应保持原位等待下一次尝试。
     protected final @Nullable Vec3 findFlyingTeleportPosition(LivingEntity target, double minimumRadius, double maximumRadius, double verticalRadius, int attempts) {
         if (!(level() instanceof ServerLevel serverLevel)) return null;
         for (int attempt = 0; attempt < attempts; attempt++) {

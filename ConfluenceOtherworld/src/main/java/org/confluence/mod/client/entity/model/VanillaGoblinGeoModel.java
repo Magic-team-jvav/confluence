@@ -13,13 +13,6 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.data.EntityModelData;
 import software.bernie.geckolib.util.RenderUtil;
 
-/// 哥布林动画族专用的人形动作桥接模型（1.20 同名文件）。
-/// 普通哥布林复用行走、转头和基础挥臂；弓箭手拉弓时使用原版人形模型的持弓姿势。
-/// 施法者有独立资源动画，不应接入这个类。
-///
-/// 1.20 → 1.21.1 与 `VanillaHumanoidGeoModel`/`VanillaSkeletonGeoModel` 同一组 geckolib 包名迁移：
-/// `core.animatable.model.CoreGeoBone` → `cache.object.GeoBone`、`core.animation.AnimationState` →
-/// `animation.AnimationState`、`util.RenderUtils` → `util.RenderUtil`；`applyBowPose` 复用同包已落地的实现。
 public final class VanillaGoblinGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";

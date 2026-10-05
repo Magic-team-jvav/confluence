@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
 import com.mojang.serialization.Codec;
-import java.util.EnumMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,6 +32,8 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.EnumMap;
 
 
 public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<DemonEye.Variant> {
@@ -162,12 +163,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)).ifSuccess(this::setVariant);
     }
 
-    /// 1.21 删掉了 `finalizeSpawn` 的第 5 个形参 `@Nullable CompoundTag tag`
-    /// （1.20.1 `Mob.java:1097` 有，1.21.1 `Mob.java:1192` 没有）。
-    /// 1.20 用它判断「本次生成是否已经带了变体 NBT」（`tag == null || !tag.contains(VARIANT_KEY)`）。
-    /// 由于 `SummonCommand.java:86-95` 里 `loadEntityRecursive`（会走 `readAdditionalSaveData`）
-    /// 仍然在 `finalizeSpawn` **之前**执行，这里改用由 `readAdditionalSaveData` 置位的标记，
-    /// 与原来的判断等价。
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {

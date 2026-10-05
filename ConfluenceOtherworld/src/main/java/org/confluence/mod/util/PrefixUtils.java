@@ -107,12 +107,6 @@ public final class PrefixUtils {
     }
 
     /// 取实体在指定属性上的加成，并剔除手持物品自身对该属性的贡献。
-    ///
-    /// 1.20 侧 `PrefixUtils:95-115`；1.21 侧此前**没有**这两个方法（坐骑内容要用到，
-    /// 属「1.21 那份更窄」的常见形态）—— 逐字搬过来，只有两处 API 改名：
-    /// ① 修饰符表的键在 1.21 是 `Holder<Attribute>`（TerraCurio `AttributeModifiersValue:16`，1.20 是裸 `Attribute`）；
-    /// ② `Operation` 枚举改名 `ADDITION/MULTIPLY_BASE/MULTIPLY_TOTAL` →
-    /// `ADD_VALUE/ADD_MULTIPLIED_BASE/ADD_MULTIPLIED_TOTAL`（`AttributeModifier.java:64-66`）。
     public static double attributeWithoutHeldItem(LivingEntity entity, Holder<Attribute> attribute, ItemStack heldItem) {
         double heldValue = PrefixUtils.heldItemContribution(heldItem, 1, attribute);
         return heldValue > 0 ? entity.getAttributeValue(attribute) / heldValue : entity.getAttributeValue(attribute);
@@ -124,7 +118,6 @@ public final class PrefixUtils {
         PrefixComponent component = getPrefix(heldItem);
         if (component != null) {
             for (AttributeModifier modifier : component.modifiers().get().get(attribute)) {
-                // 1.21 的 AttributeModifier 是 record（`AttributeModifier.java:22`）：`amount()` / `operation()`
                 value += switch (modifier.operation()) {
                     case ADD_VALUE -> modifier.amount();
                     case ADD_MULTIPLIED_BASE -> modifier.amount() * baseValue;
@@ -166,7 +159,7 @@ public final class PrefixUtils {
     }
 
     public static void unknown(ItemStack itemStack) {
-        itemStack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0.0F, 0, 0, 0.0F));
+        itemStack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0.0F, 0));
     }
 
     public static float calculateManaCost(ItemStack itemStack, float amount) {

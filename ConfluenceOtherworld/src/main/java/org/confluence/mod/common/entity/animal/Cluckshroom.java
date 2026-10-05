@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.animal;
 
-import java.util.List;
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,6 +24,9 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.List;
+import java.util.UUID;
 
 
 public final class Cluckshroom extends Chicken implements GeoEntity, IShearable {
@@ -75,10 +76,6 @@ public final class Cluckshroom extends Chicken implements GeoEntity, IShearable 
         return child;
     }
 
-    /// 1.20 侧是 Forge 的 `IForgeShearable`（`isShearable(ItemStack, Level, BlockPos)` +
-    /// `onSheared(Player, ItemStack, Level, BlockPos, int fortune)`）；1.21.1 对应 NeoForge 的
-    /// {@link IShearable}，形参表变了（`Player` 提到第一位、去掉 `fortune`）—— 与 1.21 侧
-    /// 既有的 `RainbowSheep` 写法一致。
     @Override
     public boolean isShearable(Player player, ItemStack stack, Level level, BlockPos pos) {
         return isAlive() && !isBaby();

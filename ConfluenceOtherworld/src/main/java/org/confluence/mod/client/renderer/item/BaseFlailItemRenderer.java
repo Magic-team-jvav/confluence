@@ -18,10 +18,6 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import java.util.HashMap;
 import java.util.Map;
 
-/// 连枷物品手持渲染器。
-///
-/// 1.21 侧会优先使用单个连枷自己的 Geo 模型，缺失时才回退到公共手柄。1.20
-/// 现在暂时只有公共手柄资源，但这里仍保留同样的解析流程，避免以后补资源时还要改代码。
 public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> {
     private static final ResourceLocation HANDLE_MODEL = Confluence.asResource("geo/item/flail/handle.geo.json");
     private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/flail.png");

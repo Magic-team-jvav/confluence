@@ -83,7 +83,6 @@ public final class NetworkEvents {
                 .playToServer(NPCDialogSessionPacketC2S.TYPE, NPCDialogSessionPacketC2S.STREAM_CODEC, NPCDialogSessionPacketC2S::handle)
                 .playToServer(OpenNPCServicePacketC2S.TYPE, OpenNPCServicePacketC2S.STREAM_CODEC, OpenNPCServicePacketC2S::handle)
                 .playToServer(SummonSkeletronPacketC2S.TYPE, SummonSkeletronPacketC2S.STREAM_CODEC, SummonSkeletronPacketC2S::handle)
-                // 枪械内联 G4′：开火与检视（1.20 `network/c2s/{ShootPacketC2S,InspectPacketC2S}`）。
                 .playToServer(ShootPacketC2S.TYPE, ShootPacketC2S.STREAM_CODEC, ShootPacketC2S::handle)
                 .playToServer(InspectPacketC2S.TYPE, InspectPacketC2S.STREAM_CODEC, InspectPacketC2S::handle)
 

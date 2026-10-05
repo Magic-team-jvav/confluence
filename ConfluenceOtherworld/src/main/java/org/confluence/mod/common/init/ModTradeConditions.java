@@ -7,13 +7,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.*;
 
-/// 贸易条件的 `MapCodec` 注册层（1.20 `common/init/ModTradeConditions.java` 逐条对齐）。
-///
-/// 1.20 用 `DeferredRegister.create(ModCustomRegistries.Keys.TRADE_CONDITIONS, MODID)` +
-/// `RegistryObject<...>`；1.21 侧 `RegistryObject` 没有同名对应物，按本仓库既有规矩改成
-/// `DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<X>>`（与 `NpcEntities` 同一写法）。
-/// 注册表对象本身由 {@link ModCustomRegistries} 建好（`DeferredRegister.create` 的 `Registry` 重载，
-/// 先例 `TerraEntity/.../track/TrackTypeProviderTypes.java:17`）。
 public final class ModTradeConditions {
     public static final DeferredRegister<MapCodec<? extends TradeCondition>> TYPES = DeferredRegister.create(ModCustomRegistries.TRADE_CONDITIONS, Confluence.MODID);
 

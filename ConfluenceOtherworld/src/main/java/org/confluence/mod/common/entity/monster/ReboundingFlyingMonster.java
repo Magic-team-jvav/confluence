@@ -5,7 +5,6 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.mixin.world.entity.EntityAccessor;
 
 /// 会在撞到实体方块后主动调整速度的飞行敌怪。
 ///
@@ -26,7 +25,7 @@ public abstract class ReboundingFlyingMonster extends BaseFlyingMonster {
             return;
         }
 
-        Vec3 allowed = ((EntityAccessor) this).callCollide(movement);
+        Vec3 allowed = collide(movement);
         Vec3 rebound = reboundVelocity(movement, allowed);
         setDeltaMovement(rebound);
         super.move(type, rebound);

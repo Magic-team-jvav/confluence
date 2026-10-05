@@ -1,33 +1,12 @@
 package org.confluence.mod.common.init.entity;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.SpawnPlacementType;
-import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
 
-/// 所有进入自然生成数据的生物放置规则注册中心；这里只登记，不实现条件。
-///
-/// 1.20 侧本类通过 PortLib 的 `PortRegisterSpawnPlacementsEvent` 注册；
-/// 1.21 侧是对应的原生事件 {@link RegisterSpawnPlacementsEvent}
-/// （本仓库既有写法见 `ModEvents#registerSpawnReplacements`，本类由它调用）。
-///
-/// **本类目前是小动物那一半 + 已落地物种的增量项**：`registerCritters(...)` 完整，
-/// `registerPreHardmodeMonsters` / `registerHardmodeMonsters` 只登记 1.21 `MonsterEntities`
-/// 已经存在的成员（WP2 剩余物种批补入大风气球怪与狼人）。
-///
-/// 1.20 的其余项引用 `MonsterEntities.*` 的成员，而 1.21 的 `MonsterEntities` 还在增量生长，
-/// 整篇搬会被 159 文件闭包挡住（实测见 `notes/WP5C-SUBSET.md` 第三节）—— 那几组随种族批次补。
-///
-/// 实体按生态角色和游戏进度分组。相同语义共用 {@link SpawnPlacementChecks} 中的谓词，困难模式组再由
-/// {@link SpawnPlacementChecks#hardmode(SpawnPlacements.SpawnPredicate)} 叠加进度门槛。
-/// {@link RegisterSpawnPlacementsEvent.Operation#REPLACE} 用于明确覆盖默认规则，避免模组加载
-/// 顺序导致多个谓词以不可预测方式组合。
 public final class CreatureSpawnPlacements {
     private CreatureSpawnPlacements() {}
 

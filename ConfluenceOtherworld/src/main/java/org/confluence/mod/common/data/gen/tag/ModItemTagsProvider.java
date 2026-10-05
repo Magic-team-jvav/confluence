@@ -29,9 +29,6 @@ import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.mod.common.init.item.BoomerangItems;
-import org.confluence.mod.common.init.item.SpawnEggItems;
-import org.confluence.mod.common.init.item.SummonItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -546,8 +543,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> arrows = tag(ItemTags.ARROWS);
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
 
-        // G4′（枪械内联）：`TGTags.GUN` → `ModTags.Items.GUN`，
-        // 依据 1.20 `ModItemTagsProvider.java:570`（`IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);`）。
         IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);
         GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
 
@@ -1452,8 +1447,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 GunItems.BLOWGUN.get(),
                 GunItems.TACTICAL_SHOTGUN.get()
         );
-        // G4′ 标签层补全：下面 4 块 + AMMO 汇总在 1.20 侧就有（1.20 `ModItemTagsProvider.java:1492-1507`），
-        // 1.21 侧此前**整段缺失**（连带 `ModTags.Items.{MANUAL_GUN,SEED_AMMO,SNOW_AMMO}` 也不存在，本批一并补）。
         tag(ModTags.Items.MANUAL_GUN).add(
                 GunItems.HAND_GUN.get(),
                 GunItems.PHOENIX_BLASTER.get(),
@@ -1463,11 +1456,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 GunItems.THE_UNDERTAKER.get(),
                 GunItems.MUSKET.get()
         );
-        // 这里原来还有一句 `tag(TGTags.AMMO).add(MaterialItems.FALLING_STAR.get());` —— 它把陨星加进
-        // **TE 的** `#terra_guns:ammo`（跨模组桥）。直接改成 `ModTags.Items.AMMO` 会与上方那块 AMMO
-        // （`add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())`）重复，而
-        // `TagsProvider.TagAppender` 走 `TagBuilder.addElement` **不去重**，生成的 `confluence:ammo`
-        // 会把 `confluence:falling_star` 列两遍 → 按 1.20 删除该句（内容已被上方那块覆盖，零丢失）。
         IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
         GunItems.BULLET_ITEMS.forEach(item -> bullet.add(item.get()));
         tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);

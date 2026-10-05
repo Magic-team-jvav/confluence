@@ -12,14 +12,6 @@ import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
 
 import java.util.Objects;
 
-/// 通用粒子参数。
-///
-/// 中心色块和边缘色块使用 RGB 颜色，粒子透明度由客户端根据生命周期自动计算。
-///
-/// 1.20 侧它 `extends PortParticleOptions`（PortLib 把 `type`/`codec`/`streamCodec` 塞进父类）；
-/// 1.21.1 的写法是**自己实现 `ParticleOptions` 并覆写 `getType()`** —— 与 1.21 侧既有的
-/// `common/particle/DamageIndicatorOptions` 完全同构（那一个也是 record + `getType()` 指回
-/// `ModParticleTypes`）。本类的字段/构造/取值方法逐字照 1.20，只换掉那层 PortLib 父类。
 public final class GenericParticleOptions implements ParticleOptions {
     public static final MapCodec<GenericParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("centerColor").forGetter(GenericParticleOptions::centerColor),

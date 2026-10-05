@@ -52,9 +52,6 @@ public final class NumberInfo extends Info {
         poseStack.popPose();
     }
 
-    /// 文字管线顶点格式为 POSITION_COLOR_TEX_LIGHTMAP：没有法线与 overlay 属性，不能多写。
-    /// 1.21 侧的顶点 API 是 `addVertex(...)` + `setColor/setUv/setLight`
-    /// （`VertexConsumer.java:159/53/20/63`；`color/uv/uv2` 与 `endVertex()` 都已改名/删除）。
     private static void vertex(VertexConsumer consumer, Matrix4f matrix, int color, float x, float y, float u, float v) {
         consumer.addVertex(matrix, x, y, 0.0F).setColor(color).setUv(u, v).setLight(LightTexture.FULL_BRIGHT);
     }

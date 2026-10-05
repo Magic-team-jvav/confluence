@@ -54,9 +54,6 @@ final class BossChildDeathLedger extends SavedData {
         return level.getDataStorage().computeIfAbsent(new Factory<>(BossChildDeathLedger::new, BossChildDeathLedger::load), DATA_NAME);
     }
 
-    /// 1.21.1 的 `SavedData#save` 多一个 `HolderLookup.Provider` 形参（`SavedData.java:19`），
-    /// `Factory` 的反序列化器同步变成 `BiFunction<CompoundTag, HolderLookup.Provider, T>`（`:60`），
-    /// 所以 `load` 也要接住第二个形参（本类不用注册表，忽略即可）。
     static BossChildDeathLedger load(CompoundTag tag, HolderLookup.Provider registries) {
         BossChildDeathLedger ledger = new BossChildDeathLedger();
         ListTag entries = tag.getList(ENTRIES_TAG, Tag.TAG_COMPOUND);

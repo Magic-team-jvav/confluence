@@ -66,8 +66,6 @@ public class HillOfFlesh extends BaseBoss {
         @Override
         protected Component getTypeName() {return Component.translatable(translationKey);}
 
-        /// 1.21.1 的 `getDefaultDimensions(Pose)` 只存在于 `LivingEntity`；部件继承 `Entity`，
-        /// 因此改为覆写 `Entity#getDimensions(Pose)` 并自行乘上本体缩放。
         @Override
         public EntityDimensions getDimensions(Pose pose) {
             return EntityDimensions.scalable(size, size).scale(getParent().getScale());
@@ -436,8 +434,6 @@ public class HillOfFlesh extends BaseBoss {
         if (!entity.isAlive() || entity.isRemoved() || entity.level() != level() || !canAttack(entity))
             return;
         encounterEntities.add(entity);
-        /// 1.21 的 `MobEffectInstance` 接收 `Holder<MobEffect>`（`MobEffectInstance.java:64`），
-        /// `ModEffects.CRIMSON_STORM` 本身就是 `Holder`，因此不再 `.get()`。
         entity.addEffect(new MobEffectInstance(ModEffects.CRIMSON_STORM, 200, 0), this);
         if (entity instanceof Player player) {
             registerCombatParticipant(player);

@@ -19,10 +19,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GardenGnomeBlock extends BaseEntityBlock {
-    /// 1.21.1 的 `BaseEntityBlock` 把 `codec()` 声明成 **abstract**
-    /// （`BaseEntityBlock.java:19`：`protected abstract MapCodec<? extends BaseEntityBlock> codec();`），
-    /// 1.20.1 没有这个要求 —— 所以从 1.20 搬来的 `BaseEntityBlock` 子类都要补一个
-    /// `CODEC` 与 `codec()` 覆写（本仓库既有写法见 `TuffBoothBlock.java:46/90`）。
     public static final MapCodec<GardenGnomeBlock> CODEC = simpleCodec(GardenGnomeBlock::new);
 
     public GardenGnomeBlock(Properties properties) {
@@ -50,8 +46,6 @@ public class GardenGnomeBlock extends BaseEntityBlock {
             if (world.getGameTime() % 20 != 0) return;
             for (var player : world.players()) {
                 if (player.distanceToSqr(pos.getCenter()) <= 16 * 16) {
-                    /// 1.21 的 `MobEffectInstance` 构造器收 `Holder<MobEffect>`，`DeferredHolder` 本身就是
-                    /// `Holder`，所以**不要**再 `.get()`（仓库统一写法，如 `PooBlock.java:22`）。
                     player.addEffect(new MobEffectInstance(ModEffects.GARDEN_GNOME_LUCK, 40, 0, true, false));
                 }
             }

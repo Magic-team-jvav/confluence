@@ -166,12 +166,6 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         return ModSoundEvents.TR_ZOMBIE_DEATH.get();
     }
 
-    /// 1.21 删掉了 `finalizeSpawn` 的第 5 个形参 `@Nullable CompoundTag tag`
-    /// （1.20.1 `Mob.java:1097` 有，1.21.1 `Mob.java:1192` 没有）。
-    /// 1.20 用它判断「本次生成是否已经带了变体 NBT」（`tag == null || !tag.contains(VARIANT_KEY)`）；
-    /// `SummonCommand.java:86-95` 的 `loadEntityRecursive`（会走 `readAdditionalSaveData`）
-    /// 仍在本方法**之前**执行，所以改用由 `readAdditionalSaveData` 置位的标记，判断等价。
-    /// 与 `DemonEye` 用的是同一套办法。
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data) {

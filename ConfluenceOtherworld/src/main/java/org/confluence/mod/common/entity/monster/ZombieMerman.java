@@ -15,8 +15,6 @@ public final class ZombieMerman extends BaseWarriorMonster {
         super(type, level, 0.0, LandAnimationProfile.NONE, LandSoundProfile.ZOMBIE, 1.0, true, DoorBehavior.BLOOD_MOON);
     }
 
-    /// 1.21.1 的 `LivingEntity#canBreatheUnderwater()` 是 final（`LivingEntity.java:382`），
-    /// 官方替代钩子是 `canDrownInFluidType`（见 `BaseAquaticMonster` 的同名改动）。
     @Override
     public boolean canDrownInFluidType(FluidType type) {
         return type != NeoForgeMod.WATER_TYPE.value() && super.canDrownInFluidType(type);

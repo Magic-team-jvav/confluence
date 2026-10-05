@@ -17,20 +17,6 @@ import org.confluence.mod.common.entity.monster.MeteorHead;
 import org.confluence.mod.common.init.ModMiniBiomes;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
-/// **陨石迷你群系**里生成流星头。
-///
-/// 骨架照抄 {@link SpaceSpawner}（自定义 `CustomSpawner` + 节流 + 逐玩家判定 + 逐候选位置校验），
-/// 区别只有判定条件：这里查的是迷你生物群系标记。
-///
-/// ## 三个要点
-///
-/// 1. **判定放在玩家身上，不是生成位置上。** 泰拉的生物群系本来就是以玩家为中心的
-///    （`SceneMetrics` 扫的是玩家周围的窗口），所以「玩家在陨石区」就算，流星头在附近冒出来。
-/// 2. **查询是窗口求和，必须节流。** 一次 {@link MiniBiome#markersAt} 要遍历窗口里所有 section，
-///    所以本 spawner 自己按秒级间隔节流，而且每次尝试每个玩家只查一次。
-///    要更精细就自己按玩家缓存（见 `MiniBiome#windowCounts`）。
-/// 3. **强度可以拿来当渐变旋钮。** `marker.influence()` 是 0..1，
-///    陨石块越多，一次冒出来的流星头越多 —— 这就是「渐变」在玩法上的用法。
 public class MeteoriteSpawner implements CustomSpawner {
     /// 两次尝试的间隔（秒）。泰拉的刷怪频率也是秒级，不是每 tick。
     public static final int MIN_INTERVAL_SECONDS = 8;

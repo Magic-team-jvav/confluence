@@ -202,9 +202,6 @@ public final class CritterEntities {
         return register(name, factory, 0.5F, 0.3F, 8);
     }
 
-    /// 集中创建普通小动物实体类型，保证尺寸和追踪距离只在注册入口声明一次。
-    /// 1.20 侧走的是 PortLib 的 `PortDeferredRegisterExtension.register(ENTITIES, name, id -> ...)`；
-    /// 1.21.1 的 `DeferredRegister#register(String, Function<ResourceLocation, T>)` 原生就是这个签名。
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> register(String name, EntityType.EntityFactory<T> factory, float width, float height, int trackingRange) {
         return ENTITIES.register(name, id -> EntityType.Builder.of(factory, MobCategory.CREATURE)
                 .sized(width, height)

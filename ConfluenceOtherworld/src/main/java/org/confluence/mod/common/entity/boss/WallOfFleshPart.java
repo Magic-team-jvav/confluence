@@ -69,9 +69,6 @@ public abstract class WallOfFleshPart extends PartEntity<WallOfFlesh> implements
 
     protected abstract void tickAttack(WallOfFlesh master, @Nullable LivingEntity target);
 
-    /// 1.21.1 的 `getDefaultDimensions(Pose)` 只存在于 `LivingEntity`（`LivingEntity.java:3427`）；
-    /// 部件直接继承 `Entity`/`PartEntity`，因此改为覆写 `Entity#getDimensions(Pose)`，
-    /// 并自己把本体的缩放乘进去（`LivingEntity` 的默认实现做的就是这件事）。
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         return EntityDimensions.scalable(width, height).scale(getParent().getScale());

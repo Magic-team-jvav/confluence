@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.boss;
 
-import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -8,8 +7,8 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +21,8 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 
 /// 非生物型、短暂 Boss 部件的共享生命周期。
@@ -143,12 +144,6 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         return contactMovementTick == level().getGameTime() && contactSweepStart != null ? contactSweepStart : position();
     }
 
-    /// 非生物实体默认收到位置包就跳到终点；部件按网络给出的窗口平滑移动。
-    ///
-    /// 1.20.1 的 `Entity#lerpTo` 带一个 **Forge 补丁**加的 `boolean teleport`
-    /// （`forge-1.20.1-47.4.20` 的 `Entity.java:2115`），1.21.1 的 NeoForge 没有这个形参
-    /// （`neoforge-21.1.219` 的 `Entity.java:2202` 是六参）。因此去掉该分支：
-    /// 1.21.1 只在 `lerpSteps > 0` 时调用本方法，「是否瞬移」由调用方承担。
     @Override
     public void lerpTo(double x, double y, double z, float yaw, float pitch, int steps) {
         if (!level().isClientSide || steps <= 0) {
@@ -221,9 +216,6 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         return true;
     }
 
-    /// 1.21.1 的 `Entity#defineSynchedData` 改为接收 `SynchedEntityData.Builder`
-    /// （`Entity.java:342` 是 `protected abstract void defineSynchedData(SynchedEntityData.Builder)`），
-    /// 原来的 `entityData.define(...)` 全部改成 `builder.define(...)`。
     @Override
     protected final void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(OWNER_ID, -1);
@@ -322,8 +314,6 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
     @Override
     public void push(Entity entity) {}
 
-    /// 1.21.1 的 `Entity#getAddEntityPacket` 多一个 `ServerEntity` 形参
-    /// （`Entity.java:3428`），构造包时一并传给它。
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity entity) {
         return new ClientboundAddEntityPacket(this, entity);

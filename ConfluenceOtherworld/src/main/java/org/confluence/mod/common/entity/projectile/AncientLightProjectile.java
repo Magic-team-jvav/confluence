@@ -19,11 +19,6 @@ import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.LunaticCultist;
 
-/// 拜月教邪教徒“远古之光”齐射使用的敌对弹幕。
-///
-/// 1.20 侧的 `IPortProjectileExtension` 是 PortLib 在 1.20.1 上模拟 **1.21 原生 API** 的垫片
-/// （`hitTargetOrDeflectSelf(HitResult)` 与 `deflect(...)` 在 1.21.1 已是 `Projectile` 自己的方法），
-/// 因此按约定不再实现该接口；命中判定改为直接投递 NeoForge 的 `ProjectileImpactEvent`。
 public final class AncientLightProjectile extends Projectile {
     public static final int MAX_LIFETIME = 100;
     public static final float DAMAGE = 16.0F;

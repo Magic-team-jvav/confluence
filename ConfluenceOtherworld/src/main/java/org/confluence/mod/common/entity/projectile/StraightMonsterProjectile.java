@@ -17,16 +17,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 
-/// 敌对生物直线弹幕的公共运行时。
-///
-/// 本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
-/// 具体弹幕只需要提供初始参数，并可通过 {@link #modifyVelocity(Vec3)}
-/// 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。
-///
-/// 1.20 侧的 `IPortProjectileExtension` 是 PortLib 用来在 1.20.1 上模拟 **1.21 原生 API** 的垫片：
-/// 它的 `hitTargetOrDeflectSelf(HitResult)` 在 1.21.1 已经是 `Projectile` 自己的 protected 方法
-/// （`Projectile.java:177`），`deflect(...)` 也在 `Projectile` 上（`:195`）。
-/// 因此这里**不再实现该接口**（PortLib 代码按约定一律不移植），直接调用继承来的方法。
 public abstract class StraightMonsterProjectile extends Projectile {
     private static final String DAMAGE_KEY = "Damage";
     private static final String MAXIMUM_LIFETIME_KEY = "MaximumLifetime";

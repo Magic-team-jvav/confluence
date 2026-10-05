@@ -9,9 +9,6 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
-/// 从已建立的 NPC 交互会话进入服务菜单，不接受客户端提供物品或授权信息。
-///
-/// 1.20 `IPortPacket.C2S` → 1.21 原生 `IPacketC2S`（同 `NPCDialogSessionPacketC2S`）。
 public record OpenNPCServicePacketC2S(int entityId, byte service) implements IPacketC2S {
     public static final byte TRADE = 0;
     public static final byte REFORGE = 1;

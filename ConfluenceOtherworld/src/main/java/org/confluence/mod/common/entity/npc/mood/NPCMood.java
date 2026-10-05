@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.npc.mood;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -13,8 +10,11 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 /// NPC 心情系统。100 为基准值；购买价格按 100 / 心情值计算，售回价格按心情值 / 100 计算。
@@ -23,14 +23,6 @@ public final class NPCMood {
     private static final float MIN_BUY_MULTIPLIER = 0.75F;
     private static final float MAX_BUY_MULTIPLIER = 1.5F;
 
-    /// 心情原因（{@link Component}）的序列化编解码器。
-    ///
-    /// 1.20 在这里用 `Component.Serializer.toJson(Component)` / `fromJson(String)`（1.20 `NPCMood.java:131/:140`），
-    /// 1.21 那两个方法都要 `HolderLookup.Provider`（`Component.java` 的 `Serializer#toJson(Component, HolderLookup.Provider)`），
-    /// 而 NPCMood 是纯自序列化、静态上下文里拿不到 level/provider（调用方 `BaseNPC#refreshMood` 与
-    /// `BaseNPC#onSyncedDataUpdated` 都不传注册表）。这里改用同一套编解码器的「JSON 字符串」形态
-    /// `ComponentSerialization.FLAT_CODEC`：输入输出都是 String、不需要注册表上下文，语义与 1.20 的
-    /// `toJson`/`fromJson(String)` 完全一致（1.20 也是「Component ↔ JSON 字符串」往返）。
     private static final Codec<Component> REASON_CODEC = ComponentSerialization.FLAT_CODEC;
 
     private final EntityType<?> ownerType;

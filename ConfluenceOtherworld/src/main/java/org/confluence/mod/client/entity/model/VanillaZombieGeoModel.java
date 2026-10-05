@@ -13,11 +13,6 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-/// 给僵尸类 Geo 模型复用原版僵尸的行走、转头和前伸手臂动作（1.20 同名文件）。
-/// 这个实现和普通人形族分开，避免把僵尸特有的攻击姿态施加到其他双足怪物。
-///
-/// 1.20 → 1.21.1：`CoreGeoBone` → `GeoBone`、`AnimationState` 换包；本类**不使用** `RenderUtil`
-/// （它自己按 Bedrock 手臂 X 轴反向逐项写骨骼旋转），故不需要 `RenderUtils` → `RenderUtil` 的改名。
 public class VanillaZombieGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";

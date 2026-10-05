@@ -69,11 +69,6 @@ public final class Goldfish extends SwimmingCritter {
         return entityData.get(WALKING);
     }
 
-    /// 1.21.1 的 `LivingEntity#canBreatheUnderwater()` 是 **final**（`LivingEntity.java:382`，
-    /// 本体改为查 `EntityTypeTags.CAN_BREATHE_UNDER_WATER`），1.20 那份 `{ return true; }` 编不过。
-    /// NeoForge 的替代钩子是 `ILivingEntityExtension#canDrownInFluidType(FluidType)`
-    /// （水类型的默认实现恰好就是 `!canBreatheUnderwater()`）—— 与 1.21 侧既有的
-    /// `BaseAquaticMonster.java:88-97` 是同一处 API 差异、同一处写法。
     @Override
     public boolean canDrownInFluidType(FluidType type) {
         return type != NeoForgeMod.WATER_TYPE.value() && super.canDrownInFluidType(type);

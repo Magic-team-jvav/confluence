@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.npc;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -40,6 +37,10 @@ import org.confluence.mod.common.init.item.MountItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.network.s2c.OpenAnglerDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
 
 /// 渔夫 NPC —— 每日钓鱼任务。
@@ -104,10 +105,6 @@ public class AnglerNPC extends BaseNPC {
         if (key == DATA_WAKE_UP) refreshDimensions();
     }
 
-    /// 1.21.1 的 `LivingEntity#getDimensions(Pose)` 是 **final**（`LivingEntity.java:3423`，内部为
-    /// `getDefaultDimensions(pose).scale(getScale())`），可覆写的是 `getDefaultDimensions`（protected，
-    /// `LivingEntity.java:3427`）。写法照本仓库既有先例 `Hoplite.java:49`、`Nymph.java:133`、
-    /// `BaseLivingBossPart.java:252`。
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
         return isWakeUp()

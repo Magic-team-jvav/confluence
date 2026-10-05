@@ -353,9 +353,6 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
         return cache;
     }
 
-    /// 1.20.1 的 `Entity#lerpTo` 带一个 **Forge 补丁**加的 `boolean teleport` 形参，1.21.1 的 NeoForge
-    /// 没有（`Entity.java:2202` 是六参）→ 去掉该形参，把「瞬移」判据交给 `steps <= 0`
-    /// （与既有先例 `BaseBossPart.java:148-157`、`BaseWormPart.java:286` 同一口径）。
     @Override
     public void lerpTo(double x, double y, double z, float yaw, float pitch, int steps) {
         if (!level().isClientSide || steps <= 0 || distanceToSqr(x, y, z) > 4096.0D) {

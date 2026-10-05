@@ -1,12 +1,8 @@
 package org.confluence.mod.common.data.map;
 
 import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
@@ -24,7 +20,12 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
-import com.mojang.serialization.*;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 /// 按攻击入口配置效果。普通参数为基础，专家覆盖基础，大师再覆盖专家；每个效果独立判定。
@@ -107,7 +108,6 @@ public record AttackEffects(List<Effect> contact, List<Effect> melee, List<Effec
         }
     }
 
-    /// 1.20 的 optionalFieldOf 会吞掉非法值；配置存在但无法解析时必须报告错误。
     private static final class Fields {
         private static <A> MapCodec<Optional<A>> optional(Codec<A> codec, String name) {
             return new MapCodec<>() {

@@ -41,8 +41,6 @@ public final class Confluence {
     // todo 1.3.0
     public static final boolean SOUL_SKILLS = false;
     public static final boolean THE_END_BIOMES = false;
-    /// 未发布的敌怪、小动物与 NPC 生成；刷怪蛋和手动召唤不受此开关限制。
-    /// 由 {@code common/init/entity/DevelopmentSpawnPolicy} 读取（1.20.1 同名字段在 `Confluence.java:55`）。
     public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
 
     private static void registerEntityAliases() {

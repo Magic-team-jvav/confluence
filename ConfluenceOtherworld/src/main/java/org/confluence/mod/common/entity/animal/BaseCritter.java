@@ -1,9 +1,5 @@
 package org.confluence.mod.common.entity.animal;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import javax.annotation.Nullable;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +7,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,9 +24,11 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import net.minecraft.world.entity.*;
 
-import net.minecraft.world.entity.ai.goal.*;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 /// 小动物基类 —— 不可繁殖、无食物、行为树驱动。
@@ -41,13 +40,6 @@ public abstract class BaseCritter extends Animal implements CritterVisual {
         super(type, level);
     }
 
-    /// 1.21 删掉了 `finalizeSpawn` 的第 5 个形参 `@Nullable CompoundTag tag`
-    /// （1.20.1 `Mob.java:1097` 有，1.21.1 `Mob.java:1192` 没有）。
-    /// 1.20 用它判断「本次生成是否已经带了变体 NBT」（`tag == null || !tag.contains(key)`）；
-    /// `SummonCommand.java:86-95` 的 `loadEntityRecursive`（会走 `readAdditionalSaveData`）
-    /// 仍在本方法**之前**执行，所以改用下面的标记位，判断等价。
-    /// 这与 `DemonEye` / `humanoid/Zombie` / `WaterBoltMimic` 是同一处 API 差异的第 4 例
-    /// （前两例用标记位、第三例只透传所以直接删参）。
     private boolean variantLoadedFromSave;
 
     @Override

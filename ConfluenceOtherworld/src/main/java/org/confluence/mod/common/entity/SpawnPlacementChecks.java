@@ -1,75 +1,52 @@
 package org.confluence.mod.common.entity;
 
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.entity.animal.Animal;
-import org.confluence.mod.common.init.item.ArmorItems;
-import java.util.ArrayDeque;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Blocks;
-import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
-import org.confluence.mod.common.init.entity.BossEntities;
-import org.confluence.mod.common.init.entity.CritterEntities;
-import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.util.DateUtils;
-import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
-import java.util.HashSet;
-import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
-import net.minecraft.world.level.Level;
-import org.confluence.lib.util.LibDateUtils;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import org.confluence.mod.common.init.ModBlockCounters;
+import org.confluence.mod.common.entity.animal.Worm;
+import org.confluence.mod.common.entity.monster.WaterBoltMimic;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.SandstormGameEvent;
 import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.util.ModUtils;
-import net.minecraft.world.entity.monster.Monster;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.util.DateUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
-import net.minecraft.util.RandomSource;
-import net.minecraft.core.registries.Registries;
-import org.confluence.mod.common.gameevent.SandstormGameEvent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ServerLevelAccessor;
-import java.util.Set;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.neoforged.neoforge.common.Tags;
-import org.confluence.mod.common.entity.monster.WaterBoltMimic;
-import org.confluence.mod.common.entity.animal.Worm;
 
-/// 自然生成使用的公共环境校验集合（**1.21 侧增量版**：目前是小动物那一半，加上地表敌怪基础规则）。
-///
-/// 1.20 侧的本类共 814 行 / 100 多支谓词；它的单点闭包是 **159 个文件**，因为怪物那半边引用
-/// `MonsterEntities.*` 与各种怪物实体，而 1.21 的 `MonsterEntities` 还在增量生长
-/// （实测见 `notes/WP5C-SUBSET.md` 第三节）。因此本类**按需摘取**：
-/// 摘取口径 = `CreatureSpawnPlacements` 里已经登记的那几组直接用到的方法，加上它们的私有辅助，
-/// 其余（史莱姆 / 前困难模式怪物剩余项 / 困难模式怪物剩余项 / MysticFrog / Gnome / 城镇史莱姆 /
-/// 沙尘暴…）随各自物种批次补进来。
-///
-/// WP2 剩余物种批补入「地表敌怪基础规则」四支（1.20 `:789` / `:314` / `:463` / `:677`），
-/// 因为本批落地的狼人与大风气球怪必须同时登记放置规则，否则它们不会被自然生成。
-///
-/// 本文件里每一支谓词的方法体都与 1.20 逐字一致，只有以下四处适配（都在行内注明）：
-/// 1. `PortTags.*` 没有用到（需要它的 `checkMysticFrogSpawn` 不在本批）；
-/// 2. 墓地判定改用 1.21 自己的**区块 section 级**实现（见 {@link #isGraveyard}）；
-/// 3. `IMinecraftServer.isHardmode` / `OverworldUtils` / `ConfluenceData` / `KillBoard` /
-///    `LibDateUtils` / `ModBiomes` 都是 1.21 侧**已存在**的同一批工具类，直接引用；
-/// 4. `CommonConfigs.SPAWN_WITHOUT_LIGHT` 是 1.20 `CommonConfigs:256` 的同名成员，本批一并补进 1.21 配置。
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Set;
+
 public final class SpawnPlacementChecks {
     /// 草蛉只限制局部活动区，不让远处独立洞穴互相占用名额。
     private static final double LACEWING_POPULATION_RADIUS = 96.0;
@@ -300,8 +277,6 @@ public final class SpawnPlacementChecks {
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    /// 鬼魂要求墓地环境（1.20 `:683`）。
-    /// 1.20 侧是 `ModBlockCounters.isGraveyard`，1.21 用本类自己的 section 级判定（同 {@link #isGraveyard}）。
     public static boolean checkGhostSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return isGraveyard(level, pos) && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
     }
@@ -503,16 +478,6 @@ public final class SpawnPlacementChecks {
                 && level.getFluidState(pos.above()).is(FluidTags.WATER);
     }
 
-    /// 墓地判定。
-    ///
-    /// 1.20 侧是 `ModBlockCounters.isGraveyard(level, pos)`：magiclib 的 `BlockCounters` +
-    /// `MiniBiome.windowCounts` 做**窗口内**碑石/向日葵统计，阈值 `GRAVEYARD_THRESHOLD = 7`。
-    /// 1.21 侧没有这套计数器，取而代之的是**区块 section 级**的
-    /// `ILevelChunkSection#confluence$isGraveyard()`（`BlockCounts.java:19`：`tomb - sunflower >= 7`，
-    /// 阈值与 1.20 同值），取 section 的写法照本仓库 `LivingEntityEvents.java:512`。
-    /// 差异只在粒度（section vs 窗口），语义方向一致 —— 记在批次笔记里。
-    /// 史莱姆：注册处按生态角色分组，每个规则只处理一种环境语义。
-    /// 普通地表史莱姆仅在白天、露天且有地面支撑的位置生成。
     public static boolean checkSurfaceDaySlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.canSeeSky(pos) && checkSurfaceDayMobSpawn(type, level, spawnType, pos, random);
     }

@@ -27,15 +27,6 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 import java.util.List;
 
-/// 同时服务两类调用方：
-/// * 方块物品（`RelicBlock.BItem` / `LifeCrystalBlock` / `ExtractinatorBlock` / `SkyMillBlock` /
-///   `GeoBoulderBlock.BItem`）走 `SingletonGeoAnimatable#createGeoRenderer`，用三参构造，只取
-///   {@link #getGeoItemRenderer()}；
-/// * 枪械（`ModClientEvents#registerGunModel`）走 `RegisterClientExtensionsEvent`，用
-///   {@link DefaultedItemGeoModel} 构造，额外提供第一人称手部变换钩子与相机动画。
-///
-/// 1.20 侧这两条入口（方块 `createGeoRenderer`、枪械 `IClientItemExtensions`）本就共用同一个类，
-/// 所以这里保持同一个类、两个接口并存，未改动任何既有方块调用方。
 public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements GeoRenderProvider, IClientItemExtensions {
     private final ResourceLocation model;
     private final ResourceLocation texture;

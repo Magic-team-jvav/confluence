@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import com.mojang.serialization.Codec;
-import java.util.Locale;
-import java.util.function.IntFunction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -37,6 +35,9 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Locale;
+import java.util.function.IntFunction;
+
 
 
 /// 使用原版 {@link Rabbit} 的导航、跳跃控制和行为，只扩展本模组的外观与待机动画。
@@ -58,13 +59,6 @@ public class Bunny extends Rabbit implements GeoEntity {
     private int nextWatchTick;
     private int watchTicksRemaining = 20;
     private int watchAnimationType;
-    /// 1.21 删掉了 `finalizeSpawn` 的第 5 个形参 `@Nullable CompoundTag tag`
-    /// （1.20.1 `Mob.java:1097` 有，1.21.1 `Mob.java:1192` 没有）。1.20 用它判断
-    /// 「本次生成是否已经带了变体 NBT」（`tag == null || !tag.contains(VARIANT_KEY)`）；
-    /// `SummonCommand.java:86-95` 的 `loadEntityRecursive`（会走 `readAdditionalSaveData`）
-    /// 仍在本方法**之前**执行，所以改用标记位，判断等价 —— 与 1.21 侧既有的
-    /// `BaseCritter`（`variantLoadedFromSave`）、`DemonEye`、`humanoid/Zombie` 是同一处
-    /// API 差异的第 5 例（`Bunny` 继承原版 `Rabbit`，用不了 `BaseCritter` 那一份）。
     private boolean variantLoadedFromSave;
 
     public Bunny(EntityType<? extends Bunny> type, Level level) {

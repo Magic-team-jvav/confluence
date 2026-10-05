@@ -13,15 +13,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-/// 尖刺球族共用的严格运行状态。
-///
-/// 这里只提取两种弹幕真正相同的持久化职责：剩余寿命所依赖的实体年龄，以及普通尖刺球已经
-/// 计入穿透预算的目标 UUID。移动阻尼、重力、伤害来源和命中伤害仍由各实体自行实现，避免为了
-/// 复用存档格式而合并不同的战斗行为。
-///
-/// 1.20 侧只接受带版本号的当前格式。缺少根节点、字段类型错误、年龄越界、目标过多或 UUID
-/// 损坏时，状态会记录英文原因，并要求实体在下一次服务端 tick 安全销毁；不会读取旧的扁平
-/// {@code Age}。
 final class SpikyBallRuntime {
     static final String ROOT_TAG = "ConfluenceSpikyBallRuntime";
 

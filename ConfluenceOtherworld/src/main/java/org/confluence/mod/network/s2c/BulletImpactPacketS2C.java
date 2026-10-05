@@ -14,19 +14,6 @@ import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
 
-/// 将服务端已经确认的子弹命中位置与表现类型同步给附近客户端。
-///
-/// **枪械内联 G4′**：1.20 同名文件（`network/s2c/BulletImpactPacketS2C`）逐字搬运，
-/// 原生改写 4 处（1.20 → 1.21）：
-/// 1. `IPortPacket.S2C` + `ResourceLocation ID` + `identifier()` → Magic-Lib 的 `IPacketS2C`
-///    + `Confluence.createType("confluence:bullet_impact")` + `type()`（同 `OpenAnglerDialogPacketS2C`）；
-/// 2. `PortStreamCodec.composite` / `PortByteBufCodecs` → 原生 `StreamCodec.composite` /
-///    `ByteBufCodecs`，缓冲区类型是 `RegistryFriendlyByteBuf`；
-/// 3. `PortEventHandler.postEvent(...)` → 原生 `NeoForge.EVENT_BUS.post(...)`；
-/// 4. `PortPacketDistributor.sendToPlayersNear(dimension, null, x, y, z, 64.0D, payload)` →
-///    NeoForge 的 `PacketDistributor.sendToPlayersNear(ServerLevel, excluded, x, y, z, radius, payload)`
-///    （原生版本吃 `ServerLevel` 而不是 `ResourceKey<Level>`，正好也免掉了 1.20 里那个只有
-///    `((ServerLevel) entity.level())` 才能拿到的维度键）。
 public record BulletImpactPacketS2C(double x, double y, double z,
                                     int effectId) implements IPacketS2C {
     public static final Type<BulletImpactPacketS2C> TYPE = Confluence.createType("bullet_impact");

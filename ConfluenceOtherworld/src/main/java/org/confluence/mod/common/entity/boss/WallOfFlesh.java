@@ -52,13 +52,6 @@ import java.util.*;
 /// 本体负责整面墙的推进、阶段和参战者管理；眼睛与嘴是可命中的临时部件，
 /// 各自维护射击或吐出水蛭的节奏。墙面布局由一个持久化种子生成，因此仍保留
 /// 墙面外观使用持久随机布局，保证区块重载后不会换成另一套眼、嘴和饿鬼位置。
-///
-/// 1.20 侧的 `net.minecraftforge.entity.IEntityAdditionalSpawnData` + `NetworkHooks.getEntitySpawningPacket`
-/// 是 Forge 独有的生成包机制。1.21 的 NeoForge 用 `IEntityWithComplexSpawn`：
-/// `IEntityExtension#sendPairingData` 会在实体生成包之后追加一个 `AdvancedAddEntityPayload`
-/// （`IEntityExtension.java:396`、`AdvancedAddEntityPayload.java:40`），客户端在实体已被加入世界后
-/// 回调 `readSpawnData`（`ClientPayloadHandler.java:96`）。因此不再需要自定义生成包，
-/// 也不再需要 Forge 式的客户端工厂，附加数据改为写进 `RegistryFriendlyByteBuf`。
 public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
     private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(WallOfFlesh.class, EntityDataSerializers.BOOLEAN);
 

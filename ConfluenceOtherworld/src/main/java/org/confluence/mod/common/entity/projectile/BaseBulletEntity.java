@@ -449,8 +449,6 @@ public class BaseBulletEntity extends Projectile {
         return GunItems.DUMMY_BULLET.toStack();
     }
 
-    /// 1.21.1 的 `Entity#getAddEntityPacket` 多一个 `ServerEntity` 形参
-    /// （先例：`Skeletron.java`、`BaseBossPart.java:328`、`BaseWormPart.java:279`）。
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
         Entity owner = getOwner();

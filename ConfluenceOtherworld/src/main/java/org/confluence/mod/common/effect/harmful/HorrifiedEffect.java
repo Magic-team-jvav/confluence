@@ -14,13 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-/// 标记正在参与血肉墙战斗的实体。
-///
-/// 归属写在受影响实体自身，而不是写进全局效果单例。这样同一服务器不同维度中的
-/// 血肉墙不会互相覆盖目标，多人也能各自稳定解析到施加效果的那一只 Boss。
-///
-/// 1.20 侧经由 PortLib 的 `PortMobEffect` 垫片；1.21 直接用原生 `MobEffect`
-/// （`MobEffect.java:74` 的 `applyEffectTick` 返回 `boolean`，1.20 的 `void` 没有该语义，补 `return true`）。
 public class HorrifiedEffect extends MobEffect {
     private static final String WALL_UUID_TAG = "ConfluenceWallOfFlesh";
 

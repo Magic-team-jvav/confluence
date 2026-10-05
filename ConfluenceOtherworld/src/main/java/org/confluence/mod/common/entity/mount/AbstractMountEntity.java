@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.mount;
 
-import java.util.Optional;
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -16,6 +14,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -23,7 +22,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
-import net.minecraft.world.entity.*;
+
+import java.util.Optional;
+import java.util.UUID;
 
 
 /// 临时玩家坐骑的最小公共基类。
@@ -360,8 +361,6 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     protected final void addAdditionalSaveData(CompoundTag tag) {
     }
 
-    /// 1.21.1 的 `Entity#getAddEntityPacket` 多一个 `ServerEntity` 形参
-    /// （先例：`BaseBossPart.java:328`、`BaseWormPart.java:279`）。
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
         return new ClientboundAddEntityPacket(this, serverEntity);

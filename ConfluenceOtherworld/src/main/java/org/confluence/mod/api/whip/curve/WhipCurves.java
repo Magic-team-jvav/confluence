@@ -24,7 +24,6 @@ public final class WhipCurves {
     ));
     public static final WhipCurve DEFAULT = new RetractingWhipCurve(OUTBOUND, RETURN_START);
 
-    /// 1.21“横扫之鞭”附魔触发时使用的宽幅挥动轨迹。
     public static final WhipCurve SWEEP = new KeyframedWhipCurve(List.of(
             new WhipFrame(0.0F, List.of(Vec3.ZERO, Vec3.ZERO, Vec3.ZERO)),
             new WhipFrame(0.1667F, List.of(Vec3.ZERO, new Vec3(-1.0 / 16.0, 0.0, 2.0 / 16.0), new Vec3(-3.0 / 16.0, 1.0 / 16.0, 4.0 / 16.0))),

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.gun;
 
-import java.util.List;
-import java.util.Objects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,6 +35,9 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.AnimationProcessor;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.List;
+import java.util.Objects;
 
 
 public class BaseGun extends Item implements GeoItem {
@@ -183,8 +184,6 @@ public class BaseGun extends Item implements GeoItem {
         return cache;
     }
 
-    /// 1.21 侧用「带手」的版本：`IItemExtension#onEntitySwing(ItemStack, LivingEntity)` 自 21.1 起
-    /// `@Deprecated(forRemoval = true)`，替代品是同名的三参重载（TE 的旧实现也是这么写的）。
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
         return true;

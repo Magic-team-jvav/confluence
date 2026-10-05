@@ -80,12 +80,6 @@ public abstract class BaseAquaticMonster extends BaseMonster {
         return target.isInWaterOrBubble();
     }
 
-    /// 1.21.1 的 `LivingEntity#canBreatheUnderwater()` 是 **final**
-    /// （`LivingEntity.java:382`，本体改为查 `EntityTypeTags.CAN_BREATHE_UNDER_WATER`），
-    /// 且它自己就带 `@Deprecated //FORGE: Use canDrownInFluidType instead`。
-    /// NeoForge 给出的替代钩子是 `ILivingEntityExtension#canDrownInFluidType(FluidType)`
-    /// （`ILivingEntityExtension.java:55`，水类型的默认实现恰好就是 `!canBreatheUnderwater()`），
-    /// 因此在「水」这一类型上返回 false，语义与 1.20 的 `canBreatheUnderwater() { return true; }` 等价。
     @Override
     public boolean canDrownInFluidType(FluidType type) {
         return type != NeoForgeMod.WATER_TYPE.value() && super.canDrownInFluidType(type);

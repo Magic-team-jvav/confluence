@@ -27,8 +27,8 @@ import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
@@ -37,9 +37,9 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBlockCounters;
@@ -318,10 +318,6 @@ public final class PlayerUtils {
     }
 
     /// 扣款：先用手上的钱（背包 + 钱币栏），不够再动存钱罐。
-    ///
-    /// 1.20 侧同名方法在 `common/util/PlayerUtils.java:329`；1.21 侧此前只有
-    /// `tryCostMoney(...)`，NPC 商店（`NPCTradeMenu` / `NurseNPC`）用的是 1.20 这套命名，
-    /// 所以按 1.20 逐字补上 `debit` / `purchase` / `credit` / `creditFromInventory` 四个入口。
     public static boolean debit(Player player, long cost, boolean withPiggyBank) {
         return tryCostMoney(player, cost, withPiggyBank);
     }
@@ -345,7 +341,6 @@ public final class PlayerUtils {
     public static boolean creditFromInventory(Player player, int slotIndex, ItemStack expected, long amount, boolean withPiggyBank) {
         if (expected.isEmpty() || slotIndex < 0 || slotIndex >= player.getInventory().getContainerSize()) return false;
         ItemStack source = player.getInventory().getItem(slotIndex);
-        // 1.21 把 `ItemStack#isSameItemSameTags` 改名为 `isSameItemSameComponents`（数据组件化的改名，语义相同）。
         if (!ItemStack.isSameItemSameComponents(source, expected) || source.getCount() < expected.getCount()) return false;
         source.shrink(expected.getCount());
         if (source.isEmpty()) player.getInventory().setItem(slotIndex, ItemStack.EMPTY);

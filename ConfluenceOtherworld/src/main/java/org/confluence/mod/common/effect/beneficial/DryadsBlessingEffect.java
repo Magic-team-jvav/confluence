@@ -13,15 +13,6 @@ import org.confluence.mod.common.init.ModEffects;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
 
-
-/// 树妖结界给予玩家和城镇 NPC 的短时守护效果。
-///
-/// 1.20 侧这份 extends 的是 PortLib 的 `PortMobEffect`、`ADD_VALUE` 也从
-/// `PortAttributeModifier.Operation` 静态导入；1.21 保持原生 —— `MobEffect` +
-/// `AttributeModifier.Operation.ADD_VALUE`（同名的原生枚举常量）。
-/// 另外 1.21 的 `MobEffect` 在 1.20.5+ 改了两个钩子（本批按原生形态改）：
-/// `isDurationEffectTick(int,int)` → `shouldApplyEffectTickThisTick(int,int)`、
-/// `applyEffectTick(...)` 的返回类型从 `void` 变成 `boolean`（返回是否真正生效）。
 public final class DryadsBlessingEffect extends MobEffect {
     public DryadsBlessingEffect(ResourceLocation id) {
         super(MobEffectCategory.BENEFICIAL, 0x70B94D);

@@ -109,12 +109,6 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         return WormSegment.isWormDamage(source) || source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(source);
     }
 
-    /// 1.20 的 `Entity#onAddedToWorld()` 在 1.21.1 **改名为** `onAddedToLevel()`
-    /// （`Entity.java:3733`，调用点 `ServerLevel.java:933/:945`、`ClientLevel.java:355`、
-    /// `PersistentEntitySectionManager.java:115/:122/:248`），不是被删除。
-    /// 1.20 侧此处原本只做 `if (!level().isClientSide) initSegments();`，
-    /// 现在照原样搬回来（不能因为 `tick()` 也会调 `initSegments()` 就省掉：
-    /// 该钩子先于第一次 tick 执行，体节在首个 tick 之前就已就位）。
     @Override
     public void onAddedToLevel() {
         super.onAddedToLevel();

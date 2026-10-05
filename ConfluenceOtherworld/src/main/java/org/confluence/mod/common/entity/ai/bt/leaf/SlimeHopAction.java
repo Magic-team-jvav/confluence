@@ -55,9 +55,6 @@ public class SlimeHopAction extends BTNode {
                 dir = new Vec3(-Math.sin(yaw), 0, Math.cos(yaw));
             }
 
-            // 1.21.1 的 LivingEntity#getJumpPower() 变成了 getJumpPower(float multiplier)
-            // （反编译源码 LivingEntity.java:2168 就是 getJumpPower() { return getJumpPower(1.0F); }），
-            // 所以这里显式传 1.0F 才与原 1.20.1 的无参调用等价。
             double jumpPower = ((LivingEntityAccessor) mob).callGetJumpPower(1.0F);
             double h = jumpPower * 0.7;
             if (dir.lengthSqr() > 1.0E-6) {

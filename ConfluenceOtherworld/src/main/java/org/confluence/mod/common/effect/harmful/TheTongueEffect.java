@@ -12,16 +12,6 @@ import org.confluence.mod.common.entity.boss.WallOfFleshMouth;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.util.OverworldUtils;
 
-/// 将逃离追逐区域的参战者拉回血肉墙前方。
-///
-/// 效果每次都从受影响实体保存的 UUID 解析血肉墙，不缓存可被其他战斗覆盖的全局引用。
-/// 拉回点使用墙体的实际朝向计算，因此四个水平推进方向具有完全一致的行为。
-///
-/// 1.20 侧经由 PortLib 的 `PortMobEffect` 垫片；1.21 换成原生 `MobEffect`，
-/// 且 `applyEffectTick` 的返回值由 `void` 变为 `boolean`（`MobEffect.java:74`），
-/// 1.20 的实现没有该语义，各提前返回处与末尾统一补 `return true`。
-/// 另：`removeEffect` 在 1.21 接收 `Holder<MobEffect>`（`LivingEntity.java:1035`），
-/// `ModEffects.THE_TONGUE` 本身就是 `Holder`，因此不再 `.get()`。
 public class TheTongueEffect extends MobEffect {
     private static final double EXECUTION_DISTANCE = 1000.0;
     private static final double RELEASE_DISTANCE = 9.0;

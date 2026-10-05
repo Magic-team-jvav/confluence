@@ -12,23 +12,6 @@ import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.jetbrains.annotations.NotNull;
 
-/// 渔夫对话界面 —— 任务按钮 + 对话按钮，无交易。
-/// 三个状态: COMPLETED(今日已完成) / NO_QUEST(无可用任务) / SHOW_HINT(展示任务鱼提示)
-/// CAN_SUBMIT 状态不经过此界面，AnglerNPC 直接处理。
-///
-/// 从 1.20 `org.confluence.mod.client.gui.screen.AnglerDialogScreen` 逐字搬（同一个 FQN）。
-/// 落地前已跑 `tools/port2native/check_duplicates.py`（--src120 .../src/main/java --ref .）：
-/// 1.21 侧只有 TerraEntity 的 `org.confluence.terraentity.client.gui.container.AnglerDialogScreen`
-/// （TE 时代的 `DialogScreen` 子类，判 DIFF，不同实现、不同 FQN），本仓库主模组侧无同名类，不是重复落地。
-///
-/// 1.21 原生改写（相对 1.20 原文）：
-/// 1. `npc.getRandom1211()` → `npc.getRandom()`：1.20 的 `getRandom1211` 是 PortLib 转发别名，
-///    1.21 用原生 `Entity#getRandom()`（`RandomSource`）；同一改写见 `NPCReforgeMenu.java:29`、
-///    `NPCDialogScreen.java:79`，`NPCDialogLoader#getRandomDialogKey(RandomSource, EntityType)` 收的正是它。
-/// 2. 基类换成 1.21 的 `NPCDialogScreen`（`client/gui/screen/NPCDialogScreen.java`），屏体写法以本批刚落地的
-///    兄弟屏 `NPCDialogScreen` / `GoblinTinkererDialogScreen` 为准（`renderBackground` 在基类里已是 4 形参形态）。
-/// 3. `init()` 里按 1.21 基类的写法补了 `minecraft == null || minecraft.level == null` 的空检查
-///    （1.20 原文直接取 `minecraft.level`，1.21 基类 `NPCDialogScreen#init` 也这么防）。
 public class AnglerDialogScreen extends NPCDialogScreen {
     public enum State {COMPLETED, NO_QUEST, SHOW_HINT, WAKE_UP}
 

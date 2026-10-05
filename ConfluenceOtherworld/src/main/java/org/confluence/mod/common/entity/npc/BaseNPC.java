@@ -2,12 +2,9 @@ package org.confluence.mod.common.entity.npc;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -25,10 +22,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -52,6 +47,7 @@ import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.npc.ai.*;
 import org.confluence.mod.common.entity.npc.chat.ChatLine;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
@@ -75,7 +71,10 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import org.confluence.mod.common.entity.npc.ai.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /// 城镇 NPC 的公共实体基础。
@@ -384,12 +383,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         setHealth(wasFullHealth ? getMaxHealth() : Math.min(oldHealth, getMaxHealth()));
     }
 
-    /// 将注册 profile 中的全部实体属性默认值写入属性实例。
-    ///
-    /// 1.21 差异：`AttributeModifier` 是 **record**，主键是 `ResourceLocation`
-    /// （1.20 用 `UUID` + PortLib 的 `AttributeModifier.rl2uuid(...)`），
-    /// `AttributeInstance#removeModifier(ResourceLocation)` 直接可用；
-    /// `getAttribute` 的形参在 1.21 是 `Holder<Attribute>`（1.20 传裸 `Attribute`）。
     private void applyProfileAttributes() {
         removeAttributeModifier(Attributes.MAX_HEALTH, Confluence.asResource("game_phase_modifier"));
         NPCCombatProfile.AttributesDefaults defaults = combatProfile.attributes();

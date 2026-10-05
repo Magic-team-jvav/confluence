@@ -16,13 +16,6 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.data.EntityModelData;
 import software.bernie.geckolib.util.RenderUtil;
 
-/// 给骷髅类 Geo 模型复用原版行走、头部与近战动画，并保留 1.21 侧的拉弓姿势（1.20 同名文件）。
-/// 所有姿势先在 ModelPart 坐标系内计算，最后统一转换 X、Y 旋转方向，避免攻击状态切换时反向。
-///
-/// 1.20 → 1.21.1 与 `VanillaHumanoidGeoModel`（狼人批 `2e801ef09`）是同一组 geckolib 包名迁移：
-/// `core.animatable.model.CoreGeoBone` → `cache.object.GeoBone`、`core.animation.AnimationState` →
-/// `animation.AnimationState`、`util.RenderUtils` → `util.RenderUtil`；`applyBowPose` 直接复用已在
-/// 1.21 的 `VanillaHumanoidGeoModel.applyBowPose`（同包）。
 public final class VanillaSkeletonGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";

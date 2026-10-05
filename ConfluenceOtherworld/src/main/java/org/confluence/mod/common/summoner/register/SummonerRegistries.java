@@ -9,15 +9,6 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 
-/// 召唤体系的两个**自定义注册表**。
-///
-/// 1.20 侧走 PortLib 的 `PortCustomRegistration` / `PortRegisterHandler.custom`，
-/// 1.21 侧用原生 `DeferredRegister` + {@link DeferredRegister#makeRegistry}——
-/// 后者在 NeoForge 21.1.219 仍然存在（`DeferredRegister.java:259`），
-/// `makeRegistry(b -> b.sync(true))` 与 1.20 的 `maker.sync(true)` 语义一致。
-///
-/// 与既有 `ModAttachmentTypes.TYPES` 并列：那份是 NeoForge 的**内建** ATTACHMENT_TYPES 注册表，
-/// 这一份是 confluence 自己的注册表，两者互不相干。
 public final class SummonerRegistries {
 
     public static final ResourceKey<Registry<AttachmentEntityType<? extends AttachmentEntity>>> ATTACHMENT_ENTITY_TYPE_KEY = ResourceKey.createRegistryKey(Confluence.asResource("summoner_attachment_entity_types"));

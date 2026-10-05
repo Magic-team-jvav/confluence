@@ -17,13 +17,6 @@ import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 import software.bernie.geckolib.util.RenderUtil;
 
-/// 给复用原版肢体动画的人形 Geo 模型补上手持物品渲染（1.20 同名文件）。
-/// 骨骼命名沿用 1.20 侧的 V 前缀，因此这里按前缀查找左右手；实际物品位姿保持和 1.21 的手持层一致。
-///
-/// 1.20 → 1.21.1 仅 geckolib 包名迁移：`util.RenderUtils` → `util.RenderUtil`
-/// （`translateToPivotPoint(PoseStack, GeoBone)` 语义不变，已对 `geckolib-neoforge-1.21.1-4.8.2.jar` 核过）；
-/// `BlockAndItemGeoLayer` 的四个覆写点签名（`getStackForBone`/`getTransformTypeForStack`/`renderForBone`/
-/// `renderStackForBone`）与 1.20 完全一致；空注解统一用本仓库的 `org.jetbrains.annotations.Nullable`。
 public final class VanillaHumanoidRenderer<T extends Mob & GeoEntity> extends GeoNormalRenderer<T> {
     private static final String LEFT_ARM = "Vleft_arm";
     private static final String RIGHT_ARM = "Vright_arm";

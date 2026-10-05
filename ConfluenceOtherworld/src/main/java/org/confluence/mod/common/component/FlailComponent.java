@@ -246,7 +246,6 @@ public record FlailComponent(
     public int getAutoSwingInterval(LivingEntity living) {
         if (behavior.autoSwingInterval() <= 0) return 0;
         AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
-        // 1.20.1 的连枷没有覆盖物品基础攻速；沿用 getSpinSpeed 的 4.0 基准换算倍率。
         float multiplier = instance == null ? 1.0F : (float) instance.getValue() / 4.0F;
         return Math.max(2, Math.round(behavior.autoSwingInterval() / Math.max(0.05F, multiplier)));
     }

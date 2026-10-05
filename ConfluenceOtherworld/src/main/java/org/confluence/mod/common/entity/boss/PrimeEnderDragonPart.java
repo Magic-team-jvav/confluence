@@ -63,8 +63,6 @@ public final class PrimeEnderDragonPart extends BaseBossPart<PrimeEnderDragon> {
         return (source.getEntity() instanceof Player || source.getEntity() instanceof BaseNPC || source.is(DamageTypeTags.ALWAYS_HURTS_ENDER_DRAGONS)) && owner.hurt(source, forwarded);
     }
 
-    /// 1.21.1 的 `getDefaultDimensions(Pose)` 只存在于 `LivingEntity`；部件继承 `Entity`，
-    /// 于是改为覆写 `Entity#getDimensions(Pose)` 并自行乘上本体缩放。
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         PrimeEnderDragon.PartSlot slot = getSlot();

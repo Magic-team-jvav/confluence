@@ -16,20 +16,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.UnaryOperator;
 
-/// 某个维度类别下、某个 `BiomeSource` 实例专属的区域表。
-///
-/// 表一旦建好就是不可变的，可以安全地发布给世界生成的工作线程。
-///
-/// ## 查询流程
-///
-/// 1. {@link BiomeRegionAllocator#index} 决定这一列归哪个区域（0 = 原版）；
-/// 2. 归区域时，按**声明顺序**在区域自己的参数盒子里找第一个包含当前气候单元的；
-/// 3. 一个都不包含就返回 `null`，调用方回落原版 —— 这就是取代 TerraBlender
-///    `terrablender:deferred_placeholder` 占位群系的机制。
-///
-/// 因为用的是包含判定而不是 `Climate.RTree` 的最近邻，这里不需要访问包私有的
-/// `Climate$RTree`，也就不需要任何 access widener；只需要公开的
-/// `Climate.Parameter#distance(long)`。
 public final class BiomeRegionTable {
     public record Entry(Climate.ParameterPoint parameters, Holder<Biome> biome) {}
 

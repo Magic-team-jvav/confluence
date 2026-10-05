@@ -1,9 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import com.mojang.serialization.Codec;
-import java.util.EnumSet;
-import java.util.Locale;
-import java.util.function.IntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -44,6 +41,10 @@ import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
+import java.util.Locale;
+import java.util.function.IntFunction;
+
 
 public class Fairy extends BaseFlyingCritter implements VariantHolder<Fairy.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Fairy.class, EntityDataSerializers.INT);
@@ -57,10 +58,6 @@ public class Fairy extends BaseFlyingCritter implements VariantHolder<Fairy.Vari
             .add(Variant.GREEN, 1)
             .add(Variant.PINK, 1)
             .build();
-    /// 1.21 删掉了 `finalizeSpawn` 的第 5 个形参 `@Nullable CompoundTag tag`（本批第 5 例，
-    /// 同 `BaseCritter` / `Bunny`）。1.20 用 `tag == null || !tag.contains(GUIDING_KEY)` 判断
-    /// 「本次生成是否已经带了引导标记」；`readAdditionalSaveData` 仍在 `finalizeSpawn` 之前执行，
-    /// 所以改用标记位。变体那半边由父类 `BaseCritter#finalizeSpawn` 的 `variantLoadedFromSave` 处理。
     private boolean guidingLoadedFromSave;
 
     public Fairy(EntityType<? extends Fairy> type, Level level) {

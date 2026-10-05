@@ -31,18 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
 
-/// Confluence Biome Injector —— 自研群系添加器的公共入口，取代 TerraBlender。
-///
-/// 用法：
-///
-/// 1. {@link #bootstrap()} 在 `FMLCommonSetupEvent` 里登记区域；
-/// 2. {@link #install(MinecraftServer)} 在 `ServerAboutToStartEvent` 里按 `LevelStem`
-///    建表并挂到对应的 `BiomeSource` 实例上；
-/// 3. 地表规则用 {@link #addSurfaceRules} 登记，在 `NoiseBasedChunkGenerator#buildSurface`
-///    与 `#applyCarvers` 处按维度类别拼到真正的原版规则源上。
-///
-/// 与 TerraBlender 的对照见各子类文档；关键差异是不共享全局索引、不复制原版规则、
-/// 不使用占位群系、不往共享的数据包注册表对象上挂可变状态。
 public final class ConfluenceBiomeInjector {
     private static final List<BiomeRegion> OVERWORLD_REGIONS = new ArrayList<>();
     private static final List<BiomeRegion> NETHER_REGIONS = new ArrayList<>();

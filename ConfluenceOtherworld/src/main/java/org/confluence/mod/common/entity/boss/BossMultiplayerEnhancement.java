@@ -23,17 +23,6 @@ import org.confluence.mod.Confluence;
 /// 属性修饰符使用固定 id 并永久保存。无论 Boss 经由自然生成、
 /// 召唤物品、事件脚本还是直接加入世界创建，这套逻辑都可以安全调用；
 /// 区块重新加载时也不会重复叠加或把受伤的 Boss 重新回满生命值。
-///
-/// 1.20 → 1.21.1 的改写（本类是本批唯一需要改写的文件，逐条记录）：
-/// * 1.20 走 PortLib 的 `PortAttributeModifier.rl2uuid(...)` 把 `ResourceLocation` 转成 **UUID** 当 id；
-///   1.21.1 的 `AttributeModifier` 已是 **record `(ResourceLocation id, double amount, Operation)`**，
-///   故三处常量直接持有 `ResourceLocation`（`hasModifier`/`getModifier` 也只吃 `ResourceLocation`）。
-/// * 1.20 的 `new AttributeModifier(uuid, "显示名", amount, op)` 有 name 参数；1.21.1 的 record **没有 name**
-///   → 显示名丢失（这些修饰符挂在 Boss 实体上、不进物品 tooltip，仅影响调试输出）。
-/// * `Operation.MULTIPLY_BASE` / `MULTIPLY_TOTAL` → 1.21.1 的 `ADD_MULTIPLIED_BASE` / `ADD_MULTIPLIED_TOTAL`
-///   （枚举名变更，语义一致：都是「乘算」）。
-/// * `getAttribute(...)` 在 1.21.1 只接受 `Holder<Attribute>`（1.20 的 PortLib 包装可直接 `.get()`），
-///   故 `copyModifier` 的形参改为 `Holder<Attribute>`，`LibAttributes.getAttackDamage()` 直接传、不再 `.value()`。
 public final class BossMultiplayerEnhancement {
     // 多人属性曲线最多按八名有效参战玩家计算，防止大型服务器倍率无上限膨胀。
     private static final int MAX_PLAYER_COUNT = 8;

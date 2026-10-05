@@ -94,7 +94,7 @@ public interface ModPrefix {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
             if (movementSpeed != 0.0F)
                 builder.put(Attributes.MOVEMENT_SPEED, createModifier(movementSpeed, ADD_MULTIPLIED_TOTAL));
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana, tier, value);
+            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana);
         }
 
         @Override
@@ -158,7 +158,7 @@ public interface ModPrefix {
                 builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
             if (knockBack != 0.0F)
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
+            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -224,7 +224,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
+            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -295,7 +295,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
+            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -361,7 +361,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
+            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -425,7 +425,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), manaCost, 0, tier, value);
+            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), manaCost, 0);
         }
 
         @Override
@@ -477,7 +477,7 @@ public interface ModPrefix {
             var builder = ImmutableListMultimap.<Holder<Attribute>, AttributeModifier>builder();
             if (attackDamage != 0)
                 builder.put(LibAttributes.getSummonDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0, 0, tier, value);
+            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0, 0);
         }
 
         @Override

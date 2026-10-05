@@ -476,6 +476,24 @@ public final class ModTabs {
                         CreativeModeTab.Output platinum_bricks = GroupItem.belongsTo(DecorativeBlocks.PLATINUM_BRICKS.id, output);
                         platinum_bricks.accept(DecorativeBlocks.CHISELED_PLATINUM_BRICKS.get());
 
+                        CreativeModeTab.Output gel = GroupItem.belongsTo(DecorativeBlocks.RAINBOW_GEL_BRICKS.id, output);
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.FROZEN_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.FULL.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.STAIRS.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.SLAB.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.WALL.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.FULL.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.STAIRS.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.SLAB.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.WALL.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.FULL.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.STAIRS.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.SLAB.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.WALL.get());
+
                         CreativeModeTab.Output marble_bricks = GroupItem.belongsTo(DecorativeBlocks.MARBLE_BRICKS.id, output);
                         marble_bricks.accept(DecorativeBlocks.MARBLE_COLUMN.get());
                         marble_bricks.accept(DecorativeBlocks.CRACKED_MARBLE_BRICKS.get());
@@ -522,9 +540,6 @@ public final class ModTabs {
                         special_building.accept(DecorativeBlocks.CRYSTAL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.FLESH_BLOCK.get());
                         special_building.accept(DecorativeBlocks.LESION_BLOCK.get());
-                        special_building.accept(DecorativeBlocks.BLUE_GEL_BLOCK.get());
-                        special_building.accept(DecorativeBlocks.PINK_GEL_BLOCK.get());
-                        special_building.accept(DecorativeBlocks.FROZEN_GEL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.RED_CANDY_BLOCK.get());
                         special_building.accept(DecorativeBlocks.GREEN_CANDY_BLOCK.get());
                         special_building.accept(DecorativeBlocks.WHITE_PAPER_PANE.get());

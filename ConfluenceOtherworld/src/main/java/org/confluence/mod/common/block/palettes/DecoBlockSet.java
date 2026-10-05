@@ -31,6 +31,7 @@ public class DecoBlockSet {
     public final String id;
     public final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials;
     public final boolean stonecutting;
+    public final boolean skipCreativeTab;
 
     public final PortDeferredBlock<Block> FULL;
     public final PortDeferredBlock<StairBlock> STAIRS;
@@ -41,6 +42,7 @@ public class DecoBlockSet {
         this.id = builder.id;
         this.materials = builder.materials;
         this.stonecutting = builder.stonecutting;
+        this.skipCreativeTab = builder.skipCreativeTab;
 
         this.FULL = ModBlocks.registerWithItem(id, () -> builder.full.apply(builder.properties.get()), builder.itemProperties);
         this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(() -> FULL.get().defaultBlockState(), builder.properties.get()), builder.itemProperties);
@@ -52,6 +54,7 @@ public class DecoBlockSet {
 
     public static void acceptBuilding(CreativeModeTab.Output output) {
         for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            if (blockSet.skipCreativeTab) continue;
             CreativeModeTab.Output o = GroupItem.belongsTo(blockSet.id, output);
 
             o.accept(blockSet.FULL.get());
@@ -91,6 +94,7 @@ public class DecoBlockSet {
         private final Supplier<BlockBehaviour.Properties> properties;
         private final List<ObjectIntPair<Supplier<? extends ItemLike>>> materials = new ArrayList<>();
         private boolean stonecutting = false;
+        private boolean skipCreativeTab = false;
         private Item.Properties itemProperties = new Item.Properties();
         private Function<BlockBehaviour.Properties, ? extends Block> full = Block::new;
         private BiFunction<Supplier<BlockState>, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
@@ -104,6 +108,11 @@ public class DecoBlockSet {
 
         public Builder stonecutting() {
             this.stonecutting = true;
+            return this;
+        }
+
+        public Builder skipCreativeTab() {
+            this.skipCreativeTab = true;
             return this;
         }
 

@@ -70,7 +70,6 @@ public class DecorativeBlocks {
     public static final DecoBlockSet CRIMSANDSTONE_BRICKS = DecoBlockSet.builder("crimsandstone_bricks", () -> BlockBehaviour.Properties.copy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)).stonecutting().build();
     public static final DecoBlockSet SNOW_BRICKS = DecoBlockSet.builder("snow_bricks", () -> BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
     public static final DecoBlockSet AETHERIUM_BRICKS = DecoBlockSet.builder("aetherium_bricks", () -> BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
-    public static final DecoBlockSet RAINBOW_BRICKS = DecoBlockSet.builder("rainbow_bricks", () -> BlockBehaviour.Properties.copy(Blocks.STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)).stonecutting().build();
     public static final PortDeferredBlock<Block> CRYSTAL_BLOCK = registerWithItem("crystal_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.AMETHYST_BLOCK).mapColor(MapColor.TERRACOTTA_WHITE)));
 
 
@@ -182,6 +181,10 @@ public class DecorativeBlocks {
     public static final PortDeferredBlock<Block> RED_CANDY_BLOCK = registerWithItem("red_candy_block", () -> new CandyBlock(BlockBehaviour.Properties.copy(STONE_BRICKS).mapColor(MapColor.COLOR_RED)));
     public static final PortDeferredBlock<Block> FROZEN_GEL_BLOCK = registerWithItem("frozen_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.SLIME_BLOCK).friction(1f).speedFactor(1.06F)));
     public static final PortDeferredBlock<Block> BLUE_GEL_BLOCK = registerWithItem("blue_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(SoundType.SLIME_BLOCK)));
+    public static final PortDeferredBlock<Block> RAINBOW_GEL_BLOCK = registerWithItem("rainbow_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(SoundType.SLIME_BLOCK)));
+    public static final DecoBlockSet RAINBOW_GEL_BRICKS = DecoBlockSet.builder("rainbow_gel_bricks", () -> BlockBehaviour.Properties.copy(MUD_BRICKS).mapColor(MapColor.COLOR_BLUE).sound(SoundType.SLIME_BLOCK)).stonecutting().skipCreativeTab().build();
+    public static final DecoBlockSet BLUE_GEL_BRICKS = DecoBlockSet.builder("blue_gel_bricks", () -> BlockBehaviour.Properties.copy(MUD_BRICKS).mapColor(MapColor.COLOR_BLUE).sound(SoundType.SLIME_BLOCK)).stonecutting().skipCreativeTab().build();
+    public static final DecoBlockSet PINK_GEL_BRICKS = DecoBlockSet.builder("pink_gel_bricks", () -> BlockBehaviour.Properties.copy(MUD_BRICKS).mapColor(MapColor.COLOR_PINK).sound(SoundType.SLIME_BLOCK)).stonecutting().skipCreativeTab().build();
     public static final PortDeferredBlock<HalfTransparentBlock> PINK_GEL_BLOCK = registerWithItem("pink_gel_block", () -> new HalfTransparentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).sound(SoundType.SLIME_BLOCK).noOcclusion()));
 
     // 天域

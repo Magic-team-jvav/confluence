@@ -85,7 +85,8 @@ public class SmallLivingMahoganyTreeStructure extends Structure {
                     0.20F,
                     0.75F,
                     2,
-                    3
+                    3,
+                    4
             );
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

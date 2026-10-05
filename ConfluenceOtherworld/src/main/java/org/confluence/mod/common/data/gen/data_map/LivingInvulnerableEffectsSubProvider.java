@@ -161,6 +161,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.LEECH, LibEffects.CONFUSED)
                 .add(BossEntities.SERVANT_OF_CTHULHU, ModEffects.SHIMMER, LibEffects.CONFUSED)
                 .add(MonsterEntities.THE_HUNGRY, ModEffects.SHIMMER, LibEffects.CONFUSED)
+                .add(MonsterEntities.HILL_HUNGRY, ModEffects.SHIMMER, LibEffects.CONFUSED)
         ;
     }
 

@@ -162,7 +162,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.crimsandstone_bricks", "猩红砂岩砖");
         add("itemGroup.confluence.snow_bricks", "雪砖");
         add("itemGroup.confluence.aetherium_bricks", "以太砖");
-        add("itemGroup.confluence.rainbow_bricks", "彩虹砖");
+        add("itemGroup.confluence.rainbow_gel_bricks", "凝胶砖");
+        add("itemGroup.confluence.blue_gel_bricks", "蓝色凝胶砖");
+        add("itemGroup.confluence.pink_gel_bricks", "粉色凝胶砖");
         add("itemGroup.confluence.copper_bricks", "铜砖");
         add("itemGroup.confluence.tin_bricks", "锡砖");
         add("itemGroup.confluence.iron_bricks", "铁砖");
@@ -2611,6 +2613,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BLUE_GEL_BLOCK.get(), "凝胶块");
         add(DecorativeBlocks.PINK_GEL_BLOCK.get(), "粉凝胶块");
         add(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), "冻凝胶块");
+        add(DecorativeBlocks.RAINBOW_GEL_BLOCK.get(), "彩虹凝胶块");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.FULL.get(), "彩虹凝胶砖");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.STAIRS.get(), "彩虹凝胶砖楼梯");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.SLAB.get(), "彩虹凝胶砖台阶");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.WALL.get(), "彩虹凝胶砖墙");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.FULL.get(), "蓝色凝胶砖");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.STAIRS.get(), "蓝色凝胶砖楼梯");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.SLAB.get(), "蓝色凝胶砖台阶");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.WALL.get(), "蓝色凝胶砖墙");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.FULL.get(), "粉色凝胶砖");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.STAIRS.get(), "粉色凝胶砖楼梯");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.SLAB.get(), "粉色凝胶砖台阶");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.WALL.get(), "粉色凝胶砖墙");
         add(DecorativeBlocks.RED_CANDY_BLOCK.get(), "红色糖块");
         add(DecorativeBlocks.GREEN_CANDY_BLOCK.get(), "绿色糖块");
         add(DecorativeBlocks.FLESH_BLOCK.get(), "血肉块");
@@ -2640,10 +2655,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.SLAB.get(), "哭泣的黑曜石砖台阶");
         add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.WALL.get(), "哭泣的黑曜石砖墙");
         add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
-        add(DecorativeBlocks.RAINBOW_BRICKS.FULL.get(), "彩虹砖");
-        add(DecorativeBlocks.RAINBOW_BRICKS.STAIRS.get(), "彩虹砖楼梯");
-        add(DecorativeBlocks.RAINBOW_BRICKS.SLAB.get(), "彩虹砖台阶");
-        add(DecorativeBlocks.RAINBOW_BRICKS.WALL.get(), "彩虹砖墙");
 
 
         add(DecorativeBlocks.ASPHALT_BLOCK.get(), "沥青块");

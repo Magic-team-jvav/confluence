@@ -1491,7 +1491,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         buildTorch(writer, TorchBlocks.BLUE_TORCH, Ingredient.of(MaterialItems.SAPPHIRE), 10);
         buildTorch(writer, TorchBlocks.WHITE_TORCH, Ingredient.of(Items.DIAMOND), 10);
         buildTorch(writer, TorchBlocks.PURPLE_TORCH, Ingredient.of(MaterialItems.AMETHYST), 10);
-        buildTorch(writer, TorchBlocks.RAINBOW_TORCH, Ingredient.of(DecorativeBlocks.RAINBOW_BRICKS.FULL.get()), 10);
         /// 粉火把是唯一不用宝石的：粉凝胶 ×1 + 木材 ×1 = 火把 ×3。
         shaped(writer, PortShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.PINK_GEL),

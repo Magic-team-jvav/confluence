@@ -91,7 +91,8 @@ public class LivingTreeStructure extends Structure {
                     0.01F,
                     0.75F,
                     2,
-                    1
+                    1,
+                    0
             );
 
             Rotation rotation = Util.getRandom(Rotation.values(), random);

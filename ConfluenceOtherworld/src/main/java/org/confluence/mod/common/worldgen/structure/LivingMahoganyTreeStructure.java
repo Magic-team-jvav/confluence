@@ -92,7 +92,8 @@ public class LivingMahoganyTreeStructure extends Structure {
                     0.20F,
                     0.75F,
                     2,
-                    3
+                    3,
+                    0
             );
             rectangular(centerPos.offset(1, 0, 1), centerPos.offset(-1, 1, -1), 0, blockMap, 0);
 

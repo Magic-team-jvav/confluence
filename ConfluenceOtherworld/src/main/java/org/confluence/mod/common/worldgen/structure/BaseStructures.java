@@ -16,6 +16,9 @@ import static org.confluence.lib.util.LibGeometryUtils.lightningPathList;
 import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class BaseStructures {
+    /// 根系深入地下的末端改用 endBlocks（生命红木为孢根）填充的路径点数，调大该值即可提高孢根密度
+    private static final int ROOT_END_SEGMENT = 5;
+
     public static BlockPos livingTree(
             BlockPos centerPos,
             Object2IntMap<BlockPos> blockMap,
@@ -59,7 +62,8 @@ public class BaseStructures {
             float leafPosDensity,
             float leafDensity,
             int leafBlocks,
-            int rootEndBlocks
+            int rootEndBlocks,
+            int rootEndWrapCount
     ) {
         List<Vector3f> locationList = new ArrayList<>();
         Vector3f locationStart = new Vector3f();
@@ -101,7 +105,8 @@ public class BaseStructures {
                 leafPosDensity,
                 leafDensity,
                 leafBlocks,
-                rootEndBlocks
+                rootEndBlocks,
+                0
         );
         if (isGenerateTreeRoot) {
             stick(
@@ -125,7 +130,8 @@ public class BaseStructures {
                     leafPosDensity,
                     leafDensity,
                     leafBlocks,
-                    rootEndBlocks
+                    rootEndBlocks,
+                    rootEndWrapCount
             );
         }
 
@@ -165,7 +171,8 @@ public class BaseStructures {
             float leafPosDensity,
             float leafDensity,
             int leafBlocks,
-            int endBlocks
+            int endBlocks,
+            int rootEndWrapCount
     ) {
         List<Vector3f> leavesTop = new ArrayList<>();
         int stickCount = count + random.nextInt(countRandomAddition);
@@ -189,7 +196,7 @@ public class BaseStructures {
             Vector3f stickEnd = new Vector3f();
             if (branch) {
                 Vector3f last = PortListExtension.getLast(locationList);
-                stickEnd.set(last.x + endX, last.y + endY, last.z + endZ);
+                stickEnd.set(last.x + endX, last.y + endY + offset, last.z + endZ);
             } else {
                 Vector3f first = PortListExtension.getFirst(locationList);
                 stickEnd.set(first.x + endX * 0.5F, first.y - endY + offset, first.z + endZ * 0.5F);
@@ -205,6 +212,21 @@ public class BaseStructures {
                 leavesTop = ellipsoidPos(branchLeafGenerationRadiusXZ, branchLeafGenerationRadiusY, branchLeafGenerationRadiusXZ, LibMathUtils.fromVector3f(stickEnd), leafPosDensity, random);
                 lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, false, blockMap, leafDensity, random);
             } else {
+                // 根系深入地下的末端改用 endBlocks（生命红木为孢根）填充，提高孢根产量
+                if (endBlocks != blocks) {
+                    int from = Math.max(0, stickList.size() - ROOT_END_SEGMENT);
+                    List<Vector3f> rootEndSegment = stickList.subList(from, stickList.size());
+                    lineSet(rootEndSegment, endRadius, endRadius, endBlocks, true, blockMap);
+                    // 再用 blocks（生命红木）把靠树干一侧的孢根包起来，只留最末端裸露；孢根数量不变
+                    int wrapCount = Mth.clamp(rootEndWrapCount, 0, rootEndSegment.size() - 1);
+                    BlockPos.MutableBlockPos posCheck = new BlockPos.MutableBlockPos();
+                    for (int i = 0; i < wrapCount; i++) {
+                        BlockPos center = LibMathUtils.fromVector3f(rootEndSegment.get(i));
+                        ball8(posCheck, false, 1, 0, 0, blocks, center, blockMap);
+                        ball8(posCheck, false, 0, 1, 0, blocks, center, blockMap);
+                        ball8(posCheck, false, 0, 0, 1, blocks, center, blockMap);
+                    }
+                }
                 rootEnd = PortListExtension.getLast(stickList);
                 ball(endRadius, LibMathUtils.fromVector3f(rootEnd), endBlocks, true, blockMap);
             }

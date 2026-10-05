@@ -70,7 +70,6 @@ public final class ItemGroupEvents {
             helper.register(Confluence.asResource("crimsandstone_bricks"), DecorativeBlocks.CRIMSANDSTONE_BRICKS.FULL.toStack());
             helper.register(Confluence.asResource("snow_bricks"), DecorativeBlocks.SNOW_BRICKS.FULL.toStack());
             helper.register(Confluence.asResource("aetherium_bricks"), DecorativeBlocks.AETHERIUM_BRICKS.FULL.toStack());
-            helper.register(Confluence.asResource("rainbow_bricks"), DecorativeBlocks.RAINBOW_BRICKS.FULL.toStack());
             helper.register(Confluence.asResource("copper_bricks"), DecorativeBlocks.COPPER_BRICKS.FULL.toStack());
             helper.register(Confluence.asResource("tin_bricks"), DecorativeBlocks.TIN_BRICKS.FULL.toStack());
             helper.register(Confluence.asResource("iron_bricks"), DecorativeBlocks.IRON_BRICKS.FULL.toStack());

@@ -1294,7 +1294,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         OBSIDIAN_SMALL_BRICKS.get(),
                         CHISELED_OBSIDIAN_BRICKS.get(),
                         GLOOM_OBSIDIAN_BRICKS.FULL.get(),
-                        RAINBOW_BRICKS.FULL.get(),
                         GRANITE_BRICKS.FULL.get(),
                         GRANITE_BRICKS.SLAB.get(),
                         GRANITE_BRICKS.STAIRS.get(),

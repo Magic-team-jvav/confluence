@@ -5020,3 +5020,59 @@ public static final TFBlockSet SPRUCE_SET = new TFBlockSet.Builder(SPRUCE, Block
 - 台账：行 148 仍 `TODO`（已完成第一、二批；余：樱花木箱、马桶/浴缸/水槽）。
 - `fix_eol --check` 候选 6；下一步：行 148 第三批（樱花木箱 `CherryChestBlock` + `CherryChestGeoModel` + 注册）。
 
+## 一百二十九、落地记录：行 148 第三批（樱花木箱）
+
+### 129.1 改动（`TerraFurniture` 子模块，4 个文件）
+
+| 文件 | 类型 | 内容 |
+| --- | --- | --- |
+| `common/block/misc/CherryChestBlock.java` | 新增（60 行） | `extends ChestBlock`；`super(properties, TFBlocks.CHERRY_CHEST_ENTITY::get)`；`getStateForPlacement`／`updateShape` 强制 `ChestType.SINGLE`；`newBlockEntity` 返回内部 `Entity`；`Entity extends ChestBlockEntity implements GeoBlockEntity`（`GeckoLibUtil.createInstanceCache(this)`、空 `registerControllers`） |
+| `client/model/CherryChestGeoModel.java` | 新增（17 行） | `extends CacheBlockModel<CherryChestBlock.Entity>`；`setCustomAnimations(...)`：`float openness = chest.getOpenNess(animationState.getPartialTick())` → 缓动 → `getBone("down").ifPresent(lid -> lid.setRotX(-eased * (float) (Math.PI / 2.0)))` |
+| `common/init/TFBlocks.java` | +9 行 | `CHERRY_CHEST`（`registerWithoutItem` + `ofFullCopy(Blocks.CHEST).noOcclusion()`）、`CHERRY_CHEST_ITEM`（`SimpleGeoRenderedItem`）、`CHERRY_CHEST_ENTITY`（`BlockEntityType.Builder.of(...).build(DSL.remainderType())`）＋ 1 条 import |
+| `client/event/TFModClient.java` | +4 行 | 2 条 import + `event.registerBlockEntityRenderer(TFBlocks.CHERRY_CHEST_ENTITY.get(), context -> BaseFunctionalGeoBER.Builder.<CherryChestBlock.Entity>of(new CherryChestGeoModel(), false).build());` |
+
+### 129.2 1.20 → 1.21 的适配点（全部来自 1.21 原生用法）
+
+| 项 | 1.20 | 1.21 |
+| --- | --- | --- |
+| GeckoLib 包名 | `software.bernie.geckolib.core.animation.*`／`core.animatable.instance.*` / `core.animatable.model.CoreGeoBone` | 去 `core.` 前缀：`animation.AnimatableManager`／`animation.AnimationState`／`animatable.instance.AnimatableInstanceCache`／`cache.object.GeoBone` |
+| `SimpleGeoRenderedItem` 构造 | `(block, properties, false, false)` 四参 | **三参** `(block, properties, isNegative)`（`SimpleGeoRenderedItem.java:20`） |
+| GeckoLib 方块实体样板 | — | 与 1.21 TF `SimpleModelGeoBE:15`／`LargeChandelierBlock:162` 同形（`GeckoLibUtil.createInstanceCache(this)`） |
+
+### 129.3 本批 API 的取证方式（关键：本地就有 1.21.1 vanilla 源树）
+
+本轮发现工作区里存在 **`build/_nfsrc_219/`**，其 `SharedConstants.java` 标明 `VERSION_STRING = "1.21.1"`／`WORLD_VERSION = 3955` ⇒ 是 **Minecraft 1.21.1 的本地反编译源**，vanilla API 可就地取证，不必再靠推断：
+
+| API | 依据 |
+| --- | --- |
+| `ChestBlock(Properties, Supplier<BlockEntityType<? extends ChestBlockEntity>>)` | `_nfsrc_219/…/ChestBlock.java:121` |
+| `ChestBlockEntity.getOpenNess(float)`（内部委托 `chestLidController.getOpenness`） | `_nfsrc_219/…/ChestBlockEntity.java:149` |
+| `ChestBlock.TYPE`（`EnumProperty<ChestType>`） | `_nfsrc_219/…/ChestBlock.java:57` |
+| `SimpleGeoRenderedItem(Block, Properties, boolean)` | `SimpleGeoRenderedItem.java:20` |
+| `registerWithoutItem(String, Supplier<B>)` | `TFBlocks.java:337` |
+| 方块实体注册形态（`DeferredHolder<BlockEntityType<?>, …>` + `DSL.remainderType()`） | `TFBlocks.java:282-284` |
+| `BaseFunctionalGeoBER.Builder.of(GeoModel<O>, boolean)` | `BaseFunctionalGeoBER.java:79` |
+| `CacheBlockModel<T>` 无参构造 + `setCustomAnimations` 签名 | `CacheBlockModel.java:37`；主仓 `AngryTumblerModel.java:13` |
+| `getBone(String).ifPresent(...)` + `GeoBone.setRotX(float)` | 主仓 `AngryTumblerModel.java:15/17`、`HopliteModel.java:17` |
+| `AnimationState` 包名 | `software.bernie.geckolib.animation.AnimationState`（主仓 `AngryTumblerModel.java:5`） |
+
+结构自检：两个新文件与两个改动文件均纯 CRLF、`{}`／`()` 平衡；子模块已跟踪改动**仅**这 4 个 Java（工作区 17 条用户在建资源未动）。
+
+### 129.4 樱花木箱的资源仍缺（未纳入，5 个）
+
+| 1.20 侧文件 | 行数 |
+| --- | --- |
+| `assets/terra_furniture/blockstates/cherry_chest.json` | 6 |
+| `assets/terra_furniture/geo/block/cherry_chest.geo.json` | 42 |
+| `assets/terra_furniture/models/block/cherry_chest.json` | 7 |
+| `assets/terra_furniture/models/item/cherry_chest.json` | 13 |
+| `assets/terra_furniture/textures/block/cherry_chest.png` | （二进制） |
+
+（另有 `textures/block/cherry/cherry_table.png`，属樱花木桌、非本批。）这些**不在**用户工作区那 17 条 WIP 内；按分工未擅自搬运。`CacheBlockModel` 按约定从 `geo/block/<id>.geo.json` 取模型，故缺 `cherry_chest.geo.json` 时方块无模型。
+
+### 129.5 状态
+
+- `TerraFurniture` 子模块：本批 4 个文件已提交；父仓更新 gitlink。
+- 台账：行 148 仍 `TODO`（已完成第一、二、三批；余：马桶/浴缸/水槽）。
+- `fix_eol --check` 候选 6；下一步：行 148 第四批（`BathtubBlock`／`SinkBlock` 变体／马桶与烛台变体），或先补两批的资产。
+

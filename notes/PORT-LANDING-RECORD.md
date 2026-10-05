@@ -5198,3 +5198,45 @@ public static final TFBlockSet SPRUCE_SET = new TFBlockSet.Builder(SPRUCE, Block
 - 台账：行 145／147 仍 `TODO`（各已完成两批/一批）；全量统计不变。
 - `fix_eol --check` 候选 6；下一步：行 146（`CandelabraBlock` 55 行：粒子 + `SPRUCE_SHAPE` 等变体形状 + CANDELABRAS/doLightSetup 条目）。
 
+## 一百三十三、落地记录：行 146（`CandelabraBlock` 粒子与变体形状 ＋ `SPRUCE_SET` 收尾）
+
+### 133.1 改动（`TerraFurniture` 子模块，2 个文件）
+
+| 文件 | 内容 |
+| --- | --- |
+| `common/block/light/CandelabraBlock.java` | 新增 `SPRUCE_SHAPE`（三段 `Block.box` 叠加）与三张火焰坐标表（`GLASS_FLAMES`／`BLUE_DUNGEON_FLAMES`／`SPRUCE_FLAMES`）；`getShape` 改为 `getType() == SPRUCE ? SPRUCE_SHAPE : SHAPE`（保留 1.21 的 `protected`）；新增 `animateTick(BlockState, Level, BlockPos, RandomSource)`（未点燃或含水即返回；GLASS→`ParticleTypes.SMALL_FLAME` 随 FACING 旋转，BLUE_DUNGEON／SPRUCE→`SOUL_FIRE_FLAME` 不旋转）与 `private static void addFlames(...)`；补 5 条 vanilla import 与 3 条 `static TFBlockSetTypes.*` |
+| `common/init/TFBlocks.java` | `SPRUCE_SET` 收尾：`.setAvailabilityFor(TFBlockType.CANDELABRAS, true)` 与 `.doLightSetup(14, 14, 15, 15, 15)`（1.20 原序，紧随 LAMP 之后） |
+
+### 133.2 核验
+
+| 项 | 结果 |
+| --- | --- |
+| `CandelabraBlock` 行集比对 | 1.20 = **133 行**、1.21 = **133 行**（非空）；**仅 4 处差异**：`net.minecraftforge.common.data.BlockTagsProvider` → `net.neoforged.neoforge.common.data.BlockTagsProvider`（平台），以及 `getShape`／`rotate`／`mirror` 的 `public` → `protected`（1.21 可见性） |
+| 符号计数 | `SPRUCE_SHAPE` 2/2、`GLASS_FLAMES` 2/2、`BLUE_DUNGEON_FLAMES` 2/2、`SPRUCE_FLAMES` 2/2、`animateTick` 1/1、`addFlames` 4/4、`ParticleTypes.` 3/3 ✓ |
+| `SPRUCE_SET` 计数 | `TFBlockType.CANDELABRAS` 1/1、`doLightSetup` 3/3 ✓ |
+| 1.21.1 vanilla 取证 | `Block.animateTick(BlockState, Level, BlockPos, RandomSource)`（`_nfsrc_219/…/Block.java:277`）、`ParticleTypes.SMALL_FLAME`（`:115`）／`SOUL_FIRE_FLAME`（`:63`）、`Level.addParticle(ParticleOptions, double×6)`（`:530`） |
+| 结构自检 | `CandelabraBlock` 143 行纯 CRLF、`{}` 36/36、`()` 61/61；`TFBlocks` 378 行纯 CRLF、`{}` 8/8、`()` 418/418 |
+
+### 133.3 **纠正 §128.2／§132.4 的一处错误论断**
+
+§128.2 与 §132.4 曾判断：1.20 先 `setPropertyFor(LAMP, noOcclusion)` 再 `doLightSetup(...)`，后者会对 LAMP 再调 `setPropertyFor(lightLevel)` 从而**覆盖**前者的 `noOcclusion`，因此第二批把两条合并成一次调用。**该判断是错的**，实测 1.21 的 `TFBlockSet.Builder.setPropertyFor` 是**叠加**语义：
+
+```java
+public <T extends Block> Builder setPropertyFor(TFBlockType<T> key, Function<Properties, Properties> properties) {
+    BlockBehaviour.Properties old = entries.get(key).properties;
+    entries.get(key).properties = properties.apply(old);   // 在既有属性上再应用，而非替换
+    return this;
+}
+```
+
+且 `doLightSetup` 的 5 条 `setPropertyFor(...)` 是在 **`build()` 内**执行的（`TFBlockSet.java:246-250`），所以最终 `LAMP` 的属性 = 默认 → `noOcclusion()` + `lightLevel(15)`（第二批）→ `lightLevel(15)`（build 阶段再叠一次）⇒ **两个效果都在**。
+
+结论：① 第二批的合并写法**并非必要**（但结果等价、无副作用，不回退）；② §132.4 里"留到行 146 再处理 doLightSetup"的理由同样不成立，本批已按 1.20 原序补上。此纠正仅影响理由陈述，**不影响已落地的代码语义**。
+
+### 133.4 状态
+
+- `TerraFurniture` 子模块：本批 2 个文件已提交；父仓更新 gitlink。
+- **四个 TODO 行的 Java 侧已全部落地**：行 146 ✓（本批）、行 145 ✓（SinkBlock 变体 + IRON_SET/SPRUCE_SET 的 SINK）、行 147 ✓（BathtubBlock + SPRUCE_SET 的 BATHTUB）、行 148 ✓（ModelLightBlock + 三条烛台 + LAMP + 樱花木箱）。
+- 仍缺的**非 Java**面（下一批起）：`TFBlockTagsProvider`(+7)／`TFChineseProvider`(+3) 的新方块 tag/lang 条目（属 Java，但属"随功能收尾"，需按 1.20 的 provider 差异核对），以及各批资产（云杉灯、樱花木箱、`iron_sink`／`spruce_sink`／`candelabras`、`bathtub`/`base`/`forward`/`bed` 等）。
+- `fix_eol --check` 候选 6；下一步：**provider 差异批次**（tag/lang 收尾），随后视用户指示处理资产。
+

@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
@@ -12,14 +13,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
-import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
-import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
+import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.util.EasingCurve;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -167,6 +168,22 @@ public class Zenith extends Projectile implements IEntityCollision<Zenith> {
     public void onCollisionAttack(List<HitContext> hitContexts) {
         for (HitContext hit : hitContexts) {
             attack(hit.entity(), getDamage(), 1);
+        }
+    }
+
+    @Override
+    public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
+        if (!Immunity.isActive(this, target)) {
+            DamageSource damageSource = owner.damageSources().playerAttack(owner);
+            immunityDuration = invincibleTime;
+            int invulnerableTime = target.invulnerableTime;
+            target.invulnerableTime = 0;
+            boolean hurt = target.hurt(damageSource, damageAmount);
+            target.invulnerableTime = invulnerableTime;
+            if (hurt) {
+                Immunity.apply(this, damageSource, target);
+            }
+            immunityDuration = 0;
         }
     }
 

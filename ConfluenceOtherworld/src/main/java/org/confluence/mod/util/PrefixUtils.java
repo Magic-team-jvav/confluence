@@ -79,6 +79,16 @@ public final class PrefixUtils {
         return PrefixType.UNKNOWN;
     }
 
+    public static int calculateUseTime(Player player, int baseTicks) {
+        if (baseTicks <= 0) return 0;
+        double baseSpeed = player.getAttributeBaseValue(Attributes.ATTACK_SPEED);
+        double attackSpeed = player.getAttributeValue(Attributes.ATTACK_SPEED);
+        if (baseSpeed <= 0.0 || attackSpeed <= 0.0) {
+            return baseTicks;
+        }
+        return Math.max(1, (int) Math.ceil(baseTicks * baseSpeed / attackSpeed));
+    }
+
     public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack stack, PrefixType type) {
         ModPrefix prefix = type.randomPrefix(random, stack);
         if (prefix.canBeMercy() && random.nextInt(3) != 0) {
@@ -112,16 +122,6 @@ public final class PrefixUtils {
             }
         }
         return value;
-    }
-
-    public static int calculateUseTime(Player player, int baseTicks) {
-        if (baseTicks <= 0) return 0;
-        double baseSpeed = player.getAttributeBaseValue(Attributes.ATTACK_SPEED);
-        double attackSpeed = player.getAttributeValue(Attributes.ATTACK_SPEED);
-        if (baseSpeed <= 0.0 || attackSpeed <= 0.0) {
-            return baseTicks;
-        }
-        return Math.max(1, (int) Math.ceil(baseTicks * baseSpeed / attackSpeed));
     }
 
     public static @Nullable PrefixComponent random(RandomSource random, ItemStack stack) {
@@ -164,12 +164,7 @@ public final class PrefixUtils {
         if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }
-// todo trade       ITradeHolder holder = ((IPlayer) player).confluence$getTradeHolder();
-//        float priceAdjustment = 1.0F;
-//        if (holder != null && holder.getMood() != null) {
-//            priceAdjustment = 100.0F / holder.getMood().getValue();
-//        }
-//        return (int) (price * priceAdjustment / 3);
+        // todo 心情
         return price / 3;
     }
 }

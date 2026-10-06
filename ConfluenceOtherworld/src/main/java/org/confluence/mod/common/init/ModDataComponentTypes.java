@@ -15,7 +15,7 @@ public final class ModDataComponentTypes {
     public static final PortDataComponentRegistration TYPES = PortRegisterHandler.dataComponent(Confluence.MODID);
 
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<LootComponent>> LOOT = TYPES.builder("loot", builder -> builder.persistent(LootComponent.CODEC).networkSynchronized(LootComponent.STREAM_CODEC));
-    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<PrefixComponent>> PREFIX = TYPES.builder("prefix", builder -> builder.persistent(PrefixComponent.CODEC)); // 不能使用同步
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<PrefixComponent>> PREFIX = TYPES.builder("prefix", builder -> builder.persistent(PrefixComponent.CODEC).networkSynchronized(PrefixComponent.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<ValueComponent>> VALUE = TYPES.builder("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<SwordProjectileComponent>> SWORD_PROJECTILE = TYPES.builder("sword_projectile", builder -> builder.persistent(SwordProjectileComponent.CODEC).networkSynchronized(SwordProjectileComponent.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<SpearProjectileComponent>> SPEAR_PROJECTILE = TYPES.builder("spear_projectile", builder -> builder.persistent(SpearProjectileComponent.CODEC).networkSynchronized(SpearProjectileComponent.STREAM_CODEC));

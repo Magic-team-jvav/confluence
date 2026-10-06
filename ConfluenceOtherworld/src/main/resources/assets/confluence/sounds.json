@@ -11,280 +11,281 @@
         ],
         "subtitle": "confluence.subtitle.use_terraprism"
     },
-    "transmission":  {
-                         "sounds":  [
-                                        "confluence:item/transmission"
-                                    ],
-                         "subtitle":  "confluence.subtitle.transmission"
-                     },
-    "lightsaber_open":  {
-                            "sounds":  [
-                                           "confluence:item/lightsaber_open"
-                                       ],
-                            "subtitle":  "confluence.subtitle.lightsaber_open"
-                        },
-    "regular_staff_shoot":  {
-                                "sounds":  [
-                                               "confluence:item/regular_staff_shoot"
-                                           ],
-                                "subtitle":  "confluence.subtitle.regular_staff_shoot"
-                            },
-    "life_crystal_use":  {
-                             "sounds":  [
-                                            "confluence:item/life_crystal_use"
-                                        ],
-                             "subtitle":  "confluence.subtitle.life_crystal_use"
-                         },
-    "mana_star_use":  {
-                          "sounds":  [
-                                         "confluence:item/mana_star_use"
-                                     ],
-                          "subtitle":  "confluence.subtitle.mana_star_use"
-                      },
-    "coins":  {
-                  "sounds":  [
-                                 "confluence:item/coins"
-                             ],
-                  "subtitle":  "confluence.subtitle.coins"
-              },
-    "regular_staff_shoot_2":  {
-                                  "sounds":  [
-                                                 "confluence:item/regular_staff_shoot_2",
-                "confluence:sparkle_shoot"],
-                                  "subtitle":  "confluence.subtitle.regular_staff_shoot_2"
-                              },
-    "regular_staff_shoot_3":  {
-                                  "sounds":  [
-                                                 "confluence:item/regular_staff_shoot_3"
-                                             ],
-                                  "subtitle":  "confluence.subtitle.regular_staff_shoot_3"
-                              },
-    "frozen_broken":  {
-                          "sounds":  [
-                                         "confluence:item/frozen_broken"
-                                     ],
-                          "subtitle":  "confluence.subtitle.frozen_broken"
-                      },
-    "frozen_arrow":  {
-                         "sounds":  [
-                                        "confluence:item/frozen_arrow"
-                                    ],
-                         "subtitle":  "confluence.subtitle.frozen_arrow"
-                     },
-    "cooldown_recovery":  {
-                              "sounds":  [
-                                             "confluence:item/cooldown_recovery"
-                                         ],
-                              "subtitle":  "confluence.subtitle.cooldown_recovery"
-                          },
-    "shimmer_detachment":  {
-                               "sounds":  [
-                                              "confluence:item/shimmer_detachment"
-                                          ],
-                               "subtitle":  "confluence.subtitle.shimmer_detachment"
-                           },
-    "shimmer_evolution":  {
-                              "sounds":  [
-                                             "confluence:item/shimmer_evolution"
-                                         ],
-                              "subtitle":  "confluence.subtitle.shimmer_evolution"
-                          },
-    "shimmer_immersion":  {
-                              "sounds":  [
-                                             "confluence:item/shimmer_immersion"
-                                         ],
-                              "subtitle":  "confluence.subtitle.shimmer_immersion"
-                          },
-    "shimmer_item_interactions":  {
-                                      "sounds":  [
-                                                     "confluence:item/shimmer_item_interactions"
-                                                 ],
-                                      "subtitle":  "confluence.subtitle.shimmer_item_interactions"
-                                  },
-    "star":  {
-                 "sounds":  [
-                                "confluence:item/star"
-                            ],
-                 "subtitle":  "confluence.subtitle.star"
-             },
-    "star_lands":  {
-                       "sounds":  [
-                                      "confluence:item/star_lands"
-                                  ],
-                       "subtitle":  "confluence.subtitle.star_lands"
-                   },
-    "terra_operation":  {
-                            "sounds":  [
-                                           "confluence:item/terra_operation"
-                                       ],
-                            "subtitle":  "confluence.subtitle.terra_operation"
-                        },
-    "bow_cooldown_recovery":  {
-                                  "sounds":  [
-                                                 "confluence:item/bow_cooldown_recovery"
-                                             ],
-                                  "subtitle":  "confluence.subtitle.bow_cooldown_recovery"
-                              },
-    "decoupling":  {
-                       "sounds":  [
-                                      "confluence:item/decoupling"
-                                  ],
-                       "subtitle":  "confluence.subtitle.decoupling"
-                   },
-    "achievements":  {
-                         "sounds":  [
-                                        "confluence:item/achievements"
-                                    ],
-                         "subtitle":  "confluence.subtitle.achievements"
-                     },
-    "transmutation_use":  {
-                              "sounds":  [
-                                             "confluence:item/transmutation_use"
-                                         ],
-                              "subtitle":  "confluence.subtitle.transmutation_use"
-                          },
-    "hook_attach":  {
-                        "sounds":  [
-                                       "confluence:item/hook_attach_0",
-                                       "confluence:item/hook_attach_1",
-                                       "confluence:item/hook_attach_2"
-                                   ],
-                        "subtitle":  "confluence.subtitle.hook_attach"
-                    },
-    "hook_shoot":  {
-                       "sounds":  [
-                                      "confluence:item/hook_shoot_0",
-                                      "confluence:item/hook_shoot_1",
-                                      "confluence:item/hook_shoot_2"
-                                  ],
-                       "subtitle":  "confluence.subtitle.hook_shoot"
-                   },
-    "coins_large":  {
-                        "sounds":  [
-                                       "confluence:item/coins_large_0",
-                                       "confluence:item/coins_large_1",
-                                       "confluence:item/coins_large_2"
-                                   ],
-                        "subtitle":  "confluence.subtitle.coins_large"
-                    },
-    "coins_medium":  {
-                         "sounds":  [
-                                        "confluence:item/coins_medium_0",
-                                        "confluence:item/coins_medium_1",
-                                        "confluence:item/coins_medium_2"
-                                    ],
-                         "subtitle":  "confluence.subtitle.coins_medium"
-                     },
-    "coins_small":  {
-                        "sounds":  [
-                                       "confluence:item/coins_small_0",
-                                       "confluence:item/coins_small_1",
-                                       "confluence:item/coins_small_2"
-                                   ],
-                        "subtitle":  "confluence.subtitle.coins_small"
-                    },
-    "lucyaxe_talk":  {
-                         "sounds":  [
-                                        "confluence:item/lucyaxe_talk_0",
-                                        "confluence:item/lucyaxe_talk_1",
-                                        "confluence:item/lucyaxe_talk_2",
-                                        "confluence:item/lucyaxe_talk_3",
-                                        "confluence:item/lucyaxe_talk_4"
-                                    ],
-                         "subtitle":  "confluence.subtitle.lucyaxe_talk"
-                     },
-    "repeater_item_aerial_shooting":  {
-                                          "sounds":  [
-                                                         "confluence:item/repeater_item_aerial_shooting"
-                                                     ],
-                                          "volume":  0.1,
-                                          "subtitle":  "confluence.subtitle.repeater_item_aerial_shooting"
-                                      },
-    "crystal_vile_shard_shoot":  {
-                                     "sounds":  [
-                                                    "confluence:item/crystal_vile_shard_shoot"
-                                                ],
-                                     "subtitle":  "confluence.subtitle.crystal_vile_shard_shoot"
-                                 },
-    "gun_auto":  {
-                     "sounds":  [
-                                    "confluence:item/gun_auto"
-                                ]
-                 },
-    "gun_fish":  {
-                     "sounds":  [
-                                    "confluence:item/gun_fish"
-                                ]
-                 },
-    "blowgun_shot":  {
-                         "sounds":  [
-                                        "confluence:item/blowgun_shot"
-                                    ]
-                     },
-    "gun_space":  {
-                      "sounds":  [
-                                     "confluence:item/gun_space"
-                                 ]
-                  },
-    "gun_flamethrower":  {
-                             "sounds":  [
-                                            "confluence:item/gun_flamethrower"
-                                        ]
-                         },
-    "gun_generic":  {
-                        "sounds":  [
-                                       "confluence:item/gun_generic"
-                                   ]
-                    },
-    "gun_highpower":  {
-                          "sounds":  [
-                                         "confluence:item/gun_highpower"
-                                     ]
-                      },
-    "gun_nail":  {
-                     "sounds":  [
-                                    "confluence:item/gun_nail"
-                                ]
-                 },
-    "gun_toxic":  {
-                      "sounds":  [
-                                     "confluence:item/gun_toxic"
-                                 ]
-                  },
-    "pistol_dart":  {
-                        "sounds":  [
-                                       "confluence:item/pistol_dart"
-                                   ]
-                    },
-    "rifle_burst":  {
-                        "sounds":  [
-                                       "confluence:item/rifle_burst"
-                                   ]
-                    },
-    "rifle_dart":  {
-                       "sounds":  [
-                                      "confluence:item/rifle_dart"
-                                  ]
-                   },
-    "shotgun_alien":  {
-                          "sounds":  [
-                                         "confluence:item/shotgun_alien"
-                                     ]
-                      },
-    "shotgun_alien_proj":  {
-                               "sounds":  [
-                                              "confluence:item/shotgun_alien_proj"
-                                          ]
-                           },
-    "shotgun_multi":  {
-                          "sounds":  [
-                                         "confluence:item/shotgun_multi"
-                                     ]
-                      },
-    "shotgun_tactical":  {
-                             "sounds":  [
-                                            "confluence:item/shotgun_tactical"
-                                        ]
+    "transmission": {
+        "sounds": [
+            "confluence:item/transmission"
+        ],
+        "subtitle": "confluence.subtitle.transmission"
+    },
+    "lightsaber_open": {
+        "sounds": [
+            "confluence:item/lightsaber_open"
+        ],
+        "subtitle": "confluence.subtitle.lightsaber_open"
+    },
+    "regular_staff_shoot": {
+        "sounds": [
+            "confluence:item/regular_staff_shoot"
+        ],
+        "subtitle": "confluence.subtitle.regular_staff_shoot"
+    },
+    "life_crystal_use": {
+        "sounds": [
+            "confluence:item/life_crystal_use"
+        ],
+        "subtitle": "confluence.subtitle.life_crystal_use"
+    },
+    "mana_star_use": {
+        "sounds": [
+            "confluence:item/mana_star_use"
+        ],
+        "subtitle": "confluence.subtitle.mana_star_use"
+    },
+    "coins": {
+        "sounds": [
+            "confluence:item/coins"
+        ],
+        "subtitle": "confluence.subtitle.coins"
+    },
+    "regular_staff_shoot_2": {
+        "sounds": [
+            "confluence:item/regular_staff_shoot_2",
+            "confluence:sparkle_shoot"
+        ],
+        "subtitle": "confluence.subtitle.regular_staff_shoot_2"
+    },
+    "regular_staff_shoot_3": {
+        "sounds": [
+            "confluence:item/regular_staff_shoot_3"
+        ],
+        "subtitle": "confluence.subtitle.regular_staff_shoot_3"
+    },
+    "frozen_broken": {
+        "sounds": [
+            "confluence:item/frozen_broken"
+        ],
+        "subtitle": "confluence.subtitle.frozen_broken"
+    },
+    "frozen_arrow": {
+        "sounds": [
+            "confluence:item/frozen_arrow"
+        ],
+        "subtitle": "confluence.subtitle.frozen_arrow"
+    },
+    "cooldown_recovery": {
+        "sounds": [
+            "confluence:item/cooldown_recovery"
+        ],
+        "subtitle": "confluence.subtitle.cooldown_recovery"
+    },
+    "shimmer_detachment": {
+        "sounds": [
+            "confluence:item/shimmer_detachment"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_detachment"
+    },
+    "shimmer_evolution": {
+        "sounds": [
+            "confluence:item/shimmer_evolution"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_evolution"
+    },
+    "shimmer_immersion": {
+        "sounds": [
+            "confluence:item/shimmer_immersion"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_immersion"
+    },
+    "shimmer_item_interactions": {
+        "sounds": [
+            "confluence:item/shimmer_item_interactions"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_item_interactions"
+    },
+    "star": {
+        "sounds": [
+            "confluence:item/star"
+        ],
+        "subtitle": "confluence.subtitle.star"
+    },
+    "star_lands": {
+        "sounds": [
+            "confluence:item/star_lands"
+        ],
+        "subtitle": "confluence.subtitle.star_lands"
+    },
+    "terra_operation": {
+        "sounds": [
+            "confluence:item/terra_operation"
+        ],
+        "subtitle": "confluence.subtitle.terra_operation"
+    },
+    "bow_cooldown_recovery": {
+        "sounds": [
+            "confluence:item/bow_cooldown_recovery"
+        ],
+        "subtitle": "confluence.subtitle.bow_cooldown_recovery"
+    },
+    "decoupling": {
+        "sounds": [
+            "confluence:item/decoupling"
+        ],
+        "subtitle": "confluence.subtitle.decoupling"
+    },
+    "achievements": {
+        "sounds": [
+            "confluence:item/achievements"
+        ],
+        "subtitle": "confluence.subtitle.achievements"
+    },
+    "transmutation_use": {
+        "sounds": [
+            "confluence:item/transmutation_use"
+        ],
+        "subtitle": "confluence.subtitle.transmutation_use"
+    },
+    "hook_attach": {
+        "sounds": [
+            "confluence:item/hook_attach_0",
+            "confluence:item/hook_attach_1",
+            "confluence:item/hook_attach_2"
+        ],
+        "subtitle": "confluence.subtitle.hook_attach"
+    },
+    "hook_shoot": {
+        "sounds": [
+            "confluence:item/hook_shoot_0",
+            "confluence:item/hook_shoot_1",
+            "confluence:item/hook_shoot_2"
+        ],
+        "subtitle": "confluence.subtitle.hook_shoot"
+    },
+    "coins_large": {
+        "sounds": [
+            "confluence:item/coins_large_0",
+            "confluence:item/coins_large_1",
+            "confluence:item/coins_large_2"
+        ],
+        "subtitle": "confluence.subtitle.coins_large"
+    },
+    "coins_medium": {
+        "sounds": [
+            "confluence:item/coins_medium_0",
+            "confluence:item/coins_medium_1",
+            "confluence:item/coins_medium_2"
+        ],
+        "subtitle": "confluence.subtitle.coins_medium"
+    },
+    "coins_small": {
+        "sounds": [
+            "confluence:item/coins_small_0",
+            "confluence:item/coins_small_1",
+            "confluence:item/coins_small_2"
+        ],
+        "subtitle": "confluence.subtitle.coins_small"
+    },
+    "lucyaxe_talk": {
+        "sounds": [
+            "confluence:item/lucyaxe_talk_0",
+            "confluence:item/lucyaxe_talk_1",
+            "confluence:item/lucyaxe_talk_2",
+            "confluence:item/lucyaxe_talk_3",
+            "confluence:item/lucyaxe_talk_4"
+        ],
+        "subtitle": "confluence.subtitle.lucyaxe_talk"
+    },
+    "repeater_item_aerial_shooting": {
+        "sounds": [
+            "confluence:item/repeater_item_aerial_shooting"
+        ],
+        "volume": 0.1,
+        "subtitle": "confluence.subtitle.repeater_item_aerial_shooting"
+    },
+    "crystal_vile_shard_shoot": {
+        "sounds": [
+            "confluence:item/crystal_vile_shard_shoot"
+        ],
+        "subtitle": "confluence.subtitle.crystal_vile_shard_shoot"
+    },
+    "gun_auto": {
+        "sounds": [
+            "confluence:item/gun_auto"
+        ]
+    },
+    "gun_fish": {
+        "sounds": [
+            "confluence:item/gun_fish"
+        ]
+    },
+    "blowgun_shot": {
+        "sounds": [
+            "confluence:item/blowgun_shot"
+        ]
+    },
+    "gun_space": {
+        "sounds": [
+            "confluence:item/gun_space"
+        ]
+    },
+    "gun_flamethrower": {
+        "sounds": [
+            "confluence:item/gun_flamethrower"
+        ]
+    },
+    "gun_generic": {
+        "sounds": [
+            "confluence:item/gun_generic"
+        ]
+    },
+    "gun_highpower": {
+        "sounds": [
+            "confluence:item/gun_highpower"
+        ]
+    },
+    "gun_nail": {
+        "sounds": [
+            "confluence:item/gun_nail"
+        ]
+    },
+    "gun_toxic": {
+        "sounds": [
+            "confluence:item/gun_toxic"
+        ]
+    },
+    "pistol_dart": {
+        "sounds": [
+            "confluence:item/pistol_dart"
+        ]
+    },
+    "rifle_burst": {
+        "sounds": [
+            "confluence:item/rifle_burst"
+        ]
+    },
+    "rifle_dart": {
+        "sounds": [
+            "confluence:item/rifle_dart"
+        ]
+    },
+    "shotgun_alien": {
+        "sounds": [
+            "confluence:item/shotgun_alien"
+        ]
+    },
+    "shotgun_alien_proj": {
+        "sounds": [
+            "confluence:item/shotgun_alien_proj"
+        ]
+    },
+    "shotgun_multi": {
+        "sounds": [
+            "confluence:item/shotgun_multi"
+        ]
+    },
+    "shotgun_tactical": {
+        "sounds": [
+            "confluence:item/shotgun_tactical"
+        ]
     },
     "routine_hurt": {
         "sounds": [
@@ -567,7 +568,8 @@
     "bone_serpent_death": {
         "sounds": [
             "confluence:mob/bone_serpent_death",
-                "confluence:mob/bone_snake_death"],
+            "confluence:mob/bone_snake_death"
+        ],
         "subtitle": "confluence.subtitle.bone_serpent_death"
     },
     "demon_death": {
@@ -724,7 +726,8 @@
     "the_hungry_hurt": {
         "sounds": [
             "confluence:mob/the_hungry_hurt",
-                "confluence:mob/hungry_ghost_hurt"],
+            "confluence:mob/hungry_ghost_hurt"
+        ],
         "subtitle": "confluence.subtitle.the_hungry_hurt"
     },
     "wall_of_flesh_hurt": {
@@ -736,7 +739,8 @@
     "wall_of_flesh_roar": {
         "sounds": [
             "confluence:mob/wall_of_flesh_roar",
-                "confluence:mob/wall_of_flesh_hoot"],
+            "confluence:mob/wall_of_flesh_hoot"
+        ],
         "subtitle": "confluence.subtitle.wall_of_flesh_roar"
     },
     "wall_of_flesh_summon": {
@@ -745,7 +749,6 @@
         ],
         "subtitle": "confluence.subtitle.wall_of_flesh_summon"
     },
-
     "abigail_attack": {
         "sounds": [
             "confluence:summon/abigail_attack"

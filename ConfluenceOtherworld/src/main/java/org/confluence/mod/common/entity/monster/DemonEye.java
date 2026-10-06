@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -28,6 +29,8 @@ import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeLeaveAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeSurroundAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeWanderAction;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.util.DateUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -42,22 +45,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
     private static final EnumMap<Variant, VariantStats> VARIANT_STATS = new EnumMap<>(Variant.class);
 
-    static {
-        registerVariantStats(Variant.NORMAL, 15, 3.5, 1, 0.2);
-        registerVariantStats(Variant.NORMAL_BIG, 12, 4, 2, 0.1);
-        registerVariantStats(Variant.CATARACT, 11.5, 3.5, 2, 0.2);
-        registerVariantStats(Variant.CATARACT_BIG, 14, 4, 2, 0.1);
-        registerVariantStats(Variant.SLEEPY, 15, 3, 1, 0.2);
-        registerVariantStats(Variant.SLEEPY_BIG, 16, 3.5, 1, 0.1);
-        registerVariantStats(Variant.DILATED, 12, 3.5, 1, 0.1);
-        registerVariantStats(Variant.DILATED_SMALL, 11.5, 3, 0, 0.2);
-        registerVariantStats(Variant.GREEN, 15, 4, 0, 0.1);
-        registerVariantStats(Variant.GREEN_SMALL, 12.5, 3, 0, 0.2);
-        registerVariantStats(Variant.PURPLE, 15, 3, 2, 0.2);
-        registerVariantStats(Variant.PURPLE_BIG, 16, 3, 2, 0.1);
-        registerVariantStats(Variant.OWL, 18.5, 3, 3, 0.2);
-        registerVariantStats(Variant.SPACESHIP, 15, 3, 2, 0.2);
-    }
 
     private DemonEyeSurroundAction surroundAction;
 
@@ -73,10 +60,12 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     private void applyVariantStats(Variant v) {
         VariantStats stats = VARIANT_STATS.get(v);
         if (stats == null) return;
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(stats.health);
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(stats.damage);
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.ceil(stats.health));
+        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(Math.ceil(stats.damage));
+        this.getAttribute(LibAttributes.getArmorPenetration().value()).setBaseValue(CreatureDifficultyRules.penetration(Math.ceil(stats.damage)));
         this.getAttribute(Attributes.ARMOR).setBaseValue(stats.armor);
         this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(stats.movementSpeed);
+        CreatureDifficultyScaling.apply(this, false);
         if (getHealth() > getMaxHealth()) {
             setHealth(getMaxHealth());
         }

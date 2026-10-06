@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -17,14 +18,17 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.util.LibCodecUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.mesdag.portlib.datamap.PortDataMapValueMerger;
 import org.mesdag.portlib.datamap.PortDataMapValueRemover;
 import org.mesdag.portlib.wrapper.core.PortRegistry;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -41,6 +45,12 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
     }
 
     public static void applyModifiers(LivingEntity living) {
+        applyModifiers(living, true);
+    }
+
+    /// 所有生成与读取路径共用；非新生成实体仅限制当前生命，不因阶段刷新而回血。
+    public static void applyModifiers(LivingEntity living, boolean freshSpawn) {
+        if (living.level().isClientSide) return;
         if (living instanceof Player) return;
         EntityType<?> type = living.getType();
         if (!CommonConfigs.ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES.get() &&
@@ -48,11 +58,27 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
         ) return;
 
         Difficulty difficulty = living.level().getDifficulty();
-        if (difficulty == Difficulty.PEACEFUL || difficulty == Difficulty.EASY) return;
+        if ((difficulty == Difficulty.PEACEFUL || difficulty == Difficulty.EASY)
+                && !CreatureDifficultyScaling.isManaged(living)) return;
         GamePhase2AttributeModifiers data = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, type);
-        if (data == null) return;
-        ImmutableListMultimap<Attribute, AttributeModifier> modifiers = data.get(KillBoard.INSTANCE.getGamePhase()).get();
-        if (modifiers.isEmpty()) return;
+        boolean managed = CreatureDifficultyScaling.isManaged(living);
+        if (!managed && data == null) return;
+        float health = living.getHealth();
+        boolean full = health >= living.getMaxHealth();
+        if (managed) {
+            UUID valueId = PortAttributeModifier.rl2uuid(Confluence.asResource("game_phase_modifier"));
+            UUID multiplierId = PortAttributeModifier.rl2uuid(Confluence.asResource("game_phase_multiplier"));
+            for (Attribute attribute : BuiltInRegistries.ATTRIBUTE) {
+                AttributeInstance instance = living.getAttribute(attribute);
+                if (instance != null) {
+                    instance.removeModifier(valueId);
+                    instance.removeModifier(multiplierId);
+                }
+            }
+        }
+        ImmutableListMultimap<Attribute, AttributeModifier> modifiers = data == null ? ImmutableListMultimap.of()
+                : data.get(KillBoard.INSTANCE.getGamePhase()).get();
+        if (!managed && modifiers.isEmpty()) return;
         for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : modifiers.asMap().entrySet()) {
             AttributeInstance instance = living.getAttribute(entry.getKey());
             if (instance == null) continue;
@@ -60,7 +86,8 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
                 instance.addOrReplacePermanentModifier(modifier);
             }
         }
-        living.setHealth(living.getMaxHealth());
+        if (managed) CreatureDifficultyScaling.apply(living, false);
+        living.setHealth(!managed || freshSpawn && full ? living.getMaxHealth() : Math.min(health, living.getMaxHealth()));
     }
 
     public record Remover(

@@ -200,7 +200,7 @@ public class JellyFish extends BaseAquaticMonster {
         if (isElectrified() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             if (!level().isClientSide && source.getDirectEntity() == source.getEntity()
                     && source.getEntity() instanceof LivingEntity attacker) {
-                attacker.hurt(damageSources().thorns(this), (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.3));
+                attacker.hurt(damageSources().thorns(this), specialAttackDamageFromAttribute(SpecialAttack.THORNS));
             }
             return false;
         }
@@ -208,6 +208,8 @@ public class JellyFish extends BaseAquaticMonster {
     }
 
     public enum CombatState {PURSUING, PULSING, ELECTRIFIED}
+
+    public enum SpecialAttack {THORNS}
 
     /// 执行水母的追逐—脉冲周期，并在攻击阶段进行定向推进。
     private static final class JellyFishCombatAction extends BTNode {

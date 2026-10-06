@@ -192,10 +192,6 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     public boolean shouldEnhanceMultiplayer() {return true;}
 
     // === Multi-part ===
-    double getBossHealthDifficultyMultiplier(double defaultMultiplier) {
-        return defaultMultiplier;
-    }
-
     /// 返回生成时玩家数量对应的最大生命倍率。
     ///
     /// 沿用泰拉瑞亚的多人曲线（wiki Expert Mode § Bosses）：

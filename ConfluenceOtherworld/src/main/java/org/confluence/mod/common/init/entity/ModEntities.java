@@ -720,6 +720,11 @@ public final class ModEntities {
         return CREATURE_DEFINITIONS.get(type);
     }
 
+    /// 数据生成读取登记模板的快照，不暴露可修改的内部注册表。
+    public static Map<EntityType<?>, CreatureAttributeBuilder.Definition> creatureDefinitions() {
+        return Map.copyOf(CREATURE_DEFINITIONS);
+    }
+
     public static void register(IEventBus eventBus) {
         eventBus.addListener((EntityAttributeCreationEvent event) ->
                 ATTRIBUTES.forEach((type, attributes) -> {

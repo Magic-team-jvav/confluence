@@ -9,6 +9,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.ModDataMaps;
 
 import java.util.Map;
@@ -68,10 +70,17 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
         setBaseValue(mob, Attributes.MAX_HEALTH, overrides.maxHealth());
         setBaseValue(mob, Attributes.ATTACK_DAMAGE, overrides.attackDamage());
         setBaseValue(mob, Attributes.ARMOR, overrides.armor());
+        setBaseValue(mob, LibAttributes.getArmorPenetration().value(), overrides.armorPenetration());
+        setBaseValue(mob, Attributes.ARMOR_TOUGHNESS, overrides.armorToughness());
         setBaseValue(mob, Attributes.MOVEMENT_SPEED, overrides.movementSpeed());
         setBaseValue(mob, Attributes.FOLLOW_RANGE, overrides.followRange());
         setBaseValue(mob, Attributes.KNOCKBACK_RESISTANCE, overrides.knockbackResistance());
         setBaseValue(mob, Attributes.SCALE.value(), overrides.scale());
+        overrides.multipliers().forEach((id, multiplier) -> {
+            if (!BuiltInRegistries.ATTRIBUTE.containsKey(id)) return;
+            AttributeInstance attribute = mob.getAttribute(BuiltInRegistries.ATTRIBUTE.get(id));
+            if (attribute != null) attribute.setBaseValue(attribute.getBaseValue() * multiplier);
+        });
         if (wasFullHealth) {
             mob.setHealth(mob.getMaxHealth());
         } else if (oldHealth > mob.getMaxHealth()) {
@@ -119,14 +128,18 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
 
     // 以发射者的 Data Map 和射弹实体类型定位；数值只在发射时读取。
     public record ProjectileOverrides(double damage, double speed, double knockback,
-                                      double inaccuracy, int lifetime) {
+                                      double inaccuracy, int lifetime, double damageMultiplier) {
+        public ProjectileOverrides(double damage, double speed, double knockback, double inaccuracy, int lifetime) {
+            this(damage, speed, knockback, inaccuracy, lifetime, 1);
+        }
         public static final ProjectileOverrides EMPTY = new ProjectileOverrides(-1, -1, -1, -1, -1);
         public static final Codec<ProjectileOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("damage", -1.0).forGetter(ProjectileOverrides::damage),
                 Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("speed", -1.0).forGetter(ProjectileOverrides::speed),
                 Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("knockback", -1.0).forGetter(ProjectileOverrides::knockback),
                 Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("inaccuracy", -1.0).forGetter(ProjectileOverrides::inaccuracy),
-                Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("lifetime", -1).forGetter(ProjectileOverrides::lifetime)
+                Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("lifetime", -1).forGetter(ProjectileOverrides::lifetime),
+                Codec.doubleRange(0, Double.MAX_VALUE).optionalFieldOf("damage_multiplier", 1.0).forGetter(ProjectileOverrides::damageMultiplier)
         ).apply(instance, ProjectileOverrides::new));
 
         public static ProjectileOverrides get(Mob owner, EntityType<?> projectile) {
@@ -134,7 +147,9 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
             var declared = registered == null ? null : registered.projectiles().get(projectile);
             ProjectileOverrides defaults = declared == null ? EMPTY : declared.parameters(owner);
             ProjectileOverrides override = CreatureDefinition.get(owner.getType()).projectiles().getOrDefault(BuiltInRegistries.ENTITY_TYPE.getKey(projectile), EMPTY);
-            return new ProjectileOverrides(override.damageOr((float) defaults.damage), override.speedOr((float) defaults.speed),
+            double damage = override.damage >= 0 ? CreatureDifficultyScaling.projectileDamage(owner, override.damage, false) : defaults.damage;
+            if (damage >= 0) damage *= override.damageMultiplier;
+            return new ProjectileOverrides(damage, override.speedOr((float) defaults.speed),
                     override.knockbackOr((float) defaults.knockback), override.inaccuracyOr((float) defaults.inaccuracy), override.lifetimeOr(defaults.lifetime));
         }
 
@@ -158,7 +173,18 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
     /// 这些数值在实体完成属性实例初始化后写入基础值，不创建永久修饰符，避免多次加载叠加。
     public record AttributeOverrides(double maxHealth, double attackDamage, double armor,
                                      double movementSpeed, double followRange,
-                                     double knockbackResistance, double scale) {
+                                     double knockbackResistance, double scale,
+                                     double armorPenetration,
+                                     double armorToughness,
+                                     Map<ResourceLocation, Double> multipliers) {
+        public AttributeOverrides {
+            multipliers = Map.copyOf(multipliers);
+        }
+
+        public AttributeOverrides(double maxHealth, double attackDamage, double armor,
+                                  double movementSpeed, double followRange, double knockbackResistance, double scale) {
+            this(maxHealth, attackDamage, armor, movementSpeed, followRange, knockbackResistance, scale, -1, -1, Map.of());
+        }
         public static final AttributeOverrides EMPTY = new AttributeOverrides(-1, -1, -1, -1, -1, -1, -1);
         public static final Codec<AttributeOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.DOUBLE.optionalFieldOf("max_health", -1.0).forGetter(AttributeOverrides::maxHealth),
@@ -167,7 +193,10 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
                 Codec.DOUBLE.optionalFieldOf("movement_speed", -1.0).forGetter(AttributeOverrides::movementSpeed),
                 Codec.DOUBLE.optionalFieldOf("follow_range", -1.0).forGetter(AttributeOverrides::followRange),
                 Codec.DOUBLE.optionalFieldOf("knockback_resistance", -1.0).forGetter(AttributeOverrides::knockbackResistance),
-                Codec.DOUBLE.optionalFieldOf("scale", -1.0).forGetter(AttributeOverrides::scale)
+                Codec.DOUBLE.optionalFieldOf("scale", -1.0).forGetter(AttributeOverrides::scale),
+                Codec.doubleRange(-1, 12).optionalFieldOf("armor_penetration", -1.0).forGetter(AttributeOverrides::armorPenetration),
+                Codec.doubleRange(-1, 8).optionalFieldOf("armor_toughness", -1.0).forGetter(AttributeOverrides::armorToughness),
+                Codec.unboundedMap(ResourceLocation.CODEC, Codec.doubleRange(0, Double.MAX_VALUE)).optionalFieldOf("multipliers", Map.of()).forGetter(AttributeOverrides::multipliers)
         ).apply(instance, AttributeOverrides::new));
     }
 

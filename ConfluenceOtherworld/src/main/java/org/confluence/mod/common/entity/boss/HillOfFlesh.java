@@ -125,9 +125,8 @@ public class HillOfFlesh extends BaseBoss {
     private static final float INNER_MELEE_GAP = 1.2F;
     private static final float PHASE_TWO_MELEE_GAP = 1.75F;
     static final float OUTER_RADIUS = 75.0F;
-    private static final float ATTACHED_DAMAGE = 10.0F;
-    private static final float INNER_DAMAGE = 40.0F;
-    private static final float OUTER_DAMAGE = 40.0F;
+
+    public enum DamageZone {ATTACHED, INNER, OUTER}
     // 场地高度单位为方块；出场与开始破坏场地的时间单位为 tick。
     public static final int ARENA_HEIGHT = 100;
     private static final int INITIALIZATION_TICKS = 150;
@@ -458,14 +457,14 @@ public class HillOfFlesh extends BaseBoss {
             double distanceSquared = entity.position().subtract(position()).horizontalDistanceSqr();
             float damage = 0.0F;
             if (distanceSquared > outerRadius * outerRadius) {
-                damage = OUTER_DAMAGE;
+                damage = specialAttackDamage(DamageZone.OUTER);
             } else if (distanceSquared
                     < (innerRadius - 5.0F)
                     * (innerRadius - 5.0F)) {
-                damage = ATTACHED_DAMAGE;
+                damage = specialAttackDamage(DamageZone.ATTACHED);
             } else if (distanceSquared
                     < innerRadius * innerRadius) {
-                damage = INNER_DAMAGE;
+                damage = specialAttackDamage(DamageZone.INNER);
             }
             if (damage > 0.0F && entity.hurt(LibDamageTypes.of(level(), DamageTypes.MAGIC, this), damage)) {
                 ((ServerLevel) level()).sendParticles(ParticleTypes.FLAME, entity.getX(), entity.getY() + entity.getBbHeight() * 0.5, entity.getZ(), 20, entity.getBbWidth() * 0.2, entity.getBbHeight() * 0.5, entity.getBbWidth() * 0.2, 0.0);

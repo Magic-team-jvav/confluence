@@ -1791,8 +1791,6 @@ public final class ModTabs {
                         pre_hardmode_broadswords.accept(SwordItems.BROKEN_SWEET_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.SWEET_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.MURAMASA.get());
-                        pre_hardmode_broadswords.accept(SwordItems.DEVELOPER_SWORD.get());
-                        pre_hardmode_broadswords.accept(SwordItems.CROWBAR.get());
 
                         CreativeModeTab.Output hardmode_broadswords = GroupItem.belongsTo("hardmode_broadswords", output);
                         hardmode_broadswords.accept(SwordItems.RED_PHASESABER.get());
@@ -1802,7 +1800,7 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.BLUE_PHASESABER.get());
                         hardmode_broadswords.accept(SwordItems.PURPLE_PHASESABER.get());
                         hardmode_broadswords.accept(SwordItems.WHITE_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.PINK_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.PINK_PHASESABER.get());
                         hardmode_broadswords.accept(SwordItems.COBALT_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.PALLADIUM_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.MYTHRIL_SWORD.get());
@@ -1811,6 +1809,10 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.TITANIUM_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.BREAKER_BLADE.get());
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
+                        hardmode_broadswords.accept(SwordItems.ZENITH.get());
+
+                        output.accept(SwordItems.DEVELOPER_SWORD.get());
+                        output.accept(SwordItems.CROWBAR.get());
 
                         CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
                         yoyo.accept(YoyoItems.AMAZON.get());

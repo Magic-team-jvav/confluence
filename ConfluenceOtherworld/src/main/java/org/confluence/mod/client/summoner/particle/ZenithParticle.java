@@ -8,6 +8,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
@@ -25,6 +26,7 @@ public class ZenithParticle extends TextureSheetParticle {
     private final Vec3[] trail = new Vec3[TRAIL_LENGTH];
     private final Vec3[] corners = new Vec3[4];
     private final Vec3 axis;
+    private final float rollSpeed;
 
     public ZenithParticle(ClientLevel level, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet, ZenithParticleOptions options) {
         super(level, x, y, z, vx, vy, vz);
@@ -55,6 +57,7 @@ public class ZenithParticle extends TextureSheetParticle {
         this.corners[1] = up.subtract(right);
         this.corners[2] = this.corners[0].scale(-1.0);
         this.corners[3] = this.corners[1].scale(-1.0);
+        this.rollSpeed = RandomSource.create().nextIntBetweenInclusive(9, 18);
     }
 
     @Override
@@ -63,14 +66,27 @@ public class ZenithParticle extends TextureSheetParticle {
         this.setSpriteFromAge(this.spriteSet);
         System.arraycopy(this.trail, 0, this.trail, 1, TRAIL_LENGTH - 1);
         this.trail[0] = new Vec3(this.xo, this.yo, this.zo);
+        this.oRoll = this.roll;
+        this.roll += this.rollSpeed;
     }
 
     @Override
     public void render(@NotNull VertexConsumer buffer, @NotNull Camera camera, float partialTick) {
-        if (this.age == 0) {
-            return;
-        }
         Vec3 cameraPos = camera.getPosition();
+
+        float currantRoll = Mth.lerp(partialTick, this.oRoll, this.roll);
+        float cosRoll = Mth.cos(currantRoll);
+        float sinRoll = Mth.sin(currantRoll);
+        float axisX = (float) this.axis.x, axisY = (float) this.axis.y, axisZ = (float) this.axis.z;
+        float[] rolled = new float[12];
+        for (int i = 0; i < 4; i++) {
+            Vec3 corner = this.corners[i];
+            float ox = (float) corner.x, oy = (float) corner.y, oz = (float) corner.z;
+            float projection = axisX * ox + axisY * oy + axisZ * oz;
+            rolled[i * 3] = ox * cosRoll + (axisY * oz - axisZ * oy) * sinRoll + axisX * projection * (1.0F - cosRoll);
+            rolled[i * 3 + 1] = oy * cosRoll + (axisZ * ox - axisX * oz) * sinRoll + axisY * projection * (1.0F - cosRoll);
+            rolled[i * 3 + 2] = oz * cosRoll + (axisX * oy - axisY * ox) * sinRoll + axisZ * projection * (1.0F - cosRoll);
+        }
         double x = Mth.lerp(partialTick, this.xo, this.x);
         double y = Mth.lerp(partialTick, this.yo, this.y);
         double z = Mth.lerp(partialTick, this.zo, this.z);
@@ -106,10 +122,9 @@ public class ZenithParticle extends TextureSheetParticle {
         float[] front = new float[12];
         float[] back = new float[12];
         for (int i = 0; i < 4; i++) {
-            Vec3 corner = this.corners[i];
-            float cx = hx + (float) corner.x * size;
-            float cy = hy + (float) corner.y * size;
-            float cz = hz + (float) corner.z * size;
+            float cx = hx + rolled[i * 3] * size;
+            float cy = hy + rolled[i * 3 + 1] * size;
+            float cz = hz + rolled[i * 3 + 2] * size;
             front[i * 3] = cx + dx;
             front[i * 3 + 1] = cy + dy;
             front[i * 3 + 2] = cz + dz;

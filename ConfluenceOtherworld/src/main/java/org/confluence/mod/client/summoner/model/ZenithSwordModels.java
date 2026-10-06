@@ -11,8 +11,9 @@ public final class ZenithSwordModels {
     private ZenithSwordModels() {
     }
 
-    private static ResourceLocation modelId(Zenith.RenderType type) {
-        return Confluence.asResource("projectile/zenith/" + type.textureName());
+    public static ResourceLocation modelId(Zenith.RenderType type) {
+        String path = type.getTexture().getPath();
+        return Confluence.asResource("projectile/zenith/" + path.substring(path.lastIndexOf('/') + 1));
     }
 
     public static void register(ModelEvent.RegisterAdditional event) {

@@ -6,48 +6,46 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.common.summoner.util.EasingCurve;
 import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Zenith extends Projectile implements IEntityCollision<Zenith> {
 
-    public Vec3 initialPosition = Vec3.ZERO;
+    public Vec3 offest;
+    public LivingEntity target;
     public RenderType renderType;
+    public Random random;
     public float alpha;
-
-    /**
-     * 剑型的同步编解码器。源实现放在 {@code SummonerStreamCodecs.ZENITH_RENDER_TYPE}，
-     * 由 {@code StreamCodec.composite(LyraStreamCodecs.STRING_UTF8, Enum::name, RenderType::valueOf)} 构成，
-     * 这里用 PortLib 的字符串编解码器等价实现（同样是按 name 编码）。
-     */
+    public static final EasingCurve ZENITH_EASING_CURVE = EasingCurve.bezier().control(0.1f).control(0.2f).control(0.3f).control(0.4f).control(0.45f).control(0.475f).control(0.5f).control(0.5f).control(0.525f).control(0.575f).control(0.6f).control(0.7f).control(0.8f).control(0.9f).control(1f).build();
     private static final PortStreamCodec<ByteBuf, RenderType> ZENITH_RENDER_TYPE =
             PortByteBufCodecs.STRING_UTF8.map(RenderType::valueOf, Enum::name);
 
     public Zenith() {
         super(SummonerAttachmentEntityTypes.ZENITH);
-        setMaxTickCount(30);
         setPhysics(false);
-        Random random = new Random();
+        this.random = new Random();
         this.renderType = RenderType.values()[random.nextInt(RenderType.values().length)];
-        this.alpha = random.nextFloat(0.105f, 1);
-        if (alpha > 0.8) {
+        this.alpha = random.nextFloat(0.2f, 1);
+        if (alpha > 0.75) {
             alpha = 1;
         }
     }
@@ -55,96 +53,114 @@ public class Zenith extends Projectile implements IEntityCollision<Zenith> {
     @Override
     protected void registerSyncFields(SyncFieldDispatcher fields) {
         super.registerSyncFields(fields);
-        fields.field(LibStreamCodecUtils.VEC_3, () -> initialPosition, value -> initialPosition = value);
+        fields.field(LibStreamCodecUtils.VEC_3, () -> offest, value -> offest = value);
         fields.field(ZENITH_RENDER_TYPE, () -> renderType, value -> renderType = value);
+        fields.field(PortByteBufCodecs.INT, () -> target != null ? target.getId() : -1, (level, value) -> {
+            if (value != -1 && level.getEntity(value) instanceof LivingEntity living) {
+                target = living;
+            } else {
+                target = null;
+            }
+        });
     }
 
     @Override
     public void tick() {
         super.tick();
-        ArrayList<PathNode> pathNodes = getHistoryNodes();
-        historyNodes.clear();
-        historyNodes.addAll(pathNodes);
-        RandomSource random = getRandom();
-        if (tickCount > 2 && tickCount < 9 && random.nextFloat() < 0.5f) {
-            PathNode last = historyNodes.get(0);
-            int count = random.nextIntBetweenInclusive(1, 5);
-            for (int i = 0; i < count; i++) {
-                Vec3 pos = getCurrentPathNode().pos();
-                Vec3 direction = pos.subtract(last.pos());
-                pos = pos.add(direction.scale(random.nextFloat() * 2)).offsetRandom(random, 0.5f);
-                // 天顶剑粒子：颜色跟随剑型，大小/速度/阻力按范围随机，寿命固定 10 tick 自然消退
-                float scale = Mth.nextFloat(random, 0.02F, 0.04F);
-                float speed = Mth.nextFloat(random, 0.6F, 1.2F);
-                float friction = Mth.nextFloat(random, 0.35F, 0.7F);
-                int life = random.nextIntBetweenInclusive(5, 40);
-                ParticleHelper.create(owner.level())
-                        .type(new ZenithParticleOptions(renderType.getColor(), life, friction, scale))
-                        .pos(pos.add(owner.getPosition(1.0F).subtract(initialPosition)))
-                        .velocity(direction.normalize().scale(speed))
-                        .count(0)
-                        .emit();
+        setCurrentPathNode(getRenderNode(1));
+        if (tickCount < 8) {
+            int length = Mth.clamp((int) (offest.length()), 2, 16);
+            for (int i = 1; i < length; i++) {
+                float partialTick = (float) i / length;
+                int count = random.nextInt(-6, 2);
+                for (int j = 0; j < count; j++) {
+                    PathNode currentNode = getRenderNode(partialTick);
+                    double factor = 1.15 * random.nextFloat(-2, 0);
+                    Vec3 currentPos = currentNode.pos().add(Vec3.directionFromRotation(currentNode.pitch(), currentNode.yaw()).normalize().scale(factor));
+                    PathNode nextNode = getRenderNode(Math.min(partialTick + 0.01f, 1));
+                    Vec3 nextPos = nextNode.pos().add(Vec3.directionFromRotation(nextNode.pitch(), nextNode.yaw()).normalize().scale(factor));
+                    Vec3 subtract = nextPos.subtract(currentPos);
+                    float range = 0.1f;
+                    Vec3 velocity = nextPos.add(subtract.normalize()).add(random.nextFloat(-range, range), random.nextFloat(-range, range), random.nextFloat(-range, range)).subtract(currentPos).normalize();
+                    float scale = random.nextFloat(0.01f, 0.03f);
+                    float speed = random.nextFloat(0.3F, 0.6F);
+                    float friction = random.nextFloat(0.5F, 0.75F);
+                    int life = random.nextInt(5, 15) + i * 2;
+                    ParticleHelper.create(getLevel())
+                            .type(new ZenithParticleOptions(renderType.getColor(), life, friction, scale))
+                            .pos(currentPos)
+                            .velocity(velocity.scale(speed))
+                            .count(0)
+                            .emit();
+                }
             }
         }
     }
 
     @Override
     public boolean isAlive() {
-        return isExecutingPath();
+        return tickCount <= 11;
+    }
+
+    public PathNode getRenderNodeFromTickCount(float partialTick) {
+        int tickCount = this.tickCount;
+        setTickCount(0);
+        PathNode renderNode = getRenderNode(partialTick);
+        setTickCount(tickCount);
+        return renderNode;
+    }
+
+    public Ellipse getRenderEllipse() {
+        return getRenderEllipse(FMLEnvironment.dist.isClient() ? PortDeltaTicker.INSTANCE.getGameTimeDeltaPartialTick(true) : 1.0F);
+    }
+
+    public Ellipse getRenderEllipse(float partialTick) {
+        Vec3 currentPos = owner.getPosition(partialTick).add(0, owner.getBbHeight() / 2, 0);
+        Vec3 pointA = target != null ? target.getPosition(partialTick).add(0, target.getBbHeight() / 2, 0) : currentPos.add(offest);
+        Vec3 pointB = currentPos.add(currentPos.subtract(pointA).normalize().scale(4));
+        if (pointA.distanceTo(pointB) < 8) {
+            pointA = pointB.add(pointA.subtract(pointB).normalize().scale(8));
+        }
+        RandomSource random = getRandom();
+        random.setSeed(getUuid().hashCode());
+        Vec3 normal = Ellipse.randomPlaneNormal(random, pointA, pointB);
+        float curvature = 0.1f + random.nextFloat() * 0.4f + Math.min(0.6f, 6 / (float) (pointA.distanceTo(pointB) + 1));
+        return new Ellipse(pointA, pointB, normal, curvature);
     }
 
     @Override
     public PathNode getRenderNode(float partialTick) {
-        PathNode renderNode = super.getRenderNode(partialTick);
-        Vec3 currentPos = owner.getPosition(partialTick);
-        return renderNode.modifyPos(renderNode.pos().add(currentPos.subtract(initialPosition)));
-    }
-
-    @Override
-    public ArrayList<PathNode> getHistoryNodes() {
-        ArrayList<PathNode> pathNodes = super.getHistoryNodes();
-        if (tickCount > 0) {
-            ArrayList<PathNode> list = new ArrayList<>();
-            float partialTick = getPartialTick();
-            Vec3 currentPos = owner.getPosition(partialTick);
-            for (PathNode pathNode : pathNodes) {
-                list.add(pathNode.modifyPos(pathNode.pos().add(currentPos.subtract(initialPosition))));
-            }
-            return list;
+        Ellipse renderEllipse = getRenderEllipse();
+        float progress = getProgress(partialTick);
+        Vec3 point = renderEllipse.getPoint(progress);
+        Vec3 focusNearA = renderEllipse.getFocusNearA();
+        Vec3 focusNearB = renderEllipse.getFocusNearB();
+        Vec3 normal = renderEllipse.getPlaneNormal();
+        Vec3 centerPoint;
+        if (progress < 0.5) {
+            centerPoint = focusNearB.lerp(focusNearA, progress * 2);
+        } else {
+            centerPoint = focusNearA.lerp(focusNearB, progress * 2 - 1);
         }
-        return pathNodes;
+        Vec3 tipPoint = centerPoint.lerp(renderEllipse.getPoint(progress + 0.5f), 0.25f);
+        Vec3 tipDir = point.subtract(tipPoint).normalize();
+        return getEulerNode(point, tipDir, normal);
     }
 
-    /**
-     * 取当前部分刻（partialTick），等价于源实现的 {@code RenderUtil.getPartialTick()}：
-     * 客户端取渲染插值，其余情况返回 1（即实体当前位置）。
-     * <p>
-     * 1.20.1 的 common 侧没有 partialTick 来源（{@code client/summoner/RenderUtil} 不能引入 common），
-     * 因此保留源实现的 dist 判断：只在实际客户端环境下调用客户端单例
-     * {@link PortDeltaTicker}（其内部即 {@code Minecraft.getInstance().timer}，与源实现
-     * {@code Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(true)} 一致）。
-     * 客户端类引用放在嵌套类里，专用服务端不会加载它。
-     * </p>
-     */
-    private static float getPartialTick() {
-        return FMLEnvironment.dist.isClient() ? ClientPartialTick.get() : 1.0F;
-    }
-
-    /** 客户端专用持有者：仅在 dist 为客户端时被加载。 */
-    private static final class ClientPartialTick {
-        private static float get() {
-            return PortDeltaTicker.INSTANCE.getGameTimeDeltaPartialTick(true);
-        }
+    public float getProgress(float partialTick) {
+        float progress = (tickCount + partialTick) / 9;
+        progress = ZENITH_EASING_CURVE.apply(progress);
+        return progress;
     }
 
     @Override
     public @NotNull AABB getHitbox() {
-        return new AABB(-1, -0.5, -1.5, 1, 0.5, 2);
+        return new AABB(-0.35, -0.1, -3.2, 0.35, 0.1, 0.2);
     }
 
     @Override
-    public boolean isValidCollisionTarget(Zenith entity, LivingEntity target) {
-        return owner != target;
+    public boolean isValidCollisionTarget(Zenith zenith, LivingEntity target) {
+        return owner != target && !(target instanceof Player player && (player.isSpectator() || player.isCreative()));
     }
 
     @Override
@@ -154,62 +170,52 @@ public class Zenith extends Projectile implements IEntityCollision<Zenith> {
         }
     }
 
-    /**
-     * 天顶剑轨迹所使用的剑类型，颜色为各自轨迹的渲染颜色。
-     */
+    @Override
+    public void entityCollision() {
+        if (canCollideAttack()) {
+            tickCount--;
+            int samples = 16;
+            PathNode last = getRenderNode(0);
+            for (int i = 1; i <= samples; i++) {
+                float progress = (float) i / samples;
+                PathNode current = getRenderNode(progress);
+                setCurrentPathNode(last);
+                historyNodes.set(0, current);
+                IEntityCollision.super.entityCollision();
+                last = current;
+            }
+            setCurrentPathNode(last);
+            tickCount++;
+        }
+    }
+
     public enum RenderType {
-        // 铜短剑 - 浅橙色 (#EBA687)
         COPPER_SHORT_SWORD("copper_short_sword", 0xEBA687),
-        // 魔光剑 - 紫色 (#7A42BF)
         LIGHTS_BANE("lights_bane", 0x7A42BF),
-        // 村正 - 海军蓝 (#384ED2)
         MURAMASA("muramasa", 0x384ED2),
-        // 泰拉魔刃 - 亮薄荷绿 (#B2FFB4)
         TERRA_BLADE("terra_blade", 0xB2FFB4),
-        // 血腥屠刀 - 红色 (#ED1C24)
         BLOOD_BUTCHERER("blood_butcherer", 0xED1C24),
-        // 星怒 - 粉色 (#EC3EC0)
         STARFURY("starfury", 0xEC3EC0),
-        // 附魔剑 - 浅蓝色 (#5B9EE8)
         ENCHANTED_SWORD("enchanted_sword", 0x5B9EE8),
-        // 养蜂人 - 黄色 (#FFE745)
         BEE_KEEPER("bee_keeper", 0xFFE745),
-        // 草剑 - 绿色 (#6BCB00)
         BLADE_OF_GRASS("blade_of_grass", 0x6BCB00),
-        // 火山 - 橙色 (#FE9E23)
         FIERY_GREATSWORD("fiery_greatsword", 0xFE9E23),
-        // 永夜刃 - 紫色 (#B336C9)
         NIGHTS_EDGE("nights_edge", 0xB336C9),
-        // 真永夜刃 - 紫色 (#B336C9)
         TRUE_NIGHTS_EDGE("true_nights_edge", 0xB336C9),
-        // 断钢剑 - 黄色 (#ECC813)
         EXCALIBUR("excalibur", 0xECC813),
-        // 真断钢剑 - 黄色 (#ECC813)
         TRUE_EXCALIBUR("true_excalibur", 0xECC813),
-        // 无头骑士剑 - 橙色 (#FC5F04)
         THE_HORSEMANS_BLADE("the_horsemans_blade", 0xFC5F04),
-        // 种子弯刀 - 绿色 (#8FD71D)
         SEEDLER("seedler", 0x8FD71D),
-        // 泰拉刃 - 浅绿色 (#50DE7A)
         TRUE_TERRA_BLADE("true_terra_blade", 0x50DE7A),
-        // 波涌之刃 - 青色 (#54EAF5)
         INFLUX_WAVER("influx_waver", 0x54EAF5),
-        // 狂星之怒 - 粉色 (#ED3F85)
         STAR_WRATH("star_wrath", 0xED3F85),
-        // 彩虹猫之刃 - 浅粉色 (#FEC2FA)
         MEOWMERE("meowmere", 0xFEC2FA),
-        // 天顶剑 - 亮薄荷绿 (#B2FFB4)
         ZENITH("zenith", 0xB2FFB4);
 
         private final ResourceLocation texture;
         private final int color;
 
-        /** 贴图/模型目录名，同时作为 JSON 模型注册用的模型 id 路径段。 */
-        private final String textureName;
-
         RenderType(String textureName, int color) {
-            // 与 assets/confluence/lyra_model/json/projectile/zenith/<name>/<name>.png 一一对应
-            this.textureName = textureName;
             this.texture = Confluence.asResource("lyra_model/json/projectile/zenith/" + textureName + "/" + textureName);
             this.color = color;
         }
@@ -218,16 +224,11 @@ public class Zenith extends Projectile implements IEntityCollision<Zenith> {
             return texture;
         }
 
-        public String textureName() {
-            return textureName;
-        }
-
         public int getColor() {
             return color;
         }
 
         public int getColorARBG(float alpha) {
-            // 1.20.1 的 FastColor.ARGB32 没有 (alpha, rgb) 重载，按位拆解后调用四参版本，结果与源实现一致
             return FastColor.ARGB32.color((int) (alpha * 255), FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color));
         }
     }

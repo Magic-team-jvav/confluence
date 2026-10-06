@@ -1,38 +1,21 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.SummonerHelper;
-import org.confluence.mod.common.summoner.minion.FinchMinion;
-import org.confluence.mod.common.summoner.minion.HornetMinion;
-import org.confluence.mod.common.summoner.minion.IronGolemMinion;
-import org.confluence.mod.common.summoner.minion.MinionSlotType;
-import org.confluence.mod.common.summoner.minion.SculkWispMinion;
-import org.confluence.mod.common.summoner.minion.SanguineBatMinion;
-import org.confluence.mod.common.summoner.minion.DeadlySphereMinion;
-import org.confluence.mod.common.summoner.minion.DesertTigerMinion;
-import org.confluence.mod.common.summoner.minion.EyeLaserTurretMinion;
-import org.confluence.mod.common.summoner.minion.ImpMinion;
-import org.confluence.mod.common.summoner.minion.RuinRelicMinion;
-import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
-import org.confluence.mod.common.summoner.minion.SlimeMinion;
-import org.confluence.mod.common.summoner.minion.SnowFlinxMinion;
-import org.confluence.mod.common.summoner.minion.SpiderMinion;
-import org.confluence.mod.common.summoner.minion.VampireFrogMinion;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
+import org.confluence.mod.common.summoner.minion.*;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -40,9 +23,6 @@ public class SummonItems {
     public static void init() {}
     // 取wiki 75%的数值为基础再调
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
-
-    public static final PortDeferredItem<BaseSwordItem> ZENITH = ITEMS.register("zenith",
-            () -> new BaseSwordItem(Tiers.NETHERITE, ModRarity.RED, 125, 1.6F));
 
     public static final PortDeferredItem<SummonerWeaponItem<FinchMinion>> FINCH_STAFF = ITEMS.register("finch_staff",
             () -> new SummonerWeaponItem<>(

@@ -70,7 +70,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MountItems.BLESSED_APPLE.get(), "Blessed Apple");
         add(MountItems.SUPERHEATED_BLOOD.get(), "Superheated Blood");
         add("tooltip.confluence.rideable_item.desc", "Press %s to ride.");
-        add(SummonItems.ZENITH.get(), "Zenith");
+        add(SwordItems.ZENITH.get(), "Zenith");
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
         add("summon.confluence.finch", "Finch");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");

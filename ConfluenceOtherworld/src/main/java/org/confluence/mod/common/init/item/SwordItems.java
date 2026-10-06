@@ -254,6 +254,8 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> WHITE_PHASESABER = register("white_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.WHITE));
     public static final PortDeferredItem<BaseSwordItem> PINK_PHASESABER = register("pink_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.PINK));
 
+    public static final PortDeferredItem<BaseSwordItem> ZENITH = ITEMS.register("zenith", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.RED, 125, 1.6F));
+
     // 特殊剑
     public static final PortDeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER,
             () -> SwordDefinition.builder()

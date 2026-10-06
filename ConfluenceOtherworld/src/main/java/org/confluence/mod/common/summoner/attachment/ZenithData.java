@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.item.SummonItems;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.projectile.Zenith;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -33,7 +33,7 @@ public class ZenithData {
     }
 
     public void tick() {
-        if (owner.getMainHandItem().is(SummonItems.ZENITH)) {
+        if (owner.getMainHandItem().is(SwordItems.ZENITH)) {
             if (power > 3.33f) {
                 playZenithSound();
                 Vec3 lookAngle = owner.getLookAngle();
@@ -107,7 +107,7 @@ public class ZenithData {
     }
 
     public boolean swing() {
-        if (owner.getMainHandItem().is(SummonItems.ZENITH)) {
+        if (owner.getMainHandItem().is(SwordItems.ZENITH)) {
             owner.swing(InteractionHand.MAIN_HAND, true);
             owner.resetAttackStrengthTicker();
             return true;

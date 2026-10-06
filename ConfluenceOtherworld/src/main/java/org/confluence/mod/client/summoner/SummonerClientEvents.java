@@ -12,6 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
 import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
@@ -29,17 +31,15 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
-import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
-import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 
 public final class SummonerClientEvents {
 
     public static void init() {
-        PortEventHandler.addListener((RegisterParticleProvidersEvent event) ->
-                event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new));
-        PortEventHandler.addListener((RegisterParticleProvidersEvent event) ->
-                event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new));
-        PortEventHandler.addListener((PortItemTooltipEvent event) -> {
+        PortEventHandler.addListener((RegisterParticleProvidersEvent event) -> {
+            event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new);
+            event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new);
+        });
+        PortEventHandler.addListener((ItemTooltipEvent event) -> {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
             if (player != null && itemStack.getItem() instanceof SummonerWeaponItem<?> summonerWeaponItem) {
@@ -66,7 +66,7 @@ public final class SummonerClientEvents {
                 InfoRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, event.getPartialTick());
             }
         });
-        PortEventHandler.addListener((PortFMLClientSetupEventPort event) -> event.enqueueWork(() -> {
+        PortEventHandler.addListener((FMLClientSetupEvent event) -> event.enqueueWork(() -> {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.FINCH.get(), new FinchRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET.get(), new HornetRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
@@ -88,7 +88,7 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.ZENITH.get(), new ZenithRenderer());
         }));
         PortEventHandler.addListener((PortEntityRenderersEvent.AddLayers event) -> {
-            for (PortEntityRenderersEvent.AddLayers.PortModel skin : PortEntityRenderersEvent.AddLayers.PortModel.values()) {
+            for (PortEntityRenderersEvent.AddLayers.Model skin : PortEntityRenderersEvent.AddLayers.Model.values()) {
                 PlayerRenderer playerRenderer = event.getSkin(skin);
                 if (playerRenderer != null) {
                     playerRenderer.addLayer(new BirdNestLayer(playerRenderer));

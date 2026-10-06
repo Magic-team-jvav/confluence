@@ -1810,6 +1810,7 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.BREAKER_BLADE.get());
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
                         hardmode_broadswords.accept(SwordItems.ZENITH.get());
+                        hardmode_broadswords.accept(SwordItems.TRUE_COPPER_SHORTSWORD.get());
 
                         output.accept(SwordItems.DEVELOPER_SWORD.get());
                         output.accept(SwordItems.CROWBAR.get());

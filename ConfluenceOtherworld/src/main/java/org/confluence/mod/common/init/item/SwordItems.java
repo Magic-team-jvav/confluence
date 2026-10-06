@@ -6,6 +6,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.sword.*;
+import org.confluence.mod.common.summoner.projectile.Zenith;
 import org.confluence.mod.util.generation.variant.AboveFallenGeneration;
 import org.confluence.mod.util.generation.variant.ForwardGeneration;
 import org.confluence.mod.util.track.variant.SimpleTrack;
@@ -254,7 +256,15 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> WHITE_PHASESABER = register("white_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.WHITE));
     public static final PortDeferredItem<BaseSwordItem> PINK_PHASESABER = register("pink_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.PINK));
 
-    public static final PortDeferredItem<BaseSwordItem> ZENITH = ITEMS.register("zenith", () -> new BaseSwordItem(ModTiers.UNBREAKABLE, ModRarity.RED, 125, 1.6F));
+    public static final PortDeferredItem<ZenithItem> ZENITH = ITEMS.register("zenith", () -> new ZenithItem(ModTiers.UNBREAKABLE, ModRarity.RED, 97, 1.6F));
+    public static final PortDeferredItem<ZenithItem> TRUE_COPPER_SHORTSWORD = ITEMS.register("true_copper_shortsword", () -> new ZenithItem(ModTiers.UNBREAKABLE, ModRarity.RED, 97, 1.6F) {
+        @Override
+        public Zenith createZenith(Player owner) {
+            Zenith zenith = super.createZenith(owner);
+            zenith.renderType = Zenith.RenderType.COPPER_SHORT_SWORD;
+            return zenith;
+        }
+    });
 
     // 特殊剑
     public static final PortDeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER,

@@ -71,6 +71,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MountItems.SUPERHEATED_BLOOD.get(), "Superheated Blood");
         add("tooltip.confluence.rideable_item.desc", "Press %s to ride.");
         add(SwordItems.ZENITH.get(), "Zenith");
+        add(SwordItems.TRUE_COPPER_SHORTSWORD.get(), "True Copper Shortsword");
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
         add("summon.confluence.finch", "Finch");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");

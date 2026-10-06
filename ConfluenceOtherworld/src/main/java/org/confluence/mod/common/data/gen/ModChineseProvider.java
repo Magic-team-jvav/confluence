@@ -5265,6 +5265,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 战斗召唤物
         add(SwordItems.ZENITH.get(), "天顶剑");
+        add(SwordItems.TRUE_COPPER_SHORTSWORD.get(), "真铜短剑");
         add(SummonItems.FINCH_STAFF.get(), "雀杖");
         add("summon.confluence.finch", "小鸟");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");

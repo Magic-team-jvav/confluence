@@ -13,7 +13,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,13 +22,7 @@ import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operati
 
 @SuppressWarnings("unused")
 public interface ModPrefix {
-    default @Nullable PrefixComponent createComponent(PrefixType prefixType) {
-        return null;
-    }
-
-    default @Nullable PrefixComponent createComponent(PrefixType prefixType, ItemStack stack) {
-        return createComponent(prefixType);
-    }
+    PrefixComponent createComponent(PrefixType type, ItemStack stack);
 
     default AttributeModifier createModifier(double value, AttributeModifier.Operation operation) {
         return new AttributeModifier(LibUtils.withUniqueSuffix(getModifierId()), value, operation);
@@ -80,7 +73,7 @@ public interface ModPrefix {
                 ARCANE = register("arcane", 0, 0, 0, 0, 0, 20, 1, 0.3225F); // 奥秘
 
         @Override
-        public PrefixComponent createComponent(PrefixType prefixType) {
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (armor != 0) builder.put(Attributes.ARMOR, createModifier(armor, ADD_VALUE));
             if (criticalChance != 0.0F)
@@ -94,7 +87,7 @@ public interface ModPrefix {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
             if (movementSpeed != 0.0F)
                 builder.put(Attributes.MOVEMENT_SPEED, createModifier(movementSpeed, ADD_MULTIPLIED_TOTAL));
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana);
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana);
         }
 
         @Override
@@ -143,22 +136,25 @@ public interface ModPrefix {
                 ZEALOUS = register("zealous", 0, 0.05F, 0, 1, 0.21F); // 狂热
 
         @Override
-        public PrefixComponent createComponent(PrefixType prefixType) {
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.RANGED) {
-                    builder.put(LibAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.MAGIC) {
-                    builder.put(LibAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                AttributeModifier modifier = createModifier(attackDamage, ADD_MULTIPLIED_TOTAL);
+                if (type == PrefixType.MELEE) {
+                    builder.put(LibAttributes.getAttackDamage(), modifier);
+                } else if (type == PrefixType.RANGED) {
+                    builder.put(LibAttributes.getRangedDamage(), modifier);
+                } else if (type == PrefixType.MAGIC) {
+                    builder.put(LibAttributes.getMagicDamage(), modifier);
+                } else if (type == PrefixType.SUMMON) {
+                    builder.put(LibAttributes.getSummonDamage(), modifier);
                 }
             }
             if (criticalChance != 0.0F)
                 builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
             if (knockBack != 0.0F)
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -204,15 +200,18 @@ public interface ModPrefix {
                 NASTY = register("nasty", 0.05F, 0.1F, 0.02F, -0.1F, 1, 0.1687F); // 凶险
 
         @Override
-        public PrefixComponent createComponent(PrefixType prefixType) {
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.RANGED) {
-                    builder.put(LibAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.MAGIC) {
-                    builder.put(LibAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                AttributeModifier modifier = createModifier(attackDamage, ADD_MULTIPLIED_TOTAL);
+                if (type == PrefixType.MELEE) {
+                    builder.put(LibAttributes.getAttackDamage(), modifier);
+                } else if (type == PrefixType.RANGED) {
+                    builder.put(LibAttributes.getRangedDamage(), modifier);
+                } else if (type == PrefixType.MAGIC) {
+                    builder.put(LibAttributes.getMagicDamage(), modifier);
+                } else if (type == PrefixType.SUMMON) {
+                    builder.put(LibAttributes.getSummonDamage(), modifier);
                 }
             }
             if (attackSpeed != 0) {
@@ -224,7 +223,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -278,7 +277,7 @@ public interface ModPrefix {
                 LEGENDARY2 = new Melee("legendary2", 0.17F, 0.0F, 0.08F, 0.0F, 0.17F, 2, 2.0985F); // todo 泰拉悠悠球独享传奇
 
         @Override
-        public PrefixComponent createComponent(PrefixType prefixType) {
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
                 builder.put(LibAttributes.getAttackDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
@@ -295,7 +294,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -344,7 +343,7 @@ public interface ModPrefix {
                 UNREAL = register("unreal", 0.15F, 0.1F, 0.05F, 0.1F, 0.15F, 2, 2.0985F); // 虚幻
 
         @Override
-        public PrefixComponent createComponent(PrefixType prefixType) {
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
                 builder.put(LibAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
@@ -361,7 +360,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0.0F, 0);
         }
 
         @Override
@@ -410,11 +409,10 @@ public interface ModPrefix {
                 MYTHICAL = register("mythical", 0.15F, 0.1F, 0.05F, -0.1F, 0.15F, 2, 2.0985F); // 神话
 
         @Override
-        public PrefixComponent createComponent(PrefixType prefixType) {
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
                 builder.put(LibAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                builder.put(LibAttributes.getSummonDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
@@ -425,7 +423,7 @@ public interface ModPrefix {
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             }
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), manaCost, 0);
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), manaCost, 0);
         }
 
         @Override
@@ -473,11 +471,11 @@ public interface ModPrefix {
                 SKITTISH = register("skittish", -0.15F, 0, 0, -0.10F, -2, -0.4148F); // 胆小
 
         @Override
-        public PrefixComponent createComponent(PrefixType prefixType) {
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             var builder = ImmutableListMultimap.<Holder<Attribute>, AttributeModifier>builder();
             if (attackDamage != 0)
                 builder.put(LibAttributes.getSummonDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-            return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0, 0);
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0, 0);
         }
 
         @Override

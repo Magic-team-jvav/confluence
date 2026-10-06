@@ -81,7 +81,6 @@ public final class PrefixUtils {
         return PrefixType.UNKNOWN;
     }
 
-    ///
     public static int calculateUseTime(Player player, int baseTicks) {
         if (baseTicks <= 0) return 0;
         double baseSpeed = player.getAttributeBaseValue(Attributes.ATTACK_SPEED);
@@ -92,18 +91,17 @@ public final class PrefixUtils {
         return Math.max(1, (int) Math.ceil(baseTicks * baseSpeed / attackSpeed));
     }
 
-    public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        ModPrefix modPrefix = prefixType.randomPrefix(random);
+    public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack stack, PrefixType type) {
+        ModPrefix modPrefix = type.randomPrefix(random, stack);
         if (modPrefix.canBeMercy() && random.nextFloat() < MERCY) {
-            unknown(itemStack);
-        } else {
-            return setAndUpdate(itemStack, prefixType, modPrefix);
+            unknown(stack);
+            return null;
         }
-        return null;
+        return setAndUpdate(stack, type, modPrefix);
     }
 
-    public static @Nullable PrefixComponent getPrefix(ItemStack itemStack) {
-        return itemStack.isEmpty() ? null : itemStack.get(ModDataComponentTypes.PREFIX);
+    public static @Nullable PrefixComponent getPrefix(ItemStack stack) {
+        return stack.isEmpty() ? null : stack.get(ModDataComponentTypes.PREFIX);
     }
 
     /// 取实体在指定属性上的加成，并剔除手持物品自身对该属性的贡献。
@@ -128,33 +126,28 @@ public final class PrefixUtils {
         return value;
     }
 
-    public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack) {
-        PrefixType prefixType = getPrefixType(itemStack);
-        if (prefixType != PrefixType.UNKNOWN) {
-            return random(random, itemStack, prefixType);
+    public static @Nullable PrefixComponent random(RandomSource random, ItemStack stack) {
+        PrefixType type = getPrefixType(stack);
+        if (type != PrefixType.UNKNOWN) {
+            return setAndUpdate(stack, type, type.randomPrefix(random, stack));
         }
         return null;
     }
 
-    public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        return setAndUpdate(itemStack, prefixType, prefixType.randomPrefix(random));
-    }
+    public static PrefixComponent setAndUpdate(ItemStack stack, PrefixType type, ModPrefix prefix) {
+        PrefixComponent component = prefix.createComponent(type, stack);
+        stack.set(ModDataComponentTypes.PREFIX, component);
 
-    public static @Nullable PrefixComponent setAndUpdate(ItemStack itemStack, PrefixType prefixType, ModPrefix modPrefix) {
-        if (prefixType == null) return null;
-        PrefixComponent component = modPrefix.createComponent(prefixType, itemStack);
-        itemStack.set(ModDataComponentTypes.PREFIX, component);
-
-        int tier = ModRarity.TIER.inverse().getOrDefault(ModRarity.getRarity(itemStack, true), -2);
+        int tier = ModRarity.TIER.inverse().getOrDefault(ModRarity.getRarity(stack, true), -2);
         if (tier > -2) {
-            tier += modPrefix.tier();
+            tier += prefix.tier();
             if (tier < -1) tier = -1;
             else if (tier > 11) tier = 11;
         }
-        itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.TIER.get(tier));
-        int value = ValueComponent.getValue(itemStack, 50, true);
-        float finalValue = value + value * modPrefix.value();
-        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) finalValue));
+        stack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.TIER.get(tier));
+        int value = ValueComponent.getValue(stack, 50, true);
+        float finalValue = value + value * prefix.value();
+        stack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) finalValue));
         return component;
     }
 
@@ -173,6 +166,7 @@ public final class PrefixUtils {
         if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }
+        // todo 心情
         return price / 3;
     }
 }

@@ -2,6 +2,7 @@ package org.confluence.mod.common.component.prefix;
 
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.Util;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.tags.ItemTags;
@@ -13,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.YoyoItems;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -110,7 +110,7 @@ public enum PrefixType implements StringRepresentable {
         }
 
         @Override
-        public ModPrefix randomPrefix(RandomSource random) {
+        public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
             throw new UnsupportedOperationException();
         }
 
@@ -158,13 +158,8 @@ public enum PrefixType implements StringRepresentable {
         return available;
     }
 
-    public ModPrefix randomPrefix(RandomSource random) {
-        return available[random.nextInt(available.length)];
-    }
-
-    ///
     public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
-        return randomPrefix(random);
+        return Util.getRandom(available, random);
     }
 
     public abstract @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack);
@@ -178,7 +173,7 @@ public enum PrefixType implements StringRepresentable {
     }
 
     @Override
-    public @NotNull String getSerializedName() {
+    public String getSerializedName() {
         return name().toLowerCase(Locale.ROOT);
     }
 

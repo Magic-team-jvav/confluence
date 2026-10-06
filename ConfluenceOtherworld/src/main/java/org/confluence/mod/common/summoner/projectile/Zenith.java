@@ -13,12 +13,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.util.EasingCurve;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +27,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 import java.util.List;
 import java.util.Random;
 
-public class Zenith extends Projectile implements IEntityCollision<Zenith> {
+public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith> {
 
     public Vec3 offest;
     public LivingEntity target;
@@ -37,12 +35,10 @@ public class Zenith extends Projectile implements IEntityCollision<Zenith> {
     public Random random;
     public float alpha;
     public static final EasingCurve ZENITH_EASING_CURVE = EasingCurve.bezier().control(0.1f).control(0.2f).control(0.3f).control(0.4f).control(0.45f).control(0.475f).control(0.5f).control(0.5f).control(0.525f).control(0.575f).control(0.6f).control(0.7f).control(0.8f).control(0.9f).control(1f).build();
-    private static final PortStreamCodec<ByteBuf, RenderType> ZENITH_RENDER_TYPE =
-            PortByteBufCodecs.STRING_UTF8.map(RenderType::valueOf, Enum::name);
+    private static final PortStreamCodec<ByteBuf, RenderType> ZENITH_RENDER_TYPE = PortByteBufCodecs.STRING_UTF8.map(RenderType::valueOf, Enum::name);
 
     public Zenith() {
         super(SummonerAttachmentEntityTypes.ZENITH);
-        setPhysics(false);
         this.random = new Random();
         this.renderType = RenderType.values()[random.nextInt(RenderType.values().length)];
         this.alpha = random.nextFloat(0.2f, 1);
@@ -165,13 +161,6 @@ public class Zenith extends Projectile implements IEntityCollision<Zenith> {
     }
 
     @Override
-    public void onCollisionAttack(List<HitContext> hitContexts) {
-        for (HitContext hit : hitContexts) {
-            attack(hit.entity(), getDamage(), 1);
-        }
-    }
-
-    @Override
     public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
         if (!Immunity.isActive(this, target)) {
             DamageSource damageSource = owner.damageSources().playerAttack(owner);
@@ -184,6 +173,13 @@ public class Zenith extends Projectile implements IEntityCollision<Zenith> {
                 Immunity.apply(this, damageSource, target);
             }
             immunityDuration = 0;
+        }
+    }
+
+    @Override
+    public void onCollisionAttack(List<HitContext> hitContexts) {
+        for (HitContext hit : hitContexts) {
+            attack(hit.entity(), getDamage(), 1);
         }
     }
 

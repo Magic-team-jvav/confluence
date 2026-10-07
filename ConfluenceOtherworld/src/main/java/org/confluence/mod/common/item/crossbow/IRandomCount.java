@@ -10,7 +10,7 @@ public interface IRandomCount {
     IRandomCount DEFAULT = create(1);
     IRandomCount DEFAULT_EMPTY = create(0);
 
-    float getCount(@NotNull RandomSource randomSource);
+    float getCount(RandomSource randomSource);
 
     float getMaxCount();
 
@@ -35,8 +35,6 @@ public interface IRandomCount {
             return String.valueOf(nonRandom.getCount());
         } else if (randomCount instanceof RangeRandom random) {
             return random.getMinCount() + "~" + random.getMaxCount();
-        } else if (randomCount == null) {
-            return "";
         } else {
             return randomCount.getString();
         }

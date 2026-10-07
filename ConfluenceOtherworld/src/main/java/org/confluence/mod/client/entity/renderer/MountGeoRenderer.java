@@ -8,17 +8,11 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
+import org.confluence.mod.common.entity.mount.RideableUnicornMountEntity;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.GeoBone;
 
-/// 为 1.20 轻量坐骑实体补齐 GeckoLib 的水平朝向渲染。
-///
-/// 1.21 坐骑继承自 {@code Mob}，GeckoLib 会自动从 {@code yBodyRot} 读取模型
-/// 朝向。1.20 重写后的临时坐骑继承自普通 {@code Entity}，GeckoLib 4.8.3 对这类
-/// 实体把身体朝向固定为零，即使实体的 {@code YRot} 已正确同步，模型也不会转动。
-/// 本渲染器只为坐骑补回身体朝向，不改变通用实体渲染器，避免影响已经自行处理旋转的
-/// 弹幕和其他非生物实体。存在玩家乘客时优先读取玩家已经过帧间插值的视角朝向，防止
-/// 本地连续鼠标输入与每 tick 更新的坐骑实体朝向互相追赶；没有乘客时才退回实体朝向。
+/// 为普通 Entity 坐骑补齐身体朝向；独角兽单独使用平滑转向与奔跑侧倾。
 public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> extends GeoSpecialSlimeRenderer<T> {
     public MountGeoRenderer(EntityRendererProvider.Context context, ExplicitGeoModel<T> model) {
         super(context, model);
@@ -36,6 +30,8 @@ public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> e
 
     @Override
     protected float getRenderYaw(T mount, float partialTick) {
+        if (mount instanceof RideableUnicornMountEntity unicorn)
+            return unicorn.getRenderBodyYaw(partialTick);
         return mount.getFirstPassenger() instanceof Player player ? player.getViewYRot(partialTick)
                 : Mth.rotLerp(partialTick, mount.yRotO, mount.getYRot());
     }
@@ -45,6 +41,9 @@ public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> e
         super.applyRotations(mount, poseStack, ageInTicks, getRenderYaw(mount, partialTick), partialTick);
         if (mount.tiltsWithMovement()) {
             poseStack.mulPose(Axis.XP.rotationDegrees(Mth.rotLerp(partialTick, mount.xRotO, mount.getXRot())));
+        }
+        if (mount instanceof RideableUnicornMountEntity unicorn) {
+            poseStack.mulPose(Axis.ZP.rotationDegrees(unicorn.getRenderBank(partialTick)));
         }
     }
 

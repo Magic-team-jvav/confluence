@@ -594,6 +594,9 @@ add("bestiary.entity.confluence.pirate_parrot.desc", "A pirate's best friend, th
 //        add("bestiary.entity.confluence.flying_dutchman.desc", "When the pirates face strong opposition in their pillaging raids, they bring their majestic floating galleon as backup. Cannons away!");
 //        add("bestiary.entity.confluence.brain_scrambler.desc", "These Martian soldiers brandish crude laser weaponry that releases dangerous short-range radiation, hence the protective helmets.");
         add("bestiary.entity.confluence.ray_gunner.desc", "An elite Martian marksman that commonly rides a Scutlix and continues fighting on foot if its mount falls.");
+        add("bestiary.entity.confluence.brain_scrambler.desc", "A Martian gunner whose bolts scramble the victim's sense of direction.");
+        add("bestiary.entity.confluence.gray_grunt.desc", "A heavily built Martian shock trooper trained for close combat.");
+        add("bestiary.entity.confluence.gigazapper.desc", "A Martian assault soldier who charges an electrified energy spear.");
 //        add("bestiary.entity.confluence.martian_engineer.desc", "Martian soldiers who lack combat ability may instead be deployed for their mechanical aptitude, constructing turrets on the field.");
         add("bestiary.entity.confluence.martian_officer.desc", "A tactical officer protected by a regenerating personal shield.");
 //        add("bestiary.entity.confluence.gigazapper.desc", "Martians who show great potential in close combat are equipped with powerful energy spears that can atomize anything.");
@@ -1412,6 +1415,9 @@ add("bestiary.entity.confluence.pirate_parrot.desc", "A pirate's best friend, th
 //        add("bestiary.entity.confluence.flying_dutchman.desc", "当海盗在劫掠行动中遭遇顽强抵抗时，便会召唤荷兰飞盗船这一雄伟的浮空帆船作为后援——准备开火！");
 //        add("bestiary.entity.confluence.brain_scrambler.desc", "扰脑怪是火星军队的士兵，装备着简陋的激光武器，这类武器会释放危险的短程辐射，因此它们必须佩戴防护头盔。");
         add("bestiary.entity.confluence.ray_gunner.desc", "常骑乘鳞甲怪作战的火星精英射手；坐骑倒下后仍会徒步继续战斗。");
+        add("bestiary.entity.confluence.brain_scrambler.desc", "其弹丸会扰乱受害者方向感的火星枪手。");
+        add("bestiary.entity.confluence.gray_grunt.desc", "体格强壮、擅长近身战斗的火星突击兵。");
+        add("bestiary.entity.confluence.gigazapper.desc", "能够蓄力刺出带电能量矛的火星突击兵。");
 //        add("bestiary.entity.confluence.martian_engineer.desc", "火星工程师是战斗能力较弱的火星士兵，会凭借自身的机械天赋被派往战场，负责建造防御炮塔。");
         add("bestiary.entity.confluence.martian_officer.desc", "受到可再生个人护盾保护的火星战术军官。");
 //        add("bestiary.entity.confluence.gigazapper.desc", "电击怪是在近距离战斗中展现出巨大潜力的火星人，装备着能将物体原子化的强大能量长矛。");

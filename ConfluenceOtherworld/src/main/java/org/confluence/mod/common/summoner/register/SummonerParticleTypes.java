@@ -9,6 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.particle.GenericParticleOptions;
+import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
 
 import java.util.function.Supplier;
 
@@ -18,6 +19,9 @@ public final class SummonerParticleTypes {
     public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Confluence.MODID);
 
     public static final Supplier<ParticleType<GenericParticleOptions>> GENERIC = register("generic", true, GenericParticleOptions.CODEC, GenericParticleOptions.STREAM_CODEC);
+
+    /// 天顶剑粒子：水滴形头部与四棱锥拖尾。
+    public static final Supplier<ParticleType<ZenithParticleOptions>> ZENITH = register("zenith", true, ZenithParticleOptions.CODEC, ZenithParticleOptions.STREAM_CODEC);
 
     /// 与 `ModParticleTypes` 里的同名辅助方法同形：1.21 的 `ParticleType` 是抽象类，
     /// `codec()` / `streamCodec()` 必须逐个实例覆写。

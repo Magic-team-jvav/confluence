@@ -102,6 +102,10 @@ public final class RenameEvents {
                 .register("confluence:ebony_cattails_body", "confluence:ebony_cattail_block")
                 .register("confluence:crimson_cattails_head", "confluence:crimson_cattail_block")
                 .register("confluence:crimson_cattails_body", "confluence:crimson_cattail_block");
+        event.register("confluence:rainbow_bricks", "confluence:rainbow_gel_bricks")
+                .register("confluence:rainbow_bricks_stairs", "confluence:rainbow_gel_bricks_stairs")
+                .register("confluence:rainbow_bricks_slab", "confluence:rainbow_gel_bricks_slab")
+                .register("confluence:rainbow_bricks_wall", "confluence:rainbow_gel_bricks_wall");
     }
 
     @SubscribeEvent

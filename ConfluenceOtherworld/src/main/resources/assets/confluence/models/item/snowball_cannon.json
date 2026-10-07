@@ -107,6 +107,6 @@
         }
     },
     "textures": {
-        "particle": "confluence:item/snowball_cannon"
+        "particle": "confluence:item/gun/snowball_cannon"
     }
 }

@@ -55,7 +55,7 @@ neoForge {
         data {
             data()
             gameDirectory = project.file('run-data')
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--validate', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
         }
         configureEach {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
@@ -455,6 +455,19 @@ tasks.withType(ProcessResources).configureEach {
 
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
+    }
+}
+
+// 天顶剑模型资源镜像：保留原始 lyra_model 目录，同时提供原生模型和纹理路径。
+tasks.named('processResources', ProcessResources).configure {
+    from("src/main/resources/assets/confluence/lyra_model/json") {
+        include '**/*.json'; into "assets/confluence/models/lyra_model/json"
+    }
+    from("src/main/resources/assets/confluence/lyra_model/json") {
+        include '**/*.png'; into "assets/confluence/textures/lyra_model/json"
+    }
+    from("src/main/resources/assets/confluence/lyra_model/textures") {
+        into "assets/confluence/textures/lyra_model/textures"
     }
 }
 

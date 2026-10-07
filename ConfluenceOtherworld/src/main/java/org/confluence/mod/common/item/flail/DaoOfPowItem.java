@@ -5,7 +5,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 
 /// 太极连枷：命中时有较高概率使目标短暂困惑。
@@ -13,12 +12,12 @@ public class DaoOfPowItem extends BaseFlailItem {
     private static final int CONFUSE_TICKS = 40;
     private final float confuseChance;
 
-    public DaoOfPowItem(FlailComponent component, ModRarity rarity) {
-        this(component, rarity, 0.8F);
+    public DaoOfPowItem(Parameters parameters, ModRarity rarity) {
+        this(parameters, rarity, 0.8F);
     }
 
-    DaoOfPowItem(FlailComponent component, ModRarity rarity, float confuseChance) {
-        super(component, rarity);
+    DaoOfPowItem(Parameters parameters, ModRarity rarity, float confuseChance) {
+        super(parameters, rarity);
         if (confuseChance < 0.0F || confuseChance > 1.0F) {
             throw new IllegalArgumentException("Flail confuse chance must be between zero and one");
         }

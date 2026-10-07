@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.gun.definition;
 
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.component.BulletPropertyComponent;
 
 public record BulletDefinition(float damage, float velocity, float velocityMultiplier,
                                float knockback, int penetrate, ModRarity rarity, boolean infinity,
@@ -25,7 +24,7 @@ public record BulletDefinition(float damage, float velocity, float velocityMulti
         }
     }
 
-    /// Compatibility constructor for the original normal projectile definition.
+    /// 使用普通射弹行为和无命中特效的弹药定义。
     public BulletDefinition(float damage, float velocity, float velocityMultiplier, float knockback, int penetrate, ModRarity rarity, boolean infinity) {
         this(damage, velocity, velocityMultiplier, knockback, penetrate, rarity, infinity, BulletBehavior.NORMAL, BulletImpactEffect.NONE);
     }
@@ -40,9 +39,5 @@ public record BulletDefinition(float damage, float velocity, float velocityMulti
 
     public BulletDefinition withImpactEffect(BulletImpactEffect impactEffect) {
         return new BulletDefinition(damage, velocity, velocityMultiplier, knockback, penetrate, rarity, infinity, behavior, impactEffect);
-    }
-
-    public BulletPropertyComponent component() {
-        return new BulletPropertyComponent(damage, velocity, velocityMultiplier, knockback, penetrate, rarity, infinity);
     }
 }

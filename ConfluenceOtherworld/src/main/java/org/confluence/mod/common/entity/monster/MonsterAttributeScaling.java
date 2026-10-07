@@ -25,14 +25,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.animal.BaseCritter;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.entity.monster.slime.SweetSlime;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
-///
-
+/// 独立于难度、游戏阶段与特殊状态的普通敌怪全局倍率；固定 ResourceLocation 保证读档、重载不会累乘。
 public final class MonsterAttributeScaling {
     private MonsterAttributeScaling() {}
 
@@ -42,6 +42,7 @@ public final class MonsterAttributeScaling {
         if (entity.level().isClientSide || CommonConfigs.SPEC == null || !CommonConfigs.SPEC.isLoaded())
             return;
         boolean eligible = isEligible(entity);
+        CreatureDifficultyScaling.apply(entity, freshSpawn);
         float health = entity.getHealth();
         float maximum = entity.getMaxHealth();
         boolean wasFull = Math.abs(health - maximum) < 0.001F;
@@ -51,6 +52,7 @@ public final class MonsterAttributeScaling {
                 updateModifier(attribute, multiplier.id, eligible ? multiplier.config.get().get() : 1.0D);
             }
         }
+        CreatureDifficultyScaling.apply(entity, false);
         if (entity.getMaxHealth() != maximum) {
             entity.setHealth(freshSpawn && wasFull && health > 0 ? entity.getMaxHealth() : Math.min(health, entity.getMaxHealth()));
         }
@@ -112,7 +114,7 @@ public final class MonsterAttributeScaling {
         Multiplier(Supplier<Holder<Attribute>> attribute, Supplier<ModConfigSpec.DoubleValue> config) {
             this.attribute = attribute;
             this.config = config;
-            this.id = Confluence.asResource("monster_config." + name().toLowerCase(Locale.ROOT));
+            id = Confluence.asResource("monster_config." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

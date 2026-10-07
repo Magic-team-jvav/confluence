@@ -5,22 +5,27 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-/** 由可再生护盾保护的战士 */
-public final class MartianOfficer extends BaseWarriorMonster {
-    public static final float MAX_SHIELD = 200.0F;
+/// 由可再生护盾保护的火星战士。
+public final class MartianOfficer extends MartianHumanoidMonster {
+    /// 护盾没有专家生命加成：1000 × 26%；防御 20 换算为护甲 9、韧性 4。
+    public static final float MAX_SHIELD = 260.0F;
+    public static final float SHIELD_ARMOR = 9.0F;
+    public static final float SHIELD_TOUGHNESS = 4.0F;
     public static final int RECOVERY_TICKS = 60;
     private static final EntityDataAccessor<Float> SHIELD = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> IMPACT_SEQUENCE = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.INT);
@@ -76,8 +81,7 @@ public final class MartianOfficer extends BaseWarriorMonster {
             visualImpactTicks = Math.min(20, visualImpactTicks + 1);
             return;
         }
-        // TODO 火星事件本体（MartianEventHelper）尚未移植，事件结束后本实体不会自动消失，待事件批次补回
-        if (level().isClientSide || !isAlive()) return;
+        if (!isAlive()) return;
         if (shieldHitTicks > 0) shieldHitTicks--;
         if (!hasShield() && ++recoveryTicks >= RECOVERY_TICKS) {
             entityData.set(SHIELD, MAX_SHIELD);
@@ -102,6 +106,7 @@ public final class MartianOfficer extends BaseWarriorMonster {
 
     private void tickOfficerContact() {
         if (contactCooldown > 0) contactCooldown--;
+        if (contactCooldown > 0) return;
         Vec3 previous = new Vec3(xo, yo, zo);
         if (previous.distanceToSqr(position()) > 256) previous = position();
         final Vec3 start = previous;
@@ -112,17 +117,19 @@ public final class MartianOfficer extends BaseWarriorMonster {
                 : SweptContactAttack.findTargets(this, previous, 0, maximumContactSweepDistance(), this::canContactAttack);
         boolean hit = false;
         for (Entity target : targets) {
-            if (contactCooldown == 0) hit |= doContactHurtTarget(target);
+            hit |= doContactHurtTarget(target);
         }
         if (hit) contactCooldown = contactAttackInterval();
     }
 
     @Override public boolean hurt(DamageSource source, float amount) {
+        if (!Float.isFinite(amount) || amount <= 0.0F) return false;
         if (!hasShield() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return super.hurt(source, amount);
-        if (level().isClientSide || !isAlive() || isInvulnerableTo(source) || !(amount > 0.0F)) return false;
+        if (level().isClientSide || !isAlive() || isInvulnerableTo(source)) return false;
         if (source.is(DamageTypeTags.IS_FIRE)) return false;
-        // 护盾防御 20 -> 4，采用泰拉瑞亚的半数防御固定减伤。
-        float damage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount : Math.max(0.2F, amount - 2.0F);
+        float damage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount
+                : CombatRules.getDamageAfterAbsorb(this, amount, source,
+                LibAttributes.applyArmorPenetration(this, source, SHIELD_ARMOR), SHIELD_TOUGHNESS);
         if (shieldHitTicks > 10) {
             if (damage <= lastShieldDamage) return false;
             float previous = lastShieldDamage;
@@ -135,7 +142,7 @@ public final class MartianOfficer extends BaseWarriorMonster {
         entityData.set(SHIELD, Math.max(0.0F, getShieldHealth() - damage));
         showShieldImpact();
         recoveryTicks = 0;
-        if (source.getEntity() instanceof net.minecraft.world.entity.LivingEntity attacker) setLastHurtByMob(attacker);
+        if (source.getEntity() instanceof LivingEntity attacker) setLastHurtByMob(attacker);
         level().broadcastEntityEvent(this, (byte) 2);
         return true;
     }

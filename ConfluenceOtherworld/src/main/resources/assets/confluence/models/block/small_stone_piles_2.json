@@ -1,7 +1,7 @@
 {
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
-	"parent": "small_stone_piles_2",
+    "parent": "minecraft:block/block",
 	"texture_size": [36, 36],
 	"textures": {
 		"0": "confluence:block/small_stone_piles_2",

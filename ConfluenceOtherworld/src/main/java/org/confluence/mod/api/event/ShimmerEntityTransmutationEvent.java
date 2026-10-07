@@ -66,6 +66,7 @@ public abstract class ShimmerEntityTransmutationEvent extends Event {
             super(source);
         }
 
+        /// 原 NPC 自身作为目标时只切换微光外观；设置为 null 可阻止本次默认转换。
         public void setTarget(Entity entity) {
             this.target = entity;
         }

@@ -2,13 +2,13 @@ package org.confluence.mod.client.summoner;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import java.util.function.Function;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 
+import java.util.function.Function;
 
 public class LyraRenderTypes extends RenderType {
 
@@ -30,22 +30,7 @@ public class LyraRenderTypes extends RenderType {
         return create("lyra_texture_no_depth", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, true, state);
     });
 
-    public static final RenderType TRAIL = create(
-            "lyra_trail",
-            DefaultVertexFormat.NEW_ENTITY,
-            VertexFormat.Mode.QUADS,
-            1536,
-            true,
-            true,
-            CompositeState.builder()
-                    .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/trail.png"), false, false))
-                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setCullState(NO_CULL)
-                    .setOverlayState(OVERLAY)
-                    .setWriteMaskState(COLOR_WRITE)
-                    .createCompositeState(false)
-    );
+    public static final RenderType TRAIL = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/trail.png"));
 
     public static final RenderType MODEL = RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS);
 

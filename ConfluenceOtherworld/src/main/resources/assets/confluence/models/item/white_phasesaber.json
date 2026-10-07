@@ -121,10 +121,8 @@
     },
     "perspectives":        {
            "gui": {
-               "parent": "minecraft:item/generated",
-               "textures": {
-                   "layer0": "confluence:item/phasesaber/white_phasesaber_item"
-               }
+               "parent": "builtin/entity",
+               "gui_light": "front"
            }
        }
 }

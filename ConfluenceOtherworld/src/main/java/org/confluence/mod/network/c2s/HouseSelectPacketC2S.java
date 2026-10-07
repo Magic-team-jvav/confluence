@@ -7,7 +7,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -52,7 +51,6 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacke
         House house = HouseHandler.INSTANCE.findHouseAt(dimension, pos);
         boolean isEmptyHouse = house == null || house.uuid().isEmpty();
         HouseValidater.Result result = HouseValidater.scan(player.level(), pos);
-        EntityType<?> type = AvailableHouseSelectPacketS2C.getTypes()[selected]; // 正在检测的NPC类型
         NPCSpawner.Region region = new NPCSpawner.Region(pos); // 房屋所处区域
 
         if (selected == 0) { // 检测模式
@@ -68,14 +66,15 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacke
             player.sendSystemMessage(result.message());
         } else { // 添加、删除房屋模式
             if (isEmptyHouse) { // 如果是空房子就为该类型的npc添加房屋
-                getNpc(player, type, region, npc -> {
+                getNpc(player, selected, region, npc -> {
                     House maked = result.make(npc.getUUID());
-                    HouseHandler.INSTANCE.setHouse(npc, maked);
                     npc.setHouse(maked);
+                    if (!npc.getHouse().isValid()) return;
+                    HouseHandler.INSTANCE.setHouse(npc, npc.getHouse());
                     player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.add.success"));
                 });
             } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 不是空房子，可以通过uuid获取到所有者
-                if (npc.getType() == type) { // 是该NPC的房屋时删除房屋
+                if (AvailableHouseSelectPacketS2C.matchesSelection(selected, npc.getType())) { // 是该NPC的房屋时删除房屋
                     HouseHandler.INSTANCE.removeHouse(dimension, npc.getUUID());
                     npc.setHouse(House.EMPTY);
                     player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.delete.success"));
@@ -89,10 +88,12 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPacke
     }
 
     /// 获取在region内的特定type的npc
-    private void getNpc(ServerPlayer player, EntityType<?> type, NPCSpawner.Region region, Consumer<BaseNPC> ifSuccess) {
+    private void getNpc(ServerPlayer player, int selected, NPCSpawner.Region region, Consumer<BaseNPC> ifSuccess) {
         player.serverLevel().getEntitiesOfClass(BaseNPC.class, new AABB(pos).inflate(player.requestedViewDistance() * 16)).stream()
-                .filter(npc -> npc.getType() == type)
-                .filter(npc -> /*npc.getSpawnAtPos() != null && */region.isOnRegion(npc.getSpawnAtPos()))
+                /// 待救实体尚未入住，不能让选房工具留下只存在于全局表中的房屋占用。
+                .filter(npc -> npc.isAlive() && !npc.requiresRescue())
+                .filter(npc -> AvailableHouseSelectPacketS2C.matchesSelection(selected, npc.getType()))
+                .filter(npc -> region.equals(npc.getRegion()))
                 .min(Comparator.comparingDouble(npc -> npc.distanceToSqr(player)))
                 .ifPresentOrElse(ifSuccess, () -> player.sendSystemMessage(Component.translatable("message.confluence.house_detect.npc_not_fount")));
     }

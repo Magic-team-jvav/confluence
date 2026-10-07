@@ -53,6 +53,7 @@ public final class CommonConfigs {
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
+    public static BooleanValue SHIMMER_DECOMPOSE_FIRST_TAG_ITEM;
     public static BooleanValue ALTAR_TIPS;
 
     public static BooleanValue DO_FALLING_STAR_SPAWNING;
@@ -238,6 +239,7 @@ public final class CommonConfigs {
             builder.push("Recipe");
             FLETCHING_MENU = builder.define("fletchingMenu", true);
             SHIMMER_DECOMPOSE = builder.define("shimmerDecompose", true);
+            SHIMMER_DECOMPOSE_FIRST_TAG_ITEM = builder.define("shimmerDecomposeFirstTagItem", false);
             ALTAR_TIPS = builder.define("altarTips", true);
             builder.pop();
         }

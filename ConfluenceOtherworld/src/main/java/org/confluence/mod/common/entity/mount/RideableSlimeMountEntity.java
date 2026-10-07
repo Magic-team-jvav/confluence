@@ -39,8 +39,8 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     private static final double JUMP_VELOCITY = 2.0;
     private static final double GRAVITY = 0.12;
     private static final float STOMP_DAMAGE = 40.0F;
-    private static final double GROUNDED_RIDER_OFFSET = 0.2;
-    private static final double AIRBORNE_RIDER_OFFSET = 0.2;
+    private static final double GROUNDED_RIDER_OFFSET = 0.5;
+    private static final double AIRBORNE_RIDER_OFFSET = 0.5;
 
     private static final EntityDataAccessor<Boolean> JUMPING = SynchedEntityData.defineId(RideableSlimeMountEntity.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
@@ -84,7 +84,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
         }
         vertical = accessoryJumpVelocity(player, vertical, groundedBeforeMove && isJumpInputDown());
         AABB previousBox = getBoundingBox();
-        moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
+        moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z), player, true);
         if (!level().isClientSide && vertical < 0 && !groundedBeforeMove)
             stomp(player, previousBox);
         updateGroundState();

@@ -21,25 +21,13 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
 import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
+import org.confluence.mod.client.summoner.particle.ZenithParticleProvider;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
-import org.confluence.mod.client.summoner.renderer.minion.DeadlySphereRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.DesertTigerRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.EyeLaserTurretRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.ImpRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.RuinRelicRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.SanguineBatRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.SculkWispRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.SlimeMinionRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.SnowFlinxRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.SpiderRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.TerraprismaRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.VampireFrogRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.*;
 import org.confluence.mod.client.summoner.renderer.projectile.EyeFireballRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.ImpFireballRenderer;
+import org.confluence.mod.client.summoner.renderer.projectile.ZenithRenderer;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
@@ -52,8 +40,10 @@ public final class SummonerClientEvents {
     /// 拿到的 `IEventBus`），`ItemTooltipEvent` / `RenderLevelStageEvent` 是**游戏总线**
     /// （`NeoForge.EVENT_BUS`）。写错能编译但静默不触发。
     public static void init(IEventBus modBus) {
-        modBus.addListener((RegisterParticleProvidersEvent event) ->
-                event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new));
+        modBus.addListener((RegisterParticleProvidersEvent event) -> {
+            event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new);
+            event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new);
+        });
         NeoForge.EVENT_BUS.addListener((ItemTooltipEvent event) -> {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
@@ -101,6 +91,7 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.RUIN_RELIC.get(), new RuinRelicRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.EYE_LASER_TURRET.get(), new EyeLaserTurretRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.EYE_FIREBALL.get(), new EyeFireballRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.ZENITH.get(), new ZenithRenderer());
         }));
         modBus.addListener((EntityRenderersEvent.AddLayers event) -> {
             for (PlayerSkin.Model skin : PlayerSkin.Model.values()) {

@@ -1,17 +1,15 @@
 package org.confluence.mod.common.summoner.register;
 
-import java.util.function.Supplier;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
-import org.confluence.mod.common.summoner.projectile.EyeFireball;
-import org.confluence.mod.common.summoner.projectile.ForbiddenOrb;
-import org.confluence.mod.common.summoner.projectile.HornetStinger;
-import org.confluence.mod.common.summoner.projectile.ImpFireball;
 import org.confluence.mod.common.summoner.minion.*;
+import org.confluence.mod.common.summoner.projectile.*;
+
+import java.util.function.Supplier;
 
 
 public final class SummonerAttachmentEntityTypes {
@@ -55,6 +53,9 @@ public final class SummonerAttachmentEntityTypes {
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<ForbiddenOrb>> FORBIDDEN_ORB = register("forbidden_orb", ForbiddenOrb::new);
 
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<EyeFireball>> EYE_FIREBALL = register("eye_fireball", EyeFireball::new);
+
+    /// 天顶剑飞剑。
+    public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<Zenith>> ZENITH = register("zenith", Zenith::new);
 
     private static <T extends AttachmentEntity> DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return TYPES.register(name, id -> new AttachmentEntityType<T>(id, supplier));

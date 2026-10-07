@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
+import org.confluence.mod.common.entity.mount.RideableUnicornMountEntity;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.GeoBone;
 
@@ -28,6 +29,8 @@ public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> e
 
     @Override
     protected float getRenderYaw(T mount, float partialTick) {
+        if (mount instanceof RideableUnicornMountEntity unicorn)
+            return unicorn.getRenderBodyYaw(partialTick);
         return mount.getFirstPassenger() instanceof Player player ? player.getViewYRot(partialTick)
                 : Mth.rotLerp(partialTick, mount.yRotO, mount.getYRot());
     }
@@ -39,6 +42,9 @@ public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> e
         super.applyRotations(mount, poseStack, ageInTicks, getRenderYaw(mount, partialTick), partialTick, nativeScale);
         if (mount.tiltsWithMovement()) {
             poseStack.mulPose(Axis.XP.rotationDegrees(Mth.rotLerp(partialTick, mount.xRotO, mount.getXRot())));
+        }
+        if (mount instanceof RideableUnicornMountEntity unicorn) {
+            poseStack.mulPose(Axis.ZP.rotationDegrees(unicorn.getRenderBank(partialTick)));
         }
     }
 

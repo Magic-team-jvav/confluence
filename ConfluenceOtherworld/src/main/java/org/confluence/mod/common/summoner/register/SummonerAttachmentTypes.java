@@ -28,6 +28,10 @@ public final class SummonerAttachmentTypes {
     public static final DeferredHolder<AttachmentType<?>, AttachmentType<InfoData>> INFO =
             TYPES.register("summoner_info", () -> AttachmentType.builder(InfoData::new).build());
 
+    /// 玩家持有天顶剑时的蓄力与挥砍状态。
+    public static final DeferredHolder<AttachmentType<?>, AttachmentType<ZenithData>> ZENITH_DATA =
+            TYPES.register("zenith_data", () -> AttachmentType.builder(ZenithData::new).build());
+
     public static void register(IEventBus eventBus) {
         TYPES.register(eventBus);
     }

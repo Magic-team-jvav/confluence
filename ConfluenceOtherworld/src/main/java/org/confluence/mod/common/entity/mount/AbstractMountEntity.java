@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
@@ -92,13 +94,6 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
         defineMountSynchedData(builder);
     }
 
-    /// 具体坐骑可声明自己的动画或能量同步字段。
-    ///
-    /// ⚠️ 1.21 侧签名要比 1.20 **多一个 `builder` 形参**：1.20 的 `defineSynchedData()` 没有参数、
-    /// 靠 `this.entityData` 字段写同步字段；1.21 改成 `defineSynchedData(SynchedEntityData.Builder builder)`，
-    /// 字段不存在了。1.20 侧本钩子是无参的，转换器把子类里的 `entityData.define(...)` 改写成
-    /// `builder.define(...)` 却没法把 `builder` 传进来 —— 所以这里手工把钩子签名补上形参
-    /// （三个子类同步改）。
     protected void defineMountSynchedData(SynchedEntityData.Builder builder) {
     }
 
@@ -217,7 +212,7 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
         if (fluid.isEmpty() || !level().getFluidState(pos.above()).isEmpty() || !floats && !player.canStandOnFluid(fluid))
             return false;
         double surface = pos.getY() + fluid.getHeight(level(), pos);
-        if (getY() < surface - 0.4 || getY() > surface + 0.1 || getDeltaMovement().y > 0)
+        if (getY() < surface - 1.0E-6 || getY() > surface + 0.1 || getDeltaMovement().y > 0)
             return false;
         setPos(getX(), surface, getZ());
         setOnGround(true);
@@ -297,6 +292,41 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
         move(MoverType.SELF, velocity);
     }
 
+    /// 能站在液面上的坐骑按本次移动路径截住下落，避免高速下降越过液面检测范围。
+    /// 只接住从上方穿过液面的移动；不会把已经位于水下的坐骑传送到水面。
+    protected final void moveWithVelocity(Vec3 velocity, Player player, boolean floats) {
+        if (velocity.y >= 0) {
+            moveWithVelocity(velocity);
+            return;
+        }
+        AABB box = getBoundingBox();
+        AABB swept = box.expandTowards(velocity);
+        double surface = Double.NEGATIVE_INFINITY;
+        for (BlockPos pos : BlockPos.betweenClosed(
+                Mth.floor(swept.minX + 1.0E-6), Mth.floor(box.minY + velocity.y), Mth.floor(swept.minZ + 1.0E-6),
+                Mth.floor(swept.maxX - 1.0E-6), Mth.floor(box.minY), Mth.floor(swept.maxZ - 1.0E-6))) {
+            var fluid = level().getFluidState(pos);
+            if (fluid.isEmpty() || !level().getFluidState(pos.above()).isEmpty()
+                    || !floats && !player.canStandOnFluid(fluid)) continue;
+            double top = pos.getY() + fluid.getHeight(level(), pos);
+            if (top > box.minY + 1.0E-6 || top < box.minY + velocity.y || top <= surface) continue;
+            double fraction = Mth.clamp((top - box.minY) / velocity.y, 0.0, 1.0);
+            AABB crossing = box.move(velocity.x * fraction, 0, velocity.z * fraction);
+            if (crossing.maxX > pos.getX() && crossing.minX < pos.getX() + 1
+                    && crossing.maxZ > pos.getZ() && crossing.minZ < pos.getZ() + 1) {
+                surface = top;
+            }
+        }
+        boolean landsOnFluid = surface != Double.NEGATIVE_INFINITY;
+        moveWithVelocity(landsOnFluid ? new Vec3(velocity.x, surface - box.minY, velocity.z) : velocity);
+        if (landsOnFluid && Math.abs(getBoundingBox().minY - surface) < 1.0E-6) {
+            setOnGround(true);
+            setDeltaMovement(getDeltaMovement().multiply(1, 0, 1));
+            fallDistance = 0;
+            player.resetFallDistance();
+        }
+    }
+
     @Override
     protected void positionRider(Entity passenger, MoveFunction callback) {
         super.positionRider(passenger, callback);
@@ -307,7 +337,8 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
 
     @Override
     protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
-        return new Vec3(0.0, getBbHeight() * 0.75 + 0.2, 0.0);
+        double riderOffset = Player.DEFAULT_VEHICLE_ATTACHMENT.y - 0.35;
+        return new Vec3(0.0, getBbHeight() * 0.75 + 0.2 + riderOffset, 0.0);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.Reference2BooleanMap;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +17,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPac
     public static final Type<AvailableHouseSelectPacketS2C> TYPE = Confluence.createType("available_house_select");
     public static final int size = 25;
     public static final int traveling_merchant = 20;
+    public static final int angler = 21;
     public static final StreamCodec<ByteBuf, AvailableHouseSelectPacketS2C> STREAM_CODEC = LibStreamCodecUtils.booleanArray(size)
             .map(AvailableHouseSelectPacketS2C::new, AvailableHouseSelectPacketS2C::available);
     private static EntityType<?>[] TYPES;
@@ -67,16 +67,22 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPac
     }
 
     public static CustomPacketPayload collectPacket(ServerPlayer player) {
-        Reference2BooleanMap<EntityType<?>> details = NPCSpawner.INSTANCE.getRegionAliveDetails(new NPCSpawner.Region(player.chunkPosition()));
+        NPCSpawner.Region region = new NPCSpawner.Region(player.chunkPosition());
         boolean[] values = new boolean[size];
         for (int i = 0; i < size; i++) {
             EntityType<?> type = getTypes()[i];
             if (type == EntityType.PLAYER) {
                 values[i] = true;
             } else if (type != null) {
-                values[i] = details.getBoolean(type);
+                values[i] = NPCSpawner.INSTANCE.hasNPCAlive(region, type);
             }
         }
         return new AvailableHouseSelectPacketS2C(values);
+    }
+
+    /// 判断实体类型是否属于指定住房槽位。
+    public static boolean matchesSelection(int selected, EntityType<?> type) {
+        return selected >= 0 && selected < getTypes().length
+                && NpcEntities.isSameProfession(type, getTypes()[selected]);
     }
 }

@@ -1,6 +1,6 @@
 package org.confluence.mod.common.entity.boss;
 
-import java.util.UUID;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,13 +11,19 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.mod.common.entity.PartHitTarget;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 
 /// 拥有独立生命和属性的 Boss 附属生物。
@@ -33,6 +39,7 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
     private int unresolvedOwnerTicks;
     private double registeredMaxHealth = -1.0D;
     private double registeredAttackDamage = -1.0D;
+    private CreatureDifficultyRules.Difficulty appliedDifficulty;
 
     protected BaseLivingBossPart(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -46,6 +53,7 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
         ownerUUID = owner.getUUID();
         entityData.set(OWNER_ID, owner.getId());
         owner.addSubEntity(this);
+        CreatureDifficultyScaling.apply(this, true);
         synchronizeOwnerScaling(owner);
     }
 
@@ -147,12 +155,19 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
     }
 
     private void synchronizeOwnerScaling(T owner) {
+        var difficulty = CreatureDifficultyScaling.difficulty(this);
+        if (difficulty != appliedDifficulty) {
+            CreatureDifficultyScaling.apply(this, false);
+            appliedDifficulty = difficulty;
+        }
         var partMaximumHealth = getAttribute(Attributes.MAX_HEALTH);
         var ownerMaximumHealth = owner.getAttribute(Attributes.MAX_HEALTH);
         if (partMaximumHealth != null && ownerMaximumHealth != null && ownerMaximumHealth.getBaseValue() > 0.0D) {
-            if (registeredMaxHealth < 0.0D) registeredMaxHealth = partMaximumHealth.getBaseValue();
+            if (registeredMaxHealth < 0.0D)
+                registeredMaxHealth = registeredValue(Attributes.MAX_HEALTH, partMaximumHealth.getBaseValue());
             float healthRatio = getMaxHealth() <= 0.0F ? 1.0F : getHealth() / getMaxHealth();
-            double scaledMaximum = registeredMaxHealth * ownerMaximumHealth.getValue() / ownerMaximumHealth.getBaseValue();
+            double scaledMaximum = registeredMaxHealth * ownerMaximumHealth.getValue() / ownerMaximumHealth.getBaseValue()
+                    / CreatureDifficultyScaling.healthMultiplier(this);
             if (scaledMaximum > 0.0D && Math.abs(partMaximumHealth.getBaseValue() - scaledMaximum) > 1.0E-4D) {
                 partMaximumHealth.setBaseValue(scaledMaximum);
                 setHealth((float) (getMaxHealth() * healthRatio));
@@ -163,10 +178,17 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
         var ownerAttackDamage = owner.getAttribute(Attributes.ATTACK_DAMAGE);
         if (partAttackDamage != null && ownerAttackDamage != null && ownerAttackDamage.getBaseValue() > 0.0D) {
             if (registeredAttackDamage < 0.0D)
-                registeredAttackDamage = partAttackDamage.getBaseValue();
-            double scaledDamage = registeredAttackDamage * ownerAttackDamage.getValue() / ownerAttackDamage.getBaseValue();
+                registeredAttackDamage = registeredValue(Attributes.ATTACK_DAMAGE, partAttackDamage.getBaseValue());
+            double scaledDamage = registeredAttackDamage * ownerAttackDamage.getValue() / ownerAttackDamage.getBaseValue()
+                    / CreatureDifficultyScaling.attackMultiplier(this);
             if (scaledDamage >= 0.0D) partAttackDamage.setBaseValue(scaledDamage);
         }
+    }
+
+    /// 继承倍率始终从登记模板起算，不把存档中已放大的部件基础值当作原值再放大。
+    private double registeredValue(Holder<Attribute> attribute, double fallback) {
+        var definition = ModEntities.creatureAttributes(getType());
+        return definition != null && definition.attributes().hasAttribute(attribute) ? definition.attributes().getBaseValue(attribute) : fallback;
     }
 
     @Override

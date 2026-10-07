@@ -1,97 +1,80 @@
 package org.confluence.mod.client.summoner;
 
-import org.confluence.mod.client.summoner.trail.ModelConfig;
-import org.confluence.mod.client.summoner.trail.TrailConfig;
+import org.confluence.mod.client.summoner.trail.TrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
+import software.bernie.geckolib.util.Color;
 
-/**
- * 渲染上下文，封装附件实体渲染所需的所有参数和配置。
- * <p>
- * 采用强类型配置分离模式：
- * <ul>
- *   <li>{@link TrailConfig} - 拖尾渲染配置（通过子类区分类型）</li>
- *   <li>{@link ModelConfig} - 模型渲染配置</li>
- * </ul>
- * </p>
- *
- * @param <T> 附件实体类型
- * @see TrailConfig
- * @see ModelConfig
- * @see AbstractAttachmentEntityRenderer
- */
+/// 单次附件实体渲染共享的模型、拖尾、颜色和光照上下文。
 public class RenderContext<T extends AttachmentEntity> {
 
-    /**
-     * 拖尾配置，null 表示无拖尾
-     */
-    public final TrailConfig<T, ?> trail;
+    public final T entity;
+    public final PathNode visualNode;
+    public final float partialTick;
 
-    /** 模型配置 */
-    public final ModelConfig<T> model;
+    public int packedLight;
+    public Color color = Color.WHITE;
+    public TrailContext<T> trail;
+    public ModelContext model = new ModelContext();
 
-    private RenderContext(TrailConfig<T, ?> trail, ModelConfig<T> model) {
+    public RenderContext(T entity, PathNode visualNode, float partialTick, int packedLight) {
+        this.entity = entity;
+        this.visualNode = visualNode;
+        this.partialTick = partialTick;
+        this.packedLight = packedLight;
+    }
+
+    public RenderContext<T> packedLight(int packedLight) {
+        this.packedLight = packedLight;
+        return this;
+    }
+
+    public RenderContext<T> color(Color color) {
+        this.color = color;
+        return this;
+    }
+
+    public RenderContext<T> color(int argb) {
+        this.color = Color.ofRGBA(
+                ((argb >> 16) & 0xFF) / 255.0F,
+                ((argb >> 8) & 0xFF) / 255.0F,
+                (argb & 0xFF) / 255.0F,
+                ((argb >> 24) & 0xFF) / 255.0F
+        );
+        return this;
+    }
+
+    public RenderContext<T> trail(TrailContext<T> trail) {
         this.trail = trail;
+        return this;
+    }
+
+    public RenderContext<T> model(ModelContext model) {
         this.model = model;
+        return this;
     }
 
-    /** 创建 MinionWeaponItemBuilder 实例 */
-    public static <T extends AttachmentEntity> Builder<T> builder() {
-        return new Builder<>();
-    }
-
-    // ===================== 函数式接口定义 =====================
-
-    /**
-     * 是否有拖尾
-     */
     public boolean hasTrail() {
         return trail != null && trail.timer > 0;
     }
 
-    /** 颜色计算函数 */
     @FunctionalInterface
     public interface ColorFunction<T extends AttachmentEntity> {
         int getColor(T entity, float progress, float partialTick);
     }
 
-    /** 淡出函数 */
     @FunctionalInterface
     public interface FadeFunction {
         float getFade(float progress);
     }
 
-    /** 透明度增强函数 */
     @FunctionalInterface
     public interface AlphaBoostFunction<T extends AttachmentEntity> {
         float getBoost(T entity, float progress);
     }
 
-    /** 亮度增强函数 */
     @FunctionalInterface
     public interface BrightnessBoostFunction<T extends AttachmentEntity> {
         float getBoost(T entity, float progress);
-    }
-
-    /** 渲染上下文构建器 */
-    public static class Builder<T extends AttachmentEntity> {
-        private TrailConfig<T, ?> trail;
-        private ModelConfig<T> model = new ModelConfig<>();
-
-        /** 设置拖尾配置 */
-        public Builder<T> trail(TrailConfig<T, ?> trail) {
-            this.trail = trail;
-            return this;
-        }
-
-        /** 设置模型配置 */
-        public Builder<T> model(ModelConfig<T> model) {
-            this.model = model;
-            return this;
-        }
-
-        /** 构建渲染上下文 */
-        public RenderContext<T> build() {
-            return new RenderContext<>(trail, model);
-        }
     }
 }

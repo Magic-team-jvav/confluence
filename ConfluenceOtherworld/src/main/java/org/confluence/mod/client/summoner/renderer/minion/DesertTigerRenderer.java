@@ -2,8 +2,9 @@ package org.confluence.mod.client.summoner.renderer.minion;
 
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityGeoRenderer;
+import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.ModelConfig;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.DesertTigerMinion;
 
 public class DesertTigerRenderer extends AbstractAttachmentEntityGeoRenderer<DesertTigerMinion> {
@@ -13,11 +14,10 @@ public class DesertTigerRenderer extends AbstractAttachmentEntityGeoRenderer<Des
     }
 
     @Override
-    protected RenderContext<DesertTigerMinion> createContext(DesertTigerMinion tiger, float partialTick) {
-        return RenderContext.<DesertTigerMinion>builder()
-                .model(new ModelConfig<DesertTigerMinion>()
+    protected RenderContext<DesertTigerMinion> createContext(DesertTigerMinion tiger, PathNode visualNode, float partialTick, int packedLight) {
+        return new RenderContext<>(tiger, visualNode, partialTick, packedLight)
+                .model(new ModelContext()
                         .rotationOffset(180, 0, 0)
-                        .alphaDistanceFactor(1.5F))
-                .build();
+                        .alphaDistanceFactor(1.5F));
     }
 }

@@ -22,7 +22,6 @@ import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.gun.definition.FireMode;
 import org.confluence.mod.common.item.gun.definition.GunDefinition;
@@ -62,14 +61,10 @@ public class BaseGun extends Item implements GeoItem {
     }
 
     public BaseGun(Properties properties, GunDefinition definition, HandAnimationProfile animationProfile) {
-        super(prepareProperties(properties, definition));
+        super(properties.stacksTo(1));
         this.definition = definition;
         this.animationProfile = animationProfile;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
-    }
-
-    private static Properties prepareProperties(Properties properties, GunDefinition definition) {
-        return properties.stacksTo(1).component(ModDataComponentTypes.GUN_PROPERTY, definition.component());
     }
 
     public BaseGun(Properties properties, int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity) {

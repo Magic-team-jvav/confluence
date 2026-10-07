@@ -1,15 +1,16 @@
 package org.confluence.mod.api.event;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
-import org.confluence.mod.common.combat.gun.ShotContext;
 import org.confluence.mod.common.item.gun.BaseGun;
+import org.confluence.mod.common.item.gun.ShotContext;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 public class GunEvent extends Event {

@@ -7,9 +7,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.projectile.flail.FlowerPowerPetalProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 
 import java.util.Comparator;
 
@@ -28,7 +28,7 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
     }
 
     @Override
-    protected void tickSpecialBehavior(Player player, FlailComponent component, int phase) {
+    protected void tickSpecialBehavior(Player player, Parameters parameters, int phase) {
         if (level().isClientSide()) {
             return;
         }
@@ -38,7 +38,7 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
         }
         shootTimer = interval;
 
-        LivingEntity target = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(component.maxDistance()), candidate -> LibEntityUtils.canHitEntity(candidate, this))
+        LivingEntity target = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(parameters.maxDistance()), candidate -> LibEntityUtils.canHitEntity(candidate, this))
                 .stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr))
                 .orElse(null);
@@ -51,7 +51,7 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
         if (petal == null) {
             return;
         }
-        petal.initialize(this, player, direction.scale(component.throwSpeed()), component.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) / 3.0F, 100);
+        petal.initialize(this, player, direction.scale(parameters.throwSpeed()), parameters.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) / 3.0F, 100);
         level().addFreshEntity(petal);
     }
 }

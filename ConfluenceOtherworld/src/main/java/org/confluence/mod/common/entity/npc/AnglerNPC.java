@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
@@ -89,9 +87,32 @@ public class AnglerNPC extends BaseNPC {
         return entityData.get(DATA_WAKE_UP);
     }
 
+    /// 睡姿属于渔夫自身的数据，由子类复制，通用微光流程不依赖具体 NPC 类型。
+    @Override
+    public void copyResidenceFrom(BaseNPC source) {
+        if (source instanceof AnglerNPC angler) setWakeUp(angler.isWakeUp());
+        super.copyResidenceFrom(source);
+    }
+
     public void setWakeUp(boolean wakeUp) {
         entityData.set(DATA_WAKE_UP, wakeUp);
-        if (wakeUp) refreshDimensions();
+        if (wakeUp) {
+            setShouldInteract(false);
+            refreshDimensions();
+        }
+    }
+
+    /// 渔夫的睡姿也属于待救援状态，与普通 NPC 的首次交互标记共用生命周期。
+    @Override
+    public boolean requiresRescue() {
+        return !isWakeUp() || super.requiresRescue();
+    }
+
+    /// 完成救援时同步站姿尺寸，不再由对话入口单独解锁。
+    @Override
+    public void setRescued() {
+        super.setRescued();
+        setWakeUp(true);
     }
 
     @Override
@@ -156,12 +177,8 @@ public class AnglerNPC extends BaseNPC {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             if (!canStartInteraction(serverPlayer)) return InteractionResult.SUCCESS;
             if (!isWakeUp()) {
-                recordInteraction(serverPlayer);
                 initName();
-                setWakeUp(true);
-                NPCSpawner.Region newRegion = NPCSpawner.getNpcSpawnRegion(serverPlayer);
-                NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, getRegion(), newRegion);
-                NPCSpawner.broadcastMessageToRegion(level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
+                recordInteraction(serverPlayer);
                 PacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, Items.AIR, levelName(serverPlayer)));
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }
@@ -248,10 +265,12 @@ public class AnglerNPC extends BaseNPC {
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
+        /// 先恢复睡姿，父类才能按正确救援状态读取房屋与 HOME。
         if (tag.contains(WAKE_UP_KEY)) {
             setWakeUp(tag.getBoolean(WAKE_UP_KEY));
         }
+        super.readAdditionalSaveData(tag);
+        if (isWakeUp()) setShouldInteract(false);
     }
 
     @Override

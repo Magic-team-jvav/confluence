@@ -11,9 +11,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 
 /// 锚的直接发射、重力和落点冲击行为。
 public final class AnchorFlailEntity extends LaunchedFlailEntity {
@@ -22,11 +22,11 @@ public final class AnchorFlailEntity extends LaunchedFlailEntity {
     }
 
     @Override
-    protected void onThrownToRetract(Player player, FlailComponent component) {
+    protected void onThrownToRetract(Player player, Parameters parameters) {
         if (tickCount <= 4) {
             return;
         }
-        float damage = component.damageFactor()
+        float damage = parameters.damageFactor()
                 * (float) player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)
                 * 0.6F;
         AABB area = getBoundingBox().inflate(2.0, 0.5, 2.0);

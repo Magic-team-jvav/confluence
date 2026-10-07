@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.mount.MountManager;
+import org.confluence.mod.common.entity.mount.MountManager;
 
 /// 客户端快捷坐骑请求。
 ///

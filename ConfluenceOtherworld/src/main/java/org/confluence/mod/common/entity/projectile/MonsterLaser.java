@@ -6,12 +6,14 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 
 import java.util.function.IntFunction;
@@ -35,8 +37,10 @@ public class MonsterLaser extends StraightMonsterProjectile {
 
     /// 镭射变种：一次射击的伤害、速度、散布、寿命与三层配色。
     public enum Variant {
-        RAY_GUNNER(12.0F, 5.25F, 0.0F, 20, 0xFFFFFF, 0xFF5B4D, 0xB50000),
-        MARTIAN_WALKER(14.0F, 3.5F, 1.5F, 30, 0xFFFFFF, 0x73DFFF, 0x0877FF);
+        /// 专家射弹伤害 × 26% 向上取整：120 → 32、140 → 37、96 → 25。
+        RAY_GUNNER(32.0F, 5.25F, 0.0F, 20, 0xFFFFFF, 0xFF5B4D, 0xB50000),
+        MARTIAN_WALKER(37.0F, 3.5F, 1.5F, 30, 0xFFFFFF, 0x73DFFF, 0x0877FF),
+        BRAIN_SCRAMBLER(25.0F, 3.5F, 0.0F, 30, 0xE8FFE9, 0x68FF72, 0x0B9431);
 
         private static final IntFunction<Variant> BY_ID = ByIdMap.sparse(Variant::ordinal, values(), RAY_GUNNER);
 
@@ -96,6 +100,13 @@ public class MonsterLaser extends StraightMonsterProjectile {
     @Override
     public boolean canHitEntity(Entity target) {
         return target != null && !EnemyDamageRules.isEnemy(target) && super.canHitEntity(target);
+    }
+
+    @Override
+    protected void onSuccessfulHit(Mob owner, LivingEntity target) {
+        if (variant() == Variant.BRAIN_SCRAMBLER && random.nextInt(3) == 0) {
+            target.addEffect(new MobEffectInstance(LibEffects.CONFUSED, 100));
+        }
     }
 
     @Override

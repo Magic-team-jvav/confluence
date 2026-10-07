@@ -8,6 +8,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -21,9 +22,11 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.registries.datamaps.DataMapValueMerger;
 import net.neoforged.neoforge.registries.datamaps.DataMapValueRemover;
 import org.confluence.lib.util.LibCodecUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 
@@ -48,18 +51,40 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
     }
 
     public static void applyModifiers(LivingEntity living) {
+        applyModifiers(living, true);
+    }
+
+    /// 所有生成与读取路径共用；非新生成实体仅限制当前生命，不因阶段刷新而回血。
+    public static void applyModifiers(LivingEntity living, boolean freshSpawn) {
+        if (living.level().isClientSide) return;
         if (living instanceof Player) return;
         EntityType<?> type = living.getType();
         if (!CommonConfigs.ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES.get() &&
-                "minecraft".equals(type.builtInRegistryHolder().key().location().getNamespace())
+                ResourceLocation.DEFAULT_NAMESPACE.equals(type.builtInRegistryHolder().key().location().getNamespace())
         ) return;
 
         Difficulty difficulty = living.level().getDifficulty();
-        if (difficulty == Difficulty.PEACEFUL || difficulty == Difficulty.EASY) return;
+        if ((difficulty == Difficulty.PEACEFUL || difficulty == Difficulty.EASY)
+                && !CreatureDifficultyScaling.isManaged(living)) return;
         GamePhase2AttributeModifiers data = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, type);
-        if (data == null) return;
-        ImmutableListMultimap<Holder<Attribute>, AttributeModifier> modifiers = data.get(KillBoard.INSTANCE.getGamePhase()).get();
-        if (modifiers.isEmpty()) return;
+        boolean managed = CreatureDifficultyScaling.isManaged(living);
+        if (!managed && data == null) return;
+        float health = living.getHealth();
+        boolean full = health >= living.getMaxHealth();
+        if (managed) {
+            ResourceLocation valueId = Confluence.asResource("game_phase_modifier");
+            ResourceLocation multiplierId = Confluence.asResource("game_phase_multiplier");
+            for (Holder<Attribute> attribute : BuiltInRegistries.ATTRIBUTE.holders().toList()) {
+                AttributeInstance instance = living.getAttribute(attribute);
+                if (instance != null) {
+                    instance.removeModifier(valueId);
+                    instance.removeModifier(multiplierId);
+                }
+            }
+        }
+        ImmutableListMultimap<Holder<Attribute>, AttributeModifier> modifiers = data == null ? ImmutableListMultimap.of()
+                : data.get(KillBoard.INSTANCE.getGamePhase()).get();
+        if (!managed && modifiers.isEmpty()) return;
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : modifiers.asMap().entrySet()) {
             AttributeInstance instance = living.getAttribute(entry.getKey());
             if (instance == null) continue;
@@ -67,7 +92,8 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
                 instance.addOrReplacePermanentModifier(modifier);
             }
         }
-        living.setHealth(living.getMaxHealth());
+        if (managed) CreatureDifficultyScaling.apply(living, false);
+        living.setHealth(!managed || freshSpawn && full ? living.getMaxHealth() : Math.min(health, living.getMaxHealth()));
     }
 
     public record Remover(Map<GamePhase, ImmutableListMultimap<Holder<Attribute>, ResourceLocation>> map) implements DataMapValueRemover<EntityType<?>, GamePhase2AttributeModifiers> {

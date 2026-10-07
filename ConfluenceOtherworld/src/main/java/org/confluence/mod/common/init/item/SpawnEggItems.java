@@ -306,6 +306,9 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> PHANTASM_DRAGON_SPAWN_EGG = register(BossEntities.PHANTASM_DRAGON);
     public static final DeferredItem<DeferredSpawnEggItem> MARTIAN_OFFICER_SPAWN_EGG = register(MonsterEntities.MARTIAN_OFFICER);
     public static final DeferredItem<DeferredSpawnEggItem> MARTIAN_WALKER_SPAWN_EGG = register(MonsterEntities.MARTIAN_WALKER);
+    public static final DeferredItem<DeferredSpawnEggItem> BRAIN_SCRAMBLER_SPAWN_EGG = register(MonsterEntities.BRAIN_SCRAMBLER);
+    public static final DeferredItem<DeferredSpawnEggItem> GRAY_GRUNT_SPAWN_EGG = register(MonsterEntities.GRAY_GRUNT);
+    public static final DeferredItem<DeferredSpawnEggItem> GIGAZAPPER_SPAWN_EGG = register(MonsterEntities.GIGAZAPPER);
 
     public static void init() {}
 

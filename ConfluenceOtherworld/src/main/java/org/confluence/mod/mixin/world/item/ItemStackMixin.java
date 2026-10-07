@@ -43,6 +43,6 @@ public abstract class ItemStackMixin implements Immunity, SelfGetter<ItemStack> 
     private boolean fireResistant(boolean original) {
         if (original) return true;
         ModRarity rarity = confluence$self().get(ConfluenceMagicLib.MOD_RARITY);
-        return rarity != null && rarity != ModRarity.WHITE && rarity != ModRarity.GRAY;
+        return rarity != null && !ModRarity.WHITE.equals(rarity) && !ModRarity.GRAY.equals(rarity);
     }
 }

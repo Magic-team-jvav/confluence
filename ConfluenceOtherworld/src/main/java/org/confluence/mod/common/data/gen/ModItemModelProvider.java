@@ -57,8 +57,16 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        GunItems.BULLET_ITEMS.forEach(item -> {
+            String path = item.getId().getPath();
+            withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));
+        });
+
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
+
+        handheldTextureAlias(SwordItems.ZENITH, Confluence.asResource("item/summon/zenith"));
+        handheldTextureAlias(SwordItems.TRUE_COPPER_SHORTSWORD, Confluence.asResource("item/sword/copper_short_sword"));
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
@@ -96,6 +104,21 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(ToolItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(SwordItems.WAFFLES_IRON, templateNormal24x, "sword/");
+        flailModel(FlailItems.MACE);
+        flailModel(FlailItems.FLAMING_MACE);
+        flailModel(FlailItems.WIND_ANCHOR);
+        flailModel(FlailItems.GUARDIAN_FLAIL);
+        flailModel(FlailItems.ANCIENT_GUARDIAN_FLAIL);
+        flailModel(FlailItems.BALL_O_HURT);
+        flailModel(FlailItems.THE_MEATBALL);
+        flailModel(FlailItems.BLUE_MOON);
+        flailModel(FlailItems.SUNFURY);
+        flailModel(FlailItems.DAO_OF_POW);
+        flailModel(FlailItems.FLOWER_POWER);
+        flailModel(FlailItems.DRIPPLER_CRIPPLER);
+        flailModel(FlailItems.FLAIRON);
+        flailModel(FlailItems.CHAIN_KNIFE);
+        flailModel(FlailItems.ANCHOR);
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));
@@ -142,6 +165,13 @@ public class ModItemModelProvider extends ItemModelProvider {
             try {
                 String path1 = "item/crossbow/" + ((item1 instanceof BaseTerraRepeaterItem ? "repeater/" : "") + path);
                 ResourceLocation texture = Confluence.asResource(path1);
+                /// 基础图标和拉弓图标齐全后才创建特制模型，缺图时保持占位模型。
+                if (!existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")
+                        || !existingFileHelper.exists(texture.withSuffix("_pulling"), PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                    withExistingParent(path, MISSING_ITEM);
+                    skip.add(item1);
+                    continue;
+                }
                 withExistingParent(path, handheldRod).texture("layer0", texture)
                         .transforms()
                         .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2, 0.1f, -3).scale(0.9F, 0.9F, 0.9F).end()
@@ -172,14 +202,20 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(HookItems.ITEMS, "hook/"));
         customModels.add(createDir(IconItems.ITEMS, "icon/"));
         customModels.add(createDir(LightPetItems.ITEMS, "light_pet/"));
+        customModels.add(createDir(PetItems.ITEMS, "pet/"));
         customModels.add(createDir(MaterialItems.ITEMS, "materials/", "ingot/"));
         customModels.add(createDir(MinecartItems.ITEMS, "minecart/"));
+        customModels.add(createDir(MountItems.ITEMS, "rideable/"));
         customModels.add(createDir(ModItems.ITEMS, "misc/"));
         customModels.add(createDir(ModItems.HIDDEN, "misc/"));
         customModels.add(createDir(PaintItems.ITEMS, "paint/"));
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
+        treasureBagModelAlias(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG, "skeletron_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.THE_DESTROYER_TREASURE_BAG, "eater_of_worlds_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.PLANTERA_TREASURE_BAG, "queen_bee_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG, "skeletron_treasure_bag");
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
         customModels.add(createDir(YoyoItems.ITEMS, "yoyo/"));
@@ -223,12 +259,23 @@ public class ModItemModelProvider extends ItemModelProvider {
             String path = item.getId().getPath();
             try {
                 if (item1 instanceof SignItem) {
-                    withExistingParent(path, "item/generated").texture("layer0", "confluence:item/sign/" + path);
+                    ResourceLocation texture = Confluence.asResource("item/sign/" + path);
+                    if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                        withExistingParent(path, "item/generated").texture("layer0", texture);
+                    } else {
+                        withExistingParent(path, MISSING_BLOCK);
+                    }
                 } else if (item1 instanceof BlockItem item2) {
                     Block block = item2.getBlock();
                     switch (block) {
-                        case DoorBlock ignored ->
-                                withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
+                        case DoorBlock ignored -> {
+                            ResourceLocation texture = Confluence.asResource("item/decoration/door/" + path);
+                            if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                                withExistingParent(path, "item/generated").texture("layer0", texture);
+                            } else {
+                                withExistingParent(path, MISSING_BLOCK);
+                            }
+                        }
                         case TrapDoorBlock ignored ->
                                 withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
                         case SaplingBlock ignored ->
@@ -242,6 +289,14 @@ public class ModItemModelProvider extends ItemModelProvider {
                         //case LeavesBlock ignored -> withExistingParent(path, "block/leaves").texture("all", Confluence.asResource("block/" + path + "_item"));
                         case ChainBlock ignored ->
                                 withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
+                        case TorchBlock ignored -> {
+                            ResourceLocation texture = Confluence.asResource("block/torch/" + path);
+                            if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                                withExistingParent(path, "item/generated").texture("layer0", texture);
+                            } else {
+                                withExistingParent(path, Confluence.asResource("block/" + path));
+                            }
+                        }
                         default -> withExistingParent(path, Confluence.asResource("block/" + path));
                     }
                 }
@@ -280,11 +335,11 @@ public class ModItemModelProvider extends ItemModelProvider {
             }
             skip.add(entry.get());
         }
+
+        /// 保留主资源目录中的几何、动态渲染和显示变换，不用常规模型覆盖手写定义。
+        generatedModels.keySet().removeIf(this::hasHandwrittenModel);
     }
 
-    /**
-     * 手持高清但是物品栏16x
-     */
     private void handheldTextureAlias(DeferredItem<? extends Item> item, ResourceLocation texture) {
         withExistingParent(item.getId().getPath(), "item/handheld").texture("layer0", texture);
         skip.add(item.get());
@@ -312,6 +367,35 @@ public class ModItemModelProvider extends ItemModelProvider {
         return Map.of(reg, packPaths);
     }
 
+    /// 连枷在手中交给 Geo 手柄渲染器，物品栏与展示场景继续使用紧凑二维图标。
+    private void flailModel(DeferredItem<?> deferredItem) {
+        String path = deferredItem.getId().getPath();
+        ResourceLocation none = Confluence.asResource("");
+        ResourceLocation icon = Confluence.asResource("item/flail/" + path + "_inventory");
+        ModelFile builtinEntity = new ModelFile.UncheckedModelFile(ResourceLocation.withDefaultNamespace("builtin/entity"));
+        getBuilder(path).guiLight(BlockModel.GuiLight.FRONT)
+                .customLoader((builder, helper) -> {
+                    ItemModelBuilder iconModel = new ItemModelBuilder(none, helper)
+                            .parent(itemGenerated)
+                            .texture("layer0", icon);
+                    return SeparateTransformsModelBuilder.begin(builder, helper)
+                            .base(new ItemModelBuilder(none, helper)
+                                    .parent(builtinEntity)
+                                    .texture("particle", icon))
+                            .perspective(ItemDisplayContext.GUI, iconModel)
+                            .perspective(ItemDisplayContext.GROUND, iconModel)
+                            .perspective(ItemDisplayContext.FIXED, iconModel);
+                });
+        skip.add(deferredItem.get());
+    }
+
+    private void treasureBagModelAlias(DeferredItem<? extends Item> item, String textureName) {
+        withExistingParent(item.getId().getPath(), "item/generated")
+                .texture("layer0", Confluence.asResource("item/treasure_bag/" + textureName));
+        skip.add(item.get());
+    }
+
+    /// 按候选目录检查贴图是否存在，避免依赖 texture 抛出异常而选中不存在的路径。
     private void genModels(List<Map<DeferredRegister.Items, String[]>> list, String parent) {
         for (Map<DeferredRegister.Items, String[]> map : list) {
             for (Map.Entry<DeferredRegister.Items, String[]> entry : map.entrySet()) {
@@ -320,11 +404,12 @@ public class ModItemModelProvider extends ItemModelProvider {
                     String path = item.getId().getPath();
                     boolean exist = false;
                     for (String packPath : entry.getValue()) {
-                        try {
-                            withExistingParent(path, parent).texture("layer0", Confluence.asResource("item/" + packPath + path));
-                            exist = true;
-                            break;
-                        } catch (Exception ignored) {}
+                        ResourceLocation texture = Confluence.asResource("item/" + packPath + path);
+                        if (!existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures"))
+                            continue;
+                        withExistingParent(path, parent).texture("layer0", texture);
+                        exist = true;
+                        break;
                     }
                     if (!exist) withExistingParent(path, MISSING_ITEM);
                 }

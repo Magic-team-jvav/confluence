@@ -84,10 +84,21 @@
                 ]
             },
             "gui": {
-                "parent": "minecraft:item/generated",
-                "textures": {
-                    "layer0": "confluence:item/phaseblade/yellow_phaseblade_item"
-                }
+                "rotation": [
+                    30,
+                    180,
+                    40
+                ],
+                "translation": [
+                    -6.5,
+                    -7.75,
+                    0
+                ],
+                "scale": [
+                    0.45,
+                    0.45,
+                    0.45
+                ]
             },
             "fixed": {
                 "rotation": [
@@ -110,10 +121,8 @@
     },
     "perspectives":        {
            "gui": {
-               "parent": "minecraft:item/generated",
-               "textures": {
-                   "layer0": "confluence:item/phaseblade/yellow_phaseblade_item"
-               }
+               "parent": "builtin/entity",
+               "gui_light": "front"
            }
-       }
+    }
 }

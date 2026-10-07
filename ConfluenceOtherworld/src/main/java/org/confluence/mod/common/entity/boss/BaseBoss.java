@@ -192,9 +192,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     public boolean shouldEnhanceMultiplayer() {return true;}
 
     // === Multi-part ===
-    double getBossHealthDifficultyMultiplier(double defaultMultiplier) {
-        return defaultMultiplier;
-    }
+
 
     /// 返回生成时玩家数量对应的最大生命倍率。
     ///
@@ -462,11 +460,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 // 配置允许无目标 Boss 长期存在时，也不能让空战斗永久强加载区块。
                 encounterChunkTicket.release();
             }
-            // TODO(1c-c)：恢复 `MechanicalMayhemTracker.observe(this);`。
-            // 该类依赖 `BossEntities.THE_TWINS / THE_DESTROYER / SKELETRON_PRIME`，
-            // 而 1.21 侧 `common/init/entity/BossEntities` 尚未落地（属 1c-c 的注册层）。
-            // 当前 1.21 里没有任何机械 Boss，`isMechanicalBoss(this)` 恒为 false，
-            // 因此这一行是空转，暂时删掉不影响可观察行为。
+            MechanicalMayhemTracker.observe(this);
             updateCombatLifecycle(targetBeforeAi);
         }
     }

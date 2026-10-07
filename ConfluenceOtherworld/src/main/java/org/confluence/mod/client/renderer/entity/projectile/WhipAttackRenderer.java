@@ -2,7 +2,6 @@ package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -27,6 +26,8 @@ import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.mod.network.c2s.WhipPlaybackCompletePacketC2S;
 import org.joml.Matrix3f;
 import org.joml.Quaternionf;
+
+import java.util.List;
 
 
 // 沿攻击曲线按声明顺序绘制多个分段层；手柄仍由普通物品 JSON 渲染。
@@ -84,7 +85,8 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
                 segment.mode() == WhipSegment.Mode.FIXED_SPACING
                         ? curve.fixedSpacing(segment.value() * MODEL_PIXEL_SIZE)
                         : curve.fixedCount(segment.value());
-        BakedModel body = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(segment.model(), "inventory"));
+        /// 额外烘焙的分段使用独立模型键，查询必须与注册时的变体一致。
+        BakedModel body = Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(segment.model()));
         boolean hasTip = segment.tipModel() != null;
         WhipPolylineSamples.Sample tip = hasTip ? curve.tip() : null;
         int bodyCount = positions.size();
@@ -111,7 +113,7 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
             double length = edge.length();
             if (length > 1.0E-8) {
                 orientation = segmentOrientation(edge.scale(1.0 / length), previousDirection, orientation, widthAxis);
-                BakedModel tipModel = Minecraft.getInstance().getModelManager().getModel(new ModelResourceLocation(segment.tipModel(), "inventory"));
+                BakedModel tipModel = Minecraft.getInstance().getModelManager().getModel(ModelResourceLocation.standalone(segment.tipModel()));
                 renderSegment(weapon, tipModel, tip.position().subtract(origin), orientation, length, poseStack, buffers, packedLight);
             }
         }

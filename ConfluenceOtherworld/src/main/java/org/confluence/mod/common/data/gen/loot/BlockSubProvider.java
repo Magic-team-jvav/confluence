@@ -467,6 +467,19 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RED_CANDY_BLOCK.get());
         dropSelf(FROZEN_GEL_BLOCK.get());
         dropSelf(BLUE_GEL_BLOCK.get());
+        dropSelf(RAINBOW_GEL_BLOCK.get());
+        dropSelf(RAINBOW_GEL_BRICKS.FULL.get());
+        dropSelf(RAINBOW_GEL_BRICKS.STAIRS.get());
+        dropSelf(RAINBOW_GEL_BRICKS.SLAB.get());
+        dropSelf(RAINBOW_GEL_BRICKS.WALL.get());
+        dropSelf(BLUE_GEL_BRICKS.FULL.get());
+        dropSelf(BLUE_GEL_BRICKS.STAIRS.get());
+        dropSelf(BLUE_GEL_BRICKS.SLAB.get());
+        dropSelf(BLUE_GEL_BRICKS.WALL.get());
+        dropSelf(PINK_GEL_BRICKS.FULL.get());
+        dropSelf(PINK_GEL_BRICKS.STAIRS.get());
+        dropSelf(PINK_GEL_BRICKS.SLAB.get());
+        dropSelf(PINK_GEL_BRICKS.WALL.get());
         dropSelf(PINK_GEL_BLOCK.get());
         dropSelf(FLESH_BLOCK.get());
         dropSelf(LESION_BLOCK.get());
@@ -580,7 +593,6 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(PINK_BRICK_COLUMN.get());
         dropSelf(AETHERIUM_BRICKS.FULL.get());
         dropSelf(CRYSTAL_BLOCK.get());
-        dropSelf(RAINBOW_BRICKS.FULL.get());
         dropSelf(FLOATING_WHEAT_BALE.get());
         dropSelf(BOUNCY_CLOUD_BLOCK.get());
         dropSelf(STAR_CLOUD_BLOCK.get());

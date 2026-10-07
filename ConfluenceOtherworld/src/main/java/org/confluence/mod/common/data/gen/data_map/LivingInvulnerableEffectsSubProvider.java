@@ -64,6 +64,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.GREEN_SLIME, MobEffects.POISON)
                 .add(MonsterEntities.HARPY, MobEffects.POISON)
                 .add(MonsterEntities.HELL_BAT, ModEffects.HELLFIRE)
+                .add(MonsterEntities.HILL_HUNGRY, ModEffects.SHIMMER, LibEffects.CONFUSED)
                 // TODO 装甲步兵
                 .add(MonsterEntities.HORNET, MobEffects.POISON, LibEffects.CONFUSED)
                 .add(MonsterEntities.ICE_BAT, ModEffects.FROST_BURN, ModEffects.FROSTBITE)
@@ -132,7 +133,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(BossEntities.THE_TWINS, LibEffects.CONFUSED, MobEffects.POISON,ModEffects.BLEEDING,ModEffects.BLOOD_BUTCHERED,ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.RETINAZER, LibEffects.CONFUSED, MobEffects.POISON,ModEffects.BLEEDING,ModEffects.BLOOD_BUTCHERED,ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.SPAZMATISM, LibEffects.CONFUSED, MobEffects.POISON,ModEffects.BLEEDING,ModEffects.BLOOD_BUTCHERED,ModEffects.TENTACLE_SPIKES)
-                .add(BossEntities.THE_DESTROYER, LibEffects.CONFUSED, MobEffects.POISON,ModEffects.BLEEDING,ModEffects.BLOOD_BUTCHERED,ModEffects.TENTACLE_SPIKES)
+                .add(BossEntities.THE_DESTROYER, LibEffects.CONFUSED, MobEffects.POISON, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES, ModEffects.DRYADS_BANE)
                  // 探针
                 .add(BossEntities.SKELETRON_PRIME, LibEffects.CONFUSED, MobEffects.POISON,ModEffects.BLEEDING,ModEffects.BLOOD_BUTCHERED,ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.SKELETRON_PRIME_PART, LibEffects.CONFUSED, MobEffects.POISON,ModEffects.BLEEDING,ModEffects.BLOOD_BUTCHERED,ModEffects.TENTACLE_SPIKES)
@@ -144,6 +145,22 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.LEECH, LibEffects.CONFUSED)
                 .add(BossEntities.SERVANT_OF_CTHULHU, ModEffects.SHIMMER, LibEffects.CONFUSED)
                 .add(MonsterEntities.THE_HUNGRY, ModEffects.SHIMMER, LibEffects.CONFUSED)
+                .add(MonsterEntities.MOTHER_SLIME, MobEffects.POISON)
+                .add(MonsterEntities.BABY_SLIME, MobEffects.POISON)
+                .add(MonsterEntities.DUNGEON_SPIRIT, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL)
+                .add(MonsterEntities.WRAITH, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL)
+                .add(MonsterEntities.PALADIN, LibEffects.CONFUSED)
+                .add(MonsterEntities.CORRUPTOR, LibEffects.CONFUSED)
+                .add(MonsterEntities.CHAOS_ELEMENTAL, MobEffects.POISON)
+                .add(MonsterEntities.GASTROPOD, LibEffects.CONFUSED, MobEffects.POISON, ModEffects.BLEEDING)
+                .add(MonsterEntities.LUMINOUS_SLIME, MobEffects.POISON)
+                .add(MonsterEntities.POSSESS_ARMOR, MobEffects.POISON, LibEffects.CONFUSED, ModEffects.HELLFIRE)
+                .add(MonsterEntities.SLIMELING, MobEffects.POISON)
+                .add(MonsterEntities.SLIMER, MobEffects.POISON)
+                .add(MonsterEntities.WINGLESS_SLIMER, MobEffects.POISON)
+                .add(BossEntities.THE_DESTROYER_PROBE, ModEffects.DRYADS_BANE)
+                .add(BossEntities.LUNATIC_CULTIST, ModEffects.DRYADS_BANE)
+                .add(BossEntities.LUNATIC_CULTIST_CLONE, ModEffects.DRYADS_BANE)
         ;
     }
 

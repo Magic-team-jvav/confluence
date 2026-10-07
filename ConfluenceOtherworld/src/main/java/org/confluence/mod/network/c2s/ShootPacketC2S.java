@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.combat.gun.ShootingService;
+import org.confluence.mod.common.item.gun.ShootingService;
 import org.confluence.mod.network.s2c.ShotFeedbackPacketS2C;
 
 ///

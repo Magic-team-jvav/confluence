@@ -2,7 +2,8 @@ package org.confluence.mod.common.data.spawner;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import java.util.function.Predicate;
+import it.unimi.dsi.fastutil.objects.*;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -58,7 +59,6 @@ import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.PartyGameEvent;
 import org.confluence.mod.common.gameevent.SolarEclipseGameEvent;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -68,10 +68,9 @@ import org.confluence.mod.mixed.IStructureStart;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
-import it.unimi.dsi.fastutil.objects.*;
-import net.minecraft.core.*;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /// 注：NPC默认生成在对应玩家出生点
 public enum NPCSpawner implements IGlobalData {
@@ -106,7 +105,7 @@ public enum NPCSpawner implements IGlobalData {
                 || removalNotified.contains(npc.getUUID())) return;
         ResidentRecord next = new ResidentRecord(npc.getType(), npc.getRegion(),
                 GlobalPos.of(npc.level().dimension(), npc.blockPosition()),
-                !npc.shouldInteract() && (!(npc instanceof AnglerNPC angler) || angler.isWakeUp()));
+                !npc.requiresRescue());
         ResidentRecord previous = residents.put(npc.getUUID(), next);
         if (previous != null && (!previous.region.equals(next.region) || previous.type != next.type
                 || previous.location.dimension() != next.location.dimension()))
@@ -142,6 +141,45 @@ public enum NPCSpawner implements IGlobalData {
         return npcSpawned;
     }
 
+    /// 按注册处声明的职业归属查询永久解锁，兼容存档中已有的性别变种记录。
+    public boolean isNPCUnlocked(EntityType<?> type) {
+        return npcSpawned.stream().anyMatch(spawned -> NpcEntities.isSameProfession(spawned, type));
+    }
+
+    /// 保留渔夫救援查询入口，实际进度由统一解锁判断提供。
+    public boolean isAnglerRescued() {
+        return isNPCUnlocked(NpcEntities.ANGLER.get());
+    }
+
+    /// 已解锁的旧待救实例恢复正常状态，不迁移住所或重复发送抵达消息。
+    public void normalizeRescueState(BaseNPC npc) {
+        if (npc.level().isClientSide || !npc.isAlive() || !npc.requiresRescue() || !isNPCUnlocked(npc.getType()))
+            return;
+        npc.setRescued();
+        trackNPC(npc);
+    }
+
+    /// 玩家首次救援才解锁并加入玩家所属区域；其他同族实例只更新自身救援状态。
+    public void completeRescue(BaseNPC npc, ServerPlayer player) {
+        if (npc.level().isClientSide || !npc.isAlive() || !npc.requiresRescue()) return;
+        if (isNPCUnlocked(npc.getType())) {
+            normalizeRescueState(npc);
+            return;
+        }
+        npc.setRescued();
+        addSpawned(npc.getType());
+        moveNPCToAnotherRegion(npc, npc.getRegion(), getNpcSpawnRegion(player));
+        for (ServerLevel level : player.server.getAllLevels()) {
+            for (Entity entity : level.getAllEntities()) {
+                if (entity instanceof BaseNPC other && NpcEntities.isSameProfession(other.getType(), npc.getType())) {
+                    normalizeRescueState(other);
+                }
+            }
+        }
+        broadcastMessageToRegion(npc.level(), npc, Component.translatable("event.confluence.npc.arrived",
+                npc.getType().getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
+    }
+
     public void setAdvancedCombatTechniquesUsed(boolean used) {
         this.isAdvancedCombatTechniquesUsed = used;
     }
@@ -170,11 +208,12 @@ public enum NPCSpawner implements IGlobalData {
         Reference2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map == null) return 0;
         int count = 0;
+        Set<EntityType<?>> professions = new ReferenceOpenHashSet<>();
         for (Reference2BooleanMap.Entry<EntityType<?>> entry : map.reference2BooleanEntrySet()) {
             if (entry.getBooleanValue() &&
                     entry.getKey() != NpcEntities.SKELETON_MERCHANT.get() &&
                     NpcEntities.TOWN_SLIMES.stream().noneMatch(type -> type.get() == entry.getKey()) &&
-                    filter.test(entry.getKey())
+                    filter.test(entry.getKey()) && professions.add(NpcEntities.getProfession(entry.getKey()))
             ) {
                 count++;
             }
@@ -188,17 +227,16 @@ public enum NPCSpawner implements IGlobalData {
 
     public boolean hasNPCAlive(Region region, EntityType<?> entityType) {
         Reference2BooleanMap<EntityType<?>> map = npcAlive.get(region);
-        return map != null && map.getOrDefault(entityType, false);
+        if (map == null) return false;
+        return map.reference2BooleanEntrySet().stream().anyMatch(entry -> entry.getBooleanValue()
+                && NpcEntities.isSameProfession(entry.getKey(), entityType));
     }
 
     /// 任意 region 的存活标记。
     ///
     /// 保留全局查询接口；普通城镇生成不使用它限制其他区域的同类 NPC。
     public boolean isNpcAliveAnywhere(EntityType<?> entityType) {
-        for (Reference2BooleanMap<EntityType<?>> map : npcAlive.values()) {
-            if (map.getOrDefault(entityType, false)) return true;
-        }
-        return false;
+        return npcAlive.keySet().stream().anyMatch(region -> hasNPCAlive(region, entityType));
     }
 
     /// 附近是否已经存在该类型的真实实体。
@@ -208,7 +246,8 @@ public enum NPCSpawner implements IGlobalData {
     public static boolean isNpcNearby(Level level, BlockPos pos, EntityType<?> entityType, double radius) {
         AABB area = new AABB(pos).inflate(radius);
         for (BaseNPC npc : level.getEntitiesOfClass(BaseNPC.class, area)) {
-            if (npc.isAlive() && npc.getType() == entityType) return true;
+            if (npc.isAlive() && NpcEntities.isSameProfession(npc.getType(), entityType))
+                return true;
         }
         return false;
     }
@@ -218,7 +257,7 @@ public enum NPCSpawner implements IGlobalData {
         Region region = new Region(pos);
         if (hasNPCAlive(region, entityType)) return true;
         for (Entity entity : level.getAllEntities()) {
-            if (entity instanceof BaseNPC npc && npc.isAlive() && npc.getType() == entityType
+            if (entity instanceof BaseNPC npc && npc.isAlive() && NpcEntities.isSameProfession(npc.getType(), entityType)
                     && region.equals(npc.getRegion())) return true;
         }
         return false;
@@ -231,10 +270,10 @@ public enum NPCSpawner implements IGlobalData {
         return getAliveNpcCount(region, type -> true) >= TOWN_NPC_THRESHOLD;
     }
 
+    /// 只更新区域占用；活着、搬家或认房不等于已经完成首次解锁。
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
         if (alive) {
             getRegionAliveDetails(region).put(entityType, true);
-            addSpawned(entityType);
         } else {
             Reference2BooleanMap<EntityType<?>> map = npcAlive.get(region);
             if (map != null && map.getBoolean(entityType)) {
@@ -252,12 +291,10 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     public void moveNPCToAnotherRegion(BaseNPC living, Region from, Region to) {
-        EntityType<?> entityType = living.getType();
         trackNPC(living);
         if (!from.equals(to)) {
             forgetNPC(living);
         }
-        setNPCAlive(to, entityType, true);
         living.setRegion(to);
         trackNPC(living);
         applyBenedictions(living);
@@ -267,8 +304,9 @@ public enum NPCSpawner implements IGlobalData {
         living.setRegion(new Region(living.chunkPosition()));
         removalNotified.remove(living.getUUID());
         trackNPC(living);
-        setNPCAlive(living.getRegion(), living.getType(), true);
         applyBenedictions(living);
+        if (living.requiresRescue()) return;
+        addSpawned(living.getType());
         broadcastMessageToRegion(living.level(), living, Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
     }
 
@@ -527,7 +565,7 @@ public enum NPCSpawner implements IGlobalData {
         ServerLevel level = player.serverLevel();
         if (level.canSeeSky(player.blockPosition()) || player.getY() >= level.getSeaLevel() - 8)
             return false;
-        boolean golfer = !npcSpawned.contains(NpcEntities.GOLFER.get()) && level.getBiome(player.blockPosition()).is(Tags.Biomes.IS_DESERT);
+        boolean golfer = !isNPCUnlocked(NpcEntities.GOLFER.get()) && level.getBiome(player.blockPosition()).is(Tags.Biomes.IS_DESERT);
         EntityType<? extends BaseNPC> type = golfer ? NpcEntities.GOLFER.get() : NpcEntities.SKELETON_MERCHANT.get();
         Region region = new Region(player.blockPosition());
         if (isNpcAlreadyPresent(level, player.blockPosition(), type) || player.getRandom().nextInt(8) != 0)
@@ -646,11 +684,12 @@ public enum NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /// 先计入NPC列表，待玩家交互了再转移（睡眠状态，交互后唤醒）
+    /// 仅在存档尚未救醒渔夫时生成海洋睡姿；获救后各区域通过普通城镇入口生成醒着的渔夫。
     private boolean trySpawnAngler(ServerPlayer player) {
+        if (isAnglerRescued()) return false;
         BlockPos playerPos = player.blockPosition();
         Region playerRegion = new Region(playerPos);
-        if (!isNpcAlreadyPresent(player.serverLevel(), playerPos, NpcEntities.ANGLER.get())) { // 保证玩家转移渔夫区域时不再生成新的
+        if (!isNpcAlreadyPresent(player.serverLevel(), playerPos, NpcEntities.ANGLER.get())) {
             Level level = player.serverLevel();
             Pair<BlockPos, Holder<Biome>> closestBiome3d = player.serverLevel().findClosestBiome3d(biome -> biome.is(Tags.Biomes.IS_OCEAN), playerPos, 64, 8, 64);
             if (closestBiome3d != null) {
@@ -860,11 +899,9 @@ public enum NPCSpawner implements IGlobalData {
         private long respawnAfter;
     }
 
-    /// 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）
-    ///
-    /// 首次交互时 BaseNPC.mobInteract 处理 shouldInteract → 加入区域
+    /// 机械师获救后不再走地牢待救入口；首次获救资格与骷髅王进度不能混为一个条件。
     private boolean trySpawnMechanic(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.isDefeated(Confluence.asResource("skeletron")) && npcSpawned.contains(NpcEntities.MECHANIC.get())) {
+        if (isNPCUnlocked(NpcEntities.MECHANIC.get())) {
             if (!hasNPCAlive(region, NpcEntities.MECHANIC.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.MECHANIC.get());
             }
@@ -881,9 +918,10 @@ public enum NPCSpawner implements IGlobalData {
                                 BaseNPC npc = NpcEntities.MECHANIC.get().create(level);
                                 if (npc == null) return false;
                                 npc.setPos(offset.getBottomCenter());
-                                if (!level.addFreshEntity(npc)) return false;
                                 npc.setRegion(npcRegion);
-                                npc.setShouldInteract(true); // 标记需要交互
+                                npc.setShouldInteract(true);
+                                if (!level.noCollision(npc) || !level.addFreshEntity(npc))
+                                    return false;
                                 getRegionAliveDetails(npcRegion).put(NpcEntities.MECHANIC.get(), true);
                                 trackNPC(npc);
                                 return true;
@@ -901,14 +939,13 @@ public enum NPCSpawner implements IGlobalData {
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
         if (isNpcAlreadyPresent(level, pos, entityType)) return false;
         if (!(entityType.create(level) instanceof BaseNPC npc)) return false;
+        /// 普通城镇刷新使用醒姿尺寸定位，不能在加入世界后才改变碰撞箱。
+        if (npc instanceof AnglerNPC angler) angler.setWakeUp(true);
         Optional<BlockPos> safePos = findSafeSpawnLocation(level, pos, npc);
         if (safePos.isEmpty()) return false;
         npc.setPos(safePos.get().getBottomCenter());
         if (!level.noCollision(npc)) return false;
         if (!level.addFreshEntity(npc)) return false;
-        if (npc instanceof AnglerNPC angler) {
-            angler.setWakeUp(true); // 重生的渔夫默认醒来
-        }
         onNPCAdded(npc);
         return true;
     }

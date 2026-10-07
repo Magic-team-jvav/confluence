@@ -1,6 +1,5 @@
 package org.confluence.mod.common.summoner;
 
-import java.util.List;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,6 +22,8 @@ import org.confluence.mod.common.summoner.particle.SummonerParticleData;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkInstance;
 
+import java.util.List;
+
 public final class SummonerEvents {
 
     public static void init() {
@@ -34,6 +35,7 @@ public final class SummonerEvents {
             Player player = event.getEntity();
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE).tick();
+                serverPlayer.getData(SummonerAttachmentTypes.ZENITH_DATA).tick();
             }
             player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tick();
             SummonerHelper.get(player).getEntityData().tick(player);

@@ -17,15 +17,15 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-/** Builds Tesla Turrets for the shared, world-wide four-per-engineer allowance. */
-public final class MartianEngineer extends BaseWarriorMonster {
+/// 为每位火星工程师提供共享的四座特斯拉炮塔限额。
+public final class MartianEngineer extends MartianHumanoidMonster {
     public static final String EVENT_TAG = "confluence:martian_madness";
     private static final int DEPLOY_RANGE = 5;
     private static final int DIAMETER = DEPLOY_RANGE * 2 + 1;

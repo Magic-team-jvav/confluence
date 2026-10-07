@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.entity;
 
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -58,6 +56,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<EmptyEntity>> EMPTY_ENTITY = ENTITIES.register("empty_entity", id -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(id.toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<MartianElectricBolt>> MARTIAN_ELECTRIC_BOLT = ENTITIES.register("martian_electric_bolt", id -> EntityType.Builder.of(MartianElectricBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<ElectricSpear>> ELECTRIC_SPEAR = ENTITIES.register("electric_spear", id -> EntityType.Builder.of(ElectricSpear::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<MonsterLaser>> MONSTER_LASER = ENTITIES.register("monster_laser", id -> EntityType.Builder.of(MonsterLaser::new, MobCategory.MISC).sized(0.2F, 0.2F).clientTrackingRange(16).updateInterval(1).build(id.toString()));
 
     // 炸弹
@@ -363,6 +362,11 @@ public final class ModEntities {
 
     public static @Nullable CreatureAttributeBuilder.Definition creatureAttributes(EntityType<?> type) {
         return CREATURE_DEFINITIONS.get(type);
+    }
+
+    /// 提供只读登记模板，供阶段属性数据生成器统一输出。
+    public static Map<EntityType<?>, CreatureAttributeBuilder.Definition> creatureDefinitions() {
+        return Map.copyOf(CREATURE_DEFINITIONS);
     }
 
     public static void registerAttributes(EntityAttributeCreationEvent event) {

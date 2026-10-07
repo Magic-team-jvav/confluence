@@ -16,7 +16,8 @@ import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.entity.projectile.NPCProjectileEffects;
 import org.confluence.mod.common.init.item.*;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -212,8 +213,32 @@ public class NpcEntities {
                     (npc, target, values) -> {}, builder -> builder.maxHealth(65).damage(0), 0.8F, 0.7F)),
             () -> CreatureAttributeBuilder.npc().build());
 
-    // 城镇史莱姆集合（依赖上方各注册项）
-    public static final List<DeferredHolder<EntityType<?>, EntityType<TownSlimeNPC>>> TOWN_SLIMES = List.of(NERDY_SLIME, COOL_SLIME, ELDER_SLIME, CLUMSY_SLIME, DIVA_SLIME, SURLY_SLIME, MYSTIC_SLIME, SQUIRE_SLIME);
+    /// 城镇史莱姆是独立类型的无序集合，不参与性别变种的职业合并。
+    public static final Set<DeferredHolder<EntityType<?>, EntityType<TownSlimeNPC>>> TOWN_SLIMES = Set.of(
+            NERDY_SLIME, COOL_SLIME, ELDER_SLIME, CLUMSY_SLIME, DIVA_SLIME, SURLY_SLIME, MYSTIC_SLIME, SQUIRE_SLIME);
+
+    /// 首次查询时才解析注册项，避免外部注册类初始化时访问尚未绑定的实体类型。
+    private static final class ProfessionVariants {
+        /// 只登记变种到基础职业的映射；其他类型默认代表自身。
+        private static final Map<EntityType<?>, EntityType<?>> PROFESSIONS = Map.of(
+                FEMALE_ANGLER.get(), ANGLER.get());
+    }
+
+    /// 返回变种所属职业，生成、救援与选房共用这一归属，不合并性别专属对话与偏好。
+    public static EntityType<?> getProfession(EntityType<?> type) {
+        return type == null ? null : ProfessionVariants.PROFESSIONS.getOrDefault(type, type);
+    }
+
+    /// 比较职业身份；普通 NPC 和未登记额外变种的类型默认只与自身同族。
+    public static boolean isSameProfession(EntityType<?> first, EntityType<?> second) {
+        return first != null && second != null && getProfession(first) == getProfession(second);
+    }
+
+    /// 常规 NPC（含老人和游商）支持微光外观，城镇史莱姆保留自身的宠物转换规则。
+    public static boolean hasShimmerAppearance(EntityType<?> type) {
+        return TOWN_SLIMES.stream().noneMatch(entry -> entry.get() == type)
+                && ENTITIES.getEntries().stream().anyMatch(entry -> entry.get() == type);
+    }
 
     /// 注册没有额外交互或生命周期逻辑、使用固定武器的普通城镇 NPC。
     private static DeferredHolder<EntityType<?>, EntityType<SimpleNPC>> register(String name, Supplier<? extends Item> weapon,

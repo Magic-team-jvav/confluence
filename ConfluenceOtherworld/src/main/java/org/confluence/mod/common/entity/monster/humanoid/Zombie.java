@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -30,6 +31,8 @@ import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
@@ -49,18 +52,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     /// 由 {@link #readAdditionalSaveData(CompoundTag)} 置位，替代 1.21 删掉的 `finalizeSpawn` 第 5 个形参。
     private boolean variantLoadedFromSave;
 
-    static {
-        registerVariantStats(Variant.NORMAL, 20, 4, 2);
-        registerVariantStats(Variant.ARMED, 24, 6, 3);
-        registerVariantStats(Variant.SLIMED, 18, 3.5, 2);
-        registerVariantStats(Variant.PINCUSHION, 22, 5, 3);
-        registerVariantStats(Variant.TWIGGY, 20, 5, 1);
-        registerVariantStats(Variant.SWAMP, 20, 3.5, 3);
-        registerVariantStats(Variant.RAINCOAT, 22, 4.5, 2);
-        registerVariantStats(Variant.BLOOD, 28, 6, 3);
-        registerVariantStats(Variant.ESKIMO, 24, 5, 4);
-        registerVariantStats(Variant.BALD, 18, 4.5, 1);
-    }
+
 
     public Zombie(EntityType<? extends Zombie> type, Level level) {
         this(type, level, Variant.NORMAL);
@@ -74,9 +66,11 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     protected void applyVariantStats(Variant v) {
         VariantStats stats = VARIANT_STATS.get(v);
         if (stats == null) return;
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(stats.health);
-        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(stats.damage);
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.ceil(stats.health));
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(Math.ceil(stats.damage));
+        getAttribute(LibAttributes.getArmorPenetration()).setBaseValue(CreatureDifficultyRules.penetration(Math.ceil(stats.damage)));
         getAttribute(Attributes.ARMOR).setBaseValue(stats.armor);
+        CreatureDifficultyScaling.apply(this, false);
         if (getHealth() > getMaxHealth()) {
             setHealth(getMaxHealth());
         }

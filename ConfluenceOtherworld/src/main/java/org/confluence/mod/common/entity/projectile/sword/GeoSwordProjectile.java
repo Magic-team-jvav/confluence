@@ -2,7 +2,7 @@ package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.component.SwordProjectileAppearance;
+import org.confluence.mod.common.item.sword.SwordProjectileAppearance;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;

@@ -1,9 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.Holder;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -13,9 +10,15 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Rabbit;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.function.*;
 
 /// 本体生物注册共用的属性模板构建器。
@@ -23,20 +26,28 @@ import java.util.function.*;
 public final class CreatureAttributeBuilder {
     private final Holder<Attribute> attackDamageAttribute;
     private final AttributeSupplier.Builder attributes;
+    private final AttributeSupplier defaults;
+    private final Map<Holder<Attribute>, Double> registeredValues = new LinkedHashMap<>();
     private final Map<Enum<?>, State> states = new LinkedHashMap<>();
     private final Map<EntityType<?>, Projectile> projectiles = new LinkedHashMap<>();
+    private final Map<GamePhase, PhaseBuilder> phases = new LinkedHashMap<>();
+    private boolean enemy, boss;
+    private Double armorPenetration;
 
     private CreatureAttributeBuilder(AttributeSupplier attributes, Holder<Attribute> attackDamageAttribute) {
+        this.defaults = attributes;
         this.attributes = new AttributeSupplier.Builder(attributes);
         this.attackDamageAttribute = attackDamageAttribute;
     }
 
     public CreatureAttributeBuilder add(Holder<Attribute> attribute, double value) {
+        registeredValues.put(attribute, value);
         attributes.add(attribute, value);
         return this;
     }
 
     public CreatureAttributeBuilder add(Holder<Attribute> attribute) {
+        registeredValues.put(attribute, attribute.value().getDefaultValue());
         attributes.add(attribute);
         return this;
     }
@@ -58,7 +69,90 @@ public final class CreatureAttributeBuilder {
     }
 
     public Definition build() {
-        return new Definition(attributes.build(), Map.copyOf(states), Map.copyOf(projectiles));
+        if (enemy) {
+            double damage = Math.ceil(registeredValue(attackDamageAttribute));
+            attributes.add(attackDamageAttribute, damage);
+            attributes.add(Attributes.MAX_HEALTH, Math.ceil(registeredValue(Attributes.MAX_HEALTH)));
+            attributes.add(Attributes.ARMOR, Math.ceil(registeredValue(Attributes.ARMOR)));
+            attributes.add(LibAttributes.getArmorPenetration(), armorPenetration == null ? CreatureDifficultyRules.penetration(damage) : armorPenetration);
+            attributes.add(Attributes.ARMOR_TOUGHNESS, Math.clamp(Math.floor(registeredValue(Attributes.ARMOR_TOUGHNESS)), 0, CreatureDifficultyRules.MAX_TOUGHNESS));
+        }
+        AttributeSupplier supplier = attributes.build();
+        Map<GamePhase, AttributeModifiersValue> phaseModifiers = new LinkedHashMap<>();
+        phases.forEach((phase, builder) -> phaseModifiers.put(phase, builder.build(supplier)));
+        return new Definition(supplier, Map.copyOf(states), Map.copyOf(projectiles), enemy, boss, Map.copyOf(phaseModifiers));
+    }
+
+    /// 阶段成长也在实体注册处声明；各阶段均相对初始模板，不逐阶段累乘。
+    public CreatureAttributeBuilder phase(GamePhase phase, Consumer<PhaseBuilder> configure) {
+        PhaseBuilder builder = new PhaseBuilder();
+        configure.accept(builder);
+        if (phases.putIfAbsent(phase, builder) != null)
+            throw new IllegalArgumentException("Duplicate phase " + phase);
+        return this;
+    }
+
+    public static final class PhaseBuilder {
+        private final Map<Holder<Attribute>, Double> values = new LinkedHashMap<>();
+        private final Map<Holder<Attribute>, Double> multipliers = new LinkedHashMap<>();
+
+        /// 覆盖阶段基础值；同属性同时设置倍率时，先覆盖再乘算。
+        public PhaseBuilder add(Holder<Attribute> attribute, double value) {
+            if (!Double.isFinite(value))
+                throw new IllegalArgumentException("Invalid phase value " + value);
+            values.put(attribute, value);
+            return this;
+        }
+
+        /// 相对初始模板的倍率，例如 1.5 表示基础值的 150%。
+        public PhaseBuilder multiply(Holder<Attribute> attribute, double multiplier) {
+            if (!Double.isFinite(multiplier) || multiplier < 0)
+                throw new IllegalArgumentException("Invalid phase multiplier " + multiplier);
+            multipliers.put(attribute, multiplier);
+            return this;
+        }
+
+        /// 转为既有阶段数据映射；覆盖用加法差值，倍率用独立总倍率。
+        private AttributeModifiersValue build(AttributeSupplier attributes) {
+            AttributeModifiersValue.Builder builder = AttributeModifiersValue.builder();
+            var id = Confluence.asResource("game_phase_modifier");
+            values.forEach((attribute, value) -> {
+                double base = attributes.hasAttribute(attribute) ? attributes.getBaseValue(attribute) : attribute.value().getDefaultValue();
+                builder.add(attribute, id, value - base, AttributeModifier.Operation.ADD_VALUE);
+            });
+            multipliers.forEach((attribute, value) -> builder.add(attribute,
+                    values.containsKey(attribute) ? Confluence.asResource("game_phase_multiplier") : id,
+                    value - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            return builder.build();
+        }
+    }
+
+    /// 在模板已有默认值上乘算；覆盖用 add，乘算用 multiply，不另存第二份基础值。
+    public CreatureAttributeBuilder multiply(Holder<Attribute> attribute, double multiplier) {
+        if (!Double.isFinite(multiplier) || multiplier < 0)
+            throw new IllegalArgumentException("Invalid attribute multiplier " + multiplier);
+        return add(attribute, registeredValue(attribute) * multiplier);
+    }
+
+    /// 读取登记值或初始模板，不提前 build，避免原版构建器被冻结。
+    private double registeredValue(Holder<Attribute> attribute) {
+        Double value = registeredValues.get(attribute);
+        return value != null ? value : defaults.hasAttribute(attribute) ? defaults.getBaseValue(attribute) : attribute.value().getDefaultValue();
+    }
+
+    /// 专家穿透默认由接触伤害推导；只有需要微调的物种才显式覆盖。
+    public CreatureAttributeBuilder armorPenetration(double value) {
+        armorPenetration = Math.max(1, Math.min(CreatureDifficultyRules.MAX_PENETRATION, value));
+        return this;
+    }
+
+    /// 登记已转换的专家基础韧性，不传入 Wiki 防御原值。
+    public CreatureAttributeBuilder armorToughness(double value) {return add(Attributes.ARMOR_TOUGHNESS, value);}
+
+    private CreatureAttributeBuilder enemy(boolean boss) {
+        this.enemy = true;
+        this.boss = boss;
+        return this;
     }
 
     /// 创建普通敌怪属性模板，默认移动速度为 0.25、跟随范围为 32 格、攻击击退为 1、击退抗性为 0.28。
@@ -75,7 +169,7 @@ public final class CreatureAttributeBuilder {
                 .add(Attributes.FLYING_SPEED)
                 .add(Attributes.SCALE, 1.0D)
                 .add(Attributes.SAFE_FALL_DISTANCE, 8.0)
-                .build(), attackDamage);
+                .build(), attackDamage).enemy(false);
     }
 
     /// 创建仅含原版生物基础属性的模板，供动物、展示实体和其他非敌怪实体使用。
@@ -115,7 +209,7 @@ public final class CreatureAttributeBuilder {
                 .add(Attributes.WATER_MOVEMENT_EFFICIENCY, 0.2)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.FOLLOW_RANGE, 16.0)
-                .build(), Attributes.ATTACK_DAMAGE);
+                .build(), Attributes.ATTACK_DAMAGE).enemy(false);
     }
 
     /// 创建水生敌怪属性模板；水下导航、呼吸和游动行为仍由实体实现。
@@ -126,7 +220,7 @@ public final class CreatureAttributeBuilder {
                 .add(Attributes.MOVEMENT_SPEED)
                 .add(Attributes.FOLLOW_RANGE)
                 .add(Attributes.KNOCKBACK_RESISTANCE)
-                .build(), Attributes.ATTACK_DAMAGE);
+                .build(), Attributes.ATTACK_DAMAGE).enemy(false);
     }
 
     /// 创建 Boss 属性模板，默认移动速度为 1、跟随范围为 300 格、击退抗性为 1。
@@ -142,7 +236,7 @@ public final class CreatureAttributeBuilder {
                 .add(Attributes.FLYING_SPEED, 0.4)
                 .add(Attributes.SCALE, 1.0D)
                 .add(Attributes.SAFE_FALL_DISTANCE, 8.0)
-                .build(), attackDamage);
+                .build(), attackDamage).enemy(true);
     }
 
     /// 创建城镇 NPC 属性模板。
@@ -271,12 +365,15 @@ public final class CreatureAttributeBuilder {
     }
 
     public record Definition(AttributeSupplier attributes, Map<Enum<?>, State> states,
-                             Map<EntityType<?>, Projectile> projectiles) {}
+                             Map<EntityType<?>, Projectile> projectiles, boolean enemy,
+                             boolean boss,
+                             Map<GamePhase, AttributeModifiersValue> phases) {}
 
     public record Projectile(ToDoubleFunction<Mob> damage, double speed, double knockback,
-                             double inaccuracy, int lifetime) {
+                             double inaccuracy, int lifetime, boolean fromAttackAttribute) {
         public CreatureDefinition.ProjectileOverrides parameters(Mob owner) {
-            return new CreatureDefinition.ProjectileOverrides(damage.applyAsDouble(owner), speed, knockback, inaccuracy, lifetime);
+            return new CreatureDefinition.ProjectileOverrides(CreatureDifficultyScaling.projectileDamage(owner,
+                    damage.applyAsDouble(owner), fromAttackAttribute), speed, knockback, inaccuracy, lifetime);
         }
     }
 
@@ -284,26 +381,39 @@ public final class CreatureAttributeBuilder {
         private ToDoubleFunction<Mob> damage = mob -> -1;
         private double speed = -1, knockback = -1, inaccuracy = -1;
         private int lifetime = -1;
+        private boolean fromAttackAttribute;
 
         public ProjectileBuilder damage(double value) {
-            damage = mob -> value;
+            damage = mob -> Math.ceil(value);
+            fromAttackAttribute = false;
             return this;
         }
 
         public ProjectileBuilder damage(ToDoubleFunction<Mob> value) {
             damage = value;
+            fromAttackAttribute = false;
             return this;
-        }
-
-        /// 依次为经典、专家、大师伤害；不隐含额外难度倍率。
-        public ProjectileBuilder damage(double normal, double expert, double master) {
-            return damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? master
-                    : LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? expert : normal);
         }
 
         /// 使用当前攻击属性的指定倍率，不再额外叠加难度倍率。
         public ProjectileBuilder attackDamage(double multiplier) {
-            return damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier);
+            return attackDamage(mob -> multiplier);
+        }
+
+        /// 独立射弹登记伤害的微调倍率；仍使用公共特殊攻击难度倍率。
+        public ProjectileBuilder damageMultiplier(double multiplier) {
+            if (!Double.isFinite(multiplier) || multiplier < 0)
+                throw new IllegalArgumentException("Invalid projectile multiplier " + multiplier);
+            ToDoubleFunction<Mob> previous = damage;
+            damage = mob -> previous.applyAsDouble(mob) * multiplier;
+            return this;
+        }
+
+        /// 比例可读取特殊状态或行为覆盖，难度只由公共入口结算一次。
+        public ProjectileBuilder attackDamage(ToDoubleFunction<Mob> multiplier) {
+            damage = mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier.applyAsDouble(mob);
+            fromAttackAttribute = true;
+            return this;
         }
 
         /// 对已声明的弹幕伤害按攻击属性缩放；基准值显式登记，避免调接触伤害时暗中改变分母。
@@ -311,7 +421,9 @@ public final class CreatureAttributeBuilder {
             if (referenceAttack <= 0)
                 throw new IllegalArgumentException("Reference attack must be positive");
             ToDoubleFunction<Mob> baseDamage = damage;
-            return damage(mob -> baseDamage.applyAsDouble(mob) * mob.getAttributeValue(Attributes.ATTACK_DAMAGE) / referenceAttack);
+            damage = mob -> baseDamage.applyAsDouble(mob) * mob.getAttributeValue(Attributes.ATTACK_DAMAGE) / referenceAttack;
+            fromAttackAttribute = true;
+            return this;
         }
 
         public ProjectileBuilder speed(double value) {
@@ -334,7 +446,7 @@ public final class CreatureAttributeBuilder {
             return this;
         }
 
-        private Projectile build() {return new Projectile(damage, speed, knockback, inaccuracy, lifetime);}
+        private Projectile build() {return new Projectile(damage, speed, knockback, inaccuracy, lifetime, fromAttackAttribute);}
     }
 
     public record State(Map<Holder<Attribute>, Value> attributes,

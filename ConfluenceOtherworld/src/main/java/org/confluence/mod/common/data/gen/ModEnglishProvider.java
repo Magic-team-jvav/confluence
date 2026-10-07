@@ -70,6 +70,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MountItems.SUPERHEATED_BLOOD.get(), "Superheated Blood");
         add("tooltip.confluence.rideable_item.desc", "Press %s to ride.");
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
+        add(SwordItems.ZENITH.get(), "Zenith");
+        add(SwordItems.TRUE_COPPER_SHORTSWORD.get(), "True Copper Shortsword");
         add("summon.confluence.finch", "Finch");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");
         add("summon.confluence.i_32_iron_golem", "I-32 Iron Golem");
@@ -320,7 +322,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.crimsandstone_bricks", "Crimsandstone Bricks");
         add("itemGroup.confluence.snow_bricks", "Snow Bricks");
         add("itemGroup.confluence.aetherium_bricks", "Aetherium Bricks");
-        add("itemGroup.confluence.rainbow_bricks", "Rainbow Bricks");
+        add("itemGroup.confluence.rainbow_gel_bricks", "Gel Bricks");
+        add("itemGroup.confluence.blue_gel_bricks", "Blue Gel Bricks");
+        add("itemGroup.confluence.pink_gel_bricks", "Pink Gel Bricks");
         add("itemGroup.confluence.copper_bricks", "Copper Bricks");
         add("itemGroup.confluence.tin_bricks", "Tin Bricks");
         add("itemGroup.confluence.iron_bricks", "Iron Bricks");
@@ -1357,6 +1361,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.routine_summon", "Summon: Summon");
         add("confluence.subtitle.use_minion_weapon", "Minion Staff: Use");
         add("confluence.subtitle.use_terraprism", "Terraprisma: Use");
+        add("confluence.subtitle.zenith", "Zenith: Swing");
         add("confluence.subtitle.summon_eye", "Flying Summon: Summon");
         add("confluence.subtitle.summon_imp", "Imp: Summon");
         addCreatureSoundTranslations();
@@ -1850,6 +1855,13 @@ public class ModEnglishProvider extends LanguageProvider {
         addOverrides();
         add(MonsterEntities.WINGLESS_SLIMER.get(), "Slimer");
         add(MonsterEntities.MARTIAN_PROBE.get(), "Martian Probe");
+        add(MonsterEntities.BRAIN_SCRAMBLER.get(), "Brain Scrambler");
+        add(MonsterEntities.GRAY_GRUNT.get(), "Gray Grunt");
+        add(MonsterEntities.GIGAZAPPER.get(), "Gigazapper");
+        add(ModEntities.ELECTRIC_SPEAR.get(), "Electric Spear");
+        add(SpawnEggItems.BRAIN_SCRAMBLER_SPAWN_EGG.get(), "Brain Scrambler Spawn Egg");
+        add(SpawnEggItems.GRAY_GRUNT_SPAWN_EGG.get(), "Gray Grunt Spawn Egg");
+        add(SpawnEggItems.GIGAZAPPER_SPAWN_EGG.get(), "Gigazapper Spawn Egg");
         add(MonsterEntities.MARTIAN_ENGINEER.get(), "Martian Engineer");
         add(MonsterEntities.TESLA_TURRET.get(), "Tesla Turret");
         add(MonsterEntities.RAY_GUNNER.get(), "Ray Gunner");

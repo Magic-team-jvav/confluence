@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
-import java.util.Comparator;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -22,16 +21,18 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
-import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+
+import java.util.Comparator;
 
 
 /// 剑气实体的服务端运行时，负责运动、追踪、碰撞、伤害与快照同步。
@@ -43,7 +44,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     private static final byte EVENT_ENTITY_HIT = 61;
     private static final byte EVENT_BLOCK_HIT = 62;
 
-    private @Nullable SwordProjectileComponent component;
+    private @Nullable Projectile projectileDefinition;
     private ItemStack firedFromWeapon = ItemStack.EMPTY;
     private @Nullable LivingEntity trackingTarget;
     private float gravity;
@@ -94,25 +95,25 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         }
     }
 
-    public final void configure(LivingEntity owner, ItemStack weapon, SwordProjectileComponent component, float damage) {
+    public final void configure(LivingEntity owner, ItemStack weapon, Projectile projectileDefinition, float damage) {
         setOwner(owner);
         firedFromWeapon = weapon.copy();
-        setProjectileComponent(component);
+        setProjectileComponent(projectileDefinition);
         baseAttackDamage = damage;
         AttributeInstance knockback = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
         baseKnockback = knockback == null ? 0.0F : (float) knockback.getValue();
     }
 
-    public final void setProjectileComponent(SwordProjectileComponent component) {
-        this.component = component;
-        gravity = component.gravity();
-        lifetime = component.existTicks();
+    public final void setProjectileComponent(Projectile projectileDefinition) {
+        this.projectileDefinition = projectileDefinition;
+        gravity = projectileDefinition.gravity();
+        lifetime = projectileDefinition.existTicks();
         entityData.set(DATA_GRAVITY, gravity);
         entityData.set(DATA_LIFETIME, lifetime);
     }
 
-    public final @Nullable SwordProjectileComponent getProjectileComponent() {
-        return component;
+    public final @Nullable Projectile getProjectileComponent() {
+        return projectileDefinition;
     }
 
     @Override
@@ -137,7 +138,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     @Override
     public void onAddedToLevel() {
         super.onAddedToLevel();
-        if (!level().isClientSide && component != null && component.trackType().isPresent())
+        if (!level().isClientSide && projectileDefinition != null && projectileDefinition.trackType().isPresent())
             acquireTrackingTarget();
     }
 
@@ -153,9 +154,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public void tick() {
         super.tick();
         if (level().isClientSide) SwordProjectileVisualBridge.tick(this);
-        if (component != null) {
+        if (projectileDefinition != null) {
             applyGravity();
-            updateTracking(component);
+            updateTracking(projectileDefinition);
         }
         if (!level().isClientSide && tickCount >= lifetime) discard();
         if (!level().isClientSide && !isRemoved() && usesDefaultCollisionDamage())
@@ -183,13 +184,13 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         collisionInflation = inflation;
     }
 
-    private void updateTracking(SwordProjectileComponent component) {
-        if (trackingTarget == null || !trackingTarget.isAlive() || component.trackType().isEmpty())
+    private void updateTracking(Projectile projectileDefinition) {
+        if (trackingTarget == null || !trackingTarget.isAlive() || projectileDefinition.trackType().isEmpty())
             return;
         Vec3 motion = getDeltaMovement();
         Vec3 targetDirection = trackingTarget.getBoundingBox().getCenter().subtract(position()).normalize().scale(motion.length());
         double angle = LibMathUtils.angleBetween(motion, targetDirection);
-        setDeltaMovement(component.trackType().get().calDeltaMovement(motion, targetDirection, angle));
+        setDeltaMovement(projectileDefinition.trackType().get().calDeltaMovement(motion, targetDirection, angle));
     }
 
     @Override
@@ -258,8 +259,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        if (component != null)
-            SwordProjectileComponent.CODEC.encodeStart(NbtOps.INSTANCE, component).result().ifPresent(value -> tag.put("ProjectileComponent", value));
+        if (projectileDefinition != null)
+            Projectile.CODEC.encodeStart(NbtOps.INSTANCE, projectileDefinition).result().ifPresent(value -> tag.put("ProjectileComponent", value));
         if (!firedFromWeapon.isEmpty()) tag.put("Weapon", firedFromWeapon.save(level().registryAccess(), new CompoundTag()));
         tag.putFloat("BaseDamage", baseAttackDamage);
         tag.putFloat("BaseKnockback", baseKnockback);
@@ -275,7 +276,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("ProjectileComponent"))
-            SwordProjectileComponent.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result().ifPresent(this::setProjectileComponent);
+            Projectile.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result().ifPresent(this::setProjectileComponent);
         firedFromWeapon = tag.contains("Weapon") ? ItemStack.parseOptional(level().registryAccess(), tag.getCompound("Weapon")) : ItemStack.EMPTY;
         baseAttackDamage = tag.getFloat("BaseDamage");
         baseKnockback = tag.getFloat("BaseKnockback");
@@ -291,8 +292,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-        buffer.writeBoolean(component != null);
-        if (component != null) SwordProjectileComponent.STREAM_CODEC.encode(buffer, component);
+        buffer.writeBoolean(projectileDefinition != null);
+        if (projectileDefinition != null)
+            Projectile.STREAM_CODEC.encode(buffer, projectileDefinition);
         ItemStack.STREAM_CODEC.encode(buffer, firedFromWeapon);
         Entity owner = getOwner();
         buffer.writeBoolean(owner != null);
@@ -302,7 +304,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     @Override
     public void readSpawnData(RegistryFriendlyByteBuf buffer) {
         if (buffer.readBoolean())
-            setProjectileComponent(SwordProjectileComponent.STREAM_CODEC.decode(buffer));
+            setProjectileComponent(Projectile.STREAM_CODEC.decode(buffer));
         firedFromWeapon = ItemStack.STREAM_CODEC.decode(buffer);
         /// Forge 自定义生成包不携带原版射弹的 owner ID，永夜剑客户端无 owner 就不会生成拖尾。
         if (buffer.readBoolean()) {

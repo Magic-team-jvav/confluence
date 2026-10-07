@@ -9,22 +9,17 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.item.GroupItem;
+import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFRegistries;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.BoomerangItems;
-import org.confluence.mod.common.init.item.SummonItems;
-import org.confluence.mod.common.init.item.WhipItems;
-import org.confluence.mod.common.init.item.YoyoItems;
 
 import java.util.Collection;
 import java.util.List;
@@ -504,6 +499,25 @@ public final class ModTabs {
                         CreativeModeTab.Output platinum_bricks = GroupItem.belongsTo(DecorativeBlocks.PLATINUM_BRICKS.id, output);
                         platinum_bricks.accept(DecorativeBlocks.CHISELED_PLATINUM_BRICKS.get());
 
+                        /// 凝胶方块与三套凝胶砖变体统一归入同一分组。
+                        CreativeModeTab.Output gel = GroupItem.belongsTo(DecorativeBlocks.RAINBOW_GEL_BRICKS.id, output);
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.FROZEN_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BLOCK.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.FULL.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.STAIRS.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.SLAB.get());
+                        gel.accept(DecorativeBlocks.RAINBOW_GEL_BRICKS.WALL.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.FULL.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.STAIRS.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.SLAB.get());
+                        gel.accept(DecorativeBlocks.BLUE_GEL_BRICKS.WALL.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.FULL.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.STAIRS.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.SLAB.get());
+                        gel.accept(DecorativeBlocks.PINK_GEL_BRICKS.WALL.get());
+
                         CreativeModeTab.Output obsidian_bricks = GroupItem.belongsTo(DecorativeBlocks.OBSIDIAN_BRICKS.id, output);
                         obsidian_bricks.accept(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.get());
                         obsidian_bricks.accept(DecorativeBlocks.SMOOTH_OBSIDIAN.get());
@@ -555,9 +569,6 @@ public final class ModTabs {
                         special_building.accept(DecorativeBlocks.CRYSTAL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.FLESH_BLOCK.get());
                         special_building.accept(DecorativeBlocks.LESION_BLOCK.get());
-                        special_building.accept(DecorativeBlocks.BLUE_GEL_BLOCK.get());
-                        special_building.accept(DecorativeBlocks.PINK_GEL_BLOCK.get());
-                        special_building.accept(DecorativeBlocks.FROZEN_GEL_BLOCK.get());
                         special_building.accept(DecorativeBlocks.RED_CANDY_BLOCK.get());
                         special_building.accept(DecorativeBlocks.GREEN_CANDY_BLOCK.get());
                         special_building.accept(DecorativeBlocks.WHITE_PAPER_PANE.get());
@@ -1891,8 +1902,6 @@ public final class ModTabs {
                         pre_hardmode_broadswords.accept(SwordItems.BROKEN_SWEET_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.SWEET_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.MURAMASA.get());
-                        pre_hardmode_broadswords.accept(SwordItems.DEVELOPER_SWORD.get());
-                        pre_hardmode_broadswords.accept(SwordItems.CROWBAR.get());
 
                         CreativeModeTab.Output hardmode_broadswords = GroupItem.belongsTo("hardmode_broadswords", output);
                         hardmode_broadswords.accept(SwordItems.RED_PHASESABER.get());
@@ -1902,7 +1911,7 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.BLUE_PHASESABER.get());
                         hardmode_broadswords.accept(SwordItems.PURPLE_PHASESABER.get());
                         hardmode_broadswords.accept(SwordItems.WHITE_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.PINK_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.PINK_PHASESABER.get());
                         hardmode_broadswords.accept(SwordItems.COBALT_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.PALLADIUM_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.MYTHRIL_SWORD.get());
@@ -1911,6 +1920,11 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.TITANIUM_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.BREAKER_BLADE.get());
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
+                        hardmode_broadswords.accept(SwordItems.ZENITH.get());
+                        hardmode_broadswords.accept(SwordItems.TRUE_COPPER_SHORTSWORD.get());
+
+                        output.accept(SwordItems.DEVELOPER_SWORD.get());
+                        output.accept(SwordItems.CROWBAR.get());
 
                         CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
                         yoyo.accept(YoyoItems.AMAZON.get());
@@ -2236,6 +2250,9 @@ public final class ModTabs {
                         martian.accept(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.MARTIAN_OFFICER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.MARTIAN_WALKER_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.BRAIN_SCRAMBLER_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.GRAY_GRUNT_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.GIGAZAPPER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.RAY_GUNNER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.SCUTLIX_SPAWN_EGG.get());

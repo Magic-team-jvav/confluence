@@ -17,9 +17,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
+import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 import org.confluence.mod.util.HandPositionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -52,9 +52,9 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(BaseFlailEntity entity) {
-        FlailComponent component = entity.getComponent();
-        if (component != null && component.ballTexture() != null) {
-            return component.ballTexture();
+        Parameters parameters = entity.parameters();
+        if (parameters != null && parameters.ballTexture() != null) {
+            return parameters.ballTexture();
         }
         return DEFAULT_BALL_TEXTURE;
     }
@@ -64,30 +64,30 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         if (!(entity.getOwner() instanceof Player owner)) {
             return;
         }
-        FlailComponent component = entity.getComponent();
-        if (component == null) {
+        Parameters parameters = entity.parameters();
+        if (parameters == null) {
             return;
         }
 
-        ResourceLocation ballModel = resolveBallModel(component);
+        ResourceLocation ballModel = resolveBallModel(parameters);
         if (resourceExists(ballModel)) {
-            renderGeoHead(entity, component, ballModel, entityYaw, partialTick, poseStack, buffers, packedLight);
+            renderGeoHead(entity, parameters, ballModel, entityYaw, partialTick, poseStack, buffers, packedLight);
         } else {
             renderSpriteHead(entity, poseStack, buffers, packedLight);
         }
 
-        renderChain(entity, owner, component, poseStack, buffers, packedLight, partialTick);
+        renderChain(entity, owner, parameters, poseStack, buffers, packedLight, partialTick);
         if (entity instanceof GuardianFlailEntity guardianFlail) {
             GuardianFlailBeamRenderer.render(guardianFlail, poseStack, buffers, partialTick);
         }
     }
 
-    private void renderGeoHead(BaseFlailEntity entity, FlailComponent component, ResourceLocation ballModel, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
+    private void renderGeoHead(BaseFlailEntity entity, Parameters parameters, ResourceLocation ballModel, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
         FlailGeoModel model = (FlailGeoModel) getGeoModel();
         model.model = ballModel;
-        model.texture = component.ballTexture() == null
+        model.texture = parameters.ballTexture() == null
                 ? DEFAULT_BALL_TEXTURE
-                : component.ballTexture();
+                : parameters.ballTexture();
 
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.25F, 0.0F);
@@ -142,7 +142,7 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
                 .setNormal(pose, 0.0F, 1.0F, 0.0F);
     }
 
-    private void renderChain(BaseFlailEntity entity, Player owner, FlailComponent component, PoseStack poseStack, MultiBufferSource buffers, int packedLight, float partialTick) {
+    private void renderChain(BaseFlailEntity entity, Player owner, Parameters parameters, PoseStack poseStack, MultiBufferSource buffers, int packedLight, float partialTick) {
         Vec3 renderPos = entity.getPosition(partialTick);
         Vec3 ballPos = entity.getBoundingBox().getCenter();
         Vec3 chainOffset = entity.getPhase() == BaseFlailEntity.PHASE_SPIN
@@ -161,9 +161,9 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         }
         entity.smoothedChainDir = direction;
 
-        ResourceLocation chainTexture = component.chainTexture() == null
+        ResourceLocation chainTexture = parameters.chainTexture() == null
                 ? DEFAULT_CHAIN_TEXTURE
-                : component.chainTexture();
+                : parameters.chainTexture();
         int chainLight = LightTexture.pack(10, LightTexture.sky(packedLight));
 
         poseStack.pushPose();
@@ -248,11 +248,11 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
                 .setNormal(normal, normalX, 0, normalZ);
     }
 
-    private static ResourceLocation resolveBallModel(FlailComponent component) {
-        if (component.ballTexture() == null) {
+    private static ResourceLocation resolveBallModel(Parameters parameters) {
+        if (parameters.ballTexture() == null) {
             return DEFAULT_BALL_MODEL;
         }
-        String path = component.ballTexture().getPath();
+        String path = parameters.ballTexture().getPath();
         int slash = path.lastIndexOf('/');
         int dot = path.lastIndexOf('.');
         if (dot <= slash) {

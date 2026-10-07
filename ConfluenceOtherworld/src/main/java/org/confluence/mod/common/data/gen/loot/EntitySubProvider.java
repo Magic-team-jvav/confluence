@@ -853,6 +853,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.MARTIAN_PROBE.get(), LootTable.lootTable());
         //火星人事件
         add(MonsterEntities.MARTIAN_ENGINEER.get(), LootTable.lootTable());
+        add(MonsterEntities.BRAIN_SCRAMBLER.get(), LootTable.lootTable());
+        add(MonsterEntities.GRAY_GRUNT.get(), LootTable.lootTable());
+        add(MonsterEntities.GIGAZAPPER.get(), LootTable.lootTable());
         add(MonsterEntities.MARTIAN_OFFICER.get(), LootTable.lootTable());
         add(MonsterEntities.MARTIAN_WALKER.get(), LootTable.lootTable());
         add(MonsterEntities.WALKER_WEAPON.get(), LootTable.lootTable());

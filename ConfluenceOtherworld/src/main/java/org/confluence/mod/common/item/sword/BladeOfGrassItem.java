@@ -9,12 +9,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.SwordProjectileAppearance;
-import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.common.component.SwordProjectileParticleEffect;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
 import org.confluence.mod.util.generation.variant.ForwardGeneration;
 
 import java.util.List;
@@ -24,7 +22,7 @@ import java.util.Optional;
 public class BladeOfGrassItem extends BaseSwordItem {
     public BladeOfGrassItem() {
         super(ModTiers.UNBREAKABLE, ModRarity.GREEN, 10, 2.0F, SwordDefinition.builder()
-                .projectile(new SwordProjectileComponent(0.25F, 0.8F, 0.9F, 20, 0.0F, 10,
+                .projectile(new Projectile(0.25F, 0.8F, 0.9F, 20, 0.0F, 10,
                         ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 20.0F),
                         SwordProjectileAppearance.Hidden.INSTANCE,
                         List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("grass_sword_trail")))))

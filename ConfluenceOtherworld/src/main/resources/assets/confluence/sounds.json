@@ -1,4 +1,10 @@
 {
+    "zenith": {
+        "sounds": [
+            "confluence:zenith"
+        ],
+        "subtitle": "confluence.subtitle.zenith"
+    },
   "transmission": {
     "sounds": [
       "confluence:transmission"

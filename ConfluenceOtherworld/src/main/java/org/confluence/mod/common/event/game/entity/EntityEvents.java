@@ -17,15 +17,17 @@ import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
-import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -43,6 +45,10 @@ public final class EntityEvents {
     public static void joinLevel(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
         if (!event.isCanceled() && entity instanceof LivingEntity living) {
+            if (CreatureDifficultyScaling.isManaged(living)) {
+                GamePhase2AttributeModifiers.applyModifiers(living, !event.loadedFromDisk());
+            }
+            CreatureDifficultyScaling.apply(living, !event.loadedFromDisk());
             MonsterAttributeScaling.apply(living, !event.loadedFromDisk());
         }
         if (!(entity instanceof Boss boss) || entity.level().isClientSide) {

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.sword;
 
-import java.util.List;
-import java.util.Optional;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
@@ -18,31 +16,28 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
-import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Optional;
+
 
 public class BaseSwordItem extends SwordItem {
     private final SwordDefinition definition;
-    private final @Nullable SwordProjectileComponent projectileDefinition;
     private @Nullable TooltipComponent tooltipImage;
 
     public BaseSwordItem(Tier tier, int rawDamage, float rawSpeed) {
@@ -60,7 +55,6 @@ public class BaseSwordItem extends SwordItem {
     private BaseSwordItem(Tier tier, int rawDamage, float rawSpeed, SwordDefinition.BuildResult result) {
         super(tier, result.properties());
         definition = result.definition();
-        projectileDefinition = result.projectile();
     }
 
     @Override
@@ -86,7 +80,7 @@ public class BaseSwordItem extends SwordItem {
     public boolean tryFireProjectile(ServerPlayer player, InteractionHand hand) {
         ItemStack weapon = player.getItemInHand(hand);
         if (weapon.getItem() != this || player.getCooldowns().isOnCooldown(this)) return false;
-        SwordProjectileComponent component = projectile(weapon);
+        Projectile component = projectile(weapon);
         if (component == null) return false;
         int spawned = component.generation().genProjectile(player, weapon, component.getVelocity(player), () -> createProjectile(player, weapon, component));
         if (spawned == 0) return false;
@@ -96,11 +90,11 @@ public class BaseSwordItem extends SwordItem {
         return true;
     }
 
-    public @Nullable SwordProjectileComponent projectile(ItemStack stack) {
-        return stack.getOrDefault(ModDataComponentTypes.SWORD_PROJECTILE, projectileDefinition);
+    public @Nullable Projectile projectile(ItemStack stack) {
+        return definition.projectile();
     }
 
-    private @Nullable SwordProjectile createProjectile(LivingEntity owner, ItemStack weapon, SwordProjectileComponent component) {
+    private @Nullable SwordProjectile createProjectile(LivingEntity owner, ItemStack weapon, Projectile component) {
         EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getOptional(component.projType()).orElse(null);
         if (type == null || !(type.create(owner.level()) instanceof SwordProjectile projectile)) {
             Confluence.LOGGER.error("Sword projectile type {} must create SwordProjectile", component.projType());
@@ -134,7 +128,7 @@ public class BaseSwordItem extends SwordItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        SwordProjectileComponent data = projectile(stack);
+        Projectile data = projectile(stack);
         if (data != null) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0x57CDFB));
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()).withColor(0x57CDFB));

@@ -10,11 +10,14 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.confluence.lib.util.LibStructureUtils.*;
 import static org.confluence.lib.util.LibGeometryUtils.ellipsoidPos;
 import static org.confluence.lib.util.LibGeometryUtils.lightningPathList;
+import static org.confluence.lib.util.LibStructureUtils.*;
 
 public class BaseStructures {
+    /// 根系深入地下的末端改用 endBlocks（生命红木为孢根）填充的路径点数，调大该值即可提高孢根密度
+    private static final int ROOT_END_SEGMENT = 5;
+
     public static BlockPos livingTree(
             BlockPos centerPos,
             Object2IntMap<BlockPos> blockMap,
@@ -58,7 +61,8 @@ public class BaseStructures {
             float leafPosDensity,
             float leafDensity,
             int leafBlocks,
-            int rootEndBlocks
+            int rootEndBlocks,
+            int rootEndWrapCount
     ) {
         List<Vector3f> locationList = new ArrayList<>();
         Vector3f locationStart = new Vector3f();
@@ -100,7 +104,8 @@ public class BaseStructures {
                 leafPosDensity,
                 leafDensity,
                 leafBlocks,
-                rootEndBlocks
+                rootEndBlocks,
+                0
         );
         if (isGenerateTreeRoot) {
             stick(
@@ -124,7 +129,8 @@ public class BaseStructures {
                     leafPosDensity,
                     leafDensity,
                     leafBlocks,
-                    rootEndBlocks
+                    rootEndBlocks,
+                    rootEndWrapCount
             );
         }
 
@@ -164,7 +170,8 @@ public class BaseStructures {
             float leafPosDensity,
             float leafDensity,
             int leafBlocks,
-            int endBlocks
+            int endBlocks,
+            int rootEndWrapCount
     ) {
         List<Vector3f> leavesTop = new ArrayList<>();
         int stickCount = count + random.nextInt(countRandomAddition);
@@ -186,9 +193,13 @@ public class BaseStructures {
             endZ = length * Mth.sin(everyA) * Mth.cos(everyB);
             Vector3f stickStart = locationList.get(branch ? Math.max((locationList.size() - (locationList.size() / 11 * 7) - random.nextInt(locationList.size() / 9)), 0) : (random.nextInt(locationList.size() / 9)));
             Vector3f stickEnd = new Vector3f();
-            stickEnd.x = branch ? (locationList.getLast().x + endX) : (locationList.getFirst().x + endX / 2);
-            stickEnd.y = branch ? (locationList.getLast().y + endY + offset) : (locationList.getFirst().y - endY + offset);
-            stickEnd.z = branch ? (locationList.getLast().z + endZ) : (locationList.getFirst().z + endZ / 2);
+            if (branch) {
+                Vector3f last = locationList.getLast();
+                stickEnd.set(last.x + endX, last.y + endY + offset, last.z + endZ);
+            } else {
+                Vector3f first = locationList.getFirst();
+                stickEnd.set(first.x + endX * 0.5F, first.y - endY + offset, first.z + endZ * 0.5F);
+            }
             List<Vector3f> stickList = new ArrayList<>();
             stickList.add(stickStart);
             stickList.add(stickEnd);
@@ -200,6 +211,21 @@ public class BaseStructures {
                 leavesTop = ellipsoidPos(branchLeafGenerationRadiusXZ, branchLeafGenerationRadiusY, branchLeafGenerationRadiusXZ, LibMathUtils.fromVector3f(stickEnd), leafPosDensity, random);
                 lineSetEllipsoid(leavesTop, leafBlobGenerationRadiusXZ, leafBlobGenerationRadiusY, leafBlobGenerationRadiusXZ, leafBlocks, false, blockMap, leafDensity, random);
             } else {
+                // 根系深入地下的末端改用 endBlocks（生命红木为孢根）填充，提高孢根产量
+                if (endBlocks != blocks) {
+                    int from = Math.max(0, stickList.size() - ROOT_END_SEGMENT);
+                    List<Vector3f> rootEndSegment = stickList.subList(from, stickList.size());
+                    lineSet(rootEndSegment, endRadius, endRadius, endBlocks, true, blockMap);
+                    // 再用 blocks（生命红木）把靠树干一侧的孢根包起来，只留最末端裸露；孢根数量不变
+                    int wrapCount = Mth.clamp(rootEndWrapCount, 0, rootEndSegment.size() - 1);
+                    BlockPos.MutableBlockPos posCheck = new BlockPos.MutableBlockPos();
+                    for (int i = 0; i < wrapCount; i++) {
+                        BlockPos center = LibMathUtils.fromVector3f(rootEndSegment.get(i));
+                        ball8(posCheck, false, 1, 0, 0, blocks, center, blockMap);
+                        ball8(posCheck, false, 0, 1, 0, blocks, center, blockMap);
+                        ball8(posCheck, false, 0, 0, 1, blocks, center, blockMap);
+                    }
+                }
                 rootEnd = stickList.getLast();
                 ball(endRadius, LibMathUtils.fromVector3f(rootEnd), endBlocks, true, blockMap);
             }

@@ -1137,6 +1137,20 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
 
         // 肉墙
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/the_destroyer/classic"), theDestroyerTreasureBag(15, 30, 12, null));
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/the_destroyer/expert"), theDestroyerTreasureBag(20, 35, 42, MaterialItems.MECHANICAL_WAGON_PIECE));
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/the_destroyer/master"), theDestroyerTreasureBag(20, 35, 42, MaterialItems.MECHANICAL_WAGON_PIECE));
+
+        /// 世纪之花
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/plantera/classic"), planteraTreasureBag(15));
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/plantera/expert"), planteraTreasureBag(45));
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/plantera/master"), planteraTreasureBag(45));
+
+        /// 拜月教邪教徒；远古操纵机尚未实现时，远古布作为当前进度材料。
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/lunatic_cultist/classic"), lunaticCultistTreasureBag(10, 15));
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/lunatic_cultist/expert"), lunaticCultistTreasureBag(30, 25));
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/lunatic_cultist/master"), lunaticCultistTreasureBag(30, 30));
+
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/classic"), wallOfFleshTreasureBagCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(8)))
@@ -1715,6 +1729,46 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 );
     }
     // 困难模式前匣子通用
+
+    /// 毁灭者宝藏袋
+    private static LootTable.Builder theDestroyerTreasureBag(int hallowedMin, int hallowedMax, int goldCoins, ItemLike difficultyBonus) {
+        LootTable.Builder table = LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_MIGHT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HALLOWED_INGOT)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(hallowedMin, hallowedMax)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(goldCoins)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))));
+        if (difficultyBonus != null) {
+            table.withPool(LootPool.lootPool().add(LootItem.lootTableItem(difficultyBonus)));
+        }
+        return table;
+    }
+
+    private static LootTable.Builder planteraTreasureBag(int goldCoins) {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ToolItems.TEMPLE_KEY)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(goldCoins)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(HamaxeItems.THE_AXE))
+                        .add(EmptyLootItem.emptyItem().setWeight(49)));
+    }
+
+    private static LootTable.Builder lunaticCultistTreasureBag(int goldCoins, int ancientCloth) {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ANCIENT_CLOTH)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(ancientCloth)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(goldCoins)))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))));
+    }
+
     private static LootTable.Builder environmentCrateCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()

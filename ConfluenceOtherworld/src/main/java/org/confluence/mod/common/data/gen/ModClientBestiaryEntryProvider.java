@@ -1,9 +1,5 @@
 package org.confluence.mod.common.data.gen;
 
-import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.HolderLookup;
@@ -17,19 +13,10 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.extensions.IHolderExtension;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
-
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.animal.Bunny;
-import org.confluence.mod.common.entity.animal.Butterfly;
-import org.confluence.mod.common.entity.animal.Dragonfly;
-import org.confluence.mod.common.entity.animal.Duck;
-import org.confluence.mod.common.entity.animal.Fairy;
-import org.confluence.mod.common.entity.animal.Grasshopper;
-import org.confluence.mod.common.entity.animal.Ladybug;
-import org.confluence.mod.common.entity.animal.Scorpion;
-import org.confluence.mod.common.entity.animal.Squirrel;
-import org.confluence.mod.common.entity.animal.Worm;
+import org.confluence.mod.common.entity.animal.*;
 import org.confluence.mod.common.entity.monster.DemonEye;
 import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.npc.AnglerNPC;
@@ -108,9 +95,12 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(CritterEntities.BUNNY, builder -> builder.order(4200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(EntityType.RABBIT, builder -> builder.order(4210).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （戴帽子）
+                .variant(CritterEntities.BUNNY, Bunny.Variant.PARTY, builder -> builder.order(4300).rarity(2).background(SURFACE_SUN).filters(FilterEntry.SURFACE, FilterEntry.PARTY, FilterEntry.DAYTIME))
                 .add(CritterEntities.EXPLOSIVE_BUNNY, builder -> builder.order(4250).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （史莱姆）
+                .variant(CritterEntities.BUNNY, Bunny.Variant.SLIMED, builder -> builder.order(4500).rarity(4).background(SURFACE_SUN).filters(FilterEntry.SURFACE, FilterEntry.HALLOWEEN, FilterEntry.DAYTIME))
                 // 兔兔 （圣诞节）
+                .variant(CritterEntities.BUNNY, Bunny.Variant.XMAS, builder -> builder.order(4600).rarity(4).background(SURFACE_SUN).filters(FilterEntry.SURFACE, FilterEntry.CHRISTMAS, FilterEntry.DAYTIME))
                 .numberedVariant(CritterEntities.JEWEL_BUNNY, 4, Bunny.Variant.GOLD, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.BIRD, builder -> builder.order(4800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.BLUE_JAY, builder -> builder.order(4900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
@@ -592,13 +582,13 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 海盗船长
                 // 鹦鹉
                 // 荷兰飞盗船
-                // 扰脑怪
+                .add(MonsterEntities.BRAIN_SCRAMBLER, builder -> builder.order(41200).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.RAY_GUNNER, builder -> builder.order(41300).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.MARTIAN_ENGINEER, builder -> builder.order(41400).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.MARTIAN_OFFICER, builder -> builder.order(41500).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
-                // 电击怪
+                .add(MonsterEntities.GIGAZAPPER, builder -> builder.order(41600).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.SCUTLIX, builder -> builder.order(41700).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
-                // 灰咕噜
+                .add(MonsterEntities.GRAY_GRUNT, builder -> builder.order(41800).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.MARTIAN_WALKER, builder -> builder.order(41900).rarity(3).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.TESLA_TURRET, builder -> builder.order(42000).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 // 火星飞船
@@ -858,6 +848,11 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
 
         public Builder add(EntityType<?> type, Consumer<ClientBestiary.Entry.Builder> consumer) {
             return add(type.builtInRegistryHolder(), consumer);
+        }
+
+        /// 使用变种的稳定序列化名称作为条目键，并写入实体预览的变种数据。
+        public <E extends Enum<E> & IVariant> Builder variant(IHolderExtension<EntityType<?>> holder, E entityVariant, Consumer<ClientBestiary.Entry.Builder> consumer) {
+            return add(holder, entityVariant.getSerializedName(), consumer.andThen(builder -> builder.entityNbt(entityVariant::serialize)));
         }
 
         public <E extends Enum<E> & IVariant> Builder numberedVariant(IHolderExtension<EntityType<?>> holder, int displayVariant, E entityVariant, Consumer<ClientBestiary.Entry.Builder> consumer) {

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.event.game.entity;
 
-import org.confluence.mod.common.data.AchievementOffset;
-
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
@@ -56,7 +54,7 @@ import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
@@ -64,6 +62,7 @@ import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
@@ -81,7 +80,6 @@ import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.menu.FletchingTableMenu;
-import org.confluence.mod.common.mount.MountManager;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;

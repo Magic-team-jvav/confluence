@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -40,6 +41,12 @@ public class Shark extends BaseAquaticMonster {
                         new WaitAction(10));
             }
         };
+    }
+
+    /// 鲨鱼只在身体接触目标时咬伤，不为咬击额外扩大近战范围。
+    @Override
+    public boolean isWithinMeleeAttackRange(LivingEntity target) {
+        return getBoundingBox().intersects(target.getHitbox());
     }
 
     @Override

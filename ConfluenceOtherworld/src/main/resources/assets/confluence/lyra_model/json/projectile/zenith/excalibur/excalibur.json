@@ -1,0 +1,6 @@
+{
+    "parent": "minecraft:item/handheld",
+    "textures": {
+        "layer0": "confluence:lyra_model/json/projectile/zenith/excalibur/excalibur"
+    }
+}

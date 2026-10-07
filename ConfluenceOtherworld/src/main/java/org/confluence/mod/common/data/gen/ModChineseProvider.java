@@ -66,6 +66,7 @@ public class ModChineseProvider extends LanguageProvider {
         addHostileProjectileTranslations();
     }
 
+
     private void addGeneralInterfaceTranslations() {
         add("entity.confluence.model_pending", "%s（模型待补）");
         add("house_validator.result_type.found", "这间房屋符合入住条件。");
@@ -162,7 +163,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.crimsandstone_bricks", "猩红砂岩砖");
         add("itemGroup.confluence.snow_bricks", "雪砖");
         add("itemGroup.confluence.aetherium_bricks", "以太砖");
-        add("itemGroup.confluence.rainbow_bricks", "彩虹砖");
+        add("itemGroup.confluence.rainbow_gel_bricks", "凝胶砖");
+        add("itemGroup.confluence.blue_gel_bricks", "蓝色凝胶砖");
+        add("itemGroup.confluence.pink_gel_bricks", "粉色凝胶砖");
         add("itemGroup.confluence.copper_bricks", "铜砖");
         add("itemGroup.confluence.tin_bricks", "锡砖");
         add("itemGroup.confluence.iron_bricks", "铁砖");
@@ -2625,6 +2628,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BLUE_GEL_BLOCK.get(), "凝胶块");
         add(DecorativeBlocks.PINK_GEL_BLOCK.get(), "粉凝胶块");
         add(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), "冻凝胶块");
+        add(DecorativeBlocks.RAINBOW_GEL_BLOCK.get(), "彩虹凝胶块");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.FULL.get(), "彩虹凝胶砖");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.STAIRS.get(), "彩虹凝胶砖楼梯");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.SLAB.get(), "彩虹凝胶砖台阶");
+        add(DecorativeBlocks.RAINBOW_GEL_BRICKS.WALL.get(), "彩虹凝胶砖墙");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.FULL.get(), "蓝色凝胶砖");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.STAIRS.get(), "蓝色凝胶砖楼梯");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.SLAB.get(), "蓝色凝胶砖台阶");
+        add(DecorativeBlocks.BLUE_GEL_BRICKS.WALL.get(), "蓝色凝胶砖墙");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.FULL.get(), "粉色凝胶砖");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.STAIRS.get(), "粉色凝胶砖楼梯");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.SLAB.get(), "粉色凝胶砖台阶");
+        add(DecorativeBlocks.PINK_GEL_BRICKS.WALL.get(), "粉色凝胶砖墙");
         add(DecorativeBlocks.RED_CANDY_BLOCK.get(), "红色糖块");
         add(DecorativeBlocks.GREEN_CANDY_BLOCK.get(), "绿色糖块");
         add(DecorativeBlocks.FLESH_BLOCK.get(), "血肉块");
@@ -2654,10 +2670,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.SLAB.get(), "哭泣的黑曜石砖台阶");
         add(DecorativeBlocks.CRYING_OBSIDIAN_BRICKS.WALL.get(), "哭泣的黑曜石砖墙");
         add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
-        add(DecorativeBlocks.RAINBOW_BRICKS.FULL.get(), "彩虹砖");
-        add(DecorativeBlocks.RAINBOW_BRICKS.STAIRS.get(), "彩虹砖楼梯");
-        add(DecorativeBlocks.RAINBOW_BRICKS.SLAB.get(), "彩虹砖台阶");
-        add(DecorativeBlocks.RAINBOW_BRICKS.WALL.get(), "彩虹砖墙");
 
 
         add(DecorativeBlocks.ASPHALT_BLOCK.get(), "沥青块");
@@ -3558,6 +3570,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get(), "血肉山宝藏袋");
         add(TreasureBagItems.THE_TWINS_TREASURE_BAG.get(), "双子魔眼宝藏袋");
         add(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(), "机械骷髅王宝藏袋");
+        add(TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(), "毁灭者宝藏袋");
+        add(TreasureBagItems.PLANTERA_TREASURE_BAG.get(), "世纪之花宝藏袋");
+        add(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(), "拜月教邪教徒宝藏袋");
 //        add(TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(), "毁灭者宝藏袋");
 //        add(TreasureBagItems.PLANTERA_TREASURE_BAG.get(), "世纪之花宝藏袋");
 //        add(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(), "拜月教邪教徒宝藏袋");
@@ -5095,6 +5110,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.PIRATE_PARROT.get(), "海盗鹦鹉");
         add(MonsterEntities.PIRATES_CURSE.get(), "海盗诅咒");
         add(MonsterEntities.MARTIAN_PROBE.get(), "火星探测器");
+        add(MonsterEntities.BRAIN_SCRAMBLER.get(), "扰脑怪");
+        add(MonsterEntities.GRAY_GRUNT.get(), "灰咕噜");
+        add(MonsterEntities.GIGAZAPPER.get(), "电击怪");
+        add(ModEntities.ELECTRIC_SPEAR.get(), "电矛");
+        add(SpawnEggItems.BRAIN_SCRAMBLER_SPAWN_EGG.get(), "扰脑怪刷怪蛋");
+        add(SpawnEggItems.GRAY_GRUNT_SPAWN_EGG.get(), "灰咕噜刷怪蛋");
+        add(SpawnEggItems.GIGAZAPPER_SPAWN_EGG.get(), "电击怪刷怪蛋");
         add(MonsterEntities.MARTIAN_ENGINEER.get(), "火星工程师");
         add(MonsterEntities.MARTIAN_OFFICER.get(), "火星军官");
         add(MonsterEntities.MARTIAN_WALKER.get(), "火星走妖");
@@ -5261,6 +5283,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 战斗召唤物
         add(SummonItems.FINCH_STAFF.get(), "雀杖");
+        add(SwordItems.ZENITH.get(), "天顶剑");
+        add(SwordItems.TRUE_COPPER_SHORTSWORD.get(), "真铜短剑");
         add("summon.confluence.finch", "小鸟");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");
         add("summon.confluence.i_32_iron_golem", "i-32型铁傀儡");
@@ -5387,6 +5411,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.routine_summon", "召唤物：召唤");
         add("confluence.subtitle.use_minion_weapon", "召唤杖：使用");
         add("confluence.subtitle.use_terraprism", "泰拉棱镜：使用");
+        add("confluence.subtitle.zenith", "天顶剑：挥砍");
         add("confluence.subtitle.summon_eye", "飞行召唤物：召唤");
         add("confluence.subtitle.summon_imp", "小鬼：召唤");
         add("confluence.subtitle.summon_money_trough", "钱币槽：出现");

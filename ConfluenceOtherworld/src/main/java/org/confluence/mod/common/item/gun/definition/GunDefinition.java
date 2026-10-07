@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.gun.definition;
 
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.component.GunPropertyComponent;
 
 public record GunDefinition(int cooldown, float damage, float velocity, float knockback,
                             float critical, int penetrate, float inaccuracy, ModRarity rarity,
@@ -29,7 +28,7 @@ public record GunDefinition(int cooldown, float damage, float velocity, float kn
         }
     }
 
-    /// Compatibility constructor for the original single-projectile definition.
+    /// 使用单射弹模式的枪械定义。
     public GunDefinition(int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity, FireMode fireMode) {
         this(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, fireMode, GunProjectilePattern.single());
     }
@@ -52,9 +51,5 @@ public record GunDefinition(int cooldown, float damage, float velocity, float kn
 
     public GunDefinition withShotgunPattern(int minProjectiles, int maxProjectiles) {
         return withProjectilePattern(GunProjectilePattern.shotgun(minProjectiles, maxProjectiles));
-    }
-
-    public GunPropertyComponent component() {
-        return new GunPropertyComponent(cooldown, damage, velocity, knockback, critical, penetrate, rarity);
     }
 }

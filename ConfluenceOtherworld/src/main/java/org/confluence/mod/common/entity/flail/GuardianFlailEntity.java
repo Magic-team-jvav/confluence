@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.flail;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,6 +16,10 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 
 /// 守卫者链锤的实体实现。
@@ -86,7 +87,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
             return;
         }
 
-        if (getComponent() == null) {
+        if (parameters() == null) {
             return;
         }
         // 1.21 的守卫光束只取玩家攻击属性的六分之一；连枷组件基础伤害已经用于

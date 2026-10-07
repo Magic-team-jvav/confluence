@@ -355,6 +355,8 @@ public final class PrimeEnderDragon extends BaseBoss {
         return clamped * clamped / (float) LASER_MAXIMUM_RANGE;
     }
 
+    public enum AttackType {LASER}
+
     int performLaserAttack(double range) {
         Vec3 start = getLaserOrigin(1.0F);
         Vec3 direction = getViewVector(1.0F).normalize();
@@ -366,7 +368,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             if (!hitBox.contains(start) && !hitBox.contains(end) && hitBox.clip(start, end).isEmpty()) {
                 continue;
             }
-            if (entity.hurt(LibDamageTypes.of(level(), DamageTypes.MAGIC, this), 5.0F)) {
+            if (entity.hurt(LibDamageTypes.of(level(), DamageTypes.MAGIC, this), specialAttackDamage(AttackType.LASER))) {
                 entity.setRemainingFireTicks(100);
                 hits++;
             }

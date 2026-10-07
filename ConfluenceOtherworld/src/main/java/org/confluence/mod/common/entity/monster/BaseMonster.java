@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -23,14 +24,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.ai.EnemyWalkNodeEvaluator;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -39,13 +47,15 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.UUID;
-
+import java.util.*;
 
 public abstract class BaseMonster extends Monster implements GeoEntity {
-    private final java.util.Set<Enum<?>> activeStates = new java.util.LinkedHashSet<>();
+    private final Set<Enum<?>> activeStates = new LinkedHashSet<>();
+    private final Map<Enum<?>, Set<Holder<Attribute>>> stateMultiplierAttributes = new HashMap<>();
     private CreatureDefinition appliedDefinition;
+    private CreatureDifficultyRules.Difficulty appliedDifficulty;
+    private GamePhase appliedPhase;
+    private GamePhase2AttributeModifiers appliedPhaseDefinition;
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean behaviorTreeRegistered;
     private BTRoot behaviorTree;
@@ -56,6 +66,8 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     private double defaultMaxHealth = Double.NaN;
     private double defaultAttackDamage;
     private double defaultArmor;
+    private double defaultArmorPenetration, defaultArmorToughness;
+    private final Map<Holder<Attribute>, Double> defaultMultiplierAttributes = new HashMap<>();
     private double defaultMovementSpeed;
     private double defaultFollowRange;
     private double defaultKnockbackResistance;
@@ -87,14 +99,28 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
                 : attribute == Attributes.KNOCKBACK_RESISTANCE ? values.knockbackResistance()
                 : attribute == Attributes.FOLLOW_RANGE ? values.followRange()
                 : attribute == Attributes.SCALE ? values.scale() : -1;
-        if (override >= 0) return override;
+        double multiplier = values.multipliers().getOrDefault(BuiltInRegistries.ATTRIBUTE.getKey(attribute.value()), 1.0);
+        if (override >= 0) return override * multiplier;
         var definition = ModEntities.creatureAttributes(getType());
         var declared = definition == null ? null : definition.states().get(state);
         var value = declared == null ? null : declared.attributes().get(attribute);
-        if (value == null) return base;
+        if (value == null) return base * multiplier;
         double amount = value.amount().applyAsDouble(this);
-        if (value.absolute()) return amount;
-        return value.operation() == AttributeModifier.Operation.ADD_VALUE ? base + amount : base * (1 + amount);
+        if (value.absolute()) return amount * multiplier;
+        return (value.operation() == AttributeModifier.Operation.ADD_VALUE ? base + amount : base * (1 + amount)) * multiplier;
+    }
+
+    /// 无实体射弹的范围攻击也从登记状态取专家伤害，不在行为代码硬编码数值。
+    protected final float specialAttackDamage(Enum<?> attack) {
+        double base = getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
+        return (float) CreatureDifficultyScaling.projectileDamage(this,
+                stateAttributeValue(attack, Attributes.ATTACK_DAMAGE, base), false);
+    }
+
+    /// 按当前接触属性派生特殊伤害，保留阶段与配置加成，仅替换接触难度倍率。
+    protected final float specialAttackDamageFromAttribute(Enum<?> attack) {
+        return (float) CreatureDifficultyScaling.projectileDamage(this,
+                stateAttributeValue(attack, Attributes.ATTACK_DAMAGE, getAttributeValue(Attributes.ATTACK_DAMAGE)), true);
     }
 
     private void applyStateAttributes(Enum<?> state, boolean enabled) {
@@ -102,6 +128,9 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         var values = creatureDefinition().state(state).attributes();
         applyStateModifier(Attributes.ATTACK_DAMAGE, stateModifier(state, Attributes.ATTACK_DAMAGE), values.attackDamage(), enabled);
         applyStateModifier(Attributes.ARMOR, stateModifier(state, Attributes.ARMOR), values.armor(), enabled);
+        applyStateModifier(LibAttributes.getArmorPenetration(),
+                stateModifier(state, LibAttributes.getArmorPenetration()), values.armorPenetration(), enabled);
+        applyStateModifier(Attributes.ARMOR_TOUGHNESS, stateModifier(state, Attributes.ARMOR_TOUGHNESS), values.armorToughness(), enabled);
         applyStateModifier(Attributes.MOVEMENT_SPEED, stateModifier(state, Attributes.MOVEMENT_SPEED), values.movementSpeed(), enabled);
         applyStateModifier(Attributes.KNOCKBACK_RESISTANCE, stateModifier(state, Attributes.KNOCKBACK_RESISTANCE), values.knockbackResistance(), enabled);
         applyStateModifier(Attributes.FOLLOW_RANGE, stateModifier(state, Attributes.FOLLOW_RANGE), values.followRange(), enabled);
@@ -113,13 +142,41 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             for (Holder<Attribute> attribute : declared.attributes().keySet()) {
                 if (attribute == Attributes.ATTACK_DAMAGE || attribute == Attributes.ARMOR || attribute == Attributes.MOVEMENT_SPEED
                         || attribute == Attributes.KNOCKBACK_RESISTANCE || attribute == Attributes.FOLLOW_RANGE
-                        || attribute == Attributes.MAX_HEALTH || attribute == Attributes.SCALE)
+                        || attribute == Attributes.MAX_HEALTH || attribute == Attributes.SCALE
+                        || attribute == Attributes.ARMOR_TOUGHNESS || attribute == LibAttributes.getArmorPenetration())
                     continue;
                 applyStateModifier(attribute, stateModifier(state, attribute), -1, enabled);
             }
         }
+        applyStateMultipliers(state, values, enabled);
         if (getHealth() > getMaxHealth()) setHealth(getMaxHealth());
         if (oldScale != getAttributeValue(Attributes.SCALE)) refreshDimensions();
+        CreatureDifficultyScaling.apply(this, false);
+    }
+
+    /// 状态倍率与状态绝对覆盖分别保存，删除数据包项或退出状态会移除旧倍率。
+    private void applyStateMultipliers(Enum<?> state, CreatureDefinition.AttributeOverrides values, boolean enabled) {
+        var previous = stateMultiplierAttributes.remove(state);
+        if (previous != null) previous.forEach(attribute -> {
+            AttributeInstance instance = getAttribute(attribute);
+            if (instance != null) instance.removeModifier(stateMultiplierId(state, attribute));
+        });
+        if (!enabled) return;
+        Set<Holder<Attribute>> applied = new HashSet<>();
+        values.multipliers().forEach((id, multiplier) -> {
+            if (!BuiltInRegistries.ATTRIBUTE.containsKey(id)) return;
+            Holder<Attribute> attribute = BuiltInRegistries.ATTRIBUTE.getHolder(id).orElseThrow();
+            AttributeInstance instance = getAttribute(attribute);
+            if (instance == null || multiplier == 1) return;
+            instance.addTransientModifier(new AttributeModifier(stateMultiplierId(state, attribute), multiplier - 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            applied.add(attribute);
+        });
+        if (!applied.isEmpty()) stateMultiplierAttributes.put(state, applied);
+    }
+
+    private ResourceLocation stateMultiplierId(Enum<?> state, Holder<Attribute> attribute) {
+        String key = "confluence.state_multiplier." + state.getDeclaringClass().getName() + "." + state.name() + "." + attribute.value().getDescriptionId();
+        return stateModifierId(key);
     }
 
     private AttributeModifier stateModifier(Enum<?> state, Holder<Attribute> attribute) {
@@ -208,7 +265,6 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         return false;
     }
 
-    ///
     @Override
     public void onAddedToLevel() {
         super.onAddedToLevel();
@@ -252,8 +308,21 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     /// 近战目标执行伤害的陆地生物额外获得一次碰撞攻击。
     @Override
     public void tick() {
-        if (!level().isClientSide && behaviorTreeRegistered && tickCount % 20 == 0 && creatureDefinition() != appliedDefinition)
-            applyCreatureDefinition();
+        if (!level().isClientSide && behaviorTreeRegistered && tickCount % 20 == 0) {
+            if (creatureDefinition() != appliedDefinition) applyCreatureDefinition();
+            GamePhase phase = KillBoard.INSTANCE.getGamePhase();
+            GamePhase2AttributeModifiers phaseDefinition = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, getType());
+            if (phase != appliedPhase || phaseDefinition != appliedPhaseDefinition) {
+                GamePhase2AttributeModifiers.applyModifiers(this, false);
+                appliedPhase = phase;
+                appliedPhaseDefinition = phaseDefinition;
+            }
+            var currentDifficulty = CreatureDifficultyScaling.difficulty(this);
+            if (currentDifficulty != appliedDifficulty) {
+                CreatureDifficultyScaling.apply(this, false);
+                appliedDifficulty = currentDifficulty;
+            }
+        }
         if (!level().isClientSide) clearInvalidCombatTarget();
         if (getTarget() != null && EnemyTargeting.applies(this)) {
             LivingEntity selected = EnemyTargeting.select(this, getTarget());
@@ -426,6 +495,8 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             defaultMaxHealth = baseValue(Attributes.MAX_HEALTH);
             defaultAttackDamage = baseValue(Attributes.ATTACK_DAMAGE);
             defaultArmor = baseValue(Attributes.ARMOR);
+            defaultArmorPenetration = baseValue(LibAttributes.getArmorPenetration());
+            defaultArmorToughness = baseValue(Attributes.ARMOR_TOUGHNESS);
             defaultMovementSpeed = baseValue(Attributes.MOVEMENT_SPEED);
             defaultFollowRange = baseValue(Attributes.FOLLOW_RANGE);
             defaultKnockbackResistance = baseValue(Attributes.KNOCKBACK_RESISTANCE);
@@ -434,11 +505,21 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             setBaseValue(Attributes.MAX_HEALTH, defaultMaxHealth);
             setBaseValue(Attributes.ATTACK_DAMAGE, defaultAttackDamage);
             setBaseValue(Attributes.ARMOR, defaultArmor);
+            setBaseValue(LibAttributes.getArmorPenetration(), defaultArmorPenetration);
+            setBaseValue(Attributes.ARMOR_TOUGHNESS, defaultArmorToughness);
             setBaseValue(Attributes.MOVEMENT_SPEED, defaultMovementSpeed);
             setBaseValue(Attributes.FOLLOW_RANGE, defaultFollowRange);
             setBaseValue(Attributes.KNOCKBACK_RESISTANCE, defaultKnockbackResistance);
             setBaseValue(Attributes.SCALE, defaultScale);
         }
+        defaultMultiplierAttributes.forEach(this::setBaseValue);
+        appliedDefinition.attributes().multipliers().keySet().forEach(id -> {
+            if (BuiltInRegistries.ATTRIBUTE.containsKey(id)) {
+                Holder<Attribute> attribute = BuiltInRegistries.ATTRIBUTE.getHolder(id).orElseThrow();
+                if (getAttribute(attribute) != null)
+                    defaultMultiplierAttributes.putIfAbsent(attribute, baseValue(attribute));
+            }
+        });
         CreatureDefinition.applyAttributes(this);
         setHealth(wasFullHealth ? getMaxHealth() : Math.min(oldHealth, getMaxHealth()));
         if (Math.abs(oldScale - getScale()) > 0.0001F) {
@@ -450,6 +531,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             goalSelector.addGoal(0, behaviorTree);
         }
         activeStates.forEach(state -> applyStateAttributes(state, true));
+        CreatureDifficultyScaling.apply(this, false);
         onCreatureDefinitionReload();
     }
 

@@ -361,22 +361,22 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hellforge(recipeOutput, DecorativeBlocks.HELLSTONE_BRICKS.FULL.toStack(), 0.1F, 200, false, AmountIngredient.of(5, Items.COBBLESTONE), Ingredient.of(ModTags.Items.RAW_MATERIALS_HELLSTONE));
 
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_HELMET.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_HELMET));
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_CHESTPLATE.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_CHESTPLATE));
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_LEGGINGS.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_LEGGINGS));
         hellforge(recipeOutput, ArmorItems.OBSIDIAN_BOOTS.toStack(), 0.5F, 200, true,
-                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(3, MaterialItems.SILK),
                 AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_BOOTS));

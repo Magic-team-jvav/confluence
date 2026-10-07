@@ -33,6 +33,7 @@ import org.confluence.mod.common.block.natural.CursedFlameBlock;
 import org.confluence.mod.common.block.natural.herbs.*;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.common.CursedFlameItem;
 import org.mesdag.portlib.diff.Diff;
 import org.mesdag.portlib.registries.PortBlockRegistration;
 import org.mesdag.portlib.registries.PortDeferredBlock;
@@ -113,7 +114,7 @@ public final class ModBlocks {
     public static final PortDeferredBlock<GreenDumplingBlock> GREEN_DUMPLING = registerWithoutItem("green_dumpling", GreenDumplingBlock::new);
     public static final PortDeferredBlock<BoulderBreadBlock> BOULDER_BREAD = registerWithoutItem("boulder_bread", BoulderBreadBlock::new);
 
-    public static final PortDeferredBlock<CursedFlameBlock> CURSED_FLAME = registerWithItem("cursed_flame", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
+    public static final PortDeferredBlock<CursedFlameBlock> CURSED_FLAME = registerWithItem("cursed_flame", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)), CursedFlameItem::new);
 
     // test block 要测试直接复制下面这一行改名
     public static final PortDeferredBlock<Block> TEST = registerWithItem("test", () -> new Block(BlockBehaviour.Properties.copy(STONE).mapColor(MapColor.COLOR_BLUE)));

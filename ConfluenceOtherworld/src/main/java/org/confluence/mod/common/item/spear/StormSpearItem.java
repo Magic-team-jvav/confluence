@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.EasingType;
@@ -35,7 +34,7 @@ public class StormSpearItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            SpearProjectileComponent component = SpearProjectileComponent.STORM_SPEAR_PROJ.get();
+            Parameters component = Parameters.STORM_SPEAR_PROJ.get();
             StormSpearProjectile projectile = new StormSpearProjectile(
                     ModEntities.STORM_SPEAR_SHOT.get(), level);
             // 初始位置：矛尖与玩家之间约1/3处

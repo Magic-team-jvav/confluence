@@ -3,6 +3,8 @@ package org.confluence.mod.common.item.spear;
 import PortLib.extensions.java.util.List.PortListExtension;
 import com.eliotlash.mclib.math.Constant;
 import com.eliotlash.mclib.math.IValue;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -13,13 +15,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -38,12 +43,16 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.SpearProjectileComponent;
+import org.confluence.mod.api.IGeneration;
+import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
 import org.confluence.mod.common.init.ModArmPoses;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.generation.variant.ForwardGeneration;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -68,9 +77,143 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
+    /// 长矛派生弹幕的固定参数；codec仅用于实体存档，不写入物品组件。
+    public record Parameters(
+            float damageFactor,
+            float baseSpeed,
+            float acceleration,
+            int existTicks,
+            float gravity,
+            int cooldown,
+            ResourceLocation soundEvent,
+            ResourceLocation projType,
+            Optional<ITrackType> trackType,
+            IGeneration generation,
+            Optional<Integer> pierceCount
+    ) {
+
+        public static final Codec<Parameters> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.FLOAT.fieldOf("damageFactor").forGetter(Parameters::damageFactor),
+                Codec.FLOAT.fieldOf("baseSpeed").forGetter(Parameters::baseSpeed),
+                Codec.FLOAT.fieldOf("acceleration").forGetter(Parameters::acceleration),
+                Codec.INT.fieldOf("existTicks").forGetter(Parameters::existTicks),
+                Codec.FLOAT.fieldOf("gravity").forGetter(Parameters::gravity),
+                Codec.INT.fieldOf("cooldown").forGetter(Parameters::cooldown),
+                ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(Parameters::soundEvent),
+                ResourceLocation.CODEC.fieldOf("projType").forGetter(Parameters::projType),
+                ITrackType.TYPED_CODEC.optionalFieldOf("trackType").forGetter(Parameters::trackType),
+                IGeneration.TYPED_CODEC.fieldOf("generation").forGetter(Parameters::generation),
+                Codec.INT.optionalFieldOf("pierceCount").forGetter(Parameters::pierceCount)
+        ).apply(instance, Parameters::new));
+
+        /// 风暴长矛 — 直线加速弹射物
+        public static final Supplier<Parameters> STORM_SPEAR_PROJ =
+                () -> new Parameters(1.5f, 0.1f, 1.0f, 40, 0.0f, 15,
+                        ModSoundEvents.FROZEN_ARROW.getId(),
+                        ModEntities.STORM_SPEAR_SHOT.getId(),
+                        Optional.empty(), ForwardGeneration.of(0, 0),
+                        Optional.empty());
+
+        /// 直线标准弹射物
+        public static final Supplier<Parameters> ORICHALCUM_HALBERD_PROJ =
+                () -> new Parameters(1.2f, 1.2f, 0.95f, 20, 0.0f, 12,
+                        ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                        Confluence.asResource("orichalcum_halberd_projectile"),
+                        Optional.empty(), ForwardGeneration.of(0, 0),
+                        Optional.empty());
+        /// 蘑菇孢子 - 自旋悬浮弹射物
+        public static final Supplier<Parameters> MUSHROOM_SPEAR_PROJ =
+                () -> new Parameters(1.0f, 0.0f, 0.95f, 20, 0.0f, 12,
+                        ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                        Confluence.asResource("mushroom"),
+                        Optional.empty(), ForwardGeneration.of(0, 0),
+                        Optional.empty());
+
+        /// 北极 — 弧形雪花弹射物
+        public static final Supplier<Parameters> NORTH_POLE_PROJ =
+                () -> new Parameters(1.0f, 1.0f, 0.99f, 120, 0.03f, 18,
+                        ModSoundEvents.FROZEN_ARROW.getId(),
+                        Confluence.asResource("north_pole"),
+                        Optional.empty(), ForwardGeneration.of(0, 0),
+                        Optional.of(3));
+
+        /// 叶绿长戟 — 孢子云弹射物，生命周期由速度控制。
+        public static final Supplier<Parameters> SPORE_CLOUD_PROJ =
+                () -> new Parameters(0.8f, 1.2f, 1.0f, 200, 0.0f, 20,
+                        ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                        Confluence.asResource("spore_cloud"),
+                        Optional.empty(), ForwardGeneration.of(0, (float) 1.5),
+                        Optional.of(Integer.MAX_VALUE));
+
+        /// 恶魂长戟 — 恶魂弹射物，水平飞行，无限穿透穿墙
+        public static final Supplier<Parameters> GHASTLY_PROJECTILE =
+                () -> new Parameters(0.9f, 0.5f, 1.0f, 10, 0.0f, 15,
+                        ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                        ModEntities.GHASTLY.getId(),
+                        Optional.empty(), ForwardGeneration.of(0, 0),
+                        Optional.of(Integer.MAX_VALUE));
+
+        public SoundEvent getSoundEvent() {
+            return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) return true;
+            if (o instanceof Parameters other) {
+                return Float.compare(damageFactor, other.damageFactor) == 0 &&
+                        Float.compare(baseSpeed, other.baseSpeed) == 0 &&
+                        Float.compare(acceleration, other.acceleration) == 0 &&
+                        existTicks == other.existTicks &&
+                        Float.compare(gravity, other.gravity) == 0 &&
+                        cooldown == other.cooldown &&
+                        soundEvent.equals(other.soundEvent) &&
+                        projType.equals(other.projType) &&
+                        trackType.equals(other.trackType) &&
+                        generation.equals(other.generation) &&
+                        pierceCount.equals(other.pierceCount);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = Float.hashCode(damageFactor);
+            result = 31 * result + Float.hashCode(baseSpeed);
+            result = 31 * result + Float.hashCode(acceleration);
+            result = 31 * result + existTicks;
+            result = 31 * result + Float.hashCode(gravity);
+            result = 31 * result + cooldown;
+            result = 31 * result + soundEvent.hashCode();
+            result = 31 * result + projType.hashCode();
+            result = 31 * result + trackType.hashCode();
+            result = 31 * result + generation.hashCode();
+            result = 31 * result + pierceCount.hashCode();
+            return result;
+        }
+
+        /// 计算实际速度（受远程速度属性影响）
+        public float getVelocity(LivingEntity living) {
+            float velocity = baseSpeed();
+            AttributeInstance attributeInstance = living.getAttribute(LibAttributes.getRangedVelocity().value());
+            if (attributeInstance != null) return velocity * (float) attributeInstance.getValue();
+            return velocity;
+        }
+
+        /// 计算实际冷却（受攻击速度属性影响）
+        public int getAttackSpeed(LivingEntity living) {
+            int cooldown = cooldown();
+            AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);
+            if (attributeInstance != null)
+                return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
+            return cooldown;
+        }
+    }
+
     public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final int attackDuration;
@@ -190,7 +333,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
 
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
 
-    protected final <P extends SpearProjectile> void fireDerivedProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, SpearProjectileComponent component, P projectile, Vec3 position, Vec3 direction, float baseKnockback, Consumer<P> configurator) {
+    protected final <P extends SpearProjectile> void fireDerivedProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Parameters component, P projectile, Vec3 position, Vec3 direction, float baseKnockback, Consumer<P> configurator) {
         projectile.setOwner(owner);
         projectile.setWeapon(weapon);
         projectile.setProjComponent(component, owner);
@@ -200,7 +343,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         level.addFreshEntity(projectile);
     }
 
-    protected final <P extends SpearProjectile> void fireDerivedProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, SpearProjectileComponent component, P projectile, Vec3 position, Vec3 direction, float baseKnockback) {
+    protected final <P extends SpearProjectile> void fireDerivedProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Parameters component, P projectile, Vec3 position, Vec3 direction, float baseKnockback) {
         fireDerivedProjectile(weapon, level, owner, component, projectile, position, direction, baseKnockback, ignored -> {});
     }
 

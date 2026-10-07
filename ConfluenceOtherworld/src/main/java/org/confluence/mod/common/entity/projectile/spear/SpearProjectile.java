@@ -25,10 +25,10 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.common.item.spear.AbstractSpearItem.Parameters;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -48,7 +48,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     //    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0.5F);
-    protected SpearProjectileComponent projComponent;
+    protected Parameters projComponent;
     public final IAxisZRotate.Rotate rotate = new IAxisZRotate.Rotate();
 
     // 弹射物自身状态
@@ -106,13 +106,13 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
 
     // ===== 配置注入 =====
 
-    /// 注入弹射物配置组件并初始化字段。
-    public void setProjComponent(SpearProjectileComponent projComponent, LivingEntity owner) {
+    /// 注入弹射物固定参数并初始化字段。
+    public void setProjComponent(Parameters projComponent, LivingEntity owner) {
         applyComponent(projComponent);
         this.baseAttackDamage = (float) owner.getAttributeValue(LibAttributes.getAttackDamage());
     }
 
-    protected final void applyComponent(SpearProjectileComponent projComponent) {
+    protected final void applyComponent(Parameters projComponent) {
         this.projComponent = projComponent;
         this.gravity = projComponent.gravity();
         this.lifetime = projComponent.existTicks();
@@ -356,7 +356,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (projComponent != null) {
-            SpearProjectileComponent.CODEC.encodeStart(NbtOps.INSTANCE, projComponent).result()
+            Parameters.CODEC.encodeStart(NbtOps.INSTANCE, projComponent).result()
                     .ifPresent(value -> tag.put("ProjectileComponent", value));
         }
         if (!firedFromWeapon.isEmpty()) tag.put("Weapon", firedFromWeapon.save(new CompoundTag()));
@@ -377,7 +377,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("ProjectileComponent")) {
-            SpearProjectileComponent.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result()
+            Parameters.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result()
                     .ifPresent(this::applyComponent);
         }
         firedFromWeapon = tag.contains("Weapon") ? ItemStack.of(tag.getCompound("Weapon")) : ItemStack.EMPTY;

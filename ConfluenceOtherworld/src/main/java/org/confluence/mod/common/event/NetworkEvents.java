@@ -41,6 +41,7 @@ public final class NetworkEvents {
         handler.registerInGameC2S(SwordProjectilePacketC2S.class, SwordProjectilePacketC2S.ID, SwordProjectilePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SummonSkeletronPacketC2S.class, SummonSkeletronPacketC2S.ID, SummonSkeletronPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(WormholeToPlayerPacketC2S.class, WormholeToPlayerPacketC2S.ID, WormholeToPlayerPacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(WormholeRequestPlayerDataPacketC2S.class, WormholeRequestPlayerDataPacketC2S.ID, WormholeRequestPlayerDataPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(ShootPacketC2S.class, ShootPacketC2S.ID, ShootPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(YoyoControlPacketC2S.class, YoyoControlPacketC2S.ID, YoyoControlPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(WhipControlPacketC2S.class, WhipControlPacketC2S.ID, WhipControlPacketC2S.STREAM_CODEC);
@@ -81,6 +82,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(TerraStyleExplosionPacketS2C.class, TerraStyleExplosionPacketS2C.ID, TerraStyleExplosionPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(VisibilityPacketS2C.class, VisibilityPacketS2C.ID, VisibilityPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(WindSpeedPacketS2C.class, WindSpeedPacketS2C.ID, WindSpeedPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(WormholePlayerDataSyncPacketS2C.class, WormholePlayerDataSyncPacketS2C.ID, WormholePlayerDataSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SummonerBatchedParticlesPayload.class, SummonerBatchedParticlesPayload.ID, SummonerBatchedParticlesPayload.STREAM_CODEC);
         handler.registerInGameS2C(SummonerBatchedInfoPayload.class, SummonerBatchedInfoPayload.ID, SummonerBatchedInfoPayload.STREAM_CODEC);
 

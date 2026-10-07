@@ -82,7 +82,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
         }
         vertical = accessoryJumpVelocity(player, vertical, groundedBeforeMove && isJumpInputDown());
         AABB previousBox = getBoundingBox();
-        moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
+        moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z), player, true);
         if (!level().isClientSide && vertical < 0 && !groundedBeforeMove)
             stomp(player, previousBox);
         updateGroundState();

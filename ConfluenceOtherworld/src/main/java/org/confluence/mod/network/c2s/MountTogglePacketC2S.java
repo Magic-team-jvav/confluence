@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.mount.MountManager;
+import org.confluence.mod.common.entity.mount.MountManager;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;

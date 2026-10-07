@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.combat.gun.ShootingService;
+import org.confluence.mod.common.item.gun.ShootingService;
 import org.confluence.mod.network.s2c.ShotFeedbackPacketS2C;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;

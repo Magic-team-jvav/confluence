@@ -48,6 +48,7 @@ legacyForge {
             programArguments.addAll([
                     '--mod', project.mod_id,
                     '--all',
+                    '--validate',
                     '--output', file('src/generated/resources/').getAbsolutePath(),
                     '--existing', file('src/main/resources/').getAbsolutePath(),
                     '--existing-mod', 'portlib'

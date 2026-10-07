@@ -66,6 +66,7 @@ public class ModChineseProvider extends LanguageProvider {
         addHostileProjectileTranslations();
     }
 
+
     private void addGeneralInterfaceTranslations() {
         add("entity.confluence.model_pending", "%s（模型待补）");
         add("house_validator.result_type.found", "这间房屋符合入住条件。");
@@ -105,6 +106,18 @@ public class ModChineseProvider extends LanguageProvider {
     }
 
     private void addItemGroupTranslations() {
+        add("itemGroup.confluence.evocation_robe_armor", "唤魔长袍盔甲");
+        add("itemGroup.confluence.ember_robe_armor", "余烬长袍盔甲");
+        add("itemGroup.confluence.verdant_robe_armor", "碧绿长袍盔甲");
+        add("itemGroup.confluence.highland_armor", "高地盔甲");
+        add("itemGroup.confluence.wolf_armor", "狼套装");
+        add("itemGroup.confluence.root_rot_armor", "腐根盔甲");
+        add("itemGroup.confluence.black_spot_armor", "黑斑盔甲");
+        add("itemGroup.confluence.entertainers_garb_armor", "演艺家礼服");
+        add("itemGroup.confluence.mercenary_armor", "雇佣兵盔甲");
+        add("itemGroup.confluence.renegade_armor", "叛军盔甲");
+        add("itemGroup.confluence.stalwart_armor", "坚毅盔甲");
+        add("itemGroup.confluence.troubadour_armor", "吟游诗人套装");
         // 自然方块分类
         add("itemGroup.confluence.ebony", "乌木");
         add("itemGroup.confluence.pearl", "珍珠木");

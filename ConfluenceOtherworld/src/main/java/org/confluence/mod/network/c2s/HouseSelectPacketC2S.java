@@ -66,8 +66,9 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
             if (isEmptyHouse) { // 如果是空房子就为该类型的npc添加房屋
                 getNpc(player, selected, region, npc -> {
                     House maked = result.make(npc.getUUID());
-                    HouseHandler.INSTANCE.setHouse(npc, maked);
                     npc.setHouse(maked);
+                    if (!npc.getHouse().isValid()) return;
+                    HouseHandler.INSTANCE.setHouse(npc, npc.getHouse());
                     player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.add.success"));
                 });
             } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 不是空房子，可以通过uuid获取到所有者
@@ -88,8 +89,10 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
     private void getNpc(ServerPlayer player, int selected, NPCSpawner.Region region, Consumer<BaseNPC> ifSuccess) {
         int viewDistance = player.requestedViewDistance();
         player.serverLevel().getEntitiesOfClass(BaseNPC.class, new AABB(pos).inflate(viewDistance * 16)).stream()
+                /// 待救实体尚未入住，不能让选房工具留下只存在于全局表中的房屋占用。
+                .filter(npc -> npc.isAlive() && !npc.requiresRescue())
                 .filter(npc -> AvailableHouseSelectPacketS2C.matchesSelection(selected, npc.getType()))
-                .filter(npc -> /*npc.getSpawnAtPos() != null && */region.isOnRegion(npc.getSpawnAtPos()))
+                .filter(npc -> region.equals(npc.getRegion()))
                 .min(Comparator.comparingDouble(npc -> npc.distanceToSqr(player)))
                 .ifPresentOrElse(ifSuccess, () -> player.sendSystemMessage(Component.translatable("message.confluence.house_detect.npc_not_fount")));
     }

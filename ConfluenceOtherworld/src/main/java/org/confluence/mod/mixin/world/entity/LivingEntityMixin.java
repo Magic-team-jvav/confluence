@@ -32,6 +32,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
+import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
@@ -42,10 +43,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 import java.util.Map;
+
+import static org.confluence.mod.common.util.VoidSeaConstants.*;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
@@ -169,7 +173,47 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
         if (self.hasEffect(ModEffects.FLIPPER.get())) {
             return original.call(instance, 0.96, 0.96, 0.96);
         }
+        if (confluence$isInVoidSea()) {
+            return original.call(instance, (double) HORIZONTAL_MOVEMENT_RESISTANCE, factorY, (double) HORIZONTAL_MOVEMENT_RESISTANCE);
+        }
         return original.call(instance, factorX, factorY, factorZ);
+    }
+
+    /// 虚空海没有真实流体方块，移动时仍使用原版水下运动分支。
+    @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isInWater()Z"))
+    private boolean confluence$voidSeaWater(boolean original) {
+        return original || confluence$isInVoidSea();
+    }
+
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"), index = 0)
+    private float confluence$voidSeaMovementSpeed(float original) {
+        if (confluence$isInVoidSea()) {
+            return original * (confluence$self().isSwimming() ? SWIMMING_SPEED : MOVEMENT_SPEED);
+        }
+        return original;
+    }
+
+    @Unique
+    private boolean confluence$isInVoidSea() {
+        LivingEntity self = confluence$self();
+        return VoidSeaHelper.isTrigger(self);
+    }
+
+    /// 海面附近的实体随潮位差上下移动。
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void confluence$moveWithVoidSea(CallbackInfo ci) {
+        LivingEntity self = confluence$self();
+        if (!VoidSeaHelper.isTrigger(self)) {
+            return;
+        }
+
+        float height = VoidSeaHelper.getHeight();
+        float heightO = VoidSeaHelper.getHeightO();
+        if (self.getY() >= Math.min(height, heightO) - TIDE_SURFACE_RANGE
+                && self.getY() <= Math.max(height, heightO)
+                && height != heightO) {
+            self.move(MoverType.SELF, new Vec3(0.0, height - heightO, 0.0));
+        }
     }
 
     @ModifyExpressionValue(method = "handleOnClimbable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSuppressingSlidingDownLadder()Z"))
@@ -206,6 +250,16 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
                     break;
                 }
             }
+        }
+    }
+
+    /// 重叠效果下的虚空海侵蚀由专用逻辑处理，取消原版世界底部伤害。
+    @Inject(method = "onBelowWorld", at = @At("HEAD"), cancellable = true)
+    private void confluence$onBelowWorld(CallbackInfo ci) {
+        LivingEntity livingEntity = (LivingEntity) (Object) this;
+        if (VoidSeaHelper.isTrigger(livingEntity)
+                && VoidSeaHelper.isDimensionalOverlapEffect(livingEntity)) {
+            ci.cancel();
         }
     }
 }

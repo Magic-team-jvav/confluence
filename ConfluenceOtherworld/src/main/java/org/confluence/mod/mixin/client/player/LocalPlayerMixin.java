@@ -6,9 +6,11 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraftforge.common.ForgeMod;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.handler.ScryingOrbHandler;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
+import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.MountInputPacketC2S;
 import org.spongepowered.asm.mixin.Final;
@@ -19,6 +21,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static org.confluence.mod.common.util.VoidSeaConstants.*;
 
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin implements ILocalPlayer {
@@ -66,6 +70,51 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     @Inject(method = "hurt", at = @At("HEAD"))
     private void hurt(CallbackInfoReturnable<Boolean> cir) {
         ScryingOrbHandler.stopSpectating();
+    }
+
+    /// 虚空海中使用跳跃、潜行控制升降，并按仰角施加跃出海面的加速度。
+    @Inject(method = "aiStep", at = @At("TAIL"))
+    private void confluence$voidSeaVerticalMovement(CallbackInfo ci) {
+        LocalPlayer self = (LocalPlayer) (Object) this;
+        if (!VoidSeaHelper.isTrigger(self)) {
+            return;
+        }
+        if (self.getAbilities().flying
+                || self.isPassenger()
+                || !self.isAffectedByFluids()) {
+            return;
+        }
+
+        int vertical = 0;
+        if (input.jumping) {
+            vertical++;
+        }
+        if (input.shiftKeyDown) {
+            vertical--;
+        }
+        if (vertical != 0) {
+            self.setDeltaMovement(self.getDeltaMovement().add(0.0, vertical * VERTICAL_MOVEMENT_SPEED * self.getAttributeValue(ForgeMod.SWIM_SPEED.get()), 0.0));
+        }
+
+        float exitAngle = -self.getXRot();
+        if (minecraft.options.keySprint.isDown()
+                && self.getY() >= VoidSeaHelper.getHeight() - SURFACE_EXIT_RANGE
+                && exitAngle >= SURFACE_EXIT_MIN_ANGLE
+                && exitAngle <= SURFACE_EXIT_MAX_ANGLE) {
+            self.setDeltaMovement(self.getDeltaMovement().add(self.getLookAngle().scale(SURFACE_EXIT_ACCELERATION)));
+        }
+    }
+
+    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z", ordinal = 2))
+    private boolean confluence$keepVoidSeaSwimming(boolean original) {
+        LocalPlayer self = (LocalPlayer) (Object) this;
+        return original || VoidSeaHelper.isTrigger(self);
+    }
+
+    @ModifyExpressionValue(method = "isMovingSlowly", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isVisuallyCrawling()Z"))
+    private boolean confluence$voidSeaSwimmingIsNotCrawling(boolean original) {
+        LocalPlayer self = (LocalPlayer) (Object) this;
+        return original && !(self.isSwimming() && VoidSeaHelper.isTrigger(self));
     }
 
     /// 把本体坐骑共用的跳跃键边沿发送给服务端。首次骑乘时也发送松开状态，避免沿用上一会话的输入。

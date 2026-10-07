@@ -56,6 +56,7 @@ import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.entity.model.*;
 import org.confluence.mod.client.entity.renderer.*;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
+import org.confluence.mod.client.gui.VoidSeaFilterRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeItemOutline;
@@ -64,9 +65,9 @@ import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
+import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.init.model.WhipModelRegister;
-import org.confluence.mod.client.summoner.model.ZenithSwordModels;
 import org.confluence.mod.client.model.block.GardenGnomeBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
@@ -84,6 +85,8 @@ import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.client.particle.*;
+import org.confluence.mod.client.renderer.ModRenderer;
+import org.confluence.mod.client.renderer.VoidSeaRenderSettings;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
@@ -106,6 +109,7 @@ import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
 import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
+import org.confluence.mod.client.summoner.model.ZenithSwordModels;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.animal.Fairy;
@@ -157,6 +161,7 @@ public final class ModClientEvents {
         PortEventHandler.addListener(ModClientEvents::registerItemColors);
         PortEventHandler.addListener(ModClientEvents::registerClientExtensions);
         PortEventHandler.addListener(ModClientEvents::registerParticles);
+        PortEventHandler.addListener(ModClientEvents::registerClientCommands);
         PortEventHandler.addListener(ModClientEvents::textureAtlasStitched);
         PortEventHandler.addListener(ModClientEvents::registerMaterialAtlasesEvent);
         PortEventHandler.addListener(ModClientEvents::model$ModifyBakingResult);
@@ -229,6 +234,7 @@ public final class ModClientEvents {
     }
 
     private static void registerGuiLayers(PortRegisterGuiLayersEvent event) {
+        event.registerBelow(VanillaGuiOverlay.VIGNETTE.id(), Confluence.asResource("void_sea_filter"), VoidSeaFilterRenderer::renderFilter);
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
         event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), repeaterHud, new RepeaterHud());
         ResourceLocation healthHud = Confluence.asResource("health_hud");
@@ -335,7 +341,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FLYING_PIGGY_BANK.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/piggy_bank.geo.json"), Confluence.asResource("textures/entity/summon/piggy_bank.png"), Confluence.asResource("animations/entity/summon/piggy_bank.animation.json"))));
         event.registerEntityRenderer(RIDEABLE_SLIME.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/rideable/rideable_slime.geo.json"), Confluence.asResource("textures/entity/rideable/rideable_slime.png"), Confluence.asResource("animations/entity/rideable/rideable_slime.animation.json"))).withScale(RideableSlimeMountEntity.RENDER_SCALE).setShadowRadius(0.35F));
         event.registerEntityRenderer(RIDEABLE_BEE.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/rideable/rideable_bee.geo.json"), Confluence.asResource("textures/entity/rideable/rideable_bee.png"), Confluence.asResource("animations/entity/rideable/rideable_bee.animation.json"))).withScale(RideableBeeMountEntity.RENDER_SCALE).setShadowRadius(0.35F));
-        event.registerEntityRenderer(RIDEABLE_UNICORN.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/rideable/unicorn.geo.json"), Confluence.asResource("textures/entity/rideable/unicorn.png"), Confluence.asResource("animations/entity/unicorn.animation.json"))));
+        event.registerEntityRenderer(RIDEABLE_UNICORN.get(), context -> new MountGeoRenderer<>(context, new UnicornMountModel()));
         event.registerEntityRenderer(RIDEABLE_LAVA_SHARK.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/rideable/lava_shark.geo.json"), Confluence.asResource("textures/entity/rideable/lava_shark.png"), Confluence.asResource("animations/entity/rideable/lava_shark.animation.json"))));
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
@@ -1019,6 +1025,10 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_VOIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_BRIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOLAR_FRAGMENT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.VORTEX_FRAGMENT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.NEBULA_FRAGMENT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.STARDUST_FRAGMENT);
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
         event.registerItem(new EnemyBannerItemRenderer(), ModItems.ENEMY_BANNER);
         registerGunModel(event, ManaWeaponItems.BEE_GUN);
@@ -1048,6 +1058,7 @@ public final class ModClientEvents {
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE_DUST.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE_FADE.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.ECTO_MIST.get(), EctoMistParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.VOID_SEA_SUSPENDED.get(), VoidSeaSuspendedParticle.Provider::new);
     }
 
     private static void textureAtlasStitched(PortTextureAtlasStitchedEvent event) {
@@ -1131,6 +1142,7 @@ public final class ModClientEvents {
         event.registerReloadListener(ClientBestiary.getInstance());
         event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());
         event.registerReloadListener(NPCDialogLoader.getInstance());
+        event.registerReloadListener(WormholeHandlerClient::reload);
     }
 
     private static void registerCustomBestiaryEntryModel(RegisterCustomBestiaryEntryRendererEvent event) {
@@ -1176,10 +1188,15 @@ public final class ModClientEvents {
 
     private static void registerShaders(RegisterShadersEvent event) {
         try {
+            ModRenderer.register(event.getResourceProvider(), event::registerShader);
             event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), CustomBossBarRenderer::setShader);
             event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("trade_item_outline"), DefaultVertexFormat.POSITION_TEX_COLOR), NPCTradeItemOutline::setShader);
         } catch (IOException e) {
             Confluence.LOGGER.error("Failed to register shader", e);
         }
+    }
+
+    private static void registerClientCommands(RegisterClientCommandsEvent event) {
+        VoidSeaRenderSettings.registerCommand(event.getDispatcher());
     }
 }

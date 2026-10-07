@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.NorthPoleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.EasingType;
@@ -32,7 +31,7 @@ public class NorthPoleItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            SpearProjectileComponent component = SpearProjectileComponent.NORTH_POLE_PROJ.get();
+            Parameters component = Parameters.NORTH_POLE_PROJ.get();
             NorthPoleProjectile projectile = new NorthPoleProjectile(
                     ModEntities.NORTH_POLE.get(), level);
             Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));

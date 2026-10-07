@@ -33,9 +33,13 @@ public class ZenithData {
     }
 
     public void tick() {
-        if (zenithItem != null) {
-            power = (float) (power + owner.getAttributeValue(Attributes.ATTACK_SPEED));
+        /// 换手、死亡或旁观后及时清除持键状态，不依赖客户端一定能送达松开包。
+        if (zenithItem == null) return;
+        if (!owner.isAlive() || owner.isSpectator() || owner.getMainHandItem().getItem() != zenithItem) {
+            reset();
+            return;
         }
+        power = (float) (power + owner.getAttributeValue(Attributes.ATTACK_SPEED));
         if (power > 3.33f) {
             playZenithSound();
             Vec3 lookAngle = owner.getLookAngle();

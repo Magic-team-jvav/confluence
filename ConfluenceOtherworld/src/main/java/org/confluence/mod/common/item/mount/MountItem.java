@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
-import org.confluence.mod.common.mount.MountManager;
+import org.confluence.mod.common.entity.mount.MountManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

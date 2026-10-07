@@ -5,9 +5,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.projectile.flail.DripplerCripplerProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 
 /// 滴滴怪致残者链锤实体。
 public final class DripplerCripplerFlailEntity extends BaseFlailEntity {
@@ -21,7 +21,7 @@ public final class DripplerCripplerFlailEntity extends BaseFlailEntity {
     }
 
     @Override
-    protected void onThrownToRetract(Player player, FlailComponent component) {
+    protected void onThrownToRetract(Player player, Parameters parameters) {
         DripplerCripplerProjectile projectile = ModEntities.DRIPPLER_CRIPPLER_PROJECTILE.get().create(level());
         if (projectile == null) {
             return;
@@ -30,7 +30,7 @@ public final class DripplerCripplerFlailEntity extends BaseFlailEntity {
         if (velocity.lengthSqr() < 1.0E-6) {
             velocity = player.getViewVector(1.0F);
         }
-        projectile.initialize(this, player, velocity.normalize().scale(component.throwSpeed()), component.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) * 0.5F, 200);
+        projectile.initialize(this, player, velocity.normalize().scale(parameters.throwSpeed()), parameters.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) * 0.5F, 200);
         level().addFreshEntity(projectile);
     }
 }

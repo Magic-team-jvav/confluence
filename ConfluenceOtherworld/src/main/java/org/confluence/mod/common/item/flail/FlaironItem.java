@@ -7,19 +7,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * <h1>猪鲨链球物品</h1>
- * 右键：先切换 SPIN/投射模式，再根据新模式创建/推进连枷状态机。
- */
+/// 猪鲨链球物品。
+/// 右键：先切换 SPIN/投射模式，再根据新模式创建/推进连枷状态机。
 public class FlaironItem extends BaseFlailItem {
     private static final String TAG_PROJECTILE_MODE = "confluence:flairon_projectile";
 
-    public FlaironItem(@NotNull FlailComponent component, @NotNull ModRarity rarity) {
-        super(component, rarity);
+    public FlaironItem(@NotNull Parameters parameters, @NotNull ModRarity rarity) {
+        super(parameters, rarity);
     }
 
     @Override
@@ -50,7 +47,7 @@ public class FlaironItem extends BaseFlailItem {
     }
 
     @Override
-    protected EntityType<?> getFlailEntityType(FlailComponent component) {
+    protected EntityType<?> getFlailEntityType(Parameters parameters) {
         return ModEntities.FLAIRON_FLAIL.get();
     }
 }

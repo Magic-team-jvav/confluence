@@ -10,7 +10,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.EasingType;
@@ -77,12 +76,12 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
                 nearestEnemy.getZ() - spawnZ
         ).normalize();
 
-        SpearProjectileComponent component = SpearProjectileComponent.GHASTLY_PROJECTILE.get();
+        Parameters component = Parameters.GHASTLY_PROJECTILE.get();
         spawnProjectile(weapon, level, owner, new Vec3(spawnX, spawnY, spawnZ), dir, component, nearestEnemy);
     }
 
     /// 在世界提交前锁定目标，再由统一事务安装 MELEE 快照并生成实体。
-    private GhastlyProjectile spawnProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, SpearProjectileComponent component, LivingEntity target) {
+    private GhastlyProjectile spawnProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, Parameters component, LivingEntity target) {
         GhastlyProjectile projectile = new GhastlyProjectile(ModEntities.GHASTLY.get(), level);
         fireDerivedProjectile(weapon, level, owner, component, projectile, pos, direction, 0.0F, value -> value.setLockedTarget(target));
         return projectile;

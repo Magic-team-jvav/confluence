@@ -1,0 +1,86 @@
+{
+    "vertex": "confluence:void_sea_submerged_surface",
+    "fragment": "confluence:void_sea_submerged_surface",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "DepthSampler"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "InverseProjMat",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "InverseViewMat",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "SeaRelativeY",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "SubmergedColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.65,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "SubmergedStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.45
+            ]
+        }
+    ]
+}

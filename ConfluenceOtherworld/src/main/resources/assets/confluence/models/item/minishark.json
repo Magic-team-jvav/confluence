@@ -102,6 +102,6 @@
     }
   },
     "textures": {
-        "particle": "confluence:item/minishark"
+        "particle": "confluence:item/gun/minishark"
   }
 }

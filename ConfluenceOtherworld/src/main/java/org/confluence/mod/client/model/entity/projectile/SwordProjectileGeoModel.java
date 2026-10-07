@@ -2,8 +2,8 @@ package org.confluence.mod.client.model.entity.projectile;
 
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.SwordProjectileAppearance;
 import org.confluence.mod.common.entity.projectile.sword.GeoSwordProjectile;
+import org.confluence.mod.common.item.sword.SwordProjectileAppearance;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 

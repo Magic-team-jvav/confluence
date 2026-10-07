@@ -1,6 +1,143 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
+        "mount.idle": {
+            "loop": true,
+            "animation_length": 1,
+            "bones": {
+                "body": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "chest": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "leg": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB2": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "leg2": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB3": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB4": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "neck": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "head": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "leg3": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB5": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB6": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "leg4": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB7": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "legB8": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "tail": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "ears": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                }
+            }
+        },
 		"walk": {
 			"loop": true,
 			"animation_length": 1,

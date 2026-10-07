@@ -86,7 +86,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
             return;
         }
 
-        if (getComponent() == null) {
+        if (parameters() == null) {
             return;
         }
         // 1.21 的守卫光束只取玩家攻击属性的六分之一；连枷组件基础伤害已经用于

@@ -16,4 +16,8 @@ public class EnemyOpenDoorGoal extends OpenDoorGoal {
     public boolean canUse() {
         return super.canUse() && !isOpen();
     }
+
+    /// 原版 closeDoor=false 只禁止持续运行，stop() 仍会关门；不能让门在追击途中立即关回去。
+    @Override
+    public void stop() {}
 }

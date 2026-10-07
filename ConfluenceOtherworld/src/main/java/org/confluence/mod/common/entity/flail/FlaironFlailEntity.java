@@ -5,9 +5,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.projectile.flail.FlaironBubbleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 
 /// 猪鲨链球实体，按当前状态发射可追踪气泡。
 public final class FlaironFlailEntity extends BaseFlailEntity {
@@ -24,7 +24,7 @@ public final class FlaironFlailEntity extends BaseFlailEntity {
     }
 
     @Override
-    protected void tickSpecialBehavior(Player player, FlailComponent component, int phase) {
+    protected void tickSpecialBehavior(Player player, Parameters parameters, int phase) {
         if (level().isClientSide()) {
             return;
         }
@@ -54,7 +54,7 @@ public final class FlaironFlailEntity extends BaseFlailEntity {
         if (bubble == null) {
             return;
         }
-        bubble.initialize(this, player, direction.scale(speed), component.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) * 0.5F, 40);
+        bubble.initialize(this, player, direction.scale(speed), parameters.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) * 0.5F, 40);
         bubble.randomizeScale();
         bubble.setPos(position().add(0.0, getBbHeight() * 0.5, 0.0));
         level().addFreshEntity(bubble);

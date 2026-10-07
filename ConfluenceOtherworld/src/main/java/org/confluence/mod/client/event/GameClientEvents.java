@@ -44,26 +44,25 @@ import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
-import org.confluence.mod.client.effect.AfterimageHelper;
-import org.confluence.mod.client.effect.EctoMistHelper;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
-import org.confluence.mod.client.effect.SpelunkerHelper;
+import org.confluence.mod.client.effect.*;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
+import org.confluence.mod.client.entity.renderer.MartianOfficerRenderer;
 import org.confluence.mod.client.entity.renderer.WallOfFleshRenderer;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.BackgroundLayer;
+import org.confluence.mod.client.gui.VoidSeaFilterRenderer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.renderer.VoidSeaRenderer;
 import org.confluence.mod.client.renderer.entity.TongueRenderer;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
-import org.confluence.mod.client.entity.renderer.MartianOfficerRenderer;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -80,8 +79,8 @@ import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
-import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
+import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModAttributeUtils;
@@ -133,6 +132,8 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::afterFlushArmorSetBonus);
         PortEventHandler.addListener(GameClientEvents::bullet$ImpactEffect);
         PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::viewport$RenderFog);
+        PortEventHandler.addListener(GameClientEvents::viewport$ComputeFogColor);
+        PortEventHandler.addListener(GameClientEvents::viewport$VoidSeaRenderFog);
     }
 
     private static void customizeGuiOverlay$BossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event) {
@@ -143,7 +144,12 @@ public final class GameClientEvents {
         if (event.phase != TickEvent.Phase.START) return;
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-        if (player == null) return;
+        if (player == null) {
+            VoidSeaSwimEffects.reset();
+            return;
+        }
+
+        VoidSeaSwimEffects.tick(player);
 
         if (minecraft.gameMode != null && !minecraft.gameMode.isDestroying() && minecraft.options.keyAttack.isDown()) {
             ItemStack itemStack = player.getMainHandItem();
@@ -374,6 +380,7 @@ public final class GameClientEvents {
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
             HouseSelectHud.renderRegionInWorld(minecraft);
+            VoidSeaRenderer.render(event, minecraft, player);
         }
     }
 
@@ -548,6 +555,14 @@ public final class GameClientEvents {
         event.setFarPlaneDistance(32.0F);
         event.setFogShape(FogShape.SPHERE);
         event.setCanceled(true);
+    }
+
+    private static void viewport$ComputeFogColor(ViewportEvent.ComputeFogColor event) {
+        VoidSeaFilterRenderer.computeFogColor(event);
+    }
+
+    private static void viewport$VoidSeaRenderFog(ViewportEvent.RenderFog event) {
+        VoidSeaFilterRenderer.renderFog(event);
     }
 
     private static void bullet$ImpactEffect(BulletEvent.ImpactEffectEvent event) {

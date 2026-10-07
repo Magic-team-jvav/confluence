@@ -1,7 +1,9 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -35,11 +37,26 @@ public class Shark extends BaseAquaticMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        new VanillaGoalAction(new MeleeAttackGoal(Shark.this, 1.2, true)),
+                        new VanillaGoalAction(new MeleeAttackGoal(Shark.this, 1.2, true) {
+                            @Override
+                            protected void checkAndPerformAttack(LivingEntity target, double distanceSquared) {
+                                if (isTimeToAttack() && isWithinMeleeAttackRange(target) && getSensing().hasLineOfSight(target)) {
+                                    resetAttackCooldown();
+                                    swing(InteractionHand.MAIN_HAND);
+                                    doHurtTarget(target);
+                                }
+                            }
+                        }),
                         new VanillaGoalAction(new PatrolGoal()),
                         new WaitAction(10));
             }
         };
+    }
+
+    /// 鲨鱼只在身体接触目标时咬伤，不为咬击额外扩大近战范围。
+    @Override
+    public boolean isWithinMeleeAttackRange(LivingEntity target) {
+        return getBoundingBox().intersects(target.getBoundingBox());
     }
 
     @Override

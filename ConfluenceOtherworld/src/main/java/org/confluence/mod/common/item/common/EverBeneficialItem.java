@@ -91,6 +91,13 @@ public class EverBeneficialItem extends TooltipItem {
     public static final Beneficial MINECART_UPGRADE_KIT = new Beneficial(Confluence.asResource("minecart_upgrade_kit"), EverBeneficial::setMinecartUpgradeKitUsed, (id, name, player, everBeneficial, isRespawn) -> {
         player.drop(MinecartItems.MECHANICAL_CART.toStack(), true);
     });
+    public static final Beneficial RECALL_LIFE_CRYSTAL = new Beneficial(Confluence.asResource("life_crystal"), EverBeneficial::decreaseCrystals, (id, name, player, everBeneficial, isRespawn) -> {
+        AttributeInstance instance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
+        if (instance == null) return;
+        double value = everBeneficial.getUsedLifeCrystals() * 4.0;
+        if (instance.getBaseValue() + value <= 0) return;
+        instance.addOrReplacePermanentModifier(new AttributeModifier(id, name, value, AttributeModifier.Operation.ADDITION));
+    });
     public static final Beneficial ARTISAN_LOAF = new Beneficial(Confluence.asResource("artisan_loaf"), EverBeneficial::setArtisanLoafUsed, (id, name, player, everBeneficial, isRespawn) -> {
         AttributeInstance instance = player.getAttributes().getInstance(Attributes.BLOCK_INTERACTION_RANGE);
         if (instance == null) return;

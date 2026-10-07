@@ -46,6 +46,13 @@ public class EverBeneficial implements IPortNBTSerializable<CompoundTag> {
         return lifeCrystals;
     }
 
+    /// 回溯生命水晶允许降低初始生命，最多记录负四颗，保留基础的四点生命。
+    public boolean decreaseCrystals() {
+        if (lifeCrystals <= -4) return false;
+        this.lifeCrystals--;
+        return true;
+    }
+
     public boolean isLifeCrystalsMaximum() {
         return lifeCrystals >= 15;
     }

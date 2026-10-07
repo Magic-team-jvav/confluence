@@ -6,8 +6,8 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
-import org.confluence.mod.common.combat.gun.ShotContext;
 import org.confluence.mod.common.item.gun.BaseGun;
+import org.confluence.mod.common.item.gun.ShotContext;
 
 import java.util.ArrayList;
 import java.util.Collection;

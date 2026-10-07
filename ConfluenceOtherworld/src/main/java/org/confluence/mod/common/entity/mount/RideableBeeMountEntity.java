@@ -130,7 +130,7 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
             vertical = grounded ? -GRAVITY : -fatigue * MAX_VERTICAL_SPEED;
         }
 
-        moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
+        moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z), player, false);
         if (!level().isClientSide) entityData.set(ASCENDING, !onGround() && energy > 0);
         updateMovementState();
         if (!level().isClientSide && isAscending() && (tickCount & 1) == 0) {

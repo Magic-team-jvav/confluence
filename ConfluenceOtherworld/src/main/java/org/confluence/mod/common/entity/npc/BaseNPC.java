@@ -38,7 +38,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -73,15 +72,13 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /// 城镇 NPC 的公共实体基础。
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final EntityDataAccessor<CompoundTag> DATA_MOOD = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
+    private static final EntityDataAccessor<Boolean> DATA_SHIMMERED = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation TAX_COLLECTOR_ATTACK = RawAnimation.begin().thenPlay("attack");
@@ -137,6 +134,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         super.defineSynchedData();
         entityData.define(DATA_CHAT, new CompoundTag());
         entityData.define(DATA_MOOD, new CompoundTag());
+        entityData.define(DATA_SHIMMERED, false);
     }
 
     // === Goals ===
@@ -264,7 +262,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     /// 每 512 tick 重新验证已有房屋；无房时从当前位置尝试发现房屋。
     protected void tickFindHouse(ServerLevel level) {
-        if ((tickCount & FIND_HOUSE_INTERVAL_MASK) != 0) return;
+        if (requiresRescue() || (tickCount & FIND_HOUSE_INTERVAL_MASK) != 0) return;
         BlockPos scanPos = house.isValid() ? house.center() : blockPosition();
         if (!level.isLoaded(scanPos)) return;
 
@@ -280,6 +278,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     // === 房屋 ===
 
     public void setHouse(House house) {
+        if (requiresRescue()) house = House.EMPTY;
         this.house = house;
         if (house.isValid()) {
             this.spawnAtPos = house.center();
@@ -320,6 +319,74 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public void setShouldInteract(boolean should) {
         this.shouldInteract = should;
+    }
+
+    /// 尚未完成首次救援的实体不能自行入住或因迁移获得永久解锁。
+    public boolean requiresRescue() {
+        return shouldInteract();
+    }
+
+    /// 只改变本实例的救援状态；存档解锁与区域迁移由生成管理器处理。
+    public void setRescued() {
+        setShouldInteract(false);
+    }
+
+    /// 查询独立于职业与性别的微光外观；不以实体类型转换代替这一状态。
+    public boolean isShimmered() {
+        return entityData.get(DATA_SHIMMERED);
+    }
+
+    /// 外观资格由注册处声明；其他 NPC 实现可以覆写，不依赖客户端资源决定服务端行为。
+    public boolean supportsShimmerAppearance() {
+        return NpcEntities.hasShimmerAppearance(getType());
+    }
+
+    /// 同步外观状态；缺少变种素材时渲染端仍回退普通外观，不改变实体数值。
+    public void setShimmered(boolean shimmered) {
+        entityData.set(DATA_SHIMMERED, shimmered && supportsShimmerAppearance());
+    }
+
+    /// 性别等实体变种转换先复制原生存档状态，保留名字、装备、效果及子类数据。
+    /// 新实例保留自己的 UUID；区域和房屋账本只在成功加入世界后迁移。
+    public void copyShimmerStateFrom(BaseNPC source) {
+        CompoundTag state = source.saveWithoutId(new CompoundTag());
+        state.remove("UUID");
+        load(state);
+        /// 原生存档只保存永久属性修饰器，补齐装备和效果带来的临时修饰器。
+        getAttributes().assignValues(source.getAttributes());
+        copyResidenceFrom(source);
+        tickCount = source.tickCount;
+        chatCooldowns.clear();
+        chatCooldowns.putAll(source.chatCooldowns);
+        chatForceCooldown = source.chatForceCooldown;
+        chatDisplayTicks = source.currentChat == null ? 0 : source.chatDisplayTicks;
+        healthRegenerationProgress = source.healthRegenerationProgress;
+        CompoundTag chatState = source.currentChat == null ? new CompoundTag() : source.entityData.get(DATA_CHAT).copy();
+        /// 新实体的客户端也使用剩余展示时间，不能因重新跟踪而把旧气泡重新播放完整一轮。
+        if (source.currentChat != null) chatState.putInt("DisplayTicks", chatDisplayTicks);
+        entityData.set(DATA_CHAT, chatState);
+        currentChat = source.currentChat == null ? null : new NPCChat(source.currentChat.text(),
+                source.currentChat.emoji(), source.currentChat.item().map(ItemStack::copy));
+        CompoundTag moodState = source.mood.toTag();
+        mood.loadTag(moodState);
+        entityData.set(DATA_MOOD, moodState);
+    }
+
+    /// 变体转换先复制住所与待救状态，不提前提交区域占用、解锁或入住成就。
+    public void copyResidenceFrom(BaseNPC source) {
+        setShouldInteract(source.shouldInteract());
+        region = source.region;
+        regionInitialized = source.regionInitialized;
+        spawnAtPos = source.spawnAtPos;
+        spawnAtPosInitialized = source.spawnAtPosInitialized;
+        house = !requiresRescue() && source.house.isValid() ? new House(Optional.of(getUUID()), source.house.min(), source.house.max()) : House.EMPTY;
+        if (house.isValid()) {
+            restrictTo(house.center(), 20);
+            getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), house.center()));
+        } else {
+            getBrain().eraseMemory(MemoryModuleType.HOME);
+            clearRestriction();
+        }
     }
 
     @Override
@@ -532,12 +599,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         interactingPlayer = player;
         dialogExpiresAt = tickCount + 60;
         stopForInteraction();
-        // 被"救援"的 NPC 首次交互时，将其正式加入区域
-        if (shouldInteract) {
-            setShouldInteract(false);
-            NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, region, NPCSpawner.getNpcSpawnRegion(player));
-            NPCSpawner.broadcastMessageToRegion(player.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
-        }
+        /// 首次救援统一处理，睡姿渔夫与待救城镇 NPC 不再各自维护解锁链路。
+        NPCSpawner.INSTANCE.completeRescue(this, player);
         // 图鉴记录
         if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
     }
@@ -605,7 +668,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         if (DATA_CHAT.equals(key) && level().isClientSide) {
             CompoundTag encoded = entityData.get(DATA_CHAT);
             this.currentChat = encoded.isEmpty() ? null : NPCChat.CODEC.parse(NbtOps.INSTANCE, encoded).result().orElse(null);
-            this.chatDisplayTicks = currentChat == null ? 0 : 100;
+            this.chatDisplayTicks = currentChat == null ? 0 : encoded.contains("DisplayTicks")
+                    ? Math.max(0, Math.min(100, encoded.getInt("DisplayTicks"))) : 100;
         }
         if (DATA_MOOD.equals(key) && level().isClientSide) {
             CompoundTag state = entityData.get(DATA_MOOD);
@@ -639,6 +703,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         }
         PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, region), t -> tag.put("Region", t));
         tag.putBoolean("ShouldInteract", shouldInteract);
+        tag.putBoolean("Shimmered", isShimmered());
         tag.putString("HomeDimension", level().dimension().location().toString());
         PortDataResultExtension.ifSuccess(BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, spawnAtPos), t -> tag.put("SpawnAtPos", t));
     }
@@ -646,26 +711,37 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        this.shouldInteract = tag.getBoolean("ShouldInteract");
+        setShimmered(tag.getBoolean("Shimmered"));
+        house = House.EMPTY;
         relocatedFromAnotherDimension = tag.contains("HomeDimension") && !tag.getString("HomeDimension").equals(level().dimension().location().toString());
         if (!relocatedFromAnotherDimension && tag.contains("House")) {
             House.CODEC.parse(NbtOps.INSTANCE, tag.get("House"))
-                    .result().ifPresent(this::setHouse);
+                    .result().ifPresent(loaded -> {
+                        house = requiresRescue() ? House.EMPTY : loaded;
+                        if (house.isValid()) {
+                            spawnAtPos = house.center();
+                            spawnAtPosInitialized = true;
+                        }
+                    });
         }
         if (tag.contains("Region")) {
             PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), this::setRegion);
         }
-        this.shouldInteract = tag.getBoolean("ShouldInteract");
         if (!relocatedFromAnotherDimension && tag.contains("SpawnAtPos")) {
             PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), r -> {
                 this.spawnAtPos = r;
                 this.spawnAtPosInitialized = true;
             });
         }
-        if (relocatedFromAnotherDimension) {
+        if (relocatedFromAnotherDimension || requiresRescue()) {
             house = House.EMPTY;
             getBrain().eraseMemory(MemoryModuleType.HOME);
-            spawnAtPosInitialized = false;
+            if (relocatedFromAnotherDimension) spawnAtPosInitialized = false;
             clearRestriction();
+        } else if (house.isValid()) {
+            restrictTo(house.center(), 20);
+            getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), house.center()));
         }
     }
 
@@ -678,6 +754,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         super.onAddedToWorld();
         if (!regionInitialized) setRegion(new NPCSpawner.Region(blockPosition()));
         if (!level().isClientSide) {
+            if (requiresRescue()) HouseHandler.INSTANCE.removeHouse(level().dimension(), getUUID());
+            NPCSpawner.INSTANCE.normalizeRescueState(this);
             initName();
             applyCreatureDefinition();
             ensureFixedWeapon();

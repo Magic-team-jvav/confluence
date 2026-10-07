@@ -138,6 +138,7 @@ public class MaterialItems {
     public static final PortDeferredItem<Item> PEARLWOOD_STICK = register("pearlwood_stick", ModRarity.WHITE);
     public static final PortDeferredItem<Item> BELL = register("bell", ModRarity.ORANGE);
     public static final PortDeferredItem<Item> HARP = register("harp", ModRarity.ORANGE);
+    public static final PortDeferredItem<Item> FIRE_FEATHER = register("fire_feather", ModRarity.PINK);
 
     // 草药
     public static final PortDeferredItem<Item> WATERLEAF = register("waterleaf");
@@ -183,6 +184,11 @@ public class MaterialItems {
     public static final PortDeferredItem<Item> MECHANICAL_WHEEL_PIECE = register("mechanical_wheel_piece", ModRarity.MASTER);
     public static final PortDeferredItem<Item> MECHANICAL_WAGON_PIECE = register("mechanical_wagon_piece", ModRarity.MASTER);
     public static final PortDeferredItem<Item> MECHANICAL_BATTERY_PIECE = register("mechanical_battery_piece", ModRarity.MASTER);
+
+    public static final PortDeferredItem<Item> SOLAR_FRAGMENT = register("solar_fragment", ModRarity.CYAN);
+    public static final PortDeferredItem<Item> VORTEX_FRAGMENT = register("vortex_fragment", ModRarity.CYAN);
+    public static final PortDeferredItem<Item> NEBULA_FRAGMENT = register("nebula_fragment", ModRarity.CYAN);
+    public static final PortDeferredItem<Item> STARDUST_FRAGMENT = register("stardust_fragment", ModRarity.CYAN);
 
     private static PortDeferredItem<Item> register(String id) {
         return register(id, new Item.Properties());

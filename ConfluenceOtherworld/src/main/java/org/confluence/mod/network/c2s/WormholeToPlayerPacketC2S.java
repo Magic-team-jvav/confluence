@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.WormholeHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -42,6 +43,7 @@ public record WormholeToPlayerPacketC2S(
         if (!byMod.enabled()) return;
         ServerPlayer target = player.server.getPlayerList().getPlayer(targetPlayerId);
         if (target == null || !isTrackable(player, target)) return;
+        if (!WormholeHandler.judgment(player, target)) return;
 
         ItemStack potion = getWormholePotion(player);
         if (potion.isEmpty()) return;

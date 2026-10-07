@@ -2,6 +2,7 @@ package org.confluence.mod.common.event.game;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
@@ -17,12 +18,13 @@ import org.confluence.mod.common.data.spawner.BossDelaySpawner;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.effect.harmful.DriveAwayController;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.item.whip.WhipSession;
-import org.confluence.mod.common.mount.MountManager;
+import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -44,6 +46,10 @@ public final class TickEvents {
 
     private static void levelTick$Post(TickEvent.LevelTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.level.dimension() == Level.END) {
+            /// 客户端和服务端按各自世界时间更新潮位。
+            VoidSeaHelper.tick(event.level);
+        }
         if (!(event.level instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
             return;
         }

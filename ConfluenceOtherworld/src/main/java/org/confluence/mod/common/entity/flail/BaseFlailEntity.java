@@ -26,9 +26,8 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
+import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.HandPositionUtils;
 import org.jetbrains.annotations.Nullable;
@@ -67,7 +66,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private int bounceCount = 0;
     private boolean playerDropped = false;
     @Nullable
-    private FlailComponent cachedComponent;
+    private Parameters cachedParameters;
     /// 客户端渲染链条时使用的平滑方向。
     ///
     /// 连枷阶段切换或服务端同步位置时，弹球位置可能在相邻帧内出现小幅跳变。如果链条
@@ -81,11 +80,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         setNoGravity(true);
     }
 
-    /// 由物品调用，设置弹射物所有者、连枷组件和初始位置
-    public void init(Player owner, ItemStack weapon, FlailComponent component) {
+    /// 由物品调用，设置弹射物所有者、连枷参数和初始位置
+    public void init(Player owner, ItemStack weapon, Parameters parameters) {
         setOwner(owner);
-        this.cachedComponent = component;
-        setLaunchMode(component.behavior().launchMode());
+        this.cachedParameters = parameters;
+        setLaunchMode(parameters.behavior().launchMode());
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         setPhase(PHASE_SPIN);
@@ -94,9 +93,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
     }
 
-    public void initLaunch(Player owner, ItemStack weapon, FlailComponent component) {
+    public void initLaunch(Player owner, ItemStack weapon, Parameters parameters) {
         setOwner(owner);
-        this.cachedComponent = component;
+        this.cachedParameters = parameters;
         setLaunchMode(true);
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
@@ -120,9 +119,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         int previous = entityData.get(DATA_PHASE);
         entityData.set(DATA_PHASE, phase);
         if (!level().isClientSide() && previous == PHASE_THROWN && phase == PHASE_RETRACT && getOwner() instanceof Player player) {
-            FlailComponent component = getComponent();
-            if (component != null) {
-                onThrownToRetract(player, component);
+            Parameters parameters = parameters();
+            if (parameters != null) {
+                onThrownToRetract(player, parameters);
             }
         }
     }
@@ -140,17 +139,17 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     }
 
     @Nullable
-    public FlailComponent getComponent() {
-        if (cachedComponent != null) return cachedComponent;
+    public Parameters parameters() {
+        if (cachedParameters != null) return cachedParameters;
         Entity owner = getOwner();
         if (owner instanceof LivingEntity living) {
             ItemStack stack = living.getMainHandItem();
-            cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
-            if (cachedComponent != null) return cachedComponent;
+            cachedParameters = stack.getItem() instanceof BaseFlailItem item ? item.parameters() : null;
+            if (cachedParameters != null) return cachedParameters;
             stack = living.getOffhandItem();
-            cachedComponent = stack.get(ModDataComponentTypes.FLAIL);
+            cachedParameters = stack.getItem() instanceof BaseFlailItem item ? item.parameters() : null;
         }
-        return cachedComponent;
+        return cachedParameters;
     }
 
     /// 线段 a 的纯世界方向：玩家面朝水平方向，不含公转偏移
@@ -196,45 +195,45 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
         if (!(owner instanceof Player player)) return;
 
-        FlailComponent component = getComponent();
-        if (component == null) return;
+        Parameters parameters = parameters();
+        if (parameters == null) return;
 
         if (hitCooldown > 0) hitCooldown--;
 
         this.noPhysics = false;
         switch (phase) {
-            case PHASE_SPIN -> tickSpin(player, component);
-            case PHASE_THROWN -> tickThrown(player, component);
-            case PHASE_STAY -> tickStay(player, component);
-            case PHASE_RETRACT -> tickRetract(player, component);
+            case PHASE_SPIN -> tickSpin(player, parameters);
+            case PHASE_THROWN -> tickThrown(player, parameters);
+            case PHASE_STAY -> tickStay(player, parameters);
+            case PHASE_RETRACT -> tickRetract(player, parameters);
         }
-        tickSpecialBehavior(player, component, phase);
+        tickSpecialBehavior(player, parameters, phase);
 
         if (!level().isClientSide() && hitCooldown <= 0) {
             /// 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
             /// 否则直接发射型链锤撞墙后仍会在同一 tick 以投出伤害命中附近实体。
-            doCollisionCheck(player, getPhase(), component);
+            doCollisionCheck(player, getPhase(), parameters);
         }
 
         // 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
         if (!level().isClientSide() && phase != PHASE_RETRACT
-                && position().distanceToSqr(player.position()) > component.maxDistance() * component.maxDistance()) {
+                && position().distanceToSqr(player.position()) > parameters.maxDistance() * parameters.maxDistance()) {
             setPhase(PHASE_RETRACT);
         }
 
         entityData.set(DATA_SPIN_ANGLE, spinAngle);
     }
 
-    private void tickSpin(Player player, FlailComponent component) {
+    private void tickSpin(Player player, Parameters parameters) {
         this.noPhysics = true;
         setNoGravity(true);
         // 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
-        spinAngle += component.getSpinSpeed(player);
+        spinAngle += parameters.getSpinSpeed(player);
         Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
         float yawRad = (float) Math.toRadians(player.yBodyRot);
         float cosYaw = (float) Math.cos(yawRad);
         float sinYaw = (float) Math.sin(yawRad);
-        double r = component.spinRadius();
+        double r = parameters.spinRadius();
         double localY = r * Math.sin(spinAngle);
         double localZ = r * Math.cos(spinAngle);
         // MC 坐标系：forward = (-sin(yaw), 0, cos(yaw))
@@ -245,7 +244,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         Vec3 toTarget = targetPos.subtract(position());
         double distance = toTarget.length();
         if (distance > 1.0E-7) {
-            double maxOrbitalSpeed = r * component.getSpinSpeed(player) * 1.5;
+            double maxOrbitalSpeed = r * parameters.getSpinSpeed(player) * 1.5;
             double speed = Math.min(distance * 0.8, maxOrbitalSpeed + 0.5);
             setDeltaMovement(toTarget.normalize().scale(speed));
             move(MoverType.SELF, getDeltaMovement());
@@ -264,7 +263,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         return hit.getType() == HitResult.Type.BLOCK ? (BlockHitResult) hit : null;
     }
 
-    private void tickThrown(Player player, FlailComponent component) {
+    private void tickThrown(Player player, Parameters parameters) {
         Vec3 motion = getDeltaMovement().add(0.0, -getThrownGravity(), 0.0);
 
         // 速度过低直接收回（仅服务端判断）
@@ -281,7 +280,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
             if (startsLaunched()) {
                 if (!level().isClientSide()) {
-                    onLaunchedBlockImpact(player, component, blockHit);
+                    onLaunchedBlockImpact(player, parameters, blockHit);
                     setPhase(PHASE_RETRACT);
                 }
                 return;
@@ -296,7 +295,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             setDeltaMovement(motion);
 
             // 反弹次数耗尽 或 反射后速度过低 直接收回（仅服务端判断）
-            if (!level().isClientSide() && (bounceCount >= component.maxBounces() || motion.lengthSqr() < 0.1)) {
+            if (!level().isClientSide() && (bounceCount >= parameters.maxBounces() || motion.lengthSqr() < 0.1)) {
                 setPhase(PHASE_RETRACT);
                 return;
             }
@@ -314,16 +313,16 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
         if (isLaunchMode() && (horizontalCollision || verticalCollision)) {
             if (!level().isClientSide()) {
-                onLaunchedBlockImpact(player, component, BlockHitResult.miss(position(), net.minecraft.core.Direction.UP, blockPosition()));
+                onLaunchedBlockImpact(player, parameters, BlockHitResult.miss(position(), net.minecraft.core.Direction.UP, blockPosition()));
                 setPhase(PHASE_RETRACT);
             }
         }
     }
 
-    private void tickStay(Player player, FlailComponent component) {
+    private void tickStay(Player player, Parameters parameters) {
         setNoGravity(true);
         // 手动施加重力并使用 move() 进行碰撞位移
-        Vec3 motion = getDeltaMovement().add(0, -component.gravity(), 0);
+        Vec3 motion = getDeltaMovement().add(0, -parameters.gravity(), 0);
         setDeltaMovement(motion);
 
         // 速度过低 收回（仅服务端判断，玩家主动丢出时不收回）
@@ -342,7 +341,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         stayDuration++;
     }
 
-    private void tickRetract(Player player, FlailComponent component) {
+    private void tickRetract(Player player, Parameters parameters) {
         setNoGravity(true);
         Vec3 target = HandPositionUtils.getPalmPosition(player, 1.0F);
         Vec3 toOwner = target.subtract(position());
@@ -354,18 +353,18 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             return;
         }
         Vec3 dir = toOwner.scale(1.0 / distance);
-        Vec3 motion = dir.scale(Math.min(component.retractSpeed(), distance));
+        Vec3 motion = dir.scale(Math.min(parameters.retractSpeed(), distance));
         faceDirection(motion);
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
         // 卡墙时瞬移绕过方块，同时避免高速回收跨过玩家后往返振荡。
         if (horizontalCollision || verticalCollision) {
-            setPos(position().add(dir.scale(Math.min(component.retractSpeed() * 2.0, distance))));
+            setPos(position().add(dir.scale(Math.min(parameters.retractSpeed() * 2.0, distance))));
         }
     }
 
-    private void doCollisionCheck(Player player, int phase, FlailComponent component) {
+    private void doCollisionCheck(Player player, int phase, Parameters parameters) {
         float damageMultiplier = switch (phase) {
             case PHASE_SPIN -> 0.6f;
             case PHASE_THROWN -> 1.0f;
@@ -380,7 +379,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
                 e -> e != player && e.isAlive() && LibEntityUtils.canHitEntity(e, this));
 
         for (LivingEntity target : entities) {
-            float baseDamage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
+            float baseDamage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
             float finalDamage = baseDamage * damageMultiplier;
             ItemStack held = player.getMainHandItem();
             if (isLaunchMode() && held.getItem() instanceof BaseFlailItem flailItem) {
@@ -389,14 +388,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
-                LibEntityUtils.knockBackA2B(this, target, component.behavior().knockback(), 0.15f);
+                LibEntityUtils.knockBackA2B(this, target, parameters.behavior().knockback(), 0.15f);
                 if (held.getItem() instanceof BaseFlailItem flailItem) {
                     flailItem.onFlailHit(player, target, this);
                 }
                 hitCooldown = phase == PHASE_THROWN ? 3 : 8;
                 if (phase == PHASE_THROWN && startsLaunched()) {
-                    onLaunchedEntityImpact(player, component, target);
-                    if (component.behavior().retractOnHitEntity()) {
+                    onLaunchedEntityImpact(player, parameters, target);
+                    if (parameters.behavior().retractOnHitEntity()) {
                         setPhase(PHASE_RETRACT);
                         return;
                     }
@@ -439,38 +438,38 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     /// 在共享移动、碰撞和状态转换完成后执行具体武器行为。
     ///
     /// 特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。
-    protected void tickSpecialBehavior(Player player, FlailComponent component, int phase) {
+    protected void tickSpecialBehavior(Player player, Parameters parameters, int phase) {
     }
 
     /// 直接发射型链锤撞击方块时的扩展点。
-    protected void onLaunchedBlockImpact(Player player, FlailComponent component, BlockHitResult hit) {
-        if (component.equals(FlailComponent.GOLEM_FIST.get())) {
-            triggerGolemFistShockwave(player, component, null);
+    protected void onLaunchedBlockImpact(Player player, Parameters parameters, BlockHitResult hit) {
+        if (parameters.equals(Parameters.GOLEM_FIST.get())) {
+            triggerGolemFistShockwave(player, parameters, null);
         }
     }
 
     /// 直接发射型链锤命中实体时的扩展点。
-    protected void onLaunchedEntityImpact(Player player, FlailComponent component, LivingEntity target) {
-        if (!component.equals(FlailComponent.GOLEM_FIST.get())) return;
+    protected void onLaunchedEntityImpact(Player player, Parameters parameters, LivingEntity target) {
+        if (!parameters.equals(Parameters.GOLEM_FIST.get())) return;
         applyGolemFistConfusion(target);
-        triggerGolemFistShockwave(player, component, target);
+        triggerGolemFistShockwave(player, parameters, target);
     }
 
     /// 投出阶段首次进入收回阶段时的扩展点。
-    protected void onThrownToRetract(Player player, FlailComponent component) {
+    protected void onThrownToRetract(Player player, Parameters parameters) {
     }
 
-    private void triggerGolemFistShockwave(Player player, FlailComponent component, @Nullable LivingEntity excluded) {
+    private void triggerGolemFistShockwave(Player player, Parameters parameters, @Nullable LivingEntity excluded) {
         if (position().distanceTo(player.position()) <= 9.375) return;
 
-        float damage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
+        float damage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
         DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
         double inflate = Math.max(0.5, (12.5 - getBbWidth()) * 0.5);
         AABB area = getBoundingBox().inflate(inflate);
         for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area,
                 entity -> entity != player && entity != excluded && entity.isAlive() && LibEntityUtils.canHitEntity(entity, this))) {
             if (target.hurt(source, damage)) {
-                LibEntityUtils.knockBackA2B(this, target, component.behavior().knockback(), 0.15F);
+                LibEntityUtils.knockBackA2B(this, target, parameters.behavior().knockback(), 0.15F);
                 applyGolemFistConfusion(target);
             }
         }
@@ -491,8 +490,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     /// SPIN 切换THROWN
     public void launch(Player player) {
-        FlailComponent component = getComponent();
-        if (component == null) return;
+        Parameters parameters = parameters();
+        if (parameters == null) return;
 
         setPhase(PHASE_THROWN);
         bounceCount = 0;
@@ -502,10 +501,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         Vec3 palm = HandPositionUtils.getPalmPosition(player, 1.0F);
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         Vec3 eye = player.getEyePosition(1.0F);
-        Vec3 launchDirection = look.scale(component.maxDistance()).add(eye.subtract(palm)).normalize();
+        Vec3 launchDirection = look.scale(parameters.maxDistance()).add(eye.subtract(palm)).normalize();
         faceDirection(launchDirection);
 
-        float velocity = component.getVelocity(player);
+        float velocity = parameters.getVelocity(player);
         setDeltaMovement(launchDirection.scale(velocity));
     }
 
@@ -532,8 +531,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private boolean isHoldingFlail(Player player) {
         ItemStack stack = player.getMainHandItem();
         return !stack.isEmpty()
-                && stack.getItem() instanceof BaseFlailItem
-                && stack.has(ModDataComponentTypes.FLAIL);
+                && stack.getItem() instanceof BaseFlailItem;
     }
 
     @Override

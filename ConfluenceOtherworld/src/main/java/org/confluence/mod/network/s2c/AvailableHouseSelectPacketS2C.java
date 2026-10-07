@@ -1,7 +1,6 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import it.unimi.dsi.fastutil.objects.Reference2BooleanMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -68,18 +67,14 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
     }
 
     public static IPortPacket collectPacket(ServerPlayer player) {
-        Reference2BooleanMap<EntityType<?>> details = NPCSpawner.INSTANCE.getRegionAliveDetails(new NPCSpawner.Region(player.chunkPosition()));
+        NPCSpawner.Region region = new NPCSpawner.Region(player.chunkPosition());
         boolean[] values = new boolean[size];
         for (int i = 0; i < size; i++) {
             EntityType<?> type = getTypes()[i];
             if (type == EntityType.PLAYER) {
                 values[i] = true;
-            } else if (i == angler) {
-                // 渔夫和渔女是同一住房槽位下的微光变体。
-                values[i] = details.getBoolean(NpcEntities.ANGLER.get())
-                        || details.getBoolean(NpcEntities.FEMALE_ANGLER.get());
             } else if (type != null) {
-                values[i] = details.getBoolean(type);
+                values[i] = NPCSpawner.INSTANCE.hasNPCAlive(region, type);
             }
         }
         return new AvailableHouseSelectPacketS2C(values);
@@ -87,11 +82,6 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
 
     /// 判断实体类型是否属于指定住房槽位。
     public static boolean matchesSelection(int selected, EntityType<?> type) {
-        if (selected == angler) {
-            return type == NpcEntities.ANGLER.get()
-                    || type == NpcEntities.FEMALE_ANGLER.get();
-        }
-        return selected >= 0 && selected < getTypes().length
-                && type == getTypes()[selected];
+        return selected >= 0 && selected < getTypes().length && NpcEntities.isSameProfession(type, getTypes()[selected]);
     }
 }

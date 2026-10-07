@@ -1,8 +1,8 @@
 package org.confluence.mod.client.handler;
 
-import org.confluence.mod.common.component.SwordProjectileParticleEffect;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectileVisualBridge;
+import org.confluence.mod.common.item.sword.SwordProjectileParticleEffect;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 

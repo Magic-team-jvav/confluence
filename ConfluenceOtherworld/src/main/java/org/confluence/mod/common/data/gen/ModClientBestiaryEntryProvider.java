@@ -305,6 +305,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(MonsterEntities.BLACK_RECLUSE, builder -> builder.order(22000).rarity(2).background(SPIDER_NEST).filters(FilterEntry.SPIDER_NEST))
                 .add(MonsterEntities.ICE_SLIME, builder -> builder.order(22100).rarity(1).background(SNOW).filters(FilterEntry.SNOW, FilterEntry.DAYTIME))
                 .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "frozen", builder -> builder.order(22200).rarity(2).background(SNOW_MOON).filters(FilterEntry.NIGHTTIME, FilterEntry.SNOW).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.ESKIMO.getSerializedName())))
+                .mobArmorItems(EntityType.ZOMBIE, "frozen.pink", List.of(ArmorItems.PINK_INSULATED_SHOES.toStack(), ArmorItems.PINK_INSULATED_PANTS.toStack(), ArmorItems.PINK_SNOW_SUITS.toStack(), ArmorItems.PINK_SNOW_CAPS.toStack()), null, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
                 .add(MonsterEntities.ICE_GOLEM, builder -> builder.order(22300).rarity(5).background(SNOW).filters(FilterEntry.RARE_CREATURE, FilterEntry.RAIN, FilterEntry.SNOW))
                 // 狼.add(MonsterEntities.WOLF, builder -> builder.order(22400).rarity(2).background(SNOW_MOON).filters(FilterEntry.NIGHTTIME, FilterEntry.SNOW))
                 .add(MonsterEntities.SPIKED_ICE_SLIME, builder -> builder.order(22500).rarity(2).background(UNDERGROUND_SNOW).filters(FilterEntry.ICE))

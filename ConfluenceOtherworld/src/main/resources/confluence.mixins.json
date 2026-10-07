@@ -121,6 +121,7 @@
       "client.renderer.entity.ItemRendererMixin",
       "client.renderer.entity.LivingEntityRendererAccessor",
       "client.renderer.entity.LivingEntityRendererMixin",
+      "client.renderer.entity.PlayerRendererMixin",
       "client.renderer.entity.layers.HumanoidArmorLayerMixin",
       "client.renderer.entity.layers.ItemInHandLayerMixin",
       "client.renderer.texture.SpriteLoaderMixin",

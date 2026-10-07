@@ -248,9 +248,10 @@ public final class SpawnPlacementChecks {
                 && checkAnimalSpawnRules(type, level, spawnType, pos, random);
     }
 
-    /// 神秘青蛙只在主世界地表丛林生成，且同一区域不重复出现。
+    /// 神秘青蛙只在神秘史莱姆首次解锁前的主世界地表丛林生成，且同一区域不重复出现。
     public static boolean checkMysticFrogSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        if (!level.getLevel().dimension().equals(Level.OVERWORLD) || !level.getBiome(pos).is(PortTags.Biomes.IS_JUNGLE)
+        if (NPCSpawner.INSTANCE.isNPCUnlocked(NpcEntities.MYSTIC_SLIME.get())
+                || !level.getLevel().dimension().equals(Level.OVERWORLD) || !level.getBiome(pos).is(PortTags.Biomes.IS_JUNGLE)
                 || pos.getY() < OverworldUtils.getSurfaceY() || random.nextInt(30) != 0
                 || !Mob.checkMobSpawnRules(type, level, reason, pos, random)) return false;
         NPCSpawner.Region region = new NPCSpawner.Region(pos);
@@ -276,10 +277,11 @@ public final class SpawnPlacementChecks {
                 && canSpawnTownSlimeRescue(type, level, pos, NpcEntities.CLUMSY_SLIME.get());
     }
 
-    /// 救援对象未入住且同一区域没有重复待救实体时才允许生成。
+    /// 仅在首次解锁前生成救援对象，同时保留区域入住与待救实体的去重检查。
     private static boolean canSpawnTownSlimeRescue(EntityType<? extends Mob> type, ServerLevelAccessor level, BlockPos pos, EntityType<?> rescued) {
         ServerLevel world = level.getLevel();
-        if (!world.dimension().equals(Level.OVERWORLD) || !level.getFluidState(pos).isEmpty())
+        if (NPCSpawner.INSTANCE.isNPCUnlocked(rescued)
+                || !world.dimension().equals(Level.OVERWORLD) || !level.getFluidState(pos).isEmpty())
             return false;
         NPCSpawner.Region region = new NPCSpawner.Region(pos);
         if (NPCSpawner.INSTANCE.hasNPCAlive(region, rescued)) return false;

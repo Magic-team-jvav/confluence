@@ -300,7 +300,6 @@ public class MonsterEntities {
                     .state(GraniteElemental.DefensePhase.ENTERING, state -> state.duration(7))
                     .state(GraniteElemental.DefensePhase.DEFENDING, state -> state.duration(40))
                     .state(GraniteElemental.DefensePhase.EXITING, state -> state.duration(7))
-
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)
                             .multiply(LibAttributes.getAttackDamage().value(), 0.9))
@@ -340,7 +339,6 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<Hornet>> HORNET = withAttributes(registerEntity("hornet", EntityType.Builder.<Hornet>of(Hornet::new, MobCategory.MONSTER).sized(0.8F, 1.8F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(32).armor(6).attackDamage(13).followRange(32).attackKnockback(0).knockbackResistance(0.55).movementSpeed(0.5).armorToughness(2)
                     .projectile(ModEntities.HORNET_STINGER, projectile -> projectile.attackDamage(1))
-
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)
                             .multiply(LibAttributes.getAttackDamage().value(), 0.9))
@@ -585,7 +583,6 @@ public class MonsterEntities {
                     null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.5, true),
             () -> CreatureAttributeBuilder.creature().maxHealth(94).armor(18).attackDamage(32).followRange(48).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).armorToughness(8)
                     .state(JumpingWarriorMonster.CombatState.WOUNDED, state -> state.multiply(Attributes.MOVEMENT_SPEED, 2))
-
                     .phase(GamePhase.PLANTERA, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)
                             .multiply(LibAttributes.getAttackDamage().value(), 0.9))
@@ -594,7 +591,6 @@ public class MonsterEntities {
                     null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.5, true),
             () -> CreatureAttributeBuilder.creature().maxHealth(94).armor(18).attackDamage(32).followRange(48).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).armorToughness(8)
                     .state(JumpingWarriorMonster.CombatState.WOUNDED, state -> state.multiply(Attributes.MOVEMENT_SPEED, 2))
-
                     .phase(GamePhase.PLANTERA, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)
                             .multiply(LibAttributes.getAttackDamage().value(), 0.9))
@@ -857,7 +853,6 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<DarkCaster>> DARK_CASTER = withAttributes(registerCaster("dark_caster", 0.65F, 1.85F, DarkCaster.Profile.DARK_CASTER),
             () -> CreatureAttributeBuilder.creature().maxHealth(26).armor(1).attackDamage(10).followRange(20).attackKnockback(1).knockbackResistance(0.82)
                     .projectile(ModEntities.DARK_CASTER_PROJECTILE, projectile -> projectile.attackDamage(1))
-
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 2.2)
                             .multiply(LibAttributes.getAttackDamage().value(), 1.6)
@@ -927,7 +922,6 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<Demon>> DEMON = withAttributes(registerEntity("demon", EntityType.Builder.of(Demon::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(62).armor(4).attackDamage(20).followRange(16).attackKnockback(1).knockbackResistance(0.28).armorToughness(1)
                     .projectile(ModEntities.HOSTILE_DEMON_SCYTHE, projectile -> projectile.attackDamage(1))
-
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)
                             .multiply(LibAttributes.getAttackDamage().value(), 0.9))
@@ -935,7 +929,6 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<Demon>> VOODOO_DEMON = withAttributes(registerEntity("voodoo_demon", EntityType.Builder.of(Demon::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(10).fireImmune()),
             () -> CreatureAttributeBuilder.creature().maxHealth(62).armor(4).attackDamage(20).followRange(16).attackKnockback(1).knockbackResistance(0.28).armorToughness(1)
                     .projectile(ModEntities.HOSTILE_DEMON_SCYTHE, projectile -> projectile.attackDamage(1))
-
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)
                             .multiply(LibAttributes.getAttackDamage().value(), 0.9))
@@ -947,7 +940,6 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<FireImp>> FIRE_IMP = withAttributes(registerEntity("fire_imp", EntityType.Builder.of(FireImp::new, MobCategory.MONSTER).sized(0.65F, 1F).clientTrackingRange(10).fireImmune()),
             () -> CreatureAttributeBuilder.creature().maxHealth(36).armor(8).attackDamage(15).followRange(20).attackKnockback(1).knockbackResistance(0.55).armorToughness(3)
                     .projectile(ModEntities.FIRE_IMP_PROJECTILE, projectile -> projectile.attackDamage(1))
-
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)
                             .multiply(LibAttributes.getAttackDamage().value(), 0.9))

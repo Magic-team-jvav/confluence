@@ -130,6 +130,16 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         return false;
     }
 
+    /// 回溯魔力水晶至多撤回到初始的一颗星；当前魔力也同步减少并限制在新上限内。
+    public boolean decreaseStar() {
+        if (stars <= 1) return false;
+        float oldMax = getMaxMana();
+        this.stars--;
+        this.currentMana = Mth.clamp(currentMana - 20.0F, 0.0F, oldMax);
+        freshMaxMana();
+        return true;
+    }
+
     @ApiStatus.Internal
     public void clearStars() {
         this.stars = 1;

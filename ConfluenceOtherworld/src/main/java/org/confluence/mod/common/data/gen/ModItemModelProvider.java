@@ -67,6 +67,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         // 天顶剑使用召唤武器贴图目录下的手持模型
         handheldTextureAlias(SwordItems.ZENITH, Confluence.asResource("item/summon/zenith"));
+        handheldTextureAlias(SwordItems.TRUE_COPPER_SHORTSWORD, Confluence.asResource("item/sword/copper_short_sword"));
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
         separateModel(SwordItems.MURAMASA, templateReverse24x, "sword/");
         separateModel(SwordItems.LIGHTS_BANE, templateReverse24x, "sword/");
@@ -163,6 +164,13 @@ public class ModItemModelProvider extends ItemModelProvider {
             try {
                 String path1 = "item/crossbow/" + ((item instanceof BaseTerraRepeaterItem ? "repeater/" : "") + path);
                 ResourceLocation texture = Confluence.asResource(path1);
+                /// 基础图标和拉弓图标齐全后才创建特制模型，缺图时保持占位模型。
+                if (!existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")
+                        || !existingFileHelper.exists(texture.withSuffix("_pulling"), PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                    withExistingParent(path, MISSING_ITEM);
+                    skip.add(item);
+                    continue;
+                }
                 withExistingParent(path, handheldRod).texture("layer0", texture)
                         .transforms()
                         .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2, 0.1f, -3).scale(0.9F, 0.9F, 0.9F).end()
@@ -243,11 +251,21 @@ public class ModItemModelProvider extends ItemModelProvider {
             String path = entry.getId().getPath();
             try {
                 if (item instanceof SignItem) {
-                    withExistingParent(path, "item/generated").texture("layer0", "confluence:item/sign/" + path);
+                    ResourceLocation texture = Confluence.asResource("item/sign/" + path);
+                    if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                        withExistingParent(path, "item/generated").texture("layer0", texture);
+                    } else {
+                        withExistingParent(path, MISSING_BLOCK);
+                    }
                 } else if (item instanceof BlockItem item2) {
                     Block block = item2.getBlock();
                     if (block instanceof DoorBlock) {
-                        withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
+                        ResourceLocation texture = Confluence.asResource("item/decoration/door/" + path);
+                        if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                            withExistingParent(path, "item/generated").texture("layer0", texture);
+                        } else {
+                            withExistingParent(path, MISSING_BLOCK);
+                        }
                     } else if (block instanceof TrapDoorBlock) {
                         withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
                     } else if (block instanceof SaplingBlock) {
@@ -371,6 +389,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         skip.add(item.get());
     }
 
+    /// 按候选目录检查贴图是否存在，避免依赖 texture 抛出异常而选中不存在的路径。
     private void genModels(List<Map<PortItemRegistration, String[]>> list, String parent) {
         for (Map<PortItemRegistration, String[]> map : list) {
             for (Map.Entry<PortItemRegistration, String[]> entry : map.entrySet()) {
@@ -379,11 +398,12 @@ public class ModItemModelProvider extends ItemModelProvider {
                     String path = item.getId().getPath();
                     boolean exist = false;
                     for (String packPath : entry.getValue()) {
-                        try {
-                            withExistingParent(path, parent).texture("layer0", Confluence.asResource("item/" + packPath + path));
-                            exist = true;
-                            break;
-                        } catch (Exception ignored) {}
+                        ResourceLocation texture = Confluence.asResource("item/" + packPath + path);
+                        if (!existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures"))
+                            continue;
+                        withExistingParent(path, parent).texture("layer0", texture);
+                        exist = true;
+                        break;
                     }
                     if (!exist) withExistingParent(path, MISSING_ITEM);
                 }

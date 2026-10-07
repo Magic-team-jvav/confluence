@@ -948,9 +948,14 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.ANCIENT_CLOTH.get());
                         monster_drops.accept(MaterialItems.ECTOPLASM.get());
                         monster_drops.accept(ModItems.WHOOPIE_CUSHION.get());
+                        monster_drops.accept(MaterialItems.FIRE_FEATHER.get());
                         monster_drops.accept(MaterialItems.MECHANICAL_WHEEL_PIECE.get());
                         monster_drops.accept(MaterialItems.MECHANICAL_WAGON_PIECE.get());
                         monster_drops.accept(MaterialItems.MECHANICAL_BATTERY_PIECE.get());
+                        monster_drops.accept(MaterialItems.SOLAR_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.VORTEX_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.NEBULA_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.STARDUST_FRAGMENT.get());
 
                         CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
                         plants_herbs.accept(MaterialItems.WATERLEAF.get());
@@ -1074,6 +1079,8 @@ public final class ModTabs {
                         CreativeModeTab.Output gain = GroupItem.belongsTo("gain", output);
                         gain.accept(ConsumableItems.MANA_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_CRYSTAL.get());
+                        gain.accept(ConsumableItems.RECALL_MANA_CRYSTAL.get());
+                        gain.accept(ConsumableItems.RECALL_LIFE_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_FRUIT.get());
                         gain.accept(ConsumableItems.VITAL_CRYSTAL.get());
                         gain.accept(ConsumableItems.ARCANE_CRYSTAL.get());
@@ -1395,6 +1402,13 @@ public final class ModTabs {
                         scale_mail_armor.accept(ArmorItems.SCALE_MAIL_LEGGINGS.get());
                         scale_mail_armor.accept(ArmorItems.SCALE_MAIL_BOOTS.get());
 
+                        /// 扩展防具沿用对应套装分组，便于整套取用。
+                        CreativeModeTab.Output highland_armor = GroupItem.belongsTo("highland_armor", output);
+                        highland_armor.accept(ArmorItems.HIGHLAND_HELMET.get());
+                        highland_armor.accept(ArmorItems.HIGHLAND_CHESTPLATE.get());
+                        highland_armor.accept(ArmorItems.HIGHLAND_LEGGINGS.get());
+                        highland_armor.accept(ArmorItems.HIGHLAND_BOOTS.get());
+
                         CreativeModeTab.Output guards_armor = GroupItem.belongsTo("guards_armor", output);
                         guards_armor.accept(ArmorItems.GUARDS_HELMET.get());
                         guards_armor.accept(ArmorItems.GUARDS_CHESTPLATE.get());
@@ -1413,17 +1427,83 @@ public final class ModTabs {
                         thief_armor.accept(ArmorItems.THIEF_LEGGINGS.get());
                         thief_armor.accept(ArmorItems.THIEF_BOOTS.get());
 
+                        CreativeModeTab.Output wolf_armor = GroupItem.belongsTo("wolf_armor", output);
+                        wolf_armor.accept(ArmorItems.WOLF_HELMET.get());
+                        wolf_armor.accept(ArmorItems.WOLF_CHESTPLATE.get());
+                        wolf_armor.accept(ArmorItems.WOLF_LEGGINGS.get());
+                        wolf_armor.accept(ArmorItems.WOLF_BOOTS.get());
+
+                        CreativeModeTab.Output root_rot_armor = GroupItem.belongsTo("root_rot_armor", output);
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_HELMET.get());
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_CHESTPLATE.get());
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_LEGGINGS.get());
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_BOOTS.get());
+
+                        CreativeModeTab.Output black_spot_armor = GroupItem.belongsTo("black_spot_armor", output);
+                        black_spot_armor.accept(ArmorItems.BLACK_SPOT_HELMET.get());
+                        black_spot_armor.accept(ArmorItems.BLACK_SPOT_CHESTPLATE.get());
+                        black_spot_armor.accept(ArmorItems.BLACK_SPOT_LEGGINGS.get());
+                        black_spot_armor.accept(ArmorItems.BLACK_SPOT_BOOTS.get());
+
+                        CreativeModeTab.Output entertainers_garb_armor = GroupItem.belongsTo("entertainers_garb_armor", output);
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_HAT.get());
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_SHIRT.get());
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_PANTS.get());
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_SHOES.get());
+
+                        CreativeModeTab.Output troubadour_armor = GroupItem.belongsTo("troubadour_armor", output);
+                        troubadour_armor.accept(ArmorItems.TROADOUR_HAT.get());
+                        troubadour_armor.accept(ArmorItems.TROADOUR_SHIRT.get());
+                        troubadour_armor.accept(ArmorItems.TROADOUR_PANTS.get());
+                        troubadour_armor.accept(ArmorItems.TROADOUR_SHOES.get());
+
                         CreativeModeTab.Output reinforced_mail_armor = GroupItem.belongsTo("reinforced_mail_armor", output);
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_HELMET.get());
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get());
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_LEGGINGS.get());
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_BOOTS.get());
 
+                        CreativeModeTab.Output stalwart_armor = GroupItem.belongsTo("stalwart_armor", output);
+                        stalwart_armor.accept(ArmorItems.STALWART_HELMET.get());
+                        stalwart_armor.accept(ArmorItems.STALWART_CHESTPLATE.get());
+                        stalwart_armor.accept(ArmorItems.STALWART_LEGGINGS.get());
+                        stalwart_armor.accept(ArmorItems.STALWART_BOOTS.get());
+
+                        CreativeModeTab.Output mercenary_armor = GroupItem.belongsTo("mercenary_armor", output);
+                        mercenary_armor.accept(ArmorItems.MERCENARY_HELMET.get());
+                        mercenary_armor.accept(ArmorItems.MERCENARY_CHESTPLATE.get());
+                        mercenary_armor.accept(ArmorItems.MERCENARY_LEGGINGS.get());
+                        mercenary_armor.accept(ArmorItems.MERCENARY_BOOTS.get());
+
+                        CreativeModeTab.Output renegade_armor = GroupItem.belongsTo("renegade_armor", output);
+                        renegade_armor.accept(ArmorItems.RENEGADE_HELMET.get());
+                        renegade_armor.accept(ArmorItems.RENEGADE_CHESTPLATE.get());
+                        renegade_armor.accept(ArmorItems.RENEGADE_LEGGINGS.get());
+                        renegade_armor.accept(ArmorItems.RENEGADE_BOOTS.get());
+
                         CreativeModeTab.Output climbing_armor = GroupItem.belongsTo("climbing_armor", output);
                         climbing_armor.accept(ArmorItems.CLIMBING_HELMET.get());
                         climbing_armor.accept(ArmorItems.CLIMBING_CHESTPLATE.get());
                         climbing_armor.accept(ArmorItems.CLIMBING_LEGGINGS.get());
                         climbing_armor.accept(ArmorItems.CLIMBING_BOOTS.get());
+
+                        CreativeModeTab.Output evocation_robe_armor = GroupItem.belongsTo("evocation_robe_armor", output);
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_HAT.get());
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_ROBE.get());
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_LEGGINGS.get());
+                        evocation_robe_armor.accept(ArmorItems.EVOCATION_BOOTS.get());
+
+                        CreativeModeTab.Output verdant_robe_armor = GroupItem.belongsTo("verdant_robe_armor", output);
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_HAT.get());
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_ROBE.get());
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_LEGGINGS.get());
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_BOOTS.get());
+
+                        CreativeModeTab.Output ember_robe_armor = GroupItem.belongsTo("ember_robe_armor", output);
+                        ember_robe_armor.accept(ArmorItems.EMBER_HAT.get());
+                        ember_robe_armor.accept(ArmorItems.EMBER_ROBE.get());
+                        ember_robe_armor.accept(ArmorItems.EMBER_LEGGINGS.get());
+                        ember_robe_armor.accept(ArmorItems.EMBER_BOOTS.get());
 
                         CreativeModeTab.Output battle_robe_armor = GroupItem.belongsTo("battle_robe_armor", output);
                         battle_robe_armor.accept(ArmorItems.BATTLE_COLLAR.get());
@@ -1635,7 +1715,14 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.HALLOWED_CROWN.get());
                         output.accept(VanityArmorItems.WIZARDS_HAT.get());
                         output.accept(VanityArmorItems.PEDDLERS_HAT.get());
+                        output.accept(VanityArmorItems.RUNE_HAT.get());
+                        output.accept(VanityArmorItems.RUNE_ROBE.get());
                         // output.accept(VanityArmorItems.BUCKET_HAT.get());
+                        output.accept(VanityArmorItems.WEDDING_VEIL.get());
+                        output.accept(VanityArmorItems.WEDDING_DRESS.get());
+                        output.accept(VanityArmorItems.ALIEN_HAT.get());
+                        output.accept(VanityArmorItems.GANGSTA_HAT.get());
+                        output.accept(VanityArmorItems.BALLA_HAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(TCItems.DIVING_HELMET);
@@ -1722,6 +1809,17 @@ public final class ModTabs {
                         mummy_set.accept(VanityArmorItems.MUMMY_SHIRT.get());
                         mummy_set.accept(VanityArmorItems.MUMMY_PANTS.get());
                         mummy_set.accept(VanityArmorItems.MUMMY_SHOES.get());
+
+                        CreativeModeTab.Output clown_set = GroupItem.belongsTo("clown_set", output);
+                        clown_set.accept(VanityArmorItems.CLOWN_ATTIRE.get());
+                        clown_set.accept(VanityArmorItems.CLOWN_SHIRT.get());
+                        clown_set.accept(VanityArmorItems.CLOWN_PANTS.get());
+                        clown_set.accept(VanityArmorItems.CLOWN_SHOES.get());
+
+                        CreativeModeTab.Output sailor_set = GroupItem.belongsTo("sailor_set", output);
+                        sailor_set.accept(VanityArmorItems.SAILOR_HAT.get());
+                        sailor_set.accept(VanityArmorItems.SAILOR_SHIRT.get());
+                        sailor_set.accept(VanityArmorItems.SAILOR_PANTS.get());
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
     public static final RegistryObject<CreativeModeTab> WARRIORS = TABS.register("warriors",

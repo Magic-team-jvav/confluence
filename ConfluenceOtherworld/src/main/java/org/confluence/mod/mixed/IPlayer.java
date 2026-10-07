@@ -9,6 +9,8 @@ public interface IPlayer extends SelfGetter<Player> {
 
     ItemStack confluence$getCurrentBait();
 
+    boolean confluence$isVoidSeaSwimming();
+
     static IPlayer of(Player player) {
         return (IPlayer) player;
     }

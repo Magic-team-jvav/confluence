@@ -12,7 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.MushroomProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.EasingType;
@@ -98,7 +97,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
             Vec3 viewVector = owner.getViewVector(1.0F);
             Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
             Vec3 tipPos = position.add(viewVector.scale(getDistance(tickCount, owner)));
-            SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
+            Parameters component = Parameters.MUSHROOM_SPEAR_PROJ.get();
             Vec3 forwardOffset = viewVector.scale(1.0);
             spawnProjectile(stack, owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
             LibUtils.updateItemStackNbt(stack, tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, getDistance(tickCount, owner)));
@@ -111,7 +110,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
                 Vec3 viewVector = owner.getViewVector(1.0F);
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 tipPos = position.add(viewVector.scale(currentTipZ));
-                SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
+                Parameters component = Parameters.MUSHROOM_SPEAR_PROJ.get();
                 Vec3 forwardOffset = viewVector.scale(1.0);
                 spawnProjectile(stack, owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
                 LibUtils.updateItemStackNbt(stack, tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, currentTipZ));
@@ -119,7 +118,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
         }
     }
 
-    private void spawnProjectile(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 pos, SpearProjectileComponent component, Vec3 direction) {
+    private void spawnProjectile(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 pos, Parameters component, Vec3 direction) {
         MushroomProjectile projectile = new MushroomProjectile(ModEntities.MUSHROOM.get(), level);
         fireDerivedProjectile(stack, level, owner, component, projectile, pos, direction, 0.0F);
     }

@@ -24,6 +24,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
+import org.confluence.mod.common.item.mana.RecallManaCrystalItem;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -35,7 +36,9 @@ public class ConsumableItems {
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
     public static final PortDeferredItem<ManaCrystalItem> MANA_CRYSTAL = ITEMS.register("mana_crystal", ManaCrystalItem::new);
+    public static final PortDeferredItem<RecallManaCrystalItem> RECALL_MANA_CRYSTAL = ITEMS.register("recall_mana_crystal", RecallManaCrystalItem::new);
     public static final PortDeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_crystal", 1, ChatFormatting.GREEN)));
+    public static final PortDeferredItem<EverBeneficialItem> RECALL_LIFE_CRYSTAL = ITEMS.register("recall_life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.RECALL_LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("recall_life_crystal", 1, ChatFormatting.RED)));
     public static final PortDeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, EverBeneficialItem.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_fruit", 1, ChatFormatting.GREEN)));
     public static final PortDeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("vital_crystal", 1, ChatFormatting.GREEN)));
     public static final PortDeferredItem<ArcaneCrystalItem> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal", ArcaneCrystalItem::new);

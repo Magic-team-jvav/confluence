@@ -50,6 +50,18 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("itemGroup.confluence.evocation_robe_armor", "Evocation Robe Armor");
+        add("itemGroup.confluence.ember_robe_armor", "Ember Robe Armor");
+        add("itemGroup.confluence.verdant_robe_armor", "Verdant Robe Armor");
+        add("itemGroup.confluence.highland_armor", "Highland Armor");
+        add("itemGroup.confluence.wolf_armor", "Wolf Armor");
+        add("itemGroup.confluence.root_rot_armor", "Root Rot Armor");
+        add("itemGroup.confluence.black_spot_armor", "Black Spot Armor");
+        add("itemGroup.confluence.entertainers_garb_armor", "Entertainer's Garb");
+        add("itemGroup.confluence.mercenary_armor", "Mercenary Armor");
+        add("itemGroup.confluence.renegade_armor", "Renegade Armor");
+        add("itemGroup.confluence.stalwart_armor", "Stalwart Armor");
+        add("itemGroup.confluence.troubadour_armor", "Troubadour Set");
         add("entity.confluence.wall_of_flesh_eye", "Wall Of Flesh Eye");
         add("entity.confluence.wall_of_flesh_mouth", "Wall Of Flesh Mouth");
         add("entity.confluence.hill_of_flesh_eye", "Hill Of Flesh Eye");

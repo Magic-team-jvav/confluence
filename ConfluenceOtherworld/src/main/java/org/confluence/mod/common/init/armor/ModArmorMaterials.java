@@ -149,7 +149,7 @@ public final class ModArmorMaterials {
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> SCALE_MAIL_ARMOR_MATERIALS = registerArmorMaterial("scale_mail_armor_materials",
             3, 5, 5, 2,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
-            "scale_mail", 2.0F, 0.0F
+            "scale_mail", 1.0F, 0.0F
     );
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> PHANTOM_ARMOR_MATERIALS = registerArmorMaterial("phantom_armor_materials",
             3, 4, 4, 3,
@@ -173,7 +173,7 @@ public final class ModArmorMaterials {
     );
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> BATTLE_ROBE_ARMOR_MATERIALS = registerArmorMaterial("battle_robe_armor_materials",
             3, 4, 4, 3,
-            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
             "battle_robe", 1.0F, 0.0F
     );
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> ARCHERS_ARMOR_MATERIALS = registerArmorMaterial("archers_armor_materials",
@@ -183,7 +183,7 @@ public final class ModArmorMaterials {
     );
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> SPLENDID_ROBE_ARMOR_MATERIALS = registerArmorMaterial("splendid_robe_armor_materials",
             4, 5, 5, 4,
-            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
             "splendid_robe", 2.0F, 0.0F
     );
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> GUARDS_ARMOR_MATERIALS = registerArmorMaterial("guards_armor_materials",
@@ -323,6 +323,67 @@ public final class ModArmorMaterials {
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> HALLOWED_HEADGEAR_MATERIAL = registerSingletonMaterial("hallowed_headgear_material", ArmorItem.Type.HELMET, 3, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_headgear", 2.0F, 0);
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> HALLOWED_HOOD_MATERIAL = registerSingletonMaterial("hallowed_hood_material", ArmorItem.Type.HELMET, 1, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_hood", 2.0F, 0);
     public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> HALLOWED_ARMOR_MATERIALS = registerArmorMaterial("hallowed_armor_materials", 4, 8, 7, 7, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed", 2.0F, 0);
+
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> HIGHLAND_ARMOR_MATERIALS = registerArmorMaterial("highland_armor_materials",
+            4, 6, 6, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "highland", 1.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> STALWART_ARMOR_MATERIALS = registerArmorMaterial("stalwart_armor_materials",
+            5, 6, 6, 5,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "stalwart", 2.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> MERCENARY_ARMOR_MATERIALS = registerArmorMaterial("mercenary_armor_materials",
+            4, 5, 5, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "mercenary", 2.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> WOLF_ARMOR_MATERIALS = registerArmorMaterial("wolf_armor_materials",
+            3, 4, 4, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "wolf", 1.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> ROOT_ROT_ARMOR_MATERIALS = registerArmorMaterial("root_rot_armor_materials",
+            3, 5, 5, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
+            "root_rot", 1.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> ENTERTAINERS_GARB_ARMOR_MATERIALS = registerArmorMaterial("entertainers_garb_armor_materials",
+            4, 5, 5, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
+            "entertainers_garb", 2.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> TROADOUR_ARMOR_MATERIALS = registerArmorMaterial("troubadour_armor_materials",
+            4, 6, 6, 5,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
+            "troubadour", 2.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> BLACK_SPOT_ARMOR_MATERIALS = registerArmorMaterial("black_spot_armor_materials",
+            3, 5, 5, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
+            "black_spot", 2.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> RENEGADE_ARMOR_MATERIALS = registerArmorMaterial("renegade_armor_materials",
+            5, 6, 6, 5,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "renegade", 2.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> EVOCATION_ROBE_ARMOR_MATERIALS = registerArmorMaterial("evocation_robe_armor_materials",
+            2, 4, 4, 2,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
+            "evocation_robe", 1.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> VERDANT_ROBE_ARMOR_MATERIALS = registerArmorMaterial("verdant_robe_armor_materials",
+            3, 4, 4, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
+            "ember_robe", 1.0F, 0.0F
+    );
+    public static final PortRegistryEntry<ArmorMaterial, PortArmorMaterial> EMBER_ROBE_ARMOR_MATERIALS = registerArmorMaterial("ember_robe_armor_materials",
+            4, 5, 5, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
+            "ember_robe", 1.0F, 0.0F
+    );
 
     public static PortRegistryEntry<ArmorMaterial, PortArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
         return ARMOR_MATERIALS.register(name, () -> new PortArmorMaterial(

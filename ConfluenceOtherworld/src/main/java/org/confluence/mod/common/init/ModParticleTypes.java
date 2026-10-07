@@ -30,4 +30,5 @@ public final class ModParticleTypes {
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> ECTO_MIST = PARTICLES.register("ecto_mist", true);
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> SPORE_CLOUD = PARTICLES.register("spore_cloud", true);
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> SPIT_GLOW = PARTICLES.register("spit_glow", true);
+    public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> VOID_SEA_SUSPENDED = PARTICLES.register("void_sea_suspended", true);
 }

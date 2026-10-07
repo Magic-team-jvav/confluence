@@ -22,6 +22,7 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.flask.FlaskOfFireEffect;
 import org.confluence.mod.common.effect.flask.FlaskOfGoldEffect;
 import org.confluence.mod.common.effect.harmful.*;
+import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
 import org.mesdag.portlib.wrapper.common.PortEffectCure;
@@ -173,6 +174,10 @@ public final class ModEffects {
     // 药剂
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_FIRE = EFFECTS.register("weapon_imbue_fire", FlaskOfFireEffect::new);
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_GOLD = EFFECTS.register("weapon_imbue_gold", FlaskOfGoldEffect::new);
+
+    /// 位面交叠的侵蚀阈值沿用虚空海原始实现。
+    public static final RegistryObject<MobEffect> DIMENSIONAL_OVERLAP = register("dimensional_overlap", id -> new DimensionalOverlapEffect()
+            .addAttributeModifier(ConfluenceMagicLib.VOID_EROSION_DELTA, id, ADD_VALUE, i -> i <= 0 ? -128.0f : -220.0f));
 
     private static <T extends MobEffect> RegistryObject<T> register(String name, Function<ResourceLocation, T> function) {
         return PortDeferredRegisterExtension.register(EFFECTS, name, function);

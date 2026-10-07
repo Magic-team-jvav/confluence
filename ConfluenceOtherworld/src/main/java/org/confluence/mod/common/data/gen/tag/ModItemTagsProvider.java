@@ -742,6 +742,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_SIGHT.get(),
                 MaterialItems.SOUL_OF_BRIGHT.get(),
 
+                MaterialItems.FIRE_FEATHER.get(),
+                MaterialItems.SOLAR_FRAGMENT.get(),
+                MaterialItems.VORTEX_FRAGMENT.get(),
+                MaterialItems.NEBULA_FRAGMENT.get(),
+                MaterialItems.STARDUST_FRAGMENT.get(),
+
                 MaterialItems.CRYSTAL_SHARDS.get(),
                 ModBlocks.CURSED_FLAME.asItem(),
                 MaterialItems.ICHOR.get(),
@@ -1555,7 +1561,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_MIGHT.get(),
                 MaterialItems.SOUL_OF_SIGHT.get(),
                 MaterialItems.SOUL_OF_BRIGHT.get(),
-                MaterialItems.SOUL_OF_VOIGHT.get()
+                MaterialItems.SOUL_OF_VOIGHT.get(),
+                MaterialItems.SOLAR_FRAGMENT.get(),
+                MaterialItems.VORTEX_FRAGMENT.get(),
+                MaterialItems.NEBULA_FRAGMENT.get(),
+                MaterialItems.STARDUST_FRAGMENT.get()
         );
 
         tag(ModTags.Items.SHOW_SIGNAL).add(

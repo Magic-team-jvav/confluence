@@ -415,21 +415,23 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 抑郁球
         shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ModTags.Items.INGOTS_DEMONITE),
                 'S', AmountIngredient.of(3, ModTags.Items.INGOTS_DEMONITE),
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 " SS",
-                "/SS",
+                "/aS",
                 "/  "
         )), YoyoItems.MALAISE.toStack());
 
         // 血脉球
         shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ModTags.Items.INGOTS_CRIMTANE),
                 'S', AmountIngredient.of(3, ModTags.Items.INGOTS_CRIMTANE),
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 " SS",
-                "/SS",
+                "/aS",
                 "/  "
         )), YoyoItems.ARTERY.toStack());
 
@@ -1427,8 +1429,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         shapeless(writer, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(writer, ConsumableItems.BONE_THROWING_KNIFE.toStack(30), Ingredient.of(MaterialItems.STURDY_FOSSIL));
-        shapeless(writer, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));
-        shapeless(writer, ConsumableItems.BLOODSTAINED_POWDER.toStack(2), AmountIngredient.of(6, MaterialItems.VERTEBRA), AmountIngredient.of(4, MaterialItems.BLOOD_CLOT_POWDER));
         shapeless(writer, GunItems.SILVER_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_SILVER));
         shapeless(writer, GunItems.TUNGSTEN_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN));
         shapeless(writer, GunItems.METEOR_SHOT.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_METEORITE));

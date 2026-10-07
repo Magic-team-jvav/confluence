@@ -89,6 +89,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 100);
+        cooking(writer, blasting, "blasting/", "", Ingredient.of(Items.GUNPOWDER), Items.BLAZE_POWDER.getDefaultInstance(), 2.0F, 100);
         // 熔炉
         RecipeSerializer<?> smelting = RecipeSerializer.SMELTING_RECIPE;
         cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 200);
@@ -153,6 +154,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
 
         cooking(writer, smelting, "smelting/", "", Ingredient.of(Items.SOUL_SAND), DecorativeBlocks.SOUL_GLASS.toStack(), 0.1F, 200);
+
+        cooking(writer, smelting, "smelting/", "", Ingredient.of(Items.GUNPOWDER), Items.BLAZE_POWDER.getDefaultInstance(), 0.1F, 200);
 
         RecipeSerializer<?> smoking = RecipeSerializer.SMOKING_RECIPE;
         cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);
@@ -395,7 +398,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(writer, PotionItems.CALMING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.DAMSEL_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(writer, PotionItems.SATIETY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.RED_PLEATFISH), Ingredient.of(FoodItems.BROWN_STALKSPINE));
         alchemyTable(writer, PotionItems.MANA_POTION.toStack(), Ingredient.of(MaterialItems.GLOWING_MUSHROOM), AmountIngredient.of(2, PotionItems.LESSER_MANA_POTION));
-        alchemyTable(writer, PotionItems.SUPER_MANA_POTION.toStack(15), AmountIngredient.of(15, PotionItems.GREATER_MANA_POTION), AmountIngredient.of(3, MaterialItems.CRYSTAL_SHARDS), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.UNICORN_HORN));
+        alchemyTable(writer, PotionItems.SUPER_MANA_POTION.toStack(15), AmountIngredient.of(8, PotionItems.GREATER_MANA_POTION), AmountIngredient.of(2, MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.ECTOPLASM));
         alchemyTable(writer, PotionItems.GREATER_HEALING_POTION.toStack(3), AmountIngredient.of(3, PotionItems.BOTTLED_WATER), AmountIngredient.of(3, MaterialItems.PIXIE_DUST), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);

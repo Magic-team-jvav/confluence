@@ -1,7 +1,6 @@
 package org.confluence.mod;
 
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -43,22 +42,7 @@ public final class Confluence {
     public static final boolean THE_END_BIOMES = false;
     public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
 
-    private static void registerEntityAliases() {
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("arrow_projectile"), asResource("arrow"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("bee_arrow_projectile"), asResource("bee_arrow"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("hell_bat_arrow_projectile"), asResource("hell_bat_arrow"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("ice_blade_sword_projectile"), asResource("ice_blade_sword"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("star_fury_projectile"), asResource("star_fury"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("enchanted_sword_projectile"), asResource("enchanted_sword"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("lights_bane_projectile"), asResource("lights_bane"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("grass_projectile"), asResource("grass"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("bee_projectile"), asResource("bee"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("nights_edge_projectile"), asResource("nights_edge"));
-        BuiltInRegistries.ENTITY_TYPE.addAlias(asResource("flower_projectile"), asResource("flower_power_petal"));
-    }
-
     public Confluence(IEventBus eventBus, ModContainer container) {
-        registerEntityAliases();
         ModDynamicBiomes.init();
         ModMiniBiomes.init();
         DynamicBiomeUtils.enable();

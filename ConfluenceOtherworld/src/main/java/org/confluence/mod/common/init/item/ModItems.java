@@ -1,7 +1,9 @@
 package org.confluence.mod.common.init.item;
 
+import com.google.common.collect.Iterables;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -209,6 +211,20 @@ public final class ModItems {
         if (LibUtils.isModLoaded("iris")) {
             IrisHelper.register(HIDDEN);
         }
+
+        Iterables.concat(
+                BoomerangItems.ITEMS.getEntries(),
+                GunItems.ITEMS.getEntries(),
+                MountItems.ITEMS.getEntries(),
+                PetItems.ITEMS.getEntries(),
+                SpawnEggItems.ITEMS.getEntries(),
+                SummonItems.ITEMS.getEntries(),
+                WhipItems.ITEMS.getEntries(),
+                YoyoItems.ITEMS.getEntries()
+        ).forEach(holder -> BuiltInRegistries.ITEM.addAlias(
+                ResourceLocation.fromNamespaceAndPath("terra_entity", holder.getId().getPath()),
+                holder.getId()
+        ));
     }
 
     public static Item.@NotNull Properties unbreakable() {

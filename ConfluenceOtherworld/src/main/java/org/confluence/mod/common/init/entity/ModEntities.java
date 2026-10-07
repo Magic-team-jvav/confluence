@@ -1,6 +1,8 @@
 package org.confluence.mod.common.init.entity;
 
+import com.google.common.collect.Iterables;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -383,5 +385,16 @@ public final class ModEntities {
         CritterEntities.ENTITIES.register(eventBus);
         MonsterEntities.ENTITIES.register(eventBus);
         NpcEntities.ENTITIES.register(eventBus);
+
+        Iterables.concat(
+                ENTITIES.getEntries(),
+                BossEntities.ENTITIES.getEntries(),
+                CritterEntities.ENTITIES.getEntries(),
+                MonsterEntities.ENTITIES.getEntries(),
+                NpcEntities.ENTITIES.getEntries()
+        ).forEach(holder -> BuiltInRegistries.ENTITY_TYPE.addAlias(
+                ResourceLocation.fromNamespaceAndPath("terra_entity", holder.getId().getPath()),
+                holder.getId()
+        ));
     }
 }

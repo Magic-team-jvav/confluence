@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
@@ -71,6 +72,7 @@ public class MineTunnelsStructure extends Structure {
             boolean setGate = 0.1666666F >= random.nextFloat();
             //setGate = true;
             int gateType = random.nextInt(2);
+            boolean traps = hasTrapSections();
             int worldMinY = context.heightAccessor().getMinBuildHeight();
             int maxY = worldMinY < 0 ? 20 : 50;
             int minY = worldMinY < 0 ? -40 : 10;
@@ -91,19 +93,32 @@ public class MineTunnelsStructure extends Structure {
             int facing2;
 
             blockMap.put(underPos, 0);
-            tunnels(maxY, minY, 0, length, 4, 6, 20, tunnelsMap, translationMap, switchMap, random, underPos.offset(3, 0, 0));
-            tunnels(maxY, minY, 0, length, 5, 6, 20, tunnelsMap, translationMap, switchMap, random, underPos.offset(-3, 0, 0));
-            tunnels(maxY, minY, 0, length, 6, 6, 20, tunnelsMap, translationMap, switchMap, random, underPos.offset(0, 0, 3));
-            tunnels(maxY, minY, 0, length, 7, 6, 20, tunnelsMap, translationMap, switchMap, random, underPos.offset(0, 0, -3));
+            tunnels(maxY, minY, 0, length, 4, 6, 20, traps, tunnelsMap, translationMap, switchMap, random, underPos.offset(3, 0, 0));
+            tunnels(maxY, minY, 0, length, 5, 6, 20, traps, tunnelsMap, translationMap, switchMap, random, underPos.offset(-3, 0, 0));
+            tunnels(maxY, minY, 0, length, 6, 6, 20, traps, tunnelsMap, translationMap, switchMap, random, underPos.offset(0, 0, 3));
+            tunnels(maxY, minY, 0, length, 7, 6, 20, traps, tunnelsMap, translationMap, switchMap, random, underPos.offset(0, 0, -3));
+            // 先把隧道快照到数组，再用两趟循环处理。
+            // 不能把两趟合并成一趟：第一趟每个坐标都会消耗一次 random.nextFloat() 决定半径，
+            // 若边掏空边铺轨，random 流就会被铺轨逻辑插入的取值打乱，生成结果随之改变。
+            // 快照既保留了原本的 random 消耗顺序，又避免了反复迭代 map 的条目对象开销。
+            int tunnelCount = tunnelsMap.size();
+            BlockPos[] tunnelPositions = new BlockPos[tunnelCount];
+            int[] tunnelFacings = new int[tunnelCount];
+            int snapshotIndex = 0;
             for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
-                tunnelPos = tunnel.getKey();
+                tunnelPositions[snapshotIndex] = tunnel.getKey();
+                tunnelFacings[snapshotIndex] = tunnel.getIntValue();
+                snapshotIndex++;
+            }
+            for (snapshotIndex = 0; snapshotIndex < tunnelCount; snapshotIndex++) {
+                tunnelPos = tunnelPositions[snapshotIndex];
                 ball(2.9F + 2.0F * random.nextFloat(), tunnelPos, 0, true, blockMap);
             }
-            for (Object2IntMap.Entry<BlockPos> tunnel : tunnelsMap.object2IntEntrySet()) {
-                tunnelPos = tunnel.getKey();
+            for (snapshotIndex = 0; snapshotIndex < tunnelCount; snapshotIndex++) {
+                tunnelPos = tunnelPositions[snapshotIndex];
                 xSet = tunnelPos.getX() - underPos.getX() + 5;
                 zSet = tunnelPos.getZ() - underPos.getZ() + 5;
-                tunnelFacing = tunnel.getIntValue();
+                tunnelFacing = tunnelFacings[snapshotIndex];
                 facingType = tunnelFacing % 4;
                 if (facingType == 0 || facingType == 1) {
                     rectangular(tunnelPos.offset(0, yOffset, 1), tunnelPos.offset(0, yOffset, -1), 1, blockMap, 0);
@@ -255,7 +270,7 @@ public class MineTunnelsStructure extends Structure {
         return ModStructures.MINE_TUNNELS.get();
     }
 
-    private static void tunnels(int maxY, int minY, int length, int maxLength, int ownFacing, int rotateCD, int translationCD, Object2IntMap<BlockPos> tunnelsMap, Object2IntMap<BlockPos> translationMap, List<BlockPos> switchMap, WorldgenRandom random, BlockPos ownPos) {
+    private static void tunnels(int maxY, int minY, int length, int maxLength, int ownFacing, int rotateCD, int translationCD, boolean traps, Object2IntMap<BlockPos> tunnelsMap, Object2IntMap<BlockPos> translationMap, List<BlockPos> switchMap, WorldgenRandom random, BlockPos ownPos) {
 
         float tnt = 0.005F; //瞬爆陷阱权重
         float boulder = 0.005F; //巨石权重
@@ -274,57 +289,68 @@ public class MineTunnelsStructure extends Structure {
         if (length < maxLength) {
             if (upDown == 1) {
                 if (translationCD <= 0) {
+                    // 无论是否需要陷阱路段都先取一次随机数：这样普通世界与 no_traps 世界
+                    // 的 random 消耗完全一致，同一种子下正常路段的走向不会因开关而改变。
                     float randomTR = random.nextFloat();
-                    if (tnt >= randomTR) {
-                        translationMap.put(ownPos, face);
-                        translationCD = 200;
-                    } else if (tnt + boulder >= randomTR) {
-                        translationMap.put(ownPos, 1 + face);
-                        translationCD = 200;
-                    } else if (tnt + boulder + dart >= randomTR) {
-                        translationMap.put(ownPos, 2 + face);
-                        translationCD = 200;
-                    } else if (tnt + boulder + dart + lava >= randomTR) {
-                        translationMap.put(ownPos, 3 + face);
-                        translationCD = 200;
+                    if (traps) {
+                        // 权重维持原样，仅 no_traps 特殊种子世界生成陷阱路段
+                        if (tnt >= randomTR) {
+                            translationMap.put(ownPos, face);
+                            translationCD = 200;
+                        } else if (tnt + boulder >= randomTR) {
+                            translationMap.put(ownPos, 1 + face);
+                            translationCD = 200;
+                        } else if (tnt + boulder + dart >= randomTR) {
+                            translationMap.put(ownPos, 2 + face);
+                            translationCD = 200;
+                        } else if (tnt + boulder + dart + lava >= randomTR) {
+                            translationMap.put(ownPos, 3 + face);
+                            translationCD = 200;
+                        }
                     }
                 } else if (rotateCD <= 0 && rotate >= random.nextFloat()) {
                     rotateCD = 5;
                     setFacing = random.nextInt(2);
                     if (facing4 == 0 || facing4 == 1) {
-                        tunnels(maxY, minY, length + 1 + random.nextInt(-10, 11), maxLength, 6 + setFacing, rotateCD - 1, 2, tunnelsMap, translationMap, switchMap, random, ownPos.offset(0, 0, (setFacing == 0) ? 1 : -1));
+                        tunnels(maxY, minY, length + 1 + random.nextInt(-10, 11), maxLength, 6 + setFacing, rotateCD - 1, 2, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(0, 0, (setFacing == 0) ? 1 : -1));
                         switchMap.add(ownPos.offset(0, 0, (setFacing == 0) ? -1 : 1));
                         tunnelsMap.put(ownPos, 14 + setFacing);
                     } else {
-                        tunnels(maxY, minY, length + 1 + random.nextInt(-10, 11), maxLength, 4 + setFacing, rotateCD - 1, 2, tunnelsMap, translationMap, switchMap, random, ownPos.offset((setFacing == 0) ? 1 : -1, 0, 0));
+                        tunnels(maxY, minY, length + 1 + random.nextInt(-10, 11), maxLength, 4 + setFacing, rotateCD - 1, 2, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset((setFacing == 0) ? 1 : -1, 0, 0));
                         switchMap.add(ownPos.offset((setFacing == 0) ? -1 : 1, 0, 0));
                         tunnelsMap.put(ownPos, 12 + setFacing);
                     }
                 }
                 float randomCount = random.nextFloat();
                 if (0.025F >= randomCount && ownPos.getY() <= maxY) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, rotateCD - 1, translationCD - 1, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
                 } else if (0.975F <= randomCount && ownPos.getY() >= minY) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4, rotateCD - 1, translationCD - 1, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
                 } else {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, rotateCD - 1, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, rotateCD - 1, translationCD - 1, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 0, offset.getStepZ()));
                 }
                 tunnelsMap.put(ownPos, ownFacing);
             } else if (upDown == 0) {
                 if (ownPos.getY() <= minY || 0.1F >= random.nextFloat()) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), -1, offset.getStepZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown + 1) * 4, 2, translationCD - 1, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), -1, offset.getStepZ()));
                 } else {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), -1, offset.getStepZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4, 2, translationCD - 1, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), -1, offset.getStepZ()));
                 }
                 tunnelsMap.put(ownPos.offset(0, -1, 0), ownFacing);
             } else if (upDown == 2) {
                 if (ownPos.getY() >= maxY || 0.1F >= random.nextFloat()) {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown - 1) * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 1, offset.getStepZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + (upDown - 1) * 4, 2, translationCD - 1, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 1, offset.getStepZ()));
                 } else {
-                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, 2, translationCD - 1, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 1, offset.getStepZ()));
+                    tunnels(maxY, minY, length + 1, maxLength, facing4 + upDown * 4, 2, translationCD - 1, traps, tunnelsMap, translationMap, switchMap, random, ownPos.offset(offset.getStepX(), 1, offset.getStepZ()));
                 }
                 tunnelsMap.put(ownPos, ownFacing);
             }
         }
+    }
+
+    /// 陷阱路段（瞬爆TNT / 巨石 / 毒镖 / 岩浆湖）只在 no_traps 特殊种子世界生成，
+    /// 普通世界下的矿井不出现陷阱路段。权重与判定顺序保持原样。
+    protected boolean hasTrapSections() {
+        return ModSecretSeeds.NO_TRAPS.match();
     }
 }

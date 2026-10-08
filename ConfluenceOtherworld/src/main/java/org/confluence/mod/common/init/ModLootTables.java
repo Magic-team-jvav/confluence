@@ -4,6 +4,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -11,6 +12,7 @@ import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.DifficultyChanceLootItemCondition;
 import org.confluence.mod.common.loot.EntityVariantLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
+import org.confluence.mod.common.loot.LootingBonusCountFunction;
 import org.confluence.mod.common.loot.SecretFlagLootItemCondition;
 
 import java.util.function.Supplier;
@@ -100,5 +102,12 @@ public final class ModLootTables {
         public static final Supplier<LootItemConditionType> SECRET_FLAG = TYPES.register("secret_flag", () -> new LootItemConditionType(SecretFlagLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> DIFFICULTY_CHANCE = TYPES.register("difficulty_chance", () -> new LootItemConditionType(DifficultyChanceLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> ENTITY_VARIANT = TYPES.register("entity_variant", () -> new LootItemConditionType(EntityVariantLootItemCondition.CODEC));
+    }
+
+    public static class ItemFunctions {
+        public static final DeferredRegister<LootItemFunctionType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_FUNCTION_TYPE, Confluence.MODID);
+
+        public static final Supplier<LootItemFunctionType<LootingBonusCountFunction>> LOOTING_BONUS_COUNT =
+                TYPES.register("looting_bonus_count", () -> new LootItemFunctionType<>(LootingBonusCountFunction.CODEC));
     }
 }

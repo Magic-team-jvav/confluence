@@ -90,6 +90,7 @@ public final class Confluence {
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
+        ModLootTables.ItemFunctions.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
         ModDensityFunctionTypes.TYPES.register(eventBus);
 

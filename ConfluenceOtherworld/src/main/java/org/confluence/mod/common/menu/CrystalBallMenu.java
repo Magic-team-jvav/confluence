@@ -61,7 +61,7 @@ public class CrystalBallMenu extends AbstractContainerMenu {
                 ItemStack itemStack = ItemStack.EMPTY;
                 CrystalBallRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.CRYSTAL_BALL_TYPE.get(), input, level).map(RecipeHolder::value).orElse(null);
                 if (recipe != null) {
-                    itemStack = recipe.getResultItem(null).copy();
+                    itemStack = recipe.getResult().copy();
                     resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);

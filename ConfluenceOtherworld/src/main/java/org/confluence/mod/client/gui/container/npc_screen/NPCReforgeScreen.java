@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.container;
+package org.confluence.mod.client.gui.container.npc_screen;
 
 import com.google.common.collect.EvictingQueue;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;

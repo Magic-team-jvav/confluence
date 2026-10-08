@@ -64,7 +64,7 @@ public class FletchingTableMenu extends AbstractContainerMenu {
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty()) {
                     FletchingTableRecipe recipe = recipes.getFirst().value();
-                    itemStack = recipe.getResultItem(null).copy();
+                    itemStack = recipe.getResult().copy();
                     setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);

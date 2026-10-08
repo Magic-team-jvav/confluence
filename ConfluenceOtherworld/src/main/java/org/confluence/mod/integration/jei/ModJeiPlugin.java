@@ -217,7 +217,7 @@ public final class ModJeiPlugin implements IModPlugin {
             addInput(builder, 33, -1, ingredients.get(2), true);
             addInput(builder, 33, 17, ingredients.get(3), true);
         }
-        builder.addOutputSlot(88, 8).addItemStack(recipe.value().getResultItem(null)).setOutputSlotBackground();
+        builder.addOutputSlot(88, 8).addItemStack(recipe.value().getResult()).setOutputSlotBackground();
         builder.setShapeless();
     }
 

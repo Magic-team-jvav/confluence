@@ -132,7 +132,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
                 if (!recipes.isEmpty()) {
                     if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
                     SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
-                    itemStack = recipe.getResultItem(null).copy();
+                    itemStack = recipe.getResult().copy();
                     resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);
@@ -145,7 +145,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private void setupResultSlot() {
         if (!recipes.isEmpty() && isValidRecipeIndex(selectedRecipeIndex.get())) {
             SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
-            ItemStack itemStack = recipe.getResultItem(null).copy();
+            ItemStack itemStack = recipe.getResult().copy();
             if (itemStack.isItemEnabled(player.level().enabledFeatures())) {
                 result.setItem(0, itemStack);
                 resultSlot.setCurrentRecipe(recipe);

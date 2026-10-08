@@ -193,7 +193,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
                 Optional<RecipeHolder<CookingPotRecipe>> recipeFor = blockEntity.cachedCheck.getRecipeFor(input, level);
                 if (recipeFor.isPresent()) {
                     CookingPotRecipe recipe = recipeFor.get().value();
-                    if (canResultInsert(blockEntity.items, blockEntity.getMaxStackSize(), recipe.getResultItem(null))) {
+                    if (canResultInsert(blockEntity.items, blockEntity.getMaxStackSize(), recipe.getResult())) {
                         blockEntity.cookingTotalTime = recipe.getCookingTime();
                         if (++blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                             blockEntity.items.get(CookingPotMenu.CONTAINER_SLOT).shrink(1);

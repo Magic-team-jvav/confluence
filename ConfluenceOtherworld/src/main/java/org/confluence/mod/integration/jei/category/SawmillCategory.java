@@ -68,6 +68,6 @@ public class SawmillCategory implements IRecipeCategory<RecipeHolder<SawmillReci
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<SawmillRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

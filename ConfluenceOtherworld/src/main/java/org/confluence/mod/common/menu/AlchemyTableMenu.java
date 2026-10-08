@@ -76,7 +76,7 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
                 if (!recipes.isEmpty()) {
                     AlchemyTableRecipe recipe = recipes.stream().max(Comparator.comparingInt(holder -> holder.value().getIngredients().size()))
                             .orElseGet(recipes::getFirst).value();
-                    itemStack = recipe.getResultItem(null).copy();
+                    itemStack = recipe.getResult().copy();
                     setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);

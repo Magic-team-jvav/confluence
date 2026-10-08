@@ -68,6 +68,6 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<HardmodeAnvilRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

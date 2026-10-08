@@ -48,7 +48,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         if (index == -1) return result.getItem(0);
         int recipesSize = recipes.size();
         if (index < recipesSize) {
-            return recipes.get(index).value().getResultItem(player.registryAccess());
+            return recipes.get(index).value().getResult();
         }
         return craftingRecipes.get(index - recipesSize).value().getResultItem(player.registryAccess());
     }
@@ -59,7 +59,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         if (index == -1) return result.getItem(0);
         int recipesSize = recipes.size();
         if (index < recipesSize) {
-            return recipes.get(index).value().getResultItem(player.registryAccess());
+            return recipes.get(index).value().getResult();
         }
         return craftingRecipes.get(index - recipesSize).value().getResultItem(player.registryAccess());
     }
@@ -84,7 +84,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                         resultSlot.setAltRecipe(recipe);
                     } else {
                         HeavyWorkBenchRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
-                        itemStack = recipe.getResultItem(player.registryAccess()).copy();
+                        itemStack = recipe.getResult().copy();
                         resultSlot.setCurrentRecipe(recipe);
                     }
                 }
@@ -107,7 +107,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 ItemStack itemStack;
                 if (index < recipesSize) {
                     HeavyWorkBenchRecipe recipe = recipes.get(index).value();
-                    itemStack = recipe.getResultItem(player.registryAccess());
+                    itemStack = recipe.getResult();
                     if (!itemStack.isItemEnabled(player.level().enabledFeatures())) break inner;
                     resultSlot.setCurrentRecipe(recipe);
                 } else {

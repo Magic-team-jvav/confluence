@@ -112,7 +112,7 @@ public class EitherRecipe4xHelper {
                 }
             }
         });
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResult());
     }
 
     public void drawSummary(IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics) {

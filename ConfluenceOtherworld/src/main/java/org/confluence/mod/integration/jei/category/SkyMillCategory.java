@@ -72,7 +72,7 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
             addInput(builder, 47, 32, ingredients.get(2));
         }
         // output
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 28, 8).addItemStack(recipe.value().getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 28, 8).addItemStack(recipe.value().getResult());
     }
 
     @Override
@@ -87,6 +87,6 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<SkyMillRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

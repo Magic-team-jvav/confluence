@@ -68,6 +68,6 @@ public class LoomCategory implements IRecipeCategory<RecipeHolder<LoomRecipe>> {
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<LoomRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

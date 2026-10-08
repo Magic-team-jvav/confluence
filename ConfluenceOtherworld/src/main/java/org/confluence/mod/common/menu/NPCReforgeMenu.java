@@ -19,8 +19,6 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Nullable;
 
-///
-///
 public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceMenu {
     public static final int DATA_PREFIX_TYPE = 0;
     public static final int DATA_PREFIX_ID = 1;
@@ -34,10 +32,6 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
         this(containerId, inventory, null);
     }
 
-    /// 创建由 NPC 交易会话授权的重铸菜单。
-    ///
-    /// 客户端注册工厂使用无 NPC 的构造器；服务端生产路径必须保留来源 NPC，
-    /// 以便实体死亡、跨维度或玩家离开交互距离时立即关闭菜单。
     public NPCReforgeMenu(int containerId, Inventory inventory, @Nullable BaseNPC npc) {
         super(ModMenuTypes.REFORGE_MENU.get(), containerId);
         this.player = inventory.player;

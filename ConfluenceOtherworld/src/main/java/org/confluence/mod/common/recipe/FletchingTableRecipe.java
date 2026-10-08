@@ -53,8 +53,8 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     }
 
     @Override
-    public ItemStack assemble(Input input, HolderLookup.Provider registries) {
-        return result.copy();
+    public final ItemStack assemble(Input input, HolderLookup.Provider registries) {
+        return getResult().copy();
     }
 
     @Override
@@ -63,7 +63,11 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     }
 
     @Override
-    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+    public final ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+        return getResult();
+    }
+
+    public ItemStack getResult() {
         return result;
     }
 
@@ -81,33 +85,22 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
         @Override
         protected MapCodec<FletchingTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
-                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
-                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(FletchingTableRecipe::getResult),
+                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("tail", Ingredient.EMPTY).forGetter(FletchingTableRecipe::getTail),
+                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("body", Ingredient.EMPTY).forGetter(FletchingTableRecipe::getBody),
+                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("head", Ingredient.EMPTY).forGetter(FletchingTableRecipe::getHead)
             ).apply(instance, FletchingTableRecipe::new));
         }
 
         @Override
         protected StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
-            return new StreamCodec<>() {
-                @Override
-                public FletchingTableRecipe decode(RegistryFriendlyByteBuf buffer) {
-                    ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-                    Ingredient tail = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-                    Ingredient body = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-                    Ingredient head = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-                    return new FletchingTableRecipe(itemstack, tail, body, head);
-                }
-
-                @Override
-                public void encode(RegistryFriendlyByteBuf buffer, FletchingTableRecipe recipe) {
-                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tail);
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.body);
-                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.head);
-                }
-            };
+            return StreamCodec.composite(
+                    ItemStack.STREAM_CODEC, FletchingTableRecipe::getResult,
+                    Ingredient.CONTENTS_STREAM_CODEC, FletchingTableRecipe::getTail,
+                    Ingredient.CONTENTS_STREAM_CODEC, FletchingTableRecipe::getBody,
+                    Ingredient.CONTENTS_STREAM_CODEC, FletchingTableRecipe::getHead,
+                    FletchingTableRecipe::new
+            );
         }
     }
 

@@ -46,8 +46,8 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     }
 
     @Override
-    public ItemStack assemble(Input input, HolderLookup.Provider registries) {
-        return getResultItem(null).copy();
+    public final ItemStack assemble(Input input, HolderLookup.Provider registries) {
+        return getResult().copy();
     }
 
     @Override
@@ -56,7 +56,11 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     }
 
     @Override
-    public ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+    public final ItemStack getResultItem(@Nullable HolderLookup.Provider registries) {
+        return getResult();
+    }
+
+    public ItemStack getResult() {
         return result;
     }
 
@@ -74,9 +78,9 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         @Override
         protected MapCodec<AlchemyTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(recipe -> recipe.base),
-                    AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(AlchemyTableRecipe::getResult),
+                    Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(AlchemyTableRecipe::getBase),
+                    AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(AlchemyTableRecipe::getIngredients)
             ).apply(instance, AlchemyTableRecipe::new));
         }
 

@@ -69,7 +69,7 @@ public class AlchemyTableCategory implements IRecipeCategory<RecipeHolder<Alchem
             i++;
         }
         addInput(builder, 48, 1, recipe.value().getBase());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 48, 46).addItemStack(recipe.value().getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 48, 46).addItemStack(recipe.value().getResult());
     }
 
     @Override
@@ -79,6 +79,6 @@ public class AlchemyTableCategory implements IRecipeCategory<RecipeHolder<Alchem
 
     @Override
     public ResourceLocation getRegistryName(RecipeHolder<AlchemyTableRecipe> recipe) {
-        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.value().getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.value().getResult().getItem()).getPath());
     }
 }

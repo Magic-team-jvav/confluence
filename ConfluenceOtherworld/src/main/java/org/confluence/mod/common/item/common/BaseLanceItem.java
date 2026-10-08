@@ -152,8 +152,8 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                 builder.add(Component.translatable("tooltip.item.confluence.jousting_lance.1").withStyle(ChatFormatting.GRAY));
             }
             builder.add(
-                    Component.translatable("tooltip.confluence.attack_distance", ATTRIBUTE_MODIFIER_FORMAT.format(attackDistance)).withStyle(ChatFormatting.DARK_GRAY),
-                    Component.translatable("tooltip.confluence.knockback", ATTRIBUTE_MODIFIER_FORMAT.format(baseKnockback)).withStyle(ChatFormatting.DARK_GRAY)
+                    Component.translatable("tooltip.confluence.attack_distance", ATTRIBUTE_MODIFIER_FORMAT.format(attackDistance)).withStyle(ChatFormatting.GRAY),
+                    Component.translatable("tooltip.confluence.knockback", ATTRIBUTE_MODIFIER_FORMAT.format(baseKnockback)).withStyle(ChatFormatting.GRAY)
             );
             this.tooltips = builder.build();
         }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.sword;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
@@ -132,7 +133,7 @@ public class BaseSwordItem extends SwordItem implements IWeaponTooltip {
 
         for (int index = 0; index < definition.tooltips().size(); index++) {
             if (index == 0) tooltipComponents.add(CommonComponents.EMPTY);
-            MutableComponent component = Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + index).withStyle(style -> style.withColor(0x666666).withItalic(true));
+            MutableComponent component = Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + index).withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC);
             definition.tooltips().get(index).accept(component);
             tooltipComponents.add(component);
         }

@@ -99,8 +99,6 @@
         "world.level.storage.loot.LootTableMixin"
     ],
     "client": [
-        "client.ClientItemStackTooltipMixin",
-        "client.ClientWeaponAttributeTooltipMixin",
         "client.MinecraftMixin",
         "client.MouseHandlerMixin",
         "client.gui.DeathScreenMixin",

@@ -135,10 +135,10 @@ public class YoyoItem extends CustomRarityItem implements IWeaponTooltip {
 
         tooltip.add(Component.translatable("tooltip.confluence.yoyo.max_range")
                 .append(Component.literal(" " + maximumRange))
-                .withStyle(ChatFormatting.GREEN));
+                .withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("tooltip.confluence.yoyo.exist_time")
                 .append(Component.literal(lifetimeTicks == 0 ? " ∞" : " " + lifetimeTicks / 20.0F))
-                .withStyle(ChatFormatting.GREEN));
+                .withStyle(ChatFormatting.GRAY));
         Component effect = effectTooltip();
         if (effect != null)
             tooltip.add(effect.copy().withStyle(ChatFormatting.GRAY));

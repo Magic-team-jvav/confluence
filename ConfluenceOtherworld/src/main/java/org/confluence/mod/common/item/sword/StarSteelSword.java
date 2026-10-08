@@ -8,8 +8,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.util.DateUtils;
@@ -24,8 +24,8 @@ public class StarSteelSword extends BaseSwordItem {
 
     public StarSteelSword() {
         super(ModTiers.UNBREAKABLE, ModRarity.BLUE, 9, 2.2F, SwordDefinition.builder()
-                .tooltip(p -> p.withColor(0xc0e8ff))
-                .tooltip(p -> p.withColor(0xc0e8ff))
+                .tooltip()
+                .tooltip()
                 .unbreakable());
     }
 

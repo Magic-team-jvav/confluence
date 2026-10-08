@@ -83,6 +83,7 @@ import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
+import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -185,6 +186,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void clientTick$Post(ClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
+        WormDigSoundHandler.tick(minecraft);
         LocalPlayer player = minecraft.player;
 
         boolean attackHeld = minecraft.options.keyAttack.isDown();
@@ -372,6 +374,11 @@ public final class GameClientEvents {
         ModArmorBonus.addTooltip(event.getEntity(), stack, toolTip);
         DiggingPower.addTooltip(stack, holder, toolTip);
         ExtractinatorData.addTooltip(holder, toolTip);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void weaponTooltip(ItemTooltipEvent event) {
+        WeaponTooltip.update(event);
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

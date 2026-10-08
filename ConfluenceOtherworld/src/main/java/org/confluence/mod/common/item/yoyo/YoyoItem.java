@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.attachment.YoyoSession;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.mixed.Immunity;
@@ -27,7 +28,7 @@ import java.util.List;
 /// 悠悠球物品。
 ///
 /// 基类保存通用数值，子类实现特殊能力；输入、运动和网络同步由会话与实体负责。
-public class YoyoItem extends CustomRarityItem {
+public class YoyoItem extends CustomRarityItem implements IWeaponTooltip {
     private static final int USE_DURATION = 72_000;
     private final float attackDamage;
     private final float maximumRange;
@@ -131,9 +132,7 @@ public class YoyoItem extends CustomRarityItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("attribute.name.generic.attack_damage")
-                .append(Component.literal(" " + attackDamage))
-                .withStyle(ChatFormatting.GREEN));
+
         tooltip.add(Component.translatable("tooltip.confluence.yoyo.max_range")
                 .append(Component.literal(" " + maximumRange))
                 .withStyle(ChatFormatting.GREEN));
@@ -158,4 +157,19 @@ public class YoyoItem extends CustomRarityItem {
     }
 
     public final float knockback() {return knockback;}
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return attackDamage * attributeValue;
+    }
+
+    @Override
+    public double getTooltipCriticalChance(ItemStack stack, double attributeValue) {
+        return bonusCriticalChance() + attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 4.0;
+    }
 }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import javax.annotation.Nullable;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -16,6 +15,7 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
+import javax.annotation.Nullable;
 
 
 /// 法师怪物基类：三次远程施法后向目标方向重新选取安全落点。
@@ -28,6 +28,11 @@ public abstract class BaseCasterMonster extends BaseMonster {
     private static final RawAnimation CAST = RawAnimation.begin().thenPlay("attack.cast");
     private final CasterCycleAction.HurtResponse hurtResponse;
     private CasterCycleAction cycleAction;
+
+    @Override
+    protected boolean shouldFloatInWater() {
+        return true;
+    }
 
     public BaseCasterMonster(EntityType<? extends BaseCasterMonster> type, Level level) {
         this(type, level, CasterCycleAction.HurtResponse.CONTINUE_CYCLE);

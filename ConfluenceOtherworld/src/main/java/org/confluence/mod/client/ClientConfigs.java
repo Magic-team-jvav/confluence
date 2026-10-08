@@ -17,11 +17,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
-import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
-import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
-import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
-import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHandler;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.init.ModTags;
@@ -43,6 +39,7 @@ public final class ClientConfigs {
     public static boolean soulcererBackgroundMagic = true;
 
     public static boolean achievementToast = true;
+    public static boolean weaponTooltipBaseStats = false;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
     public static int customTitle = 71;
     public static CustomBossBarRenderer.Style bossBarStyle = CustomBossBarRenderer.Style.STATIC;
@@ -64,16 +61,16 @@ public final class ClientConfigs {
     public static int extraInventoryButtonOffsetX = 0;
     public static int extraInventoryButtonOffsetY = 0;
 
-    public static boolean bloodyEffect = true; // todo
+    public static boolean bloodyEffect = true;
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
-    public static boolean damageIndicator = true;
-    public static boolean healIndicator = true;
+    /// 伤害/治疗数值的显示方式，默认虚拟信息。
+    public static IndicatorMode damageIndicator = IndicatorMode.VIRTUAL;
+    public static IndicatorMode healIndicator = IndicatorMode.VIRTUAL;
     public static WeaponUseButton staffUseButton = WeaponUseButton.RIGHT;
     public static WeaponUseButton whipUseButton = WeaponUseButton.LEFT;
     public static WeaponUseButton yoyoUseButton = WeaponUseButton.LEFT;
     public static WeaponUseButton gunUseButton = WeaponUseButton.LEFT;
     public static WeaponUseButton flailUseButton = WeaponUseButton.LEFT;
-    public static boolean voidSeaDepthIntersectionOutline = false;
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
@@ -87,6 +84,7 @@ public final class ClientConfigs {
     public static BooleanValue SOULCERER_BACKGROUND_MAGIC;
 
     private static BooleanValue ACHIEVEMENT_TOAST;
+    private static BooleanValue WEAPON_TOOLTIP_BASE_STATS;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
     private static IntValue CUSTOM_TITLE;
     private static EnumValue<CustomBossBarRenderer.Style> BOSS_BAR_STYLE;
@@ -110,14 +108,13 @@ public final class ClientConfigs {
 
     private static BooleanValue BLOODY_EFFECT;
     private static EnumValue<GoreEffect> GORE_EFFECT;
-    private static BooleanValue DAMAGE_INDICATOR;
-    private static BooleanValue HEAL_INDICATOR;
+    private static EnumValue<IndicatorMode> DAMAGE_INDICATOR;
+    private static EnumValue<IndicatorMode> HEAL_INDICATOR;
     private static EnumValue<WeaponUseButton> STAFF_USE_BUTTON;
     private static EnumValue<WeaponUseButton> WHIP_USE_BUTTON;
     private static EnumValue<WeaponUseButton> YOYO_USE_BUTTON;
     private static EnumValue<WeaponUseButton> GUN_USE_BUTTON;
     private static EnumValue<WeaponUseButton> FLAIL_USE_BUTTON;
-    private static BooleanValue VOID_SEA_DEPTH_INTERSECTION_OUTLINE;
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
@@ -132,6 +129,7 @@ public final class ClientConfigs {
         soulcererBackgroundMagic = SOULCERER_BACKGROUND_MAGIC.get();
 
         achievementToast = ACHIEVEMENT_TOAST.get();
+        weaponTooltipBaseStats = WEAPON_TOOLTIP_BASE_STATS.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
         customTitle = CUSTOM_TITLE.get();
         bossBarStyle = BOSS_BAR_STYLE.get();
@@ -164,7 +162,6 @@ public final class ClientConfigs {
         yoyoUseButton = YOYO_USE_BUTTON.get();
         gunUseButton = GUN_USE_BUTTON.get();
         flailUseButton = FLAIL_USE_BUTTON.get();
-        voidSeaDepthIntersectionOutline = VOID_SEA_DEPTH_INTERSECTION_OUTLINE.get();
     }
 
     public static void register(ModContainer container) {
@@ -175,6 +172,8 @@ public final class ClientConfigs {
         {
             builder.push("GUI");
             ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
+            WEAPON_TOOLTIP_BASE_STATS = builder.comment("显示武器自身的伤害和暴击率（保留词缀），不计玩家装备和效果加成；默认显示加成后的数值。")
+                    .define("weaponTooltipBaseStats", false);
             SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
             CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
             {
@@ -237,8 +236,8 @@ public final class ClientConfigs {
             builder.push("Entity");
             BLOODY_EFFECT = builder.define("bloodyEffect", true);
             GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
-            DAMAGE_INDICATOR = builder.define("damageIndicator", true);
-            HEAL_INDICATOR = builder.define("healIndicator", true);
+            DAMAGE_INDICATOR = builder.defineEnum("damageIndicator", IndicatorMode.VIRTUAL);
+            HEAL_INDICATOR = builder.defineEnum("healIndicator", IndicatorMode.VIRTUAL);
             builder.pop();
         }
         {
@@ -251,9 +250,6 @@ public final class ClientConfigs {
             }
             builder.pop();
         }
-        VOID_SEA_DEPTH_INTERSECTION_OUTLINE = builder.comment("Enables the experimental depth intersection outline for the void sea. Shader pack compatibility depends on the active shader pack.")
-                .define("voidSeaDepthIntersectionOutline", false);
-
         {
             builder.push("WeaponInput");
             STAFF_USE_BUTTON = builder.defineEnum("staffUseButton", WeaponUseButton.RIGHT);
@@ -380,6 +376,24 @@ public final class ClientConfigs {
         @Override
         public Component getTranslatedName() {
             return Component.translatable("confluence.configuration.sellPriceDisplay." + name().toLowerCase(Locale.ROOT));
+        }
+    }
+
+    public enum IndicatorMode implements TranslatableEnum {
+        PARTICLE,
+        VIRTUAL;
+
+        public boolean isParticle() {
+            return this == PARTICLE;
+        }
+
+        public boolean isVirtual() {
+            return this == VIRTUAL;
+        }
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.indicatorMode." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

@@ -32,6 +32,9 @@ public interface WormSegment {
                 Mth.lerp(partialTick, entity.zOld, entity.getZ()));
     }
 
+    /// 飞行蠕虫不播放钻地音效；虫头、身体和尾节都可独立提供位置声源。
+    default boolean supportsDigSound() {return true;}
+
     static boolean isWormDamage(DamageSource source) {
         // 同时检查攻击主体和射弹所有者，体节转发及弹幕伤害不能绕过同类免伤。
         return source.getEntity() instanceof WormSegment || source.getDirectEntity() instanceof WormSegment

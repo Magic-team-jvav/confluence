@@ -15,6 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.mod.api.item.ILeftClickStateItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -23,7 +24,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import java.util.List;
 
 
-public class BoomerangItem extends Item implements ILeftClickStateItem {
+public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponTooltip {
     private final Settings settings;
 
     public BoomerangItem(Settings settings) {
@@ -71,10 +72,7 @@ public class BoomerangItem extends Item implements ILeftClickStateItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("attribute.name.generic.attack_damage")
-                .append(": ")
-                .append(String.format("%.1f", settings.damage()))
-                .withStyle(style -> style.withColor(0x00FF00)));
+
         tooltip.add(Component.translatable("tooltip.confluence.boomerang.fly_speed")
                 .append(": ")
                 .append(String.format("%.2f", settings.flySpeed()))
@@ -120,5 +118,15 @@ public class BoomerangItem extends Item implements ILeftClickStateItem {
         public double activeSearchRange() {
             return DEFAULT_ACTIVE_SEARCH_RANGE;
         }
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return settings.damage() * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, settings.cooldown());
     }
 }

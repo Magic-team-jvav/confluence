@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -19,6 +20,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
 import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
 import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
 import org.confluence.mod.client.summoner.particle.ZenithParticleProvider;
@@ -44,11 +46,11 @@ public final class SummonerClientEvents {
             event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new);
             event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new);
         });
-        NeoForge.EVENT_BUS.addListener((ItemTooltipEvent event) -> {
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, (ItemTooltipEvent event) -> {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
             if (player != null && itemStack.getItem() instanceof SummonerWeaponItem<?> summonerWeaponItem) {
-                event.getToolTip().addAll(summonerWeaponItem.getTooltips(itemStack, player));
+                summonerWeaponItem.getTooltips(itemStack, player).stream().map(WeaponTooltip::grayDescription).forEach(event.getToolTip()::add);
             }
         });
         NeoForge.EVENT_BUS.addListener((RenderLevelStageEvent event) -> {

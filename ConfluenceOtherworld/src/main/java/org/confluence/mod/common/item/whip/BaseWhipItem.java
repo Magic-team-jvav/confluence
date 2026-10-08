@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.whip;
 
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
@@ -7,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -18,6 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.api.whip.WhipAppearance;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.api.whip.WhipFriendlyHitContext;
@@ -35,7 +38,7 @@ import java.util.function.Supplier;
 
 
 // 鞭子的共享挥动流程；具体数值、命中行为和外观由各物品类提供。
-public class BaseWhipItem extends Item {
+public class BaseWhipItem extends Item implements IWeaponTooltip {
     private final float baseDamage;
     private final int durationTicks;
     private final int hitCooldownTicks;
@@ -146,4 +149,24 @@ public class BaseWhipItem extends Item {
         return player.getEyePosition(partialTick).add(right.scale(side * 0.25 * scale)).add(forward.scale(0.4 * scale)).add(up.scale(-0.45 * scale));
     }
 
+    @Override
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getSummonDamage();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return baseDamage * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        float step = (float) Mth.clamp(attributeValue / 80.0, 0.0, 1.0);
+        return step > 0.0F ? 20.0 / Math.max(1, Math.ceil(1.0 / step)) : 0.0;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue, Player player) {
+        return getTooltipAttackSpeed(stack, player != null && player.hasEffect(ModEffects.JUNGLES_FURY) ? attributeValue * 1.12 : attributeValue);
+    }
 }

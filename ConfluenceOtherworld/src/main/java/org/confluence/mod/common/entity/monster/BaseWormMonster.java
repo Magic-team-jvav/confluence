@@ -197,6 +197,9 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     }
 
     @Override
+    public boolean supportsDigSound() {return !movementProfile().canFly();}
+
+    @Override
     public void tick() {
         if (isDeadOrDying()) setDeltaMovement(Vec3.ZERO);
         if (!level().isClientSide && contactSweepStart == null) contactSweepStart = position();

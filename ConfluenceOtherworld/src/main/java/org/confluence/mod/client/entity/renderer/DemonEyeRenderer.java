@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import org.confluence.mod.client.entity.model.DemonEyeGeoModel;
 import org.confluence.mod.common.entity.monster.DemonEye;
-import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class DemonEyeRenderer extends GeoNormalRenderer<DemonEye> {
@@ -33,10 +32,13 @@ public class DemonEyeRenderer extends GeoNormalRenderer<DemonEye> {
         // 1.21 侧恶魔眼模型本身按 1.55 倍显示；1.20 额外保留变种体型差异。
         float scale = 1.55F * eye.getVariant().scale();
         poseStack.scale(scale, scale, scale);
-        double yaw = Mth.rotLerp(partialTick, eye.yBodyRotO, eye.yBodyRot) * Mth.DEG_TO_RAD;
-        Vector3f pitchAxis = new Vector3f((float) Math.cos(yaw), 0.0F, (float) Math.sin(yaw));
-        poseStack.mulPose(Axis.of(pitchAxis).rotationDegrees(-Mth.rotLerp(partialTick, eye.xRotO, eye.getXRot())));
         super.preRender(poseStack, eye, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+    }
+
+    @Override
+    protected void applyRotations(DemonEye eye, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTick, float scale) {
+        super.applyRotations(eye, poseStack, ageInTicks, rotationYaw, partialTick, scale);
+        poseStack.mulPose(Axis.XP.rotationDegrees(-Mth.rotLerp(partialTick, eye.xRotO, eye.getXRot())));
     }
 
     @Override

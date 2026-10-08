@@ -1,22 +1,26 @@
 package org.confluence.mod.common.item.bow;
 
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.ArrowItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.EventHooks;
-import net.minecraft.core.Holder;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
@@ -27,7 +31,7 @@ import org.joml.Quaternionf;
 
 import java.util.List;
 
-public class BaseTerraBowItem extends BowItem {
+public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
     private final float baseDamage;
 
     public BaseTerraBowItem(float baseDamage) {
@@ -244,10 +248,17 @@ public class BaseTerraBowItem extends BowItem {
     public float getFullDrawDamage() {return baseDamage * 3.0F;}
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltip, flag);
-        /// 显示满蓄力的武器伤害，不包含随机暴击和箭种自身的附加伤害。
-        tooltip.add(Component.translatable("tooltip.confluence.ranged_damage", ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT.format(getFullDrawDamage())));
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getRangedDamage();
     }
 
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return getFullDrawDamage() * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 1.0;
+    }
 }

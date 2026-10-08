@@ -200,18 +200,15 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
     @NotNull
     public List<Component> getTooltips(ItemStack itemStack, Player player) {
         List<Component> tooltips = new ArrayList<>();
-        if (damage > 0) {
-            tooltips.add(Component.literal(String.format("%.1f ", getSummonDamage(player, itemStack))).withStyle(ChatFormatting.BLUE).append(Component.translatable("item.confluence.tooltip.damage").withStyle(ChatFormatting.GRAY)));
-        }
         if (knockback > 0) {
-            tooltips.add(Component.literal(String.format("%.1f ", getSummonKnockback(player, itemStack))).withStyle(ChatFormatting.BLUE).append(Component.translatable("item.confluence.tooltip.knockback").withStyle(ChatFormatting.GRAY)));
+            tooltips.add(Component.literal(String.format("%.1f ", getSummonKnockback(player, itemStack))).withStyle(ChatFormatting.GRAY).append(Component.translatable("item.confluence.tooltip.knockback").withStyle(ChatFormatting.GRAY)));
         }
         if (armorPierce > 0) {
-            tooltips.add(Component.literal(String.format("%.1f ", getSummonArmorPierce(player, itemStack))).withStyle(ChatFormatting.BLUE).append(Component.translatable("item.confluence.tooltip.armor_pierce").withStyle(ChatFormatting.GRAY)));
+            tooltips.add(Component.literal(String.format("%.1f ", getSummonArmorPierce(player, itemStack))).withStyle(ChatFormatting.GRAY).append(Component.translatable("item.confluence.tooltip.armor_pierce").withStyle(ChatFormatting.GRAY)));
         }
         tooltips.add(Component.translatable("item.confluence.tooltip.summon", typeSupplier.get().getDisplayName()).withStyle(ChatFormatting.GRAY));
         SummonerHelper helper = SummonerHelper.get(player);
-        tooltips.add(Component.translatable(slotType == MinionSlotType.Sentry ? "item.confluence.tooltip.sentry_slots" : "item.confluence.tooltip.minion_slots", Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.BLUE), Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.BLUE)).withStyle(ChatFormatting.GRAY));
+        tooltips.add(Component.translatable(slotType == MinionSlotType.Sentry ? "item.confluence.tooltip.sentry_slots" : "item.confluence.tooltip.minion_slots", Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.GRAY), Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.GRAY));
         tooltips.add(Component.translatable("item.confluence.tooltip.remove_summon").withStyle(ChatFormatting.GRAY));
         return tooltips;
     }

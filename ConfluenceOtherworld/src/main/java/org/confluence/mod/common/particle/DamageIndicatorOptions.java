@@ -77,14 +77,22 @@ public record DamageIndicatorOptions(
     }
 
     public static void sendHealParticle(float amount, ServerLevel level, LivingEntity living) {
-        if (living.getHealth() < living.getMaxHealth()) {
+        amount = effectiveHealAmount(amount, living);
+        if (amount > 0) {
             double y = living.getBoundingBoxForCulling().maxY;
             Vec3 pos = living.position();
             amount = Math.round(amount * 10.0F) / 10.0F;
+            if (amount <= 0) return;
             String text = amount % 1 == 0 ? Integer.toString((int) amount) : Float.toString(amount);
             Component component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
             level.sendParticles(new DamageIndicatorOptions(component, false, Type.HEAL), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0.0);
         }
+    }
+
+    /// 治疗数字只显示实际可恢复的血量，满血、死亡、无效和非正治疗均不生成数值。
+    public static float effectiveHealAmount(float amount, LivingEntity living) {
+        if (!living.isAlive() || !Float.isFinite(amount) || amount <= 0) return 0;
+        return Math.max(0, Math.min(amount, living.getMaxHealth() - living.getHealth()));
     }
 
     public enum Type {

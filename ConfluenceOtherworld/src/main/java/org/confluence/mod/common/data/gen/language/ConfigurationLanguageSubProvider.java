@@ -12,6 +12,30 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void english() {
+        add("confluence.configuration.spawnWithoutLight", "Ignore Light for Enemy Spawns");
+        add("confluence.configuration.spawnWithoutLight.tooltip", "Allows Confluence enemies to spawn without the vanilla darkness requirement.");
+        add("confluence.configuration.npcAttackBlacklist", "NPC Attack Blacklist");
+        add("confluence.configuration.npcAttackBlacklist.tooltip", "Enter a mod ID, an entity ID such as minecraft:zombie, a tag such as #forge:bosses, or regex: followed by a full-ID pattern");
+        add("confluence.configuration.indicatorMode.particle", "Particle Info");
+        add("confluence.configuration.indicatorMode.virtual", "Virtual Info");
+        add("confluence.configuration.AutomaticWeaponUse", "Automatic Weapon Use");
+        add("confluence.configuration.AutomaticWeaponUse.tooltip", "Controls which weapon categories automatically repeat while their input is held");
+        add("confluence.configuration.autoSwingAllSwords", "Auto Swing All Swords");
+        add("confluence.configuration.autoSwingAllSwords.tooltip", "When disabled, only tagged swords or swords enabled by glove accessories can auto swing");
+        add("confluence.configuration.autoFireAllGuns", "Auto Fire All Guns");
+        add("confluence.configuration.autoFireAllGuns.tooltip", "When disabled, only guns in the automatic gun tag support hold-to-fire");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem", "Use First Tag Item for Shimmer Decomposition");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip", "When enabled, Shimmer decomposition uses the first matching ingredient item instead of randomly selecting from tag candidates.");
+        add("confluence.configuration.WeaponInput", "Weapon Input");
+        add("confluence.configuration.WeaponInput.button", "Weapon Input");
+        add("confluence.configuration.WeaponInput.tooltip", "Choose the primary action button for each weapon category.");
+        add("confluence.configuration.weaponInputButton.left", "Left Mouse Button");
+        add("confluence.configuration.weaponInputButton.right", "Right Mouse Button");
+        add("confluence.configuration.staffUseButton", "Staff Action Button");
+        add("confluence.configuration.whipUseButton", "Whip Action Button");
+        add("confluence.configuration.yoyoUseButton", "Yoyo Action Button");
+        add("confluence.configuration.gunUseButton", "Gun Action Button");
+        add("confluence.configuration.flailUseButton", "Flail Action Button");
         // configuration
         add("confluence.configuration.customTitle", "Custom Title");
 
@@ -37,6 +61,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion");
         add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.");
         add("confluence.configuration.sellPriceDisplay", "Sell Price Display");
+        add("confluence.configuration.weaponTooltipBaseStats", "Show Base Weapon Stats");
+        add("confluence.configuration.weaponTooltipBaseStats.tooltip", "Shows the weapon's own damage and critical chance, including its prefix, instead of bonuses from player equipment and effects. Disabled by default. Attack speed always follows the actual use behavior.");
         add("confluence.configuration.sellPriceDisplay.tooltip", "Toggles the timing to see the price of the item when it is sold to NPCs");
         add("confluence.configuration.sellPriceDisplay.never", "Not displayed at any time");
         add("confluence.configuration.sellPriceDisplay.everywhere", "Displayed at all times");
@@ -233,8 +259,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goreEffect.tooltip", "The gore effect will be specially adapted to Conflux and Vanilla entities, while other mod entities will use a generic method with no guaranteed effect.");
         add("confluence.configuration.damageIndicator", "Damage Indicator");
         add("confluence.configuration.healIndicator", "Heal Indicator");
-        add("confluence.configuration.damageIndicator.tooltip", "Enable to display damage numbers");
-        add("confluence.configuration.healIndicator.tooltip", "Enable to display heal numbers");
+        add("confluence.configuration.damageIndicator.tooltip", "How damage numbers are displayed: particle indicator or virtual info");
+        add("confluence.configuration.healIndicator.tooltip", "How heal numbers are displayed: particle indicator or virtual info");
 
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
@@ -361,6 +387,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.instantlyHardmodeConversion", "困难模式快速转换");
         add("confluence.configuration.instantlyHardmodeConversion.tooltip", "启用后，转换至困难模式的过程将会加快并以完全卡顿的形式进行，请评估电脑性能斟酌打开此配置");
         add("confluence.configuration.sellPriceDisplay", "物品售价显示");
+        add("confluence.configuration.weaponTooltipBaseStats", "显示武器基础数值");
+        add("confluence.configuration.weaponTooltipBaseStats.tooltip", "开启后显示武器自身的伤害与暴击率（保留词缀），不计玩家装备和状态效果加成；默认关闭，显示加成后的数值。攻击速度始终按实际使用行为显示。");
         add("confluence.configuration.sellPriceDisplay.tooltip", "切换查看该物品出售于NPC时的价格的时机");
         add("confluence.configuration.sellPriceDisplay.never", "任何时候都不显示");
         add("confluence.configuration.sellPriceDisplay.everywhere", "任何时候都显示");
@@ -570,8 +598,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goreEffect.tooltip", "肢解效果会对汇流生物和原版生物特别适配，其他Mod的生物使用通用的方法，不保证效果。");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
         add("confluence.configuration.healIndicator", "治疗数值显示");
-        add("confluence.configuration.damageIndicator.tooltip", "启用以观察伤害数值");
-        add("confluence.configuration.healIndicator.tooltip", "启用以观察治疗数值");
+        add("confluence.configuration.damageIndicator.tooltip", "伤害数值的显示方式：粒子信息或虚拟信息");
+        add("confluence.configuration.healIndicator.tooltip", "治疗数值的显示方式：粒子信息或虚拟信息");
         add("confluence.configuration.indicatorMode.particle", "粒子信息");
         add("confluence.configuration.indicatorMode.virtual", "虚拟信息");
 

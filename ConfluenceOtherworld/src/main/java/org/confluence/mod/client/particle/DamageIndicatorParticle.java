@@ -101,8 +101,8 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
     public static class Provider implements ParticleProvider<DamageIndicatorOptions> {
         @Override
         public @Nullable Particle createParticle(DamageIndicatorOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            if (!ClientConfigs.damageIndicator && options.type() == DamageIndicatorOptions.Type.DAMAGE
-                    || !ClientConfigs.healIndicator && options.type() == DamageIndicatorOptions.Type.HEAL) {
+            if (ClientConfigs.damageIndicator.isVirtual() && options.type() == DamageIndicatorOptions.Type.DAMAGE
+                    || ClientConfigs.healIndicator.isVirtual() && options.type() == DamageIndicatorOptions.Type.HEAL) {
                 return null;
             }
             return new DamageIndicatorParticle(pLevel, pX, pY, pZ, options.text(), options.big());

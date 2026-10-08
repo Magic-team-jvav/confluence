@@ -30,12 +30,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
@@ -56,7 +57,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
-public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
+public abstract class AbstractSpearItem extends TooltipItem implements GeoItem, IWeaponTooltip {
     public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final int attackDuration;
@@ -65,6 +66,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     private TooltipComponent component;
     /** 本次挥击已命中的实体 ID，挥击开始时清空 */
     private final Set<Integer> struckEntities = new HashSet<>();
+
 
     /// @param attackDuration 攻击持续时间，值越大攻击时间越长
     /// @param attackInterval 攻击间隔，每造成两次伤害之间的时间
@@ -255,5 +257,15 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         public static K of(double atTime, double zOffset, EasingType easingType) {
             return new K(atTime, zOffset, easingType);
         }
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, attackDuration + 1);
     }
 }

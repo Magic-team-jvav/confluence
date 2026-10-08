@@ -1,19 +1,23 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.SpikyBallProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
 
-public class SpikyBallItem extends Item {
+public class SpikyBallItem extends Item implements IWeaponTooltip {
     public SpikyBallItem() {
         super(new Properties().stacksTo(MAX_STACK_SIZE));
     }
@@ -35,5 +39,20 @@ public class SpikyBallItem extends Item {
         }
 
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide);
+    }
+
+    @Override
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getRangedDamage();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return 3.2 * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / 5;
     }
 }

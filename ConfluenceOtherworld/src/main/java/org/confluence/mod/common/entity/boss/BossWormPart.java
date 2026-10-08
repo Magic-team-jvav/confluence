@@ -145,6 +145,12 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     }
 
     @Override
+    public boolean supportsDigSound() {
+        BaseWormBoss head = getOwner();
+        return head != null && head.isAlive() && head.supportsDigSound();
+    }
+
+    @Override
     public int getSegmentIndex() {
         return entityData.get(INDEX);
     }

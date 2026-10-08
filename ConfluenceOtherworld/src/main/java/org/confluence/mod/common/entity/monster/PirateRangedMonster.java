@@ -28,6 +28,11 @@ public class PirateRangedMonster extends BaseMonster {
     private int chargeReduction;
     private boolean recovering;
 
+    @Override
+    protected boolean shouldFloatInWater() {
+        return true;
+    }
+
     public PirateRangedMonster(EntityType<? extends PirateRangedMonster> type, Level level, Profile profile) {
         super(type, level);
         this.profile = profile;

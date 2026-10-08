@@ -1,11 +1,14 @@
 package org.confluence.mod.common.item.gun;
 
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.item.gun.definition.GunDefinition;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -57,5 +60,10 @@ public class ManaGunItem extends BaseGun {
 
     public float getCritical() {
         return getDefinition().critical();
+    }
+
+    @Override
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getMagicDamage();
     }
 }

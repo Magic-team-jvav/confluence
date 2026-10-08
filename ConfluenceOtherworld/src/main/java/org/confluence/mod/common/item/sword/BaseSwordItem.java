@@ -26,6 +26,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class BaseSwordItem extends SwordItem {
+public class BaseSwordItem extends SwordItem implements IWeaponTooltip {
     private final SwordDefinition definition;
     private @Nullable TooltipComponent tooltipImage;
 
@@ -128,14 +129,7 @@ public class BaseSwordItem extends SwordItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        Projectile data = projectile(stack);
-        if (data != null) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0x57CDFB));
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()).withColor(0x57CDFB));
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.speed").append(": " + data.baseSpeed()).withColor(0x57CDFB));
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.cooldown").append(": " + data.cooldown()).withColor(0x57CDFB));
-            data.trackType().ifPresent(type -> tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.track_type").append(": ").append(Component.translatable(type.getName())).withColor(0x57CDFB)));
-        }
+
         for (int index = 0; index < definition.tooltips().size(); index++) {
             if (index == 0) tooltipComponents.add(CommonComponents.EMPTY);
             MutableComponent component = Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + index).withStyle(style -> style.withColor(0x666666).withItalic(true));

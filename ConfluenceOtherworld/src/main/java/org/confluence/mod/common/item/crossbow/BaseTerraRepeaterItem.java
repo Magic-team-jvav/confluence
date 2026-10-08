@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
@@ -32,16 +33,18 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.lib.util.LibEnchantmentUtils;
+import org.confluence.mod.api.item.ILeftClickStateItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.mixed.IAbstractArrow;
@@ -58,7 +61,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickStateItem {
+public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickStateItem, IWeaponTooltip {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
@@ -798,5 +801,20 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
             }
             return properties;
         }
+    }
+
+    @Override
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getRangedDamage();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return baseDamage * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, baseShootInterval);
     }
 }

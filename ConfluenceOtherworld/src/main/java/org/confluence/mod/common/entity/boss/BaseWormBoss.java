@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.boss;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Nullable;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +17,10 @@ import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.WormSegment;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /// 蠕虫型 Boss 基类。穿透方块移动，体节跟随。

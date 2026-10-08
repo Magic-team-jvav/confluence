@@ -21,6 +21,7 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
+import org.confluence.mod.common.entity.ai.bt.leaf.*;
 import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -28,7 +29,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
-import org.confluence.mod.common.entity.ai.bt.leaf.*;
 
 /// 通用陆行近战怪物，负责追击、近战、越障跃击和空闲漫游。
 ///
@@ -48,6 +48,11 @@ public class BaseWarriorMonster extends BaseMonster {
     private final LandSoundProfile soundProfile;
     private final DoorBehavior doorBehavior;
     private boolean doorNavigationEnabled;
+
+    @Override
+    protected boolean shouldFloatInWater() {
+        return true;
+    }
 
     public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level) {
         this(type, level, 0.0, LandAnimationProfile.NONE, LandSoundProfile.ROUTINE);

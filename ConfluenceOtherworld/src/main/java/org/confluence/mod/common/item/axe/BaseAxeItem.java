@@ -10,6 +10,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class BaseAxeItem extends AxeItem {
+public class BaseAxeItem extends AxeItem implements IWeaponTooltip {
     private @Nullable TooltipComponent component;
     private boolean hasImage;
 

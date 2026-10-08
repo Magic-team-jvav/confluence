@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -30,7 +31,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class BaseDrillItem extends PickaxeItem implements GeoItem {
+public class BaseDrillItem extends PickaxeItem implements GeoItem, IWeaponTooltip {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BaseDrillItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {

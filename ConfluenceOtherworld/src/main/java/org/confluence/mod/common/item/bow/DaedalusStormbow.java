@@ -37,4 +37,9 @@ public class DaedalusStormbow extends BaseTerraBowItem {
 
     @Override
     public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {}
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 5.0;
+    }
 }

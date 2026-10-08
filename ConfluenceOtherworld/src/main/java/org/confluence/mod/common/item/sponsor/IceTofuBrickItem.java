@@ -2,26 +2,30 @@ package org.confluence.mod.common.item.sponsor;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
 
 import java.util.List;
 
-public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem {
+public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem, IWeaponTooltip {
     public IceTofuBrickItem() {
         super(new Properties(), ModRarity.MASTER);
     }
@@ -50,5 +54,20 @@ public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(TooltipItem.getTooltipsFromString("ice_tofu_brick", 1, ChatFormatting.GRAY));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    }
+
+    @Override
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getRangedDamage();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return 4.0 * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / 6;
     }
 }

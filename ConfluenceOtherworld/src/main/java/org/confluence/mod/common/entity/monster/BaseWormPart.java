@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import java.util.List;
-import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.EnemyDamageRules;
@@ -24,7 +23,9 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import net.minecraft.world.entity.*;
+
+import java.util.List;
+import java.util.UUID;
 
 
 // 分段生物的共用部件实现；实体类型由所属家族决定，位置由本体的连续轨迹驱动。
@@ -125,6 +126,12 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     }
 
     @Override
+    public boolean supportsDigSound() {
+        BaseWormMonster head = getOwner();
+        return head != null && head.isAlive() && head.supportsDigSound();
+    }
+
+    @Override
     public int getSegmentIndex() {
         return entityData.get(INDEX);
     }
@@ -172,7 +179,9 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         }
         unresolvedOwnerTicks = 0;
 
-        if (!level().isClientSide) tickCollisionAttack(head);
+        if (!level().isClientSide) {
+            tickCollisionAttack(head);
+        }
     }
 
     private void tickCollisionAttack(BaseWormMonster head) {

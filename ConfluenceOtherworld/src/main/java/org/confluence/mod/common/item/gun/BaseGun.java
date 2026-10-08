@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.gun;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +11,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,8 +21,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.api.animation.first_person.HandAnimationApi;
 import org.confluence.lib.api.animation.first_person.HandAnimationChannel;
 import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibClientUtils;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.gun.definition.FireMode;
@@ -39,7 +43,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class BaseGun extends Item implements GeoItem {
+public class BaseGun extends Item implements GeoItem, IWeaponTooltip {
     public static final String DRAW_ACTION = "draw";
     public static final String PUT_AWAY_ACTION = "put_away";
     public static final String SHOOT_ACTION = "shoot";
@@ -93,8 +97,7 @@ public class BaseGun extends Item implements GeoItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.confluence.ranged_damage", definition.damage()).withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("tooltip.confluence.critical_chance", String.format("%.1f", definition.critical() * 100)).withStyle(ChatFormatting.GRAY));
+
         tooltipComponents.add(Component.translatable("tooltip.confluence.knockback", definition.knockback()).withStyle(ChatFormatting.GRAY));
     }
 
@@ -187,5 +190,33 @@ public class BaseGun extends Item implements GeoItem {
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;
+    }
+
+    @Override
+    public Holder<Attribute> getTooltipDamageAttribute() {
+        return LibAttributes.getRangedDamage();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return definition.damage() * attributeValue;
+    }
+
+    @Override
+    public double getTooltipCriticalChance(ItemStack stack, double attributeValue) {
+        /// 两次独立暴击判定，取至少一次触发的概率。
+        double weaponCritical = Math.max(0, Math.min(1, definition.critical()));
+        double playerCritical = Math.max(0, Math.min(1, attributeValue));
+        return 1 - (1 - weaponCritical) * (1 - playerCritical);
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return IWeaponTooltip.speedFromCooldown(definition.cooldown(), attributeValue);
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue, @Nullable Player player) {
+        return IWeaponTooltip.speedFromCooldown(definition.cooldown(), attributeValue, player);
     }
 }

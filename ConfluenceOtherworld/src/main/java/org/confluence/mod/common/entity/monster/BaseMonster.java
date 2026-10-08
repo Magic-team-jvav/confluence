@@ -14,6 +14,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -234,6 +236,14 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        if (shouldFloatInWater()) {
+            goalSelector.addGoal(-1, new FloatGoal(this) {
+                @Override
+                public boolean canUse() {
+                    return !isNoGravity() && super.canUse();
+                }
+            });
+        }
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.playerTargetGoal = new NearestAttackableTargetGoal<>(this, Player.class, mustSeePlayerTarget(), this::canTargetPlayer);
         this.targetSelector.addGoal(1, playerTargetGoal);
@@ -278,7 +288,10 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
 
     private BTRoot createSafeBehaviorTree() {
         try {
-            return Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
+            BTRoot tree = Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
+            /// 浮水只占用跳跃，移动与观察仍由原行为树执行，不能让浮水暂停整棵树。
+            if (shouldFloatInWater()) tree.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            return tree;
         } catch (RuntimeException exception) {
             Confluence.LOGGER.error("Failed to create behavior tree for {}; the entity will remain passive instead of crashing the level", getType(), exception);
             return disabledBehaviorTree();
@@ -300,6 +313,11 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     }
 
     protected abstract BTRoot createBT();
+
+    /// 陆行怪物族启用原版浮水；水生、飞行和固定位置怪物默认不参与。
+    protected boolean shouldFloatInWater() {
+        return false;
+    }
 
     /// 推进由实体持有的接触攻击计时器。
     ///

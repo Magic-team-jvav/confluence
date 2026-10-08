@@ -1,7 +1,5 @@
 package org.confluence.mod.common.summoner.attachment;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +12,9 @@ import org.confluence.mod.client.summoner.info.NumberInfo;
 import org.confluence.mod.client.summoner.info.TextInfo;
 import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public final class InfoData {
@@ -36,12 +37,9 @@ public final class InfoData {
         InfoData infoData = player.level().getData(SummonerAttachmentTypes.INFO);
         Vec3 eye = player.getEyePosition();
         for (SummonerBatchedInfoPayload.Number entry : numbers) {
-            // 粒子信息模式下这些数字由原版指示粒子显示，同步时直接不接受，渲染时不再逐帧判断。
-            // 1.20 侧是 `IndicatorMode#isParticle()`（PARTICLE/VIRTUAL 二选一）；
-            // 1.21 侧的 `ClientConfigs` 只有 boolean（`ClientConfigs.java:64-65`，true = 显示数值），
-            // 因此 PARTICLE 等价于「该开关关闭」。
-            boolean enabled = entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator;
-            if (!enabled) continue;
+            /// 粒子模式不接收虚拟数值，两种显示方式不能重复输出。
+            if ((entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator).isParticle())
+                continue;
             NumberInfo info = new NumberInfo(entry.type(), entry.amount(), entry.pos(), entry.velocity());
             if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
                 infoData.numbers.add(info);

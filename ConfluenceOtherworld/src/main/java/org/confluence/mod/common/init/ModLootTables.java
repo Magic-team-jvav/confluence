@@ -11,6 +11,8 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -105,10 +107,37 @@ public final class ModLootTables {
         public static final RegistryObject<LootItemConditionType> DIFFICULTY_CHANCE = register("difficulty_chance", DifficultyChanceLootItemCondition.CODEC);
         public static final RegistryObject<LootItemConditionType> SECRET_FLAG = register("secret_flag", SecretFlagLootItemCondition.CODEC);
         public static final RegistryObject<LootItemConditionType> ENTITY_VARIANT = register("entity_variant", EntityVariantLootItemCondition.CODEC);
+        public static final RegistryObject<LootItemConditionType> LOOTING_SCALED_CHANCE = register("looting_scaled_chance", LootingScaledChanceLootItemCondition.CODEC);
 
         private static <T extends LootItemCondition> RegistryObject<LootItemConditionType> register(String name, MapCodec<T> mapCodec) {
             Codec<T> codec = mapCodec.codec();
             return TYPES.register(name, () -> new LootItemConditionType(new Serializer<T>() {
+                @Override
+                public void serialize(JsonObject json, T value, JsonSerializationContext serializationContext) {
+                    PortDataResultExtension.ifSuccess(codec.encodeStart(JsonOps.INSTANCE, value), r -> {
+                        for (Map.Entry<String, JsonElement> entry : r.getAsJsonObject().entrySet()) {
+                            json.add(entry.getKey(), entry.getValue());
+                        }
+                    });
+                }
+
+                @Override
+                public T deserialize(JsonObject json, JsonDeserializationContext serializationContext) {
+                    return PortDataResultExtension.getOrThrow(mapCodec.compressedDecode(JsonOps.INSTANCE, json));
+                }
+            }));
+        }
+    }
+
+    public static class ItemFunctions {
+        public static final DeferredRegister<LootItemFunctionType> TYPES = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, Confluence.MODID);
+
+        public static final RegistryObject<LootItemFunctionType> LOOTING_BONUS_COUNT =
+                register("looting_bonus_count", LootingBonusCountFunction.CODEC);
+
+        private static <T extends LootItemFunction> RegistryObject<LootItemFunctionType> register(String name, MapCodec<T> mapCodec) {
+            Codec<T> codec = mapCodec.codec();
+            return TYPES.register(name, () -> new LootItemFunctionType(new Serializer<T>() {
                 @Override
                 public void serialize(JsonObject json, T value, JsonSerializationContext serializationContext) {
                     PortDataResultExtension.ifSuccess(codec.encodeStart(JsonOps.INSTANCE, value), r -> {

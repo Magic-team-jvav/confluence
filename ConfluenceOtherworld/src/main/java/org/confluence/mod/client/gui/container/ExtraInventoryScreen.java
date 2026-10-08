@@ -101,7 +101,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         super.init();
         addRenderableWidget(new PortImageButton(leftPos + 109, topPos + 166, 16, 16, HOUSE_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
-                getMinecraft().setScreen(null);
+                super.onClose();
                 HouseSelectHud.inSelectHUD = true;
             }
         }));

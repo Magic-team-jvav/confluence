@@ -62,16 +62,14 @@ public final class WormholeHandlerClient {
                 });
     }
 
-    private static @NotNull Function<Map<ResourceLocation, Resource>, Object2ObjectOpenHashMap<ResourceLocation, ResourceLocation>> getMapFunction() {
+    private static Function<Map<ResourceLocation, Resource>, Object2ObjectOpenHashMap<ResourceLocation, ResourceLocation>> getMapFunction() {
         return resources -> {
             var tasks = new Object2ObjectOpenHashMap<ResourceLocation, ResourceLocation>();
             for (ResourceLocation resource : resources.keySet()) {
                 String[] split = resource.getPath().substring(WORMHOLE_DIMENSION_PATH.length() + 1).split("/", 2);
                 if (split.length != 2) continue;
                 String substring = split[1].substring(0, split[1].length() - 4);
-                ResourceLocation k = ResourceLocation.fromNamespaceAndPath(split[0], substring);
-                ResourceLocation v = resource;
-                tasks.put(k, v);
+                tasks.put(ResourceLocation.fromNamespaceAndPath(split[0], substring), resource);
             }
             return tasks;
         };

@@ -20,6 +20,7 @@ import net.minecraftforge.common.ToolActions;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.component.ToolMode;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
@@ -29,7 +30,7 @@ import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifier
 import java.util.List;
 import java.util.function.Consumer;
 
-public class HoeShovelItem extends DiggerItem {
+public class HoeShovelItem extends DiggerItem implements IWeaponTooltip {
     public HoeShovelItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<PortItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_HOE_SHOVEL, properties
                 .component(ConfluenceMagicLib.MOD_RARITY, rarity)

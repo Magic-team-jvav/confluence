@@ -124,6 +124,12 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     }
 
     @Override
+    public boolean supportsDigSound() {
+        BaseWormMonster head = getOwner();
+        return head != null && head.isAlive() && head.supportsDigSound();
+    }
+
+    @Override
     public int getSegmentIndex() {
         return entityData.get(INDEX);
     }
@@ -171,7 +177,9 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         }
         unresolvedOwnerTicks = 0;
 
-        if (!level().isClientSide) tickCollisionAttack(head);
+        if (!level().isClientSide) {
+            tickCollisionAttack(head);
+        }
     }
 
     private void tickCollisionAttack(BaseWormMonster head) {

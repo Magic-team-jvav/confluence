@@ -8,21 +8,24 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.item.PortProjectileItem;
 
 import java.util.List;
 
-public class IceTofuBrickItem extends CustomRarityItem implements PortProjectileItem {
+public class IceTofuBrickItem extends CustomRarityItem implements PortProjectileItem, IWeaponTooltip {
     public IceTofuBrickItem() {
         super(new Properties(), ModRarity.MASTER);
     }
@@ -52,5 +55,20 @@ public class IceTofuBrickItem extends CustomRarityItem implements PortProjectile
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.addAll(TooltipItem.getTooltipsFromString("ice_tofu_brick", 1, ChatFormatting.GRAY));
         super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
+    }
+
+    @Override
+    public Attribute getTooltipDamageAttribute() {
+        return LibAttributes.getRangedDamage().value();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return 4.0 * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / 6;
     }
 }

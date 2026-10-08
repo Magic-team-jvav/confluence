@@ -174,6 +174,8 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         super.tick();
         if (level().isClientSide) return;
         if (level().isDay()) setTarget(null);
+        /// 移动和反弹结束后再统一朝向，不能继续使用动作执行前的目标方向或旧速度。
+        if (isAlive()) faceCombatMovement(360.0F, 180.0F);
     }
 
     private record VariantStats(double health, double damage, int armor, double movementSpeed) {}

@@ -6,10 +6,11 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
 
-public class BaseHoeItem extends HoeItem {
+public class BaseHoeItem extends HoeItem implements IWeaponTooltip {
     public BaseHoeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties) {
         super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), properties);
     }

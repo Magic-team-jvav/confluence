@@ -24,6 +24,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.client.renderer.item.BaseFlailItemRenderer;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -42,7 +43,7 @@ import java.util.function.Supplier;
 ///
 /// 按下主动作键时创建并旋转链锤，松开时投出；再次按下可让投出或回收中的链锤落入停留阶段，
 /// 再次松开则收回。
-public class BaseFlailItem extends TooltipItem implements GeoItem {
+public class BaseFlailItem extends TooltipItem implements GeoItem, IWeaponTooltip {
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private final Parameters parameters;
 
@@ -404,5 +405,15 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
             int autoSwingMaxActive,
             boolean retractOnHitEntity) {
         public static final Behavior NORMAL = new Behavior(0.3F, false, 13, false, 0, false);
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return parameters.damageFactor() * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, parameters.cooldown() - (int) (attributeValue / 3.0));
     }
 }

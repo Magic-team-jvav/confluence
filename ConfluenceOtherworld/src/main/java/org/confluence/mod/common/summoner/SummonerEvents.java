@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.mixed.ILibDamageSource;
+import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.summoner.attachment.InfoData;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
@@ -89,9 +90,9 @@ public final class SummonerEvents {
         });
         PortEventHandler.addListener((PortLivingHealEvent event) -> {
             LivingEntity living = event.getEntity();
-            float amount = event.getAmount();
+            float amount = DamageIndicatorOptions.effectiveHealAmount(event.getAmount(), living);
             Level level = living.level();
-            if (!level.isClientSide()) {
+            if (!level.isClientSide() && amount > 0) {
                 Vec3 pos = living.getBoundingBox().getCenter();
                 Vec3 velocity = new Vec3(0, 2, 0).offsetRandom(level.getRandom(), 0.5F).subtract(Vec3.ZERO).scale(0.4);
                 InfoData.record(level, amount, pos, velocity, InfoData.Type.HEAL);

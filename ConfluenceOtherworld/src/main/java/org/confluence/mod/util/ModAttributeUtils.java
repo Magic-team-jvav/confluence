@@ -11,7 +11,7 @@ import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
 
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
-// todo 合并四职业属性的tooltip
+/// 追加不属于伤害、暴击率和攻速的词缀属性提示。
 public final class ModAttributeUtils {
     public static void addPrefixTooltips(PortAddAttributeTooltipsEvent event) {
         PrefixComponent prefix = PrefixUtils.getPrefix(event.getStack());
@@ -42,8 +42,6 @@ public final class ModAttributeUtils {
             ModPrefix modPrefix = prefix.type() == PrefixType.SUMMON ? ModPrefix.Summon.VALUES.get(prefix.name()) : ModPrefix.Universal.VALUES.get(prefix.name());
             // 召唤武器的伤害与击退，两类词缀都作用于召唤物
             if (modPrefix instanceof ModPrefix.Summon summon) {
-                if (summon.attackDamage() != 0)
-                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (summon.attackDamage() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(summon.attackDamage()) * 100), Component.translatable("item.confluence.tooltip.damage")).withStyle(summon.attackDamage() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
                 if (summon.knockBack() != 0)
                     event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (summon.knockBack() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(summon.knockBack()) * 100), Component.translatable("item.confluence.tooltip.knockback")).withStyle(summon.knockBack() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
                 if (summon.tagDamage() != 0)
@@ -51,8 +49,6 @@ public final class ModAttributeUtils {
                 if (summon.armorPenetration() != 0)
                     event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add", ATTRIBUTE_MODIFIER_FORMAT.format(summon.armorPenetration()), Component.translatable("prefix.confluence.tooltip.armor_penetration")).withStyle(ChatFormatting.BLUE));
             } else if (modPrefix instanceof ModPrefix.Universal universal) {
-                if (universal.attackDamage() != 0)
-                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (universal.attackDamage() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(universal.attackDamage()) * 100), Component.translatable("item.confluence.tooltip.damage")).withStyle(universal.attackDamage() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
                 if (universal.knockBack() != 0)
                     event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (universal.knockBack() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(universal.knockBack()) * 100), Component.translatable("item.confluence.tooltip.knockback")).withStyle(universal.knockBack() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
             }

@@ -45,6 +45,7 @@ import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.api.ITrackType;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
 import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -80,7 +81,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
-public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
+public abstract class AbstractSpearItem extends TooltipItem implements GeoItem, IWeaponTooltip {
     /// 长矛派生弹幕的固定参数；codec仅用于实体存档，不写入物品组件。
     public record Parameters(
             float damageFactor,
@@ -432,5 +433,15 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         public static K of(double atTime, double zOffset, EasingType easingType) {
             return new K(atTime, zOffset, easingType);
         }
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, attackDuration + 1);
     }
 }

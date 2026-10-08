@@ -63,6 +63,7 @@ import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
+import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -113,6 +114,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::customizeGuiOverlay$BossEventProgress);
         PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::renderTooltip$GatherComponents);
         PortEventHandler.addListener(GameClientEvents::itemToolTip);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, WeaponTooltip::update);
         PortEventHandler.addListener(PortEventPriority.LOW, GameClientEvents::addAttributeTooltips);
         PortEventHandler.addListener(GameClientEvents::movementInputUpdate);
         PortEventHandler.addListener(GameClientEvents::renderLevelStage);
@@ -173,6 +175,7 @@ public final class GameClientEvents {
     private static void clientTick$Post(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         Minecraft minecraft = Minecraft.getInstance();
+        WormDigSoundHandler.tick(minecraft);
         LocalPlayer player = minecraft.player;
 
         boolean attackHeld = minecraft.options.keyAttack.isDown();

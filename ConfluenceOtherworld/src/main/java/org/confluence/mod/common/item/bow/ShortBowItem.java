@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.bow;
 
+import net.minecraft.world.item.ItemStack;
 
 public class ShortBowItem extends BaseTerraBowItem {
     public static final int MAX_DRAW_DURATION = 8; // 满蓄力时间为8 tick
@@ -24,5 +25,10 @@ public class ShortBowItem extends BaseTerraBowItem {
     @Override
     public float getFullDrawDamage() {
         return getBaseDamage();
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / MAX_DRAW_DURATION;
     }
 }

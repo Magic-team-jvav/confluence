@@ -32,6 +32,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.ILeftClickStateItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.attachment.LeftClickState;
 import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.item.LanceItems;
@@ -57,7 +58,7 @@ import java.util.function.Consumer;
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
 /// 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。
-public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateItem, GeoItem {
+public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateItem, GeoItem, IWeaponTooltip {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
     private final double attackDistance;
@@ -158,9 +159,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
                 builder.add(Component.translatable("tooltip.item.confluence.jousting_lance.1").withStyle(ChatFormatting.GRAY));
             }
             builder.add(
-                    Component.translatable("tooltip.confluence.attack_interval", attackInterval).withStyle(ChatFormatting.DARK_GRAY),
                     Component.translatable("tooltip.confluence.attack_distance", ATTRIBUTE_MODIFIER_FORMAT.format(attackDistance)).withStyle(ChatFormatting.DARK_GRAY),
-                    Component.translatable("tooltip.confluence.attack_damage", ATTRIBUTE_MODIFIER_FORMAT.format(baseAttackDamage)).withStyle(ChatFormatting.DARK_GRAY),
                     Component.translatable("tooltip.confluence.knockback", ATTRIBUTE_MODIFIER_FORMAT.format(baseKnockback)).withStyle(ChatFormatting.DARK_GRAY)
             );
             this.tooltips = builder.build();
@@ -218,5 +217,15 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
             player.getCooldowns().addCooldown(lance, 5);
             lance.stopTriggeredAnim(player, GeoItem.getOrAssignId(itemStack, player.serverLevel()), "lance", "sting");
         }
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return Math.floor(baseAttackDamage * 0.1 * attributeValue);
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, attackInterval);
     }
 }

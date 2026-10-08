@@ -39,6 +39,7 @@ public final class ClientConfigs {
     public static boolean soulcererBackgroundMagic = true;
 
     public static boolean achievementToast = true;
+    public static boolean weaponTooltipBaseStats = false;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
     public static int customTitle = 71;
     public static CustomBossBarRenderer.Style bossBarStyle = CustomBossBarRenderer.Style.STATIC;
@@ -83,6 +84,7 @@ public final class ClientConfigs {
     public static BooleanValue SOULCERER_BACKGROUND_MAGIC;
 
     private static BooleanValue ACHIEVEMENT_TOAST;
+    private static BooleanValue WEAPON_TOOLTIP_BASE_STATS;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
     private static IntValue CUSTOM_TITLE;
     private static EnumValue<CustomBossBarRenderer.Style> BOSS_BAR_STYLE;
@@ -127,6 +129,7 @@ public final class ClientConfigs {
         soulcererBackgroundMagic = SOULCERER_BACKGROUND_MAGIC.get();
 
         achievementToast = ACHIEVEMENT_TOAST.get();
+        weaponTooltipBaseStats = WEAPON_TOOLTIP_BASE_STATS.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
         customTitle = CUSTOM_TITLE.get();
         bossBarStyle = BOSS_BAR_STYLE.get();
@@ -169,6 +172,8 @@ public final class ClientConfigs {
         {
             builder.push("GUI");
             ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
+            WEAPON_TOOLTIP_BASE_STATS = builder.comment("显示武器自身的伤害和暴击率（保留词缀），不计玩家装备和效果加成；默认显示加成后的数值。")
+                    .define("weaponTooltipBaseStats", false);
             SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
             CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
             {

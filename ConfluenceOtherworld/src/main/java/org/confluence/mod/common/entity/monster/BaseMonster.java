@@ -12,6 +12,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -44,11 +46,11 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Objects;
+import java.util.*;
 
 public abstract class BaseMonster extends Monster implements GeoEntity {
-    private final java.util.Set<Enum<?>> activeStates = new java.util.LinkedHashSet<>();
-    private final java.util.Map<Enum<?>, java.util.Set<Attribute>> stateMultiplierAttributes = new java.util.HashMap<>();
+    private final Set<Enum<?>> activeStates = new LinkedHashSet<>();
+    private final Map<Enum<?>, Set<Attribute>> stateMultiplierAttributes = new HashMap<>();
     private CreatureDefinition appliedDefinition;
     private CreatureDifficultyRules.Difficulty appliedDifficulty;
     private GamePhase appliedPhase;
@@ -64,7 +66,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     private double defaultAttackDamage;
     private double defaultArmor;
     private double defaultArmorPenetration, defaultArmorToughness;
-    private final java.util.Map<Attribute, Double> defaultMultiplierAttributes = new java.util.HashMap<>();
+    private final Map<Attribute, Double> defaultMultiplierAttributes = new HashMap<>();
     private double defaultMovementSpeed;
     private double defaultFollowRange;
     private double defaultKnockbackResistance;
@@ -110,8 +112,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     /// 无实体射弹的范围攻击也从登记状态取专家伤害，不在行为代码硬编码数值。
     protected final float specialAttackDamage(Enum<?> attack) {
         double base = getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue();
-        return (float) CreatureDifficultyScaling.projectileDamage(this,
-                stateAttributeValue(attack, Attributes.ATTACK_DAMAGE, base), false);
+        return (float) CreatureDifficultyScaling.projectileDamage(this, stateAttributeValue(attack, Attributes.ATTACK_DAMAGE, base), false);
     }
 
     /// 按当前接触属性派生特殊伤害，保留阶段与配置加成，仅替换接触难度倍率。
@@ -125,8 +126,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         var values = creatureDefinition().state(state).attributes();
         applyStateModifier(Attributes.ATTACK_DAMAGE, stateModifier(state, Attributes.ATTACK_DAMAGE), values.attackDamage(), enabled);
         applyStateModifier(Attributes.ARMOR, stateModifier(state, Attributes.ARMOR), values.armor(), enabled);
-        applyStateModifier(LibAttributes.getArmorPenetration().value(),
-                stateModifier(state, LibAttributes.getArmorPenetration().value()), values.armorPenetration(), enabled);
+        applyStateModifier(LibAttributes.getArmorPenetration().value(), stateModifier(state, LibAttributes.getArmorPenetration().value()), values.armorPenetration(), enabled);
         applyStateModifier(Attributes.ARMOR_TOUGHNESS, stateModifier(state, Attributes.ARMOR_TOUGHNESS), values.armorToughness(), enabled);
         applyStateModifier(Attributes.MOVEMENT_SPEED, stateModifier(state, Attributes.MOVEMENT_SPEED), values.movementSpeed(), enabled);
         applyStateModifier(Attributes.KNOCKBACK_RESISTANCE, stateModifier(state, Attributes.KNOCKBACK_RESISTANCE), values.knockbackResistance(), enabled);
@@ -159,7 +159,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             if (instance != null) instance.removeModifier(stateMultiplierId(state, attribute));
         });
         if (!enabled) return;
-        java.util.Set<Attribute> applied = new java.util.HashSet<>();
+        Set<Attribute> applied = new HashSet<>();
         values.multipliers().forEach((id, multiplier) -> {
             if (!BuiltInRegistries.ATTRIBUTE.containsKey(id)) return;
             Attribute attribute = BuiltInRegistries.ATTRIBUTE.get(id);
@@ -171,9 +171,9 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         if (!applied.isEmpty()) stateMultiplierAttributes.put(state, applied);
     }
 
-    private java.util.UUID stateMultiplierId(Enum<?> state, Attribute attribute) {
+    private UUID stateMultiplierId(Enum<?> state, Attribute attribute) {
         String key = "confluence.state_multiplier." + state.getDeclaringClass().getName() + "." + state.name() + "." + attribute.getDescriptionId();
-        return java.util.UUID.nameUUIDFromBytes(key.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        return UUID.nameUUIDFromBytes(key.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     }
 
     private AttributeModifier stateModifier(Enum<?> state, Attribute attribute) {
@@ -185,9 +185,9 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             double amount = value.amount().applyAsDouble(this);
             if (value.absolute() && getAttribute(attribute) != null)
                 amount -= getAttribute(attribute).getBaseValue();
-            return new AttributeModifier(java.util.UUID.nameUUIDFromBytes(name.getBytes(java.nio.charset.StandardCharsets.UTF_8)), name, amount, value.operation());
+            return new AttributeModifier(UUID.nameUUIDFromBytes(name.getBytes(java.nio.charset.StandardCharsets.UTF_8)), name, amount, value.operation());
         }
-        return new AttributeModifier(java.util.UUID.nameUUIDFromBytes(name.getBytes(java.nio.charset.StandardCharsets.UTF_8)), name, 0, AttributeModifier.Operation.ADDITION);
+        return new AttributeModifier(UUID.nameUUIDFromBytes(name.getBytes(java.nio.charset.StandardCharsets.UTF_8)), name, 0, AttributeModifier.Operation.ADDITION);
     }
 
     private void applyStateModifier(Attribute attribute, AttributeModifier original, double override, boolean enabled) {
@@ -226,6 +226,14 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        if (shouldFloatInWater()) {
+            goalSelector.addGoal(-1, new FloatGoal(this) {
+                @Override
+                public boolean canUse() {
+                    return !isNoGravity() && super.canUse();
+                }
+            });
+        }
         this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.playerTargetGoal = new NearestAttackableTargetGoal<>(this, Player.class, mustSeePlayerTarget(), this::canTargetPlayer);
         this.targetSelector.addGoal(1, playerTargetGoal);
@@ -270,7 +278,10 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
 
     private BTRoot createSafeBehaviorTree() {
         try {
-            return Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
+            BTRoot tree = Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
+            /// 浮水只占用跳跃，移动与观察仍由原行为树执行，不能让浮水暂停整棵树。
+            if (shouldFloatInWater()) tree.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            return tree;
         } catch (RuntimeException exception) {
             Confluence.LOGGER.error("Failed to create behavior tree for {}; the entity will remain passive instead of crashing the level", getType(), exception);
             return disabledBehaviorTree();
@@ -292,6 +303,11 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     }
 
     protected abstract BTRoot createBT();
+
+    /// 陆行怪物族启用原版浮水；水生、飞行和固定位置怪物默认不参与。
+    protected boolean shouldFloatInWater() {
+        return false;
+    }
 
     /// 推进由实体持有的接触攻击计时器。
     ///

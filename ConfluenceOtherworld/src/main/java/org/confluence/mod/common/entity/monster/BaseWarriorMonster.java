@@ -50,6 +50,11 @@ public class BaseWarriorMonster extends BaseMonster {
     private final DoorBehavior doorBehavior;
     private boolean doorNavigationEnabled;
 
+    @Override
+    protected boolean shouldFloatInWater() {
+        return true;
+    }
+
     public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level) {
         this(type, level, 0.0, LandAnimationProfile.NONE, LandSoundProfile.ROUTINE);
     }

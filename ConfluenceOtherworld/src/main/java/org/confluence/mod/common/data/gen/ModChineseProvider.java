@@ -5316,6 +5316,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.summon.slots", "占用仆从栏：%s");
         add("tooltip.confluence.summon.retrieve", "右键长按以解除所有召唤物");
         add("item.confluence.tooltip.damage", "伤害");
+        add("item.confluence.tooltip.summon_attributes", "作用于召唤物时：");
         add("item.confluence.tooltip.knockback", "击退");
         add("item.confluence.tooltip.armor_pierce", "护甲穿透");
         add("item.confluence.tooltip.summon", "召唤%s");

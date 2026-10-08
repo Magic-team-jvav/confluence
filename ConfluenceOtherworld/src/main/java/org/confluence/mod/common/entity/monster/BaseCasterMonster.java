@@ -29,6 +29,11 @@ public abstract class BaseCasterMonster extends BaseMonster {
     private final CasterCycleAction.HurtResponse hurtResponse;
     private CasterCycleAction cycleAction;
 
+    @Override
+    protected boolean shouldFloatInWater() {
+        return true;
+    }
+
     public BaseCasterMonster(EntityType<? extends BaseCasterMonster> type, Level level) {
         this(type, level, CasterCycleAction.HurtResponse.CONTINUE_CYCLE);
     }

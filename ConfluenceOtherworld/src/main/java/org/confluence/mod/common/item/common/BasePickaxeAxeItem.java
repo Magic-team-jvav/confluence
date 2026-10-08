@@ -12,6 +12,7 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
@@ -19,7 +20,7 @@ import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifier
 
 import java.util.function.Consumer;
 
-public class BasePickaxeAxeItem extends DiggerItem {
+public class BasePickaxeAxeItem extends DiggerItem implements IWeaponTooltip {
     public BasePickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
     }

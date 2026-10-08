@@ -117,6 +117,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.summon.slots", "Minion slots: %s");
         add("tooltip.confluence.summon.retrieve", "Hold right-click to release all summons");
         add("item.confluence.tooltip.damage", "Damage");
+        add("item.confluence.tooltip.summon_attributes", "When applied to summons:");
         add("item.confluence.tooltip.knockback", "Knockback");
         add("item.confluence.tooltip.armor_pierce", "Armor Penetration");
         add("item.confluence.tooltip.summon", "Summons %s");

@@ -15,6 +15,7 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
 import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
 import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
 import org.confluence.mod.client.summoner.particle.ZenithParticleProvider;
@@ -30,6 +31,7 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
 import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
 
 public final class SummonerClientEvents {
@@ -39,11 +41,11 @@ public final class SummonerClientEvents {
             event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new);
             event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new);
         });
-        PortEventHandler.addListener((ItemTooltipEvent event) -> {
+        PortEventHandler.addListener(PortEventPriority.HIGH, (ItemTooltipEvent event) -> {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
             if (player != null && itemStack.getItem() instanceof SummonerWeaponItem<?> summonerWeaponItem) {
-                event.getToolTip().addAll(summonerWeaponItem.getTooltips(itemStack, player));
+                summonerWeaponItem.getTooltips(itemStack, player).stream().map(WeaponTooltip::grayDescription).forEach(event.getToolTip()::add);
             }
         });
         PortEventHandler.addListener((RenderLevelStageEvent event) -> {

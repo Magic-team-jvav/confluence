@@ -23,6 +23,11 @@ public class GoblinWarlock extends BaseMonster {
     private int flying;
     private Vec3 flightDestination = Vec3.ZERO;
 
+    @Override
+    protected boolean shouldFloatInWater() {
+        return true;
+    }
+
     public GoblinWarlock(EntityType<? extends GoblinWarlock> type, Level level) {
         super(type, level);
     }

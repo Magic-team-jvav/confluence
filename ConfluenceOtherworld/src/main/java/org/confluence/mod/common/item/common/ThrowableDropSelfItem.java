@@ -5,16 +5,19 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 import java.util.function.Supplier;
 
-public class ThrowableDropSelfItem extends Item {
+public class ThrowableDropSelfItem extends Item implements IWeaponTooltip {
     protected final Supplier<EntityType<? extends ThrowableDropSelfProjectile>> typeSup;
     protected final boolean dropSelf;
     protected final float inaccuracy;
@@ -59,5 +62,20 @@ public class ThrowableDropSelfItem extends Item {
         }
 
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide);
+    }
+
+    @Override
+    public Attribute getTooltipDamageAttribute() {
+        return LibAttributes.getRangedDamage().value();
+    }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue) {
+        return damage * attributeValue;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, cooldown);
     }
 }

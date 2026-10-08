@@ -29,6 +29,7 @@ import net.minecraftforge.common.Tags;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
@@ -40,7 +41,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class StaffOfRegrowth extends CustomRarityItem {
+public class StaffOfRegrowth extends CustomRarityItem implements IWeaponTooltip {
     protected final Multimap<Attribute, AttributeModifier> defaultModifiers;
     private @Nullable TooltipComponent component;
 

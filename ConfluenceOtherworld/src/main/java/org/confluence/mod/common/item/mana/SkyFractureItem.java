@@ -23,7 +23,7 @@ import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
 
 public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
     public SkyFractureItem() {
-        super(ModRarity.LIGHT_RED, SkyFractureProjectile::new, 24, 17, 17.5F, 6, 0.24);
+        super(ModRarity.LIGHT_RED, SkyFractureProjectile::new, 24, 17, 17.5F, 10, 0.24);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         ItemStack stack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, stack)) {
             player.awardStat(Stats.ITEM_USED.get(this));
-            player.getCooldowns().addCooldown(this, 10);
+            player.getCooldowns().addCooldown(this, cooldown);
             LibUtils.updateItemStackNbt(stack, tag -> {
                 tag.putLong("StartTime", level.getGameTime());
 
@@ -87,5 +87,15 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return false;
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue) {
+        return 20.0 / Math.max(1, cooldown);
+    }
+
+    @Override
+    public double getTooltipAttackSpeed(ItemStack stack, double attributeValue, Player player) {
+        return getTooltipAttackSpeed(stack, attributeValue);
     }
 }

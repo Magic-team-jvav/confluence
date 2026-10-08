@@ -6,11 +6,13 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
@@ -163,7 +165,7 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
     @Override
     public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
         if (!Immunity.isActive(this, target)) {
-            DamageSource damageSource = owner.damageSources().playerAttack(owner);
+            DamageSource damageSource = LibDamageTypes.of(getLevel(), DamageTypes.PLAYER_ATTACK, null, owner);
             immunityDuration = invincibleTime;
             int invulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;

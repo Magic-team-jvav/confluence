@@ -24,8 +24,8 @@ public class StarSteelSword extends BaseSwordItem {
 
     public StarSteelSword() {
         super(ModTiers.UNBREAKABLE, ModRarity.BLUE, 9, 2.2F, SwordDefinition.builder()
-                .tooltip(p -> p.withColor(0xc0e8ff))
-                .tooltip(p -> p.withColor(0xc0e8ff))
+                .tooltip()
+                .tooltip()
                 .unbreakable());
     }
 

@@ -51,8 +51,8 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 2, 3, ModRarity.WHITE,
             () -> SwordDefinition.builder()
                     .withoutSweep()
-                    .tooltip(p -> p.withColor(0x984c11))
-                    .tooltip(p -> p.withColor(0x984c11)));
+                    .tooltip()
+                    .tooltip());
     public static final PortDeferredItem<BaseSwordItem> TIN_SHORT_SWORD = register("tin_short_sword", ModTiers.TIN, 2, 3,
             () -> SwordDefinition.builder().withoutSweep());
     public static final PortDeferredItem<BaseSwordItem> IRON_SHORT_SWORD = register("iron_short_sword", ModTiers.IRON, 4, 3,
@@ -70,18 +70,18 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE,
             () -> SwordDefinition.builder()
                     .withoutSweep()
-                    .tooltip(p -> p.withColor(11184810)));
+                    .tooltip());
     public static final PortDeferredItem<BaseSwordItem> GLADIUS = register("gladius", ModTiers.UNBREAKABLE, 6, 3,
             () -> SwordDefinition.builder().withoutSweep());
     public static final PortDeferredItem<BaseSwordItem> UMBRELLA = register("umbrella",
             () -> new UmbrellaSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, SwordDefinition.builder()
                     .withoutSweep()
-                    .tooltip(p -> p.withColor(11184810))
+                    .tooltip()
                     .unbreakable()));
     public static final PortDeferredItem<BaseSwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella",
             () -> new UmbrellaSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, SwordDefinition.builder()
                     .withoutSweep()
-                    .tooltip(p -> p.withColor(11184810))
+                    .tooltip()
                     .unbreakable()));
 
     // 普通宽剑 默认横扫*1.5
@@ -202,8 +202,8 @@ public class SwordItems {
                             new AboveFallenGeneration(30.0F, 30.0F, 10.0F, 1.0F, 20.0F, 5.0F),
                             new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/star_fury_projectile.png"),
                                     0xFFFF9696, 2.0F, 18.0F, 10)))
-                    .tooltip(p -> p.withColor(0xe44189))
-                    .tooltip(p -> p.withColor(0xe44189))
+                    .tooltip()
+                    .tooltip()
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE,
             () -> SwordDefinition.builder()
@@ -213,8 +213,8 @@ public class SwordItems {
                                     Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
                                     SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
                             List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("falling_star")))))
-                    .tooltip(p -> p.withColor(0x4156e4))
-                    .tooltip(p -> p.withColor(0x4156e4))
+                    .tooltip()
+                    .tooltip()
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", BladeOfGrassItem::new);
     public static final PortDeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN,
@@ -286,7 +286,7 @@ public class SwordItems {
             () -> new SweetSword(ModTiers.UNBREAKABLE, ModRarity.EXPERT, 2, 1, SwordDefinition.builder()));
     public static final PortDeferredItem<BaseSwordItem> SWEET_SWORD = register("sweet_sword",
             () -> new SweetSword(ModTiers.UNBREAKABLE, ModRarity.EXPERT, 6, 2, SwordDefinition.builder()
-                    .tooltip(p -> p.withColor(0xe44189))
+                    .tooltip()
                     .properties(p -> {
                         FoodProperties properties = new FoodProperties.Builder().nutrition(1).saturationMod(1)
                                 .effect(() -> new MobEffectInstance(ModEffects.DELICIOUS.get(), 200), 1.0F)

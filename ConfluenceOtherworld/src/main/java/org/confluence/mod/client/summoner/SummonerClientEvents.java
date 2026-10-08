@@ -15,7 +15,6 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
 import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
 import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
 import org.confluence.mod.client.summoner.particle.ZenithParticleProvider;
@@ -45,7 +44,7 @@ public final class SummonerClientEvents {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
             if (player != null && itemStack.getItem() instanceof SummonerWeaponItem<?> summonerWeaponItem) {
-                summonerWeaponItem.getTooltips(itemStack, player).stream().map(WeaponTooltip::grayDescription).forEach(event.getToolTip()::add);
+                event.getToolTip().addAll(summonerWeaponItem.getTooltips(itemStack, player));
             }
         });
         PortEventHandler.addListener((RenderLevelStageEvent event) -> {

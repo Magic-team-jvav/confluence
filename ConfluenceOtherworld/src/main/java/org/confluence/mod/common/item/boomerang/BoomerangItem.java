@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.boomerang;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -72,18 +73,18 @@ public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponT
         tooltip.add(Component.translatable("tooltip.confluence.boomerang.fly_speed")
                 .append(": ")
                 .append(String.format("%.2f", settings.flySpeed()))
-                .withStyle(style -> style.withColor(0xCCCC00)));
+                .withStyle(ChatFormatting.GRAY));
         if (settings.maxCount() > 1) {
             tooltip.add(Component.translatable("tooltip.confluence.boomerang.max_count")
                     .append(": ")
                     .append(Integer.toString(settings.maxCount()))
-                    .withStyle(style -> style.withColor(0xAA8800)));
+                    .withStyle(ChatFormatting.GRAY));
         }
         if (settings.penetration() > 1) {
             tooltip.add(Component.translatable("tooltip.confluence.boomerang.penetration")
                     .append(": ")
                     .append(Integer.toString(settings.penetration()))
-                    .withStyle(style -> style.withColor(0x00FFFF)));
+                    .withStyle(ChatFormatting.GRAY));
         }
     }
 

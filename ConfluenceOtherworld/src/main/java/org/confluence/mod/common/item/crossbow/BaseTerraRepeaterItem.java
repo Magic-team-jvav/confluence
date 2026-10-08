@@ -632,17 +632,17 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
 
     @Override
     public void appendHoverText(ItemStack weapon, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(tooltip(ARROW_CAPACITY_TEXT).append(getTotalSize(weapon).getItemsTotalCount() + "/" + baseCapacity).withStyle(ChatFormatting.DARK_GRAY));
-        tooltipComponents.add(tooltip(ATTACK_SPEED_TEXT).append(String.valueOf(baseArrowSpeed)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltipComponents.add(tooltip(KNOCKBACK_TEXT).append(String.valueOf(baseKnockback)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltipComponents.add(tooltip(ARROW_CAPACITY_TEXT).append(getTotalSize(weapon).getItemsTotalCount() + "/" + baseCapacity).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(tooltip(ATTACK_SPEED_TEXT).append(String.valueOf(baseArrowSpeed)).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(tooltip(KNOCKBACK_TEXT).append(String.valueOf(baseKnockback)).withStyle(ChatFormatting.GRAY));
         if (!IRandomCount.is(baseBurstCount, 1)) {
-            tooltipComponents.add(tooltip(TORRENT_COUNT_TEXT).append(IRandomCount.getString(baseBurstCount)).withStyle(ChatFormatting.DARK_GRAY));
+            tooltipComponents.add(tooltip(TORRENT_COUNT_TEXT).append(IRandomCount.getString(baseBurstCount)).withStyle(ChatFormatting.GRAY));
         }
         if (!IRandomCount.is(baseConcurrentCount, 1)) {
-            tooltipComponents.add(tooltip(CONCURRENCY_COUNT_TEXT).append(IRandomCount.getString(baseConcurrentCount)).withStyle(ChatFormatting.DARK_GRAY));
+            tooltipComponents.add(tooltip(CONCURRENCY_COUNT_TEXT).append(IRandomCount.getString(baseConcurrentCount)).withStyle(ChatFormatting.GRAY));
         }
-        tooltipComponents.add(tooltip(FIRING_INTERVAL_TEXT).append(String.valueOf(baseShootInterval / 20f)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltipComponents.add(tooltip(RELOAD_SPEED_TEXT).append(String.valueOf(baseReloadSpeed / 20f)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltipComponents.add(tooltip(FIRING_INTERVAL_TEXT).append(String.valueOf(baseShootInterval / 20f)).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(tooltip(RELOAD_SPEED_TEXT).append(String.valueOf(baseReloadSpeed / 20f)).withStyle(ChatFormatting.GRAY));
         tooltipComponents.addAll(TOOLTIP);
     }
 

@@ -86,7 +86,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                         resultSlot.setAltRecipe(recipe);
                     } else {
                         HeavyWorkBenchRecipe recipe = recipes.get(selectedRecipeIndex.get());
-                        itemStack = recipe.getResultItem(player.registryAccess()).copy();
+                        itemStack = recipe.getResult().copy();
                         resultSlot.setCurrentRecipe(recipe);
                     }
                 }
@@ -109,7 +109,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 ItemStack itemStack;
                 if (index < recipesSize) {
                     HeavyWorkBenchRecipe recipe = recipes.get(index);
-                    itemStack = recipe.getResultItem(player.registryAccess());
+                    itemStack = recipe.getResult();
                     if (!itemStack.isItemEnabled(player.level().enabledFeatures())) break inner;
                     resultSlot.setCurrentRecipe(recipe);
                 } else {

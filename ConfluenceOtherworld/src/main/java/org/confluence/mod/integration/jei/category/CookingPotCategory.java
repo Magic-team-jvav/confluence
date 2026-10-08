@@ -109,6 +109,6 @@ public class CookingPotCategory implements IRecipeCategory<CookingPotRecipe> {
 
     @Override
     public ResourceLocation getRegistryName(CookingPotRecipe recipe) {
-        return Confluence.asResource(recipe.getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.getResultItem(null).getItem()).getPath());
+        return Confluence.asResource(recipe.getGroup() + "/" + BuiltInRegistries.ITEM.getKey(recipe.getResult().getItem()).getPath());
     }
 }

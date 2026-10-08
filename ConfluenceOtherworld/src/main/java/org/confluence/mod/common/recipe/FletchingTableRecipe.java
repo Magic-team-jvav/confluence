@@ -15,7 +15,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.common.recipe.SimpleRecipeSerializer;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.FletchingTableMenu;
-import org.mesdag.portlib.diff.Diff;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipe;
@@ -70,8 +69,8 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
     }
 
     @Override
-    public ItemStack assemble(Input input, RegistryAccess registryAccess) {
-        return result.copy();
+    public final ItemStack assemble(Input input, RegistryAccess registryAccess) {
+        return getResult().copy();
     }
 
     @Override
@@ -80,11 +79,10 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public final ItemStack getResultItem(RegistryAccess registryAccess) {
         return getResult();
     }
 
-    @Diff
     public ItemStack getResult() {
         return result;
     }

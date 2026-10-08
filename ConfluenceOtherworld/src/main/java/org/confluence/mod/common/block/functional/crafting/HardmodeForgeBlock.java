@@ -54,7 +54,8 @@ public class HardmodeForgeBlock extends EnhancedForgeBlock {
         }
         if (recipeholder != null) {
             if (!entity.isLit() && entity.canForgeBurn(recipeholder)) {
-                data[0] = entity.doUpdateStatus();
+                entity.doUpdateStatus();
+                data[0] = true;
             }
             if (entity.canForgeBurn(recipeholder)) {
                 if (entity.doUpdateProgress(recipeholder, entity::burnForge)) {

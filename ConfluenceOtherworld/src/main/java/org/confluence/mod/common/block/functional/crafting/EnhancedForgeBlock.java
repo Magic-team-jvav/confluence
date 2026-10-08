@@ -159,7 +159,8 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         T recipe = entity.forge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
         if (recipe != null) {
             if (!entity.isLit() && entity.canForgeBurn(recipe)) {
-                data[0] = entity.doUpdateStatus();
+                entity.doUpdateStatus();
+                data[0] = true;
             }
             if (entity.canForgeBurn(recipe)) {
                 if (entity.doUpdateProgress(recipe, entity::burnForge)) {
@@ -284,7 +285,8 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         protected void doBlasting(BlastingRecipe recipe, ItemStack lastInput, boolean[] data) {
             if (!isLit() && canBlastingBurn(recipe, lastInput)) {
-                data[0] = doUpdateStatus();
+                doUpdateStatus();
+                data[0] = true;
             }
             if (canBlastingBurn(recipe, lastInput)) {
                 if (doUpdateProgress(recipe, recipeHolder -> burnBlasting(recipeHolder, lastInput))) {
@@ -308,22 +310,21 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             return false;
         }
 
-        protected boolean doUpdateStatus() {
+        protected void doUpdateStatus() {
             ItemStack fuel = getItem(FUEL_SLOT);
-            getBasePart().litTime = getBurnDuration(fuel);
-            getBasePart().litDuration = litTime;
-            if (fuel.hasCraftingRemainingItem()) {
-                getItems().set(FUEL_SLOT, fuel.getCraftingRemainingItem());
-            } else if (fuel.isEmpty()) {
+            int burnDuration = getBurnDuration(fuel);
+            getBasePart().litTime = burnDuration;
+            getBasePart().litDuration = burnDuration;
+            if (burnDuration <= 0 || fuel.isEmpty()) {
                 getBasePart().useFuel = 0;
             } else {
+                ItemStack craftingRemainingItem = fuel.getCraftingRemainingItem();
                 fuel.shrink(1);
                 if (fuel.isEmpty()) {
-                    getItems().set(FUEL_SLOT, fuel.getCraftingRemainingItem());
+                    getItems().set(FUEL_SLOT, craftingRemainingItem);
                 }
                 getBasePart().useFuel = 1;
             }
-            return true;
         }
 
         @Override
@@ -397,12 +398,11 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         protected boolean canForgeBurn(T recipe) {
-            if ((!recipe.isRequiresFuel() || (useFuel() || isLit() || !getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
+            if ((!recipe.isRequiresFuel() || useFuel() || isLit()) && Arrays.stream(itemStacks).anyMatch(itemStack -> !itemStack.isEmpty())) {
                 ItemStack neoResult = recipe.getResult();
                 return canResultInsert(neoResult);
-            } else {
-                return false;
             }
+            return false;
         }
 
         protected boolean burnForge(T recipe) {
@@ -422,17 +422,15 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                     oldResult.grow(neoResult.getCount());
                 }
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
 
         protected int getBurnDuration(ItemStack fuel) {
             if (fuel.isEmpty()) {
                 return 0;
-            } else {
-                return ForgeHooks.getBurnTime(fuel, getRecipeType()) / 2;
             }
+            return ForgeHooks.getBurnTime(fuel, getRecipeType()) / 2;
         }
 
         protected boolean useFuel() {

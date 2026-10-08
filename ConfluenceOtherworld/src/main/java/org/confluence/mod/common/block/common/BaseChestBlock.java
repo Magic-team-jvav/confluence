@@ -92,18 +92,15 @@ public class BaseChestBlock extends ChestBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack stack = player.getItemInHand(hand);
-
         if (!state.getValue(UNLOCKED)) {
             if (key != null && !key.useKeyOn(stack, state, level, pos, player, hand, hitResult)) {
                 return InteractionResult.FAIL;
             }
-            return super.use(state, level, pos, player, hand, hitResult);
+            return InteractionResult.SUCCESS;
         }
-
         if (player instanceof ServerPlayer serverPlayer) {
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
         }
-
         return super.use(state, level, pos, player, hand, hitResult);
     }
 

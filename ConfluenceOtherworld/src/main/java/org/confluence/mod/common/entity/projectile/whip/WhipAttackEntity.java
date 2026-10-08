@@ -404,7 +404,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
                 * (1.0F + sweepLevel() * 0.2F);
         if (Immunity.isActive(this, logicalTarget)) return;
         if (!Immunity.withCause(this, () -> LibDamageTypes.hurtWithoutKnockback(damageRecipient,
-                LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage))) {
+                LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, this, owner), damage))) {
             return;
         }
         completedTargets.add(identity.getUUID());
@@ -460,7 +460,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         WhipFriendlyHitContext context = new WhipFriendlyHitContext(player, target, weapon());
         whip.onFriendlyHit(context);
         float baseDamage = getDamage() > 0.0F ? getDamage() : whip.baseDamage();
-        Immunity.withCause(this, () -> LibDamageTypes.hurtWithoutKnockback(target, LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), baseDamage * 0.2F));
+        Immunity.withCause(this, () -> LibDamageTypes.hurtWithoutKnockback(target, LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, this, owner), baseDamage * 0.2F));
         return true;
     }
 

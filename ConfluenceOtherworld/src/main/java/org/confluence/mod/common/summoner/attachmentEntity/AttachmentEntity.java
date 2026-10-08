@@ -7,6 +7,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
@@ -104,6 +106,7 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
             if (tracker.isSummonMarkTarget(target)) {
                 damageAmount = tracker.getDamageModifier(damageSource, damageAmount);
             }
+            damageAmount = (float) (damageAmount * owner.getAttributeValue(LibAttributes.getSummonDamage()));
             immunityDuration = invincibleTime;
             int invulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;

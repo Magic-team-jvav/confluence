@@ -22,8 +22,8 @@ import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.BrushData;
+import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.saved.SpaceSpawner;
 import org.confluence.mod.common.data.spawner.MeteoriteSpawner;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
@@ -121,7 +121,7 @@ public final class LevelEvents {
         if (event.getLevel().dimension() == OverworldUtils.dimension()) {
             event.addCustomSpawner(BloodMoonGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(GoblinArmyGameEvent.INSTANCE.spawner);
-            if (Confluence.UNRELEASED_SPAWNS)
+            if (Confluence.UNRELEASED_EVENTS)
                 event.addCustomSpawner(PirateInvasionGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(MeteorShowerGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(new SpaceSpawner());

@@ -38,9 +38,10 @@ public final class Confluence {
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
     // todo 1.3.0
-    public static final boolean SOUL_SKILLS = false;
-    public static final boolean THE_END_BIOMES = false;
+    public static final boolean SOUL_SKILLS = LibUtils.isDev();
+    public static final boolean THE_END_BIOMES = LibUtils.isDev();
     public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
+    public static final boolean UNRELEASED_EVENTS = LibUtils.isDev();
 
     public Confluence(IEventBus eventBus, ModContainer container) {
         ModDynamicBiomes.init();

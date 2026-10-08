@@ -12,6 +12,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.block.WallTorchBlock;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -279,7 +281,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
-//        for (Torches torches : Torches.values()) torch.add(torches.item.get());
+        for (var holder : TorchBlocks.BLOCKS.getEntries()) {
+            Block block = holder.value();
+            if (block instanceof TorchBlock && !(block instanceof WallTorchBlock)) {
+                torch.add(block.asItem());
+            }
+        }
         tag(ModTags.Items.PROVIDE_LIGHT).addTag(ModTags.Items.TORCH).add(
                 Items.LANTERN,
                 Items.SOUL_LANTERN,

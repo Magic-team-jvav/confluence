@@ -6,6 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -65,6 +66,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
         buildBaseStatues(recipeOutput);
+        buildTorches(recipeOutput);
 
         // 玻璃窑
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
@@ -1483,6 +1485,51 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         for (ItemLike statueItem : statueItems) {
             shaped(recipeOutput, baseStatuePattern, statueItem.asItem().getDefaultInstance());
         }
+    }
+
+    private void buildTorches(RecipeOutput recipeOutput) {
+
+        buildTorch(recipeOutput, TorchBlocks.RED_TORCH.get().asItem(), Ingredient.of(MaterialItems.RUBY), 10);
+        buildTorch(recipeOutput, TorchBlocks.ORANGE_TORCH.get().asItem(), Ingredient.of(MaterialItems.AMBER), 10);
+        buildTorch(recipeOutput, TorchBlocks.YELLOW_TORCH.get().asItem(), Ingredient.of(MaterialItems.TOPAZ), 10);
+        buildTorch(recipeOutput, TorchBlocks.GREEN_TORCH.get().asItem(), Ingredient.of(Items.EMERALD), 10);
+        buildTorch(recipeOutput, TorchBlocks.BLUE_TORCH.get().asItem(), Ingredient.of(MaterialItems.SAPPHIRE), 10);
+        buildTorch(recipeOutput, TorchBlocks.WHITE_TORCH.get().asItem(), Ingredient.of(Items.DIAMOND), 10);
+        buildTorch(recipeOutput, TorchBlocks.PURPLE_TORCH.get().asItem(), Ingredient.of(MaterialItems.AMETHYST), 10);
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.PINK_GEL),
+                '#', Ingredient.of(Items.STICK)
+        ), List.of(
+                "a",
+                "#"
+        )), TorchBlocks.PINK_TORCH.get().asItem().getDefaultInstance().copyWithCount(3));
+
+        buildTorch(recipeOutput, TorchBlocks.ICE_TORCH.get().asItem(), Ingredient.of(Items.ICE), 3);
+        buildTorch(recipeOutput, TorchBlocks.DESERT_TORCH.get().asItem(), Ingredient.of(NatureBlocks.HARDENED_SAND_BLOCK), 3);
+        buildTorch(recipeOutput, TorchBlocks.DEMON_TORCH.get().asItem(), Ingredient.of(Items.OBSIDIAN), 3);
+        buildTorch(recipeOutput, TorchBlocks.MUSHROOM_TORCH.get().asItem(), Ingredient.of(MaterialItems.GLOWING_MUSHROOM), 3);
+
+        buildTorch(recipeOutput, TorchBlocks.CORRUPT_TORCH.get().asItem(), Ingredient.of(NatureBlocks.EBONSTONE, NatureBlocks.PURPLE_ICE, NatureBlocks.HARDENED_EBONSAND_BLOCK), 3);
+        buildTorch(recipeOutput, TorchBlocks.CRIMSON_TORCH.get().asItem(), Ingredient.of(NatureBlocks.CRIMSTONE, NatureBlocks.RED_ICE, NatureBlocks.HARDENED_CRIMSAND_BLOCK), 3);
+        buildTorch(recipeOutput, TorchBlocks.HALLOWED_TORCH.get().asItem(), Ingredient.of(NatureBlocks.PEARLSTONE, NatureBlocks.PINK_ICE, NatureBlocks.HARDENED_PEARLSAND_BLOCK), 3);
+
+        buildTorch(recipeOutput, TorchBlocks.JUNGLE_TORCH.get().asItem(), Ingredient.of(MaterialItems.JUNGLE_SPORE), 25);
+
+        buildTorch(recipeOutput, TorchBlocks.CURSED_TORCH.get().asItem(), Ingredient.of(MaterialItems.CURSED_FLAME), 33);
+        buildTorch(recipeOutput, TorchBlocks.ICHOR_TORCH.get().asItem(), Ingredient.of(MaterialItems.ICHOR), 33);
+
+        buildTorch(recipeOutput, TorchBlocks.RAINBOW_TORCH.get().asItem(), Ingredient.of(DecorativeBlocks.RAINBOW_GEL_BRICKS.FULL), 10);
+    }
+
+    private void buildTorch(RecipeOutput recipeOutput, Item torch, Ingredient material, int count) {
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', material,
+                '#', AmountIngredient.of(count, Items.TORCH)
+        ), List.of(
+                "a",
+                "#"
+        )), torch.getDefaultInstance().copyWithCount(count));
     }
 
     protected void shaped(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {

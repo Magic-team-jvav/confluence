@@ -32,6 +32,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
 
+        hardmodeAnvil(recipeOutput, SummonItems.SPIDER_STAFF.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.SPIDER_FANG),
+                'b', AmountIngredient.of(3, MaterialItems.SPIDER_FANG)
+        ), List.of(
+                "a a",
+                "aaa",
+                " b ",
+                " b "
+        )));
         hardmodeAnvil(recipeOutput, DrillItems.DRAX.toStack(), ShapedRecipePattern.of(Map.of(
                 'H', AmountIngredient.of(3, MaterialItems.HALLOWED_INGOT),
                 'F', Ingredient.of(MaterialItems.SOUL_OF_FRIGHT),

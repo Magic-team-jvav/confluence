@@ -281,7 +281,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.terraStyleFireDamage", "Terra Style Fire Damage");
         add("confluence.configuration.terraStyleFireDamage.tooltip", "When enabled, fire damage will be multiplied by 4 and healing will be blocked. It only affects players.");
         add("confluence.configuration.npcInvulnerableToPlayer", "NPC Invulnerable To Player");
-        add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "When enabled, NPCs can no longer be attacked by players (including vanilla villagers).");
+        add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "When enabled, NPCs can no longer be attacked by players .");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "Allows Vanilla Entities To Perform Stage Attributes");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "When enabled, the attributes of the vanilla entities will be modified in Hard mode or other stages.");
 
@@ -626,7 +626,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.terraStyleFireDamage", "泰拉样式火焰伤害");
         add("confluence.configuration.terraStyleFireDamage.tooltip", "开启后，火焰伤害将x4，并阻止回血。且仅对玩家有效");
         add("confluence.configuration.npcInvulnerableToPlayer", "NPC对玩家免疫");
-        add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "开启后，NPC将不再能被玩家攻击（包括原版村民）");
+        add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "开启后，NPC将不再能被玩家攻击");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "允许原版生物应用阶段属性");
         add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "开启后，原版生物将在困难模式或其它阶段修改属性");
 

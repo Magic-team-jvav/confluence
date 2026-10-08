@@ -196,6 +196,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, ToolItems.MECHANIC_SAFE_KEY, ChestBlocks.MECHANIC_SAFE_CHEST);
         // 微光箭转化
         item(recipeOutput, "shimmer_arrow", addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1));
+        /// 以太火把：任意火把扔进微光转化而成（泰拉瑞亚 1.4.4），火把标签在 ModItemTagsProvider 里维护。
+        item(recipeOutput, "aether_torch", addItem(ModTags.Items.TORCH, TorchBlocks.AETHER_TORCH.get().asItem(), 1));
         // 匣子转化
         item(recipeOutput, CrateBlocks.PEARLWOOD_CRATE, CrateBlocks.WOODEN_CRATE);
         item(recipeOutput, CrateBlocks.MYTHRIL_CRATE, CrateBlocks.IRON_CRATE);
@@ -296,7 +298,6 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "jungle_hive_from_crispy_honey_block", addItem(DecorativeBlocks.CRISPY_HONEY_BLOCK,NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);
         item(recipeOutput, Blocks.CACTUS, Blocks.PUMPKIN);
-        item(recipeOutput, Blocks.SNOW_BLOCK, NatureBlocks.AETHERIUM_BLOCK);
         item(recipeOutput, DecorativeBlocks.SUN_PLATE.FULL, DecorativeBlocks.MOON_PLATE.FULL);
         item(recipeOutput, DecorativeBlocks.MOON_PLATE.FULL, DecorativeBlocks.SUN_PLATE.FULL);
         item(recipeOutput, "acacia_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.ACACIA_LOG));

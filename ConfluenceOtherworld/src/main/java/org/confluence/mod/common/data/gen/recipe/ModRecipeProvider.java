@@ -65,7 +65,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
-        cooking(recipeOutput, SmeltingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LAPIS_ORE_SMELTING), Items.LAPIS_ORE.getDefaultInstance(), 0.7F, 100);
 
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
@@ -113,8 +113,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 200);
-        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 200);
-        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_EBONSAND_BLOCK), NatureBlocks.EBONSAND.toStack(), 0.15F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_PEARLSAND_BLOCK), NatureBlocks.PEARLSAND.toStack(), 0.15F, 200);
@@ -298,6 +298,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, AccessoryItems.GLOWING_FISHING_BOBBER.toStack(), Ingredient.of(AccessoryItems.FISHING_BOBBER), AmountIngredient.of(5, MaterialItems.FALLING_STAR));
         workshop(recipeOutput, AccessoryItems.COIN_RING.toStack(), Ingredient.of(AccessoryItems.LUCKY_COIN), Ingredient.of(AccessoryItems.GOLD_RING));
         workshop(recipeOutput, AccessoryItems.GREEDY_RING.toStack(), Ingredient.of(AccessoryItems.COIN_RING), Ingredient.of(AccessoryItems.DISCOUNT_CARD));
+        workshop(recipeOutput, AccessoryItems.SHINY_PIPETTE.toStack(), Ingredient.of(AccessoryItems.EXPERIENCE_PIPETTE), Ingredient.of(AccessoryItems.TINSEL)); // 闪亮吸管 = 经验吸管 + 金箔
         workshop(recipeOutput, AccessoryItems.CHARM_OF_MYTHS.toStack(), Ingredient.of(TCItems.BAND_OF_REGENERATION), Ingredient.of(AccessoryItems.PHILOSOPHERS_STONE));
         workshop(recipeOutput, AccessoryItems.PAPYRUS_SCARAB.toStack(), Ingredient.of(AccessoryItems.NECROMANTIC_SCROLL), Ingredient.of(AccessoryItems.HERCULES_BEETLE));
         workshop(recipeOutput, TCItems.AVENGER_EMBLEM.toStack(), Ingredient.of(ModTags.Items.EMBLEM), AmountIngredient.of(5, MaterialItems.SOUL_OF_MIGHT), AmountIngredient.of(5, MaterialItems.SOUL_OF_SIGHT), AmountIngredient.of(5, MaterialItems.SOUL_OF_FRIGHT));

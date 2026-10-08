@@ -66,7 +66,7 @@ public enum PrefixType implements StringRepresentable {
     },
     SUMMON("universal", "summon") {
         {
-            available = Arrays.stream(available).filter(prefix -> prefix instanceof Universal universal && universal.criticalChance() != 0).toArray(ModPrefix[]::new);
+            available = Arrays.stream(available).filter(prefix -> !(prefix instanceof Universal universal) || universal.criticalChance() != 0).toArray(ModPrefix[]::new);
         }
 
         @Override

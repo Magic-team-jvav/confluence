@@ -93,11 +93,11 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
         @Override
         protected MapCodec<CookingPotRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(AbstractAmountRecipe::getResult),
-                    INGREDIENTS_CODEC.forGetter(AbstractAmountRecipe::getIngredients),
-                    Ingredient.CODEC.fieldOf("container").forGetter(recipe -> recipe.container),
-                    HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
-                    Codec.INT.fieldOf("cookingtime").forGetter(recipe -> recipe.cookingTime)
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(CookingPotRecipe::getResult),
+                    INGREDIENTS_CODEC.forGetter(CookingPotRecipe::getIngredients),
+                    Ingredient.CODEC.fieldOf("container").forGetter(CookingPotRecipe::getContainer),
+                    HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(CookingPotRecipe::getHeatSource),
+                    Codec.INT.fieldOf("cookingtime").forGetter(CookingPotRecipe::getCookingTime)
             ).apply(instance, CookingPotRecipe::new));
         }
 

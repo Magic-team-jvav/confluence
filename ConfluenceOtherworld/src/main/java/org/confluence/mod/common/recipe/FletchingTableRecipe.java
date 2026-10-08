@@ -101,20 +101,20 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
         @Override
         protected MapCodec<FletchingTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
-                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
-                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(FletchingTableRecipe::getResult),
+                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "tail", Ingredient.EMPTY).forGetter(FletchingTableRecipe::getTail),
+                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "body", Ingredient.EMPTY).forGetter(FletchingTableRecipe::getBody),
+                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "head", Ingredient.EMPTY).forGetter(FletchingTableRecipe::getHead)
             ).apply(instance, FletchingTableRecipe::new));
         }
 
         @Override
         protected PortStreamCodec<PortRegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
             return PortStreamCodec.composite(
-                    ItemStack.STREAM_CODEC, recipe -> recipe.result,
-                    Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.tail,
-                    Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.body,
-                    Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.head,
+                    ItemStack.STREAM_CODEC, FletchingTableRecipe::getResult,
+                    Ingredient.CONTENTS_STREAM_CODEC, FletchingTableRecipe::getTail,
+                    Ingredient.CONTENTS_STREAM_CODEC, FletchingTableRecipe::getBody,
+                    Ingredient.CONTENTS_STREAM_CODEC, FletchingTableRecipe::getHead,
                     FletchingTableRecipe::new
             );
         }

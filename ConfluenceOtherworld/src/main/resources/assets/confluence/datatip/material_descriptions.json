@@ -1,0 +1,133 @@
+{
+    "_comment": "材料的背景描述和固定制作指引。",
+    "confluence:gel": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.gel.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:raw_asphalt": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.raw_asphalt.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_bright": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_bright.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_flight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_flight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_fright": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_fright.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_light": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_light.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_might": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_might.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_night": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_night.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_sight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_sight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:soul_of_voight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.soul_of_voight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

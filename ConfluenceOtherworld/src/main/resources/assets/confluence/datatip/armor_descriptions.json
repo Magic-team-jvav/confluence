@@ -1,0 +1,344 @@
+{
+    "_comment": "盔甲的固定能力说明；实际属性与套装提示继续由 Java 输出。",
+    "confluence:adamantite_headgear": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.adamantite_headgear.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:amber_robe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.amber_robe.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.amber_robe.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:amethyst_robe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.amethyst_robe.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.amethyst_robe.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:angler_hat": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.angler_hat.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:angler_pants": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.angler_pants.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:angler_vest": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.angler_vest.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:cobalt_hat": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.cobalt_hat.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:cold_crystal_chestplate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.cold_crystal_chestplate.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:cold_crystal_helmet": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.cold_crystal_helmet.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:diamond_robe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.diamond_robe.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.diamond_robe.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:heim_helmet": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.heim_helmet.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:jade_robe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.jade_robe.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.jade_robe.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:jungle_chestplate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.jungle_chestplate.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:jungle_helmet": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.jungle_helmet.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:jungle_leggings": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.jungle_leggings.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mining_helmet": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.mining_helmet.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mythril_hood": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.mythril_hood.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:orichalcum_headgear": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.orichalcum_headgear.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:palladium_headgear": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.palladium_headgear.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:ruby_robe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.ruby_robe.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.ruby_robe.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:sapphire_robe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.sapphire_robe.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.sapphire_robe.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:titanium_headgear": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.titanium_headgear.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:topaz_robe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.topaz_robe.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.topaz_robe.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

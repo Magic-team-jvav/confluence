@@ -89,6 +89,14 @@ obfuscation {
 }
 
 repositories {
+    exclusiveContent {
+        forRepository {
+            flatDir { dirs 'libs' }
+        }
+        filter {
+            includeModule('com.cooobird', 'datatip')
+        }
+    }
     mavenLocal()
     flatDir {
         dirs 'libs'
@@ -222,6 +230,8 @@ dependencies {
 
     modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     modCompileOnly("com.eliotlash.mclib:mclib:20")
+
+    modImplementation(jarJar('com.cooobird:datatip:1.2.7-forge'))
 
     modImplementation(jarJar("org.mesdag:ParticleStorm-forge-${minecraft_version}:${particlestorm_version}"))
     modImplementation(jarJar("org.mesdag:ThreeDimensionParticle-forge-${minecraft_version}:${thr_dim_particle_version}"))

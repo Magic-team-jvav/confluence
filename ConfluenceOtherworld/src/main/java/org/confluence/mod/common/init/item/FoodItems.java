@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.item;
 
 import com.google.common.base.Supplier;
-import net.minecraft.ChatFormatting;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -337,19 +336,19 @@ public class FoodItems {
                         }
                     }));
     //赞助
-    public static final PortDeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola",
+    public static final PortDeferredItem<BaseFoodItem> PINK_COLA = registerFood("pink_cola",
             builder -> builder.rarity(ModRarity.EXPERT).food(hasEffectProperties(1, 0.5f,
                     EffectData.of(MobEffects.MOVEMENT_SLOWDOWN, 1200),
                     EffectData.of(MobEffects.REGENERATION, 1200))
-            ).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.GRAY);
-    public static final PortDeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread",
+            ).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK));
+    public static final PortDeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerFood("dongdongs_flatbread",
             builder -> builder.rarity(ModRarity.EXPERT).food(hasEffectProperties(5, 0.2f,
                     EffectData.of(ModEffects.EXQUISITELY_STUFFED.get(), 3000))
-            ).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
-    public static final PortDeferredItem<BaseFoodItem> PIGLIN_STEW = registerToolTipFood("piglin_stew",
+            ).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT));
+    public static final PortDeferredItem<BaseFoodItem> PIGLIN_STEW = registerFood("piglin_stew",
             builder -> builder.rarity(ModRarity.EXPERT).food(hasEffectProperties(20, 80.0f,
                     EffectData.of(MobEffects.DAMAGE_RESISTANCE, 1200, 4))
-            ).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
+            ).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT));
     //节日特有
     public static final PortDeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi",
             builder -> builder.rarity(ModRarity.RED).food(ModFoodProperties.wellFedProperties(6000, 4, 1.5f)
@@ -416,14 +415,6 @@ public class FoodItems {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64);
             consumer.accept(builder);
             return new BaseFoodItem.BItem(block.get(), builder.getProperties());
-        });
-    }
-
-    public static PortDeferredItem<BaseFoodItem> registerToolTipFood(String name, Consumer<BaseFoodItem.Builder> consumer, int line, ChatFormatting chatFormatting) {
-        return ITEMS.register(name, () -> {
-            BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64).tooltip(name, line, chatFormatting);
-            consumer.accept(builder);
-            return builder.build();
         });
     }
 

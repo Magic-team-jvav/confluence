@@ -11,6 +11,6 @@ import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 /// - 文本：暂定
 public class ParadoxInteractiveMedal extends BaseCurioItem {
     public ParadoxInteractiveMedal() {
-        super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER));
+        super(builder("paradox_interactive_medal").noTooltip().rarity(ModRarity.MASTER));
     }
 }

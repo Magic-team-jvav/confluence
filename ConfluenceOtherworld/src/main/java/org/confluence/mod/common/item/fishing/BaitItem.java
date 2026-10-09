@@ -130,8 +130,6 @@ public class BaitItem extends Item implements IBait {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.item.confluence.bait.common.0")
-                .withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable(
                 "info.confluence.bait",
                 ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(getBaitBonus() * 100.0)

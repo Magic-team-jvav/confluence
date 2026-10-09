@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -15,7 +14,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -31,20 +29,11 @@ import org.mesdag.portlib.wrapper.common.PortTags;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.confluence.lib.common.item.TooltipItem.getTooltipsFromString;
 
 public class MagicConch extends CustomRarityItem implements ApplySelectionPacketC2S.ISelectable<BlockPos> {
-    public List<Component> tooltips = new ArrayList<>();
 
     public MagicConch(Properties properties, ModRarity rarity) {
         super(properties, rarity);
-        tooltips = getTooltipsFromString("magic_conch", 1, ChatFormatting.GRAY);
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(tooltips);
-        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
     }
 
     @Override

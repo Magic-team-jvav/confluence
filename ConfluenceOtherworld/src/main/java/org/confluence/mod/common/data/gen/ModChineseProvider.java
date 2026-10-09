@@ -910,6 +910,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.sweet_sword.0", "来自一只屑水缡写的au“传说之下：虚无之上”");
         add("tooltip.item.confluence.piglin_stew.0", "屁戈林在饿死前最想吃的东西，可他最终没能吃上…");
 
+        add("tooltip.item.confluence.zenith.0", "当十块散碎的拼图被重新找回，十股力量汇流之际，这把炽热的神兵将从天穹之顶降下，赐予解放汇合交流来世之英雄");
+        add("tooltip.item.confluence.zenith.1", "“为什么不丢进微光里试试呢？”");
+        add("tooltip.item.confluence.true_copper_shortsword.0", "神兵投入微光的怀抱，将其力量之源泉展现");
+        add("tooltip.item.confluence.true_copper_shortsword.1", "它或许不是陪伴你一路走来的那把剑，但，它可能会让你回忆起，你第一次打开“汇流来世”的那个遥远的下午");
+        add("tooltip.item.confluence.true_copper_shortsword.2", "“我就说嘛，我们十个真厉害！”那把崭新的，幸运的铜短剑如是说。");
         add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
         add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
         add("tooltip.item.confluence.umbrella.0", "持有此物可减缓掉落速度");

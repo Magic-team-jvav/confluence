@@ -1,0 +1,196 @@
+{
+    "_comment": "玩家、NPC、商贩及矿车永久提升道具的固定说明。",
+    "confluence:advanced_combat_techniques": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.advanced_combat_techniques.0",
+                "color": "green",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.advanced_combat_techniques.1",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:advanced_combat_techniques_volume_two": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.advanced_combat_techniques_volume_two.0",
+                "color": "green",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.advanced_combat_techniques_volume_two.1",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:aegis_apple": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.aegis_apple.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:ambrosia": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.ambrosia.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:arcane_crystal": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.arcane_crystal.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:artisan_loaf": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.artisan_loaf.0",
+                "color": "green",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.artisan_loaf.1",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:galaxy_pearl": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.galaxy_pearl.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:gummy_worm": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.gummy_worm.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mana_crystal": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.mana_crystal.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:minecart_upgrade_kit": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.minecart_upgrade_kit.0",
+                "color": "green",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.minecart_upgrade_kit.1",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:peddlers_satchel": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.peddlers_satchel.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:recall_mana_crystal": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.recall_mana_crystal.0",
+                "color": "aqua",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:vital_crystal": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.vital_crystal.0",
+                "color": "green",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

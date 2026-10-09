@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -10,15 +9,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
 
 /// 撤回一颗魔力水晶的永久增益，并同步新的魔力上限。
-public class RecallManaCrystalItem extends TooltipItem {
+public class RecallManaCrystalItem extends CustomRarityItem {
     public RecallManaCrystalItem() {
-        super(new Properties().stacksTo(16), ModRarity.GREEN, getTooltipsFromString("recall_mana_crystal", 1, ChatFormatting.AQUA));
+        super(new Properties().stacksTo(16), ModRarity.GREEN);
     }
 
     @Override

@@ -8,18 +8,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-public class WireCutterItem extends TooltipItem {
+public class WireCutterItem extends CustomRarityItem {
     public static final ResourceLocation BASE_ID = Confluence.asResource("wire_cutter");
 
     public WireCutterItem() {
-        super(new Properties().stacksTo(1), ModRarity.BLUE, "tooltip.item.confluence.wire_cutter.0");
+        super(new Properties().stacksTo(1), ModRarity.BLUE);
         addAttributeModifiers(builder -> builder.add(Attributes.BLOCK_INTERACTION_RANGE, new PortAttributeModifier(BASE_ID, 20, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND));
     }
 

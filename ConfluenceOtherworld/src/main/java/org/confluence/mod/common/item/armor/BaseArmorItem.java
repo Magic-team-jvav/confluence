@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.armor;
 
 import com.google.common.collect.ImmutableMultimap;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -34,7 +32,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 public class BaseArmorItem extends ArmorItem {
-    private @Nullable List<Component> tooltips;
     private @Nullable String requiresModLoaded;
     private boolean golden;
 
@@ -44,9 +41,6 @@ public class BaseArmorItem extends ArmorItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        if (tooltips != null) {
-            tooltipComponents.addAll(tooltips);
-        }
         if (requiresModLoaded != null && !LibUtils.isModLoaded(requiresModLoaded)) {
             tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", requiresModLoaded));
         }
@@ -72,7 +66,6 @@ public class BaseArmorItem extends ArmorItem {
         private final Properties properties = new Properties();
         private String geoName = null;
         private ModRarity rarity = ModRarity.WHITE;
-        private int lineCount = 0;
         private int durability = 0;
         private Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> types = null;
         private boolean multiHead = false;
@@ -113,11 +106,6 @@ public class BaseArmorItem extends ArmorItem {
 
         public Builder rarity(ModRarity rarity) {
             this.rarity = rarity;
-            return this;
-        }
-
-        public Builder tooltips(int lineCount) {
-            this.lineCount = lineCount;
             return this;
         }
 
@@ -203,9 +191,6 @@ public class BaseArmorItem extends ArmorItem {
             if (attributeModifiers != null) {
                 attributeModifiers.putAll(item.defaultModifiers);
                 item.defaultModifiers = attributeModifiers.build();
-            }
-            if (lineCount > 0) {
-                item.tooltips = TooltipItem.getTooltipsFromString(name, lineCount, ChatFormatting.GRAY);
             }
             item.requiresModLoaded = requiresModLoaded;
             item.golden = golden;

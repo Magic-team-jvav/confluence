@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -14,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -27,12 +26,11 @@ import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class EverBeneficialItem extends TooltipItem {
+public class EverBeneficialItem extends CustomRarityItem {
     public static final Post DO_NOTHING = (id, name, player, everBeneficial, isRespawn) -> {};
     public static final Beneficial LIFE_CRYSTAL = new Beneficial(Confluence.asResource("life_crystal"), EverBeneficial::increaseCrystals, (id, name, player, everBeneficial, isRespawn) -> {
         if (everBeneficial.isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum() && ManaStorage.of(player).isStarMaximum()) {
@@ -133,20 +131,20 @@ public class EverBeneficialItem extends TooltipItem {
     private final Beneficial beneficial;
     private final @Nullable Supplier<SoundEvent> sound;
 
-    public EverBeneficialItem(Properties properties, ModRarity rarity, Beneficial beneficial, @Nullable Supplier<SoundEvent> sound, List<Component> tooltips) {
-        super(properties, rarity, tooltips);
+    public EverBeneficialItem(Properties properties, ModRarity rarity, Beneficial beneficial, @Nullable Supplier<SoundEvent> sound) {
+        super(properties, rarity);
         this.beneficial = beneficial;
         this.sound = sound;
     }
 
-    public EverBeneficialItem(ModRarity rarity, Beneficial beneficial, @Nullable Supplier<SoundEvent> sound, List<Component> tooltips) {
-        super(new Properties(), rarity, tooltips);
+    public EverBeneficialItem(ModRarity rarity, Beneficial beneficial, @Nullable Supplier<SoundEvent> sound) {
+        super(new Properties(), rarity);
         this.beneficial = beneficial;
         this.sound = sound;
     }
 
-    public EverBeneficialItem(ModRarity rarity, Beneficial beneficial, List<Component> tooltips) {
-        super(new Properties(), rarity, tooltips);
+    public EverBeneficialItem(ModRarity rarity, Beneficial beneficial) {
+        super(new Properties(), rarity);
         this.beneficial = beneficial;
         this.sound = null;
     }

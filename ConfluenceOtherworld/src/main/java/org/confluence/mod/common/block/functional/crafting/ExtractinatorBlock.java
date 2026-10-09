@@ -38,6 +38,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock implements EntityBlock {
@@ -116,7 +117,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public BItem(ExtractinatorBlock block) {
-            super(block, new Properties(), ModRarity.WHITE, "tooltip.item.confluence.extractinator.0");
+            super(block, new Properties(), ModRarity.WHITE, List.of());
         }
 
         @Override

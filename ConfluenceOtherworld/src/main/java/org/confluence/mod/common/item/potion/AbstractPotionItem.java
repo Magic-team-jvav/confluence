@@ -1,10 +1,8 @@
 package org.confluence.mod.common.item.potion;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +13,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,7 +24,6 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.spreadable.conversion_table.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -102,15 +102,6 @@ public abstract class AbstractPotionItem extends Item {
             }
         }
         return InteractionResult.PASS;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        String key = "tooltip." + stack.getDescriptionId() + ".0";
-        /// 物品类会同时加载在客户端与专用服务端，不能在这里通过客户端 I18n
-        /// 判断翻译键是否存在。基础药水的说明键由语言数据生成器统一提供，直接
-        /// 保存为可翻译组件既能延迟到客户端解析，也允许服务端安全构造提示信息。
-        tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
     }
 
     public static <T extends AbstractPotionItem> void use(Player player, float required, Class<T> type, ToIntFunction<T> function) {

@@ -1,0 +1,260 @@
+{
+    "_comment": "武器的背景故事与风味文字。伤害、攻速、暴击、前缀和可动组件由原有 Java 实现负责。",
+    "confluence:bee_keeper": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.bee_keeper.0",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#FFE082",
+                    "#FFC857",
+                    "#FFF1AD"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            },
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.bee_keeper.1",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#FFE082",
+                    "#FFC857",
+                    "#FFF1AD"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ],
+        "marginBottom": 8
+    },
+    "confluence:copper_short_sword": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.copper_short_sword.0",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#DCA078",
+                    "#F2C69C",
+                    "#C98B65"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            },
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.copper_short_sword.1",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#DCA078",
+                    "#F2C69C",
+                    "#C98B65"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ]
+    },
+    "confluence:enchanted_sword": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.enchanted_sword.0",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#9CCBFF",
+                    "#C6B5FF",
+                    "#B8E9FF"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            },
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.enchanted_sword.1",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#9CCBFF",
+                    "#C6B5FF",
+                    "#B8E9FF"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ]
+    },
+    "confluence:lucy_the_axe": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.lucy_the_axe.0",
+                "maxWidth": 320,
+                "colors": [
+                    "#F0A3A3",
+                    "#FFC58F",
+                    "#EAB0CB"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ]
+    },
+    "confluence:starfury": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.starfury.0",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#FFB3DA",
+                    "#D3B4FF",
+                    "#FFF1AD"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            },
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.starfury.1",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#FFB3DA",
+                    "#D3B4FF",
+                    "#FFF1AD"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ]
+    },
+    "confluence:sweet_sword": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.sweet_sword.0",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#FFB1D4",
+                    "#FFD0EB",
+                    "#C9B8FF"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ]
+    },
+    "confluence:true_copper_shortsword": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.true_copper_shortsword.0",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#E1A16E",
+                    "#FFE0A3",
+                    "#F3BC70"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            },
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.true_copper_shortsword.1",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#E1A16E",
+                    "#FFE0A3",
+                    "#F3BC70"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            },
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.true_copper_shortsword.2",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#E1A16E",
+                    "#FFE0A3",
+                    "#F3BC70"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ]
+    },
+    "confluence:zenith": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.zenith.0",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#FFAAAA",
+                    "#FFD594",
+                    "#FFF1A0",
+                    "#ACEDC1",
+                    "#A8D8FF",
+                    "#D0B4FF"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            },
+            {
+                "type": "cycle_text",
+                "translate": "tooltip.item.confluence.zenith.1",
+                "italic": true,
+                "maxWidth": 320,
+                "colors": [
+                    "#FFAAAA",
+                    "#FFD594",
+                    "#FFF1A0",
+                    "#ACEDC1",
+                    "#A8D8FF",
+                    "#D0B4FF"
+                ],
+                "cycleSeconds": 12,
+                "transition": "smooth"
+            }
+        ]
+    }
+}

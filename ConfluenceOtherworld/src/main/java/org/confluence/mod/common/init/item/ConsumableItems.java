@@ -1,12 +1,11 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
@@ -37,17 +36,17 @@ public class ConsumableItems {
 
     public static final PortDeferredItem<ManaCrystalItem> MANA_CRYSTAL = ITEMS.register("mana_crystal", ManaCrystalItem::new);
     public static final PortDeferredItem<RecallManaCrystalItem> RECALL_MANA_CRYSTAL = ITEMS.register("recall_mana_crystal", RecallManaCrystalItem::new);
-    public static final PortDeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_crystal", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> RECALL_LIFE_CRYSTAL = ITEMS.register("recall_life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.RECALL_LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("recall_life_crystal", 1, ChatFormatting.RED)));
-    public static final PortDeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, EverBeneficialItem.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_fruit", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("vital_crystal", 1, ChatFormatting.GREEN)));
+    public static final PortDeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE));
+    public static final PortDeferredItem<EverBeneficialItem> RECALL_LIFE_CRYSTAL = ITEMS.register("recall_life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.RECALL_LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE));
+    public static final PortDeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, EverBeneficialItem.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE));
+    public static final PortDeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE));
     public static final PortDeferredItem<ArcaneCrystalItem> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal", ArcaneCrystalItem::new);
-    public static final PortDeferredItem<EverBeneficialItem> AEGIS_APPLE = ITEMS.register("aegis_apple", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AEGIS_APPLE, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("aegis_apple", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> AMBROSIA = ITEMS.register("ambrosia", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AMBROSIA, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("ambrosia", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> GUMMY_WORM = ITEMS.register("gummy_worm", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GUMMY_WORM, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("gummy_worm", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GALAXY_PEARL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("galaxy_pearl", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, EverBeneficialItem.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("minecart_upgrade_kit", 2, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> new EverBeneficialItem(ModRarity.ORANGE, EverBeneficialItem.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("artisan_loaf", 2, ChatFormatting.GREEN)));
+    public static final PortDeferredItem<EverBeneficialItem> AEGIS_APPLE = ITEMS.register("aegis_apple", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AEGIS_APPLE, ModSoundEvents.TRANSMUTATION_USE));
+    public static final PortDeferredItem<EverBeneficialItem> AMBROSIA = ITEMS.register("ambrosia", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AMBROSIA, ModSoundEvents.TRANSMUTATION_USE));
+    public static final PortDeferredItem<EverBeneficialItem> GUMMY_WORM = ITEMS.register("gummy_worm", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GUMMY_WORM, ModSoundEvents.TRANSMUTATION_USE));
+    public static final PortDeferredItem<EverBeneficialItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GALAXY_PEARL, ModSoundEvents.TRANSMUTATION_USE));
+    public static final PortDeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, EverBeneficialItem.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE));
+    public static final PortDeferredItem<EverBeneficialItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> new EverBeneficialItem(ModRarity.ORANGE, EverBeneficialItem.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE));
     public static final PortDeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = ITEMS.register("advanced_combat_techniques", AdvancedCombatTechniquesItem::new);
     public static final PortDeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = ITEMS.register("advanced_combat_techniques_volume_two", AdvancedCombatTechniquesVolumeTwoItem::new);
     public static final PortDeferredItem<PeddlersSatchelItem> PEDDLERS_SATCHEL = ITEMS.register("peddlers_satchel", PeddlersSatchelItem::new);
@@ -101,25 +100,25 @@ public class ConsumableItems {
     public static final PortDeferredItem<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", () -> new ModBoneMealItem(ModRarity.BLUE, "rotten_bone_dust"));
     public static final PortDeferredItem<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", () -> new ModBoneMealItem(ModRarity.BLUE, "bloodstained_powder"));
 
-    public static final PortDeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), level -> new EyeOfCthulhu(BossEntities.EYE_OF_CTHULHU.get(), level), TooltipItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
-    public static final PortDeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, level -> new KingSlime(BossEntities.KING_SLIME.get(), level), TooltipItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));
-    public static final PortDeferredItem<BossSummoningItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level), TooltipItem.getTooltipsFromString("worm_food", 3, ChatFormatting.DARK_PURPLE)));
-    public static final PortDeferredItem<BossSummoningItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level), TooltipItem.getTooltipsFromString("bloody_spine", 3, ChatFormatting.RED)));
+    public static final PortDeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), level -> new EyeOfCthulhu(BossEntities.EYE_OF_CTHULHU.get(), level)));
+    public static final PortDeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, level -> new KingSlime(BossEntities.KING_SLIME.get(), level)));
+    public static final PortDeferredItem<BossSummoningItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level)));
+    public static final PortDeferredItem<BossSummoningItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level)));
     public static final PortDeferredItem<BossSummoningItem> ABEEMINATION = ITEMS.register("abeemination", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(PortTags.Biomes.IS_JUNGLE) || biome.is(PortTags.Biomes.IS_LUSH);
-    }, level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level), BossSummoningItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
+    }, level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level)));
     public static final PortDeferredItem<BossSummoningItem> DEER_THING = ITEMS.register("deer_thing", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(PortTags.Biomes.IS_SNOWY) || biome.is(PortTags.Biomes.IS_ICY);
-    }, level -> new DeerClops(BossEntities.DEERCLOPS.get(), level), BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
+    }, level -> new DeerClops(BossEntities.DEERCLOPS.get(), level)));
 
-    public static final PortDeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
-    public static final PortDeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));
+    public static final PortDeferredItem<CustomRarityItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN));
+    public static final PortDeferredItem<CustomRarityItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN));
 
-    public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
-    public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
-    public static final PortDeferredItem<GameEventItem> PIRATE_MAP = ITEMS.register("pirate_map", () -> new GameEventItem(new Item.Properties(), ModRarity.LIGHT_RED, TooltipItem.getTooltipsFromString("pirate_map", 1, ChatFormatting.GRAY), PirateInvasionGameEvent.KEY));
+    public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, BloodMoonGameEvent.KEY));
+    public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, GoblinArmyGameEvent.KEY));
+    public static final PortDeferredItem<GameEventItem> PIRATE_MAP = ITEMS.register("pirate_map", () -> new GameEventItem(new Item.Properties(), ModRarity.LIGHT_RED, PirateInvasionGameEvent.KEY));
 
     // todo
     public static final PortDeferredItem<Item> GLOWSTICK = ITEMS.registerSimpleItem("glowstick", new Item.Properties().stacksTo(9999));

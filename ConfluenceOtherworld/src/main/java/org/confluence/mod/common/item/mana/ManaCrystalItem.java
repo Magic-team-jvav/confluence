@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -10,15 +9,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
 
-public class ManaCrystalItem extends TooltipItem {
+public class ManaCrystalItem extends CustomRarityItem {
     public ManaCrystalItem() {
-        super(new Properties().stacksTo(16), ModRarity.YELLOW, getTooltipsFromString("mana_crystal", 1, ChatFormatting.GREEN));
+        super(new Properties().stacksTo(16), ModRarity.YELLOW);
     }
 
     @Override

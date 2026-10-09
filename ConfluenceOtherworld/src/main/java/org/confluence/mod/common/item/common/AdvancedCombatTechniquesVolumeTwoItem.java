@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -15,15 +14,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
+public class AdvancedCombatTechniquesVolumeTwoItem extends CustomRarityItem {
     public AdvancedCombatTechniquesVolumeTwoItem() {
-        super(new Properties(), ModRarity.LIGHT_PURPLE, getTooltipsFromString("advanced_combat_techniques_volume_two", 2, ChatFormatting.GREEN));
+        super(new Properties(), ModRarity.LIGHT_PURPLE);
     }
 
     @Override

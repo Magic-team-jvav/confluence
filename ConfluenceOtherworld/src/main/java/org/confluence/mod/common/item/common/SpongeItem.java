@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -21,7 +21,7 @@ import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifier
 
 import java.util.function.Predicate;
 
-public class SpongeItem extends TooltipItem {
+public class SpongeItem extends CustomRarityItem {
     private final Predicate<BlockState> fluidPredicate;
 
     public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> fluidPredicate) {
@@ -29,7 +29,7 @@ public class SpongeItem extends TooltipItem {
                 .add(Attributes.BLOCK_INTERACTION_RANGE, new PortAttributeModifier(
                         Confluence.asResource(name), blockInteractionRange, PortAttributeModifier.Operation.ADD_VALUE
                 ), PortEquipmentSlotGroup.MAINHAND)
-                .build()), rarity, "tooltip.item.confluence." + name + ".0");
+                .build()), rarity);
         this.fluidPredicate = fluidPredicate;
     }
 

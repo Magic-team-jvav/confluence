@@ -66,35 +66,35 @@ public class AccessoryItems {
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> MANA$PICKUP$RANGE = ValueType.create("mana_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(1.75F, 0), PickupRangeAbilityValue::new);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> COIN$PICKUP$RANGE = ValueType.create("coin_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(2.0F, 0), PickupRangeAbilityValue::new);
 
-    public static final PortDeferredItem<BaseCurioItem> ADHESIVE_BANDAGE = registerCurio("adhesive_bandage", builder -> builder.rarity(LIGHT_RED)),
-            MEDICATED_BANDAGE = registerCurio("medicated_bandage", builder -> builder.rarity(PINK)),
-            POCKET_MIRROR = registerCurio("pocket_mirror", builder -> builder.rarity(ORANGE)),
-            REFLECTIVE_SHADES = registerCurio("reflective_shades", builder -> builder.rarity(PINK)),
-            ARMOR_POLISH = registerCurio("armor_polish", builder -> builder.rarity(LIGHT_RED)),
-            ARMOR_BRACING = registerCurio("armor_bracing", builder -> builder.rarity(PINK)),
-            MEGAPHONE = registerCurio("megaphone", builder -> builder.rarity(LIGHT_RED)),
-            NAZAR = registerCurio("nazar", builder -> builder.rarity(GREEN)),
-            COUNTERCURSE_MANTRA = registerCurio("countercurse_mantra", builder -> builder.rarity(LIGHT_RED));
+    public static final PortDeferredItem<BaseCurioItem> ADHESIVE_BANDAGE = registerCurio("adhesive_bandage", builder -> builder.noTooltip().rarity(LIGHT_RED)),
+            MEDICATED_BANDAGE = registerCurio("medicated_bandage", builder -> builder.noTooltip().rarity(PINK)),
+            POCKET_MIRROR = registerCurio("pocket_mirror", builder -> builder.noTooltip().rarity(ORANGE)),
+            REFLECTIVE_SHADES = registerCurio("reflective_shades", builder -> builder.noTooltip().rarity(PINK)),
+            ARMOR_POLISH = registerCurio("armor_polish", builder -> builder.noTooltip().rarity(LIGHT_RED)),
+            ARMOR_BRACING = registerCurio("armor_bracing", builder -> builder.noTooltip().rarity(PINK)),
+            MEGAPHONE = registerCurio("megaphone", builder -> builder.noTooltip().rarity(LIGHT_RED)),
+            NAZAR = registerCurio("nazar", builder -> builder.noTooltip().rarity(GREEN)),
+            COUNTERCURSE_MANTRA = registerCurio("countercurse_mantra", builder -> builder.noTooltip().rarity(LIGHT_RED));
 
-    public static final PortDeferredItem<BaseCurioItem> NATURES_GIFT = registerCurio("natures_gift", builder -> builder.rarity(ORANGE)),
-            MANA_FLOWER = registerCurio("mana_flower", builder -> builder.tooltips(1).rarity(LIGHT_RED)),
-            CELESTIAL_MAGNET = registerCurio("celestial_magnet", builder -> builder.rarity(LIGHT_RED)),
-            CELESTIAL_EMBLEM = registerCurio("celestial_emblem", builder -> builder.rarity(PINK)),
-            MAGNET_FLOWER = registerCurio("magnet_flower", builder -> builder.tooltips(2).rarity(PINK)),
-            ARCANE_FLOWER = registerCurio("arcane_flower", builder -> builder.tooltips(2).rarity(PINK)),
-            BAND_OF_STARPOWER = registerCurio("band_of_starpower", builder -> {}),
-            MANA_REGENERATION_BAND = registerCurio("mana_regeneration_band", builder -> builder.tooltips(1)),
-            MAGIC_CUFFS = registerCurio("magic_cuffs", builder -> builder.tooltips(1).rarity(GREEN)),
-            CELESTIAL_CUFFS = registerCurio("celestial_cuffs", builder -> builder.tooltips(2).rarity(PINK)),
-            MANA_CLOAK = registerCurio("mana_cloak", builder -> builder.tooltips(3).rarity(PINK)),
-            PHILOSOPHERS_STONE = registerCurio("philosophers_stone", builder -> builder.rarity(LIGHT_RED)),
-            CHARM_OF_MYTHS = registerDirectly("charm_of_myths", name -> new BandOfRegeneration(BaseCurioItem.builder(name).rarity(LIGHT_PURPLE)));
+    public static final PortDeferredItem<BaseCurioItem> NATURES_GIFT = registerCurio("natures_gift", builder -> builder.noTooltip().rarity(ORANGE)),
+            MANA_FLOWER = registerCurio("mana_flower", builder -> builder.noTooltip().rarity(LIGHT_RED)),
+            CELESTIAL_MAGNET = registerCurio("celestial_magnet", builder -> builder.noTooltip().rarity(LIGHT_RED)),
+            CELESTIAL_EMBLEM = registerCurio("celestial_emblem", builder -> builder.noTooltip().rarity(PINK)),
+            MAGNET_FLOWER = registerCurio("magnet_flower", builder -> builder.noTooltip().rarity(PINK)),
+            ARCANE_FLOWER = registerCurio("arcane_flower", builder -> builder.noTooltip().rarity(PINK)),
+            BAND_OF_STARPOWER = registerCurio("band_of_starpower", builder -> builder.noTooltip()),
+            MANA_REGENERATION_BAND = registerCurio("mana_regeneration_band", builder -> builder.noTooltip()),
+            MAGIC_CUFFS = registerCurio("magic_cuffs", builder -> builder.noTooltip().rarity(GREEN)),
+            CELESTIAL_CUFFS = registerCurio("celestial_cuffs", builder -> builder.noTooltip().rarity(PINK)),
+            MANA_CLOAK = registerCurio("mana_cloak", builder -> builder.noTooltip().rarity(PINK)),
+            PHILOSOPHERS_STONE = registerCurio("philosophers_stone", builder -> builder.noTooltip().rarity(LIGHT_RED)),
+            CHARM_OF_MYTHS = registerDirectly("charm_of_myths", name -> new BandOfRegeneration(BaseCurioItem.builder(name).noTooltip().rarity(LIGHT_PURPLE)));
 
-    public static final PortDeferredItem<BaseCurioItem> HIGH_TEST_FISHING_LINE = registerCurio("high_test_fishing_line", builder -> {}), // 优质钓鱼线
-            TACKLE_BOX = registerCurio("tackle_box", builder -> {}), // 钓具箱
-            ANGLER_TACKLE_BAG = registerCurio("angler_tackle_bag", builder -> builder.rarity(ORANGE)), // 渔夫渔具袋
-            LAVAPROOF_FISHING_HOOK = registerCurio("lavaproof_fishing_hook", builder -> builder.rarity(LIME)), // 防熔岩钓钩
-            LAVAPROOF_TACKLE_BAG = registerCurio("lavaproof_tackle_bag", builder -> builder.rarity(YELLOW).tooltips(1)), // 防熔岩渔具袋
+    public static final PortDeferredItem<BaseCurioItem> HIGH_TEST_FISHING_LINE = registerCurio("high_test_fishing_line", builder -> builder.noTooltip()), // 优质钓鱼线
+            TACKLE_BOX = registerCurio("tackle_box", builder -> builder.noTooltip()), // 钓具箱
+            ANGLER_TACKLE_BAG = registerCurio("angler_tackle_bag", builder -> builder.noTooltip().rarity(ORANGE)), // 渔夫渔具袋
+            LAVAPROOF_FISHING_HOOK = registerCurio("lavaproof_fishing_hook", builder -> builder.noTooltip().rarity(LIME)), // 防熔岩钓钩
+            LAVAPROOF_TACKLE_BAG = registerCurio("lavaproof_tackle_bag", builder -> builder.noTooltip().rarity(YELLOW)), // 防熔岩渔具袋
             FISHING_BOBBER = ITEMS.register("fishing_bobber", () -> new FishingBobber(CurioFishingHook.Variant.COMMON)), // 钓鱼浮标
             GLOWING_FISHING_BOBBER = ITEMS.register("glowing_fishing_bobber", () -> new FishingBobber(CurioFishingHook.Variant.GLOWING)), // 发光钓鱼浮标
             LAVA_MOSS_FISHING_BOBBER = ITEMS.register("lava_moss_fishing_bobber", () -> new FishingBobber(CurioFishingHook.Variant.LAVA)), // 熔岩苔藓钓鱼浮标
@@ -105,22 +105,22 @@ public class AccessoryItems {
             XENON_MOSS_FISHING_BOBBER = ITEMS.register("xenon_moss_fishing_bobber", () -> new FishingBobber(CurioFishingHook.Variant.XENON)); // 氙苔藓钓鱼浮标
 
 
-    public static final PortDeferredItem<BaseCurioItem> MECHANICAL_LENS = registerDirectly("mechanical_lens", name -> new MechanicalLens(BaseCurioItem.builder("mechanical_lens").rarity(ORANGE).tooltips(1))); //机械晶状体
+    public static final PortDeferredItem<BaseCurioItem> MECHANICAL_LENS = registerDirectly("mechanical_lens", name -> new MechanicalLens(BaseCurioItem.builder("mechanical_lens").rarity(ORANGE).noTooltip())); //机械晶状体
     /* 标尺 */
     /* 机械标尺 */
 
     /* 自动安放器 */
-    public static final PortDeferredItem<BaseCurioItem> PAINT_SPRAYER = registerCurio("paint_sprayer", builder -> builder.rarity(ORANGE)); // 喷漆器
+    public static final PortDeferredItem<BaseCurioItem> PAINT_SPRAYER = registerCurio("paint_sprayer", builder -> builder.noTooltip().rarity(ORANGE)); // 喷漆器
 
-    public static final PortDeferredItem<BaseCurioItem> LUCKY_COIN = registerCurio("lucky_coin", builder -> builder.rarity(PINK)), // 幸运币
-            GOLD_RING = registerCurio("gold_ring", builder -> builder.rarity(PINK)), // 金戒指
-            COIN_RING = registerCurio("coin_ring", builder -> builder.rarity(PINK)), // 钱币戒指
-            DISCOUNT_CARD = registerCurio("discount_card", builder -> builder.rarity(PINK)), // 优惠卡
-            GREEDY_RING = registerCurio("greedy_ring", builder -> builder.rarity(LIGHT_PURPLE)), // 贪婪戒指
-            GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> {}), // 植物纤维绳索宝典
-            RADIO_THING = registerDirectly("radio_thing", name -> new RadioThing(BaseCurioItem.builder(name).rarity(BLUE).tooltips(1))), // 收音机
-            SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).tooltips(1))), // 幽灵护目镜
-            CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK)), // 炫彩斗篷
+    public static final PortDeferredItem<BaseCurioItem> LUCKY_COIN = registerCurio("lucky_coin", builder -> builder.noTooltip().rarity(PINK)), // 幸运币
+            GOLD_RING = registerCurio("gold_ring", builder -> builder.noTooltip().rarity(PINK)), // 金戒指
+            COIN_RING = registerCurio("coin_ring", builder -> builder.noTooltip().rarity(PINK)), // 钱币戒指
+            DISCOUNT_CARD = registerCurio("discount_card", builder -> builder.noTooltip().rarity(PINK)), // 优惠卡
+            GREEDY_RING = registerCurio("greedy_ring", builder -> builder.noTooltip().rarity(LIGHT_PURPLE)), // 贪婪戒指
+            GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> builder.noTooltip()), // 植物纤维绳索宝典
+            RADIO_THING = registerDirectly("radio_thing", name -> new RadioThing(BaseCurioItem.builder(name).rarity(BLUE).noTooltip())), // 收音机
+            SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).noTooltip())), // 幽灵护目镜
+            CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.noTooltip().rarity(PINK)), // 炫彩斗篷
             STRESS_BALL = registerCurio("stress_ball", builder -> builder.rarity(BLUE).tooltips(1)); // 压力球
 
     public static final PortDeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.noTooltip().rarity(LIGHT_RED)), // 召唤师徽章
@@ -134,39 +134,39 @@ public class AccessoryItems {
             PYGMY_NECKLACE = registerCurio("pygmy_necklace", builder -> builder.noTooltip().rarity(LIME)); // 矮人项链
 
 
-    public static final PortDeferredItem<BaseCurioItem> CLOTHIER_VOODOO_DOLL = registerCurio("clothier_voodoo_doll", builder -> builder.rarity(BLUE));
-    public static final PortDeferredItem<BaseCurioItem> WHITE_YOYO_STRING = registerCurio("white_string", builder -> builder.rarity(WHITE)),
-            RED_YOYO_STRING = registerCurio("red_string", builder -> builder.rarity(WHITE)),
-            ORANGE_YOYO_STRING = registerCurio("orange_string", builder -> builder.rarity(WHITE)),
-            YELLOW_YOYO_STRING = registerCurio("yellow_string", builder -> builder.rarity(WHITE)),
-            LIME_YOYO_STRING = registerCurio("lime_string", builder -> builder.rarity(WHITE)),
-            GREEN_YOYO_STRING = registerCurio("green_string", builder -> builder.rarity(WHITE)),
-            TEAL_YOYO_STRING = registerCurio("teal_string", builder -> builder.rarity(WHITE)),
-            CYAN_YOYO_STRING = registerCurio("cyan_string", builder -> builder.rarity(WHITE)),
-            SKY_BLUE_YOYO_STRING = registerCurio("sky_blue_string", builder -> builder.rarity(WHITE)),
-            BLUE_YOYO_STRING = registerCurio("blue_string", builder -> builder.rarity(WHITE)),
-            PURPLE_YOYO_STRING = registerCurio("purple_string", builder -> builder.rarity(WHITE)),
-            VIOLET_YOYO_STRING = registerCurio("violet_string", builder -> builder.rarity(WHITE)),
-            PINK_YOYO_STRING = registerCurio("pink_string", builder -> builder.rarity(WHITE)),
-            BROWN_YOYO_STRING = registerCurio("brown_string", builder -> builder.rarity(WHITE)),
-            RAINBOW_YOYO_STRING = registerCurio("rainbow_string", builder -> builder.rarity(WHITE)),
-            BLACK_YOYO_STRING = registerCurio("black_string", builder -> builder.rarity(WHITE)),
-            YOYO_GLOVE = registerCurio("yoyo_glove", builder -> builder.rarity(LIGHT_RED)),
-            BLACK_COUNTERWEIGHT = registerCurio("black_counterweight", builder -> builder.rarity(WHITE)),
-            BLUE_COUNTERWEIGHT = registerCurio("blue_counterweight", builder -> builder.rarity(WHITE)),
-            GREEN_COUNTERWEIGHT = registerCurio("green_counterweight", builder -> builder.rarity(WHITE)),
-            PURPLE_COUNTERWEIGHT = registerCurio("purple_counterweight", builder -> builder.rarity(WHITE)),
-            RED_COUNTERWEIGHT = registerCurio("red_counterweight", builder -> builder.rarity(WHITE)),
-            YELLOW_COUNTERWEIGHT = registerCurio("yellow_counterweight", builder -> builder.rarity(WHITE)),
-            STRUNG_COUNTERWEIGHT = registerCurio("strung_counterweight", builder -> builder.rarity(BLUE)),
-            YOYO_BAG = registerCurio("yoyo_bag", builder -> builder.rarity(LIGHT_RED)),
+    public static final PortDeferredItem<BaseCurioItem> CLOTHIER_VOODOO_DOLL = registerCurio("clothier_voodoo_doll", builder -> builder.noTooltip().rarity(BLUE));
+    public static final PortDeferredItem<BaseCurioItem> WHITE_YOYO_STRING = registerCurio("white_string", builder -> builder.noTooltip().rarity(WHITE)),
+            RED_YOYO_STRING = registerCurio("red_string", builder -> builder.noTooltip().rarity(WHITE)),
+            ORANGE_YOYO_STRING = registerCurio("orange_string", builder -> builder.noTooltip().rarity(WHITE)),
+            YELLOW_YOYO_STRING = registerCurio("yellow_string", builder -> builder.noTooltip().rarity(WHITE)),
+            LIME_YOYO_STRING = registerCurio("lime_string", builder -> builder.noTooltip().rarity(WHITE)),
+            GREEN_YOYO_STRING = registerCurio("green_string", builder -> builder.noTooltip().rarity(WHITE)),
+            TEAL_YOYO_STRING = registerCurio("teal_string", builder -> builder.noTooltip().rarity(WHITE)),
+            CYAN_YOYO_STRING = registerCurio("cyan_string", builder -> builder.noTooltip().rarity(WHITE)),
+            SKY_BLUE_YOYO_STRING = registerCurio("sky_blue_string", builder -> builder.noTooltip().rarity(WHITE)),
+            BLUE_YOYO_STRING = registerCurio("blue_string", builder -> builder.noTooltip().rarity(WHITE)),
+            PURPLE_YOYO_STRING = registerCurio("purple_string", builder -> builder.noTooltip().rarity(WHITE)),
+            VIOLET_YOYO_STRING = registerCurio("violet_string", builder -> builder.noTooltip().rarity(WHITE)),
+            PINK_YOYO_STRING = registerCurio("pink_string", builder -> builder.noTooltip().rarity(WHITE)),
+            BROWN_YOYO_STRING = registerCurio("brown_string", builder -> builder.noTooltip().rarity(WHITE)),
+            RAINBOW_YOYO_STRING = registerCurio("rainbow_string", builder -> builder.noTooltip().rarity(WHITE)),
+            BLACK_YOYO_STRING = registerCurio("black_string", builder -> builder.noTooltip().rarity(WHITE)),
+            YOYO_GLOVE = registerCurio("yoyo_glove", builder -> builder.noTooltip().rarity(LIGHT_RED)),
+            BLACK_COUNTERWEIGHT = registerCurio("black_counterweight", builder -> builder.noTooltip().rarity(WHITE)),
+            BLUE_COUNTERWEIGHT = registerCurio("blue_counterweight", builder -> builder.noTooltip().rarity(WHITE)),
+            GREEN_COUNTERWEIGHT = registerCurio("green_counterweight", builder -> builder.noTooltip().rarity(WHITE)),
+            PURPLE_COUNTERWEIGHT = registerCurio("purple_counterweight", builder -> builder.noTooltip().rarity(WHITE)),
+            RED_COUNTERWEIGHT = registerCurio("red_counterweight", builder -> builder.noTooltip().rarity(WHITE)),
+            YELLOW_COUNTERWEIGHT = registerCurio("yellow_counterweight", builder -> builder.noTooltip().rarity(WHITE)),
+            STRUNG_COUNTERWEIGHT = registerCurio("strung_counterweight", builder -> builder.noTooltip().rarity(BLUE)),
+            YOYO_BAG = registerCurio("yoyo_bag", builder -> builder.noTooltip().rarity(LIGHT_RED)),
             MAGIC_STRING = registerCurio("magic_string", builder -> builder.rarity(PINK)),
-            MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", builder -> builder.rarity(PINK));
+            MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", builder -> builder.noTooltip().rarity(PINK));
     public static final PortDeferredItem<BaseCurioItem> GUIDE_VOODOO_DOLL = registerDirectly("guide_voodoo_doll", GuideVooDooDollItem::new);
 
-    public static final PortDeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", builder -> builder.rarity(LIME)),//经验吸管
-            TINSEL = registerCurio("tinsel", builder -> builder.rarity(LIME)),//金箔
-            SHINY_PIPETTE = registerCurio("shiny_pipette", builder -> builder.rarity(YELLOW));//闪亮吸管
+    public static final PortDeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", builder -> builder.noTooltip().rarity(LIME)),//经验吸管
+            TINSEL = registerCurio("tinsel", builder -> builder.noTooltip().rarity(LIME)),//金箔
+            SHINY_PIPETTE = registerCurio("shiny_pipette", builder -> builder.noTooltip().rarity(YELLOW));//闪亮吸管
 
     private static PortDeferredItem<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

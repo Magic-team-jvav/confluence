@@ -9,12 +9,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 
-public class NPCInvitationItem extends TooltipItem {
+public class NPCInvitationItem extends CustomRarityItem {
     public NPCInvitationItem() {
-        super(new Properties().stacksTo(1), ModRarity.WHITE, "tooltip.item.confluence.npc_invitation.0");
+        super(new Properties().stacksTo(1), ModRarity.WHITE);
     }
 
     @Override

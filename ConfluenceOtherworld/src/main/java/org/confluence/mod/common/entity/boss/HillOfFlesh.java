@@ -199,6 +199,7 @@ public class HillOfFlesh extends BaseBoss {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_INITIALIZING, true);
         builder.define(DATA_OUTER_RADIUS, INITIAL_CLEARING_RADIUS);
         builder.define(DATA_INNER_RADIUS, getType().getDimensions().width() * 0.5F + INNER_MELEE_GAP);

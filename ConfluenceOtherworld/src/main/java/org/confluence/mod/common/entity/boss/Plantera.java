@@ -84,6 +84,7 @@ public class Plantera extends BaseBoss {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_PHASE, 0);
     }
 

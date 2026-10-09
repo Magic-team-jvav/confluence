@@ -152,6 +152,7 @@ public class BrainOfCthulhu extends BaseBoss {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_PHASE_TWO, false);
         builder.define(DATA_PHASE_ONE_STATE, PhaseOneState.SUMMONING.id);
         builder.define(DATA_PHASE_ONE_STATE_TICKS, 0);

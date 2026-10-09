@@ -245,6 +245,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_PHASE_TWO, false);
         builder.define(PART_TARGETS, new CompoundTag());
     }

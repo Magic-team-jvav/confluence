@@ -53,6 +53,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(OWNER_UUID, Optional.empty());
         builder.define(DATA_TRANSFORMED, false);
         builder.define(DATA_DASHING, false);

@@ -94,6 +94,7 @@ public final class PrimeEnderDragon extends BaseBoss {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(DATA_COMBAT_STATE, CombatState.OPENING_WAIT.ordinal());
         builder.define(DATA_LASER_ACTIVE, false);
         builder.define(DATA_LANDING, false);

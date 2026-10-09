@@ -76,6 +76,7 @@ public class VisualNeuron extends BaseFlyingMonster implements BossOwnedEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(OWNER_UUID, Optional.empty());
         builder.define(COMBAT_STATE, CombatState.RETURNING.id);
     }

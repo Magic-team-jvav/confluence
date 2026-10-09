@@ -78,6 +78,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
         builder.define(OWNER_UUID, Optional.empty());
         builder.define(ANCHOR, new Vector3f());
         builder.define(IS_FREE, false);

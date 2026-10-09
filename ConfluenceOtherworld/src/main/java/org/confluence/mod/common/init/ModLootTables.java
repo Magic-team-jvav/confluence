@@ -133,7 +133,7 @@ public final class ModLootTables {
         public static final DeferredRegister<LootItemFunctionType> TYPES = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, Confluence.MODID);
 
         public static final RegistryObject<LootItemFunctionType> LOOTING_BONUS_COUNT =
-                register("looting_bonus_count", LootingBonusCountFunction.CODEC);
+                TYPES.register("looting_bonus_count", () -> new LootItemFunctionType(new LootingBonusCountFunction.Serializer()));
 
         private static <T extends LootItemFunction> RegistryObject<LootItemFunctionType> register(String name, MapCodec<T> mapCodec) {
             Codec<T> codec = mapCodec.codec();

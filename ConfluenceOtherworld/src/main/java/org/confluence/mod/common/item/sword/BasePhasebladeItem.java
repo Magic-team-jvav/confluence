@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.sword;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -99,11 +100,6 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        return isThrown(player, stack) || super.onLeftClickEntity(stack, player, entity);
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (hand != InteractionHand.MAIN_HAND || !isTurnOn(stack))
@@ -160,6 +156,10 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
             return;
 
         boolean shouldBeOn = selected && player.getMainHandItem() == stack;
+        ItemAttributeModifiers modifiers = shouldBeOn ? turnOnModifiers : turnOffModifiers;
+        if (!modifiers.equals(stack.get(DataComponents.ATTRIBUTE_MODIFIERS))) {
+            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
+        }
         if (isTurnOn(stack) == shouldBeOn) return;
 
         LibUtils.updateItemStackNbt(stack, tag -> tag.putBoolean(TURN_ON_KEY, shouldBeOn));

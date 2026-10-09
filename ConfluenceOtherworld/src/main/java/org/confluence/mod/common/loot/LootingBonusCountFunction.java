@@ -23,18 +23,17 @@ import org.confluence.mod.common.init.ModLootTables;
 import java.util.List;
 import java.util.Set;
 
-/**
- * 高概率战利品池（权重掉落率不低于 5%）专用的抢夺适配。
- * <p>掉落概率完全由池自身的权重决定，本函数只在掉落成立之后叠加一个<b>固定</b>数量：
- * <ul>
- *     <li>无抢夺：数量不变（原来掉 1 个还是 1 个）</li>
- *     <li>抢夺 I 及以上：数量 {@code +bonus}（默认 +1），且<b>只吃 1 级</b>——
- *     等级再高也还是 +bonus，不随等级继续放大。</li>
- * </ul>
- * <p>这正是原版 {@code minecraft:enchanted_count_increase} 做不到的：那个函数是
- * {@code stack.grow(level * value)}，无抢夺时直接跳出不生效，有抢夺时又会按等级线性放大，
- * 无法表达“等级大于等于 1 就固定加 1”。
- */
+// 高概率战利品池（权重掉落率不低于 5%）专用的抢夺适配。
+// 掉落概率完全由池自身的权重决定，本函数只在掉落成立之后叠加一个固定数量：
+//
+//     无抢夺：数量不变（原来掉 1 个还是 1 个）
+//     抢夺 I 及以上：数量 +bonus（默认 +1），且只吃 1 级——
+//     等级再高也还是 +bonus，不随等级继续放大。
+//
+// 这正是原版 minecraft:enchanted_count_increase 做不到的：那个函数是
+// stack.grow(level * value)，无抢夺时直接跳出不生效，有抢夺时又会按等级线性放大，
+// 无法表达“等级大于等于 1 就固定加 1”。
+//
 public class LootingBonusCountFunction extends LootItemConditionalFunction {
     public static final MapCodec<LootingBonusCountFunction> CODEC = RecordCodecBuilder.mapCodec(instance -> commonFields(instance)
             .and(instance.group(
@@ -75,22 +74,20 @@ public class LootingBonusCountFunction extends LootItemConditionalFunction {
         Entity entity = context.getParamOrNull(LootContextParams.ATTACKING_ENTITY);
         if (!(entity instanceof LivingEntity living)) return stack;
         if (EnchantmentHelper.getEnchantmentLevel(enchantment, living) <= 0) return stack;
-        // 用 setCount 而不是 grow：grow 受 reserved 空间限制，某些堆叠会静默失败
+        // 掉落成立后固定增加数量，不随抢夺等级继续增加。
         stack.setCount(stack.getCount() + bonus);
         return stack;
     }
 
-    /**
-     * 构造一个抢夺大于等于 1 级时固定增加 bonus 数量的掉落函数。
-     */
+    // 构造一个抢夺大于等于 1 级时固定增加 bonus 数量的掉落函数。
+    //
     public static Builder lootingBonusCount(HolderLookup.Provider registries, int bonus) {
         Holder<Enchantment> looting = registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.LOOTING);
         return new Builder(looting, bonus);
     }
 
-    /**
-     * 构造一个抢夺大于等于 1 级时固定加 1 的掉落数量函数。
-     */
+    // 构造一个抢夺大于等于 1 级时固定加 1 的掉落数量函数。
+    //
     public static Builder lootingBonusCount(HolderLookup.Provider registries) {
         return lootingBonusCount(registries, 1);
     }

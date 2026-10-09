@@ -1,0 +1,45 @@
+{
+    "_comment": "芦苇、雨伞等兼作工具的武器固定用途说明。",
+    "confluence:breathing_reed": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.breathing_reed.0",
+                "color": "gray",
+                "italic": true,
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:tragic_umbrella": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tragic_umbrella.0",
+                "color": "gray",
+                "italic": true,
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:umbrella": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.umbrella.0",
+                "color": "gray",
+                "italic": true,
+                "maxWidth": 320
+            }
+        ]
+    }
+}

@@ -16,7 +16,6 @@ import org.confluence.terra_curio.util.CuriosUtils;
 public class BeeKeeperItem extends EffectSwordItem {
     public BeeKeeperItem() {
         super(ModTiers.UNBREAKABLE, ModRarity.GREEN, 18, 1.6F, SwordDefinition.builder()
-                .tooltips(2)
                 .tooltipImage()
                 .specialSweep(0.8F), LibEffects.CONFUSED, 40, 1, 1.0F);
     }

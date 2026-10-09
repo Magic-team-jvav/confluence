@@ -13,7 +13,9 @@ public class FishingBobber extends BaseCurioItem {
     public final CurioFishingHook.Variant variant;
 
     public FishingBobber(CurioFishingHook.Variant variant) {
-        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE).component(TCDataComponentTypes.ACCESSORIES, PrimitiveValueComponent.entry(AccessoryItems.FISHING$POWER, new FloatValue(10.0F))));
+        super(builder("fishing_bobber", new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)
+                .component(TCDataComponentTypes.ACCESSORIES, PrimitiveValueComponent.entry(AccessoryItems.FISHING$POWER, new FloatValue(10.0F))))
+                .noTooltip().infos(0));
         this.variant = variant;
     }
 }

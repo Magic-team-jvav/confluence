@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.sponsor;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Position;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
-import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
 
@@ -52,7 +50,6 @@ public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem
     }
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(TooltipItem.getTooltipsFromString("ice_tofu_brick", 1, ChatFormatting.GRAY));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 

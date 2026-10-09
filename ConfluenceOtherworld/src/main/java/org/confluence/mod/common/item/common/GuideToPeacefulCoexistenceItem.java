@@ -1,17 +1,18 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.FunctionItem;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.IFunctionCouldEnable;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 
-public class GuideToPeacefulCoexistenceItem extends FunctionItem {
+public class GuideToPeacefulCoexistenceItem extends CustomRarityItem implements IFunctionCouldEnable {
     public GuideToPeacefulCoexistenceItem() {
-        super(new Properties().stacksTo(1), ModRarity.GREEN, getTooltipsFromString("guide_to_peaceful_coexistence", 3, ChatFormatting.GRAY));
+        super(new Properties().stacksTo(1), ModRarity.GREEN);
     }
 
     @Override
@@ -23,4 +24,10 @@ public class GuideToPeacefulCoexistenceItem extends FunctionItem {
             data.setCouldDamageEnvironment(b);
         }
     }
+
+    @Override
+    public Component getName(ItemStack stack) {
+        return isEnabled(stack) ? super.getName(stack) : Component.translatable(getDescriptionId(stack) + ".disable");
+    }
+
 }

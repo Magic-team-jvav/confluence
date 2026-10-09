@@ -1,0 +1,704 @@
+{
+    "_comment": "宝匣、宝藏袋、礼包和锁盒的打开及放置指引。",
+    "confluence:azure_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:boreal_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:brain_of_cthulhu_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:bramble_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:can_of_worms": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:christmas_gift": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:clam": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:corrupt_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:crimson_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:deerclops_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:defiled_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:deluxe_package": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:divine_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:dungeon_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:eater_of_worlds_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:eye_of_cthulhu_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:frozen_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:golden_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:golden_lock_box": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.golden_lock_box.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.golden_lock_box.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:goodie_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:hallowed_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:hellstone_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:hematic_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:herb_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:hill_of_flesh_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:iron_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:jungle_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:king_slime_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:lunatic_cultist_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mirage_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mythril_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:oasis_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:obsidian_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:obsidian_lock_box": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.obsidian_lock_box.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.obsidian_lock_box.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:ocean_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:pearlwood_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:pine_cone": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:plantera_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:queen_bee_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:red_envelope": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:savanna_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:seaside_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:skeletron_prime_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:skeletron_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:sky_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:stockade_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:sugar_tangerine": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:the_destroyer_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:the_twins_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:titanium_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:wall_of_flesh_treasure_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.right_click.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:wild_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:wooden_crate": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.crate.common.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

@@ -1,0 +1,124 @@
+{
+    "_comment": "赞助纪念物品、特殊食物与彩蛋的背景描述；赞助武器的故事统一放在 weapon_lore.json。",
+    "confluence:dongdongs_flatbread": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.dongdongs_flatbread.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:failed_skull": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.failed_skull.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:ice_tofu_brick": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.ice_tofu_brick.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:kind_miside_ring": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.kind_miside_ring.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:piglin_stew": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.piglin_stew.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:pink_cola": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.pink_cola.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:tokyo_teddy_bear": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tokyo_teddy_bear.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tokyo_teddy_bear.1",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tokyo_teddy_bear.2",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tokyo_teddy_bear.3",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tokyo_teddy_bear.4",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tokyo_teddy_bear.5",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

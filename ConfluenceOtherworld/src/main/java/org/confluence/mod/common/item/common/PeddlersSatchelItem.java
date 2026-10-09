@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -12,13 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-public class PeddlersSatchelItem extends TooltipItem {
+public class PeddlersSatchelItem extends CustomRarityItem {
     public PeddlersSatchelItem() {
-        super(new Properties(), ModRarity.LIGHT_PURPLE, Component.translatable("tooltip.item.confluence.peddlers_satchel.0").withStyle(ChatFormatting.GREEN));
+        super(new Properties(), ModRarity.LIGHT_PURPLE);
     }
 
     @Override

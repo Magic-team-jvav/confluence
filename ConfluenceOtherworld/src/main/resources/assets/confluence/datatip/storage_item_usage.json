@@ -1,0 +1,29 @@
+{
+    "_comment": "猪猪存钱罐与切斯特召唤物的收回操作说明。",
+    "confluence:chester_staff": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.confluence.storage_companion.retrieve",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:money_trough": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.confluence.storage_companion.retrieve",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

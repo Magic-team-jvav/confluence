@@ -1,0 +1,1087 @@
+{
+    "_comment": "Confluence 注册的饰品固定能力说明。",
+    "confluence:adhesive_bandage": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.adhesive_bandage.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:angler_tackle_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.angler_tackle_bag.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:arcane_flower": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.arcane_flower.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.arcane_flower.1",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.arcane_flower.2",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:argon_moss_fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.argon_moss_fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:armor_bracing": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.armor_bracing.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:armor_polish": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.armor_polish.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:band_of_starpower": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.band_of_starpower.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:black_counterweight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.black_counterweight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:black_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.black_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:blue_counterweight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.blue_counterweight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:blue_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.blue_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:brown_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.brown_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:celestial_cuffs": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.celestial_cuffs.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.celestial_cuffs.1",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.celestial_cuffs.2",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:celestial_emblem": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.celestial_emblem.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:celestial_magnet": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.celestial_magnet.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:charm_of_myths": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.charm_of_myths.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:chromatic_cloak": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.chromatic_cloak.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:clothier_voodoo_doll": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.clothier_voodoo_doll.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:coin_ring": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.coin_ring.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:countercurse_mantra": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.countercurse_mantra.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:cyan_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.cyan_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:discount_card": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.discount_card.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:experience_pipette": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.experience_pipette.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:glowing_fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.glowing_fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:gold_ring": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.gold_ring.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:greedy_ring": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.greedy_ring.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:green_counterweight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.green_counterweight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:green_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.green_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:guide_to_plant_fiber_cordage": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.guide_to_plant_fiber_cordage.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:helium_moss_fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.helium_moss_fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:high_test_fishing_line": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.high_test_fishing_line.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:krypton_moss_fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.krypton_moss_fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:lava_moss_fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.lava_moss_fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:lavaproof_fishing_hook": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.lavaproof_fishing_hook.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:lavaproof_tackle_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.lavaproof_tackle_bag.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.lavaproof_tackle_bag.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:lime_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.lime_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:lucky_coin": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.lucky_coin.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:magic_cuffs": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.magic_cuffs.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.magic_cuffs.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:magic_yoyo_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.magic_yoyo_bag.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:magnet_flower": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.magnet_flower.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.magnet_flower.1",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.magnet_flower.2",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mana_cloak": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.mana_cloak.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.mana_cloak.1",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.mana_cloak.2",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.mana_cloak.3",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mana_flower": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.mana_flower.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.mana_flower.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mana_regeneration_band": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.mana_regeneration_band.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.mana_regeneration_band.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:mechanical_lens": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.mechanical_lens.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.mechanical_lens.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:medicated_bandage": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.medicated_bandage.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:megaphone": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.megaphone.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:natures_gift": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.natures_gift.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:nazar": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.nazar.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:neon_moss_fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.neon_moss_fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:orange_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.orange_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:paint_sprayer": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.paint_sprayer.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:philosophers_stone": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.philosophers_stone.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:pink_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.pink_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:pocket_mirror": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.pocket_mirror.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:purple_counterweight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.purple_counterweight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:purple_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.purple_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:radio_thing": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.radio_thing.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.radio_thing.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:rainbow_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.rainbow_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:red_counterweight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.red_counterweight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:red_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.red_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:reflective_shades": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.reflective_shades.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:shiny_pipette": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.shiny_pipette.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:sky_blue_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.sky_blue_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:spectre_goggles": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.spectre_goggles.0",
+                "color": "gray",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.terra_curio.spectre_goggles.1",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:strung_counterweight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.strung_counterweight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:tackle_box": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tackle_box.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:teal_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.teal_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:tinsel": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.tinsel.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:violet_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.violet_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:white_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.white_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:xenon_moss_fishing_bobber": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.xenon_moss_fishing_bobber.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:yellow_counterweight": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.yellow_counterweight.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:yellow_string": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.yellow_string.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:yoyo_bag": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.yoyo_bag.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:yoyo_glove": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.yoyo_glove.0",
+                "color": "gray",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

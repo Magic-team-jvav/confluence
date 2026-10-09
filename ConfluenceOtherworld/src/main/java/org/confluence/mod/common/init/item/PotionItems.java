@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
@@ -36,7 +36,7 @@ public class PotionItems {
         }
     });
 
-    public static final DeferredItem<TooltipItem> MUG = ITEMS.register("mug", () -> new TooltipItem(new Item.Properties(), ModRarity.GRAY, Component.translatable("tooltip.item.confluence.mug.0")));
+    public static final DeferredItem<CustomRarityItem> MUG = ITEMS.register("mug", () -> new CustomRarityItem(new Item.Properties(), ModRarity.GRAY));
     public static final DeferredItem<AbstractPotionItem> ALE = ITEMS.register("ale", () -> new EffectPotionItem(ModEffects.TIPSY, 2400) {
         @Override
         protected ItemStack getReturnItem() {

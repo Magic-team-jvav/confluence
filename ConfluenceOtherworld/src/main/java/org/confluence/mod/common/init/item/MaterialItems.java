@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -8,7 +7,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
-import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -23,7 +21,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> GEL = ITEMS.register("gel", GelItem::new);
     public static final DeferredItem<Item> PINK_GEL = register("pink_gel", ModRarity.PINK);
     public static final DeferredItem<Item> SILK = register("silk", ModRarity.BLUE);
-    public static final DeferredItem<Item> RAW_ASPHALT = ITEMS.register("raw_asphalt", () -> new TooltipItem(new Item.Properties().stacksTo(LibUtils.MAX_STACK_SIZE), ModRarity.WHITE, "tooltip.item.confluence.raw_asphalt.0"));
+    public static final DeferredItem<Item> RAW_ASPHALT = ITEMS.register("raw_asphalt", () -> new CustomRarityItem(new Item.Properties().stacksTo(LibUtils.MAX_STACK_SIZE), ModRarity.WHITE));
 
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin");
     public static final DeferredItem<Item> TIN_INGOT = register("tin_ingot");
@@ -157,14 +155,14 @@ public class MaterialItems {
 
 
     // 困难模式
-    public static final DeferredItem<Item> SOUL_OF_VOIGHT = ITEMS.register("soul_of_voight", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_voight", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> SOUL_OF_LIGHT = ITEMS.register("soul_of_light", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_light", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> SOUL_OF_NIGHT = ITEMS.register("soul_of_night", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_night", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> SOUL_OF_FLIGHT = ITEMS.register("soul_of_flight", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_flight", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> SOUL_OF_FRIGHT = ITEMS.register("soul_of_fright", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_fright", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> SOUL_OF_MIGHT = ITEMS.register("soul_of_might", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_might", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> SOUL_OF_SIGHT = ITEMS.register("soul_of_sight", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_sight", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> SOUL_OF_BRIGHT = ITEMS.register("soul_of_bright", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_bright", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<Item> SOUL_OF_VOIGHT = ITEMS.register("soul_of_voight", () -> new CustomRarityItem(new Item.Properties(), ModRarity.ORANGE));
+    public static final DeferredItem<Item> SOUL_OF_LIGHT = ITEMS.register("soul_of_light", () -> new CustomRarityItem(new Item.Properties(), ModRarity.ORANGE));
+    public static final DeferredItem<Item> SOUL_OF_NIGHT = ITEMS.register("soul_of_night", () -> new CustomRarityItem(new Item.Properties(), ModRarity.ORANGE));
+    public static final DeferredItem<Item> SOUL_OF_FLIGHT = ITEMS.register("soul_of_flight", () -> new CustomRarityItem(new Item.Properties(), ModRarity.ORANGE));
+    public static final DeferredItem<Item> SOUL_OF_FRIGHT = ITEMS.register("soul_of_fright", () -> new CustomRarityItem(new Item.Properties(), ModRarity.PINK));
+    public static final DeferredItem<Item> SOUL_OF_MIGHT = ITEMS.register("soul_of_might", () -> new CustomRarityItem(new Item.Properties(), ModRarity.PINK));
+    public static final DeferredItem<Item> SOUL_OF_SIGHT = ITEMS.register("soul_of_sight", () -> new CustomRarityItem(new Item.Properties(), ModRarity.PINK));
+    public static final DeferredItem<Item> SOUL_OF_BRIGHT = ITEMS.register("soul_of_bright", () -> new CustomRarityItem(new Item.Properties(), ModRarity.PINK));
     public static final DeferredItem<BlockItem> CRYSTAL_SHARDS = ITEMS.register("crystal_shards", () -> new BlockItem(NatureBlocks.CRYSTAL_SHARDS.get(), new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
     public static final DeferredItem<Item> CURSED_FLAME = ITEMS.register("cursed_flame", CursedFlameItem::new);
     public static final DeferredItem<Item> ICHOR = register("ichor", ModRarity.ORANGE);

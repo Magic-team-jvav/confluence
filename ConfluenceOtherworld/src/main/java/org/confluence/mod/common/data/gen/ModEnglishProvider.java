@@ -1044,6 +1044,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.sweet_sword.0", "au'undertale: above nothingness' written by 一只屑水缡");
         add("tooltip.item.confluence.piglin_stew.0", "The last thing a Piglin would crave before starving, yet they never got to taste it...");
 
+        add("tooltip.item.confluence.zenith.0", "When ten scattered pieces are found again and ten powers converge, this blazing weapon will descend from the zenith of the sky, bestowed upon the hero who liberated Confluence: Otherworld.");
+        add("tooltip.item.confluence.zenith.1", "“Why not try throwing it into Shimmer?”");
+        add("tooltip.item.confluence.true_copper_shortsword.0", "Embraced by Shimmer, the divine weapon reveals the source of its power.");
+        add("tooltip.item.confluence.true_copper_shortsword.1", "It may not be the sword that accompanied you throughout your journey, but it may remind you of that distant afternoon when you first opened Confluence: Otherworld.");
+        add("tooltip.item.confluence.true_copper_shortsword.2", "“I told you, the ten of us are amazing!” said the brand-new, lucky Copper Shortsword.");
+
         add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the confluence of the two worlds... until the journey's end.");
         add("tooltip.item.confluence.copper_short_sword.1", "\"We are so awesome!\" said the copper short sword.");
         add("tooltip.item.confluence.umbrella.0", "You will fall slower while holding this");

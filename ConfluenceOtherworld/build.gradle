@@ -209,7 +209,7 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
     implementation jarJar(files('libs/LanguageFixer.jar'))
-    implementation jarJar(files('libs/datatip-1.2.6-fix-neoforge.jar'))
+    implementation jarJar(files('libs/datatip-1.2.7-neoforge.jar'))
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
     compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }

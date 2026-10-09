@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -9,15 +7,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.item.paint.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class PaintItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -73,13 +70,13 @@ public class PaintItems {
         });
     }
 
-    private static <T extends Item> DeferredItem<T> registerTool(String suffix, TriFunction<Item.Properties, ModRarity, List<Component>, T> factory, boolean spectre) {
+    private static <T extends Item> DeferredItem<T> registerTool(String suffix, BiFunction<Item.Properties, ModRarity, T> factory, boolean spectre) {
         return ITEMS.register(spectre ? "spectre_" + suffix : suffix, () -> {
             Item.Properties properties = new Item.Properties();
             if (spectre) properties.attributes(ItemAttributeModifiers.builder().add(
                     Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 3, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND
             ).build());
-            return factory.apply(properties, ModRarity.WHITE, TooltipItem.getTooltipsFromString(suffix, 2, ChatFormatting.GRAY));
+            return factory.apply(properties, ModRarity.WHITE);
         });
     }
 }

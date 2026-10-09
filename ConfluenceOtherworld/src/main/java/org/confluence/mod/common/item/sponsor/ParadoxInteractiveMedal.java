@@ -17,7 +17,7 @@ import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
  */
 public class ParadoxInteractiveMedal extends BaseCurioItem {
     public ParadoxInteractiveMedal() {
-        super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER)
+        super(builder("paradox_interactive_medal").noTooltip().rarity(ModRarity.MASTER)
                 .attribute(LibAttributes.getAttackDamage(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                 .attribute(Attributes.ENTITY_INTERACTION_RANGE, 3, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(ConfluenceMagicLib.MINION_CAPACITY, 2, AttributeModifier.Operation.ADD_VALUE)

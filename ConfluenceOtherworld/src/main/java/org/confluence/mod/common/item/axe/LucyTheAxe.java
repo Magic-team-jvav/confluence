@@ -1,8 +1,6 @@
 package org.confluence.mod.common.item.axe;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,7 +10,6 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
@@ -21,7 +18,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.network.s2c.LucyTheAxeDialogPacketS2C;
 
-import java.util.List;
 
 public class LucyTheAxe extends BaseAxeItem {
     public LucyTheAxe() {
@@ -88,8 +84,4 @@ public class LucyTheAxe extends BaseAxeItem {
         return state.is(NatureBlocks.STONY_LOG) || super.isCorrectToolForDrops(stack, state);
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.item.confluence.lucy_the_axe.0").withStyle(ChatFormatting.GRAY));
-    }
 }

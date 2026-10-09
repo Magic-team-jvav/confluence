@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
@@ -10,12 +9,10 @@ import org.confluence.lib.common.component.ModRarity;
 
 import java.util.Optional;
 
-import static org.confluence.lib.common.item.TooltipItem.getTooltipsFromString;
 
 public class DemonConch extends MagicConch {
     public DemonConch() {
         super(new Properties().stacksTo(1), ModRarity.LIGHT_RED);
-        tooltips = getTooltipsFromString("demon_conch", 1, ChatFormatting.GRAY);
     }
 
     protected Component getMessage(Optional<BlockPos> pos) {

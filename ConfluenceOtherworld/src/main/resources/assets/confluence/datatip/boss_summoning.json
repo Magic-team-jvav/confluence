@@ -1,0 +1,159 @@
+{
+    "_comment": "Boss 召唤物的使用条件、背景故事和风味文字；每个物品按原行号排列。",
+    "confluence:abeemination": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.abeemination.0",
+                "color": "yellow",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.abeemination.1",
+                "color": "yellow",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.abeemination.2",
+                "color": "yellow",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.abeemination.3",
+                "color": "yellow",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:bloody_spine": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.bloody_spine.0",
+                "color": "red",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.bloody_spine.1",
+                "color": "red",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.bloody_spine.2",
+                "color": "red",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:deer_thing": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.deer_thing.0",
+                "color": "aqua",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.deer_thing.1",
+                "color": "aqua",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.deer_thing.2",
+                "color": "aqua",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:slime_crown": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.slime_crown.0",
+                "color": "blue",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.slime_crown.1",
+                "color": "blue",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.slime_crown.2",
+                "color": "blue",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:suspicious_looking_eye": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.suspicious_looking_eye.0",
+                "color": "red",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.suspicious_looking_eye.1",
+                "color": "red",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.suspicious_looking_eye.2",
+                "color": "red",
+                "maxWidth": 320
+            }
+        ]
+    },
+    "confluence:worm_food": {
+        "type": "vbox",
+        "gap": 0,
+        "prepend": true,
+        "children": [
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.worm_food.0",
+                "color": "dark_purple",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.worm_food.1",
+                "color": "dark_purple",
+                "maxWidth": 320
+            },
+            {
+                "type": "text",
+                "translate": "tooltip.item.confluence.worm_food.2",
+                "color": "dark_purple",
+                "maxWidth": 320
+            }
+        ]
+    }
+}

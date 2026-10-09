@@ -102,11 +102,6 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        return isThrown(player, stack) || super.onLeftClickEntity(stack, player, entity);
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (hand != InteractionHand.MAIN_HAND || !isTurnOn(stack))

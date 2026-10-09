@@ -27,6 +27,7 @@ import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 import java.util.Locale;
 
 public final class ClientConfigs {
+    public static BooleanValue ENABLE_NON_SPIDER_MODEL;
     public static int showWindParticles = 90;
     public static float minEctoMistEffectRadius = 10;
 
@@ -166,6 +167,8 @@ public final class ClientConfigs {
 
     public static void register(FMLJavaModLoadingContext context) {
         Builder builder = new Builder();
+        ENABLE_NON_SPIDER_MODEL = builder.comment("Replace spiders with the Terra Entity alternative model. Requires a game restart.")
+                .define("enableNonSpiderModel", false);
 
         SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);
         MIN_ECTO_MIST_EFFECT_RADIUS = builder.defineInRange("minEctoMistEffectRadius", 10, 0, 100);

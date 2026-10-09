@@ -24,6 +24,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
@@ -911,7 +912,16 @@ public final class ModClientEvents {
         // 陆行怪
         event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new ZombieGeoModel(c)));
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
-        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
+        // Client config is loaded after this registration event; read it in the providers.
+        event.registerEntityRenderer(EntityType.SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", EntityType.SPIDER)
+                : new net.minecraft.client.renderer.entity.SpiderRenderer<>(c));
+        event.registerEntityRenderer(EntityType.CAVE_SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "cave_spider", EntityType.CAVE_SPIDER)
+                : new net.minecraft.client.renderer.entity.CaveSpiderRenderer(c));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "blood_crawler", MonsterEntities.BLOOD_CRAWLER.get())
+                : new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
         event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, new NymphModel(MonsterEntities.NYMPH.getId())));

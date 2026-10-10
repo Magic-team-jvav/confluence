@@ -71,6 +71,7 @@ import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.init.model.WhipModelRegister;
+import org.confluence.mod.client.light.ModDynamicLights;
 import org.confluence.mod.client.model.block.*;
 import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
 import org.confluence.mod.client.model.entity.RainbowSheepModel;
@@ -132,7 +133,6 @@ import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
-import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.jetbrains.annotations.Nullable;
@@ -154,6 +154,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            ModDynamicLights.register();
             StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
@@ -165,7 +166,6 @@ public final class ModClientEvents {
 
             PonderHelper.registerPlugin();
             AppleskinHelper.addListeners();
-            SodiumDynamicLightsHelper.registerDynamicLight();
 
             ClientBestiary.getInstance().registerCustomFilter();
 

@@ -1,0 +1,72 @@
+{
+    "confluence:johnny_o_lantern": [
+        1.0,
+        0.66666667,
+        0.33333333
+    ],
+    "confluence:white_paper_pane_lamp": [
+        1.0,
+        0.94117647,
+        0.8
+    ],
+    "confluence:malachite_paper_pane_lamp": [
+        0.50196078,
+        0.90196078,
+        0.67843137
+    ],
+    "confluence:king_slime_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:eye_of_cthulhu_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:brain_of_cthulhu_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:eater_of_worlds_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:queen_bee_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:deerclops_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:skeletron_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:wall_of_flesh_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:hill_of_flesh_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:the_twins_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ],
+    "confluence:skeletron_prime_relic": [
+        1.0,
+        0.85098039,
+        0.4
+    ]
+}

@@ -56,6 +56,7 @@ public final class NetworkEvents {
                 .playToClient(SummonerBatchedParticlesPayload.TYPE, SummonerBatchedParticlesPayload.STREAM_CODEC, SummonerBatchedParticlesPayload::handle)
                 .playToClient(OpenNPCDialogPacketS2C.TYPE, OpenNPCDialogPacketS2C.STREAM_CODEC, OpenNPCDialogPacketS2C::handle)
                 .playToClient(OpenAnglerDialogPacketS2C.TYPE, OpenAnglerDialogPacketS2C.STREAM_CODEC, OpenAnglerDialogPacketS2C::handle)
+                .playToClient(GunMuzzleFlashPacketS2C.TYPE, GunMuzzleFlashPacketS2C.STREAM_CODEC, GunMuzzleFlashPacketS2C::handle)
                 .playToClient(BulletImpactPacketS2C.TYPE, BulletImpactPacketS2C.STREAM_CODEC, BulletImpactPacketS2C::handle)
                 .playToClient(ShotFeedbackPacketS2C.TYPE, ShotFeedbackPacketS2C.STREAM_CODEC, ShotFeedbackPacketS2C::handle)
 

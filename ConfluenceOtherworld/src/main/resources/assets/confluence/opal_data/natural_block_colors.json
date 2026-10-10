@@ -1,0 +1,122 @@
+{
+    "confluence:shimmer": [
+        0.76078431,
+        0.54117647,
+        1.0
+    ],
+    "confluence:aetherium_block": [
+        0.76078431,
+        0.54117647,
+        1.0
+    ],
+    "confluence:life_crystal_block": [
+        1.0,
+        0.36078431,
+        0.47058824
+    ],
+    "confluence:crystal_shards": [
+        0.93333333,
+        0.6,
+        1.0
+    ],
+    "confluence:gelatin_crystal": [
+        0.93333333,
+        0.6,
+        1.0
+    ],
+    "confluence:glow_coralite": [
+        0.50196078,
+        0.90196078,
+        1.0
+    ],
+    "confluence:glowing_mushroom": [
+        0.4,
+        0.6,
+        1.0
+    ],
+    "confluence:glowing_mushroom_pileus_block": [
+        0.4,
+        0.6,
+        1.0
+    ],
+    "confluence:glowing_mushroom_moss": [
+        0.4,
+        0.6,
+        1.0
+    ],
+    "confluence:jungle_spore": [
+        0.66666667,
+        1.0,
+        0.4
+    ],
+    "confluence:shimmer_rice": [
+        0.76078431,
+        0.54117647,
+        1.0
+    ],
+    "confluence:shimmer_coral_tube": [
+        0.76078431,
+        0.54117647,
+        1.0
+    ],
+    "confluence:green_moss": [
+        0.53333333,
+        0.8,
+        0.4
+    ],
+    "confluence:brown_moss": [
+        0.8,
+        0.66666667,
+        0.46666667
+    ],
+    "confluence:red_moss": [
+        1.0,
+        0.4,
+        0.4
+    ],
+    "confluence:blue_moss": [
+        0.4,
+        0.6,
+        1.0
+    ],
+    "confluence:purple_moss": [
+        0.73333333,
+        0.46666667,
+        1.0
+    ],
+    "confluence:lava_moss": [
+        1.0,
+        0.50196078,
+        0.2
+    ],
+    "confluence:krypton_moss": [
+        0.53333333,
+        1.0,
+        0.4
+    ],
+    "confluence:xenon_moss": [
+        0.4,
+        0.86666667,
+        1.0
+    ],
+    "confluence:argon_moss": [
+        1.0,
+        0.50196078,
+        0.8
+    ],
+    "confluence:neon_moss": [
+        0.8,
+        0.53333333,
+        1.0
+    ],
+    "confluence:helium_moss": [
+        1.0,
+        0.90196078,
+        0.66666667
+    ],
+    "confluence:cursed_flame_block": [
+        0.66666667,
+        1.0,
+        0.4
+    ]
+}

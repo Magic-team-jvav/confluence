@@ -27,8 +27,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> MINING_HELMET = register("mining_helmet", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .armorBonus(PrimitiveValueComponent.of(TCItems.LUMINANCE, 10))
-            .requiresModLoaded("sodiumdynamiclights"));
+            .armorBonus(PrimitiveValueComponent.of(TCItems.LUMINANCE, 10)));
     public static final DeferredItem<BaseArmorItem> MINING_CHESTPLATE = register("mining_chestplate", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)

@@ -1,12 +1,10 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -14,14 +12,10 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.*;
 import org.confluence.mod.util.AchievementUtils;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 
 public class PotionItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -70,17 +64,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> RAGE_POTION = ITEMS.register("rage_potion", () -> new EffectPotionItem(ModEffects.RAGE, 4800));
     public static final DeferredItem<AbstractPotionItem> RECALL_POTION = ITEMS.register("recall_potion", RecallPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> REGENERATION_POTION = ITEMS.register("regeneration_potion", () -> new EffectPotionItem(MobEffects.REGENERATION, 9600));
-    public static final DeferredItem<AbstractPotionItem> SHINE_POTION = ITEMS.register("shine_potion", () -> new EffectPotionItem(ModEffects.SHINE, 12000) {
-        private final boolean noneLoaded = !LibUtils.isModLoaded("sodiumdynamiclights");
-
-        @ParametersAreNonnullByDefault
-        @Override
-        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-            if (noneLoaded) {
-                tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", "sodiumdynamiclights"));
-            }
-        }
-    });
+    public static final DeferredItem<AbstractPotionItem> SHINE_POTION = ITEMS.register("shine_potion", () -> new EffectPotionItem(ModEffects.SHINE, 12000));
     public static final DeferredItem<AbstractPotionItem> SPELUNKER_POTION = ITEMS.register("spelunker_potion", () -> new EffectPotionItem(ModEffects.SPELUNKER, 6000));
     public static final DeferredItem<AbstractPotionItem> SWIFTNESS_POTION = ITEMS.register("swiftness_potion", () -> new EffectPotionItem(MobEffects.MOVEMENT_SPEED, 9600));
     public static final DeferredItem<AbstractPotionItem> THORNS_POTION = ITEMS.register("thorns_potion", () -> new EffectPotionItem(ModEffects.THORNS, 9600));

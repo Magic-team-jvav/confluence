@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.GunEvent;
+import org.confluence.mod.network.s2c.GunMuzzleFlashPacketS2C;
 import org.confluence.mod.util.ModGunUtils;
 
 /// 服务端统一校验开火条件、消耗弹药并设置冷却。
@@ -27,6 +28,7 @@ public final class ShootingService {
         int projectileCount = GunFiringService.fire(player, gun, gunStack, selectedAmmo);
         if (projectileCount <= 0) return false;
         gun.fireAnimator(gunStack, player);
+        GunMuzzleFlashPacketS2C.send(player);
         consumeAmmo(player, gun, gunStack, selectedAmmo);
         int cooldown = Math.max(0, useEvent.getCooldowns());
         if (cooldown > 0) player.getCooldowns().addCooldown(gun, cooldown);

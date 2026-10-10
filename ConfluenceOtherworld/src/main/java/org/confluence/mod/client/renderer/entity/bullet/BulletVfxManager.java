@@ -1,16 +1,18 @@
 package org.confluence.mod.client.renderer.entity.bullet;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
+import org.confluence.lib.client.light.DynamicLightEffects;
 import org.confluence.mod.client.renderer.entity.bullet.effect.*;
+import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public final class BulletVfxManager {
@@ -28,7 +30,14 @@ public final class BulletVfxManager {
 
     public static void play(BulletImpactEffect effect, Vec3 position) {
         BulletImpactVfx vfx = IMPACT_EFFECTS.get(effect);
-        if (vfx != null) vfx.play(position);
+        if (vfx == null) return;
+        vfx.play(position);
+        switch (effect) {
+            case SILVER_CROSS -> DynamicLightEffects.flash(position, 7, 4);
+            case CRYSTAL_IMPACT, CHLOROPHYTE_IMPACT -> DynamicLightEffects.flash(position, 6, 4);
+            case LUMINITE_IMPACT -> DynamicLightEffects.flash(position, 12, 6);
+            default -> {}
+        }
     }
 
     public static void tick() {

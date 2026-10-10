@@ -307,7 +307,6 @@ dependencies {
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }
 
-    compileOnly "curse.maven:dynamiclights-reforged-551736:5807536" // todo remove
 
     if (bettercombat) {
         runtimeOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
@@ -322,7 +321,6 @@ dependencies {
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
-    //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
     //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
     //runtimeOnly "curse.maven:modern-ui-352491:6200236"

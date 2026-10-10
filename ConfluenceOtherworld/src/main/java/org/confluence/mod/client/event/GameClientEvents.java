@@ -78,12 +78,10 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
-import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
-import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModAttributeUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -181,7 +179,6 @@ public final class GameClientEvents {
         boolean attackHeld = minecraft.options.keyAttack.isDown();
         if (player != null) {
             BowHandler.releaseFullyDrawnBow(minecraft, player);
-            DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
             SwordProjectileInputHandler.handle(player, attackHeld);
             LeftClickItemHandler.tick(player, attackHeld);
@@ -208,7 +205,7 @@ public final class GameClientEvents {
             }
         }
         GunHandler.handle(player, attackHeld);
-        DeathAnimUtils.clearPending();
+        DeathEffectManager.tick(minecraft.level);
         BackgroundLayer.tickLayers();
         WeatherHandler.handle();
     }
@@ -223,6 +220,7 @@ public final class GameClientEvents {
     }
 
     private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
         ClientWeaponInputManager.reset();
@@ -436,27 +434,13 @@ public final class GameClientEvents {
     private static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
         TongueRenderer.render(event);
         LivingEntity living = event.getEntity();
-        boolean dead = living.isDeadOrDying();
-        if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
-            living.level().getProfiler().push("entity_dismemberment");
-            IClientLivingEntity.of(living).confluence$deadO(dead); // 阻断下一次post
-            DeathAnimUtils.livingDeath(living);
-            living.level().getProfiler().pop();
-        }
-        IClientLivingEntity.of(living).confluence$deadO(dead);
+        DeathEffectManager.onRendered(living);
     }
 
     private static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
         if (event.getEntity() instanceof LivingEntity living) {
-            boolean dead = living.isDeadOrDying();
-            if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
-                living.level().getProfiler().push("geo_dismemberment");
-                IClientLivingEntity.of(living).confluence$deadO(dead); // 阻断下一次post
-                DeathAnimUtils.livingDeath(living);
-                living.level().getProfiler().pop();
-            }
-            IClientLivingEntity.of(living).confluence$deadO(dead);
+            DeathEffectManager.onRendered(living);
         }
     }
 

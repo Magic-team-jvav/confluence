@@ -3,7 +3,6 @@ package org.confluence.mod.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.client.DummyVertexConsumer;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.mixin.client.model.AgeableListModelAccessor;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.*;
@@ -87,8 +85,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
                 geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
                 // GeoGeo的奇妙Y轴旋转
-                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
-                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
+                poseStack.mulPose(Axis.XP.rotationDegrees(entity.deathPitch));
                 // GeoGeo的奇妙Y轴偏移
                 poseStack.translate(0, 0.01f, 0);
                 // 还原bone的各级旋转
@@ -122,8 +120,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
                 geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
                 // GeoGeo的奇妙Y轴旋转
-//                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
-//                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+//                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
+//                poseStack.mulPose(Axis.XP.rotationDegrees(entity.deathPitch));
                 // GeoGeo的奇妙Y轴偏移
 //                poseStack.translate(0, 0.01f, 0);
                 applyRandomRotation(entity, poseStack, partialTick);
@@ -150,27 +148,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 applyRandomRotation(entity, poseStack, partialTick);
                 poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
 
-                if (livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young) {
-                    poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
-                } else if (livingRenderer.getModel().young && livingRenderer.getModel() instanceof AgeableListModelAccessor model) {
-                    for (ModelPart bodyPart : model.callBodyParts()) {
-                        if (entity.modelPart == bodyPart) {  // FIXME: 父模型
-                            float scale = 1.0F / model.getBabyBodyScale();
-                            poseStack.scale(scale, scale, scale);
-                            break;
-                        }
-                    }
-                    for (ModelPart headPart : model.callHeadParts()) {
-                        if (entity.modelPart == headPart) {
-                            if (model.getScaleHead()) {
-                                float scale = 1.5F / model.getBabyHeadScale();
-                                poseStack.scale(scale, scale, scale);
-                            }
-                            break;
-                        }
-                    }
-                }
-                float scale = living.getScale();
+                poseStack.scale(entity.modelScale, entity.modelScale, entity.modelScale);
+                float scale = entity.entityScale;
                 poseStack.scale(scale, scale, scale);
 // todo renderer               ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);
                 Vector3f modelPartRot = entity.modelPartRot;
@@ -207,8 +186,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                     poseStack.translate(0, baby ? 0.8 : -0.25, 0);
                 }
                 poseStack.scale(-1.0F, -1.0F, 1.0F);
-                poseStack.mulPose(Axis.YP.rotationDegrees(-dying.getYRot() + 180));
-                poseStack.mulPose(Axis.XP.rotationDegrees(dying.getXRot()));
+                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
+                poseStack.mulPose(Axis.XP.rotationDegrees(entity.deathPitch));
                 geoArmorRenderer.prepForRender(dying, itemStack, equipable.getEquipmentSlot(), baseModel);
                 geoArmorRenderer.renderToBuffer(poseStack, DummyVertexConsumer.INSTANCE, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
                 poseStack.popPose();

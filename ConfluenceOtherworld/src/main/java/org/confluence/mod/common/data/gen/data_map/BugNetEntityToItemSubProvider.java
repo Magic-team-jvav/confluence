@@ -9,6 +9,13 @@ import net.neoforged.neoforge.common.extensions.IHolderExtension;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
+import org.confluence.mod.common.entity.IVariant;
+import org.confluence.mod.common.entity.animal.Butterfly;
+import org.confluence.mod.common.entity.animal.Dragonfly;
+import org.confluence.mod.common.entity.animal.Grasshopper;
+import org.confluence.mod.common.entity.animal.Ladybug;
+import org.confluence.mod.common.entity.animal.Scorpion;
+import org.confluence.mod.common.entity.animal.Worm;
 import org.confluence.mod.common.init.ModAdvancements;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.item.BaitItems;
@@ -35,47 +42,51 @@ public final class BugNetEntityToItemSubProvider {
                 .add(CritterEntities.FIREFLY, BaitItems.FIREFLY)
                 .add(CritterEntities.LIGHTNING_BUG, BaitItems.LIGHTNING_BUG)
                 .add(CritterEntities.BUTTERFLY, List.of(
-                        intVariant(0, BaitItems.GOLD_BUTTERFLY),
-                        intVariant(1, BaitItems.JULIA_BUTTERFLY),
-                        intVariant(2, BaitItems.MONARCH_BUTTERFLY),
-                        intVariant(3, BaitItems.PURPLE_EMPEROR_BUTTERFLY),
-                        intVariant(4, BaitItems.RED_ADMIRAL_BUTTERFLY),
-                        intVariant(5, BaitItems.SULPHUR_BUTTERFLY),
-                        intVariant(6, BaitItems.TREE_NYMPH_BUTTERFLY),
-                        intVariant(7, BaitItems.ULYSSES_BUTTERFLY),
-                        intVariant(8, BaitItems.ZEBRA_SWALLOWTAIL_BUTTERFLY)
+                        variant(Butterfly.Variant.GOLD, BaitItems.GOLD_BUTTERFLY),
+                        variant(Butterfly.Variant.JULIA, BaitItems.JULIA_BUTTERFLY),
+                        variant(Butterfly.Variant.MONARCH, BaitItems.MONARCH_BUTTERFLY),
+                        variant(Butterfly.Variant.PURPLE_EMPEROR, BaitItems.PURPLE_EMPEROR_BUTTERFLY),
+                        variant(Butterfly.Variant.RED_ADMIRAL, BaitItems.RED_ADMIRAL_BUTTERFLY),
+                        variant(Butterfly.Variant.SULPHUR, BaitItems.SULPHUR_BUTTERFLY),
+                        variant(Butterfly.Variant.TREE_NYMPH, BaitItems.TREE_NYMPH_BUTTERFLY),
+                        variant(Butterfly.Variant.ULYSSES, BaitItems.ULYSSES_BUTTERFLY),
+                        variant(Butterfly.Variant.ZEBRA_SWALLOWTAIL, BaitItems.ZEBRA_SWALLOWTAIL_BUTTERFLY)
                 ))
                 .add(CritterEntities.DRAGONFLY, List.of(
-                        intVariant(0, BaitItems.BLACK_DRAGONFLY),
-                        intVariant(1, BaitItems.BLUE_DRAGONFLY),
-                        intVariant(2, BaitItems.GOLD_DRAGONFLY),
-                        intVariant(3, BaitItems.GREEN_DRAGONFLY),
-                        intVariant(4, BaitItems.ORANGE_DRAGONFLY),
-                        intVariant(5, BaitItems.RED_DRAGONFLY),
-                        intVariant(6, BaitItems.YELLOW_DRAGONFLY)
+                        variant(Dragonfly.Variant.BLACK, BaitItems.BLACK_DRAGONFLY),
+                        variant(Dragonfly.Variant.BLUE, BaitItems.BLUE_DRAGONFLY),
+                        variant(Dragonfly.Variant.GOLD, BaitItems.GOLD_DRAGONFLY),
+                        variant(Dragonfly.Variant.GREEN, BaitItems.GREEN_DRAGONFLY),
+                        variant(Dragonfly.Variant.ORANGE, BaitItems.ORANGE_DRAGONFLY),
+                        variant(Dragonfly.Variant.RED, BaitItems.RED_DRAGONFLY),
+                        variant(Dragonfly.Variant.YELLOW, BaitItems.YELLOW_DRAGONFLY)
                 ))
                 .add(CritterEntities.LADYBUG, List.of(
-                        intVariant(0, BaitItems.GOLD_LADYBUG),
-                        intVariant(1, BaitItems.LADYBUG)
+                        variant(Ladybug.Variant.GOLD, BaitItems.GOLD_LADYBUG),
+                        variant(Ladybug.Variant.RED, BaitItems.LADYBUG)
                 ))
                 .add(CritterEntities.WORM, List.of(
-                        intVariant(0, BaitItems.ENCHANTED_NIGHTCRAWLER),
-                        intVariant(1, BaitItems.GOLD_WORM),
-                        intVariant(2, BaitItems.WORM)
+                        variant(Worm.Variant.NIGHTCRAWLER, BaitItems.ENCHANTED_NIGHTCRAWLER),
+                        variant(Worm.Variant.GOLD, BaitItems.GOLD_WORM),
+                        variant(Worm.Variant.NORMAL, BaitItems.WORM)
                 ))
                 .add(CritterEntities.SCORPION, List.of(
-                        intVariant(0, BaitItems.BLACK_SCORPION),
-                        intVariant(1, BaitItems.SCORPION)
+                        variant(Scorpion.Variant.BLACK, BaitItems.BLACK_SCORPION),
+                        variant(Scorpion.Variant.NORMAL, BaitItems.SCORPION)
                 ))
                 .add(CritterEntities.GRASSHOPPER, List.of(
-                        intVariant(0, BaitItems.GOLD_GRASSHOPPER),
-                        intVariant(1, BaitItems.GRASSHOPPER)
+                        variant(Grasshopper.Variant.GOLD, BaitItems.GOLD_GRASSHOPPER),
+                        variant(Grasshopper.Variant.GREEN, BaitItems.GRASSHOPPER)
                 ))
         ;
     }
 
-    private static Tuple<EntityPredicate, ItemStack> intVariant(int variant, DeferredItem<?> item) {
-        return new Tuple<>(EntityPredicate.Builder.entity().subPredicate(ModAdvancements.EntitySubPredicatez.INT_VARIANT.createPredicate(variant)).build(), item.toStack());
+    /// 注意：这里必须按**变体名**匹配，不能按枚举序号。变体枚举的声明顺序与 1.20.1 不同
+    /// （例如 `Worm.Variant` 是 `NORMAL, GOLD, NIGHTCRAWLER`），写死序号会串味。
+    private static Tuple<EntityPredicate, ItemStack> variant(IVariant variant, DeferredItem<?> item) {
+        return new Tuple<>(EntityPredicate.Builder.entity()
+                .subPredicate(ModAdvancements.EntitySubPredicatez.VARIANT_NAME.createPredicate(variant.getSerializedName()))
+                .build(), item.toStack());
     }
 
     public static class Builder extends DataMapProvider.Builder<BugNetEntityToItem, EntityType<?>> {

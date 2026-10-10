@@ -17,7 +17,6 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.lib.client.light.DynamicLightGpu;
-import org.confluence.mod.client.light.ModDynamicLights;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 
@@ -63,7 +62,6 @@ public class AttachmentEntityRenderDispatcher {
                 poseStack.pushPose();
                 PathNode renderNode = entity.getRenderNode(partialTick);
                 Vec3 pos = renderNode.pos();
-                ModDynamicLights.renderAttachment(entity.getType(), pos);
                 poseStack.translate(pos.x() - cameraPos.x(), pos.y() - cameraPos.y(), pos.z() - cameraPos.z());
                 int lightCoords = Math.max(playerLight, getLightCoords(level, pos));
                 // 渲染实体模型

@@ -83,7 +83,6 @@ import org.confluence.mod.client.model.entity.fishing.HotlineFishingHookModel;
 import org.confluence.mod.client.model.entity.hook.*;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
-import org.confluence.mod.client.model.item.WhipModelRegister;
 import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.VoidSeaRenderSettings;
 import org.confluence.mod.client.renderer.block.*;

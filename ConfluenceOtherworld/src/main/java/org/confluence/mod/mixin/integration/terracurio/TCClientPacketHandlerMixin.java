@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = TCClientPacketHandler.class, remap = false)
 public abstract class TCClientPacketHandlerMixin {
-
     @ModifyExpressionValue(method = "applyAutoAttack", at = @At(value = "INVOKE", target = "Lorg/confluence/terra_curio/client/handler/TCClientPacketHandler;couldAutoAttack()Z"))
     private static boolean extraAutoAttack(boolean original, @Local(name = "itemStack") ItemStack stack) {
         if (!(stack.getItem() instanceof SwordItem) || stack.is(ModTags.Items.AUTO_ATTACK_BLACKLIST))

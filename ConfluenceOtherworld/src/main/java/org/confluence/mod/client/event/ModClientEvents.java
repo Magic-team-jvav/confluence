@@ -71,6 +71,7 @@ import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.light.ModDynamicLights;
+import org.confluence.mod.client.model.WhipModelRegister;
 import org.confluence.mod.client.model.block.*;
 import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
 import org.confluence.mod.client.model.entity.RainbowSheepModel;

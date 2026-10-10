@@ -1,4 +1,4 @@
-package org.confluence.mod.client.model.item;
+package org.confluence.mod.client.model;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;

@@ -86,7 +86,7 @@ public class BaseArrowEntity extends AbstractArrow {
         return 0.05;
     }
 
-    // 这个命名是为了防止有些模组加了个final int getLuminance()V方法导致崩溃
+    // 这个命名是为了防止有些模组加了个final getLuminance()I方法导致崩溃
     public int confluence$getLuminance() {
         return 0;
     }

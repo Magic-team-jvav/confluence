@@ -163,10 +163,8 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap)
-                .ifSuccess(nbt -> tag.put("BlockMap", nbt));
-        ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap)
-                .ifSuccess(nbt -> tag.put("ItemMap", nbt));
+        BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap).ifSuccess(nbt -> tag.put("BlockMap", nbt));
+        ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap).ifSuccess(nbt -> tag.put("ItemMap", nbt));
         tag.putInt("Version", version);
     }
 

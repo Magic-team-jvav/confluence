@@ -22,7 +22,7 @@ public class FrostburnArrowEntity extends BaseArrowEntity {
         super(entityType, owner, pickupItemStack, firedFromWeapon);
     }
     @Override
-    public int getLuminance() {
+    public int confluence$getLuminance() {
         return 5;
     }
 

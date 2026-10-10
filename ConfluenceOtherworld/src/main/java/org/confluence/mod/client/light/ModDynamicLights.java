@@ -157,7 +157,7 @@ public final class ModDynamicLights {
         });
         DynamicLightRegister.registerEntityLuminance(CurioFishingHook.class,
                 hook -> hook.getVariant() != CurioFishingHook.Variant.COMMON ? 5 : 0);
-        DynamicLightRegister.registerEntityLuminance(BaseArrowEntity.class, BaseArrowEntity::getLuminance);
+        DynamicLightRegister.registerEntityLuminance(BaseArrowEntity.class, BaseArrowEntity::confluence$getLuminance);
         DynamicLightRegister.registerEntityLuminance(BaseBombEntity.class,
                 bomb -> bomb.emitter != null && !bomb.emitter.isRemoved() ? 4 : 0);
         DynamicLightRegister.registerEntityLuminance(LivingEntity.class,

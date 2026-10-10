@@ -102,12 +102,14 @@ import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
-import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
-import org.confluence.mod.util.*;
+import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModAttributeUtils;
+import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.lwjgl.glfw.GLFW;
 import software.bernie.geckolib.event.GeoRenderEvent;
@@ -192,7 +194,6 @@ public final class GameClientEvents {
         boolean attackHeld = minecraft.options.keyAttack.isDown();
         if (player != null) {
             BowHandler.releaseFullyDrawnBow(minecraft, player);
-            DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
             ParticleHandler.handle(player);
             SwordProjectileInputHandler.handle(player, attackHeld);
@@ -220,7 +221,7 @@ public final class GameClientEvents {
             }
         }
         GunHandler.handle(player, attackHeld);
-        DeathAnimUtils.clearPending();
+        DeathEffectManager.tick(minecraft.level);
         BackgroundLayer.tickLayers();
         WeatherHandler.handle();
     }
@@ -233,6 +234,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
         ClientWeaponInputManager.reset();
@@ -477,28 +479,14 @@ public final class GameClientEvents {
     public static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
         TongueRenderer.render(event);
         LivingEntity living = event.getEntity();
-        boolean dead = living.isDeadOrDying();
-        IClientLivingEntity i = IClientLivingEntity.of(living);
-        if (dead != i.confluence$deadO()) {
-            living.level().getProfiler().push("entity_dismemberment");
-            i.confluence$deadO(dead); // 阻断下一次post
-            DeathAnimUtils.livingDeath(living);
-            living.level().getProfiler().pop();
-        }
-        i.confluence$deadO(dead);
+        DeathEffectManager.onRendered(living);
     }
 
     @SubscribeEvent
     public static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
         if (event.getEntity() instanceof LivingEntity living) {
-            boolean dead = living.isDeadOrDying();
-            if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
-                living.level().getProfiler().push("geo_dismemberment");
-                DeathAnimUtils.livingDeath(living);
-                living.level().getProfiler().pop();
-            }
-            IClientLivingEntity.of(living).confluence$deadO(dead);
+            DeathEffectManager.onRendered(living);
         }
     }
 

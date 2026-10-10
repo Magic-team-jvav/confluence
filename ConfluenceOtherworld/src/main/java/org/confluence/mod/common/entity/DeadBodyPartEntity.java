@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity;
 
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -9,6 +8,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.mod.common.init.ModFluids;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -22,6 +22,9 @@ public class DeadBodyPartEntity extends Entity {
     public final Entity dyingEntity;
     @Nullable
     public final Object cube;
+    public final float deathYaw;
+    public final float deathPitch;
+    public final float entityScale;
     public List<Vector3f> boneRots;
     public List<Vector3f> bonePivots;
     public Vector3f boneOffset;
@@ -40,7 +43,7 @@ public class DeadBodyPartEntity extends Entity {
      * true则停在原地不动，一般用来调试
      */
     public boolean still = false;
-    public ModelPart modelPart;
+    public float modelScale = 1.0F;
     /**
      * 目前如果非空则说明是盔甲
      */
@@ -59,6 +62,9 @@ public class DeadBodyPartEntity extends Entity {
         super(entityType, level);
         this.dyingEntity = dyingEntity;
         this.cube = cube;
+        this.deathYaw = dyingEntity == null ? 0 : dyingEntity.getYRot();
+        this.deathPitch = dyingEntity == null ? 0 : dyingEntity.getXRot();
+        this.entityScale = dyingEntity instanceof LivingEntity living ? living.getScale() : 1.0F;
         this.minSide = minSide;
         if (dyingEntity instanceof Boss) {
             lifetime = level.random.nextInt(60, 75);
@@ -97,13 +103,15 @@ public class DeadBodyPartEntity extends Entity {
                     }
                     finalMin = Math.min(finalMin, min);
                 }
-                this.dimensions = EntityDimensions.fixed(finalMin, finalMin);
+                float side = Float.isFinite(finalMin) ? finalMin : 0.1F;
+                this.dimensions = EntityDimensions.fixed(side, side);
             }
             case null, default -> this.dimensions = EntityDimensions.fixed(minSide, minSide);
         }
+        refreshDimensions();
 //        still();
 
-        setId(getId() + 0x3F3F3F3F);
+
     }
 
     public void still() {
@@ -117,20 +125,29 @@ public class DeadBodyPartEntity extends Entity {
             discard();
             return;
         }
-        refreshDimensions();
         if (still) return;
-        applyGravity();
+        updateFluidHeightAndDoFluidPushing();
+        boolean inHoney = getFluidTypeHeight(ModFluids.HONEY.type().get()) > 0;
+        boolean inLiquid = isInWater() || isInLava() || inHoney;
+        if (inLiquid) {
+            // 液体中随水流移动并缓慢下沉。
+            if (!isNoGravity())
+                setDeltaMovement(getDeltaMovement().add(0, -getDefaultGravity() * 0.2, 0));
+        } else {
+            applyGravity();
+        }
         move(MoverType.SELF, getDeltaMovement());
         // 摩擦力
-        if (this.onGround()) {
+        if (inLiquid) {
+            double drag = isInLava() || inHoney ? 0.5 : 0.8;
+            setDeltaMovement(getDeltaMovement().scale(drag));
+        } else if (this.onGround()) {
             BlockPos groundPos = getBlockPosBelowThatAffectsMyMovement();
             float friction = this.level().getBlockState(groundPos).getFriction(level(), groundPos, this) * 0.98F;
             this.setDeltaMovement(this.getDeltaMovement().multiply(friction, 0.98, friction));
         } else {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.9, 1, 0.9));
         }
-        // TODO: 液体
-//        updateFluidHeightAndDoFluidPushing();
 
         // 撞墙停转
         if (tickCount > 3 && !stop && (onGround() || verticalCollision || verticalCollisionBelow || horizontalCollision)) {

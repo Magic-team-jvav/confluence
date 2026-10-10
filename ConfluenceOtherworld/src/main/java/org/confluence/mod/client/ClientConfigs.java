@@ -338,7 +338,7 @@ public final class ClientConfigs {
         ALL {
             @Override
             public boolean isInvalidFor(@Nullable LivingEntity living, @Nullable Item item) {
-                return false;
+                return living != null && living.getType().is(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST);
             }
         };
 

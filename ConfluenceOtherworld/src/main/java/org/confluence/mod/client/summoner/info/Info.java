@@ -57,11 +57,10 @@ public abstract class Info {
         return lastPos.lerp(pos, partialTick);
     }
 
-    /// 姿态准备（调用方负责 `popPose`）：平移 + 相机朝向 + roll + 顶点翻转修正。
+    /// 姿态准备（调用方负责 `popPose`）：平移 + 相机朝向 + roll。
     ///
-    /// 朝向基 `cameraOrientation × XN(180)` 下局部 +x 指屏幕左、+y 指屏幕下，四边形却是背面朝相机
-    /// （Lyra 因此把字序与 UV 反向写成补偿）。这里再乘一次 `scale(-1, 1, 1)`：四边形重新正面朝相机，局部坐标变成
-    /// 「+x 向右、+y 向下」的 GUI 约定——与 `Font.drawInBatch` 期望一致，于是字序、UV 都用自然顺序。
+    /// 1.21.1 的 stage poseStack 不含视图旋转（视图矩阵由管线施加），因此这里不再需要
+    /// 1.20.1 那套 `scale(-1, 1, 1)` 顶点翻转补偿；局部坐标即「+x 向右、+y 向下」，字序与 UV 用自然顺序。
     ///
     /// @return 本条的生命进度（0~1）
     protected final float beginPose(PoseStack poseStack, Quaternionf baseRotation, Vec3 camPos, float partialTick) {
@@ -70,7 +69,6 @@ public abstract class Info {
         poseStack.pushPose();
         poseStack.translate(renderPos.x, renderPos.y, renderPos.z);
         poseStack.mulPose(baseRotation.rotateZ(roll * (1.0F - progress) * Mth.DEG_TO_RAD, new Quaternionf()));
-        poseStack.scale(-1.0F, 1.0F, 1.0F);
         return progress;
     }
 

@@ -9,6 +9,7 @@ import org.confluence.mod.client.summoner.LyraRenderTypes;
 import org.confluence.mod.common.summoner.attachment.InfoData;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.Locale;
 
@@ -36,23 +37,25 @@ public final class NumberInfo extends Info {
         int color = renderColor(progress);
         Matrix4f matrix = poseStack.last().pose();
         float pixelWidth = (float) TEXTURE_WIDTH / GLYPH_COUNT;
+        Vector3f vertexPos = new Vector3f();
         for (int i = 0; i < glyphs.length(); i++) {
             char c = glyphs.charAt(i);
             int glyph = c == '.' ? 10 : c - '0';
             float u0 = glyph * pixelWidth / TEXTURE_WIDTH;
             float u1 = (glyph + 1) * pixelWidth / TEXTURE_WIDTH;
-            // 局部 +x 向右推进、+y 向下，所以 v0（贴图顶部）落在 -half
+            // 局部 +x 向右推进、+y 向下，所以 v0（贴图顶部）落在 -half；绕序与 1.21.1 伤害信息一致
             float x0 = -halfWidth + i * size;
             float x1 = x0 + size;
-            vertex(consumer, matrix, color, x0, -half, u0, 0.0F);
-            vertex(consumer, matrix, color, x1, -half, u1, 0.0F);
-            vertex(consumer, matrix, color, x1, half, u1, 1.0F);
-            vertex(consumer, matrix, color, x0, half, u0, 1.0F);
+            vertex(consumer, matrix, color, x0, -half, u0, 0.0F, vertexPos);
+            vertex(consumer, matrix, color, x0, half, u0, 1.0F, vertexPos);
+            vertex(consumer, matrix, color, x1, half, u1, 1.0F, vertexPos);
+            vertex(consumer, matrix, color, x1, -half, u1, 0.0F, vertexPos);
         }
         poseStack.popPose();
     }
 
-    private static void vertex(VertexConsumer consumer, Matrix4f matrix, int color, float x, float y, float u, float v) {
-        consumer.addVertex(matrix, x, y, 0.0F).setColor(color).setUv(u, v).setLight(LightTexture.FULL_BRIGHT);
+    private static void vertex(VertexConsumer consumer, Matrix4f matrix, int color, float x, float y, float u, float v, Vector3f vertexPos) {
+        matrix.transformPosition(x, y, 0.0F, vertexPos);
+        consumer.addVertex(vertexPos.x, vertexPos.y, vertexPos.z).setColor(color).setUv(u, v).setLight(LightTexture.FULL_BRIGHT);
     }
 }

@@ -28,7 +28,7 @@ public class IronGolemIdleGoal extends AttachmentEntityGoal<IronGolemMinion> {
         Vec3 subtract = idlePos.subtract(minion.getPos());
         if (!owner.onGround() && owner.getY() > minion.getPos().y + 6.0) {
             minion.lookAtPos(owner.getEyePosition());
-            minion.flyTo(idlePos, 0.06f);
+            minion.flyTo(idlePos, 0.15f);
         } else {
             if (subtract.horizontalDistance() > 1) {
                 minion.lookAtPos(idlePos);

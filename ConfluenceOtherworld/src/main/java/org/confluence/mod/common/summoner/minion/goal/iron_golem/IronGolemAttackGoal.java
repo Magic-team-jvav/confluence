@@ -37,7 +37,7 @@ public class IronGolemAttackGoal extends AttachmentEntityGoal<IronGolemMinion> {
             }
         } else {
             if (cooldown <= 0) {
-                minion.moveTo(targetPos, 0.06f);
+                minion.moveTo(targetPos, 0.15f);
             }
         }
     }

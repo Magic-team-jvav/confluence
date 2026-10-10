@@ -795,7 +795,7 @@ public class MonsterEntities {
 
     // 海洋：鲨鱼、水母与史莱姆
     public static final RegistryObject<EntityType<Shark>> SHARK = withAttributes(registerEntity("shark", EntityType.Builder.of(Shark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.aquatic().maxHealth(156).armor(1).attackDamage(20).followRange(48).movementSpeed(1.2).attackKnockback(0.37).knockbackResistance(0.1).build());
+            () -> CreatureAttributeBuilder.aquatic().maxHealth(106).armor(1).attackDamage(20).followRange(48).movementSpeed(1.2).attackKnockback(0.37).knockbackResistance(0.1).build());
     public static final RegistryObject<EntityType<JellyFish>> PINK_JELLYFISH = withAttributes(registerJellyFish("pink_jellyfish", JellyFish.Profile.ROUTINE),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(36).armor(3).attackDamage(15).followRange(16).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).armorToughness(1)
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))

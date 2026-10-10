@@ -1914,15 +1914,15 @@ public final class ModTabs {
                         output.accept(SwordItems.CROWBAR.get());
 
                         CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
-                        yoyo.accept(YoyoItems.AMAZON.get());
+                        yoyo.accept(YoyoItems.WOODEN_YOYO.get());
+                        yoyo.accept(YoyoItems.RALLY.get());
                         yoyo.accept(YoyoItems.ARTERY.get());
-                        yoyo.accept(YoyoItems.CASCADE.get());
+                        yoyo.accept(YoyoItems.AMAZON.get());
+                        yoyo.accept(YoyoItems.MALAISE.get());
                         yoyo.accept(YoyoItems.CODE_1.get());
                         yoyo.accept(YoyoItems.HIVE_FIVE.get());
-                        yoyo.accept(YoyoItems.MALAISE.get());
-                        yoyo.accept(YoyoItems.RALLY.get());
+                        yoyo.accept(YoyoItems.CASCADE.get());
                         yoyo.accept(YoyoItems.VALOR.get());
-                        yoyo.accept(YoyoItems.WOODEN_YOYO.get());
                         yoyo.accept(YoyoItems.CHIK.get());
                         yoyo.accept(YoyoItems.FORMAT_C.get());
                         yoyo.accept(YoyoItems.HEL_FIRE.get());
@@ -1930,8 +1930,8 @@ public final class ModTabs {
                         yoyo.accept(YoyoItems.GRADIENT.get());
                         yoyo.accept(YoyoItems.CODE_2.get());
                         yoyo.accept(YoyoItems.YELETS.get());
-                        yoyo.accept(YoyoItems.THE_EYE_OF_CTHULHU.get());
                         yoyo.accept(YoyoItems.KRAKEN.get());
+                        yoyo.accept(YoyoItems.THE_EYE_OF_CTHULHU.get());
                         yoyo.accept(YoyoItems.TERRARIAN.get());
                         acceptAll(BoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");

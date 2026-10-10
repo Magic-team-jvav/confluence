@@ -10,6 +10,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -29,9 +31,11 @@ import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public enum GlobalCloakData implements IGlobalData {
     INSTANCE;
+
     public static final Codec<Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_CODEC = LibCodecUtils.notStringKeyMap(
             "source", BlockState.CODEC,
             "pair", LibCodecUtils.booleanObjectPair("cloaked", "target", BlockState.CODEC)
@@ -53,9 +57,9 @@ public enum GlobalCloakData implements IGlobalData {
     });
     public static final int VERSION = 1;
 
-    private Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new Reference2ObjectOpenHashMap<>();
-    private Map<BlockState, BlockBehaviour.Properties> backupProperties = new Reference2ObjectOpenHashMap<>();
-    private Map<Item, BooleanObjectPair<Item>> itemMap = new Reference2ObjectOpenHashMap<>();
+    private final Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new Reference2ObjectOpenHashMap<>();
+    private final Map<BlockState, Tuple<BlockBehaviour.Properties, Supplier<ResourceLocation>>> backups = new Reference2ObjectOpenHashMap<>();
+    private final Map<Item, BooleanObjectPair<Item>> itemMap = new Reference2ObjectOpenHashMap<>();
     private int version;
 
     public void initialize() {
@@ -73,10 +77,11 @@ public enum GlobalCloakData implements IGlobalData {
     private void fromBlock(BlockState source, BlockState target) {
         blockMap.put(source, new BooleanObjectMutablePair<>(true, target));
 
-        backupProperties.put(source, BlockBehaviour.Properties.copy(source.getBlock()));
-        replaceProperties(source, target);
+        Block sourceBlock = source.getBlock();
+        backups.put(source, new Tuple<>(BlockBehaviour.Properties.copy(sourceBlock), sourceBlock.lootTableSupplier));
+        replaceProperties(source.getBlock(), target.getBlock());
 
-        Item sourceItem = source.getBlock().asItem();
+        Item sourceItem = sourceBlock.asItem();
         Item targetItem = target.getBlock().asItem();
         if (sourceItem != Items.AIR && targetItem != Items.AIR) {
             itemMap.put(sourceItem, new BooleanObjectMutablePair<>(true, targetItem));
@@ -88,7 +93,7 @@ public enum GlobalCloakData implements IGlobalData {
             BooleanObjectPair<BlockState> pair = blockMap.get(state);
             if (pair == null) continue;
             pair.left(false);
-            rollbackProperties(state, backupProperties.get(state));
+            rollbackProperties(state.getBlock(), backups.get(state));
             Item item = state.getBlock().asItem();
             if (item == Items.AIR) continue;
             BooleanObjectPair<Item> pair1 = itemMap.get(item);
@@ -131,8 +136,10 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")), result -> this.blockMap = new Reference2ObjectOpenHashMap<>(result));
-        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")), result -> this.itemMap = new Reference2ObjectOpenHashMap<>(result));
+        blockMap.clear();
+        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")), blockMap::putAll);
+        itemMap.clear();
+        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")), itemMap::putAll);
         this.version = tag.getInt("Version");
 
         rollbackAllProperties();
@@ -148,9 +155,9 @@ public enum GlobalCloakData implements IGlobalData {
     @Override
     public void clear() {
         rollbackAllProperties();
-        this.blockMap = new Reference2ObjectOpenHashMap<>();
-        this.backupProperties = new Reference2ObjectOpenHashMap<>();
-        this.itemMap = new Reference2ObjectOpenHashMap<>();
+        this.blockMap.clear();
+        this.backups.clear();
+        this.itemMap.clear();
         this.version = VERSION;
         initialize();
     }
@@ -166,20 +173,20 @@ public enum GlobalCloakData implements IGlobalData {
     }
 
     public void networkDecode(PortRegistryFriendlyByteBuf buffer) {
-        this.blockMap = BLOCK_MAP_STREAM_CODEC.decode(buffer);
-        this.itemMap = ITEM_MAP_STREAM_CODEC.decode(buffer);
+        blockMap.clear();
+        blockMap.putAll(BLOCK_MAP_STREAM_CODEC.decode(buffer));
+        itemMap.clear();
+        itemMap.putAll(ITEM_MAP_STREAM_CODEC.decode(buffer));
     }
 
     public void rollbackAllProperties() {
         for (Map.Entry<BlockState, BooleanObjectPair<BlockState>> entry : blockMap.entrySet()) {
             if (entry.getValue().leftBoolean()) continue;
-            rollbackProperties(entry.getKey(), backupProperties.get(entry.getKey()));
+            rollbackProperties(entry.getKey().getBlock(), backups.get(entry.getKey()));
         }
     }
 
-    public static void replaceProperties(BlockState source, BlockState target) {
-        Block sourceBlock = source.getBlock();
-        Block targetBlock = target.getBlock();
+    public static void replaceProperties(Block sourceBlock, Block targetBlock) {
         sourceBlock.hasCollision = targetBlock.hasCollision;
         sourceBlock.soundType = targetBlock.soundType;
         sourceBlock.friction = targetBlock.friction;
@@ -190,10 +197,12 @@ public enum GlobalCloakData implements IGlobalData {
         sourceBlock.explosionResistance = targetBlock.explosionResistance;
 
         sourceBlock.properties = targetBlock.properties;
+        sourceBlock.drops = targetBlock.drops;
+        sourceBlock.lootTableSupplier = targetBlock.lootTableSupplier;
     }
 
-    public static void rollbackProperties(BlockState source, BlockBehaviour.Properties properties) {
-        Block sourceBlock = source.getBlock();
+    public static void rollbackProperties(Block sourceBlock, Tuple<BlockBehaviour.Properties, Supplier<ResourceLocation>> backup) {
+        BlockBehaviour.Properties properties = backup.getA();
         sourceBlock.hasCollision = properties.hasCollision;
         sourceBlock.soundType = properties.soundType;
         sourceBlock.friction = properties.friction;
@@ -204,5 +213,7 @@ public enum GlobalCloakData implements IGlobalData {
         sourceBlock.explosionResistance = properties.explosionResistance;
 
         sourceBlock.properties = properties;
+        sourceBlock.drops = properties.drops;
+        sourceBlock.lootTableSupplier = backup.getB();
     }
 }

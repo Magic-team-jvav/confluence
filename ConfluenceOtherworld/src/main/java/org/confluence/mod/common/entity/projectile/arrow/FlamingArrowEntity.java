@@ -21,7 +21,7 @@ public class FlamingArrowEntity extends BaseArrowEntity {
     }
 
     @Override
-    public int getLuminance() {
+    public int confluence$getLuminance() {
         return 12;
     }
 

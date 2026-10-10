@@ -180,7 +180,7 @@ public final class ModDynamicLights {
             case LOST_SOUL, VILE_SPIT -> 6;
         }));
         DynamicLightRegister.registerEntity(CurioFishingHook.class, DynamicLightProvider.entity(hook -> hook.getVariant() != CurioFishingHook.Variant.COMMON ? 5 : 0));
-        DynamicLightRegister.registerEntity(BaseArrowEntity.class, DynamicLightProvider.entity(BaseArrowEntity::getLuminance));
+        DynamicLightRegister.registerEntity(BaseArrowEntity.class, DynamicLightProvider.entity(BaseArrowEntity::confluence$getLuminance));
         DynamicLightRegister.registerEntity(BaseBombEntity.class, DynamicLightProvider.entity(bomb -> bomb.emitter != null && !bomb.emitter.isRemoved() ? 4 : 0));
         DynamicLightRegister.registerEntity(LivingEntity.class, DynamicLightProvider.entity(living -> living.hasEffect(ModEffects.SHINE.get()) || living.hasEffect(MobEffects.GLOWING) ? 10 : 0));
         DynamicLightRegister.registerEntity(Player.class, DynamicLightProvider.entity(player -> {

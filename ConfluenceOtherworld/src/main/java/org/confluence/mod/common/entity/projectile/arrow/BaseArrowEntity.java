@@ -89,7 +89,8 @@ public class BaseArrowEntity extends PortAbstractArrow {
         return 0.05;
     }
 
-    public int getLuminance() {
+    // 这个命名是为了防止有些模组加了个final getLuminance()I方法导致崩溃
+    public int confluence$getLuminance() {
         return 0;
     }
 

@@ -46,7 +46,7 @@ public class StarArrowEntity extends BaseArrowEntity {
     }
 
     @Override
-    public int getLuminance() {
+    public int confluence$getLuminance() {
         return 8;
     }
 

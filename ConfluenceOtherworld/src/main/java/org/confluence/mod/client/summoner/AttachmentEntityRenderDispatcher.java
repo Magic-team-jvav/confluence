@@ -3,9 +3,6 @@ package org.confluence.mod.client.summoner;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import org.confluence.lib.client.DynamicLightDispatcher;
-import org.confluence.mod.common.summoner.attachmentEntity.*;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,6 +15,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.client.DynamicLightDispatcher;
+import org.confluence.lib.client.light.DynamicLightGpu;
+import org.confluence.mod.client.light.ModDynamicLights;
+import org.confluence.mod.common.summoner.attachmentEntity.*;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +63,7 @@ public class AttachmentEntityRenderDispatcher {
                 poseStack.pushPose();
                 PathNode renderNode = entity.getRenderNode(partialTick);
                 Vec3 pos = renderNode.pos();
+                ModDynamicLights.renderAttachment(entity.getType(), pos);
                 poseStack.translate(pos.x() - cameraPos.x(), pos.y() - cameraPos.y(), pos.z() - cameraPos.z());
                 // 渲染实体模型
                 IAttachmentEntityRenderer<AttachmentEntity> renderer = getRenderer(entity);
@@ -83,7 +86,7 @@ public class AttachmentEntityRenderDispatcher {
         int sky = level.getBrightness(LightLayer.SKY, blockPos);
         int block = Math.max(level.getBrightness(LightLayer.BLOCK, blockPos), level.getBlockState(blockPos).getLightEmission(level, blockPos));
         int packed = LightTexture.pack(block, sky);
-        return DynamicLightDispatcher.INSTANCE.getDynamicLight(pos, packed);
+        return DynamicLightGpu.terrainGpu() ? packed : DynamicLightDispatcher.INSTANCE.getDynamicLight(pos, packed);
     }
 
     private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, MultiBufferSource bufferSource) {

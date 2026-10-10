@@ -119,7 +119,7 @@ public class DeadBodyPartEntity extends Entity {
             return;
         }
         if (still) return;
-        updateFluidHeightAndDoFluidPushing();
+        updateFluidHeightAndDoFluidPushing(fluidState -> true);
         boolean inHoney = getFluidTypeHeight(ModFluids.HONEY.type().get()) > 0;
         boolean inLiquid = isInWater() || isInLava() || inHoney;
         if (inLiquid) {

@@ -1,6 +1,9 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +18,7 @@ import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides
 /// 前 50 tick 只显示烟雾预警，随后持续 40 tick 喷发，并且每 10 tick
 /// 结算一次范围伤害。伤害区域固定在生成位置，不会追踪目标，因此玩家能够在预警期间主动离开。
 public final class HillLavaPillarProjectile extends Projectile {
+    private static final EntityDataAccessor<Boolean> DATA_ACTIVE = SynchedEntityData.defineId(HillLavaPillarProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final int WARNING_TICKS = 50;
     private static final int ACTIVE_TICKS = 40;
     private static final int MAX_LIFETIME = WARNING_TICKS + ACTIVE_TICKS;
@@ -32,7 +36,13 @@ public final class HillLavaPillarProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData() {}
+    protected void defineSynchedData() {
+        entityData.define(DATA_ACTIVE, false);
+    }
+
+    public boolean isActive() {
+        return entityData.get(DATA_ACTIVE);
+    }
 
     @Override
     public void tick() {
@@ -50,6 +60,8 @@ public final class HillLavaPillarProjectile extends Projectile {
             }
             return;
         }
+
+        if (!isActive()) entityData.set(DATA_ACTIVE, true);
 
         if (tickCount % 8 == 0 && level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.LAVA, getX(), getY() + 1.0, getZ(), 10, 0.0, 1.0, 0.0, 0.0);

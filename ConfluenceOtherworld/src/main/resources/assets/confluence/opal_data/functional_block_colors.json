@@ -1,0 +1,77 @@
+{
+    "confluence:demon_altar": [
+        0.67843137,
+        0.28627451,
+        1.0
+    ],
+    "confluence:crimson_altar": [
+        1.0,
+        0.37647059,
+        0.31372549
+    ],
+    "confluence:hellforge": [
+        1.0,
+        0.50196078,
+        0.2
+    ],
+    "confluence:heart_lantern": [
+        1.0,
+        0.36078431,
+        0.47058824
+    ],
+    "confluence:star_in_a_bottle": [
+        1.0,
+        0.90196078,
+        0.50196078
+    ],
+    "confluence:water_candle": [
+        0.4,
+        0.54901961,
+        1.0
+    ],
+    "confluence:peace_candle": [
+        1.0,
+        0.56862745,
+        0.78431373
+    ],
+    "confluence:soul_of_flight_in_a_bottle": [
+        0.50196078,
+        0.9372549,
+        1.0
+    ],
+    "confluence:soul_of_light_in_a_bottle": [
+        1.0,
+        0.6,
+        0.86666667
+    ],
+    "confluence:soul_of_fright_in_a_bottle": [
+        1.0,
+        0.46666667,
+        0.33333333
+    ],
+    "confluence:soul_of_night_in_a_bottle": [
+        0.67843137,
+        0.4,
+        1.0
+    ],
+    "confluence:soul_of_might_in_a_bottle": [
+        0.4,
+        0.6,
+        1.0
+    ],
+    "confluence:soul_of_sight_in_a_bottle": [
+        0.70196078,
+        1.0,
+        0.4
+    ],
+    "confluence:soul_of_bright_in_a_bottle": [
+        1.0,
+        0.90196078,
+        0.50196078
+    ],
+    "confluence:soul_of_voight_in_a_bottle": [
+        0.70196078,
+        0.50196078,
+        1.0
+    ]
+}

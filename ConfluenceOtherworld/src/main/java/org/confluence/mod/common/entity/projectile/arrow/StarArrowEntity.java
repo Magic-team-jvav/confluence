@@ -46,7 +46,7 @@ public class StarArrowEntity extends BaseArrowEntity {
     }
 
     @Override
-    protected int getLuminance() {
+    public int getLuminance() {
         return 8;
     }
 

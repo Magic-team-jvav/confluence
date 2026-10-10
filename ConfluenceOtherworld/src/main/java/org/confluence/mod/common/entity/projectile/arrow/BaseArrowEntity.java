@@ -89,7 +89,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
         return 0.05;
     }
 
-    protected int getLuminance() {
+    public int getLuminance() {
         return 0;
     }
 

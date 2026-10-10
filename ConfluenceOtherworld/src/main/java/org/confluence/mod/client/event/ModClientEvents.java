@@ -69,6 +69,7 @@ import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.init.model.WhipModelRegister;
+import org.confluence.mod.client.light.ModDynamicLights;
 import org.confluence.mod.client.model.block.GardenGnomeBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
@@ -178,6 +179,7 @@ public final class ModClientEvents {
 
     private static void fmlClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            ModDynamicLights.register();
             StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();

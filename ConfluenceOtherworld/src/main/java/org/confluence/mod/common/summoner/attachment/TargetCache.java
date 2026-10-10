@@ -38,7 +38,6 @@ import java.util.function.Predicate;
 
 
 public class TargetCache {
-
     private final Int2BooleanOpenHashMap visibilityCache = new Int2BooleanOpenHashMap();
     private final Int2IntOpenHashMap hurterHistory = new Int2IntOpenHashMap();
     private final Int2BooleanOpenHashMap targetCache = new Int2BooleanOpenHashMap();
@@ -113,7 +112,7 @@ public class TargetCache {
 
     public List<LivingEntity> getEntitiesInRadius(Vec3 pos, double radius, @Nullable Predicate<LivingEntity> filter) {
         List<LivingEntity> result = new ArrayList<>();
-        if (radius <= 0 || serverLevel == null ) {
+        if (radius <= 0 || serverLevel == null) {
             return result;
         }
         double radiusSq = radius * radius;
@@ -207,7 +206,7 @@ public class TargetCache {
 
     public float getDistance(LivingEntity living1, LivingEntity living2) {
         int key = living1.getUUID().hashCode() + living2.getUUID().hashCode();
-        return distanceCache.computeIfAbsent(key, (IntToDoubleFunction)(k -> (float) living1.getEyePosition().distanceTo(living2.getBoundingBox().getCenter())));
+        return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) living1.getEyePosition().distanceTo(living2.getBoundingBox().getCenter())));
     }
 
     //此缓存不能被共享，极易卡顿，不建议使用

@@ -51,7 +51,7 @@ public class SummonItems {
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
                     SummonerAttachmentEntityTypes.IRON_GOLEM,
                     MinionSlotType.Minion,
-                    12.0F,
+                    16.0F,
                     1.0F,
                     0.0F,
                     SummonerSoundEvents.USE_MINION_WEAPON,

@@ -827,6 +827,31 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
 
+                        CreativeModeTab.Output torches = GroupItem.belongsTo("torches", output);
+                        torches.accept(TorchBlocks.RED_TORCH.get());
+                        torches.accept(TorchBlocks.ORANGE_TORCH.get());
+                        torches.accept(TorchBlocks.YELLOW_TORCH.get());
+                        torches.accept(TorchBlocks.GREEN_TORCH.get());
+                        torches.accept(TorchBlocks.BLUE_TORCH.get());
+                        torches.accept(TorchBlocks.WHITE_TORCH.get());
+                        torches.accept(TorchBlocks.PURPLE_TORCH.get());
+                        torches.accept(TorchBlocks.PINK_TORCH.get());
+                        torches.accept(TorchBlocks.ICE_TORCH.get());
+                        torches.accept(TorchBlocks.BONE_TORCH.get());
+                        torches.accept(TorchBlocks.ULTRABRIGHT_TORCH.get());
+                        torches.accept(TorchBlocks.DEMON_TORCH.get());
+                        torches.accept(TorchBlocks.CURSED_TORCH.get());
+                        torches.accept(TorchBlocks.ICHOR_TORCH.get());
+                        torches.accept(TorchBlocks.RAINBOW_TORCH.get());
+                        torches.accept(TorchBlocks.DESERT_TORCH.get());
+                        torches.accept(TorchBlocks.CORAL_TORCH.get());
+                        torches.accept(TorchBlocks.CORRUPT_TORCH.get());
+                        torches.accept(TorchBlocks.CRIMSON_TORCH.get());
+                        torches.accept(TorchBlocks.HALLOWED_TORCH.get());
+                        torches.accept(TorchBlocks.JUNGLE_TORCH.get());
+                        torches.accept(TorchBlocks.MUSHROOM_TORCH.get());
+                        torches.accept(TorchBlocks.AETHER_TORCH.get());
+
                         acceptAll(PylonBlocks.BLOCKS, output, "pylon");
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
@@ -1927,15 +1952,25 @@ public final class ModTabs {
                         output.accept(SwordItems.CROWBAR.get());
 
                         CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
-                        yoyo.accept(YoyoItems.AMAZON.get());
+                        yoyo.accept(YoyoItems.WOODEN_YOYO.get());
+                        yoyo.accept(YoyoItems.RALLY.get());
                         yoyo.accept(YoyoItems.ARTERY.get());
-                        yoyo.accept(YoyoItems.CASCADE.get());
+                        yoyo.accept(YoyoItems.AMAZON.get());
+                        yoyo.accept(YoyoItems.MALAISE.get());
                         yoyo.accept(YoyoItems.CODE_1.get());
                         yoyo.accept(YoyoItems.HIVE_FIVE.get());
-                        yoyo.accept(YoyoItems.MALAISE.get());
-                        yoyo.accept(YoyoItems.RALLY.get());
+                        yoyo.accept(YoyoItems.CASCADE.get());
                         yoyo.accept(YoyoItems.VALOR.get());
-                        yoyo.accept(YoyoItems.WOODEN_YOYO.get());
+                        yoyo.accept(YoyoItems.CHIK.get());
+                        yoyo.accept(YoyoItems.FORMAT_C.get());
+                        yoyo.accept(YoyoItems.HEL_FIRE.get());
+                        yoyo.accept(YoyoItems.AMAROK.get());
+                        yoyo.accept(YoyoItems.GRADIENT.get());
+                        yoyo.accept(YoyoItems.CODE_2.get());
+                        yoyo.accept(YoyoItems.YELETS.get());
+                        yoyo.accept(YoyoItems.KRAKEN.get());
+                        yoyo.accept(YoyoItems.THE_EYE_OF_CTHULHU.get());
+                        yoyo.accept(YoyoItems.TERRARIAN.get());
                         acceptAll(BoomerangItems.ITEMS, output, "boomerang");
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");

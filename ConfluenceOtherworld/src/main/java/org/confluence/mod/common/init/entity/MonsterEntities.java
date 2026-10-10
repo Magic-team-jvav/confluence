@@ -571,7 +571,7 @@ public final class MonsterEntities {
 
     // 海洋：鲨鱼、水母与史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<Shark>> SHARK = withAttributes(registerEntity("shark", EntityType.Builder.of(Shark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.aquatic().maxHealth(156).armor(1).attackDamage(20).followRange(48).movementSpeed(1.2).attackKnockback(0.37).knockbackResistance(0.1).build());
+            () -> CreatureAttributeBuilder.aquatic().maxHealth(106).armor(1).attackDamage(20).followRange(48).movementSpeed(1.2).attackKnockback(0.37).knockbackResistance(0.1).build());
 
     // 地牢：诅咒骷髅与幽魂
     public static final DeferredHolder<EntityType<?>, EntityType<CursedSkull>> CURSED_SKULL = withAttributes(registerEntity("cursed_skull", EntityType.Builder.of(CursedSkull::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10)),

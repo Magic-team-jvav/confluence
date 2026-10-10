@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.client.light.DynamicLightEffects;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
 import org.confluence.mod.common.entity.boss.PrimeEnderDragon;
@@ -68,7 +67,6 @@ public final class PrimeEnderDragonRenderer extends BossGeoRenderer<PrimeEnderDr
         float yaw = Mth.rotLerp(partialTick, dragon.yRotO, dragon.getYRot());
         Vec3 direction = Vec3.directionFromRotation(pitch, yaw);
 
-        DynamicLightEffects.renderBeam(origin, origin.add(direction.scale(range)), 10);
         poseStack.pushPose();
         poseStack.translate(origin.x - renderX, origin.y - renderY, origin.z - renderZ);
         poseStack.translate(direction.x * range * 0.5, direction.y * range * 0.5, direction.z * range * 0.5);

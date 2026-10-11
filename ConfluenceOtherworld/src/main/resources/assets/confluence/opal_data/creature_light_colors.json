@@ -1,0 +1,218 @@
+{
+    "entities": {
+        "confluence:dungeon_spirit": {
+            "color": [
+                0.56470588,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:pixie": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.60392157
+            ],
+            "light_level": 8
+        },
+        "confluence:illuminant_bat": {
+            "color": [
+                1.0,
+                0.58039216,
+                0.87843137
+            ],
+            "light_level": 8
+        },
+        "confluence:glowing_mooshroom": {
+            "color": [
+                0.33333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:glowing_cluckshroom": {
+            "color": [
+                0.33333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:blood_jelly": {
+            "color": [
+                1.0,
+                0.4,
+                0.53333333
+            ],
+            "light_level": 6
+        },
+        "confluence:fungo_fish": {
+            "color": [
+                0.33333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:ice_elemental": {
+            "color": [
+                0.60392157,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:blue_jellyfish": {
+            "color": [
+                0.46666667,
+                0.7254902,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:green_jellyfish": {
+            "color": [
+                0.46666667,
+                1.0,
+                0.66666667
+            ],
+            "light_level": 6
+        },
+        "confluence:pink_jellyfish": {
+            "color": [
+                1.0,
+                0.6,
+                0.8
+            ],
+            "light_level": 6
+        },
+        "confluence:glowing_snail": {
+            "color": [
+                0.33333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 5
+        },
+        "confluence:magma_snail": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 5
+        },
+        "confluence:hell_butterfly": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 5
+        },
+        "confluence:fealing": {
+            "cycle": {
+                "colors": [
+                    [
+                        1.0,
+                        0.4,
+                        0.53333333
+                    ],
+                    [
+                        1.0,
+                        0.85098039,
+                        0.4
+                    ],
+                    [
+                        0.46666667,
+                        0.90196078,
+                        0.63921569
+                    ],
+                    [
+                        0.4745098,
+                        0.8745098,
+                        1.0
+                    ],
+                    [
+                        0.58823529,
+                        0.58039216,
+                        1.0
+                    ],
+                    [
+                        0.9372549,
+                        0.6,
+                        1.0
+                    ]
+                ],
+                "period_ticks": 120,
+                "update_interval_ticks": 2
+            },
+            "light_level": 5
+        },
+        "confluence:lightning_bug": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.60392157
+            ],
+            "light_level": 5
+        },
+        "confluence:firefly": {
+            "color": [
+                0.8745098,
+                1.0,
+                0.53333333
+            ],
+            "light_level": 4
+        },
+        "confluence:luminous_slime": {
+            "color": [
+                0.33333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 7
+        },
+        "confluence:prismatic_lacewing": {
+            "cycle": {
+                "colors": [
+                    [
+                        1.0,
+                        0.4,
+                        0.53333333
+                    ],
+                    [
+                        1.0,
+                        0.85098039,
+                        0.4
+                    ],
+                    [
+                        0.46666667,
+                        0.90196078,
+                        0.63921569
+                    ],
+                    [
+                        0.4745098,
+                        0.8745098,
+                        1.0
+                    ],
+                    [
+                        0.58823529,
+                        0.58039216,
+                        1.0
+                    ],
+                    [
+                        0.9372549,
+                        0.6,
+                        1.0
+                    ]
+                ],
+                "period_ticks": 120,
+                "update_interval_ticks": 2
+            },
+            "light_level": 7
+        }
+    }
+}

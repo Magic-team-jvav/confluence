@@ -12,6 +12,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.light.DynamicLightEffects;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.TerraStyleExplosion;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
@@ -38,6 +39,7 @@ public record TerraStyleExplosionPacketS2C(double x, double y, double z,
     public void work(Player player) {
         TerraStyleExplosion.handleClientExplode(player.level(), x, y, z, radius);
         DynamicLightEffects.flash(new Vec3(x, y, z), 15, 6);
+        OpalLightIntegration.flash(OpalLightIntegration.EXPLOSION, new Vec3(x, y, z), 6);
     }
 
     public static void send2All(ServerLevel level, double x, double y, double z, float radius) {

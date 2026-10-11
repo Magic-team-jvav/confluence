@@ -1,0 +1,650 @@
+{
+    "items": {
+        "confluence:red_phaseblade": {
+            "color": [
+                1.0,
+                0.30980392,
+                0.36470588
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:orange_phaseblade": {
+            "color": [
+                1.0,
+                0.66666667,
+                0.30196078
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:yellow_phaseblade": {
+            "color": [
+                1.0,
+                0.90980392,
+                0.42745098
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:green_phaseblade": {
+            "color": [
+                0.44705882,
+                1.0,
+                0.55294118
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:blue_phaseblade": {
+            "color": [
+                0.4627451,
+                0.66666667,
+                1.0
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:purple_phaseblade": {
+            "color": [
+                0.74901961,
+                0.51372549,
+                1.0
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:white_phaseblade": {
+            "color": [
+                0.94117647,
+                0.96862745,
+                1.0
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:pink_phaseblade": {
+            "color": [
+                1.0,
+                0.51372549,
+                0.80784314
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:red_phasesaber": {
+            "color": [
+                1.0,
+                0.30980392,
+                0.36470588
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:orange_phasesaber": {
+            "color": [
+                1.0,
+                0.66666667,
+                0.30196078
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:yellow_phasesaber": {
+            "color": [
+                1.0,
+                0.90980392,
+                0.42745098
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:green_phasesaber": {
+            "color": [
+                0.44705882,
+                1.0,
+                0.55294118
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:blue_phasesaber": {
+            "color": [
+                0.4627451,
+                0.66666667,
+                1.0
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:purple_phasesaber": {
+            "color": [
+                0.74901961,
+                0.51372549,
+                1.0
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:white_phasesaber": {
+            "color": [
+                0.94117647,
+                0.96862745,
+                1.0
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        },
+        "confluence:pink_phasesaber": {
+            "color": [
+                1.0,
+                0.51372549,
+                0.80784314
+            ],
+            "light_level": 12,
+            "item_state": {
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
+                "conditions": {
+                    "confluence:phaseblade_available": true
+                }
+            }
+        }
+    },
+    "entities": {
+        "confluence:phaseblade_projectile": [
+            {
+                "color": [
+                    1.0,
+                    0.30980392,
+                    0.36470588
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:red_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.66666667,
+                    0.30196078
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:orange_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.90980392,
+                    0.42745098
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:yellow_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.44705882,
+                    1.0,
+                    0.55294118
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:green_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.4627451,
+                    0.66666667,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:blue_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.74901961,
+                    0.51372549,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:purple_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.94117647,
+                    0.96862745,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:white_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.51372549,
+                    0.80784314
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:pink_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.30980392,
+                    0.36470588
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:red_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.66666667,
+                    0.30196078
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:orange_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.90980392,
+                    0.42745098
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:yellow_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.44705882,
+                    1.0,
+                    0.55294118
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:green_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.4627451,
+                    0.66666667,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:blue_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.74901961,
+                    0.51372549,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:purple_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.94117647,
+                    0.96862745,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:white_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.51372549,
+                    0.80784314
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:pink_phasesaber"
+                    }
+                }
+            }
+        ],
+        "confluence:phasesaber_projectile": [
+            {
+                "color": [
+                    1.0,
+                    0.30980392,
+                    0.36470588
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:red_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.66666667,
+                    0.30196078
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:orange_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.90980392,
+                    0.42745098
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:yellow_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.44705882,
+                    1.0,
+                    0.55294118
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:green_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.4627451,
+                    0.66666667,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:blue_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.74901961,
+                    0.51372549,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:purple_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.94117647,
+                    0.96862745,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:white_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.51372549,
+                    0.80784314
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:pink_phaseblade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.30980392,
+                    0.36470588
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:red_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.66666667,
+                    0.30196078
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:orange_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.90980392,
+                    0.42745098
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:yellow_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.44705882,
+                    1.0,
+                    0.55294118
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:green_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.4627451,
+                    0.66666667,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:blue_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.74901961,
+                    0.51372549,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:purple_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.94117647,
+                    0.96862745,
+                    1.0
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:white_phasesaber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.51372549,
+                    0.80784314
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:projectile_item": "confluence:pink_phasesaber"
+                    }
+                }
+            }
+        ]
+    }
+}

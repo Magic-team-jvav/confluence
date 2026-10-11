@@ -78,6 +78,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
@@ -223,6 +224,7 @@ public final class GameClientEvents {
         DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
+        OpalLightIntegration.clearWorld();
         ClientWeaponInputManager.reset();
         GunHandler.reset();
         WeatherHandler.reset();

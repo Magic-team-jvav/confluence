@@ -1,0 +1,108 @@
+{
+    "items": {
+        "confluence:bottomless_lava_bucket": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 10
+        },
+        "confluence:mining_helmet": {
+            "color": [
+                1.0,
+                0.94901961,
+                0.75294118
+            ],
+            "light_level": 10
+        },
+        "confluence:falling_star": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.60392157
+            ],
+            "light_level": 10
+        },
+        "confluence:glowing_mushroom": {
+            "color": [
+                0.33333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_light": {
+            "color": [
+                1.0,
+                0.6,
+                0.86666667
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_night": {
+            "color": [
+                0.67843137,
+                0.50196078,
+                0.89803922
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_flight": {
+            "color": [
+                0.63921569,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_might": {
+            "color": [
+                0.4,
+                0.61176471,
+                1.0
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_sight": {
+            "color": [
+                0.6,
+                0.96078431,
+                0.50196078
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_fright": {
+            "color": [
+                1.0,
+                0.66666667,
+                0.4
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_bright": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.7372549
+            ],
+            "light_level": 3
+        },
+        "confluence:soul_of_voight": {
+            "color": [
+                0.66666667,
+                0.53333333,
+                0.9372549
+            ],
+            "light_level": 3
+        },
+        "minecraft:lava_bucket": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 15
+        }
+    }
+}

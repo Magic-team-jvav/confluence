@@ -133,6 +133,7 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.ClientUtils;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.event.PortEventHandler;
@@ -180,6 +181,7 @@ public final class ModClientEvents {
     private static void fmlClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ModDynamicLights.register();
+            OpalLightIntegration.register();
             StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
@@ -1149,6 +1151,7 @@ public final class ModClientEvents {
     }
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(OpalLightIntegration.INSTANCE);
         event.registerReloadListener((ResourceManagerReloadListener) manager -> org.confluence.mod.client.effect.BrainDissolveTexture.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());

@@ -9,6 +9,7 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.client.light.DynamicLightEffects;
 import org.confluence.mod.client.renderer.entity.bullet.effect.*;
 import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,22 @@ public final class BulletVfxManager {
         if (vfx == null) return;
         vfx.play(position);
         switch (effect) {
-            case SILVER_CROSS -> DynamicLightEffects.flash(position, 7, 4);
-            case CRYSTAL_IMPACT, CHLOROPHYTE_IMPACT -> DynamicLightEffects.flash(position, 6, 4);
-            case LUMINITE_IMPACT -> DynamicLightEffects.flash(position, 12, 6);
+            case SILVER_CROSS -> {
+                DynamicLightEffects.flash(position, 7, 4);
+                OpalLightIntegration.flash(OpalLightIntegration.SILVER_IMPACT, position, 4);
+            }
+            case CRYSTAL_IMPACT -> {
+                DynamicLightEffects.flash(position, 6, 4);
+                OpalLightIntegration.flash(OpalLightIntegration.CRYSTAL_IMPACT, position, 4);
+            }
+            case CHLOROPHYTE_IMPACT -> {
+                DynamicLightEffects.flash(position, 6, 4);
+                OpalLightIntegration.flash(OpalLightIntegration.CHLOROPHYTE_IMPACT, position, 4);
+            }
+            case LUMINITE_IMPACT -> {
+                DynamicLightEffects.flash(position, 12, 6);
+                OpalLightIntegration.flash(OpalLightIntegration.LUMINITE_IMPACT, position, 6);
+            }
             default -> {}
         }
     }

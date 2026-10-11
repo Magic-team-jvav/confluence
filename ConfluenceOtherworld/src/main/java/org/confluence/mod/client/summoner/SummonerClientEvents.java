@@ -15,9 +15,9 @@ import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
-import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
-import org.confluence.mod.client.summoner.particle.ZenithParticleProvider;
+import org.confluence.mod.client.info.InfoRenderDispatcher;
+import org.confluence.mod.client.particle.GenericParticle;
+import org.confluence.mod.client.particle.ZenithParticle;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
 import org.confluence.mod.client.summoner.renderer.minion.*;
 import org.confluence.mod.client.summoner.renderer.projectile.EyeFireballRenderer;
@@ -37,8 +37,8 @@ public final class SummonerClientEvents {
 
     public static void init() {
         PortEventHandler.addListener((RegisterParticleProvidersEvent event) -> {
-            event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new);
-            event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new);
+            event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticle.GenericParticleProvider::new);
+            event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticle.ZenithParticleProvider::new);
         });
         PortEventHandler.addListener(PortEventPriority.HIGH, (ItemTooltipEvent event) -> {
             Player player = event.getEntity();

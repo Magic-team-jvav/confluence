@@ -26,11 +26,6 @@ public class SimpleRenderer<T extends AttachmentEntity> extends AbstractAttachme
         this.renderer = renderer;
     }
 
-    @Override
-    protected RenderContext<T> createContext(T entity, PathNode visualNode, float partialTick, int packedLight) {
-        return new RenderContext<>(entity, visualNode, partialTick, packedLight);
-    }
-
     /**
      * 本渲染器绘制的是<b>面向相机的贴图</b>（{@code RenderUtil.renderImage} 内部再乘 cameraOrientation）
      * 与<b>面向相机的文本</b>，方向完全由相机决定。
@@ -68,9 +63,5 @@ public class SimpleRenderer<T extends AttachmentEntity> extends AbstractAttachme
             font.drawInBatch(component, (float) -font.width(component) / 2, -font.lineHeight, 0xFFFFFF, true, last.pose(), bufferSource, Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
             poseStack.popPose();
         }
-    }
-
-    @Override
-    protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
     }
 }

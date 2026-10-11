@@ -1,4 +1,4 @@
-package org.confluence.mod.client.summoner.info;
+package org.confluence.mod.client.info;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

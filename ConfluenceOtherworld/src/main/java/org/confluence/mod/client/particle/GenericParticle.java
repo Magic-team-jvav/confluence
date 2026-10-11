@@ -1,13 +1,10 @@
-package org.confluence.mod.client.summoner.particle;
+package org.confluence.mod.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.particle.GenericParticleOptions;
@@ -119,5 +116,19 @@ public class GenericParticle extends TextureSheetParticle {
     @Override
     public int getLightColor(float partialTick) {
         return LightTexture.FULL_BRIGHT;
+    }
+
+    public static class GenericParticleProvider implements ParticleProvider<GenericParticleOptions> {
+
+        private final SpriteSet spriteSet;
+
+        public GenericParticleProvider(SpriteSet spriteSet) {
+            this.spriteSet = spriteSet;
+        }
+
+        @Override
+        public Particle createParticle(GenericParticleOptions options, ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
+            return createWithOptions(level, x, y, z, vx, vy, vz, this.spriteSet, options);
+        }
     }
 }

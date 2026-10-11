@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.hud.soul.SoulQuickSkillHudUtils;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
-import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.client.PortDeltaTicker;
@@ -242,8 +242,8 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     public void update() {}
 
     @Override
-    public SoulSkillClientHandler.Type getType() {
-        return isRight ? SoulSkillClientHandler.Type.CARD_HORIZONTAL_R
-                : SoulSkillClientHandler.Type.CARD_HORIZONTAL_L;
+    public SoulSkillHandler.Type getType() {
+        return isRight ? SoulSkillHandler.Type.CARD_HORIZONTAL_R
+                : SoulSkillHandler.Type.CARD_HORIZONTAL_L;
     }
 }

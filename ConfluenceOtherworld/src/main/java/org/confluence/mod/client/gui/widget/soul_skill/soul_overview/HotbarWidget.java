@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +21,7 @@ import java.util.List;
 
 /// 底部快捷栏
 public class HotbarWidget extends AbstractWidget {
-    protected static final SoulSkillClientHandler HOLDER = SoulSkillClientHandler.INSTANCE;
+    protected static final SoulSkillHandler HOLDER = SoulSkillHandler.INSTANCE;
 
     public static final PortSprite BOTTOM_BOX_CENTRE = new PortSprite(Confluence.asResource("container/soul_overview/hotbar_box_centre"), 20, 32);
     public static final PortSprite BOTTOM_BOX_HEAD = new PortSprite(Confluence.asResource("container/soul_overview/hotbar_box_head"), 16, 32);

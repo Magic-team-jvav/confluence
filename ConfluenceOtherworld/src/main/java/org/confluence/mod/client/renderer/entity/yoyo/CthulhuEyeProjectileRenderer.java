@@ -5,7 +5,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.GeoNormalModel;
-import org.confluence.mod.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.mod.client.renderer.entity.GeoNormalRenderer;
 import org.confluence.mod.common.entity.yoyo.CthulhuEyeProjectile;
 import software.bernie.geckolib.core.object.Color;
 

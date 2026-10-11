@@ -25,7 +25,7 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
 import org.confluence.mod.client.gui.widget.soul_skill.soul_overview.*;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +41,7 @@ import java.util.function.Supplier;
 
 /// 灵魂技能总览界面 — 类似原版进度界面的技能树视图
 public class SoulOverviewScreen extends Screen {
-    private static final SoulSkillClientHandler HOLDER = SoulSkillClientHandler.INSTANCE;
+    private static final SoulSkillHandler HOLDER = SoulSkillHandler.INSTANCE;
 
     private final NormalNoise backgroundNoise;
     /* 组件 */

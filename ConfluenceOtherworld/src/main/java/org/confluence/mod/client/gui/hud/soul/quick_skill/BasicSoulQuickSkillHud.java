@@ -3,17 +3,17 @@ package org.confluence.mod.client.gui.hud.soul.quick_skill;
 import net.minecraft.client.gui.GuiGraphics;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.mesdag.portlib.client.PortDeltaTicker;
 
 public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
     protected boolean active = false;
-    protected final SoulSkillClientHandler soulSkillHolder;
+    protected final SoulSkillHandler soulSkillHolder;
     protected boolean isInit;
 
     public BasicSoulQuickSkillHud() {
         super();
-        soulSkillHolder = SoulSkillClientHandler.INSTANCE;
+        soulSkillHolder = SoulSkillHandler.INSTANCE;
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
 
     public abstract void update();
 
-    public abstract SoulSkillClientHandler.Type getType();
+    public abstract SoulSkillHandler.Type getType();
 
     public boolean isType() {
         return ClientConfigs.soulQuickSkillStyle == getType();

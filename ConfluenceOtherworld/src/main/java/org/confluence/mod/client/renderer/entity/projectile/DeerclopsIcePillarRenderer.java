@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
-import org.confluence.mod.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.mod.client.renderer.entity.GeoNormalRenderer;
 import org.confluence.mod.common.entity.projectile.DeerclopsIcePillarProjectile;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 

@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 
@@ -22,7 +22,7 @@ import java.util.function.Supplier;
  * 技能树中的一个节点，中心坐标相对于屏幕中心
  */
 public class OverviewNode extends SoulSkillBox {
-    protected static final SoulSkillClientHandler HOLDER = SoulSkillClientHandler.INSTANCE;
+    protected static final SoulSkillHandler HOLDER = SoulSkillHandler.INSTANCE;
 
     private final SoulOverviewScreen screen;
     private final ResourceLocation nodeId;

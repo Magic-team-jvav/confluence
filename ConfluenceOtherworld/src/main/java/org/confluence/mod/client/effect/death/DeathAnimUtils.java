@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+package org.confluence.mod.client.effect.death;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -14,8 +14,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.effect.death.GeoDeathModelAdapter;
-import org.confluence.mod.client.effect.death.VanillaDeathModelAdapter;
 import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.IModelPart;

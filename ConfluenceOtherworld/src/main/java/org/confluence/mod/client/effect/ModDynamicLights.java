@@ -1,4 +1,4 @@
-package org.confluence.mod.client;
+package org.confluence.mod.client.effect;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;

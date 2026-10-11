@@ -5,9 +5,9 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.effect.death.DeathAnimUtils;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.mixed.IClientLivingEntity;
-import org.confluence.mod.util.DeathAnimUtils;
 
 import java.util.ArrayList;
 import java.util.List;

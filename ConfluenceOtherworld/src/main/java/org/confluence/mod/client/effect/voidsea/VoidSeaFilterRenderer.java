@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui;
+package org.confluence.mod.client.effect.voidsea;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;

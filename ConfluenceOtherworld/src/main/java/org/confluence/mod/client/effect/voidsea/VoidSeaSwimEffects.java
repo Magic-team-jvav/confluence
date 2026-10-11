@@ -1,4 +1,4 @@
-package org.confluence.mod.client.effect;
+package org.confluence.mod.client.effect.voidsea;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;

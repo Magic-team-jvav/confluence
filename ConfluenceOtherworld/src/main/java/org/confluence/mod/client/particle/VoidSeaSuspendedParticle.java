@@ -7,7 +7,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.mod.client.util.ClientVoidSeaConstants.*;
+import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;
 
 public class VoidSeaSuspendedParticle extends TextureSheetParticle {
     protected VoidSeaSuspendedParticle(ClientLevel level, double x, double y, double z, SpriteSet sprites) {

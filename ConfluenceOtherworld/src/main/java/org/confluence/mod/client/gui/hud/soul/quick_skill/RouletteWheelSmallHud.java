@@ -13,9 +13,9 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.soul.CurrentSelectedSkillHud;
+import org.confluence.mod.client.gui.hud.soul.SoulQuickSkillHudUtils;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
-import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 
 public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
@@ -73,7 +73,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
         if (!isType()) {
             return;
         }
-        CurrentSelectedSkillHud instance = SoulSkillClientHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE;
+        CurrentSelectedSkillHud instance = SoulSkillHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE;
         PoseStack poseStack = guiGraphics.pose();
         float realtimeDeltaTicks = deltaTracker.getRealtimeDeltaTicks();
 
@@ -211,8 +211,8 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public SoulSkillClientHandler.Type getType() {
-        return SoulSkillClientHandler.Type.ROULETTE_WHEEL_SMALL;
+    public SoulSkillHandler.Type getType() {
+        return SoulSkillHandler.Type.ROULETTE_WHEEL_SMALL;
     }
 
     protected void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y) {

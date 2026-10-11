@@ -49,6 +49,7 @@ import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRenderer
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.effect.DivaSlimeVertexConsumer;
+import org.confluence.mod.client.effect.ModDynamicLights;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.connected.CustomBlockModels;
 import org.confluence.mod.client.effect.connected.ModConnectives;
@@ -56,25 +57,21 @@ import org.confluence.mod.client.effect.connected.ModelSwapper;
 import org.confluence.mod.client.effect.connected.StitchedSprite;
 import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
-import org.confluence.mod.client.entity.model.*;
-import org.confluence.mod.client.entity.renderer.*;
-import org.confluence.mod.client.entity.renderer.BatRenderer;
+import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
+import org.confluence.mod.client.effect.voidsea.VoidSeaRenderSettings;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
-import org.confluence.mod.client.gui.VoidSeaFilterRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-import org.confluence.mod.client.light.ModDynamicLights;
 import org.confluence.mod.client.model.WhipModelRegister;
 import org.confluence.mod.client.model.block.*;
-import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
-import org.confluence.mod.client.model.entity.RainbowSheepModel;
+import org.confluence.mod.client.model.entity.*;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
@@ -84,9 +81,9 @@ import org.confluence.mod.client.model.entity.hook.*;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.client.particle.*;
-import org.confluence.mod.client.renderer.VoidSeaRenderSettings;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.*;
+import org.confluence.mod.client.renderer.entity.BatRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.SlimeZombieRenderer;
 import org.confluence.mod.client.renderer.entity.bullet.BulletRenderer;
@@ -232,12 +229,12 @@ public final class ModClientEvents {
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
 
         if (Confluence.SOUL_SKILLS) {
-            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_l_hud"), SoulSkillClientHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_r_hud"), SoulSkillClientHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("roulette_wheel_small_hud"), SoulSkillClientHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("current_selected_skill_hud"), SoulSkillClientHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("roulette_wheel_big_hud"), SoulSkillClientHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
-            SoulSkillClientHandler.INSTANCE.init();
+            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_l_hud"), SoulSkillHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
+            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_r_hud"), SoulSkillHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
+            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("roulette_wheel_small_hud"), SoulSkillHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
+            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("current_selected_skill_hud"), SoulSkillHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
+            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("roulette_wheel_big_hud"), SoulSkillHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
+            SoulSkillHandler.INSTANCE.init();
         }
     }
 

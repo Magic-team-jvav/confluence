@@ -16,7 +16,7 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.color.IntegerARGB;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulSkillClientHandler;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -122,8 +122,8 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public SoulSkillClientHandler.Type getType() {
-        return SoulSkillClientHandler.Type.ROULETTE_WHEEL_BIG;
+    public SoulSkillHandler.Type getType() {
+        return SoulSkillHandler.Type.ROULETTE_WHEEL_BIG;
     }
 
     @Override

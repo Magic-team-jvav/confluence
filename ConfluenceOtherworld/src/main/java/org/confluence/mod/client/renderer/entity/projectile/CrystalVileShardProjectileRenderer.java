@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.renderer.GeoNegativeVolumeRenderer;
+import org.confluence.mod.client.renderer.entity.GeoNegativeVolumeRenderer;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import software.bernie.geckolib.util.Color;
 

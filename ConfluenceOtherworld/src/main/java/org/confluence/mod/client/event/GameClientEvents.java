@@ -60,25 +60,25 @@ import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.AfterimageHelper;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
-import org.confluence.mod.client.effect.VoidSeaSwimEffects;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
-import org.confluence.mod.client.entity.renderer.MartianOfficerRenderer;
-import org.confluence.mod.client.entity.renderer.WallOfFleshRenderer;
+import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
+import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
+import org.confluence.mod.client.effect.voidsea.VoidSeaSwimEffects;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
-import org.confluence.mod.client.gui.VoidSeaFilterRenderer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.ModRenderer;
-import org.confluence.mod.client.renderer.VoidSeaRenderer;
 import org.confluence.mod.client.renderer.block.MuralPlacementPreviewRenderer;
+import org.confluence.mod.client.renderer.entity.MartianOfficerRenderer;
 import org.confluence.mod.client.renderer.entity.TongueRenderer;
+import org.confluence.mod.client.renderer.entity.WallOfFleshRenderer;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
@@ -314,7 +314,7 @@ public final class GameClientEvents {
         if (LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
             event.setCanceled(true);
         } else if (Confluence.SOUL_SKILLS) {
-            if (SoulSkillClientHandler.INSTANCE.scrolling(scrollDeltaY)) {
+            if (SoulSkillHandler.INSTANCE.scrolling(scrollDeltaY)) {
                 event.setCanceled(true);
             }
         }

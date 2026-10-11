@@ -1,12 +1,10 @@
 package org.confluence.mod.client.renderer.entity.bestiary;
 
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.mod.client.renderer.entity.GeoNormalRenderer;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
 
 public class GeoWormBestiaryEntryRenderer extends GeoNormalRenderer<BaseWormMonster> {

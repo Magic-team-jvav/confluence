@@ -97,7 +97,9 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.BannedBiomeNoiseBasedChunkGenerator;
+import org.confluence.mod.common.worldgen.DepthBandPlacement;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
+import org.confluence.mod.common.worldgen.YRangeFilter;
 import org.confluence.mod.common.worldgen.carver.DemonicCaveCarver;
 import org.confluence.mod.common.worldgen.feature.*;
 import org.confluence.mod.common.worldgen.structure.*;
@@ -901,7 +903,8 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> BOULDER_TRAP = key("boulder_trap");
         private static final ResourceKey<PlacedFeature> DEATH_CHEST_TRAP = key("death_chest_trap");
         private static final ResourceKey<PlacedFeature> LIFE_CRYSTAL = key("life_crystal");
-        private static final ResourceKey<PlacedFeature> WATER_CHESTS = key("water_chests");
+        private static final ResourceKey<PlacedFeature> WATER_CHESTS_ABOVE_30 = key("water_chests_above_30");
+        private static final ResourceKey<PlacedFeature> WATER_CHESTS_BELOW_30 = key("water_chests_below_30");
         private static final ResourceKey<PlacedFeature> ROLLING_CACTUS = key("rolling_cactus");
         private static final ResourceKey<PlacedFeature> SILT_BLOCK = key("silt_block");
         private static final ResourceKey<PlacedFeature> SLUSH = key("slush");
@@ -948,6 +951,7 @@ public class ModDataProvider {
         private static final SurfaceWaterDepthFilter surfaceWaterDepth0 = SurfaceWaterDepthFilter.forMaxDepth(0);
         private static final SecretFlagPlacement noTraps = SecretFlagPlacement.of(IWorldOptions.NT_MASK);
         private static final HeightmapPlacement oceanFloor = HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR);
+        private static final HeightmapPlacement oceanFloorWG = HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR_WG);
         private static final HeightmapPlacement worldSurfaceWG = HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG);
         private static final HeightmapPlacement worldSurface = HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE);
         private static final BlockPredicate air = BlockPredicate.matchesBlocks(Blocks.AIR);
@@ -1028,7 +1032,7 @@ public class ModDataProvider {
             register(context, DESERT_FOSSIL, configured.getOrThrow(ConfiguredFeatures.DESERT_FOSSIL), count14, inSquare, bottomThroughTop, biome);
             register(context, FALLING_SAND_TRAP, configured.getOrThrow(ConfiguredFeatures.FALLING_SAND_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, ANTLION_EGGS, configured.getOrThrow(ConfiguredFeatures.ANTLION_EGGS), CountPlacement.of(12), inSquare, bottomThroughUnderground, biome);
-            register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -80), biome);
+            register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(8), inSquare, surfaceBand(-110, -80), targetSturdyAllowedAir, biome);
             register(context, FOREST_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.FOREST_DROOPING_VINE), CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.STONE), air, 12), ySpreadN1, biome);
             register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, LIFE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.LIFE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, inSquare, worldSurfaceWG, biome);
@@ -1074,7 +1078,7 @@ public class ModDataProvider {
             register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
-            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(6), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
+            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(26), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome);
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
             register(context, HUGE_LIFE_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE), RarityFilter.onAverageOnceEvery(30), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
@@ -1083,7 +1087,7 @@ public class ModDataProvider {
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir, biome);
             register(context, ASH_GRASS, configured.getOrThrow(ConfiguredFeatures.ASH_GRASS), CountPlacement.of(20), inSquare, bottomThroughTop, biome);
             register(context, JUNGLE_ROSE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_ROSE), count4, inSquare, bottomThroughSurface, biome);
-            register(context, JUNGLE_SPORE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_SPORE), count14, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR, -110, -70), biome);
+            register(context, JUNGLE_SPORE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_SPORE), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(16), inSquare, oceanFloorBand(-110, -70), targetSturdyAllowedAir, biome);
             register(context, JUNGLE_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_DROOPING_VINE), CountPlacement.of(90), inSquare, bottomThroughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
             register(context, JUNGLE_CATTAILS, configured.getOrThrow(ConfiguredFeatures.JUNGLE_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, UNDERGROUND_JUNGLE_GRASS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_GRASS), CountPlacement.of(125), inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1, biome);
@@ -1105,19 +1109,17 @@ public class ModDataProvider {
             register(context, NO_TRAPS_SCULK_SENSOR_WITH_TNT, configured.getOrThrow(ConfiguredFeatures.SCULK_SENSOR_WITH_TNT), noTraps, RarityFilter.onAverageOnceEvery(127), inSquare, throughSurface, biome);
             register(context, DART_TRAP, configured.getOrThrow(ConfiguredFeatures.DART_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, BOULDER_TRAP, configured.getOrThrow(ConfiguredFeatures.BOULDER_TRAP), inSquare, bottomThroughUnderground, biome);
-            register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(20), inSquare, throughCave, biome);
-            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), count3, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
-            register(context, WATER_CHESTS, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
-                    RarityFilter.onAverageOnceEvery(8), inSquare, bottomThroughSurface,
-                    EnvironmentScanPlacement.scanningFor(
-                            Direction.DOWN,
-                            BlockPredicate.hasSturdyFace(new Vec3i(0, -1, 0), Direction.UP),
-                            BlockPredicate.matchesBlocks(Blocks.WATER),
-                            12
-                    ),
-                    SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -80, 320), biome
+            register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(25), inSquare, throughCave, biome);
+            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(13), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome);
+            register(context, WATER_CHESTS_ABOVE_30, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
+                    RarityFilter.onAverageOnceEvery(16), inSquare, oceanFloorWG, yRange(30, 320),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.WATER)), biome
             );
-            register(context, ROLLING_CACTUS, configured.getOrThrow(ConfiguredFeatures.ROLLING_CACTUS), CountPlacement.of(90), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR, -110, -30), biome);
+            register(context, WATER_CHESTS_BELOW_30, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
+                    RarityFilter.onAverageOnceEvery(8), CountOnEveryLayerPlacement.of(1), yRange(-64, 29),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.WATER)), biome
+            );
+            register(context, ROLLING_CACTUS, configured.getOrThrow(ConfiguredFeatures.ROLLING_CACTUS), CountPlacement.of(22), inSquare, oceanFloorBand(-110, -30), targetSturdyAllowedAir, biome);
             register(context, SILT_BLOCK, configured.getOrThrow(ConfiguredFeatures.SILT_BLOCK), count14, inSquare, bottomThroughTop, biome);
             register(context, SLUSH, configured.getOrThrow(ConfiguredFeatures.SLUSH), CountPlacement.of(10), inSquare, bottomThroughTop, biome);
             register(context, PALM_TREE, configured.getOrThrow(ModFeatures.Configured.PALM_TREE),
@@ -1150,14 +1152,14 @@ public class ModDataProvider {
             pot(context, UNDERGROUND_DESERT_POT, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_DESERT_POT));
             pot(context, TUNDRA_POT, configured.getOrThrow(ConfiguredFeatures.TUNDRA_POT));
 
-            chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count3, -110, -80);
-            chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count5, -80, -23);
-            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), count5, -80, -23);
-            chest(context, CAVE_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_SANDSTONE_CHESTS), count2, -110, -80);
-            chest(context, UNDERGROUND_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_SANDSTONE_CHESTS), count2, -80, -23);
-            chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), CountPlacement.of(27), -23, -2);
-            chest(context, CAVE_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_FROZEN_CHESTS), count2, -110, -80);
-            chest(context, UNDERGROUND_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_FROZEN_CHESTS), count2, -80, -23);
+            chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(3), -110, -80); // 1/8 × 3 = 0.375
+            chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), RarityFilter.onAverageOnceEvery(6), CountPlacement.of(8), -80, -23); // 1/6 × 8 ≈ 1.33
+            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(6), CountPlacement.of(8), -80, -23); // 1/6 × 8 ≈ 1.33
+            chest(context, CAVE_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_SANDSTONE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(2), -110, -80); // 1/8 × 2 = 0.25
+            chest(context, UNDERGROUND_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_SANDSTONE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(4), -80, -23); // 1/8 × 4 = 0.5
+            chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(20), -23, -2); // 1/11 × 20 ≈ 1.82
+            chest(context, CAVE_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_FROZEN_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(2), -110, -80); // 1/8 × 2 = 0.25
+            chest(context, UNDERGROUND_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_FROZEN_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(4), -80, -23); // 1/8 × 4 = 0.5
 
         }
 
@@ -1170,15 +1172,27 @@ public class ModDataProvider {
         }
 
         private static void evilAltar(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, boolean corruption, int count) {
-            register(context, key, feature, SecretFlagPlacement.of(corruption ? IWorldOptions.THE_CORRUPTION : IWorldOptions.THE_CRIMSON), biome, CountPlacement.of(count), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -20));
+            register(context, key, feature, SecretFlagPlacement.of(corruption ? IWorldOptions.THE_CORRUPTION : IWorldOptions.THE_CRIMSON), RarityFilter.onAverageOnceEvery(15), CountPlacement.of(count * 13), inSquare, surfaceBand(-110, -20), targetSturdyAllowedAir, biome);
         }
 
-        private static void chest(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, CountPlacement count, int minInclusive, int maxInclusive) {
-            register(context, key, feature, biome, count, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, minInclusive, maxInclusive));
+        private static void chest(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, RarityFilter rarity, CountPlacement count, int minInclusive, int maxInclusive) {
+            register(context, key, feature, rarity, count, inSquare, surfaceBand(minInclusive, maxInclusive), targetSturdyAllowedAir, biome);
         }
 
         private static void pot(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature) {
-            register(context, key, feature, biome, CountPlacement.of(26), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -2));
+            register(context, key, feature, CountPlacement.of(9), inSquare, surfaceBand(-110, -2), targetSturdyAllowedAir, biome);
+        }
+
+        private static PlacementModifier surfaceBand(int minInclusive, int maxInclusive) {
+            return DepthBandPlacement.of(Heightmap.Types.WORLD_SURFACE_WG, minInclusive, maxInclusive);
+        }
+
+        private static PlacementModifier yRange(int minInclusive, int maxInclusive) {
+            return YRangeFilter.of(minInclusive, maxInclusive);
+        }
+
+        private static PlacementModifier oceanFloorBand(int minInclusive, int maxInclusive) {
+            return DepthBandPlacement.of(Heightmap.Types.OCEAN_FLOOR_WG, minInclusive, maxInclusive);
         }
 
         private static PlacementModifier heightRangeTriangle(int min, int max) {
@@ -1331,7 +1345,7 @@ public class ModDataProvider {
                     PlacedFeatures.CRIMSON_ALTAR_WORLD, PlacedFeatures.DEMON_ALTAR_WORLD,
                     PlacedFeatures.NO_TRAPS_GRAVITATION_TRAP, PlacedFeatures.NO_TRAPS_PNEUMATIC_TRAP, PlacedFeatures.NO_TRAPS_SCULK_TRAP, PlacedFeatures.NO_TRAPS_SHIMMER_TRAP,
                     PlacedFeatures.DART_TRAP, PlacedFeatures.BOULDER_TRAP, PlacedFeatures.DEATH_CHEST_TRAP,
-                    PlacedFeatures.LIFE_CRYSTAL, PlacedFeatures.WATER_CHESTS, PlacedFeatures.PLATINUM_VEIN_WITH_DETONATOR, PlacedFeatures.GOLD_VEIN_WITH_DETONATOR
+                    PlacedFeatures.LIFE_CRYSTAL, PlacedFeatures.WATER_CHESTS_ABOVE_30, PlacedFeatures.WATER_CHESTS_BELOW_30, PlacedFeatures.PLATINUM_VEIN_WITH_DETONATOR, PlacedFeatures.GOLD_VEIN_WITH_DETONATOR
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "overworld_vd", overworld, HolderSet.direct(factory,
                     PlacedFeatures.LIFE_MUSHROOM

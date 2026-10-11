@@ -90,12 +90,12 @@ public class GuardianFlailEntity extends BaseFlailEntity {
             return;
         }
 
-        if (parameters() == null) {
+        var parameters = parameters();
+        if (parameters == null) {
             return;
         }
-        // 1.21 的守卫光束只取玩家攻击属性的六分之一；连枷组件基础伤害已经用于
-        // 链球本体，不能在光束上再次相乘，否则会把同一武器数值重复放大。
-        float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage()) / 6.0F;
+
+        float damage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()) / 2.0F);
         for (LivingEntity target : targets) {
             target.hurt(level().damageSources().mobAttack(player), damage);
             level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.GUARDIAN_ATTACK, SoundSource.HOSTILE, 1.0F, 1.0F);

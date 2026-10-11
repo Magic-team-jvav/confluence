@@ -22,7 +22,9 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.worldgen.DepthBandPlacement;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
+import org.confluence.mod.common.worldgen.YRangeFilter;
 import org.confluence.mod.common.worldgen.feature.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,6 +74,8 @@ public final class ModFeatures {
     public static final Supplier<RandomInverseTallPlantFeature> RANDOM_INVERSE_TALL_PLANT = FEATURES.register("random_inverse_tall_plant", () -> new RandomInverseTallPlantFeature(RandomInverseTallPlantFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
+    public static final Supplier<PlacementModifierType<DepthBandPlacement>> DEPTH_BAND_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("depth_band", () -> () -> DepthBandPlacement.CODEC);
+    public static final Supplier<PlacementModifierType<YRangeFilter>> Y_RANGE_FILTER_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("y_range", () -> () -> YRangeFilter.CODEC);
 
     public static Tuple<BlockPos, BlockState> getPressurePlate(WorldGenLevel level, BlockPos supportPos) {
         boolean isDeepslate = level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE));

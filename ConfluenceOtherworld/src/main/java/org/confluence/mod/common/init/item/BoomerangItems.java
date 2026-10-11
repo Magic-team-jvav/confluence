@@ -18,7 +18,7 @@ public class BoomerangItems {
     public static final DeferredItem<BoomerangItem> COMBAT_WRENCH = register("combat_wrench", 9.0F, 3.0F, 1.85F, 10, 10, 1, 1, false, 1500);
     public static final DeferredItem<BoomerangItem> WOOD_BOOMERANG = register("wood_boomerang", 3.8F, 1.52F, 1.52F, 15, 10, 1, 1, false, 100);
 
-    public static final DeferredItem<BoomerangItem> BEIDOU_BOOMERANG = register("beidou_boomerang", 5.0F, 3.0F, 3.0F, 40, 5, 4, 7, false, 0);
+    public static final DeferredItem<BoomerangItem> BEIDOU_BOOMERANG = register("bei_dou_boomerang", 95.0F, 3.0F, 3.0F, 40, 5, 4, 7, false, 0);
     public static final DeferredItem<BoomerangItem> DEVELOPER_BOOMERANG = register("developer_boomerang", 9999.0F, 2.0F, 2.0F, 50, 0, 10, 8, false, 0);
 
     private static DeferredItem<BoomerangItem> register(String id, float damage, float flySpeed, float backSpeed, int forwardTicks, int cooldown, int maxCount, int penetration, boolean fire, int durability) {

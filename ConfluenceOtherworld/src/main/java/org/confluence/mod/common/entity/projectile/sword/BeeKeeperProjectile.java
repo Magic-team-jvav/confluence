@@ -6,7 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -14,14 +14,18 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.mixed.Immunity;
-import net.minecraft.world.entity.*;
 
 /// 养蜂人剑与蜂巢球共用的本体蜜蜂；飞行、穿透和无敌帧不借用剑气或饰品弹幕。
 public class BeeKeeperProjectile extends Projectile implements Immunity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_ONLY);
+
     private static final EntityDataAccessor<Boolean> GIANT = SynchedEntityData.defineId(BeeKeeperProjectile.class, EntityDataSerializers.BOOLEAN);
     private float damage;
     private float criticalChance;
@@ -114,19 +118,12 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
     }
 
     private void trackTarget() {
-        Entity target = null;
-        double nearest = 50;
-        /// 二维曼哈顿距离按三维移植；持续重选最近敌人，而不是永久锁定第一个目标。
-        for (Entity candidate : level().getEntities(this, getBoundingBox().inflate(50), this::canHitEntity)) {
-            Entity logical = ProjectileHitRules.encounterOwner(candidate);
-            if (!(logical instanceof Enemy)) continue;
-            Vec3 offset = candidate.getBoundingBox().getCenter().subtract(position());
-            double distance = Math.abs(offset.x) + Math.abs(offset.y) + Math.abs(offset.z);
-            if (distance < nearest) {
-                nearest = distance;
-                target = candidate;
-            }
-        }
+        /// 保留三维曼哈顿距离、严格小于 50 的阈值和同分时的遍历顺序。
+        Entity target = LibEntityUtils.nearest(
+                level().getEntities(this, getBoundingBox().inflate(50), this::canHitEntity),
+                candidate -> TARGETING.canAcquire(getOwner(), candidate)
+                        && LibEntityUtils.manhattanDistance(position(), candidate) < 50,
+                java.util.Comparator.comparingDouble(candidate -> LibEntityUtils.manhattanDistance(position(), candidate)));
         if (target == null) return;
         double speed = (isGiant() ? 25.5 : 22.5) / 20;
         double acceleration = (isGiant() ? 31.5 : 22.5) / 400;

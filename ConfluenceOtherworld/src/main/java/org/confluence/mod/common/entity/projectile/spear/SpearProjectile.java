@@ -16,10 +16,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.ITrackType;
-import org.confluence.lib.common.LibDamageTypes;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -37,6 +39,12 @@ import java.util.function.Predicate;
  * 可选覆写 {@link #getTrailParticle()} 提供拖尾粒子效果。
  */
 public abstract class SpearProjectile extends AbstractHurtingProjectile {
+    public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
+    protected WeaponTargeting targeting() {
+        return TARGETING;
+    }
+
     public int lifetime;
     public int pierceRemaining;
     protected float attackDamageFactor = 1.0F;
@@ -192,7 +200,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
             setDeltaMovement(velocity);
 
             Optional<ITrackType> track = getTrackType();
-            if (track.isPresent() && target != null && target.isAlive()) {
+            if (track.isPresent() && targeting().canKeep(getOwner(), target)) {
                 Vec3 dir = target.position()
                         .add(0, target.getBoundingBox().getYsize() * 0.5, 0)
                         .subtract(position())
@@ -396,16 +404,10 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
                 this.knockBack += (float) instance.getValue();
             }
 
-            var entities = level().getEntities(this,
-                    getBoundingBox().inflate(50),
-                    e -> e instanceof LivingEntity living && living.isAlive() && e != owner1);
-            entities.sort(Comparator.comparingDouble(a -> a.distanceToSqr(this)));
-            for (Entity entity : entities) {
-                if (entity instanceof LivingEntity living) {
-                    target = living;
-                    break;
-                }
-            }
+            target = LibEntityUtils.nearest(
+                    level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(50)),
+                    living -> targeting().canAcquire(owner1, living),
+                    Comparator.comparingDouble(living -> living.distanceToSqr(this)));
         }
     }
 

@@ -72,7 +72,7 @@ public class ForbiddenOrb extends Projectile implements IEntityCollision<Forbidd
     private void explode(Vec3 hitPoint) {
         if (!exploded) {
             exploded = true;
-            List<LivingEntity> entities = getTargetCache().getEntitiesInRadius(hitPoint, 3.5, target -> getTargetCache().isTarget(target));
+            List<LivingEntity> entities = getTargetCache().getEntitiesInRadius(hitPoint, 3.5, target -> getTargetCache().canKeep(target));
             for (LivingEntity entity : entities) {
                 attack(entity, getDamage(), 0);
             }

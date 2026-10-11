@@ -5,11 +5,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
@@ -18,6 +20,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.UnaryOperator;
 
 public class HurtnadoProjectile extends AbstractManaProjectile implements Immunity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_ONLY);
+
     private Entity target;
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
@@ -50,7 +54,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
         if (target == null || target.isRemoved()) {
             this.target = getNearestEnemy();
         }
-        if (target != null) {
+        if (TARGETING.canKeep(getOwner(), target)) {
             setDeltaMovement(getDeltaMovement().scale(0.96).add(LibMathUtils.getVectorA2B(this, target).scale(0.05)));
         }
     }
@@ -73,18 +77,9 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
     }
 
     private @Nullable Entity getNearestEnemy() {
-        double d0 = -1.0;
-        Entity enemy = null;
-        for (Entity entity : level().getEntities(this, new AABB(blockPosition()).inflate(15.5))) {
-            if (entity instanceof Enemy) {
-                double d1 = entity.distanceToSqr(getX(), getY(), getZ());
-                if (d0 == -1.0 || d1 < d0) {
-                    d0 = d1;
-                    enemy = entity;
-                }
-            }
-        }
-        return enemy;
+        return LibEntityUtils.nearest(level().getEntities(this, new AABB(blockPosition()).inflate(15.5)),
+                candidate -> TARGETING.canAcquire(getOwner(), candidate),
+                java.util.Comparator.comparingDouble(candidate -> candidate.distanceToSqr(getX(), getY(), getZ())));
     }
 
     @Override

@@ -211,9 +211,9 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> implem
         }
     }
 
-    /// 渲染一段 X 形交叉平面链条。
+    /// 渲染一段 X 形交叉平面链条；正反面通过背面剔除保证每侧只绘制一次。
     private static void renderChainSegment(PoseStack poseStack, MultiBufferSource buffer, ResourceLocation texture, int packedLight) {
-        VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutoutNoCull(texture));
+        VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutout(texture));
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
 
@@ -225,18 +225,18 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> implem
             float angle = (float) (Math.PI / 4.0 + plane * Math.PI / 2.0);
             float x = (float) Math.cos(angle) * halfWidth;
             float z = (float) Math.sin(angle) * halfWidth;
-            float normalX = (float) Math.cos(angle);
-            float normalZ = (float) Math.sin(angle);
+            float normalX = -(float) Math.sin(angle);
+            float normalZ = (float) Math.cos(angle);
 
             vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u0, 0, normalX, normalZ);
             vertex(consumer, matrix, pose, packedLight, x, 0, z, u1, 0, normalX, normalZ);
             vertex(consumer, matrix, pose, packedLight, x, 1, z, u1, 1, normalX, normalZ);
             vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u0, 1, normalX, normalZ);
 
-            vertex(consumer, matrix, pose, packedLight, x, 0, z, u0, 0, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u1, 0, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u1, 1, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, x, 1, z, u0, 1, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, x, 0, z, u1, 0, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u0, 0, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u0, 1, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, x, 1, z, u1, 1, -normalX, -normalZ);
         }
     }
 

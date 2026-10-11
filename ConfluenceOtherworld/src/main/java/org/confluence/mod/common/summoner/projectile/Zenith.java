@@ -10,10 +10,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith> {
+    public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
 
     public Vec3 offest;
     public LivingEntity target;
@@ -113,7 +115,8 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
 
     public Ellipse getRenderEllipse(float partialTick) {
         Vec3 currentPos = owner.getPosition(partialTick).add(0, owner.getBbHeight() / 2, 0);
-        Vec3 pointA = target != null ? target.getPosition(partialTick).add(0, target.getBbHeight() / 2, 0) : currentPos.add(offest);
+        Vec3 pointA = TARGETING.canKeep(owner, target)
+                ? target.getPosition(partialTick).add(0, target.getBbHeight() / 2, 0) : currentPos.add(offest);
         Vec3 pointB = currentPos.add(currentPos.subtract(pointA).normalize().scale(4));
         if (pointA.distanceTo(pointB) < 8) {
             pointA = pointB.add(pointA.subtract(pointB).normalize().scale(8));
@@ -157,7 +160,7 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
 
     @Override
     public boolean isValidCollisionTarget(Zenith zenith, LivingEntity target) {
-        return owner != target && !(target instanceof Player player && (player.isSpectator() || player.isCreative()));
+        return TARGETING.canAcquire(owner, target);
     }
 
     @Override

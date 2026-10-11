@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.projectile;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -11,13 +9,19 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /// NPC 虚拟弹药的命中策略注册表；弹体只持有策略 ID，不依赖具体效果实现。
 public final class NPCProjectileEffects {
+    private static final WeaponTargeting ATTACK_TARGETING = new WeaponTargeting(TargetPolicy.ATTACKABLE);
     private static final Map<ResourceLocation, ImpactEffect> EFFECTS = new HashMap<>();
 
     /// 普通单体伤害，不附加额外状态。
@@ -35,6 +39,17 @@ public final class NPCProjectileEffects {
     public static final ResourceLocation EXPLOSIVE = register("explosive", (context, target) -> context.areaDamage(2.5));
     /// 只命中受伤城镇 NPC 的固定 20 点治疗策略。
     public static final ResourceLocation HEAL = register("heal", new ImpactEffect() {
+        // 治疗追踪友方，不使用攻击弹的敌我过滤。
+        @Override
+        public boolean canAcquireTarget(Context context, LivingEntity target) {
+            return canHit(context, target);
+        }
+
+        @Override
+        public boolean canKeepTarget(Context context, LivingEntity target) {
+            return target.isAlive();
+        }
+
         /// 为命中的受伤城镇 NPC 恢复固定 20 点生命。
         @Override
         public void apply(Context context, @Nullable Entity target) {
@@ -69,6 +84,14 @@ public final class NPCProjectileEffects {
     public interface ImpactEffect {
         /// 处理一次实体或方块命中；方块命中时 target 为 null。
         void apply(Context context, @Nullable Entity target);
+
+        default boolean canAcquireTarget(Context context, LivingEntity target) {
+            return ATTACK_TARGETING.canAcquire(context.owner(), target) && canHit(context, target);
+        }
+
+        default boolean canKeepTarget(Context context, LivingEntity target) {
+            return ATTACK_TARGETING.canKeep(context.owner(), target) && canHit(context, target);
+        }
 
         /// 判断该策略是否允许弹体命中指定实体；默认沿用 NPC 友军过滤。
         default boolean canHit(Context context, Entity target) {

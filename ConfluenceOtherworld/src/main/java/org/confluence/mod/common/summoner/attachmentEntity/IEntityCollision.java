@@ -47,7 +47,7 @@ public interface IEntityCollision<T extends AttachmentEntity> {
      * 判断目标是否为有效的碰撞对象
      */
     default boolean isValidCollisionTarget(T entity, LivingEntity target) {
-        return entity.getTargetCache().isTarget(target);
+        return entity.getTargetCache().canKeep(target);
     }
 
     /**

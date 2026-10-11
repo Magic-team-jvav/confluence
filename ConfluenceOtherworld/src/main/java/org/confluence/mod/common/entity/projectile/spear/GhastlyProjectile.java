@@ -59,7 +59,7 @@ public class GhastlyProjectile extends SpearProjectile {
 
     @Override
     protected void updateMotion() {
-        if (!hasPassedTarget && target != null && target.isAlive()) {
+        if (!hasPassedTarget && targeting().canKeep(getOwner(), target)) {
             Vec3 toTarget = target.position().subtract(position());
             double horizontalDistSqr = toTarget.x * toTarget.x + toTarget.z * toTarget.z;
             if (horizontalDistSqr > 0.25) {

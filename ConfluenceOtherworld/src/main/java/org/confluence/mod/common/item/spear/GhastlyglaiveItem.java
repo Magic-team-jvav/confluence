@@ -51,7 +51,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
                 victimPos.add(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE));
 
         List<LivingEntity> enemies = level.getEntitiesOfClass(LivingEntity.class, searchBox,
-                e -> e.isAlive() && e != owner && LibEntityUtils.canHitEntity(e, owner));
+                e -> GhastlyProjectile.TARGETING.canAcquire(owner, e));
 
         if (enemies.isEmpty()) return;
 

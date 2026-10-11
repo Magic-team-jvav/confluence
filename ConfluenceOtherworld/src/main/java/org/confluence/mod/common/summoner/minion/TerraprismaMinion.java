@@ -65,7 +65,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
     public LivingEntity searchTarget() {
         int distance = getSearchDistance();
         TargetCache targetCache = getTargetCache();
-        List<LivingEntity> targets = targetCache.getEntitiesInRadius(getOwner().getBoundingBox().getCenter(), distance, living -> (attacking || targetCache.isVisibility(getOwner(), living)) && targetCache.isTarget(living));
+        List<LivingEntity> targets = targetCache.getEntitiesInRadius(getOwner().getBoundingBox().getCenter(), distance, living -> (attacking || targetCache.isVisibility(getOwner(), living)) && targetCache.canAcquire(living));
         return targets.isEmpty() ? null : targetCache.getNewTarget(this, targets, 8, false);
     }
 

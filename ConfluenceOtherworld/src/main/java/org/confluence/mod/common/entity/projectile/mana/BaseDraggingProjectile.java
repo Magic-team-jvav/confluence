@@ -10,13 +10,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.util.track.variant.BasisTrack;
 
 public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
+    protected static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
+    protected WeaponTargeting targeting() {
+        return TARGETING;
+    }
+
     protected boolean shot;
     protected ITrackType trackType = new BasisTrack(90, 0.4F);
 
@@ -46,7 +53,7 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
     protected abstract ResourceLocation getParticleId();
 
     protected void doTracking() {
-        LivingEntity target = LibEntityUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getTrackingRange(), 30, this::canHitEntity);
+        LivingEntity target = targeting().angleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getOwner(), getTrackingRange(), 30, this::canHitEntity);
         if (target != null) {
             Vec3 motion = getDeltaMovement();
             Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());

@@ -69,6 +69,7 @@ import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
+import org.confluence.mod.common.entity.TargetingIntegration;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
@@ -101,6 +102,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            TargetingIntegration.init();
             ModGunProperties.init();
             GunSounds.init();
             GunTrailColors.init();

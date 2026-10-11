@@ -4,10 +4,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,33 +15,12 @@ public final class ProjectileHitRules {
 
     /// 校验原始碰撞部位及其遭遇主体。可攻击性、同载具、队伍友伤和服务器 PvP 均在此处处理。
     public static boolean canHit(@Nullable Entity owner, Entity rawTarget) {
-        if (!acceptsDirectHit(rawTarget)) {
-            return false;
-        }
-        Entity target = encounterOwner(rawTarget);
-        if (rawTarget instanceof PartHitTarget) {
-            if (target.isRemoved() || !target.isAttackable() || owner != null && owner.isPassengerOfSameVehicle(target)) {
-                return false;
-            }
-        } else if (!LibEntityUtils.canHitEntity(rawTarget, owner)) {
-            return false;
-        }
-        if (target == owner || owner != null && owner.isAlliedTo(target)) {
-            return false;
-        }
-        if (owner instanceof Player attackingPlayer && target instanceof Player targetPlayer) {
-            return attackingPlayer.canHarmPlayer(targetPlayer)
-                    && PlayerSpecialData.of(attackingPlayer).isPvP()
-                    && PlayerSpecialData.of(targetPlayer).isPvP();
-        }
-        return true;
+        return LibEntityUtils.canHit(owner, rawTarget);
     }
 
     /// 返回原始实体是否允许成为直接命中部位。
     public static boolean acceptsDirectHit(Entity rawTarget) {
-        if (rawTarget.isRemoved()) return false;
-        if (rawTarget instanceof PartHitTarget part) return part.acceptsDirectHit();
-        return LibEntityUtils.canHitEntity(rawTarget, null);
+        return LibEntityUtils.acceptsDirectHit(rawTarget);
     }
 
     /// 返回必须实际执行 {@link Entity#hurt} 的实体。
@@ -54,11 +31,7 @@ public final class ProjectileHitRules {
 
     /// 返回部位所属的遭遇主体，用于阵营、索敌、命中特效和奖励归属。
     public static Entity encounterOwner(Entity rawTarget) {
-        if (rawTarget instanceof PartHitTarget part) {
-            return part.encounterOwner();
-        }
-        Entity impacted = LibEntityUtils.tryFindBeImpacted(rawTarget);
-        return impacted == null ? rawTarget : impacted;
+        return LibEntityUtils.encounterOwner(rawTarget);
     }
 
     /// 返回一次穿透或连续碰撞中的去重身份。

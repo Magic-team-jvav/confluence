@@ -11,7 +11,8 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.AimUtils;
-import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.common.init.ModGenerationProviderTypes;
 import org.confluence.mod.util.generation.GenerationProvider;
@@ -35,6 +36,8 @@ public record AboveFallenGeneration(
         float offsetV,
         float offsetH
 ) implements IGeneration {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
     public static final MapCodec<AboveFallenGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             Codec.FLOAT.fieldOf("max_angle").forGetter(AboveFallenGeneration::maxAngle),
             Codec.FLOAT.fieldOf("range").forGetter(AboveFallenGeneration::range),
@@ -49,7 +52,7 @@ public record AboveFallenGeneration(
         var projectile = proj.get();
         if (projectile == null) return 0;
         Vec3 eye = owner.getEyePosition();
-        LivingEntity target = LibEntityUtils.getAABBAngleTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, range, maxAngle, e -> LibEntityUtils.canHitEntity(e, projectile.getOwner()));
+        LivingEntity target = TARGETING.angleTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, owner, range, maxAngle, e -> true);
         float actualInaccuracy;
         Vec3 firePos, projVel;
         Vec3 fireLocOffset = new Vec3(

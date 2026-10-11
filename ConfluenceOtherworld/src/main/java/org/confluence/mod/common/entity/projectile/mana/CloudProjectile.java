@@ -14,6 +14,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -24,6 +26,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.UUID;
 
 public class CloudProjectile extends AbstractManaProjectile implements GeoEntity {
+    public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
     protected static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(CloudProjectile.class, EntityDataSerializers.INT);
     private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
     protected UUID targetUUID;
@@ -102,6 +106,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
                 }
             }
         } else if (getTarget() != null && !target.isRemoved()) {
+            if (!TARGETING.canKeep(getOwner(), target)) return;
             if (Mth.square(getX() - target.getX()) + Mth.square(getZ() - target.getZ()) < 4) {
                 setPos(target.position().add(0, target.getBbHeight() + 2, 0));
                 setDeltaMovement(Vec3.ZERO);

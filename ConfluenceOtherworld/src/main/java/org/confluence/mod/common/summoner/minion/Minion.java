@@ -1,7 +1,5 @@
 package org.confluence.mod.common.summoner.minion;
 
-import java.util.List;
-import java.util.Objects;
 import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,8 +7,11 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
-import org.jetbrains.annotations.NotNull;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Objects;
 
 
 public abstract class Minion extends AttachmentEntity {
@@ -99,7 +100,7 @@ public abstract class Minion extends AttachmentEntity {
         int distance = this.getSearchDistance();
         if (distance > 0 && owner != null) {
             TargetCache targetCache = getTargetCache();
-            List<LivingEntity> targets = targetCache.getEntitiesInRadius(owner.getBoundingBox().getCenter(), distance, living -> targetCache.isVisibility(owner, living) && targetCache.isTarget(living));
+            List<LivingEntity> targets = targetCache.getEntitiesInRadius(owner.getBoundingBox().getCenter(), distance, living -> targetCache.isVisibility(owner, living) && targetCache.canAcquire(living));
             if (!targets.isEmpty()) {
                 return targetCache.getNewTarget(this, targets, 0, true);
             }

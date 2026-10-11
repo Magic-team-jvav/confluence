@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.yoyo;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,19 +8,30 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 
 /// 悠悠球的短寿命衍生攻击，保留发射伤害，不读取玩家后来切换的武器。
 public abstract class BaseYoyoProjectile extends Projectile implements Immunity {
+    protected static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
+    protected WeaponTargeting targeting() {
+        return TARGETING;
+    }
+
     private final Set<UUID> hitTargets = new HashSet<>();
     private float damage;
     private float criticalChance;
@@ -53,24 +61,18 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
     public void shootAtNearest(YoyoEntity source, @Nullable LivingEntity excluded, float damageMultiplier, double speed, double targetRange) {
         Entity owner = source.getOwner();
         if (owner == null) return;
-        double range = targetRange;
-        double distance = range * range;
-        LivingEntity nearest = null;
-        for (LivingEntity candidate : source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(range))) {
-            if (candidate == excluded || !EnemyDamageRules.isEnemy(candidate) || !ProjectileHitRules.canHit(owner, candidate))
-                continue;
-            if (requiresLineOfSight() && !candidate.noPhysics && source.level().clip(new ClipContext(source.position(), candidate.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, source)).getType() != HitResult.Type.MISS)
-                continue;
-            double next = source.distanceToSqr(candidate);
-            if (next < distance) {
-                nearest = candidate;
-                distance = next;
-            }
-        }
+        LivingEntity nearest = LibEntityUtils.nearest(
+                source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(targetRange)),
+                candidate -> candidate != excluded
+                        && targeting().canAcquire(owner, candidate)
+                        && (!requiresLineOfSight() || LibEntityUtils.hasProjectileLineOfSight(source, candidate))
+                        && source.distanceToSqr(candidate) < targetRange * targetRange,
+                Comparator.comparingDouble(source::distanceToSqr));
         Vec3 direction;
         if (nearest != null)
             direction = nearest.getBoundingBox().getCenter().subtract(source.position());
-        else if (fallsBackToExcludedTarget() && excluded != null)
+        else if (fallsBackToExcludedTarget()
+                && targeting().canKeep(owner, excluded))
             direction = excluded.getBoundingBox().getCenter().subtract(source.position());
         else
             direction = new Vec3(source.getRandom().nextGaussian(), source.getRandom().nextGaussian(), source.getRandom().nextGaussian());
@@ -94,7 +96,7 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
             if (!spent) {
                 for (Entity candidate : level().getEntities(this, getBoundingBox().expandTowards(motion).inflate(0.3))) {
                     /// 自动衍生弹幕的命中与索敌采用同一敌怪规则，不误伤沿途城镇 NPC。
-                    if (!EnemyDamageRules.isEnemy(candidate) || !ProjectileHitRules.canHit(owner, candidate))
+                    if (!targeting().canAcquire(owner, candidate) || !ProjectileHitRules.canHit(owner, candidate))
                         continue;
                     Entity identity = ProjectileHitRules.dedupeIdentity(candidate);
                     UUID id = identity.getUUID();

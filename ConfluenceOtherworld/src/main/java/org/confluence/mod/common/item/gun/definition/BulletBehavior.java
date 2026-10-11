@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.gun.definition;
 
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.item.gun.definition.behavior.*;
 
@@ -19,6 +20,10 @@ public interface BulletBehavior {
     BulletBehavior CURSED_DEBUFF = CursedDebuffBehavior.INSTANCE;
     BulletBehavior VENOM_DEBUFF = VenomDebuffBehavior.INSTANCE;
     BulletBehavior LUMINITE_DAMAGE_DECAY = LuminiteDamageDecayBehavior.INSTANCE;
+
+    default WeaponTargeting targeting() {
+        return WeaponTargeting.DISABLED;
+    }
 
     default void tick(BaseBulletEntity entity) {}
 

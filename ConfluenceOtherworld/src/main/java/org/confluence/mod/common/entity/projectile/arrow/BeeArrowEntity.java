@@ -7,13 +7,16 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.util.track.variant.BasisTrack;
 import org.jetbrains.annotations.Nullable;
 
 public class BeeArrowEntity extends BaseArrowEntity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
     ITrackType trackType;
 
     public BeeArrowEntity(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
@@ -40,7 +43,7 @@ public class BeeArrowEntity extends BaseArrowEntity {
         super.tick();
 
         if (!this.inGround && getOwner() != null) {
-            LivingEntity target = LibEntityUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, 20, 30, this::canHitEntity);
+            LivingEntity target = TARGETING.angleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getOwner(), 20, 30, this::canHitEntity);
             if (target != null) {
                 Vec3 motion = getDeltaMovement();
                 Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());

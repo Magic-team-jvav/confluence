@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.flail;
 
-import java.util.Comparator;
 import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -11,12 +10,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibEntityUtils;
+
+import java.util.Comparator;
 
 
 /// 猪鲨链球发射的可追踪气泡。
 public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
     private static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(FlaironBubbleProjectile.class, EntityDataSerializers.FLOAT);
     private static final double TARGET_RANGE = 12.0;
     private static final double ACCELERATION = 0.05;
@@ -49,10 +54,11 @@ public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
         if (level().isClientSide()) {
             return;
         }
-        LivingEntity target = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(TARGET_RANGE), candidate -> LibEntityUtils.canHitEntity(candidate, getOwner()))
-                .stream()
-                .min(Comparator.comparingDouble(this::distanceToSqr))
-                .orElse(null);
+        LivingEntity target = LibEntityUtils.nearest(
+                level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(TARGET_RANGE)),
+                // 气泡只主动锁定敌怪阵营；可被攻击的城镇 NPC 和和平生物不是索敌对象。
+                candidate -> TARGETING.canAcquire(getOwner(), candidate),
+                Comparator.comparingDouble(this::distanceToSqr));
 
         Vec3 velocity = getDeltaMovement();
         if (target != null) {

@@ -4,6 +4,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 
 import java.util.Comparator;
@@ -19,7 +22,7 @@ public final class ChlorophyteHomingBehavior extends AbstractBulletBehavior {
     private static final double TURN_RATE = Math.toRadians(14.0D);
 
     private ChlorophyteHomingBehavior() {
-        super("tooltip.confluence.ability.chlorophyte_homing");
+        super("tooltip.confluence.ability.chlorophyte_homing", new WeaponTargeting(TargetPolicy.ENEMY_ONLY));
     }
 
     @Override
@@ -33,7 +36,7 @@ public final class ChlorophyteHomingBehavior extends AbstractBulletBehavior {
             target = findTarget(entity);
             entity.setHomingTarget(target);
         }
-        if (!BulletBehaviorSupport.isValidTarget(entity, target) || !isInsideRectangle(entity, target, velocity.normalize()))
+        if (!BulletBehaviorSupport.canKeepTarget(entity, target) || !isInsideRectangle(entity, target, velocity.normalize()))
             return;
         Vec3 toTarget = target.getBoundingBox().getCenter().subtract(entity.position());
         entity.setDeltaMovement(rotateVelocityToward(velocity, toTarget, TURN_RATE));
@@ -44,25 +47,15 @@ public final class ChlorophyteHomingBehavior extends AbstractBulletBehavior {
         if (velocity.lengthSqr() < 1.0E-10D) return null;
         Vec3 direction = velocity.normalize();
         AABB searchBox = entity.getBoundingBox().expandTowards(direction.scale(FORWARD_RANGE)).inflate(HALF_WIDTH + HALF_HEIGHT + 1.0D);
-        return entity.level().getEntitiesOfClass(LivingEntity.class, searchBox,
-                        candidate -> BulletBehaviorSupport.isValidTarget(entity, candidate) && isInsideRectangle(entity, candidate, direction))
-                .stream().min(Comparator.comparingDouble((LivingEntity candidate) -> entity.position()
-                                .distanceToSqr(candidate.getBoundingBox().getCenter()))
-                        .thenComparingInt(Entity::getId)).orElse(null);
+        return LibEntityUtils.nearest(entity.level().getEntitiesOfClass(LivingEntity.class, searchBox),
+                candidate -> BulletBehaviorSupport.canAcquireTarget(entity, candidate) && isInsideRectangle(entity, candidate, direction),
+                Comparator.comparingDouble((LivingEntity candidate) -> entity.position()
+                        .distanceToSqr(candidate.getBoundingBox().getCenter())).thenComparingInt(Entity::getId));
     }
 
     private static boolean isInsideRectangle(BaseBulletEntity entity, LivingEntity target, Vec3 direction) {
-        Vec3 offset = target.getBoundingBox().getCenter().subtract(entity.position());
-        double forward = offset.dot(direction);
-        double targetWidth = target.getBbWidth() * 0.5D;
-        double targetHeight = target.getBbHeight() * 0.5D;
-        if (forward < -targetWidth || forward > FORWARD_RANGE + targetWidth) return false;
-        Vec3 side = direction.cross(new Vec3(0.0D, 1.0D, 0.0D));
-        if (side.lengthSqr() <= 1.0E-10D) side = direction.cross(new Vec3(1.0D, 0.0D, 0.0D));
-        side = side.normalize();
-        Vec3 vertical = side.cross(direction).normalize();
-        return Math.abs(offset.dot(side)) <= HALF_WIDTH + targetWidth
-                && Math.abs(offset.dot(vertical)) <= HALF_HEIGHT + targetHeight;
+        return LibEntityUtils.insideForwardRectangle(entity.position(), direction, target,
+                FORWARD_RANGE, HALF_WIDTH, HALF_HEIGHT);
     }
 
     /// 限制每次转向的角度，同时保持射弹速度不变。

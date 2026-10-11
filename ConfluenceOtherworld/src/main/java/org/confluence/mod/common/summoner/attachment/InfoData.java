@@ -8,8 +8,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.summoner.info.NumberInfo;
-import org.confluence.mod.client.summoner.info.TextInfo;
+import org.confluence.mod.client.info.NumberInfo;
+import org.confluence.mod.client.info.TextInfo;
 import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 

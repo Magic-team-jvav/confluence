@@ -63,7 +63,7 @@ public final class SummonerEvents {
             LivingEntity target = event.getEntity();
             DamageSource source = event.getSource();
             Level level = target.level();
-            if (!level.isClientSide()) {
+            if (!level.isClientSide() && event.getNewDamage() >= 0.01) {
                 if (source.getEntity() instanceof LivingEntity attacker && target != attacker) {
                     if (target instanceof Player player) {
                         player.getData(SummonerAttachmentTypes.TARGET_CACHE).record(attacker, 200);
@@ -91,7 +91,7 @@ public final class SummonerEvents {
             LivingEntity living = event.getEntity();
             float amount = DamageIndicatorOptions.effectiveHealAmount(event.getAmount(), living);
             Level level = living.level();
-            if (!level.isClientSide() && amount > 0) {
+            if (!level.isClientSide() && amount >= 0.01) {
                 Vec3 pos = living.getBoundingBox().getCenter();
                 Vec3 velocity = new Vec3(0, 2, 0).offsetRandom(level.getRandom(), 0.5F).subtract(Vec3.ZERO).scale(0.4);
                 InfoData.record(level, amount, pos, velocity, InfoData.Type.HEAL);

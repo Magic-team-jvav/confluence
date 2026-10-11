@@ -1,11 +1,9 @@
-package org.confluence.mod.client.summoner.particle;
+package org.confluence.mod.client.particle;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.particle.TextureSheetParticle;
+import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -177,5 +175,20 @@ public class ZenithParticle extends TextureSheetParticle {
     @Override
     public int getLightColor(float partialTick) {
         return LightTexture.FULL_BRIGHT;
+    }
+
+    /// 根据天顶剑粒子参数创建客户端粒子。
+    public static class ZenithParticleProvider implements ParticleProvider<ZenithParticleOptions> {
+
+        private final SpriteSet spriteSet;
+
+        public ZenithParticleProvider(SpriteSet spriteSet) {
+            this.spriteSet = spriteSet;
+        }
+
+        @Override
+        public Particle createParticle(@NotNull ZenithParticleOptions options, @NotNull ClientLevel level, double x, double y, double z, double vx, double vy, double vz) {
+            return new ZenithParticle(level, x, y, z, vx, vy, vz, this.spriteSet, options);
+        }
     }
 }

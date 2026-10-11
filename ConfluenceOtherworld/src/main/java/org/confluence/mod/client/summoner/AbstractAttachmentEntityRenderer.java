@@ -24,7 +24,7 @@ public abstract class AbstractAttachmentEntityRenderer<T extends AttachmentEntit
     public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, int packedLight, PathNode visualNode) {
         context = createContext(entity, visualNode, partialTick, packedLight);
         if (context != null) {
-            float alpha = getAlpha();
+            float alpha = getAlphaModify();
             Color color = context.color;
             context.color(Color.ofRGBA(color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat(), alpha));
             poseStack.pushPose();
@@ -59,10 +59,6 @@ public abstract class AbstractAttachmentEntityRenderer<T extends AttachmentEntit
     }
 
     protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
-    }
-
-    protected float getAlpha() {
-        return SummonerRenderConfig.AlphaModify ? getAlphaModify() : 1.0F;
     }
 
     protected float getAlphaModify() {

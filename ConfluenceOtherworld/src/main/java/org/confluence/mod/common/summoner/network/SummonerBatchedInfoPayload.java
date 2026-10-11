@@ -11,11 +11,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.summoner.info.NumberInfo;
-import org.confluence.mod.client.summoner.info.TextInfo;
 import org.confluence.mod.common.summoner.attachment.InfoData;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 
 
 public record SummonerBatchedInfoPayload(List<Number> numbers, List<Text> texts) implements IPacketS2C {

@@ -20,9 +20,9 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
-import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
-import org.confluence.mod.client.summoner.particle.ZenithParticleProvider;
+import org.confluence.mod.client.info.InfoRenderDispatcher;
+import org.confluence.mod.client.particle.GenericParticle;
+import org.confluence.mod.client.particle.ZenithParticle;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
 import org.confluence.mod.client.summoner.renderer.minion.*;
 import org.confluence.mod.client.summoner.renderer.projectile.EyeFireballRenderer;
@@ -42,8 +42,8 @@ public final class SummonerClientEvents {
     /// （`NeoForge.EVENT_BUS`）。写错能编译但静默不触发。
     public static void init(IEventBus modBus) {
         modBus.addListener((RegisterParticleProvidersEvent event) -> {
-            event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new);
-            event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticleProvider::new);
+            event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticle.GenericParticleProvider::new);
+            event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticle.ZenithParticleProvider::new);
         });
         NeoForge.EVENT_BUS.addListener(EventPriority.HIGH, (ItemTooltipEvent event) -> {
             Player player = event.getEntity();

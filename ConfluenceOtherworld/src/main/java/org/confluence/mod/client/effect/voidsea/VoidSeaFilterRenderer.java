@@ -26,6 +26,8 @@ import org.confluence.mod.client.renderer.ModRenderer;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.mesdag.portlib.client.PortDeltaTicker;
 
+import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;
+
 public final class VoidSeaFilterRenderer {
     private static TextureTarget refractionSource;
     private static float filterFade;

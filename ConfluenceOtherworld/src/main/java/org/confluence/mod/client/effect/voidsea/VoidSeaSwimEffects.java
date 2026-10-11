@@ -7,6 +7,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.util.VoidSeaHelper;
 
+import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;
+
 public final class VoidSeaSwimEffects {
     /// 状态
     /// 玩家上一刻是否位于虚空海内。

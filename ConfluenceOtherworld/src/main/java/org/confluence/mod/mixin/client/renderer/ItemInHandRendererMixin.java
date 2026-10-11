@@ -31,7 +31,7 @@ public abstract class ItemInHandRendererMixin {
     @Shadow
     protected abstract void renderPlayerArm(PoseStack poseStack, MultiBufferSource buffer, int packedLight, float equippedProgress, float swingProgress, HumanoidArm side);
 
-    @Inject(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", ordinal = 0))
+    @Inject(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z", ordinal = 0), cancellable = true)
     private void check(
             CallbackInfo ci,
             @Local(argsOnly = true) AbstractClientPlayer player,
@@ -47,6 +47,8 @@ public abstract class ItemInHandRendererMixin {
             if (!player.isInvisible()) {
                 renderPlayerArm(poseStack, buffer, combinedLight, equippedProgress, 0.0F, humanoidarm);
             }
+            poseStack.popPose();
+            ci.cancel();
         } else if (stack.is(SwordItems.ZOMBIE_ARM)) {
             if (!player.isInvisible()) {
                 renderPlayerArm(poseStack, buffer, combinedLight, equippedProgress, swingProgress, humanoidarm);

@@ -8,11 +8,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -26,11 +22,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -44,11 +36,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -62,11 +50,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -80,11 +64,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -98,11 +78,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -116,11 +92,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -134,11 +106,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -152,11 +120,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -170,11 +134,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -188,11 +148,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -206,11 +162,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -224,11 +176,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -242,11 +190,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -260,11 +204,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }
@@ -278,11 +218,7 @@
             ],
             "light_level": 12,
             "item_state": {
-                "component_fields": {
-                    "confluence_magic_lib:nbt": {
-                        "isTurnOn": 1
-                    }
-                },
+                "nbt": "{\"portlib:data_components\":{\"confluence_magic_lib:nbt\":{isTurnOn:1b}}}",
                 "conditions": {
                     "confluence:phaseblade_available": true
                 }

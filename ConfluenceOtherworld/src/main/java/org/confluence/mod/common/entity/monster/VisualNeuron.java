@@ -75,6 +75,11 @@ public class VisualNeuron extends BaseFlyingMonster implements BossOwnedEntity {
     }
 
     @Override
+    protected boolean usesSharedTargeting() {
+        return false;
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(OWNER_UUID, Optional.empty());

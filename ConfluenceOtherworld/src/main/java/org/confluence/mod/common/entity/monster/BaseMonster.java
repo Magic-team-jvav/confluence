@@ -258,11 +258,15 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     /// 在自己的实体基类仲裁目标，不修改原版 Mob；Boss 保留专用遭遇规则。
     @Override
     public void setTarget(LivingEntity target) {
-        super.setTarget(EnemyTargeting.applies(this) ? EnemyTargeting.select(this, target) : target);
+        super.setTarget(usesSharedTargeting() && EnemyTargeting.applies(this) ? EnemyTargeting.select(this, target) : target);
     }
 
     protected boolean mustSeePlayerTarget() {
         return false;
+    }
+
+    protected boolean usesSharedTargeting() {
+        return true;
     }
 
     @Override
@@ -332,7 +336,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             }
         }
         if (!level().isClientSide) clearInvalidCombatTarget();
-        if (getTarget() != null && EnemyTargeting.applies(this)) {
+        if (getTarget() != null && usesSharedTargeting() && EnemyTargeting.applies(this)) {
             LivingEntity selected = EnemyTargeting.select(this, getTarget());
             if (selected != getTarget()) setTarget(selected);
         }

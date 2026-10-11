@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +46,8 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
 
     /// 设置服务端追踪目标；不设置时保持普通抛射运动。
     public void setHomingTarget(@Nullable LivingEntity target) {
-        homingTargetId = target == null ? null : target.getUUID();
+        homingTargetId = target != null && NPCProjectileEffects.get(effect).canAcquireTarget(createContext(), target)
+                ? target.getUUID() : null;
     }
 
     /// 缺少同步物品时使用原版箭矢作为安全回退外观。
@@ -127,6 +129,7 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
             homingTargetId = null;
             return;
         }
+        if (!NPCProjectileEffects.get(effect).canKeepTarget(createContext(), target)) return;
         Vec3 offset = target.getEyePosition().subtract(position());
         if (offset.lengthSqr() < 0.0001) return;
         double speed = Math.max(0.5, getDeltaMovement().length());

@@ -1,5 +1,8 @@
 package org.confluence.mod.common.summoner.attachment;
 
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -10,10 +13,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.NeutralMob;
-import net.minecraft.world.entity.Targeting;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +22,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -31,12 +31,13 @@ import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import java.util.function.IntToDoubleFunction;
 import java.util.function.Predicate;
 
 public class TargetCache {
+    // 召唤物沿用接触攻击的目标资格，不额外要求目标可被射弹命中。
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ATTACKABLE, false);
+
     private final Int2BooleanOpenHashMap visibilityCache = new Int2BooleanOpenHashMap();
     private final Int2IntOpenHashMap hurterHistory = new Int2IntOpenHashMap();
     private final Int2BooleanOpenHashMap targetCache = new Int2BooleanOpenHashMap();
@@ -70,39 +71,15 @@ public class TargetCache {
         hurterHistory.put(target.getUUID().hashCode(), time);
     }
 
-    public boolean isTarget(@Nullable LivingEntity target) {
-        if (target != null && owner != target && target.isAlive()) {
-            return targetCache.computeIfAbsent(target.getUUID().hashCode(), key -> {
-                if (target instanceof Enemy) enemy:{
-                    if (target instanceof NeutralMob neutralMob) {
-                        if (neutralMob.isAngryAt(owner)) {
-                            return true;
-                        }
-                        break enemy; // 防止攻击僵尸猪灵之类的怪物
-                    }
-                    @Nullable Optional<UUID> uuid = target.getBrain().getMemoryInternal(MemoryModuleType.ANGRY_AT);
-                    if (uuid != null) {
-                        if (uuid.isPresent() && uuid.get().equals(owner.getUUID())) {
-                            return true;
-                        }
-                        break enemy; // 防止攻击猪灵之类的怪物
-                    }
-                    return true;
-                }
-                if (target instanceof Targeting targeting && targeting.getTarget() == owner) {
-                    return true;
-                }
-                if (target instanceof NeutralMob neutralMob && neutralMob.isAngryAt(owner)) {
-                    return true;
-                }
-                Optional<UUID> uuid = target.getBrain().getMemoryInternal(MemoryModuleType.ANGRY_AT);
-                if (uuid != null && uuid.isPresent() && uuid.get().equals(owner.getUUID())) {
-                    return true;
-                }
-                return hurterHistory.containsKey(target.getUUID().hashCode());
-            });
-        }
-        return false;
+    public boolean canAcquire(@Nullable LivingEntity target) {
+        return TARGETING.canAcquire(owner, target) && canKeep(target);
+    }
+
+    public boolean canKeep(@Nullable LivingEntity target) {
+        if (!TARGETING.canKeep(owner, target)) return false;
+        return targetCache.computeIfAbsent(target.getUUID().hashCode(), key ->
+                LibEntityUtils.isSummonThreat(owner, target,
+                        living -> hurterHistory.containsKey(living.getUUID().hashCode())));
     }
 
     private static long cellKey(int x, int y, int z) {

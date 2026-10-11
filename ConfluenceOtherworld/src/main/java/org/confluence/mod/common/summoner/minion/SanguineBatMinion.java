@@ -56,7 +56,7 @@ public class SanguineBatMinion extends Minion implements IEntityCollision<Sangui
         if (!prep) {
             return null;
         }
-        return getTarget() != null ? getTarget() : super.searchTarget();
+        return getTargetCache().canKeep(getTarget()) ? getTarget() : super.searchTarget();
     }
 
     @Override

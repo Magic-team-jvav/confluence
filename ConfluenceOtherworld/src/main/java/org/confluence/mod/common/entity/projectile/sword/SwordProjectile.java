@@ -26,8 +26,11 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
+import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
@@ -39,6 +42,12 @@ import java.util.Comparator;
 
 /// 剑气实体的服务端运行时，负责运动、追踪、碰撞、伤害与快照同步。
 public abstract class SwordProjectile extends AbstractHurtingProjectile implements IEntityAdditionalSpawnData, Immunity {
+    protected static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
+    protected WeaponTargeting targeting() {
+        return TARGETING;
+    }
+
     private static final EntityDataAccessor<Vector3f> DATA_INITIAL_VELOCITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     private static final EntityDataAccessor<Float> DATA_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
@@ -146,10 +155,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     private void acquireTrackingTarget() {
         if (!(getOwner() instanceof LivingEntity owner)) return;
-        trackingTarget = level().getEntities(this, getBoundingBox().inflate(50.0), entity -> entity instanceof LivingEntity living && living.isAlive() && ProjectileHitRules.canHit(owner, living)).stream()
-                .map(LivingEntity.class::cast)
-                .min(Comparator.comparingDouble(this::distanceToSqr))
-                .orElse(null);
+        trackingTarget = LibEntityUtils.nearest(
+                level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(50.0)),
+                living -> targeting().canAcquire(owner, living),
+                Comparator.comparingDouble(this::distanceToSqr));
     }
 
     @Override
@@ -187,7 +196,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     }
 
     private void updateTracking(Projectile projectileDefinition) {
-        if (trackingTarget == null || !trackingTarget.isAlive() || projectileDefinition.trackType().isEmpty())
+        if (!targeting().canKeep(getOwner(), trackingTarget) || projectileDefinition.trackType().isEmpty())
             return;
         Vec3 motion = getDeltaMovement();
         Vec3 targetDirection = trackingTarget.getBoundingBox().getCenter().subtract(position()).normalize().scale(motion.length());

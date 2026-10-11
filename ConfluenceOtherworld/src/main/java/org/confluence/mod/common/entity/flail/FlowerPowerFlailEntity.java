@@ -1,12 +1,15 @@
 package org.confluence.mod.common.entity.flail;
 
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.flail.FlowerPowerPetalProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
@@ -15,6 +18,8 @@ import java.util.Comparator;
 
 /// 花之力链锤实体，定期向最近的有效目标发射花瓣。
 public final class FlowerPowerFlailEntity extends BaseFlailEntity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
     private int shootTimer;
 
     public FlowerPowerFlailEntity(EntityType<? extends FlowerPowerFlailEntity> type, Level level) {
@@ -37,10 +42,10 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
         }
         shootTimer = interval;
 
-        LivingEntity target = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(parameters.maxDistance()), candidate -> LibEntityUtils.canHitEntity(candidate, this))
-                .stream()
-                .min(Comparator.comparingDouble(this::distanceToSqr))
-                .orElse(null);
+        LivingEntity target = LibEntityUtils.nearest(
+                level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(parameters.maxDistance())),
+                candidate -> TARGETING.canAcquire(player, candidate),
+                Comparator.comparingDouble(this::distanceToSqr));
         if (target == null) {
             return;
         }

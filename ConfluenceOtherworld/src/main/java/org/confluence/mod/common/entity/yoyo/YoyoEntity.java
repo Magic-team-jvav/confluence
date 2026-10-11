@@ -31,7 +31,8 @@ import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.attachment.YoyoSession;
-import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.yoyo.YoyoEquipment;
@@ -54,6 +55,7 @@ import java.util.UUID;
 ///
 /// 负责生命周期、准星方向运动、方块反弹、接触伤害与收回；具体命中特效回调给 {@link YoyoItem}。
 public final class YoyoEntity extends Projectile implements GeoEntity, Immunity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
     private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> WEAPON = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Boolean> RETURNING = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.BOOLEAN);
@@ -254,9 +256,9 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
         Vec3 to = blockHit.getType() == HitResult.Type.MISS ? limit : blockHit.getLocation();
         AABB search = owner.getBoundingBox().inflate(range);
         EntityHitResult hit = ProjectileUtil.getEntityHitResult(level(), owner, from, to, search,
-                entity -> EnemyDamageRules.isEnemy(entity) && ProjectileHitRules.canHit(owner, entity), 0.1F);
+                entity -> TARGETING.canAcquire(owner, entity) && ProjectileHitRules.canHit(owner, entity), 0.1F);
         noPhysics = false;
-        if (hit == null || !ProjectileHitRules.canHit(owner, hit.getEntity())) {
+        if (hit == null || !TARGETING.canKeep(owner, hit.getEntity()) || !ProjectileHitRules.canHit(owner, hit.getEntity())) {
             trackingTarget = false;
             return to;
         }

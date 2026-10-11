@@ -1,5 +1,8 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -8,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -16,6 +18,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,6 +26,8 @@ import java.util.Comparator;
 import java.util.UUID;
 
 public class SkullProjectile extends AbstractManaProjectile {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_ONLY);
+
     private static final int NO_TARGET_ID = -114514;
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(SkullProjectile.class, EntityDataSerializers.INT);
     private UUID targetUUID;
@@ -59,13 +64,18 @@ public class SkullProjectile extends AbstractManaProjectile {
 
         if (getTarget() == null) {
             if (!level().isClientSide) {
-                level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(12.5), living -> living instanceof Enemy).stream()
-                        .min(Comparator.comparingDouble(living -> living.distanceToSqr(this))).ifPresent(this::setTarget);
+                LivingEntity nearest = LibEntityUtils.nearest(
+                        level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(12.5)),
+                        living -> TARGETING.canAcquire(getOwner(), living),
+                        Comparator.comparingDouble(living -> living.distanceToSqr(this)));
+                if (nearest != null) setTarget(nearest);
             }
         } else if (!target.isRemoved()) {
-            Vec3 vec3 = getDeltaMovement().add(LibMathUtils.getVectorA2B(this, target).scale(0.4375));
-            if (vec3.lengthSqr() > 0.4375 * 0.4375) {
-                setDeltaMovement(vec3.normalize().scale(0.4375));
+            if (TARGETING.canKeep(getOwner(), target)) {
+                Vec3 vec3 = getDeltaMovement().add(LibMathUtils.getVectorA2B(this, target).scale(0.4375));
+                if (vec3.lengthSqr() > 0.4375 * 0.4375) {
+                    setDeltaMovement(vec3.normalize().scale(0.4375));
+                }
             }
         } else {
             setTarget(null);

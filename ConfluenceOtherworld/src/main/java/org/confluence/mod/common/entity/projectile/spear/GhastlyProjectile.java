@@ -41,7 +41,7 @@ public class GhastlyProjectile extends SpearProjectile {
     /// 穿过目标不再折返，继续沿原方向飞行。
     @Override
     protected void updateMotion() {
-        if (!hasPassedTarget && target != null && target.isAlive()) {
+        if (!hasPassedTarget && targeting().canKeep(getOwner(), target)) {
             Vec3 toTarget = target.position().subtract(position());
             double horizontalDistSqr = toTarget.x * toTarget.x + toTarget.z * toTarget.z;
             if (horizontalDistSqr > 0.25) {

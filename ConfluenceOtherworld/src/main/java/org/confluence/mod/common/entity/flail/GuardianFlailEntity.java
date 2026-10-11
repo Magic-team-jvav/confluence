@@ -15,7 +15,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.mod.common.entity.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,6 +28,8 @@ import java.util.List;
 /// 锁定目标、攻击周期和普通/远古变体都属于当前实体，物品只负责通过组件选择实体类型。
 /// 目标实体 ID 使用原版同步数据传给客户端，因此不需要额外网络包或全局缓存。
 public class GuardianFlailEntity extends BaseFlailEntity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
     private static final int ATTACK_INTERVAL = 40;
     private static final EntityDataAccessor<Integer> TARGET_ONE = SynchedEntityData.defineId(GuardianFlailEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TARGET_TWO = SynchedEntityData.defineId(GuardianFlailEntity.class, EntityDataSerializers.INT);
@@ -101,7 +105,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
     private List<LivingEntity> findTargets(Player player) {
         double range = elder ? 20.0 : 15.0;
         AABB searchBox = getBoundingBox().inflate(range);
-        List<LivingEntity> candidates = level().getEntitiesOfClass(LivingEntity.class, searchBox, target -> target != player && target.isAlive() && LibEntityUtils.canHitEntity(target, this) && canSee(target));
+        List<LivingEntity> candidates = level().getEntitiesOfClass(LivingEntity.class, searchBox, target -> TARGETING.canAcquire(player, target) && canSee(target));
         candidates.sort(Comparator.comparingDouble(this::distanceToSqr));
         int count = Math.min(elder ? 3 : 1, candidates.size());
         return new ArrayList<>(candidates.subList(0, count));
@@ -109,7 +113,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
 
     private boolean canContinueTargeting(LivingEntity target) {
         double range = elder ? 20.0 : 15.0;
-        return target.isAlive()
+        return TARGETING.canKeep(getOwner(), target)
                 && distanceToSqr(target) <= range * range
                 && canSee(target);
     }

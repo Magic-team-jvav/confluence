@@ -1,11 +1,11 @@
 package org.confluence.mod.common.item.gun.definition.behavior;
 
+import org.confluence.lib.util.LibEntityUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -16,22 +16,26 @@ import java.util.Comparator;
 final class BulletBehaviorSupport {
     private static final double RICOCHET_POSITION_EPSILON = 0.02D;
 
-    static boolean isValidTarget(BaseBulletEntity entity, LivingEntity target) {
-        Entity owner = entity.getOwner();
-        return target != null && target instanceof Enemy && target.isAlive() && entity.canHitTarget(target)
-                && (owner == null || !owner.isAlliedTo(target));
+    static boolean canAcquireTarget(BaseBulletEntity entity, LivingEntity target) {
+        return entity.targeting().canAcquire(entity.getOwner(), target)
+                && entity.canHitTarget(target);
+    }
+
+    static boolean canKeepTarget(BaseBulletEntity entity, LivingEntity target) {
+        return entity.targeting().canKeep(entity.getOwner(), target)
+                && LibEntityUtils.canHit(entity.getOwner(), target)
+                && entity.canHitTarget(target);
     }
 
     static LivingEntity findNearestTargetInRange(BaseBulletEntity entity, double range) {
-        return entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(range),
-                        candidate -> isValidTarget(entity, candidate) && homingDistance(entity, candidate) <= range)
-                .stream().min(Comparator.comparingDouble((LivingEntity candidate) -> homingDistance(entity, candidate))
-                        .thenComparingInt(Entity::getId)).orElse(null);
+        return LibEntityUtils.nearest(
+                entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(range)),
+                candidate -> canAcquireTarget(entity, candidate) && homingDistance(entity, candidate) <= range,
+                Comparator.comparingDouble((LivingEntity candidate) -> homingDistance(entity, candidate)).thenComparingInt(Entity::getId));
     }
 
     static double homingDistance(BaseBulletEntity entity, LivingEntity target) {
-        Vec3 offset = target.getBoundingBox().getCenter().subtract(entity.position());
-        return Math.sqrt(offset.x * offset.x + offset.z * offset.z) + Math.abs(offset.y);
+        return LibEntityUtils.horizontalVerticalDistance(entity.position(), target);
     }
 
     static void moveOutsideBlock(BaseBulletEntity entity, BlockHitResult result) {

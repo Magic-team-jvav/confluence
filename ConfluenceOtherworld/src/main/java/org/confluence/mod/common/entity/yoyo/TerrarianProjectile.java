@@ -1,5 +1,8 @@
 package org.confluence.mod.common.entity.yoyo;
 
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -14,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.attachment.YoyoSession;
-import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
@@ -26,6 +29,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 泰拉悠悠球的独立射弹：发射时选敌，直线飞行，前十 tick 可命中一次，随后减速消失。
 public final class TerrarianProjectile extends Projectile implements Immunity, GeoEntity {
+    private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private float damage;
     private float criticalChance;
@@ -42,17 +47,11 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
     public static void shootAtNearest(YoyoEntity source, float damageMultiplier, double speed, double targetRange) {
         Entity owner = source.getOwner();
         if (owner == null || source.level().isClientSide) return;
-        double distance = targetRange * targetRange;
-        LivingEntity nearest = null;
-        for (LivingEntity candidate : source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(targetRange))) {
-            if (!EnemyDamageRules.isEnemy(candidate) || !ProjectileHitRules.canHit(owner, candidate))
-                continue;
-            double next = source.distanceToSqr(candidate);
-            if (next < distance) {
-                nearest = candidate;
-                distance = next;
-            }
-        }
+        LivingEntity nearest = LibEntityUtils.nearest(
+                source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(targetRange)),
+                candidate -> TARGETING.canAcquire(owner, candidate)
+                        && source.distanceToSqr(candidate) < targetRange * targetRange,
+                java.util.Comparator.comparingDouble(source::distanceToSqr));
         Vec3 direction = nearest != null ? nearest.getBoundingBox().getCenter().subtract(source.position())
                 : new Vec3(source.getRandom1211().nextGaussian(), source.getRandom1211().nextGaussian(), source.getRandom1211().nextGaussian());
         TerrarianProjectile shot = new TerrarianProjectile(ModEntities.TERRARIAN_PROJECTILE.get(), source.level());
@@ -80,7 +79,7 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
             if (tickCount > 10) spent = true;
             if (!spent) {
                 for (Entity candidate : level().getEntities(this, getBoundingBox().expandTowards(motion).inflate(0.3))) {
-                    if (!EnemyDamageRules.isEnemy(candidate) || !ProjectileHitRules.canHit(owner, candidate))
+                    if (!TARGETING.canAcquire(owner, candidate) || !ProjectileHitRules.canHit(owner, candidate))
                         continue;
                     LivingEntity logical = ProjectileHitRules.logicalLivingTarget(candidate);
                     if (logical == null) continue;

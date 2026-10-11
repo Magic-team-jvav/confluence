@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -147,6 +148,10 @@ public class BaseBulletEntity extends Projectile {
 
     public void clearHomingTarget() {
         entityData.set(HOMING_TARGET_ID, -1);
+    }
+
+    public WeaponTargeting targeting() {
+        return getBullet().getBehavior().targeting();
     }
 
     public boolean canHitTarget(Entity target) {

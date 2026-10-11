@@ -34,7 +34,7 @@ public class DesertTigerAttackGoal extends AttachmentEntityGoal<DesertTigerMinio
         }
         if (pounceTarget != null) {
             Vec3 offset = pounceTarget.position().subtract(minion.getOwner().position());
-            if (--pounceTicks <= 0 || Math.abs(offset.x) > 50.0 || Math.abs(offset.y) > 25.0 || Math.abs(offset.z) > 50.0 || !pounceTarget.isAlive() || !minion.getTargetCache().isTarget(pounceTarget)) {
+            if (--pounceTicks <= 0 || Math.abs(offset.x) > 50.0 || Math.abs(offset.y) > 25.0 || Math.abs(offset.z) > 50.0 || !pounceTarget.isAlive() || !minion.getTargetCache().canKeep(pounceTarget)) {
                 pounceTarget = null;
                 minion.pouncing = false;
                 minion.pounced.clear();
@@ -51,7 +51,7 @@ public class DesertTigerAttackGoal extends AttachmentEntityGoal<DesertTigerMinio
             if (firstTarget == null) {
                 firstTarget = minion.getOwner().level().getEntitiesOfClass(LivingEntity.class, minion.getOwner().getBoundingBox().inflate(50.0, 25.0, 50.0), candidate -> {
                     Vec3 offset = candidate.position().subtract(minion.getOwner().position());
-                    return candidate != minion.getOwner() && candidate.isAlive() && minion.getTargetCache().isTarget(candidate)
+                    return candidate != minion.getOwner() && candidate.isAlive() && minion.getTargetCache().canAcquire(candidate)
                             && Math.abs(offset.x) <= 50.0 && Math.abs(offset.y) <= 25.0 && Math.abs(offset.z) <= 50.0;
                 }).stream().min((first, second) -> Double.compare(first.distanceToSqr(minion.getPos()), second.distanceToSqr(minion.getPos()))).orElse(null);
             }

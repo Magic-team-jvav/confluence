@@ -6,15 +6,10 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.mana.CloudProjectile;
@@ -58,22 +53,8 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
             }
         }
 
-        double reach = 64;
-        double squared = Mth.square(reach);
-        Vec3 from = player.getEyePosition(1.0F);
-        HitResult hitResult = player.pick(reach, 1.0F, false);
-        double sqr = hitResult.getLocation().distanceToSqr(from);
-        if (hitResult.getType() != HitResult.Type.MISS) {
-            squared = sqr;
-            reach = Math.sqrt(sqr);
-        }
-        Vec3 viewVector = player.getViewVector(1.0F);
-        Vec3 to = from.add(viewVector.x * reach, viewVector.y * reach, viewVector.z * reach);
-        AABB aabb = player.getBoundingBox().expandTowards(viewVector.scale(reach)).inflate(1.0, 1.0, 1.0);
-        EntityHitResult entityHitResult = ProjectileUtil.getEntityHitResult(
-                player, from, to, aabb, entity -> !entity.isSpectator() && entity.isPickable(), squared
-        );
-        if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr) {
+        EntityHitResult entityHitResult = CloudProjectile.TARGETING.viewTarget(player, 64);
+        if (entityHitResult != null) {
             if (entityHitResult.getEntity() instanceof LivingEntity living) {
                 projectile.setTarget(living);
             }

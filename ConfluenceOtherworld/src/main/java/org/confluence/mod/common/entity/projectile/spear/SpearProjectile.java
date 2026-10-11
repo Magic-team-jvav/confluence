@@ -24,8 +24,11 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
+import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.item.spear.AbstractSpearItem.Parameters;
@@ -40,6 +43,12 @@ import java.util.Comparator;
 /// 子类应覆写[#updateMotion()] 方法实现自定义运动曲线，
 /// 可选覆写[#getTrailParticle()] 提供拖尾粒子效果。
 public abstract class SpearProjectile extends AbstractHurtingProjectile implements Immunity {
+    public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+
+    protected WeaponTargeting targeting() {
+        return TARGETING;
+    }
+
     // 可调参数
     public int lifetime = 40;
     public int pierceRemaining = 1;
@@ -183,7 +192,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     }
 
     private void updateTracking() {
-        if (projComponent == null || projComponent.trackType().isEmpty() || target == null || !target.isAlive()
+        if (projComponent == null || projComponent.trackType().isEmpty() || !targeting().canKeep(getOwner(), target)
                 || velocity.lengthSqr() < 1.0E-10) return;
         Vec3 targetDirection = target.getBoundingBox().getCenter().subtract(position()).normalize().scale(velocity.length());
         double angle = LibMathUtils.angleBetween(velocity, targetDirection);
@@ -306,15 +315,10 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
                 this.knockBack += (float) instance.getValue();
             }
 
-            var entities = level().getEntities(this, getBoundingBox().inflate(50),
-                    entity -> entity instanceof LivingEntity living && living.isAlive() && ProjectileHitRules.canHit(owner1, living));
-            entities.sort(Comparator.comparingDouble(a -> a.distanceToSqr(this)));
-            for (Entity entity : entities) {
-                if (entity instanceof LivingEntity living) {
-                    target = living;
-                    break;
-                }
-            }
+            target = LibEntityUtils.nearest(
+                    level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(50)),
+                    living -> targeting().canAcquire(owner1, living),
+                    Comparator.comparingDouble(living -> living.distanceToSqr(this)));
         }
     }
 

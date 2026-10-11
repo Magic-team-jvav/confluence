@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ZenithData {
-
     private final Player owner;
     private ZenithItem zenithItem = null;
     private float power = 0;
@@ -47,12 +46,12 @@ public class ZenithData {
             Vec3 eyePos = owner.getEyePosition();
             int reach = 32;
             Vec3 endEndPos = eyePos.add(lookAngle.scale(reach));
-            EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(owner, eyePos, endEndPos, owner.getBoundingBox().inflate(reach), entity -> entity instanceof LivingEntity living && living.isAlive() && living != owner, reach * reach);
+            EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(owner, eyePos, endEndPos, owner.getBoundingBox().inflate(reach), entity -> entity instanceof LivingEntity && Zenith.TARGETING.canAcquire(owner, entity), reach * reach);
             if (entityHit != null && entityHit.getEntity() instanceof LivingEntity) {
                 endEndPos = entityHit.getLocation();
             }
             TargetCache targetCache = owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
-            Predicate<LivingEntity> predicate = target -> owner != target && !(target instanceof Player player && (player.isSpectator() || player.isCreative()));
+            Predicate<LivingEntity> predicate = target -> Zenith.TARGETING.canAcquire(owner, target);
             List<LivingEntity> targetList = targetCache.getEntitiesInRadius(endEndPos, 32, predicate);
             LivingEntity best = null;
             if (!targetList.isEmpty()) {

@@ -98,7 +98,7 @@ public abstract class Minion extends AttachmentEntity {
         int distance = this.getSearchDistance();
         if (distance > 0 && owner != null) {
             TargetCache targetCache = getTargetCache();
-            List<LivingEntity> targets = targetCache.getEntitiesInRadius(owner.getBoundingBox().getCenter(), distance, living -> targetCache.isVisibility(owner, living) && targetCache.isTarget(living));
+            List<LivingEntity> targets = targetCache.getEntitiesInRadius(owner.getBoundingBox().getCenter(), distance, living -> targetCache.isVisibility(owner, living) && targetCache.canAcquire(living));
             if (!targets.isEmpty()) {
                 return targetCache.getNewTarget(this, targets, 0, true);
             }

@@ -135,6 +135,7 @@ public class AccessoryItems {
 
 
     public static final PortDeferredItem<BaseCurioItem> CLOTHIER_VOODOO_DOLL = registerCurio("clothier_voodoo_doll", builder -> builder.noTooltip().rarity(BLUE));
+    public static final PortDeferredItem<BaseCurioItem> GUIDE_VOODOO_DOLL = registerDirectly("guide_voodoo_doll", GuideVooDooDollItem::new);
     public static final PortDeferredItem<BaseCurioItem> WHITE_YOYO_STRING = registerCurio("white_string", builder -> builder.noTooltip().rarity(WHITE)),
             RED_YOYO_STRING = registerCurio("red_string", builder -> builder.noTooltip().rarity(WHITE)),
             ORANGE_YOYO_STRING = registerCurio("orange_string", builder -> builder.noTooltip().rarity(WHITE)),
@@ -162,7 +163,6 @@ public class AccessoryItems {
             YOYO_BAG = registerCurio("yoyo_bag", builder -> builder.noTooltip().rarity(LIGHT_RED)),
             MAGIC_STRING = registerCurio("magic_string", builder -> builder.rarity(PINK)),
             MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", builder -> builder.noTooltip().rarity(PINK));
-    public static final PortDeferredItem<BaseCurioItem> GUIDE_VOODOO_DOLL = registerDirectly("guide_voodoo_doll", GuideVooDooDollItem::new);
 
     public static final PortDeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", builder -> builder.noTooltip().rarity(LIME)),//经验吸管
             TINSEL = registerCurio("tinsel", builder -> builder.noTooltip().rarity(LIME)),//金箔

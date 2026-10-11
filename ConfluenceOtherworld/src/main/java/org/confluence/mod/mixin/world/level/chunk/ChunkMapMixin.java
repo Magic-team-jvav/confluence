@@ -35,7 +35,7 @@ public class ChunkMapMixin {
 
         /// 只调整肉墙的距离判定，配对、解除追踪和数据发送仍使用原版同一个追踪集合。
         @ModifyVariable(method = "updatePlayer", at = @At("STORE"))
-        private boolean confluence$wallTrackingRange(boolean flag, @Local(argsOnly = true) ServerPlayer player, @Local(ordinal = 0) double d0) {
+        private boolean confluence$wallTrackingRange(boolean flag, ServerPlayer player, @Local(ordinal = 0) double d0) {
             if (!(entity instanceof WallOfFlesh wall)) return flag;
             /// 保留原视距余量，沿墙面展开追踪范围；不把中心距离误当作离墙距离。
             return wall.isWithinTrackingRange(player, (int) d0) && wall.broadcastToPlayer(player);

@@ -3,8 +3,8 @@
         "confluence:falling_star": {
             "color": [
                 1.0,
-                0.94117647,
-                0.60392157
+                0.901961,
+                0.329412
             ],
             "light_level": 12
         },

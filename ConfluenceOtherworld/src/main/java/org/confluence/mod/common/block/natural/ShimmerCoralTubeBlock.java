@@ -22,7 +22,7 @@ public class ShimmerCoralTubeBlock extends PipeBlock implements SimpleShimmerImm
     public static final BooleanProperty SHIMMER_IMMERSED = StateProperties.SHIMMER_IMMERSED;
 
     public ShimmerCoralTubeBlock(Properties properties) {
-        super(0.1875F, properties.lightLevel(state -> state.getValue(SHIMMER_IMMERSED) ? 10 : 0));
+        super(0.1875F, properties.lightLevel(state -> state.getValue(SHIMMER_IMMERSED) ? 5 : 0));
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(NORTH, false)
                 .setValue(EAST, false)

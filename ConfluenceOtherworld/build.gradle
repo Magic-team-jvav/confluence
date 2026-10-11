@@ -243,6 +243,7 @@ dependencies {
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    modRuntimeOnly("maven.modrinth:spark:1.10.53-forge")
 
 //    implementation jarJar(files('libs/LanguageFixer.jar'))
 

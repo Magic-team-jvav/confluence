@@ -8,7 +8,6 @@ import org.confluence.lib.api.animation.first_person.CameraAnimation;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
-import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.network.c2s.InspectPacketC2S;
 import org.confluence.mod.network.c2s.ShootPacketC2S;
@@ -50,7 +49,6 @@ public final class GunHandler {
         PortEventHandler.postEvent(use);
         if (use.isCanceled()) return;
 
-        player.playSound(GunSounds.getSound(mainHandItem), 1f, 1f);
         ShootPacketC2S.sendToServer();
         cooldowns.addCooldown(baseGun, Math.max(0, use.getCooldowns()));
     }

@@ -122,7 +122,7 @@ public final class DeathAnimUtils {
         }
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"rawtypes"})
     public static void livingDeath(LivingEntity living) {
         if (!(living.level() instanceof ClientLevel level) || ClientConfigs.goreEffect.isInvalidFor(living, null)) {
             return;

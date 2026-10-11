@@ -18,6 +18,7 @@ import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.mesdag.opallight.light.render.ColoredLightBufferSource;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -51,6 +52,16 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         this.modelScale = modelScale;
         this.modelOffsetY = modelOffsetY;
         this.shadowRadius = 0.25F;
+    }
+
+    @Override
+    public void renderRecursively(PoseStack poseStack, T animatable, GeoBone bone, RenderType renderType,
+                                  MultiBufferSource source, VertexConsumer buffer, boolean isReRender, float partialTick,
+                                  int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        // 子骨骼的持物层可能切换共享缓冲区，在骨骼边界恢复模型渲染层。
+        if (!isReRender && source instanceof ColoredLightBufferSource)
+            buffer = source.getBuffer(renderType);
+        super.renderRecursively(poseStack, animatable, bone, renderType, source, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override

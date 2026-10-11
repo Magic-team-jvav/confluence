@@ -1,9 +1,11 @@
 package org.confluence.mod.common.item.gun;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.GunEvent;
+import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.network.s2c.GunMuzzleFlashPacketS2C;
 import org.confluence.mod.util.ModGunUtils;
 
@@ -27,6 +29,8 @@ public final class ShootingService {
 
         int projectileCount = GunFiringService.fire(player, gun, gunStack, selectedAmmo);
         if (projectileCount <= 0) return false;
+        player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
+                GunSounds.getSound(gunStack), SoundSource.PLAYERS, 1.0F, 1.0F);
         gun.fireAnimator(gunStack, player);
         GunMuzzleFlashPacketS2C.send(player);
         consumeAmmo(player, gun, gunStack, selectedAmmo);

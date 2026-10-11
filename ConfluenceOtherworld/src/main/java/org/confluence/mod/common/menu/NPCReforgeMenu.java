@@ -11,10 +11,12 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModMenuTypes;
+import org.confluence.mod.network.s2c.PiggyBankTotalMoneyPacket;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Nullable;
@@ -36,6 +38,9 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
         super(ModMenuTypes.REFORGE_MENU.get(), containerId);
         this.player = inventory.player;
         this.npc = npc;
+        if (player instanceof ServerPlayer serverPlayer) {
+            PiggyBankTotalMoneyPacket.sendToClient(serverPlayer, PlayerPiggyBankContainer.of(player), true);
+        }
         container.addListener(this::slotsChanged);
 
         addSlot(new Slot(container, 0, 39, 44) {

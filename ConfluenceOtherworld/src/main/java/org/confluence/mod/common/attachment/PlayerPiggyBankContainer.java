@@ -28,7 +28,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
     public PlayerPiggyBankContainer() {
         super(6);
         addListener(container -> {
-            if (owner == null || owner.isLocalPlayer()) return;
+            if (owner != null && owner.level().isClientSide) return;
             long res = 0;
             for (int i = 0; i < container.getContainerSize(); i++) {
                 ItemStack stack = container.getItem(i);

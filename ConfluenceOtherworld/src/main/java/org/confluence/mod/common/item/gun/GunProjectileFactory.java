@@ -24,8 +24,11 @@ public final class GunProjectileFactory {
         List<Projectile> projectiles = event.getProjectiles();
         projectiles.removeIf(Objects::isNull);
         projectiles.forEach(projectile -> configureProjectile(context, projectile));
-        projectiles.forEach(context.level()::addFreshEntity);
-        return projectiles.size();
+        int spawned = 0;
+        for (Projectile projectile : projectiles) {
+            if (context.level().addFreshEntity(projectile)) spawned++;
+        }
+        return spawned;
     }
 
     public static List<BaseBulletEntity> create(ShotContext context, GunProjectilePattern pattern) {

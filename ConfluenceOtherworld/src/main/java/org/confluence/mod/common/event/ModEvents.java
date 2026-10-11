@@ -70,7 +70,10 @@ import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.ModFluids;
+import org.confluence.mod.common.init.ModGunProperties;
+import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.CreatureSpawnPlacements;
@@ -80,12 +83,10 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 import org.confluence.mod.network.task.AchievementsTask;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
@@ -241,9 +242,6 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        CrossbowItems.ITEMS.getEntries().stream().map(DeferredHolder::get).filter(BaseTerraRepeaterItem.class::isInstance).map(BaseTerraRepeaterItem.class::cast).forEach(item -> event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) ->
-                new RepeaterContentsComponentHandler(stack, ModDataComponentTypes.REPEATER_CONTENTS.get(), item.getCapacity()), item
-        ));
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
             if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
                 return null;

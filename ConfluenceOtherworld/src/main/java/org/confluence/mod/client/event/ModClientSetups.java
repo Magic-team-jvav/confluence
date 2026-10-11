@@ -3,9 +3,7 @@ package org.confluence.mod.client.event;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -45,7 +43,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -57,8 +54,8 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.ColoredGlintContext;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
@@ -79,18 +76,14 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.mixed.IPlayer;
-import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.function.Supplier;
-
-import static net.minecraft.client.renderer.RenderStateShard.*;
 
 @SuppressWarnings("deprecation")
 public final class ModClientSetups {
@@ -223,20 +216,16 @@ public final class ModClientSetups {
         return false;
     };
     static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
-        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
-            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();
-            if (itemIterator.hasNext()) {
-                ItemStack stack = itemIterator.next();
-                if (!stack.isEmpty()) {
-                    PoseStack pose = guiGraphics.pose();
-                    pose.pushPose();
-                    pose.translate(x + 8, y + 8, 100);
-                    pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
-                    pose.translate(-7, -9, 0);
-                    guiGraphics.renderItem(stack, 0, 0);
-                    pose.popPose();
-                }
-            }
+        RepeaterContents contents = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        ItemStack stack = contents.nonEmptyStream().findFirst().orElse(ItemStack.EMPTY);
+        if (!stack.isEmpty()) {
+            PoseStack pose = guiGraphics.pose();
+            pose.pushPose();
+            pose.translate(x + 8, y + 8, 100);
+            pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
+            pose.translate(-7, -9, 0);
+            guiGraphics.renderItem(stack, 0, 0);
+            pose.popPose();
         }
         return false;
     };

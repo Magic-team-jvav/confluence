@@ -8,13 +8,14 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.util.Color;
 
-public final class TerrarianProjectileRenderer extends GeoEntityRenderer<TerrarianProjectile> {
+public final class TerrarianProjectileRenderer extends GeoEntityRenderer<TerrarianProjectile> implements ColoredGeoRenderer<TerrarianProjectile> {
     private static final ResourceLocation MODEL = Confluence.asResource("geo/entity/yoyos.geo.json");
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/yoyos/terrarian_projectile.png");
     private static final Color COLOR = Color.ofRGBA(255, 255, 255, 255);

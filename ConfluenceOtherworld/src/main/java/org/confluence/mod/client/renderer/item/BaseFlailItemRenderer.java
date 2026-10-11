@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +19,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> {
+public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> implements ColoredGeoRenderer<BaseFlailItem> {
     private static final ResourceLocation HANDLE_MODEL = Confluence.asResource("geo/item/flail/handle.geo.json");
     private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/flail.png");
 

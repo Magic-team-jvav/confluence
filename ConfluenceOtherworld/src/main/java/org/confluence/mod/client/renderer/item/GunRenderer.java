@@ -2,10 +2,6 @@ package org.confluence.mod.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -18,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
@@ -28,8 +25,13 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.RenderUtil;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer<T> {
+
+public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer<T> implements ColoredGeoRenderer<T> {
     private static final float FIRST_PERSON_X = 0.54F;
     private static final float FIRST_PERSON_Y = -0.10F;
     private static final float FIRST_PERSON_Z = -0.24F;

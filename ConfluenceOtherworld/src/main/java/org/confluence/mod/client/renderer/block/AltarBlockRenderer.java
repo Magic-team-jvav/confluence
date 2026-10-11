@@ -9,13 +9,14 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.client.model.block.AltarBlockModel;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AltarBlockRenderer extends GeoBlockRenderer<AltarBlock.BEntity> {
+public class AltarBlockRenderer extends GeoBlockRenderer<AltarBlock.BEntity> implements ColoredGeoRenderer<AltarBlock.BEntity> {
     public AltarBlockRenderer() {
         super(new AltarBlockModel());
     }

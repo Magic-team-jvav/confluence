@@ -6,13 +6,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.block.functional.crafting.LoomBlock;
 import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class LoomBlockRenderer extends GeoBlockRenderer<LoomBlock.BEntity> {
+public class LoomBlockRenderer extends GeoBlockRenderer<LoomBlock.BEntity> implements ColoredGeoRenderer<LoomBlock.BEntity> {
     public LoomBlockRenderer() {
         super(new DefaultedBlockGeoModel<>(Confluence.asResource("loom")));
     }

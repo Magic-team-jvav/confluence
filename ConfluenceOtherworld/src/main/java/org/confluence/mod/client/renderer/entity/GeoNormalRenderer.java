@@ -12,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.entity.GeoNormalModel;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseWormBoss;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
@@ -25,7 +26,7 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRenderer<T> {
+public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRenderer<T> implements ColoredGeoRenderer<T> {
     protected final boolean rotateAlongPitch;
     protected final float modelScale;
     protected final float modelOffsetY;

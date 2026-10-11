@@ -7,11 +7,12 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.entity.projectile.boulder.LifecrystalBoulderEntity;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class LifecrystalBoulderRenderer extends GeoEntityRenderer<LifecrystalBoulderEntity> {
+public class LifecrystalBoulderRenderer extends GeoEntityRenderer<LifecrystalBoulderEntity> implements ColoredGeoRenderer<LifecrystalBoulderEntity> {
     public LifecrystalBoulderRenderer(EntityRendererProvider.Context pContext) {
         super(pContext, new LifecrystalBoulderModel());
     }

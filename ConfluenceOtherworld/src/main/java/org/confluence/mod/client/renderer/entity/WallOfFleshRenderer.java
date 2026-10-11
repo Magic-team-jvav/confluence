@@ -21,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.GeoNormalModel;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.boss.WallOfFleshEye;
 import org.confluence.mod.common.entity.boss.WallOfFleshPart;
@@ -31,7 +32,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import java.io.IOException;
 
 /// 肉墙与眼嘴共享本体的插值变换；世界事件绘制绕过管理原点区段未编译的限制。
-public final class WallOfFleshRenderer extends GeoEntityRenderer<WallOfFlesh> {
+public final class WallOfFleshRenderer extends GeoEntityRenderer<WallOfFlesh> implements ColoredGeoRenderer<WallOfFlesh> {
     private static final int GRID_WIDTH = 40;
     private static final int GRID_HEIGHT = 30;
     private static final float GRID_SPACING = 15;

@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,7 @@ public class BirdNestLayer extends RenderLayer<AbstractClientPlayer, PlayerModel
         }
     }
 
-    private static final class NestRenderer extends GeoObjectRenderer<NestAnimatable> {
+    private static final class NestRenderer extends GeoObjectRenderer<NestAnimatable> implements ColoredGeoRenderer<NestAnimatable> {
         private final NestAnimatable nestAnimatable = new NestAnimatable();
 
         private NestRenderer() {

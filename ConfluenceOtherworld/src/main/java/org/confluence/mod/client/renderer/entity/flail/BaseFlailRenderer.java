@@ -17,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
@@ -27,7 +28,7 @@ import org.joml.Quaternionf;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
+public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> implements ColoredGeoRenderer<BaseFlailEntity> {
     private static final ResourceLocation DEFAULT_BALL_MODEL = Confluence.asResource("geo/entity/flail/flail.geo.json");
     private static final ResourceLocation DEFAULT_BALL_TEXTURE = Confluence.asResource("textures/entity/flail.png");
     private static final ResourceLocation DEFAULT_CHAIN_TEXTURE = Confluence.asResource("textures/entity/flail/flail_chain.png");

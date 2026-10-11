@@ -23,6 +23,7 @@ import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.entity.projectile.EnchantedSwordProjectileModel;
 import org.confluence.mod.client.model.entity.projectile.IceBladeSwordProjectileModel;
 import org.confluence.mod.client.model.entity.projectile.SwordProjectileGeoModel;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.entity.projectile.sword.GeoSwordProjectile;
 import org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
@@ -265,7 +266,7 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
         return TextureAtlas.LOCATION_BLOCKS;
     }
 
-    private static final class GeoRenderer extends GeoEntityRenderer<GeoSwordProjectile> {
+    private static final class GeoRenderer extends GeoEntityRenderer<GeoSwordProjectile> implements ColoredGeoRenderer<GeoSwordProjectile> {
         private GeoRenderer(EntityRendererProvider.Context context) {
             super(context, new SwordProjectileGeoModel());
             shadowRadius = 0.0F;

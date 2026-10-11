@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.item.PhasebladeModel;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.sword.Phasesaber;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +19,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
+public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> implements ColoredGeoRenderer<BasePhasebladeItem> {
     private static final ResourceLocation LIGHTNING = Confluence.asResource("textures/particle/phaseblade/phaseblade_lightling.png");
     private final boolean forceBladeOn;
     private boolean bladeOn;

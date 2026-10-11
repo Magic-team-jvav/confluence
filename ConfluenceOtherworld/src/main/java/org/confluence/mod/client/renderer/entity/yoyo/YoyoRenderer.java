@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.renderer.ColoredGeoRenderer;
 import org.confluence.mod.client.renderer.entity.TetherRenderHelper;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.item.yoyo.YoyoItem;
@@ -17,7 +18,7 @@ import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 /// 悠悠球模型与绳线渲染器。
-public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> {
+public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> implements ColoredGeoRenderer<YoyoEntity> {
     private static final ResourceLocation MODEL = Confluence.asResource("geo/entity/yoyos.geo.json");
     private static final ResourceLocation COUNTERWEIGHT_MODEL = Confluence.asResource("geo/entity/proj/counterweight.geo.json");
     private static final ResourceLocation[] COUNTERWEIGHT_TEXTURES = {

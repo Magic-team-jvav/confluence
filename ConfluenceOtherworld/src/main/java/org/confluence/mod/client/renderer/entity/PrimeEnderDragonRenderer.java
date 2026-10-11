@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.ExplicitGeoModel;
+import org.confluence.mod.client.model.entity.ExplicitGeoModel;
 import org.confluence.mod.common.entity.boss.PrimeEnderDragon;
 
 /// 本源末影龙专用渲染器。

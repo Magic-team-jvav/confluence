@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.client.entity.model.GeoNormalModel;
+import org.confluence.mod.client.model.entity.GeoNormalModel;
 import org.confluence.mod.common.entity.monster.Demon;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.cache.object.BakedGeoModel;

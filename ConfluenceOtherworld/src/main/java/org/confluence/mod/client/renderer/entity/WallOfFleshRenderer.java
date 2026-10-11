@@ -20,7 +20,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.GeoNormalModel;
+import org.confluence.mod.client.model.entity.GeoNormalModel;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.boss.WallOfFleshEye;
 import org.confluence.mod.common.entity.boss.WallOfFleshPart;

@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.CritterGeoModel;
+import org.confluence.mod.client.model.entity.CritterGeoModel;
 import org.confluence.mod.common.entity.animal.CritterVisual;
 
 public class CritterRenderer<T extends Entity & CritterVisual> extends GeoNormalRenderer<T> {

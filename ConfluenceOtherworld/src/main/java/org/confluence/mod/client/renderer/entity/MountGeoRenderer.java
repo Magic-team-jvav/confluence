@@ -5,7 +5,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.client.entity.model.ExplicitGeoModel;
+import org.confluence.mod.client.model.entity.ExplicitGeoModel;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
 import org.confluence.mod.common.entity.mount.RideableUnicornMountEntity;

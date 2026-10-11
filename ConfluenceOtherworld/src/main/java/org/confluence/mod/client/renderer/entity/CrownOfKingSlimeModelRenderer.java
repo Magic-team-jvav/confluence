@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.confluence.mod.client.entity.model.CrownOfKingSlimeModel;
+import org.confluence.mod.client.model.entity.CrownOfKingSlimeModel;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 import org.joml.Quaternionf;
 

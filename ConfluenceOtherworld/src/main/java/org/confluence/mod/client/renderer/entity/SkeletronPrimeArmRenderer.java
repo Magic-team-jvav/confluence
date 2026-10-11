@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.ExplicitGeoModel;
+import org.confluence.mod.client.model.entity.ExplicitGeoModel;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;
 import org.confluence.mod.common.entity.boss.SkeletronPrimeArm;
 import org.joml.Quaternionf;

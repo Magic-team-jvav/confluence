@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.ExplicitGeoModel;
+import org.confluence.mod.client.model.entity.ExplicitGeoModel;
 import org.confluence.mod.common.entity.monster.MartianOfficer;
 import org.confluence.mod.common.entity.monster.OfficerShieldGeometry;
 import org.joml.Vector3f;

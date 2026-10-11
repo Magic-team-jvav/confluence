@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.LivingEntity;
-import org.confluence.mod.client.entity.model.BaseSlimeModel;
+import org.confluence.mod.client.model.entity.BaseSlimeModel;
 
 /// 普通史莱姆的半透明外壳。
 ///

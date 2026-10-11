@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
-import org.confluence.mod.client.entity.model.GeoNormalModel;
+import org.confluence.mod.client.model.entity.GeoNormalModel;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseWormBoss;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;

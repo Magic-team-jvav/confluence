@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.GeoNormalModel;
+import org.confluence.mod.client.model.entity.GeoNormalModel;
 import org.confluence.mod.common.entity.monster.CaveBat;
 
 public class BatRenderer extends GeoNormalRenderer<CaveBat> {

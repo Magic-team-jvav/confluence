@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.BaseSlimeModel;
-import org.confluence.mod.client.entity.model.CrownOfKingSlimeModel;
+import org.confluence.mod.client.model.entity.BaseSlimeModel;
+import org.confluence.mod.client.model.entity.CrownOfKingSlimeModel;
 import org.confluence.mod.common.entity.boss.KingSlime;
 
 /// 史莱姆王专用渲染器。

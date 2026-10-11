@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.client.entity.model.ExplicitGeoModel;
+import org.confluence.mod.client.model.entity.ExplicitGeoModel;
 import org.confluence.mod.common.entity.monster.JellyFish;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;

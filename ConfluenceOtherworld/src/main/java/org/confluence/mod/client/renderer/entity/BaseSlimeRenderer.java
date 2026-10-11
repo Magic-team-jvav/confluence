@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.entity.model.BaseSlimeModel;
+import org.confluence.mod.client.model.entity.BaseSlimeModel;
 import org.confluence.mod.common.entity.monster.slime.BaseSlime;
 
 /// 泰拉瑞亚史莱姆族的通用渲染器。

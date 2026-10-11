@@ -132,7 +132,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
         return original || confluence$isInVoidSea();
     }
 
-    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"), index = 0)
+    @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"))
     private float confluence$voidSeaMovementSpeed(float original) {
         if (confluence$isInVoidSea()) {
             return original * (confluence$self().isSwimming() ? SWIMMING_SPEED : MOVEMENT_SPEED);

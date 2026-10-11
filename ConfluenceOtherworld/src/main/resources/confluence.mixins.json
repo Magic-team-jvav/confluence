@@ -85,8 +85,8 @@
         "world.level.block.state.BlockBehaviourMixin$BlockStateBaseMixin",
         "world.level.block.state.StateHolderMixin",
         "world.level.chunk.ChunkMapMixin",
+        "world.level.chunk.ChunkMapMixin$TrackedEntityMixin",
         "world.level.chunk.PalettedContainerAccessor",
-        "world.level.chunk.WallTrackingMixin",
         "world.level.dimension.DimensionTypeAccessor",
         "world.level.levelgen.DensityFunctions$Ap2Mixin",
         "world.level.levelgen.NoiseBasedChunkGeneratorMixin",
@@ -182,5 +182,6 @@
     ],
     "injectors": {
         "defaultRequire": 1
-    }
+    },
+    "plugin": "org.confluence.mod.mixin.ConfluenceMixinPlugin"
 }

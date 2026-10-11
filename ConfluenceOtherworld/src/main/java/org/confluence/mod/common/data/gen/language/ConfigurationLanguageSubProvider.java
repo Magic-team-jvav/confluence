@@ -178,6 +178,28 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
         add("confluence.configuration.showWindParticles.tooltip", "Adjust the value to decide how many wind particles are visible.");
 
+        add("confluence.configuration.Weather", "Weather");
+        add("confluence.configuration.Weather.button", "Weather");
+        add("confluence.configuration.Weather.tooltip", "About the wind system");
+        add("confluence.configuration.doWind", "Enable Wind");
+        add("confluence.configuration.doWind.tooltip", "Master switch. When disabled, all wind consumers fall back to no wind.");
+        add("confluence.configuration.windDirectionNoise", "Positional Wind Direction");
+        add("confluence.configuration.windDirectionNoise.tooltip", "Let the world's temperature noise field bend the wind direction by location. Disable for a single global direction.");
+        add("confluence.configuration.windDirectionAmplitude", "Positional Direction Amplitude (degrees)");
+        add("confluence.configuration.windDirectionAmplitude.tooltip", "Maximum deflection from the global direction caused by the temperature field. 0 = single global direction.");
+        add("confluence.configuration.windWindyChance", "Windy Day Chance");
+        add("confluence.configuration.windWindyChance.tooltip", "Chance for each reroll to target the Windy Day tier (20 mph or above).");
+        add("confluence.configuration.windSandstormForcedSpeed", "Sandstorm Wind Speed (m/s)");
+        add("confluence.configuration.windSandstormForcedSpeed.tooltip", "Wind speed forced during a Sandstorm. Terraria keeps it constant and unidirectional.");
+        add("confluence.configuration.sandstormPushesEntities", "Sandstorm Pushes Entities");
+        add("confluence.configuration.sandstormPushesEntities.tooltip", "Whether a Sandstorm applies wind force to entities. Wind on its own never affects entities.");
+        add("confluence.configuration.blizzardPushesEntities", "Blizzard Pushes Entities");
+        add("confluence.configuration.blizzardPushesEntities.tooltip", "Whether a Blizzard applies wind force to entities.");
+        add("confluence.configuration.blizzardAmbience", "Blizzard Ambience");
+        add("confluence.configuration.blizzardAmbience.tooltip", "Whether a Blizzard plays its ambient wind loop (separate sounds outdoors and indoors).");
+        add("confluence.configuration.windSlantsRainClouds", "Wind Slants Rain and Clouds");
+        add("confluence.configuration.windSlantsRainClouds.tooltip", "Whether wind tilts rain and snow and drives cloud speed. Visual only.");
+
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.HUD.tooltip", "About HUD Display");
         add("confluence.configuration.HUD.button", "About HUD Display");
@@ -507,6 +529,28 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "最大重生时间（boss战时死亡的重生时间）");
         add("confluence.configuration.showWindParticles", "风粒子比率");
         add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
+
+        add("confluence.configuration.Weather", "风");
+        add("confluence.configuration.Weather.button", "风");
+        add("confluence.configuration.Weather.tooltip", "关于风系统");
+        add("confluence.configuration.doWind", "启用风");
+        add("confluence.configuration.doWind.tooltip", "总开关。关闭后所有风消费端退化为无风。");
+        add("confluence.configuration.windDirectionNoise", "风向随位置变化");
+        add("confluence.configuration.windDirectionNoise.tooltip", "让世界生成的温度噪声场按位置弯曲风向。关闭则为单一全局风向。");
+        add("confluence.configuration.windDirectionAmplitude", "局地风向偏差上限（度）");
+        add("confluence.configuration.windDirectionAmplitude.tooltip", "温度场造成的、相对全局风向的最大偏转。0 表示单一全局风向。");
+        add("confluence.configuration.windWindyChance", "大风天概率");
+        add("confluence.configuration.windWindyChance.tooltip", "每次重掷目标风速时抽到大风天档（20 mph 及以上）的概率。");
+        add("confluence.configuration.windSandstormForcedSpeed", "沙尘暴风速（m/s）");
+        add("confluence.configuration.windSandstormForcedSpeed.tooltip", "沙尘暴期间强制维持的风速。原作中沙尘暴是恒速恒向风。");
+        add("confluence.configuration.sandstormPushesEntities", "沙尘暴推动实体");
+        add("confluence.configuration.sandstormPushesEntities.tooltip", "沙尘暴是否对实体施加风力。风本身在任何风速下都不影响实体。");
+        add("confluence.configuration.blizzardPushesEntities", "暴风雪推动实体");
+        add("confluence.configuration.blizzardPushesEntities.tooltip", "暴风雪是否对实体施加风力。");
+        add("confluence.configuration.blizzardAmbience", "暴风雪环境音");
+        add("confluence.configuration.blizzardAmbience.tooltip", "暴风雪是否播放环境风声（露天与室内为两种音效）。");
+        add("confluence.configuration.windSlantsRainClouds", "风使雨雪倾斜并驱动云");
+        add("confluence.configuration.windSlantsRainClouds.tooltip", "风是否让雨雪倾斜、并驱动云层速度。纯视觉。");
 
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.HUD.tooltip", "关于HUD显示");

@@ -17,3 +17,5 @@ title: "机制"
 ### [村民以及交易列表](villagers_and_trade_tables.md)
 
 ### [陨石](meteorite.md)
+
+### [风](wind.md)

@@ -159,8 +159,8 @@ final class LanternNightSprite {
                 @Override
                 protected void createVars() {
                     super.createVars();
-                    Variable windX = new Variable("variable.wind_x", p -> WeatherHandler.getWindSpeedX());
-                    Variable windZ = new Variable("variable.wind_z", p -> WeatherHandler.getWindSpeedZ());
+                    Variable windX = new Variable("variable.wind_x", p -> WeatherHandler.getLegacyWindSpeedX());
+                    Variable windZ = new Variable("variable.wind_z", p -> WeatherHandler.getLegacyWindSpeedZ());
                     vars.table.put(windX.name(), windX);
                     vars.table.put(windZ.name(), windZ);
                 }

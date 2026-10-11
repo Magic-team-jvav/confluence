@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import org.confluence.mod.common.data.StarPhase;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
@@ -16,11 +15,12 @@ import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
+import org.confluence.mod.common.data.StarPhase;
+import org.confluence.mod.common.wind.WindMath;
+import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
-import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,6 @@ public final class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 10;
 
     private boolean initialized = false;
-    private final Vector3f windSpeed = new Vector3f();
     private final Int2ObjectMap<StarPhase> starPhases = new Int2ObjectArrayMap<>();
     private int revealStep = -1;
     private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
@@ -44,8 +43,8 @@ public final class ConfluenceData extends SavedData {
 
     ConfluenceData(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         this.initialized = nbt.getBoolean("initialized");
-        this.windSpeed.x = nbt.getFloat("windSpeedX");
-        this.windSpeed.z = nbt.getFloat("windSpeedZ");
+        // 风已于本版本迁移到 IGlobalData（写进 level.dat），这里只负责把旧格式的 key 交给它迁移
+        WindState.INSTANCE.migrateLegacy(nbt.getFloat("windSpeedX"), nbt.getFloat("windSpeedZ"));
         for (Tag tag : nbt.getList("starPhases", Tag.TAG_COMPOUND)) {
             CompoundTag phase = (CompoundTag) tag;
             starPhases.put(phase.getInt("index"), new StarPhase(phase));
@@ -87,8 +86,10 @@ public final class ConfluenceData extends SavedData {
     @Override
     public @NotNull CompoundTag save(CompoundTag nbt, HolderLookup.@NotNull Provider registries) {
         nbt.putBoolean("initialized", initialized);
-        nbt.putFloat("windSpeedX", windSpeed.x);
-        nbt.putFloat("windSpeedZ", windSpeed.z);
+        // 旧格式的键继续写回（由 WindState 换算）：单方面回滚到旧版本时不会读出一堆 0
+        float normalized = WindState.INSTANCE.speed() / WindMath.REF_SPEED;
+        nbt.putFloat("windSpeedX", WindState.INSTANCE.dirX() * normalized);
+        nbt.putFloat("windSpeedZ", WindState.INSTANCE.dirZ() * normalized);
         ListTag listTag = new ListTag();
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             CompoundTag tag = new CompoundTag();
@@ -102,21 +103,6 @@ public final class ConfluenceData extends SavedData {
         nbt.putInt("evilBrokenCount", evilBrokenCount);
         nbt.putBoolean("stopAskForSoftcore", stopAskForSoftcore);
         return nbt;
-    }
-
-    public void setWindSpeed(float x, float z) {
-        this.windSpeed.x = x;
-        this.windSpeed.z = z;
-        WindSpeedPacketS2C.sendToAll(x, z);
-        setDirty();
-    }
-
-    public float getWindSpeedX() {
-        return windSpeed.x;
-    }
-
-    public float getWindSpeedZ() {
-        return windSpeed.z;
     }
 
     public boolean setStarPhase(int index, int timeOffset, float radius, float angle) {
@@ -179,11 +165,5 @@ public final class ConfluenceData extends SavedData {
 
     public boolean isStopAskForSoftcore() {
         return stopAskForSoftcore;
-    }
-
-    public static void updateWind(ServerLevel level) {
-        float factorX = Mth.nextFloat(level.random, -1.0F, 1.0F);
-        float factorZ = Mth.nextFloat(level.random, -1.0F, 1.0F);
-        get(level).setWindSpeed(factorX, factorZ);
     }
 }

@@ -22,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -46,22 +47,27 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.data.GameEventArgument;
-import org.confluence.mod.common.data.PrefixArgument;
 import org.confluence.mod.common.data.*;
-import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.item.PaintItems;
+import org.confluence.mod.common.wind.WindField;
+import org.confluence.mod.common.wind.WindMath;
+import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2f;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
@@ -115,20 +121,20 @@ public final class ModCommands {
                             return 1;
                         })))
                 )
-                .then(Commands.literal("windSpeed")
-                        .then(Commands.literal("get").executes(context -> {
-                            ConfluenceData data = ConfluenceData.get(context.getSource().getLevel());
-                            context.getSource().sendSystemMessage(Component.literal("Wind speed: [" + data.getWindSpeedX() + ", " + data.getWindSpeedZ() + "]"));
+                .then(Commands.literal("wind")
+                        .then(Commands.literal("get").executes(ModCommands::windGet))
+                        .then(Commands.literal("set")
+                                .then(Commands.argument("x", FloatArgumentType.floatArg(-MAX_WIND_SPEED, MAX_WIND_SPEED))
+                                        .then(Commands.argument("z", FloatArgumentType.floatArg(-MAX_WIND_SPEED, MAX_WIND_SPEED))
+                                                .executes(context -> windSet(context, Integer.MAX_VALUE))
+                                                .then(Commands.argument("durationTicks", IntegerArgumentType.integer(1))
+                                                        .executes(context -> windSet(context, IntegerArgumentType.getInteger(context, "durationTicks")))))))
+                        .then(Commands.literal("stop").executes(context -> {
+                            WindState.INSTANCE.clearOverride();
+                            context.getSource().sendSuccess(() -> Component.literal("Wind override cleared"), true);
                             return 1;
                         }))
-                        .then(Commands.literal("set").then(Commands.argument("x", FloatArgumentType.floatArg()).then(Commands.argument("z", FloatArgumentType.floatArg()).executes(context -> {
-                            float x = FloatArgumentType.getFloat(context, "x");
-                            float z = FloatArgumentType.getFloat(context, "z");
-                            ConfluenceData.get(context.getSource().getLevel()).setWindSpeed(x, z);
-                            context.getSource().sendSystemMessage(Component.literal("Has been set to [" + x + ", " + z + "]"));
-                            return 1;
-                        }))))
-                )
+                        .then(Commands.literal("debug").executes(ModCommands::windDebug)))
                 .then(Commands.literal("meteorite")
                         .then(Commands.literal("random").then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
                             int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
@@ -350,6 +356,74 @@ public final class ModCommands {
             dataMap.computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>())).merge(brushData);
             PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, brushData));
         }
+        return 1;
+    }
+
+    // ===================== 风 =====================
+
+    /// `wind set` 的风速分量上限（m/s）。与 {@link WindState#MAX_FORCED_SPEED} 一致。
+    private static final float MAX_WIND_SPEED = WindState.MAX_FORCED_SPEED;
+
+    private static int windGet(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
+        WindState state = WindState.INSTANCE;
+        Component message = Component.literal(
+                "Wind: x=%.2f, z=%.2f (%.2f m/s, %.1f mph), from the %s, %s, gust=%.2f%s".formatted(
+                        state.dirX() * state.speed(),
+                        state.dirZ() * state.speed(),
+                        state.speed(),
+                        WindMath.toMph(state.speed()),
+                        Component.translatable(WindMath.compassKey(state.angle())).getString(),
+                        Component.translatable("info.confluence.wind.tier." + state.tier().name().toLowerCase(Locale.ROOT)).getString(),
+                        WindMath.gust(level.getGameTime(), state.gustPhase()),
+                        state.isOverridden() ? " [overridden]" : ""));
+        context.getSource().sendSuccess(() -> message, false);
+        return 1;
+    }
+
+    /// `/confluence wind set <x> <z> [durationTicks]` —— x / z 是风速在 **+X（东）/ +Z（南）** 上的分量，单位 m/s。
+    ///
+    /// 用分量而不是"大小 + 角度"：这里本来就是二维风向场，分量对负值和斜风都更自然
+    /// （负值天然合法，不必再约定"负风速 = 反向"）。`set 0 0` 就是强制静风。
+    ///
+    /// @param ticks 强制风持续的 **tick** 数（20 tick = 1 秒）。传 {@link Integer#MAX_VALUE} 表示本局一直有效，
+    ///              由 `/confluence wind stop` 解除。参数名带 `Ticks` 是为了让 Brigadier 的用法提示自己说明单位。
+    private static int windSet(CommandContext<CommandSourceStack> context, int ticks) {
+        float x = FloatArgumentType.getFloat(context, "x");
+        float z = FloatArgumentType.getFloat(context, "z");
+        float speed = Mth.sqrt(x * x + z * z);
+        // 方向由分量比例给出；WindState.override 只夹取大小上限，所以方向不会被夹偏。
+        // (0, 0) 视为静风，此时方向无意义。
+        float angle = speed < 1.0E-4F ? 0.0F : (float) Mth.atan2(z, x);
+        WindState.INSTANCE.override(speed, angle, ticks);
+
+        String duration = ticks == Integer.MAX_VALUE
+                ? "until /confluence wind stop"
+                : "%d ticks (%.1f s)".formatted(ticks, ticks / 20.0F);
+        // 这里刻意不给方位名：`<x> <z>` 是"吹向"的分量，而气象台显示的是"来向"（相差 180°），
+        // 两个方向词并排出现只会让人怀疑哪个是哪个。分量本身就是方向。
+        context.getSource().sendSuccess(() -> Component.literal(
+                "Wind set to (x=%.2f, z=%.2f) = %.2f m/s, holding for %s".formatted(x, z, speed, duration)), true);
+        return 1;
+    }
+
+    /// 打印该命令来源所在位置的风向场细节，用于核对温度噪声造成的方向偏差。
+    private static int windDebug(CommandContext<CommandSourceStack> context) {
+        ServerLevel level = context.getSource().getLevel();
+        WindState state = WindState.INSTANCE;
+        Vec3 pos = context.getSource().getPosition();
+        Vector2f dir = WindField.direction(level, state, pos.x, pos.z);
+        BlockPos blockPos = BlockPos.containing(pos);
+        context.getSource().sendSuccess(() -> Component.literal(
+                "speed=%.2f m/s instant=%.2f tier=%s blend=%.2f\n".formatted(
+                        state.speed(), state.instantSpeed(level.getGameTime()), state.tier(), state.directionBlend())
+                        + "globalAngle=%.1f deg localAngle=%.1f deg (delta=%.1f deg) cell=(%d, %d)\n".formatted(
+                        state.angle() * Mth.RAD_TO_DEG,
+                        (float) Mth.atan2(dir.y, dir.x) * Mth.RAD_TO_DEG,
+                        ((float) Mth.atan2(dir.y, dir.x) - state.angle()) * Mth.RAD_TO_DEG,
+                        Mth.floor(pos.x / WindField.CELL), Mth.floor(pos.z / WindField.CELL))
+                        + "exposure=%.2f windyDay=%s".formatted(
+                        WindMath.exposure(level, blockPos), state.isWindyDay())), false);
         return 1;
     }
 }

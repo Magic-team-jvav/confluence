@@ -21,7 +21,8 @@ public abstract class InformationHandlerMixin {
 
     @Inject(method = "getWeatherInfo", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$Inject()V"), cancellable = true)
     private static void modifyWeather(CallbackInfoReturnable<Component> cir, @Local(name = "weather") String weather) {
-        cir.setReturnValue(Component.translatable("info.confluence.weather_radio." + weather, WeatherHandler.windSpeedInfo));
+        cir.setReturnValue(Component.translatable("info.confluence.weather_radio." + weather,
+                WeatherHandler.windSpeedInfo(), WeatherHandler.windCompassInfo()));
     }
 
     @ModifyReturnValue(method = "hasMechanicalView", at = @At("RETURN"))

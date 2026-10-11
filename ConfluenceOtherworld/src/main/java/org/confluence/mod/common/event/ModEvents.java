@@ -83,6 +83,7 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 import org.confluence.mod.network.task.AchievementsTask;
 import org.confluence.mod.util.DateUtils;
@@ -158,6 +159,7 @@ public final class ModEvents {
                     NPCSpawner.INSTANCE,
                     Bestiary.INSTANCE,
                     GlobalCloakData.INSTANCE,
+                    WindState.INSTANCE,
                     GameEventSystem.INSTANCE
 //                    HouseHandler.INSTANCE
             );

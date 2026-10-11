@@ -30,6 +30,11 @@ public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static float minEctoMistEffectRadius = 10;
 
+    /// 风是否让雨雪倾斜、并驱动云层速度（纯视觉）。
+    public static boolean windSlantsRainClouds = true;
+    /// 暴风雪是否播放环境风声（露天与室内为两种音效）。
+    public static boolean blizzardAmbience = true;
+
     public static int rainbowCount = 3;
     public static boolean rainbowGradient = false;
 
@@ -116,9 +121,14 @@ public final class ClientConfigs {
     private static EnumValue<WeaponUseButton> GUN_USE_BUTTON;
     private static EnumValue<WeaponUseButton> FLAIL_USE_BUTTON;
 
+    private static BooleanValue WIND_SLANTS_RAIN_CLOUDS;
+    private static BooleanValue BLIZZARD_AMBIENCE;
+
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
+        windSlantsRainClouds = WIND_SLANTS_RAIN_CLOUDS.get();
+        blizzardAmbience = BLIZZARD_AMBIENCE.get();
 
         rainbowCount = RAINBOW_COUNT.get();
         rainbowGradient = RAINBOW_GRADIENT.get();
@@ -257,6 +267,14 @@ public final class ClientConfigs {
             YOYO_USE_BUTTON = builder.defineEnum("yoyoUseButton", WeaponUseButton.LEFT);
             GUN_USE_BUTTON = builder.defineEnum("gunUseButton", WeaponUseButton.LEFT);
             FLAIL_USE_BUTTON = builder.defineEnum("flailUseButton", WeaponUseButton.LEFT);
+            builder.pop();
+        }
+        {
+            // 风系统里**纯视听**的两项放这里；影响玩法的那几项（风速频率、局地风向偏差、
+            // 沙尘暴/暴风雪的实体受力）属于服务端行为，留在 CommonConfigs。
+            builder.push("Weather");
+            WIND_SLANTS_RAIN_CLOUDS = builder.define("windSlantsRainClouds", true);
+            BLIZZARD_AMBIENCE = builder.define("blizzardAmbience", true);
             builder.pop();
         }
 

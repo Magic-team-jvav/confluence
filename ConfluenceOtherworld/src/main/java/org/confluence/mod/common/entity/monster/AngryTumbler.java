@@ -9,8 +9,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.ai.goal.AcceleratingMeleeAttackGoal;
+import org.confluence.mod.common.wind.WindField;
+import org.confluence.mod.common.wind.WindState;
+import org.confluence.mod.common.wind.WindTier;
+import org.joml.Vector2f;
 
 public final class AngryTumbler extends BaseWarriorMonster {
     public AngryTumbler(EntityType<? extends AngryTumbler> type, Level level) {
@@ -27,9 +30,11 @@ public final class AngryTumbler extends BaseWarriorMonster {
     public double getAttributeValue(Holder<Attribute> attribute) {
         double value = super.getAttributeValue(attribute);
         if (attribute == Attributes.MOVEMENT_SPEED && level() instanceof ServerLevel level && getTarget() != null) {
-            ConfluenceData data = ConfluenceData.get(level);
+            // AI 主动读风（不是风在推实体）：用**自己位置**的风向 + 当前风速档位强度
             Vec3 direction = getTarget().position().subtract(position()).multiply(1.0, 0.0, 1.0).normalize();
-            double wind = direction.x * data.getWindSpeedX() + direction.z * data.getWindSpeedZ();
+            Vector2f dir = WindField.direction(level, WindState.INSTANCE, getX(), getZ());
+            float intensity = WindTier.intensity(WindState.INSTANCE.instantSpeed(level.getGameTime()));
+            double wind = (direction.x * dir.x + direction.z * dir.y) * intensity;
             value *= Mth.clamp(1.0 + wind, 0.3, 2.5);
         }
         return value;

@@ -17,8 +17,14 @@ public abstract class TFPinWheelMixin {
      */
     @Overwrite
     public float getStepNext() {
-        if (rotate <= -Mth.PI*24) rotate = 0;
-        else rotate -= WeatherHandler.WIND_SPEED.length() * 0.09f;
+        if (rotate <= -Mth.PI*24) {
+            rotate = 0;
+        } else {
+            // 归一化风量（满值 1.0 = 30 mph），保证转速系数与旧实现一致
+            float x = WeatherHandler.getLegacyWindSpeedX();
+            float z = WeatherHandler.getLegacyWindSpeedZ();
+            rotate -= Mth.sqrt(x * x + z * z) * 0.09f;
+        }
         return rotate;
     }
 }

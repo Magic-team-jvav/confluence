@@ -1,0 +1,379 @@
+{
+    "entities": {
+        "confluence:falling_star": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.60392157
+            ],
+            "light_level": 12
+        },
+        "confluence:ball_of_fire": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:flamelash": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:flame_cloud": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:fire_imp_projectile": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:cultist_fireball": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:cultist_ice_mist": {
+            "color": [
+                0.60392157,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:cultist_lightning_orb": {
+            "color": [
+                0.61176471,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 10
+        },
+        "confluence:cascade_fire": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:cursed_flames": {
+            "color": [
+                0.66666667,
+                1.0,
+                0.4
+            ],
+            "light_level": 15
+        },
+        "confluence:clinger_flame": {
+            "color": [
+                0.66666667,
+                1.0,
+                0.4
+            ],
+            "light_level": 15
+        },
+        "confluence:star_fury": {
+            "color": [
+                1.0,
+                0.60784314,
+                0.80784314
+            ],
+            "light_level": 10
+        },
+        "confluence:star_cannon_bullet": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.60392157
+            ],
+            "light_level": 10
+        },
+        "confluence:rainbow": {
+            "cycle": {
+                "colors": [
+                    [
+                        1.0,
+                        0.4,
+                        0.53333333
+                    ],
+                    [
+                        1.0,
+                        0.85098039,
+                        0.4
+                    ],
+                    [
+                        0.46666667,
+                        0.90196078,
+                        0.63921569
+                    ],
+                    [
+                        0.4745098,
+                        0.8745098,
+                        1.0
+                    ],
+                    [
+                        0.58823529,
+                        0.58039216,
+                        1.0
+                    ],
+                    [
+                        0.9372549,
+                        0.6,
+                        1.0
+                    ]
+                ],
+                "period_ticks": 120,
+                "update_interval_ticks": 2
+            },
+            "light_level": 10
+        },
+        "confluence:ball_of_frost": {
+            "color": [
+                0.60392157,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:npc_shadowflame_skull": {
+            "color": [
+                0.77254902,
+                0.54117647,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:monster_laser": {
+            "color": [
+                1.0,
+                0.35686275,
+                0.40392157
+            ],
+            "light_level": 10
+        },
+        "confluence:martian_electric_bolt": {
+            "color": [
+                0.4627451,
+                0.90980392,
+                1.0
+            ],
+            "light_level": 10
+        },
+        "confluence:magic_missile": {
+            "color": [
+                0.53333333,
+                0.7372549,
+                1.0
+            ],
+            "light_level": 10
+        },
+        "confluence:water_bolt": {
+            "color": [
+                0.43137255,
+                0.6745098,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:magic_dagger": {
+            "color": [
+                0.75686275,
+                0.91372549,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:crystal_vile_shard": {
+            "color": [
+                0.8627451,
+                0.76078431,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:crystal_storm": {
+            "color": [
+                0.93333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:chik_crystal": {
+            "color": [
+                0.48235294,
+                0.92156863,
+                0.86666667
+            ],
+            "light_level": 5
+        },
+        "confluence:sky_fracture": {
+            "color": [
+                0.4,
+                0.85098039,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:frost_beam": {
+            "color": [
+                0.60392157,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:frost_blast": {
+            "color": [
+                0.60392157,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:storm_spear_shot": {
+            "color": [
+                0.6627451,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:hotline_fishing_hook": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 6
+        },
+        "confluence:rune_blast": {
+            "color": [
+                0.74901961,
+                0.54117647,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:hill_fire_bound": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:wall_of_flesh_laser": {
+            "color": [
+                1.0,
+                0.35686275,
+                0.40392157
+            ],
+            "light_level": 8
+        },
+        "confluence:dark_caster_projectile": {
+            "color": [
+                0.47058824,
+                0.74901961,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:chaos_ball_projectile": {
+            "color": [
+                0.69019608,
+                0.47058824,
+                0.9372549
+            ],
+            "light_level": 8
+        },
+        "confluence:shadow_beam_projectile": {
+            "color": [
+                0.72941176,
+                0.50196078,
+                1.0
+            ],
+            "light_level": 8
+        },
+        "confluence:inferno_bolt_projectile": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:lost_soul_projectile": {
+            "color": [
+                0.65490196,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 6
+        },
+        "confluence:vile_spit_projectile": {
+            "color": [
+                0.72941176,
+                0.53333333,
+                0.85882353
+            ],
+            "light_level": 6
+        },
+        "confluence:gastropod_projectile": {
+            "color": [
+                1.0,
+                0.58039216,
+                0.87843137
+            ],
+            "light_level": 8
+        },
+        "confluence:flaming_arrow": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12
+        },
+        "confluence:hellfire_arrow": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 8
+        },
+        "confluence:frostburn_arrow": {
+            "color": [
+                0.60392157,
+                0.8745098,
+                1.0
+            ],
+            "light_level": 5
+        },
+        "confluence:star_arrow": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.60392157
+            ],
+            "light_level": 8
+        }
+    }
+}

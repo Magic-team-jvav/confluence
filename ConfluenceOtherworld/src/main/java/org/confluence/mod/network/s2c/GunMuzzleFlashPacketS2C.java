@@ -13,6 +13,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.gun.BeeGunItem;
 import org.confluence.mod.common.item.gun.ManaGunItem;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 
 public record GunMuzzleFlashPacketS2C(int shooterId) implements IPacketS2C {
     public static final Type<GunMuzzleFlashPacketS2C> TYPE = Confluence.createType("gun_muzzle_flash");
@@ -31,6 +32,7 @@ public record GunMuzzleFlashPacketS2C(int shooterId) implements IPacketS2C {
                 || gun instanceof BeeGunItem) return;
         Vec3 position = shooter.getEyePosition().add(shooter.getLookAngle().scale(0.8));
         DynamicLightEffects.flash(position, gun instanceof ManaGunItem ? 8 : 10, 2);
+        OpalLightIntegration.flash(gun instanceof ManaGunItem ? OpalLightIntegration.MAGIC_MUZZLE : OpalLightIntegration.GUN_MUZZLE, position, 2);
     }
 
     public static void send(ServerPlayer shooter) {

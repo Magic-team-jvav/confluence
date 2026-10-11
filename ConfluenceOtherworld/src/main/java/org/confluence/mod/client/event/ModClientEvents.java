@@ -132,6 +132,7 @@ import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
@@ -155,6 +156,7 @@ public final class ModClientEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ModDynamicLights.register();
+            OpalLightIntegration.register();
             StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
@@ -1168,6 +1170,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(OpalLightIntegration.INSTANCE);
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> org.confluence.mod.client.effect.BrainDissolveTexture.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());

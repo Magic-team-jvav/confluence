@@ -13,6 +13,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.client.light.DynamicLightEffects;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.TerraStyleExplosion;
 
 public record TerraStyleExplosionPacketS2C(double x, double y, double z, float radius) implements IPacketS2C {
@@ -34,6 +35,7 @@ public record TerraStyleExplosionPacketS2C(double x, double y, double z, float r
     public void work(Player player) {
         TerraStyleExplosion.handleClientExplode(player.level(), x, y, z, radius);
         DynamicLightEffects.flash(new Vec3(x, y, z), 15, 6);
+        OpalLightIntegration.flash(OpalLightIntegration.EXPLOSION, new Vec3(x, y, z), 6);
     }
 
     public static void send2All(ServerLevel level, double x, double y, double z, float radius) {

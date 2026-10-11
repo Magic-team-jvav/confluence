@@ -1,0 +1,530 @@
+{
+    "entities": {
+        "confluence:fairy": [
+            {
+                "color": [
+                    0.46666667,
+                    0.7254902,
+                    1.0
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fairy_variant": "blue"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.46666667,
+                    1.0,
+                    0.66666667
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fairy_variant": "green"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.6,
+                    0.8
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fairy_variant": "pink"
+                    }
+                }
+            }
+        ],
+        "confluence:base_mana_staff": [
+            {
+                "color": [
+                    0.91765,
+                    0.41961,
+                    1.0
+                ],
+                "light_level": 8,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "amethyst"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.81569,
+                    0.0
+                ],
+                "light_level": 8,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "topaz"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.30196,
+                    0.65098,
+                    1.0
+                ],
+                "light_level": 8,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "sapphire"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.12941,
+                    0.72157,
+                    0.45098
+                ],
+                "light_level": 8,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "jade"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.92157,
+                    0.38824,
+                    0.45882
+                ],
+                "light_level": 8,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "ruby"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.98824,
+                    0.75686,
+                    0.17647
+                ],
+                "light_level": 8,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "amber"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.60392,
+                    1.0,
+                    0.86667
+                ],
+                "light_level": 8,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "diamond"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.6,
+                    0.87,
+                    1.0
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "frost"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.53,
+                    0.22
+                ],
+                "light_level": 12,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "spark"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.66,
+                    0.87,
+                    1.0
+                ],
+                "light_level": 10,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:staff_variant": "thunder_zapper"
+                    }
+                }
+            }
+        ],
+        "confluence:curio_fishing_hook": [
+            {
+                "color": [
+                    0.61960784,
+                    1.0,
+                    0.51372549
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fishing_hook_variant": "glowing"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.52941176,
+                    0.21960784
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fishing_hook_variant": "lava"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.6627451,
+                    0.47058824
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fishing_hook_variant": "helium"
+                    }
+                }
+            },
+            {
+                "color": [
+                    1.0,
+                    0.43529412,
+                    0.44705882
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fishing_hook_variant": "neon"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.64313725,
+                    0.54901961,
+                    1.0
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fishing_hook_variant": "argon"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.78039216,
+                    1.0,
+                    0.70196078
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fishing_hook_variant": "krypton"
+                    }
+                }
+            },
+            {
+                "color": [
+                    0.55294118,
+                    0.8745098,
+                    1.0
+                ],
+                "light_level": 5,
+                "entity_state": {
+                    "conditions": {
+                        "confluence:fishing_hook_variant": "xenon"
+                    }
+                }
+            }
+        ],
+        "confluence:hill_lava_pillar": {
+            "color": [
+                1.0,
+                0.52941176,
+                0.21960784
+            ],
+            "light_level": 12,
+            "entity_state": {
+                "conditions": {
+                    "confluence:lava_pillar_active": true
+                }
+            }
+        },
+        "confluence:bomb_entity": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:bouncy_bomb_entity": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:scarab_bomb_entity": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:sticky_bomb_entity": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:smoke_bomb_entity": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:bomb_fish_entity": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:grenade": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:bouncy_grenade": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:sticky_grenade": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:beenade": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:dynamite": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:bouncy_dynamite": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:sticky_dynamite": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:dirt_bomb": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:sticky_dirt_bomb": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:dry_bomb": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:wet_bomb": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:lava_bomb": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        },
+        "confluence:honey_bomb": {
+            "color": [
+                1.0,
+                0.72156863,
+                0.38823529
+            ],
+            "light_level": 4,
+            "entity_state": {
+                "conditions": {
+                    "confluence:bomb_fuse_active": true
+                }
+            }
+        }
+    }
+}

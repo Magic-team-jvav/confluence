@@ -6,55 +6,55 @@
                 0.8745098,
                 1.0
             ],
-            "light_level": 8
+            "light_level": 6
         },
         "confluence:pixie": {
             "color": [
                 1.0,
-                0.94117647,
-                0.60392157
+                0.913725,
+                0.431373
             ],
-            "light_level": 8
+            "light_level": 6
         },
         "confluence:illuminant_bat": {
             "color": [
-                1.0,
-                0.58039216,
-                0.87843137
+                0.980392,
+                0.505882,
+                0.843137
             ],
-            "light_level": 8
+            "light_level": 6
         },
         "confluence:glowing_mooshroom": {
             "color": [
-                0.33333333,
-                0.6,
+                0.588235,
+                0.752941,
                 1.0
             ],
-            "light_level": 6
+            "light_level": 4
         },
         "confluence:glowing_cluckshroom": {
             "color": [
-                0.33333333,
-                0.6,
+                0.592157,
+                0.756863,
                 1.0
             ],
-            "light_level": 6
+            "light_level": 4
         },
         "confluence:blood_jelly": {
             "color": [
                 1.0,
                 0.4,
-                0.53333333
+                0.470588
             ],
-            "light_level": 6
+            "light_level": 5
         },
         "confluence:fungo_fish": {
             "color": [
-                0.33333333,
-                0.6,
+                0.545098,
+                0.72549,
                 1.0
             ],
-            "light_level": 6
+            "light_level": 4
         },
         "confluence:ice_elemental": {
             "color": [
@@ -70,7 +70,7 @@
                 0.7254902,
                 1.0
             ],
-            "light_level": 6
+            "light_level": 5
         },
         "confluence:green_jellyfish": {
             "color": [
@@ -78,7 +78,7 @@
                 1.0,
                 0.66666667
             ],
-            "light_level": 6
+            "light_level": 5
         },
         "confluence:pink_jellyfish": {
             "color": [
@@ -86,7 +86,7 @@
                 0.6,
                 0.8
             ],
-            "light_level": 6
+            "light_level": 5
         },
         "confluence:glowing_snail": {
             "color": [
@@ -161,19 +161,19 @@
         },
         "confluence:firefly": {
             "color": [
-                0.8745098,
                 1.0,
-                0.53333333
+                0.807843,
+                0.466667
             ],
             "light_level": 4
         },
         "confluence:luminous_slime": {
             "color": [
-                0.33333333,
-                0.6,
+                0.937255,
+                0.333333,
                 1.0
             ],
-            "light_level": 7
+            "light_level": 5
         },
         "confluence:prismatic_lacewing": {
             "cycle": {
@@ -212,7 +212,7 @@
                 "period_ticks": 120,
                 "update_interval_ticks": 2
             },
-            "light_level": 7
+            "light_level": 5
         }
     }
 }

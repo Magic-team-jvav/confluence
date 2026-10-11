@@ -22,7 +22,7 @@
                 0.94117647,
                 0.60392157
             ],
-            "light_level": 10
+            "light_level": 5
         },
         "confluence:glowing_mushroom": {
             "color": [
@@ -102,7 +102,7 @@
                 0.52941176,
                 0.21960784
             ],
-            "light_level": 15
+            "light_level": 6
         }
     }
 }

@@ -74,7 +74,7 @@ public final class ModFluids {
     public static final FluidTriple SHIMMER = FluidTriple.builder(Confluence.asResource("shimmer"))
             .typeProperties(properties -> properties
                     .density(800)
-                    .lightLevel(10)
+                    .lightLevel(5)
                     .viscosity(800)
                     .canSwim(false)
                     .motionScale(0.02)

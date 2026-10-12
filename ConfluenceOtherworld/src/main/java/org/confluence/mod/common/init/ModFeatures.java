@@ -73,6 +73,7 @@ public final class ModFeatures {
     public static final Supplier<LayerFeature> LAYER = FEATURES.register("layer", () -> new LayerFeature(LayerFeature.Config.CODEC));
     public static final Supplier<RandomInverseTallPlantFeature> RANDOM_INVERSE_TALL_PLANT = FEATURES.register("random_inverse_tall_plant", () -> new RandomInverseTallPlantFeature(RandomInverseTallPlantFeature.Config.CODEC));
     public static final Supplier<CrimsonEyeballFeature> CRIMSON_EYEBALL = FEATURES.register("crimson_eyeball", () -> new CrimsonEyeballFeature(CrimsonEyeballFeature.Config.CODEC));
+    public static final Supplier<StalagmiteFeature> STALAGMITE = FEATURES.register("stalagmite", () -> new StalagmiteFeature(StalagmiteFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
     public static final Supplier<PlacementModifierType<DepthBandPlacement>> DEPTH_BAND_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("depth_band", () -> () -> DepthBandPlacement.CODEC);

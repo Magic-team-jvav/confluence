@@ -574,6 +574,41 @@
 - id：confluence:natures_gift
 - 生成于丛林系列群系
 
+## 石笋
+
+### 沙漠石笋
+
+- id：confluence:desert_stalagmite
+- id：confluence:desert_stalactite
+- 生成于沙漠系列群系的地表与地下：石笋朝上长在地面 / 洞底，钟乳石朝下挂在天花板上
+- 一次放置最多 2 格（1~2 格高，1 格更常见）
+
+### 腐化石笋
+
+- id：confluence:corrupt_stalagmite
+- id：confluence:corrupt_stalactite
+- 生成于腐化之地群系地下、洞穴层的地面与天花板；腐化沙漠、腐化冻原等变种群系不会生成
+
+### 猩红石笋
+
+- id：confluence:crimson_stalagmite
+- id：confluence:crimson_stalactite
+- 生成于猩红之地群系地下、洞穴层的地面与天花板；猩红沙漠、猩红冻原等变种群系不会生成
+
+### 冰锥
+
+- id：confluence:ice_stalagmite
+- id：confluence:ice_icicle
+- 生成于所有冰雪群系的地下、洞穴层：地面版朝上长，天花板版朝下挂
+
+### 大理石笋
+
+- 由大理石洞穴结构在洞底与天花板直接写入方块（不走地物）：贴附着面那格是 base、外侧那格是 tip_merge、只有 1 格时是 tip_single
+
+### 花岗岩石笋
+
+- 由花岗岩洞穴结构在洞底与天花板直接写入方块（不走地物），状态规则同上
+
 ## 其余生成
 
 ### 猩红祭坛（生物群系）

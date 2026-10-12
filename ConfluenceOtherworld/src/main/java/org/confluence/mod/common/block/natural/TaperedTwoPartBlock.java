@@ -132,7 +132,9 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     private boolean isValidTaperedPlacement(LevelReader level, BlockPos pos, Direction dir) {
-        return level.getBlockState(pos.relative(dir.getOpposite())).isFaceSturdy(level, pos.relative(dir.getOpposite()), dir) || (level.getBlockState(pos.relative(dir.getOpposite())).is(this.asBlock()) && (level.getBlockState(pos.relative(dir.getOpposite())).getValue(PART) == TIP_SINGLE));
+        BlockPos support = pos.relative(dir.getOpposite());
+        BlockState state = level.getBlockState(support);
+        return state.isFaceSturdy(level, support, dir) || state.is(this.asBlock());
     }
 
     private @Nullable Direction calculateTipDirection(LevelReader level, BlockPos pos, Direction dir) {

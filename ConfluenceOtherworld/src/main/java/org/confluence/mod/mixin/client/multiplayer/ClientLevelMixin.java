@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.fluids.FluidType;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,18 +49,18 @@ public abstract class ClientLevelMixin implements LevelReader, SelfGetter<Client
 
     @Inject(method = "doAnimateTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;isEmpty()Z"))
     private void tick(CallbackInfo ci, @Local(argsOnly = true) BlockPos.MutableBlockPos blockPos, @Local BlockState blockstate, @Local FluidState fluidstate) {
-        int i1 = ClientConfigs.showWindParticles;
-        if (i1 == 0 || WeatherHandler.windDirection == null) return;
-        i1 = 100 - i1;
+        int threshold = WeatherHandler.particleThreshold();
+        if (threshold <= 0 || WeatherHandler.windDirection == null) return;
+
         int r = -1;
         if (confluence$blockParticles != null) {
-            r = i1 == 0 ? 0 : confluence$random.nextInt(i1);
+            r = threshold == 1 ? 0 : confluence$random.nextInt(threshold);
             if (r == 0) {
                 WeatherHandler.handleBlock(confluence$self(), confluence$random, blockstate, blockPos, confluence$blockParticles);
             }
         }
         if (confluence$fluidParticles != null && !fluidstate.isEmpty()) {
-            if (r == 0 || confluence$random.nextInt(i1) == 0) {
+            if (r == 0 || confluence$random.nextInt(threshold) == 0) {
                 WeatherHandler.handleFluid(confluence$self(), confluence$random, fluidstate, blockPos, confluence$fluidParticles);
             }
         }

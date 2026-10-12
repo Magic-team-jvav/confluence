@@ -12,6 +12,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
 import org.confluence.mod.common.entity.npc.NPCAttackBlacklist;
+import org.confluence.mod.common.wind.WindMath;
+import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.DragonChargePlayerConfigPacketS2C;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -71,6 +73,22 @@ public final class CommonConfigs {
     public static BooleanValue DEERCLOPS_NATURE_SPAWNING;
 
     public static BooleanValue DO_METEORITE_SPAWNING;
+
+    // ===== 风（Weather）=====
+    /// 风系统总开关。关闭后退化为「无风」，所有消费端静默。
+    public static BooleanValue DO_WIND;
+    /// 是否启用温度噪声方向场。关闭 = 全局恒向（便于对比调试）。
+    public static BooleanValue WIND_DIRECTION_NOISE;
+    /// 温度噪声造成的风向偏差上限（度）。0 = 全局恒向。
+    public static DoubleValue WIND_DIRECTION_AMPLITUDE;
+    /// 每次重掷抽到「大风天档」（>= 20 mph）的概率。
+    public static DoubleValue WIND_WINDY_CHANCE;
+    /// 沙尘暴期间强制维持的风速（m/s），默认 30 mph。
+    public static DoubleValue WIND_SANDSTORM_FORCED_SPEED;
+    /// 沙尘暴是否推实体。
+    public static BooleanValue SANDSTORM_PUSHES_ENTITIES;
+    /// 暴风雪是否推实体。
+    public static BooleanValue BLIZZARD_PUSHES_ENTITIES;
 
     public static BooleanValue PLAYER_DROPS_MONEY;
     public static BooleanValue SHOW_MONEY_DROPS;
@@ -241,6 +259,17 @@ public final class CommonConfigs {
                 TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER = builder.defineInRange("terraStyleLightningBoltFrequencyMultiplier", 10, 1, 1000);
                 builder.pop();
             }
+            builder.pop();
+        }
+        {
+            builder.push("Weather");
+            DO_WIND = builder.define("doWind", true);
+            WIND_DIRECTION_NOISE = builder.define("windDirectionNoise", true);
+            WIND_DIRECTION_AMPLITUDE = builder.defineInRange("windDirectionAmplitude", 90.0D, 0.0D, 180.0D);
+            WIND_WINDY_CHANCE = builder.defineInRange("windWindyChance", (double) WindState.WINDY_CHANCE, 0.0D, 1.0D);
+            WIND_SANDSTORM_FORCED_SPEED = builder.defineInRange("windSandstormForcedSpeed", (double) WindMath.SANDSTORM_FORCED_SPEED, 0.0D, 100.0D);
+            SANDSTORM_PUSHES_ENTITIES = builder.define("sandstormPushesEntities", true);
+            BLIZZARD_PUSHES_ENTITIES = builder.define("blizzardPushesEntities", true);
             builder.pop();
         }
         {

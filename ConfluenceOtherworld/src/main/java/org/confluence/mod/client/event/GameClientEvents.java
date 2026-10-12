@@ -204,6 +204,8 @@ public final class GameClientEvents {
                 }
                 MeteorLandingHandler.handle(player);
                 HookThrowingHandler.handle(player);
+                WindPushHandler.handle(player);
+                BlizzardAmbienceHandler.tick(player);
                 KeyRequestHandler.handle();
                 DropletsHandler.handle(player);
                 ClientGameEventSystem.handle(player);
@@ -232,6 +234,7 @@ public final class GameClientEvents {
         ClientWeaponInputManager.reset();
         GunHandler.reset();
         WeatherHandler.reset();
+        BlizzardAmbienceHandler.reset();
         MeteorLandingHandler.reset();
         LocalBrushData.reset();
         ClientPacketHandler.reset();

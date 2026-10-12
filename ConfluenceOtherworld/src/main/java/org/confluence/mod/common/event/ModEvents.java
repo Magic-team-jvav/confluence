@@ -50,6 +50,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.DispenserRegistration;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.common.entity.TargetingIntegration;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
@@ -136,6 +137,7 @@ public final class ModEvents {
                     NPCSpawner.INSTANCE,
                     Bestiary.INSTANCE,
                     GlobalCloakData.INSTANCE,
+                    WindState.INSTANCE,
                     GameEventSystem.INSTANCE,
                     HouseHandler.INSTANCE,
                     AnglerData.INSTANCE

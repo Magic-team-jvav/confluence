@@ -51,6 +51,8 @@ public enum GameEventSystem implements IGlobalData {
         map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
         map.put(BoulderRainGameEvent.KEY, BoulderRainGameEvent.INSTANCE);
         map.put(SolarEclipseGameEvent.KEY, SolarEclipseGameEvent.INSTANCE);
+        map.put(WindyDayGameEvent.KEY, WindyDayGameEvent.INSTANCE);
+        map.put(BlizzardGameEvent.KEY, BlizzardGameEvent.INSTANCE);
         if (Confluence.UNRELEASED_EVENTS) {
             map.put(SandstormGameEvent.KEY, SandstormGameEvent.INSTANCE);
             map.put(PartyGameEvent.KEY, PartyGameEvent.INSTANCE);
@@ -59,6 +61,8 @@ public enum GameEventSystem implements IGlobalData {
     });
     private transient int startedEventAmount;
     private transient int startedNonEnvEventAmount;
+    /// 是否有会推实体的天气事件正在运行。**风系统平时不影响任何实体**，这个标志让逐实体结算退化成一次布尔判断。
+    private transient boolean anyWindPushedEvent;
 
     public void syncAll(ServerPlayer player) {
         List<ResourceKey<? extends GameEvent>> started = new ArrayList<>(events.size());
@@ -107,6 +111,31 @@ public enum GameEventSystem implements IGlobalData {
         }
         this.startedEventAmount = started;
         this.startedNonEnvEventAmount = nonEnv;
+
+        boolean anyWindPush = false;
+        for (GameEvent event : events.values()) {
+            if (event instanceof WindPushedEvent && event.started()) {
+                anyWindPush = true;
+                break;
+            }
+        }
+        this.anyWindPushedEvent = anyWindPush;
+    }
+
+    /// 实体受风的唯一入口。
+    ///
+    /// **风系统本身不产生任何实体推力**：无论风速多大，平时实体都不受影响。
+    /// 只有沙尘暴、暴风雪这类实现了 {@link WindPushedEvent} 的事件激活期间才会逐实体结算。
+    ///
+    /// @see WindPushedEvent
+    public void pushEventWind(Entity entity) {
+        if (!anyWindPushedEvent) return;
+        for (GameEvent event : events.values()) {
+            if (event instanceof WindPushedEvent pushed && event.started()) {
+                pushed.pushWindOn(entity);
+                return; // 同一时刻只允许一个风推事件（沙尘暴与暴风雪互斥：沙漠 vs 雪原）
+            }
+        }
     }
 
     public void countKilled(LivingEntity living) {

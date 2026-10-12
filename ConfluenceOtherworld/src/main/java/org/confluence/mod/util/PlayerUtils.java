@@ -161,7 +161,7 @@ public final class PlayerUtils {
     /// 初始化数据到player客户端
     public static void syncSavedData(ServerPlayer player) {
         ConfluenceData data = ConfluenceData.get(player.serverLevel());
-        WindSpeedPacketS2C.sendToClient(player, data.getWindSpeedX(), data.getWindSpeedZ());
+        WindSpeedPacketS2C.sendToClient(player);
         if (CommonConfigs.STAR_PHASE.get()) {
             StarPhasesPacketS2C.sendToClient(player, data.getStarPhases());
         }

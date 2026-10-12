@@ -18,7 +18,6 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.animal.Worm;
@@ -35,10 +34,14 @@ import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.common.wind.WindField;
+import org.confluence.mod.common.wind.WindMath;
+import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.joml.Vector2f;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayDeque;
@@ -174,12 +177,11 @@ public final class SpawnPlacementChecks {
                 && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
-    /// 瓢虫要求地表晴朗白天且风速达到有风天气门槛。
+    /// 瓢虫要求地表晴朗白天且风速达到大风天阈值（20 mph）。
     public static boolean checkLadybugSpawn(EntityType<? extends Animal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel serverLevel)) return false;
-        ConfluenceData data = ConfluenceData.get(serverLevel);
-        float windSquared = data.getWindSpeedX() * data.getWindSpeedX() + data.getWindSpeedZ() * data.getWindSpeedZ();
-        return windSquared >= 0.25F && checkSurfaceDayCritterSpawn(type, level, spawnType, pos, random);
+        return windSpeedAt(serverLevel, pos) >= WindMath.WINDY_DAY_MIN
+                && checkSurfaceDayCritterSpawn(type, level, spawnType, pos, random);
     }
 
     /// 用世界种子和游戏日固定当天是否为臭虫日，避免每次尝试重新随机。
@@ -187,13 +189,17 @@ public final class SpawnPlacementChecks {
         return RandomSource.create(level.getSeed() ^ (level.getDayTime() / 24000L)).nextInt(3) == 0;
     }
 
-    /// 蝴蝶与臭虫共用的晴朗、无墓地和低风速条件。
+    /// 该位置当前的实际风速（m/s，含阵风）。方向随位置变化，所以风速也要在生成坐标处求。
+    public static float windSpeedAt(ServerLevel level, BlockPos pos) {
+        return WindState.INSTANCE.instantSpeed(level.getGameTime());
+    }
+
+    /// 蝴蝶与臭虫共用的晴朗、无墓地和低风速条件（不是大风天即可）。
     private static boolean checkCalmDayCritterSpawn(EntityType<? extends Animal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel world) || world.isRaining() || !checkSurfaceDayCritterSpawn(type, level, spawnType, pos, random))
             return false;
         if (ModBlockCounters.isGraveyard(level, pos)) return false;
-        ConfluenceData data = ConfluenceData.get(world);
-        return data.getWindSpeedX() * data.getWindSpeedX() + data.getWindSpeedZ() * data.getWindSpeedZ() < 0.25F;
+        return windSpeedAt(world, pos) < WindMath.WINDY_DAY_MIN;
     }
 
     /// 蝴蝶只在非臭虫日满足平静白天条件时生成。
@@ -224,9 +230,7 @@ public final class SpawnPlacementChecks {
                 || pos.getY() <= OverworldUtils.getSurfaceY() || !level.canSeeSky(pos))
             return false;
         if (ModBlockCounters.isGraveyard(level, pos)) return false;
-        ConfluenceData data = ConfluenceData.get(world);
-        if (data.getWindSpeedX() * data.getWindSpeedX() + data.getWindSpeedZ() * data.getWindSpeedZ() >= 0.25F)
-            return false;
+        if (windSpeedAt(world, pos) >= WindMath.WINDY_DAY_MIN) return false;
         return checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
@@ -461,17 +465,17 @@ public final class SpawnPlacementChecks {
         return false;
     }
 
-    /// 愤怒蒲公英要求晴朗有风白天、草地，且风向将其吹向玩家。
+    /// 愤怒蒲公英要求晴朗有风白天、草地，且**该位置的风向**将其吹向玩家。
     public static boolean checkAngryDandelionSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel world) || !world.isDay() || world.isRaining() || !world.canSeeSky(pos)
                 || !level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK)
                 || !checkGroundSpawn(type, level, spawnType, pos, random)) return false;
-        ConfluenceData data = ConfluenceData.get(world);
-        float windX = data.getWindSpeedX();
-        float windZ = data.getWindSpeedZ();
-        if (windX * windX + windZ * windZ < 0.25F) return false;
+        WindState state = WindState.INSTANCE;
+        if (state.instantSpeed(world.getGameTime()) < WindMath.WINDY_DAY_MIN) return false;
+        // 方向随位置变化：必须用蒲公英所在位置的风向，而不是全局风向
+        Vector2f dir = WindField.direction(world, state, pos.getX() + 0.5, pos.getZ() + 0.5);
         var player = level.getNearestPlayer(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 128.0, false);
-        return player != null && (player.getX() - pos.getX() - 0.5) * windX + (player.getZ() - pos.getZ() - 0.5) * windZ > 0.0;
+        return player != null && (player.getX() - pos.getX() - 0.5) * dir.x + (player.getZ() - pos.getZ() - 0.5) * dir.y > 0.0;
     }
 
     /// 地下生物群系规则覆盖浅层地下到洞穴底部，不把 Y=0 误作下界。

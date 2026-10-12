@@ -133,7 +133,10 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     private boolean isValidTaperedPlacement(LevelReader level, BlockPos pos, Direction dir) {
-        return level.getBlockState(pos.relative(dir.getOpposite())).isFaceSturdy(level, pos.relative(dir.getOpposite()), dir) || (level.getBlockState(pos.relative(dir.getOpposite())).is(this.asBlock()) && (level.getBlockState(pos.relative(dir.getOpposite())).getValue(PART) == TIP_SINGLE));
+        BlockPos support = pos.relative(dir.getOpposite());
+        BlockState state = level.getBlockState(support);
+        // 与原版滴水石一致：实心面或者同种锥形方块都能撑住，所以 2 格以上的笋 / 冰锥不会自己崩掉
+        return state.isFaceSturdy(level, support, dir) || state.is(this.asBlock());
     }
 
     private @Nullable Direction calculateTipDirection(LevelReader level, BlockPos pos, Direction dir) {

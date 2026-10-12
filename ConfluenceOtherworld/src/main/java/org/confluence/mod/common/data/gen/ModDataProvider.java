@@ -277,6 +277,14 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_CATTAILS = key("crimson_cattails");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_EYEBALL_EMBEDDED = key("crimson_eyeball_embedded");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_EYEBALL_STANDING = key("crimson_eyeball_standing");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> DESERT_STALAGMITE = key("desert_stalagmite");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_STALAGMITE = key("corrupt_stalagmite");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_STALAGMITE = key("crimson_stalagmite");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> ICE_STALAGMITE = key("ice_stalagmite");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> ICE_ICICLE = key("ice_icicle");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> DESERT_STALACTITE = key("desert_stalactite");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_STALACTITE = key("corrupt_stalactite");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_STALACTITE = key("crimson_stalactite");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
@@ -511,6 +519,14 @@ public class ModDataProvider {
             register(context, CRIMSON_EYEBALL_STANDING, ModFeatures.CRIMSON_EYEBALL.get(), new CrimsonEyeballFeature.Config(
                     BlockStateProvider.simple(NatureBlocks.EYEBALL_BLOCK.get()), BlockStateProvider.simple(NatureBlocks.PUPIL_BLOCK.get()),
                     BlockStateProvider.simple(NatureBlocks.CRIMSTONE.get()), BlockStateProvider.simple(Blocks.WATER), false, 0.7F, 0.25F));
+            register(context, DESERT_STALAGMITE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.DESERT_TAPERED_BLOCK.get()), Direction.UP, stalagmiteHeight(2), 0, 2));
+            register(context, CORRUPT_STALAGMITE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.CORRUPT_TAPERED_BLOCK.get()), Direction.UP, stalagmiteHeight(2), 0, 2));
+            register(context, CRIMSON_STALAGMITE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_TAPERED_BLOCK.get()), Direction.UP, stalagmiteHeight(2), 0, 2));
+            register(context, ICE_STALAGMITE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.ICE_TAPERED_BLOCK.get()), Direction.UP, stalagmiteHeight(2), 0, 2));
+            register(context, ICE_ICICLE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.ICE_TAPERED_BLOCK.get()), Direction.DOWN, stalagmiteHeight(2), 0, 2));
+            register(context, DESERT_STALACTITE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.DESERT_TAPERED_BLOCK.get()), Direction.DOWN, stalagmiteHeight(2), 0, 2));
+            register(context, CORRUPT_STALACTITE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.CORRUPT_TAPERED_BLOCK.get()), Direction.DOWN, stalagmiteHeight(2), 0, 2));
+            register(context, CRIMSON_STALACTITE, ModFeatures.STALAGMITE.get(), new StalagmiteFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_TAPERED_BLOCK.get()), Direction.DOWN, stalagmiteHeight(2), 0, 2));
             register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, ModFeatures.Configured.PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
@@ -725,6 +741,12 @@ public class ModDataProvider {
             context.register(key, new ConfiguredFeature<>(feature, config));
         }
 
+        private static IntProvider stalagmiteHeight(int max) {
+            SimpleWeightedRandomList.Builder<IntProvider> builder = SimpleWeightedRandomList.builder();
+            for (int i = 1; i <= max; i++) builder.add(ConstantInt.of(i), max + 1 - i);
+            return new WeightedListInt(builder.build());
+        }
+
         private static void ore(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
             register(context, key, Feature.ORE, new OreConfiguration(Arrays.stream(targets).toList(), size));
         }
@@ -855,6 +877,14 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> CRIMSON_CATTAILS = key("crimson_cattails");
         private static final ResourceKey<PlacedFeature> CRIMSON_EYEBALL_EMBEDDED = key("crimson_eyeball_embedded");
         private static final ResourceKey<PlacedFeature> CRIMSON_EYEBALL_STANDING = key("crimson_eyeball_standing");
+        private static final ResourceKey<PlacedFeature> DESERT_STALAGMITE = key("desert_stalagmite");
+        private static final ResourceKey<PlacedFeature> CORRUPT_STALAGMITE = key("corrupt_stalagmite");
+        private static final ResourceKey<PlacedFeature> CRIMSON_STALAGMITE = key("crimson_stalagmite");
+        private static final ResourceKey<PlacedFeature> ICE_STALAGMITE = key("ice_stalagmite");
+        private static final ResourceKey<PlacedFeature> ICE_ICICLE = key("ice_icicle");
+        private static final ResourceKey<PlacedFeature> DESERT_STALACTITE = key("desert_stalactite");
+        private static final ResourceKey<PlacedFeature> CORRUPT_STALACTITE = key("corrupt_stalactite");
+        private static final ResourceKey<PlacedFeature> CRIMSON_STALACTITE = key("crimson_stalactite");
         private static final ResourceKey<PlacedFeature> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_LIFE_CRYSTAL = key("glowing_mushroom_life_crystal");
@@ -932,6 +962,7 @@ public class ModDataProvider {
         private static final BlockPredicate air = BlockPredicate.matchesBlocks(Blocks.AIR);
         private static final EnvironmentScanPlacement targetSolidAllowedAir = EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), air, 12);
         private static final EnvironmentScanPlacement targetSturdyAllowedAir = EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.hasSturdyFace(new Vec3i(0, -1, 0), Direction.UP), air, 12);
+        private static final EnvironmentScanPlacement targetHangingAir = EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.hasSturdyFace(new Vec3i(0, 1, 0), Direction.DOWN), air, 12);
         private static final CountPlacement count2 = CountPlacement.of(2);
         private static final CountPlacement count3 = CountPlacement.of(3);
         private static final CountPlacement count4 = CountPlacement.of(4);
@@ -1048,9 +1079,16 @@ public class ModDataProvider {
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
             register(context, CRIMSON_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_DROOPING_VINE), CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.CRIMSTONE.get()), air, 12), ySpreadN1, biome);
             register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
-            // 猩红眼球：贴地表（OCEAN_FLOOR_WG 忽略植物/水，落在真正的地面上），feature 内还会校验地面平整度
             register(context, CRIMSON_EYEBALL_EMBEDDED, configured.getOrThrow(ConfiguredFeatures.CRIMSON_EYEBALL_EMBEDDED), RarityFilter.onAverageOnceEvery(6), inSquare, oceanFloorWG, biome);
             register(context, CRIMSON_EYEBALL_STANDING, configured.getOrThrow(ConfiguredFeatures.CRIMSON_EYEBALL_STANDING), RarityFilter.onAverageOnceEvery(10), inSquare, oceanFloorWG, biome);
+            register(context, DESERT_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.DESERT_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughSurface, targetSturdyAllowedAir, biome);
+            register(context, CORRUPT_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.CORRUPT_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, biome);
+            register(context, CRIMSON_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, biome);
+            register(context, ICE_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.ICE_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, biome);
+            register(context, ICE_ICICLE, configured.getOrThrow(ConfiguredFeatures.ICE_ICICLE), CountPlacement.of(28), inSquare, bottomThroughUnderground, targetHangingAir, biome);
+            register(context, DESERT_STALACTITE, configured.getOrThrow(ConfiguredFeatures.DESERT_STALACTITE), CountPlacement.of(40), inSquare, bottomThroughSurface, targetHangingAir, biome);
+            register(context, CORRUPT_STALACTITE, configured.getOrThrow(ConfiguredFeatures.CORRUPT_STALACTITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetHangingAir, biome);
+            register(context, CRIMSON_STALACTITE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_STALACTITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetHangingAir, biome);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
             register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(26), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome);
@@ -1266,7 +1304,8 @@ public class ModDataProvider {
                     PlacedFeatures.AMBER_ORE
             ), GenerationStep.Decoration.UNDERGROUND_ORES);
             addFeatures(context, "desert_ud", desert, HolderSet.direct(factory,
-                    PlacedFeatures.FALLING_SAND_TRAP, PlacedFeatures.ANTLION_EGGS
+                    PlacedFeatures.FALLING_SAND_TRAP, PlacedFeatures.ANTLION_EGGS,
+                    PlacedFeatures.DESERT_STALAGMITE, PlacedFeatures.DESERT_STALACTITE
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "desert_vd", desert, HolderSet.direct(factory,
                     PlacedFeatures.WATERLEAF
@@ -1294,7 +1333,8 @@ public class ModDataProvider {
                     PlacedFeatures.THIN_ICE_PATCH, PlacedFeatures.POWDER_SNOW_PATCH,
                     //PlacedFeatures.CAVE_CHESTS_SMALL, PlacedFeatures.UNDERGROUND_CHESTS_SMALL, todo 会与上方产生feature order cycle
                     PlacedFeatures.TUNDRA_POT,
-                    PlacedFeatures.CAVE_FROZEN_CHESTS, PlacedFeatures.UNDERGROUND_FROZEN_CHESTS
+                    PlacedFeatures.CAVE_FROZEN_CHESTS, PlacedFeatures.UNDERGROUND_FROZEN_CHESTS,
+                    PlacedFeatures.ICE_STALAGMITE, PlacedFeatures.ICE_ICICLE
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "snowy_icy_vd", snowyIcy, HolderSet.direct(factory,
                     PlacedFeatures.SHIVERTHORN
@@ -1660,6 +1700,8 @@ public class ModDataProvider {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_CATTAILS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.DEATHWEED);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CORRUPTION_POT);
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CORRUPT_STALAGMITE);
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CORRUPT_STALACTITE);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.DEMON_ALTAR_BIOME);
                     })).build());
             context.register(ModBiomes.THE_CORRUPTION_DESERT, new Biome.BiomeBuilder().temperature(2).downfall(0).hasPrecipitation(false)
@@ -1719,6 +1761,8 @@ public class ModDataProvider {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.DEATHWEED);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CRIMSON_ALTAR_BIOME);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CRIMSON_POT);
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CRIMSON_STALAGMITE);
+                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CRIMSON_STALACTITE);
                     })).build()
             );
             context.register(ModBiomes.THE_CRIMSON_DESERT, new Biome.BiomeBuilder().temperature(2).downfall(0).hasPrecipitation(false)

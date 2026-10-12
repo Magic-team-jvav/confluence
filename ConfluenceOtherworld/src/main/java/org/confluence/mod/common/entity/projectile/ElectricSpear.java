@@ -98,7 +98,7 @@ public final class ElectricSpear extends Projectile {
         }
         AABB bounds = new AABB(start, end).inflate(0.55 * UNIT * owner.getScale());
         for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, bounds)) {
-            if (!target.isAlive() || target == owner || EnemyDamageRules.isEnemy(target) || !owner.canAttack(target)
+            if (!target.isAlive() || target == owner || EnemyDamageRules.isProtectedEnemy(target) || !owner.canAttack(target)
                     || hitTargets.contains(target.getUUID())
                     || !intersectsShaft(target.getBoundingBox(), start, end, owner.getScale())) {
                 continue;

@@ -51,7 +51,7 @@ public final class MartianElectricBolt extends StraightMonsterProjectile {
     /// 敌怪阵营不互伤：电弧穿过所有同类敌怪，只命中玩家、玩家召唤物等敌对目标。
     @Override
     public boolean canHitEntity(Entity target) {
-        return !EnemyDamageRules.isEnemy(target) && super.canHitEntity(target);
+        return !EnemyDamageRules.isProtectedEnemy(target) && super.canHitEntity(target);
     }
 
     @Override

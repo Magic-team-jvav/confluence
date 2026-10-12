@@ -12,6 +12,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void english() {
+        add("confluence.configuration.enableNonSpiderModel", "Non-Spider Models");
+        add("confluence.configuration.enableNonSpiderModel.tooltip", "Replace vanilla spiders and Confluence spiders, including sand poachers, with non-spider models. Requires a game restart.");
+        add("confluence.configuration.preventEnemyFriendlyFire", "Prevent Enemy Friendly Fire");
+        add("confluence.configuration.preventEnemyFriendlyFire.tooltip", "Enable the existing enemy faction friendly-fire protection. Does not change targeting or block player, summon or environmental damage.");
         add("confluence.configuration.spawnWithoutLight", "Ignore Light for Enemy Spawns");
         add("confluence.configuration.spawnWithoutLight.tooltip", "Allows Confluence enemies to spawn without the vanilla darkness requirement.");
         add("confluence.configuration.npcAttackBlacklist", "NPC Attack Blacklist");
@@ -387,6 +391,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void chinese() {
+        add("confluence.configuration.enableNonSpiderModel", "蜘蛛和谐");
+        add("confluence.configuration.enableNonSpiderModel.tooltip", "将原版蜘蛛与汇流蜘蛛（含沙贼）替换为蜘蛛娘模型；血爬虫使用专用外观。需要重启游戏。");
+        add("confluence.configuration.preventEnemyFriendlyFire", "禁止怪物互伤");
+        add("confluence.configuration.preventEnemyFriendlyFire.tooltip", "控制现有敌怪阵营不互伤规则，不改变索敌，不阻止玩家、召唤物及环境伤害。");
         add("confluence.configuration.customTitle", "自定义标题");
 
         add("confluence.configuration.Compatibility", "兼容性机制");

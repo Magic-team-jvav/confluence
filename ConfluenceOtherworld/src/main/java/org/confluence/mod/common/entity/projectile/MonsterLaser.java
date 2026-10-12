@@ -96,10 +96,10 @@ public class MonsterLaser extends StraightMonsterProjectile {
         }
     }
 
-    /// 敌怪阵营不互伤：镭射穿过所有同类敌怪，只命中玩家、玩家召唤物等敌对目标。
+    // 开启敌怪不互伤时，镭射穿过同阵营敌怪。
     @Override
     public boolean canHitEntity(Entity target) {
-        return target != null && !EnemyDamageRules.isEnemy(target) && super.canHitEntity(target);
+        return target != null && !EnemyDamageRules.isProtectedEnemy(target) && super.canHitEntity(target);
     }
 
     @Override

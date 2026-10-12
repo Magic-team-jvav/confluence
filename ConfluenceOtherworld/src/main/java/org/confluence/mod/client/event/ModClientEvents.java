@@ -21,6 +21,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
@@ -708,7 +709,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.HERPLING.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.HERPLING.getId()));
         event.registerEntityRenderer(MonsterEntities.METEOR_HEAD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GRANITE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GRANITE_GOLEM.getId(), false, 1.3F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
+        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.SAND_POACHER.get())
+                : new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
         event.registerEntityRenderer(MonsterEntities.SHARK.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SHARK.getId(), true, 1.0F, -0.10625F));
         event.registerEntityRenderer(MonsterEntities.GRANITE_ELEMENTAL.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.GRANITE_ELEMENTAL.getId()), true, 1.0F, 0.0F).addBoneToGlow("Core"));
         event.registerEntityRenderer(MonsterEntities.ANGLER_FISH.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.ANGLER_FISH.getId(), false), true, 1.0F, -0.1875F).addBoneToGlow("light"));
@@ -755,9 +758,19 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ANTLION_CHARGER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/antlion.geo.json"), Confluence.asResource("textures/entity/antlion.png"), Confluence.asResource("animations/entity/antlion_charger.animation.json")), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION_SWARMER.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ARAPAIMA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ARAPAIMA.getId(), true, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> new ClimbingSpiderRenderer(c, "spider/black_recluse"));
+        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.BLACK_RECLUSE.get())
+                : new ClimbingSpiderRenderer(c, "spider/black_recluse"));
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
-        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
+        event.registerEntityRenderer(EntityType.SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", EntityType.SPIDER)
+                : new SpiderRenderer<>(c));
+        event.registerEntityRenderer(EntityType.CAVE_SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "cave_spider", EntityType.CAVE_SPIDER)
+                : new CaveSpiderRenderer(c));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "blood_crawler", MonsterEntities.BLOOD_CRAWLER.get())
+                : new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
         event.registerEntityRenderer(MonsterEntities.BLOOD_FEEDER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_FEEDER.getId(), true, 1.2F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.BLOOD_JELLY.get(), c -> new JellyFishRenderer(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/blood_jelly.geo.json"), Confluence.asResource("textures/entity/blood_jelly.png"), Confluence.asResource("animations/entity/blood_jelly.animation.json")), 0.0F, true));
         event.registerEntityRenderer(MonsterEntities.BLOOD_TUMORS.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_TUMORS.getId()));
@@ -798,7 +811,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ICE_ELEMENTAL.get(), c -> new FullbrightGeoRenderer<IceElemental>(c, MonsterEntities.ICE_ELEMENTAL.getId()));
         event.registerEntityRenderer(MonsterEntities.ICE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_GOLEM.getId(), false, 2.0F, -0.021875F));
         event.registerEntityRenderer(MonsterEntities.ICY_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/icy_merman.geo.json"), Confluence.asResource("textures/entity/icy_merman.png"), true), false, 1.0F, 0.015625F));
-        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> new ClimbingSpiderRenderer(c, "spider/jungle"));
+        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.JUNGLE_CREEPER.get())
+                : new ClimbingSpiderRenderer(c, "spider/jungle"));
         event.registerEntityRenderer(MonsterEntities.LITTLE_HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.LITTLE_HORNET.getId(), false), true, 1.0F, 0.1F));
         event.registerEntityRenderer(MonsterEntities.MAN_EATER.get(), c -> new SnatcherRenderer(c, MonsterEntities.MAN_EATER.getId()));
         event.registerEntityRenderer(MonsterEntities.MARTIAN_PROBE.get(), MartianProbeRenderer::new);
@@ -856,7 +871,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.VICIOUS_GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/vicious_goldfish.png"), Confluence.asResource("animations/entity/animal/goldfish.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.VICIOUS_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/vicious_penguin.png"), Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.VOODOO_DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.VOODOO_DEMON.getId(), 1.1F));
-        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> new ClimbingSpiderRenderer(c, "wall_creeper"));
+        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.WALL_CREEPER.get())
+                : new ClimbingSpiderRenderer(c, "wall_creeper"));
         event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.WANDERING_EYE_FISH.getId(), false), true, 1.2F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.WATER_BOLT_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WATER_BOLT_MIMIC.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.WRAITH.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/item/armor/wraith_armor.geo.json"), Confluence.asResource("textures/item/armor/wraith_armor.png"), false)));

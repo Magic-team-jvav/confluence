@@ -112,7 +112,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.asItem());
         tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.asItem());
         tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.asItem());
-        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.asItem(), ModBlocks.POO.asItem());
+        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.asItem(), NatureBlocks.POO.asItem());
         tag(ModTags.Items.EXTRACT_SAND).add(Items.OBSIDIAN);
         tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST, NatureBlocks.JUNGLE_HIVE_BLOCK.asItem());
         tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.asItem(), NatureBlocks.NEON_MOSS.asItem(), NatureBlocks.ARGON_MOSS.asItem(), NatureBlocks.XENON_MOSS.asItem(), NatureBlocks.KRYPTON_MOSS.asItem(), NatureBlocks.LAVA_MOSS.asItem());

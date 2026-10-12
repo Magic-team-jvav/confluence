@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -111,7 +110,7 @@ public class ModBoneMealItem extends CustomRarityItem {
             };
         } else {
             if ("crimson".equals(blockType) || "corrupt".equals(blockType)) {
-                blockState = ModBlocks.DEATHWEED.get().defaultBlockState();
+                blockState = NatureBlocks.DEATHWEED.get().defaultBlockState();
             }
         }
         return blockState;

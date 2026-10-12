@@ -46,6 +46,7 @@ import static net.minecraft.world.level.block.Blocks.STONE;
 public final class ModBlocks {
     public static void init(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
+        NatureBlocks.BLOCK_ENTITIES.register(eventBus);
         ChestBlocks.init();
         CrateBlocks.init();
         DecorativeBlocks.init();
@@ -76,18 +77,6 @@ public final class ModBlocks {
     public static final PortDeferredBlock<LiquidBlock> SHIMMER = registerWithoutItem("shimmer", () -> new EmptyPickupLiquidBlock(ModFluids.SHIMMER.fluid()::get, BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_PINK).lightLevel(blockState -> 10)));
     public static final PortDeferredBlock<AetheriumCauldronBlock> AETHERIUM_CAULDRON = registerWithItem("aetherium_cauldron", () -> new AetheriumCauldronBlock(BlockBehaviour.Properties.copy(Blocks.WATER_CAULDRON)));
     public static final PortDeferredBlock<HoneyCauldronBlock> HONEY_CAULDRON = registerWithItem("honey_cauldron", () -> new HoneyCauldronBlock(BlockBehaviour.Properties.copy(Blocks.WATER_CAULDRON)));
-    // 草药
-    public static final PortDeferredBlock<BaseHerbBlock> WATERLEAF = registerWithoutItem("waterleaf", Waterleaf::new); // 幌菊
-    public static final PortDeferredBlock<Fireblossom> FIREBLOSSOM = registerWithoutItem("fireblossom", Fireblossom::new); // 火焰花
-    public static final PortDeferredBlock<Moonglow> MOONGLOW = registerWithoutItem("moonglow", Moonglow::new); // 月光草
-    public static final PortDeferredBlock<BaseHerbBlock> BLINKROOT = registerWithoutItem("blinkroot", Blinkroot::new); // 闪耀根
-    public static final PortDeferredBlock<BaseHerbBlock> SHIVERTHORN = registerWithoutItem("shiverthorn", ShiveringThorn::new); // 寒颤棘
-    public static final PortDeferredBlock<BaseHerbBlock> DAYBLOOM = registerWithoutItem("daybloom", Daybloom::new); // 太阳花
-    public static final PortDeferredBlock<DeathWeed> DEATHWEED = registerWithoutItem("deathweed", DeathWeed::new); // 死亡草
-    public static final RegistryObject<BlockEntityType<BaseHerbBlock.BEntity>> HERBS_ENTITY = BLOCK_ENTITIES.register("herbs_entity", () -> BlockEntityType.Builder.of(BaseHerbBlock.BEntity::new,
-            WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(DSL.remainderType()));
-
-    public static final PortDeferredBlock<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.copy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     public static final PortDeferredBlock<BaseRopeBlock> ROPE = registerWithItem("rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BROWN).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
     public static final PortDeferredBlock<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.GREEN).sound(SoundType.GRASS).noCollission().instabreak()), BaseRopeBlock.BItem::new);

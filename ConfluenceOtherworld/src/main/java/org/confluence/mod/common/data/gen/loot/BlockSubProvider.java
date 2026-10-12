@@ -767,13 +767,13 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         // 所有雕像均有对应方块物品；由注册表批量生成可同时覆盖普通雕像与行为雕像。
         StatueBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
         // 草药
-        addHerbDrop(ModBlocks.WATERLEAF.get(), MaterialItems.WATERLEAF.get(), FoodItems.WATERLEAF_SEED.get());
-        addHerbDrop(ModBlocks.FIREBLOSSOM.get(), MaterialItems.FIREBLOSSOM.get(), FoodItems.FIREBLOSSOM_SEED.get());
-        addHerbDrop(ModBlocks.MOONGLOW.get(), MaterialItems.MOONGLOW.get(), FoodItems.MOONGLOW_SEED.get());
-        addHerbDrop(ModBlocks.BLINKROOT.get(), MaterialItems.BLINKROOT.get(), FoodItems.BLINKROOT_SEED.get());
-        addHerbDrop(ModBlocks.SHIVERTHORN.get(), MaterialItems.SHIVERTHORN.get(), FoodItems.SHIVERTHORN_SEED.get());
-        addHerbDrop(ModBlocks.DAYBLOOM.get(), MaterialItems.DAYBLOOM.get(), FoodItems.DAYBLOOM_SEED.get());
-        addHerbDrop(ModBlocks.DEATHWEED.get(), MaterialItems.DEATHWEED.get(), FoodItems.DEATHWEED_SEED.get());
+        addHerbDrop(NatureBlocks.WATERLEAF.get(), MaterialItems.WATERLEAF.get(), FoodItems.WATERLEAF_SEED.get());
+        addHerbDrop(NatureBlocks.FIREBLOSSOM.get(), MaterialItems.FIREBLOSSOM.get(), FoodItems.FIREBLOSSOM_SEED.get());
+        addHerbDrop(NatureBlocks.MOONGLOW.get(), MaterialItems.MOONGLOW.get(), FoodItems.MOONGLOW_SEED.get());
+        addHerbDrop(NatureBlocks.BLINKROOT.get(), MaterialItems.BLINKROOT.get(), FoodItems.BLINKROOT_SEED.get());
+        addHerbDrop(NatureBlocks.SHIVERTHORN.get(), MaterialItems.SHIVERTHORN.get(), FoodItems.SHIVERTHORN_SEED.get());
+        addHerbDrop(NatureBlocks.DAYBLOOM.get(), MaterialItems.DAYBLOOM.get(), FoodItems.DAYBLOOM_SEED.get());
+        addHerbDrop(NatureBlocks.DEATHWEED.get(), MaterialItems.DEATHWEED.get(), FoodItems.DEATHWEED_SEED.get());
 
         dropOther(NatureBlocks.VICIOUS_MUSHROOM.get(), MaterialItems.VICIOUS_MUSHROOM.get());
         dropOther(NatureBlocks.VILE_MUSHROOM.get(), MaterialItems.VILE_MUSHROOM.get());

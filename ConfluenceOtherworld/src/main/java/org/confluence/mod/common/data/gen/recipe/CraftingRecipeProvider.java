@@ -1000,7 +1000,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
 //        shapeless(writer, ConsumableItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
 
-        shapeless(writer, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(ModBlocks.POO));
+        shapeless(writer, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(NatureBlocks.POO));
 
         shapeless(writer, Items.BLAZE_ROD.getDefaultInstance(), AmountIngredient.of(2, Items.BLAZE_POWDER));
 

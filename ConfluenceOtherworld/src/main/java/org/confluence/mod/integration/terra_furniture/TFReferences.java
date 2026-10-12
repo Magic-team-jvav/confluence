@@ -8,7 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.terra_curio.common.init.TCSoundEvents;
 import org.confluence.terra_furniture.references.TFConfluenceRefs;
 
@@ -24,7 +24,7 @@ public class TFReferences {
                 // Duration is tick, so duration / 20 / 60 is minutes. Then, minutes * level is what Terraria do.
                 // Don't worry about spare time, terraria is the same.
                 int foodTime = instance.duration / 1200 * (instance.amplifier + 1);
-                SimpleContainer container = new SimpleContainer(ModBlocks.POO.toStack(foodTime));
+                SimpleContainer container = new SimpleContainer(NatureBlocks.POO.toStack(foodTime));
                 Containers.dropContents(serverLevel, pos, container);
                 ClientboundSoundPacket packet = new ClientboundSoundPacket(
                         TCSoundEvents.FART_SOUND.getHolder().orElseThrow(),

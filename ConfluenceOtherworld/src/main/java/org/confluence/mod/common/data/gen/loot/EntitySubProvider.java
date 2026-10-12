@@ -1211,7 +1211,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModBlocks.POO).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        .add(LootItem.lootTableItem(NatureBlocks.POO).apply(LootingBonusCountFunction.lootingBonusCount()))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 // 天使雕像

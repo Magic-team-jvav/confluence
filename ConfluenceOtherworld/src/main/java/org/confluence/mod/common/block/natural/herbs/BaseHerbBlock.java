@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,14 +48,14 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     public static final Supplier<Map<Block, Set<Block>>> HERB_GROUND_MAP = Suppliers.memoize(() -> new ImmutableMap.Builder<Block, Set<Block>>()
-            .put(ModBlocks.DAYBLOOM.get(), Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
-            .put(ModBlocks.MOONGLOW.get(), Set.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, NatureBlocks.JUNGLE_GRASS_BLOCK.get()))
+            .put(NatureBlocks.DAYBLOOM.get(), Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
+            .put(NatureBlocks.MOONGLOW.get(), Set.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, NatureBlocks.JUNGLE_GRASS_BLOCK.get()))
             .put(NatureBlocks.STELLAR_BLOSSOM.get(), Set.of(NatureBlocks.CLOUD_BLOCK.get(), NatureBlocks.RAIN_CLOUD_BLOCK.get()))
-            .put(ModBlocks.SHIVERTHORN.get(), Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))
-            .put(ModBlocks.BLINKROOT.get(), Set.of(Blocks.DIRT, Blocks.MUD, Blocks.STONE, Blocks.DEEPSLATE))
-            .put(ModBlocks.DEATHWEED.get(), Set.of(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.EBONSTONE.get(), NatureBlocks.CRIMSON_GRASS_BLOCK.get(), NatureBlocks.CRIMSTONE.get()))
-            .put(ModBlocks.WATERLEAF.get(), Set.of(Blocks.SAND, Blocks.RED_SAND, NatureBlocks.PEARLSAND.get()))
-            .put(ModBlocks.FIREBLOSSOM.get(), Set.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get()))
+            .put(NatureBlocks.SHIVERTHORN.get(), Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))
+            .put(NatureBlocks.BLINKROOT.get(), Set.of(Blocks.DIRT, Blocks.MUD, Blocks.STONE, Blocks.DEEPSLATE))
+            .put(NatureBlocks.DEATHWEED.get(), Set.of(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.EBONSTONE.get(), NatureBlocks.CRIMSON_GRASS_BLOCK.get(), NatureBlocks.CRIMSTONE.get()))
+            .put(NatureBlocks.WATERLEAF.get(), Set.of(Blocks.SAND, Blocks.RED_SAND, NatureBlocks.PEARLSAND.get()))
+            .put(NatureBlocks.FIREBLOSSOM.get(), Set.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get()))
             .build());
 
     public BaseHerbBlock() {
@@ -133,7 +132,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return level.isClientSide ? null : LibUtils.getTicker(type, ModBlocks.HERBS_ENTITY.get(), (level1, pos, state1, entity) -> {
+        return level.isClientSide ? null : LibUtils.getTicker(type, NatureBlocks.HERBS_ENTITY.get(), (level1, pos, state1, entity) -> {
             if (level1.getGameTime() % 20 == 2) { // 每秒判断能不能开花
                 int age = getAge(state1);
                 if (age < MAX_AGE - 1) return;
@@ -150,7 +149,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
 
     public static class BEntity extends BlockEntity {
         public BEntity(BlockPos pos, BlockState state) {
-            super(ModBlocks.HERBS_ENTITY.get(), pos, state);
+            super(NatureBlocks.HERBS_ENTITY.get(), pos, state);
         }
     }
 }

@@ -358,7 +358,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(writer, PotionItems.DANGERSENSE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(Items.COBWEB));
         alchemyTable(writer, PotionItems.ENDURANCE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.ARMORED_CAVE_FISH), Ingredient.of(MaterialItems.BLINKROOT));
         alchemyTable(writer, PotionItems.FEATHERFALL_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.FEATHER));
-        alchemyTable(writer, ConsumableItems.FERTILIZER.toStack(), Ingredient.of(ModBlocks.POO.get()), AmountIngredient.of(3, NatureBlocks.ASH_BLOCK), AmountIngredient.of(3, Items.BONE));
+        alchemyTable(writer, ConsumableItems.FERTILIZER.toStack(), Ingredient.of(NatureBlocks.POO.get()), AmountIngredient.of(3, NatureBlocks.ASH_BLOCK), AmountIngredient.of(3, Items.BONE));
         alchemyTable(writer, PotionItems.FISHING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(DecorativeBlocks.CRISPY_HONEY_BLOCK), Ingredient.of(MaterialItems.WATERLEAF));
         alchemyTable(writer, PotionItems.FLIPPER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(MaterialItems.WATERLEAF));
         alchemyTable(writer, PotionItems.GILLS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(ModTags.Items.CORALS));

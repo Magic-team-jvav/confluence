@@ -15,7 +15,7 @@ import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.ILevelRenderer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -84,7 +84,7 @@ public abstract class LevelRendererMixin implements ILevelRenderer {
 
     @ModifyReturnValue(method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", at = @At("RETURN"))
     private static int enhanceLightColor(int original, @Local(argsOnly = true) BlockState state) {
-        if (state.is(ModBlocks.SHIVERTHORN.get()) && state.getValue(BaseHerbBlock.AGE) == 2) {
+        if (state.is(NatureBlocks.SHIVERTHORN.get()) && state.getValue(BaseHerbBlock.AGE) == 2) {
             int block = (original >> 4) & 0xf;
             if (block < 6) {
                 original &= ~0xF0;

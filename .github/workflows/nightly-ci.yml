@@ -1,70 +1,123 @@
-permissions:
-  contents: write
-
 name: Nightly Build
 on:
   workflow_dispatch:
   schedule:
     - cron: "30 21 * * *"
 
+permissions:
+  contents: read
+
+concurrency:
+  group: nightly-1.21.1
+  cancel-in-progress: false
+
+env:
+  TZ: UTC
+  NIGHTLY_TAG: nightly-1.21.1
+
 jobs:
   build:
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: bash
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: refs/heads/neoforge-dev/1.21.1
+          ref: neoforge-dev/1.21.1
           submodules: recursive
-          fetch-depth: 0
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: temurin
           java-version: 21
-          cache: "gradle"
 
-      - name: Prepare Permissions and Assets
-        run: |
-          find . -name "gradlew" -exec chmod +x {} +
-          git submodule foreach './gradlew runData'
-          cd ./ConfluenceOtherworld && ./gradlew runData
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
 
-      - name: Build Confluence
-        working-directory: ./ConfluenceOtherworld
+      - name: Prepare CI environment
         run: |
           chmod +x gradlew
-          ./gradlew build
+          # Local development proxies are unavailable on GitHub runners.
+          find . -name gradle.properties -not -path '*/.gradle/*' -print0 |
+            xargs -0 -r sed -i -E '/^[[:space:]]*systemProp\.(http|https|socks)\.proxy(Host|Port|User|Password)[[:space:]]*=/d'
 
-      - name: Get version with date suffix
-        id: version
-        working-directory: ./ConfluenceOtherworld
+      - name: Generate assets
         run: |
-          if [ -f "gradle.properties" ]; then
-            BASE_VERSION=$(grep -E "^(mod_)?version\s*=" gradle.properties | head -1 | cut -d'=' -f2 | tr -d ' \r\n' | sed 's/-.*//')
-          else
-            BASE_VERSION="1.2.0"
+          ./gradlew :Confluence-Magic-Lib:runData :TerraCurio:runData :TerraFurniture:runData :ConfluenceOtherworld:runData \
+            --no-daemon --no-configuration-cache --console=plain --stacktrace
+
+      - name: Build Confluence
+        run: |
+          ./gradlew :ConfluenceOtherworld:build :ConfluenceOtherworld:jarJar \
+            --no-daemon --no-configuration-cache --console=plain --stacktrace
+
+      - name: Select release artifacts
+        id: artifacts
+        run: |
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import shutil
+          import zipfile
+
+          output = pathlib.Path("nightly-artifacts")
+          output.mkdir()
+          jars = []
+          for path in pathlib.Path("ConfluenceOtherworld/build/libs").glob("*.jar"):
+              if path.name.endswith(("-sources.jar", "-javadoc.jar", "-dev.jar")):
+                  continue
+              with zipfile.ZipFile(path) as jar:
+                  names = set(jar.namelist())
+                  if "META-INF/jarjar/metadata.json" in names and "META-INF/neoforge.mods.toml" in names:
+                      jars.append(path)
+          if len(jars) != 1:
+              raise SystemExit(f"Expected one distributable jar with embedded dependencies, found: {jars}")
+          path = jars[0]
+          shutil.copy2(path, output / path.name)
+          with open(os.environ["GITHUB_OUTPUT"], "a") as stream:
+              stream.write(f"title=Nightly 1.21.1 - {path.stem}\n")
+          PY
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: confluence-1.21.1-nightly
+          path: nightly-artifacts/*.jar
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Publish nightly release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TITLE: ${{ steps.artifacts.outputs.title }}
+        run: |
+          # Validate release lookup failures before changing the existing release.
+          gh api --paginate --slurp "repos/$GH_REPO/releases" > releases.json
+          release_id=$(jq -r --arg tag "$NIGHTLY_TAG" '.[][] | select(.tag_name == $tag) | .id' releases.json)
+          if [[ -n "$release_id" ]]; then
+            gh release delete "$NIGHTLY_TAG" --cleanup-tag --yes
           fi
-          DATE_SUFFIX=$(date +%y%m%d)
-          FULL_VERSION="${BASE_VERSION}-alpha-${DATE_SUFFIX}"
-          echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
+          gh release create "$NIGHTLY_TAG" nightly-artifacts/*.jar \
+            --target "$(git rev-parse HEAD)" \
+            --title "$RELEASE_TITLE" --prerelease --latest=false \
+            --notes "Built from $(git rev-parse HEAD). Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
-      - name: Cleanup Old Nightly Release
-        uses: dev-drprasad/delete-tag-and-release@v1.1
+      - name: Upload failure logs
+        if: failure()
+        uses: actions/upload-artifact@v4
         with:
-          delete_release: true
-          tag_name: nightly
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload to Nightly Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ./ConfluenceOtherworld/build/libs/*.jar
-          tag_name: nightly
-          name: "Nightly Build - ${{ steps.version.outputs.FULL_VERSION }}"
-          prerelease: true
-          make_latest: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: confluence-1.21.1-nightly-logs
+          path: |
+            **/run/logs/*.log
+            **/build/reports/
+          if-no-files-found: ignore
+          retention-days: 7

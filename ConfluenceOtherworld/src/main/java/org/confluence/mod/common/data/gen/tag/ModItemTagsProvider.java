@@ -1514,7 +1514,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             death.add(deathChest.asItem());
         }
 
-        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).add(
+        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).addTags(ModTags.Items.BULLET).add(
+                GunItems.DUMMY_BULLET.get(),
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );

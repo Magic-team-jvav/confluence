@@ -22,6 +22,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.npcAttackBlacklist.tooltip", "Enter a mod ID, an entity ID such as minecraft:zombie, a tag such as #forge:bosses, or regex: followed by a full-ID pattern");
         add("confluence.configuration.indicatorMode.particle", "Particle Info");
         add("confluence.configuration.indicatorMode.virtual", "Virtual Info");
+        add("confluence.configuration.indicatorMode.off", "Off");
         add("confluence.configuration.AutomaticWeaponUse", "Automatic Weapon Use");
         add("confluence.configuration.AutomaticWeaponUse.tooltip", "Controls which weapon categories automatically repeat while their input is held");
         add("confluence.configuration.autoSwingAllSwords", "Auto Swing All Swords");
@@ -285,8 +286,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goreEffect.tooltip", "The gore effect will be specially adapted to Conflux and Vanilla entities, while other mod entities will use a generic method with no guaranteed effect.");
         add("confluence.configuration.damageIndicator", "Damage Indicator");
         add("confluence.configuration.healIndicator", "Heal Indicator");
-        add("confluence.configuration.damageIndicator.tooltip", "How damage numbers are displayed: particle indicator or virtual info");
-        add("confluence.configuration.healIndicator.tooltip", "How heal numbers are displayed: particle indicator or virtual info");
+        add("confluence.configuration.damageIndicator.tooltip", "How damage numbers are displayed: particle indicator, virtual info, or off");
+        add("confluence.configuration.healIndicator.tooltip", "How heal numbers are displayed: particle indicator, virtual info, or off");
 
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
@@ -650,10 +651,11 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goreEffect.tooltip", "肢解效果会对汇流生物和原版生物特别适配，其他Mod的生物使用通用的方法，不保证效果。");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
         add("confluence.configuration.healIndicator", "治疗数值显示");
-        add("confluence.configuration.damageIndicator.tooltip", "伤害数值的显示方式：粒子信息或虚拟信息");
-        add("confluence.configuration.healIndicator.tooltip", "治疗数值的显示方式：粒子信息或虚拟信息");
+        add("confluence.configuration.damageIndicator.tooltip", "伤害数值的显示方式：粒子信息、虚拟信息或关闭");
+        add("confluence.configuration.healIndicator.tooltip", "治疗数值的显示方式：粒子信息、虚拟信息或关闭");
         add("confluence.configuration.indicatorMode.particle", "粒子信息");
         add("confluence.configuration.indicatorMode.virtual", "虚拟信息");
+        add("confluence.configuration.indicatorMode.off", "关闭");
 
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");

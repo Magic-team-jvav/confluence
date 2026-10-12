@@ -1121,7 +1121,7 @@ public class ModDataProvider {
             register(context, CRIMSON_EYEBALL_EMBEDDED, configured.getOrThrow(ConfiguredFeatures.CRIMSON_EYEBALL_EMBEDDED), RarityFilter.onAverageOnceEvery(6), inSquare, oceanFloorWG, biome);
             register(context, CRIMSON_EYEBALL_STANDING, configured.getOrThrow(ConfiguredFeatures.CRIMSON_EYEBALL_STANDING), RarityFilter.onAverageOnceEvery(10), inSquare, oceanFloorWG, biome);
 
-            register(context, DESERT_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.DESERT_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughSurface, targetSturdyAllowedAir, biome);
+            register(context, DESERT_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.DESERT_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughSurface, yRange(-64, 39), targetSturdyAllowedAir, biome);
             register(context, CORRUPT_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.CORRUPT_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, biome);
             register(context, CRIMSON_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, biome);
             register(context, ICE_STALAGMITE, configured.getOrThrow(ConfiguredFeatures.ICE_STALAGMITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, biome);

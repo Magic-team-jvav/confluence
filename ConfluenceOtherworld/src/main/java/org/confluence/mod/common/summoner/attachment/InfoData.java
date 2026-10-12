@@ -37,8 +37,8 @@ public final class InfoData {
         InfoData infoData = player.level().getData(SummonerAttachmentTypes.INFO);
         Vec3 eye = player.getEyePosition();
         for (SummonerBatchedInfoPayload.Number entry : numbers) {
-            /// 粒子模式不接收虚拟数值，两种显示方式不能重复输出。
-            if ((entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator).isParticle())
+            /// 只有虚拟模式才接收数值：粒子模式的数字由原版指示粒子显示，关闭模式两者都不显示。
+            if (!(entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator).isVirtual())
                 continue;
             NumberInfo info = new NumberInfo(entry.type(), entry.amount(), entry.pos(), entry.velocity());
             if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {

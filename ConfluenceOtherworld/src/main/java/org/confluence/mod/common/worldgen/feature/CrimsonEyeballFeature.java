@@ -21,14 +21,14 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 /// - {@code embedded = false}：立在地表的实心立方体眼球，尺寸 2x2 ~ 5x5（越小越常见），瞳孔面朝随机的一个水平方向，
 ///   其余五面与内部都填眼白块。瞳孔大小跟随眼球尺寸：2x2 以单块为主，3x3 为单块 / 双块 / 2x2，
 ///   4x4 保底 2x2，5x5 保底 3x3。眼球底部会长出分叉的猩红石「血管」，贴着地面爬开并向外铺成底座，
-///   而且整体比地面高出一格；4x4 / 5x5 的巨型眼球还有较低概率内部含水、在非正面破一个洞让水流出来。
+///   而且整体比地面高出一格；4x4 / 5x5 的巨型眼球还有较低概率内部含水（水只封在眼球里，不在表面破洞）。
 public class CrimsonEyeballFeature extends Feature<CrimsonEyeballFeature.Config> {
     /// 站立眼球的尺寸权重（下标 = 尺寸 - 2）：2x2 40%、3x3 30%、4x4 20%、5x5 10%
     private static final int[] SIZE_WEIGHTS = {4, 3, 2, 1};
     /// 嵌地眼球的 XZ 面边长与层数
     private static final int EMBEDDED_SIZE = 3;
     private static final int EMBEDDED_LAYERS = 2;
-    /// 内部含水 / 破洞的巨型眼球尺寸门槛
+    /// 内部含水的巨型眼球尺寸门槛
     private static final int GIANT_SIZE = 4;
     /// 底座向外铺开的最大格数
     private static final int MAX_WRAP_DEPTH = 3;
@@ -126,10 +126,10 @@ public class CrimsonEyeballFeature extends Feature<CrimsonEyeballFeature.Config>
             placeVeins(level, base, size, random, vein);
             wrapBase(level, base, size, random, vein);
         }
-        // 巨型眼球内部含水 + 非正面破损（权重更低）
+        // 巨型眼球内部含水（权重更低），水只封在眼球内部，不在表面破洞
         if (size >= GIANT_SIZE && random.nextFloat() < config.waterChance()) {
             BlockState fluid = config.fluid().getState(random, base);
-            placeWaterAndBreach(level, base, size, facing, random, fluid, vein);
+            fillInteriorWater(level, base, size, random, fluid);
         }
         return true;
     }
@@ -273,9 +273,8 @@ public class CrimsonEyeballFeature extends Feature<CrimsonEyeballFeature.Config>
         }
     }
 
-    /// 巨型眼球内部灌一点水，并在非正面（不是瞳孔面）破一个洞，让水能流出来
-    private static void placeWaterAndBreach(WorldGenLevel level, BlockPos base, int size, Direction facing,
-                                            RandomSource random, BlockState fluid, BlockState vein) {
+    /// 巨型眼球内部灌一点水：从眼球底面往上填到随机高度，四面都由眼白块包住，水不会外流
+    private static void fillInteriorWater(WorldGenLevel level, BlockPos base, int size, RandomSource random, BlockState fluid) {
         int waterTop = 1 + random.nextInt(size - 2);
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         for (int dx = 1; dx < size - 1; dx++) {
@@ -285,25 +284,6 @@ public class CrimsonEyeballFeature extends Feature<CrimsonEyeballFeature.Config>
                     level.setBlock(pos, fluid, 3);
                 }
             }
-        }
-        Direction[] sides = new Direction[3];
-        int index = 0;
-        for (Direction direction : Direction.Plane.HORIZONTAL) {
-            if (direction != facing) sides[index++] = direction;
-        }
-        Direction breachFace = sides[random.nextInt(sides.length)];
-        // 水面高于底部时，洞开在底座之上，水才流得出去
-        int minV = waterTop > 1 ? 1 : 0;
-        int holes = 1 + random.nextInt(2);
-        for (int i = 0; i < holes; i++) {
-            int u = 1 + random.nextInt(size - 2);
-            int v = minV + random.nextInt(waterTop - minV);
-            BlockPos hole = facePos(pos, base, size, breachFace, u, v);
-            BlockPos outward = hole.relative(breachFace);
-            if (level.getBlockState(outward).is(vein.getBlock())) {
-                level.setBlock(outward, Blocks.AIR.defaultBlockState(), 3); // 洞口外面也空出来，底座才不会把水堵在眼球里
-            }
-            level.setBlock(hole, Blocks.AIR.defaultBlockState(), 3);
         }
     }
 

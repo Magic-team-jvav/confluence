@@ -6,18 +6,18 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.lib.common.LibEffects;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 
-import java.util.function.IntFunction;
 import java.util.Objects;
+import java.util.function.IntFunction;
 
 /// 通用敌对镭射弹幕。
 ///
@@ -104,10 +104,10 @@ public class MonsterLaser extends StraightMonsterProjectile {
         }
     }
 
-    /// 敌怪阵营不互伤：镭射穿过所有同类敌怪，只命中玩家、玩家召唤物等敌对目标。
+    // 开启敌怪不互伤时，镭射穿过同阵营敌怪。
     @Override
     public boolean canHitEntity(Entity target) {
-        return target != null && !EnemyDamageRules.isEnemy(target) && super.canHitEntity(target);
+        return target != null && !EnemyDamageRules.isProtectedEnemy(target) && super.canHitEntity(target);
     }
 
     @Override

@@ -12,6 +12,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void english() {
+        add("confluence.configuration.preventEnemyFriendlyFire", "Prevent Enemy Friendly Fire");
+        add("confluence.configuration.preventEnemyFriendlyFire.tooltip", "Enable the existing enemy faction friendly-fire protection. Does not change targeting or block player, summon or environmental damage.");
         // configuration
         add("confluence.screen.soul_overview.center", "Soul Overview Screen: Center");
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
@@ -35,7 +37,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts");
         add("confluence.configuration.sellPriceDisplay", "Sell Price Display");
         add("confluence.configuration.enableNonSpiderModel", "Spider Harmonization");
-        add("confluence.configuration.enableNonSpiderModel.tooltip", "Replace spiders, cave spiders and blood crawlers with the Terra Entity alternative model. Requires a game restart.");
+        add("confluence.configuration.enableNonSpiderModel.tooltip", "Replace vanilla spiders and Confluence spiders, including sand poachers, with non-spider models. Requires a game restart.");
         add("confluence.configuration.weaponTooltipBaseStats", "Show Base Weapon Stats");
         add("confluence.configuration.weaponTooltipBaseStats.tooltip", "Shows the weapon's own damage and critical chance, including its prefix, instead of bonuses from player equipment and effects. Disabled by default. Attack speed always follows the actual use behavior.");
         add("confluence.configuration.sellPriceDisplay.tooltip", "Toggles the timing to see the price of the item when it is sold to NPCs");
@@ -359,6 +361,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void chinese() {
+        add("confluence.configuration.preventEnemyFriendlyFire", "禁止怪物互伤");
+        add("confluence.configuration.preventEnemyFriendlyFire.tooltip", "控制现有敌怪阵营不互伤规则，不改变索敌，不阻止玩家、召唤物及环境伤害。");
         add("confluence.screen.soul_overview.center", "灵魂技能总览界面.居中");
         add("confluence.configuration.WeaponInput", "武器输入");
         add("confluence.configuration.WeaponInput.button", "武器输入");
@@ -392,7 +396,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.instantlyHardmodeConversion.tooltip", "启用后，转换至困难模式的过程将会加快并以完全卡顿的形式进行，请评估电脑性能斟酌打开此配置");
         add("confluence.configuration.sellPriceDisplay", "物品售价显示");
         add("confluence.configuration.enableNonSpiderModel", "蜘蛛和谐");
-        add("confluence.configuration.enableNonSpiderModel.tooltip", "将蜘蛛、洞穴蜘蛛和血爬虫替换为泰拉生物的和谐模型，需要重启游戏。");
+        add("confluence.configuration.enableNonSpiderModel.tooltip", "将原版蜘蛛与汇流蜘蛛（含沙贼）替换为蜘蛛娘模型；血爬虫使用专用外观。需要重启游戏。");
         add("confluence.configuration.weaponTooltipBaseStats", "显示武器基础数值");
         add("confluence.configuration.weaponTooltipBaseStats.tooltip", "开启后显示武器自身的伤害与暴击率（保留词缀），不计玩家装备和状态效果加成；默认关闭，显示加成后的数值。攻击速度始终按实际使用行为显示。");
         add("confluence.configuration.sellPriceDisplay.tooltip", "切换查看该物品出售于NPC时的价格的时机");

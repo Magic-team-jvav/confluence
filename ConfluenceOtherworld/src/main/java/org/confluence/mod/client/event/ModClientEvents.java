@@ -852,9 +852,15 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GRANITE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GRANITE_GOLEM.getId(), false, 1.3F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.HOPLITE.get(), c -> new GeoNormalRenderer<>(c, new HopliteModel(c)));
         event.registerEntityRenderer(MonsterEntities.DESERT_SPIRIT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DESERT_SPIRIT.getId(), false, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> new ClimbingSpiderRenderer(c, "wall_creeper"));
-        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> new ClimbingSpiderRenderer(c, "spider/black_recluse"));
-        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> new ClimbingSpiderRenderer(c, "spider/jungle"));
+        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.WALL_CREEPER.get())
+                : new ClimbingSpiderRenderer(c, "wall_creeper"));
+        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.BLACK_RECLUSE.get())
+                : new ClimbingSpiderRenderer(c, "spider/black_recluse"));
+        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.JUNGLE_CREEPER.get())
+                : new ClimbingSpiderRenderer(c, "spider/jungle"));
         event.registerEntityRenderer(MonsterEntities.WATER_BOLT_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WATER_BOLT_MIMIC.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.RUNE_WIZARD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.RUNE_WIZARD.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ANGRY_DANDELION.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANGRY_DANDELION.getId(), false, 1.0F, 0.0F));
@@ -926,7 +932,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, new NymphModel(MonsterEntities.NYMPH.getId())));
-        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
+        event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
+                ? new ReplacedSpiderRenderer<>(c, "spider", MonsterEntities.SAND_POACHER.get())
+                : new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
         // 水怪
         event.registerEntityRenderer(MonsterEntities.PIRANHA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRANHA.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ANGLER_FISH.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.ANGLER_FISH.getId(), false), true, 1.0F, -0.1875F).addBoneToGlow("light"));

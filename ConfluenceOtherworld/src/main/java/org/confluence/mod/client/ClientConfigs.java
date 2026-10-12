@@ -177,7 +177,7 @@ public final class ClientConfigs {
 
     public static void register(FMLJavaModLoadingContext context) {
         Builder builder = new Builder();
-        ENABLE_NON_SPIDER_MODEL = builder.comment("Replace spiders with the Terra Entity alternative model. Requires a game restart.")
+        ENABLE_NON_SPIDER_MODEL = builder.comment("Replace spiders and sand poachers with non-spider models. Requires a game restart.")
                 .define("enableNonSpiderModel", false);
 
         SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);

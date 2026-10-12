@@ -33,6 +33,7 @@ public final class CommonConfigs {
     public static BooleanValue TERRA_STYLE_EXPLOSION;
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
+    public static BooleanValue PREVENT_ENEMY_FRIENDLY_FIRE;
     public static BooleanValue ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES;
     public static BooleanValue ENHANCE_ALL_MONSTER;
     public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH;
@@ -212,6 +213,8 @@ public final class CommonConfigs {
             TERRA_STYLE_EXPLOSION = builder.define("terraStyleExplosion", true);
             TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
             NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
+            PREVENT_ENEMY_FRIENDLY_FIRE = builder.comment("Enable the existing enemy faction friendly-fire protection. Does not change enemy targeting.")
+                    .define("preventEnemyFriendlyFire", true);
             ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
             DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
             STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);

@@ -29,6 +29,9 @@ public final class ModConnectives {
         registerWeighted(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "frozen_gel_block", 2), 5, 1);
         register(FunctionalBlocks.ECHO_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "echo_block"));
 
+        register(NatureBlocks.PUPIL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "pupil_block"));
+        register(NatureBlocks.EYEBALL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "eyeball_block"));
+
         register(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "chiseled_palm_planks"));
         register(DecorativeBlocks.GRANITE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "granite_column"));
         register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "marble_column"));

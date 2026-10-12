@@ -640,7 +640,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
-        mineableWithHoe.add(FLOATING_WHEAT_BALE.get(), SCULK_TRAP.get());
+        mineableWithHoe.add(
+                FLOATING_WHEAT_BALE.get(),
+                SCULK_TRAP.get(),
+                PUPIL_BLOCK.get(),
+                EYEBALL_BLOCK.get()
+        );
         CrateBlocks.BLOCKS.getEntries().forEach(block -> mineableWithHoe.add(block.get()));
 
         tag(BlockTags.PLANKS).add(
@@ -1024,7 +1029,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 VOID_GRASS_BLOCK.get(),
                 INVERSE_GRASS_BLOCK.get(),
                 MOONLIT_GRASS_BLOCK.get(),
-                END_DIRT.get()
+                END_DIRT.get(),
+
+                PUPIL_BLOCK.get(),
+                EYEBALL_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_METEORITE,

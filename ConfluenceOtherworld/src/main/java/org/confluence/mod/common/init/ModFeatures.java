@@ -72,6 +72,7 @@ public final class ModFeatures {
     public static final RegistryObject<GemstoneCaveFeature> GEMSTONE_CAVE = FEATURES.register("gemstone_cave", () -> new GemstoneCaveFeature(GemstoneCaveFeature.Config.CODEC));
     public static final RegistryObject<DetonatorFeature> DETONATOR_FEATURE = FEATURES.register("detonator", () -> new DetonatorFeature(DetonatorFeature.Config.CODEC));
     public static final RegistryObject<PlantPatchFeature> PLANT_PATCH = FEATURES.register("plant_patch", () -> new PlantPatchFeature(PlantPatchFeature.Config.CODEC)); // todo 使用
+    public static final RegistryObject<CrimsonEyeballFeature> CRIMSON_EYEBALL = FEATURES.register("crimson_eyeball", () -> new CrimsonEyeballFeature(CrimsonEyeballFeature.Config.CODEC));
 
     public static final RegistryObject<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
     public static final RegistryObject<PlacementModifierType<DepthBandPlacement>> DEPTH_BAND_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("depth_band", () -> () -> DepthBandPlacement.CODEC);

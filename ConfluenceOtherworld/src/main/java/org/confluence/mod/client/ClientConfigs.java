@@ -401,7 +401,9 @@ public final class ClientConfigs {
 
     public enum IndicatorMode implements PortTranslatableEnum {
         PARTICLE,
-        VIRTUAL;
+        VIRTUAL,
+        /// 关闭：既不生成原版伤害指示粒子，也不显示虚拟信息
+        OFF;
 
         public boolean isParticle() {
             return this == PARTICLE;
@@ -409,6 +411,11 @@ public final class ClientConfigs {
 
         public boolean isVirtual() {
             return this == VIRTUAL;
+        }
+
+        /// 关闭时伤害 / 治疗数值完全不显示
+        public boolean isOff() {
+            return this == OFF;
         }
 
         @Override

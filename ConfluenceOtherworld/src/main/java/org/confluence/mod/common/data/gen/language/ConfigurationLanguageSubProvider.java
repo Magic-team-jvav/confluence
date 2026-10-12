@@ -12,7 +12,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
 
     @Override
     public void english() {
-        add("confluence.configuration.enableNonSpiderModel", "Non-Spider Models");
+        add("confluence.configuration.enableNonSpiderModel", "Spider Harmonization");
         add("confluence.configuration.enableNonSpiderModel.tooltip", "Replace vanilla spiders and Confluence spiders, including sand poachers, with non-spider models. Requires a game restart.");
         add("confluence.configuration.preventEnemyFriendlyFire", "Prevent Enemy Friendly Fire");
         add("confluence.configuration.preventEnemyFriendlyFire.tooltip", "Enable the existing enemy faction friendly-fire protection. Does not change targeting or block player, summon or environmental damage.");
@@ -369,8 +369,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.terraStyleLightningBolt", "Terraria-Style Lightning Bolt");
         add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "Lightning Bolt Frequency Multiplier");
 
-        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings (Client)");
-        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings (Server)");
+        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings");
+        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings");
         add("confluence.configuration.title", "Configuration Screen");
         add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
         add("confluence.configuration.section.confluence.common.toml.title", "Common Configuration");
@@ -741,8 +741,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.terraStyleLightningBolt", "泰拉闪电束");
         add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "闪电束频率提升倍率");
 
-        add("confluence.configuration.section.confluence.client.toml", "个人显示设定（客户端）");
-        add("confluence.configuration.section.confluence.common.toml", "游戏机制设定（服务端）");
+        add("confluence.configuration.section.confluence.client.toml", "个人显示设定");
+        add("confluence.configuration.section.confluence.common.toml", "游戏机制设定");
         add("confluence.configuration.title", "配置界面");
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
@@ -754,6 +754,13 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.The Hallow", "神圣之地");
         add("confluence.configuration.rainbowCount", "彩虹数量");
         add("confluence.configuration.rainbowGradient", "彩虹光环");
+        add("confluence.configuration.wrappedCrimson_heart", "裸露猩红之心");
+        add("confluence.configuration.wrappedCrimson_heart.tooltip", "启用后，新生成的猩红洞穴会出现裸露的猩红之心");
+        add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "启用后，酿造台可酿造泰拉药水。（更改此配置后需要重启游戏！）");
+        add("confluence.configuration.shimmer_decompose", "微光分解");
+        add("confluence.configuration.shimmer_decompose.tooltip", "启用后，微光可将物品分解为原材料");
+        add("confluence.configuration.soulStyle.tooltip", "灵魂样式");
 
         add("title.confluence.merged_configuration", "汇流来世合并配置总览");
         add("modid.name.confluence", "汇流来世");

@@ -6070,13 +6070,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.moon_plate_wall", "月盘墙");
         add("block.confluence.test", "测试方块");
         add("block.confluence.void", "虚空");
-        add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
-        add("confluence.configuration.brewing_stand_recipe.tooltip", "启用后，酿造台可酿造泰拉药水。（更改此配置后需要重启游戏！）");
-        add("confluence.configuration.shimmer_decompose", "微光分解");
-        add("confluence.configuration.shimmer_decompose.tooltip", "启用后，微光可将物品分解为原材料");
-        add("confluence.configuration.soulStyle.tooltip", "灵魂样式");
-        add("confluence.configuration.wrappedCrimson_heart", "裸露猩红之心");
-        add("confluence.configuration.wrappedCrimson_heart.tooltip", "启用后，新生成的猩红洞穴会出现裸露的猩红之心");
         add("entity.confluence.accumulating_energy", "聚积能量");
         add("entity.confluence.anchor", "锚");
         add("entity.confluence.ancient_guardian_flail", "远古守卫连枷");

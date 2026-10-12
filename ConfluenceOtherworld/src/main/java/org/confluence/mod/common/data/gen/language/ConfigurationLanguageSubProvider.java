@@ -199,6 +199,11 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.manaStyle.overlay", "Mana Style: Overlay");
         add("confluence.configuration.soulStyle.legacy", "Soul Style: Elegant");
         add("confluence.configuration.soulStyle.overlay", "Soul Style: Overlay");
+        add("confluence.configuration.soulQuickSkillStyle", "Soul Quick Skill Style");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_BIG", "Big Roulette Wheel");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_SMALL", "Small Roulette Wheel");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_L", "Horizontal Cards (Left)");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_R", "Horizontal Cards (Right)");
         add("confluence.configuration.healthStyle.legacy", "Health Style: Elegant");
         add("confluence.configuration.healthStyle.overlay", "Health Style: Overlay");
         add("confluence.configuration.foodStyle.legacy", "Food Saturation Style: Elegant");
@@ -319,8 +324,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Mana.tooltip", "About Mana Display");
         add("confluence.configuration.Soul.tooltip", "About Soul Display");
         add("confluence.configuration.Food.tooltip", "About Food Display");
-        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings (Client)");
-        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings (Server)");
+        add("confluence.configuration.section.confluence.client.toml", "Client Display Settings");
+        add("confluence.configuration.section.confluence.common.toml", "Gameplay Settings");
         add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons are displayed on the left side of the screen.");
         add("confluence.configuration.Entity.button", "Entity-related Visual Effects");
         add("confluence.configuration.HUD.tooltip", "About HUD Display");
@@ -352,6 +357,12 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.yoyoUseButton", "Yoyo Action Button");
         add("confluence.configuration.gunUseButton", "Gun Action Button");
         add("confluence.configuration.flailUseButton", "Flail Action Button");
+
+        add("confluence.configuration.Biome.button", "Biome-related Visual Effects");
+        add("confluence.configuration.Biome", "Biome");
+        add("confluence.configuration.The Hallow", "The Hallow");
+        add("confluence.configuration.rainbowCount", "Rainbow Count");
+        add("confluence.configuration.rainbowGradient", "Rainbow Gradient");
 
         add("title.confluence.merged_configuration", "Confluence Merged Configuration Overview");
         add("modid.name.confluence", "Confluence: Otherworld");
@@ -559,6 +570,11 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.manaStyle.overlay", "魔力值样式:叠加");
         add("confluence.configuration.soulStyle.legacy", "灵魂值样式:叠加");
         add("confluence.configuration.soulStyle.overlay", "灵魂值样式:叠加");
+        add("confluence.configuration.soulQuickSkillStyle", "灵魂快捷技能栏样式");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_BIG", "大转盘");
+        add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_SMALL", "小转盘");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_L", "横向卡片（左）");
+        add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_R", "横向卡片（右）");
         add("confluence.configuration.healthStyle.legacy", "生命值样式:精致");
         add("confluence.configuration.healthStyle.overlay", "生命值样式:叠加");
         add("confluence.configuration.foodStyle.legacy", "饥饿值样式:精致");
@@ -674,8 +690,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Mana.tooltip", "关于魔力值显示");
         add("confluence.configuration.Food.tooltip", "关于饥饿值显示");
         add("confluence.configuration.Soul.tooltip", "关于灵魂显示");
-        add("confluence.configuration.section.confluence.client.toml", "个人显示设定（客户端）");
-        add("confluence.configuration.section.confluence.common.toml", "游戏机制设定（服务端）");
+        add("confluence.configuration.section.confluence.client.toml", "个人显示设定");
+        add("confluence.configuration.section.confluence.common.toml", "游戏机制设定");
         add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示屏幕左侧");
         add("confluence.configuration.Entity.button", "与生物有关的视觉效果");
         add("confluence.configuration.HUD.tooltip", "关于HUD显示");
@@ -697,6 +713,18 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.minEctoMistEffectRadius", "最小灵雾雾气效果距离");
         add("confluence.configuration.minEctoMistEffectRadius.tooltip", "设置为0时，关闭灵雾雾气效果");
         add("confluence.configuration.customTitle", "自定义标题");
+        add("confluence.configuration.Biome.button", "与生物群系有关的视觉效果");
+        add("confluence.configuration.Biome", "生物群系");
+        add("confluence.configuration.The Hallow", "神圣之地");
+        add("confluence.configuration.rainbowCount", "彩虹数量");
+        add("confluence.configuration.rainbowGradient", "彩虹光环");
+        add("confluence.configuration.wrappedCrimson_heart", "裸露猩红之心");
+        add("confluence.configuration.wrappedCrimson_heart.tooltip", "启用后，新生成的猩红洞穴会出现裸露的猩红之心");
+        add("confluence.configuration.brewing_stand_recipe", "泰拉药水酿造台配方");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "启用后，酿造台可酿造泰拉药水。（更改此配置后需要重启游戏！）");
+        add("confluence.configuration.shimmer_decompose", "微光分解");
+        add("confluence.configuration.shimmer_decompose.tooltip", "启用后，微光可将物品分解为原材料");
+        add("confluence.configuration.soulStyle.tooltip", "灵魂样式");
 
         add("title.confluence.merged_configuration", "汇流来世合并配置总览");
         add("modid.name.confluence", "汇流来世");

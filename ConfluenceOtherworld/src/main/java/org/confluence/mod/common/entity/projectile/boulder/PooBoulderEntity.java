@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
 
@@ -33,7 +33,7 @@ public class PooBoulderEntity extends BoulderEntity {
         super.removeEffect(serverLevel);
         int blockRadius = 2;
 
-        final BlockState toFill = ModBlocks.POO.get().defaultBlockState();
+        final BlockState toFill = NatureBlocks.POO.get().defaultBlockState();
         final BlockPos blockPos = blockPosition();
 
         BlockPos.MutableBlockPos mutable = blockPos.mutable();

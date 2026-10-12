@@ -28,7 +28,6 @@ import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
@@ -1261,7 +1260,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModBlocks.POO).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
+                        .add(LootItem.lootTableItem(NatureBlocks.POO).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 // 天使雕像

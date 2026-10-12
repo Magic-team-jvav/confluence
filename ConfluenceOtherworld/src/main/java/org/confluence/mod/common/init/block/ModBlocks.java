@@ -63,17 +63,6 @@ public final class ModBlocks {
                     BlockEntityType.Builder.of(VoidBlock.VoidBlockEntity::new, VOID.get()).build(DSL.remainderType())
             );
     // 草药
-    public static final DeferredBlock<BaseHerbBlock> WATERLEAF = registerWithoutItem("waterleaf", Waterleaf::new); // 幌菊
-    public static final DeferredBlock<Fireblossom> FIREBLOSSOM = registerWithoutItem("fireblossom", Fireblossom::new); // 火焰花
-    public static final DeferredBlock<Moonglow> MOONGLOW = registerWithoutItem("moonglow", Moonglow::new); // 月光草
-    public static final DeferredBlock<BaseHerbBlock> BLINKROOT = registerWithoutItem("blinkroot", Blinkroot::new); // 闪耀根
-    public static final DeferredBlock<BaseHerbBlock> SHIVERTHORN = registerWithoutItem("shiverthorn", ShiveringThorn::new); // 寒颤棘
-    public static final DeferredBlock<BaseHerbBlock> DAYBLOOM = registerWithoutItem("daybloom", Daybloom::new); // 太阳花
-    public static final DeferredBlock<DeathWeed> DEATHWEED = registerWithoutItem("deathweed", DeathWeed::new); // 死亡草
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BaseHerbBlock.BEntity>> HERBS_ENTITY = BLOCK_ENTITIES.register("herbs_entity", () -> BlockEntityType.Builder.of(BaseHerbBlock.BEntity::new,
-            WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(DSL.remainderType()));
-
-    public static final DeferredBlock<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     public static final DeferredBlock<BaseRopeBlock> ROPE = registerWithItem("rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.BROWN).sound(SoundType.WOOL).noCollission().instabreak()), BaseRopeBlock.BItem::new);
     public static final DeferredBlock<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().mapColor(DyeColor.GREEN).sound(SoundType.GRASS).noCollission().instabreak()), BaseRopeBlock.BItem::new);
@@ -154,6 +143,7 @@ public final class ModBlocks {
         DecorativeBlocks.BLOCKS.register(eventBus);
         FunctionalBlocks.BLOCKS.register(eventBus);
         NatureBlocks.BLOCKS.register(eventBus);
+        NatureBlocks.BLOCK_ENTITIES.register(eventBus);
         OreBlocks.BLOCKS.register(eventBus);
         PotBlocks.BLOCKS.register(eventBus);
         PylonBlocks.BLOCKS.register(eventBus);

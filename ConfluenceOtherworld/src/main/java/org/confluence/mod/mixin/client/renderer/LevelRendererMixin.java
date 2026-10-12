@@ -21,7 +21,7 @@ import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.ILevelRenderer;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
@@ -92,7 +92,7 @@ public abstract class LevelRendererMixin implements ILevelRenderer {
 
     @ModifyReturnValue(method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", at = @At("RETURN"))
     private static int makeHerbEmissive(int original, @Local(argsOnly = true) BlockState state) {
-        if (state.is(ModBlocks.SHIVERTHORN) && state.getValue(BaseHerbBlock.AGE) == 2) {
+        if (state.is(NatureBlocks.SHIVERTHORN) && state.getValue(BaseHerbBlock.AGE) == 2) {
             int block = (original >> 4) & 0xf;
             if (block < 6) {
                 original &= ~0xF0;

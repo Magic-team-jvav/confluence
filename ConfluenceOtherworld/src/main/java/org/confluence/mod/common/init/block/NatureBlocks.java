@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.block;
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
@@ -17,11 +18,14 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.block.TransparentLeavesBlock;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.common.PooBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.MushroomBlock;
+import org.confluence.mod.common.block.natural.herbs.*;
 import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.PineSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.StoneSaplingBlock;
@@ -45,6 +49,7 @@ import static org.confluence.mod.common.init.block.DecorativeBlocks.LOST_PAPER_B
 @ParametersAreNonnullByDefault
 public class NatureBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
 
     // 非环境树苗
     public static final DeferredBlock<StoneSaplingBlock> RUBY_SAPLING = registerWithItem("ruby_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.RUBY_GROWER));
@@ -252,6 +257,19 @@ public class NatureBlocks {
     public static final DeferredBlock<AshGrassBlock> ASH_GRASS_BLOCK = registerWithItem("ash_grass_block", AshGrassBlock::new);
     public static final LogBlockSet ASH_LOG_BLOCKS = LogBlockSet.builder("ash", false, ASH).leaves(null).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.ASH_GROWER, properties, null, ASH_BLOCK, ASH_GRASS_BLOCK)).build();
     public static final DeferredBlock<BasePlantBlock> ASH_GRASS = registerWithItem("ash_grass", () -> new BasePlantBlock(ASH_GRASS_BLOCK.get()));
+
+    //草药
+    public static final DeferredBlock<BaseHerbBlock> WATERLEAF = registerWithoutItem("waterleaf", Waterleaf::new); // 幌菊
+    public static final DeferredBlock<Fireblossom> FIREBLOSSOM = registerWithoutItem("fireblossom", Fireblossom::new); // 火焰花
+    public static final DeferredBlock<Moonglow> MOONGLOW = registerWithoutItem("moonglow", Moonglow::new); // 月光草
+    public static final DeferredBlock<BaseHerbBlock> BLINKROOT = registerWithoutItem("blinkroot", Blinkroot::new); // 闪耀根
+    public static final DeferredBlock<BaseHerbBlock> SHIVERTHORN = registerWithoutItem("shiverthorn", ShiveringThorn::new); // 寒颤棘
+    public static final DeferredBlock<BaseHerbBlock> DAYBLOOM = registerWithoutItem("daybloom", Daybloom::new); // 太阳花
+    public static final DeferredBlock<DeathWeed> DEATHWEED = registerWithoutItem("deathweed", DeathWeed::new); // 死亡草
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BaseHerbBlock.BEntity>> HERBS_ENTITY = BLOCK_ENTITIES.register("herbs_entity", () -> BlockEntityType.Builder.of(BaseHerbBlock.BEntity::new,
+            WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(DSL.remainderType()));
+
+    public static final DeferredBlock<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
     // 丛林
     public static final DeferredBlock<JungleGrassBlock> JUNGLE_GRASS_BLOCK = registerWithItem("jungle_grass_block", () -> new JungleGrassBlock(ISpreadable.Type.JUNGLE, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_GREEN)));

@@ -431,13 +431,13 @@ public class ModDataProvider {
             simple(context, ROLLING_CACTUS, FunctionalBlocks.ROLLING_CACTUS_BOULDER.get());
 
             herb(context, LIFE_MUSHROOM, 12, NatureBlocks.LIFE_MUSHROOM.get());
-            herb(context, BLINKROOT, 50, ModBlocks.BLINKROOT.get());
-            herb(context, DAYBLOOM, 32, ModBlocks.DAYBLOOM.get());
-            herb(context, DEATHWEED, 12, ModBlocks.DEATHWEED.get());
-            herb(context, WATERLEAF, 32, ModBlocks.WATERLEAF.get());
-            herb(context, MOONGLOW, 32, ModBlocks.MOONGLOW.get());
-            herb(context, FIREBLOSSOM, 40, ModBlocks.FIREBLOSSOM.get());
-            herb(context, SHIVERTHORN, 32, ModBlocks.SHIVERTHORN.get());
+            herb(context, BLINKROOT, 50, NatureBlocks.BLINKROOT.get());
+            herb(context, DAYBLOOM, 32, NatureBlocks.DAYBLOOM.get());
+            herb(context, DEATHWEED, 12, NatureBlocks.DEATHWEED.get());
+            herb(context, WATERLEAF, 32, NatureBlocks.WATERLEAF.get());
+            herb(context, MOONGLOW, 32, NatureBlocks.MOONGLOW.get());
+            herb(context, FIREBLOSSOM, 40, NatureBlocks.FIREBLOSSOM.get());
+            herb(context, SHIVERTHORN, 32, NatureBlocks.SHIVERTHORN.get());
             herb(context, CORRUPT_GRASS, 45, NatureBlocks.CORRUPT_GRASS.get());
             herb(context, VILE_MUSHROOM, 12, NatureBlocks.VILE_MUSHROOM.get());
             herb(context, CRIMSON_GRASS, 28, NatureBlocks.CRIMSON_GRASS.get());

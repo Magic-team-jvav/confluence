@@ -2,6 +2,7 @@ package org.confluence.mod.common.init;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.SoundType;
 import net.neoforged.neoforge.common.util.DeferredSoundType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -520,5 +521,7 @@ public final class ModSoundEvents {
 
     public static class Types {
         public static final SoundType COIN = new DeferredSoundType(1.0F, 1.0F, COINS, COINS, COINS, COINS, COINS);
+        /// 眼球块 / 瞳孔块：破坏时用常规死亡音效，其余保持石头音效
+        public static final SoundType EYEBALL = new DeferredSoundType(1.0F, 1.0F, ROUTINE_DEATH, () -> SoundEvents.STONE_STEP, () -> SoundEvents.STONE_PLACE, () -> SoundEvents.STONE_HIT, () -> SoundEvents.STONE_FALL);
     }
 }

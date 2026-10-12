@@ -287,6 +287,8 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_GRASS = key("crimson_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_DROOPING_VINE = key("crimson_drooping_vine");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_CATTAILS = key("crimson_cattails");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_EYEBALL_EMBEDDED = key("crimson_eyeball_embedded");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_EYEBALL_STANDING = key("crimson_eyeball_standing");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
@@ -522,6 +524,12 @@ public class ModDataProvider {
             register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get()), 2, 0.5F, 20));
+            register(context, CRIMSON_EYEBALL_EMBEDDED, ModFeatures.CRIMSON_EYEBALL.get(), new CrimsonEyeballFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.EYEBALL_BLOCK.get()), BlockStateProvider.simple(NatureBlocks.PUPIL_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.CRIMSTONE.get()), BlockStateProvider.simple(Blocks.WATER), true, 0.7F, 0.25F));
+            register(context, CRIMSON_EYEBALL_STANDING, ModFeatures.CRIMSON_EYEBALL.get(), new CrimsonEyeballFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.EYEBALL_BLOCK.get()), BlockStateProvider.simple(NatureBlocks.PUPIL_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.CRIMSTONE.get()), BlockStateProvider.simple(Blocks.WATER), false, 0.7F, 0.25F));
             register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAIL_BLOCK.get()), 2, 0.5F, 20));
             register(context, ModFeatures.Configured.PINE_TREE, ModFeatures.PINE_TREE.get(), new PineTreeFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.PINE_LOG_BLOCKS.LOG.get()),
@@ -876,6 +884,8 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> CRIMSON_GRASS = key("crimson_grass");
         private static final ResourceKey<PlacedFeature> CRIMSON_DROOPING_VINE = key("crimson_drooping_vine");
         private static final ResourceKey<PlacedFeature> CRIMSON_CATTAILS = key("crimson_cattails");
+        private static final ResourceKey<PlacedFeature> CRIMSON_EYEBALL_EMBEDDED = key("crimson_eyeball_embedded");
+        private static final ResourceKey<PlacedFeature> CRIMSON_EYEBALL_STANDING = key("crimson_eyeball_standing");
         private static final ResourceKey<PlacedFeature> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_LIFE_CRYSTAL = key("glowing_mushroom_life_crystal");
@@ -1076,6 +1086,9 @@ public class ModDataProvider {
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING), biome);
             register(context, CRIMSON_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_DROOPING_VINE), CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.CRIMSTONE.get()), air, 12), ySpreadN1, biome);
             register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
+            // 猩红眼球：贴地表（OCEAN_FLOOR_WG 忽略植物/水，落在真正的地面上），feature 内还会校验地面平整度
+            register(context, CRIMSON_EYEBALL_EMBEDDED, configured.getOrThrow(ConfiguredFeatures.CRIMSON_EYEBALL_EMBEDDED), RarityFilter.onAverageOnceEvery(6), inSquare, oceanFloorWG, biome);
+            register(context, CRIMSON_EYEBALL_STANDING, configured.getOrThrow(ConfiguredFeatures.CRIMSON_EYEBALL_STANDING), RarityFilter.onAverageOnceEvery(10), inSquare, oceanFloorWG, biome);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
             register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(26), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome);
@@ -1676,6 +1689,8 @@ public class ModDataProvider {
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_EYEBALL_EMBEDDED);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_EYEBALL_STANDING);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SHADOW_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_DROOPING_VINE);

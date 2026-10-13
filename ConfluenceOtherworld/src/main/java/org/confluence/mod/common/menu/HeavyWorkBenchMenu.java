@@ -20,7 +20,9 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortCraftingInput;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentRecipeInput, HeavyWorkBenchRecipe, HeavyWorkBenchMenu.ResultSlot, EnvironmentLevelAccess> {
@@ -68,10 +70,14 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
 
     @Override
     public void slotsChanged(Container container) {
-        this.craftingRecipes = player.level().getRecipeManager().getRecipesFor(RecipeType.CRAFTING, input.asCraftingInput(true), player.level()).stream().filter(holder -> {
-            Class<?> clazz = holder.getClass();
-            return clazz == ShapedRecipe.class || clazz == ShapelessRecipe.class;
-        }).toList();
+        PortCraftingInput craftingInput = input.asCraftingInput(true);
+        // Filter before matching: special mod recipes may assume a fixed 3x3 grid.
+        this.craftingRecipes = craftingInput.isEmpty() ? List.of() : player.level().getRecipeManager()
+                .getAllRecipesFor(RecipeType.CRAFTING).stream()
+                .filter(recipe -> recipe.getClass() == ShapedRecipe.class || recipe.getClass() == ShapelessRecipe.class)
+                .filter(recipe -> recipe.matches(craftingInput, player.level()))
+                .sorted(Comparator.comparing(recipe -> recipe.getResultItem(player.registryAccess()).getDescriptionId()))
+                .toList();
         this.recipes = player.level().getRecipeManager().getRecipesFor(recipeType, input, player.level());
         int totalSize = recipes.size() + craftingRecipes.size();
         if (selectedRecipeIndex.get() >= totalSize) selectedRecipeIndex.set(totalSize - 1);
@@ -80,20 +86,23 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty() || !craftingRecipes.isEmpty()) {
                     if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
-                    if (recipes.isEmpty()) {
-                        CraftingRecipe recipe = craftingRecipes.get(selectedRecipeIndex.get());
+                    int index = selectedRecipeIndex.get();
+                    if (index >= recipes.size()) {
+                        CraftingRecipe recipe = craftingRecipes.get(index - recipes.size());
                         itemStack = recipe.getResultItem(player.registryAccess()).copy();
                         resultSlot.setAltRecipe(recipe);
                     } else {
-                        HeavyWorkBenchRecipe recipe = recipes.get(selectedRecipeIndex.get());
+                        HeavyWorkBenchRecipe recipe = recipes.get(index);
                         itemStack = recipe.getResult().copy();
                         resultSlot.setCurrentRecipe(recipe);
                     }
+                } else {
+                    resultSlot.setCurrentRecipe(null);
                 }
                 result.setItem(0, itemStack);
                 setRemoteSlot(0, itemStack);
                 serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, itemStack));
-            } else if (!recipes.isEmpty()) {
+            } else if (totalSize > 0) {
                 if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
             }
         });

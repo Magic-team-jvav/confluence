@@ -346,8 +346,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         altar(writer, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_CHUNK));
         altar(writer, ConsumableItems.SUSPICIOUS_LOOKING_EYE.toStack(), AmountIngredient.of(6, MaterialItems.LENS));
         altar(writer, SwordItems.NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
-        altar(writer, ToolItems.VOID_BAG.toStack(), AmountIngredient.of(30, Items.BONE), AmountIngredient.of(15, MaterialItems.JUNGLE_SPORE), AmountIngredient.of(30, Ingredient.of(MaterialItems.SHADOW_SCALE, MaterialItems.TISSUE_SAMPLE)));
-        altar(writer, FunctionalBlocks.VOID_VAULT.toStack(), AmountIngredient.of(15, Items.BONE), AmountIngredient.of(8, MaterialItems.JUNGLE_SPORE), AmountIngredient.of(15, Ingredient.of(MaterialItems.SHADOW_SCALE, MaterialItems.TISSUE_SAMPLE)));
+        altar(writer, ToolItems.VOID_BAG.toStack(), AmountIngredient.of(30, ConsumableItems.DUNGEON_DEMON_BONE), AmountIngredient.of(15, MaterialItems.JUNGLE_SPORE), AmountIngredient.of(30, Ingredient.of(MaterialItems.SHADOW_SCALE, MaterialItems.TISSUE_SAMPLE)));
+        altar(writer, FunctionalBlocks.VOID_VAULT.toStack(), AmountIngredient.of(15, ConsumableItems.DUNGEON_DEMON_BONE), AmountIngredient.of(8, MaterialItems.JUNGLE_SPORE), AmountIngredient.of(15, Ingredient.of(MaterialItems.SHADOW_SCALE, MaterialItems.TISSUE_SAMPLE)));
         altar(writer, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4, ModTags.Items.EVIL_INGOT), AmountIngredient.of(4, MaterialItems.FALLING_STAR));
         altar(writer, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20, MaterialItems.GEL), Ingredient.of(VanityArmorItems.GOLD_CROWN, VanityArmorItems.PLATINUM_CROWN));
         altar(writer, ConsumableItems.DEER_THING.toStack(), AmountIngredient.of(3, MaterialItems.FLINX_FUR), AmountIngredient.of(5, Ingredient.of(ModTags.Items.EVIL_MATERIAL)));

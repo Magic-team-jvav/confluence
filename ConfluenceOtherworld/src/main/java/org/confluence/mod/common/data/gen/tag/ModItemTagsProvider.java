@@ -1548,9 +1548,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         ChestBlocks.DEATH_CHESTS.forEach(block -> death.add(block.asItem()));
 
-        // 弹药不吃词条：子弹之所以能被重铸，是因为 gun 标签把枪和子弹收在了一起，而 PREFIX_RANGED_ONLY 整个引用了 gun
-        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).addTags(ModTags.Items.BULLET).add(
-                GunItems.DUMMY_BULLET.get(),
+        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).add(
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );

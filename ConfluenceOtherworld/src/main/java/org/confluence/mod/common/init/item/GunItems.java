@@ -30,8 +30,6 @@ public class GunItems {
     public static final List<PortDeferredItem<BaseGun>> GUN_ITEMS = new ArrayList<>();
     public static final List<PortDeferredItem<BaseBullet>> BULLET_ITEMS = new ArrayList<>();
 
-    /// 稀有度用的是泰拉瑞亚的稀有度色阶：`ModRarity` 的白/蓝/绿/橙/浅红/粉/浅紫/黄绿/黄/青/红/紫
-    /// 对应泰拉瑞亚稀有度的第 0~11 层。
     public static final PortDeferredItem<BaseGun> STAR_CANNON = registerGun("star_cannon", StarCannonItem::new);
     public static final PortDeferredItem<BaseGun> BLOWGUN = registerGun("blowgun", properties -> new BaseGun(properties, GunDefinition.automatic(8, 2.8F, 1.4F, 0.17F, 0.04F, 0, 0.0F, ModRarity.WHITE).withGravity(0.08F)));
     public static final PortDeferredItem<BaseGun> SNOWBALL_CANNON = registerGun("snowball_cannon", properties -> new BaseGun(

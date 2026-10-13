@@ -29,7 +29,8 @@ public final class PrefixUtils {
 
     public static boolean couldReforge(ItemStack stack) {
         return !stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX) &&
-                (stack.is(ModTags.Items.SUMMONER_WEAPON) || stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
+                (stack.is(ModTags.Items.SUMMONER_WEAPON) ||
+                        stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_MELEE_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_RANGED_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_MAGIC_ONLY) ||
@@ -99,10 +100,7 @@ public final class PrefixUtils {
     }
 
     public static @Nullable PrefixComponent getPrefix(ItemStack stack) {
-        if (stack.isEmpty()) return null;
-        // 不该吃词条的物品（弹药等）即便旧存档里已经带上了词条，也不生效、不显示
-        if (stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX)) return null;
-        return stack.get(ModDataComponentTypes.PREFIX);
+        return stack.isEmpty() ? null : stack.get(ModDataComponentTypes.PREFIX);
     }
 
     /// 取实体在指定属性上的加成，并剔除手持物品自身对该属性的贡献。

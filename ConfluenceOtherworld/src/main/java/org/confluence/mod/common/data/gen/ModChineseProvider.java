@@ -5995,6 +5995,13 @@ public class ModChineseProvider extends LanguageProvider {
 
     private void addStorageCompanionTranslations() {
         add(PetItems.CHESTER_STAFF.get(), "眼骨");
+        add("item.confluence.void_bag", "虚空袋");
+        add("item.confluence.void_bag.disable", "关闭的虚空袋");
+        add("block.confluence.void_vault", "虚空保险库");
+        add("container.confluence.void_vault", "虚空保险库");
+        add("tooltip.confluence.void_storage.shared", "访问你的个人虚空库存，与虚空保险库共用储物空间");
+        add("tooltip.confluence.void_storage.overflow", "开启时，背包满后自动收纳物品，支持快捷使用库存内的药水");
+        add("tooltip.confluence.void_storage.toggle", "在物品栏中空手右键切换开启／关闭状态");
         add(PetItems.MONEY_TROUGH.get(), "钱币槽");
         add(ModEntities.CHESTER.get(), "切斯特");
         add(ModEntities.FLYING_PIGGY_BANK.get(), "飞行存钱罐");

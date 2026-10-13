@@ -465,6 +465,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 THIN_ICE_BLOCK.get(),
                 WINTER_MARROW_BLOCK.get(),
                 SAFE.get(),
+                VOID_VAULT.get(),
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
                 AETHERIUM_BRICKS.FULL.get(),
@@ -1012,6 +1013,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MARBLE_ETERNAL_CHESSBOARD_BRICKS.get(),
 
                 SAFE.get(),
+                VOID_VAULT.get(),
                 SPIKE.get(),
                 ASPHALT_BLOCK.get(),
                 REMAINS_BLOCK.get(),

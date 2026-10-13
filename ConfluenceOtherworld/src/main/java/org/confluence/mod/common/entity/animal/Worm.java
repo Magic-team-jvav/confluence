@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import com.mojang.serialization.Codec;
-import java.util.Locale;
-import java.util.function.IntFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,12 +12,14 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.leaf.PassiveWormAction;
 
+import java.util.Locale;
+import java.util.function.IntFunction;
 
 
 public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
@@ -39,7 +39,7 @@ public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return withPassivePanic(createGroundCritterRoutine(0.45D), 0.7D);
+                return new PassiveWormAction(Worm.this);
             }
         };
     }

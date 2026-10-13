@@ -101,6 +101,8 @@ public abstract class BaseAquaticMonster extends BaseMonster {
         if (!level().isClientSide && flopsOnLand() && !isNoAi() && !isInWaterOrBubble() && onGround()) {
             setDeltaMovement(getDeltaMovement().add((random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5, (random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             setYRot(random.nextFloat() * 360.0F);
+            setYBodyRot(getYRot());
+            setYHeadRot(getYRot());
             setOnGround(false);
             hasImpulse = true;
         }

@@ -207,6 +207,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.DYE_VAT.get(), DyeVatScreen::new);
         event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
         event.register(ModMenuTypes.PIGGY_BANK.get(), PiggyBankScreen::new);
+        event.register(ModMenuTypes.VOID_VAULT.get(), VoidVaultScreen::new);
         // npc
         event.register(ModMenuTypes.NPC_TRADE.get(), NPCTradeScreens::create);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
@@ -969,6 +970,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), ClientUtils.rendererProvider(MechanicalBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));
         event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.VOID_VAULT_ENTITY.get(), context -> new GeoBlockRenderer<>(new VoidVaultModel<>()));
         event.registerBlockEntityRenderer(FunctionalBlocks.SAFE_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("safe"))));
         event.registerBlockEntityRenderer(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), ClientUtils.rendererProvider(MuralBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), ClientUtils.rendererProvider(BewitchingTableBlockRenderer::new));

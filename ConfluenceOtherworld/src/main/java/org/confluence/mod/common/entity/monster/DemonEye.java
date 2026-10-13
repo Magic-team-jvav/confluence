@@ -11,10 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.VariantHolder;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -48,6 +45,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
 
     private DemonEyeSurroundAction surroundAction;
+    private boolean rebounded;
     private boolean variantLoadedFromSave;
 
     public DemonEye(EntityType<? extends DemonEye> type, Level level) {
@@ -95,15 +93,27 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         }
         if (allowed.y != requested.y) {
             boolean movingDown = requested.y < 0.0;
-            if (surroundAction != null) {
-                surroundAction.adjustTargetAfterVerticalCollision(movingDown);
-            }
             rebound = new Vec3(rebound.x, movingDown ? Mth.clamp(-requested.y, 0.1, 0.22) : Mth.clamp(-requested.y, -0.22, -0.1), rebound.z);
         }
         if (allowed.z != requested.z) {
             rebound = new Vec3(rebound.x, rebound.y, requested.z < 0.0 ? 0.3 : -0.3);
         }
+        if (!allowed.equals(requested)) {
+            rebounded = true;
+            if (surroundAction != null) surroundAction.onCollision();
+        }
         return rebound;
+    }
+
+    // 白天离场时不能被共用索敌重新选回玩家或反击目标。
+    @Override
+    protected boolean usesSharedTargeting() {
+        return !level().isDay();
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        return !level().isDay() && super.canAttack(target);
     }
 
     @Override
@@ -171,13 +181,14 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
     @Override
     public void tick() {
-        if (!level().isClientSide) {
-            setTarget(level().isDay() ? null : level().getNearestPlayer(getX(), getY(), getZ(), 40.0, true));
-        }
+        rebounded = false;
+        if (!level().isClientSide && level().isDay()) setTarget(null);
         super.tick();
         if (level().isClientSide) return;
         if (level().isDay()) setTarget(null);
-        if (isAlive()) faceCombatMovement(360.0F, 180.0F);
+        if (isAlive() && (surroundAction == null || !surroundAction.isHovering())) {
+            faceCombatMovement(360.0F, 180.0F);
+        }
     }
 
     private record VariantStats(double health, double damage, int armor, double movementSpeed) {}

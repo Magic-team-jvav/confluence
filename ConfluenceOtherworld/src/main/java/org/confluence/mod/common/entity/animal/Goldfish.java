@@ -77,7 +77,8 @@ public final class Goldfish extends SwimmingCritter {
     @Override
     public void tick() {
         if (!level().isClientSide) {
-            entityData.set(WALKING, !isInWater() && level().isRaining());
+            if (isInWater()) entityData.set(WALKING, false);
+            else if (level().isRaining()) entityData.set(WALKING, true);
         }
         super.tick();
         if (!level().isClientSide && isAlive() && tickCount % 20 == 0 && BloodMoonGameEvent.INSTANCE.started()) {

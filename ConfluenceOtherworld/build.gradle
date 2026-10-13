@@ -205,10 +205,10 @@ dependencies {
     implementation jarJar("org.mesdag:ThreeDimensionParticle-neoforge-${minecraft_version}:${thr_dim_particle_version}")
     implementation jarJar("org.mesdag:OpalLight-neoforge-${minecraft_version}:${opallight_version}")
     implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
+    implementation jarJar("com.coobird:DataTip-neoforge-1.21.1:${datatip_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
-    implementation jarJar(files('libs/LanguageFixer.jar'))
     implementation jarJar(files('libs/datatip-1.2.7-neoforge.jar'))
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"

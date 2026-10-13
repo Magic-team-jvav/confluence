@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import com.mojang.serialization.Codec;
-import java.util.Locale;
-import java.util.function.IntFunction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
+import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
@@ -25,6 +24,8 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.util.OverworldUtils;
 
+import java.util.Locale;
+import java.util.function.IntFunction;
 
 
 public class Dragonfly extends BaseFlyingCritter implements VariantHolder<Dragonfly.Variant> {
@@ -42,14 +43,29 @@ public class Dragonfly extends BaseFlyingCritter implements VariantHolder<Dragon
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide || isNoAi()) return;
+        double dx = getX() - xo;
+        double dz = getZ() - zo;
+        if (dx * dx + dz * dz > 1.0E-6) {
+            float yaw = (float) (Mth.atan2(-dx, dz) * Mth.RAD_TO_DEG);
+            setYRot(yaw);
+            setYBodyRot(yaw);
+            setYHeadRot(yaw);
+            setXRot(0.0F);
+        }
+    }
+
+    @Override
     protected BTRoot createBT() {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
+                return withPassivePanic(SelectorNode.of(
                         new VanillaGoalAction(new AvoidEntityGoal<>(Dragonfly.this, Player.class, 5.0F, 1.0D, 1.35D)),
                         new DragonflyBurstAction(Dragonfly.this)
-                );
+                ), 1.35D);
             }
         };
     }
@@ -58,6 +74,7 @@ public class Dragonfly extends BaseFlyingCritter implements VariantHolder<Dragon
     private static final class DragonflyBurstAction extends BTNode {
         private final Dragonfly dragonfly;
         private Vec3 destination;
+        private Vec3 activityCenter;
         private int burstTicks;
         private int restTicks;
 
@@ -67,11 +84,25 @@ public class Dragonfly extends BaseFlyingCritter implements VariantHolder<Dragon
 
         @Override
         public void start() {
-            if (burstTicks <= 0 && restTicks <= 0) beginRest();
+            dragonfly.navigation.stop();
+            dragonfly.moveControl.setWantedPosition(dragonfly.getX(), dragonfly.getY(), dragonfly.getZ(), 0.0);
+            dragonfly.setSpeed(0.0F);
+            dragonfly.setXxa(0.0F);
+            dragonfly.setYya(0.0F);
+            dragonfly.setZza(0.0F);
+            activityCenter = dragonfly.position();
+            beginRest();
         }
 
         @Override
         public BTStatus execute() {
+            if (dragonfly.isInWaterOrBubble()) {
+                beginRest();
+                Vec3 movement = dragonfly.getDeltaMovement();
+                dragonfly.setDeltaMovement(movement.x * 0.9, 0.12, movement.z * 0.9);
+                return BTStatus.RUNNING;
+            }
+            if (dragonfly.horizontalCollision || dragonfly.verticalCollision) beginRest();
             if (restTicks > 0) {
                 --restTicks;
                 dragonfly.setDeltaMovement(dragonfly.getDeltaMovement().scale(0.72));
@@ -95,18 +126,32 @@ public class Dragonfly extends BaseFlyingCritter implements VariantHolder<Dragon
         }
 
         private void beginBurst() {
-            destination = dragonfly.position().add(
+            destination = activityCenter.add(
                     dragonfly.random.nextDouble() * 8.0 - 4.0,
                     dragonfly.random.nextDouble() * 4.0 - 2.0,
                     dragonfly.random.nextDouble() * 8.0 - 4.0
             );
+            if (!dragonfly.level().noCollision(dragonfly,
+                    dragonfly.getBoundingBox().move(destination.subtract(dragonfly.position())))) {
+                beginRest();
+                return;
+            }
             burstTicks = 8 + dragonfly.random.nextInt(9);
+        }
+
+        @Override
+        public void stop() {
+            dragonfly.navigation.stop();
+            destination = null;
+            activityCenter = null;
+            burstTicks = 0;
+            restTicks = 0;
         }
 
         private void beginRest() {
             destination = null;
             burstTicks = 0;
-            restTicks = 8 + dragonfly.random.nextInt(18);
+            restTicks = 20 + dragonfly.random.nextInt(21);
         }
     }
 

@@ -105,7 +105,8 @@ public class Snail extends SimpleCritter {
 
     @Override
     public void travel(Vec3 input) {
-        if (!isEffectiveAi()) {
+        if (!isEffectiveAi() || isNoAi()) {
+            if (isEffectiveAi()) detach();
             super.travel(input);
             return;
         }

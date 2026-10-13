@@ -8,8 +8,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.item.storage.VoidBagItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Final;
@@ -69,6 +71,28 @@ public abstract class InventoryMixin {
         } else if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
             PrefixUtils.initPrefix(player.getRandom(), stack);
         }
+    }
+
+    // 主背包和额外槽位先收纳，剩余部分才进入开启的虚空袋。
+    @ModifyReturnValue(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("RETURN"))
+    private boolean confluence$collectOverflow(boolean original, int slot, ItemStack stack) {
+        if (slot != -1 || player.level().isClientSide || stack.isEmpty() || !VoidBagItem.hasOpenBag(player))
+            return original;
+        int before = stack.getCount();
+        Inventory inventory = (Inventory) (Object) this;
+        // 钱币和弹药的额外槽位可能提前返回，先填满主背包再收纳剩余部分。
+        while (!stack.isEmpty()) {
+            int target = inventory.getSlotWithRemainingSpace(stack);
+            if (target < 0) target = inventory.getFreeSlot();
+            if (target < 0) break;
+            int count = stack.getCount();
+            inventory.add(target, stack);
+            if (stack.getCount() == count) break;
+        }
+        if (stack.isEmpty()) return original || before > 0;
+        ItemStack remainder = PlayerVoidVaultContainer.of(player).addItem(stack);
+        stack.setCount(remainder.getCount());
+        return original || stack.getCount() < before;
     }
 
     @Inject(method = "setItem", at = @At("HEAD"))

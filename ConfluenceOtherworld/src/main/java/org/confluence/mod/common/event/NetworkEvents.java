@@ -38,6 +38,7 @@ public final class NetworkEvents {
                 .playToClient(RepeaterShootingPayloadS2C.TYPE, RepeaterShootingPayloadS2C.STREAM_CODEC, RepeaterShootingPayloadS2C::handle)
                 .playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle)
                 .playToClient(PiggyBankTotalMoneyPacket.TYPE, PiggyBankTotalMoneyPacket.STREAM_CODEC, PiggyBankTotalMoneyPacket::handle)
+                .playToClient(VoidVaultSyncPacketS2C.TYPE, VoidVaultSyncPacketS2C.STREAM_CODEC, VoidVaultSyncPacketS2C::handle)
                 .playToClient(DropletsSyncPacketS2C.TYPE, DropletsSyncPacketS2C.STREAM_CODEC, DropletsSyncPacketS2C::handle)
                 .playToClient(BestiarySyncPacketS2C.TYPE, BestiarySyncPacketS2C.STREAM_CODEC, BestiarySyncPacketS2C::handle)
                 .playToClient(AvailableHouseSelectPacketS2C.TYPE, AvailableHouseSelectPacketS2C.STREAM_CODEC, AvailableHouseSelectPacketS2C::handle)

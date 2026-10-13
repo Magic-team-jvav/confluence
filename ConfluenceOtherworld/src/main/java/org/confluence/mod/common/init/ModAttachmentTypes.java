@@ -16,6 +16,7 @@ public final class ModAttachmentTypes {
     public static final Supplier<AttachmentType<EverBeneficial>> EVER_BENEFICIAL = TYPES.register("ever_beneficial", () -> AttachmentType.serializable(EverBeneficial::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<ExtraInventory>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> AttachmentType.serializable(() -> new ExtraInventory(true)).copyOnDeath().build());
     public static final Supplier<AttachmentType<PlayerPiggyBankContainer>> PIGGY_BANK = TYPES.register("piggy_bank", () -> AttachmentType.serializable(PlayerPiggyBankContainer::new).copyOnDeath().build());
+    public static final Supplier<AttachmentType<PlayerVoidVaultContainer>> VOID_VAULT = TYPES.register("void_vault", () -> AttachmentType.serializable(PlayerVoidVaultContainer::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<PlayerSafeContainer>> SAFE = TYPES.register("safe", () -> AttachmentType.serializable(PlayerSafeContainer::new).copyOnDeath().build());
     public static final Supplier<AttachmentType<PlayerSpecialData>> SPECIAL_DATA = TYPES.register("special_data", () -> AttachmentType.serializable(PlayerSpecialData::new).copyOnDeath().build());
 

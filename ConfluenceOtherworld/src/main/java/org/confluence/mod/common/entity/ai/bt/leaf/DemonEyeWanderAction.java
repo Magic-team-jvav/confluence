@@ -51,7 +51,6 @@ public final class DemonEyeWanderAction extends BTNode {
             mob.setDeltaMovement(nextMovement);
             mob.hasImpulse = true;
         }
-        mob.faceCombatMovement(30.0F, 85.0F);
         ticksLeft--;
         return BTStatus.RUNNING;
     }

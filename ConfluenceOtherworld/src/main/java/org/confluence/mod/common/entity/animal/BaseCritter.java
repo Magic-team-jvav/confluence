@@ -164,11 +164,6 @@ public abstract class BaseCritter extends Animal implements CritterVisual {
         controllers.add(DefaultAnimations.genericWalkController(this));
     }
 
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        return super.hurt(source, amount);
-    }
-
     public ResourceLocation getModelPath() {
         return getType().builtInRegistryHolder().key().location().withPrefix("geo/entity/animal/");
     }

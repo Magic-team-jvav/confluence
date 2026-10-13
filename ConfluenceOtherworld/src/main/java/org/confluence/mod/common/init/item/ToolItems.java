@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.common.*;
+import org.confluence.mod.common.item.storage.VoidBagItem;
 import org.confluence.terra_curio.common.item.MagicMirror;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -27,6 +28,8 @@ import java.util.List;
 @ParametersAreNonnullByDefault
 public class ToolItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
+
+    public static final DeferredItem<VoidBagItem> VOID_BAG = ITEMS.register("void_bag", VoidBagItem::new);
 
     public static final DeferredItem<HoneyBucketItem> HONEY_BUCKET = ITEMS.register("honey_bucket", HoneyBucketItem::new);
     public static final DeferredItem<VoidBucketItem> VOID_BUCKET = ITEMS.register("void_bucket", VoidBucketItem::new);

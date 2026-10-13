@@ -49,6 +49,9 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
     public GeoNormalRenderer(EntityRendererProvider.Context context, GeoModel<T> model, boolean rotateAlongPitch, float modelScale, float modelOffsetY) {
         super(context, model);
         this.rotateAlongPitch = rotateAlongPitch;
+        if (rotateAlongPitch && model instanceof GeoNormalModel<?> normalModel) {
+            normalModel.setHeadPitchEnabled(false);
+        }
         this.modelScale = modelScale;
         this.modelOffsetY = modelOffsetY;
         this.shadowRadius = 0.25F;

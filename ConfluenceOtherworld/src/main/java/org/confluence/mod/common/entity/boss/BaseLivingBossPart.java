@@ -152,6 +152,8 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
         }
         synchronizeOwnerScaling(resolvedOwner);
         tickPart(resolvedOwner);
+        setYBodyRot(getYRot());
+        setYHeadRot(getYRot());
     }
 
     private void synchronizeOwnerScaling(T owner) {

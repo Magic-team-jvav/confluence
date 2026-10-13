@@ -20,8 +20,10 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
 import org.confluence.mod.common.block.natural.spreadable.conversion_table.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.item.storage.VoidBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 
 import java.util.ArrayList;
@@ -113,6 +115,19 @@ public abstract class AbstractPotionItem extends Item {
         return InteractionResult.PASS;
     }
 
+    private static void finishQuickUse(ItemStack stack, Player player) {
+        PlayerVoidVaultContainer vault = PlayerVoidVaultContainer.of(player);
+        for (int slot = 0; slot < vault.getContainerSize(); slot++) {
+            if (vault.getItem(slot) == stack) {
+                vault.setItem(slot, stack.finishUsingItem(player.level(), player));
+                return;
+            }
+        }
+        ItemStack result = stack.finishUsingItem(player.level(), player);
+        if (result != stack && !result.isEmpty() && !player.getInventory().add(result))
+            player.drop(result, false);
+    }
+
     public static <T extends AbstractPotionItem> void use(Player player, float required, Class<T> type, ToIntFunction<T> function) {
         if (required <= 0.0F) return;
         List<Tuple<ItemStack, Integer>> potions = new ArrayList<>();
@@ -120,7 +135,7 @@ public abstract class AbstractPotionItem extends Item {
         if (type.isInstance(item)) {
             potions.add(new Tuple<>(player.getOffhandItem(), function.applyAsInt(type.cast(item))));
         }
-        for (ItemStack itemStack : player.getInventory().items) {
+        for (ItemStack itemStack : VoidBagItem.accessibleItems(player)) {
             item = itemStack.getItem();
             if (type.isInstance(item)) {
                 potions.add(new Tuple<>(itemStack, function.applyAsInt(type.cast(item))));
@@ -128,24 +143,23 @@ public abstract class AbstractPotionItem extends Item {
         }
         if (potions.isEmpty()) return;
         potions.sort(Comparator.comparingInt(Tuple::getB));
-        Level level = player.level();
         for (int i = 0; i < potions.size(); i++) {
             Tuple<ItemStack, Integer> left = potions.get(i);
             if (required <= left.getB()) {
-                left.getA().finishUsingItem(level, player);
+                finishQuickUse(left.getA(), player);
                 return;
             }
             if (i == potions.size() - 1) {
-                left.getA().finishUsingItem(level, player);
+                finishQuickUse(left.getA(), player);
                 return;
             } else {
                 Tuple<ItemStack, Integer> right = potions.get(i + 1);
                 if (right.getB() >= required) {
-                    right.getA().finishUsingItem(level, player);
+                    finishQuickUse(right.getA(), player);
                     return;
                 }
             }
         }
-        potions.getLast().getA().finishUsingItem(level, player);
+        finishQuickUse(potions.getLast().getA(), player);
     }
 }

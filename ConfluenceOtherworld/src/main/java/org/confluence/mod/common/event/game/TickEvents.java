@@ -14,10 +14,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.attachment.YoyoSession;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.BossDelaySpawner;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
@@ -111,6 +108,9 @@ public final class TickEvents {
             PlayerUtils.applySunflowerEffect(player, level, gameTime);
             LucyTheAxe.onIdle(player, gameTime);
         }
+        PlayerVoidVaultContainer.tickContents(entity);
+        if (entity instanceof ServerPlayer player)
+            PlayerVoidVaultContainer.of(player).sync(player, false);
 
         if (gameTime % 60 == 3) {
             AbstractFishingPole.resetCurrentBait(entity);

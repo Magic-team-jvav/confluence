@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.leaf.PassiveWormAction;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
@@ -30,7 +31,7 @@ public class SimpleCritter extends BaseCritter {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return withPassivePanic(createGroundCritterRoutine(0.45D), 0.7D);
+                return new PassiveWormAction(SimpleCritter.this);
             }
         };
     }

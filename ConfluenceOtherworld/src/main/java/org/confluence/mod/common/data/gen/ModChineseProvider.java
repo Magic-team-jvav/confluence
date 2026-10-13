@@ -512,6 +512,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("enchantment.confluence.multi_boomerang.desc", "额外发射一个回旋镖");
         add("enchantment.confluence.summoner_pact", "召唤师契约");
         add("enchantment.confluence.summoner_pact.desc", "提高仆从容量");
+        add("enchantment.confluence.flail_wind_burst", "风暴锤");
+        add("enchantment.confluence.flail_wind_burst.desc", "击中敌人时生成风暴击飞敌人");
+        add("enchantment.confluence.flail_turbine", "涡轮");
+        add("enchantment.confluence.flail_turbine.desc", "越转越强");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");

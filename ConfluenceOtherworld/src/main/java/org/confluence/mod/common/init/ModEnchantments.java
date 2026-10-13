@@ -35,6 +35,8 @@ public final class ModEnchantments {
     public static final RegistryObject<Enchantment> WHIP_SWEEP = ENCHANTMENTS.register("whip_sweep", WhipSweepEnchantment::new);
     public static final RegistryObject<Enchantment> MULTI_BOOMERANG = ENCHANTMENTS.register("multi_boomerang", MultiBoomerangEnchantment::new);
     public static final RegistryObject<Enchantment> SUMMONER_PACT = ENCHANTMENTS.register("summoner_pact", SummonerPactEnchantment::new);
+    public static final RegistryObject<Enchantment> FLAIL_WIND_BURST = ENCHANTMENTS.register("flail_wind_burst", WindBurstEnchantment::new);
+    public static final RegistryObject<Enchantment> FLAIL_TURBINE = ENCHANTMENTS.register("flail_turbine", TurbineEnchantment::new);
 
     @SuppressWarnings("deprecation")
     public static class Categories {
@@ -45,5 +47,6 @@ public final class ModEnchantments {
         public static final EnchantmentCategory MANA = EnchantmentCategory.create("CONFLUENCE_MANA", item -> item.builtInRegistryHolder().is(ModTags.Items.MANA_WEAPON));
         public static final EnchantmentCategory WHIP = EnchantmentCategory.create("CONFLUENCE_WHIP", item -> item.builtInRegistryHolder().is(ModTags.Items.WHIP));
         public static final EnchantmentCategory BOOMERANG = EnchantmentCategory.create("CONFLUENCE_BOOMERANG", item -> item.builtInRegistryHolder().is(ModTags.Items.BOOMERANG));
+        public static final EnchantmentCategory FLAIL = EnchantmentCategory.create("CONFLUENCE_FLAIL", item -> item.builtInRegistryHolder().is(ModTags.Items.FLAIL));
     }
 }

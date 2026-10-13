@@ -7,6 +7,7 @@ import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 import org.confluence.mod.common.item.flail.DaoOfPowItem;
 import org.confluence.mod.common.item.flail.FlaironItem;
 import org.confluence.mod.common.item.flail.IgnitingFlailItem;
+import org.confluence.mod.common.item.flail.WindAnchorItem;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -24,7 +25,7 @@ public class FlailItems {
     public static final PortDeferredItem<IgnitingFlailItem> FLAMING_MACE = ITEMS.register("flaming_mace", () -> new IgnitingFlailItem(Parameters.FLAMING_MACE.get(), ModRarity.BLUE, 1.0F / 6.0F));
 
     /// 风锚。
-    public static final PortDeferredItem<BaseFlailItem> WIND_ANCHOR = ITEMS.register("wind_anchor", () -> new BaseFlailItem(Parameters.WIND_ANCHOR.get(), ModRarity.BLUE));
+    public static final PortDeferredItem<WindAnchorItem> WIND_ANCHOR = ITEMS.register("wind_anchor", () -> new WindAnchorItem(Parameters.WIND_ANCHOR.get(), ModRarity.BLUE));
 
     /// 守卫者链锤。
     public static final PortDeferredItem<BaseFlailItem> GUARDIAN_FLAIL = ITEMS.register("guardian_flail", () -> new BaseFlailItem(Parameters.GUARDIAN_FLAIL.get(), ModRarity.GREEN));

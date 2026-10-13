@@ -14,6 +14,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.enchantment.ManaAffectiveEnchantment;
+import org.confluence.mod.common.enchantment.WindBurstEnchantment;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
@@ -119,5 +120,22 @@ public final class EnchantmentUtils {
             return amount + amount * ((1 - ratio) * lm.floatValue() + ratio * mm.floatValue());
         }
         return amount;
+    }
+
+    /// 处理连枷的风暴锤附魔效果（flail_wind_burst）。
+    ///
+    /// 1.20.1 没有附魔效果组件，因此这里直接读取手持物品上的附魔等级并执行
+    /// [WindBurstEnchantment#applyWindBurst]。伤害来源仅用于与 1.21 侧保持调用签名一致，
+    /// 当前实现不参与判定。
+    ///
+    /// @param player       攻击者（连枷持有者）
+    /// @param victim       被击中的实体
+    /// @param damageSource 伤害来源
+    /// @return 是否触发了风爆效果
+    public static boolean processFlailWindBurst(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
+        int level = WindBurstEnchantment.getLevel(player);
+        if (level <= 0) return false;
+        WindBurstEnchantment.applyWindBurst(player.serverLevel(), level, player, victim);
+        return true;
     }
 }

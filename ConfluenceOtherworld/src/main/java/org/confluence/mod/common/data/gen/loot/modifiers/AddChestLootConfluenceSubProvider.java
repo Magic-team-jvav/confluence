@@ -167,6 +167,14 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                 )
         ));
         entries.add(new AddedChestLoot(
+                BuiltInLootTables.BURIED_TREASURE,
+                LootTable.lootTable().withPool(
+                        LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FlailItems.WIND_ANCHOR)
+                                        .when(LootItemRandomChanceCondition.randomChance(1.0f)))
+                )
+        ));
+        entries.add(new AddedChestLoot(
                 BuiltInLootTables.SPAWN_BONUS_CHEST,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()

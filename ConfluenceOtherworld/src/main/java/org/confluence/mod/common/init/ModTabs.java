@@ -1942,6 +1942,11 @@ public final class ModTabs {
                         acceptAll(LanceItems.ITEMS, output, "lance");
                         acceptAll(FlailItems.ITEMS, output, "flail");
 
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_WIND_BURST.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_WIND_BURST.get(), 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_WIND_BURST.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_TURBINE.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_TURBINE.get(), 2));
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.WHIP_SWEEP.get(), 2));
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MULTI_BOOMERANG.get(), 3));
                     })

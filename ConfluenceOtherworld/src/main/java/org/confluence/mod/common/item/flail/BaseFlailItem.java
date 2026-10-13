@@ -169,6 +169,13 @@ public class BaseFlailItem extends TooltipItem implements GeoItem, IWeaponToolti
     public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
     }
 
+    /// 链锤从旋转阶段投出的瞬间触发的物品扩展点。
+    ///
+    /// 普通链锤保持空实现；需要在投出时附带效果的链锤通过具体物品子类覆盖，
+    /// 例如风锚在投出位置召唤一枚痛苦飓风。只在服务端真正投出时调用一次。
+    public void onFlailLaunch(Player owner, BaseFlailEntity flail) {
+    }
+
     /// 持有连枷时始终禁用挖掘
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {

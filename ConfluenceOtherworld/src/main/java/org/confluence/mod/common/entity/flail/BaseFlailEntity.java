@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -26,9 +27,11 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.enchantment.TurbineEnchantment;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.HandPositionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -62,9 +65,15 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     // ── 运行时状态 ──
     public float spinAngle = 0.0F;
     private int hitCooldown = 0;
+    /// 风爆附魔独立冷却，防止每 tick 多次触发
+    private int windBurstCooldown = 0;
     private int stayDuration = 0;
     private int bounceCount = 0;
     private boolean playerDropped = false;
+    /// SPIN 阶段持续 tick 计数，供 {@link TurbineEnchantment} 等外部附魔效果查询
+    private int spinTickCounter = 0;
+    /// 上一帧的阶段，用于检测阶段切换
+    private int previousPhase = -1;
     @Nullable
     private Parameters cachedParameters;
     /// 客户端渲染链条时使用的平滑方向。
@@ -74,6 +83,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     @Nullable
     public Vec3 smoothedChainDir;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+
+    /// 获取当前 SPIN 持续 tick 数
+    public int getSpinTickCounter() {
+        return spinTickCounter;
+    }
 
     public BaseFlailEntity(EntityType<? extends BaseFlailEntity> entityType, Level level) {
         super(entityType, level);
@@ -193,12 +207,19 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         // 重新读取 phase：super.tick() 中的 onHitBlock 可能已改变阶段
         int phase = getPhase();
 
+        // 涡轮附魔：退出 SPIN 时重置计数
+        if (previousPhase == PHASE_SPIN && phase != PHASE_SPIN) {
+            spinTickCounter = 0;
+        }
+        previousPhase = phase;
+
         if (!(owner instanceof Player player)) return;
 
         Parameters parameters = parameters();
         if (parameters == null) return;
 
         if (hitCooldown > 0) hitCooldown--;
+        if (windBurstCooldown > 0) windBurstCooldown--;
 
         this.noPhysics = false;
         switch (phase) {
@@ -228,7 +249,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         this.noPhysics = true;
         setNoGravity(true);
         // 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
-        spinAngle += parameters.getSpinSpeed(player);
+        spinTickCounter++;
+        // 涡轮附魔：按旋转时长提升挥舞速度
+        float turbineBonus = TurbineEnchantment.getBonus(player, spinTickCounter);
+        spinAngle += parameters.getSpinSpeed(player) * (1.0F + turbineBonus);
         Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
         float yawRad = (float) Math.toRadians(player.yBodyRot);
         float cosYaw = (float) Math.cos(yawRad);
@@ -378,9 +402,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox,
                 e -> e != player && e.isAlive() && LibEntityUtils.canHitEntity(e, this));
 
+        boolean anyHit = false;
+        LivingEntity firstHit = null;
         for (LivingEntity target : entities) {
             float baseDamage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
-            float finalDamage = baseDamage * damageMultiplier;
+            // 涡轮附魔：按旋转时长提升伤害
+            float turbineBonus = TurbineEnchantment.getBonus(player, spinTickCounter);
+            float finalDamage = baseDamage * damageMultiplier * (1.0F + turbineBonus);
             ItemStack held = player.getMainHandItem();
             if (isLaunchMode() && held.getItem() instanceof BaseFlailItem flailItem) {
                 finalDamage *= flailItem.getLaunchDamageRatio(held);
@@ -388,18 +416,32 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
+                if (!anyHit) firstHit = target;
+                anyHit = true;
                 LibEntityUtils.knockBackA2B(this, target, parameters.behavior().knockback(), 0.15f);
                 if (held.getItem() instanceof BaseFlailItem flailItem) {
                     flailItem.onFlailHit(player, target, this);
                 }
-                hitCooldown = phase == PHASE_THROWN ? 3 : 8;
                 if (phase == PHASE_THROWN && startsLaunched()) {
                     onLaunchedEntityImpact(player, parameters, target);
                     if (parameters.behavior().retractOnHitEntity()) {
                         setPhase(PHASE_RETRACT);
-                        return;
+                        break;
                     }
                 }
+            }
+        }
+
+        if (anyHit) {
+            // 涡轮附魔：按旋转时长缩短命中间隔
+            float turbineBonus = TurbineEnchantment.getBonus(player, spinTickCounter);
+            hitCooldown = phase == PHASE_THROWN ? 3 : (int) Math.max(4, 8 / (1.0F + turbineBonus));
+            // 风爆附魔：命中实体后击飞命中点周围生物，独立 3 秒冷却
+            if (player instanceof ServerPlayer serverPlayer && windBurstCooldown <= 0 && firstHit != null) {
+                EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,
+                        LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player));
+                windBurstCooldown = 60;
+                serverPlayer.getCooldowns().addCooldown(serverPlayer.getMainHandItem().getItem(), 60);
             }
         }
     }
@@ -504,8 +546,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         Vec3 launchDirection = look.scale(parameters.maxDistance()).add(eye.subtract(palm)).normalize();
         faceDirection(launchDirection);
 
-        float velocity = parameters.getVelocity(player);
+        // 涡轮附魔：旋转越久投出越快
+        float velocity = parameters.getVelocity(player) * (1.0F + TurbineEnchantment.getBonus(player, spinTickCounter));
         setDeltaMovement(launchDirection.scale(velocity));
+
+        // 物品扩展点：投出瞬间的附属效果（如风锚在链球位置召唤痛苦飓风）
+        if (player.getMainHandItem().getItem() instanceof BaseFlailItem flailItem) {
+            flailItem.onFlailLaunch(player, this);
+        }
     }
 
     /// 落地进入 STAY，不因低速自动收回。

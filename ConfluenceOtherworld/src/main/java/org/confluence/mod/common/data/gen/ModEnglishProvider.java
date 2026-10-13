@@ -648,6 +648,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("enchantment.confluence.multi_boomerang.desc", "Fires an additional boomerang");
         add("enchantment.confluence.summoner_pact", "Summoner's Pact");
         add("enchantment.confluence.summoner_pact.desc", "Increases minion capacity");
+        add("enchantment.confluence.flail_wind_burst", "Wind Burst");
+        add("enchantment.confluence.flail_wind_burst.desc", "Hitting an enemy unleashes a wind burst that knocks back nearby enemies");
+        add("enchantment.confluence.flail_turbine", "Turbine");
+        add("enchantment.confluence.flail_turbine.desc", "The longer it spins, the higher the damage and spin speed");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");

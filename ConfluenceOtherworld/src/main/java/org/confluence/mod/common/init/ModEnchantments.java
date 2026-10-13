@@ -34,7 +34,7 @@ public final class ModEnchantments {
     public static final ResourceKey<Enchantment> WHIP_SWEEP = Confluence.asResourceKey(Registries.ENCHANTMENT, "whip_sweep");
     public static final ResourceKey<Enchantment> SUMMONER_PACT = Confluence.asResourceKey(Registries.ENCHANTMENT, "summoner_pact");
 
-    /** 暴风锤 — 连枷专属风爆附魔，仅实体命中触发 */
+    /** 风暴锤 — 连枷专属风爆附魔，仅实体命中触发 */
     public static final ResourceKey<Enchantment> FLAIL_WIND_BURST = Confluence.asResourceKey(Registries.ENCHANTMENT, "flail_wind_burst");
     /** 涡轮 — 连枷专属附魔，挥舞越久伤害和速度越高 */
     public static final ResourceKey<Enchantment> FLAIL_TURBINE = Confluence.asResourceKey(Registries.ENCHANTMENT, "flail_turbine");

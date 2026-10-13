@@ -553,7 +553,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
         shapeless(output, new ItemStack(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.PLANKS, 4), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK));
 
-        shapeless(output, FlailItems.WIND_ANCHOR.toStack(), Ingredient.of(Items.HEAVY_CORE), Ingredient.of(FlailItems.MACE));
+        shapeless(output, FlailItems.WIND_ANCHOR.toStack(), Ingredient.of(Items.HEAVY_CORE), Ingredient.of(Items.WIND_CHARGE), Ingredient.of(Items.BREEZE_ROD), Ingredient.of(FlailItems.MACE));
         shapeless(output, FlailItems.FLAMING_MACE.toStack(), Ingredient.of(Items.LAVA_BUCKET), Ingredient.of(FlailItems.MACE));
         shapeless(output, ConsumableItems.RECALL_MANA_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));
         shapeless(output, ConsumableItems.RECALL_LIFE_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));

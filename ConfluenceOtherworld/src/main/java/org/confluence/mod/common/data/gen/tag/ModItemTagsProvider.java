@@ -550,7 +550,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
 
         IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);
-        GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
+        GunItems.GUN_ITEMS.forEach(item -> gun.add(item.get()));
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
         ManaWeaponItems.ITEMS.getEntries().forEach(item -> mana_weapon.add(item.get()));
@@ -1514,8 +1514,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             death.add(deathChest.asItem());
         }
 
-        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).addTags(ModTags.Items.BULLET).add(
-                GunItems.DUMMY_BULLET.get(),
+        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).add(
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );

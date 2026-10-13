@@ -1258,6 +1258,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
+        add("resourcepack.confluence_datatip_0.4", "Confluence Extra Tooltips");
 
         add("event.confluence.meteorite", "A meteorite has landed!");
         add("event.confluence.meteorite.ready", "A meteorite is falling!");

@@ -1,0 +1,70 @@
+{
+  "minecraft:gravel": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be refined",
+      "zh_cn": "可提炼"
+    }
+  },
+  "minecraft:skeleton_skull": {
+    "type": "text",
+    "text": {
+      "en_us": "Commonly found in churches within Sky Village and under Nether Tower walkways",
+      "zh_cn": "常见于天空村庄中的教堂、下界塔的天桥下"
+    }
+  },
+  "minecraft:arrow": {
+    "type": "text",
+    "text": {
+      "en_us": "Note: Also crafted at the Fletching Table",
+      "zh_cn": "注：制箭台亦可用于制作箭矢"
+    }
+  },
+  "minecraft:chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates on the surface and in Living Trees",
+      "zh_cn": "自然生成于地表和生命树中"
+    }
+  },
+  "#c:foods/fruit": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into Ambrosia",
+      "zh_cn": "可微光嬗变为仙馔密酒"
+    },
+    "color": "#FF69B4"
+  },
+  "#minecraft:arrows": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into Shimmer Arrow",
+      "zh_cn": "可微光嬗变为微光箭"
+    },
+    "color": "#FF69B4"
+  },
+  "minecraft:snow_block": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "minecraft:water_bucket": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "minecraft:lava_bucket": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  }
+}

@@ -1222,6 +1222,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
+        add("resourcepack.confluence_datatip_0.4", "汇流来世额外提示");
 
         add("event.confluence.meteorite", "有一颗陨石落地了！");
         add("event.confluence.meteorite.ready", "陨石即将落下！");

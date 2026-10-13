@@ -4,7 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -27,7 +26,7 @@ public record SwordProjectileParticleEffect(Event event, ResourceLocation emitte
         public static final Codec<Event> CODEC = StringRepresentable.fromEnum(Event::values);
 
         @Override
-        public @NotNull String getSerializedName() {
+        public String getSerializedName() {
             return name().toLowerCase(Locale.ROOT);
         }
     }

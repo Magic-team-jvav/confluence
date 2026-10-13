@@ -34,10 +34,14 @@ public final class SwordProjectileVisualHandler implements SwordProjectileVisual
         if (projectile.getProjectileComponent() == null) return;
         for (SwordProjectileParticleEffect effect : projectile.getProjectileComponent().particleEffects()) {
             if (effect.event() != event) continue;
-            ParticleEmitter emitter = new ParticleEmitter(projectile.level(), projectile.position(), effect.emitter());
-            emitter.attachEntity(projectile);
-            emitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE.addEmitter(emitter);
+            if (event == SwordProjectileParticleEffect.Event.TRAIL) {
+                MolangParticleEngine.INSTANCE.addTrackedEmitter(projectile, effect.emitter());
+            } else {
+                ParticleEmitter emitter = new ParticleEmitter(projectile.level(), projectile.position(), effect.emitter());
+                emitter.attachEntity(projectile);
+                emitter.hideOutline = true;
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
+            }
         }
     }
 

@@ -291,7 +291,10 @@
         - dave's front yard(daves_front_yard)
             - 常驻灵雾
         - heartbroken(heartbroken)
-            - 玩家死亡会重置生命水晶加成
+            - 碎心世界：玩家死亡会扣除一次最大生命值，需要用生命水晶加回来
+              玩家受到伤害会掉落1-2红心
+              怪物可以拾取红心，并获得＋1伤害和20生命上限
+              抗药性debuff延长时间为平时的两倍
         - act three abyss(act_three_abyss)
             - 被怪物击中后会在2秒内损失20魔力
             - 怪物变黑（纯视觉效果）

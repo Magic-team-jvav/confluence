@@ -57,11 +57,8 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(BaseFlailEntity entity) {
-        Parameters parameters = entity.parameters();
-        if (parameters != null && parameters.ballTexture() != null) {
-            return parameters.ballTexture();
-        }
-        return DEFAULT_BALL_TEXTURE;
+        ResourceLocation texture = entity.getBallTexture();
+        return texture == null ? DEFAULT_BALL_TEXTURE : texture;
     }
 
     @Override
@@ -90,9 +87,7 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
     private void renderGeoHead(BaseFlailEntity entity, Parameters parameters, ResourceLocation ballModel, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
         FlailGeoModel model = (FlailGeoModel) getGeoModel();
         model.model = ballModel;
-        model.texture = parameters.ballTexture() == null
-                ? DEFAULT_BALL_TEXTURE
-                : parameters.ballTexture();
+        model.texture = getTextureLocation(entity);
 
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.25F, 0.0F);

@@ -169,6 +169,16 @@ public class BaseFlailItem extends TooltipItem implements GeoItem, IWeaponToolti
     public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
     }
 
+    /// 服务端在位移前后调用，物品可更新本次链锤的命中效果状态。
+    public void onFlailTick(Player owner, BaseFlailEntity flail) {
+    }
+
+    /// 根据本次链锤的同步状态选择贴图，不改变武器参数或模型。
+    public @Nullable ResourceLocation getFlailTexture(BaseFlailEntity flail) {
+        Parameters parameters = flail.parameters();
+        return parameters == null ? null : parameters.ballTexture();
+    }
+
     /// 链锤从旋转阶段投出的瞬间触发的物品扩展点。
     ///
     /// 普通链锤保持空实现；需要在投出时附带效果的链锤通过具体物品子类覆盖，

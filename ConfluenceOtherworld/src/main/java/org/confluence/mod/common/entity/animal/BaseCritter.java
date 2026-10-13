@@ -8,8 +8,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
@@ -153,11 +151,6 @@ public abstract class BaseCritter extends Animal implements CritterVisual {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(DefaultAnimations.genericWalkController(this));
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        return super.hurt(source, amount);
     }
 
     public ResourceLocation getModelPath() {

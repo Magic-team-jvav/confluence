@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -67,6 +69,13 @@ public abstract class BaseFlyingCritter extends BaseCritter {
         );
     }
 
+    // 将飞行小动物的注视偏航应用到身体。
+    @Override
+    protected float tickHeadTurn(float bodyYaw, float animationSpeed) {
+        setYBodyRot(getYHeadRot());
+        return animationSpeed;
+    }
+
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {
@@ -80,6 +89,11 @@ public abstract class BaseFlyingCritter extends BaseCritter {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Fly", 5, state -> state.setAndContinue(FLY_ONLY)));
+    }
+
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
+        fallDistance = 0.0F;
     }
 
     @Override

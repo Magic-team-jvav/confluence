@@ -187,18 +187,17 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
 
         @Override
         public void tick() {
+            if (grasshopper.onGround()) grasshopper.setJumping(false);
             double deltaX = wantedX - mob.getX();
             double deltaY = wantedY - mob.getY();
             double deltaZ = wantedZ - mob.getZ();
             double distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
             if (distanceSquared < 2.500000277905201E-7) {
+                mob.setSpeed(0.0F);
                 mob.setZza(0.0F);
                 return;
             }
 
-            if (grasshopper.onGround()) {
-                grasshopper.setJumping(false);
-            }
             if (operation != Operation.MOVE_TO) {
                 mob.setZza(0.0F);
                 return;

@@ -25,10 +25,10 @@ public final class Fealing extends BaseFlyingCritter {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
+                return withPassivePanic(SelectorNode.of(
                         new VanillaGoalAction(new AvoidEntityGoal<>(Fealing.this, Player.class, 6.0F, 1.0D, 1.3D)),
                         createFlyingRoutine()
-                );
+                ), 1.35D);
             }
         };
     }

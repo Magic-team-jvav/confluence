@@ -721,6 +721,8 @@ public final class ValueSubProvider {
                 .add(SummonItems.IRON_GOLEM_STAFF, gold2)
                 .add(SummonItems.TERRAPRISMA, gold20)
                 .add(PetItems.CHESTER_STAFF, gold2)
+                .add(ToolItems.VOID_BAG, gold2)
+                .add(FunctionalBlocks.VOID_VAULT, gold2)
                 .add(PetItems.MONEY_TROUGH, gold2);
         builder
                 .add(WhipItems.LEATHER_WHIP, gold2)

@@ -11,12 +11,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.VariantHolder;
-
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -26,6 +26,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Locale;
 import java.util.function.IntFunction;
@@ -40,10 +41,19 @@ public class Ladybug extends BaseFlyingCritter implements VariantHolder<Ladybug.
             .add(Variant.RED, 399)
             .add(Variant.GOLD, 1)
             .build();
+    private final PathNavigation flightNavigation;
+    private final GroundPathNavigation groundNavigation;
+    private final MoveControl flightControl;
+    private final MoveControl groundControl;
     private int phaseTicks = 40;
 
     public Ladybug(EntityType<? extends Ladybug> type, Level level) {
         super(type, level);
+        flightNavigation = navigation;
+        flightControl = moveControl;
+        groundNavigation = new GroundPathNavigation(this, level);
+        groundNavigation.setCanFloat(true);
+        groundControl = new MoveControl(this);
     }
 
     @Override
@@ -108,13 +118,13 @@ public class Ladybug extends BaseFlyingCritter implements VariantHolder<Ladybug.
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) return;
+        if (level().isClientSide || isNoAi() || !isAlive()) return;
         if (isFlyingPhase()) {
-            if (--phaseTicks <= 0) {
+            if (!isInWaterOrBubble() && --phaseTicks <= 0) {
                 setFlyingPhase(false);
                 phaseTicks = 40 + random.nextInt(61);
             }
-        } else if (onGround() && --phaseTicks <= 0) {
+        } else if (isInWaterOrBubble() || onGround() && --phaseTicks <= 0) {
             setFlyingPhase(true);
             phaseTicks = 30 + random.nextInt(51);
             setDeltaMovement(getDeltaMovement().add(0.0, 0.18, 0.0));
@@ -128,7 +138,15 @@ public class Ladybug extends BaseFlyingCritter implements VariantHolder<Ladybug.
     private void setFlyingPhase(boolean flying) {
         entityData.set(DATA_FLYING, flying);
         setNoGravity(flying);
-        if (!flying) getNavigation().stop();
+        navigation.stop();
+        navigation = flying ? flightNavigation : groundNavigation;
+        moveControl = flying ? flightControl : groundControl;
+        moveControl.setWantedPosition(getX(), getY(), getZ(), 0.0);
+        setSpeed(0.0F);
+        setXxa(0.0F);
+        setYya(0.0F);
+        setZza(0.0F);
+        if (!flying) setXRot(0.0F);
     }
 
     @Override
@@ -139,7 +157,11 @@ public class Ladybug extends BaseFlyingCritter implements VariantHolder<Ladybug.
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Fly", 0, state -> state.setAndContinue(DefaultAnimations.FLY)));
+        controllers.add(new AnimationController<>(this, "Fly", 0, state -> {
+            if (isFlyingPhase()) return state.setAndContinue(DefaultAnimations.FLY);
+            state.resetCurrentAnimation();
+            return PlayState.STOP;
+        }));
     }
 
     public enum Variant implements IVariant {

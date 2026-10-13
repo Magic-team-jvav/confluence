@@ -32,10 +32,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -190,6 +187,7 @@ public final class PlayerUtils {
 
     /// 同步数据到player客户端
     public static void syncPlayerData(ServerPlayer player) {
+        PlayerVoidVaultContainer.of(player).sync(player, true);
         GameEventSystem.INSTANCE.syncAll(player);
     }
 
@@ -262,7 +260,7 @@ public final class PlayerUtils {
     }
 
     public static Coins getCoins(Player player, boolean withPiggyBank) {
-        Coins coins = withPiggyBank ? decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney()) : Coins.createEmpty();
+        Coins coins = withPiggyBank ? decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney() + PlayerVoidVaultContainer.of(player).getMoney()) : Coins.createEmpty();
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.getItem() instanceof CoinItem coin) {
                 coins.increase(coin, stack.getCount());
@@ -272,7 +270,7 @@ public final class PlayerUtils {
     }
 
     public static long getMoney(Player player, boolean withPiggyBank) {
-        long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
+        long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() + PlayerVoidVaultContainer.of(player).getMoney() : 0;
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
@@ -293,6 +291,10 @@ public final class PlayerUtils {
 
         if (withPiggyBank) {
             long res = PlayerPiggyBankContainer.of(player).tryCostMoney(cost);
+            if (res == 0) return true;
+            have -= cost - res;
+            cost = res;
+            res = PlayerVoidVaultContainer.of(player).tryCostMoney(player, cost);
             if (res == 0) return true;
             have -= cost - res;
             cost = res;

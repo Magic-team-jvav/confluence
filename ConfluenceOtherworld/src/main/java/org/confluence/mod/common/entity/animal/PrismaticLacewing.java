@@ -7,16 +7,19 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.util.OverworldUtils;
 
 public class PrismaticLacewing extends BaseFlyingCritter {
     private static final String DAMAGED_BY_PLAYER_KEY = "DamagedByPlayer";
     private boolean damagedByPlayer;
+    private int outsideHallowTicks;
 
     public PrismaticLacewing(EntityType<? extends PrismaticLacewing> type, Level level) {
         super(type, level);
@@ -45,6 +48,14 @@ public class PrismaticLacewing extends BaseFlyingCritter {
     @Override
     public void tick() {
         super.tick();
+        if (!level().isClientSide) {
+            if (ModSecretSeeds.DONT_DIG_UP.match() || OverworldUtils.isHallow(level().getBiome(blockPosition()))) {
+                outsideHallowTicks = 0;
+            } else if (++outsideHallowTicks >= 20) {
+                discard();
+                return;
+            }
+        }
         if (level().isClientSide && tickCount % 3 == 0) {
             level().addParticle(ParticleTypes.END_ROD, getRandomX(0.8), getRandomY(), getRandomZ(0.8), 0.0, 0.005, 0.0);
         }
@@ -55,6 +66,7 @@ public class PrismaticLacewing extends BaseFlyingCritter {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         Entity attacker = source.getEntity();
+        if (EnemyDamageRules.isEnemy(attacker)) return false;
         if (attacker instanceof Player) damagedByPlayer = true;
         if (!damagedByPlayer && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;

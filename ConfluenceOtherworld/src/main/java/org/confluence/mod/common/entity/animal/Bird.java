@@ -14,8 +14,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -32,7 +30,6 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.constant.DefaultAnimations;
@@ -79,11 +76,34 @@ public class Bird extends Animal implements FlyingAnimal, CritterVisual {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+        goalSelector.addGoal(0, new PanicGoal(this, 1.25) {
+            @Override
+            public void start() {
+                super.start();
+                liftEscapePath(1.25);
+            }
+        });
         goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        goalSelector.addGoal(2, new BirdWanderGoal(this, 1.0));
-        goalSelector.addGoal(3, new FollowMobGoal(this, 1.0, 3.0F, 7.0F));
+        goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0, 1.25) {
+            @Override
+            public void start() {
+                super.start();
+                liftEscapePath(1.0);
+            }
+        });
+        goalSelector.addGoal(2, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(3, new BirdWanderGoal(this, 1.0));
+    }
+
+    // 将逃跑终点转换为空中路径，并启动鸟类起飞。
+    private void liftEscapePath(double speed) {
+        var path = navigation.getPath();
+        if (path == null || path.getEndNode() == null || !onGround()) return;
+        var end = path.getEndNode();
+        if (navigation.moveTo(end.x + 0.5, Math.max(getY() + 2.0, end.y + 1.0), end.z + 0.5, speed)) {
+            setDeltaMovement(getDeltaMovement().add(0.0, 0.25, 0.0));
+            hasImpulse = true;
+        }
     }
 
     @Nullable
@@ -94,6 +114,7 @@ public class Bird extends Animal implements FlyingAnimal, CritterVisual {
         if (key != null && (tag == null || !tag.contains(key))) initializeSpawnVariant();
         return result;
     }
+
 
     protected @Nullable String variantSaveKey() {
         return null;
@@ -136,6 +157,11 @@ public class Bird extends Animal implements FlyingAnimal, CritterVisual {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         return null;
+    }
+
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
+        fallDistance = 0.0F;
     }
 
     @Override

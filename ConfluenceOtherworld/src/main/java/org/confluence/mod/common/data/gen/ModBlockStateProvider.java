@@ -13,10 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.common.init.block.TorchBlocks;
+import org.confluence.mod.common.init.block.*;
 
 import java.io.FileNotFoundException;
 import java.util.function.Supplier;
@@ -40,6 +37,7 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         OreBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
         DecorativeBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
         simpleBlockIfAbsent(NatureBlocks.SPIDER_NEST_STONE.get());
+        simpleBlockIfAbsent(FunctionalBlocks.VOID_VAULT.get());
 
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerLogSet(blockSet);

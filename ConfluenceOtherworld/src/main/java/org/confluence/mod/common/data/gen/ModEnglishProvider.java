@@ -1819,6 +1819,13 @@ public class ModEnglishProvider extends LanguageProvider {
         addAll(LanceItems.ITEMS);
         addAll(LightPetItems.ITEMS);
         add(PetItems.CHESTER_STAFF.get(), "Eye Bone");
+        add("item.confluence.void_bag", "Void Bag");
+        add("item.confluence.void_bag.disable", "Closed Void Bag");
+        add("block.confluence.void_vault", "Void Vault");
+        add("container.confluence.void_vault", "Void Vault");
+        add("tooltip.confluence.void_storage.shared", "Accesses your personal storage, shared with the Void Vault");
+        add("tooltip.confluence.void_storage.overflow", "When open, collects inventory overflow and allows quick use of stored potions");
+        add("tooltip.confluence.void_storage.toggle", "Right-click with an empty cursor in the inventory to toggle open or closed");
         add(PetItems.MONEY_TROUGH.get(), "Money Trough");
         add("container.confluence.chester", "Chester");
         addAll(ManaWeaponItems.ITEMS);

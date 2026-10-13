@@ -361,6 +361,7 @@ public final class ModClientSetups {
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
+        ItemProperties.register(ToolItems.VOID_BAG.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
     }
 

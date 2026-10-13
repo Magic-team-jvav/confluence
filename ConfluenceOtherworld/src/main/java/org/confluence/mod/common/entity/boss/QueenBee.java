@@ -286,6 +286,8 @@ public class QueenBee extends BaseBoss {
         }
         hornet.setPos(position());
         hornet.setYRot(getYRot());
+        hornet.setYBodyRot(getYRot());
+        hornet.setYHeadRot(getYRot());
         hornet.setMaster(this);
         if (serverLevel.addFreshEntity(hornet)) {
             return true;

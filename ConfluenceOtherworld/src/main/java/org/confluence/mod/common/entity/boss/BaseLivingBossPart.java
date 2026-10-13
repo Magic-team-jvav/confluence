@@ -150,6 +150,9 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
         }
         synchronizeOwnerScaling(resolvedOwner);
         tickPart(resolvedOwner);
+        // 部件完成位移和转向后，同步本刻的身体和头部朝向。
+        setYBodyRot(getYRot());
+        setYHeadRot(getYRot());
     }
 
     private void synchronizeOwnerScaling(T owner) {

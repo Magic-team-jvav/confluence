@@ -10,6 +10,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+import org.confluence.mod.common.entity.ai.bt.leaf.PassiveWormAction;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -34,7 +35,7 @@ public final class TruffleWorm extends BaseCritter {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(new BurrowAction(), withPassivePanic(createGroundCritterRoutine(0.5), 1.0));
+                return SelectorNode.of(new BurrowAction(), new PassiveWormAction(TruffleWorm.this));
             }
         };
     }
@@ -59,12 +60,12 @@ public final class TruffleWorm extends BaseCritter {
         @Override
         public BTStatus execute() {
             if (!entityData.get(BURROWING) && nearbyPlayer() == null) return BTStatus.FAILURE;
-            if (++ticks >= 20) {
+            if (++ticks >= 30) {
                 entityData.set(BURROWING, true);
                 getNavigation().stop();
                 noPhysics = true;
                 setDeltaMovement(0.0, -0.06, 0.0);
-                if (ticks >= 30) discard();
+                if (ticks >= 40) discard();
             }
             return BTStatus.RUNNING;
         }

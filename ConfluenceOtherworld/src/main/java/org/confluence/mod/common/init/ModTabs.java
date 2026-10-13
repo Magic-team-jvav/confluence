@@ -769,6 +769,8 @@ public final class ModTabs {
                         storage.accept(ChestBlocks.MECHANIC_SAFE_CHEST.get());
                         storage.accept(FunctionalBlocks.PIGGY_BANK.get());
                         storage.accept(FunctionalBlocks.SAFE.get());
+                        storage.accept(FunctionalBlocks.VOID_VAULT.get());
+                        storage.accept(ToolItems.VOID_BAG.get());
                         storage.accept(FunctionalBlocks.MAGIC_MAIL_BOX.get());
                         storage.accept(TFBlocks.TRASH_CAN);
 

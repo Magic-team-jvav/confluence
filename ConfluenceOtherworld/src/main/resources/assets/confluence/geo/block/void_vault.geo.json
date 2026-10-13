@@ -1,0 +1,193 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:geometry": [
+        {
+            "description": {
+                "identifier": "geometry.unknown",
+                "texture_width": 64,
+                "texture_height": 64,
+                "visible_bounds_width": 2,
+                "visible_bounds_height": 2.5,
+                "visible_bounds_offset": [
+                    0,
+                    0.75,
+                    0
+                ]
+            },
+            "bones": [
+                {
+                    "name": "bb_main",
+                    "pivot": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -8,
+                                0,
+                                -5
+                            ],
+                            "size": [
+                                16,
+                                4,
+                                10
+                            ],
+                            "uv": [
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -6,
+                                17,
+                                -2
+                            ],
+                            "size": [
+                                12,
+                                3,
+                                4
+                            ],
+                            "uv": [
+                                0,
+                                14
+                            ]
+                        },
+                        {
+                            "origin": [
+                                4,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                2,
+                                17,
+                                4
+                            ],
+                            "uv": [
+                                0,
+                                21
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -6,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                2,
+                                17,
+                                4
+                            ],
+                            "uv": [
+                                12,
+                                21
+                            ]
+                        },
+                        {
+                            "origin": [
+                                3,
+                                16,
+                                -3
+                            ],
+                            "size": [
+                                4,
+                                5,
+                                6
+                            ],
+                            "uv": [
+                                24,
+                                21
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -7,
+                                16,
+                                -3
+                            ],
+                            "size": [
+                                4,
+                                5,
+                                6
+                            ],
+                            "uv": [
+                                24,
+                                32
+                            ]
+                        },
+                        {
+                            "origin": [
+                                4,
+                                4,
+                                -3
+                            ],
+                            "size": [
+                                3,
+                                5,
+                                6
+                            ],
+                            "uv": [
+                                16,
+                                43
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -7,
+                                4,
+                                -3
+                            ],
+                            "size": [
+                                3,
+                                5,
+                                6
+                            ],
+                            "uv": [
+                                34,
+                                43
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -4,
+                                3,
+                                -0.05
+                            ],
+                            "size": [
+                                8,
+                                14,
+                                0.1
+                            ],
+                            "uv": {
+                                "north": {
+                                    "uv": [
+                                        0,
+                                        42
+                                    ],
+                                    "uv_size": [
+                                        8,
+                                        14
+                                    ]
+                                },
+                                "south": {
+                                    "uv": [
+                                        8,
+                                        42
+                                    ],
+                                    "uv_size": [
+                                        8,
+                                        14
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

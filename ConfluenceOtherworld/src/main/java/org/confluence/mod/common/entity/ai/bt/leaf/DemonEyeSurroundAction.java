@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.ai.bt.leaf;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -39,6 +38,10 @@ public final class DemonEyeSurroundAction extends BTNode {
 
     public DemonEyeSurroundAction(BaseMonster mob) {
         this.mob = mob;
+    }
+
+    public boolean isHovering() {
+        return !charging && mob.getTarget() != null;
     }
 
     @Override
@@ -78,7 +81,7 @@ public final class DemonEyeSurroundAction extends BTNode {
 
     /// 开始一次冲撞：锁定方向并给出初速。
     private void beginCharge(LivingEntity target) {
-        Vec3 aim = target.getEyePosition().subtract(mob.getEyePosition());
+        Vec3 aim = target.getBoundingBox().getCenter().subtract(mob.getBoundingBox().getCenter());
         chargeDirection = aim.lengthSqr() < 1.0E-6D ? mob.getViewVector(1.0F) : aim.normalize();
         mob.setDeltaMovement(chargeDirection.scale(CHARGE_IMPULSE));
         mob.hasImpulse = true;
@@ -96,7 +99,6 @@ public final class DemonEyeSurroundAction extends BTNode {
         // 迎面有水就抬高，把冲撞抬过水面；否则恶魔眼会一头扎进水里。
         next = next.add(waterAvoidance(next));
         mob.setDeltaMovement(next);
-        mob.faceCombatDirection(next, 30.0F, 85.0F);
         mob.hasImpulse = true;
 
         stateTicks++;
@@ -128,18 +130,18 @@ public final class DemonEyeSurroundAction extends BTNode {
         if (target == null) {
             return;
         }
-        mob.faceCombatPosition(target.getEyePosition(), 30.0F, 85.0F);
+        mob.faceCombatDirection(target.getBoundingBox().getCenter().subtract(mob.getBoundingBox().getCenter()), 30.0F, 85.0F);
     }
 
-    /// 碰撞改变垂直速度时同步清理冲撞状态，避免继续朝同一块天花板或地面推进。
-    public void adjustTargetAfterVerticalCollision(boolean movingDown) {
-        if (charging) {
-            charging = false;
-            stateTicks = 0;
-            chargeDirection = Vec3.ZERO;
-        }
-        // 抬高或压低一点目标高度，让下一轮冲撞不再重复撞同一个面。
-        Vec3 movement = mob.getDeltaMovement();
-        mob.setDeltaMovement(new Vec3(movement.x, movingDown ? Mth.clamp(-movement.y, 0.1D, 0.22D) : movement.y, movement.z));
+    // 任意方向碰撞后重新蓄势，避免沿旧冲撞方向持续推墙。
+    public void onCollision() {
+        charging = false;
+        stateTicks = 0;
+        chargeDirection = Vec3.ZERO;
+    }
+
+    @Override
+    public void stop() {
+        onCollision();
     }
 }

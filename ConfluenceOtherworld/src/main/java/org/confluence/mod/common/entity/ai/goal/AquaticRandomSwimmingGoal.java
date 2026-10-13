@@ -17,6 +17,11 @@ public class AquaticRandomSwimmingGoal extends RandomStrollGoal {
         return mob.isInWaterOrBubble() && super.canUse();
     }
 
+    @Override
+    public boolean canContinueToUse() {
+        return mob.isInWaterOrBubble() && super.canContinueToUse();
+    }
+
     @Nullable
     @Override
     protected Vec3 getPosition() {

@@ -442,10 +442,9 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
         float targetYaw = horizontal < 1.0E-7D ? getYRot() : (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
         float targetPitch = (float) (-Mth.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG);
-        // 第一个参数是目标角，第二个参数是当前参考角；传反会使实体从目标角反推，
-        // 表现为拒绝转向、突然跳向或越过目标后反复摆动。
-        float yaw = Mth.rotateIfNecessary(targetYaw, getYRot(), maximumYawChange);
-        float pitch = Mth.rotateIfNecessary(targetPitch, getXRot(), maximumPitchChange);
+        // 按每刻最大转角从当前朝向接近目标，不能用限制两角差值的 rotateIfNecessary。
+        float yaw = Mth.approachDegrees(getYRot(), targetYaw, maximumYawChange);
+        float pitch = Mth.approachDegrees(getXRot(), targetPitch, maximumPitchChange);
         setYRot(yaw);
         setXRot(pitch);
         yBodyRot = yaw;

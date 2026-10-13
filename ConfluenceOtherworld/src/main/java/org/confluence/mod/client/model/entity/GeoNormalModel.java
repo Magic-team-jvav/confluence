@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 
 public class GeoNormalModel<T extends GeoEntity> extends DefaultedEntityGeoModel<T> {
     protected CoreGeoBone head;
+    private boolean headPitchEnabled = true;
     protected final ResourceLocation path;
 
     public GeoNormalModel(ResourceLocation path) {
@@ -36,9 +37,10 @@ public class GeoNormalModel<T extends GeoEntity> extends DefaultedEntityGeoModel
             this.head = getHead();
             if (this.head != null) {
                 EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
+                if (entityData == null) return;
                 if (this.head instanceof GeoBone bone) {
                     var initial = bone.getInitialSnapshot();
-                    this.head.setRotX(initial.getRotX() + entityData.headPitch() * 0.017453292F);
+                    this.head.setRotX(initial.getRotX() + (headPitchEnabled ? entityData.headPitch() * 0.017453292F : 0.0F));
                     this.head.setRotY(initial.getRotY() + entityData.netHeadYaw() * 0.017453292F);
                 }
             }
@@ -46,11 +48,18 @@ public class GeoNormalModel<T extends GeoEntity> extends DefaultedEntityGeoModel
     }
 
     protected @Nullable CoreGeoBone getHead() {
-        return getAnimationProcessor().getBone(getHeadName());
+        CoreGeoBone bone = getAnimationProcessor().getBone(getHeadName());
+        return bone == null && "Head".equals(getHeadName())
+                ? getAnimationProcessor().getBone("head") : bone;
     }
 
     protected @Nullable String getHeadName() {
         return headBone;
+    }
+
+    // 整体模型承担俯仰时，头部仅应用相对偏航。
+    public void setHeadPitchEnabled(boolean enabled) {
+        headPitchEnabled = enabled;
     }
 
     public GeoNormalModel<T> setHeadName(String headName) {

@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.common.*;
+import org.confluence.mod.common.item.storage.VoidBagItem;
 import org.confluence.terra_curio.common.item.MagicMirror;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortDeferredItem;
@@ -30,6 +31,8 @@ public class ToolItems {
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+
+    public static final PortDeferredItem<VoidBagItem> VOID_BAG = ITEMS.register("void_bag", VoidBagItem::new);
 
     public static final PortDeferredItem<HoneyBucketItem> HONEY_BUCKET = ITEMS.register("honey_bucket", HoneyBucketItem::new);
     public static final PortDeferredItem<VoidBucketItem> VOID_BUCKET = ITEMS.register("void_bucket", VoidBucketItem::new);

@@ -6,10 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
-import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.attachment.YoyoSession;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
@@ -112,6 +109,9 @@ public final class TickEvents {
             PlayerUtils.applySunflowerEffect(player, level, gameTime);
             LucyTheAxe.onIdle(player, gameTime);
         }
+        PlayerVoidVaultContainer.tickContents(event.player);
+        if (event.player instanceof ServerPlayer player)
+            PlayerVoidVaultContainer.of(player).sync(player, false);
 
         if (gameTime % 60 == 3) {
             AbstractFishingPole.resetCurrentBait(event.player);

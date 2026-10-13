@@ -71,6 +71,8 @@ public final class SandShark extends BaseMonster {
                             if (onGround()) {
                                 movement = new Vec3((random.nextFloat() * 2 - 1) * 0.2, 0.5, (random.nextFloat() * 2 - 1) * 0.2);
                                 setYRot(random.nextFloat() * 360);
+                                setYBodyRot(getYRot());
+                                setYHeadRot(getYRot());
                                 setOnGround(false);
                                 hasImpulse = true;
                             }

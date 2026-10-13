@@ -33,6 +33,7 @@ import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.item.storage.VoidBagItem;
 import org.confluence.mod.network.s2c.SyncEnemyBannerEntriesPacketS2C;
 import org.confluence.terra_curio.common.attachment.PrimitiveValueHolder;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
@@ -296,7 +297,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         if (!data.isCouldHurtCritters() || !data.isCouldDamageEnvironment()) {
             data.setCouldHurtCritters(true);
             data.setCouldDamageEnvironment(true);
-            for (ItemStack stack : Iterables.concat(player.getInventory().offhand, player.getInventory().items)) {
+            for (ItemStack stack : Iterables.concat(player.getInventory().offhand, VoidBagItem.accessibleItems(player))) {
                 if (stack == null) continue;
                 boolean a = data.isCouldHurtCritters();
                 boolean b = data.isCouldDamageEnvironment();

@@ -28,6 +28,7 @@ public final class ModMenuTypes {
     public static final RegistryObject<MenuType<LoomMenu>> LOOM = TYPES.register("loom", () -> new MenuType<>(LoomMenu::new, FeatureFlags.VANILLA_SET));
     public static final RegistryObject<MenuType<DyeVatMenu>> DYE_VAT = TYPES.register("dye_vat", () -> new MenuType<>(DyeVatMenu::new, FeatureFlags.VANILLA_SET));
     public static final RegistryObject<MenuType<DyeMixMenu>> DYE_MIX = TYPES.register("dye_mix", () -> new MenuType<>(DyeMixMenu::new, FeatureFlags.VANILLA_SET));
+    public static final RegistryObject<MenuType<VoidVaultMenu>> VOID_VAULT = TYPES.register("void_vault", () -> new MenuType<>(VoidVaultMenu::new, FeatureFlags.VANILLA_SET));
     public static final RegistryObject<MenuType<PiggyBankMenu>> PIGGY_BANK = TYPES.register("piggy_bank", () -> new MenuType<>(PiggyBankMenu::new, FeatureFlags.VANILLA_SET));
 
     public static final RegistryObject<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));

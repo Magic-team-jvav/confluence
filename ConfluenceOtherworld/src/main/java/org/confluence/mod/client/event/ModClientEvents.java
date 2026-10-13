@@ -69,10 +69,7 @@ import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.WhipModelRegister;
-import org.confluence.mod.client.model.block.GardenGnomeBlockModel;
-import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
-import org.confluence.mod.client.model.block.RelicBlockModel;
-import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
+import org.confluence.mod.client.model.block.*;
 import org.confluence.mod.client.model.entity.*;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
@@ -231,6 +228,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.DYE_VAT.get(), DyeVatScreen::new);
         event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
         event.register(ModMenuTypes.PIGGY_BANK.get(), PiggyBankScreen::new);
+        event.register(ModMenuTypes.VOID_VAULT.get(), VoidVaultScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
         event.register(ModMenuTypes.NPC_TRADE.get(), NPCTradeScreens::create);
     }
@@ -980,6 +978,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), ClientUtils.rendererProvider(MechanicalBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));
         event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.VOID_VAULT_ENTITY.get(), context -> new GeoBlockRenderer<>(new VoidVaultModel<>()));
         event.registerBlockEntityRenderer(FunctionalBlocks.SAFE_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("safe"))));
         event.registerBlockEntityRenderer(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), ClientUtils.rendererProvider(MuralBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), ClientUtils.rendererProvider(BewitchingTableBlockRenderer::new));

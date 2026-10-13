@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -61,6 +62,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private static final EntityDataAccessor<Float> DATA_SPIN_ANGLE =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_LAUNCH_MODE =
+            SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HIT_EFFECT_ENABLED =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.BOOLEAN);
 
     // ── 运行时状态 ──
@@ -124,6 +127,30 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         builder.define(DATA_PHASE, PHASE_SPIN);
         builder.define(DATA_SPIN_ANGLE, 0.0F);
         builder.define(DATA_LAUNCH_MODE, false);
+        builder.define(DATA_HIT_EFFECT_ENABLED, true);
+    }
+
+    /// 每个实体独立保存命中效果开关，新创建的链锤默认开启。
+    public boolean isHitEffectEnabled() {
+        return entityData.get(DATA_HIT_EFFECT_ENABLED);
+    }
+
+    public void setHitEffectEnabled(boolean enabled) {
+        entityData.set(DATA_HIT_EFFECT_ENABLED, enabled);
+    }
+
+    public @Nullable ResourceLocation getBallTexture() {
+        if (getOwner() instanceof LivingEntity owner && owner.getMainHandItem().getItem() instanceof BaseFlailItem item) {
+            return item.getFlailTexture(this);
+        }
+        Parameters parameters = parameters();
+        return parameters == null ? null : parameters.ballTexture();
+    }
+
+    private void tickItemBehavior(Player player) {
+        if (!level().isClientSide() && player.getMainHandItem().getItem() instanceof BaseFlailItem item) {
+            item.onFlailTick(player, this);
+        }
     }
 
     public int getPhase() {
@@ -219,6 +246,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         Parameters parameters = parameters();
         if (parameters == null) return;
 
+        tickItemBehavior(player);
         if (hitCooldown > 0) hitCooldown--;
         if (windBurstCooldown > 0) windBurstCooldown--;
 
@@ -230,6 +258,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             case PHASE_RETRACT -> tickRetract(player, parameters);
         }
         tickSpecialBehavior(player, parameters, phase);
+        tickItemBehavior(player);
 
         if (!level().isClientSide() && hitCooldown <= 0) {
             /// 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
@@ -420,7 +449,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
                 if (!anyHit) firstHit = target;
                 anyHit = true;
                 LibEntityUtils.knockBackA2B(this, target, parameters.behavior().knockback(), 0.15f);
-                if (held.getItem() instanceof BaseFlailItem flailItem) {
+                if (isHitEffectEnabled() && held.getItem() instanceof BaseFlailItem flailItem) {
                     flailItem.onFlailHit(player, target, this);
                 }
                 if (level() instanceof ServerLevel serverLevel) {
@@ -594,6 +623,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (tag.contains("BounceCount")) bounceCount = tag.getInt("BounceCount");
         if (tag.contains("PlayerDropped")) playerDropped = tag.getBoolean("PlayerDropped");
         if (tag.contains("LaunchMode")) setLaunchMode(tag.getBoolean("LaunchMode"));
+        if (tag.contains("HitEffectEnabled")) setHitEffectEnabled(tag.getBoolean("HitEffectEnabled"));
     }
 
     @Override
@@ -604,6 +634,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         tag.putInt("BounceCount", bounceCount);
         tag.putBoolean("PlayerDropped", playerDropped);
         tag.putBoolean("LaunchMode", isLaunchMode());
+        tag.putBoolean("HitEffectEnabled", isHitEffectEnabled());
     }
 
     @Override

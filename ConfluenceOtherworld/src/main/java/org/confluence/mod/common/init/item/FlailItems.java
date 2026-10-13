@@ -21,7 +21,7 @@ public class FlailItems {
     public static final DeferredItem<BaseFlailItem> MACE = ITEMS.register("mace", () -> new BaseFlailItem(Parameters.MACE.get(), ModRarity.WHITE));
 
     /// 火焰链锤。
-    public static final DeferredItem<IgnitingFlailItem> FLAMING_MACE = ITEMS.register("flaming_mace", () -> new IgnitingFlailItem(Parameters.FLAMING_MACE.get(), ModRarity.BLUE, 1.0F / 6.0F));
+    public static final DeferredItem<IgnitingFlailItem> FLAMING_MACE = ITEMS.register("flaming_mace", () -> new IgnitingFlailItem(Parameters.FLAMING_MACE.get(), ModRarity.BLUE, 1.0F / 6.0F, true));
 
     /// 风锚。
     public static final DeferredItem<WindAnchorItem> WIND_ANCHOR = ITEMS.register("wind_anchor", () -> new WindAnchorItem(Parameters.WIND_ANCHOR.get(), ModRarity.BLUE));

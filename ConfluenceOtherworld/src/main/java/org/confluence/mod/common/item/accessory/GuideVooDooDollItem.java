@@ -151,7 +151,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
                     direction = Direction.fromAxisAndDirection(Direction.Axis.Z, negative ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
                 }
             }
-            WallOfFlesh wallOfFlesh = wof.spawn(level, blockPos.relative(direction, 64), MobSpawnType.MOB_SUMMONED);
+            WallOfFlesh wallOfFlesh = wof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
             if (wallOfFlesh != null) {
                 wallOfFlesh.setForward(direction);
             }

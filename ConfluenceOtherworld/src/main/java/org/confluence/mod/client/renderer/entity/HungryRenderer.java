@@ -22,7 +22,7 @@ import org.joml.Vector3f;
 
 /// 绘制饿鬼本体及其连接 Boss 锚点的连续叶片。
 public final class HungryRenderer<T extends TheHungry> extends GeoNormalRenderer<T> {
-    private static final ModelResourceLocation SEGMENT_MODEL = new ModelResourceLocation(Confluence.asResource("entity/the_hungry_leaf"), "inventory");
+    private static final ModelResourceLocation SEGMENT_MODEL = TongueRenderer.SEGMENT_MODEL;
     private static final double SEGMENT_SPACING = 0.75;
     private static final int MAX_SEGMENTS = 96;
     private static final Quaternionf[] SEGMENT_ROTATIONS = new Quaternionf[MAX_SEGMENTS];

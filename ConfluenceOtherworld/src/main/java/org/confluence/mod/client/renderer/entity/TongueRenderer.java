@@ -29,7 +29,7 @@ import org.joml.Vector3f;
 
 /// 绘制狂卷之舌效果中嘴部到受影响实体之间的连续饿鬼叶片。
 public final class TongueRenderer {
-    public static final ModelResourceLocation SEGMENT_MODEL = new ModelResourceLocation(Confluence.asResource("entity/the_hungry_leaf"), ModelResourceLocation.STANDALONE_VARIANT);
+    public static final ModelResourceLocation SEGMENT_MODEL = ModelResourceLocation.standalone(Confluence.asResource("item/entity/the_hungry_leaf"));
     private static final int BASE_SEGMENTS = 5;
     private static final float SEGMENTS_PER_BLOCK = 0.8F;
 

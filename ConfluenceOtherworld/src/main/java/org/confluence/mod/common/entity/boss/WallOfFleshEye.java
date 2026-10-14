@@ -36,13 +36,12 @@ public final class WallOfFleshEye extends WallOfFleshPart {
 
         shoot(master, target);
         if (master.isPhaseTwo() && --burstRemaining > 0) {
-            shootTimer = BURST_INTERVAL;
+            shootTimer = Math.max(2, Math.round(BURST_INTERVAL * (0.4F + 0.6F * master.getHealth() / master.getMaxHealth())));
         } else {
             burstRemaining = master.isPhaseTwo() ? 3 : 1;
-            shootTimer = (master.isPhaseTwo()
-                    ? PHASE_TWO_SHOT_INTERVAL
-                    : NORMAL_SHOT_INTERVAL)
-                    + random.nextInt(20);
+            float health = master.getHealth() / master.getMaxHealth();
+            shootTimer = Math.max(2, Math.round(((master.isPhaseTwo() ? PHASE_TWO_SHOT_INTERVAL : NORMAL_SHOT_INTERVAL)
+                    + random.nextInt(20)) * (0.4F + 0.6F * health)));
         }
     }
 

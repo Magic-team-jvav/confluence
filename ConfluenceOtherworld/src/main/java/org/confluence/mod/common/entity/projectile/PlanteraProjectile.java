@@ -4,13 +4,19 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.joml.Vector3f;
 
 /// 世纪之花三类基础弹幕的共享实现。
@@ -27,6 +33,7 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
     private static final double SPORE_VERTICAL_SPEED = 0.1D;
     private static final double SPORE_APEX_HEIGHT = 5.0D;
 
+    private static final EntityDataAccessor<Boolean> POISON_SEED = SynchedEntityData.defineId(PlanteraProjectile.class, EntityDataSerializers.BOOLEAN);
     private final Variant variant;
     private boolean sporeMovingUpward = true;
 
@@ -35,8 +42,15 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
         this.variant = variant;
     }
 
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(POISON_SEED, false);
+    }
+
     /// 在弹幕加入世界前保存初速度、伤害与寿命。
     public void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy) {
+        entityData.set(POISON_SEED, variant == Variant.SEED && owner.getHealth() < owner.getMaxHealth() * 0.8F && random.nextBoolean());
         if (variant == Variant.SPORE) {
             Vec3 origin = new Vec3(owner.getX(), owner.getEyeY() - 0.1D, owner.getZ());
             Vec3 horizontalAim = target.position().subtract(origin).multiply(1.0D, 0.0D, 1.0D);
@@ -55,7 +69,7 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
         if (level().isClientSide) return velocity;
         LivingEntity target = getOwner() instanceof Mob owner ? owner.getTarget() : null;
         return switch (variant) {
-            case SEED -> target == null || !target.isAlive()
+            case SEED -> !LibUtils.isAtLeastExpert(level()) || target == null || !target.isAlive()
                     ? velocity
                     : trackToward(velocity, target.position().add(0.0D, target.getEyeHeight() * 0.5D, 0.0D)
                     .subtract(position()), SEED_TRACKING_POWER);
@@ -90,6 +104,10 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
+        if (variant == Variant.SEED && !LibUtils.isAtLeastExpert(level())) {
+            super.onHitBlock(result);
+            return;
+        }
         if (variant != Variant.THORN_BALL) return;
 
         Direction direction = result.getDirection();
@@ -99,6 +117,16 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
         double z = direction.getAxis() == Direction.Axis.Z ? -velocity.z : velocity.z;
         setDeltaMovement(new Vec3(x, y, z).scale(0.99D));
         setPos(result.getLocation().add(Vec3.atLowerCornerOf(direction.getNormal()).scale(0.08D)));
+    }
+
+    @Override
+    protected void onSuccessfulHit(Mob owner, LivingEntity target) {
+        if (!entityData.get(POISON_SEED)) return;
+        boolean expert = LibUtils.isAtLeastExpert(level());
+        if (!expert && random.nextBoolean()) return;
+        int duration = expert ? 80 + random.nextInt(101) : 60 + random.nextInt(81);
+        if (LibUtils.isMaster(level())) duration = duration * 5 / 4;
+        target.addEffect(new MobEffectInstance(MobEffects.POISON, duration));
     }
 
     @Override

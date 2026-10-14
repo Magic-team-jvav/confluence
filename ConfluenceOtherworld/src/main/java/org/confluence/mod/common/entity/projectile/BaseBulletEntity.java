@@ -25,6 +25,7 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.api.event.BulletEvent;
+import org.confluence.mod.common.entity.boss.BossProjectileReflection;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.GunItems;
@@ -256,6 +257,10 @@ public class BaseBulletEntity extends Projectile {
             if (hitResult.getType() != HitResult.Type.ENTITY) {
                 setPos(segmentEnd.x, segmentEnd.y, segmentEnd.z);
                 break;
+            }
+            if (hitResult instanceof EntityHitResult hit && BossProjectileReflection.reflect(this, hit.getEntity())) {
+                PortEventHandler.postEvent(new BulletEvent.Tick.Post(this, getBullet()));
+                return;
             }
             if (hitTargetOrDeflectSelf(hitResult) != PortProjectileDeflection.NONE) {
                 PortEventHandler.postEvent(new BulletEvent.Tick.Post(this, getBullet()));

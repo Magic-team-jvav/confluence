@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.entity.boss.QueenBee;
 import org.confluence.mod.common.entity.monster.Hornet;
 
 /// 黄蜂发射的毒刺弹幕。
@@ -46,6 +48,14 @@ public final class HornetStingerProjectile extends StraightMonsterProjectile {
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
         if (owner instanceof Hornet hornet) {
             hornet.applyStingerPoison(target);
+            return;
+        }
+        if (owner instanceof QueenBee) {
+            boolean master = LibUtils.isMaster(level());
+            boolean expert = LibUtils.isAtLeastExpert(level());
+            if (!expert && random.nextInt(3) != 0) return;
+            int duration = master ? 50 + random.nextInt(451) : expert ? 40 + random.nextInt(361) : 200;
+            target.addEffect(new MobEffectInstance(MobEffects.POISON, duration, poisonAmplifier), owner);
             return;
         }
         target.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION, poisonAmplifier), owner);

@@ -2,6 +2,8 @@ package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -9,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,10 +21,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.VisualNeuron;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -32,7 +37,7 @@ import java.util.*;
 
 /// 克苏鲁之脑及其两阶段战斗控制器。
 ///
-/// 第一阶段会分批召唤二十只视神经元。Boss 维护每只神经元的精确 UUID、编队位置和出击节奏，
+/// 第一阶段会分批召唤视神经元，普通种子二十只，FTW 四十只。Boss 维护每只神经元的精确 UUID、编队位置和出击节奏，
 /// 本体在所有神经元被击败前不可受伤。神经元不会自主索敌，只有处于待命状态的个体才会接受 Boss
 /// 发出的攻击命令。第二阶段才由本体执行瞬移、冲刺与追击行为。
 ///
@@ -48,6 +53,13 @@ public class BrainOfCthulhu extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final int NEURON_COUNT = 20;
+    private final Map<UUID, NeuronHealth> neuronHealth = new HashMap<>();
+    private float estimatedNeuronMaximum;
+    private int neuronHealthUpdateTick = Integer.MIN_VALUE;
+
+    private record NeuronHealth(float current, float maximum) {}
+
+    private static final EntityDataAccessor<Boolean> DATA_OPAQUE_ILLUSIONS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.BOOLEAN);
     private static final int SUMMON_START_TICK = 21;
     private static final int SUMMON_INTERVAL_TICKS = 2;
     private static final int PHASE1_APPROACH_TICKS = 200;
@@ -80,6 +92,7 @@ public class BrainOfCthulhu extends BaseBoss {
     private PhaseOneState phaseOneState = PhaseOneState.SUMMONING;
     private int phaseOneStateTicks;
     private Vec3 phaseOneInertia = Vec3.ZERO;
+    private Vec3 knockbackVelocity = Vec3.ZERO;
     private PhaseTwoState phaseTwoState = PhaseTwoState.TRANSFORMING;
     private int phaseTwoStateTicks;
     private int phaseTwoDashRemaining;
@@ -138,6 +151,8 @@ public class BrainOfCthulhu extends BaseBoss {
         } else {
             ensureIllusions();
             tickPhaseTwoCycle();
+            applyPhaseTwoKnockback();
+            tickForcedGravity();
         }
         Entity target = getTarget();
         entityData.set(DATA_TARGET_ID, target != null && target.isAlive() ? target.getId() : -1);
@@ -154,6 +169,7 @@ public class BrainOfCthulhu extends BaseBoss {
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_PHASE_TWO, false);
+        entityData.define(DATA_OPAQUE_ILLUSIONS, false);
         entityData.define(DATA_PHASE_ONE_STATE, PhaseOneState.SUMMONING.id);
         entityData.define(DATA_PHASE_ONE_STATE_TICKS, 0);
         entityData.define(DATA_PHASE_TWO_STATE, PhaseTwoState.TRANSFORMING.id);
@@ -232,6 +248,7 @@ public class BrainOfCthulhu extends BaseBoss {
         neuron.setHomePosition(home);
         if (serverLevel.addFreshEntity(neuron)) {
             activeNeuronUUIDs.add(neuron.getUUID());
+            neuronHealth.put(neuron.getUUID(), new NeuronHealth(neuron.getHealth(), neuron.getMaxHealth()));
             spawnedNeuronCount++;
         } else {
             neuron.cancelPendingSpawn();
@@ -276,7 +293,7 @@ public class BrainOfCthulhu extends BaseBoss {
         Vec3 destination = target.position().add(away.normalize().scale(10.0)).add(0.0, verticalOffset, 0.0);
         Vec3 offset = destination.subtract(position());
         if (offset.lengthSqr() > 2.0) {
-            setDeltaMovement(offset.normalize().scale(0.15));
+            setDeltaMovement(offset.normalize().scale(isFtw() ? 0.45 : 0.15));
         }
         faceCombatPosition(target.getEyePosition(), 10.0F, 30.0F);
     }
@@ -437,7 +454,7 @@ public class BrainOfCthulhu extends BaseBoss {
     /// 幻象不写入区块存档，因此本体从存档恢复、幻象被外部命令移除或实体生成暂时失败时，
     /// 都由这里按槽位补齐。已有幻象会先从本体的部件列表中恢复引用，避免重复生成。
     private void ensureIllusions() {
-        if (!phase2 || !(level() instanceof ServerLevel serverLevel)) {
+        if (!phase2 || !isExpert() && !isFtw() || !(level() instanceof ServerLevel serverLevel)) {
             return;
         }
 
@@ -538,6 +555,7 @@ public class BrainOfCthulhu extends BaseBoss {
 
     public void onNeuronDefeated(VisualNeuron neuron) {
         activeNeuronUUIDs.remove(neuron.getUUID());
+        neuronHealth.put(neuron.getUUID(), new NeuronHealth(0.0F, neuron.getMaxHealth()));
     }
 
     public static void recordDetachedNeuronDeath(ServerLevel level, UUID ownerUUID, UUID neuronUUID) {
@@ -551,27 +569,42 @@ public class BrainOfCthulhu extends BaseBoss {
 
     @Override
     protected float getBossBarMaximumHealth() {
-        return isPhase2() ? getMaxHealth() : (float) (getMaxHealth() + NEURON_COUNT * VisualNeuron.BASE_MAX_HEALTH);
+        updateNeuronHealth();
+        double maximum = getMaxHealth() + Math.max(0, neuronCount() - neuronHealth.size()) * estimatedNeuronMaximum;
+        for (NeuronHealth health : neuronHealth.values()) maximum += health.maximum();
+        return (float) maximum;
     }
 
-    /// 第一阶段 Boss 条使用固定的遭遇总生命上限。
-    ///
-    /// 神经元死亡后只能减少当前生命，不能同时从最大生命中移除；否则每击杀一只神经元，
-    /// 分母也随之缩小，Boss 条就会错误回升。仍被追踪但暂未加载的神经元按满生命计入当前值，
-    /// 避免区块短暂卸载被误判为已经击败；开场尚未生成的神经元也预占完整生命，防止召唤阶段
-    /// Boss 条从半血反向增长。
+    /// 整场战斗共用本体与全部神经元的总生命上限，转阶段时不重置血条。
+    /// 卸载的神经元保留最后记录的生命，死亡成员只保留最大生命用于总量计算。
     public float getEncounterProgress() {
-        if (isPhase2()) return getHealth() / getMaxHealth();
-        List<VisualNeuron> loaded = findOwnedLoadedNeurons();
-        double loadedHealth = loaded.stream().mapToDouble(VisualNeuron::getHealth).sum();
-        int unloadedCount = Math.max(0, activeNeuronUUIDs.size() - loaded.size());
-        int pendingSpawnCount = Math.max(0, NEURON_COUNT - spawnedNeuronCount);
-        double health = getHealth()
-                + loadedHealth
-                + (unloadedCount + pendingSpawnCount) * VisualNeuron.BASE_MAX_HEALTH;
-        double maximum = getMaxHealth()
-                + NEURON_COUNT * VisualNeuron.BASE_MAX_HEALTH;
-        return maximum > 0.0 ? Mth.clamp((float) (health / maximum), 0.0F, 1.0F) : 0.0F;
+        updateNeuronHealth();
+        double health = getHealth();
+        if (!isPhase2()) {
+            health += Math.max(0, neuronCount() - spawnedNeuronCount) * estimatedNeuronMaximum;
+            for (UUID uuid : activeNeuronUUIDs) {
+                NeuronHealth snapshot = neuronHealth.get(uuid);
+                health += snapshot == null ? estimatedNeuronMaximum : snapshot.current();
+            }
+        }
+        float maximum = getBossBarMaximumHealth();
+        return maximum > 0.0F ? Mth.clamp((float) (health / maximum), 0.0F, 1.0F) : 0.0F;
+    }
+
+    private void updateNeuronHealth() {
+        if (neuronHealthUpdateTick == tickCount) return;
+        neuronHealthUpdateTick = tickCount;
+        if (estimatedNeuronMaximum <= 0.0F) {
+            VisualNeuron sample = MonsterEntities.VISUAL_NEURON.get().create(level());
+            if (sample != null) {
+                sample.setPos(position());
+                CreatureDifficultyScaling.apply(sample, true);
+                estimatedNeuronMaximum = sample.getMaxHealth();
+            } else estimatedNeuronMaximum = (float) VisualNeuron.BASE_MAX_HEALTH;
+        }
+        for (VisualNeuron neuron : findOwnedLoadedNeurons()) {
+            neuronHealth.put(neuron.getUUID(), new NeuronHealth(neuron.getHealth(), neuron.getMaxHealth()));
+        }
     }
 
     @Override
@@ -581,7 +614,9 @@ public class BrainOfCthulhu extends BaseBoss {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return isPhase2() && super.hurt(source, amount);
+        boolean damaged = isPhase2() && super.hurt(source, amount);
+        if (damaged && isFtw()) entityData.set(DATA_OPAQUE_ILLUSIONS, true);
+        return damaged;
     }
 
     @Override
@@ -643,14 +678,57 @@ public class BrainOfCthulhu extends BaseBoss {
         return phaseTwoDashRemaining;
     }
 
+    private int neuronCount() {
+        return isFtw() ? NEURON_COUNT * 2 : NEURON_COUNT;
+    }
+
+    public boolean hasOpaqueIllusions() {
+        return entityData.get(DATA_OPAQUE_ILLUSIONS);
+    }
+
+    @Override
+    public void knockback(double strength, double x, double z) {
+        if (!isPhase2() || level().isClientSide || strength <= 0.0) return;
+        Vec3 direction = new Vec3(x, 0.0, z);
+        if (direction.lengthSqr() > 1.0E-7)
+            knockbackVelocity = knockbackVelocity.add(direction.normalize().scale(-strength * 0.55));
+    }
+
+    /// 击退同时平移当前曲线，避免下一刻曲线求值把 Boss 拉回受击前的位置。
+    private void applyPhaseTwoKnockback() {
+        if (knockbackVelocity.lengthSqr() < 1.0E-5) {
+            knockbackVelocity = Vec3.ZERO;
+            return;
+        }
+        setPos(position().add(knockbackVelocity));
+        if (phaseTwoCurveStart != null)
+            phaseTwoCurveStart = phaseTwoCurveStart.add(knockbackVelocity);
+        if (phaseTwoCurveControl != null)
+            phaseTwoCurveControl = phaseTwoCurveControl.add(knockbackVelocity);
+        if (phaseTwoCurveEnd != null) phaseTwoCurveEnd = phaseTwoCurveEnd.add(knockbackVelocity);
+        knockbackVelocity = knockbackVelocity.scale(0.6);
+    }
+
+    /// 短时强制效果持续刷新，离开战斗范围或 Boss 撤离后自动恢复，保留被覆盖的药水效果。
+    private void tickForcedGravity() {
+        if (!isFtw() || !isAlive() || isDisengageRetreating() || !(level() instanceof ServerLevel serverLevel))
+            return;
+        for (Player player : serverLevel.players()) {
+            if (player.isAlive() && !player.isCreative() && !player.isSpectator() && distanceToSqr(player) < 250.0 * 250.0) {
+                player.addEffect(new MobEffectInstance(LibEffects.GRAVITATION.get(), 3, 2, false, false, false));
+            }
+        }
+    }
+
     private boolean summoningComplete() {
-        return spawnedNeuronCount >= NEURON_COUNT;
+        return spawnedNeuronCount >= neuronCount();
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean(PHASE_TWO_TAG, phase2);
+        tag.putBoolean("OpaqueIllusions", hasOpaqueIllusions());
         tag.putInt(PHASE_TWO_STATE_TAG, phaseTwoState.id);
         tag.putInt(PHASE_TWO_STATE_TICKS_TAG, phaseTwoStateTicks);
         tag.putInt(PHASE_TWO_DASH_REMAINING_TAG, phaseTwoDashRemaining);
@@ -661,6 +739,16 @@ public class BrainOfCthulhu extends BaseBoss {
         tag.putDouble(PHASE_ONE_INERTIA_Z_TAG, phaseOneInertia.z);
         tag.putInt(SUMMON_TICKS_TAG, summonTicks);
         tag.putInt(SPAWNED_NEURON_COUNT_TAG, spawnedNeuronCount);
+        tag.putFloat("EstimatedNeuronMaximum", estimatedNeuronMaximum);
+        ListTag healthSnapshots = new ListTag();
+        neuronHealth.forEach((uuid, health) -> {
+            CompoundTag entry = new CompoundTag();
+            entry.putUUID("UUID", uuid);
+            entry.putFloat("Health", health.current());
+            entry.putFloat("Maximum", health.maximum());
+            healthSnapshots.add(entry);
+        });
+        tag.put("NeuronHealth", healthSnapshots);
 
         List<UUID> trackedNeurons = new ArrayList<>(activeNeuronUUIDs);
         trackedNeurons.sort(Comparator.comparing(UUID::toString));
@@ -674,6 +762,7 @@ public class BrainOfCthulhu extends BaseBoss {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         phase2 = tag.getBoolean(PHASE_TWO_TAG);
+        entityData.set(DATA_OPAQUE_ILLUSIONS, tag.getBoolean("OpaqueIllusions"));
         phaseTwoState = PhaseTwoState.byId(tag.getInt(PHASE_TWO_STATE_TAG));
         phaseTwoStateTicks = Math.max(0, tag.getInt(PHASE_TWO_STATE_TICKS_TAG));
         phaseTwoDashRemaining = Math.max(0, tag.getInt(PHASE_TWO_DASH_REMAINING_TAG));
@@ -693,7 +782,20 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.set(DATA_PHASE_ONE_STATE, phaseOneState.id);
         entityData.set(DATA_PHASE_ONE_STATE_TICKS, phaseOneStateTicks);
         summonTicks = Math.max(0, tag.getInt(SUMMON_TICKS_TAG));
-        spawnedNeuronCount = Mth.clamp(tag.getInt(SPAWNED_NEURON_COUNT_TAG), 0, NEURON_COUNT);
+        spawnedNeuronCount = Mth.clamp(tag.getInt(SPAWNED_NEURON_COUNT_TAG), 0, neuronCount());
+        estimatedNeuronMaximum = tag.getFloat("EstimatedNeuronMaximum");
+        if (!Float.isFinite(estimatedNeuronMaximum) || estimatedNeuronMaximum < 0.0F)
+            estimatedNeuronMaximum = 0.0F;
+        neuronHealth.clear();
+        neuronHealthUpdateTick = Integer.MIN_VALUE;
+        ListTag healthSnapshots = tag.getList("NeuronHealth", Tag.TAG_COMPOUND);
+        for (int i = 0; i < healthSnapshots.size(); i++) {
+            CompoundTag entry = healthSnapshots.getCompound(i);
+            float maximum = entry.getFloat("Maximum");
+            float health = entry.getFloat("Health");
+            if (entry.hasUUID("UUID") && Float.isFinite(maximum) && maximum > 0.0F && Float.isFinite(health))
+                neuronHealth.put(entry.getUUID("UUID"), new NeuronHealth(Mth.clamp(health, 0.0F, maximum), maximum));
+        }
 
         activeNeuronUUIDs.clear();
         int savedTrackedCount = tag.getInt(TRACKED_NEURON_COUNT_TAG);

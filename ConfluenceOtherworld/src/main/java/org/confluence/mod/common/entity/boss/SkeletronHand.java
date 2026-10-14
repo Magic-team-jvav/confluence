@@ -229,7 +229,7 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
         AABB search = current.bounds(radius).minmax(previous.bounds(radius)).inflate(0.125);
         for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, search,
                 living -> living != this && living != master && master.canAttack(living) && current.sweeps(previous, living.getBoundingBox(), radius))) {
-            entity.hurt(damageSources().mobAttack(master), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+            entity.hurt(damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         }
     }
 

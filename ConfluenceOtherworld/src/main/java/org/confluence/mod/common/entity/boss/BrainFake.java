@@ -52,7 +52,7 @@ public class BrainFake extends BaseBossPart<BrainOfCthulhu> implements GeoEntity
     public float getFadeProgress(float partialTick) {
         BrainOfCthulhu master = getOwner();
         if (master == null) return 0.0F;
-        float healthVisibility = 1.0F - master.getHealth() / master.getMaxHealth() * 0.5F;
+        float healthVisibility = master.hasOpaqueIllusions() ? 1.0F : 1.0F - master.getHealth() / master.getMaxHealth() * 0.5F;
         return Math.min(healthVisibility, master.getFadeProgress(partialTick));
     }
 

@@ -14,7 +14,6 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -170,10 +169,10 @@ public class KingSlime extends BaseBoss {
 
         faceHorizontalMovement(direction);
 
-        double horizontalSpeed = stateParameters(CombatPhase.NORMAL).behavior().chargeSpeed();
+        double horizontalSpeed = stateParameters(CombatPhase.NORMAL).behavior().chargeSpeed() * (isFtw() ? 2.0 : 1.0);
         double baseVerticalSpeed = finishingJump
-                ? LibUtils.switchByDifficulty(level(), blockPosition(), 2.0F, 2.25F, 2.5F, 2.75F)
-                : LibUtils.switchByDifficulty(level(), blockPosition(), 1.5F, 1.75F, 2.0F, 2.25F);
+                ? selectByDifficulty(2.0F, 2.25F, 2.5F, 2.75F)
+                : selectByDifficulty(1.5F, 1.75F, 2.0F, 2.25F);
         double verticalSpeed = baseVerticalSpeed * (getLogicalSize() + 127.0) / 256.0;
         setDeltaMovement(direction.x * horizontalSpeed, verticalSpeed, direction.z * horizontalSpeed);
         hasImpulse = true;
@@ -185,7 +184,7 @@ public class KingSlime extends BaseBoss {
                 ? Vec3.ZERO
                 : new Vec3(target.getX() - getX(), 0.0, target.getZ() - getZ());
         if (direction.lengthSqr() > 1.0E-6) {
-            direction = direction.normalize().scale(LibUtils.switchByDifficulty(level(), blockPosition(), 0.1F, 0.15F, 0.2F, 0.25F));
+            direction = direction.normalize().scale(selectByDifficulty(0.1F, 0.15F, 0.2F, 0.25F));
             faceHorizontalMovement(direction);
         }
         setHorizontalMovement(direction);
@@ -377,7 +376,7 @@ public class KingSlime extends BaseBoss {
     }
 
     private int getTotalSplits() {
-        int splits = LibUtils.switchByDifficulty(level(), blockPosition(), 30, 50, 75, 100);
+        int splits = 20;
         return CommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? Math.max(1, splits / 3) : splits;
     }
 
@@ -391,10 +390,10 @@ public class KingSlime extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        spawnSlime(serverLevel, MonsterEntities.BLUE_SLIME.get());
-        float spikedChance = LibUtils.switchByDifficulty(level(), blockPosition(), 0.0F, 0.5F, 0.75F, 1.0F);
-        if (random.nextFloat() < spikedChance) {
-            spawnSlime(serverLevel, MonsterEntities.SPIKED_SLIME.get());
+        int count = CommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? 1 : 1 + random.nextInt(3);
+        for (int index = 0; index < count; index++) {
+            spawnSlime(serverLevel, isExpert() && random.nextInt(4) == 0
+                    ? MonsterEntities.SPIKED_SLIME.get() : MonsterEntities.BLUE_SLIME.get());
         }
     }
 

@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -30,12 +31,16 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,6 +84,7 @@ public class EaterOfWorlds extends BaseWormBoss {
     private boolean restructuring;
     private boolean headDeathRuleHandled;
     private MovementPhase movementPhase = MovementPhase.ALIGN;
+    private Vec3 dashDirection = Vec3.ZERO;
     private int movementTicks;
     private Vec3 wanderTarget = Vec3.ZERO;
     private Vec3 wanderCurveStart = Vec3.ZERO;
@@ -106,6 +112,7 @@ public class EaterOfWorlds extends BaseWormBoss {
     public EaterOfWorlds(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.xpReward = 800;
+        this.explosionResistance = 1.0F;
         resetSegmentHealths(INITIAL_SEGMENT_COUNT);
     }
 
@@ -208,6 +215,7 @@ public class EaterOfWorlds extends BaseWormBoss {
             return false;
         }
 
+        amount = reduceResistedDamage(source, amount);
         float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount
                 : CombatRules.getDamageAfterAbsorb(amount, (float) segment.getAttributeValue(Attributes.ARMOR), 0.0F);
         if (appliedDamage <= 0.0F) return false;
@@ -448,7 +456,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
         if (inheritedTarget != null) {
             eater.setTarget(inheritedTarget);
-            org.confluence.mod.common.entity.ai.BossMinionCoordinator.faceTargetImmediately(eater, inheritedTarget);
+            BossMinionCoordinator.faceTargetImmediately(eater, inheritedTarget);
         }
 
         // 注册表目前只有标准噬魂怪实体；生成点和目标继承集中在这里，后续增加大型变体时
@@ -649,6 +657,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
         int phaseIndex = Mth.clamp(tag.getInt(MOVEMENT_PHASE_TAG), 0, MovementPhase.values().length - 1);
         movementPhase = MovementPhase.values()[phaseIndex];
+        if (movementPhase == MovementPhase.DASH) movementPhase = MovementPhase.ALIGN;
         movementTicks = Mth.clamp(tag.getInt(MOVEMENT_TICKS_TAG), 0, phaseDuration(movementPhase));
         if (tag.contains(WANDER_TARGET_TAG, Tag.TAG_LIST)) {
             ListTag target = tag.getList(WANDER_TARGET_TAG, FloatTag.TAG_FLOAT);
@@ -706,6 +715,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
         synchronizeEncounterTarget();
         tickWormMovement();
+        tickHeadSpit();
         refreshSegmentsAfterHeadMovement();
         tickEntityContactAttack();
     }
@@ -813,6 +823,37 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
     }
 
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return super.hurt(source, reduceResistedDamage(source, amount));
+    }
+
+    /// 专家以上只减免指定爆炸物及蜜蜂的伤害，本体与体节采用同一规则。
+    private float reduceResistedDamage(DamageSource source, float amount) {
+        Entity direct = source.getDirectEntity();
+        return isExpert() && direct != null && direct.getType().is(ModTags.EntityTypes.EATER_RESISTED_PROJECTILES)
+                ? amount * 0.2F : amount;
+    }
+
+    private void tickHeadSpit() {
+        if (!isExpert() || getTarget() == null || !getTarget().isAlive() || !hasLineOfSight(getTarget()))
+            return;
+        int chance = Math.round(30.0F + 100.0F * getHealth() / getMaxHealth());
+        if (random.nextInt(chance) == 0) shootVileSpit(getBoundingBox().getCenter());
+    }
+
+    void shootVileSpit(Vec3 origin) {
+        LivingEntity target = getTarget();
+        if (target == null) return;
+        HostileParticleProjectile projectile = ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
+        if (projectile == null) return;
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        projectile.setPos(origin);
+        Vec3 aim = target.getEyePosition().subtract(origin);
+        projectile.shoot(aim.x, aim.y, aim.z, 0.3F, 3.0F);
+        if (!level().addFreshEntity(projectile)) projectile.discard();
+    }
+
     private void tickWormMovement() {
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive()) {
@@ -848,9 +889,8 @@ public class EaterOfWorlds extends BaseWormBoss {
                 }
             }
             case DASH -> {
-                Vec3 attackPoint = org.confluence.mod.common.entity.ai.BossMinionCoordinator
-                        .predict(target, 4.0D, 4.0D);
-                steerAndAdvance(attackPoint,
+                if (dashDirection.lengthSqr() < 1.0E-7) dashDirection = getLookAngle();
+                steerAndAdvance(position().add(dashDirection.scale(32.0)),
                         isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED, 5.5F);
                 if (movementTicks >= DASH_TICKS) {
                     beginPhase(MovementPhase.WANDER);
@@ -892,6 +932,9 @@ public class EaterOfWorlds extends BaseWormBoss {
     private void beginPhase(MovementPhase phase) {
         movementPhase = phase;
         movementTicks = 0;
+        if (phase == MovementPhase.DASH && getTarget() != null) {
+            dashDirection = BossMinionCoordinator.predict(getTarget(), 4.0D, 4.0D).subtract(position()).normalize();
+        }
         if (phase != MovementPhase.WANDER) {
             wanderTarget = Vec3.ZERO;
             wanderCurveStart = Vec3.ZERO;

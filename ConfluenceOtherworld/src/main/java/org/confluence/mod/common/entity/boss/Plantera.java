@@ -32,7 +32,7 @@ public class Plantera extends BaseBoss {
     static final int HOOK_COUNT = 3;
     static final int BODY_TENTACLE_COUNT = 8;
     static final int TENTACLES_PER_HOOK = 3;
-    static final int TENTACLE_COUNT = BODY_TENTACLE_COUNT + HOOK_COUNT * TENTACLES_PER_HOOK;
+    static final int TENTACLE_COUNT = 14 + HOOK_COUNT * 6;
     // 钩爪搜索与系绳最大长度均为 48 方块；移动速度和加速度单位为方块/tick。
     private static final double HOOK_SEARCH_RANGE = 48.0;
     private static final double HOOK_TETHER_LENGTH = 48.0;
@@ -62,6 +62,7 @@ public class Plantera extends BaseBoss {
     private final PlanteraTentacle[] tentacles = new PlanteraTentacle[TENTACLE_COUNT];
     private int attackTicks;
     private int tentacleTimer;
+    private long destroyedTentacles;
     private int enragedTicks;
 
     public Plantera(EntityType<? extends Monster> type, Level level) {
@@ -133,8 +134,9 @@ public class Plantera extends BaseBoss {
                 if (tentacleTimer > 0) {
                     tentacleTimer--;
                 }
-                if (tentacleTimer <= 0 && tickCount % 5 == 0) {
+                if (tickCount % 5 == 0) {
                     ensureTentacles();
+                    if (isExpert() && tentacleTimer <= 0) regenerateBodyTentacle();
                 }
             }
 
@@ -182,10 +184,10 @@ public class Plantera extends BaseBoss {
             float firstPhaseProgress = Mth.clamp(healthRatio * 2.0F - 1.0F, 0.0F, 1.0F);
             int seedInterval = Math.round(Mth.lerp(firstPhaseProgress, SEED_INTERVAL_LIMIT, SEED_INTERVAL_FULL_HEALTH));
             int thornInterval = Math.round(Mth.lerp(firstPhaseProgress, THORN_INTERVAL_LIMIT, THORN_INTERVAL_FULL_HEALTH));
-            if (attackTicks % seedInterval == 0) {
+            if (attackTicks % (isFtw() ? Math.max(1, seedInterval / 2) : seedInterval) == 0) {
                 spawnProjectile(ModEntities.PLANTERA_SEED.get(), SEED_SPEED, 0.02F);
             }
-            if (attackTicks % thornInterval == 0) {
+            if (healthRatio < 0.8F && attackTicks % (isFtw() ? Math.max(1, thornInterval / 2) : thornInterval) == 0) {
                 spawnProjectile(ModEntities.PLANTERA_THORN_BALL.get(), THORN_SPEED, 0.02F);
             }
             return;
@@ -193,7 +195,7 @@ public class Plantera extends BaseBoss {
 
         float secondPhaseProgress = Mth.clamp(healthRatio * 2.0F, 0.0F, 1.0F);
         int sporeInterval = Math.round(Mth.lerp(secondPhaseProgress, SPORE_INTERVAL_LIMIT, SPORE_INTERVAL_HALF_HEALTH));
-        if (attackTicks % sporeInterval == 0) {
+        if (attackTicks % (isFtw() ? Math.max(1, sporeInterval / 2) : sporeInterval) == 0) {
             spawnProjectile(ModEntities.PLANTERA_SPORE.get(), SPORE_SPEED, 0.04F);
         }
     }
@@ -315,6 +317,11 @@ public class Plantera extends BaseBoss {
                 : PHASE_TWO_MOVE_SPEED;
         maximumSpeed = stateParameters(isEnraged() ? Temperament.ENRAGED : Temperament.CALM)
                 .behavior().moveSpeedOr(maximumSpeed);
+        if (getPhase() >= 1 && getHealth() < getMaxHealth() * 0.25F) maximumSpeed *= 1.4;
+        if (isFtw()) {
+            maximumSpeed *= 1.15;
+            acceleration = acceleration.scale(1.15);
+        }
         Vec3 velocity = getDeltaMovement().add(acceleration);
         if (velocity.lengthSqr() > maximumSpeed * maximumSpeed) {
             velocity = velocity.normalize().scale(maximumSpeed);
@@ -344,24 +351,27 @@ public class Plantera extends BaseBoss {
         setSpecialState(state, true);
     }
 
-    /// 补齐第二阶段缺失的触手槽位。
-    ///
-    /// 首次转阶段会一次生成全部 17 根；之后若有触手被击毁，则按当前存活数量
-    /// 延长重建间隔。触手是临时实体，区块重新加载后同样从这些权威槽位恢复。
-    private void ensureTentacles() {
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        for (int slot = 0; slot < tentacles.length; slot++) {
-            PlanteraTentacle current = tentacles[slot];
-            if (current != null && current.isAlive() && !current.isRemoved()) {
-                continue;
-            }
+    private int bodyTentacleCount() {
+        return isFtw() ? 14 : BODY_TENTACLE_COUNT;
+    }
 
+    private int tentaclesPerHook() {
+        return isFtw() ? 6 : TENTACLES_PER_HOOK;
+    }
+
+    private int activeTentacleCount() {
+        return bodyTentacleCount() + (isExpert() ? HOOK_COUNT * tentaclesPerHook() : 0);
+    }
+
+    /// 恢复尚未被击败的临时触手；已被击败的槽位不能因区块重载而复活。
+    private void ensureTentacles() {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        for (int slot = 0; slot < activeTentacleCount(); slot++) {
+            if ((destroyedTentacles & 1L << slot) != 0) continue;
+            PlanteraTentacle current = tentacles[slot];
+            if (current != null && current.isAlive() && !current.isRemoved()) continue;
             PlanteraTentacle created = BossEntities.PLANTERA_TENTACLE.get().create(level());
-            if (created == null) {
-                continue;
-            }
+            if (created == null) continue;
             created.setPos(getTentacleAnchor(slot));
             created.setMaster(this, slot);
             if (!serverLevel.addFreshEntity(created)) {
@@ -370,6 +380,21 @@ public class Plantera extends BaseBoss {
                 created.discard();
             }
         }
+    }
+
+    /// 专家以上只逐根再生本体触手；钩爪触手被击败后不会再生。
+    private void regenerateBodyTentacle() {
+        int alive = 0;
+        int missing = -1;
+        int missingCount = 0;
+        for (int slot = 0; slot < bodyTentacleCount(); slot++) {
+            if ((destroyedTentacles & 1L << slot) == 0) alive++;
+            else if (random.nextInt(++missingCount) == 0) missing = slot;
+        }
+        if (missing < 0) return;
+        destroyedTentacles &= ~(1L << missing);
+        ensureTentacles();
+        tentacleTimer = TENTACLE_REBUILD_BASE_COOLDOWN * (alive + 1);
     }
 
     /// 每 50 tick 展开空闲钩爪，并在周期中点收回离目标最远的一根。
@@ -425,10 +450,10 @@ public class Plantera extends BaseBoss {
     /// 返回触手槽位当前附着的锚点。钩爪尚未完成重建时退回本体的对应方向，
     /// 避免触手短暂出现在世界原点或错误玩家身边。
     Vec3 getTentacleAnchor(int slot) {
-        if (slot < BODY_TENTACLE_COUNT) {
+        if (slot < bodyTentacleCount()) {
             return getEyePosition();
         }
-        int hookIndex = (slot - BODY_TENTACLE_COUNT) / TENTACLES_PER_HOOK;
+        int hookIndex = (slot - bodyTentacleCount()) / tentaclesPerHook();
         PlanteraHook hook = getHook(hookIndex);
         return hook == null || hook.isRemoved()
                 ? position().add(hookRestOffset(hookIndex))
@@ -437,11 +462,11 @@ public class Plantera extends BaseBoss {
 
     /// 返回触手所属本体或钩爪的当前速度。
     Vec3 getTentacleAnchorVelocity(int slot) {
-        if (slot < BODY_TENTACLE_COUNT) {
+        if (slot < bodyTentacleCount()) {
             return getDeltaMovement();
         }
-        int hookIndex = (slot - BODY_TENTACLE_COUNT)
-                / TENTACLES_PER_HOOK;
+        int hookIndex = (slot - bodyTentacleCount())
+                / tentaclesPerHook();
         PlanteraHook hook = getHook(hookIndex);
         return hook == null || hook.isRemoved()
                 ? getDeltaMovement()
@@ -454,14 +479,14 @@ public class Plantera extends BaseBoss {
         int localSlot;
         int count;
         double phaseOffset;
-        if (slot < BODY_TENTACLE_COUNT) {
+        if (slot < bodyTentacleCount()) {
             localSlot = slot;
-            count = BODY_TENTACLE_COUNT;
+            count = bodyTentacleCount();
             phaseOffset = 0.0;
         } else {
-            int hookIndex = (slot - BODY_TENTACLE_COUNT) / TENTACLES_PER_HOOK;
-            localSlot = (slot - BODY_TENTACLE_COUNT) % TENTACLES_PER_HOOK;
-            count = TENTACLES_PER_HOOK;
+            int hookIndex = (slot - bodyTentacleCount()) / tentaclesPerHook();
+            localSlot = (slot - bodyTentacleCount()) % tentaclesPerHook();
+            count = tentaclesPerHook();
             phaseOffset = hookIndex * Mth.TWO_PI / HOOK_COUNT;
         }
         double y = 1.0 - 2.0 * (localSlot + 0.5) / count;
@@ -471,16 +496,15 @@ public class Plantera extends BaseBoss {
     }
 
     void onTentacleDestroyed(int slot, PlanteraTentacle destroyed) {
-        if (slot >= 0 && slot < tentacles.length && tentacles[slot] == destroyed) {
-            tentacles[slot] = null;
-        }
+        if (slot < 0 || slot >= tentacles.length || tentacles[slot] != destroyed) return;
+        tentacles[slot] = null;
+        destroyedTentacles |= 1L << slot;
+        if (slot >= bodyTentacleCount() || !isExpert() || tentacleTimer > 0) return;
         int alive = 0;
-        for (PlanteraTentacle tentacle : tentacles) {
-            if (tentacle != null && tentacle.isAlive() && !tentacle.isRemoved()) {
-                alive++;
-            }
+        for (int index = 0; index < bodyTentacleCount(); index++) {
+            if ((destroyedTentacles & 1L << index) == 0) alive++;
         }
-        tentacleTimer = Math.max(tentacleTimer, TENTACLE_REBUILD_BASE_COOLDOWN * Math.max(1, alive + 1));
+        tentacleTimer = TENTACLE_REBUILD_BASE_COOLDOWN * Math.max(1, alive);
     }
 
     @Override
@@ -489,6 +513,7 @@ public class Plantera extends BaseBoss {
         tag.putInt(PHASE_TAG, getPhase());
         tag.putInt(ATTACK_TICKS_TAG, attackTicks);
         tag.putInt(TENTACLE_TIMER_TAG, tentacleTimer);
+        tag.putLong("DestroyedTentacles", destroyedTentacles);
         tag.putInt(ENRAGED_TICKS_TAG, enragedTicks);
     }
 
@@ -498,6 +523,7 @@ public class Plantera extends BaseBoss {
         entityData.set(DATA_PHASE, Mth.clamp(tag.getInt(PHASE_TAG), 0, 1));
         attackTicks = Math.max(0, tag.getInt(ATTACK_TICKS_TAG));
         tentacleTimer = Math.max(0, tag.getInt(TENTACLE_TIMER_TAG));
+        destroyedTentacles = tag.getLong("DestroyedTentacles");
         enragedTicks = Mth.clamp(tag.getInt(ENRAGED_TICKS_TAG), 0, 200);
         java.util.Arrays.fill(hooks, null);
         java.util.Arrays.fill(tentacles, null);

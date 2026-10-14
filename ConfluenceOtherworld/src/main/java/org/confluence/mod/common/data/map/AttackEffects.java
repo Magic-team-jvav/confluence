@@ -13,7 +13,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModEffects;
@@ -45,8 +48,9 @@ public record AttackEffects(List<Effect> contact, List<Effect> melee, List<Effec
         if (data == null) return;
         List<Effect> effects = ranged ? data.projectile : direct instanceof BaseMonster monster && monster.isPerformingContactAttack() ? data.contact : data.melee;
         Entity attacker = source.getEntity() == null ? direct : source.getEntity();
-        boolean master = LibUtils.isMaster(attacker.level(), attacker.blockPosition());
-        boolean expert = master || LibUtils.isAtLeastExpert(attacker.level(), attacker.blockPosition());
+        boolean bossAttack = attacker instanceof BaseBoss || attacker instanceof Boss.BossPart || attacker instanceof BossOwnedEntity owned && owned.getBossOwner() != null;
+        boolean master = bossAttack ? LibUtils.isMaster(attacker.level()) : LibUtils.isMaster(attacker.level(), attacker.blockPosition());
+        boolean expert = master || (bossAttack ? LibUtils.isAtLeastExpert(attacker.level()) : LibUtils.isAtLeastExpert(attacker.level(), attacker.blockPosition()));
         RandomSource random = target.getRandom();
         for (Effect effect : effects) {
             if (effect.condition.isPresent() && !effect.condition.get().matches(target)) continue;

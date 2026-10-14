@@ -10,8 +10,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
+import org.confluence.mod.common.init.ModEffects;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -25,6 +25,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public final class DeerclopsShadowHandProjectile extends StraightMonsterProjectile implements GeoEntity {
     private static final EntityDataAccessor<Vector3f> DATA_ATTACK_DIRECTION = SynchedEntityData.defineId(DeerclopsShadowHandProjectile.class, EntityDataSerializers.VECTOR3);
     private static final int LIFETIME = 40;
+    private static final EntityDataAccessor<Integer> DATA_PATTERN = SynchedEntityData.defineId(DeerclopsShadowHandProjectile.class, EntityDataSerializers.INT);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public DeerclopsShadowHandProjectile(EntityType<? extends DeerclopsShadowHandProjectile> type, Level level) {
@@ -39,9 +40,16 @@ public final class DeerclopsShadowHandProjectile extends StraightMonsterProjecti
         setXRot((float) -Math.toDegrees(Math.asin(direction.normalize().y)));
     }
 
+    /// 周期性暗影手在出生时锁定预判方向，并选择缓进、弧线或旋转突进轨迹。
+    public void configurePassive(Mob owner, Vec3 origin, Vec3 direction, float damage, int pattern) {
+        configure(owner, origin, direction, damage);
+        entityData.set(DATA_PATTERN, pattern);
+    }
+
     @Override
     protected void defineSynchedData() {
         entityData.define(DATA_ATTACK_DIRECTION, new Vector3f());
+        entityData.define(DATA_PATTERN, 0);
     }
 
     @Override
@@ -50,7 +58,16 @@ public final class DeerclopsShadowHandProjectile extends StraightMonsterProjecti
         if (attackDirection.lengthSqr() < 1.0E-4) {
             attackDirection = Vec3.directionFromRotation(getXRot(), getYRot());
         }
-        if (tickCount > 10 && tickCount < 25) {
+        int pattern = entityData.get(DATA_PATTERN);
+        if (tickCount > 10 && tickCount < 35 && pattern != 0) {
+            double progress = (tickCount - 10) / 24.0;
+            return switch (pattern) {
+                case 1 -> attackDirection.scale(0.25 + progress * 0.75);
+                case 2 -> attackDirection.yRot((float) ((progress - 0.5) * 1.2)).scale(0.75);
+                default -> attackDirection.yRot((float) ((progress - 0.5) * 2.0)).scale(1.1);
+            };
+        }
+        if (tickCount > 10 && tickCount < 25 && pattern == 0) {
             return attackDirection;
         }
         return velocity.scale(0.6);

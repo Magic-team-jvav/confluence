@@ -430,6 +430,7 @@ public final class ModEntities {
                     .noSummon()
                     .build(id.toString()));
     public static final RegistryObject<EntityType<AncientLightProjectile>> ANCIENT_LIGHT = register("ancient_light", id -> EntityType.Builder.of(AncientLightProjectile::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
+    public static final RegistryObject<EntityType<CultistProjectile>> PROPHECYS_END = register("prophecys_end", id -> EntityType.Builder.<CultistProjectile>of((type, level) -> new CultistProjectile(type, level, CultistProjectile.Variant.PROPHECYS_END), MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
     public static final RegistryObject<EntityType<CultistProjectile>> CULTIST_FIREBALL = register("cultist_fireball",
             id -> EntityType.Builder.<CultistProjectile>of(
                             (type, level) -> new CultistProjectile(type, level, CultistProjectile.Variant.FIREBALL),

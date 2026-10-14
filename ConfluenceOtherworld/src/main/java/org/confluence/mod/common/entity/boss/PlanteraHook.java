@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -9,8 +10,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -110,6 +113,7 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
                 setState(STATE_IDLE);
             } else if (state == STATE_EXTENDING) {
                 setState(STATE_GRABBED);
+                spawnThorns(master, anchor);
             }
             Vec3 movement = offset.scale(0.9);
             setDeltaMovement(movement);
@@ -126,6 +130,17 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
         setDeltaMovement(movement);
         move(MoverType.SELF, movement);
         updateRotation(movement);
+    }
+
+    /// FTW 钩爪抓牢时，在相邻空位长出可被攻击清除的粉色荆棘。
+    private void spawnThorns(Plantera master, BlockPos anchor) {
+        if (!master.isFtw() || anchor == null || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING))
+            return;
+        for (Direction direction : Direction.values()) {
+            BlockPos pos = anchor.relative(direction);
+            if (!level().hasChunkAt(pos) || !level().getBlockState(pos).isAir()) continue;
+            level().setBlock(pos, NatureBlocks.PLANTERA_THORN.get().getStateForPlacement(level(), pos), 3);
+        }
     }
 
     private void updateRotation(Vec3 movement) {

@@ -1,11 +1,14 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.ModEffects;
 
 /// 双子魔眼使用的真实直线弹幕。
 ///
@@ -21,6 +24,8 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
 
     public void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy) {
         super.configure(owner, target, damage, velocity, inaccuracy, 100);
+        if (LibUtils.isAtLeastExpert(level()))
+            setDeltaMovement(getDeltaMovement().scale(7.0 / 6.0));
     }
 
     @Override
@@ -38,7 +43,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     @Override
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
         if (variant == Variant.CURSED_FLAME) {
-            target.setSecondsOnFire(5);
+            target.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO.get(), 100));
         }
     }
 

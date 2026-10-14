@@ -30,7 +30,7 @@ public final class CultistProjectile extends StraightMonsterProjectile {
     @Override
     protected Vec3 modifyVelocity(Vec3 velocity) {
         return switch (variant) {
-            case FIREBALL -> velocity;
+            case FIREBALL, PROPHECYS_END -> velocity;
             case ICE_MIST -> velocity.scale(0.992);
             case LIGHTNING_ORB -> velocity.lengthSqr() < 1.44
                     ? velocity.scale(1.012)
@@ -61,7 +61,8 @@ public final class CultistProjectile extends StraightMonsterProjectile {
     public enum Variant {
         FIREBALL(ParticleTypes.FLAME, 2),
         ICE_MIST(ParticleTypes.SNOWFLAKE, 3),
-        LIGHTNING_ORB(ParticleTypes.ELECTRIC_SPARK, 3);
+        LIGHTNING_ORB(ParticleTypes.ELECTRIC_SPARK, 3),
+        PROPHECYS_END(ParticleTypes.DRAGON_BREATH, 3);
 
         private final ParticleOptions particle;
         private final int particleCount;

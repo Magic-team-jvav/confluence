@@ -69,7 +69,7 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
         if (distance < 1.0E-6) {
             offset = master.getTentacleBaseDirection(getSlot()).scale(desiredDistance);
         } else {
-            double radialStep = RADIAL_STEP * master.getScale();
+            double radialStep = RADIAL_STEP * master.getScale() * (master.isFtw() ? 9.0 : 1.0);
             double radialChange = Mth.clamp(desiredDistance - distance, -radialStep, radialStep);
             offset = offset.scale(Math.min(distance + radialChange, desiredDistance) / distance);
         }
@@ -77,7 +77,8 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
         LivingEntity target = master.getTarget();
         if (target != null) {
             Vec3 targetOffset = target.getEyePosition().subtract(anchor);
-            double attraction = Math.max(TARGET_ATTRACTION_RADIUS - targetOffset.length(), 0.0) * TARGET_ATTRACTION;
+            double attraction = Math.max(TARGET_ATTRACTION_RADIUS - targetOffset.length(), 0.0) * TARGET_ATTRACTION
+                    * (master.isFtw() ? 9.0 : 1.0);
             offset = rotateToward(offset, targetOffset, attraction);
         }
 

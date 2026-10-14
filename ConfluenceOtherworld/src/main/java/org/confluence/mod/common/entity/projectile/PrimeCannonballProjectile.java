@@ -1,12 +1,15 @@
 package org.confluence.mod.common.entity.projectile;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;
@@ -15,7 +18,7 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 /// 机械炮管发射的小范围爆炸炮弹。
 ///
-/// 爆炸只影响实体，不破坏地形，避免 Boss 攻击永久损坏玩家建筑与战斗场地。
+/// 普通世界只伤害实体；FTW 在允许生物破坏且未启用庆典种子时还能炸开脆弱方块。
 public final class PrimeCannonballProjectile extends Projectile implements IPortProjectileExtension {
     public static final int MAX_LIFETIME = 80;
     private static final double BLAST_RADIUS = 3.0;
@@ -80,6 +83,16 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
 
     private void explodeWithoutTerrainDamage() {
         if (!level().isClientSide && getOwner() instanceof SkeletronPrime prime) {
+            if (prime.canBombDestroyBlocks()) {
+                for (BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2))) {
+                    if (!level().hasChunkAt(pos) || pos.distSqr(blockPosition()) > 4.0) continue;
+                    BlockState state = level().getBlockState(pos);
+                    if (!state.isAir() && state.getDestroySpeed(level(), pos) >= 0.0F
+                            && state.getBlock().getExplosionResistance() <= 6.0F
+                            && !state.is(BlockTags.FEATURES_CANNOT_REPLACE))
+                        level().destroyBlock(pos, true, this);
+                }
+            }
             AABB blast = getBoundingBox().inflate(BLAST_RADIUS);
             for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, blast, prime::canAttack)) {
                 double distance = Math.sqrt(distanceToSqr(target));

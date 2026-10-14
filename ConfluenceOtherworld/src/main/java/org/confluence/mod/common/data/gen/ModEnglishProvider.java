@@ -50,6 +50,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("entity.confluence.ancient_doom", "Ancient Doom");
+        add("entity.confluence.ancient_vision", "Ancient Vision");
+        add("entity.confluence.prophecys_end", "Prophecy’s End");
         add("itemGroup.confluence.evocation_robe_armor", "Evocation Robe Armor");
         add("itemGroup.confluence.ember_robe_armor", "Ember Robe Armor");
         add("itemGroup.confluence.verdant_robe_armor", "Verdant Robe Armor");

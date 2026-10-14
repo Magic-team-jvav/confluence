@@ -156,8 +156,8 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
         } else {
             Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)).ifSuccess(this::setVariant);
         }
-        if (behavior != null) behavior.stop();
-        setMovementMode(isInWaterOrBubble() ? MovementMode.WATER : MovementMode.LAND);
+        if (behavior != null) behavior.reset();
+        else setMovementMode(MovementMode.LAND);
     }
 
     @Override
@@ -191,10 +191,8 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
 
     @Override
     public void tick() {
-        if (!level().isClientSide) {
-            if (behavior != null) behavior.updateEnvironment();
-            else setMovementMode(isInWaterOrBubble() ? MovementMode.WATER : MovementMode.LAND);
-        }
+        // NoAI 时行为树不运行，仍需解除可能残留的飞行控制。
+        if (!level().isClientSide && isNoAi() && behavior != null) behavior.reset();
         super.tick();
         if (!level().isClientSide && !isNoAi()) {
             // 将注视偏航同步到实体和身体，保持整身朝向一致。
@@ -311,42 +309,50 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
         }
 
         private void requestFlight(Entity attacker) {
-            if (mode != MovementMode.FLYING && mode != MovementMode.LANDING) {
+            if (!airborne()) {
                 flightRequested = true;
                 threat = attacker;
             }
         }
 
+        private boolean airborne() {
+            return mode == MovementMode.FLYING || mode == MovementMode.LANDING;
+        }
+
+        private void changeMode(MovementMode next) {
+            if (mode == next) return;
+            stopAction();
+            mode = next;
+            setMovementMode(next);
+        }
+
         private void updateEnvironment() {
-            if (isNoAi() || !isAlive()) {
-                stop();
-                return;
-            }
-            if (onGround() || isInWaterOrBubble()) flewThisFall = false;
-            // 起飞时仍在水里或贴地，不因这一刻的接触标记取消起飞。
+            boolean inWater = isInWater();
+            if (onGround() || inWater) flewThisFall = false;
             if (mode == MovementMode.FLYING) return;
-            if (mode == MovementMode.LANDING && !onGround() && !isInWaterOrBubble()) return;
-            MovementMode next = isInWaterOrBubble() ? MovementMode.WATER : MovementMode.LAND;
+            if (mode == MovementMode.LANDING && !onGround() && !inWater) return;
+            MovementMode next = inWater ? MovementMode.WATER : MovementMode.LAND;
             if (next != mode) {
-                stopAction();
                 flightTicks = 0;
                 flightDirection = Vec3.ZERO;
-                mode = next;
+                changeMode(next);
             }
-            setMovementMode(mode);
         }
 
         @Override
         public BTStatus execute() {
+            if (isNoAi() || !isAlive()) {
+                reset();
+                return BTStatus.SUCCESS;
+            }
             updateEnvironment();
-            if (isNoAi() || !isAlive()) return BTStatus.SUCCESS;
             if (mode == MovementMode.WATER && !flightRequested) {
                 Player player = level().getNearestPlayer(Duck.this, 3.0);
                 if (player != null && !player.isSpectator()) requestFlight(player);
             }
             if (flightRequested || mode == MovementMode.LAND && !onGround()
                     && !flewThisFall && fallDistance >= 3.0F) beginFlight();
-            if (mode == MovementMode.FLYING || mode == MovementMode.LANDING) {
+            if (airborne()) {
                 tickFlight();
                 return BTStatus.RUNNING;
             }
@@ -359,7 +365,6 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
         }
 
         private void beginFlight() {
-            stopAction();
             Vec3 direction = threat == null ? getLookAngle() : position().subtract(threat.position());
             direction = direction.multiply(1.0, 0.0, 1.0);
             if (direction.lengthSqr() < 1.0E-6) {
@@ -371,16 +376,14 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
             threat = null;
             flewThisFall = true;
             flightTicks = 100;
-            mode = MovementMode.FLYING;
-            setMovementMode(mode);
+            changeMode(MovementMode.FLYING);
             setDeltaMovement(flightDirection.scale(0.2).add(0.0, 0.25, 0.0));
             hasImpulse = true;
         }
 
         private void tickFlight() {
             if (mode == MovementMode.FLYING && --flightTicks <= 0) {
-                mode = MovementMode.LANDING;
-                setMovementMode(mode);
+                changeMode(MovementMode.LANDING);
             }
             Vec3 movement = getDeltaMovement();
             if (horizontalCollision) flightDirection = flightDirection.scale(-1.0);
@@ -416,12 +419,17 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
 
         @Override
         public void stop() {
+            reset();
+        }
+
+        private void reset() {
             stopAction();
             flightTicks = 0;
             flightDirection = Vec3.ZERO;
             flightRequested = false;
             threat = null;
-            mode = isInWaterOrBubble() ? MovementMode.WATER : MovementMode.LAND;
+            flewThisFall = false;
+            mode = MovementMode.LAND;
             setMovementMode(mode);
         }
     }

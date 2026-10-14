@@ -24,7 +24,6 @@
         "integration.terracurio.DemonHeartMixin",
         "integration.terracurio.StarClockEntityMixin",
         "integration.terrafurniture.TFPinWheelMixin",
-        "integration.touhoulittlemaid.MaidFishingHookMixin",
         "neoforge.common.data.DataMapProviderAccessor",
         "neoforge.common.loot.LootModifierManagerMixin",
         "neoforge.items.ItemStackHandlerMixin",

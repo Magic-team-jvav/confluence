@@ -33,17 +33,17 @@ public class ConsumableItems {
 
     public static final DeferredItem<ManaCrystalItem> MANA_CRYSTAL = ITEMS.register("mana_crystal", ManaCrystalItem::new);
     public static final DeferredItem<RecallManaCrystalItem> RECALL_MANA_CRYSTAL = ITEMS.register("recall_mana_crystal", RecallManaCrystalItem::new);
-    public static final DeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE));
-    public static final DeferredItem<EverBeneficialItem> RECALL_LIFE_CRYSTAL = ITEMS.register("recall_life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.RECALL_LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE));
-    public static final DeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, EverBeneficialItem.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE));
-    public static final DeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE));
+    public static final DeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, PermanentUpgrade.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE));
+    public static final DeferredItem<EverBeneficialItem> RECALL_LIFE_CRYSTAL = ITEMS.register("recall_life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, PermanentUpgrade.RECALL_LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE));
+    public static final DeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, PermanentUpgrade.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE));
+    public static final DeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, PermanentUpgrade.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE));
     public static final DeferredItem<ArcaneCrystalItem> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal", ArcaneCrystalItem::new);
-    public static final DeferredItem<EverBeneficialItem> AEGIS_APPLE = ITEMS.register("aegis_apple", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AEGIS_APPLE, ModSoundEvents.TRANSMUTATION_USE));
-    public static final DeferredItem<EverBeneficialItem> AMBROSIA = ITEMS.register("ambrosia", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AMBROSIA, ModSoundEvents.TRANSMUTATION_USE));
-    public static final DeferredItem<EverBeneficialItem> GUMMY_WORM = ITEMS.register("gummy_worm", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GUMMY_WORM, ModSoundEvents.TRANSMUTATION_USE));
-    public static final DeferredItem<EverBeneficialItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GALAXY_PEARL, ModSoundEvents.TRANSMUTATION_USE));
-    public static final DeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, EverBeneficialItem.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE));
-    public static final DeferredItem<EverBeneficialItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> new EverBeneficialItem(ModRarity.ORANGE, EverBeneficialItem.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE));
+    public static final DeferredItem<EverBeneficialItem> AEGIS_APPLE = ITEMS.register("aegis_apple", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, PermanentUpgrade.AEGIS_APPLE, ModSoundEvents.TRANSMUTATION_USE));
+    public static final DeferredItem<EverBeneficialItem> AMBROSIA = ITEMS.register("ambrosia", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, PermanentUpgrade.AMBROSIA, ModSoundEvents.TRANSMUTATION_USE));
+    public static final DeferredItem<EverBeneficialItem> GUMMY_WORM = ITEMS.register("gummy_worm", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, PermanentUpgrade.GUMMY_WORM, ModSoundEvents.TRANSMUTATION_USE));
+    public static final DeferredItem<EverBeneficialItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, PermanentUpgrade.GALAXY_PEARL, ModSoundEvents.TRANSMUTATION_USE));
+    public static final DeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, PermanentUpgrade.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE));
+    public static final DeferredItem<EverBeneficialItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> new EverBeneficialItem(ModRarity.ORANGE, PermanentUpgrade.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE));
     public static final DeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = ITEMS.register("advanced_combat_techniques", AdvancedCombatTechniquesItem::new);
     public static final DeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = ITEMS.register("advanced_combat_techniques_volume_two", AdvancedCombatTechniquesVolumeTwoItem::new);
     public static final DeferredItem<PeddlersSatchelItem> PEDDLERS_SATCHEL = ITEMS.register("peddlers_satchel", PeddlersSatchelItem::new);

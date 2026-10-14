@@ -52,7 +52,10 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.*;
+import org.confluence.mod.common.attachment.ChunkDropletsData;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.Team;
@@ -107,6 +110,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+        PermanentUpgrade.restore(player);
         PlayerUtils.syncSavedData(player);
         BoulderWorld.forceSetAccessory(player);
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
@@ -372,13 +376,7 @@ public final class PlayerEvents {
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         MountManager.dismiss(player);
-        EverBeneficial everBeneficial = EverBeneficial.of(player);
-        EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() != 0, player);
-        EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
-        EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, player);
-        EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, player);
-        EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, player);
-        EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
+        PermanentUpgrade.restore(player);
 
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);

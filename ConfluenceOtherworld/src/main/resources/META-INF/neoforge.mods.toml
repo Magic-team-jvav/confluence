@@ -95,13 +95,6 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
-modId = "touhou_little_maid"
-type = "optional"
-versionRange = "[1.3.5,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies."${mod_id}"]]
 modId = "create"
 type = "optional"
 versionRange = "[6.0.9,)"

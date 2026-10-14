@@ -16,7 +16,7 @@ import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.item.common.EverBeneficialItem;
+import org.confluence.mod.common.item.common.PermanentUpgrade;
 
 import java.util.Locale;
 
@@ -60,12 +60,12 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     absorptionHealth = player.getAbsorptionAmount();
                     maxHealth = player.getMaxHealth();
                     currentHealth = player.getHealth();
-                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(EverBeneficialItem.LIFE_FRUITS.id());
+                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(PermanentUpgrade.LIFE_FRUITS.id());
                     if (modifier != null) {
                         lifeFruitHealth = (int) modifier.amount();
                     }
                 }
-                int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
+                int countHeart = heartCount(maxHealth, lifeFruitHealth);
                 int countHeartAbsorptionHealth = (int) (absorptionHealth / 4.0F) + ((((int) absorptionHealth) % 4 == 0) ? 0 : 1);
                 int yLine = 4 + (int) (6.0F / (float) ((countHeart - 1) / 20 + (countHeartAbsorptionHealth - 1) / 20 + 1));
                 int heightToAbsorption = blit(heartBuff, maxHealth, currentHealth, lifeFruitHealth, guiGraphics, widthHealth, heightHealth, 0, yLine);
@@ -91,12 +91,14 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             private static int blit(int heartBuff, float maxHealth, float currentHealth, int lifeFruitHealth, GuiGraphics guiGraphics, int width, int height, int typeHeart, int yLine) {
                 heartBuff *= 20;
                 int heightUV = (typeHeart * 17);
-                int countHeart = (int) ((maxHealth - (float) lifeFruitHealth) / 4);
+                int countHeart = heartCount(maxHealth, lifeFruitHealth);
                 int countLine;
                 int type;
                 int blitX;
                 int blitY = 0;
                 int blitXFirst;
+                // 按实际生命上限分配金色心，避免召回水晶后遗漏生命果提供的容量。
+                lifeFruitHealth = Math.min(countHeart, Math.max(0, (int) Math.ceil(maxHealth - countHeart * 4.0F)));
                 FloatArrayList heartNumList = getHeartNumList(currentHealth, lifeFruitHealth, countHeart);
                 for (int countToBlit = 0; countToBlit < countHeart; countToBlit++) {
                     countLine = countToBlit / 10;
@@ -121,6 +123,10 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     blitHeart(guiGraphics, type, typeHeart, heartNumList.getFloat(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);
                 }
                 return (height + blitY + yLine);
+            }
+
+            private static int heartCount(float maxHealth, int lifeFruitHealth) {
+                return Math.max((int) Math.ceil(maxHealth / 5.0F), (int) Math.ceil((maxHealth - lifeFruitHealth) / 4.0F));
             }
 
             private static FloatArrayList getHeartNumList(float currentHealth, int lifeFruitHealth, int countHeart) {

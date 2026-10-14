@@ -1196,7 +1196,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.hardmode_forge", "困难模式熔炉");
         add("title.confluence.alchemy_table", "炼药桌");
         add("title.confluence.fletching_table", "制箭台");
-        add("title.confluence.touhoulittlemaid", "女仆特供");
         add("title.confluence.npc_trade", "汇流商店");
         add("title.confluence.cooking_pot", "烹饪锅");
         add("title.confluence.sawmill", "锯木机");
@@ -3569,9 +3568,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.LAVA_BOMB.get(), "熔岩炸弹");
         add(ConsumableItems.HONEY_BOMB.get(), "蜂蜜炸弹");
         add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
-//        add(ConsumableItems.RECALL_MANA_CRYSTAL.get(), "回溯魔力水晶");
+        add(ConsumableItems.RECALL_MANA_CRYSTAL.get(), "回溯魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
-//        add(ConsumableItems.RECALL_LIFE_CRYSTAL.get(), "回溯生命水晶");
+        add(ConsumableItems.RECALL_LIFE_CRYSTAL.get(), "回溯生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
@@ -4946,9 +4945,6 @@ public class ModChineseProvider extends LanguageProvider {
 
     private void addMaidIntegrationTranslations() {
         // 车万女仆
-        add("task.confluence.use_life_crystal", "生命水晶");
-        add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
-        add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
 
         add(BaseTerraRepeaterItem.ATTACK_SPEED_TEXT, "矢速度");
         add(BaseTerraRepeaterItem.KNOCKBACK_TEXT, "击退");

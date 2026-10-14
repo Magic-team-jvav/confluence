@@ -255,8 +255,6 @@ dependencies {
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
-    compileOnly "curse.maven:touhou-little-maid-355044:7894267"
-//    runtimeOnly "curse.maven:touhou-little-maid-355044:7894267"
 
     compileOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"

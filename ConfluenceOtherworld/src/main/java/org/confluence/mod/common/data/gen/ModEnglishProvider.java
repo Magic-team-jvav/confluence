@@ -1243,7 +1243,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.cooking_pot", "Cooking Pot");
         add("title.confluence.solidifier", "Solidifier");
         add("title.confluence.fletching_table", "Fletching Table");
-        add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
         add("title.confluence.sawmill", "Sawmill");
         add("title.confluence.mythril_anvil", "Mythril Anvil");
@@ -2051,10 +2050,6 @@ public class ModEnglishProvider extends LanguageProvider {
         addSpawnEggTranslations();
         addPreviouslyMissingTranslations();
 
-        // TouhouLittleMaid
-        add("task.confluence.use_life_crystal", "Use Life Crystal");
-        add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
-        add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
     }
 
     /// 注册生物与战斗相关声音的英文字幕。

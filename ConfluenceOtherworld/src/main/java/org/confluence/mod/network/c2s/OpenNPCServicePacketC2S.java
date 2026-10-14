@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.NurseNPC;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
@@ -14,6 +15,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 public record OpenNPCServicePacketC2S(int entityId, byte service) implements IPortPacket.C2S {
     public static final byte TRADE = 0;
     public static final byte REFORGE = 1;
+    public static final byte HEAL = 2;
     public static final ResourceLocation ID = Confluence.asResource("open_npc_service");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenNPCServicePacketC2S> STREAM_CODEC = PortStreamCodec.composite(
             PortByteBufCodecs.VAR_INT, OpenNPCServicePacketC2S::entityId,
@@ -25,6 +27,9 @@ public record OpenNPCServicePacketC2S(int entityId, byte service) implements IPo
         switch (service) {
             case TRADE -> npc.openTradeMenu(player);
             case REFORGE -> npc.openReforgeMenu(player);
+            case HEAL -> {
+                if (npc instanceof NurseNPC nurse) nurse.healPlayer(player);
+            }
         }
     }
 

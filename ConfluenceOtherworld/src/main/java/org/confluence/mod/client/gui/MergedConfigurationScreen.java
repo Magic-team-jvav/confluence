@@ -13,6 +13,7 @@ import net.minecraftforge.fml.ModList;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.TerraCurio;
+import org.mesdag.opallight.OpalLight;
 import org.mesdag.particlestorm.ParticleStorm;
 import org.mesdag.portlib.client.gui.PortConfigurationScreen;
 
@@ -89,7 +90,8 @@ public class MergedConfigurationScreen extends Screen {
                 Confluence.MODID,
                 TerraCurio.MODID,
                 TheTrackers.MOD_ID,
-                ParticleStorm.MODID
+                ParticleStorm.MODID,
+                OpalLight.MODID
         );
     }
 }

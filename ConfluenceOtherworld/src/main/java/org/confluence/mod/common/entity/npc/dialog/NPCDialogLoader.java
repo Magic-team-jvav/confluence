@@ -44,6 +44,10 @@ public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
         this.dialogs = ImmutableMap.copyOf(parsed.get());
     }
 
+    public Map<EntityType<?>, NPCDialog> getDialogs() {
+        return dialogs;
+    }
+
     @Nullable
     public NPCDialog getDialog(EntityType<?> type) {
         return dialogs.get(type);

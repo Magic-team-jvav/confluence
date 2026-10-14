@@ -231,6 +231,7 @@ public final class GameClientEvents {
         FlailHandler.reset();
         LeftClickItemHandler.reset();
         OpalLightIntegration.clearWorld();
+        ClientNPCDialogs.clear();
         ClientWeaponInputManager.reset();
         GunHandler.reset();
         WeatherHandler.reset();

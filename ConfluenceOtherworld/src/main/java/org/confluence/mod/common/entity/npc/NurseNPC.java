@@ -1,12 +1,9 @@
 package org.confluence.mod.common.entity.npc;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -32,18 +29,12 @@ public class NurseNPC extends BaseNPC {
         this.goalSelector.addGoal(3, new NPCHealGoal(this, 5));
     }
 
-    @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        boolean canHeal = !level().isClientSide && player instanceof ServerPlayer && hand == InteractionHand.MAIN_HAND
-                && !player.isShiftKeyDown() && !(player.getItemInHand(hand).getItem() instanceof ArmorItem);
-        InteractionResult result = super.mobInteract(player, hand);
-        if (canHeal && player instanceof ServerPlayer serverPlayer && serverPlayer.getHealth() < serverPlayer.getMaxHealth()) {
-            healPlayer(serverPlayer);
-        }
-        return result;
-    }
-
-    private void healPlayer(ServerPlayer player) {
+    /// 只允许当前对话玩家主动购买治疗，扣款成功后才恢复生命并清除可治疗的减益。
+    public void healPlayer(ServerPlayer player) {
+        if (!canTradeWith(player) || player.containerMenu != player.inventoryMenu) return;
+        boolean injured = player.getHealth() < player.getMaxHealth();
+        boolean hasDebuff = player.getActiveEffects().stream().anyMatch(ModUtils::isDebuff);
+        if (!injured && !hasDebuff) return;
         long cost = (long) (player.getMaxHealth() - player.getHealth() + 1) * 5L;
         for (MobEffectInstance effect : player.getActiveEffects()) {
             if (ModUtils.isDebuff(effect)) cost += 500L;
@@ -60,12 +51,16 @@ public class NurseNPC extends BaseNPC {
         } else if (killBoard.isDefeated(BossEntities.EYE_OF_CTHULHU.get())) {
             cost *= 3L;
         }
-        if (!PlayerUtils.debit(player, cost, true)) return;
+        if (!PlayerUtils.debit(player, cost, true)) {
+            player.displayClientMessage(Component.translatable("message.confluence.nurse.insufficient_funds"), true);
+            return;
+        }
 
         player.setHealth(player.getMaxHealth());
         for (MobEffectInstance effect : List.copyOf(player.getActiveEffects())) {
             if (ModUtils.isDebuff(effect)) player.removeEffect(effect.getEffect());
         }
+        player.containerMenu.broadcastChanges();
         AchievementUtils.theFrequentFlyer(player, cost);
     }
 }

@@ -731,6 +731,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("modid.name.terra_curio", "泰拉饰品");
         add("modid.name.the_trackers", "全追踪");
         add("modid.name.particlestorm", "粒子风暴");
+        add("modid.name.opallight", "蛋白石");
     }
 
     @Override

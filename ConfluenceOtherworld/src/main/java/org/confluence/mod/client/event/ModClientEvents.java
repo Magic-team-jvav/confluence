@@ -113,7 +113,6 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.*;
 import org.confluence.mod.common.entity.mount.RideableBeeMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
-import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
@@ -1163,7 +1162,6 @@ public final class ModClientEvents {
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());
         event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());
-        event.registerReloadListener(NPCDialogLoader.getInstance());
         event.registerReloadListener(WormholeHandlerClient::reload);
     }
 

@@ -32,6 +32,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
+import org.confluence.mod.network.s2c.NPCDialogSyncPacketS2C;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.event.PortEventHandler;
@@ -79,6 +80,8 @@ public final class GameEvents {
 
     private static void onDatapackSync(PortOnDatapackSyncEvent event) {
         ServerPlayer sendTo = event.getPlayer();
+        for (ServerPlayer target : sendTo == null ? event.getPlayerList().getPlayers() : List.of(sendTo))
+            NPCDialogSyncPacketS2C.sendToClient(target);
         if (sendTo == null) {
             for (ServerPlayer target : event.getPlayerList().getPlayers()) {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(target, target);

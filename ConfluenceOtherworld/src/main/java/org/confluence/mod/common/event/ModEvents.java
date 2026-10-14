@@ -95,6 +95,7 @@ import org.confluence.terra_curio.common.init.TCTabs;
 
 import java.util.Optional;
 
+import static org.confluence.mod.Confluence.DATA_TIP;
 import static org.confluence.mod.Confluence.MODID;
 
 @EventBusSubscriber(modid = MODID)
@@ -199,7 +200,7 @@ public final class ModEvents {
                 );
                 if (pack != null) consumer.accept(pack);
             });
-            event.addRepositorySource(consumer -> {
+            if (DATA_TIP) event.addRepositorySource(consumer -> {
                 Pack pack = Pack.readMetaAndCreate(
                         new PackLocationInfo("confluence:confluence_datatip_0.4", Component.translatable("resourcepack.confluence_datatip_0.4"), PackSource.BUILT_IN, Optional.empty()),
                         new ConfluenceResources(modFile, "resourcepacks/confluence_datatip_0.4"),

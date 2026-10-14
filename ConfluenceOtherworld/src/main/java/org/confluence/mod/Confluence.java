@@ -42,6 +42,7 @@ public final class Confluence {
     public static final boolean THE_END_BIOMES = LibUtils.isDev();
     public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
     public static final boolean UNRELEASED_EVENTS = LibUtils.isDev();
+    public static final boolean DATA_TIP = LibUtils.isDev();
 
     public Confluence(IEventBus eventBus, ModContainer container) {
         ModDynamicBiomes.init();

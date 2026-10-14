@@ -34,8 +34,9 @@ public record TerraStyleExplosionPacketS2C(double x, double y, double z, float r
     @Override
     public void work(Player player) {
         TerraStyleExplosion.handleClientExplode(player.level(), x, y, z, radius);
-        DynamicLightEffects.flash(new Vec3(x, y, z), 15, 6);
-        OpalLightIntegration.flash(OpalLightIntegration.EXPLOSION, new Vec3(x, y, z), 6);
+        if (!OpalLightIntegration.flash(OpalLightIntegration.EXPLOSION, new Vec3(x, y, z), 6)) {
+            DynamicLightEffects.flash(new Vec3(x, y, z), 15, 6);
+        }
     }
 
     public static void send2All(ServerLevel level, double x, double y, double z, float radius) {

@@ -39,6 +39,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.confluence.terra_curio.common.init.TCEntities;
 
@@ -57,6 +58,7 @@ public final class ModDynamicLights {
                         }
                     }
                 }, AttachmentEntity::getType);
+        attachments.suppressWhen(entity -> OpalLightIntegration.handlesEffect(entity.getType().location()));
         attachments.register(SummonerAttachmentEntityTypes.IMP_FIREBALL.get(), (entity, partialTick) ->
                 new DynamicLightDispatcher.LightSource(entity.getRenderNode(partialTick).pos(), 170));
         attachments.register(SummonerAttachmentEntityTypes.EYE_FIREBALL.get(), (entity, partialTick) ->
@@ -69,7 +71,7 @@ public final class ModDynamicLights {
                 new DynamicLightDispatcher.LightSource(entity.getRenderNode(partialTick).pos(), 102));
         DynamicLightRegister.registerEntity(PrimeEnderDragon.class, (dragon, partialTick) -> {
             float range = dragon.getLaserRange();
-            if (range > 0) {
+            if (range > 0 && !OpalLightIntegration.handlesEffect(OpalLightIntegration.DRAGON_LASER)) {
                 Vec3 origin = dragon.getLaserOrigin(partialTick);
                 float pitch = Mth.rotLerp(partialTick, dragon.xRotO, dragon.getXRot());
                 float yaw = Mth.rotLerp(partialTick, dragon.yRotO, dragon.getYRot());
@@ -182,7 +184,8 @@ public final class ModDynamicLights {
         DynamicLightRegister.registerEntity(CurioFishingHook.class, DynamicLightProvider.entity(hook -> hook.getVariant() != CurioFishingHook.Variant.COMMON ? 5 : 0));
         DynamicLightRegister.registerEntity(BaseArrowEntity.class, DynamicLightProvider.entity(BaseArrowEntity::confluence$getLuminance));
         DynamicLightRegister.registerEntity(BaseBombEntity.class, DynamicLightProvider.entity(bomb -> bomb.emitter != null && !bomb.emitter.isRemoved() ? 4 : 0));
-        DynamicLightRegister.registerEntity(LivingEntity.class, DynamicLightProvider.entity(living -> living.hasEffect(ModEffects.SHINE) || living.hasEffect(MobEffects.GLOWING) ? 10 : 0));
+        DynamicLightRegister.registerEntity(LivingEntity.class, DynamicLightProvider.entity(living -> (living.hasEffect(ModEffects.SHINE) || living.hasEffect(MobEffects.GLOWING))
+                && !OpalLightIntegration.handlesLivingEffect(living) ? 10 : 0));
         DynamicLightRegister.registerEntity(Player.class, DynamicLightProvider.entity(player -> {
             int equipment = ClientPacketHandler.getLuminance(player);
             return equipment < 0 ? (player.isEyeInFluid(FluidTags.WATER) ? -equipment : 0) : equipment;

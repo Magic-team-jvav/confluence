@@ -17,6 +17,7 @@ import org.confluence.mod.client.summoner.RenderContext;
 import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 
 /// 泰拉棱镜渲染器：灰底贴图配合逐实例色相做色调控制，攻击时额外绘制丝带拖尾。
 public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<TerraprismaMinion> {
@@ -44,7 +45,9 @@ public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<Terrap
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5F);
+        if (!OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+            DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5F);
+        }
         if (model == null) {
             model = new TerraprismaModel(Minecraft.getInstance().getEntityModels().bakeLayer(TerraprismaModel.LAYER_LOCATION));
         }

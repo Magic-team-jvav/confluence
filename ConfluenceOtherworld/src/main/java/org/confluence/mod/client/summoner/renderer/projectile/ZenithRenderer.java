@@ -16,6 +16,7 @@ import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.projectile.Zenith;
 import org.confluence.mod.common.summoner.util.EasingCurve;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,9 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
         if (zenith.getTickCount() < 2) {
             light *= context.partialTick;
         }
-        DynamicLightDispatcher.INSTANCE.addLightSource(visualNode.pos(), light);
+        if (!OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+            DynamicLightDispatcher.INSTANCE.addLightSource(visualNode.pos(), light);
+        }
         if (context.trail != null && zenith.alpha > 0.75) {
             float alpha = 0;
             float progress = zenith.getProgress(context.partialTick);

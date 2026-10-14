@@ -14,10 +14,13 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.client.DynamicLightRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.animal.Fairy;
 import org.confluence.mod.common.entity.boss.PrimeEnderDragon;
@@ -34,6 +37,7 @@ import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.mesdag.opallight.light.data.DynamicLightDefinition;
 import org.mesdag.opallight.light.data.LightConditions;
+import org.mesdag.opallight.light.data.LightDataLoader;
 import org.mesdag.opallight.light.data.LightProfile;
 import org.mesdag.opallight.light.engine.DynamicLights;
 
@@ -50,7 +54,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     public static final ResourceLocation LUMINITE_IMPACT = Confluence.asResource("luminite_impact");
     private static final ResourceLocation SHINE = Confluence.asResource("effect_shine");
     private static final ResourceLocation GLOWING = Confluence.asResource("effect_glowing");
-    private static final ResourceLocation DRAGON_LASER = Confluence.asResource("prime_ender_dragon_laser");
+    public static final ResourceLocation DRAGON_LASER = Confluence.asResource("prime_ender_dragon_laser");
     private static final Codec<Map<ResourceLocation, DynamicLightDefinition>> CODEC = Codec.unboundedMap(ResourceLocation.CODEC, DynamicLightDefinition.CODEC);
 
     private Map<ResourceLocation, Source> sources = Map.of();
@@ -68,6 +72,8 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     }
 
     public static void register() {
+        DynamicLightRegister.suppressItemLightWhen(OpalLightIntegration::handlesItem);
+        DynamicLightRegister.suppressEntityLightWhen(OpalLightIntegration::handlesEntity);
         LightConditions.registerItem(Confluence.asResource("phaseblade_available"), value -> {
             boolean expected = value.getAsBoolean();
             return (stack, entity) -> INSTANCE.phasebladeAvailable(stack, entity) == expected;
@@ -109,6 +115,35 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
         });
         // 附件、光束和闪光没有普通 EntityType，单独采集位置；色彩仍从 JSON 读取。
         DynamicLights.registerCollector(Confluence.asResource("effects"), INSTANCE::collect);
+    }
+
+    public static boolean handlesEffect(ResourceLocation type) {
+        Source source = INSTANCE.sources.get(type);
+        return source != null && source.brightness() > 0;
+    }
+
+    public static boolean handlesLivingEffect(LivingEntity living) {
+        return living.hasEffect(ModEffects.SHINE) ? handlesEffect(SHINE)
+                : living.hasEffect(MobEffects.GLOWING) && handlesEffect(GLOWING);
+    }
+
+    private static boolean handlesItem(ItemStack stack, Entity owner) {
+        if (stack.isEmpty()) return false;
+        LightDataLoader data = LightDataLoader.INSTANCE;
+        if (data.hasItemDefinition(stack.getItem())) {
+            var definition = data.getItemDefinition(stack, owner, owner != null && owner.isOnFire());
+            return definition != null && definition.lightLevel() > 0;
+        }
+        if (!(stack.getItem() instanceof BlockItem item)) return false;
+        var state = item.getBlock().defaultBlockState();
+        return state.getLightEmission() > 0 && data.getProfile(state) != null;
+    }
+
+    private static boolean handlesEntity(Entity entity) {
+        var definition = LightDataLoader.INSTANCE.getEntityDefinition(entity);
+        if (definition != null && definition.lightLevel() > 0) return true;
+        if (entity instanceof ItemEntity item && handlesItem(item.getItem(), entity)) return true;
+        return handlesItem(projectileItem(entity), entity);
     }
 
     private boolean phasebladeAvailable(ItemStack stack, Entity entity) {
@@ -155,12 +190,13 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
         sources = Map.copyOf(updated);
     }
 
-    public static void flash(ResourceLocation type, Vec3 position, int duration) {
+    public static boolean flash(ResourceLocation type, Vec3 position, int duration) {
         ClientLevel level = Minecraft.getInstance().level;
         INSTANCE.useLevel(level);
-        if (level == null || duration <= 0 || !INSTANCE.sources.containsKey(type)) return;
+        if (level == null || duration <= 0 || !handlesEffect(type)) return false;
         long now = level.getGameTime();
         INSTANCE.flashes.add(new Flash(INSTANCE.nextId++, type, position, now, now + (long) duration));
+        return true;
     }
 
     private void collect(ClientLevel level, DynamicLights.Sink sink) {

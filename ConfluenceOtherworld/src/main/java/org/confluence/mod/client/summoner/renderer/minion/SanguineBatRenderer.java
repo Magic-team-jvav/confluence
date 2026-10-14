@@ -10,6 +10,7 @@ import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.SanguineBatMinion;
+import org.confluence.mod.integration.opallight.OpalLightIntegration;
 
 public class SanguineBatRenderer extends AbstractAttachmentEntityGeoRenderer<SanguineBatMinion> {
 
@@ -32,6 +33,8 @@ public class SanguineBatRenderer extends AbstractAttachmentEntityGeoRenderer<San
     /// 模型提交之后再注册动态光源，与旧实现的调用顺序一致
     @Override
     protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
-        DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5F);
+        if (!OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+            DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5F);
+        }
     }
 }

@@ -260,6 +260,13 @@ dependencies {
 //    modRuntimeOnly('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-3.0.1.10')
 //    modRuntimeOnly("curse.maven:lithostitched-936015:6742615")
 //    modRuntimeOnly("curse.maven:aether-255308:6134920")
+//    modRuntimeOnly("curse.maven:epic-fight-mod-405076:8049910")
+//    modRuntimeOnly("curse.maven:epicfight-nightfall-1307848:9015395")
+//    modRuntimeOnly("curse.maven:epic-fight-avalon-1268823:8849430")
+//    modRuntimeOnly("curse.maven:epic-fight-invincible-1184379:7679941")
+//
+//    modRuntimeOnly("curse.maven:lendercataclysm-551586:8246047")
+//    modRuntimeOnly("curse.maven:lionfish-api-1001614:8095554")
 }
 
 mixin {

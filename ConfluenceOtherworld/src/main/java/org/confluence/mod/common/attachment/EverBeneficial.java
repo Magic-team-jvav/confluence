@@ -34,35 +34,20 @@ public class EverBeneficial implements IPortNBTSerializable<CompoundTag> {
 //        this.fallenSoulCore = false;
     }
 
-    public boolean increaseCrystals() {
-        if (!isLifeCrystalsMaximum()) {
-            this.lifeCrystals++;
-            return true;
-        }
-        return false;
+    public void setUsedLifeCrystals(int lifeCrystals) {
+        this.lifeCrystals = lifeCrystals;
     }
 
     public int getUsedLifeCrystals() {
         return lifeCrystals;
     }
 
-    /// 回溯生命水晶允许降低初始生命，最多记录负四颗，保留基础的四点生命。
-    public boolean decreaseCrystals() {
-        if (lifeCrystals <= -4) return false;
-        this.lifeCrystals--;
-        return true;
-    }
-
     public boolean isLifeCrystalsMaximum() {
         return lifeCrystals >= 15;
     }
 
-    public boolean increaseFruits() {
-        if (isLifeCrystalsMaximum() && !isLifeFruitsMaximum()) {
-            this.lifeFruits++;
-            return true;
-        }
-        return false;
+    public void setUsedLifeFruits(int lifeFruits) {
+        this.lifeFruits = lifeFruits;
     }
 
     public int getUsedLifeFruits() {
@@ -73,67 +58,62 @@ public class EverBeneficial implements IPortNBTSerializable<CompoundTag> {
         return lifeFruits >= 20;
     }
 
-    public boolean setVitalCrystalUsed() {
-        if (vitalCrystal) return false;
-        return this.vitalCrystal = true;
+    public void setVitalCrystalUsed(boolean used) {
+        this.vitalCrystal = used;
     }
 
     public boolean isVitalCrystalUsed() {
         return vitalCrystal;
     }
 
-    public boolean setAegisAppleUsed() {
-        if (aegisApple) return false;
-        return this.aegisApple = true;
+    public void setAegisAppleUsed(boolean used) {
+        this.aegisApple = used;
     }
 
     public boolean isAegisAppleUsed() {
         return aegisApple;
     }
 
-    public boolean setAmbrosiaUsed() {
-        if (ambrosia) return false;
-        return this.ambrosia = true;
+    public void setAmbrosiaUsed(boolean used) {
+        this.ambrosia = used;
     }
 
     public boolean isAmbrosiaUsed() {
         return ambrosia;
     }
 
-    public boolean setGummyWormUsed() {
-        if (gummyWorm) return false;
-        return this.gummyWorm = true;
+    public void setGummyWormUsed(boolean used) {
+        this.gummyWorm = used;
     }
 
     public boolean isGummyWormUsed() {
         return gummyWorm;
     }
 
-    public boolean setGalaxyPearlUsed() {
-        if (galaxyPearl) return false;
-        return this.galaxyPearl = true;
+    public void setGalaxyPearlUsed(boolean used) {
+        this.galaxyPearl = used;
     }
 
     public boolean isGalaxyPearlUsed() {
         return galaxyPearl;
     }
 
-    public boolean setMinecartUpgradeKitUsed() {
-        return this.minecartUpgradeKit = true;
+    public void setMinecartUpgradeKitUsed(boolean used) {
+        this.minecartUpgradeKit = used;
     }
 
     public boolean isMinecartUpgradeKitUsed() {
         return minecartUpgradeKit;
     }
 
-    public boolean setArtisanLoafUsed() {
-        if (artisanLoaf) return false;
-        return this.artisanLoaf = true;
+    public void setArtisanLoafUsed(boolean used) {
+        this.artisanLoaf = used;
     }
 
     public boolean isArtisanLoafUsed() {
         return artisanLoaf;
     }
+
 
 //    public void changeFallenSoulCore() {this.fallenSoulCore = !fallenSoulCore;}
 //

@@ -472,6 +472,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SPIDER_WEB_SPIT.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ICEWATER_SPIT.get(), NoopRenderer::new);
         event.registerEntityRenderer(ANCIENT_LIGHT.get(), NoopRenderer::new);
+        event.registerEntityRenderer(PROPHECYS_END.get(), NoopRenderer::new);
+        event.registerEntityRenderer(BossEntities.ANCIENT_DOOM.get(), CultistSummonRenderer::new);
+        event.registerEntityRenderer(BossEntities.ANCIENT_VISION.get(), CultistSummonRenderer::new);
         event.registerEntityRenderer(CULTIST_FIREBALL.get(), NoopRenderer::new);
         event.registerEntityRenderer(CULTIST_ICE_MIST.get(), NoopRenderer::new);
         event.registerEntityRenderer(CULTIST_LIGHTNING_ORB.get(), NoopRenderer::new);

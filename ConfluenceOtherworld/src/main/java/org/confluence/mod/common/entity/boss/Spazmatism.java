@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,6 +16,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.confluence.mod.common.entity.projectile.TwinEyeProjectile;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 
@@ -184,23 +186,28 @@ public class Spazmatism extends AbstractTwinEye {
         float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
         for (LivingEntity entity : hitEntities) {
             if (canAttack(entity)) {
-                entity.hurt(LibDamageTypes.of(level(), DamageTypes.IN_FIRE, this), damage);
-                entity.setRemainingFireTicks(100);
+                if (entity.hurt(LibDamageTypes.of(level(), DamageTypes.IN_FIRE, this), damage)) {
+                    entity.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, 100));
+                }
             }
         }
         return true;
     }
 
     private int flameInterval() {
-        return isTransformed() ? 3 : 20;
+        if (isTransformed()) return 3;
+        TheTwins master = getMaster();
+        double rate = 1.0 + (master != null && master.isExpert() && getHealth() < getMaxHealth() * 0.8F ? 0.6 : 0.0)
+                + (master != null && master.isFtw() ? 0.4 : 0.0);
+        return (int) Math.round(20.0 / rate);
     }
 
     private double movementSpeed() {
-        return isTransformed() ? 1.0 : 1.5;
+        return (isTransformed() ? 1.0 : 1.5) * (getMaster() != null && getMaster().isFtw() ? 1.15 : 1.0);
     }
 
     private double dashSpeed() {
-        return isTransformed() ? 2.0 : 1.0;
+        return (isTransformed() ? 2.0 : 1.0) * (getMaster() != null && getMaster().isFtw() ? 1.2 : 1.0);
     }
 
     private double followDistance() {

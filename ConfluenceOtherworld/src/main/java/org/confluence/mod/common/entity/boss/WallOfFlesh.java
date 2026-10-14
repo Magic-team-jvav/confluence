@@ -37,6 +37,7 @@ import org.confluence.mod.common.effect.harmful.HorrifiedEffect;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.monster.FireImp;
 import org.confluence.mod.common.entity.monster.SimpleWormMonster;
 import org.confluence.mod.common.entity.monster.TheHungry;
 import org.confluence.mod.common.init.ModEffects;
@@ -391,6 +392,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         for (WallOfFleshPart part : wallParts) part.tickPart();
         updateMovement();
         updateHungrySlots();
+        tickFireImps();
         checkFinishLine();
     }
 
@@ -516,7 +518,11 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
 
     private void updateMovement() {
         /// 半血后的属性增幅自然提高加速度与巡航速度，不直接跳到固定速度。
-        setDeltaMovement(getDeltaMovement().add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125D)));
+        double health = getHealth() / getMaxHealth();
+        double acceleration = 1.0 + (health < 0.5 ? (0.5 - health) * 2.0 : 0.0);
+        if (isExpert()) acceleration += Math.pow(1.0 - health, 3.0);
+        if (isFtw()) acceleration = acceleration * 1.1 + 0.2;
+        setDeltaMovement(getDeltaMovement().add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125D * acceleration)));
     }
 
     /// 根据持久化种子建立墙面布局，并补回不参与存档的眼睛与嘴部实体。
@@ -684,6 +690,27 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
     }
 
 
+    /// FTW 以独立随机节拍补充火焰小鬼；落点只从已加载且可站立的位置中选择。
+    private void tickFireImps() {
+        if (!isFtw() || getTarget() == null || random.nextInt(60) != 0 || !(level() instanceof ServerLevel serverLevel))
+            return;
+        if (level().getEntitiesOfClass(FireImp.class, getBoundingBox().inflate(64.0), LivingEntity::isAlive).size() >= 4)
+            return;
+        for (int attempt = 0; attempt < 16; attempt++) {
+            BlockPos pos = getTarget().blockPosition().offset(random.nextInt(25) - 12, random.nextInt(9) - 4, random.nextInt(25) - 12);
+            if (!level().hasChunkAt(pos) || !level().hasChunkAt(pos.below())
+                    || !level().getBlockState(pos.below()).isFaceSturdy(level(), pos.below(), Direction.UP))
+                continue;
+            FireImp imp = MonsterEntities.FIRE_IMP.get().create(serverLevel);
+            if (imp == null) return;
+            imp.setPos(Vec3.atBottomCenterOf(pos));
+            if (!level().noCollision(imp, imp.getBoundingBox())) continue;
+            imp.setWallOwner(this);
+            if (!serverLevel.addFreshEntity(imp)) imp.discard();
+            return;
+        }
+    }
+
     private void updateHungrySlots() {
         if (!hungryInitialized) {
             hungryInitialized = true;
@@ -695,6 +722,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         if (--hungryTimer > 0) {
             return;
         }
+        if (!isExpert()) return;
         hungryTimer = HUNGRY_RESPAWN_INTERVAL;
         for (Vec3 anchor : hungryAnchors) {
             if (!hasLivingHungryAt(anchor) && random.nextFloat() < 0.4F) {

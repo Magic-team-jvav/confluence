@@ -15,12 +15,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 
@@ -162,6 +164,12 @@ public class SkeletronPrime extends BaseBoss {
     }
 
     /// 旋转阶段持续朝目标追击；白天狂暴使用更高速度和致命接触伤害。
+    public boolean canBombDestroyBlocks() {
+        return isFtw() && level() instanceof ServerLevel serverLevel
+                && !ModSecretSeeds.CELEBRATIONMK10.match(serverLevel)
+                && level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+    }
+
     private void updateSpinningMovement(LivingEntity target, boolean enraged) {
         Vec3 direction = target.getEyePosition().subtract(position());
         if (direction.lengthSqr() <= 1.0E-7) {
@@ -170,6 +178,9 @@ public class SkeletronPrime extends BaseBoss {
         }
         double speed = stateParameters(enraged ? CombatState.ENRAGED : CombatState.SPINNING)
                 .behavior().chargeSpeedOr(enraged ? 2.0 : 0.8);
+        if (isExpert() && !enraged) {
+            speed *= Mth.clamp(direction.length() / 15.0, 1.0, 76.0 / 31.0);
+        }
         setDeltaMovement(direction.normalize().scale(speed));
     }
 

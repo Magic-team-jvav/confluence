@@ -49,6 +49,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("entity.confluence.ancient_doom", "Ancient Doom");
+        add("entity.confluence.ancient_vision", "Ancient Vision");
+        add("entity.confluence.prophecys_end", "Prophecy’s End");
         add("entity.confluence.wall_of_flesh_eye", "Wall Of Flesh Eye");
         add("entity.confluence.wall_of_flesh_mouth", "Wall Of Flesh Mouth");
         add("entity.confluence.hill_of_flesh_eye", "Hill Of Flesh Eye");

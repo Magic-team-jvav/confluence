@@ -24,8 +24,8 @@ public final class BossEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<Skeletron>> SKELETRON = withAttributes(registerEntity("skeletron", EntityType.Builder.of(Skeletron::new, MobCategory.MONSTER).sized(2.3F, 2.3F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(2288).armor(5).attackDamage(18.2).followRange(300).armorToughness(2)
-                    .state(Skeletron.CombatState.FLOATING, state -> state.bonus(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 25 * ((Skeletron) mob).getRemainingHandCount() : 0).duration(267))
-                    .state(Skeletron.CombatState.SPINNING, state -> state.attribute(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 25 * ((Skeletron) mob).getRemainingHandCount() : 0).multiply(Attributes.ATTACK_DAMAGE, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 1.3 : 1).duration(133))
+                    .state(Skeletron.CombatState.FLOATING, state -> state.bonus(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 25 * ((Skeletron) mob).getRemainingHandCount() : 0).duration(267))
+                    .state(Skeletron.CombatState.SPINNING, state -> state.attribute(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 25 * ((Skeletron) mob).getRemainingHandCount() : 0).multiply(Attributes.ATTACK_DAMAGE, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 1.3 : 1).duration(133))
                     .state(Skeletron.CombatState.ENRAGED, state -> state.attackDamage(9999).armor(9999))
                     .projectile(ModEntities.SKELETRON_SKULL, projectile -> projectile.damage(6).speed(0.001).lifetime(100))
                     .build());
@@ -39,7 +39,7 @@ public final class BossEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<KingSlime>> KING_SLIME = withAttributes(registerEntity("king_slime", EntityType.Builder.of(KingSlime::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(728).armor(5).attackDamage(16.5).followRange(100).attackKnockback(2.2).armorToughness(2)
-                    .state(KingSlime.CombatPhase.NORMAL, state -> state.chargeSpeed(mob -> LibUtils.switchByDifficulty(mob.level(), mob.blockPosition(), 1.1F, 1.35F, 1.55F, 1.8F)).attackCount(mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) && mob.getHealth() / mob.getMaxHealth() < 0.5F ? 2 : 1))
+                    .state(KingSlime.CombatPhase.NORMAL, state -> state.chargeSpeed(mob -> ((BaseBoss) mob).selectByDifficulty(1.1F, 1.35F, 1.55F, 1.8F)).attackCount(mob -> LibUtils.isAtLeastExpert(mob.level()) && mob.getHealth() / mob.getMaxHealth() < 0.5F ? 2 : 1))
                     .build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<CrownOfKingSlimeModelEntity>> CROWN_OF_KING_SLIME_MODEL = registerEntity("crown_of_king_slime_model", EntityType.Builder.<CrownOfKingSlimeModelEntity>of(CrownOfKingSlimeModelEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).clientTrackingRange(10));
@@ -113,9 +113,9 @@ public final class BossEntities {
                     .state(QueenBee.CombatState.SUMMONING_STINGERS, state -> state.duration(mob -> mob.getHealth() / mob.getMaxHealth() < 0.3F ? 50 : 60))
                     .state(QueenBee.CombatState.PRE_DASH_IDLE, state -> state.duration(20).moveSpeed(mob -> 1.2 * (1 + ((QueenBee) mob).enrageStrength() * 0.5)))
                     .state(QueenBee.CombatState.PRE_DASH, state -> state.duration(mob -> Math.max(5, 15 - (int) (((QueenBee) mob).enrageStrength() * 3))))
-                    .state(QueenBee.CombatState.DASHING, state -> state.duration(50).chargeSpeed(mob -> 2 * (1 + ((QueenBee) mob).enrageStrength() * 0.5)).attackCount(mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? Math.min(6, 3 + (int) ((1 - mob.getHealth() / mob.getMaxHealth()) * 4)) : 3))
-                    .state(QueenBee.Temperament.CALM, state -> state.bonus(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 20 * (1.0 - mob.getHealth() / mob.getMaxHealth()) : 0).attackInterval(mob -> Math.max(2, 10 - (int) (((QueenBee) mob).enrageStrength() * 2) - (LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? (int) ((1 - mob.getHealth() / mob.getMaxHealth()) * 3) : 0))))
-                    .state(QueenBee.Temperament.ENRAGED, state -> state.bonus(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 20 * (1.0 - mob.getHealth() / mob.getMaxHealth()) : 0).attackInterval(mob -> Math.max(2, 10 - (int) (((QueenBee) mob).enrageStrength() * 2) - (LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? (int) ((1 - mob.getHealth() / mob.getMaxHealth()) * 3) : 0))))
+                    .state(QueenBee.CombatState.DASHING, state -> state.duration(50).chargeSpeed(mob -> 2 * (1 + ((QueenBee) mob).enrageStrength() * 0.5)).attackCount(mob -> ((QueenBee) mob).getDashCount()))
+                    .state(QueenBee.Temperament.CALM, state -> state.bonus(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 20 * (1.0 - mob.getHealth() / mob.getMaxHealth()) : 0).attackInterval(mob -> Math.max(2, 10 - (int) (((QueenBee) mob).enrageStrength() * 2) - (LibUtils.isAtLeastExpert(mob.level()) ? (int) ((1 - mob.getHealth() / mob.getMaxHealth()) * 3) : 0))))
+                    .state(QueenBee.Temperament.ENRAGED, state -> state.bonus(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 20 * (1.0 - mob.getHealth() / mob.getMaxHealth()) : 0).attackInterval(mob -> Math.max(2, 10 - (int) (((QueenBee) mob).enrageStrength() * 2) - (LibUtils.isAtLeastExpert(mob.level()) ? (int) ((1 - mob.getHealth() / mob.getMaxHealth()) * 3) : 0))))
                     .projectile(ModEntities.HORNET_STINGER, projectile -> projectile.attackDamage(1).speed(1).inaccuracy(5).lifetime(100))
                     .build());
 
@@ -180,7 +180,13 @@ public final class BossEntities {
                     .projectile(ModEntities.CULTIST_ICE_MIST, projectile -> projectile.damage(12).speed(0.72).inaccuracy(0).lifetime(120))
                     .projectile(ModEntities.CULTIST_LIGHTNING_ORB, projectile -> projectile.damage(14).speed(0.88).inaccuracy(0).lifetime(120))
                     .projectile(ModEntities.ANCIENT_LIGHT, projectile -> projectile.damage(16).lifetime(100))
+                    .projectile(ModEntities.PROPHECYS_END, projectile -> projectile.damage(20).speed(0.8).lifetime(100))
                     .build());
+
+    public static final DeferredHolder<EntityType<?>, EntityType<AncientDoom>> ANCIENT_DOOM = withAttributes(registerEntity("ancient_doom", EntityType.Builder.of(AncientDoom::new, MobCategory.MONSTER).sized(1.5F, 1.5F).clientTrackingRange(10).updateInterval(1).noSave()),
+            () -> CreatureAttributeBuilder.boss().maxHealth(130).armor(0).attackDamage(0).followRange(64).knockbackResistance(1).build());
+    public static final DeferredHolder<EntityType<?>, EntityType<AncientVision>> ANCIENT_VISION = withAttributes(registerEntity("ancient_vision", EntityType.Builder.of(AncientVision::new, MobCategory.MONSTER).sized(1.5F, 1.5F).clientTrackingRange(10).updateInterval(1).noSave()),
+            () -> CreatureAttributeBuilder.boss().maxHealth(150).armor(0).attackDamage(14).followRange(64).knockbackResistance(1).build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<LunaticCultistClone>> LUNATIC_CULTIST_CLONE = withAttributes(registerEntity("lunatic_cultist_clone", EntityType.Builder.of(LunaticCultistClone::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(1).armor(16).armorToughness(7).attackDamage(8).followRange(64).movementSpeed(0.3).flyingSpeed(0.6).build());

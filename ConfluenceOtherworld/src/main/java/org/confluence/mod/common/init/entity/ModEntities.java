@@ -266,6 +266,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<TwinEyeProjectile>> SPAZMATISM_FLAME = ENTITIES.register("spazmatism_flame", id -> EntityType.Builder.<TwinEyeProjectile>of((type, level) -> new TwinEyeProjectile(type, level, TwinEyeProjectile.Variant.CURSED_FLAME), MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(12).updateInterval(1).noSave().build(id.toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<AncientLightProjectile>> ANCIENT_LIGHT = ENTITIES.register("ancient_light", id -> EntityType.Builder.of(AncientLightProjectile::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<CultistProjectile>> PROPHECYS_END = ENTITIES.register("prophecys_end", id -> EntityType.Builder.<CultistProjectile>of((type, level) -> new CultistProjectile(type, level, CultistProjectile.Variant.PROPHECYS_END), MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<CultistProjectile>> CULTIST_FIREBALL = ENTITIES.register("cultist_fireball", id -> EntityType.Builder.<CultistProjectile>of((type, level) -> new CultistProjectile(type, level, CultistProjectile.Variant.FIREBALL), MobCategory.MISC).sized(0.55F, 0.55F).clientTrackingRange(10).updateInterval(1).noSave().noSummon().build(id.toString()));
 

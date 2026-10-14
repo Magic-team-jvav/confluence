@@ -8,6 +8,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -27,6 +28,8 @@ import org.confluence.mod.common.init.entity.ModEntities;
 /// 拜月教邪教徒——传送+弹幕+召唤幻影龙。
 public class LunaticCultist extends BaseBoss {
     static final int CLONE_COUNT = 2;
+    static final int MAX_CLONE_COUNT = 6;
+    private int ritualCloneCount;
     private static final int TELEPORT_TICKS = 60;
     private static final int SPELL_COOLDOWN = 50;
     private static final int ANCIENT_LIGHT_COOLDOWN = 180;
@@ -106,6 +109,7 @@ public class LunaticCultist extends BaseBoss {
             teleportTimer--;
             if (teleportTimer <= 0 && getTarget() != null) {
                 teleportTimer = stateParameters(CombatState.RELOCATING).randomAttackInterval(random);
+                if (isFtw()) teleportTimer = Math.max(1, teleportTimer * 2 / 3);
                 doTeleport();
                 combatState = CombatState.RELOCATING;
                 stateTicks = 0;
@@ -117,6 +121,7 @@ public class LunaticCultist extends BaseBoss {
                 spellTimer--;
                 if (spellTimer <= 0) {
                     spellTimer = stateParameters(CombatState.CASTING).randomAttackInterval(random);
+                    if (isFtw()) spellTimer = Math.max(1, spellTimer * 2 / 3);
                     shootSpell();
                     if (++attackCycle >= stateParameters(CombatState.RITUAL).attackCount()) {
                         attackCycle = 0;
@@ -146,7 +151,13 @@ public class LunaticCultist extends BaseBoss {
     }
 
     void spawnDragon() {
-        if (!(level() instanceof ServerLevel serverLevel) || hasLivingDragon()) {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        if (hasLivingDragon()) {
+            AncientVision vision = BossEntities.ANCIENT_VISION.get().create(level());
+            if (vision == null) return;
+            vision.setPos(position().add(0.0, 3.0, 0.0));
+            vision.setMaster(this);
+            if (!serverLevel.addFreshEntity(vision)) vision.discard();
             return;
         }
         PhantasmDragon dragon = BossEntities.PHANTASM_DRAGON.get().create(level());
@@ -171,10 +182,11 @@ public class LunaticCultist extends BaseBoss {
     void spawnClones() {
         if (!(level() instanceof ServerLevel serverLevel) || getTarget() == null) return;
         clearClones();
-        for (int index = 0; index < CLONE_COUNT; index++) {
+        ritualCloneCount = Math.min(MAX_CLONE_COUNT, ritualCloneCount + CLONE_COUNT);
+        for (int index = 0; index < ritualCloneCount; index++) {
             LunaticCultistClone clone = BossEntities.LUNATIC_CULTIST_CLONE.get().create(level());
             if (clone == null) continue;
-            double angle = index * Mth.TWO_PI / CLONE_COUNT + random.nextDouble() * 0.4;
+            double angle = index * Mth.TWO_PI / ritualCloneCount + random.nextDouble() * 0.4;
             clone.setPos(position().add(Math.cos(angle) * 3.0, 0.0, Math.sin(angle) * 3.0));
             clone.setMaster(this, index);
             clone.setTarget(getTarget());
@@ -204,7 +216,11 @@ public class LunaticCultist extends BaseBoss {
             return false;
         }
 
-        int pattern = spellPattern++ % 3;
+        int pattern = spellPattern;
+        spellPattern = (spellPattern + 1) % 3;
+        float health = getHealth() / getMaxHealth();
+        if (isExpert() && health < 0.5F && random.nextInt(health < 0.25F ? 3 : health < 0.33F ? 4 : 6) == 0
+                && spawnAncientDooms(serverLevel)) return true;
         CultistProjectile projectile;
         float velocity;
         if (pattern == 0) {
@@ -228,9 +244,29 @@ public class LunaticCultist extends BaseBoss {
         return false;
     }
 
+    private boolean spawnAncientDooms(ServerLevel serverLevel) {
+        if (getTarget() == null) return false;
+        boolean spawned = false;
+        Vec3 center = getTarget().getBoundingBox().getCenter();
+        for (int index = 0; index < 3; index++) {
+            AncientDoom doom = BossEntities.ANCIENT_DOOM.get().create(level());
+            if (doom == null) continue;
+            double angle = random.nextDouble() * Math.PI * 2.0;
+            Vec3 origin = center.add(Math.cos(angle) * 7.0, random.nextDouble() * 4.0 - 2.0, Math.sin(angle) * 7.0);
+            doom.setPos(origin);
+            if (!level().hasChunkAt(doom.blockPosition()) || !level().noCollision(doom, doom.getBoundingBox()))
+                continue;
+            doom.setMaster(this);
+            if (serverLevel.addFreshEntity(doom)) spawned = true;
+            else doom.discard();
+        }
+        return spawned;
+    }
+
     void onCloneHit(LunaticCultistClone clone) {
         if (clone.getMaster() != this || level().isClientSide || !isPerformingRitual()) return;
         spawnDragon();
+        ritualCloneCount = Math.max(0, ritualCloneCount - 1);
         combatState = CombatState.CASTING;
         stateTicks = 0;
     }
@@ -252,7 +288,19 @@ public class LunaticCultist extends BaseBoss {
             return false;
         boolean hurt = super.hurt(source, amount);
         if (hurt && !level().isClientSide && isPerformingRitual()) {
-            clearClones();
+            if (isExpert()) {
+                int removed = 0;
+                for (Entity entity : getSubEntities()) {
+                    if (entity instanceof LunaticCultistClone clone && removed < 3) {
+                        clone.discard();
+                        removed++;
+                    }
+                }
+                ritualCloneCount = Math.max(0, ritualCloneCount - removed);
+            } else {
+                clearClones();
+                ritualCloneCount = 0;
+            }
             combatState = CombatState.CASTING;
             stateTicks = 0;
         }
@@ -267,6 +315,7 @@ public class LunaticCultist extends BaseBoss {
         tag.putInt(ANCIENT_LIGHT_TIMER_TAG, ancientLightTimer);
         tag.putInt(ATTACK_CYCLE_TAG, attackCycle);
         tag.putInt(SPELL_PATTERN_TAG, spellPattern);
+        tag.putInt("RitualCloneCount", ritualCloneCount);
         tag.putString("CombatState", combatState.name());
         tag.putInt("StateTicks", stateTicks);
     }
@@ -278,7 +327,8 @@ public class LunaticCultist extends BaseBoss {
         spellTimer = Math.max(0, tag.getInt(SPELL_TIMER_TAG));
         ancientLightTimer = Math.max(0, tag.getInt(ANCIENT_LIGHT_TIMER_TAG));
         attackCycle = Math.max(0, tag.getInt(ATTACK_CYCLE_TAG));
-        spellPattern = Math.max(0, tag.getInt(SPELL_PATTERN_TAG));
+        spellPattern = Math.floorMod(tag.getInt(SPELL_PATTERN_TAG), 3);
+        ritualCloneCount = Mth.clamp(tag.getInt("RitualCloneCount"), 0, MAX_CLONE_COUNT);
         try {combatState = CombatState.valueOf(tag.getString("CombatState"));} catch (
                 IllegalArgumentException ignored) {combatState = CombatState.CASTING;}
         stateTicks = Math.max(0, tag.getInt("StateTicks"));

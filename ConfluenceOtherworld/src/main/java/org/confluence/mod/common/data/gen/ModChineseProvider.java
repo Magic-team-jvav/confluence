@@ -25,6 +25,9 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("entity.confluence.ancient_doom", "远古末日");
+        add("entity.confluence.ancient_vision", "远古幻象");
+        add("entity.confluence.prophecys_end", "预言之末");
         addGeneralInterfaceTranslations();
         addItemGroupTranslations();
         addInterfaceAndTooltipTranslations();

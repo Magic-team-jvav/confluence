@@ -52,7 +52,7 @@ public final class LunaticCultistClone extends BaseFlyingMonster implements Boss
     public void setMaster(LunaticCultist master, int cloneIndex) {
         ownerTracker.bind(this, master);
         entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
-        entityData.set(CLONE_INDEX, Mth.clamp(cloneIndex, 0, LunaticCultist.CLONE_COUNT - 1));
+        entityData.set(CLONE_INDEX, Mth.clamp(cloneIndex, 0, LunaticCultist.MAX_CLONE_COUNT - 1));
         setTarget(master.getTarget());
         BossMinionCoordinator.faceTargetImmediately(this, getTarget());
     }
@@ -140,7 +140,7 @@ public final class LunaticCultistClone extends BaseFlyingMonster implements Boss
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
         entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
-        entityData.set(CLONE_INDEX, Mth.clamp(tag.getInt("CloneIndex"), 0, LunaticCultist.CLONE_COUNT - 1));
+        entityData.set(CLONE_INDEX, Mth.clamp(tag.getInt("CloneIndex"), 0, LunaticCultist.MAX_CLONE_COUNT - 1));
         illusionAge = Mth.clamp(tag.getInt(AGE_TAG), 0, LIFETIME - 1);
     }
 

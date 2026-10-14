@@ -100,12 +100,12 @@ public class Retinazer extends AbstractTwinEye {
             fireLaser(target);
         }
         if (--shotsRemaining > 0) {
-            stateTicks = 20;
+            stateTicks = laserInterval(20);
             return;
         }
         dashesRemaining = 5;
         combatState = DASH_WINDUP;
-        stateTicks = 10;
+        stateTicks = laserInterval(10);
     }
 
     private void tickTopVolley(LivingEntity target) {
@@ -115,12 +115,12 @@ public class Retinazer extends AbstractTwinEye {
         }
         fireLaser(target);
         if (--shotsRemaining > 0) {
-            stateTicks = 20;
+            stateTicks = laserInterval(20);
             return;
         }
         combatState = PHASE_TWO_PARALLEL_VOLLEY;
         shotsRemaining = 3;
-        stateTicks = 10;
+        stateTicks = laserInterval(10);
     }
 
     private void tickParallelVolley(LivingEntity target) {
@@ -130,12 +130,12 @@ public class Retinazer extends AbstractTwinEye {
         }
         fireLaser(target);
         if (--shotsRemaining > 0) {
-            stateTicks = 10;
+            stateTicks = laserInterval(10);
             return;
         }
         combatState = PHASE_TWO_RAPID_VOLLEY;
         shotsRemaining = 12;
-        stateTicks = 5;
+        stateTicks = laserInterval(5);
     }
 
     private void tickRapidVolley(LivingEntity target) {
@@ -145,10 +145,29 @@ public class Retinazer extends AbstractTwinEye {
         }
         fireLaser(target);
         if (--shotsRemaining > 0) {
-            stateTicks = 5;
+            stateTicks = laserInterval(5);
         } else {
             beginApproach();
         }
+    }
+
+    private int laserInterval(int base) {
+        TheTwins master = getMaster();
+        float health = getHealth() / getMaxHealth();
+        double rate = 1.0;
+        if (master != null && master.isExpert()) {
+            if (isTransformed()) rate += 1.5 * (1.0 - Math.min(1.0, health / 0.4));
+            else rate += (health < 0.9F ? 0.3 : 0.0) + (health < 0.8F ? 0.3 : 0.0)
+                    + (health < 0.7F ? 0.3 : 0.0) + (health < 0.6F ? 0.3 : 0.0);
+        }
+        if (master != null && master.isFtw()) rate += 0.5;
+        return Math.max(1, (int) Math.round(base / rate));
+    }
+
+    private double dashSpeed() {
+        TheTwins master = getMaster();
+        return 1.5 * (master != null && master.isExpert() ? 15.0 / 12.0 : 1.0)
+                * (master != null && master.isFtw() ? 17.0 / 15.0 : 1.0);
     }
 
     private void tickDashWindup(LivingEntity target) {
@@ -160,12 +179,12 @@ public class Retinazer extends AbstractTwinEye {
         dashDirection = direction.lengthSqr() < 1.0E-7
                 ? Vec3.ZERO : direction.normalize();
         combatState = DASH;
-        stateTicks = 5;
-        setDeltaMovement(dashDirection.scale(1.5));
+        stateTicks = getMaster() != null && getMaster().isExpert() ? 8 : 5;
+        setDeltaMovement(dashDirection.scale(dashSpeed()));
     }
 
     private void tickDash() {
-        setDeltaMovement(dashDirection.scale(1.5));
+        setDeltaMovement(dashDirection.scale(dashSpeed()));
         if (--stateTicks > 0) {
             return;
         }
@@ -184,6 +203,7 @@ public class Retinazer extends AbstractTwinEye {
     }
 
     private void moveToward(LivingEntity target, double horizontalDistance, double height, double speed) {
+        if (getMaster() != null && getMaster().isFtw()) speed *= 1.15;
         Vec3 desiredPosition;
         if (horizontalDistance <= 0.0) {
             desiredPosition = target.position().add(0.0, height, 0.0);

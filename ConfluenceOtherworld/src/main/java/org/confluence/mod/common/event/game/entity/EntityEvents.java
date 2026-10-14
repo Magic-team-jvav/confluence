@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.EntityHitResult;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
@@ -16,6 +17,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
@@ -26,6 +28,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.entity.boss.BossProjectileReflection;
 import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.ModEffects;
@@ -38,6 +41,13 @@ import org.jetbrains.annotations.Nullable;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
+    @SubscribeEvent
+    public static void projectileImpact(ProjectileImpactEvent event) {
+        if (!event.isCanceled() && event.getRayTraceResult() instanceof EntityHitResult hit
+                && BossProjectileReflection.reflect(event.getProjectile(), hit.getEntity()))
+            event.setCanceled(true);
+    }
+
     /// 统一处理所有生成路径最终都会触发的实体加入事件。
     ///
     ///

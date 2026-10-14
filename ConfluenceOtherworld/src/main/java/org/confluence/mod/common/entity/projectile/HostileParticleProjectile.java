@@ -22,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.Corruptor;
+import org.confluence.mod.common.entity.monster.FireImp;
 import org.confluence.mod.common.entity.monster.WaterBoltMimic;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.Nullable;
@@ -46,6 +47,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
     private static final EntityDataAccessor<Boolean> INFERNO_BLAST = SynchedEntityData.defineId(HostileParticleProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> WATER_BOLT_VISUAL = SynchedEntityData.defineId(HostileParticleProjectile.class, EntityDataSerializers.BOOLEAN);
 
+    private static final EntityDataAccessor<Boolean> UNBREAKABLE = SynchedEntityData.defineId(HostileParticleProjectile.class, EntityDataSerializers.BOOLEAN);
     private final Variant variant;
     private int infernoFlightTicks = Integer.MAX_VALUE;
     private int infernoBlastTicks;
@@ -62,6 +64,10 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
         Vec3 origin = owner.getEyePosition();
         Vec3 aim = target.position().add(0.0, target.getBbHeight() * 0.5, 0.0).subtract(origin);
         configureAimed(owner, origin, aim, damage, VELOCITY, INACCURACY, variant.maximumLifetime());
+        if (owner instanceof FireImp imp && imp.isWallServant()) {
+            entityData.set(UNBREAKABLE, true);
+            setDeltaMovement(getDeltaMovement().scale(1.5));
+        }
         if (variant == Variant.INFERNO_BOLT) {
             double speed = getDeltaMovement().length();
             infernoFlightTicks = speed > 1.0E-8 ? Math.max(1, Mth.ceil(aim.length() / speed)) : Integer.MAX_VALUE;
@@ -76,6 +82,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(INFERNO_BLAST, false);
         builder.define(WATER_BOLT_VISUAL, false);
+        builder.define(UNBREAKABLE, false);
     }
 
     @Override
@@ -259,13 +266,13 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
 
     @Override
     public boolean isPickable() {
-        return variant.isDestructible() && !isRemoved();
+        return variant.isDestructible() && !entityData.get(UNBREAKABLE) && !isRemoved();
     }
 
     /// 水球、混沌球与燃烧球受到一次有效攻击即被摧毁。
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!variant.isDestructible() || source.getEntity() == null || amount <= 0.0F || isInvulnerableTo(source) || isRemoved())
+        if (entityData.get(UNBREAKABLE) || !variant.isDestructible() || source.getEntity() == null || amount <= 0.0F || isInvulnerableTo(source) || isRemoved())
             return false;
         if (!level().isClientSide) discard();
         return true;

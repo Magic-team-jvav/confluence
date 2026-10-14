@@ -20,8 +20,7 @@ import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.monster.WormSegment;
-import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
-import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -41,9 +40,6 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     private static final int COLLISION_COOLDOWN = 10;
     // 允许本体后到达的网络/区块加载宽限，单位为 tick。
     private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
-    // 世界吞噬者体节吐腐化物的基础周期、随机附加延迟（tick）和基础伤害。
-    private static final int EATER_SPIT_INTERVAL = 200;
-    private static final int EATER_SPIT_RANDOM_DELAY = 50;
     private static final String OWNER_TAG = "Owner";
     private static final String INDEX_TAG = "SegmentIndex";
     private static final String TAIL_TAG = "Tail";
@@ -62,7 +58,6 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     private @Nullable UUID ownerUUID;
     private int unresolvedOwnerTicks;
     private int hurtCooldown;
-    private int eaterSpitCooldown = EATER_SPIT_INTERVAL;
     private boolean destroyerDimensions;
     private float previousSegmentRoll;
     private @Nullable Vec3 contactSweepStart;
@@ -272,33 +267,14 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
         }
     }
 
-    /// 世界吞噬怪的每个体节都拥有独立射击冷却。冷却仅在体节露天且主体持有
-    /// 有效目标时推进；弹幕归属主体，以便统一使用
-    /// Boss 的阵营过滤和伤害来源，但出生点仍取当前体节位置。
+    /// 只有专家以上的身体体节能随机吐射；尾节不射击，FTW 允许地下体节参与。
     private void tickEaterRangedAttack(BaseWormBoss head) {
-        if (!(head instanceof EaterOfWorlds eater) || !(level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
+        if (!(head instanceof EaterOfWorlds eater) || !eater.isExpert() || isTail()) return;
         LivingEntity target = eater.getTarget();
-        if (target == null || !target.isAlive() || !level().canSeeSky(blockPosition())) {
-            return;
-        }
-        if (--eaterSpitCooldown > 0) {
-            return;
-        }
-        eaterSpitCooldown = EATER_SPIT_INTERVAL
-                + random.nextInt(EATER_SPIT_RANDOM_DELAY);
-
-        HostileParticleProjectile projectile = ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
-        if (projectile == null) {
-            return;
-        }
-        projectile.configure(eater, target, (float) eater.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        Vec3 origin = getBoundingBox().getCenter();
-        projectile.setPos(origin);
-        Vec3 aim = target.getEyePosition().subtract(origin);
-        projectile.shoot(aim.x, aim.y, aim.z, 0.3F, 3.0F);
-        serverLevel.addFreshEntity(projectile);
+        if (target == null || !target.isAlive() || !hasLineOfSight(target)) return;
+        if (!eater.isFtw() && getY() < OverworldUtils.getSurfaceY()) return;
+        if (random.nextInt(eater.isFtw() ? 150 : 300) == 0)
+            eater.shootVileSpit(getBoundingBox().getCenter());
     }
 
     @Override

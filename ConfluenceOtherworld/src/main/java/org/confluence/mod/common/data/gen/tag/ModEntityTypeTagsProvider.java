@@ -12,6 +12,7 @@ import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.*;
+import org.confluence.terra_curio.common.init.TCEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,6 +24,12 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        tag(ModTags.EntityTypes.EATER_RESISTED_PROJECTILES).add(
+                ModEntities.BOMB_ENTITY.get(), ModEntities.BOUNCY_BOMB_ENTITY.get(), ModEntities.STICKY_BOMB_ENTITY.get(),
+                ModEntities.SCARAB_BOMB_ENTITY.get(), ModEntities.BOMB_FISH_ENTITY.get(),
+                ModEntities.GRENADE.get(), ModEntities.BOUNCY_GRENADE.get(), ModEntities.STICKY_GRENADE.get(), ModEntities.BEENADE.get(),
+                ModEntities.DYNAMITE.get(), ModEntities.BOUNCY_DYNAMITE.get(), ModEntities.STICKY_DYNAMITE.get(), ModEntities.BEE.get(), ModEntities.BEE_GUN_BULLET.get(), TCEntities.BEE_PROJECTILE.get()
+        );
         tag(ModTags.EntityTypes.SPAWN_AT_DUNGEON).add(
                 MonsterEntities.ANGER_BONES.get(),
                 MonsterEntities.SHORT_BONES.get(),

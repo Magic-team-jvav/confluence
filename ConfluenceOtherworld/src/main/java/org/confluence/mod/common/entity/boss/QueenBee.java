@@ -209,6 +209,9 @@ public class QueenBee extends BaseBoss {
     private void tickDashing(LivingEntity target) {
         stateTicks++;
         double speed = temperamentParameters().behavior().chargeSpeedOr(stateParameters(CombatState.DASHING).behavior().chargeSpeed());
+        float health = getHealth() / getMaxHealth();
+        speed *= isExpert() ? 1.0 + (health < 0.75F ? 0.125 : 0.0) + (health < 0.5F ? 0.125 : 0.0)
+                + (health < 0.25F ? 0.125 : 0.0) + (health < 0.1F ? 0.125 : 0.0) : 0.75;
         Vec3 desiredDirection = target.position().subtract(position()).multiply(1.0D, 0.0D, 1.0D);
         lockedDashDirection = turnDirectionToward(lockedDashDirection, desiredDirection, 3.0F)
                 .multiply(1.0D, 0.0D, 1.0D).normalize();
@@ -259,6 +262,13 @@ public class QueenBee extends BaseBoss {
             direction = new Vec3(1.0, 0.0, 0.0);
         }
         return direction.normalize();
+    }
+
+    public int getDashCount() {
+        float health = getHealth() / getMaxHealth();
+        return 3 + (isExpert() && health < 0.5F ? 1 : 0)
+                + (isExpert() && health < 1.0F / 3.0F ? 1 : 0)
+                + (isExpert() && health < 0.2F ? 1 : 0) + (int) enrageStrength();
     }
 
     private int requiredDashCycles() {

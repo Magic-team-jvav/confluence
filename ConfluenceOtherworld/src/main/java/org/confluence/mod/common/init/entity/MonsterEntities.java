@@ -654,6 +654,7 @@ public final class MonsterEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<FireImp>> FIRE_IMP = withAttributes(registerEntity("fire_imp", EntityType.Builder.of(FireImp::new, MobCategory.MONSTER).sized(0.65F, 1F).clientTrackingRange(10).fireImmune()),
             () -> CreatureAttributeBuilder.creature().maxHealth(36).armor(8).attackDamage(15).followRange(20).attackKnockback(1).knockbackResistance(0.55).armorToughness(3)
+                    .state(FireImp.CombatState.WALL_SERVANT, state -> state.multiply(Attributes.MAX_HEALTH, 1.5).bonus(Attributes.ARMOR, 10))
                     .projectile(ModEntities.FIRE_IMP_PROJECTILE, projectile -> projectile.attackDamage(1))
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
                             .multiply(Attributes.MAX_HEALTH, 1.1)

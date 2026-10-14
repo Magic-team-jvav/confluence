@@ -1,13 +1,16 @@
 package org.confluence.mod.common.entity.projectile;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
@@ -79,6 +82,16 @@ public final class PrimeCannonballProjectile extends Projectile {
 
     private void explodeWithoutTerrainDamage() {
         if (!level().isClientSide && getOwner() instanceof SkeletronPrime prime) {
+            if (prime.canBombDestroyBlocks()) {
+                for (BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2))) {
+                    if (!level().hasChunkAt(pos) || pos.distSqr(blockPosition()) > 4.0) continue;
+                    BlockState state = level().getBlockState(pos);
+                    if (!state.isAir() && state.getDestroySpeed(level(), pos) >= 0.0F
+                            && state.getBlock().getExplosionResistance() <= 6.0F
+                            && !state.is(BlockTags.FEATURES_CANNOT_REPLACE))
+                        level().destroyBlock(pos, true, this);
+                }
+            }
             AABB blast = getBoundingBox().inflate(BLAST_RADIUS);
             for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, blast, prime::canAttack)) {
                 double distance = Math.sqrt(distanceToSqr(target));

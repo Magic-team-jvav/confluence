@@ -4,13 +4,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -76,6 +80,9 @@ public class DeerClops extends BaseBoss {
     private double lastChaseX;
     private double lastChaseZ;
     private boolean hasLastChasePosition;
+    private int passiveHandTicks;
+    private int passiveHandWave;
+    private int roarCooldown = 240;
 
     public DeerClops(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -128,7 +135,32 @@ public class DeerClops extends BaseBoss {
             tickIntro();
             return;
         }
+        tickPassiveShadowHands();
         tickCombat(target);
+    }
+
+    /// 按血量缩短暗影手间隔；多人按轮次分组，避免同一刻向所有玩家堆叠弹幕。
+    private void tickPassiveShadowHands() {
+        if (!isExpert() || !(level() instanceof ServerLevel serverLevel)) {
+            passiveHandTicks = 0;
+            return;
+        }
+        int interval = Math.round(13.333F + 13.333F * getHealth() / getMaxHealth());
+        if (++passiveHandTicks < interval) return;
+        passiveHandTicks = 0;
+        passiveHandWave = (passiveHandWave + 1) % 3;
+        for (Player player : serverLevel.players()) {
+            if (!isValidCurrentCombatPlayer(player) || distanceToSqr(player) > 75.0 * 75.0
+                    || Math.floorMod(player.getId(), 3) != passiveHandWave) continue;
+            DeerclopsShadowHandProjectile hand = ModEntities.SHADOW_HAND.get().create(level());
+            if (hand == null) continue;
+            Vec3 center = player.getBoundingBox().getCenter();
+            Vec3 origin = findShadowHandOrigin(center, 0, random.nextDouble() * Math.PI * 2.0, hand);
+            Vec3 predicted = center.add(player.getDeltaMovement().scale(10.0));
+            hand.configurePassive(this, origin, predicted.subtract(origin),
+                    (float) getAttributeValue(Attributes.ATTACK_DAMAGE), random.nextInt(3) + 1);
+            if (!serverLevel.addFreshEntity(hand)) hand.discard();
+        }
     }
 
     private void tickIntro() {
@@ -147,12 +179,33 @@ public class DeerClops extends BaseBoss {
             setCombatState(CombatState.ROARING);
         } else {
             introComplete = true;
+            applyRoarSlow();
             attackCooldown = ATTACK_COOLDOWN_TICKS;
             setCombatState(CombatState.CHASE);
         }
     }
 
+    private void applyRoarSlow() {
+        for (Player player : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(50.0), this::canAttack)) {
+            if (!player.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 240));
+            }
+        }
+    }
+
     private void tickCombat(LivingEntity target) {
+        if (getCombatState() == CombatState.ROARING) {
+            navigation.stop();
+            if (++stateTicks == 10) applyRoarSlow();
+            if (stateTicks >= 20) setCombatState(CombatState.CHASE);
+            return;
+        }
+        if (--roarCooldown <= 0 && getCombatState() == CombatState.CHASE) {
+            roarCooldown = 240;
+            setCombatState(CombatState.ROARING);
+            playSound(ModSoundEvents.ROAR.get());
+            return;
+        }
         double distanceSqr = distanceToSqr(target);
         boolean outsideAttackRange = distanceSqr > MAXIMUM_ATTACK_RANGE * MAXIMUM_ATTACK_RANGE;
         setFarInvulnerable(outsideAttackRange);
@@ -266,7 +319,7 @@ public class DeerClops extends BaseBoss {
         Vec3 center = target.position();
         double formationRotation = random.nextDouble() * Math.PI * 2.0;
         int spawned = 0;
-        for (int index = 0; index < 4; index++) {
+        for (int index = 0; index < 5; index++) {
             DeerclopsShadowHandProjectile projectile = ModEntities.SHADOW_HAND.get().create(level());
             if (projectile == null) {
                 continue;
@@ -284,8 +337,8 @@ public class DeerClops extends BaseBoss {
     /// 为暗影之手寻找不会一生成就卡进方块的位置。
     ///
     /// 随机球面点靠近洞壁或地面时可能使黑手生成后立刻撞墙消失。
-    /// 因此先尝试球面取点，再退回四个均匀方向并逐格上移，保证一次攻击稳定形成
-    /// 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。
+    /// 因此先尝试球面取点，再退回五个均匀方向并逐格上移，保证一次攻击稳定形成
+    /// 五向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。
     private Vec3 findShadowHandOrigin(Vec3 center, int handIndex, double formationRotation, DeerclopsShadowHandProjectile projectile) {
         double formationAngle = formationRotation + handIndex * Math.PI * 0.5;
         Vec3 formationOrigin = center.add(Math.cos(formationAngle) * 4.5, handIndex % 2 == 0 ? 2.0 : -2.0, Math.sin(formationAngle) * 4.5);
@@ -302,7 +355,7 @@ public class DeerClops extends BaseBoss {
             }
         }
 
-        double angle = handIndex * Math.PI * 0.5;
+        double angle = handIndex * Math.PI * 2.0 / 5.0;
         Vec3 fallback = center.add(Math.cos(angle) * 5.0, 2.0, Math.sin(angle) * 5.0);
         for (int upward = 0; upward < 6; upward++) {
             Vec3 candidate = fallback.add(0.0, upward, 0.0);

@@ -10,6 +10,7 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.AttackEffects;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
 import java.util.ArrayList;
@@ -23,6 +24,12 @@ import java.util.function.Supplier;
 public final class AttackEffectsSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
         appender.create()
+                .add(BossEntities.SKELETRON, effects().contact(ModEffects.BLEEDING, effect().chance(0).duration(120, 200)
+                        .expert(value -> value.chance(1)).master(value -> value.duration(150, 250))))
+                .add(BossEntities.SKELETRON_HAND, effects().melee(MobEffects.MOVEMENT_SLOWDOWN, effect().chance(0).duration(20, 40)
+                        .expert(value -> value.chance(1)).master(value -> value.duration(30, 50))))
+                .add(BossEntities.QUEEN_BEE, effects().contact(MobEffects.POISON, effect().chance(0).duration(40, 160)
+                        .expert(value -> value.chance(1)).master(value -> value.duration(50, 200))))
                 .add(MonsterEntities.ICE_SLIME, effects()
                         .contact(MobEffects.MOVEMENT_SLOWDOWN, effect()
                                 .chance(1.0 / 12)

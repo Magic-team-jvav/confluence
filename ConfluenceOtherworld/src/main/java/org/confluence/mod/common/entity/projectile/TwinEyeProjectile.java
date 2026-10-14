@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 
 /// 双子魔眼使用的真实直线弹幕。
 ///
@@ -21,6 +22,8 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
 
     public void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy) {
         super.configure(owner, target, damage, velocity, inaccuracy, 100);
+        if (LibUtils.isAtLeastExpert(level()))
+            setDeltaMovement(getDeltaMovement().scale(7.0 / 6.0));
     }
 
     @Override

@@ -78,7 +78,7 @@ public class TheDestroyer extends BaseWormBoss {
 
     @Override
     protected int getSegmentCount() {
-        return SEGMENT_COUNT;
+        return isFtw() ? 100 : SEGMENT_COUNT;
     }
 
     @Override
@@ -224,8 +224,8 @@ public class TheDestroyer extends BaseWormBoss {
         Vec3 targetVelocity = target.getEyePosition().subtract(getEyePosition());
         if (targetVelocity.lengthSqr() > 1.0E-7) {
             targetVelocity = targetVelocity.normalize().scale(speed);
-            double maximumTurn = turn * Mth.DEG_TO_RAD;
-            Vec3 velocity = LibMathUtils.interpolateBasis(getDeltaMovement(), targetVelocity, angle -> Math.min(angle, maximumTurn), difference -> difference * 0.25);
+            double maximumTurn = turn * Mth.DEG_TO_RAD * (isFtw() ? 1.2 : 1.0);
+            Vec3 velocity = LibMathUtils.interpolateBasis(getDeltaMovement(), targetVelocity, angle -> Math.min(angle, maximumTurn), difference -> difference * (isFtw() ? 0.3 : 0.25));
             faceVelocity(velocity);
             setDeltaMovement(velocity);
         }
@@ -482,7 +482,7 @@ public class TheDestroyer extends BaseWormBoss {
     }
 
     boolean hasReleasedProbe(int segmentIndex) {
-        if (segmentIndex < 1 || segmentIndex > SEGMENT_COUNT) {
+        if (segmentIndex < 1 || segmentIndex > getSegmentCount()) {
             return false;
         }
         int bitIndex = segmentIndex - 1;
@@ -525,7 +525,7 @@ public class TheDestroyer extends BaseWormBoss {
         }
         entityData.set(DATA_PHASE, Mth.clamp(tag.getInt(PHASE_TAG), 0, Phase.values().length - 1));
         phaseTimer = Mth.clamp(tag.getInt(PHASE_TIMER_TAG), 0, 10000);
-        laserSequenceIndex = Mth.clamp(tag.getInt(LASER_SEQUENCE_INDEX_TAG), -1, SEGMENT_COUNT);
+        laserSequenceIndex = Mth.clamp(tag.getInt(LASER_SEQUENCE_INDEX_TAG), -1, getSegmentCount());
         volleyCooldown = Mth.clamp(tag.getInt(VOLLEY_COOLDOWN_TAG), 0, 120);
         caveAttackState = Mth.clamp(tag.getInt(CAVE_ATTACK_STATE_TAG), 0, 3);
         groundAttackState = Mth.clamp(tag.getInt(GROUND_ATTACK_STATE_TAG), 0, 2);

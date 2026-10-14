@@ -30,7 +30,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.common.MinecraftForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -46,6 +45,7 @@ import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -134,7 +134,7 @@ public enum HardmodeConvertor implements IGlobalData {
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
-                MinecraftForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
+                PortEventHandler.postEvent(new EnterHardmodeEvent(server));
             }
             this.started = false;
         } else {

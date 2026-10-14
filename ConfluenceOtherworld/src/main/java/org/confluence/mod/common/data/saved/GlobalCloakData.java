@@ -197,7 +197,7 @@ public enum GlobalCloakData implements IGlobalData {
         sourceBlock.explosionResistance = targetBlock.explosionResistance;
 
         sourceBlock.properties = targetBlock.properties;
-        sourceBlock.drops = targetBlock.drops;
+        sourceBlock.drops = null;
         sourceBlock.lootTableSupplier = targetBlock.lootTableSupplier;
     }
 
@@ -213,7 +213,7 @@ public enum GlobalCloakData implements IGlobalData {
         sourceBlock.explosionResistance = properties.explosionResistance;
 
         sourceBlock.properties = properties;
-        sourceBlock.drops = properties.drops;
+        sourceBlock.drops = null;
         sourceBlock.lootTableSupplier = backup.getB();
     }
 }

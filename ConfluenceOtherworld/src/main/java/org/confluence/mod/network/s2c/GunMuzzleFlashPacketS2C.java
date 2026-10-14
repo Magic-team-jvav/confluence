@@ -32,8 +32,9 @@ public record GunMuzzleFlashPacketS2C(int shooterId) implements IPortPacket.S2C 
                 || !(shooter.getMainHandItem().getItem() instanceof BaseGun gun)
                 || gun instanceof BeeGunItem) return;
         Vec3 position = shooter.getEyePosition().add(shooter.getLookAngle().scale(0.8));
-        DynamicLightEffects.flash(position, gun instanceof ManaGunItem ? 8 : 10, 2);
-        OpalLightIntegration.flash(gun instanceof ManaGunItem ? OpalLightIntegration.MAGIC_MUZZLE : OpalLightIntegration.GUN_MUZZLE, position, 2);
+        if (!OpalLightIntegration.flash(gun instanceof ManaGunItem ? OpalLightIntegration.MAGIC_MUZZLE : OpalLightIntegration.GUN_MUZZLE, position, 2)) {
+            DynamicLightEffects.flash(position, gun instanceof ManaGunItem ? 8 : 10, 2);
+        }
     }
 
     public static void send(ServerPlayer shooter) {

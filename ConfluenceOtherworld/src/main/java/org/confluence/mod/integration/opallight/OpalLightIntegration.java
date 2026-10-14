@@ -35,6 +35,7 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.mesdag.opallight.OpalLightConfig;
 import org.mesdag.opallight.light.data.DynamicLightDefinition;
 import org.mesdag.opallight.light.data.LightConditions;
 import org.mesdag.opallight.light.data.LightDataLoader;
@@ -58,13 +59,20 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     private static final Codec<Map<ResourceLocation, DynamicLightDefinition>> CODEC = Codec.unboundedMap(ResourceLocation.CODEC, DynamicLightDefinition.CODEC);
 
     private Map<ResourceLocation, Source> sources = Map.of();
-    private final Map<UUID, Long> attachmentIds = new HashMap<>();
-    private final Set<UUID> activeAttachments = new HashSet<>();
-    private final List<Flash> flashes = new ArrayList<>();
-    private ClientLevel currentLevel;
-    private ClientLevel phaseLevel;
-    private long phaseTick = Long.MIN_VALUE;
-    private final Map<UUID, EnumSet<BasePhasebladeItem.PhaseColor>> thrownColors = new HashMap<>();
+    private final Map<ClientLevel, WorldSources> worlds = new WeakHashMap<>();
+
+    private static final class WorldSources {
+        private final Map<UUID, Long> attachmentIds = new HashMap<>();
+        private final Set<UUID> activeAttachments = new HashSet<>();
+        private final List<Flash> flashes = new ArrayList<>();
+        private long phaseTick = Long.MIN_VALUE;
+        private final Map<UUID, EnumSet<BasePhasebladeItem.PhaseColor>> thrownColors = new HashMap<>();
+    }
+
+    private WorldSources world(ClientLevel level) {
+        return worlds.computeIfAbsent(level, ignored -> new WorldSources());
+    }
+
     private long nextId = Long.MIN_VALUE;
 
     private OpalLightIntegration() {
@@ -118,6 +126,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     }
 
     public static boolean handlesEffect(ResourceLocation type) {
+        if (!OpalLightConfig.isEnabled()) return false;
         Source source = INSTANCE.sources.get(type);
         return source != null && source.brightness() > 0;
     }
@@ -128,6 +137,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     }
 
     private static boolean handlesItem(ItemStack stack, Entity owner) {
+        if (!OpalLightConfig.isEnabled()) return false;
         if (stack.isEmpty()) return false;
         LightDataLoader data = LightDataLoader.INSTANCE;
         if (data.hasItemDefinition(stack.getItem())) {
@@ -140,6 +150,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     }
 
     private static boolean handlesEntity(Entity entity) {
+        if (!OpalLightConfig.isEnabled()) return false;
         var definition = LightDataLoader.INSTANCE.getEntityDefinition(entity);
         if (definition != null && definition.lightLevel() > 0) return true;
         if (entity instanceof ItemEntity item && handlesItem(item.getItem(), entity)) return true;
@@ -151,22 +162,22 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
             return true;
         if (!(player.level() instanceof ClientLevel level))
             return !BasePhasebladeItem.isThrown(player, stack);
+        var world = world(level);
         long tick = level.getGameTime();
-        if (phaseLevel != level || phaseTick != tick) {
-            phaseLevel = level;
-            phaseTick = tick;
-            thrownColors.clear();
+        if (world.phaseTick != tick) {
+            world.phaseTick = tick;
+            world.thrownColors.clear();
             // 同一刻只扫描一次射弹，手持规则复用投掷颜色集合。
             for (Entity candidate : level.entitiesForRendering()) {
                 if (candidate instanceof PhasebladeProjectile projectile && !projectile.isRemoved()
                         && projectile.getOwner() instanceof Player owner
                         && projectile.getItem().getItem() instanceof BasePhasebladeItem weapon) {
-                    thrownColors.computeIfAbsent(owner.getUUID(), ignored -> EnumSet.noneOf(BasePhasebladeItem.PhaseColor.class))
+                    world.thrownColors.computeIfAbsent(owner.getUUID(), ignored -> EnumSet.noneOf(BasePhasebladeItem.PhaseColor.class))
                             .add(weapon.color());
                 }
             }
         }
-        var colors = thrownColors.get(player.getUUID());
+        var colors = world.thrownColors.get(player.getUUID());
         return colors == null || !colors.contains(blade.color());
     }
 
@@ -192,36 +203,35 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
 
     public static boolean flash(ResourceLocation type, Vec3 position, int duration) {
         ClientLevel level = Minecraft.getInstance().level;
-        INSTANCE.useLevel(level);
         if (level == null || duration <= 0 || !handlesEffect(type)) return false;
         long now = level.getGameTime();
-        INSTANCE.flashes.add(new Flash(INSTANCE.nextId++, type, position, now, now + (long) duration));
+        INSTANCE.world(level).flashes.add(new Flash(INSTANCE.nextId++, type, position, now, now + (long) duration));
         return true;
     }
 
     private void collect(ClientLevel level, DynamicLights.Sink sink) {
-        useLevel(level);
-        activeAttachments.clear();
+        var world = world(level);
+        world.activeAttachments.clear();
         for (Player player : level.players()) {
             if (player.isRemoved() || player.isSpectator()) continue;
             for (var attachment : player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache()) {
                 Source source = sources.get(attachment.getType().location());
                 if (source == null || attachment.isRemove()) continue;
                 UUID uuid = attachment.getUuid();
-                activeAttachments.add(uuid);
-                long id = attachmentIds.computeIfAbsent(uuid, ignored -> nextId++);
+                world.activeAttachments.add(uuid);
+                long id = world.attachmentIds.computeIfAbsent(uuid, ignored -> nextId++);
                 sink.point(id, attachment.getRenderNode(1.0F).pos(), source.profile(), source.brightness());
             }
         }
-        attachmentIds.keySet().retainAll(activeAttachments);
+        world.attachmentIds.keySet().retainAll(world.activeAttachments);
         Entity local = Minecraft.getInstance().player;
-        if (local != null) collectEntity(local, sink);
+        if (local != null && local.level() == level) collectEntity(local, sink);
         for (Entity entity : level.entitiesForRendering()) {
             if (entity != local) collectEntity(entity, sink);
         }
         long now = level.getGameTime();
-        flashes.removeIf(flash -> now < flash.started() || now >= flash.expires());
-        for (Flash flash : flashes) {
+        world.flashes.removeIf(flash -> now < flash.started() || now >= flash.expires());
+        for (Flash flash : world.flashes) {
             Source source = sources.get(flash.type());
             if (source == null) continue;
             int brightness = Math.round(source.brightness() * (flash.expires() - now) / (float) (flash.expires() - flash.started()));
@@ -250,19 +260,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     }
 
     public static void clearWorld() {
-        INSTANCE.useLevel(null);
-        INSTANCE.phaseLevel = null;
-        INSTANCE.phaseTick = Long.MIN_VALUE;
-        INSTANCE.thrownColors.clear();
-    }
-
-    private void useLevel(ClientLevel level) {
-        if (currentLevel != level) {
-            flashes.clear();
-            attachmentIds.clear();
-            activeAttachments.clear();
-            currentLevel = level;
-        }
+        INSTANCE.worlds.clear();
     }
 
     private record Source(LightProfile profile, int brightness) {}

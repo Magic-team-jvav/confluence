@@ -7,8 +7,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.client.handler.ClientNPCDialogs;
 import org.confluence.mod.common.entity.npc.BaseNPC;
-import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +45,7 @@ public class AnglerDialogScreen extends NPCDialogScreen {
         // 对话按钮
         addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), b -> {
             if (entity instanceof BaseNPC npc) {
-                String key = NPCDialogLoader.getInstance().getRandomDialogKey(npc.getRandom(), npc.getType());
+                String key = ClientNPCDialogs.getRandomDialogKey(npc.getRandom(), npc.getType());
                 if (key != null) {
                     dialogText = Component.translatable(key, levelName);
                     showQuestFish = false;
@@ -57,11 +57,11 @@ public class AnglerDialogScreen extends NPCDialogScreen {
     private void initDialog(BaseNPC npc) {
         switch (state) {
             case COMPLETED -> {
-                String key = NPCDialogLoader.getInstance().getRandomDialogKey(npc.getRandom(), npc.getType());
+                String key = ClientNPCDialogs.getRandomDialogKey(npc.getRandom(), npc.getType());
                 dialogText = key != null ? Component.translatable(key, levelName) : Component.translatable("dialogs.confluence.angler.completed");
             }
             case NO_QUEST -> {
-                String key = NPCDialogLoader.getInstance().getRandomDialogKey(npc.getRandom(), npc.getType());
+                String key = ClientNPCDialogs.getRandomDialogKey(npc.getRandom(), npc.getType());
                 dialogText = key != null ? Component.translatable(key, levelName) : Component.translatable("dialogs.confluence.angler.no_quest");
             }
             case SHOW_HINT -> {

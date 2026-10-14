@@ -1,21 +1,23 @@
 package org.confluence.mod.client.gui.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.confluence.mod.client.handler.ClientNPCDialogs;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.NurseNPC;
 import org.confluence.mod.common.entity.npc.OldManNPC;
-import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.network.c2s.NPCDialogSessionPacketC2S;
 import org.confluence.mod.network.c2s.OpenNPCServicePacketC2S;
 import org.confluence.mod.network.c2s.SummonSkeletronPacketC2S;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 
 /// NPC 对话界面基类 —— 渲染对话文本、商店入口与对话刷新按钮，按 E 关闭。
@@ -68,6 +70,9 @@ public class NPCDialogScreen extends Screen {
                 onClose();
             }).width(80).pos(width / 2 - 85, buttonY).build());
             addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 + 5, buttonY).build());
+        } else if (npc instanceof NurseNPC) {
+            addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 - 85, buttonY).build());
+            addRenderableWidget(Button.builder(Component.translatable("gui.confluence.heal"), button -> OpenNPCServicePacketC2S.sendToServer(entityId, OpenNPCServicePacketC2S.HEAL)).width(80).pos(width / 2 + 5, buttonY).build());
         } else if (canTrade) {
             addTradeButtons(npc, buttonY);
         } else {
@@ -76,7 +81,7 @@ public class NPCDialogScreen extends Screen {
     }
 
     protected void selectDialog(BaseNPC npc) {
-        String key = NPCDialogLoader.getInstance().getRandomDialogKey(npc.getRandom(), npc.getType());
+        String key = ClientNPCDialogs.getRandomDialogKey(npc.getRandom(), npc.getType());
         if (key != null) dialogText = Component.translatable(key);
     }
 

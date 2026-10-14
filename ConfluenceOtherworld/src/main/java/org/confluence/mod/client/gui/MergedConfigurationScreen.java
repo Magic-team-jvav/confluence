@@ -12,6 +12,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import nowebsite.makertechno.the_trackers.TheTrackers;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.TerraCurio;
+import org.mesdag.opallight.OpalLight;
 import org.mesdag.particlestorm.ParticleStorm;
 
 import java.util.ArrayList;
@@ -81,7 +82,8 @@ public class MergedConfigurationScreen extends Screen {
                 Confluence.MODID,
                 TerraCurio.MODID,
                 TheTrackers.MOD_ID,
-                ParticleStorm.MODID
+                ParticleStorm.MODID,
+                OpalLight.MODID
         );
     }
 }

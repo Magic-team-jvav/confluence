@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -14,6 +13,8 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 
 public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
@@ -42,6 +43,10 @@ public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
             return;
         }
         this.dialogs = ImmutableMap.copyOf(parsed.get());
+    }
+
+    public Map<EntityType<?>, NPCDialog> getDialogs() {
+        return dialogs;
     }
 
     @Nullable

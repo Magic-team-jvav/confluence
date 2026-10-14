@@ -1,7 +1,5 @@
 package org.confluence.mod.common.event.game;
 
-import org.confluence.mod.common.data.AchievementOffset;
-
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -16,7 +14,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
-
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AnglerQuestLoader;
 import org.confluence.mod.common.entity.npc.NPCNames;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;
@@ -27,11 +25,13 @@ import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
+import org.confluence.mod.network.s2c.NPCDialogSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PrefixUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -63,6 +63,8 @@ public final class GameEvents {
     @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer sendTo = event.getPlayer();
+        for (ServerPlayer target : sendTo == null ? event.getPlayerList().getPlayers() : List.of(sendTo))
+            NPCDialogSyncPacketS2C.sendToClient(target);
         if (sendTo == null) {
             for (ServerPlayer target : event.getPlayerList().getPlayers()) {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(target, target);

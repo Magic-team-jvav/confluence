@@ -8,10 +8,12 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.NurseNPC;
 
 public record OpenNPCServicePacketC2S(int entityId, byte service) implements IPacketC2S {
     public static final byte TRADE = 0;
     public static final byte REFORGE = 1;
+    public static final byte HEAL = 2;
     public static final Type<OpenNPCServicePacketC2S> TYPE = Confluence.createType("open_npc_service");
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenNPCServicePacketC2S> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, OpenNPCServicePacketC2S::entityId,
@@ -23,6 +25,9 @@ public record OpenNPCServicePacketC2S(int entityId, byte service) implements IPa
         switch (service) {
             case TRADE -> npc.openTradeMenu(player);
             case REFORGE -> npc.openReforgeMenu(player);
+            case HEAL -> {
+                if (npc instanceof NurseNPC nurse) nurse.healPlayer(player);
+            }
         }
     }
 

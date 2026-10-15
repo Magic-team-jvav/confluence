@@ -1,4 +1,4 @@
-package org.confluence.mod.common.soulskill;
+package org.confluence.mod.common.soul.skill;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -90,6 +90,19 @@ public class SoulSkillStack {
 
     public void setMaxCd(int maxCd) {
         this.maxCd = maxCd;
+    }
+
+    public boolean tickCooldown() {
+        if (cd > 0) {
+            this.cd--;
+            return true;
+        }
+        return false;
+    }
+
+    public void startCooldown(int cooldownTicks) {
+        this.cd = Math.max(0, cooldownTicks);
+        this.maxCd = cd;
     }
 
     public SoulSkillStack copy(){

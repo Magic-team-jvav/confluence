@@ -74,6 +74,7 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -175,6 +176,14 @@ public final class LivingEntityEvents {
             DeathMotionPacketS2C.sendToAll(victim);
             NoTraps.entityDropsGrenade(victim);
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void livingDeath$Soul(LivingDeathEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            player.getData(ModAttachmentTypes.SOUL_STORAGE).onDeath(player);
+        }
+        PlayerUtils.collectSoul(event.getEntity(), event.getSource());
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

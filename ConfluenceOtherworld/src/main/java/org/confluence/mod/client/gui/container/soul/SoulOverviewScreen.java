@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.container;
+package org.confluence.mod.client.gui.container.soul;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,11 +22,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.gui.widget.soul_skill.soul_overview.*;
-import org.confluence.mod.client.handler.SoulSkillHandler;
+import org.confluence.mod.client.gui.widget.soul.skill.SoulSkillBox;
+import org.confluence.mod.client.gui.widget.soul.skill.overview.*;
+import org.confluence.mod.client.handler.soul.ClientSoulHandler;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.soulskill.SoulSkill;
+import org.confluence.mod.common.soul.skill.SoulSkill;
 import org.jetbrains.annotations.Nullable;
 import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
@@ -36,14 +37,14 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * 灵魂技能总览界面 — 类似原版进度界面的技能树视图
  */
 public class SoulOverviewScreen extends Screen {
-    private static final SoulSkillHandler HOLDER = SoulSkillHandler.INSTANCE;
 
+    private static final int SURVIVAL_INSTINCT_NODE_X = -40;
+    private static final int SURVIVAL_INSTINCT_NODE_Y = 40;
     private final NormalNoise backgroundNoise;
     /* 组件 */
     public final HotbarWidget hotbar;
@@ -137,16 +138,14 @@ public class SoulOverviewScreen extends Screen {
     // ============ 初始化 ============
 
     private void initSkillsFromRegistry() {
-        for (Supplier<SoulSkill> supplier : ModSoulSkills.getAllSkills()) {
-            SoulSkill skill = supplier.get();
-            HOLDER.addUnlockedSkill(skill);
-        }
         // 横向布局，中点开始，坐标原点 = 屏幕中心，左边为buff列技能树，右边为攻击列，坐标原点 = 屏幕中心，40为一段  -x为往左，正x往右，-y往上，正y往下
 // 按照时期排序，第一次献祭为boss前，第二次献祭为邪恶boss时
 // 左列 buff技能树
         // 强力附魂
         addNode(OverviewNode.Builder.of(ModSoulSkills.ENHANCED_SOUL)
                 .pos(-40, 0));
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SURVIVAL_INSTINCT)
+                .pos(SURVIVAL_INSTINCT_NODE_X, SURVIVAL_INSTINCT_NODE_Y));
         // 魂引天星
         addNode(OverviewNode.Builder.of(ModSoulSkills.STAR_CALL)
                 .pos(-80, -40)
@@ -1222,11 +1221,9 @@ public class SoulOverviewScreen extends Screen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         int slot = keyCode - GLFW.GLFW_KEY_1;
-        if (slot >= 0 && slot < HOLDER.getEquippedSkillMaxNumber()) {
+        if (slot >= 0 && slot < PlayerUtils.getEquippedSkillMaxNumber(Minecraft.getInstance().player)) {
             if (theCurrentlySelectedSkill != null) {
-                HOLDER.equipSkill(slot, theCurrentlySelectedSkill.getStack());
-                hotbar.rebuildFromHolder();
-                return true;
+                return ClientSoulHandler.INSTANCE.equipSkill(slot, theCurrentlySelectedSkill.getStack());
             }
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
@@ -1236,10 +1233,24 @@ public class SoulOverviewScreen extends Screen {
 
     public boolean equipSelectedToSlot(int slot) {
         if (theCurrentlySelectedSkill == null) return false;
-        return HOLDER.equipSkill(slot, theCurrentlySelectedSkill.getStack());
+        return ClientSoulHandler.INSTANCE.equipSkill(slot, theCurrentlySelectedSkill.getStack());
     }
 
-    public void rebuildHotbar() {hotbar.rebuildFromHolder();}
+    public void rebuildHotbar() {refreshSoulSkills();}
+
+    public void refreshSoulSkills() {
+        for (HotbarWidget.HotbarSlot widget : hotbar.getSlots()) {
+            removeWidget(widget);
+        }
+        hotbar.rebuildFromHolder();
+        updateHotbarPos();
+        for (HotbarWidget.HotbarSlot widget : hotbar.getSlots()) {
+            addRenderableWidget(widget);
+        }
+        if (selectedHotbarSlot >= hotbar.getSlots().size()) {
+            selectedHotbarSlot = -1;
+        }
+    }
 
     // ============ 通用工具 ============
 

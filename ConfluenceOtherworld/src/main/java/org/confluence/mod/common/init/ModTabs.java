@@ -1116,6 +1116,12 @@ public final class ModTabs {
                         gain.accept(ConsumableItems.LIFE_FRUIT.get());
                         gain.accept(ConsumableItems.VITAL_CRYSTAL.get());
                         gain.accept(ConsumableItems.ARCANE_CRYSTAL.get());
+                        gain.accept(ConsumableItems.FALLEN_SOUL_CORE.get());
+                        for (var skill : ModSoulSkills.getAllSkills()) {
+                            if (skill.get() != ModSoulSkills.EMPTY.get()) {
+                                gain.accept(ConsumableItems.SOUL_SKILL_BOOK.get().createStack(skill.get().getId()));
+                            }
+                        }
                         gain.accept(ConsumableItems.MINECART_UPGRADE_KIT.get());
                         gain.accept(ConsumableItems.ARTISAN_LOAF.get());
                         gain.accept(ConsumableItems.GALAXY_PEARL.get());
@@ -2047,6 +2053,7 @@ public final class ModTabs {
                         output = new WipNotDisplayOutput(output);
 
                         acceptAll(ManaWeaponItems.ITEMS, output);
+                        output.accept(ModItems.BROKEN_GLIMMER);
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_REGENERATION, 3));
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.EFFICIENT_MAGIC, 1));

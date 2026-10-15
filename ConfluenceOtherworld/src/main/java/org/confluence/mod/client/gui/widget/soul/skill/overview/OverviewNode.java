@@ -1,15 +1,18 @@
-package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
+package org.confluence.mod.client.gui.widget.soul.skill.overview;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
-import org.confluence.mod.client.gui.container.SoulOverviewScreen;
-import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulSkillHandler;
-import org.confluence.mod.common.soulskill.SoulSkill;
-import org.confluence.mod.common.soulskill.SoulSkillStack;
+import org.confluence.mod.client.gui.container.soul.SoulOverviewScreen;
+import org.confluence.mod.client.gui.widget.soul.skill.SoulSkillBox;
+import org.confluence.mod.client.handler.soul.ClientSoulHandler;
+import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.common.soul.skill.SoulSkill;
+import org.confluence.mod.common.soul.skill.SoulSkillStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +24,6 @@ import java.util.function.Supplier;
  * 技能树中的一个节点，中心坐标相对于屏幕中心
  */
 public class OverviewNode extends SoulSkillBox {
-    protected static final SoulSkillHandler HOLDER = SoulSkillHandler.INSTANCE;
 
     private final SoulOverviewScreen screen;
     private final ResourceLocation nodeId;
@@ -56,11 +58,23 @@ public class OverviewNode extends SoulSkillBox {
     public List<ResourceLocation> getConnections() {return connections;}
 
     @Override
+    @Nullable
+    protected SoulSkillStack getCooldownSkillStack() {
+        SoulSkillStack cooldownStack = null;
+        for (SoulSkillStack equippedSkill : PlayerUtils.getEquippedSkills(instance.player)) {
+            if (!SoulSkillStack.isEmpty(equippedSkill) && equippedSkill.getSoulSkill().getId().equals(skillId()) && (cooldownStack == null || equippedSkill.getCd() > cooldownStack.getCd())) {
+                cooldownStack = equippedSkill;
+            }
+        }
+        return cooldownStack;
+    }
+
+    @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         boolean isSelected = screen.theCurrentlySelectedSkill == getSkill();
-        boolean isEquipped = HOLDER.isSkillEquipped(getSkill());
+        boolean isEquipped = PlayerUtils.isSkillEquipped(Minecraft.getInstance().player, getSkill());
         isSelect = isSelected || isHovered();
-        isActivate = isEquipped;
+        isActivate = PlayerUtils.isSoulSkillAvailable(Minecraft.getInstance().player, skillId());
         isFlame = isEquipped;
         super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
     }
@@ -77,7 +91,7 @@ public class OverviewNode extends SoulSkillBox {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 1000);
-        guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY);
+        guiGraphics.renderTooltip(font, getSkillTooltipLines(soulSkillStack, tooltipLines), Optional.empty(), mouseX, mouseY);
         poseStack.popPose();
     }
 
@@ -88,8 +102,8 @@ public class OverviewNode extends SoulSkillBox {
             boolean alreadySelected = screen.theCurrentlySelectedSkill == getSkill();
             screen.theCurrentlySelectedSkill = alreadySelected ? null : getSkill();
         } else {
-            for (int skillIndex : HOLDER.getSkillIndexes(getSkill())) {
-                HOLDER.unequipSkill(skillIndex);
+            for (int skillIndex : PlayerUtils.getSkillIndexes(Minecraft.getInstance().player, getSkill())) {
+                ClientSoulHandler.INSTANCE.unequipSkill(skillIndex);
             }
         }
     }

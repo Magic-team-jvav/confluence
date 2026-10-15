@@ -1789,9 +1789,23 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.soul_skill.blood_rage.name", "Blood Rage");
         add("confluence.soul_skill.boiling_blood.name", "Boiling Blood");
         add("confluence.soul_skill.soul_lure.name", "Soul Lure");
+        add("confluence.soul_skill.survival_instinct.name", "Survival Instinct");
+        add("effect.confluence.enhanced_soul", "Enhanced Soul");
         add("confluence.soul_skill.lure_surge.name", "Lure Surge");
         add("confluence.soul_skill.law_of_nature.name", "Law of Nature");
         add("confluence.soul_skill.natures_wrath.name", "Nature's Wrath");
+        add("confluence.soul_skill.state.learned", "Permanently learned");
+        add("confluence.soul_skill.state.temporary", "Temporarily available");
+        add("confluence.soul_skill.state.locked", "Locked");
+        add("confluence.soul_skill.state.equipped", "Equipped");
+        add("confluence.soul_skill.state.unavailable", "Temporarily unavailable");
+        add("tooltip.confluence.soul_skill_book.bound", "Skill: %s");
+        add("tooltip.confluence.soul_skill_book.unbound", "No soul skill bound");
+        add("tooltip.confluence.soul_skill_book.invalid", "Invalid soul skill");
+        add("death.attack.soul_overdraft", "%1$s fails to realize they have become the pact itself.");
+        add("message.confluence.soul_skill_book.learned", "By reading the dust-laden tome, you have acquired %s!");
+        add("message.confluence.soul_mode.magic", "Traverse the astral morning stars");
+        add("message.confluence.soul_mode.soul", "Rouse the souls of fallen quietude");
 
         addAll(ChestBlocks.BLOCKS);
         addAll(CrateBlocks.BLOCKS);

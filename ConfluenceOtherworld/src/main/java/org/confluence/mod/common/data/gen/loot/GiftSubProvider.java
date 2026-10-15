@@ -13,13 +13,17 @@ import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
+import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.GamePhase;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -27,6 +31,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
+import org.confluence.mod.common.soul.skill.SoulSkillParameters;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 
@@ -1328,6 +1333,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         //克脑
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon()
+                .withPool(spiritSurgeSkillBookPool())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 90)))
                 ))
@@ -1336,6 +1342,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon()
+                .withPool(spiritSurgeSkillBookPool())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(80, 110)))
@@ -1351,6 +1358,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon()
+                .withPool(spiritSurgeSkillBookPool())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(110, 135)))
@@ -1692,6 +1700,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
     private static LootTable.Builder eaterOfWorldsTreasureBagCommon() {
         return LootTable.lootTable()
+                .withPool(spiritSurgeSkillBookPool())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_DEMONITE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(30, 59)))
                 ))
@@ -1701,6 +1710,15 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ));
+    }
+
+    private static LootPool.Builder spiritSurgeSkillBookPool() {
+        return LootPool.lootPool()
+                .when(LootItemRandomChanceCondition.randomChance(SoulSkillParameters.LOOT_CHANCE_PERCENT / 100.0F))
+                .add(LootItem.lootTableItem(ConsumableItems.SOUL_SKILL_BOOK)
+                        .setWeight(SoulSkillParameters.LOOT_WEIGHT)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(SoulSkillParameters.LOOT_COUNT)))
+                        .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SPIRIT_SURGE.get().getId())));
     }
 
     // 提炼机

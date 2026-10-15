@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.hud.soul;
+package org.confluence.mod.client.util.soul;
 
 /**
  * 灵魂技能快速切换HUD工具类

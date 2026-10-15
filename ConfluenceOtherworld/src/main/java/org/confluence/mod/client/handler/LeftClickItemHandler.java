@@ -5,6 +5,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.network.c2s.LeftClickItemActionPacketC2S;
+import org.confluence.mod.util.PlayerUtils;
 
 /// 只在按键状态或主手物品变化时发送包，不按 tick 重复触发物品动作。
 public final class LeftClickItemHandler {
@@ -17,7 +18,7 @@ public final class LeftClickItemHandler {
         Minecraft minecraft = Minecraft.getInstance();
         ItemStack stack = player.getMainHandItem();
         boolean active = (attackHeld || mouseHeld) && !player.isSpectator() && minecraft.screen == null && !minecraft.isPaused()
-                && stack.getItem() instanceof ILeftClickStateItem;
+                && (stack.getItem() instanceof ILeftClickStateItem || PlayerUtils.canAdjustSoulWithCore(player, stack));
         if (!activeStack.isEmpty() && (!active || activeStack != stack)) {
             LeftClickItemActionPacketC2S.sendReleased();
             activeStack = ItemStack.EMPTY;

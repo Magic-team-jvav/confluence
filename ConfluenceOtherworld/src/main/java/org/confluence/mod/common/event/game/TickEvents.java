@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,6 +24,7 @@ import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
@@ -97,6 +99,14 @@ public final class TickEvents {
             MountManager.validate(player);
             YoyoSession.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
+            if (gameTime % SharedConstants.TICKS_PER_SECOND == 0) {
+                PlayerUtils.regenerateSoul(player);
+            }
+            player.getData(ModAttachmentTypes.SOUL_STORAGE).syncIfNeeded(player);
+            PlayerUtils.refreshSoulSkillAvailability(player);
+            player.getData(ModAttachmentTypes.SOUL_SKILL_STORAGE).tickCooldowns();
+            player.getData(ModAttachmentTypes.SOUL_SKILL_STORAGE).syncIfNeeded(player);
+            PlayerUtils.tickSoulArtifactCooldowns(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);
             AchievementUtils.aRareRealm(player, gameTime);

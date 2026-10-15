@@ -67,6 +67,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         handheldTextureAlias(SwordItems.ZENITH, Confluence.asResource("item/summon/zenith"));
         handheldTextureAlias(SwordItems.TRUE_COPPER_SHORTSWORD, Confluence.asResource("item/sword/copper_short_sword"));
+        handheldTextureAlias(ModItems.BROKEN_GLIMMER, Confluence.asResource("item/soul_lantern/broken_glimmer"));
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
@@ -187,6 +188,9 @@ public class ModItemModelProvider extends ItemModelProvider {
             }
             skip.add(item1);
         }
+
+        withExistingParent(ConsumableItems.SOUL_SKILL_BOOK.getId().getPath(), ResourceLocation.withDefaultNamespace("item/book"));
+        skip.add(ConsumableItems.SOUL_SKILL_BOOK.get());
 
         // 一般物品
         // tip：MATERIALS的贴图分多个文件夹 "materials/","gem/","ingot/","ore/"，物品多的文件夹放前面提高速度

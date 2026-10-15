@@ -15,8 +15,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.color.IntegerARGB;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
-import org.confluence.mod.client.handler.SoulSkillHandler;
+import org.confluence.mod.client.gui.widget.soul.skill.SoulSkillBox;
+import org.confluence.mod.client.handler.soul.ClientSoulHandler;
+import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
@@ -86,7 +87,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         }
 
         if (wheelSelection >= 0) {
-            soulSkillHolder.setCurrentIndex(wheelSelection);
+            ClientSoulHandler.INSTANCE.setCurrentIndex(wheelSelection);
         }
 
         mouseHandler.grabMouse();
@@ -94,7 +95,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
 
     @Override
     public void update() {
-        int skillTotalNumber = soulSkillHolder.getEquippedSkillMaxNumber();
+        int skillTotalNumber = PlayerUtils.getEquippedSkillMaxNumber(getMinecraft().player);
 
         if (skillTotalNumber <= 0) {
             boxList.clear();
@@ -117,13 +118,13 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         }
 
         for (int i = 0; i < skillTotalNumber; i++) {
-            boxList.get(i).setSkill(soulSkillHolder.getCurrentSkillStack(i));
+            boxList.get(i).setSkill(PlayerUtils.getCurrentSkillStack(getMinecraft().player, i));
         }
     }
 
     @Override
-    public SoulSkillHandler.Type getType() {
-        return SoulSkillHandler.Type.ROULETTE_WHEEL_BIG;
+    public ClientSoulHandler.Type getType() {
+        return ClientSoulHandler.Type.ROULETTE_WHEEL_BIG;
     }
 
     @Override
@@ -149,7 +150,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     private void draw(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Font font = getFont();
         Vec2 screenCenter = getScreenCenter();
-        int skillTotalNumber = soulSkillHolder.getEquippedSkillMaxNumber();
+        int skillTotalNumber = PlayerUtils.getEquippedSkillMaxNumber(getMinecraft().player);
 
         if (skillTotalNumber <= 0) {
             return;
@@ -347,7 +348,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
      */
     private void renderCurrentSelectedSkillBox(GuiGraphics guiGraphics, PoseStack poseStack) {
         poseStack.pushPose();
-        int currentIndex = soulSkillHolder.getCurrentIndex();
+        int currentIndex = PlayerUtils.getCurrentIndex(getMinecraft().player);
         if (boxList.size() > currentIndex) {
             SoulSkillBox soulSkillBox = boxList.get(currentIndex);
             if (soulSkillBox != null) {

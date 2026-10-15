@@ -38,3 +38,6 @@ build/
 
 #python
 __pycache__/
+*.*~
+notes/_tmp_**/*
+notes/codex-backups

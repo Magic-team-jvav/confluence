@@ -19,9 +19,11 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetLoreFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNameFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.soul.skill.SoulSkillParameters;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +40,14 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
 
     public List<AddedChestLoot> getAddedEntitiesLoot() {
         List<AddedChestLoot> entries = new ArrayList<>();
+        entries.add(new AddedChestLoot(
+                BuiltInLootTables.SIMPLE_DUNGEON,
+                LootTable.lootTable().withPool(LootPool.lootPool()
+                        .when(LootItemRandomChanceCondition.randomChance(SoulSkillParameters.LOOT_CHANCE_PERCENT / 100.0F))
+                        .add(LootItem.lootTableItem(ModItems.BROKEN_GLIMMER)
+                                .setWeight(SoulSkillParameters.LOOT_WEIGHT)
+                                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(SoulSkillParameters.LOOT_COUNT)))))
+        ));
         entries.add(new AddedChestLoot(
                 BuiltInLootTables.ABANDONED_MINESHAFT,
                 LootTable.lootTable()

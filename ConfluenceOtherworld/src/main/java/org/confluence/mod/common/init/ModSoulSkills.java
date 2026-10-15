@@ -1,17 +1,26 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.soulskill.SoulSkill;
+import org.confluence.mod.common.soul.skill.EnhancedSoulSkill;
+import org.confluence.mod.common.soul.skill.SoulLureSkill;
+import org.confluence.mod.common.soul.skill.SoulSkill;
+import org.confluence.mod.common.soul.skill.SpiritSurgeSkill;
+import org.confluence.mod.common.soul.skill.SurvivalInstinctSkill;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 // TODO 需要重写
 public final class ModSoulSkills {
-    private static final List<Supplier<SoulSkill>> SKILLS = new ArrayList<>();
+    public static final ResourceKey<Registry<SoulSkill>> REGISTRY_KEY = ResourceKey.createRegistryKey(Confluence.asResource("soul_skill"));
+    private static final DeferredRegister<SoulSkill> SKILLS = DeferredRegister.create(REGISTRY_KEY, Confluence.MODID);
     private static final Map<ResourceLocation, SkillCategory> CATEGORIES = new HashMap<>();
 
     public static final Supplier<SoulSkill> EMPTY = register("empty", 0, SkillCategory.EMPTY);
@@ -20,23 +29,24 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> CONFUSE_SPORES = register("confuse_spores", 0, SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> EMPOWERED_SURGE = register("empowered_surge", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> ENHANCED_LURE = register("enhanced_lure", 0, SkillCategory.STAR_LURE);
-    public static final Supplier<SoulSkill> ENHANCED_SOUL = register("enhanced_soul", 0, SkillCategory.SOUL);
+    public static final Supplier<SoulSkill> ENHANCED_SOUL = register("enhanced_soul", SkillCategory.SOUL, EnhancedSoulSkill::new);
     public static final Supplier<SoulSkill> KARMA_FLAME = register("karma_flame", 0, SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> LAW_OF_NATURE = register("law_of_nature", 0, SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> LURE_SURGE = register("lure_surge", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> NATURES_WRATH = register("natures_wrath", 0, SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> PROFANE_SOUL = register("profane_soul", 0, SkillCategory.SOUL);
     public static final Supplier<SoulSkill> SOUL_DRAIN = register("soul_drain", 0, SkillCategory.SOUL);
-    public static final Supplier<SoulSkill> SOUL_LURE = register("soul_lure", 0, SkillCategory.SOUL);
+    public static final Supplier<SoulSkill> SOUL_LURE = register("soul_lure", SkillCategory.SOUL, SoulLureSkill::new);
     public static final Supplier<SoulSkill> SOUL_MARK = register("soul_mark", 0, SkillCategory.SOUL);
     public static final Supplier<SoulSkill> SOUL_PLUNDER = register("soul_plunder", 0, SkillCategory.SOUL);
     public static final Supplier<SoulSkill> SOUL_SURGE = register("soul_surge", 0, SkillCategory.SOUL);
-    public static final Supplier<SoulSkill> SPIRIT_SURGE = register("spirit_surge", 0, SkillCategory.BLOOD_NATURE);
+    public static final Supplier<SoulSkill> SPIRIT_SURGE = register("spirit_surge", SkillCategory.BLOOD_NATURE, SpiritSurgeSkill::new);
     public static final Supplier<SoulSkill> SPIRIT_TRIGGER = register("spirit_trigger", 0, SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> STAR_CALL = register("star_call", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> STAR_LINK = register("star_link", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> STAR_REVERSAL = register("star_reversal", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> SURGE_BLAST = register("surge_blast", 0, SkillCategory.STAR_LURE);
+    public static final Supplier<SoulSkill> SURVIVAL_INSTINCT = register("survival_instinct", SkillCategory.SOUL, SurvivalInstinctSkill::new);
 
     public enum SkillCategory {
         EMPTY("", 0xFFFFFFFF, "confluence.screen.soul_overview.tab.empty"),
@@ -57,25 +67,38 @@ public final class ModSoulSkills {
 
     private static Supplier<SoulSkill> register(String id, float basicDamage, SkillCategory category) {
         ResourceLocation rl = Confluence.asResource(id);
-        SoulSkill cached = new SoulSkill(rl, rl, basicDamage);
-        SKILLS.add(() -> cached);
-        CATEGORIES.put(cached.getId(), category);
-        return () -> cached;
+        CATEGORIES.put(rl, category);
+        return SKILLS.register(id, () -> new SoulSkill(rl, rl, basicDamage));
+    }
+
+    private static Supplier<SoulSkill> register(String id, SkillCategory category, Function<ResourceLocation, SoulSkill> factory) {
+        ResourceLocation rl = Confluence.asResource(id);
+        CATEGORIES.put(rl, category);
+        return SKILLS.register(id, () -> factory.apply(rl));
+    }
+
+    @Nullable
+    public static SoulSkill getById(ResourceLocation id) {
+        return getRegistry().get(id);
     }
 
     public static List<Supplier<SoulSkill>> getAllSkills() {
-        return Collections.unmodifiableList(SKILLS);
+        return getRegistry().stream().<Supplier<SoulSkill>>map(skill -> () -> skill).toList();
+    }
+
+    public static Registry<SoulSkill> getRegistry() {
+        return SKILLS.getRegistry().get();
     }
 
     public static List<Supplier<SoulSkill>> getSkillsByCategory(SkillCategory category) {
-        return SKILLS.stream()
+        return getAllSkills().stream()
                 .filter(s -> getCategory(s) == category)
                 .toList();
     }
 
     @Nullable
     public static SoulSkill getFirstInCategory(SkillCategory category) {
-        for (Supplier<SoulSkill> s : SKILLS) {
+        for (Supplier<SoulSkill> s : getAllSkills()) {
             if (getCategory(s) == category) return s.get();
         }
         return null;
@@ -86,5 +109,7 @@ public final class ModSoulSkills {
     }
 
     public static void register(IEventBus eventBus) {
+        SKILLS.makeRegistry(builder -> builder.sync(true));
+        SKILLS.register(eventBus);
     }
 }

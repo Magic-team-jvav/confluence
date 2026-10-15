@@ -1676,9 +1676,23 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.soul_skill.blood_rage.name", "血怒");
         add("confluence.soul_skill.boiling_blood.name", "血液沸腾");
         add("confluence.soul_skill.soul_lure.name", "引魂");
+        add("confluence.soul_skill.survival_instinct.name", "求生欲");
+        add("effect.confluence.enhanced_soul", "强力附魂");
         add("confluence.soul_skill.lure_surge.name", "引魂激荡");
         add("confluence.soul_skill.law_of_nature.name", "自然法则");
         add("confluence.soul_skill.natures_wrath.name", "自然之惩戒");
+        add("confluence.soul_skill.state.learned", "永久学会");
+        add("confluence.soul_skill.state.temporary", "临时可用");
+        add("confluence.soul_skill.state.locked", "未解锁");
+        add("confluence.soul_skill.state.equipped", "已装备");
+        add("confluence.soul_skill.state.unavailable", "暂不可用");
+        add("tooltip.confluence.soul_skill_book.bound", "技能：%s");
+        add("tooltip.confluence.soul_skill_book.unbound", "未绑定灵魂技能");
+        add("tooltip.confluence.soul_skill_book.invalid", "无效的灵魂技能");
+        add("death.attack.soul_overdraft", "%1$s没有意识到自己成为了契约");
+        add("message.confluence.soul_skill_book.learned", "通过阅读尘封的书籍，你获得了%s！");
+        add("message.confluence.soul_mode.magic", "流转天外晨星");
+        add("message.confluence.soul_mode.soul", "唤起坠寂之魂");
 
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
@@ -3584,7 +3598,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.PEDDLERS_SATCHEL.get(), "商贩背包");
         add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
         add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
-//        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
+        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
+        add(ConsumableItems.SOUL_SKILL_BOOK.get(), "灵魂技能书");
         add(ConsumableItems.BLOOD_TEAR.get(), "血泪");
         add(ConsumableItems.GOBLIN_BATTLE_STANDARD.get(), "哥布林战旗");
         add(ConsumableItems.PIRATE_MAP.get(), "海盗地图");
@@ -3611,6 +3626,7 @@ public class ModChineseProvider extends LanguageProvider {
     }
 
     private void addGeneralItemTranslations() {
+        add(ModItems.BROKEN_GLIMMER.get(), "残破微光");
         add(ModItems.COPPER_COIN.get(), "铜币");
         add(ModItems.SILVER_COIN.get(), "银币");
         add(ModItems.GOLD_COIN.get(), "金币");

@@ -66,6 +66,9 @@ public class AccessoryItems {
     public static final ValueType.FloatType REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
     public static final ValueType.FloatType FISHING$POWER = ValueType.ofFloat("fishing_power", FloatValue.ADDITION, 0.0F);
     public static final ValueType.IntegerType ADDITIONAL$MANA = ValueType.ofInteger("additional_mana", IntegerValue.ADDITION, 0);
+    public static final ValueType.IntegerType ADDITIONAL$SOUL = ValueType.ofInteger("additional_soul", IntegerValue.ADDITION, 0);
+    public static final ValueType.FloatType SOUL$COLLECTION$BONUS = ValueType.ofFloat("soul_collection_bonus", FloatValue.ADDITION, 0.0F);
+    public static final ValueType.FloatType SOUL$COLLECTION$RATIO = ValueType.ofFloat("soul_collection_ratio", FloatValue.ADDITION, 0.0F);
     public static final ValueType.IntegerType SPECIAL$PRICE = ValueType.ofInteger("special_price", IntegerValue.GET_MAX, 0);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> MANA$PICKUP$RANGE = ValueType.create("mana_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(1.75F, 0), PickupRangeAbilityValue::new);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> COIN$PICKUP$RANGE = ValueType.create("coin_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(2.0F, 0), PickupRangeAbilityValue::new);

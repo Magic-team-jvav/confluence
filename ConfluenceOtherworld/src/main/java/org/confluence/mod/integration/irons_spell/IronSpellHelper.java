@@ -1,6 +1,9 @@
 package org.confluence.mod.integration.irons_spell;
 
+import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
+import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
+import io.redspace.ironsspellbooks.api.util.Utils;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -8,17 +11,38 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.util.PlayerUtils;
+
+import java.util.function.Consumer;
 
 public class IronSpellHelper {
     public static final String MODID = "irons_spellbooks";
     public static final boolean IS_LOADED = LibUtils.isModLoaded(MODID);
     private static final ResourceLocation MANA_OVERLAY_NAME = ResourceLocation.fromNamespaceAndPath(MODID, "mana_overlay");
+
+    public static void addListeners() {
+        if (IS_LOADED) {
+            NeoForge.EVENT_BUS.addListener((Consumer<SpellPreCastEvent>) event -> {
+                if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && event.getEntity() instanceof ServerPlayer player
+                        && player.getData(ModAttachmentTypes.SOUL_STORAGE).isSoulMode()) {
+                    event.setCanceled(true);
+                }
+            });
+        }
+    }
+
+    public static void cancelCasting(ServerPlayer player) {
+        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && MagicData.getPlayerMagicData(player).isCasting()) {
+            Utils.serverSideCancelCast(player);
+        }
+    }
 
     public static float getInitMaxMana() {
         return (float) AttributeRegistry.MAX_MANA.get().getDefaultValue();

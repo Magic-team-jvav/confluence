@@ -89,14 +89,6 @@ obfuscation {
 }
 
 repositories {
-    exclusiveContent {
-        forRepository {
-            flatDir { dirs 'libs' }
-        }
-        filter {
-            includeModule('com.cooobird', 'datatip')
-        }
-    }
     mavenLocal()
     flatDir {
         dirs 'libs'

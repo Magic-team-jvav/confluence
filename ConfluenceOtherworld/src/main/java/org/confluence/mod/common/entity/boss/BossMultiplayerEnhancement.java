@@ -20,7 +20,8 @@ public final class BossMultiplayerEnhancement {
     private BossMultiplayerEnhancement() {}
 
     /// 遭遇人数只确定一次；已有存档移除旧难度项，不叠加新的难度倍率。
-    public static void apply(LivingEntity boss) {
+    /// 仅新生成时补齐生命上限；读档和配置重载不治疗。
+    public static void apply(LivingEntity boss, boolean fillHealth) {
         if (boss.level().isClientSide) return;
         float health = boss.getHealth(), maximum = boss.getMaxHealth();
         boolean full = health > 0 && Math.abs(health - maximum) < 0.001F;
@@ -37,7 +38,7 @@ public final class BossMultiplayerEnhancement {
             replace(maxHealth, HEALTH_CONFIG_ID, CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_HEALTH.get());
         }
         CreatureDifficultyScaling.apply(boss, false);
-        boss.setHealth(full ? boss.getMaxHealth() : Math.min(health, boss.getMaxHealth()));
+        boss.setHealth(fillHealth && full ? boss.getMaxHealth() : Math.min(health, boss.getMaxHealth()));
     }
 
     /// 配置项覆盖自己固定 ID 的乘算，不随调用次数累乘。

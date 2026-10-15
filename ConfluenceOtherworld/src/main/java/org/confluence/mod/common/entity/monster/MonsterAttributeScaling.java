@@ -25,6 +25,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.animal.BaseCritter;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.entity.monster.slime.SweetSlime;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -32,7 +34,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-/// 独立于难度、游戏阶段与特殊状态的普通敌怪全局倍率；固定 ResourceLocation 保证读档、重载不会累乘。
+/// 独立于难度、游戏阶段与特殊状态的敌怪属性配置倍率；固定 ResourceLocation 保证读档、重载不会累乘。
 public final class MonsterAttributeScaling {
     private MonsterAttributeScaling() {}
 
@@ -49,7 +51,11 @@ public final class MonsterAttributeScaling {
         for (Multiplier multiplier : Multiplier.values()) {
             AttributeInstance attribute = entity.getAttribute(multiplier.attribute.get());
             if (attribute != null) {
-                updateModifier(attribute, multiplier.id, eligible ? multiplier.config.get().get() : 1.0D);
+                double value = 1.0D;
+                if (eligible) value = multiplier.config.get().get();
+                else if (entity instanceof BaseBoss && multiplier.bossConfig != null)
+                    value = multiplier.bossConfig.get().get();
+                updateModifier(attribute, multiplier.id, value);
             }
         }
         CreatureDifficultyScaling.apply(entity, false);
@@ -77,7 +83,11 @@ public final class MonsterAttributeScaling {
         server.execute(() -> {
             for (ServerLevel level : server.getAllLevels()) {
                 for (Entity entity : level.getAllEntities()) {
-                    if (entity instanceof LivingEntity living) apply(living, false);
+                    if (entity instanceof LivingEntity living) {
+                        apply(living, false);
+                        if (living instanceof Boss boss && boss.isMainBody() && boss.shouldEnhanceMultiplayer())
+                            BossMultiplayerEnhancement.apply(living, false);
+                    }
                 }
             }
         });
@@ -100,20 +110,26 @@ public final class MonsterAttributeScaling {
     private enum Multiplier {
         HEALTH(() -> Attributes.MAX_HEALTH, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH),
         DAMAGE(() -> LibAttributes.getAttackDamage(), () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE),
-        ARMOR(() -> Attributes.ARMOR, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR),
-        ARMOR_TOUGHNESS(() -> Attributes.ARMOR_TOUGHNESS, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS),
-        MOVEMENT_SPEED(() -> Attributes.MOVEMENT_SPEED, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED),
-        FLYING_SPEED(() -> Attributes.FLYING_SPEED, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED),
-        KNOCKBACK_RESISTANCE(() -> Attributes.KNOCKBACK_RESISTANCE, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE),
-        FOLLOW_RANGE(() -> Attributes.FOLLOW_RANGE, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE);
+        ARMOR(() -> Attributes.ARMOR, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR),
+        ARMOR_TOUGHNESS(() -> Attributes.ARMOR_TOUGHNESS, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS),
+        MOVEMENT_SPEED(() -> Attributes.MOVEMENT_SPEED, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED),
+        FLYING_SPEED(() -> Attributes.FLYING_SPEED, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED),
+        KNOCKBACK_RESISTANCE(() -> Attributes.KNOCKBACK_RESISTANCE, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE),
+        FOLLOW_RANGE(() -> Attributes.FOLLOW_RANGE, () -> CommonConfigs.MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE, () -> CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE);
 
         private final Supplier<Holder<Attribute>> attribute;
         private final Supplier<ModConfigSpec.DoubleValue> config;
+        private final Supplier<ModConfigSpec.DoubleValue> bossConfig;
         private final ResourceLocation id;
 
         Multiplier(Supplier<Holder<Attribute>> attribute, Supplier<ModConfigSpec.DoubleValue> config) {
+            this(attribute, config, null);
+        }
+
+        Multiplier(Supplier<Holder<Attribute>> attribute, Supplier<ModConfigSpec.DoubleValue> config, Supplier<ModConfigSpec.DoubleValue> bossConfig) {
             this.attribute = attribute;
             this.config = config;
+            this.bossConfig = bossConfig;
             id = Confluence.asResource("monster_config." + name().toLowerCase(Locale.ROOT));
         }
     }

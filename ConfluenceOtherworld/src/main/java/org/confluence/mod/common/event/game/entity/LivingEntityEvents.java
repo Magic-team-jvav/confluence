@@ -530,7 +530,7 @@ public final class LivingEntityEvents {
         if (!event.isCanceled()) {
             GamePhase2AttributeModifiers.applyModifiers(mob);
             if (mob instanceof Boss boss && boss.isMainBody() && boss.shouldEnhanceMultiplayer()) {
-                BossMultiplayerEnhancement.apply(mob);
+                BossMultiplayerEnhancement.apply(mob, true);
             }
         }
     }

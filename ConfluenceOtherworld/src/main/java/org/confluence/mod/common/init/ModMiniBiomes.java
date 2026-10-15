@@ -4,8 +4,8 @@ import net.minecraft.server.level.ServerLevel;
 import org.confluence.lib.common.worldgen.biome.MiniBiome;
 import org.confluence.lib.common.worldgen.biome.MiniBiomeType;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.npc.TownPopulation;
 import org.confluence.mod.util.OverworldUtils;
 
 /// 多个环境标记可以同时成立；优先级只服务于需要唯一表现的消费方，不用于抹掉刷怪条件。
@@ -79,7 +79,7 @@ public final class ModMiniBiomes {
             .offset(ModBlockCounters.SUNFLOWER, 1)
             .build();
 
-    /// 入住数据由服务端提供，不从客户端读取集成服务器的静态存档对象。
+    /// 服务端统计附近活动的城镇 NPC，包含老人、旅商和宠物。
     public static final MiniBiomeType TOWN = MiniBiomeType
             .builder(Confluence.asResource("town"))
             .priority(200)
@@ -87,7 +87,7 @@ public final class ModMiniBiomes {
             .condition((level, pos) -> level instanceof ServerLevel)
             .threshold(NPCSpawner.TOWN_NPC_THRESHOLD, 8)
             .provider((level, pos) -> level instanceof ServerLevel serverLevel
-                    ? HouseHandler.INSTANCE.countNearbyResidents(serverLevel, pos, 64, 32) : 0)
+                    ? TownPopulation.count(serverLevel, pos) : 0)
             .build();
 
     static {

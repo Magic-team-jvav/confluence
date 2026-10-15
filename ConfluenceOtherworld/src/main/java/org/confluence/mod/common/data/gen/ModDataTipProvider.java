@@ -575,6 +575,9 @@ public final class ModDataTipProvider implements DataProvider {
         add(root, FunctionalBlocks.WATER_CANDLE.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.water_candle.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
                 translate("tooltip.item.confluence.wireable.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, FunctionalBlocks.SHADOW_CANDLE.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.shadow_candle.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.wireable.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         return root;
     }
 

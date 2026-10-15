@@ -13,7 +13,7 @@ public record GraveyardCondition() implements TradeCondition {
 
     @Override
     public boolean test(ServerPlayer player, BaseNPC npc) {
-        EnvironmentLevelAccess access = new EnvironmentLevelAccess(npc.level(), npc.blockPosition());
+        EnvironmentLevelAccess access = new EnvironmentLevelAccess(player.serverLevel(), player.blockPosition());
         access.initializeIfNeeded(player);
         return EnvironmentLevelAccess.matcher(null, null, true).matches(access);
     }

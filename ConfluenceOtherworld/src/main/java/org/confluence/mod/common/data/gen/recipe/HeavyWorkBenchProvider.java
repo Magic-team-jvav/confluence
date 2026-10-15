@@ -1428,6 +1428,8 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
 
         shapeless(writer, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
+        shapeless(writer, FunctionalBlocks.SHADOW_CANDLE.toStack(), EnvironmentLevelAccess.matcher(null, null, true),
+                Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3, ModTags.Items.EVIL_INGOT));
         shapeless(writer, ConsumableItems.BONE_THROWING_KNIFE.toStack(30), Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(writer, GunItems.SILVER_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_SILVER));
         shapeless(writer, GunItems.TUNGSTEN_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN));

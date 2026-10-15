@@ -177,6 +177,7 @@ public class FunctionalBlocks {
     // 有效果的蜡烛
     public static final PortDeferredBlock<EffectiveCandleBlock> WATER_CANDLE = registerCandle("water_candle", new MobEffectInstanceData(ModEffects.WATER_CANDLE, 100));
     public static final PortDeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", new MobEffectInstanceData(ModEffects.PEACE_CANDLE, 100));
+    public static final PortDeferredBlock<EffectiveCandleBlock> SHADOW_CANDLE = registerCandle("shadow_candle", new MobEffectInstanceData(ModEffects.SHADOW_CANDLE, 100));
 
     public static final PortDeferredBlock<AnnouncementBoxBlock> ANNOUNCEMENT_BOX = BLOCKS.register("announcement_box", () -> new AnnouncementBoxBlock(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(5.0F).noCollission().noOcclusion().sound(SoundType.METAL).isValidSpawn(Blocks::never)));
     public static final PortDeferredBlock<AnnouncementBoxBlock.Wall> WALL_ANNOUNCEMENT_BOX = BLOCKS.register("wall_announcement_box", () -> new AnnouncementBoxBlock.Wall(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(5.0F).noCollission().noOcclusion().sound(SoundType.METAL).isValidSpawn(Blocks::never)));

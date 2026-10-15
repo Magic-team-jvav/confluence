@@ -25,7 +25,7 @@ public record PositionHeightCondition(int minY, int maxY, boolean exclude) imple
 
     @Override
     public boolean test(ServerPlayer player, BaseNPC npc) {
-        int y = npc.blockPosition().getY();
+        int y = player.blockPosition().getY();
         boolean inRange = y >= minY && y <= maxY;
         return inRange != exclude;
     }

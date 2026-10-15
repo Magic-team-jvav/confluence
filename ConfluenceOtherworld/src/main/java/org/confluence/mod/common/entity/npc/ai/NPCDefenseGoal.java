@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.npc.ai;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Enemy;
@@ -36,7 +37,7 @@ public final class NPCDefenseGoal extends Goal {
         return target != null;
     }
 
-    /// 目标仍合法且 NPC 没有开始交易时持续执行，不因暂时丢失视线而重置冷却。
+    /// 目标仍可见且 NPC 没有开始交易时持续执行。
     @Override
     public boolean canContinueToUse() {
         if (npc.getInteractingPlayer() != null || !npc.canDefendSelf() || !isValid(target))
@@ -122,12 +123,13 @@ public final class NPCDefenseGoal extends Goal {
 
     /// NPC 只把仍存活的敌对生物作为自卫目标，不攻击玩家或其他城镇 NPC。
     private boolean isValid(LivingEntity candidate) {
-        return candidate != null && candidate.isAlive() && candidate instanceof Enemy && npc.canAttack(candidate);
+        return candidate != null && candidate.isAlive() && candidate instanceof Enemy && npc.canAttack(candidate)
+                && npc.getSensing().hasLineOfSight(candidate);
     }
 
     /// 取属性索敌上限和实际战斗距离的较小值，作为目标的启动与持续范围。
     private double detectionRange(NPCCombatProfile.Values values) {
-        return Math.min(npc.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE),
+        return Math.min(npc.getAttributeValue(Attributes.FOLLOW_RANGE),
                 Math.max(values.attackRange(), values.retreatRange()) + 2);
     }
 

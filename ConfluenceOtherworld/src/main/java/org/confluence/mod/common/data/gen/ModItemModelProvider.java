@@ -56,6 +56,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        withExistingParent("shadow_candle", "item/generated").texture("layer0", Confluence.asResource("item/tool/shadow_candle"));
         GunItems.BULLET_ITEMS.forEach(item -> {
             String path = item.getId().getPath();
             withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));

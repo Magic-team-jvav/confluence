@@ -60,12 +60,13 @@ import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
-import org.confluence.mod.common.entity.monster.DungeonSpirit;
 import org.confluence.mod.common.entity.monster.Decayeder;
+import org.confluence.mod.common.entity.monster.DungeonSpirit;
 import org.confluence.mod.common.entity.monster.TheHungry;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.TownPopulation;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
 import org.confluence.mod.common.entity.yoyo.BaseYoyoProjectile;
@@ -606,7 +607,8 @@ public final class LivingEntityEvents {
         // 墓地的额外放行不能覆盖其他监听器或游戏事件已经作出的禁止生成决定。
         if (event.getResult() == PortMobSpawnEvent.PositionCheck.PortResult.FAIL.unwrap()) return;
         Mob mob = event.getEntity();
-        if (DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) || GameEventSystem.shouldDenyNatureSpawn()) {
+        if (DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) || GameEventSystem.shouldDenyNatureSpawn()
+                || TownPopulation.suppressesSpawn(event.getLevel().getLevel(), mob)) {
             event.setResult(PortMobSpawnEvent.PositionCheck.PortResult.FAIL.unwrap());
             return;
         }

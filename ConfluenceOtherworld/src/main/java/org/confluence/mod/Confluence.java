@@ -25,6 +25,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.summoner.SummonerEvents;
 import org.confluence.mod.common.summoner.register.*;
+import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
@@ -45,6 +46,7 @@ public final class Confluence {
     public static final boolean DATA_TIP = LibUtils.isDev();
 
     public Confluence(IEventBus eventBus, ModContainer container) {
+        LibUtils.setForTheWorthy(ForTheWorthy::isEnabled);
         ModDynamicBiomes.init();
         ModMiniBiomes.init();
         DynamicBiomeUtils.enable();

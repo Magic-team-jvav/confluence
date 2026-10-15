@@ -1,18 +1,16 @@
-package org.confluence.mod.client.gui.widget.soul.skill.overview;
+package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.container.soul.SoulOverviewScreen;
-import org.confluence.mod.client.gui.widget.soul.skill.SoulSkillBox;
-import org.confluence.mod.client.handler.soul.ClientSoulHandler;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.common.soul.skill.SoulSkill;
-import org.confluence.mod.common.soul.skill.SoulSkillStack;
+import org.confluence.mod.client.gui.container.SoulOverviewScreen;
+import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulSkillHandler;
+import org.confluence.mod.common.soulskill.SoulSkill;
+import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -24,6 +22,7 @@ import java.util.List;
  * 底部快捷栏
  */
 public class HotbarWidget extends AbstractWidget {
+    protected static final SoulSkillHandler HOLDER = SoulSkillHandler.INSTANCE;
 
     public static final ResourceLocation BOTTOM_BOX_CENTRE = Confluence.asResource("container/soul_overview/hotbar_box_centre");
     public static final ResourceLocation BOTTOM_BOX_HEAD = Confluence.asResource("container/soul_overview/hotbar_box_head");
@@ -35,7 +34,7 @@ public class HotbarWidget extends AbstractWidget {
         super(x, y, 0, 32, Component.empty());
         this.screen = screen;
 
-        for (int i = 0; i < PlayerUtils.getEquippedSkillMaxNumber(Minecraft.getInstance().player); i++) {
+        for (int i = 0; i < HOLDER.getEquippedSkillMaxNumber(); i++) {
             slots.add(new HotbarSlot(x, y, i));
         }
         updateSize();
@@ -86,16 +85,7 @@ public class HotbarWidget extends AbstractWidget {
     }
 
     public void rebuildFromHolder() {
-        int slotCount = PlayerUtils.getEquippedSkillMaxNumber(Minecraft.getInstance().player);
-        if (slots.size() != slotCount) {
-            slots.clear();
-            for (int i = 0; i < slotCount; i++) {
-                slots.add(new HotbarSlot(getX(), getY(), i));
-            }
-            updateSize();
-            updateBoxPos();
-        }
-        var equipped = PlayerUtils.getEquippedSkills(Minecraft.getInstance().player);
+        var equipped = HOLDER.getEquippedSkills();
         int equippedSize = equipped.size();
         for (int i = 0; i < slots.size(); i++) {
             slots.get(i).setSkillStack(i < equippedSize ? equipped.get(i) : null);
@@ -164,7 +154,8 @@ public class HotbarWidget extends AbstractWidget {
         public void onClick(double mouseX, double mouseY, int button) {
             super.onClick(mouseX, mouseY, button);
             if (button == 1) {
-                ClientSoulHandler.INSTANCE.unequipSkill(slotIndex);
+                HOLDER.unequipSkill(slotIndex);
+                skillStack = null;
                 return;
             }
 
@@ -173,9 +164,8 @@ public class HotbarWidget extends AbstractWidget {
             if (selectedSkill != null) {
                 // TODO 可能会导致技能重置cd
                 SoulSkillStack stack = selectedSkill.getStack();
-                if (!ClientSoulHandler.INSTANCE.equipSkill(slotIndex, stack)) {
-                    return;
-                }
+                HOLDER.equipSkill(slotIndex, stack);
+                skillStack = stack;
             } else {
                 // 如果没有选中的技能
                 // 选择了相同的槽位则取消选择 否则 选择该槽位

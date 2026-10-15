@@ -1,9 +1,9 @@
-package org.confluence.mod.client.gui.widget.soul.skill.overview;
+package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import org.confluence.mod.client.gui.container.soul.SoulOverviewScreen;
+import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -148,12 +148,6 @@ public enum PermanentUpgrade {
         protected void restoreAttribute(ServerPlayer player, EverBeneficial data) {
             updateAttribute(player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE), data.isArtisanLoafUsed() ? 4.0 : 0.0);
         }
-    },
-    FALLEN_SOUL_CORE("fallen_soul_core") {
-        @Override
-        protected boolean use(ServerPlayer player, EverBeneficial data) {
-            return true;
-        }
     };
 
     private final ResourceLocation location;

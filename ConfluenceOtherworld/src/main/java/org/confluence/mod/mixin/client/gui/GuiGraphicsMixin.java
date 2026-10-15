@@ -8,14 +8,10 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.soul.SoulArtifactItem;
-import org.confluence.mod.util.PlayerUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -46,14 +42,6 @@ public abstract class GuiGraphicsMixin implements SelfGetter<GuiGraphics> {
         int s = original.call(instance, font, text, 0, 0, color, dropShadow);
         pose.popPose();
         return Mth.ceil(s * scale);
-    }
-
-    @WrapOperation(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemCooldowns;getCooldownPercent(Lnet/minecraft/world/item/Item;F)F"))
-    private float confluence$soulArtifactCooldown(ItemCooldowns cooldowns, Item item, float partialTick, Operation<Float> original, @Local(argsOnly = true) ItemStack stack) {
-        if (stack.getItem() instanceof SoulArtifactItem) {
-            return PlayerUtils.getSoulArtifactCooldownPercent(stack);
-        }
-        return original.call(cooldowns, item, partialTick);
     }
 
     @Inject(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;pushPose()V"))

@@ -1,13 +1,13 @@
-package org.confluence.mod.client.gui.widget.soul.skill.overview;
+package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import org.confluence.mod.client.gui.container.soul.SoulOverviewScreen;
+import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.init.ModSoulSkills.SkillCategory;
-import org.confluence.mod.common.soul.skill.SoulSkill;
+import org.confluence.mod.common.soulskill.SoulSkill;
 import org.jetbrains.annotations.NotNull;
 
 /**

@@ -1020,7 +1020,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.artisan_loaf.1", "'Legendary Bread that once reminded Teddy of home'");
         add("tooltip.item.confluence.water_candle.0", "Holding this may attract unwanted attention");
         add("tooltip.item.confluence.peace_candle.0", "Makes surrounding creatures less hostile");
-        add("tooltip.item.confluence.shadow_candle.0", "Cancels town protection when held or placed and lit");
         add("tooltip.item.confluence.blood_tear.0", "Summons the Blood Moon");
         add("tooltip.item.confluence.blood_tear.1", "'What a horrible night to have a curse.'");
         add("tooltip.item.confluence.goblin_battle_standard.0", "Summons a Goblin Army ");
@@ -1790,23 +1789,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.soul_skill.blood_rage.name", "Blood Rage");
         add("confluence.soul_skill.boiling_blood.name", "Boiling Blood");
         add("confluence.soul_skill.soul_lure.name", "Soul Lure");
-        add("confluence.soul_skill.survival_instinct.name", "Survival Instinct");
-        add("effect.confluence.enhanced_soul", "Enhanced Soul");
         add("confluence.soul_skill.lure_surge.name", "Lure Surge");
         add("confluence.soul_skill.law_of_nature.name", "Law of Nature");
         add("confluence.soul_skill.natures_wrath.name", "Nature's Wrath");
-        add("confluence.soul_skill.state.learned", "Permanently learned");
-        add("confluence.soul_skill.state.temporary", "Temporarily available");
-        add("confluence.soul_skill.state.locked", "Locked");
-        add("confluence.soul_skill.state.equipped", "Equipped");
-        add("confluence.soul_skill.state.unavailable", "Temporarily unavailable");
-        add("tooltip.confluence.soul_skill_book.bound", "Skill: %s");
-        add("tooltip.confluence.soul_skill_book.unbound", "No soul skill bound");
-        add("tooltip.confluence.soul_skill_book.invalid", "Invalid soul skill");
-        add("death.attack.soul_overdraft", "%1$s fails to realize they have become the pact itself.");
-        add("message.confluence.soul_skill_book.learned", "By reading the dust-laden tome, you have acquired %s!");
-        add("message.confluence.soul_mode.magic", "Traverse the astral morning stars");
-        add("message.confluence.soul_mode.soul", "Rouse the souls of fallen quietude");
 
         addAll(ChestBlocks.BLOCKS);
         addAll(CrateBlocks.BLOCKS);
@@ -2048,7 +2033,6 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.SHADOWFLAME.get(), "Losing life");
         addEffect(ModEffects.WATER_CANDLE.get(), "Increased monster spawn rate");
         addEffect(ModEffects.PEACE_CANDLE.get(), "Decreased monster spawn rate");
-        addEffect(ModEffects.SHADOW_CANDLE.get(), "Disables town protection and town critter spawning");
         addEffect(ModEffects.BATTLE.get(), "Increased enemy spawn rate");
         addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
         addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");

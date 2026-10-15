@@ -13,11 +13,10 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.soul.CurrentSelectedSkillHud;
-import org.confluence.mod.client.gui.widget.soul.skill.SoulSkillBox;
-import org.confluence.mod.client.handler.soul.ClientSoulHandler;
-import org.confluence.mod.client.util.soul.SoulQuickSkillHudUtils;
-import org.confluence.mod.common.soul.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.client.gui.hud.soul.SoulQuickSkillHudUtils;
+import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulSkillHandler;
+import org.confluence.mod.common.soulskill.SoulSkillStack;
 
 public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     // 资源与常量定义
@@ -74,7 +73,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
         if (!isType()) {
             return;
         }
-        CurrentSelectedSkillHud instance = ClientSoulHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE;
+        CurrentSelectedSkillHud instance = SoulSkillHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE;
         PoseStack poseStack = guiGraphics.pose();
         float realtimeDeltaTicks = deltaTracker.getRealtimeDeltaTicks();
 
@@ -131,8 +130,8 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     private void renderSkillBoxes(GuiGraphics guiGraphics, PoseStack poseStack, float realtimeDeltaTicks) {
         poseStack.pushPose();
         float startAngleOffset = RouletteWheelBigHud.START_ANGLE_OFFSET;
-        int totalSkills = PlayerUtils.getEquippedSkillMaxNumber(getMinecraft().player);
-        int currentIdx = PlayerUtils.getCurrentIndex(getMinecraft().player);
+        int totalSkills = soulSkillHolder.getEquippedSkillMaxNumber();
+        int currentIdx = soulSkillHolder.getCurrentIndex();
 
         // 计算当前轮盘旋转对应的槽位偏移量
         int rotationOffset = SoulQuickSkillHudUtils.calculateRotationOffset(targetAngle, INTERVAL, DISPLAY_COUNT);
@@ -140,7 +139,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
         for (int slotIdx = 0; slotIdx < DISPLAY_COUNT; slotIdx++) {
             int skillIdx = SoulQuickSkillHudUtils.getSkillIndex(slotIdx, rotationOffset, currentIdx, totalSkills, DISPLAY_COUNT, HALF_DISPLAY);
 
-            SoulSkillStack stack = PlayerUtils.getCurrentSkillStack(getMinecraft().player, skillIdx);
+            SoulSkillStack stack = soulSkillHolder.getCurrentSkillStack(skillIdx);
             if (SoulSkillStack.isEmpty(stack)) {
                 continue;
             }
@@ -169,7 +168,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
      * 调整目标索引
      */
     public void adjustTarget(int offset) {
-        int totalSkills = PlayerUtils.getEquippedSkillMaxNumber(getMinecraft().player);
+        int totalSkills = soulSkillHolder.getEquippedSkillMaxNumber();
 
         if (totalSkills <= 0) {
             targetAngle = 0;
@@ -212,12 +211,12 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     }
 
     @Override
-    public ClientSoulHandler.Type getType() {
-        return ClientSoulHandler.Type.ROULETTE_WHEEL_SMALL;
+    public SoulSkillHandler.Type getType() {
+        return SoulSkillHandler.Type.ROULETTE_WHEEL_SMALL;
     }
 
     protected void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y) {
-        SoulSkillStack stack = PlayerUtils.getCurrentSkillStack(getMinecraft().player, PlayerUtils.getCurrentIndex(getMinecraft().player));
+        SoulSkillStack stack = soulSkillHolder.getCurrentSkillStack(soulSkillHolder.getCurrentIndex());
         if (SoulSkillStack.isEmpty(stack)) {
             return;
         }

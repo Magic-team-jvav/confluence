@@ -176,14 +176,6 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void livingDeath$Soul(LivingDeathEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            player.getData(ModAttachmentTypes.SOUL_STORAGE).onDeath(player);
-        }
-        PlayerUtils.collectSoul(event.getEntity(), event.getSource());
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;

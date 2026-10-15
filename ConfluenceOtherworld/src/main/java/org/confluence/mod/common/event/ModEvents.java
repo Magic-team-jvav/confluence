@@ -112,7 +112,6 @@ public final class ModEvents {
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
             ModBiomes.registerRegionAndSurface();
-            IronSpellHelper.addListeners();
             if (StartupConfigs.forceAllowWipItemsDisplayInCreativeModeTab()) {
                 WipNotDisplayOutput.forceAllow();
             }

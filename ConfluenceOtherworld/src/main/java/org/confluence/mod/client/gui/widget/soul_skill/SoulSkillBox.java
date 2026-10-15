@@ -1,26 +1,16 @@
-package org.confluence.mod.client.gui.widget.soul.skill;
+package org.confluence.mod.client.gui.widget.soul_skill;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
-import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.soul.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class SoulSkillBox extends AbstractWidget {
     public static final ResourceLocation BOX_GRAY = Confluence.asResource("hud/soul_quick_skill_hud/box_gray");
@@ -31,14 +21,6 @@ public class SoulSkillBox extends AbstractWidget {
     public static final int SKILL_SIZE = 16;
     public static final int BOX_SIZE = 32;
     public static final int BOX_GRAY_SIZE = 22;
-    private static final int UNAVAILABLE_SKILL_OVERLAY_COLOR = 0x80000000;
-    private static final int COOLDOWN_OVERLAY_COLOR = 0x7FFFFFFF;
-    private static final int COOLDOWN_TEXT_COLOR = 0xFFFFFFFF;
-    private static final String STATE_LEARNED_TRANSLATION_KEY = "confluence.soul_skill.state.learned";
-    private static final String STATE_TEMPORARY_TRANSLATION_KEY = "confluence.soul_skill.state.temporary";
-    private static final String STATE_LOCKED_TRANSLATION_KEY = "confluence.soul_skill.state.locked";
-    private static final String STATE_EQUIPPED_TRANSLATION_KEY = "confluence.soul_skill.state.equipped";
-    private static final String STATE_UNAVAILABLE_TRANSLATION_KEY = "confluence.soul_skill.state.unavailable";
 
     protected final Minecraft instance;
     protected final Font font;
@@ -91,7 +73,7 @@ public class SoulSkillBox extends AbstractWidget {
             }
         }
         if (isSkill && !SoulSkillStack.isEmpty(soulSkillStack)) {
-            renderSkillIcon(guiGraphics, soulSkillStack, getCooldownSkillStack(), x + 8, y + 10 - 2);
+            renderSkillIcon(guiGraphics, soulSkillStack, x + 8, y + 10 - 2);
         }
         if (isBox) {
             if (isFlame) {
@@ -114,31 +96,8 @@ public class SoulSkillBox extends AbstractWidget {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 1000);
-        guiGraphics.renderTooltip(font, getSkillTooltipLines(skillStack, skillStack.getSkillDescriptionLines()), Optional.empty(), mouseX, mouseY);
+        guiGraphics.renderTooltip(font, skillStack.getSkillTooltipLines(), mouseX, mouseY);
         poseStack.popPose();
-    }
-
-    public static List<Component> getSkillTooltipLines(SoulSkillStack skillStack, List<Component> tooltipLines) {
-        List<Component> lines = new ArrayList<>(tooltipLines);
-        Player player = Minecraft.getInstance().player;
-        ResourceLocation skillId = skillStack.getSoulSkill().getId();
-        boolean available = PlayerUtils.isSoulSkillAvailable(player, skillId);
-        String stateKey;
-        if (PlayerUtils.isSoulSkillLearned(player, skillId)) {
-            stateKey = STATE_LEARNED_TRANSLATION_KEY;
-        } else if (available) {
-            stateKey = STATE_TEMPORARY_TRANSLATION_KEY;
-        } else {
-            stateKey = STATE_LOCKED_TRANSLATION_KEY;
-        }
-        lines.add(Component.translatable(stateKey).withStyle(ChatFormatting.GRAY));
-        if (PlayerUtils.isSkillEquipped(player, skillId)) {
-            lines.add(Component.translatable(STATE_EQUIPPED_TRANSLATION_KEY).withStyle(ChatFormatting.GRAY));
-            if (!available) {
-                lines.add(Component.translatable(STATE_UNAVAILABLE_TRANSLATION_KEY).withStyle(ChatFormatting.GRAY));
-            }
-        }
-        return lines;
     }
 
     public static void renderBox(GuiGraphics guiGraphics, int x, int y) {
@@ -158,31 +117,11 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     public static void renderSkillIcon(GuiGraphics guiGraphics, SoulSkillStack skillStack, int x, int y) {
-        renderSkillIcon(guiGraphics, skillStack, skillStack, x, y);
-    }
-
-    private static void renderSkillIcon(GuiGraphics guiGraphics, SoulSkillStack skillStack, @Nullable SoulSkillStack cooldownStack, int x, int y) {
         if (SoulSkillStack.isEmpty(skillStack)) {
             return;
         }
+        // TODO 需要添加CD渲染
         guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE);
-        if (!PlayerUtils.isSoulSkillAvailable(Minecraft.getInstance().player, skillStack.getSoulSkill().getId())) {
-            guiGraphics.fill(x, y, x + SKILL_SIZE, y + SKILL_SIZE, UNAVAILABLE_SKILL_OVERLAY_COLOR);
-        }
-        if (cooldownStack != null && cooldownStack.getCd() > 0) {
-            float cooldownPercent = cooldownStack.getMaxCd() > 0 ? Mth.clamp((float) cooldownStack.getCd() / cooldownStack.getMaxCd(), 0.0F, 1.0F) : 1.0F;
-            int top = y + Mth.floor(SKILL_SIZE * (1.0F - cooldownPercent));
-            int bottom = top + Mth.ceil(SKILL_SIZE * cooldownPercent);
-            guiGraphics.fill(RenderType.guiOverlay(), x, top, x + SKILL_SIZE, bottom, COOLDOWN_OVERLAY_COLOR);
-            long seconds = ((long) cooldownStack.getCd() + SharedConstants.TICKS_PER_SECOND - 1) / SharedConstants.TICKS_PER_SECOND;
-            Font font = Minecraft.getInstance().font;
-            guiGraphics.drawCenteredString(font, Long.toString(seconds), x + SKILL_SIZE / 2, y + (SKILL_SIZE - font.lineHeight) / 2, COOLDOWN_TEXT_COLOR);
-        }
-    }
-
-    @Nullable
-    protected SoulSkillStack getCooldownSkillStack() {
-        return soulSkillStack;
     }
 
     public static void renderBoxGray(GuiGraphics guiGraphics, int x, int y) {

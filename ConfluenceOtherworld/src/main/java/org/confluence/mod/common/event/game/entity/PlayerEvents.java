@@ -318,7 +318,7 @@ public final class PlayerEvents {
         if (player.isSpectator()) return;
         ItemStack stack = event.getItemStack();
 
-        if (stack.is(ModTags.Items.MANA_WEAPON) && (player.getData(ModAttachmentTypes.SOUL_STORAGE).isSoulMode() || player.hasEffect(ModEffects.SILENCED))) {
+        if (stack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED)) {
             event.setCanceled(true);
         } else if (!stack.isEmpty()) {
             if (player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)) {
@@ -381,9 +381,6 @@ public final class PlayerEvents {
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
-        if (!event.isEndConquered()) {
-            player.getData(ModAttachmentTypes.SOUL_STORAGE).onRespawn(player);
-        }
         if (ModSecretSeeds.REALLY_SMALL.match(player.server)) {
             ReallySmall.scalePlayer(player);
         }

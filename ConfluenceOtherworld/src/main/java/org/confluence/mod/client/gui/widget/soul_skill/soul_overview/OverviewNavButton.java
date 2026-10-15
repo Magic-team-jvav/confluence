@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.widget.soul.skill.overview;
+package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -9,7 +9,8 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
-import org.confluence.mod.client.gui.container.soul.SoulOverviewScreen;
+import org.confluence.mod.client.gui.container.SoulOverviewScreen;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * 侧边栏导航按钮基类 — 点击后平滑滚动到目标位置
  */
 public abstract class OverviewNavButton extends AbstractWidget {
+    protected static final SoulSkillHandler HOLDER = SoulSkillHandler.INSTANCE;
 
     protected final SoulOverviewScreen screen;
     protected final Font font;

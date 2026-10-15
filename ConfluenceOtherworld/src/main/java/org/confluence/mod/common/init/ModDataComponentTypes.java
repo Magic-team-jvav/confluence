@@ -7,7 +7,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.RepeaterContents;
-import org.confluence.mod.common.component.SoulArtifactCooldown;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
@@ -22,6 +21,4 @@ public final class ModDataComponentTypes {
     public static final Supplier<DataComponentType<ValueComponent>> VALUE = TYPES.registerComponentType("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.registerComponentType("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.registerComponentType("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
-    public static final Supplier<DataComponentType<ResourceLocation>> SOUL_SKILL = TYPES.registerComponentType("soul_skill", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
-    public static final Supplier<DataComponentType<SoulArtifactCooldown>> SOUL_ARTIFACT_COOLDOWN = TYPES.registerComponentType("soul_artifact_cooldown", builder -> builder.persistent(SoulArtifactCooldown.CODEC).networkSynchronized(SoulArtifactCooldown.STREAM_CODEC));
 }

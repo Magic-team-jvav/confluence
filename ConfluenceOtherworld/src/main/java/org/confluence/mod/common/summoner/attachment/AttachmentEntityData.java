@@ -1,5 +1,6 @@
 package org.confluence.mod.common.summoner.attachment;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.util.concurrent.atomic.AtomicReference;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -9,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.AttachmentSyncHandler;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
-import net.neoforged.neoforge.common.util.FriendlyByteBufUtil;
 import net.neoforged.neoforge.network.connection.ConnectionType;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
@@ -54,116 +54,105 @@ public class AttachmentEntityData {
 
     public void tick(Player player) {
         if (isClientSide()) {
-            clientTick();
-            return;
-        }
-
-        if (!isRunning()) {
-            return;
-        }
-
-        hasCarryMinion = false;
-        boolean levelChange = level != null && level != player.level();
-        level = player.level();
-        Map<Long, List<Minion>> sameCache = new HashMap<>();
-        // tick实体
-        for (List<AttachmentEntity> list : groups.values()) {
-            for (AttachmentEntity entity : list) {
-                if (entity instanceof Minion minion) {
-                    List<Minion> minionList = sameCache.computeIfAbsent(minion.getSameHash(), key -> new ArrayList<>());
-                    minion.setOrder(minionList.size());
-                    minionList.add(minion);
-                    for (Minion minion1 : minionList) {
-                        minion1.setSameSize(list.size());
-                    }
-                }
-                if (levelChange) {
-                    entity.onLevelChange();
-                }
-                entity.tick();
-                entity.tickCurrentPathNode();
-            }
-        }
-
-        // 将待添加队列合并到主分组
-        if (!pendingAdd.isEmpty()) {
-            for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entry : pendingAdd.entrySet()) {
-                List<AttachmentEntity> entities = groups.computeIfAbsent(entry.getKey(), key -> new ArrayList<>());
-                for (AttachmentEntity attachmentEntity : entry.getValue()) {
-                    if (!attachmentEntity.getCurrentPathNode().pos().equals(Vec3.ZERO)) {
-                        attachmentEntity.setOwner(player);
-                        entities.add(attachmentEntity);
+            applyPendingSync();
+            renderCache.clear();
+            if (isRunning()) {
+                for (List<AttachmentEntity> list : groups.values()) {
+                    for (AttachmentEntity entity : list) {
+                        entity.tickCurrentPathNode();
+                        renderCache.add(entity);
                     }
                 }
             }
-            pendingAdd.clear();
-            changed = true;
-        }
-        // 检查槽位溢出
-        Map<MinionSlotType, Integer> limits = new HashMap<>();
-        for (Minion minion : get(Minion.class)) {
-            Player owner = minion.getOwner();
-            int limit = limits.computeIfAbsent(minion.getSlotType(), slotType -> {
-                AttributeInstance instance = switch (slotType) {
-                    case Minion -> owner.getAttribute(ConfluenceMagicLib.MINION_CAPACITY);
-                    case Sentry -> owner.getAttribute(ConfluenceMagicLib.SENTRY_CAPACITY);
-                    case None -> null;
-                };
-                if (instance != null) {
-                    return (int) instance.getValue();
-                }
-                return 0;
-            });
-            int slotCost = minion.getSlotCost();
-            if (slotCost > 0) {
-                if (limit >= slotCost) {
-                    limits.put(minion.getSlotType(), limit - slotCost);
-                } else {
-                    minion.setRemove();
-                }
-            }
-        }
-
-        // 清理所有分组中标记移除的实体
-        groups.values().removeIf(list -> {
-            while (true) {
-                list.removeIf(entity -> {
-                    if (!entity.isAlive()) {
-                        entity.setRemove();
+        } else {
+            if (isRunning()) {
+                hasCarryMinion = false;
+                boolean levelChange = level != null && level != player.level();
+                level = player.level();
+                Map<Long, List<Minion>> sameCache = new HashMap<>();
+                // tick实体
+                for (List<AttachmentEntity> list : groups.values()) {
+                    for (AttachmentEntity entity : list) {
+                        if (entity instanceof Minion minion) {
+                            List<Minion> minionList = sameCache.computeIfAbsent(minion.getSameHash(), key -> new ArrayList<>());
+                            minion.setOrder(minionList.size());
+                            minionList.add(minion);
+                            for (Minion minion1 : minionList) {
+                                minion1.setSameSize(list.size());
+                            }
+                        }
+                        if (levelChange) {
+                            entity.onLevelChange();
+                        }
+                        entity.tick();
+                        entity.tickCurrentPathNode();
                     }
-                    if (entity.isRemove()) {
-                        entity.onRemove();
-                        changed = true;
-                        return true;
+                }
+                // 将待添加队列合并到主分组
+                if (!pendingAdd.isEmpty()) {
+                    for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entry : pendingAdd.entrySet()) {
+                        List<AttachmentEntity> entities = groups.computeIfAbsent(entry.getKey(), key -> new ArrayList<>());
+                        for (AttachmentEntity attachmentEntity : entry.getValue()) {
+                            if (!attachmentEntity.getCurrentPathNode().pos().equals(Vec3.ZERO)) {
+                                attachmentEntity.setOwner(player);
+                                entities.add(attachmentEntity);
+                            }
+                        }
                     }
-                    return false;
+                    pendingAdd.clear();
+                    changed = true;
+                }
+                // 检查槽位溢出
+                Map<MinionSlotType, Integer> limits = new HashMap<>();
+                for (Minion minion : get(Minion.class)) {
+                    Player owner = minion.getOwner();
+                    int limit = limits.computeIfAbsent(minion.getSlotType(), slotType -> {
+                        AttributeInstance instance = switch (slotType) {
+                            case Minion -> owner.getAttribute(ConfluenceMagicLib.MINION_CAPACITY);
+                            case Sentry -> owner.getAttribute(ConfluenceMagicLib.SENTRY_CAPACITY);
+                            case None -> null;
+                        };
+                        if (instance != null) {
+                            return (int) instance.getValue();
+                        }
+                        return 0;
+                    });
+                    int slotCost = minion.getSlotCost();
+                    if (slotCost > 0) {
+                        if (limit >= slotCost) {
+                            limits.put(minion.getSlotType(), limit - slotCost);
+                        } else {
+                            minion.setRemove();
+                        }
+                    }
+                }
+                // 清理所有分组中标记移除的实体
+                groups.values().removeIf(list -> {
+                    while (true) {
+                        list.removeIf(entity -> {
+                            if (!entity.isAlive()) {
+                                entity.setRemove();
+                            }
+                            if (entity.isRemove()) {
+                                entity.onRemove();
+                                changed = true;
+                                return true;
+                            }
+                            return false;
+                        });
+                        if (list.isEmpty()) {
+                            break;
+                        }
+                        if (list.stream().noneMatch(AttachmentEntity::isRemove)) {
+                            break;
+                        }
+                    }
+                    return list.isEmpty();
                 });
-                if (list.isEmpty()) {
-                    break;
+                if (!groups.isEmpty() || changed) {
+                    changed = false;
+                    player.syncData(SummonerAttachmentTypes.ENTITY_DATA.get());
                 }
-                if (list.stream().noneMatch(AttachmentEntity::isRemove)) {
-                    break;
-                }
-            }
-            return list.isEmpty();
-        });
-
-        if (!groups.isEmpty() || changed) {
-            changed = false;
-            player.syncData(SummonerAttachmentTypes.ENTITY_DATA.get());
-        }
-    }
-
-    private void clientTick() {
-        applyPendingSync();
-        renderCache.clear();
-        if (!isRunning()) {
-            return;
-        }
-        for (List<AttachmentEntity> list : groups.values()) {
-            for (AttachmentEntity entity : list) {
-                entity.tickCurrentPathNode();
-                renderCache.add(entity);
             }
         }
     }
@@ -179,8 +168,9 @@ public class AttachmentEntityData {
     public boolean isRunning() {
         if (isClientSide()) {
             return !groups.isEmpty();
+        } else {
+            return !groups.isEmpty() || !pendingAdd.isEmpty() || changed;
         }
-        return !groups.isEmpty() || !pendingAdd.isEmpty() || changed;
     }
 
     public void add(AttachmentEntity entity) {
@@ -277,31 +267,30 @@ public class AttachmentEntityData {
 
         @Override
         public void write(RegistryFriendlyByteBuf buf, AttachmentEntityData data, boolean initialSync) {
-            buf.writeByteArray(FriendlyByteBufUtil.writeCustomData(payloadBuf -> {
-                // 写入 AttachmentEntityType → 实体列表的结构
-                payloadBuf.writeVarInt(data.groups.size());
-                for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entityEntry : data.groups.entrySet()) {
-                    payloadBuf.writeResourceLocation(entityEntry.getKey().location());
-                    List<AttachmentEntity> list = entityEntry.getValue();
-                    payloadBuf.writeVarInt(list.size());
-                    for (AttachmentEntity entity : list) {
-                        payloadBuf.writeUUID(entity.getUuid());
-                        entity.getSyncFieldDispatcher().encode(payloadBuf, entity.getLevel(), initialSync);
-                        payloadBuf.writeBoolean(entity.isClientInit());
-                        if (entity.isClientInit()) {
-                            continue;
-                        }
+            // 写入 AttachmentEntityType → 实体列表的结构
+            buf.writeVarInt(data.groups.size());
+            for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entityEntry : data.groups.entrySet()) {
+                buf.writeResourceLocation(entityEntry.getKey().location());
+                List<AttachmentEntity> list = entityEntry.getValue();
+                buf.writeVarInt(list.size());
+                for (AttachmentEntity entity : list) {
+                    buf.writeUUID(entity.getUuid());
+                    entity.getSyncFieldDispatcher().encode(buf, entity.getLevel(), initialSync);
+                    buf.writeBoolean(entity.isClientInit());
+                    if (!entity.isClientInit()) {
                         entity.setClientInit(true);
-                        LyraStreamCodecs.PATH_NODE.encode(payloadBuf, entity.getHistoryNodes().get(0));
+                        LyraStreamCodecs.PATH_NODE.encode(buf, entity.getHistoryNodes().get(0));
                     }
                 }
-            }, buf.registryAccess()));
+            }
         }
 
         @Override
         public AttachmentEntityData read(@NotNull IAttachmentHolder holder, @NotNull RegistryFriendlyByteBuf buf, @Nullable AttachmentEntityData oldData) {
             AttachmentEntityData data = oldData != null ? oldData : new AttachmentEntityData(holder);
-            byte[] payload = buf.readByteArray();
+            ByteBuf copy = buf.copy();
+            byte[] payload = new byte[copy.readableBytes()];
+            copy.readBytes(payload);
             if (payload.length == 0) {
                 return data;
             }

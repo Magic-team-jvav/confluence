@@ -26,7 +26,6 @@ import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
-import org.confluence.mod.common.soul.skill.SoulSkillParameters;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
@@ -73,8 +72,6 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> FISHING = EFFECTS.register("fishing", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x00BFFF));
     public static final DeferredHolder<MobEffect, MobEffect> MAGIC_POWER = EFFECTS.register("magic_power", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xCC00CC)
             .addAttributeModifier(LibAttributes.getMagicDamage(), id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-    public static final DeferredHolder<MobEffect, MobEffect> ENHANCED_SOUL = EFFECTS.register("enhanced_soul", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, SoulSkillParameters.ENHANCED_SOUL_COLOR)
-            .addAttributeModifier(LibAttributes.getSoulDamage(), id, SoulSkillParameters.ENHANCED_SOUL_DAMAGE_MULTIPLIER - 1.0D, ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> OBSIDIAN_SKIN = EFFECTS.register("obsidian_skin", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x660066));
     public static final DeferredHolder<MobEffect, MobEffect> LUCK_EFFECT = EFFECTS.register("luck", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x39C5BB)
             .addAttributeModifier(Attributes.LUCK, id, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.5));

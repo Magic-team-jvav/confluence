@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.util.supplier.FloatSupplier;
@@ -19,8 +18,6 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
 
 public class ManaStorage implements INBTSerializable<CompoundTag> {
-    private static final float MIN_MANA = 0.0F;
-    private transient IAttachmentHolder holder;
     private int stars;
     private int additionalMana;
     private float currentMana;
@@ -30,8 +27,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     private boolean arcaneCrystalUsed;
 
-    public ManaStorage(IAttachmentHolder holder) {
-        this.holder = holder;
+    public ManaStorage() {
         this.stars = 1;
         this.additionalMana = 0;
         this.currentMana = 20;
@@ -47,7 +43,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("stars", stars);
         nbt.putInt("additionalMana", additionalMana);
-        nbt.putFloat("currentMana", getCurrentMana());
+        nbt.putFloat("currentMana", currentMana);
         nbt.putBoolean("fastManaRegeneration", fastManaRegeneration);
         nbt.putBoolean("arcaneCrystalUsed", arcaneCrystalUsed);
         return nbt;
@@ -88,17 +84,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     public float getCurrentMana() {
-        return isManaActive() ? currentMana : MIN_MANA;
-    }
-
-    public void setCurrentMana(float amount) {
-        if (Float.isFinite(amount)) {
-            this.currentMana = isManaActive() ? Mth.clamp(amount, MIN_MANA, getMaxMana()) : MIN_MANA;
-        }
-    }
-
-    private boolean isManaActive() {
-        return !holder.getExistingData(ModAttachmentTypes.SOUL_STORAGE).map(SoulStorage::isSoulMode).orElse(false);
+        return currentMana;
     }
 
     public int getRegenerateDelay() {
@@ -122,19 +108,17 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public void freshMaxMana() {
         this.maxMana = stars * 20 + additionalMana;
-        if (!isManaActive()) {
-            this.currentMana = MIN_MANA;
-        } else if (currentMana > maxMana) {
+        if (currentMana > maxMana) {
             this.currentMana = maxMana;
         }
     }
 
     public boolean canExtract() {
-        return isManaActive() && currentMana > 0;
+        return currentMana > 0;
     }
 
     public boolean canReceive() {
-        return isManaActive() && currentMana < getMaxMana();
+        return currentMana < getMaxMana();
     }
 
     public boolean addStar() {
@@ -150,7 +134,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         if (stars <= 1) return false;
         float oldMax = getMaxMana();
         this.stars--;
-        setCurrentMana(Mth.clamp(currentMana - 20.0F, 0.0F, oldMax));
+        this.currentMana = Mth.clamp(currentMana - 20.0F, 0.0F, oldMax);
         freshMaxMana();
         return true;
     }

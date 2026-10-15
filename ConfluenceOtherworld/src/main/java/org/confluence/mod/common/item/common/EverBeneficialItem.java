@@ -69,33 +69,6 @@ public class EverBeneficialItem extends CustomRarityItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        if (upgrade == PermanentUpgrade.FALLEN_SOUL_CORE) {
-            if (player.getCooldowns().isOnCooldown(this)) {
-                return InteractionResultHolder.fail(stack);
-            }
-            if (player.isCreative() && player.isShiftKeyDown()) {
-                if (!PlayerUtils.canAdjustSoulWithCore(player, stack)) {
-                    return InteractionResultHolder.fail(stack);
-                }
-                if (player instanceof ServerPlayer serverPlayer && !PlayerUtils.adjustSoulWithCore(serverPlayer, stack, true)) {
-                    return InteractionResultHolder.fail(stack);
-                }
-                return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
-            }
-            if (player instanceof ServerPlayer serverPlayer) {
-                if (!PlayerUtils.toggleSoulMode(serverPlayer, FALLEN_SOUL_CORE_TARGET_RESOURCE)) {
-                    return InteractionResultHolder.fail(stack);
-                }
-                CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
-                if (!player.hasInfiniteMaterials()) {
-                    stack.shrink(FALLEN_SOUL_CORE_CONSUME_COUNT);
-                }
-                player.getCooldowns().addCooldown(this, FALLEN_SOUL_CORE_COOLDOWN_TICKS);
-                String message = player.getData(ModAttachmentTypes.SOUL_STORAGE).isSoulMode() ? FALLEN_SOUL_CORE_SOUL_MESSAGE : FALLEN_SOUL_CORE_MAGIC_MESSAGE;
-                player.displayClientMessage(Component.translatable(message), true);
-            }
-            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
-        }
         if (player instanceof ServerPlayer serverPlayer) {
             if (!upgrade.tryUse(serverPlayer)) return InteractionResultHolder.fail(stack);
             CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);

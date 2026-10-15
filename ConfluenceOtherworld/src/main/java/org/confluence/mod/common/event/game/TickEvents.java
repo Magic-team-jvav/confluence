@@ -99,14 +99,6 @@ public final class TickEvents {
             MountManager.validate(player);
             YoyoSession.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
-            if (gameTime % SharedConstants.TICKS_PER_SECOND == 0) {
-                PlayerUtils.regenerateSoul(player);
-            }
-            player.getData(ModAttachmentTypes.SOUL_STORAGE).syncIfNeeded(player);
-            PlayerUtils.refreshSoulSkillAvailability(player);
-            player.getData(ModAttachmentTypes.SOUL_SKILL_STORAGE).tickCooldowns();
-            player.getData(ModAttachmentTypes.SOUL_SKILL_STORAGE).syncIfNeeded(player);
-            PlayerUtils.tickSoulArtifactCooldowns(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);
             AchievementUtils.aRareRealm(player, gameTime);

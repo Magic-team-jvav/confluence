@@ -37,9 +37,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.*;
-import org.confluence.mod.common.item.soul.SoulWeaponItem;
 import org.confluence.mod.common.item.sponsor.*;
-import org.confluence.mod.common.soul.skill.SoulSkillParameters;
 import org.confluence.mod.integration.sodium.iris.IrisHelper;
 import org.confluence.mod.util.DateUtils;
 import org.jetbrains.annotations.NotNull;
@@ -89,8 +87,6 @@ public final class ModItems {
 
     public static final DeferredItem<BestiaryItem> BESTIARY = HIDDEN.register("bestiary", BestiaryItem::new);
     public static final DeferredItem<Item> BACKGROUND_IMAGE_MAKER = HIDDEN.register("background_image_maker", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
-
-    public static final DeferredItem<SoulWeaponItem> BROKEN_GLIMMER = ITEMS.register("broken_glimmer", () -> new SoulWeaponItem(new Item.Properties().stacksTo(1), ModRarity.WHITE, SoulSkillParameters.BROKEN_GLIMMER_DAMAGE));
 
     public static final DeferredItem<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final DeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN.get(), ModRarity.ORANGE, ModItems.GOLD_COIN, 100));

@@ -13,7 +13,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.common.attachment.LeftClickState;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
-import org.confluence.mod.util.PlayerUtils;
 
 public record LeftClickItemActionPacketC2S(Action action) implements IPacketC2S {
     public static final StreamCodec<ByteBuf, LeftClickItemActionPacketC2S> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(
@@ -37,15 +36,6 @@ public record LeftClickItemActionPacketC2S(Action action) implements IPacketC2S 
             if (state.isPressed(stack) && stack.getItem() instanceof ILeftClickStateItem item) {
                 item.onWheelScroll(player, stack, action == Action.WHEEL_UP ? 1 : -1);
             }
-            return;
-        }
-        if (PlayerUtils.canAdjustSoulWithCore(player, stack)) {
-            if (state.isPressed(stack)) {
-                return;
-            }
-            release(player, state);
-            state.press(stack);
-            PlayerUtils.adjustSoulWithCore(player, stack, false);
             return;
         }
         if (!(stack.getItem() instanceof ILeftClickStateItem item)) {

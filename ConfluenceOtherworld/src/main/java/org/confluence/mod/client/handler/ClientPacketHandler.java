@@ -11,11 +11,8 @@ import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.client.gui.container.soul.SoulOverviewScreen;
-import org.confluence.mod.client.handler.soul.ClientSoulHandler;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IDeathScreen;
@@ -111,12 +108,14 @@ public final class ClientPacketHandler {
         }
     }
 
-    public static void handleSoulSkills(SoulSkillSyncPacketS2C packet, Player player) {
-        player.getData(ModAttachmentTypes.SOUL_SKILL_STORAGE).applySnapshot(player.registryAccess(), packet.data());
-        ClientSoulHandler.INSTANCE.allUpdate();
-        if (Minecraft.getInstance().screen instanceof SoulOverviewScreen screen) {
-            screen.refreshSoulSkills();
-        }
+    public static void handleSoul(SoulPacketS2C packet, Player player) {
+//        maxSoul = packet.maxSoul();
+//        currentSoul = packet.currentSoul();
+//        fallenSoulCoreActive = packet.fallenSoulCoreActive();
+//        EverBeneficial beneficial = EverBeneficial.of(player);
+//        beneficial.setFallenSoulCore(fallenSoulCoreActive);
+//        PlayerSpecialData data = PlayerSpecialData.of(player);
+//        data.setFallenSoulCoreActive(beneficial.getFallenSoulCore());
     }
 
     public static void handleFishingPower(FishingPowerInfoPacketS2C packet) {

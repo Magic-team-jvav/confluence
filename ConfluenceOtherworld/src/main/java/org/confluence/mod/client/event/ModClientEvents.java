@@ -65,7 +65,7 @@ import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.soul.ClientSoulHandler;
+import org.confluence.mod.client.handler.SoulSkillHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
@@ -96,7 +96,6 @@ import org.confluence.mod.client.renderer.entity.flail.BaseFlailRenderer;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
-import org.confluence.mod.client.renderer.entity.projectile.soul.SoulLureProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.SwordProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.CthulhuEyeProjectileRenderer;
@@ -232,12 +231,12 @@ public final class ModClientEvents {
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
 
         if (Confluence.SOUL_SKILLS) {
-            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_l_hud"), ClientSoulHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_r_hud"), ClientSoulHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("roulette_wheel_small_hud"), ClientSoulHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("current_selected_skill_hud"), ClientSoulHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("roulette_wheel_big_hud"), ClientSoulHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
-            ClientSoulHandler.INSTANCE.init();
+            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_l_hud"), SoulSkillHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
+            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_r_hud"), SoulSkillHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
+            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("roulette_wheel_small_hud"), SoulSkillHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
+            event.registerBelow(VanillaGuiLayers.HOTBAR, Confluence.asResource("current_selected_skill_hud"), SoulSkillHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
+            event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("roulette_wheel_big_hud"), SoulSkillHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
+            SoulSkillHandler.INSTANCE.init();
         }
     }
 
@@ -367,9 +366,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WET_BOMB.get(), WetBombEntityRenderer::new);
         event.registerEntityRenderer(LAVA_BOMB.get(), LavaBombEntityRenderer::new);
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
-
-        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), SoulLureProjectileRenderer::new);
-        event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
 
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);

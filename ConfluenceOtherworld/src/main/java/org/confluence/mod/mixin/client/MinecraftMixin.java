@@ -13,16 +13,13 @@ import net.minecraft.server.WorldStem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
-import org.confluence.mod.client.handler.soul.ClientSoulHandler;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -104,12 +101,6 @@ public abstract class MinecraftMixin {
                 }
             }
         }
-    }
-
-    @WrapOperation(method = "handleKeybinds", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/player/Inventory;selected:I", opcode = Opcodes.PUTFIELD))
-    private void confluence$useSoulArtifact(Inventory inventory, int slot, Operation<Void> original) {
-        original.call(inventory, slot);
-        ClientSoulHandler.tryUseSoulArtifact(slot);
     }
 
     @WrapOperation(method = "createTitle", at = @At(value = "INVOKE", target = "Ljava/lang/StringBuilder;toString()Ljava/lang/String;"))

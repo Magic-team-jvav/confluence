@@ -34,17 +34,14 @@ import org.confluence.mod.common.entity.projectile.flail.DripplerCripplerProject
 import org.confluence.mod.common.entity.projectile.flail.FlaironBubbleProjectile;
 import org.confluence.mod.common.entity.projectile.flail.FlowerPowerPetalProjectile;
 import org.confluence.mod.common.entity.projectile.mana.*;
-import org.confluence.mod.common.entity.projectile.soul.SoulLureProjectile;
 import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
-import org.confluence.mod.common.entity.soul.SpiritSurgeEntity;
 import org.confluence.mod.common.entity.storage.ChesterEntity;
 import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
 import org.confluence.mod.common.entity.yoyo.*;
-import org.confluence.mod.common.soul.skill.SoulSkillParameters;
 import org.confluence.mod.integration.sable.SableHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,9 +81,6 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<LiquidBombEntity>> WET_BOMB = registerBomb("wet_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
     public static final DeferredHolder<EntityType<?>, EntityType<LiquidBombEntity>> LAVA_BOMB = registerBomb("lava_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
     public static final DeferredHolder<EntityType<?>, EntityType<LiquidBombEntity>> HONEY_BOMB = registerBomb("honey_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
-
-    public static final DeferredHolder<EntityType<?>, EntityType<SoulLureProjectile>> SOUL_LURE_PROJECTILE = ENTITIES.register("soul_lure", id -> EntityType.Builder.<SoulLureProjectile>of(SoulLureProjectile::new, MobCategory.MISC).sized(SoulSkillParameters.SOUL_LURE_ENTITY_SIZE, SoulSkillParameters.SOUL_LURE_ENTITY_SIZE).clientTrackingRange(SoulSkillParameters.SOUL_ENTITY_TRACKING_RANGE).updateInterval(SoulSkillParameters.SOUL_ENTITY_UPDATE_INTERVAL).noSave().build(id.toString()));
-    public static final DeferredHolder<EntityType<?>, EntityType<SpiritSurgeEntity>> SPIRIT_SURGE = ENTITIES.register("spirit_surge", id -> EntityType.Builder.<SpiritSurgeEntity>of(SpiritSurgeEntity::new, MobCategory.MISC).sized(SoulSkillParameters.SOUL_LURE_ENTITY_SIZE, SoulSkillParameters.SOUL_LURE_ENTITY_SIZE).clientTrackingRange(SoulSkillParameters.SOUL_ENTITY_TRACKING_RANGE).updateInterval(SoulSkillParameters.SOUL_ENTITY_UPDATE_INTERVAL).noSave().build(id.toString()));
 
     // 魔法
     public static final DeferredHolder<EntityType<?>, EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = ENTITIES.register("base_mana_staff", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));

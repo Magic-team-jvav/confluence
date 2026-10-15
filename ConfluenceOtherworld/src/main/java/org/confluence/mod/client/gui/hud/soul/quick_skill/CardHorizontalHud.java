@@ -7,11 +7,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.widget.soul.skill.SoulSkillBox;
-import org.confluence.mod.client.handler.soul.ClientSoulHandler;
-import org.confluence.mod.client.util.soul.SoulQuickSkillHudUtils;
-import org.confluence.mod.common.soul.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.client.gui.hud.soul.SoulQuickSkillHudUtils;
+import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulSkillHandler;
+import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -109,8 +108,8 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!isType()) return;
 
-        int currentIdx = PlayerUtils.getCurrentIndex(getMinecraft().player);
-        int totalSkills = PlayerUtils.getEquippedSkillMaxNumber(getMinecraft().player);
+        int currentIdx = soulSkillHolder.getCurrentIndex();
+        int totalSkills = soulSkillHolder.getEquippedSkillMaxNumber();
         if (totalSkills <= 0) return;
 
         float totalSlide = renderRotation;
@@ -136,7 +135,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
 
             int effectiveOffset = Math.round(virtualPos);
             int skillIdx = SoulQuickSkillHudUtils.calculateSkillIndex(effectiveOffset, currentIdx, totalSkills);
-            SoulSkillStack stack = PlayerUtils.getCurrentSkillStack(getMinecraft().player, skillIdx);
+            SoulSkillStack stack = soulSkillHolder.getCurrentSkillStack(skillIdx);
             boolean selected = Math.abs(virtualPos) < 0.5f;
 
             // 弧形坐标
@@ -243,8 +242,8 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     public void update() {}
 
     @Override
-    public ClientSoulHandler.Type getType() {
-        return isRight ? ClientSoulHandler.Type.CARD_HORIZONTAL_R
-                : ClientSoulHandler.Type.CARD_HORIZONTAL_L;
+    public SoulSkillHandler.Type getType() {
+        return isRight ? SoulSkillHandler.Type.CARD_HORIZONTAL_R
+                : SoulSkillHandler.Type.CARD_HORIZONTAL_L;
     }
 }

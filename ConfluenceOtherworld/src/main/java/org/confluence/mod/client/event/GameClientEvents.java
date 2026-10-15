@@ -74,7 +74,6 @@ import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-import org.confluence.mod.client.handler.soul.ClientSoulHandler;
 import org.confluence.mod.client.renderer.ModRenderer;
 import org.confluence.mod.client.renderer.block.MuralPlacementPreviewRenderer;
 import org.confluence.mod.client.renderer.entity.MartianOfficerRenderer;
@@ -205,7 +204,7 @@ public final class GameClientEvents {
             ClientBiomeEffectSystem.tick(player);
             ScryingOrbHandler.handle(minecraft, player);
             if (Confluence.SOUL_SKILLS) {
-                ClientSoulHandler.INSTANCE.handle(minecraft);
+                SoulSkillHandler.handle(minecraft);
             }
             if (!minecraft.isPaused()) {
                 if (player.hasEffect(ModEffects.ELECTRIFIED)) {
@@ -287,7 +286,7 @@ public final class GameClientEvents {
                         event.setCanceled(true);
                     }
                     event.setSwingHand(false);
-                } else if (event.isAttack() && (stack.getItem() instanceof ILeftClickStateItem || ClientWeaponInputManager.blocksAttack(stack) || PlayerUtils.canAdjustSoulWithCore(player, stack))) {
+                } else if (event.isAttack() && (stack.getItem() instanceof ILeftClickStateItem || ClientWeaponInputManager.blocksAttack(stack))) {
                     event.setCanceled(true);
                     event.setSwingHand(false);
                 } else if (event.isUseItem() && stack.is(ModItems.BACKGROUND_IMAGE_MAKER)) {
@@ -319,7 +318,7 @@ public final class GameClientEvents {
         if (LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
             event.setCanceled(true);
         } else if (Confluence.SOUL_SKILLS) {
-            if (ClientSoulHandler.INSTANCE.scrolling(scrollDeltaY)) {
+            if (SoulSkillHandler.INSTANCE.scrolling(scrollDeltaY)) {
                 event.setCanceled(true);
             }
         }

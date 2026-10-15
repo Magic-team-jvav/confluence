@@ -1,4 +1,4 @@
-package org.confluence.mod.client.util.soul;
+package org.confluence.mod.client.gui.hud.soul;
 
 /**
  * 灵魂技能快速切换HUD工具类
@@ -41,7 +41,7 @@ public final class SoulQuickSkillHudUtils {
      * @return 计算后的技能索引
      */
     public static int getSkillIndex(int slotIdx, int rotationOffset, int currentIdx,
-                                   int totalSkills, int displayCount, int halfDisplay) {
+                                    int totalSkills, int displayCount, int halfDisplay) {
         if (totalSkills <= 0) {
             return -1;
         }
@@ -120,6 +120,6 @@ public final class SoulQuickSkillHudUtils {
     public static int getDefaultSkillIndex(int slotIdx, int currentIdx, int totalSkills) {
         int rotationOffset = calculateDefaultRotationOffset(0); // 这里可以根据实际需要调整
         return getSkillIndex(slotIdx, rotationOffset, currentIdx, totalSkills,
-                           DEFAULT_DISPLAY_COUNT, DEFAULT_HALF_DISPLAY);
+                DEFAULT_DISPLAY_COUNT, DEFAULT_HALF_DISPLAY);
     }
 }

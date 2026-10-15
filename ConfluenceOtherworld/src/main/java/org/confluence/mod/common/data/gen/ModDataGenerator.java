@@ -1,5 +1,9 @@
 package org.confluence.mod.common.data.gen;
 
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+
+import org.confluence.mod.common.data.saved.Bestiary;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -87,7 +91,6 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModEnchantmentTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModRecipeSerializerTagsProvider(output, lookup, helper));
-        generator.addProvider(server, new ModSoulSkillTagsProvider(output, lookup, helper));
         generator.addProvider(server, new EMILootDirectDropsProvider(output, lookup));
         generator.addProvider(server, new EMILootExcludedSyntheticLootModifierLootTablesProvider(output, lookup));
         generator.addProvider(server, new ModLootModifiersProvider(output, lookup));

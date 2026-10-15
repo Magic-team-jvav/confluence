@@ -4,9 +4,8 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.HumanoidArm;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
-import org.confluence.mod.client.gui.widget.soul.skill.SoulSkillBox;
-import org.confluence.mod.common.soul.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 
 public class CurrentSelectedSkillHud extends BasicHudLayer {
@@ -20,9 +19,6 @@ public class CurrentSelectedSkillHud extends BasicHudLayer {
 
     @Override
     protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!PlayerUtils.isHoldingSoulWeapon(getMinecraft().player)) {
-            return;
-        }
         box.render(guiGraphics, 0, 0, deltaTracker.getRealtimeDeltaTicks());
     }
 

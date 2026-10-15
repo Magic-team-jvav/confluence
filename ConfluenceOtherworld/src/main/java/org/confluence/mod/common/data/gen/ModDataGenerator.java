@@ -46,6 +46,7 @@ public final class ModDataGenerator {
 
         boolean client = event.includeClient();
         generator.addProvider(client, new ModChineseProvider(output));
+        generator.addProvider(client, new ModDataTipProvider(output));
         generator.addProvider(client, new ModEnglishProvider(output, lookup));
         generator.addProvider(client, new ModEnUdProvider(output, lookup));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));

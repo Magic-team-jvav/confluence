@@ -107,6 +107,8 @@ public class BoomerangProjectile extends Projectile {
                     Vec3 push = getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(0.35);
                     livingTarget.push(push.x, 0.1, push.z);
                     livingOwner.setLastHurtMob(target);
+                    if (livingTarget.isAlive() && getWeapon().getItem() instanceof BoomerangItem boomerang)
+                        boomerang.onProjectileHit(this, livingOwner, livingTarget);
                 }
             }
         }
@@ -150,6 +152,8 @@ public class BoomerangProjectile extends Projectile {
             noPhysics = true;
         }
         Vec3 motion = getDeltaMovement();
+        if (level().isClientSide && getWeapon().getItem() instanceof BoomerangItem boomerang)
+            boomerang.emitFlightParticles(this, motion);
         setPos(getX() + motion.x, getY() + motion.y, getZ() + motion.z);
         updateRotation();
     }

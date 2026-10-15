@@ -6051,6 +6051,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoomerangItems.COMBAT_WRENCH.get(), "战斗扳手");
         add(BoomerangItems.WOOD_BOOMERANG.get(), "木回旋镖");
         add(BoomerangItems.BEIDOU_BOOMERANG.get(), "北斗飞镖");
+        add("tooltip.item.confluence.bei_dou_boomerang.0", "命中时随机施加以下一种效果：");
+        add("tooltip.item.confluence.bei_dou_boomerang.1", "霜冻 IV（10秒）");
+        add("tooltip.item.confluence.bei_dou_boomerang.2", "狱炎 IV（10秒）");
+        add("tooltip.item.confluence.bei_dou_boomerang.3", "凋零 IV（10秒）");
+        add("tooltip.item.confluence.bei_dou_boomerang.4", "中毒 IV（10秒）");
+        add("tooltip.item.confluence.bei_dou_boomerang.5", "瞬间伤害 VII");
         add(BoomerangItems.DEVELOPER_BOOMERANG.get(), "开发者回旋镖");
     }
 

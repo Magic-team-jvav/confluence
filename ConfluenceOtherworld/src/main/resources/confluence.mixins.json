@@ -25,7 +25,6 @@
         "server.level.ServerPlayerMixin",
         "server.network.ServerGamePacketListenerImplMixin",
         "world.ContainerMixin",
-        "world.DifficultyInstanceMixin",
         "world.DifficultyMixin",
         "world.damagesource.DamageSourceMixin",
         "world.entity.EntityAccessor",

@@ -1,12 +1,12 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseMonster;
@@ -145,7 +145,7 @@ public final class BowCombatAction extends BTNode {
         SpawnArrowAction shot = SpawnArrowAction.mobBowShot(mob, BowItem.getPowerForTime(chargeTicks), arrowVelocity);
         shot.start();
         if (shot.execute() == BTStatus.SUCCESS) {
-            attackCooldown = mob.level().getDifficulty() == Difficulty.HARD ? hardAttackInterval : normalAttackInterval;
+            attackCooldown = LibUtils.isMaster(mob.level()) ? hardAttackInterval : normalAttackInterval;
             choosePostShotMovement(target, distanceSqr);
         } else {
             attackCooldown = 1;

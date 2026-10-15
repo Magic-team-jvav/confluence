@@ -66,6 +66,7 @@ import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.MoneyDropSource;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -211,7 +212,9 @@ public final class ModUtils {
         double attackFactor = attack == null ? 0.0 : attack.getValue() * 0.25;
         double armorFactor = armor == null ? 0.0 : armor.getValue() * 0.1;
         double knockbackResistanceFactor = knockbackResistance == null ? 10.0 : (1.0 + knockbackResistance.getValue()) * 10.0;
-        double difficultyFactor = level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
+        double difficultyFactor = CreatureDifficultyScaling.isManaged(living)
+                ? LibUtils.getDifficultyId(level) * 0.375
+                : level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
         return Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
     }
 

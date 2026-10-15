@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -27,9 +28,15 @@ public class ForTheWorthy extends SecretSeed {
         return "fortheworthy".equals(seed) || "for the worthy".equals(seed);
     }
 
+    public static boolean isEnabled(Level level) {
+        return level instanceof ServerLevel serverLevel
+                ? ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel)
+                : level.isClientSide && ModSecretSeeds.FOR_THE_WORTHY.match();
+    }
+
     public static Component getDifficultyName(Difficulty difficulty) {
         return switch (difficulty) {
-            case PEACEFUL -> Component.translatable("options.difficulty.easy");
+            case PEACEFUL -> Component.translatable("options.difficulty.peaceful");
             case EASY -> Component.translatable("options.difficulty.normal");
             case NORMAL -> Component.translatable("options.difficulty.hard");
             case HARD -> Component.translatable("options.difficulty.legendary");

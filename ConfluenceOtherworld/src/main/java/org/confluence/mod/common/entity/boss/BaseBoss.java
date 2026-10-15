@@ -291,11 +291,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 行为只随世界难度变化，不受月相、区块停留时间或区域难度影响。
     public final <T> T selectByDifficulty(T classic, T expert, T master, T legendary) {
-        return switch (level().getDifficulty()) {
-            case HARD -> isFtw() ? legendary : master;
-            case NORMAL -> expert;
-            default -> classic;
-        };
+        return LibUtils.switchByDifficulty(level(), blockPosition(), classic, expert, master, legendary);
     }
 
     /// 当前世界是否启用了“受够了”特殊种子规则。

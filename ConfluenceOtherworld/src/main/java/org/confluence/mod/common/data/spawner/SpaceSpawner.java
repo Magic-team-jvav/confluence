@@ -17,6 +17,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.lib.util.function.ints.ToIntFunction4;
 import org.confluence.mod.common.init.entity.MonsterEntities;
@@ -31,7 +32,7 @@ public class SpaceSpawner implements CustomSpawner {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
-                if (difficulty.getEffectiveDifficulty() * csd.speedMultiplier() > random.nextFloat() * 3) {
+                if (LibUtils.getDifficultyId(level) * 0.75F * csd.speedMultiplier() > random.nextFloat() * 3) {
                     BlockPos spawnPos = pos.offset(
                             -25 + random.nextInt(51),
                             15 + random.nextInt(15),
@@ -67,7 +68,7 @@ public class SpaceSpawner implements CustomSpawner {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
-                if (difficulty.getEffectiveDifficulty() * csd.speedMultiplier() > random.nextFloat() * 3) {
+                if (LibUtils.getDifficultyId(level) * 0.75F * csd.speedMultiplier() > random.nextFloat() * 3) {
                     BlockPos spawnPos = pos.offset(
                             -25 + random.nextInt(51),
                             15 + random.nextInt(15),

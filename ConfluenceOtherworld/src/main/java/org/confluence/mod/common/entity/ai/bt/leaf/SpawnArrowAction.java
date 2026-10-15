@@ -9,6 +9,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -76,7 +77,7 @@ public final class SpawnArrowAction extends BTNode {
         double horizontalDistance = Math.sqrt(dx * dx + dz * dz);
         float inaccuracy = explicitInaccuracy != null
                 ? explicitInaccuracy
-                : 14.0F - shooter.level().getDifficulty().getId() * 4.0F;
+                : 14.0F - Math.min(LibUtils.getDifficultyId(shooter.level()), 3) * 4.0F;
         arrow.shoot(dx, dy + horizontalDistance * 0.20000000298023224, dz, parameters.speedOr(velocity), parameters.inaccuracyOr(inaccuracy));
         if (!shooter.level().addFreshEntity(arrow)) {
             arrow.discard();

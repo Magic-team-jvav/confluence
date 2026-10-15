@@ -2612,6 +2612,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add(BoomerangItems.COMBAT_WRENCH.get(), "Combat Wrench");
         add(BoomerangItems.WOOD_BOOMERANG.get(), "Wood Boomerang");
         add(BoomerangItems.BEIDOU_BOOMERANG.get(), "Bei Dou Boomerang");
+        add("tooltip.item.confluence.bei_dou_boomerang.0", "On hit, randomly applies one of the following effects:");
+        add("tooltip.item.confluence.bei_dou_boomerang.1", "Frostburn IV (10 seconds)");
+        add("tooltip.item.confluence.bei_dou_boomerang.2", "Hellfire IV (10 seconds)");
+        add("tooltip.item.confluence.bei_dou_boomerang.3", "Wither IV (10 seconds)");
+        add("tooltip.item.confluence.bei_dou_boomerang.4", "Poison IV (10 seconds)");
+        add("tooltip.item.confluence.bei_dou_boomerang.5", "Instant Damage VII");
         add(BoomerangItems.DEVELOPER_BOOMERANG.get(), "Developer Boomerang");
     }
 

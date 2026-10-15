@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.api.item.IWeaponTooltip;
@@ -101,6 +102,12 @@ public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponT
         }
         return Math.max(0, count);
     }
+
+    /// 射弹成功命中后在服务端结算武器专属效果。
+    public void onProjectileHit(BoomerangProjectile projectile, LivingEntity owner, LivingEntity target) {}
+
+    /// 由客户端实体 tick 生成拖尾，不依赖渲染帧率。
+    public void emitFlightParticles(BoomerangProjectile projectile, Vec3 movement) {}
 
     public record Settings(float damage, float flySpeed, float backSpeed, int forwardTicks,
                            int cooldown, int maxCount, int penetration, boolean fire,

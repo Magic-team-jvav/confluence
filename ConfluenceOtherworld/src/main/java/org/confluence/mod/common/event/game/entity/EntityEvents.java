@@ -77,7 +77,7 @@ public final class EntityEvents {
             Boss.sendBossSpawnMessage(entity);
         }
         if (boss.isMainBody() && boss.shouldEnhanceMultiplayer() && entity instanceof LivingEntity living) {
-            BossMultiplayerEnhancement.apply(living);
+            BossMultiplayerEnhancement.apply(living, !event.loadedFromDisk());
         }
     }
 

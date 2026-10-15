@@ -103,6 +103,12 @@ public final class CommonConfigs {
     public static BooleanValue ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD;
     public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_HEALTH;
     public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_ARMOR;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE;
 
     public static BooleanValue WRAPPED_CRIMSON_HEART;
     public static BooleanValue INSTANTLY_HARDMODE_CONVERSION;
@@ -247,6 +253,30 @@ public final class CommonConfigs {
                 MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = builder
                         .comment("Follow range attribute multiplier; existing line-of-sight and AI-specific range checks still apply.")
                         .defineInRange("monsterAttributesMultiplierFollowRange", 1.0D, 0.0D, 100.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder
+                        .comment("Maximum health multiplier for Confluence bosses. Reloading does not heal existing bosses.")
+                        .defineInRange("bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder
+                        .comment("Damage multiplier for Confluence bosses, including contact attacks and projectiles attributed to the boss. Applied once before damage reduction.")
+                        .defineInRange("bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_ARMOR = builder
+                        .comment("Armor multiplier. Zero armor remains zero.")
+                        .defineInRange("bossAttributesMultiplierArmor", 1.0D, 0.0D, 100.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS = builder
+                        .comment("Armor toughness multiplier. Zero toughness remains zero.")
+                        .defineInRange("bossAttributesMultiplierArmorToughness", 1.0D, 0.0D, 100.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED = builder
+                        .comment("Movement speed attribute multiplier; fixed AI velocities are unchanged.")
+                        .defineInRange("bossAttributesMultiplierMovementSpeed", 1.0D, 0.0D, 100.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_FLYING_SPEED = builder
+                        .comment("Flying speed attribute multiplier; only affects bosses that use this attribute.")
+                        .defineInRange("bossAttributesMultiplierFlyingSpeed", 1.0D, 0.0D, 100.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE = builder
+                        .comment("Knockback resistance multiplier, clamped by the attribute's allowed range.")
+                        .defineInRange("bossAttributesMultiplierKnockbackResistance", 1.0D, 0.0D, 100.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = builder
+                        .comment("Follow range attribute multiplier; line-of-sight and AI-specific range checks still apply.")
+                        .defineInRange("bossAttributesMultiplierFollowRange", 1.0D, 0.0D, 100.0D);
                 builder.pop();
             }
             {
@@ -307,8 +337,6 @@ public final class CommonConfigs {
                 ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD = builder.define("allowFleshBossesOutsideUnderworld", false);
                 BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
                 KING_SLIME_LARGE_MINIONS = builder.define("kingSlimeLargeMinions", false);
-                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder.defineInRange("bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder.defineInRange("bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
                 builder.pop();
             }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);

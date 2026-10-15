@@ -35,7 +35,7 @@ public final class FrostMonsterProjectile extends StraightMonsterProjectile {
     @Override
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
         if (level().isClientSide) return;
-        double durationMultiplier = LibUtils.isMaster(level(), blockPosition()) ? 2.5 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 2.0 : 1.0;
+        double durationMultiplier = LibUtils.isMaster(level()) ? 2.5 : LibUtils.isAtLeastExpert(level()) ? 2.0 : 1.0;
         if (kind == Kind.BLAST) {
             if (random.nextInt(3) == 0)
                 target.addEffect(new MobEffectInstance(ModEffects.FROST_BURN, (int) (120 * durationMultiplier)), owner);

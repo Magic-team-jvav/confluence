@@ -1,11 +1,10 @@
 package org.confluence.mod.common.entity.npc.ai;
 
-import org.confluence.mod.Confluence;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.BaseNPC;
-import org.confluence.mod.common.init.entity.BossEntities;
 
 /// 按当前世界难度和已完成进度计算城镇 NPC 的实时战斗成长。
 public final class NPCCombatProgression {
@@ -13,7 +12,7 @@ public final class NPCCombatProgression {
 
     /// 返回基础攻击伤害最终使用的倍率；进度加值先相加，再乘世界难度倍率。
     public static double damageMultiplier(BaseNPC npc) {
-        double difficulty = LibUtils.switchByDifficulty(npc.level(), npc.blockPosition(), 1.0, 1.5, 1.75, 2.0);
+        double difficulty = LibUtils.switchByDifficulty(npc.level(), 1.0, 1.5, 1.75, 2.0);
         return difficulty * (1.0 + bonuses().damage());
     }
 

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,8 +49,8 @@ public class MeteorHead extends BaseFlyingMonster {
     public boolean doHurtTarget(Entity target) {
         boolean damaged = super.doHurtTarget(target);
         if (damaged && target instanceof LivingEntity living && random.nextInt(3) == 0) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 350
-                    : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 280 : 140;
+            int duration = LibUtils.isMaster(level()) ? 350
+                    : LibUtils.isAtLeastExpert(level()) ? 280 : 140;
             living.setRemainingFireTicks(Math.max(living.getRemainingFireTicks(), duration));
         }
         return damaged;

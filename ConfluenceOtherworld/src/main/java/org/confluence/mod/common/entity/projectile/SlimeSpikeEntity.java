@@ -71,7 +71,7 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
             } else if (getVariant() == Variant.ICE) {
                 if (!TCUtils.hasType(target, TCItems.FROZEN$IMMUNE)) {
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, scaledDuration(400)), owner);
-                    boolean expert = LibUtils.isAtLeastExpert(level(), blockPosition());
+                    boolean expert = LibUtils.isAtLeastExpert(level());
                     if (!expert) {
                         if (random.nextInt(20) == 0) {
                             target.addEffect(new MobEffectInstance(ModEffects.FROZEN, 30), owner);
@@ -79,9 +79,9 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
                     } else {
                         int roll = random.nextInt(400);
                         if (roll < 20) {
-                            target.addEffect(new MobEffectInstance(ModEffects.FROZEN, LibUtils.isMaster(level(), blockPosition()) ? 75 : 60), owner);
+                            target.addEffect(new MobEffectInstance(ModEffects.FROZEN, LibUtils.isMaster(level()) ? 75 : 60), owner);
                         } else if (roll < 39) {
-                            target.addEffect(new MobEffectInstance(ModEffects.FROZEN, LibUtils.isMaster(level(), blockPosition()) ? 50 : 40), owner);
+                            target.addEffect(new MobEffectInstance(ModEffects.FROZEN, LibUtils.isMaster(level()) ? 50 : 40), owner);
                         }
                     }
                 }
@@ -125,8 +125,8 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
     }
 
     private int scaledDuration(int classicTicks) {
-        if (LibUtils.isMaster(level(), blockPosition())) return classicTicks * 5 / 2;
-        return LibUtils.isAtLeastExpert(level(), blockPosition()) ? classicTicks * 2 : classicTicks;
+        if (LibUtils.isMaster(level())) return classicTicks * 5 / 2;
+        return LibUtils.isAtLeastExpert(level()) ? classicTicks * 2 : classicTicks;
     }
 
     public enum Variant {NORMAL, JUNGLE, ICE}

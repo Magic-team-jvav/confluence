@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.monster.slime;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -50,7 +49,7 @@ public class LavaSlime extends BaseSlime {
     protected void tickDeath() {
         super.tickDeath();
         if (deathLavaPlaced || !(level() instanceof ServerLevel serverLevel)
-                || !LibUtils.isAtLeastExpert(serverLevel, blockPosition())) {
+                || !LibUtils.isAtLeastExpert(serverLevel)) {
             return;
         }
 

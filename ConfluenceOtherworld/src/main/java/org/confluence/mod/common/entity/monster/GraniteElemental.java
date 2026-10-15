@@ -139,7 +139,7 @@ public class GraniteElemental extends BaseFlyingMonster {
         boolean damaged = super.hurt(source, amount);
         if (damaged && isAlive() && getHealth() < getMaxHealth() * 0.5F
                 && !level().isClientSide && getDefensePhase() == DefensePhase.ACTIVE
-                && LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextInt(6) == 0) {
+                && LibUtils.isAtLeastExpert(level()) && random.nextInt(6) == 0) {
             beginDefenseSequence();
         }
         return damaged;

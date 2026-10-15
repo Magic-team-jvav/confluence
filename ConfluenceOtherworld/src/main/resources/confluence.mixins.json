@@ -20,8 +20,6 @@
         "integration.irons_spell.AbstractSpellMixin",
         "integration.irons_spell.MagicManagerMixin",
         "integration.lootr.BlockReplacementMapMixin",
-        "integration.magiclib.LibEntityUtilsMixin",
-        "integration.magiclib.common.recipe.EnvironmentLevelAccess$MatcherMixin",
         "integration.terracurio.AccessoriesAttachmentMixin",
         "integration.terracurio.DemonHeartMixin",
         "integration.terracurio.StarClockEntityMixin",

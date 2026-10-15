@@ -46,7 +46,7 @@ public final class PlantSpit extends StraightMonsterProjectile {
         LivingEntity target = owner.getTarget();
         if (target == null || !target.isAlive() || !owner.canAttack(target)) return velocity;
         Vec3 desired = target.getEyePosition().subtract(position()).normalize().scale(0.15);
-        if (LibUtils.isAtLeastExpert(level(), blockPosition()))
+        if (LibUtils.isAtLeastExpert(level()))
             desired = desired.add(Math.sin(tickCount * 0.4) * 0.05, Math.cos(tickCount * 0.3) * 0.05, 0.0);
         return velocity.lerp(desired, 0.08);
     }
@@ -54,7 +54,7 @@ public final class PlantSpit extends StraightMonsterProjectile {
     @Override
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
         if (kind == Kind.CURSED_FLAME && random.nextFloat() < 0.6875F) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 100 + random.nextInt(51) : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 80 + random.nextInt(41) : 40 + random.nextInt(21);
+            int duration = LibUtils.isMaster(level()) ? 100 + random.nextInt(51) : LibUtils.isAtLeastExpert(level()) ? 80 + random.nextInt(41) : 40 + random.nextInt(21);
             target.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, duration), owner);
         }
     }

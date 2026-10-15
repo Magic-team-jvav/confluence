@@ -48,11 +48,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.TorchBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
-import org.confluence.mod.common.init.item.ArrowItems;
-import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.common.init.item.GunItems;
-import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
@@ -62,11 +58,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.IntSupplier;
 
-import static org.confluence.mod.common.init.block.PotBlocks.CORRUPTION_POT;
-import static org.confluence.mod.common.init.block.PotBlocks.CRIMSON_POT;
-import static org.confluence.mod.common.init.block.PotBlocks.JUNGLE_POT;
-import static org.confluence.mod.common.init.block.PotBlocks.TUNDRA_POT;
-import static org.confluence.mod.common.init.block.PotBlocks.UNDERGROUND_DESERT_POT;
+import static org.confluence.mod.common.init.block.PotBlocks.*;
 import static org.confluence.mod.common.init.item.PotionItems.*;
 
 public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
@@ -199,7 +191,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropPotion(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.random.nextInt(45) < (LibUtils.isAtLeastExpert(level, blockPos) ? 2 : 1)) {
+        if (level.random.nextInt(45) < (LibUtils.isAtLeastExpert(level) ? 2 : 1)) {
             double y = center.y;
             Item item = null;
             if (level.dimension() == Level.NETHER) {
@@ -286,7 +278,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             if (player.getHealth() < player.getMaxHealth()) {
                 int amount = 1;
                 if (level.random.nextBoolean()) amount++;
-                if (LibUtils.isAtLeastExpert(level, blockPos)) {
+                if (LibUtils.isAtLeastExpert(level)) {
                     if (level.random.nextBoolean()) amount++;
                     if (level.random.nextBoolean()) amount++;
                 }
@@ -359,7 +351,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             item = PotionItems.LESSER_HEALING_POTION.get();
         }
         int amount = 1;
-        if (LibUtils.isAtLeastExpert(level, blockPos) && level.random.nextInt(3) == 0) {
+        if (LibUtils.isAtLeastExpert(level) && level.random.nextInt(3) == 0) {
             amount++;
         }
         LibEntityUtils.createItemEntity(item, amount, center, level, 0);
@@ -375,7 +367,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else {
             return dropRope(level, blockPos, center);
         }
-        LibEntityUtils.createItemEntity(item, level.random.nextInt(1, LibUtils.isAtLeastExpert(level, blockPos) ? 5 : 8), center, level, 0);
+        LibEntityUtils.createItemEntity(item, level.random.nextInt(1, LibUtils.isAtLeastExpert(level) ? 5 : 8), center, level, 0);
         return true;
     }
 
@@ -410,7 +402,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else if (random < 0.25F) {
             ratio = Mth.nextFloat(level.random, 1.05F, 1.1F);
         }
-        if (LibUtils.isAtLeastExpert(level, blockPos)) {
+        if (LibUtils.isAtLeastExpert(level)) {
             ratio *= 2.5F;
             random = level.random.nextFloat();
             if (random < 0.25F) {

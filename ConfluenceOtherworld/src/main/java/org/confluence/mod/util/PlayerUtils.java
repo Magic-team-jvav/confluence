@@ -3,8 +3,6 @@ package org.confluence.mod.util;
 import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -836,7 +834,7 @@ public final class PlayerUtils {
         long money = getMoney(player, false);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            int ratio = LibUtils.switchByDifficulty(player.level(), player.blockPosition(), 2, 3, 4);
+            int ratio = LibUtils.switchByDifficulty(player.level(), 2, 3, 4);
             drops = money * ratio / 4;
         } else {
             drops = money;

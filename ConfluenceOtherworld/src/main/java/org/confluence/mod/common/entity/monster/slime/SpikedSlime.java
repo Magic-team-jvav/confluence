@@ -121,7 +121,7 @@ public class SpikedSlime extends BaseSlime {
         public void start() {
             tick = 0;
             LivingEntity target = getTarget();
-            boolean expert = LibUtils.isAtLeastExpert(level(), blockPosition());
+            boolean expert = LibUtils.isAtLeastExpert(level());
             closeRange = target != null && distanceToSqr(target) < CLOSE_ATTACK_DISTANCE * CLOSE_ATTACK_DISTANCE
                     && (!usesBiomeSpikePattern() || expert);
             if (!closeRange) {

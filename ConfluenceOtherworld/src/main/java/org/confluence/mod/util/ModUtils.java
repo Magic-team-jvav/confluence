@@ -225,10 +225,10 @@ public final class ModUtils {
     }
 
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
-        if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
+        if (attacker != null && LibUtils.isAtLeastExpert(level)) {
             EntityType<?> type = attacker.getType();
             if (type == MonsterEntities.VISUAL_NEURON.get() || (type == BossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
-                boolean master = LibUtils.isMaster(level, living.blockPosition());
+                boolean master = LibUtils.isMaster(level);
                 Holder<MobEffect> debuff;
                 float min;
                 int i = attacker.getRandom().nextInt(81);

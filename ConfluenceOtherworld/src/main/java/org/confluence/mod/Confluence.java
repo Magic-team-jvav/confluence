@@ -11,13 +11,16 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.network.IPacket;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.client.summoner.SummonerClientEvents;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -46,7 +49,11 @@ public final class Confluence {
     public static final boolean DATA_TIP = LibUtils.isDev();
 
     public Confluence(IEventBus eventBus, ModContainer container) {
-        LibUtils.setForTheWorthy(ForTheWorthy::isEnabled);
+        {
+            LibUtils.setForTheWorthyPredicate(ForTheWorthy::isEnabled);
+            EnvironmentLevelAccess.setGraveyardPredicate((player, level, pos) -> ModBlockCounters.isGraveyard(level, pos) || ModBlockCounters.isGraveyard(level, player.blockPosition()));
+            LibEntityUtils.setTeamGetter(player -> PlayerSpecialData.of(player).getTeam());
+        }
         ModDynamicBiomes.init();
         ModMiniBiomes.init();
         DynamicBiomeUtils.enable();

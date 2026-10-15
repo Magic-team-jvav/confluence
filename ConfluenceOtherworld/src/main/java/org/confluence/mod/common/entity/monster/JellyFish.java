@@ -118,7 +118,7 @@ public class JellyFish extends BaseAquaticMonster {
 
     private void setAttackPhase(boolean attackPhase) {
         entityData.set(ATTACK_PHASE, attackPhase);
-        entityData.set(ELECTRIFIED, profile != Profile.FUNGO && attackPhase && isInWater() && LibUtils.isAtLeastExpert(level(), blockPosition()));
+        entityData.set(ELECTRIFIED, profile != Profile.FUNGO && attackPhase && isInWater() && LibUtils.isAtLeastExpert(level()));
         setSpecialState(CombatState.ELECTRIFIED, isElectrified());
     }
 

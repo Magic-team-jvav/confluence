@@ -30,9 +30,9 @@ import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEv
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 
 import java.util.HashSet;
 import java.util.List;
@@ -179,7 +179,7 @@ public enum SlimeRainGameEvent implements GameEvent {
                 !level.isRaining() && !BloodMoonGameEvent.INSTANCE.started() // 事件
         ) {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                boolean expert = LibUtils.isAtLeastExpert(level, player.blockPosition());
+                boolean expert = LibUtils.isAtLeastExpert(level);
                 if (player.getMaxHealth() >= CommonConfigs.SLIME_RAIN_EVENT_REQUIRED_PLAYER_MAX_HEALTH.get() &&
                         player.getArmorValue() >= CommonConfigs.SLIME_RAIN_EVENT_REQUIRED_PLAYER_ARMOR.get()
                 ) {

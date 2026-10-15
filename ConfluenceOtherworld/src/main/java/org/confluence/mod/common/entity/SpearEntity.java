@@ -85,7 +85,7 @@ public class SpearEntity extends Entity {
         for (Entity entity1 : level().getEntities(this, boundingBox, entity -> entity instanceof LivingEntity)) {
             AABB aabb = entity1.getBoundingBox().inflate(0.3);
             if (aabb.clip(startVec, endVec).isPresent()) {
-                float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 24, 48, 72);
+                float damage = LibUtils.switchByDifficulty(level(), 24, 48, 72);
                 entity1.hurt(LibDamageTypes.of(level(), DamageTypes.STING), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity1, damage));
             }
         }

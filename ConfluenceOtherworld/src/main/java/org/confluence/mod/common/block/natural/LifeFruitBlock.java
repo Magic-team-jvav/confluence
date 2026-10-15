@@ -56,7 +56,7 @@ public class LifeFruitBlock extends Block {
 
     /// [生命果](https://terraria.wiki.gg/zh/wiki/%E7%94%9F%E5%91%BD%E6%9E%9C)
     public static boolean canGrow(ServerLevel level, BlockState state, BlockPos pos, RandomSource random) {
-        boolean isExpert = LibUtils.isAtLeastExpert(level, pos);
+        boolean isExpert = LibUtils.isAtLeastExpert(level);
         if (state.canBeReplaced() &&
                 pos.getY() < OverworldUtils.getSurfaceY() &&
                 random.nextInt(isExpert ? CLASSIC_CHANCE : CLASSIC_CHANCE * 5 / 4) == 0 &&

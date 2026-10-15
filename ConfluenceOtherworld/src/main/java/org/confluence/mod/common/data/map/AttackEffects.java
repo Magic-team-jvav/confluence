@@ -52,8 +52,8 @@ public record AttackEffects(List<Effect> contact, List<Effect> melee, List<Effec
         Entity attacker = source.getEntity() == null ? direct : source.getEntity();
         boolean bossAttack = attacker instanceof BaseBoss || attacker instanceof Boss.BossPart
                 || attacker instanceof BossOwnedEntity owned && owned.getBossOwner() != null;
-        boolean master = bossAttack ? LibUtils.isMaster(attacker.level()) : LibUtils.isMaster(attacker.level(), attacker.blockPosition());
-        boolean expert = master || (bossAttack ? LibUtils.isAtLeastExpert(attacker.level()) : LibUtils.isAtLeastExpert(attacker.level(), attacker.blockPosition()));
+        boolean master = bossAttack ? LibUtils.isMaster(attacker.level()) : LibUtils.isMaster(attacker.level());
+        boolean expert = master || (bossAttack ? LibUtils.isAtLeastExpert(attacker.level()) : LibUtils.isAtLeastExpert(attacker.level()));
         RandomSource random = target.getRandom();
         for (Effect effect : effects) {
             if (effect.condition.isPresent() && !effect.condition.get().matches(target)) continue;

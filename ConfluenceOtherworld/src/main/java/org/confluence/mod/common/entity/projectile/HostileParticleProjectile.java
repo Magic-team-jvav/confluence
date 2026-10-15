@@ -159,34 +159,34 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
         switch (variant) {
             case VILE_SPIT -> {
                 if (owner instanceof Corruptor && random.nextInt(20) == 0) {
-                    int duration = LibUtils.isMaster(level(), blockPosition()) ? 15_000
-                            : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 12_000 : 6_000;
+                    int duration = LibUtils.isMaster(level()) ? 15_000
+                            : LibUtils.isAtLeastExpert(level()) ? 12_000 : 6_000;
                     target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, duration), owner);
                 }
             }
             case FIRE_IMP -> {
                 if (random.nextInt(3) == 0) {
-                    int ticks = LibUtils.isMaster(level(), blockPosition()) ? 350
-                            : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 280 : 140;
+                    int ticks = LibUtils.isMaster(level()) ? 350
+                            : LibUtils.isAtLeastExpert(level()) ? 280 : 140;
                     target.igniteForTicks(ticks);
                 }
             }
             case SHADOW_BEAM -> {
                 int duration = Mth.randomBetweenInclusive(random, 100, 300);
-                if (LibUtils.isMaster(level(), blockPosition())) duration = duration * 5 / 2;
-                else if (LibUtils.isAtLeastExpert(level(), blockPosition())) duration *= 2;
+                if (LibUtils.isMaster(level())) duration = duration * 5 / 2;
+                else if (LibUtils.isAtLeastExpert(level())) duration *= 2;
                 target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration), owner);
             }
             case LOST_SOUL -> {
                 int duration = Mth.randomBetweenInclusive(random, 40, 120);
-                if (LibUtils.isMaster(level(), blockPosition())) duration = duration * 5 / 2;
-                else if (LibUtils.isAtLeastExpert(level(), blockPosition())) duration *= 2;
+                if (LibUtils.isMaster(level())) duration = duration * 5 / 2;
+                else if (LibUtils.isAtLeastExpert(level())) duration *= 2;
                 target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, duration), owner);
             }
             case INFERNO_BOLT -> {
                 int duration = Mth.randomBetweenInclusive(random, 160, 300);
-                if (LibUtils.isMaster(level(), blockPosition())) duration = duration * 5 / 2;
-                else if (LibUtils.isAtLeastExpert(level(), blockPosition())) duration *= 2;
+                if (LibUtils.isMaster(level())) duration = duration * 5 / 2;
+                else if (LibUtils.isAtLeastExpert(level())) duration *= 2;
                 target.igniteForTicks(duration);
             }
             case WATER_SPHERE, CHAOS_BALL, RUNE_BLAST, GASTROPOD, WALL_OF_FLESH_LASER -> {

@@ -1155,8 +1155,8 @@ public final class MonsterEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<TheHungry>> THE_HUNGRY = withAttributes(registerEntity("the_hungry", EntityType.Builder.of(TheHungry::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(87).armor(8).attackDamage(15).followRange(32).attackKnockback(0.75).knockbackResistance(1).armorToughness(3)
-                    .state(TheHungry.FeedingState.WOUNDED_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.5).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 20.0 / 16.0 : 2.0))
-                    .state(TheHungry.FeedingState.CRITICAL_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 30.0 / 16.0 : 3.0))
+                    .state(TheHungry.FeedingState.WOUNDED_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.5).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 20.0 / 16.0 : 2.0))
+                    .state(TheHungry.FeedingState.CRITICAL_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 30.0 / 16.0 : 3.0))
                     .build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<HillHungry>> HILL_HUNGRY = withAttributes(registerEntity("hill_hungry", EntityType.Builder.of(HillHungry::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10)),

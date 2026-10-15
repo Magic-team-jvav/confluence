@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.util.TrapDamageHelper;
@@ -36,7 +36,7 @@ public class SpikeBlock extends Block {
             }
             entity.hurt(LibDamageTypes.of(level, DamageTypes.STING), finalDamage);
             if (entity.isAlive() && entity instanceof LivingEntity living) {
-                int duration = LibUtils.switchByDifficulty(level, pos, 200, 400, 500);
+                int duration = LibUtils.switchByDifficulty(level, 200, 400, 500);
                 if (living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
                     duration /= 2;
                 }

@@ -45,7 +45,7 @@ public class FlameCloudEntity extends Entity {
                         fireTicks /= 2;
                     }
                     entity.setRemainingFireTicks(Math.max(entity.getRemainingFireTicks(), fireTicks));
-                    float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 8F, 16F, 24F);
+                    float damage = LibUtils.switchByDifficulty(level(), 8F, 16F, 24F);
                     if (entity instanceof LivingEntity living) {
                         damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                     }

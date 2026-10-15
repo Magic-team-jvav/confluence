@@ -61,6 +61,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             String path = item.getId().getPath();
             withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));
         });
+        withExistingParent("shadow_candle", "item/generated").texture("layer0", Confluence.asResource("item/tool/shadow_candle"));
 
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));

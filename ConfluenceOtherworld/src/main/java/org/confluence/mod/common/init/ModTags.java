@@ -499,6 +499,8 @@ public final class ModTags {
     }
 
     public static class EntityTypes {
+        public static final TagKey<EntityType<?>> TOWN_CRITTERS = register("town_critters");
+        public static final TagKey<EntityType<?>> TOWN_SUPPRESSED_CRITTERS = register("town_suppressed_critters");
         public static final TagKey<EntityType<?>> EATER_RESISTED_PROJECTILES = register("eater_resisted_projectiles");
         public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = register("spawn_at_dungeon"); // 允许生成在地牢的生物
         public static final TagKey<EntityType<?>> LAVA_BUG_NET_ALLOWS = register("lava_bug_net_allows"); // 熔岩萤火虫、岩浆蜗牛和地狱蝴蝶; 用于区分普通虫网与防熔岩虫网

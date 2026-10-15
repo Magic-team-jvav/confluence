@@ -40,6 +40,7 @@ import net.neoforged.neoforge.server.command.EnumArgument;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.common.worldgen.biome.MiniBiome;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkBrushData;
@@ -209,6 +210,24 @@ public final class ModCommands {
                         }
                     }, true);
                     return 0;
+                }))
+                .then(Commands.literal("judgeMiniBiome").executes(context -> {
+                    CommandSourceStack source = context.getSource();
+                    BlockPos pos = BlockPos.containing(source.getPosition());
+                    var markers = MiniBiome.markersAt(source.getLevel(), pos);
+                    source.sendSuccess(() -> {
+                        if (markers.isEmpty()) return Component.literal(pos + " no mini biome");
+                        StringBuilder builder = new StringBuilder(pos + " mini biomes:");
+                        for (MiniBiome.Marker marker : markers) {
+                            builder.append("\n  ").append(marker.id())
+                                    .append(" count=").append(marker.count())
+                                    .append(" threshold=").append(marker.threshold())
+                                    .append(" priority=").append(marker.priority())
+                                    .append(" influence=").append(String.format(Locale.ROOT, "%.2f", marker.influence()));
+                        }
+                        return Component.literal(builder.toString());
+                    }, false);
+                    return 1;
                 }))
                 .then(Commands.literal("mana")
                         .then(Commands.literal("receive").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, Float.MAX_VALUE)).executes(context -> {

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.npc.trade;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +25,9 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.menu.NPCServiceMenu;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /// NPC 商店菜单。
@@ -62,6 +63,7 @@ public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMen
     private final List<NPCTradeOffer> offers;
     private final int shopRevision;
     private final List<SlotState> slotStates = new ArrayList<>(TRADE_SIZE);
+    private final SimpleContainerData sellPrices = new SimpleContainerData(37 * 4);
     private final SimpleContainerData pageData = new SimpleContainerData(4);
     private final List<Buyback> buybacks = new ArrayList<>();
     private final List<Buyback> refundablePurchases = new ArrayList<>();
@@ -105,6 +107,7 @@ public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMen
         }
 
         addDataSlots(pageData);
+        addDataSlots(sellPrices);
         pageData.set(DATA_OFFER_COUNT, this.offers.size());
         pageData.set(DATA_PAGE_COUNT, this.offers.size() / OFFER_SLOTS + 1);
         populatePage(0);
@@ -236,8 +239,34 @@ public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMen
 
     @Override
     public void broadcastChanges() {
-        if (!npc.level().isClientSide) updateMoneyDisplay();
+        if (!npc.level().isClientSide) {
+            updateMoneyDisplay();
+            for (int index = 0; index < 37; index++) {
+                ItemStack stack = index == 36 ? getCarried() : slots.get(PLAYER_SLOT_START + index).getItem();
+                long price = getSellPrice(stack);
+                for (int part = 0; part < 4; part++)
+                    sellPrices.set(index * 4 + part, (int) (price >>> (part * 16)) & 0xFFFF);
+            }
+        }
         super.broadcastChanges();
+    }
+
+    /// 读取服务端按当前心情及购买记录计算的整组卖出价格。
+    public long getDisplayedSellPrice(ItemStack stack) {
+        int index = stack == getCarried() ? 36 : -1;
+        if (index < 0) {
+            for (int slot = 0; slot < 36; slot++) {
+                if (slots.get(PLAYER_SLOT_START + slot).getItem() == stack) {
+                    index = slot;
+                    break;
+                }
+            }
+        }
+        if (index < 0) return getSellPrice(stack);
+        long price = 0;
+        for (int part = 0; part < 4; part++)
+            price |= (long) (sellPrices.get(index * 4 + part) & 0xFFFF) << (part * 16);
+        return price;
     }
 
     private void updateMoneyDisplay() {

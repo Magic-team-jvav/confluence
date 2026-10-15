@@ -1020,6 +1020,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.artisan_loaf.1", "'Legendary Bread that once reminded Teddy of home'");
         add("tooltip.item.confluence.water_candle.0", "Holding this may attract unwanted attention");
         add("tooltip.item.confluence.peace_candle.0", "Makes surrounding creatures less hostile");
+        add("tooltip.item.confluence.shadow_candle.0", "Cancels town protection when held or placed and lit");
         add("tooltip.item.confluence.blood_tear.0", "Summons the Blood Moon");
         add("tooltip.item.confluence.blood_tear.1", "'What a horrible night to have a curse.'");
         add("tooltip.item.confluence.goblin_battle_standard.0", "Summons a Goblin Army ");
@@ -2047,6 +2048,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.SHADOWFLAME.get(), "Losing life");
         addEffect(ModEffects.WATER_CANDLE.get(), "Increased monster spawn rate");
         addEffect(ModEffects.PEACE_CANDLE.get(), "Decreased monster spawn rate");
+        addEffect(ModEffects.SHADOW_CANDLE.get(), "Disables town protection and town critter spawning");
         addEffect(ModEffects.BATTLE.get(), "Increased enemy spawn rate");
         addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
         addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");

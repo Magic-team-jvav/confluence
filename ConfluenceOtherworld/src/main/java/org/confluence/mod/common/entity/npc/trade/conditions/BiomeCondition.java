@@ -28,7 +28,7 @@ public record BiomeCondition(List<ResourceKey<Biome>> values,
     }
 
     @Override public boolean test(ServerPlayer player, BaseNPC npc) {
-        var biome = player.serverLevel().getBiome(npc.blockPosition());
+        var biome = player.serverLevel().getBiome(player.blockPosition());
         return (values.isEmpty() || values.stream().anyMatch(biome::is))
                 && (tags.isEmpty() || tags.stream().anyMatch(biome::is));
     }

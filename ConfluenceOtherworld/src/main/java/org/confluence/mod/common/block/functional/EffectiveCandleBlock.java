@@ -110,7 +110,7 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), (level1, pos, state1, blockEntity) -> {
-            if (level1 instanceof ServerLevel serverLevel && level.getGameTime() % 40 == 5) {
+            if (state1.getValue(LIT) && level1 instanceof ServerLevel serverLevel && level.getGameTime() % 40 == 5) {
                 double x = pos.getX() + 0.5;
                 double y = pos.getY() + 0.5;
                 double z = pos.getZ() + 0.5;
@@ -142,7 +142,7 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
 
         @Override
         public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-            if (isSelected && entity instanceof LivingEntity living) {
+            if (!level.isClientSide && entity instanceof LivingEntity living && (isSelected || stack == living.getOffhandItem())) {
                 awardEffect(living, effectData);
             }
         }

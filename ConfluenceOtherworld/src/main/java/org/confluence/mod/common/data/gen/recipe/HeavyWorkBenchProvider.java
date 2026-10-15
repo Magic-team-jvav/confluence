@@ -25,10 +25,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.mod.common.init.item.BoomerangItems;
-import org.confluence.mod.common.init.item.SummonItems;
-import org.confluence.mod.common.init.item.WhipItems;
-import org.confluence.mod.common.init.item.YoyoItems;
 
 import java.util.List;
 import java.util.Map;
@@ -1434,6 +1430,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
+        shapeless(recipeOutput, FunctionalBlocks.SHADOW_CANDLE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3, MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(30),Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, GunItems.SILVER_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_SILVER));
         shapeless(recipeOutput, GunItems.TUNGSTEN_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN));

@@ -20,6 +20,7 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.lib.util.function.ints.ToIntFunction4;
+import org.confluence.mod.common.entity.npc.TownPopulation;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
 
@@ -115,7 +116,8 @@ public class SpaceSpawner implements CustomSpawner {
 
         int count = 0;
         for (ServerPlayer player : level.players()) {
-            if (player.isSpectator() || player.getY() < OverworldUtils.getSpaceY()) continue;
+            if (player.isSpectator() || player.isCreative() || player.getY() < OverworldUtils.getSpaceY() || TownPopulation.suppressesSpawn(player))
+                continue;
             BlockPos pos = player.blockPosition();
             NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             for (int i = 0; i < 4; i++) {

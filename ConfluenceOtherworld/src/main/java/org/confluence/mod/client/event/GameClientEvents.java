@@ -378,7 +378,7 @@ public final class GameClientEvents {
         Holder<Item> holder = stack.getItemHolder();
 
         if (ClientConfigs.sellPriceDisplay.test()) {
-            ValueComponent.addTooltip(stack, toolTip);
+            ValueComponent.addTooltip(stack, toolTip, event.getEntity());
         }
         ModArmorBonus.addTooltip(event.getEntity(), stack, toolTip);
         DiggingPower.addTooltip(stack, holder, toolTip);

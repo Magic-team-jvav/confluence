@@ -79,7 +79,7 @@ public enum NPCSpawner implements IGlobalData {
     /// NPC「已存在」判定半径（方块）。玩家活动区跨 region 时，同一个 NPC 会在相邻 region 被
     /// 重复生成；除了 region 标记之外再按附近真实实体做一次兜底检查。
     public static final int NPC_PRESENCE_CHECK_RADIUS = 128;
-    /// 城镇（NPC 小镇）判定：region 内已入住 NPC 数量门槛。泰拉为 3。
+    /// 城镇环境所需的附近 NPC 数量门槛。
     public static final int TOWN_NPC_THRESHOLD = 3;
     public static final Codec<Map<Region, Reference2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC;
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC;
@@ -263,11 +263,9 @@ public enum NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /// 城镇（NPC 小镇）判定：该 region 内已入住的 NPC 数量是否达到门槛。
-    ///
-    /// 迷你生物群系里的「小镇」标记直接用这个；`getAliveNpcCount` 已经排除了骷髅商人与城镇史莱姆。
-    public boolean isTown(Region region) {
-        return getAliveNpcCount(region, type -> true) >= TOWN_NPC_THRESHOLD;
+    /// 城镇门槛以附近实际人口判断，不使用整片区域的职业存活表。
+    public boolean isTown(int nearbyResidents) {
+        return nearbyResidents >= TOWN_NPC_THRESHOLD;
     }
 
     /// 只更新区域占用；活着、搬家或认房不等于已经完成首次解锁。

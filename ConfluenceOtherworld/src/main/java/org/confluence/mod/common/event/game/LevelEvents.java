@@ -26,6 +26,7 @@ import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.saved.SpaceSpawner;
 import org.confluence.mod.common.data.spawner.MeteoriteSpawner;
+import org.confluence.mod.common.data.spawner.TownCritterSpawner;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
@@ -118,6 +119,7 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void modifyCustomSpawners(ModifyCustomSpawnersEvent event) {
+        event.addCustomSpawner(new TownCritterSpawner());
         if (event.getLevel().dimension() == OverworldUtils.dimension()) {
             event.addCustomSpawner(BloodMoonGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(GoblinArmyGameEvent.INSTANCE.spawner);

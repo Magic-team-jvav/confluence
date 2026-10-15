@@ -38,6 +38,14 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
     }
 
     @Override
+    protected void renderNameTag(T entity, Component name, PoseStack poseStack, MultiBufferSource buffers, int packedLight, float partialTick) {
+        poseStack.pushPose();
+        if (entity instanceof AnglerNPC angler && angler.isWakeUp()) poseStack.translate(0, 0.4, 0);
+        super.renderNameTag(entity, name, poseStack, buffers, packedLight, partialTick);
+        poseStack.popPose();
+    }
+
+    @Override
     protected void adjustPose(PoseStack poseStack, T animatable, BakedGeoModel model, float partialTick) {
         if (animatable instanceof AnglerNPC angler && !angler.isWakeUp()) {
             if (angler.isPassenger()) poseStack.translate(0.0F, 0.5F, 0.0F);

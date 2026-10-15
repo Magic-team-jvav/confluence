@@ -9,6 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
@@ -73,15 +74,17 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         return getValueLong(itemStack, defaultValue, false);
     }
 
-    public static void addTooltip(ItemStack stack, List<Component> toolTip) {
+    public static void addTooltip(ItemStack stack, List<Component> toolTip, Player player) {
         CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
         if (customData != null && customData.contains(NPCTradeMenu.BUY_PRICE_TAG)) {
             long buyPrice = customData.copyTag().getLong(NPCTradeMenu.BUY_PRICE_TAG);
             if (buyPrice > 0) {
                 toolTip.add(Component.translatable("tooltip.price.buy").withStyle(ChatFormatting.GRAY).append(ClientUtils.formatPrice(buyPrice)));
             }
+            return;
         }
-        long price = getValueLong(stack, 0);
+        long price = player != null && player.containerMenu instanceof NPCTradeMenu menu
+                ? menu.getDisplayedSellPrice(stack) : getValueLong(stack, 0);
         if (price > 0) {
             toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ClientUtils.formatPrice(price)));
         }

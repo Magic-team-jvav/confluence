@@ -5,14 +5,17 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
-import org.confluence.mod.common.entity.npc.*;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.OldManNPC;
+import org.confluence.mod.common.entity.npc.SkeletonMerchantNPC;
+import org.confluence.mod.common.entity.npc.TravelingMerchantNPC;
 import org.confluence.mod.common.init.ModTags;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/// 心情环境以房屋为邻居距离锚点，无房者使用实体位置；城镇归属可在此层接入。
+/// 心情以房屋为邻居距离锚点，无房者使用实体位置；邻居距离独立于城镇群系判定。
 public record MoodEnvironment(List<BaseNPC> neighbors, int distantCount, Holder<Biome> biome,
                               HousingStatus housing, boolean evilBiome) {
     private static final double NEIGHBOR_DISTANCE_SQR = 25.0 * 25.0;
@@ -35,7 +38,7 @@ public record MoodEnvironment(List<BaseNPC> neighbors, int distantCount, Holder<
         for (BaseNPC other : level.getEntitiesOfClass(BaseNPC.class, new AABB(anchor).inflate(QUERY_RADIUS))) {
             if (other == owner || !other.isAlive() || other instanceof TravelingMerchantNPC
                     || other instanceof SkeletonMerchantNPC || other instanceof OldManNPC
-                    || other instanceof TownSlimeNPC) continue;
+                    || other.isTownPet() || other.requiresRescue()) continue;
             double distance = anchor.distSqr(anchorOf(other));
             if (distance <= NEIGHBOR_DISTANCE_SQR) neighbors.add(other);
             else if (distance <= TOWN_DISTANCE_SQR) distantCount++;

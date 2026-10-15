@@ -66,6 +66,7 @@ import org.confluence.mod.common.entity.monster.TheHungry;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.TownPopulation;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
 import org.confluence.mod.common.entity.yoyo.BaseYoyoProjectile;
@@ -74,11 +75,7 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
-import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModBlockCounters;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
@@ -598,16 +595,15 @@ public final class LivingEntityEvents {
     public static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
         if (event.getSpawnType() != MobSpawnType.NATURAL) return;
         Mob mob = event.getEntity();
-        if (event.getResult() != MobSpawnEvent.PositionCheck.Result.FAIL && (
-                DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) ||
-                        GameEventSystem.shouldDenyNatureSpawn()
-        )) {
+        if (event.getResult() == MobSpawnEvent.PositionCheck.Result.FAIL) return;
+        if (DungeonStructure.skipSpawn(mob, event.getLevel().getLevel()) || GameEventSystem.shouldDenyNatureSpawn() || TownPopulation.suppressesSpawn(event.getLevel().getLevel(), mob)) {
             event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
+            return;
         }
-        if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-            if (ModBlockCounters.isGraveyard(event.getLevel(), mob.blockPosition())) {
-                event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
-            }
+        if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)
+                && ModBlockCounters.isGraveyard(event.getLevel(), mob.blockPosition())
+                && mob.checkSpawnObstruction(event.getLevel())) {
+            event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
         }
     }
 

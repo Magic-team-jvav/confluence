@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.worldgen.biome.MiniBiome;
 import org.confluence.mod.common.entity.monster.MeteorHead;
+import org.confluence.mod.common.entity.npc.TownPopulation;
 import org.confluence.mod.common.init.ModMiniBiomes;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
@@ -39,7 +40,8 @@ public class MeteoriteSpawner implements CustomSpawner {
 
         int spawned = 0;
         for (ServerPlayer player : level.players()) {
-            if (player.isSpectator()) continue;
+            if (player.isSpectator() || player.isCreative() || TownPopulation.suppressesSpawn(player))
+                continue;
             // 节流之后，每个玩家每次尝试只查一次迷你群系
             MiniBiome.Marker marker = MiniBiome.markerAt(level, player.blockPosition(), ModMiniBiomes.METEORITE);
             if (marker == null) continue;

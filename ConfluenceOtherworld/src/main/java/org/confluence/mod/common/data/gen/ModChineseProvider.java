@@ -888,6 +888,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.artisan_loaf.1", "“曾经让泰迪想家的传奇面包”");
         add("tooltip.item.confluence.water_candle.0", "手持此物可能会引起不必要的注意");
         add("tooltip.item.confluence.peace_candle.0", "降低周围生物的敌意");
+        add("tooltip.item.confluence.shadow_candle.0", "手持或点亮放置时取消城镇保护");
         add("tooltip.item.confluence.blood_tear.0", "召唤血月");
         add("tooltip.item.confluence.blood_tear.1", "“诅咒之夜太可怕了。”");
         add("tooltip.item.confluence.goblin_battle_standard.0", "召唤哥布林军队");
@@ -2956,6 +2957,7 @@ public class ModChineseProvider extends LanguageProvider {
         // 带效果的蜡烛
         add(FunctionalBlocks.WATER_CANDLE.get(), "水蜡烛");
         add(FunctionalBlocks.PEACE_CANDLE.get(), "和平蜡烛");
+        add(FunctionalBlocks.SHADOW_CANDLE.get(), "暗影蜡烛");
 
         add(TorchBlocks.RED_TORCH.get(), "红火把");
         add(TorchBlocks.ORANGE_TORCH.get(), "橙火把");
@@ -4941,6 +4943,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.SHADOWFLAME.get(), "暗影焰", "持续损失生命值");
         addEffect(ModEffects.WATER_CANDLE.get(), "水蜡烛", "提高怪物生成速度");
         addEffect(ModEffects.PEACE_CANDLE.get(), "和平蜡烛", "怪物生成速度降低");
+        addEffect(ModEffects.SHADOW_CANDLE.get(), "暗影蜡烛", "取消城镇保护与城镇小动物生成");
         addEffect(ModEffects.BATTLE.get(), "战斗", "提高怪物生成速度");
         addEffect(ModEffects.CALM.get(), "冷静", "敌人生成速度降低");
         addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高，怪物生成减少");

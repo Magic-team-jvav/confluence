@@ -137,6 +137,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = EFFECTS.register("summoning", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9cf257)
             .addAttributeModifier(ConfluenceMagicLib.MINION_CAPACITY, id, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = EFFECTS.register("water_candle", WaterCandleEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> SHADOW_CANDLE = EFFECTS.register("shadow_candle", () -> new PublicMobEffect(MobEffectCategory.NEUTRAL, 0x9FEFFF));
     public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xda9ae0)
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.26)
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.30));

@@ -104,7 +104,7 @@ public class ClimbingSpider extends BaseWarriorMonster {
         setSpecialState(CombatState.CLIMBING, kind == Kind.BLACK_RECLUSE && onClimbable());
         LivingEntity target = getTarget();
         if (kind == Kind.WALL || isNoAi() || !isAlive() || target == null || !target.isAlive() || !canAttack(target) || hasEffect(LibEffects.CONFUSED.get())
-                || !LibUtils.isAtLeastExpert(level(), blockPosition()) || !getSensing().hasLineOfSight(target))
+                || !LibUtils.isAtLeastExpert(level()) || !getSensing().hasLineOfSight(target))
             return;
         if (++spitTicks < stateParameters(CombatState.SPITTING).attackInterval()) return;
         spitTicks = 0;

@@ -12,7 +12,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
@@ -23,6 +25,7 @@ import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.client.summoner.SummonerClientEvents;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.event.ItemGroupEvents;
 import org.confluence.mod.common.event.ModEvents;
@@ -57,7 +60,11 @@ public final class Confluence {
 
     public Confluence(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();
-        LibUtils.setForTheWorthy(ForTheWorthy::isEnabled);
+        {
+            LibUtils.setForTheWorthyPredicate(ForTheWorthy::isEnabled);
+            EnvironmentLevelAccess.setGraveyardPredicate((player, level, pos) -> ModBlockCounters.isGraveyard(level, pos) || ModBlockCounters.isGraveyard(level, player.blockPosition()));
+            LibEntityUtils.setTeamGetter(player -> PlayerSpecialData.of(player).getTeam());
+        }
         ModDynamicBiomes.init();
         ModMiniBiomes.init();
         DynamicBiomeUtils.enable();
@@ -65,12 +72,15 @@ public final class Confluence {
         CommonConfigs.register(context);
         NetworkEvents.init();
         ModEvents.init();
-        SummonerRegistries.init();
-        SummonerAttachmentTypes.init();
-        SummonerAttachmentEntityTypes.register(eventBus);
-        SummonerSoundEvents.register(eventBus);
-        SummonerSummonMarks.init();
-        SummonerEvents.init();
+        {
+            SummonerRegistries.init();
+            SummonerAttachmentTypes.init();
+            SummonerAttachmentEntityTypes.register(eventBus);
+            SummonerSoundEvents.register(eventBus);
+            SummonerSummonMarks.init();
+            SummonerEvents.init();
+            SummonerParticleTypes.init();
+        }
         ModDataMaps.init();
         EntityEvents.init();
         ItemEvents.init();
@@ -108,8 +118,6 @@ public final class Confluence {
         ModFluids.initialize();
         ModPrefix.initialize();
 
-
-
         ModTabs.TABS.register(eventBus);
         ModEntities.register(eventBus);
         ModDataComponentTypes.init();
@@ -118,7 +126,6 @@ public final class Confluence {
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.init();
-        SummonerParticleTypes.init();
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);

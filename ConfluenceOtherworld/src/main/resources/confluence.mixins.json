@@ -9,8 +9,6 @@
         "forge.items.ItemStackHandlerMixin",
         "integration.curios.CuriosUtilMixinHooksMixin",
         "integration.geckolib.KeyFramesAdapterMixin",
-        "integration.magiclib.EnvironmentLevelAccess$MatcherMixin",
-        "integration.magiclib.LibEntityUtilsMixin",
         "integration.magiclib.LibKeyBindingsMixin",
         "integration.terracurio.AccessoriesAttachmentMixin",
         "integration.terracurio.DemonHeartMixin",

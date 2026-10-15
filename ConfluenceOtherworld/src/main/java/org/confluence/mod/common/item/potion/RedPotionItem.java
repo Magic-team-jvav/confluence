@@ -68,7 +68,7 @@ public class RedPotionItem extends AbstractPotionItem {
                 living.addEffect(new MobEffectInstance(Util.getRandom(beneficial, living.getRandom1211()).get(), 30 * 60 * 20));
             }
         } else {
-            int duration = LibUtils.switchByDifficulty(level, living.blockPosition(), 60, 120, 180) * 60 * 20;
+            int duration = LibUtils.switchByDifficulty(level, 60, 120, 180) * 60 * 20;
             if (living.getRandom1211().nextFloat() < 1.0F / 11.0F) {
                 living.setRemainingFireTicks(duration);
             } else {

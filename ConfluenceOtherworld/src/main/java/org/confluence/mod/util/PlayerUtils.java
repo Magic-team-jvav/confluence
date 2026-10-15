@@ -425,7 +425,7 @@ public final class PlayerUtils {
         long money = getMoney(player, false);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            int ratio = LibUtils.switchByDifficulty(player.level(), player.blockPosition(), 2, 3, 4);
+            int ratio = LibUtils.switchByDifficulty(player.level(), 2, 3, 4);
             drops = money * ratio / 4;
         } else {
             drops = money;

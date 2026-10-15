@@ -28,11 +28,11 @@ public class SuperDartTrapBlock extends DartTrapBlock {
         arrow.setup(PICKUP_ITEM_STACK, null);
         arrow.setCustomName(NAME);
         arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-        arrow.addEffect(new MobEffectInstance(MobEffects.POISON, LibUtils.switchByDifficulty(level, pos, 300, 600, 750), 2));
+        arrow.addEffect(new MobEffectInstance(MobEffects.POISON, LibUtils.switchByDifficulty(level, 300, 600, 750), 2));
         if (ModSecretSeeds.NO_TRAPS.match(level)) {
             arrow.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 2400, 2));
         }
-        arrow.setBaseDamage(LibUtils.switchByDifficulty(level, pos, 16, 32, 48));
+        arrow.setBaseDamage(LibUtils.switchByDifficulty(level, 16, 32, 48));
         arrow.shoot(direction.getStepX(), direction.getStepY(), direction.getStepZ(), 3.0F, 0.0F);
         return level.addFreshEntity(arrow);
     }

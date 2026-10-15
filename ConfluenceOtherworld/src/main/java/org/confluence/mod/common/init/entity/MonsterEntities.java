@@ -1228,8 +1228,8 @@ public class MonsterEntities {
     // Boss 附属生物：血肉墙与血肉山
     public static final RegistryObject<EntityType<TheHungry>> THE_HUNGRY = withAttributes(registerEntity("the_hungry", EntityType.Builder.of(TheHungry::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(87).armor(8).attackDamage(15).followRange(32).attackKnockback(0.75).knockbackResistance(1).armorToughness(3)
-                    .state(TheHungry.FeedingState.WOUNDED_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.5).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 20.0 / 16.0 : 2.0))
-                    .state(TheHungry.FeedingState.CRITICAL_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 30.0 / 16.0 : 3.0))
+                    .state(TheHungry.FeedingState.WOUNDED_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.5).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 20.0 / 16.0 : 2.0))
+                    .state(TheHungry.FeedingState.CRITICAL_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level()) ? 30.0 / 16.0 : 3.0))
                     .build());
     public static final RegistryObject<EntityType<BaseWormPart>> LEECH_SEGMENT = registerWormSegment("leech_segment");
     public static final RegistryObject<EntityType<SimpleWormMonster>> LEECH = withAttributes(registerWorm("leech", 2F, 2F, SimpleWormMonster.Role.UNDERWORLD, SimpleWormMonster.Anatomy.LEECH, () -> MonsterEntities.LEECH_SEGMENT.get()),

@@ -45,7 +45,7 @@ public class PlantStemPart extends PartEntity<Snatcher> implements PartHitTarget
     public boolean hurt(DamageSource source, float amount) {
         Snatcher plant = getParent();
         if (level().isClientSide || !isAttackable() || isInvulnerableTo(source)) return false;
-        float multiplier = LibUtils.isMaster(level(), plant.blockPosition()) ? 0.2F : LibUtils.isAtLeastExpert(level(), plant.blockPosition()) ? 0.5F : 0.7F;
+        float multiplier = LibUtils.isMaster(level()) ? 0.2F : LibUtils.isAtLeastExpert(level()) ? 0.5F : 0.7F;
         return plant.hurt(source, amount * multiplier);
     }
 

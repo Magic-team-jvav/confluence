@@ -63,7 +63,7 @@ public final class DungeonSpirit extends BaseFlyingMonster {
         if (!DungeonStructure.iterateDungeon(level, victim.chunkPosition(), start -> start.getPieces().stream()
                 .anyMatch(piece -> piece.getBoundingBox().isInside(victim.blockPosition()))))
             return;
-        int chance = LibUtils.isAtLeastExpert(level, victim.blockPosition()) ? 9 : 13;
+        int chance = LibUtils.isAtLeastExpert(level) ? 9 : 13;
         if (victim.getRandom().nextInt(chance) != 0) return;
         DungeonSpirit spirit = MonsterEntities.DUNGEON_SPIRIT.get().create(level);
         if (spirit == null) return;

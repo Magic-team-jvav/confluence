@@ -34,7 +34,7 @@ public class DartTrapBlock extends AbstractDispenserMechanicalBlock {
         arrow.setup(PICKUP_ITEM_STACK, null);
         arrow.setCustomName(NAME);
         arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
-        arrow.addEffect(new MobEffectInstance(MobEffects.POISON, LibUtils.switchByDifficulty(level, pos, 300, 600, 750), 1));
+        arrow.addEffect(new MobEffectInstance(MobEffects.POISON, LibUtils.switchByDifficulty(level, 300, 600, 750), 1));
         if (ModSecretSeeds.NO_TRAPS.match(level)) {
             arrow.addEffect(new MobEffectInstance(ModEffects.BLEEDING.get(), 1200, 1));
         }

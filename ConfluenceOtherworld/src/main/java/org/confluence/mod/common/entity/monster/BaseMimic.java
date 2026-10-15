@@ -264,7 +264,7 @@ public class BaseMimic extends BaseMonster {
     /// 困难模式拟态怪闭合时免疫伤害；专家及大师模式还会反射可反射的投射物。
     @Override
     public PortProjectileDeflection deflection(Projectile projectile) {
-        return action == 7 && onGround() && isHardmodeVariant() && LibUtils.isAtLeastExpert(level(), blockPosition())
+        return action == 7 && onGround() && isHardmodeVariant() && LibUtils.isAtLeastExpert(level())
                 ? PortProjectileDeflection.REVERSE
                 : PortProjectileDeflection.NONE;
     }

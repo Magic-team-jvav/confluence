@@ -36,7 +36,7 @@ public class SpikeBlock extends Block {
             }
             entity.hurt(LibDamageTypes.of(level, DamageTypes.STING), finalDamage);
             if (entity.isAlive() && entity instanceof LivingEntity living) {
-                int duration = LibUtils.switchByDifficulty(level, pos, 200, 400, 500);
+                int duration = LibUtils.switchByDifficulty(level, 200, 400, 500);
                 if (living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
                     duration /= 2;
                 }

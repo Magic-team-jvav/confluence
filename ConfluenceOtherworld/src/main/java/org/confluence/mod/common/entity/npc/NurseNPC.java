@@ -39,7 +39,7 @@ public class NurseNPC extends BaseNPC {
         for (MobEffectInstance effect : player.getActiveEffects()) {
             if (ModUtils.isDebuff(effect)) cost += 500L;
         }
-        if (LibUtils.isAtLeastExpert(player.level(), player.blockPosition())) cost *= 2L;
+        if (LibUtils.isAtLeastExpert(player.level())) cost *= 2L;
 
         KillBoard killBoard = KillBoard.INSTANCE;
         if (killBoard.getGamePhase().isHardmode()) {

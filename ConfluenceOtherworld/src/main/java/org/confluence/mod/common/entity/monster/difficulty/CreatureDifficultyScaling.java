@@ -38,7 +38,7 @@ public final class CreatureDifficultyScaling {
 
     /// 使用本体已有的有效难度判定，包含传奇种子。
     public static CreatureDifficultyRules.Difficulty difficulty(Entity entity) {
-        return LibUtils.switchByDifficulty(entity.level(), entity.blockPosition(),
+        return LibUtils.switchByDifficulty(entity.level(),
                 CreatureDifficultyRules.Difficulty.CLASSIC, CreatureDifficultyRules.Difficulty.EXPERT,
                 CreatureDifficultyRules.Difficulty.MASTER, CreatureDifficultyRules.Difficulty.LEGENDARY);
     }

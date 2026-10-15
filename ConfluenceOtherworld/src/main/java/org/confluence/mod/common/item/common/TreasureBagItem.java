@@ -41,7 +41,7 @@ public class TreasureBagItem extends CustomRarityItem {
     }
 
     public TreasureBagItem(ResourceLocation lootTable, ModRarity innerRarity) {
-        this(lootTable, innerRarity, (level, pos) -> LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master"));
+        this(lootTable, innerRarity, (level, pos) -> LibUtils.switchByDifficulty(level, "/classic", "/expert", "/master"));
     }
 
     @Override

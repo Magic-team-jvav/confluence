@@ -86,8 +86,8 @@ public class Hornet extends BaseFlyingMonster {
     /// 黄蜂毒刺在经典模式有三分之一概率中毒；专家及大师模式必定触发。
     /// 高难度下三分之一为固定长时效果，其余为随机短时效果。
     public void applyStingerPoison(LivingEntity target) {
-        boolean master = LibUtils.isMaster(level(), blockPosition());
-        boolean expert = master || LibUtils.isAtLeastExpert(level(), blockPosition());
+        boolean master = LibUtils.isMaster(level());
+        boolean expert = master || LibUtils.isAtLeastExpert(level());
         if (!expert && random.nextInt(3) != 0) return;
         int duration;
         if (!expert) {

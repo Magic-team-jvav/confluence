@@ -400,7 +400,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     public int getArmorValue() {
         int armor = super.getArmorValue() + NPCCombatProgression.defenseBonus();
         if (hasEffect(ModEffects.DRYADS_BLESSING.get())) {
-            armor += LibUtils.switchByDifficulty(level(), blockPosition(), 2, 7, 12, 12);
+            armor += LibUtils.switchByDifficulty(level(), 2, 7, 12, 12);
         }
         return armor;
     }

@@ -39,8 +39,8 @@ public final class HostileDemonScytheProjectile extends StraightMonsterProjectil
     @Override
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
         if (random.nextInt(3) != 0) return;
-        int duration = LibUtils.isMaster(level(), blockPosition()) ? 750
-                : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 600 : 300;
+        int duration = LibUtils.isMaster(level()) ? 750
+                : LibUtils.isAtLeastExpert(level()) ? 600 : 300;
         target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, duration), owner);
     }
 

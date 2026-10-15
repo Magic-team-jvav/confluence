@@ -452,7 +452,7 @@ public final class LivingEntityEvents {
                 isEnemy &&
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
-                living.getRandom1211().nextFloat() < (LibUtils.isAtLeastExpert(level, living.blockPosition()) ? 0.36F : 0.2F)
+                living.getRandom1211().nextFloat() < (LibUtils.isAtLeastExpert(level) ? 0.36F : 0.2F)
         ) { // 掉落光明或暗影之魂
             Holder<Biome> biome = level.getBiome(living.blockPosition());
             ItemStack soul = ItemStack.EMPTY;

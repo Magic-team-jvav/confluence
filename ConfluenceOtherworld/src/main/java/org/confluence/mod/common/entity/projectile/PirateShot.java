@@ -32,7 +32,7 @@ public class PirateShot extends StraightMonsterProjectile implements ItemSupplie
     @Override
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
         if (kind == Kind.ARROW && random.nextInt(3) == 0) {
-            target.setSecondsOnFire(LibUtils.isMaster(level(), blockPosition()) ? 18 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 14 : 7);
+            target.setSecondsOnFire(LibUtils.isMaster(level()) ? 18 : LibUtils.isAtLeastExpert(level()) ? 14 : 7);
         }
     }
 

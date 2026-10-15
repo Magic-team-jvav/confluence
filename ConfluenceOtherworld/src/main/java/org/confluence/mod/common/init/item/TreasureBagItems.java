@@ -28,7 +28,7 @@ public class TreasureBagItems {
 
     public static final PortDeferredItem<TreasureBagItem> KING_SLIME_TREASURE_BAG = ITEMS.register("king_slime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/king_slime"), ModRarity.BLUE));
     public static final PortDeferredItem<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eye_of_cthulhu"), ModRarity.BLUE, (level, pos) -> {
-        String difficulty = LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master");
+        String difficulty = LibUtils.switchByDifficulty(level, "/classic", "/expert", "/master");
         long secretFlag = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
         String biome;
         if (IMinecraftServer.equalsSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL) || !IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL)) {
@@ -51,7 +51,7 @@ public class TreasureBagItems {
         @ParametersAreNonnullByDefault
         @Override
         protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
-            if (LibUtils.isAtLeastExpert(serverLevel, player.blockPosition())) {
+            if (LibUtils.isAtLeastExpert(serverLevel)) {
                 CuriosApi.getCuriosInventory(player).ifPresent(iCuriosItemHandler -> {
                     ICurioStacksHandler iCurioStacksHandler = iCuriosItemHandler.getCurios().get(TerraCurio.CURIO_SLOT);
                     if (TCCommonConfigs.MAX_ACCESSORIES.get() - iCurioStacksHandler.getSlots() > 0) {
@@ -65,7 +65,7 @@ public class TreasureBagItems {
         @ParametersAreNonnullByDefault
         @Override
         protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
-            if (LibUtils.isAtLeastExpert(serverLevel, player.blockPosition())) {
+            if (LibUtils.isAtLeastExpert(serverLevel)) {
                 CuriosApi.getCuriosInventory(player).ifPresent(iCuriosItemHandler -> {
                     ICurioStacksHandler iCurioStacksHandler = iCuriosItemHandler.getCurios().get(TerraCurio.CURIO_SLOT);
                     if (TCCommonConfigs.MAX_ACCESSORIES.get() - iCurioStacksHandler.getSlots() > 0) {

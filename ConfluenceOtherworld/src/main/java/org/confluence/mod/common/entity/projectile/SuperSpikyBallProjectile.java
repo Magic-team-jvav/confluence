@@ -63,7 +63,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
             EntityHitResult result = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
             if (result != null) {
                 Entity entity = result.getEntity();
-                float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 16, 32, 48);
+                float damage = LibUtils.switchByDifficulty(level(), 16, 32, 48);
                 if (entity instanceof LivingEntity living) {
                     damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                 }

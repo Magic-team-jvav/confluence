@@ -68,12 +68,16 @@ public final class VanillaHumanoidRenderer<T extends Mob & GeoEntity> extends Ge
             poseStack.popPose();
         }
 
-        @Override
-        protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T entity, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+        public static void applyHandTransform(PoseStack poseStack) {
             poseStack.translate(0.0F, 0.0F, -0.0625F);
             poseStack.translate(0.0F, -0.0625F, 0.0F);
             poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
             poseStack.translate(0.03F, 0.05F, -0.5F);
+        }
+
+        @Override
+        protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T entity, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+            applyHandTransform(poseStack);
             super.renderStackForBone(poseStack, bone, stack, entity, bufferSource, partialTick, packedLight, packedOverlay);
         }
     }

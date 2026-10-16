@@ -15,7 +15,6 @@ import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
@@ -24,7 +23,6 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.NpcEntities;
-import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.util.PlayerUtils;
@@ -33,6 +31,9 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/reforge.png");
@@ -53,9 +54,9 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     // 工匠预览
     private static final float MODEL_X = 80.0F;
-    private static final float MODEL_Y = 108.0F;
+    private static final float MODEL_Y = 113.0F;
     private static final float MODEL_SCALE = 35.0F;
-    private static final float HAMMER_RAISED_X = 115.0F;
+    private static final float HAMMER_RAISED_X = 105.0F;
     private static final float HAMMER_STRIKE_X = 20.0F;
     private static final int HAMMER_RETURN_TICKS = 9;
     private static final float MODEL_YAW = 200.0F;
@@ -109,19 +110,25 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final int BALANCE_ROW_SPACING = 18;
     private static final int COST_TEXT_WIDTH = 19;
     private static final int COST_COUNT_COLOR = 0x403326;
-    private static final int PREFIX_X = 34;
+    private static final int ITEM_TEXT_GAP = 6;
+    private static final int PREFIX_RIGHT_X = NPCReforgeMenu.REFORGE_SLOT_X - ITEM_TEXT_GAP;
     private static final int PREFIX_Y = 73;
     private static final int PREFIX_MAX_WIDTH = 85;
     private static final int PREFIX_COLOR = 0xFFFFFF;
-    private static final int PREFIX_POPUP_TICKS = 30;
+    private static final int PREFIX_POPUP_TICKS = 60;
     private static final int PREFIX_FADE_TICKS = 10;
-    private static final float PREFIX_RISE = 8.0F;
+    private static final int PREFIX_FADE_IN_TICKS = 4;
+    private static final int PREFIX_LINE_SPACING = 11;
+    private static final int PREFIX_QUEUE_LIMIT = 16;
+    private static final int PREFIX_PUSH_TICKS = 4;
+    private static final float PREFIX_STACK_SHRINK = 0.86F;
+    private static final float PREFIX_MIN_SCALE = 0.55F;
+    private static final float PREFIX_STACK_FADE = 0.75F;
 
     // 点击范围随模型位置移动，限制在可见裁剪区域内。
     private static final float MODEL_HIT_HALF_WIDTH = 18.0F;
     private static final float MODEL_HIT_HEIGHT = 1.9F;
     private static final int HINT_MAX_WIDTH = 120;
-    private static final int HINT_SLOT_GAP = 6;
     private static final int SLOT_SIZE = 16;
     private static final int SLOT_FRAME_PADDING = 1;
     private static final int SLOT_FRAME_LIGHT = 0x70FFFFFF;
@@ -129,11 +136,12 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final int SLOT_FRAME_DARK = 0x70606060;
 
     private int hammerSwingAge = HAMMER_RETURN_TICKS;
-    private int lastReforgeRevision;
-    private int prefixPopupAge;
-    private Component prefixPopup;
-    private boolean bestPrefixPopup;
-    private ItemStack popupItem = ItemStack.EMPTY;
+
+    private record ReforgePopup(Component text, int createdAt, boolean best) {}
+
+    private final Deque<ReforgePopup> prefixPopups = new ArrayDeque<>();
+    private int popupClock;
+    private int bestPrefixPauseTicks;
     private boolean hammerImpactPending;
     private TextureTarget previewTarget;
     private BaseNPC tinkererPreview;
@@ -162,7 +170,6 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 var controller = tinkererPreview.getAnimatableInstanceCache().getManagerForId(tinkererPreview.getId()).getAnimationControllers().get("movement");
                 if (controller != null) controller.transitionLength(0);
                 tinkererPreview.setSilent(true);
-                tinkererPreview.setItemSlot(EquipmentSlot.MAINHAND, HammerItems.IRON_HAMMER.toStack());
             }
         }
 
@@ -173,22 +180,20 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         super.containerTick();
         if (tinkererPreview != null) tinkererPreview.tickCount++;
         if (hammerSwingAge < HAMMER_RETURN_TICKS) hammerSwingAge++;
-        if (bestPrefixPopup && prefixPopupAge < NPCReforgeMenu.BEST_PREFIX_PAUSE_TICKS)
-            prefixPopupAge++;
-        if (lastReforgeRevision != menu.getReforgeRevision()) {
-            lastReforgeRevision = menu.getReforgeRevision();
+        popupClock++;
+        if (bestPrefixPauseTicks > 0) bestPrefixPauseTicks--;
+        prefixPopups.removeIf(popup -> popupClock - popup.createdAt() >=
+                (popup.best() ? NPCReforgeMenu.BEST_PREFIX_PAUSE_TICKS : PREFIX_POPUP_TICKS));
+        NPCReforgeMenu.ReforgeResult result;
+        while ((result = menu.pollReforgeResult()) != null) {
             hammerSwingAge = 0;
             hammerImpactPending = true;
-            PrefixComponent prefix = PrefixUtils.getPrefix(menu.getReforgeItem());
-            prefixPopup = prefix != null && prefix.type() != PrefixType.UNKNOWN
-                    ? ModRarity.withColor(menu.getReforgeItem(), prefix.getName()) : null;
-            bestPrefixPopup = menu.isLastReforgeBest();
-            popupItem = menu.getReforgeItem().copy();
-            prefixPopupAge = 0;
-        } else if (prefixPopup != null) {
-            if (!ItemStack.matches(popupItem, menu.getReforgeItem())) prefixPopup = null;
-            else if (bestPrefixPopup ? prefixPopupAge >= NPCReforgeMenu.BEST_PREFIX_PAUSE_TICKS
-                    : ++prefixPopupAge >= PREFIX_POPUP_TICKS) prefixPopup = null;
+            PrefixComponent prefix = PrefixUtils.getPrefix(result.item());
+            if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
+                prefixPopups.addLast(new ReforgePopup(ModRarity.withColor(result.item(), prefix.getName()), popupClock, result.best()));
+                while (prefixPopups.size() > PREFIX_QUEUE_LIMIT) prefixPopups.removeFirst();
+            }
+            if (result.best()) bestPrefixPauseTicks = NPCReforgeMenu.BEST_PREFIX_PAUSE_TICKS;
         }
     }
 
@@ -228,7 +233,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     private boolean canReforge() {
         return PrefixUtils.couldReforge(menu.getReforgeItem()) && menu.getCooldownTicks() == 0
-                && (!bestPrefixPopup || prefixPopupAge >= NPCReforgeMenu.BEST_PREFIX_PAUSE_TICKS)
+                && bestPrefixPauseTicks == 0
                 && menu.getCost() < 0x3F3F3F3F && menu.getAvailableMoney() >= menu.getCost();
     }
 
@@ -278,21 +283,34 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
             var lines = font.split(hint, HINT_MAX_WIDTH);
             int hintY = slotY + (SLOT_SIZE - lines.size() * font.lineHeight) / 2;
             for (var line : lines) {
-                graphics.drawString(font, line, slotX - HINT_SLOT_GAP - font.width(line), hintY, PREFIX_COLOR);
+                graphics.drawString(font, line, slotX - ITEM_TEXT_GAP - font.width(line), hintY, PREFIX_COLOR);
                 hintY += font.lineHeight;
             }
         }
-        if (prefixPopup != null) {
-            float age = bestPrefixPopup ? 0.0F : prefixPopupAge + partialTick;
-            int alpha = (int) (255.0F * Math.min(1.0F, (PREFIX_POPUP_TICKS - age) / PREFIX_FADE_TICKS));
+        float stackDepth = 0.0F;
+        var popups = prefixPopups.descendingIterator();
+        while (popups.hasNext()) {
+            ReforgePopup popup = popups.next();
+            float age = popupClock - popup.createdAt() + partialTick;
+            int lifetime = popup.best() ? NPCReforgeMenu.BEST_PREFIX_PAUSE_TICKS : PREFIX_POPUP_TICKS;
+            float opacity = Math.max(0, Math.min(1, Math.min(age / PREFIX_FADE_IN_TICKS,
+                    (lifetime - age) / PREFIX_FADE_TICKS)));
+            float scale = Math.max(PREFIX_MIN_SCALE, (float) Math.pow(PREFIX_STACK_SHRINK, stackDepth));
+            opacity *= (float) Math.pow(PREFIX_STACK_FADE, stackDepth);
+            int alpha = (int) (255 * opacity);
             if (alpha > 3) {
-                int y = topPos + PREFIX_Y - (int) (PREFIX_RISE * Math.min(1.0F, age / PREFIX_POPUP_TICKS));
-                graphics.drawString(font, Language.getInstance().getVisualOrder(font.substrByWidth(prefixPopup, PREFIX_MAX_WIDTH)),
-                        leftPos + PREFIX_X, y, alpha << 24 | PREFIX_COLOR);
+                graphics.pose().pushPose();
+                graphics.pose().translate(leftPos + PREFIX_RIGHT_X, topPos + PREFIX_Y - stackDepth * PREFIX_LINE_SPACING, 0);
+                graphics.pose().scale(scale, scale, 1);
+                var text = Language.getInstance().getVisualOrder(font.substrByWidth(popup.text(), PREFIX_MAX_WIDTH));
+                graphics.drawString(font, text, -font.width(text), 0, alpha << 24 | PREFIX_COLOR);
+                graphics.pose().popPose();
             }
+            float push = Math.min(1.0F, age / PREFIX_PUSH_TICKS);
+            stackDepth += push * push * (3.0F - 2.0F * push);
         }
-
     }
+
 
     private void renderTinkerer(GuiGraphics graphics) {
         graphics.pose().pushPose();

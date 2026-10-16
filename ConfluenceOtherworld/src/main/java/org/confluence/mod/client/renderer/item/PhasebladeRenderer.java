@@ -70,7 +70,7 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> impl
         float z = geometry.maxZ() + 0.02F;
         float v0 = frame / 7.0F;
         float v1 = (frame + 1) / 7.0F;
-        VertexConsumer vertices = buffers.getBuffer(RenderType.entityTranslucentEmissive(LIGHTNING));
+        VertexConsumer vertices = buffers.getBuffer(RenderType.eyes(LIGHTNING));
         var pose = poses.last();
         vertices.addVertex(pose.pose(), u - radius, centerY - radius, z).setColor(255, 255, 255, 255).setUv(0, v1).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);
         vertices.addVertex(pose.pose(), u + radius, centerY - radius, z).setColor(255, 255, 255, 255).setUv(1, v1).setOverlay(overlay).setLight(15728880).setNormal(pose, 0, 0, 1);

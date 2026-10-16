@@ -21,4 +21,5 @@ public final class ModDataComponentTypes {
     public static final Supplier<DataComponentType<ValueComponent>> VALUE = TYPES.registerComponentType("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.registerComponentType("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.registerComponentType("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
+    public static final Supplier<DataComponentType<ResourceLocation>> SOUL_SKILL = TYPES.registerComponentType("soulcerer_skill", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
 }

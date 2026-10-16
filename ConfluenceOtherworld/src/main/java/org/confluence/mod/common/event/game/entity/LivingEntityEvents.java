@@ -25,6 +25,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -37,12 +38,14 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.SoulOverdraftEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.data.map.AttackEffects;
 import org.confluence.mod.common.data.map.CreatureDefinition;
@@ -182,6 +185,16 @@ public final class LivingEntityEvents {
         }
     }
 
+    /// 在未取消的死亡结算后保留玩家灵魂，并处理击杀收魂。
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void livingDeathSoul(LivingDeathEvent event) {
+        LivingEntity victim = event.getEntity();
+        if (victim instanceof ServerPlayer player) {
+            SoulStorage.of(player).onDeath();
+        }
+        PlayerUtils.collectSoul(victim, event.getSource());
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
@@ -207,11 +220,26 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
+        DamageSource damageSource = event.getSource();
+        if (damageSource.is(LibTags.DamageTypes.SOUL_OVERDRAFT)) {
+            if (event.getEntity() instanceof ServerPlayer player) {
+                SoulOverdraftEvent overdraftEvent = NeoForge.EVENT_BUS.post(new SoulOverdraftEvent(player, event.getAmount()));
+                float amount = Math.max(0.0F, overdraftEvent.getAmount());
+                if (overdraftEvent.isCanceled() || !player.isAlive() || amount <= 0.0F) {
+                    event.setCanceled(true);
+                    return;
+                }
+
+                event.setAmount(amount);
+            }
+
+            return;
+        }
+
         if (EnemyDamageRules.blocks(event.getEntity(), event.getSource())) {
             event.setCanceled(true);
             return;
         }
-        DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
 
         applyBossDefinitionDamage(event, living, damageSource);

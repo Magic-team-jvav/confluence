@@ -55,22 +55,22 @@ public final class ModKeyBindings {
     //region 魔法系列
 
     /// 灵魂总览
-    public static final Lazy<KeyMapping> SOUL_OVERVIEW = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
-            "key.confluence.soul.overview",
+    public static final Lazy<KeyMapping> SOUL_OVERVIEW = register(() -> new KeyMapping(
+            "key.confluence.soulcerer.overview",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_C,
             KEY_BINDINGS_CATEGORY
-    )) : null;
+    ));
 
     /// 灵魂快捷技能切换
-    public static final Lazy<KeyMapping> MAGIC_QUICK_SKILL_SWITCHING = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
-            "key.confluence.soul.quick_skill_switching",
+    public static final Lazy<KeyMapping> MAGIC_QUICK_SKILL_SWITCHING = register(() -> new KeyMapping(
+            "key.confluence.soulcerer.quick_skill_switching",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_LEFT_SHIFT,
             KEY_BINDINGS_CATEGORY
-    )) : null;
+    ));
 
     /// 魔法技能释放
     public static final Lazy<KeyMapping> MAGIC_SKILL_RELEASE = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(

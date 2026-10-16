@@ -56,6 +56,7 @@ import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.Team;
@@ -119,7 +120,6 @@ public final class PlayerEvents {
         if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
-//        PlayerUtils.syncSoul2Client(player);
         PlayerUtils.syncPlayerData(player);
 
         if (ModUtils.shouldDisplayTeam()) {
@@ -380,6 +380,7 @@ public final class PlayerEvents {
 
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
+        SoulStorage.of(player).onRespawn();
         PlayerUtils.syncPlayerData(player);
         if (ModSecretSeeds.REALLY_SMALL.match(player.server)) {
             ReallySmall.scalePlayer(player);

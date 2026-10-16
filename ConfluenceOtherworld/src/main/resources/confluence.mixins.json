@@ -10,6 +10,8 @@
         "integration.apothic_attributes.AttributeEventsMixin",
         "integration.ars_nouveau.LivingCasterMixin",
         "integration.ars_nouveau.ManaCapMixin",
+        "integration.ars_nouveau.SpellCrossbowMixin",
+        "integration.ars_nouveau.SpellResolverMixin",
         "integration.carryon.PickupHandlerMixin",
         "integration.create.ArmBlockEntityMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",

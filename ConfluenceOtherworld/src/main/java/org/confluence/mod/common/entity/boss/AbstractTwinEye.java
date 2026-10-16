@@ -15,6 +15,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
+import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
@@ -207,8 +208,13 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
                 && super.canAttack(target);
     }
 
+    /// 先保留击杀归属，再通知管理本体眼球败退。
     @Override
     public void die(DamageSource source) {
+        TheTwins master = getMaster();
+        if (master != null) {
+            PlayerUtils.rememberSoulBossKiller(master, source);
+        }
         reportDeath();
         super.die(source);
     }

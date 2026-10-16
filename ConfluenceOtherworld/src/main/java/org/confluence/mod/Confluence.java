@@ -27,11 +27,13 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.SoulItems;
 import org.confluence.mod.common.summoner.SummonerEvents;
 import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,12 +75,14 @@ public final class Confluence {
 
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
+        SoulItems.register(eventBus);
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
         AgeratumHelper.register(eventBus);
         CreateHelper.register(eventBus);
+        IronSpellHelper.registerEvents();
         ModAdvancements.register(eventBus);
 
         TFReferences.init();

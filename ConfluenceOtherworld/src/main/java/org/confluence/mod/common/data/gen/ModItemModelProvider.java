@@ -65,6 +65,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
 
+        handheldTextureAlias(SoulItems.BROKEN_GLIMMER, Confluence.asResource("item/soul_lantern/broken_glimmer"));
+        withExistingParent(SoulItems.FALLEN_SOUL_CORE.getId().getPath(), "item/generated").texture("layer0", Confluence.asResource("item/consumable/fallen_soul_core"));
+        skip.add(SoulItems.FALLEN_SOUL_CORE.get());
+        withExistingParent(SoulItems.SOUL_SKILL_BOOK.getId().getPath(), "item/generated").texture("layer0", ResourceLocation.withDefaultNamespace("item/book"));
+        skip.add(SoulItems.SOUL_SKILL_BOOK.get());
+
         handheldTextureAlias(SwordItems.ZENITH, Confluence.asResource("item/summon/zenith"));
         handheldTextureAlias(SwordItems.TRUE_COPPER_SHORTSWORD, Confluence.asResource("item/sword/copper_short_sword"));
 

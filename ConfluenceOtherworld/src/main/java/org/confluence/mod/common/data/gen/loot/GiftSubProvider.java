@@ -14,12 +14,17 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModSoulSkills;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -1327,7 +1332,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         //克脑
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon().withPool(soulSkillBookLoot())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 90)))
                 ))
@@ -1335,7 +1340,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon().withPool(soulSkillBookLoot())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(80, 110)))
@@ -1350,7 +1355,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(13)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon().withPool(soulSkillBookLoot())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(110, 135)))
@@ -1368,10 +1373,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
 
         // 世吞
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/classic"), eaterOfWorldsTreasureBagCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/classic"), eaterOfWorldsTreasureBagCommon().withPool(soulSkillBookLoot())
 
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/expert"), eaterOfWorldsTreasureBagCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/expert"), eaterOfWorldsTreasureBagCommon().withPool(soulSkillBookLoot())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.WORM_SCARF)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
@@ -1380,7 +1385,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/master"), eaterOfWorldsTreasureBagCommon()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/master"), eaterOfWorldsTreasureBagCommon().withPool(soulSkillBookLoot())
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.WORM_SCARF)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
@@ -1887,6 +1892,15 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 );
     }
+    /// 两类 Boss 的奖励链共用绑定灵魂激荡的独立技能书池。
+    private static LootPool.Builder soulSkillBookLoot() {
+        return LootPool.lootPool()
+                .when(LootItemRandomChanceCondition.randomChance(SoulSkillParameters.LOOT_CHANCE_PERCENT / 100.0F))
+                .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK).setWeight(SoulSkillParameters.LOOT_WEIGHT)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(SoulSkillParameters.LOOT_COUNT)))
+                        .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SPIRIT_SURGE.get().getId())));
+    }
+
     // 困难模式匣子通用
     private static LootTable.Builder environmentCrateHardModeCommon() {
         return LootTable.lootTable()

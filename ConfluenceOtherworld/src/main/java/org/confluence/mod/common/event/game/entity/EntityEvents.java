@@ -105,7 +105,8 @@ public final class EntityEvents {
         if (ILivingEntity.of(victim).confluence$getExtraInvulnerableTicks() > 0) return;
 
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
+        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)
+                || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return;
         }
         @Nullable Entity attacker = damageSource.getEntity();

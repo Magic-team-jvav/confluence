@@ -95,6 +95,8 @@ public final class TickEvents {
             ServerLevel level = player.serverLevel();
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
+            PlayerUtils.tickSoulSkills(player);
+            PlayerUtils.regenerateSoul(player);
             ExtraInventory.of(player).sync(player);
             MountManager.validate(player);
             YoyoSession.of(player).tick(player);

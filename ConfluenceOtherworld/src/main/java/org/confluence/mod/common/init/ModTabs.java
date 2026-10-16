@@ -8,6 +8,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
@@ -1109,6 +1110,7 @@ public final class ModTabs {
                         environment_items.accept(ModItems.ASH_GRASS_SEED.get());
 
                         CreativeModeTab.Output gain = GroupItem.belongsTo("gain", output);
+                        gain.accept(SoulItems.FALLEN_SOUL_CORE);
                         gain.accept(ConsumableItems.MANA_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_CRYSTAL.get());
                         gain.accept(ConsumableItems.RECALL_MANA_CRYSTAL.get());
@@ -2074,6 +2076,26 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MAGES.getId())
                     .build());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SOUL = TABS.register("soulcerer",
+            () -> CreativeModeTab.builder().icon(IconItems.SOULCERER_ICON::toStack)
+                    .title(Component.translatable("creativetab.confluence.soulcerer"))
+                    .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
+
+                        output.accept(SoulItems.FALLEN_SOUL_CORE);
+                        acceptSoulGroup(output, "soulcerer_main_weapons", List.of(SoulItems.BROKEN_GLIMMER.toStack()));
+                        acceptSoulGroup(output, "soulcerer_secondary_weapons", List.of());
+                        acceptSoulGroup(output, "soulcerer_artifacts", List.of());
+
+                        ItemStack spiritSurgeBook = SoulItems.SOUL_SKILL_BOOK.toStack();
+                        spiritSurgeBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SPIRIT_SURGE.get().getId());
+                        ItemStack survivalInstinctBook = SoulItems.SOUL_SKILL_BOOK.toStack();
+                        survivalInstinctBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SURVIVAL_INSTINCT.get().getId());
+                        acceptSoulGroup(output, "soulcerer_skill_books", List.of(SoulItems.SOUL_SKILL_BOOK.toStack(), spiritSurgeBook, survivalInstinctBook));
+                    })
+                    .withTabsBefore(MAGES.getId())
+                    .withTabsAfter(SUMMONERS.getId())
+                    .build());
     /* 生物 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ENTITY = TABS.register("entity",
             () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)
@@ -2420,6 +2442,15 @@ public final class ModTabs {
                     })
                     .withTabsBefore(SUMMONERS.getId())
                     .build());
+
+    /// 启用分组时保留空分类入口，关闭分组时按原序平铺物品。
+    private static void acceptSoulGroup(CreativeModeTab.Output output, String group, List<ItemStack> values) {
+        if (LibStartupConfig.itemGroups()) {
+            output.accept(GroupItem.of(Confluence.asResource(group), values));
+        } else {
+            values.forEach(output::accept);
+        }
+    }
 
     private static void acceptAll(DeferredRegister.Items register, CreativeModeTab.Output output) {
         register.getEntries().forEach(holder -> output.accept(holder.get()));

@@ -65,6 +65,7 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModWorldPresetTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModEntityTypeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModSoulSkillTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModFluidTagsProvider(output, lookup, helper));
         generator.addProvider(server, new CollectRecipeProvider(Confluence.asPlainId("server"), output, lookup,
                 ModRecipeProvider::new,

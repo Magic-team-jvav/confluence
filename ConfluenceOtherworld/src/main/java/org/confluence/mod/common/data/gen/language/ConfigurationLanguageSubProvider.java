@@ -100,9 +100,9 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.Soul", "Soul", "灵魂值");
         language.add("confluence.configuration.Soul.button", "Soul", "灵魂");
         language.add("confluence.configuration.Soul.tooltip", "About Soul Display", "关于灵魂显示");
-        language.add("confluence.configuration.Soulcerer", "Soulcerer Background", "灵魂界面背景");
-        language.add("confluence.configuration.Soulcerer.button", "Soulcerer Background", "灵魂界面背景");
-        language.add("confluence.configuration.Soulcerer.tooltip", "Background appearance settings for the Soulcerer interface.", "灵魂界面的背景外观设置。");
+        language.add("confluence.configuration.Soulcerer", "Soulcerer", "魂师");
+        language.add("confluence.configuration.Soulcerer.button", "Soulcerer", "魂师");
+        language.add("confluence.configuration.Soulcerer.tooltip", "Settings for the Soulcerer interface.", "魂师界面的相关设置。");
         language.add("confluence.configuration.Spawning", "Spawning Mechanism", "生成机制");
         language.add("confluence.configuration.Spawning.button", "Spawning Mechanism", "生成机制");
         language.add("confluence.configuration.Spawning.tooltip", "Settings related to entity spawning", "一些生成相关设置");
@@ -363,11 +363,11 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.slimeRainEventSpawnIntervalFactor", "Enemy Spawn Interval Factor", "敌人生成间隙系数");
         language.add("confluence.configuration.soulOffsetX", "Soul Offset X", "灵魂值X轴偏移");
         language.add("confluence.configuration.soulOffsetY", "Soul Offset Y", "灵魂值Y轴偏移");
-        language.add("confluence.configuration.soulQuickSkillStyle", "Soul Quick Skill Style", "灵魂快捷技能栏样式");
-        language.add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_L", "Horizontal Cards (Left)", "横向卡片（左）");
-        language.add("confluence.configuration.soulQuickSkillStyle.CARD_HORIZONTAL_R", "Horizontal Cards (Right)", "横向卡片（右）");
-        language.add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_BIG", "Big Roulette Wheel", "大转盘");
-        language.add("confluence.configuration.soulQuickSkillStyle.ROULETTE_WHEEL_SMALL", "Small Roulette Wheel", "小转盘");
+        language.add("confluence.configuration.soulcererQuickSkillStyle", "Soul Quick Skill Style", "灵魂快捷技能栏样式");
+        language.add("confluence.configuration.soulcererQuickSkillStyle.CARD_HORIZONTAL_L", "Horizontal Cards (Left)", "横向卡片（左）");
+        language.add("confluence.configuration.soulcererQuickSkillStyle.CARD_HORIZONTAL_R", "Horizontal Cards (Right)", "横向卡片（右）");
+        language.add("confluence.configuration.soulcererQuickSkillStyle.ROULETTE_WHEEL_BIG", "Big Roulette Wheel", "大转盘");
+        language.add("confluence.configuration.soulcererQuickSkillStyle.ROULETTE_WHEEL_SMALL", "Small Roulette Wheel", "小转盘");
         language.add("confluence.configuration.soulStyle", "Soul Style", "灵魂值样式");
         language.add("confluence.configuration.soulStyle.legacy", "Soul Style: Elegant", "灵魂值样式:叠加");
         language.add("confluence.configuration.soulStyle.overlay", "Soul Style: Overlay", "灵魂值样式:叠加");
@@ -426,6 +426,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart", "裸露猩红之心");
         language.add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts", "启用后，新生成的猩红洞穴会出现裸露的猩红之心");
         language.add("confluence.configuration.yoyoUseButton", "Yoyo Action Button", "悠悠球动作按键");
-        language.add("confluence.screen.soul_overview.center", "Soul Overview Screen: Center", "灵魂技能总览界面.居中");
+        language.add("confluence.screen.soulcerer_overview.center", "Soul Overview Screen: Center", "灵魂技能总览界面.居中");
     }
 }

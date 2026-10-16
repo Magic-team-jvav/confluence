@@ -74,6 +74,7 @@ import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.client.renderer.ModRenderer;
 import org.confluence.mod.client.renderer.block.MuralPlacementPreviewRenderer;
 import org.confluence.mod.client.renderer.entity.MartianOfficerRenderer;
@@ -203,9 +204,7 @@ public final class GameClientEvents {
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientBiomeEffectSystem.tick(player);
             ScryingOrbHandler.handle(minecraft, player);
-            if (Confluence.SOUL_SKILLS) {
-                SoulSkillHandler.handle(minecraft);
-            }
+            ClientSoulHandler.handleSoulSkills(minecraft);
             if (!minecraft.isPaused()) {
                 if (player.hasEffect(ModEffects.ELECTRIFIED)) {
                     boolean moving = minecraft.screen == null && (player.input.forwardImpulse != 0.0F
@@ -317,8 +316,8 @@ public final class GameClientEvents {
         double scrollDeltaY = event.getScrollDeltaY();
         if (LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
             event.setCanceled(true);
-        } else if (Confluence.SOUL_SKILLS) {
-            if (SoulSkillHandler.INSTANCE.scrolling(scrollDeltaY)) {
+        } else {
+            if (ClientSoulHandler.scrollSoulSkills(scrollDeltaY)) {
                 event.setCanceled(true);
             }
         }

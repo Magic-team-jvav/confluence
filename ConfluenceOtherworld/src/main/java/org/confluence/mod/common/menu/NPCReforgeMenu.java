@@ -21,6 +21,9 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceMenu {
     // 槽位坐标相对于界面左上角，客户端显示与服务端点击区域共用。
     public static final int REFORGE_SLOT_X = 50;
@@ -41,6 +44,10 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
     private final Player player;
     private final @Nullable BaseNPC npc;
     private final int[] data = {PrefixType.UNKNOWN.ordinal(), -1, 0x3F3F3F3F, 0};
+
+    public record ReforgeResult(ItemStack item, boolean best) {}
+
+    private final Deque<ReforgeResult> reforgeResults = new ArrayDeque<>();
     private int reforgeRevision;
     private long availableMoney;
     private long reforgeReadyAt;
@@ -87,7 +94,13 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
             public int get() {return reforgeRevision;}
 
             @Override
-            public void set(int value) {reforgeRevision = value & 0xFFFF;}
+            public void set(int value) {
+                int revision = value & 0xFFFF;
+                if (reforgeRevision != revision && player.level().isClientSide) {
+                    reforgeResults.addLast(new ReforgeResult(getReforgeItem().copy(), (revision & 0x8000) != 0));
+                }
+                reforgeRevision = revision;
+            }
         });
         addDataSlot(DataSlot.shared(data, DATA_PREFIX_TYPE));
         addDataSlot(DataSlot.shared(data, DATA_PREFIX_ID));
@@ -191,6 +204,8 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
     public long getAvailableMoney() {return availableMoney;}
 
     public boolean isLastReforgeBest() {return (reforgeRevision & 0x8000) != 0;}
+
+    public ReforgeResult pollReforgeResult() {return reforgeResults.pollFirst();}
 
     public int getReforgeRevision() {return reforgeRevision;}
 

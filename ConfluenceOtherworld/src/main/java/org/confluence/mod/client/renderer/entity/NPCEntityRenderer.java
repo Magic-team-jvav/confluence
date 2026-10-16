@@ -16,18 +16,27 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.client.model.entity.NPCHumanoidGeoModel;
 import org.confluence.mod.common.entity.npc.AnglerNPC;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.joml.Matrix4f;
+import software.bernie.geckolib.cache.GeckoLibCache;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
+import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.List;
 
 /// 渲染城镇 NPC 及其由服务端同步的短时聊天气泡。
 public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
     private static final ResourceLocation CHAT_BUBBLE = Confluence.asResource("textures/gui/chat_bubble.png");
+    private static final ResourceLocation REFORGE_HAMMER_MODEL = Confluence.asResource("geo/gui/reforge_hammer.geo.json");
+    private static final ResourceLocation REFORGE_HAMMER_TEXTURE = Confluence.asResource("textures/gui/reforge_hammer.png");
+    private static final float HAMMER_GRIP_Y = 3.0F / 16.0F;
+    private static final float HAMMER_SCALE = 0.85F;
     private static final float ICON_SIZE = 0.4F;
     private static final int MAX_TEXT_WIDTH = 68;
     private static final int MAX_TEXT_LINES = 4;
@@ -35,6 +44,34 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
     public NPCEntityRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
         super(context, new NPCHumanoidGeoModel<>(path));
         addRenderLayer(new VanillaHumanoidRenderer.HeldItemLayer<>(this, "LeftArm", "RightArm"));
+        addRenderLayer(new GeoRenderLayer<>(this) {
+            @Override
+            public void renderForBone(PoseStack poseStack, T entity, GeoBone bone, RenderType renderType,
+                                      MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick,
+                                      int packedLight, int packedOverlay) {
+                if (!bone.getName().equals("RightArm")
+                        || !(Minecraft.getInstance().screen instanceof NPCReforgeScreen screen)
+                        || !screen.isTinkererPreview(entity)) return;
+                BakedGeoModel hammerModel = GeckoLibCache.getBakedModels().get(REFORGE_HAMMER_MODEL);
+                if (hammerModel == null) return;
+                GeoBone hammer = hammerModel.getBone("reforge_hammer").orElse(null);
+                if (hammer == null) return;
+                RenderType hammerType = RenderType.entityCutoutNoCull(REFORGE_HAMMER_TEXTURE);
+                poseStack.pushPose();
+                try {
+                    RenderUtils.translateToPivotPoint(poseStack, bone);
+                    VanillaHumanoidRenderer.HeldItemLayer.applyHandTransform(poseStack);
+                    // 模型以锤柄底端为原点，将握点对齐手掌，不叠加平面物品的展示旋转。
+                    poseStack.scale(HAMMER_SCALE, HAMMER_SCALE, HAMMER_SCALE);
+                    poseStack.translate(0, -HAMMER_GRIP_Y, 0);
+                    getRenderer().renderRecursively(poseStack, entity, hammer, hammerType, bufferSource,
+                            bufferSource.getBuffer(hammerType), true, partialTick, packedLight, packedOverlay, 1, 1, 1, 1);
+                } finally {
+                    poseStack.popPose();
+                    bufferSource.getBuffer(renderType);
+                }
+            }
+        });
     }
 
     @Override

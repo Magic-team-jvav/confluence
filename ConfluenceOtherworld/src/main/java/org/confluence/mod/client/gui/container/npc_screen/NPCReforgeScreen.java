@@ -60,6 +60,9 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final float HAMMER_STRIKE_X = 20.0F;
     private static final int HAMMER_RETURN_TICKS = 9;
     private static final float MODEL_YAW = 200.0F;
+    private static final float MODEL_LOOK_DISTANCE = 40.0F;
+    private static final float MODEL_MAX_HEAD_YAW = 45.0F;
+    private static final float MODEL_MAX_HEAD_PITCH = 30.0F;
     private static final float MODEL_PITCH = 0.0F;
     private static final float MODEL_ROLL = 180.0F;
     private static final float MODEL_TRANSLATE_X = 0.0F;
@@ -241,6 +244,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         if (tinkererPreview != null) {
+            updateTinkererLook(mouseX, mouseY);
             boolean outlined = isHoveringTinkerer(mouseX, mouseY) && NPCTradeItemOutline.getShader() != null;
             if (outlined) {
                 graphics.flush();
@@ -313,6 +317,21 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         }
     }
 
+
+    private void updateTinkererLook(int mouseX, int mouseY) {
+        float eyeX = leftPos + MODEL_X;
+        float eyeY = topPos + MODEL_Y - tinkererPreview.getEyeHeight() * MODEL_SCALE;
+        boolean hasItem = !menu.getReforgeItem().isEmpty();
+        float targetX = hasItem ? leftPos + NPCReforgeMenu.REFORGE_SLOT_X + SLOT_SIZE / 2.0F : mouseX;
+        float targetY = hasItem ? topPos + NPCReforgeMenu.REFORGE_SLOT_Y + SLOT_SIZE / 2.0F : mouseY;
+        float yaw = (float) (Math.atan((eyeX - targetX) / MODEL_LOOK_DISTANCE) * 2 / Math.PI) * MODEL_MAX_HEAD_YAW;
+        float pitch = (float) (Math.atan((targetY - eyeY) / MODEL_LOOK_DISTANCE) * 2 / Math.PI) * MODEL_MAX_HEAD_PITCH;
+        tinkererPreview.yHeadRot = tinkererPreview.yHeadRotO = MODEL_YAW + yaw;
+        tinkererPreview.setYRot(MODEL_YAW + yaw);
+        tinkererPreview.yRotO = tinkererPreview.getYRot();
+        tinkererPreview.setXRot(pitch);
+        tinkererPreview.xRotO = pitch;
+    }
 
     private void renderTinkerer(GuiGraphics graphics) {
         graphics.pose().pushPose();

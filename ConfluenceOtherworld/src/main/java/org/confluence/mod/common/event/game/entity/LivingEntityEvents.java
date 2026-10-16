@@ -119,6 +119,7 @@ public final class LivingEntityEvents {
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.HIGHEST, LivingEntityEvents::blockEnemyFriendlyFire);
         PortEventHandler.addListener(LivingEntityEvents::death);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::dropMoneyOnDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, DungeonSpirit::onDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
         PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
@@ -178,9 +179,6 @@ public final class LivingEntityEvents {
                 ModUtils.bossDeath(level, boss);
                 SlimeRainGameEvent.INSTANCE.checkEnd(victim);
             }
-            if (victim instanceof ServerPlayer player) {
-                PlayerUtils.dropMoney(player);
-            }
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;
                 if (ManaStorage.of(player).canReceive() && player.getRandom1211().nextFloat() < 0.083F) {
@@ -209,6 +207,12 @@ public final class LivingEntityEvents {
             }
             DeathMotionPacketS2C.sendToAll(victim);
             NoTraps.entityDropsGrenade(victim);
+        }
+    }
+
+    private static void dropMoneyOnDeath(LivingDeathEvent event) {
+        if (!event.isCanceled() && event.getEntity() instanceof ServerPlayer player) {
+            PlayerUtils.dropMoney(player);
         }
     }
 

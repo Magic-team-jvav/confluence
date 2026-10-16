@@ -21,6 +21,7 @@ import org.confluence.mod.client.model.entity.NPCHumanoidGeoModel;
 import org.confluence.mod.common.entity.npc.AnglerNPC;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.GeckoLibCache;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -86,6 +87,8 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
 
     @Override
     protected void adjustPose(PoseStack poseStack, T animatable, BakedGeoModel model, float partialTick) {
+        if (animatable.getType() == NpcEntities.GOBLIN_TINKERER.get())
+            model.getBone("bone").ifPresent(binding -> binding.setHidden(true));
         if (animatable instanceof AnglerNPC angler && !angler.isWakeUp()) {
             if (angler.isPassenger()) poseStack.translate(0.0F, 0.5F, 0.0F);
             poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));

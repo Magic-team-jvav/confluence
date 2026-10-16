@@ -1,0 +1,4830 @@
+{
+  "_comment01": "============================== 功能方块 ==============================",
+
+  "confluence:extractinator": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be obtained from Golden Chests and Wooden Crates",
+      "zh_cn": "可从金箱、木匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:workshop": {
+    "type": "text",
+    "text": {
+      "en_us": "Reforge: Hammer button in the Goblin Tinkerer\u0027s trade UI (top-left)",
+      "zh_cn": "重铸词条：哥布林工匠NPC交易界面左上方的锤子按钮"
+    }
+  },
+  "confluence:safe": {
+    "type": "text",
+    "text": {
+      "en_us": "Note: The Safe is also a job site block for Banker villagers",
+      "zh_cn": "注：保险箱也是银行家村民的工作站"
+    },
+    "color": "#FFFFFF"
+  },
+  "confluence:cooking_pot": {
+    "type": "text",
+    "text": {
+      "en_us": "Note: The Cooking Pot is also a job site block for Chef villagers",
+      "zh_cn": "注：烹饪锅也是厨师村民的工作站"
+    },
+    "color": "#FFFFFF"
+  },
+  "confluence:sky_mill": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Skyware Chests",
+          "zh_cn": "可从天域箱中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: The Sky Mill is also a job site block for Sky Miller villagers",
+          "zh_cn": "注：天磨也是天师村民的工作站"
+        },
+        "color": "#FFFFFF"
+      }
+    ]
+  },
+  "confluence:alchemy_table": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in church rooms in the Dungeon or by fishing in the Dungeon",
+      "zh_cn": "可从地牢的教堂建筑中获取，也可于地牢钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:bewitching_table": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in church rooms in the Dungeon",
+      "zh_cn": "可从地牢的教堂建筑中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:water_candle": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in villa, church, and armory rooms in the Dungeon",
+      "zh_cn": "可从地牢的独栋别墅、教堂、军械库建筑中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:obelisk": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "以防你不知道：汇流来世其实是噶了给墓（galgame）"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:cross_grave_marker": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "以防你不知道：汇流来世其实是噶了给墓（galgame）"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:tombstone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "以防你不知道：汇流来世其实是噶了给墓（galgame）"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:headstone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "以防你不知道：汇流来世其实是噶了给墓（galgame）"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:gravestone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "以防你不知道：汇流来世其实是噶了给墓（galgame）"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:grave_marker": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "以防你不知道：汇流来世其实是噶了给墓（galgame）"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:golden_tombstone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "这里安眠着爆出10个金币之人，下辈子要记得及时存钱"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:golden_grave_marker": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "这里安眠着爆出10个金币之人，下辈子要记得及时存钱"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:golden_headstone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "这里安眠着爆出10个金币之人，下辈子要记得及时存钱"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:golden_cross_grave_marker": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "这里安眠着爆出10个金币之人，下辈子要记得及时存钱"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:golden_gravestone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Creates a graveyard biome with spectral mist when 7+ tombstones are nearby",
+          "zh_cn": "附近至少有7个墓碑时，将产生充斥着灵雾的墓地环境"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": "这里安眠着爆出10个金币之人，下辈子要记得及时存钱"
+        },
+        "color": "#555555",
+        "strikethrough": true,
+        "shift": true
+      }
+    ]
+  },
+  "terra_furniture:plastic_chair": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": {
+            "text": "\"Hey bro... your pre-Hardmode days are over. Give me the Night\u0027s Edge.\"",
+            "color": "#AAAAAA",
+            "italic": true
+          },
+          "zh_cn": {
+            "text": "（不知为何，脑海中出现了一阵意义不明的强劲鼓点）",
+            "color": "#555555"
+          }
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": {
+            "text": "(dramatic taiko drum plays again for no reason)",
+            "color": "#555555"
+          }
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": {
+            "text": "\"If you want it, then you\u0027ll have to take it. But you already knew that.\"",
+            "color": "#AAAAAA",
+            "italic": true
+          }
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": {
+            "text": "(The Guide\u0027s death scream echoes in the distance)",
+            "color": "#555555",
+            "strikethrough": true
+          }
+        }
+      }
+    ],
+    "shift": true
+  },
+
+  "_comment02": "============================== 矿物 ==============================",
+
+  "confluence:spore_root": {
+    "type": "text",
+    "text": {
+      "en_us": "Generates at the base of any Living Mahogany Tree structure",
+      "zh_cn": "生成于任意生命红树结构根部"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:spore_root_block": {
+    "type": "text",
+    "text": {
+      "en_us": "Generates at the base of any Living Mahogany Tree structure",
+      "zh_cn": "生成于任意生命红树结构根部"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:gelstone": {
+    "type": "text",
+    "text": {
+      "en_us": "Randomly generates in shallow Underground Swamp areas",
+      "zh_cn": "随机生成于较浅的沼泽地下"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:gelstone_ore": {
+    "type": "text",
+    "text": {
+      "en_us": "Randomly generates in shallow Underground Swamp areas",
+      "zh_cn": "随机生成于较浅的沼泽地下"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:winter_marrow": {
+    "type": "text",
+    "text": {
+      "en_us": "Generates inside Ice Thorn structures",
+      "zh_cn": "生成于巨型冰刺结构内部"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:winter_marrow_block": {
+    "type": "text",
+    "text": {
+      "en_us": "Generates inside Ice Thorn structures",
+      "zh_cn": "生成于巨型冰刺结构内部"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:cold_crystal": {
+    "type": "text",
+    "text": {
+      "en_us": "Randomly generates in shallow Underground Snow biomes",
+      "zh_cn": "随机生成于较浅的冰雪群系地下"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:cold_crystal_ore": {
+    "type": "text",
+    "text": {
+      "en_us": "Randomly generates in shallow Underground Snow biomes",
+      "zh_cn": "随机生成于较浅的冰雪群系地下"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:opal": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Randomly generates in Ocean Diatomaceous Earth terrain",
+          "zh_cn": "随机生成于海底硅藻土地形"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Opal Ore is affected by gravity, shatters when dropped, and always drops when harvested with a Brush",
+          "zh_cn": "欧泊矿受重力影响，且会摔碎，用刷子采集时必定掉落"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "confluence:opal_ore": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Randomly generates in Ocean Diatomaceous Earth terrain",
+          "zh_cn": "随机生成于海底硅藻土地形"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Opal Ore is affected by gravity, shatters when dropped, and always drops when harvested with a Brush",
+          "zh_cn": "欧泊矿受重力影响，且会摔碎，用刷子采集时必定掉落"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "confluence:raw_hellstone": {
+    "type": "text",
+    "text": {
+      "en_us": "Smelt into bars using Obsidian in a Hellforge",
+      "zh_cn": "需搭配黑曜石于地狱熔炉中烧炼成锭"
+    },
+    "color": "#FFFF55"
+  },
+
+  "_comment03": "============================== 物块 ==============================",
+
+  "confluence:silt_block": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be refined",
+      "zh_cn": "可提炼"
+    }
+  },
+  "confluence:slush": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be refined; commonly found in Underground Snow",
+      "zh_cn": "可提炼，常见于地下雪原"
+    }
+  },
+  "confluence:desert_fossil": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be refined; commonly found in Underground Desert",
+      "zh_cn": "可提炼，常见于地下沙漠"
+    }
+  },
+  "confluence:marine_gravel": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be refined; commonly found on the ocean floor",
+      "zh_cn": "可提炼，常见于海底"
+    }
+  },
+  "confluence:aetherium_block": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Generated when any liquid contacts the source of Shimmer",
+          "zh_cn": "任意液体接触微光源时产生"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be placed in a Cauldron for transmutation and decomposition",
+          "zh_cn": "可放入炼药锅中，用于微光嬗变和分解"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "confluence:cloud_block": {
+    "type": "text",
+    "text": {
+      "en_us": "Negates fall damage",
+      "zh_cn": "消除摔落伤害"
+    }
+  },
+
+  "_comment04": "============================== 种植 ==============================",
+
+  "confluence:ruby_sapling": {
+    "type": "text",
+    "text": {
+      "en_us": "Must be planted on Stone or Deepslate; grows only at depth ≤40 and light level ≤10\nBreaking gem tree branches may drop the corresponding gem or sapling",
+      "zh_cn": "须种植在石头或深板岩上，深度≤40且亮度≤10时才能生长\n破坏宝石树枝杈有概率掉落对应的宝石或宝石树苗"
+    }
+  },
+  "confluence:amber_sapling": {
+    "type": "text",
+    "text": {
+      "en_us": "Must be planted on Stone or Deepslate; grows only at depth ≤40 and light level ≤10\nBreaking gem tree branches may drop the corresponding gem or sapling",
+      "zh_cn": "须种植在石头或深板岩上，深度≤40且亮度≤10时才能生长\n破坏宝石树枝杈有概率掉落对应的宝石或宝石树苗"
+    }
+  },
+  "confluence:topaz_sapling": {
+    "type": "text",
+    "text": {
+      "en_us": "Must be planted on Stone or Deepslate; grows only at depth ≤40 and light level ≤10\nBreaking gem tree branches may drop the corresponding gem or sapling",
+      "zh_cn": "须种植在石头或深板岩上，深度≤40且亮度≤10时才能生长\n破坏宝石树枝杈有概率掉落对应的宝石或宝石树苗"
+    }
+  },
+  "confluence:jade_sapling": {
+    "type": "text",
+    "text": {
+      "en_us": "Must be planted on Stone or Deepslate; grows only at depth ≤40 and light level ≤10\nBreaking gem tree branches may drop the corresponding gem or sapling",
+      "zh_cn": "须种植在石头或深板岩上，深度≤40且亮度≤10时才能生长\n破坏宝石树枝杈有概率掉落对应的宝石或宝石树苗"
+    }
+  },
+  "confluence:diamond_sapling": {
+    "type": "text",
+    "text": {
+      "en_us": "Must be planted on Stone or Deepslate; grows only at depth ≤40 and light level ≤10\nBreaking gem tree branches may drop the corresponding gem or sapling",
+      "zh_cn": "须种植在石头或深板岩上，深度≤40且亮度≤10时才能生长\n破坏宝石树枝杈有概率掉落对应的宝石或宝石树苗"
+    }
+  },
+  "confluence:sapphire_sapling": {
+    "type": "text",
+    "text": {
+      "en_us": "Must be planted on Stone or Deepslate; grows only at depth ≤40 and light level ≤10\nBreaking gem tree branches may drop the corresponding gem or sapling",
+      "zh_cn": "须种植在石头或深板岩上，深度≤40且亮度≤10时才能生长\n破坏宝石树枝杈有概率掉落对应的宝石或宝石树苗"
+    }
+  },
+  "confluence:amethyst_sapling": {
+    "type": "text",
+    "text": {
+      "en_us": "Must be planted on Stone or Deepslate; grows only at depth ≤40 and light level ≤10\nBreaking gem tree branches may drop the corresponding gem or sapling",
+      "zh_cn": "须种植在石头或深板岩上，深度≤40且亮度≤10时才能生长\n破坏宝石树枝杈有概率掉落对应的宝石或宝石树苗"
+    }
+  },
+  "confluence:daybloom": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Grass Blocks and Hallowed Grass Blocks\nBlooms during daytime (4:30-19:29)",
+      "zh_cn": "生长在草方块、神圣草方块上\n开花条件：白天（4:30~19:29）"
+    }
+  },
+  "confluence:daybloom_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Grass Blocks and Hallowed Grass Blocks\nBlooms during daytime (4:30-19:29)",
+      "zh_cn": "生长在草方块、神圣草方块上\n开花条件：白天（4:30~19:29）"
+    }
+  },
+  "confluence:moonglow": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Grass Blocks and Jungle Grass Blocks\nBlooms at night (19:30-4:29)",
+      "zh_cn": "生长在草方块、丛林草方块上\n开花条件：夜间（19:30~4:29）"
+    }
+  },
+  "confluence:moonglow_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Grass Blocks and Jungle Grass Blocks\nBlooms at night (19:30-4:29)",
+      "zh_cn": "生长在草方块、丛林草方块上\n开花条件：夜间（19:30~4:29）"
+    }
+  },
+  "confluence:waterleaf": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Sand and Red Sand\nBlooms during rain",
+      "zh_cn": "生长在沙子、红沙上\n开花条件：雨天"
+    }
+  },
+  "confluence:waterleaf_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Sand and Red Sand\nBlooms during rain",
+      "zh_cn": "生长在沙子、红沙上\n开花条件：雨天"
+    }
+  },
+  "confluence:deathweed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Corrupt/Crimson Grass Blocks, Ebonstone, and Crimstone\nBlooms during Blood Moons or Full Moon nights (19:30-4:29)",
+      "zh_cn": "生长在腐化草方块、猩红草方块、黑檀石块、猩红石块上\n开花条件：血月，或满月的夜间（19:30~4:29）"
+    }
+  },
+  "confluence:deathweed_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Corrupt/Crimson Grass Blocks, Ebonstone, and Crimstone\nBlooms during Blood Moons or Full Moon nights (19:30-4:29)",
+      "zh_cn": "生长在腐化草方块、猩红草方块、黑檀石块、猩红石块上\n开花条件：血月，或满月的夜间（19:30~4:29）"
+    }
+  },
+  "confluence:blinkroot": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Stone and Deepslate\nBlooms randomly",
+      "zh_cn": "生长在石头、深板岩上\n开花条件：随机"
+    }
+  },
+  "confluence:blinkroot_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Stone and Deepslate\nBlooms randomly",
+      "zh_cn": "生长在石头、深板岩上\n开花条件：随机"
+    }
+  },
+  "confluence:shiverthorn": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Grass Blocks, Ice, Purple Ice Blocks, Red Ice Blocks, and Pink Ice Blocks\nBlooms randomly and stays bloomed",
+      "zh_cn": "生长在草方块、冰、紫冰块、红冰块、粉冰块上\n开花条件：随机，开花后保持盛开"
+    }
+  },
+  "confluence:shiverthorn_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Grass Blocks, Ice, Purple Ice Blocks, Red Ice Blocks, and Pink Ice Blocks\nBlooms randomly and stays bloomed",
+      "zh_cn": "生长在草方块、冰、紫冰块、红冰块、粉冰块上\n开花条件：随机，开花后保持盛开"
+    }
+  },
+  "confluence:fireblossom": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Ash Blocks and Ash Grass Blocks\nBlooms during non-rainy sunsets (15:45-19:30)",
+      "zh_cn": "生长在灰烬块、灰烬草方块上\n开花条件：不下雨的日落时段（15:45~19:30）"
+    }
+  },
+  "confluence:fireblossom_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Ash Blocks and Ash Grass Blocks\nBlooms during non-rainy sunsets (15:45-19:30)",
+      "zh_cn": "生长在灰烬块、灰烬草方块上\n开花条件：不下雨的日落时段（15:45~19:30）"
+    }
+  },
+
+  "_comment05": "============================== 材料 ==============================",
+
+  "confluence:soul_of_light": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from enemies in the Underground Hallow in Hardmode",
+      "zh_cn": "困难模式下，于神圣群系地下击杀敌怪掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:soul_of_night": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from enemies in the Underground Corruption/Crimson in Hardmode",
+      "zh_cn": "困难模式下，于腐化/猩红群系地下击杀敌怪掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:soul_of_flight": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from Wyverns in Space (height ≥260) in Hardmode",
+      "zh_cn": "困难模式下由飞龙掉落（出没于高度260以上的太空）"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:jungle_spore": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Naturally generates in the Underground Jungle; can also be fished there",
+          "zh_cn": "自然生成于地下丛林，也可于地下丛林钓鱼获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: Lush Caves count as Jungle biome",
+          "zh_cn": "注：繁茂洞穴也视为丛林环境"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "zh_cn": {
+            "text": "“有点招笑了这个月总鞭”\n“你两个耳朵中间的是不是丛林孢子我问你”",
+            "color": "#555555",
+            "italic": true,
+            "strikethrough": true
+          }
+        },
+        "shift": true
+      }
+    ]
+  },
+  "confluence:vile_mushroom": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Corrupt Grass Blocks; can be spawned using Rotten Bone Dust",
+      "zh_cn": "生长在腐化草方块上，可用朽骨齑尘催生"
+    }
+  },
+  "confluence:vicious_mushroom": {
+    "type": "text",
+    "text": {
+      "en_us": "Grows on Crimson Grass Blocks; can be spawned using Bloodstained Powder",
+      "zh_cn": "生长在猩红草方块上，可用血凝痂粉催生"
+    }
+  },
+  "confluence:stellar_blossom_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be planted on Cloud Blocks",
+      "zh_cn": "可种植在云块上"
+    }
+  },
+  "confluence:cloudweaver_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be planted on Cloud Blocks",
+      "zh_cn": "可种植在云块上"
+    }
+  },
+  "confluence:floating_wheat_seed": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be planted on Cloud Blocks",
+      "zh_cn": "可种植在云块上"
+    }
+  },
+  "confluence:jungle_rose": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Naturally generates in the Underground Jungle",
+          "zh_cn": "自然生成于地下丛林"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: Lush Caves count as Jungle biome",
+          "zh_cn": "注：繁茂洞穴也视为丛林环境"
+        },
+        "color": "#FFFFFF"
+      }
+    ]
+  },
+  "confluence:natures_gift": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Naturally generates in the Underground Jungle; can also be fished there",
+          "zh_cn": "自然生成于地下丛林，也可于地下丛林钓鱼获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: Lush Caves count as Jungle biome",
+          "zh_cn": "注：繁茂洞穴也视为丛林环境"
+        },
+        "color": "#FFFFFF"
+      }
+    ]
+  },
+  "confluence:tattered_cloth": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from Goblin Scouts (commonly found on beach sands during daytime)",
+      "zh_cn": "由哥布林侦察兵掉落（出没于白天海边的沙滩）"
+    }
+  },
+  "confluence:empty_bullet": {
+    "type": "text",
+    "text": {
+      "en_us": "Used to craft various high-tier bullets",
+      "zh_cn": "用于制作各种高级子弹"
+    }
+  },
+  "confluence:poo": {
+    "type": "text",
+    "text": {
+      "en_us": "Obtain by sitting on a Toilet while under the Well Fed buff",
+      "zh_cn": "拥有膳食效果时，坐在马桶上以获取"
+    }
+  },
+
+  "_comment06": "============================== 杂项 ==============================",
+
+  "confluence:heart": {
+    "type": "text",
+    "text": {
+      "en_us": "Single-use healing item consumed on pickup; do not confuse with Life Crystal",
+      "zh_cn": "拾取时立即消耗的一次性回血物品，请勿与生命水晶弄混"
+    }
+  },
+  "confluence:candy_apple": {
+    "type": "text",
+    "text": {
+      "en_us": "Single-use Halloween-exclusive healing item consumed on pickup",
+      "zh_cn": "拾取时立即消耗的一次性回血物品，万圣节限定"
+    }
+  },
+  "confluence:candy_cane": {
+    "type": "text",
+    "text": {
+      "en_us": "Single-use Christmas-exclusive healing item consumed on pickup",
+      "zh_cn": "拾取时立即消耗的一次性回血物品，圣诞节限定"
+    }
+  },
+  "confluence:star": {
+    "type": "text",
+    "text": {
+      "en_us": "Single-use mana restoration item consumed on pickup; do not confuse with Mana Crystal",
+      "zh_cn": "拾取时立即消耗的一次性回魔物品，请勿与魔力水晶弄混"
+    }
+  },
+  "confluence:soul_cake": {
+    "type": "text",
+    "text": {
+      "en_us": "Single-use Halloween-exclusive mana restoration item consumed on pickup",
+      "zh_cn": "拾取时立即消耗的一次性回魔物品，万圣节限定"
+    }
+  },
+  "confluence:sugar_plum": {
+    "type": "text",
+    "text": {
+      "en_us": "Single-use Christmas-exclusive mana restoration item consumed on pickup",
+      "zh_cn": "拾取时立即消耗的一次性回魔物品，圣诞节限定"
+    }
+  },
+  "confluence:copper_coin": {
+    "type": "text",
+    "text": {
+      "en_us": "The easiest way to craft: drop low-tier coins and pick them up",
+      "zh_cn": "将低级钱币丢出去再拾取是最方便的合成方式"
+    },
+    "shift": true
+  },
+  "confluence:silver_coin": {
+    "type": "text",
+    "text": {
+      "en_us": "The easiest way to craft: drop low-tier coins and pick them up",
+      "zh_cn": "将低级钱币丢出去再拾取是最方便的合成方式"
+    },
+    "shift": true
+  },
+  "confluence:gold_coin": {
+    "type": "text",
+    "text": {
+      "en_us": "The easiest way to craft: drop low-tier coins and pick them up",
+      "zh_cn": "将低级钱币丢出去再拾取是最方便的合成方式"
+    },
+    "shift": true
+  },
+  "confluence:platinum_coin": {
+    "type": "text",
+    "text": {
+      "en_us": "Goblin Tinkerer: \"Thanks for the donation.\"",
+      "zh_cn": "哥布林工匠：\"你已穷哭\""
+    },
+    "color": "#555555",
+    "strikethrough": true,
+    "shift": true
+  },
+  "confluence:emerald_coin": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be traded with villagers selling Confluence items",
+          "zh_cn": "可与售卖汇流物品的村民交易"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Villagers from the Sky Villages will also sell certain utility items added by Confluence",
+          "zh_cn": "原版职业的天空村庄村民也会售卖部分汇流的实用物品"
+        },
+        "color": "#FFFFFF",
+        "shift": true
+      }
+    ]
+  },
+
+  "_comment07": "============================== 道具 ==============================",
+
+  "confluence:wallet": {
+    "type": "text",
+    "text": {
+      "en_us": "As of Confluence Afterlife 1.2.4, the Wallet contains a bug. Do not equip it in the pet slot",
+      "zh_cn": "截至汇流来世1.2.4版本，钱币槽存在bug，请勿将其装备至宠物栏"
+    },
+    "color": "#FF0000"
+  },
+  "confluence:dungeon_compass": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Craft by interacting with the tuff center of a Dungeon Altar while holding a Meteor Compass",
+          "zh_cn": "手持陨石指南针与地牢祭坛中心的凝灰岩交互以制作"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Wearing it on your head shows a skull facing the Dungeon",
+          "zh_cn": "将其戴在头上将会看到一个注视着地牢方向的骷髅头"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Each Dungeon Compass locks onto the nearest dungeon at the moment it is crafted",
+          "zh_cn": "每个地牢指南针被制作出来时仅锁定当前最近的地牢"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Only Dungeon Compasses obtained this way can locate the Dungeon",
+          "zh_cn": "唯有通过上述方式获取的地牢指南针才能够定位地牢"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dungeon Altar schematic:",
+          "zh_cn": "地牢祭坛示意图："
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "image",
+        "texture": "confluence_datatip:textures/screenshot/dungeon_altar.png",
+        "width": 78,
+        "height": 64
+      }
+
+    ],
+    "shift": true
+  },
+  "confluence:clothier_voodoo_doll": {
+    "type": "text",
+    "text": {
+      "en_us": "Summons Skeletron when equipped in accessory slot and Clothier NPC is killed",
+      "zh_cn": "装备在饰品栏时，击杀服装商NPC以召唤骷髅王"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:guide_voodoo_doll": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from Voodoo Demons (with doll hanging below) in Ashlands and Ash Forests",
+      "zh_cn": "可于灰烬荒地、灰烬木林击杀脚下悬挂着巫毒玩偶的巫毒恶魔获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:slime_crown": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Throw into Shimmer to instantly summon Slime Rain",
+        "color": "#FF69B4"
+      },
+      "zh_cn": {
+        "text": "投入微光可立即召唤史莱姆雨事件",
+        "color": "#FF69B4"
+      }
+    }
+  },
+  "confluence:golden_dungeon_key": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Low drop chance from Dungeon enemies; guaranteed from Dungeon Slimes",
+          "zh_cn": "击杀地牢敌怪有低概率掉落，击杀地牢史莱姆必定掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: Dungeon Chests are in armory rooms in the Dungeon",
+          "zh_cn": "注：地牢箱位于军械库建筑中"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dungeon Chest schematic:",
+          "zh_cn": "地牢箱示意图："
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "block",
+        "block": "confluence:dungeon_chest",
+        "size": 48,
+        "autoRotate": true
+      }
+    ],
+    "shift": true
+  },
+  "confluence:jungle_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:corruption_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:crimson_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:hallowed_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:frozen_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:desert_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:ocean_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:universe_key": {
+    "type": "text",
+    "text": {
+      "en_us": {
+        "text": "Usable after defeating Plantera",
+        "color": "#55FF55"
+      },
+      "zh_cn": {
+        "text": "击败世纪之花后可用",
+        "color": "#55FF55"
+      }
+    }
+  },
+  "confluence:key_of_light": {
+    "type": "text",
+    "text": {
+      "en_us": "Place in an empty chest to summon a Hallowed Mimic",
+      "zh_cn": "放入空箱子中以召唤神圣宝箱怪"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:key_of_night": {
+    "type": "text",
+    "text": {
+      "en_us": "Place in an empty chest to summon a Corrupt/Crimson Mimic",
+      "zh_cn": "放入空箱子中以召唤腐化/猩红宝箱怪"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:advanced_combat_techniques": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by fishing during a Blood Moon",
+      "zh_cn": "于血月时钓鱼概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:spelunker_potion": {
+    "type": "text",
+    "text": {
+      "en_us": "Press [Tab] by default for a surprise",
+      "zh_cn": "默认按下[Tab]键有惊喜"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:lesser_healing_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grants Potion Sickness debuff after use; cannot drink again during its duration",
+          "zh_cn": "饮用后获得耐药性减益，期间无法再次饮用"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Default hotkey: [H]; can be changed in controls",
+          "zh_cn": "默认按[H]快捷使用，可在按键配置中修改"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:healing_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grants Potion Sickness debuff after use; cannot drink again during its duration",
+          "zh_cn": "饮用后获得耐药性减益，期间无法再次饮用"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Default hotkey: [H]; can be changed in controls",
+          "zh_cn": "默认按[H]快捷使用，可在按键配置中修改"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:greater_healing_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grants Potion Sickness debuff after use; cannot drink again during its duration",
+          "zh_cn": "饮用后获得耐药性减益，期间无法再次饮用"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Default hotkey: [H]; can be changed in controls",
+          "zh_cn": "默认按[H]快捷使用，可在按键配置中修改"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:super_healing_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grants Potion Sickness debuff after use; cannot drink again during its duration",
+          "zh_cn": "饮用后获得耐药性减益，期间无法再次饮用"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Default hotkey: [H]; can be changed in controls",
+          "zh_cn": "默认按[H]快捷使用，可在按键配置中修改"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:lesser_mana_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drinking it inflicts Mana Sickness, reducing magic damage dealt",
+          "zh_cn": "饮用后获得耐魔性减益，降低所造成的魔法伤害"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "This allows sacrificing some damage output in exchange for sustained mana uptime",
+          "zh_cn": "通过这种方式可以牺牲部分伤害来换取续航"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:mana_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drinking it inflicts Mana Sickness, reducing magic damage dealt",
+          "zh_cn": "饮用后获得耐魔性减益，降低所造成的魔法伤害"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "This allows sacrificing some damage output in exchange for sustained mana uptime",
+          "zh_cn": "通过这种方式可以牺牲部分伤害来换取续航"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:greater_mana_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drinking it inflicts Mana Sickness, reducing magic damage dealt",
+          "zh_cn": "饮用后获得耐魔性减益，降低所造成的魔法伤害"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "This allows sacrificing some damage output in exchange for sustained mana uptime",
+          "zh_cn": "通过这种方式可以牺牲部分伤害来换取续航"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:super_mana_potion": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drinking it inflicts Mana Sickness, reducing magic damage dealt",
+          "zh_cn": "饮用后获得耐魔性减益，降低所造成的魔法伤害"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "This allows sacrificing some damage output in exchange for sustained mana uptime",
+          "zh_cn": "通过这种方式可以牺牲部分伤害来换取续航"
+        },
+        "color": "#FFFF55"
+      }
+    ],
+    "shift": true
+  },
+  "confluence:scarab_bomb": {
+    "type": "text",
+    "text": {
+      "en_us": "Explodes away from the user, carving a tunnel",
+      "zh_cn": "朝远离使用者的方向炸出一条通道"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:rope": {
+    "type": "text",
+    "text": {
+      "en_us": "Climbable",
+      "zh_cn": "可攀爬"
+    }
+  },
+  "confluence:vine_rope": {
+    "type": "text",
+    "text": {
+      "en_us": "Climbable",
+      "zh_cn": "可攀爬"
+    }
+  },
+  "confluence:silk_rope": {
+    "type": "text",
+    "text": {
+      "en_us": "Climbable",
+      "zh_cn": "可攀爬"
+    }
+  },
+  "confluence:web_rope": {
+    "type": "text",
+    "text": {
+      "en_us": "Climbable",
+      "zh_cn": "可攀爬"
+    }
+  },
+
+  "_comment08": "============================== 工具 ==============================",
+
+  "confluence:scrying_orb": {
+    "type": "text",
+    "text": {
+      "en_us": "Use in multiplayer to spy on teammates",
+      "zh_cn": "多人模式下使用以视奸队友"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:pwnhammer": {
+    "type": "text",
+    "text": {
+      "en_us": "Breaks Demon Altars/Crimson Altars, blessing the world with 6 new ores",
+      "zh_cn": "可击碎恶魔、猩红祭坛，令世界获赐六种全新矿物"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:nightmare_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Hellstone; breaks Ebonstone and Crimstone",
+      "zh_cn": "可开采狱石，可破坏黑檀石块、猩红石块"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:deathbringer_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Hellstone; breaks Ebonstone and Crimstone",
+      "zh_cn": "可开采狱石，可破坏黑檀石块、猩红石块"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:molten_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Cobalt/Palladium; breaks Dungeon Bricks",
+      "zh_cn": "可开采钴、钯金，可破坏地牢砖"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:cobalt_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Mythril/Orichalcum",
+      "zh_cn": "可开采秘银、山铜"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:cobalt_drill": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Mythril/Orichalcum",
+      "zh_cn": "可开采秘银、山铜"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:palladium_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Mythril/Orichalcum",
+      "zh_cn": "可开采秘银、山铜"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:palladium_drill": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Mythril/Orichalcum",
+      "zh_cn": "可开采秘银、山铜"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:mythril_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Adamantite/Titanium",
+      "zh_cn": "可开采精金、钛金"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:mythril_drill": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Adamantite/Titanium",
+      "zh_cn": "可开采精金、钛金"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:orichalcum_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Adamantite/Titanium",
+      "zh_cn": "可开采精金、钛金"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:orichalcum_drill": {
+    "type": "text",
+    "text": {
+      "en_us": "Mines Adamantite/Titanium",
+      "zh_cn": "可开采精金、钛金"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:pickaxe_axe": {
+    "type": "text",
+    "text": {
+      "en_us": "Functions as both pickaxe and axe; mines Chlorophyte",
+      "zh_cn": "同时具备镐和斧的功能，可开采叶绿"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:drax": {
+    "type": "text",
+    "text": {
+      "en_us": "Functions as both drill and chainsaw; mines Chlorophyte",
+      "zh_cn": "同时具备钻头和链锯的功能，可开采叶绿"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:picksaw": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Defeat Golem to obtain",
+          "zh_cn": "击败石巨人以获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Functions as both pickaxe and axe; breaks Lihzahrd Bricks",
+          "zh_cn": "同时具备镐和斧的功能，可破坏丛林蜥蜴砖"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "confluence:lavaproof_bug_net": {
+    "type": "text",
+    "text": {
+      "en_us": "Catches Underworld critters, enabling fishing in lava",
+      "zh_cn": "能够捕捉地狱的小动物，从而在熔岩中钓鱼"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:staff_of_regrowth": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Rich Mahogany Chests, Ivy Chests, and Jungle Crates",
+          "zh_cn": "可从红木箱、常春藤箱、丛林匣中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click dirt to grow grass; increases herb yield when harvesting blooming plants",
+          "zh_cn": "右击泥土以生草，收获开花草药时提高收成"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "confluence:axe_of_regrowth": {
+    "type": "text",
+    "text": {
+      "en_us": "Right-click dirt to grow grass; increases herb yield when harvesting blooming plants",
+      "zh_cn": "右击泥土以生草，收获开花草药时提高收成"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:chum_caster": {
+    "type": "text",
+    "text": {
+      "en_us": "Higher chance to catch special enemies during Blood Moons",
+      "zh_cn": "有更高概率在血月期间钓到特殊敌怪"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:hotline_fishing_hook": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Chance to obtain by completing Angler quests",
+          "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can fish in lava",
+          "zh_cn": "可在熔岩中钓鱼"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+
+  "_comment09": "============================== 武器 ==============================",
+
+  "confluence:shimmer_arrow": {
+    "type": "text",
+    "text": {
+      "en_us": "Gravity acts in reverse",
+      "zh_cn": "所受重力方向相反"
+    }
+  },
+  "confluence:exotic_scimitar": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops when Dye Trader NPC dies",
+      "zh_cn": "染料商NPC死亡时概率掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:combat_wrench": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops when Mechanic NPC dies",
+      "zh_cn": "机械师NPC死亡时概率掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:katana": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "(For some reason, holding this sword makes you really want to grab a plastic lawn chair)",
+          "zh_cn": "（不知为何，拿起这把刀时你突然很想坐在一把大排档椅上）"
+        },
+        "color": "#555555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "\"Seriously? Where do I even find a plastic lawn chair? It's not like it's stashed inside a Nether Tower.\"",
+          "zh_cn": "“你叫我上哪找大排档椅去？总不可能藏在下界塔里吧”"
+        },
+        "color": "#AAAAAA",
+        "italic": true
+      }
+    ],
+    "shift": true
+  },
+  "confluence:zombie_arm": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from Zombies",
+      "zh_cn": "击杀僵尸概率掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:shackle": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from Zombies",
+      "zh_cn": "击杀僵尸概率掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:sculk_wisp_staff": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from Wardens",
+      "zh_cn": "击杀监守者概率掉落"
+    },
+    "color": "#FFFFFF"
+  },
+  "confluence:space_gun": {
+    "type": "text",
+    "text": {
+      "en_us": "Uses no mana when wearing full Meteor Armor",
+      "zh_cn": "装备全套流星盔甲时，使用太空枪不会消耗魔力"
+    },
+    "color": "#FFFF55"
+  },
+  "confluence:star_cannon": {
+    "type": "text",
+    "text": {
+      "en_us": "\"300 stars. That\u0027s gotta be plenty. ...Right?\"",
+      "zh_cn": "桑百颗够吗？"
+    },
+    "color": "#555555",
+    "strikethrough": true,
+    "shift": true
+  },
+  "confluence:nimbus_rod": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drops from Angry Nimbus in Hardmode",
+          "zh_cn": "困难模式下击杀愤怒雨云怪概率掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Summons up to 2 clouds that rain on enemies below",
+          "zh_cn": "可召唤最多两朵云，持续降雨攻击下方的敌人"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+
+  "_comment10": "============================== 宝箱 ==============================",
+
+  "confluence:golden_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates underground, commonly found in underground cabins",
+      "zh_cn": "自然生成于地下，常见于地下小屋"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:frozen_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates in Underground Snow, commonly found in ice underground cabins",
+      "zh_cn": "自然生成于地下雪原，常见于雪原地下小屋"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:sandstone_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates in Underground Desert, commonly found in desert underground cabins",
+      "zh_cn": "自然生成于地下沙漠，常见于沙漠地下小屋"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:rich_mahogany_chest": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Naturally generates in the Underground Jungle, commonly found in jungle underground cabins",
+          "zh_cn": "自然生成于地下丛林，常见于丛林地下小屋"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: Lush Caves count as Jungle biome",
+          "zh_cn": "注：繁茂洞穴也视为丛林环境"
+        },
+        "color": "#FFFFFF"
+      }
+    ]
+  },
+  "confluence:ivy_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates in Jungle Shrines and Living Mahogany Trees",
+      "zh_cn": "自然生成于丛林神龛、生命红树中"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:skyware_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates in Heaven Island houses",
+      "zh_cn": "自然生成于天堂岛的房屋中"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:water_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates in oceans or other bodies of water",
+      "zh_cn": "自然生成于海洋或其他水体中"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:dungeon_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates in armory rooms in the Dungeon; requires Golden Dungeon Key to open",
+      "zh_cn": "自然生成于地牢的军械库中，消耗地牢金钥匙才能打开"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:shadow_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates in Nether Towers; requires Shadow Key to open",
+      "zh_cn": "自然生成于下界塔中，拥有暗影钥匙才能打开"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:death_golden_chest": {
+    "type": "text",
+    "text": {
+      "en_us": "Naturally generates underground, surrounded by traps; triggers signals when opened",
+      "zh_cn": "自然生成于地下，附近存在大量陷阱，打开时触发"
+    },
+    "color": "#00AAAA"
+  },
+
+  "_comment11": "============================== 宝箱&宝匣产出 ==============================",
+
+  "confluence:umbrella": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests",
+      "zh_cn": "可从地表的普通箱子中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:spear": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests",
+      "zh_cn": "可从地表的普通箱子中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:wood_boomerang": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests",
+      "zh_cn": "可从地表的普通箱子中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_guns:blowgun": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in surface chests",
+          "zh_cn": "可从地表的普通箱子中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Uses Seeds as ammunition",
+          "zh_cn": "使用种子作为弹药"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "confluence:wand_of_sparking": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests",
+      "zh_cn": "可从地表的普通箱子中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:aglet": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests and Wooden Crates",
+      "zh_cn": "可从地表的普通箱子、木匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:climbing_claws": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests and Wooden Crates",
+      "zh_cn": "可从地表的普通箱子、木匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:guide_to_plant_fiber_cordage": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests and Wooden Crates",
+      "zh_cn": "可从地表的普通箱子、木匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:step_stool": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in surface chests and Wooden Crates",
+      "zh_cn": "可从地表的普通箱子、木匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:finch_staff": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Living Tree rooms",
+      "zh_cn": "可从生命树下的房间内获取"
+    },
+    "color": "#FFFFFF"
+  },
+  "confluence:living_wood_wand": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Living Tree rooms",
+          "zh_cn": "可从生命树下的房间内获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Consumes any log to place Living Wood",
+          "zh_cn": "消耗任意原木，放置生命原木"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "confluence:leaf_wand": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Living Tree rooms",
+          "zh_cn": "可从生命树下的房间内获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Consumes any leaves to place Living Leaves",
+          "zh_cn": "消耗任意树叶，放置生命树叶"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "confluence:enchanted_sword": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Enchanted Sword Shrines; also drops from Golden Crates",
+      "zh_cn": "可从附魔剑冢获取，也有概率由金匣掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:terragrim": {
+    "type": "text",
+    "text": {
+      "en_us": "Extremely rare drop from breaking Sword Shrines; otherwise drops Enchanted Sword",
+      "zh_cn": "挖掘石中剑时极低概率掉落，否则将掉落附魔剑"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:starfury": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Skyware Chests and Sky Crates",
+      "zh_cn": "可从天域箱、天空匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:shiny_red_balloon": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Skyware Chests and Sky Crates",
+      "zh_cn": "可从天域箱、天空匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:lucky_horseshoe": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Skyware Chests and Sky Crates",
+      "zh_cn": "可从天域箱、天空匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:celestial_magnet": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Skyware Chests and Sky Crates",
+      "zh_cn": "可从天域箱、天空匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:fledgling_wings": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Skyware Chests and Sky Crates",
+      "zh_cn": "可从天域箱、天空匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:magic_mirror": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Golden Chests; also craftable",
+      "zh_cn": "可从金箱中获取，亦可自行制作"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:band_of_regeneration": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Golden Chests",
+      "zh_cn": "可从金箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:cloud_in_a_bottle": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Golden Chests",
+      "zh_cn": "可从金箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:hermes_boots": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Golden Chests",
+      "zh_cn": "可从金箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:shoe_spikes": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Golden Chests",
+      "zh_cn": "可从金箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:lava_charm": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Underground Golden Chests in Deepslate layers; also drops from Obsidian Crates",
+          "zh_cn": "可从深板岩层的地下金箱中获取，也有概率由黑曜石匣掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be transmuted in Shimmer",
+          "zh_cn": "可微光嬗变"
+        },
+        "color": "#FF69B4"
+      }
+    ]
+  },
+  "confluence:ice_blade": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Frozen Chests and Frozen Crates",
+      "zh_cn": "可从冰冻箱、冰冻匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:ice_boomerang": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Frozen Chests and Frozen Crates",
+      "zh_cn": "可从冰冻箱、冰冻匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_guns:snowball_cannon": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Frozen Chests and Frozen Crates",
+          "zh_cn": "可从冰冻箱、冰冻匣中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Uses Snowballs as ammunition",
+          "zh_cn": "使用雪球作为弹药"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:blizzard_in_a_bottle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Frozen Chests and Frozen Crates",
+          "zh_cn": "可从冰冻箱、冰冻匣中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hold jump to jump higher with Blizzard in a Bottle",
+          "zh_cn": "长按跳跃时，暴雪瓶能够跳得更高"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:flurry_boots": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Frozen Chests and Frozen Crates",
+      "zh_cn": "可从冰冻箱、冰冻匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:ice_skates": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Frozen Chests and Frozen Crates",
+      "zh_cn": "可从冰冻箱、冰冻匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:ice_mirror": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Frozen Chests",
+      "zh_cn": "可从冰冻箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:storm_spear": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Sandstone Chests and Oasis Crates",
+      "zh_cn": "可从沙岩箱、绿洲匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:thunder_zapper": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Sandstone Chests and Oasis Crates",
+      "zh_cn": "可从沙岩箱、绿洲匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:sandstorm_in_a_bottle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Desert Temples; very rarely drops from Oasis Crates",
+          "zh_cn": "可从沙漠神殿获取，也有极低概率由绿洲匣掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hold jump to jump higher with Sandstorm in a Bottle",
+          "zh_cn": "长按跳跃时，沙暴瓶能够跳得更高"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:flying_carpet": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Desert Temples",
+      "zh_cn": "可从沙漠神殿获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:dunerider_boots": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Sandstone Chests and Oasis Crates",
+      "zh_cn": "可从沙岩箱、绿洲匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:ancient_chisel": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Sandstone Chests and Oasis Crates",
+      "zh_cn": "可从沙岩箱、绿洲匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:magic_conch": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Sandstone Chests and Oasis Crates",
+      "zh_cn": "可从沙岩箱、绿洲匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:encumbering_stone": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Sandstone Chests",
+      "zh_cn": "可从沙岩箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_guns:boomstick": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Rich Mahogany Chests, Ivy Chests, and Jungle Crates",
+      "zh_cn": "可从红木箱、常春藤箱、丛林匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:feral_claws": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Rich Mahogany Chests, Ivy Chests, and Jungle Crates",
+      "zh_cn": "可从红木箱、常春藤箱、丛林匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:anklet_of_the_wind": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Rich Mahogany Chests, Ivy Chests, and Jungle Crates",
+      "zh_cn": "可从红木箱、常春藤箱、丛林匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:flower_boots": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Rich Mahogany Chests, Ivy Chests, and Jungle Crates",
+      "zh_cn": "可从红木箱、常春藤箱、丛林匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:fiberglass_fishing_pole": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Rich Mahogany Chests, Ivy Chests, and Jungle Crates",
+      "zh_cn": "可从红木箱、常春藤箱、丛林匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:living_mahogany_wand": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Rich Mahogany Chests and Ivy Chests",
+          "zh_cn": "可从红木箱、常春藤箱中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Consumes any log to place Living Mahogany Wood",
+          "zh_cn": "消耗任意原木，放置生命红木原木"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "confluence:rich_mahogany_leaf_wand": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in Rich Mahogany Chests and Ivy Chests",
+          "zh_cn": "可从红木箱、常春藤箱中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Consumes any log to place Living Mahogany Leaves",
+          "zh_cn": "消耗任意原木，放置生命红树叶"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "terra_guns:musket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drops from breaking Shadow Orbs; also drops from Corrupt Crates",
+          "zh_cn": "击碎暗影珠时概率掉落，也有概率由腐化匣掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Guaranteed drop from first Shadow Orb broken",
+          "zh_cn": "首次击碎暗影珠必定掉落"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "confluence:vilethron": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from breaking Shadow Orbs; also drops from Corrupt Crates",
+      "zh_cn": "击碎暗影珠时概率掉落，也有概率由腐化匣掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:band_of_starpower": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from breaking Shadow Orbs; also drops from Corrupt Crates",
+      "zh_cn": "击碎暗影珠时概率掉落，也有概率由腐化匣掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:shadow_orb": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from breaking Shadow Orbs; also drops from Corrupt Crates",
+      "zh_cn": "击碎暗影珠时概率掉落，也有概率由腐化匣掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:the_rotted_fork": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from breaking Crimson Hearts; also drops from Crimson Crates",
+      "zh_cn": "击碎猩红之心时概率掉落，也有概率由猩红匣掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_guns:the_undertaker": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drops from breaking Crimson Hearts; also drops from Crimson Crates",
+          "zh_cn": "击碎猩红之心时概率掉落，也有概率由猩红匣掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Guaranteed drop from first Crimson Heart broken",
+          "zh_cn": "首次击碎猩红之心必定掉落"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "confluence:crimson_rod": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drops from breaking Crimson Hearts; also drops from Crimson Crates",
+          "zh_cn": "击碎猩红之心时概率掉落，也有概率由猩红匣掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Summons a blood cloud that rains on enemies below",
+          "zh_cn": "可召唤一朵血云，持续降雨攻击下方的敌人"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "terra_curio:panic_necklace": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from breaking Crimson Hearts; also drops from Crimson Crates",
+      "zh_cn": "击碎猩红之心时概率掉落，也有概率由猩红匣掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:crimson_heart": {
+    "type": "text",
+    "text": {
+      "en_us": "Drops from breaking Crimson Hearts; also drops from Crimson Crates",
+      "zh_cn": "击碎猩红之心时概率掉落，也有概率由猩红匣掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:muramasa": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Dungeon Chests; also drops from Golden Lock Boxes\nGuaranteed to be found in Dungeon Chests on the third layer of the Dungeon",
+      "zh_cn": "可从带锁的地牢箱中获取，也有概率由金锁盒掉落\n地牢三层的地牢箱中必定包含"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:valor": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Dungeon Chests; also drops from Golden Lock Boxes",
+      "zh_cn": "可从带锁的地牢箱中获取，也有概率由金锁盒掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_guns:hand_gun": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Dungeon Chests; also drops from Golden Lock Boxes",
+      "zh_cn": "可从带锁的地牢箱中获取，也有概率由金锁盒掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:aqua_scepter": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Dungeon Chests; also drops from Golden Lock Boxes",
+      "zh_cn": "可从带锁的地牢箱中获取，也有概率由金锁盒掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:water_bolt": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found on bookshelves in the Dungeon",
+      "zh_cn": "可从地牢内的书架上获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:cobalt_shield": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Dungeon Chests; also drops from Golden Lock Boxes",
+      "zh_cn": "可从带锁的地牢箱中获取，也有概率由金锁盒掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:ram_rune": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Dungeon Chests; also drops from Golden Lock Boxes",
+      "zh_cn": "可从带锁的地牢箱中获取，也有概率由金锁盒掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:shadow_key": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Dungeon Chests; also drops from Golden Lock Boxes",
+      "zh_cn": "可从带锁的地牢箱中获取，也有概率由金锁盒掉落"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:dark_lance": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Shadow Chests in Nether Towers",
+      "zh_cn": "可从下界塔内的带锁暗影箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:hellwing_bow": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Shadow Chests in Nether Towers",
+      "zh_cn": "可从下界塔内的带锁暗影箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:flower_of_fire": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Shadow Chests in Nether Towers",
+      "zh_cn": "可从下界塔内的上锁暗影箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:treasure_magnet": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in locked Shadow Chests in Nether Towers",
+      "zh_cn": "可从下界塔内的带锁暗影箱中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:water_walking_boots": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Water Chests and Ocean Crates",
+      "zh_cn": "可从水中箱、海洋匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:flipper": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Water Chests and Ocean Crates",
+      "zh_cn": "可从水中箱、海洋匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:inner_tube": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Water Chests and Ocean Crates",
+      "zh_cn": "可从水中箱、海洋匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:breathing_reed": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Water Chests and Ocean Crates",
+      "zh_cn": "可从水中箱、海洋匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+
+  "_comment12": "============================== 宝匣 ==============================",
+
+  "confluence:wooden_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Commonly caught by fishing in any biome",
+      "zh_cn": "可于任意群系钓鱼获取，较为常见"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:pearlwood_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Wooden Crate; caught in Hardmode by fishing in any biome",
+      "zh_cn": "木匣的升级版，可在困难模式下于任意群系钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:iron_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Rarely caught by fishing in any biome",
+      "zh_cn": "可于任意群系钓鱼获取，较为稀有"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:mythril_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Iron Crate; caught in Hardmode by fishing in any biome",
+      "zh_cn": "铁匣的升级版，可在困难模式下于任意群系钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:golden_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Very rarely caught by fishing in any biome",
+      "zh_cn": "可于任意群系钓鱼获取，非常罕见"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:titanium_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Golden Crate; caught in Hardmode by fishing in any biome",
+      "zh_cn": "金匣的升级版，可在困难模式下于任意群系钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:jungle_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Jungle",
+      "zh_cn": "可于丛林钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:bramble_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Jungle Crate; caught in Hardmode by fishing in the Jungle",
+      "zh_cn": "丛林匣的升级版，可在困难模式下于丛林钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:sky_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Space",
+      "zh_cn": "可于太空钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:azure_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Sky Crate; caught in Hardmode by fishing in Space",
+      "zh_cn": "天空匣的升级版，可在困难模式下于太空钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:corrupt_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Corruption",
+      "zh_cn": "可于腐化之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:defiled_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Corrupt Crate; caught in Hardmode by fishing in the Corruption",
+      "zh_cn": "腐化匣的升级版，可在困难模式下于腐化之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:crimson_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Crimson",
+      "zh_cn": "可于猩红之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:hematic_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Crimson Crate; caught in Hardmode by fishing in the Crimson",
+      "zh_cn": "猩红匣的升级版，可在困难模式下于猩红之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:hallowed_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Hallow",
+      "zh_cn": "可于神圣之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:divine_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Hallowed Crate; caught in Hardmode by fishing in the Hallow",
+      "zh_cn": "神圣匣的升级版，可在困难模式下于神圣之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:dungeon_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Dungeon",
+      "zh_cn": "可于地牢钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:stockade_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Dungeon Crate; caught in Hardmode by fishing in the Dungeon",
+      "zh_cn": "地牢匣的升级版，可在困难模式下于地牢钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:frozen_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Snow biomes",
+      "zh_cn": "可于雪原钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:boreal_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Frozen Crate; caught in Hardmode by fishing in Snow biomes",
+      "zh_cn": "冰冻匣的升级版，可在困难模式下于雪原钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:oasis_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Deserts",
+      "zh_cn": "可于沙漠钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:mirage_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Oasis Crate; caught in Hardmode by fishing in Deserts",
+      "zh_cn": "绿洲匣的升级版，可在困难模式下于沙漠钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:obsidian_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in lava",
+      "zh_cn": "可于熔岩中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:hellstone_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Obsidian Crate; caught in Hardmode by fishing in lava",
+      "zh_cn": "黑曜石匣的升级版，可在困难模式下于熔岩中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:ocean_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Oceans",
+      "zh_cn": "可于海洋钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:seaside_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Ocean Crate; caught in Hardmode by fishing in Oceans",
+      "zh_cn": "海洋匣的升级版，可在困难模式下于海洋钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:savanna_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Savannas",
+      "zh_cn": "可于热带草原钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:wild_crate": {
+    "type": "text",
+    "text": {
+      "en_us": "Upgraded Savanna Crate; caught in Hardmode by fishing in Savannas",
+      "zh_cn": "热带草原匣的升级版，可在困难模式下于热带草原钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+
+  "_comment13": "============================== 渔获 ==============================",
+
+  "confluence:golden_lock_box": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Dungeon Crates",
+      "zh_cn": "可从地牢匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:obsidian_lock_box": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Obsidian Crates",
+      "zh_cn": "可从黑曜石匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:balloon_pufferfish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing",
+      "zh_cn": "钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:frog_leg": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing",
+      "zh_cn": "钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:sailfish_boots": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Wooden and Iron Crates",
+      "zh_cn": "可从木匣、铁匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:tsunami_in_a_bottle": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Wooden and Iron Crates",
+      "zh_cn": "可从木匣、铁匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:bomb_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing",
+      "zh_cn": "钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:frost_daggerfish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Snow biomes",
+      "zh_cn": "于雪原钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:reaver_shark_pickaxe": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Oceans",
+      "zh_cn": "于海洋钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:rockfish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing underground",
+      "zh_cn": "于地下钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:falcon_blade": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Iron Crates",
+      "zh_cn": "可从铁匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:hunting_bow": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Savanna Crates",
+      "zh_cn": "可从热带草原匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:purple_clubberfish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Corruption",
+      "zh_cn": "于腐化之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:demon_conch": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in lava",
+      "zh_cn": "于熔岩中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:bottomless_lava_bucket": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in lava",
+      "zh_cn": "于熔岩中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:lava_absorbant_sponge": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in lava",
+      "zh_cn": "于熔岩中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:lavaproof_fishing_hook": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be found in Obsidian Crates",
+      "zh_cn": "可从黑曜石匣中获取"
+    },
+    "color": "#00AAAA"
+  },
+
+  "_comment14": "============================== 渔夫任务 ==============================",
+
+  "confluence:angler_hat": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:angler_vest": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:angler_pants": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:fishing_bobber": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:high_test_fishing_line": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:tackle_box": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:angler_earring": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "terra_curio:fishermans_pocket_guide": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Chance to obtain by completing Angler quests",
+          "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used to craft Fish Finder",
+          "zh_cn": "可合成探鱼器"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:weather_radio": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Chance to obtain by completing Angler quests",
+          "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used to craft Fish Finder",
+          "zh_cn": "可合成探鱼器"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:sextant": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Chance to obtain by completing Angler quests",
+          "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used to craft Fish Finder",
+          "zh_cn": "可合成探鱼器"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "confluence:fin_wings": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:fish_hook": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:bottomless_water_bucket": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:super_absorbant_sponge": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:bottomless_honey_bucket": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain upon completing the Angler quest for Bumblebee Tuna",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:honey_absorbant_sponge": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain upon completing the Angler quest for Bumblebee Tuna",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:golden_bug_net": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:golden_fishing_rod": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain by completing Angler quests",
+      "zh_cn": "完成渔夫的钓鱼任务有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+
+  "_comment15": "============================== 鱼饵和鱼 ==============================",
+
+  "confluence:hell_butterfly": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be caught with a Lavaproof Bug Net; enables fishing in lava",
+      "zh_cn": "可用防熔岩虫网捕捉，能够在熔岩中钓鱼"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:lavafly": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be caught with a Lavaproof Bug Net; enables fishing in lava",
+      "zh_cn": "可用防熔岩虫网捕捉，能够在熔岩中钓鱼"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:magma_snail": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be caught with a Lavaproof Bug Net; enables fishing in lava",
+      "zh_cn": "可用防熔岩虫网捕捉，能够在熔岩中钓鱼"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:sea_bass": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in non-desert biomes",
+      "zh_cn": "于非沙漠群系钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:atlantic_cod": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Snow biomes",
+      "zh_cn": "于冰雪群系钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:frosty_minnow": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Snow biomes",
+      "zh_cn": "于冰雪群系钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:pisces_fin_cod": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in surface Jungles",
+      "zh_cn": "于地表丛林钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:partial_mouth_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Deserts",
+      "zh_cn": "于沙漠钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:rock_lobster": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Deserts",
+      "zh_cn": "于沙漠钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:shrimp": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in surface Oceans",
+      "zh_cn": "于地表海洋钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:salmon": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in surface pure biomes",
+      "zh_cn": "于地表纯净群系钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:tuna": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in surface Oceans",
+      "zh_cn": "于地表海洋钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:red_snapper": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in surface Oceans",
+      "zh_cn": "于地表海洋钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:trout": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in surface Oceans",
+      "zh_cn": "于地表海洋钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:armored_cave_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing underground in non-desert biomes",
+      "zh_cn": "于非沙漠群系的地下钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:mirror_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing underground in non-desert biomes",
+      "zh_cn": "于非沙漠群系的地下钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:stinky_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing underground in non-desert, non-corrupt, non-hallow biomes",
+      "zh_cn": "于非沙漠、腐化、神圣群系的地下钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:neon_grease_carp": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Jungle",
+      "zh_cn": "于丛林钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:damsel_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Space in pure biomes",
+      "zh_cn": "于纯净群系的太空钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:ebony_koi": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Corruption",
+      "zh_cn": "于腐化之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:scarlet_tiger_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Crimson",
+      "zh_cn": "于猩红之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:bloody_piranhas": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Crimson",
+      "zh_cn": "于猩红之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:princess_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Hallow",
+      "zh_cn": "于神圣之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:colorful_mineral_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Hallow",
+      "zh_cn": "于神圣之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:chaos_fish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in the Underground Hallow",
+      "zh_cn": "于地下神圣之地钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:mottled_oilfish": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Caught by fishing in the Underground Jungle",
+          "zh_cn": "于地下丛林钓鱼获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: Lush Caves count as Jungle biome",
+          "zh_cn": "注：繁茂洞穴也视为丛林环境"
+        },
+        "color": "#FFFFFF"
+      }
+    ]
+  },
+  "confluence:yellow_eel": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Savannas",
+      "zh_cn": "于热带草原钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:tilapia": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Savannas",
+      "zh_cn": "于热带草原钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:red_pleatfish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Mushroom Islands",
+      "zh_cn": "于蘑菇岛钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:brown_stalkspine": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Mushroom Islands",
+      "zh_cn": "于蘑菇岛钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:golden_carp": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing underground in non-desert biomes",
+      "zh_cn": "于非沙漠群系的地下钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:obsidifish": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in lava",
+      "zh_cn": "于熔岩中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:flashfin_koi": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in lava",
+      "zh_cn": "于熔岩中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:honeyfin": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in honey",
+      "zh_cn": "于蜂蜜中钓鱼获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:clam": {
+    "type": "text",
+    "text": {
+      "en_us": "Caught by fishing in Deserts; has a chance to drop Pearls when opened",
+      "zh_cn": "于沙漠钓鱼获取，打开时有概率获得珍珠"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:pearl": {
+    "type": "text",
+    "text": {
+      "en_us": "Chance to obtain when opening clams",
+      "zh_cn": "打开牡蛎时有概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:black_pearl": {
+    "type": "text",
+    "text": {
+      "en_us": "Low chance to obtain when opening clams",
+      "zh_cn": "打开牡蛎时有低概率获取"
+    },
+    "color": "#00AAAA"
+  },
+  "confluence:pink_pearl": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Extremely low chance to obtain when opening clams",
+          "zh_cn": "打开牡蛎时有极低概率获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be transmuted in Shimmer",
+          "zh_cn": "可微光嬗变"
+        },
+        "color": "#FF69B4"
+      }
+    ]
+  },
+
+  "_comment16": "============================== 饰品 ==============================",
+
+  "terra_curio:warrior_emblem": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into emblems for other classes",
+      "zh_cn": "可微光嬗变为其他职业的徽章"
+    },
+    "color": "#FF69B4"
+  },
+  "terra_curio:ranger_emblem": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into emblems for other classes",
+      "zh_cn": "可微光嬗变为其他职业的徽章"
+    },
+    "color": "#FF69B4"
+  },
+  "terra_curio:sorcerer_emblem": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into emblems for other classes",
+      "zh_cn": "可微光嬗变为其他职业的徽章"
+    },
+    "color": "#FF69B4"
+  },
+  "confluence:summoner_emblem": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into emblems for other classes",
+      "zh_cn": "可微光嬗变为其他职业的徽章"
+    },
+    "color": "#FF69B4"
+  },
+  "terra_curio:copper_watch": {
+    "type": "text",
+    "text": {
+      "en_us": "Displays time accurate to the hour (rounded down)",
+      "zh_cn": "时间精确到小时，向下取整"
+    },
+    "color": "#55FFFF"
+  },
+  "terra_curio:tin_watch": {
+    "type": "text",
+    "text": {
+      "en_us": "Displays time accurate to the hour (rounded down)",
+      "zh_cn": "时间精确到小时，向下取整"
+    },
+    "color": "#55FFFF"
+  },
+  "terra_curio:silver_watch": {
+    "type": "text",
+    "text": {
+      "en_us": "Displays time accurate to the half-hour (rounded down)",
+      "zh_cn": "时间精确到半小时，向下取整"
+    },
+    "color": "#55FFFF"
+  },
+  "terra_curio:tungsten_watch": {
+    "type": "text",
+    "text": {
+      "en_us": "Displays time accurate to the half-hour (rounded down)",
+      "zh_cn": "时间精确到半小时，向下取整"
+    },
+    "color": "#55FFFF"
+  },
+  "terra_curio:gold_watch": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Displays time accurate to the minute (rounded down)",
+          "zh_cn": "时间精确到分钟，向下取整"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used to craft GPS",
+          "zh_cn": "可合成全球定位系统"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:platinum_watch": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Displays time accurate to the minute (rounded down)",
+          "zh_cn": "时间精确到分钟，向下取整"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used to craft GPS",
+          "zh_cn": "可合成全球定位系统"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:depth_meter": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft GPS",
+      "zh_cn": "可合成全球定位系统"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:compass": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft GPS",
+      "zh_cn": "可合成全球定位系统"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:radar": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be found in surface chests and Wooden Crates",
+          "zh_cn": "可从地表的普通箱子、木匣中获取"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used to craft R.E.K. 3000",
+          "zh_cn": "可合成R.E.K.3000"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "terra_curio:life_form_analyzer": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft R.E.K. 3000",
+      "zh_cn": "可合成R.E.K.3000"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:tally_counter": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft R.E.K. 3000",
+      "zh_cn": "可合成R.E.K.3000"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:metal_detector": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft Goblin Tech",
+      "zh_cn": "可合成哥布林数据仪"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:stopwatch": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft Goblin Tech",
+      "zh_cn": "可合成哥布林数据仪"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:dps_meter": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft Goblin Tech",
+      "zh_cn": "可合成哥布林数据仪"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:gps": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft PDA",
+      "zh_cn": "可合成个人数字助手"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:rek_3000": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft PDA",
+      "zh_cn": "可合成个人数字助手"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:goblin_tech": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft PDA",
+      "zh_cn": "可合成个人数字助手"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:fish_finder": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft PDA",
+      "zh_cn": "可合成个人数字助手"
+    },
+    "color": "#FFFF55"
+  },
+  "terra_curio:pda": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be used to craft Cell Phone",
+      "zh_cn": "可合成手机"
+    },
+    "color": "#FFFF55"
+  },
+
+  "_comment17": "============================== 盔甲&时装 ==============================",
+
+  "confluence:cobalt_helmet": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Warrior",
+      "zh_cn": "所属职业：战士"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:cobalt_mask": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Ranger",
+      "zh_cn": "所属职业：射手"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:cobalt_hat": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Mage",
+      "zh_cn": "所属职业：法师"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:palladium_mask": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Warrior",
+      "zh_cn": "所属职业：战士"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:palladium_helmet": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Ranger",
+      "zh_cn": "所属职业：射手"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:palladium_headgear": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Mage",
+      "zh_cn": "所属职业：法师"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:mythril_helmet": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Warrior",
+      "zh_cn": "所属职业：战士"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:mythril_hat": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Ranger",
+      "zh_cn": "所属职业：射手"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:mythril_hood": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Mage",
+      "zh_cn": "所属职业：法师"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:orichalcum_mask": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Warrior",
+      "zh_cn": "所属职业：战士"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:orichalcum_helmet": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Ranger",
+      "zh_cn": "所属职业：射手"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:orichalcum_headgear": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Mage",
+      "zh_cn": "所属职业：法师"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:adamantite_helmet": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Warrior",
+      "zh_cn": "所属职业：战士"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:adamantite_mask": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Ranger",
+      "zh_cn": "所属职业：射手"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:adamantite_headgear": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Mage",
+      "zh_cn": "所属职业：法师"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:titanium_mask": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Warrior",
+      "zh_cn": "所属职业：战士"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:titanium_helmet": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Ranger",
+      "zh_cn": "所属职业：射手"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:titanium_headgear": {
+    "type": "text",
+    "text": {
+      "en_us": "Class: Mage",
+      "zh_cn": "所属职业：法师"
+    },
+    "color": "#55FFFF"
+  },
+  "confluence:familiar_wig": {
+    "type": "text",
+    "text": {
+      "en_us": "Vanity item: Hides armor, shows player skin",
+      "zh_cn": "时装物品（隐藏盔甲，显示玩家皮肤）"
+    }
+  },
+  "confluence:familiar_shirt": {
+    "type": "text",
+    "text": {
+      "en_us": "Vanity item: Hides armor, shows player skin",
+      "zh_cn": "时装物品（隐藏盔甲，显示玩家皮肤）"
+    }
+  },
+  "confluence:familiar_pants": {
+    "type": "text",
+    "text": {
+      "en_us": "Vanity item: Hides armor, shows player skin",
+      "zh_cn": "时装物品（隐藏盔甲，显示玩家皮肤）"
+    }
+  },
+  "confluence:familiar_shoes": {
+    "type": "text",
+    "text": {
+      "en_us": "Vanity item: Hides armor, shows player skin",
+      "zh_cn": "时装物品（隐藏盔甲，显示玩家皮肤）"
+    }
+  },
+
+  "_comment18": "============================== 微光 ==============================",
+
+  "confluence:life_crystal": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Generates underground; also drops from Golden Crates",
+          "zh_cn": "生成于地下，也有概率由金匣掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Increases max health to 80 (40 hearts)",
+          "zh_cn": "最多将玩家生命上限提升至80（40颗心）"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be transmuted in Shimmer into Vital Crystal",
+          "zh_cn": "可微光嬗变为活力水晶"
+        },
+        "color": "#FF69B4"
+      }
+    ]
+  },
+  "confluence:mana_crystal": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into Arcane Crystal",
+      "zh_cn": "可微光嬗变为奥术水晶"
+    },
+    "color": "#FF69B4"
+  },
+  "confluence:life_fruit": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer into Aegis Fruit",
+      "zh_cn": "可微光嬗变为神盾果"
+    },
+    "color": "#FF69B4"
+  },
+  "confluence:gold_warm": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "confluence:spell_tome": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "terra_curio:star_cloak": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "confluence:honey_bucket": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "terra_curio:magma_stone": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "terra_curio:putrid_scent": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+  "terra_curio:flesh_knuckles": {
+    "type": "text",
+    "text": {
+      "en_us": "Can be transmuted in Shimmer",
+      "zh_cn": "可微光嬗变"
+    },
+    "color": "#FF69B4"
+  },
+
+  "_comment19": "============================== NPC ==============================",
+
+  "confluence:guide_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Initial NPC spawned upon world creation",
+          "zh_cn": "创建世界时生成的初始NPC"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Provides basic tips and guidance through dialogue",
+          "zh_cn": "在交谈中提供一些简单的提示与指引"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:guide",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:demolitionist_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in when the player carries explosives and the Merchant is present",
+          "zh_cn": "玩家携带爆炸物且商人存在时入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells various explosion-related items",
+          "zh_cn": "出售各种与爆炸相关的物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:demolitionist",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:goblin_tinkerer_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in after defeating the Goblin Army",
+          "zh_cn": "击败哥布林入侵事件后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells the Tinkerer's Workshop, along with assorted tools and accessories",
+          "zh_cn": "出售工匠作坊以及一些工具和饰品"
+        },
+        "color": "#FFFFFF"
+      },
+        {
+            "type": "text",
+            "text": {
+                "en_us": "Reforge. Pay coins to reroll an item's modifiers on weapons and accessories",
+                "zh_cn": "重铸，支付钱币并改变武器和饰品的词缀"
+            },
+            "color": "#FFFF55"
+        },
+      {
+        "type": "entity",
+        "entity": "confluence:goblin_tinkerer",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:arms_dealer_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in when the player carries bullets or a gun that fires them",
+          "zh_cn": "玩家携带子弹或发射子弹的枪支时入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells guns, bullets, and other types of ammunition",
+          "zh_cn": "出售枪支、子弹以及一些其他弹药"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:arms_dealer",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:nurse_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in when the player has at least 40 maximum health (20 hearts) and the Merchant is present",
+          "zh_cn": "玩家拥有40生命上限（20颗心）且商人存在时入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Charges coins to instantly heal the player and remove all debuffs",
+          "zh_cn": "收取钱币，瞬间治愈玩家并清除负面效果"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:nurse",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:merchant_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in when the player carries over 50 silver coins",
+          "zh_cn": "玩家携带的钱币超过50银时入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells basic tools and general supplies",
+          "zh_cn": "出售基本的工具和供给"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:merchant",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:painter_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in once there are at least 8 other NPCs in the world",
+          "zh_cn": "世界中已有另外8个NPC时入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells paints, painting tools, and wall paintings",
+          "zh_cn": "出售油漆、刷漆工具以及画作"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a chance to drop the Paintball Gun upon death",
+          "zh_cn": "死亡时有概率掉落彩弹枪"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:painter",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:dryad_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in after defeating the Eye of Cthulhu, Eater of Worlds/Brain of Cthulhu, or Skeletron",
+          "zh_cn": "击败克苏鲁之眼、世界吞噬怪/克苏鲁之脑、或骷髅王后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells nature-themed items and, under specific conditions, Corruption/Crimson-themed goods",
+          "zh_cn": "出售自然相关物品、特定条件下出售腐化/猩红物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:dryad",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:dye_trader_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in when the player carries dyes or dye-related crafting materials",
+          "zh_cn": "玩家携带染料或可用于制作染料的物品时入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells Dye Vats and dyes. Accepts Strange Plants in exchange for rare dyes",
+          "zh_cn": "出售染缸和染料，收取奇异植物并给予玩家稀有染料"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a chance to drop the Scourge of the Corruptor upon death",
+          "zh_cn": "死亡时有概率掉落异域弯刀"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:dye_trader",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:angler_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Naturally spawns on the ocean surface; interacts to move in",
+          "zh_cn": "自然刷新于海面上，交互后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Posts a fishing quest daily. Turn in the required fish to receive rewards",
+          "zh_cn": "每游戏日发布钓鱼任务，提交任务鱼后获得奖励"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:angler",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:old_man_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Appears at the Dungeon entrance (the Old Man is not a standard town NPC)",
+          "zh_cn": "出现于地牢入口处（老人并非常规的城镇NPC）"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Speak to him at night to lift the curse and challenge Skeletron",
+          "zh_cn": "在夜晚与其对话并解除诅咒以挑战骷髅王"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The Old Man will no longer spawn after Skeletron is defeated",
+          "zh_cn": "击败骷髅王后老人将不再生成"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "If the Old Man is missing from the entrance, wait near the Dungeon for him to respawn",
+          "zh_cn": "若未在地牢入口处发现老人，请于地牢附近逗留片刻等待刷新"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:old_man",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:mechanic_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Found within the Dungeon's Mechanic workshop; interact to move in",
+          "zh_cn": "出现于地牢的机械师实验室中，交互后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells wrenches, wire, and other mechanical components",
+          "zh_cn": "出售扳手、电线等机械相关物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a chance to drop the Rocket Wrench upon death",
+          "zh_cn": "死亡时有概率掉落战斗扳手"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:mechanic",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:traveling_merchant_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a chance to arrive in the morning and stay until night if at least 2 other NPCs reside in the world",
+          "zh_cn": "若世界中已有另外2个NPC，则有概率于早间到来，停留到夜晚离去"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells random unique items",
+          "zh_cn": "出售随机独特物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drops theVendor Hat upon death",
+          "zh_cn": "死亡时掉落商贩帽"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:traveling_merchant",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:witch_doctor_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in after defeating the Queen Bee",
+          "zh_cn": "击败蜂王后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells Blowpipes, the Imbuing Station, summoner gear, and related items",
+          "zh_cn": "出售吹箭筒、灌注站、召唤师装备等物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:witch_doctor",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:party_girl_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a chance to move in once there are at least 20 other NPCs in the world",
+          "zh_cn": "若世界中已有另外20个NPC，则有概率入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells various novelty items and toys",
+          "zh_cn": "出售各种有趣的小玩具"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a chance to drop the Happy Grenade upon death",
+          "zh_cn": "死亡时有概率掉落快乐手榴弹"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:party_girl",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:clothier_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in after defeating Skeletron",
+          "zh_cn": "击败骷髅王后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells vanity clothing, including outfits that hide equipped armor",
+          "zh_cn": "出售时装，包括能够隐藏盔甲的便装"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Vanity Slots: The armor slots located within the Extra Accessories menu (the tree icon in the top-left of the inventory)",
+          "zh_cn": "时装栏：即额外栏（物品栏左上方的树状按钮）中的盔甲栏"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drops the Red Hat upon death",
+          "zh_cn": "死亡时掉落红帽"
+        },
+        "color": "#AAAAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Fun Fact: The Old Man at the Dungeon entrance is the cursed Clothier",
+          "zh_cn": "热知识：地牢门口的老人就是被诅咒的服装商"
+        },
+        "color": "#555555"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:clothier",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:zoologist_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in once 10% of the Bestiary is unlocked",
+          "zh_cn": "解锁 10% 生物图鉴后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells critter-themed vanity items, mounts, and pets",
+          "zh_cn": "出售时装、坐骑、宠物等小动物主题物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Bestiary: The book icon located in the bottom-right of the Extra Accessories menu (the tree icon in the top-left of the inventory)",
+          "zh_cn": "生物图鉴：即额外栏（物品栏左上方的树状按钮）右下方的书状按钮"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:zoologist",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:truffle_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in during Hardmode if a suitable house exists in a surface Glowing Mushroom biome",
+          "zh_cn": "困难模式下，地表有处于发光蘑菇群系的可用房屋时入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells the Autohammer, Mushroom Spear, and other mushroom-themed gear",
+          "zh_cn": "出售自动锤炼机、蘑菇长矛等蘑菇主题物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:truffle",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+  "confluence:wizard_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves in after entering Hardmode (defeating the Wall of Flesh)",
+          "zh_cn": "进入困难模式（击败血肉之墙/血肉之山）后入住"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Sells magic-related equipment and supplies",
+          "zh_cn": "出售魔法相关物品"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:wizard",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+
+  "_comment20": "============================== 敌怪 ==============================",
+
+  "confluence:nymph_spawn_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Naturally spawns in the Underground Cavern layer (Deepslate layer)",
+          "zh_cn": "自然生成于地下的洞穴层（深板岩层）"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Initially appears as the harmless Lost Girl. Transforms into the Nymph and attacks when approached",
+          "zh_cn": "初始伪装成人畜无害的迷失女孩，玩家靠近后变为宁芙并发起攻击"
+        },
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "entity",
+        "entity": "confluence:nymph",
+        "size": 48,
+        "shift": true
+      }
+    ]
+  },
+
+  "_comment21": "============================== 专家 ==============================",
+
+  "terra_curio:royal_gel": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:shield_of_cthulhu": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:worm_scarf": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:brain_of_confusion": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:hive_pack": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:bone_glove": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:demon_heart": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:shiny_stone": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:soaring_insignia": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:gravity_globe": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+  "terra_curio:celestial_starboard": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Expert Mode and above",
+      "zh_cn": "专家模式（普通难度）及以上独有"
+    }
+  },
+
+  "_comment22": "============================== 大师 ==============================",
+
+  "confluence:king_slime_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:eye_of_cthulhu_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:brain_of_cthulhu_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:eater_of_worlds_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:queen_bee_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:deerclops_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:skeletron_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:wall_of_flesh_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  },
+  "confluence:hill_of_flesh_relic": {
+    "type": "text",
+    "text": {
+      "en_us": "Exclusive to Master Mode",
+      "zh_cn": "大师模式（困难难度）独有"
+    }
+  }
+}

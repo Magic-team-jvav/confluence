@@ -175,6 +175,18 @@ public final class ModEvents {
                 );
                 if (pack != null) consumer.accept(pack);
             });
+            event.addRepositorySource(consumer -> {
+                Pack pack = Pack.readMetaAndCreate(
+                        "confluence:confluence_datatip_0.4",
+                        Component.translatable("resourcepack.confluence_datatip_0.4"),
+                        false,
+                        (String id) -> new PathPackResources(id, true, modFile.findResource("resourcepacks/confluence_datatip_0.4")),
+                        PackType.CLIENT_RESOURCES,
+                        Pack.Position.TOP,
+                        PackSource.BUILT_IN
+                );
+                if (pack != null) consumer.accept(pack);
+            });
         }
     }
 

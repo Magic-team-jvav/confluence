@@ -259,6 +259,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("mural.dungeon.crimson_mural", "Mind Rend", "精神撕裂");
         language.add("mural.dungeon.ebony_mural", "Corrosive Worm", "腐堕巨蠕");
         language.add("options.difficulty.legendary", "§aLegendary", "§a传奇");
+        language.add("resourcepack.confluence_datatip_0.4", "Confluence Extra Tooltips", "汇流来世额外提示");
         language.add("resourcepack.terraria_armor", "Terraria-Like Armor", "泰拉盔甲样式材质");
         language.add("resourcepack.terraria_art", "Terraria Art", "泰拉艺术");
         language.add("secret_seed.the_constant.in_darkness_for_3_second", "It is very dark...you feel in danger...", "非常黑暗……你觉得有危险……");

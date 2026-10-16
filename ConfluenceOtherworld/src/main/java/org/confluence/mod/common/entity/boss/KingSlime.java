@@ -15,6 +15,7 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -312,9 +313,7 @@ public class KingSlime extends BaseBoss {
     private void faceHorizontalMovement(Vec3 movement) {
         if (movement.x * movement.x + movement.z * movement.z <= 1.0E-7D) return;
         float wantedYaw = (float) (Mth.atan2(-movement.x, movement.z) * Mth.RAD_TO_DEG);
-        setYRot(wantedYaw);
-        setYBodyRot(wantedYaw);
-        setYHeadRot(wantedYaw);
+        LibEntityUtils.setEntityYaw(this, wantedYaw);
     }
 
     @Override

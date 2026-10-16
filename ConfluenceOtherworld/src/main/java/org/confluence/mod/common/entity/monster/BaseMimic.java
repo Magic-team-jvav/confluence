@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileDeflection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -287,18 +287,13 @@ public class BaseMimic extends BaseMonster {
     private void lookAtTarget(LivingEntity target) {
         double dx = target.getX() - getX();
         double dz = target.getZ() - getZ();
-        float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
-        setYRot(yaw);
-        setYBodyRot(yaw);
-        setYHeadRot(yaw);
+        LibEntityUtils.turnEntityTowards(this, new Vec3(dx, 0.0D, dz), 180.0F, 0.0F);
     }
 
     private void snapToIdleAngle() {
         int angle = entityData.get(DATA_IDLE_ANGLE);
         if (angle < 0) return;
-        setYRot(angle);
-        setYBodyRot(angle);
-        setYHeadRot(angle);
+        LibEntityUtils.setEntityYaw(this, angle);
     }
 
     private void setIdleAngle(int angle) {

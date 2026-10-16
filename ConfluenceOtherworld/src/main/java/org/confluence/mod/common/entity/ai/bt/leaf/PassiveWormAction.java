@@ -4,6 +4,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
@@ -50,9 +51,7 @@ public final class PassiveWormAction extends BTNode {
         double speed = crawling ? mob.getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.18 : 0.0;
         mob.setDeltaMovement(direction.x * speed, mob.getDeltaMovement().y, direction.z * speed);
         float yaw = (float) (Mth.atan2(-direction.x, direction.z) * Mth.RAD_TO_DEG);
-        mob.setYRot(yaw);
-        mob.setYBodyRot(yaw);
-        mob.setYHeadRot(yaw);
+        LibEntityUtils.setEntityYaw(mob, yaw);
         mob.setXRot(0.0F);
         mob.getLookControl().setLookAt(mob.getX() + direction.x, mob.getEyeY(), mob.getZ() + direction.z);
         return BTStatus.RUNNING;

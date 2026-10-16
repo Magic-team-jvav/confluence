@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.WormChainTrail;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -307,8 +308,7 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         Vec3 tangent = segmentTrail.headTangent();
         if (tangent.lengthSqr() > 1.0E-7D) {
             WormSegment.orientAlong(this, tangent);
-            setYBodyRot(getYRot());
-            setYHeadRot(getYRot());
+            LibEntityUtils.setEntityYaw(this, getYRot());
         }
     }
 

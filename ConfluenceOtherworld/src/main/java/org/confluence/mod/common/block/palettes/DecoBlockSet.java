@@ -16,14 +16,18 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.common.item.GroupItem;
+import org.confluence.mod.common.data.gen.language.TranslationConsumer;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class DecoBlockSet {
     public static final List<DecoBlockSet> DECO_BLOCK_SETS = new ArrayList<>();
@@ -145,6 +149,12 @@ public class DecoBlockSet {
         public Builder wall(@Nullable Function<BlockBehaviour.Properties, ? extends WallBlock> function) {
             this.wall = function;
             return this;
+        }
+
+        public DecoBlockSet build(BiConsumer<DecoBlockSet, TranslationConsumer> translations) {
+            DecoBlockSet set = build();
+            LANGUAGE_PROVIDERS.add(language -> translations.accept(set, language));
+            return set;
         }
 
         public DecoBlockSet build() {

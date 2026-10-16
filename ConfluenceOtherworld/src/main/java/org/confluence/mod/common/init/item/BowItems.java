@@ -10,6 +10,8 @@ import org.confluence.mod.common.item.bow.*;
 
 import java.util.function.Supplier;
 
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
+
 /// 弓箭位置修正参考[ArrowInBowRenderer]
 public class BowItems {
     public static void init() {}
@@ -17,56 +19,54 @@ public class BowItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     // 短弓
-    public static final DeferredItem<ShortBowItem> WOODEN_SHORT_BOW = ITEMS.register("wooden_short_bow", () -> new ShortBowItem(4.0F, 384));
-    public static final DeferredItem<ShortBowItem> EBONWOOD_SHORT_BOW = ITEMS.register("ebonwood_short_bow", () -> new ShortBowItem(4.3F, 404));
-    public static final DeferredItem<ShortBowItem> SHADEWOOD_SHORT_BOW = ITEMS.register("shadewood_short_bow", () -> new ShortBowItem(4.4F, 424));
-    public static final DeferredItem<ShortBowItem> ASH_WOOD_SHORT_BOW = ITEMS.register("ash_wood_short_bow", () -> new ShortBowItem(4.5F, 444));
-    public static final DeferredItem<ShortBowItem> PEARLWOOD_SHORT_BOW = ITEMS.register("pearlwood_short_bow", () -> new ShortBowItem(5.0F, 1000));
-    public static final DeferredItem<ShortBowItem> COPPER_SHORT_BOW = ITEMS.register("copper_short_bow", () -> new ShortBowItem(4.5F, 640));
-    public static final DeferredItem<ShortBowItem> TIN_SHORT_BOW = ITEMS.register("tin_short_bow", () -> new ShortBowItem(4.5F, 768));
-    public static final DeferredItem<ShortBowItem> IRON_SHORT_BOW = ITEMS.register("iron_short_bow", () -> new ShortBowItem(5.0F, 896));
-    public static final DeferredItem<ShortBowItem> LEAD_SHORT_BOW = ITEMS.register("lead_short_bow", () -> new ShortBowItem(5.0F, 1024));
-    public static final DeferredItem<ShortBowItem> SILVER_SHORT_BOW = ITEMS.register("silver_short_bow", () -> new ShortBowItem(5.5F, 1152));
-    public static final DeferredItem<ShortBowItem> TUNGSTEN_SHORT_BOW = ITEMS.register("tungsten_short_bow", () -> new ShortBowItem(5.5F, 1280));
-    public static final DeferredItem<ShortBowItem> GOLDEN_SHORT_BOW = ITEMS.register("golden_short_bow", () -> new ShortBowItem(6.0F, 1408));
-    public static final DeferredItem<ShortBowItem> PLATINUM_SHORT_BOW = ITEMS.register("platinum_short_bow", () -> new ShortBowItem(6.0F, 1536));
-
+    public static final DeferredItem<ShortBowItem> WOODEN_SHORT_BOW = registerItem("wooden_short_bow", "木短弓", () -> new ShortBowItem(4.0F, 384));
+    public static final DeferredItem<ShortBowItem> EBONWOOD_SHORT_BOW = registerItem("ebonwood_short_bow", "乌木短弓", () -> new ShortBowItem(4.3F, 404));
+    public static final DeferredItem<ShortBowItem> SHADEWOOD_SHORT_BOW = registerItem("shadewood_short_bow", "暗影木短弓", () -> new ShortBowItem(4.4F, 424));
+    public static final DeferredItem<ShortBowItem> ASH_WOOD_SHORT_BOW = registerItem("ash_wood_short_bow", "灰烬木短弓", () -> new ShortBowItem(4.5F, 444));
+    public static final DeferredItem<ShortBowItem> PEARLWOOD_SHORT_BOW = registerItem("pearlwood_short_bow", "珍珠木短弓", () -> new ShortBowItem(5.0F, 1000));
+    public static final DeferredItem<ShortBowItem> COPPER_SHORT_BOW = registerItem("copper_short_bow", "铜短弓", () -> new ShortBowItem(4.5F, 640));
+    public static final DeferredItem<ShortBowItem> TIN_SHORT_BOW = registerItem("tin_short_bow", "锡短弓", () -> new ShortBowItem(4.5F, 768));
+    public static final DeferredItem<ShortBowItem> IRON_SHORT_BOW = registerItem("iron_short_bow", "铁短弓", () -> new ShortBowItem(5.0F, 896));
+    public static final DeferredItem<ShortBowItem> LEAD_SHORT_BOW = registerItem("lead_short_bow", "铅短弓", () -> new ShortBowItem(5.0F, 1024));
+    public static final DeferredItem<ShortBowItem> SILVER_SHORT_BOW = registerItem("silver_short_bow", "银短弓", () -> new ShortBowItem(5.5F, 1152));
+    public static final DeferredItem<ShortBowItem> TUNGSTEN_SHORT_BOW = registerItem("tungsten_short_bow", "钨短弓", () -> new ShortBowItem(5.5F, 1280));
+    public static final DeferredItem<ShortBowItem> GOLDEN_SHORT_BOW = registerItem("golden_short_bow", "金短弓", () -> new ShortBowItem(6.0F, 1408));
+    public static final DeferredItem<ShortBowItem> PLATINUM_SHORT_BOW = registerItem("platinum_short_bow", "铂金短弓", () -> new ShortBowItem(6.0F, 1536));
 
     // 无效果蓄力弓
-    public static final DeferredItem<BaseTerraBowItem> EBONWOOD_BOW = register("ebonwood_bow", 3.0F, 404);
-    public static final DeferredItem<BaseTerraBowItem> SHADEWOOD_BOW = register("shadewood_bow", 3.1F, 424);
-    public static final DeferredItem<BaseTerraBowItem> ASH_WOOD_BOW = register("ash_wood_bow", 3.2F, 444);
-    public static final DeferredItem<BaseTerraBowItem> PEARLWOOD_BOW = register("pearlwood_bow", 3.5F, 1000);
-    public static final DeferredItem<BaseTerraBowItem> COPPER_BOW = register("copper_bow", 3.0F, 640);
-    public static final DeferredItem<BaseTerraBowItem> TIN_BOW = register("tin_bow", 3.0F, 768);
-    public static final DeferredItem<BaseTerraBowItem> IRON_BOW = register("iron_bow", 3.5F, 896);
-    public static final DeferredItem<BaseTerraBowItem> LEAD_BOW = register("lead_bow", 3.5F, 1024);
-    public static final DeferredItem<BaseTerraBowItem> SILVER_BOW = register("silver_bow", 4.0F, 1152);
-    public static final DeferredItem<BaseTerraBowItem> TUNGSTEN_BOW = register("tungsten_bow", 4.0F, 1280);
-    public static final DeferredItem<BaseTerraBowItem> GOLDEN_BOW = register("golden_bow", 4.5F, 1408);
-    public static final DeferredItem<BaseTerraBowItem> PLATINUM_BOW = register("platinum_bow", 4.5F, 1536);
+    public static final DeferredItem<BaseTerraBowItem> EBONWOOD_BOW = register("ebonwood_bow", "乌木弓", 3.0F, 404);
+    public static final DeferredItem<BaseTerraBowItem> SHADEWOOD_BOW = register("shadewood_bow", "暗影木弓", 3.1F, 424);
+    public static final DeferredItem<BaseTerraBowItem> ASH_WOOD_BOW = register("ash_wood_bow", "灰烬木弓", 3.2F, 444);
+    public static final DeferredItem<BaseTerraBowItem> PEARLWOOD_BOW = register("pearlwood_bow", "珍珠木弓", 3.5F, 1000);
+    public static final DeferredItem<BaseTerraBowItem> COPPER_BOW = register("copper_bow", "铜弓", 3.0F, 640);
+    public static final DeferredItem<BaseTerraBowItem> TIN_BOW = register("tin_bow", "锡弓", 3.0F, 768);
+    public static final DeferredItem<BaseTerraBowItem> IRON_BOW = register("iron_bow", "铁弓", 3.5F, 896);
+    public static final DeferredItem<BaseTerraBowItem> LEAD_BOW = register("lead_bow", "铅弓", 3.5F, 1024);
+    public static final DeferredItem<BaseTerraBowItem> SILVER_BOW = register("silver_bow", "银弓", 4.0F, 1152);
+    public static final DeferredItem<BaseTerraBowItem> TUNGSTEN_BOW = register("tungsten_bow", "钨弓", 4.0F, 1280);
+    public static final DeferredItem<BaseTerraBowItem> GOLDEN_BOW = register("golden_bow", "金弓", 4.5F, 1408);
+    public static final DeferredItem<BaseTerraBowItem> PLATINUM_BOW = register("platinum_bow", "铂金弓", 4.5F, 1536);
 
     // DIY蓄力弓
     /**
      * 如果需要速射，加上tag {@link org.confluence.mod.common.init.ModTags.Items#FAST_BOW}
      */
-    public static final DeferredItem<FossilBow> FOSSIL_BOW = ITEMS.register("fossil_bow", FossilBow::new);
-    public static final DeferredItem<HuntingBow> HUNTING_BOW = ITEMS.register("hunting_bow", HuntingBow::new);
-    public static final DeferredItem<DemonBow> DEMON_BOW = ITEMS.register("demon_bow", DemonBow::new);
-    public static final DeferredItem<TendonBow> TENDON_BOW = ITEMS.register("tendon_bow", TendonBow::new);
-    public static final DeferredItem<MoltenFury> MOLTEN_FURY = ITEMS.register("molten_fury", MoltenFury::new);
-    public static final DeferredItem<TheBeesKnees> THE_BEES_KNEES = ITEMS.register("the_bees_knees", TheBeesKnees::new);
-    public static final DeferredItem<HellwingBow> HELLWING_BOW = ITEMS.register("hellwing_bow", HellwingBow::new);
+    public static final DeferredItem<FossilBow> FOSSIL_BOW = registerItem("fossil_bow", "石骸弓", FossilBow::new);
+    public static final DeferredItem<HuntingBow> HUNTING_BOW = registerItem("hunting_bow", "猎手弓", HuntingBow::new);
+    public static final DeferredItem<DemonBow> DEMON_BOW = registerItem("demon_bow", "恶魔弓", DemonBow::new);
+    public static final DeferredItem<TendonBow> TENDON_BOW = registerItem("tendon_bow", "肌腱弓", TendonBow::new);
+    public static final DeferredItem<MoltenFury> MOLTEN_FURY = registerItem("molten_fury", "熔火之怒", MoltenFury::new);
+    public static final DeferredItem<TheBeesKnees> THE_BEES_KNEES = registerItemWithEnglishName("the_bees_knees", "蜂膝弓", "The Bee's Knees", TheBeesKnees::new);
+    public static final DeferredItem<HellwingBow> HELLWING_BOW = registerItem("hellwing_bow", "地狱之翼弓", HellwingBow::new);
 
     // 稻草人弓 - 驱离鸟妖，对飞行单位造成1.5倍伤害
-    public static final DeferredItem<Scarebow> SCAREBOW = ITEMS.register("scarebow", Scarebow::new);
+    public static final DeferredItem<Scarebow> SCAREBOW = registerItem("scarebow", "稻草人弓", Scarebow::new);
 
     // 代达罗斯风暴弓
-    public static final DeferredItem<DaedalusStormbow> DAEDALUS_STORM_BOW = ITEMS.register("daedalus_storm_bow", () -> new DaedalusStormbow(12f, ModRarity.PURPLE));
+    public static final DeferredItem<DaedalusStormbow> DAEDALUS_STORM_BOW = registerItemWithEnglishName("daedalus_storm_bow", "代达罗斯风暴弓", "Daedalus Stormbow", () -> new DaedalusStormbow(12f, ModRarity.PURPLE));
 
     // 开发者弓
-    public static final DeferredItem<DeveloperBow> DEVELOPER_BOW = ITEMS.register("developer_bow", DeveloperBow::new);
-
+    public static final DeferredItem<DeveloperBow> DEVELOPER_BOW = registerItem("developer_bow", "开发者弓", DeveloperBow::new);
 
     public static DeferredItem<BaseTerraBowItem> register(String name, Supplier<BaseTerraBowItem> supplier) {
         return ITEMS.register(name, supplier);
@@ -75,5 +75,29 @@ public class BowItems {
     /// 注册有耐久的弓
     public static DeferredItem<BaseTerraBowItem> register(String name, float damage, int durability) {
         return register(name, () -> new BaseTerraBowItem(damage, new Item.Properties().durability(durability)));
+    }
+
+    private static DeferredItem<BaseTerraBowItem> register(String registryId, String chineseName, Supplier<BaseTerraBowItem> supplier) {
+        DeferredItem<BaseTerraBowItem> entry = ITEMS.register(registryId, supplier);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static DeferredItem<BaseTerraBowItem> register(String registryId, String chineseName, float damage, int durability) {
+        DeferredItem<BaseTerraBowItem> entry = register(registryId, () -> new BaseTerraBowItem(damage, new Item.Properties().durability(durability)));
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
+        DeferredItem<T> entry = ITEMS.register(registryId, factory);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static <T extends Item> DeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
+        DeferredItem<T> entry = ITEMS.register(registryId, factory);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        return entry;
     }
 }

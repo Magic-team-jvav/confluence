@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -363,9 +364,7 @@ public class Snail extends SimpleCritter {
             case EAST -> -90;
             default -> getYRot();
         };
-        setYRot(yaw);
-        setYBodyRot(yaw);
-        setYHeadRot(yaw);
+        LibEntityUtils.setEntityYaw(this, yaw);
         setXRot(crawl == Direction.UP ? -90 : crawl == Direction.DOWN ? 90 : 0);
     }
 

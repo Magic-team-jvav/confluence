@@ -166,25 +166,11 @@ public class Skeletron extends BaseBoss {
     /// 不再维护可能与实体旋转脱节的第二份同步状态。
     private void faceTarget(LivingEntity target) {
         Vec3 direction = target.getEyePosition().subtract(getEyePosition());
-        applyExclusiveFacing(direction, 90.0F, 85.0F);
+        faceCombatDirection(direction, 90.0F, 85.0F);
     }
 
     private void faceMovementDirection(float maximumYawChange, float maximumPitchChange) {
-        applyExclusiveFacing(getDeltaMovement(), maximumYawChange, maximumPitchChange);
-    }
-
-    /// 骷髅王专用状态机是唯一朝向权威，不向 LookControl 留下下一刻会被重放的命令。
-    private void applyExclusiveFacing(Vec3 direction, float maximumYawChange, float maximumPitchChange) {
-        if (direction.lengthSqr() <= 1.0E-7D) return;
-        double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        float targetYaw = horizontal < 1.0E-7D ? getYRot() : (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
-        float targetPitch = (float) (-Mth.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG);
-        float yaw = Mth.rotateIfNecessary(targetYaw, getYRot(), maximumYawChange);
-        float pitch = Mth.rotateIfNecessary(targetPitch, getXRot(), maximumPitchChange);
-        setYRot(yaw);
-        setXRot(pitch);
-        setYBodyRot(yaw);
-        setYHeadRot(yaw);
+        faceCombatDirection(getDeltaMovement(), maximumYawChange, maximumPitchChange);
     }
 
     /// 返回实体网络角度的帧间插值，供头部和手臂使用同一朝向来源。

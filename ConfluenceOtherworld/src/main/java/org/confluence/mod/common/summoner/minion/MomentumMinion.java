@@ -1,16 +1,13 @@
 package org.confluence.mod.common.summoner.minion;
 
-import java.util.Collections;
-import java.util.Random;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
-import org.confluence.mod.common.summoner.attachmentEntity.IMomentumAttachmentEntity;
-import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.confluence.mod.common.summoner.attachmentEntity.PlannedPath;
+import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.Random;
 
 
 /**
@@ -109,9 +106,9 @@ public abstract class MomentumMinion extends Minion implements IMomentumAttachme
 
     /** 看向指定方向 */
     public void lookAtDirection(Vec3 direction) {
-        float targetYaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
-        float targetPitch = (float) Math.toDegrees(Math.asin(-direction.y));
-        setDesiredRotation(targetYaw, targetPitch, getRoll());
+        if (direction.lengthSqr() < 1.0E-14D) return;
+        PathNode facing = getCurrentPathNode().faceDirection(direction);
+        setDesiredRotation(facing.yaw(), facing.pitch(), getRoll());
     }
 
     /** 设置期望朝向 */

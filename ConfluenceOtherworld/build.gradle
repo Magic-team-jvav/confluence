@@ -81,6 +81,10 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+configurations.configureEach {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 repositories {
     mavenLocal()
     flatDir {
@@ -205,7 +209,9 @@ dependencies {
     implementation jarJar("org.mesdag:ThreeDimensionParticle-neoforge-${minecraft_version}:${thr_dim_particle_version}")
     implementation jarJar("org.mesdag:OpalLight-neoforge-${minecraft_version}:${opallight_version}")
     implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
-    implementation jarJar("com.coobird:DataTip-neoforge-1.21.1:${datatip_version}")
+    implementation jarJar("com.coobird:DataTip-neoforge-1.21.1:${datatip_version}") {
+        changing = true
+    }
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 

@@ -7,52 +7,66 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
+
 public class QuestedFishes {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<Item> AMANITA_FUNGIFIN = register("amanita_fungifin"), // 毒菌鱼
-            ANGELFISH = register("angelfish"), // 天使鱼
-            BATFISH = register("batfish"), // 蝙蝠鱼
-            BLOODY_MANOWAR = register("bloody_manowar"), // 血腥战神
-            BONEFISH = register("bonefish"), // 骷髅鱼
-            BUMBLEBEE_TUNA = register("bumblebee_tuna"), // 大黄蜂金枪鱼
-            BUNNYFISH = register("bunnyfish"), // 兔兔鱼
-            CAPN_TUNABEARD = register("capn_tunabeard"), // 金枪鱼须船长
-            INFECTED_SCABBARDFISH = register("infected_scabbardfish"), // 染病鞘鱼
-            JEWELFISH = register("jewelfish"), // 珠宝鱼
-            MIRAGE_FISH = register("mirage_fish"), // 幻象鱼
-            MUDFISH = register("mudfish"), // 泥鱼
-            MUTANT_FLINXFIN = register("mutant_flinxfin"), // 突变雪怪鱼
-            CLOUDFISH = register("cloudfish"), // 云鱼
-            CLOWNFISH = register("clownfish"), // 小丑鱼
-            DEMONIC_HELLFISH = register("demonic_hellfish"), // 恶魔地狱鱼
-            DERPFISH = register("derpfish"), // 跳跳鱼
-            ICHORFISH = register("ichorfish"), // 灵液鱼
-            SLIMEFISH = register("slimefish"), // 史莱姆鱼
-            ZOMBIE_FISH = register("zombie_fish"), // 僵尸鱼
-            TROPICAL_BARRACUDA = register("tropical_barracuda"), // 热带梭鱼
-            UNICORN_FISH = register("unicorn_fish"), // 独角兽鱼
-            WYVERNTAIL = register("wyverntail"), // 飞龙尾
-            DIRTFISH = register("dirtfish"), // 土鱼
-            CURSEDFISH = register("cursedfish"), // 诅咒鱼
-            DYNAMITE_FISH = register("dynamite_fish"), // 雷管鱼
-            FALLEN_STARFISH = register("fallen_starfish"), // 坠落星鱼
-            EATER_OF_PLANKTON = register("eater_of_plankton"), // 浮游噬鱼
-            THE_FISH_OF_CTHULHU = register("the_fish_of_cthulhu"), // 克苏鲁鱼
-            FISHRON = register("fishron"), // 猪龙鱼
-            GUIDE_VOODOO_FISH = register("guide_voodoo_fish"), // 向导巫毒鱼
-            HARPYFISH = register("harpyfish"), // 鸟妖鱼
-            FISHOTRON = register("fishotron"), // 骷髅王鱼
-            SCORPIO_FISH = register("scorpio_fish"), // 蝎子鱼
-            HUNGERFISH = register("hungerfish"), // 饿鬼鱼
-            CATFISH = register("catfish"), // 猫鱼
-            PENGFISH = register("pengfish"), // 企鹅鱼
-            PIXIEFISH = register("pixiefish"), // 妖精鱼
-            SCARAB_FISH = register("scarab_fish"), // 甲虫鱼
-            SPIDERFISH = register("spiderfish"), // 蜘蛛鱼
-            TUNDRA_TROUT = register("tundra_trout"); // 苔原鳟鱼
+    public static final DeferredItem<Item> AMANITA_FUNGIFIN = register("amanita_fungifin", "毒菌鱼"), // 毒菌鱼
+            ANGELFISH = register("angelfish", "天使鱼"), // 天使鱼
+            BATFISH = register("batfish", "蝙蝠鱼"), // 蝙蝠鱼
+            BLOODY_MANOWAR = register("bloody_manowar", "血腥战神"), // 血腥战神
+            BONEFISH = register("bonefish", "骷髅鱼"), // 骷髅鱼
+            BUMBLEBEE_TUNA = register("bumblebee_tuna", "大黄蜂金枪鱼"), // 大黄蜂金枪鱼
+            BUNNYFISH = register("bunnyfish", "兔兔鱼"), // 兔兔鱼
+            CAPN_TUNABEARD = registerWithEnglishName("capn_tunabeard", "金枪鱼须船长", "Cap'n Tunabeard"), // 金枪鱼须船长
+            INFECTED_SCABBARDFISH = register("infected_scabbardfish", "染病鞘鱼"), // 染病鞘鱼
+            JEWELFISH = register("jewelfish", "珠宝鱼"), // 珠宝鱼
+            MIRAGE_FISH = register("mirage_fish", "幻象鱼"), // 幻象鱼
+            MUDFISH = register("mudfish", "泥鱼"), // 泥鱼
+            MUTANT_FLINXFIN = register("mutant_flinxfin", "突变雪怪鱼"), // 突变雪怪鱼
+            CLOUDFISH = register("cloudfish", "云鱼"), // 云鱼
+            CLOWNFISH = register("clownfish", "小丑鱼"), // 小丑鱼
+            DEMONIC_HELLFISH = register("demonic_hellfish", "恶魔地狱鱼"), // 恶魔地狱鱼
+            DERPFISH = register("derpfish", "跳跳鱼"), // 跳跳鱼
+            ICHORFISH = register("ichorfish", "灵液鱼"), // 灵液鱼
+            SLIMEFISH = register("slimefish", "史莱姆鱼"), // 史莱姆鱼
+            ZOMBIE_FISH = register("zombie_fish", "僵尸鱼"), // 僵尸鱼
+            TROPICAL_BARRACUDA = register("tropical_barracuda", "热带梭鱼"), // 热带梭鱼
+            UNICORN_FISH = register("unicorn_fish", "独角兽鱼"), // 独角兽鱼
+            WYVERNTAIL = register("wyverntail", "飞龙尾"), // 飞龙尾
+            DIRTFISH = register("dirtfish", "土鱼"), // 土鱼
+            CURSEDFISH = register("cursedfish", "诅咒鱼"), // 诅咒鱼
+            DYNAMITE_FISH = register("dynamite_fish", "雷管鱼"), // 雷管鱼
+            FALLEN_STARFISH = register("fallen_starfish", "坠落星鱼"), // 坠落星鱼
+            EATER_OF_PLANKTON = registerWithEnglishName("eater_of_plankton", "浮游噬鱼", "Eater of Plankton"), // 浮游噬鱼
+            THE_FISH_OF_CTHULHU = registerWithEnglishName("the_fish_of_cthulhu", "克苏鲁鱼", "The Fish of Cthulhu"), // 克苏鲁鱼
+            FISHRON = register("fishron", "猪龙鱼"), // 猪龙鱼
+            GUIDE_VOODOO_FISH = register("guide_voodoo_fish", "向导巫毒鱼"), // 向导巫毒鱼
+            HARPYFISH = register("harpyfish", "鸟妖鱼"), // 鸟妖鱼
+            FISHOTRON = register("fishotron", "骷髅王鱼"), // 骷髅王鱼
+            SCORPIO_FISH = register("scorpio_fish", "蝎子鱼"), // 蝎子鱼
+            HUNGERFISH = register("hungerfish", "饿鬼鱼"), // 饿鬼鱼
+            CATFISH = register("catfish", "猫鱼"), // 猫鱼
+            PENGFISH = register("pengfish", "企鹅鱼"), // 企鹅鱼
+            PIXIEFISH = register("pixiefish", "妖精鱼"), // 妖精鱼
+            SCARAB_FISH = register("scarab_fish", "甲虫鱼"), // 甲虫鱼
+            SPIDERFISH = register("spiderfish", "蜘蛛鱼"), // 蜘蛛鱼
+            TUNDRA_TROUT = register("tundra_trout", "苔原鳟鱼"); // 苔原鳟鱼
 
     public static DeferredItem<Item> register(String name) {
         return ITEMS.register(name, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
+    }
+
+    private static DeferredItem<Item> register(String registryId, String chineseName) {
+        DeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static DeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName) {
+        DeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        return entry;
     }
 }

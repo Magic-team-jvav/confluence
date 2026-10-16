@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -125,8 +126,7 @@ public class Crab extends BaseMonster implements CritterVisual {
             mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
             // 螃蟹以模型的侧轴前进，因此这里刻意不减 90 度；只需让身体和头部
             // 跟随同一个横向朝向，避免碰撞/移动方向正确但模型仍朝旧方向。
-            mob.setYBodyRot(mob.getYRot());
-            mob.setYHeadRot(mob.getYRot());
+            LibEntityUtils.setEntityYaw(mob, mob.getYRot());
             mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 
             BlockPos currentPos = mob.blockPosition();

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.projectile.PrimeCannonballProjectile;
 import org.confluence.mod.common.entity.projectile.PrimeLaserProjectile;
@@ -269,9 +270,7 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
         if (direction.lengthSqr() <= 1.0E-9) {
             return;
         }
-        double horizontal = direction.horizontalDistance();
-        setYRot((float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F);
-        setXRot((float) -(Mth.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG));
+        LibEntityUtils.updateEntityRotation(this, direction);
     }
 
     /// 四条机械臂逐刻检查接触，成功造成伤害后冷却二十刻，检测范围不额外膨胀。

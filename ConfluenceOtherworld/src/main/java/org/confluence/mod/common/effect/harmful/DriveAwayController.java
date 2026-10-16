@@ -8,6 +8,7 @@ import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 
 /// 保存并推进飞行生物的持续驱离状态。
 public final class DriveAwayController {
@@ -59,9 +60,7 @@ public final class DriveAwayController {
         } else {
             Vec3 movement = target.subtract(position).normalize().scale(speed);
             mob.setDeltaMovement(movement);
-            double yaw = Math.toDegrees(Math.atan2(movement.z, movement.x)) - 90.0;
-            mob.setYRot((float) yaw);
-            mob.setYHeadRot((float) yaw);
+            LibEntityUtils.turnEntityTowards(mob, movement, 180.0F, 0.0F);
         }
         state.putInt(ELAPSED, elapsed + 1);
     }

@@ -16,11 +16,14 @@ public record PathNode(Vec3 pos, float yaw, float pitch, float roll) {
     }
 
     public static float pitchFromDirection(Vec3 direction) {
-        if (direction.lengthSqr() < 1.0E-12) {
-            return 0;
-        }
-        Vec3 normalized = direction.normalize();
-        return (float) Math.toDegrees(Math.asin(-normalized.y));
+        return (float) Math.toDegrees(Math.atan2(-direction.y, direction.horizontalDistance()));
+    }
+
+    /// 按方向更新姿态，静止时保留原姿态，垂直运动时保留偏航和滚转。
+    public PathNode faceDirection(Vec3 direction) {
+        if (direction.lengthSqr() < 1.0E-14D) return this;
+        float yaw = direction.horizontalDistanceSqr() > 1.0E-14D ? yawFromDirection(direction) : yaw();
+        return modifyEuler(yaw, pitchFromDirection(direction), roll());
     }
 
     public Quaternionf toQuaternion() {

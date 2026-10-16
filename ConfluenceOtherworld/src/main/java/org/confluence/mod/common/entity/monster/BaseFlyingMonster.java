@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
+import org.confluence.lib.util.LibEntityUtils;
 
 public abstract class BaseFlyingMonster extends BaseMonster {
     public BaseFlyingMonster(EntityType<? extends Monster> type, Level level) {
@@ -42,8 +43,7 @@ public abstract class BaseFlyingMonster extends BaseMonster {
 
     @Override
     protected float tickHeadTurn(float bodyYaw, float animationSpeed) {
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        LibEntityUtils.setEntityYaw(this, getYRot());
         return animationSpeed;
     }
 

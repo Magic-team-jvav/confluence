@@ -1,9 +1,5 @@
 package org.confluence.mod.common.data.gen;
 
-import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -50,9 +46,9 @@ public final class ModDataGenerator {
         lookup = generator.addProvider(server, new DatapackBuiltinEntriesProvider(output, lookup, ModDataProvider.DATA_BUILDER, Set.of(Confluence.MODID))).getRegistryProvider();
 
         boolean client = event.includeClient();
-        generator.addProvider(client, new ModChineseProvider(output));
+        generator.addProvider(client, new ModLanguageProvider(output, "zh_cn", lookup));
         generator.addProvider(client, new ModDataTipProvider(output));
-        generator.addProvider(client, new ModEnglishProvider(output, lookup));
+        generator.addProvider(client, new ModLanguageProvider(output, "en_us", lookup));
         generator.addProvider(client, new ModEnUdProvider(output, lookup));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));

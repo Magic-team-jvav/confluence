@@ -30,6 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -89,7 +90,7 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
             @Override
             public void clientTick() {
                 // 身体与视线使用同一偏航，避免客户端实体转向和头部同步产生偏差。
-                setYBodyRot(getYHeadRot());
+                LibEntityUtils.setEntityYaw(Duck.this, getYHeadRot());
             }
         };
     }
@@ -198,17 +199,11 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
             // 将注视偏航同步到实体和身体，保持整身朝向一致。
             boolean flying = behavior != null && (behavior.mode == MovementMode.FLYING
                     || behavior.mode == MovementMode.LANDING);
-            float yaw;
             if (flying && behavior.flightDirection.horizontalDistanceSqr() > 1.0E-6) {
-                Vec3 direction = behavior.flightDirection;
-                yaw = (float) (Mth.atan2(-direction.x, direction.z) * Mth.RAD_TO_DEG);
-                setXRot(0.0F);
+                LibEntityUtils.updateEntityRotation(this, behavior.flightDirection.multiply(1.0D, 0.0D, 1.0D));
             } else {
-                yaw = navigation.isDone() ? getYHeadRot() : getYRot();
+                LibEntityUtils.setEntityYaw(this, navigation.isDone() ? getYHeadRot() : getYRot());
             }
-            setYRot(yaw);
-            setYBodyRot(yaw);
-            setYHeadRot(yaw);
         }
         if (level().isClientSide && isInWater() && tickCount % 16 == 0) {
             level().addParticle(ParticleTypes.BUBBLE_POP, getX(), getY(), getZ(), 0.0, 0.0, 0.0);

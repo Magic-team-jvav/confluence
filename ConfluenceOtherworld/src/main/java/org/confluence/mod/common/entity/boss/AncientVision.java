@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 
 /// 幻影龙仍存活时由错误仪式召出的远古幻象，反复沿锁定的水平航向穿越目标。
@@ -42,7 +43,7 @@ public final class AncientVision extends BaseLivingBossPart<LunaticCultist> {
         Vec3 movement = dash.scale(0.8).add(0.0, vertical, 0.0);
         setDeltaMovement(movement);
         setPos(position().add(movement));
-        setYRot((float) Math.toDegrees(Math.atan2(-dash.x, dash.z)));
+        LibEntityUtils.turnEntityTowards(this, dash, 180.0F, 0.0F);
         if (contactCooldown > 0) {
             contactCooldown--;
             return;

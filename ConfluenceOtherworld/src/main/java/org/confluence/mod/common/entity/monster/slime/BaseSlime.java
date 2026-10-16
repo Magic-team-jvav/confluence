@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster.slime;
 
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -33,7 +34,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
-import net.minecraft.world.entity.*;
+
+import java.util.UUID;
 
 
 public class BaseSlime extends BaseMonster implements BossOwnedEntity {
@@ -335,9 +337,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
                 return;
             }
 
-            mob.setYRot(rotlerp(mob.getYRot(), wantedYRot, 90.0F));
-            mob.setYHeadRot(mob.getYRot());
-            mob.setYBodyRot(mob.getYRot());
+            LibEntityUtils.setEntityYaw(mob, rotlerp(mob.getYRot(), wantedYRot, 90.0F));
             operation = Operation.WAIT;
             float speed = (float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
             if (!mob.onGround()) {

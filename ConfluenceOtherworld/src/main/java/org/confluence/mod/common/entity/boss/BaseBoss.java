@@ -31,6 +31,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.EnemyDamageRules;
@@ -403,8 +404,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// 状态机决定朝向，不能由原版倒退行走修正再翻转半圈。
     @Override
     protected float tickHeadTurn(float bodyYaw, float animationSpeed) {
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        LibEntityUtils.setEntityYaw(this, getYRot());
         return animationSpeed;
     }
 

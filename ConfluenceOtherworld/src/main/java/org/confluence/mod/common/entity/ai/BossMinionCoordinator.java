@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 
 /// Boss 召唤物共用的轻量协同计算。
 ///
@@ -22,13 +23,9 @@ public final class BossMinionCoordinator {
         if (target == null || !target.isAlive()) return;
         Vec3 direction = target.getEyePosition().subtract(minion.getEyePosition());
         if (direction.lengthSqr() <= 1.0E-7D) return;
-        double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        float yaw = (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
-        float pitch = (float) (-Mth.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG);
-        minion.setYRot(yaw);
-        minion.setXRot(pitch);
-        minion.setYBodyRot(yaw);
-        minion.setYHeadRot(yaw);
+        LibEntityUtils.updateEntityRotation(minion, direction);
+        float yaw = minion.getYRot();
+        float pitch = minion.getXRot();
         // 出生插值也从同一角度开始，不能从注册项默认的 0° 慢慢转过去。
         minion.yRotO = yaw;
         minion.xRotO = pitch;

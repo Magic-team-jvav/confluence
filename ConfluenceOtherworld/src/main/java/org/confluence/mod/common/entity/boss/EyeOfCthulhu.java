@@ -1,14 +1,10 @@
 package org.confluence.mod.common.entity.boss;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,6 +14,7 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -27,6 +24,10 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 
 
 /// 克苏鲁之眼 Boss。
@@ -340,8 +341,7 @@ public class EyeOfCthulhu extends BaseBoss {
     /// 客户端也重复约束俯仰，避免无目标的 LookControl 在两个移动包之间把姿态拉回水平。
     private void faceSkyward() {
         setXRot(-90.0F);
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        LibEntityUtils.setEntityYaw(this, getYRot());
         getLookControl().setLookAt(getX(), getEyeY() + 1.0, getZ());
     }
 

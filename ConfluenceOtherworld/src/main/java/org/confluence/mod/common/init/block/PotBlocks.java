@@ -12,22 +12,24 @@ import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.IntSupplier;
 
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
+
 public class PotBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
-    public static final DeferredBlock<BasePotBlock> FOREST_POT = registerWithItem("forest_pot", 1.0F, 500);
-    public static final DeferredBlock<BasePotBlock> TUNDRA_POT = registerWithItem("tundra_pot", 1.25F, 461);
-    public static final DeferredBlock<BasePotBlock> OCEAN_POT = registerWithItem("ocean_pot", 1.25F, 0);
-    public static final DeferredBlock<BasePotBlock> SPIDER_NEST_POT = registerWithItem("spider_nest_pot", 3.5F, 272);
-    public static final DeferredBlock<BasePotBlock> UNDERGROUND_DESERT_POT = registerWithItem("underground_desert_pot", 1.25F, 461);
-    public static final DeferredBlock<BasePotBlock> JUNGLE_POT = registerWithItem("jungle_pot", 1.75F, 400);
-    public static final DeferredBlock<BasePotBlock> MARBLE_CAVE_POT = registerWithItem("marble_cave_pot", 2.0F, 375);
-    public static final DeferredBlock<BasePotBlock> CRIMSON_POT = registerWithItem("crimson_pot", 1.6F, 365);
-    public static final DeferredBlock<BasePotBlock> PYRAMID_POT = registerWithItem("pyramid_pot", 10.0F, 125);
-    public static final DeferredBlock<BasePotBlock> CORRUPTION_POT = registerWithItem("corruption_pot", 1.6F, 365);
-    public static final DeferredBlock<BasePotBlock> DUNGEON_POT = registerWithItem("dungeon_pot", 1.9F, 384);
-    public static final DeferredBlock<BasePotBlock> UNDERWORLD_POT = registerWithItem("underworld_pot", 2.1F, 365);
-    public static final DeferredBlock<BasePotBlock> LIHZAHRD_POT = registerWithItem("lihzahrd_pot", 4.0F, () -> KillBoard.INSTANCE.getGamePhase().isHardmode() ? 250 : 500);
+    public static final DeferredBlock<BasePotBlock> FOREST_POT = registerWithItem("forest_pot", "森林罐子", 1.0F, 500);
+    public static final DeferredBlock<BasePotBlock> TUNDRA_POT = registerWithItem("tundra_pot", "苔原罐子", 1.25F, 461);
+    public static final DeferredBlock<BasePotBlock> OCEAN_POT = registerWithItem("ocean_pot", "海洋罐子", 1.25F, 0);
+    public static final DeferredBlock<BasePotBlock> SPIDER_NEST_POT = registerWithItem("spider_nest_pot", "蛛洞罐子", 3.5F, 272);
+    public static final DeferredBlock<BasePotBlock> UNDERGROUND_DESERT_POT = registerWithItem("underground_desert_pot", "沙漠罐子", 1.25F, 461);
+    public static final DeferredBlock<BasePotBlock> JUNGLE_POT = registerWithItem("jungle_pot", "丛林罐子", 1.75F, 400);
+    public static final DeferredBlock<BasePotBlock> MARBLE_CAVE_POT = registerWithItem("marble_cave_pot", "尘封罐子", 2.0F, 375);
+    public static final DeferredBlock<BasePotBlock> CRIMSON_POT = registerWithItem("crimson_pot", "血肉罐子", 1.6F, 365);
+    public static final DeferredBlock<BasePotBlock> PYRAMID_POT = registerWithItem("pyramid_pot", "祭祀罐子", 10.0F, 125);
+    public static final DeferredBlock<BasePotBlock> CORRUPTION_POT = registerWithItem("corruption_pot", "蠕虫罐子", 1.6F, 365);
+    public static final DeferredBlock<BasePotBlock> DUNGEON_POT = registerWithItem("dungeon_pot", "地牢罐子", 1.9F, 384);
+    public static final DeferredBlock<BasePotBlock> UNDERWORLD_POT = registerWithItem("underworld_pot", "炎烬罐子", 2.1F, 365);
+    public static final DeferredBlock<BasePotBlock> LIHZAHRD_POT = registerWithItem("lihzahrd_pot", "神庙罐子", 4.0F, () -> KillBoard.INSTANCE.getGamePhase().isHardmode() ? 250 : 500);
 
     public static DeferredBlock<BasePotBlock> registerWithItem(String id, float moneyRatio, IntSupplier invMoneyHoleChance) {
         DeferredBlock<BasePotBlock> object = BLOCKS.register(id, () -> new BasePotBlock(moneyRatio, invMoneyHoleChance, Block.box(2, 0, 2, 14, 12, 14)));
@@ -37,5 +39,17 @@ public class PotBlocks {
 
     public static DeferredBlock<BasePotBlock> registerWithItem(String id, float moneyRatio, int invMoneyHoleChance) {
         return registerWithItem(id, moneyRatio, () -> invMoneyHoleChance);
+    }
+
+    private static DeferredBlock<BasePotBlock> registerWithItem(String registryId, String chineseName, float moneyRatio, IntSupplier invMoneyHoleChance) {
+        DeferredBlock<BasePotBlock> entry = registerWithItem(registryId, moneyRatio, invMoneyHoleChance);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static DeferredBlock<BasePotBlock> registerWithItem(String registryId, String chineseName, float moneyRatio, int invMoneyHoleChance) {
+        DeferredBlock<BasePotBlock> entry = registerWithItem(registryId, moneyRatio, () -> invMoneyHoleChance);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
     }
 }

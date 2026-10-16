@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -295,9 +296,7 @@ public class QueenBee extends BaseBoss {
             return false;
         }
         hornet.setPos(position());
-        hornet.setYRot(getYRot());
-        hornet.setYBodyRot(getYRot());
-        hornet.setYHeadRot(getYRot());
+        LibEntityUtils.setEntityYaw(hornet, getYRot());
         hornet.setMaster(this);
         if (serverLevel.addFreshEntity(hornet)) {
             return true;

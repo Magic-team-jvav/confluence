@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.effect.harmful.HorrifiedEffect;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -283,9 +284,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
             throw new IllegalArgumentException("Wall of Flesh requires a horizontal direction: " + direction);
         }
         float rotation = direction.toYRot();
-        setYRot(rotation);
-        setYHeadRot(rotation);
-        yBodyRot = rotation;
+        LibEntityUtils.setEntityYaw(this, rotation);
     }
 
     @Override
@@ -398,9 +397,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
 
     private void lockCardinalRotation() {
         float rotation = getDirection().toYRot();
-        setYRot(rotation);
-        setYHeadRot(rotation);
-        yBodyRot = rotation;
+        LibEntityUtils.setEntityYaw(this, rotation);
     }
 
     private void updatePhase() {

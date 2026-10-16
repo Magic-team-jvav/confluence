@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.map.CreatureDefinition;
@@ -446,19 +447,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     /// 以实际战斗方向为唯一权威，同时更新实体、身体和头部朝向。
     /// 飞行怪、冲刺怪与 Boss 共用这一入口，避免各自只写一半旋转状态。
     public final void faceCombatDirection(Vec3 direction, float maximumYawChange, float maximumPitchChange) {
-        if (direction.lengthSqr() < 1.0E-7D) {
-            return;
-        }
-        double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        float targetYaw = horizontal < 1.0E-7D ? getYRot() : (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
-        float targetPitch = (float) (-Mth.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG);
-        // 按每刻最大转角从当前朝向接近目标，不能用限制两角差值的 rotateIfNecessary。
-        float yaw = Mth.approachDegrees(getYRot(), targetYaw, maximumYawChange);
-        float pitch = Mth.approachDegrees(getXRot(), targetPitch, maximumPitchChange);
-        setYRot(yaw);
-        setXRot(pitch);
-        yBodyRot = yaw;
-        yHeadRot = yaw;
+        LibEntityUtils.turnEntityTowards(this, direction, maximumYawChange, maximumPitchChange);
     }
 
     public final void faceCombatPosition(Vec3 targetPosition, float maximumYawChange, float maximumPitchChange) {

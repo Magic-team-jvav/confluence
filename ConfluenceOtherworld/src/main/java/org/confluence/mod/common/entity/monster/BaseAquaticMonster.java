@@ -21,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.util.LibEntityUtils;
 
 /// 敌对水生生物共用的水下导航、移动与目标选择基类。
 ///
@@ -100,9 +101,7 @@ public abstract class BaseAquaticMonster extends BaseMonster {
         super.tick();
         if (!level().isClientSide && flopsOnLand() && !isNoAi() && !isInWaterOrBubble() && onGround()) {
             setDeltaMovement(getDeltaMovement().add((random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5, (random.nextFloat() * 2.0F - 1.0F) * 0.2F));
-            setYRot(random.nextFloat() * 360.0F);
-            setYBodyRot(getYRot());
-            setYHeadRot(getYRot());
+            LibEntityUtils.setEntityYaw(this, random.nextFloat() * 360.0F);
             setOnGround(false);
             hasImpulse = true;
         }

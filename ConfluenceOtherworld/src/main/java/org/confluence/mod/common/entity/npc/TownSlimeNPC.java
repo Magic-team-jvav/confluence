@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.monster.slime.BaseSlime;
@@ -88,8 +89,7 @@ public class TownSlimeNPC extends BaseNPC {
             double dz = wantedZ - slime.getZ();
             if (dx * dx + dz * dz < 0.0001D) return;
             float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
-            slime.setYRot(rotlerp(slime.getYRot(), yaw, 90.0F));
-            slime.setYBodyRot(slime.getYRot());
+            LibEntityUtils.setEntityYaw(slime, rotlerp(slime.getYRot(), yaw, 90.0F));
 
             // 导航只指定方向；落地等待时不施加行走输入，起跳后才向前移动。
             if (slime.onGround()) {

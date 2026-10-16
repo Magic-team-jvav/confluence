@@ -25,20 +25,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
+
 public class PylonBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     public static final Map<ResourceLocation, ResourceLocation> TYPE_TO_TEXTURE = new HashMap<>();
 
     // todo 目前只是占位符
-    public static final DeferredBlock<BasePylonBlock> FOREST_PYLON = register("forest_pylon", DyeColor.CYAN, (world, pos, biome) -> biome.is(Tags.Biomes.IS_FOREST) || biome.is(Tags.Biomes.IS_PLAINS));
-    public static final DeferredBlock<BasePylonBlock> SNOW_PYLON = register("snow_pylon", DyeColor.WHITE, (world, pos, biome) -> biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY));
-    public static final DeferredBlock<BasePylonBlock> DESERT_PYLON = register("desert_pylon", DyeColor.YELLOW, (world, pos, biome) -> biome.is(Tags.Biomes.IS_DESERT) || biome.is(Tags.Biomes.IS_BADLANDS));
-    public static final DeferredBlock<BasePylonBlock> CAVERN_PYLON = register("cavern_pylon", DyeColor.GRAY, (world, pos, biome) -> world.dimensionType().bedWorks() && pos.getY() < world.getMinBuildHeight() + 104);
-    public static final DeferredBlock<BasePylonBlock> OCEAN_PYLON = register("ocean_pylon", DyeColor.BLUE, (world, pos, biome) -> biome.is(Tags.Biomes.IS_OCEAN));
-    public static final DeferredBlock<BasePylonBlock> JUNGLE_PYLON = register("jungle_pylon", DyeColor.GREEN, (world, pos, biome) -> biome.is(Tags.Biomes.IS_JUNGLE));
-    public static final DeferredBlock<BasePylonBlock> HALLOW_PYLON = register("hallow_pylon", DyeColor.LIGHT_BLUE, (world, pos, biome) -> biome.is(ModTags.Biomes.THE_HALLOW));
-    public static final DeferredBlock<BasePylonBlock> MUSHROOM_PYLON = register("mushroom_pylon", DyeColor.PURPLE, (world, pos, biome) -> biome.is(ModBiomes.GLOWING_MUSHROOM));
-    public static final DeferredBlock<BasePylonBlock> UNIVERSAL_PYLON = register("universal_pylon", DyeColor.BROWN, (world, pos, biome) -> true);
+    public static final DeferredBlock<BasePylonBlock> FOREST_PYLON = register("forest_pylon", "森林晶塔", DyeColor.CYAN, (world, pos, biome) -> biome.is(Tags.Biomes.IS_FOREST) || biome.is(Tags.Biomes.IS_PLAINS));
+    public static final DeferredBlock<BasePylonBlock> SNOW_PYLON = register("snow_pylon", "雪原晶塔", DyeColor.WHITE, (world, pos, biome) -> biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY));
+    public static final DeferredBlock<BasePylonBlock> DESERT_PYLON = register("desert_pylon", "沙漠晶塔", DyeColor.YELLOW, (world, pos, biome) -> biome.is(Tags.Biomes.IS_DESERT) || biome.is(Tags.Biomes.IS_BADLANDS));
+    public static final DeferredBlock<BasePylonBlock> CAVERN_PYLON = register("cavern_pylon", "洞穴晶塔", DyeColor.GRAY, (world, pos, biome) -> world.dimensionType().bedWorks() && pos.getY() < world.getMinBuildHeight() + 104);
+    public static final DeferredBlock<BasePylonBlock> OCEAN_PYLON = register("ocean_pylon", "海洋晶塔", DyeColor.BLUE, (world, pos, biome) -> biome.is(Tags.Biomes.IS_OCEAN));
+    public static final DeferredBlock<BasePylonBlock> JUNGLE_PYLON = register("jungle_pylon", "丛林晶塔", DyeColor.GREEN, (world, pos, biome) -> biome.is(Tags.Biomes.IS_JUNGLE));
+    public static final DeferredBlock<BasePylonBlock> HALLOW_PYLON = register("hallow_pylon", "神圣晶塔", DyeColor.LIGHT_BLUE, (world, pos, biome) -> biome.is(ModTags.Biomes.THE_HALLOW));
+    public static final DeferredBlock<BasePylonBlock> MUSHROOM_PYLON = register("mushroom_pylon", "蘑菇晶塔", DyeColor.PURPLE, (world, pos, biome) -> biome.is(ModBiomes.GLOWING_MUSHROOM));
+    public static final DeferredBlock<BasePylonBlock> UNIVERSAL_PYLON = register("universal_pylon", "万能晶塔", DyeColor.BROWN, (world, pos, biome) -> true);
     // todo 地狱晶塔 // todo 以太晶塔+晶塔微光转换配方
     public static final Supplier<BlockEntityType<BasePylonBlock.BEntity>> PYLON_ENTITY = ModBlocks.BLOCK_ENTITIES.register("pylon_entity", () -> BlockEntityType.Builder.of(BasePylonBlock.BEntity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
@@ -52,5 +54,17 @@ public class PylonBlocks {
 
     private static DeferredBlock<BasePylonBlock> register(String name, DyeColor dyeColor, BasePylonBlock.Survive survive) {
         return register(name, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(dyeColor).lightLevel(state -> 10), survive);
+    }
+
+    private static DeferredBlock<BasePylonBlock> register(String registryId, String chineseName, BlockBehaviour.Properties properties, BasePylonBlock.Survive survive) {
+        DeferredBlock<BasePylonBlock> entry = register(registryId, properties, survive);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static DeferredBlock<BasePylonBlock> register(String registryId, String chineseName, DyeColor dyeColor, BasePylonBlock.Survive survive) {
+        DeferredBlock<BasePylonBlock> entry = register(registryId, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(dyeColor).lightLevel(state -> 10), survive);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
     }
 }

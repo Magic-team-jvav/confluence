@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -329,9 +330,7 @@ public class JellyFish extends BaseAquaticMonster {
                 }
 
                 float targetYaw = (float) (Mth.atan2(zDistance, xDistance) * Mth.RAD_TO_DEG) - 90.0F;
-                mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
-                mob.setYBodyRot(mob.getYRot());
-                mob.setYHeadRot(mob.getYRot());
+                LibEntityUtils.setEntityYaw(mob, rotlerp(mob.getYRot(), targetYaw, 90.0F));
                 // 速度由脉冲直接设置，不再叠加 travel 的输入加速度。
                 mob.setSpeed(0.0F);
                 mob.setXxa(0.0F);

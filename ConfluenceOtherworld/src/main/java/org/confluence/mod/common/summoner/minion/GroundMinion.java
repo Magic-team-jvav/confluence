@@ -1,15 +1,16 @@
 package org.confluence.mod.common.summoner.minion;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.jetbrains.annotations.NotNull;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -64,7 +65,8 @@ public abstract class GroundMinion extends MomentumMinion implements IBlockColli
 
     @Override
     public void lookAtDirection(Vec3 direction) {
-        setDesiredRotation((float) Math.toDegrees(Math.atan2(-direction.x, direction.z)), 0, getRoll());
+        if (direction.horizontalDistanceSqr() < 1.0E-14D) return;
+        setDesiredRotation(PathNode.yawFromDirection(direction), 0, getRoll());
     }
 
     @Override

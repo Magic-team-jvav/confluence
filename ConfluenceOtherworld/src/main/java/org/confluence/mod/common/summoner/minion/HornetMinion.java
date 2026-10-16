@@ -3,6 +3,7 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.hornet.HornetAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.hornet.HornetIdleGoal;
@@ -49,8 +50,8 @@ public class HornetMinion extends MomentumMinion {
 
     @Override
     public void lookAtDirection(Vec3 direction) {
-        float targetYaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
-        setDesiredRotation(targetYaw, 0, getRoll());
+        if (direction.horizontalDistanceSqr() < 1.0E-14D) return;
+        setDesiredRotation(PathNode.yawFromDirection(direction), 0, getRoll());
     }
 
     public boolean isAttackAnimationActive() {

@@ -1,23 +1,6270 @@
 {
+  "_index01": "============================== 索引 INDEX ==============================",
+  "_index02": "适用版本：Minecraft Java 1.20.1 与 1.21.1（本条目的全部注册名在两个版本的原版中均存在）",
+  "_index03": "Targets Minecraft Java 1.20.1 and 1.21.1; every registry id below exists in vanilla 1.20.1.",
+  "_index04": "红石元件 / Redstone components（38 条）",
+  "_index05": "功能方块与工作站 / Functional blocks and workstations（42 条）",
+  "_index06": "结构、激活与召唤方块 / Structure, activation and summoning blocks（28 条）",
+  "_index07": "具有特殊用法的物品 / Items with non-obvious uses（62 条）",
+  "_index08": "补充条目 / Addendum（18 条）",
+  "_index09": "整合族条目 / consolidated families（3 条）: #minecraft:beds, #minecraft:wooden_buttons, #minecraft:wooden_pressure_plates",
+  "_index10": "原有标签条目（非本次新增）/ pre-existing tag entries: #c:foods/fruit, #minecraft:arrows",
+  "_index11": "条目总计 / total entries: 188",
+  "_entries01": "============================== 条目 ENTRIES ==============================",
+  "_skipped01": "============ 未写入的条目与不实说法 SKIPPED / FALSE CLAIMS ============",
+  "_skipped02": "1.21.1 新增内容已按 1.20.1 兼容性移除（如需 1.21.1 专用版本可另行恢复）：",
+  "_skipped03": "  copper_bulb、exposed_copper_bulb、weathered_copper_bulb、oxidized_copper_bulb、waxed_copper_bulb、waxed_exposed_copper_bulb、waxed_weathered_copper_bulb、waxed_oxidized_copper_bulb、crafter",
+  "_skipped04": "  mace、wind_charge、ominous_bottle、trial_key、ominous_trial_key",
+  "_skipped05": "Removed for 1.20.1 compatibility: minecraft:copper_bulb, minecraft:exposed_copper_bulb, minecraft:weathered_copper_bulb, minecraft:oxidized_copper_bulb, minecraft:waxed_copper_bulb, minecraft:waxed_exposed_copper_bulb, minecraft:waxed_weathered_copper_bulb, minecraft:waxed_oxidized_copper_bulb, minecraft:crafter, minecraft:mace, minecraft:wind_charge, minecraft:ominous_bottle, minecraft:trial_key, minecraft:ominous_trial_key",
+  "_skipped06": "nether_portal / end_portal: the portal block itself is not an obtainable item, so no entry was written for minecraft:nether_portal or minecraft:end_portal; the frame blocks carry the guidance.",
+  "_skipped07": "piston_head, moving_piston: internal, unobtainable placement states of a piston.",
+  "_skipped08": "redstone_wall_torch: the wall-mounted placement state of minecraft:redstone_torch.",
+  "_skipped09": "redstone_ore, deepslate_redstone_ore: no redstone mechanic beyond dropping dust; minecraft:redstone carries the mining note.",
+  "_skipped10": "fletching_table: has no GUI in vanilla and cannot craft arrows; it only serves as the Fletcher job site.",
+  "_skipped11": "furnace is not a villager job site; the Armorer's job site is the blast furnace.",
+  "_skipped12": "ender_chest: breaking it without Silk Touch does NOT lose the contents.",
+  "_skipped13": "barrel: a direct redstone output while open could not be confirmed, so the entry states the verifiable behaviour instead (its open state is detectable by an observer).",
+  "_skipped14": "decorated_pot: no right-click rotation interaction is documented for Java.",
+  "_skipped15": "spyglass: no carved pumpkin interaction exists.",
+  "_skipped16": "shears: cannot carve a pumpkin.",
+  "_skipped17": "bundle: there is no 'one stack-size-1 item' rule; the real limit is 64 total item weight.",
+  "_skipped18": "rotten_flesh: no wolf healing or breeding use.",
+  "_skipped19": "echo_shard and disc_fragment_5 are unrelated to each other.",
+  "_skipped20": "ender_pearl: no Endermite interaction and no direct End teleport.",
+  "_note01": "============ 预留图片路径 RESERVED IMAGE PATHS ============",
+  "_note02": "结构示意图使用 minecraft:textures/datatip/minecraft/<name>.png，共 8 个路径；当前文件内容为问号占位图，等待替换。",
+  "_note03": "占位图像素尺寸与条目中声明的 width/height 完全一致；替换为同尺寸实机截图即可，无需改动本文件。",
+  "_note04": "The 8 placeholder diagrams share their native pixel size with the declared width/height, so a same-size screenshot drops in without editing this file.",
+  "_note05": "若要改用其他尺寸，请同时修改 datatip.json 中对应 image 元素的 width/height 以保持比例。",
+  "minecraft:lever": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to toggle between on and off, and it stays in that state",
+          "zh_cn": "右键在开与关之间切换并保持该状态"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "While on, emits a redstone signal of strength 15",
+          "zh_cn": "开启时输出强度 15 的红石信号"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be placed on any solid face of a block",
+              "zh_cn": "可附着在方块的任意固体面上"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Responds only to right-clicks and detects nothing else",
+              "zh_cn": "只响应右键，不检测其他任何变化"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:redstone_torch": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Continuously emits a redstone signal of strength 15",
+          "zh_cn": "持续输出强度 15 的红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Turns off while the block it is attached to is powered",
+          "zh_cn": "所附着的方块被充能时熄灭"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Toggled on and off 8 or more times within 60 ticks, it burns out and stays off for a while",
+              "zh_cn": "在 60 游戏刻内被切换 8 次及以上会烧毁并暂时熄灭"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Also lights the area like a torch",
+              "zh_cn": "同时像火把一样提供照明"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:repeater": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Re-emits its input at full strength 15",
+          "zh_cn": "把输入信号以满强度 15 重新输出"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to set a delay of 1 to 4 redstone ticks (0.1 to 0.4 s)",
+          "zh_cn": "右键设置 1~4 红石刻（0.1~0.4 秒）的延迟"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Passes signals in one direction only",
+              "zh_cn": "信号只能单向通过"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Cannot take input from its sides",
+              "zh_cn": "不从两侧接收输入"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Locked while a repeater or comparator faces into its side",
+              "zh_cn": "被朝向其侧面的中继器或比较器锁定时保持当前状态"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:comparator": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Compares two inputs and outputs the difference",
+          "zh_cn": "比较两个输入并输出其差值"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Reads container fill levels, cauldron levels, jukebox discs and block states",
+          "zh_cn": "可读取容器填充度、炼药锅液面、唱片机唱片与方块状态"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click cycles compare and subtract modes, and toggles the front torch",
+          "zh_cn": "右键在比较模式与减法模式间切换，并点亮或熄灭前端火把"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Output strength 0-15",
+              "zh_cn": "输出信号强度 0~15"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The lit front torch means subtract mode is active",
+              "zh_cn": "前端火把点亮时处于减法模式"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:redstone_wire": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Carries power up to 15 blocks, losing 1 strength per block",
+          "zh_cn": "可传输至多 15 格，每格损失 1 点强度"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Connects to most redstone components",
+          "zh_cn": "可连接绝大多数红石元件"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Loses an extra point of strength when travelling upward",
+              "zh_cn": "向上传输时强度额外衰减"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Cannot climb more than one block",
+              "zh_cn": "向上的爬升高度不能超过一格"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Breaks instantly and drops redstone dust",
+              "zh_cn": "被破坏时立即掉落红石粉"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:redstone_block": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Acts as a permanent power source of strength 15 in all directions",
+          "zh_cn": "作为永久电源向所有方向输出强度 15 的信号"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Made from 9 redstone dust",
+              "zh_cn": "由 9 个红石粉合成"
+            },
+            "color": "#00AAAA",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Cannot be turned off",
+              "zh_cn": "无法被关闭"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:redstone_lamp": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Lights up while it receives redstone power",
+          "zh_cn": "被充能时点亮"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Stays lit for 4 ticks after power is removed",
+          "zh_cn": "失去充能后仍保持点亮 4 游戏刻"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be toggled rapidly by redstone pulses",
+              "zh_cn": "可用红石脉冲快速反复切换"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Emits light level 15 while lit",
+              "zh_cn": "点亮时发光等级为 15"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:piston": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "When powered, pushes up to 12 blocks one block forward",
+          "zh_cn": "被充能时把至多 12 个方块向前推动一格"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cannot push obsidian, bedrock or blocks with block entities",
+          "zh_cn": "无法推动黑曜石、基岩以及带有方块实体的方块"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Cannot pull blocks back",
+              "zh_cn": "不能把方块拉回"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Loses its head if the pushed block cannot move",
+              "zh_cn": "被推动的方块无法移动时活塞头消失"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:sticky_piston": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Pushes blocks forward when powered and pulls the block back when unpowered",
+          "zh_cn": "被充能时推动方块，断电时把方块拉回"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Slime blocks and honey blocks stick to it",
+          "zh_cn": "粘液块与蜂蜜块会粘附在其上"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Pulling fails for immovable blocks, but the head still retracts",
+              "zh_cn": "无法拉动不可移动的方块，但活塞头仍会收回"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Pulls at most 12 blocks in one move",
+              "zh_cn": "一次最多拉动 12 个方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:observer": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Detects a block state change in the block it faces",
+          "zh_cn": "检测其面对方块的状态变化"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a 1-tick pulse from its back",
+          "zh_cn": "从背面输出 1 游戏刻的脉冲"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The face with the dot is the output face",
+              "zh_cn": "带圆点的面是输出面"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Detects changes such as crop growth, block placement and block breaking",
+              "zh_cn": "可检测作物生长、方块放置与方块破坏等变化"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:dispenser": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "When powered, ejects its contents as entities or uses them",
+          "zh_cn": "被充能时把内部物品作为实体射出或直接使用"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Uses arrows, fire charges, water and lava buckets, bone meal, shears, armor for armor stands, TNT and more",
+          "zh_cn": "可使用箭、火焰弹、水桶与熔岩桶、骨粉、剪刀、盔甲架装备、TNT 等"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Has 9 inventory slots",
+              "zh_cn": "拥有 9 个物品槽"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Right-click to open it and fill the slots",
+              "zh_cn": "右键打开并装填物品"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:dropper": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "When powered, drops one item as an item entity instead of using it",
+          "zh_cn": "被充能时把物品作为掉落物投出，而不使用它"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Transfers items into the container it faces",
+          "zh_cn": "会把物品送入其面对的容器"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Has 9 inventory slots",
+              "zh_cn": "拥有 9 个物品槽"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Fires only one item per redstone pulse",
+              "zh_cn": "每个红石脉冲只投出一个物品"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:hopper": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Collects item entities above it and pulls items from the container above",
+          "zh_cn": "收集其上方的掉落物，并从上方容器中吸取物品"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Moves one item every 4 redstone ticks (0.4 s) into the container it points into",
+          "zh_cn": "每 4 红石刻（0.4 秒）向指向的容器转移一个物品"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Disabled while it receives redstone power",
+              "zh_cn": "被充能时停止工作"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A comparator reads its contents",
+              "zh_cn": "比较器可读取其内部物品数量"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Pulls only from the block directly above, not from the sides",
+              "zh_cn": "只从正上方吸取，不从两侧吸取"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:note_block": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to change the pitch, with 25 pitches over 2 octaves",
+          "zh_cn": "右键调整音高，两个八度共 25 个音高"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Plays a note when powered or when the block above it changes",
+          "zh_cn": "被充能或其上方方块变化时发声"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The sound depends on the block below it",
+              "zh_cn": "音色取决于其下方的方块"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Air below makes a harp sound",
+              "zh_cn": "下方为空气时发出竖琴音色"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:jukebox": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click with a music disc to insert it and play it",
+          "zh_cn": "手持音乐唱片右键放入并播放"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a redstone signal whose strength identifies the disc",
+          "zh_cn": "输出红石信号，强度对应所播放的唱片"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Right-click again to remove the disc, or use a hopper",
+              "zh_cn": "再次右键取出唱片，也可用漏斗取出"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The music is heard by everyone in the area",
+              "zh_cn": "附近所有玩家都能听到音乐"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:daylight_detector": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits power based on sunlight, from 0 to 15, peaking at noon",
+          "zh_cn": "根据日照强度输出 0~15 的红石信号，正午最强"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to invert it, so it outputs 15 at night",
+          "zh_cn": "右键切换为夜间模式，夜间输出 15"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Unaffected by moonlight in normal mode",
+              "zh_cn": "普通模式不受月光影响"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Output is reduced by rain and thunderstorms",
+              "zh_cn": "降雨与雷暴会降低其输出"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:target": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a redstone signal for 4 ticks when hit by a projectile",
+          "zh_cn": "被弹射物击中时输出 4 游戏刻的红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The strength depends on how close to the centre it was hit, from 1 to 15",
+          "zh_cn": "信号强度取决于命中点距中心的距离，范围为 1~15"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A hit on the centre gives strength 15",
+              "zh_cn": "命中正中心时强度为 15"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A hit near the edge gives strength 1",
+              "zh_cn": "命中边缘附近时强度为 1"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:tripwire_hook": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Placed on both sides with string between them forms a tripwire",
+          "zh_cn": "两侧各放一个钩并以线相连即构成绊线"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits power while an entity or player crosses the string",
+          "zh_cn": "实体或玩家穿过线时输出红石信号"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The signal strength decreases with distance from the hook",
+              "zh_cn": "信号强度随距钩的距离递减"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Breaking the string triggers it once",
+              "zh_cn": "线被破坏时也会触发一次"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:tripwire": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "String stretched between two tripwire hooks",
+          "zh_cn": "拉紧在两个绊线钩之间的线"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "An entity or player crossing it makes the hooks emit power",
+          "zh_cn": "实体或玩家穿过时使绊线钩输出红石信号"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Shears cut the string and trigger the trap once",
+              "zh_cn": "用剪刀剪断线也会触发一次"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Placed on the ground without hooks, the string is decorative and detects nothing",
+              "zh_cn": "未连接绊线钩时线只作装饰，不会检测任何东西"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:powered_rail": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Speeds up a minecart while powered by redstone",
+          "zh_cn": "被红石充能时加速其上的矿车"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A single powered rail can push a minecart several blocks",
+          "zh_cn": "单个充能铁轨即可把矿车推动数格"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Unpowered, it brakes a moving minecart",
+              "zh_cn": "未充能时会减缓矿车的移动"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be placed on slopes and curves",
+              "zh_cn": "可铺设成斜坡与弯道"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:activator_rail": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "While powered, ejects entities riding a minecart",
+          "zh_cn": "被充能时弹出乘坐矿车的实体"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Disables a hopper minecart or a TNT minecart while powered",
+          "zh_cn": "被充能时禁用漏斗矿车与 TNT 矿车"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Ignites a TNT minecart that passes over it while powered",
+              "zh_cn": "被充能时点燃经过其上的 TNT 矿车"
+            },
+            "color": "#FF5555",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Does nothing while unpowered",
+              "zh_cn": "未充能时不产生任何效果"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:detector_rail": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a redstone signal while a minecart is on it",
+          "zh_cn": "矿车在其上时输出红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A hopper or chest minecart on it can be read by a comparator",
+          "zh_cn": "其上的漏斗矿车或箱子矿车可被比较器读取"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Any minecart, including empty ones, triggers it",
+              "zh_cn": "任何矿车包括空矿车都会触发"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Does not power the rail itself or the rails next to it",
+              "zh_cn": "不会给自身或相邻铁轨充能"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:rail": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A plain rail that guides a minecart, and can be laid as curves and slopes",
+          "zh_cn": "引导矿车行驶的普通铁轨，可铺设成弯道与斜坡"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cannot be powered and never accelerates a minecart",
+          "zh_cn": "不能被充能，也不会加速矿车"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Placed on a slope, it lets a minecart change height by one block",
+              "zh_cn": "铺成斜坡时可让矿车升降一格"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A minecart on flat rails slowly loses speed to friction",
+              "zh_cn": "矿车在平地铁轨上会因摩擦缓慢减速"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:tnt": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Primed by flint and steel, a fire charge, redstone power or fire",
+          "zh_cn": "可用打火石、火焰弹、红石信号或火点燃"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Explodes after 80 ticks, about 4 seconds",
+          "zh_cn": "点燃后约 80 游戏刻即 4 秒后爆炸"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be pushed by pistons",
+              "zh_cn": "可被活塞推动"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "An explosion underwater deals reduced damage to entities",
+              "zh_cn": "水下爆炸对实体造成的伤害降低"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Destroys most blocks in its blast radius",
+              "zh_cn": "会摧毁爆炸范围内的绝大多数方块"
+            },
+            "color": "#FF5555",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:sculk_sensor": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Detects vibrations within 8 blocks and emits a redstone signal",
+          "zh_cn": "检测 8 格内的振动并输出红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The signal lasts as long as the vibration's frequency",
+          "zh_cn": "信号持续时间与振动的频率对应"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Does not detect a sneaking player",
+              "zh_cn": "不会检测潜行中的玩家"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be waterlogged",
+              "zh_cn": "可以含水"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The frequency depends on the type of vibration",
+              "zh_cn": "频率取决于振动的种类"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:calibrated_sculk_sensor": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Reads the strongest vibration on one of its input faces",
+          "zh_cn": "读取其各输入面上最强的振动"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Outputs a signal proportional to the vibration frequency",
+          "zh_cn": "输出的信号强度与振动频率成正比"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Redstone input on the back filters for that exact frequency",
+              "zh_cn": "背面输入的红石信号用于过滤指定频率，只保留该强度的振动"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Its range is twice as far and its signal is stronger than a sculk sensor",
+              "zh_cn": "检测范围为幽匿感测体的两倍，信号也更强"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:sculk_shrieker": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Shrieks when a player triggers a nearby sculk sensor or steps on it",
+          "zh_cn": "附近幽匿感测体被触发或玩家踩踏时尖啸"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Shrieking inflicts Darkness and eventually spawns a Warden",
+          "zh_cn": "尖啸会施加黑暗效果，多次尖啸后生成监守者"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Only shriekers naturally generated in the Deep Dark can summon Wardens",
+              "zh_cn": "只有深暗之域中自然生成的尖啸体才能召唤监守者"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can also be activated by a redstone signal",
+              "zh_cn": "也可由红石信号直接激活"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:sculk_catalyst": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Converts mob deaths within 8 blocks into sculk",
+          "zh_cn": "把 8 格内生物死亡转化为幽匿"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Blooms with a ring of sculk, spreading sculk veins, sensors and shriekers",
+          "zh_cn": "以幽匿环绽放，并生成幽匿脉络、感测体与尖啸体"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The experience from the kill fuels the spread",
+              "zh_cn": "由击杀产生的经验推动扩散"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Gives experience when mined without Silk Touch",
+              "zh_cn": "不用精准采集挖掘时会掉落经验"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:sculk": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Generated by a sculk catalyst and spread from mob deaths",
+          "zh_cn": "由幽匿催发体生成，并随生物死亡扩散"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Mined with Silk Touch it drops itself, otherwise it drops experience",
+          "zh_cn": "用精准采集挖掘掉落自身，否则掉落经验"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Found in the Deep Dark",
+              "zh_cn": "生成于深暗之域"
+            },
+            "color": "#00AAAA",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Sculk blocks can be used as decoration or fuel for a catalyst",
+              "zh_cn": "幽匿方块可用作装饰或催化体的传播载体"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:sculk_vein": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The thin decorative variant of sculk that grows on block faces",
+          "zh_cn": "附着在方块表面的薄层幽匿装饰变体"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Mined with Silk Touch it drops itself, otherwise it drops experience",
+          "zh_cn": "用精准采集挖掘掉落自身，否则掉落经验"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Spreads from a sculk catalyst when mobs die nearby",
+              "zh_cn": "附近生物死亡时由幽匿催发体扩散生成"
+            },
+            "color": "#00AAAA",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be placed on any solid face",
+              "zh_cn": "可附着在任意固体面上"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:lightning_rod": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Attracts lightning strikes within a 128-block radius during thunderstorms",
+          "zh_cn": "雷暴期间吸引 128 格范围内的闪电并引导至自身"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a redstone signal for 8 ticks when struck",
+          "zh_cn": "被雷击时输出 8 游戏刻的红石信号"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Made of copper",
+              "zh_cn": "由铜制成"
+            },
+            "color": "#00AAAA",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be placed on any face",
+              "zh_cn": "可附着在任意面"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:stone_button": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a 1-second pulse, 10 redstone ticks, when pressed by hand",
+          "zh_cn": "被手按下时输出 1 秒即 10 红石刻的脉冲"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hit by an arrow, it emits a longer pulse",
+          "zh_cn": "被箭射中时输出更长的脉冲"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Pulse length from an arrow depends on how long the arrow stays in the button",
+              "zh_cn": "箭矢产生的脉冲长度取决于其插在按钮上的时间"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be placed on the floor, ceiling or a wall",
+              "zh_cn": "可放置在地面、天花板或墙面上"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:polished_blackstone_button": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a 1-second pulse, 10 redstone ticks, when pressed by hand",
+          "zh_cn": "被手按下时输出 1 秒即 10 红石刻的脉冲"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hit by an arrow, it emits a longer pulse",
+          "zh_cn": "被箭射中时输出更长的脉冲"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Pulse length from an arrow depends on how long the arrow stays in the button",
+              "zh_cn": "箭矢产生的脉冲长度取决于其插在按钮上的时间"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be placed on the floor, ceiling or a wall",
+              "zh_cn": "可放置在地面、天花板或墙面上"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:stone_pressure_plate": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits power of strength 15 while a mob or player stands on it",
+          "zh_cn": "生物或玩家踩在其上时输出强度 15 的红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Items dropped on it do not trigger it",
+          "zh_cn": "掉落的物品不会触发它"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Also triggered by arrows and other projectiles",
+              "zh_cn": "也会被箭等弹射物触发"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Turns off as soon as the entity steps off",
+              "zh_cn": "实体离开后立即停止输出"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:polished_blackstone_pressure_plate": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits power of strength 15 while a mob or player stands on it",
+          "zh_cn": "生物或玩家踩在其上时输出强度 15 的红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Items dropped on it do not trigger it",
+          "zh_cn": "掉落的物品不会触发它"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Also triggered by arrows and other projectiles",
+              "zh_cn": "也会被箭等弹射物触发"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Turns off as soon as the entity steps off",
+              "zh_cn": "实体离开后立即停止输出"
+            },
+            "color": "#AAAAAA",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:light_weighted_pressure_plate": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Its signal strength equals the number of entities on it, up to 15",
+          "zh_cn": "信号强度等于其上实体的数量，最高 15"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Usually made of gold, so it reacts to a single entity",
+          "zh_cn": "通常由金制成，因此对单个实体就会响应"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Dropped items on it are also counted",
+              "zh_cn": "其上的掉落物也会被计入数量"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Useful for counting entities in a small area",
+              "zh_cn": "适合用于统计小范围内的实体数量"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:heavy_weighted_pressure_plate": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Its signal strength equals the number of entities on it divided by 10, up to 15",
+          "zh_cn": "信号强度等于其上实体数量除以 10，最高 15"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Usually made of iron, so every 10 entities add 1 strength",
+          "zh_cn": "通常由铁制成，每 10 个实体增加 1 点强度"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Dropped items on it are also counted",
+              "zh_cn": "其上的掉落物也会被计入数量"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A single entity is not enough to produce a signal",
+              "zh_cn": "单个实体不足以产生信号"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:redstone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Placed on the ground as redstone wire, it carries redstone signals",
+          "zh_cn": "放置后成为红石线，用于传输红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also used as a crafting ingredient for many redstone components",
+          "zh_cn": "也是多种红石元件的合成材料"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Mined from redstone ore, or from deepslate redstone ore",
+              "zh_cn": "由红石矿石或深层红石矿石开采获得"
+            },
+            "color": "#00AAAA",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Also brews potions of Healing and extends other potions",
+              "zh_cn": "还可用于酿造治疗药水或延长其他药水"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:fire_charge": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to shoot a small fireball",
+          "zh_cn": "右键发射一枚小火球"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Ignites the block it hits, and can light a nether portal",
+          "zh_cn": "点燃命中的方块，也可点燃下界传送门"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A dispenser loaded with fire charges shoots them",
+              "zh_cn": "装填在发射器中会被射出"
+            },
+            "color": "#55FFFF",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can prime TNT",
+              "zh_cn": "可以点燃 TNT"
+            },
+            "color": "#FF5555",
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:firework_rocket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to launch it",
+          "zh_cn": "右键发射"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "With no explosion it boosts elytra flight instead",
+          "zh_cn": "不含爆炸效果时用于为鞘翅飞行提供加速"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Crafted with a firework star, it explodes and deals damage",
+              "zh_cn": "加入烟花之星后会爆炸并造成伤害"
+            },
+            "color": "#FF5555",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "More gunpowder extends the flight duration",
+              "zh_cn": "增加火药可延长飞行时间"
+            },
+            "color": "#FFFF55",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Fired from a crossbow, it flies in a straight line",
+              "zh_cn": "由弩发射时会沿直线飞行"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:tnt_minecart": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A minecart loaded with TNT that explodes after being primed",
+          "zh_cn": "装载 TNT 的矿车，被点燃后爆炸"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Primed by an activator rail, by fire or by a redstone signal",
+          "zh_cn": "可由激活铁轨、火焰或红石信号点燃"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Falls if the rail under it is removed, and explodes on impact",
+              "zh_cn": "下方铁轨被破坏后会坠落，落地即爆炸"
+            },
+            "color": "#FF5555",
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Can be pushed by pistons before it is primed",
+              "zh_cn": "未被点燃时可被活塞推动"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:crafting_table": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Opens a 3x3 grid for arranging a recipe and crafting items",
+          "zh_cn": "打开3×3的合成网格，摆放配方以合成物品"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Includes a recipe book that can fill in unlocked recipes",
+          "zh_cn": "内置配方书，可一键填充已解锁的配方"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#AAAAAA",
+        "text": {
+          "en_us": "Note: with JEI installed, hover an item and press R for recipes or U for uses",
+          "zh_cn": "注：安装JEI后，鼠标悬停物品并按R查看配方、按U查看用途"
+        }
+      }
+    ]
+  },
+  "minecraft:furnace": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Smelts items using fuel, taking 10 seconds per item",
+          "zh_cn": "消耗燃料熔炼物品，每件耗时10秒"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Consumes one unit of fuel per operation",
+          "zh_cn": "每次操作消耗一份燃料"
+        }
+      }
+    ]
+  },
+  "minecraft:blast_furnace": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Smelts ores, tools and armor only",
+          "zh_cn": "仅能熔炼矿石、工具与盔甲"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Smelts twice as fast as a furnace, 5 seconds per item",
+          "zh_cn": "熔炼速度为熔炉的两倍，每件耗时5秒"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Each unit of fuel lasts for twice as many items",
+          "zh_cn": "每份燃料可熔炼的物品数量翻倍"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Armorer villagers",
+              "zh_cn": "可作为盔甲匠的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:smoker": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cooks food only",
+          "zh_cn": "仅能烹饪食物"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cooks twice as fast as a furnace, 5 seconds per item",
+          "zh_cn": "烹饪速度为熔炉的两倍，每件耗时5秒"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Each unit of fuel lasts for twice as many items",
+          "zh_cn": "每份燃料可烹饪的食物数量翻倍"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Butcher villagers",
+              "zh_cn": "可作为屠夫的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:stonecutter": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cuts stone blocks into stairs, slabs and other variants",
+          "zh_cn": "将石头类方块切割为楼梯、台阶等变体"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "One input yields one output with no waste",
+          "zh_cn": "一份材料产出一份成品，不产生损耗"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Mason villagers",
+              "zh_cn": "可作为石匠的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:loom": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Applies banner patterns to a banner",
+          "zh_cn": "可将旗帜图案应用到旗帜上"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The dye placed in the loom colors the pattern",
+          "zh_cn": "放入织布机的染料决定图案的颜色"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Shepherd villagers",
+              "zh_cn": "可作为牧羊人的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:cartography_table": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Zooms out, copies and locks maps",
+          "zh_cn": "可缩放、复制与锁定地图"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Paper zooms a map out, an empty map copies it, a glass pane locks it",
+          "zh_cn": "地图加纸可缩小比例，加空地图可复制，加玻璃板可锁定"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Cartographer villagers",
+              "zh_cn": "可作为制图师的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:fletching_table": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Currently has no interface and cannot craft arrows directly",
+          "zh_cn": "目前没有交互界面，无法直接用来制作箭"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Fletcher villagers",
+              "zh_cn": "可作为制箭师的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:smithing_table": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Applies armor trims and netherite upgrades",
+          "zh_cn": "可应用盔甲纹饰与下界合金升级"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Each recipe needs a smithing template and the matching material",
+          "zh_cn": "每次升级需要锻造模板与对应材料"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Toolsmith villagers",
+              "zh_cn": "可作为工具匠的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:grindstone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Repairs items and removes their enchantments",
+          "zh_cn": "可修复物品耐久，也可移除其附魔"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Removing enchantments returns some experience",
+          "zh_cn": "移除附魔时会返还部分经验"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Cannot remove curses",
+          "zh_cn": "无法移除绑定诅咒与消失诅咒"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Weaponsmith villagers",
+              "zh_cn": "可作为武器匠的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:anvil": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Renames items, repairs them with materials and combines enchantments",
+          "zh_cn": "可为物品重命名、用材料修复并合并附魔"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Degrades with each use across 3 damage states",
+          "zh_cn": "每次使用都会损耗，共有3种损坏状态"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FF5555",
+        "text": {
+          "en_us": "A falling anvil hurts entities below",
+          "zh_cn": "从高处掉落的铁砧会砸伤下方实体"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Cannot be pushed by pistons",
+              "zh_cn": "无法被活塞推动"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "color": "#FF5555",
+            "text": {
+              "en_us": "An anvil in the last damage state is destroyed when used",
+              "zh_cn": "处于第三损坏阶段的铁砧再次使用会被摧毁"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:chipped_anvil": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Works like an anvil but is already in its second damage state",
+          "zh_cn": "用途与铁砧相同，但已处于第二损坏阶段"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Renames items, repairs them with materials and combines enchantments",
+          "zh_cn": "可为物品重命名、用材料修复并合并附魔"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FF5555",
+        "text": {
+          "en_us": "A falling anvil hurts entities below",
+          "zh_cn": "从高处掉落的铁砧会砸伤下方实体"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Each use may damage it further, until it is destroyed",
+              "zh_cn": "每次使用都可能加深损坏，最终会被摧毁"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:damaged_anvil": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Works like an anvil but is already in its final damage state",
+          "zh_cn": "用途与铁砧相同，但已处于第三损坏阶段"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Renames items, repairs them with materials and combines enchantments",
+          "zh_cn": "可为物品重命名、用材料修复并合并附魔"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FF5555",
+        "text": {
+          "en_us": "A falling anvil hurts entities below",
+          "zh_cn": "从高处掉落的铁砧会砸伤下方实体"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "color": "#FF5555",
+            "text": {
+              "en_us": "Using it again has a chance to destroy it",
+              "zh_cn": "再次使用有几率将其摧毁"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:enchanting_table": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Enchants one item by spending experience levels and lapis lazuli",
+          "zh_cn": "消耗经验等级与青金石为物品附魔"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Offers 3 options; the number on the right is the required level",
+          "zh_cn": "每次提供3个选项，右侧数字为所需等级"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Bookshelves placed around it raise the maximum level to 30",
+          "zh_cn": "周围摆放书架可将可选等级上限提升至30级"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Only 15 bookshelves near the table are counted",
+              "zh_cn": "只有附魔台附近15个书架会被计入"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "One block of air must remain between a bookshelf and the table",
+              "zh_cn": "书架与附魔台之间需空出一格"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "The three options cost 1, 2 and 3 lapis lazuli",
+              "zh_cn": "三个选项分别消耗1、2、3个青金石"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:bookshelf": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Raises the maximum enchantment level of a nearby enchanting table",
+          "zh_cn": "摆放于附魔台附近可提升其最大附魔等级"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drops 3 books when mined without Silk Touch",
+          "zh_cn": "不使用精准采集破坏时掉落3本书"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "One block of air must remain between it and the table",
+              "zh_cn": "与附魔台之间需空出一格"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:chiseled_bookshelf": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Stores up to 6 books of any kind",
+          "zh_cn": "可存放6本任意种类的书"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A redstone comparator reads how full it is",
+          "zh_cn": "红石比较器可读取其装满程度"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Hoppers can insert books into it and extract them",
+              "zh_cn": "漏斗可向其中存入或从中取出书"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:lectern": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Holds a book and quill or a written book so several players can read it",
+          "zh_cn": "可放置书与笔或成书，供多名玩家共同阅读"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Turning a page emits a redstone pulse",
+          "zh_cn": "翻页时会输出一次红石脉冲"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A comparator's output reflects the current page",
+          "zh_cn": "红石比较器的输出强度随当前页码变化"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Librarian villagers",
+              "zh_cn": "可作为图书管理员的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:composter": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Converts compostable items into bone meal",
+          "zh_cn": "将可堆肥物品转化为骨粉"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Produces bone meal once 7 layers are filled",
+          "zh_cn": "填满7层后产出骨粉"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A comparator reads the fill level",
+          "zh_cn": "红石比较器可读取其填充层数"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Farmer villagers",
+              "zh_cn": "可作为农民的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:barrel": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "color": "#55FFFF",
+        "text": {
+          "en_us": "A storage block that can still be opened with a block above it",
+          "zh_cn": "存储方块，上方有方块阻挡时仍可打开"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Its lid opens with an animation",
+          "zh_cn": "打开时盖子会有开合动画"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Its open state can be detected by an observer",
+          "zh_cn": "开启状态可被侦测器检测到"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Fisherman villagers",
+              "zh_cn": "可作为渔夫的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:brewing_stand": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Brews potions using blaze powder as fuel",
+          "zh_cn": "以烈焰粉为燃料酿造药水"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Each operation uses one ingredient and processes up to 3 bottles",
+          "zh_cn": "每次操作消耗一份材料，可同时处理3个瓶子"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click with a water bottle to fill one of its bottle slots",
+          "zh_cn": "手持水瓶右键可为酿造台装水"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Cleric villagers",
+              "zh_cn": "可作为牧师的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:cauldron": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Holds 1 to 3 layers of water, lava or powder snow",
+          "zh_cn": "可盛放1~3层水、熔岩或细雪"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Filled by right-clicking with the matching bucket",
+          "zh_cn": "手持对应的桶右键即可填充"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Rain or dripstone above slowly fills it",
+          "zh_cn": "降雨或上方滴水石会缓慢将其填充"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A glass bottle can be filled from the water it holds",
+              "zh_cn": "可用玻璃瓶从中装水"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Serves as the job site block for Leatherworker villagers",
+              "zh_cn": "可作为皮匠的工作站点方块"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:water_cauldron": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A cauldron holding 1 to 3 layers of water",
+          "zh_cn": "盛有1~3层水的炼药锅"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#55FFFF",
+        "text": {
+          "en_us": "Washes the dye off leather armor and banners",
+          "zh_cn": "可洗去皮革盔甲与旗帜上的染料"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Fills a glass bottle with water, using up one layer",
+          "zh_cn": "可用玻璃瓶装水，每次消耗1层"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Extinguishes fire on entities",
+              "zh_cn": "可使着火实体身上的火熄灭"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Slowly refilled by rain or dripstone above",
+              "zh_cn": "降雨或上方滴水石会缓慢填充"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:lava_cauldron": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A cauldron holding 1 to 3 layers of lava",
+          "zh_cn": "盛有1~3层熔岩的炼药锅"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FF5555",
+        "text": {
+          "en_us": "Damages entities that touch the lava",
+          "zh_cn": "接触其中熔岩的实体持续受到伤害"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits light",
+          "zh_cn": "可作为光源"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Filled by lava dripping from pointed dripstone above",
+              "zh_cn": "上方滴水石滴落的熔岩会将其填充"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:powder_snow_cauldron": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A cauldron holding 1 to 3 layers of powder snow",
+          "zh_cn": "盛有1~3层细雪的炼药锅"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "An empty bucket can be filled from it",
+          "zh_cn": "可用空桶从中装取细雪"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Extinguishes fire on entities",
+              "zh_cn": "可使着火实体身上的火熄灭"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "color": "#FF5555",
+            "text": {
+              "en_us": "Entities that fall in sink and freeze",
+              "zh_cn": "陷入其中的实体持续受到冰冻伤害"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:campfire": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cooks up to 4 food items at once without any fuel",
+          "zh_cn": "无需燃料，可同时烹饪4份食物"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click with food to place it on the fire",
+          "zh_cn": "手持食物右键即可放上营火"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FF5555",
+        "text": {
+          "en_us": "Entities standing on it take fire damage",
+          "zh_cn": "站在其上的实体持续受到火焰伤害"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Also serves as a light source and a smoke signal",
+              "zh_cn": "可作为光源与烟雾信号源"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A hay bale placed below makes the smoke rise higher",
+              "zh_cn": "下方放置干草捆可使烟雾升得更高"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Extinguished with a shovel or water, relit with flint and steel",
+              "zh_cn": "用锹或水可扑灭，用打火石可重新点燃"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:soul_campfire": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Burns with blue soul fire and cooks 4 food items without fuel",
+          "zh_cn": "燃烧蓝色灵魂火，无需燃料即可烹饪4份食物"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#55FFFF",
+        "text": {
+          "en_us": "Crafted with soul soil or soul sand instead of logs",
+          "zh_cn": "用灵魂土或灵魂沙代替原木合成"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FF5555",
+        "text": {
+          "en_us": "Deals more damage than a normal campfire",
+          "zh_cn": "造成的伤害高于普通营火"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Emits a dimmer light than a normal campfire",
+              "zh_cn": "光照强度低于普通营火"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Extinguished with a shovel or water, relit with flint and steel",
+              "zh_cn": "用锹或水可扑灭，用打火石可重新点燃"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:bee_nest": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Houses up to 3 bees",
+          "zh_cn": "最多可容纳3只蜜蜂"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Shearing a full nest yields 3 honeycomb, a glass bottle yields a honey bottle",
+          "zh_cn": "对满的蜂巢使用剪刀可获得3个蜜脾，使用玻璃瓶可获得蜂蜜瓶"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#00AAAA",
+        "text": {
+          "en_us": "Generates naturally on trees in some biomes",
+          "zh_cn": "自然生成于部分生物群系的树木上"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A campfire placed below keeps the bees calm",
+              "zh_cn": "在下方放置营火可使蜜蜂不被激怒"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A comparator reads how full it is",
+              "zh_cn": "红石比较器可读取其蜂蜜储量"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Silk Touch keeps the bees inside when it is moved",
+              "zh_cn": "使用精准采集破坏可保留其中的蜜蜂"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:beehive": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A crafted hive that houses up to 3 bees",
+          "zh_cn": "可合成的蜂箱，最多容纳3只蜜蜂"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Shearing a full hive yields 3 honeycomb, a glass bottle yields a honey bottle",
+          "zh_cn": "对满的蜂箱使用剪刀可获得3个蜜脾，使用玻璃瓶可获得蜂蜜瓶"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A campfire placed below keeps the bees calm",
+              "zh_cn": "在下方放置营火可使蜜蜂不被激怒"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A comparator reads how full it is",
+              "zh_cn": "红石比较器可读取其蜂蜜储量"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Silk Touch keeps the bees inside when it is moved",
+              "zh_cn": "使用精准采集破坏可保留其中的蜜蜂"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:ender_chest": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Personal storage shared between all ender chests of one player",
+          "zh_cn": "同一玩家的所有末影箱共享同一份存储空间"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Contents are kept per player and survive death",
+          "zh_cn": "箱内物品按玩家独立保存，死亡后也不会丢失"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Breaking it without Silk Touch drops 8 obsidian and does not lose the items",
+          "zh_cn": "不使用精准采集破坏时掉落8个黑曜石，箱内物品不会丢失"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Cannot be pushed by pistons",
+              "zh_cn": "无法被活塞推动"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:shulker_box": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Portable storage that keeps its contents when broken",
+          "zh_cn": "便携存储方块，破坏后物品仍保留在盒中"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Cannot be placed inside another shulker box",
+          "zh_cn": "无法放入另一个潜影盒中"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Destroyed by an explosion, it drops itself together with its contents",
+              "zh_cn": "被爆炸摧毁时会连同其中的物品一起掉落"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:decorated_pot": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Its appearance is set by the 4 pottery sherds or bricks used to craft it",
+          "zh_cn": "由合成时使用的4个陶片或红砖决定外观"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Holds a single stack of items",
+          "zh_cn": "只能存放一组物品"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Its contents drop when it is broken",
+          "zh_cn": "破坏时其中的物品会掉落"
+        }
+      }
+    ]
+  },
+  "minecraft:bell": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Ring it to send nearby villagers running home",
+          "zh_cn": "敲响后附近的村民会跑回家中"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be rung by hand or hit by a projectile",
+          "zh_cn": "可用手敲响，也可被弹射物击中而响"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#55FFFF",
+        "text": {
+          "en_us": "Ringing during a raid makes nearby raiders glow",
+          "zh_cn": "袭击期间敲响钟会使附近的袭击者发光"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "color": "#FFFF55",
+            "text": {
+              "en_us": "Must hang from the bottom or side of a block and cannot be activated by redstone",
+              "zh_cn": "需悬挂在方块底部或侧面，无法被红石激活"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:scaffolding": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Climbable, and building starts by right-clicking the side of a block",
+          "zh_cn": "可以攀爬，右键方块的侧面即可开始搭建"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FF5555",
+        "text": {
+          "en_us": "Breaking the bottom block breaks everything above it",
+          "zh_cn": "破坏最下方的一格会使上方全部一并破坏"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Sideways placement is limited to a few blocks from a support",
+          "zh_cn": "向侧面放置时存在水平距离限制"
+        }
+      }
+    ]
+  },
+  "minecraft:ladder": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Climbable when attached to a solid block",
+          "zh_cn": "附着在固体方块上时可以攀爬"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Needs a supporting block behind it",
+          "zh_cn": "背后必须有支撑方块"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Breaks and drops if that supporting block is removed",
+          "zh_cn": "支撑方块被破坏时梯子也会掉落"
+        }
+      }
+    ]
+  },
+  "minecraft:chain": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Climbable when hanging vertically",
+          "zh_cn": "垂直悬挂时可以攀爬"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be waterlogged",
+          "zh_cn": "可以被水浸没"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Also used to hang lanterns and bells",
+              "zh_cn": "也可用于悬挂灯笼与钟"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:sponge": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Absorbs nearby water and turns into a wet sponge",
+          "zh_cn": "吸收周围的水，自身变为湿海绵"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#00AAAA",
+        "text": {
+          "en_us": "Generates only in ocean monuments",
+          "zh_cn": "仅生成于海底神殿"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#FFFF55",
+        "text": {
+          "en_us": "Cannot absorb water in the Nether, where water evaporates",
+          "zh_cn": "在下界无法吸水，水会立即蒸发"
+        }
+      }
+    ]
+  },
+  "minecraft:wet_sponge": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A waterlogged sponge that drips water particles",
+          "zh_cn": "吸满水的海绵，会不断滴落水珠"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Smelt it in a furnace to turn it back into a sponge",
+          "zh_cn": "放入熔炉烧炼可变回海绵"
+        }
+      },
+      {
+        "type": "text",
+        "color": "#55FFFF",
+        "text": {
+          "en_us": "Dries instantly when placed in the Nether",
+          "zh_cn": "放置在下界时会立即变干"
+        }
+      }
+    ]
+  },
+  "minecraft:candle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Lit with flint and steel or a fire charge",
+          "zh_cn": "可用打火石或火焰弹点燃"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Up to 4 candles of the same color can be placed on one block",
+          "zh_cn": "同一方块上最多放置4根同色蜡烛"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Light level rises with the number of candles: 3, 6, 9 or 12",
+          "zh_cn": "光照强度随蜡烛数量提升：3、6、9、12"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "text": {
+              "en_us": "Water or a thrown potion extinguishes it",
+              "zh_cn": "水或投掷的药水可将其熄灭"
+            },
+            "shift": true
+          },
+          {
+            "type": "text",
+            "text": {
+              "en_us": "A candle can also be placed on top of a cake",
+              "zh_cn": "也可放置在蛋糕上"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:hopper_minecart": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A minecart with a hopper that collects items it passes over",
+          "zh_cn": "装有漏斗的矿车，会拾取经过的物品"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Inserts collected items into containers it rolls into",
+          "zh_cn": "会将收集的物品存入沿途的容器"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also pulls items from a container directly above it",
+          "zh_cn": "也可从正上方的容器中抽取物品"
+        }
+      },
+      {
+        "type": "vbox",
+        "gap": 0,
+        "shift": true,
+        "children": [
+          {
+            "type": "text",
+            "color": "#FFFF55",
+            "text": {
+              "en_us": "An activator rail stops it from collecting and transferring items",
+              "zh_cn": "驶过激活铁轨时会停止收集与传输物品"
+            },
+            "shift": true
+          }
+        ]
+      }
+    ]
+  },
+  "minecraft:obsidian": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Build a Nether portal frame out of obsidian and light the interior with flint and steel",
+          "zh_cn": "用黑曜石搭建下界传送门框架，再用打火石点燃内部"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Mined only with a diamond or netherite pickaxe",
+          "zh_cn": "只能使用钻石镐或下界合金镐开采"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Blast resistant and immune to piston movement and to being pushed by the Ender Dragon",
+          "zh_cn": "具有爆炸抗性，无法被活塞推动，也不会被末影龙破坏"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Created where flowing water meets a lava source block",
+          "zh_cn": "流动的水接触熔岩源方块时生成"
+        },
+        "color": "#00AAAA",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Nether portal frame:",
+          "zh_cn": "下界传送门框架："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/nether_portal_frame.png",
+        "width": 80,
+        "height": 96
+      }
+    ]
+  },
+  "minecraft:crying_obsidian": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A purple-glowing obsidian variant that emits purple particles",
+          "zh_cn": "会持续散发紫色粒子的黑曜石变种"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to craft a Respawn Anchor",
+          "zh_cn": "用于合成重生锚"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cannot be used to build a Nether portal",
+          "zh_cn": "不能用于搭建下界传送门"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be mined with a diamond or netherite pickaxe",
+          "zh_cn": "可使用钻石镐或下界合金镐开采"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:beacon": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Fires a beam into the sky and grants powers when placed on a pyramid of iron, gold, diamond, emerald or netherite blocks",
+          "zh_cn": "放置于铁块、金块、钻石块、绿宝石块或下界合金块构成的金字塔上时，向天空发射光束并给予效果"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The pyramid supports 1 to 4 layers: more layers grant a stronger power and a wider range",
+          "zh_cn": "金字塔可搭建 1 至 4 层，层数越多，效果越强、作用范围越大"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click the beacon to choose a primary power, which is granted to nearby players",
+          "zh_cn": "右键信标可选择主要效果，附近玩家会获得该效果"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Needs a clear view of the sky above it to project its beam",
+          "zh_cn": "上方需要能直接看到天空，否则无法投射光束"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A 4-layer pyramid unlocks a second power",
+          "zh_cn": "搭建 4 层金字塔后可再选择一项次要效果"
+        },
+        "color": "#55FF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Stained glass placed above the beacon recolours the beam",
+          "zh_cn": "在信标上方放置染色玻璃可改变光束颜色"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Beacon pyramid:",
+          "zh_cn": "信标金字塔："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/beacon_pyramid.png",
+        "width": 96,
+        "height": 64
+      }
+    ]
+  },
+  "minecraft:conduit": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A conduit activated by a frame of prismarine blocks in water grants Conduit Power to nearby players",
+          "zh_cn": "在水中被海晶石框架激活后，为附近玩家提供潮涌能量"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Conduit Power grants water breathing, night vision and haste",
+          "zh_cn": "潮涌能量提供水下呼吸、夜视与急迫效果"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The frame may also be built from dark prismarine and sea lanterns; no two frame blocks may be adjacent",
+          "zh_cn": "框架也可使用暗海晶石与海晶灯，且任意两个框架方块不能相邻"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The effect radius grows with the size of the frame, up to 96 blocks",
+          "zh_cn": "框架越大，效果半径越大，最大 96 格"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Attacks hostile mobs in contact with water within 8 blocks",
+          "zh_cn": "攻击 8 格内接触水的敌对生物"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Conduit frame:",
+          "zh_cn": "潮涌核心框架："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/conduit_frame.png",
+        "width": 80,
+        "height": 80
+      }
+    ]
+  },
+  "minecraft:respawn_anchor": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Charge with glowstone to set your spawn in the Nether",
+          "zh_cn": "装填荧石以设置在下界的重生点"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Holds up to 4 charges; each respawn consumes one charge",
+          "zh_cn": "最多可装填 4 次，每次重生消耗 1 次充能"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Using it in the Overworld or the End causes an explosion",
+          "zh_cn": "在主世界或末地使用时会引发爆炸"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click with glowstone to add a charge",
+          "zh_cn": "手持荧石右键可添加一次充能"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "An explosion triggered by using an uncharged anchor in the Overworld or the End destroys nearby blocks",
+          "zh_cn": "在无充能状态下于主世界或末地使用，爆炸会破坏周围方块"
+        },
+        "color": "#FF5555",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:lodestone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click with a compass to bind that compass to this lodestone",
+          "zh_cn": "手持指南针右键可将其绑定到该磁石"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A bound compass always points to this lodestone, even across dimensions",
+          "zh_cn": "绑定的指南针始终指向该磁石，跨维度依然有效"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A lodestone compass cannot be re-bound to another lodestone",
+          "zh_cn": "已绑定的磁石指南针无法重新绑定到其他磁石"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be mined with any pickaxe and keeps its binding",
+          "zh_cn": "可使用任意镐开采，破坏后仍保留原有绑定"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:netherrack": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Fire placed on netherrack burns forever",
+          "zh_cn": "在其上方点燃的火焰会永久燃烧"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be lit with flint and steel or a fire charge",
+          "zh_cn": "可用打火石或火焰弹点燃"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Mined with any pickaxe",
+          "zh_cn": "可使用任意镐开采"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:soul_soil": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Fire on soul soil becomes soul fire, which burns forever and deals more damage than normal fire",
+          "zh_cn": "在其上方点燃的火焰会变成灵魂火，永久燃烧且伤害高于普通火焰"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used with soul sand to summon the Wither",
+          "zh_cn": "与灵魂沙一同用于召唤凋灵"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Does not slow entities that walk on it",
+          "zh_cn": "不会减慢走在其上方的实体"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The Soul Speed enchantment works when walking on it",
+          "zh_cn": "在其上行走时灵魂疾行附魔生效"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:soul_sand": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Fire on soul sand becomes soul fire, which burns forever and deals more damage than normal fire",
+          "zh_cn": "在其上方点燃的火焰会变成灵魂火，永久燃烧且伤害高于普通火焰"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used with soul soil to summon the Wither",
+          "zh_cn": "与灵魂土一同用于召唤凋灵"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Slows entities that walk on it",
+          "zh_cn": "会减慢走在其上方的实体"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The Soul Speed enchantment works when walking on it",
+          "zh_cn": "在其上行走时灵魂疾行附魔生效"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:cobweb": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Slows entities that move through it",
+          "zh_cn": "减慢在其中移动的实体"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Mined with shears or a sword to drop a cobweb",
+          "zh_cn": "使用剪刀或剑破坏时掉落蜘蛛网"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Breaking it with any other tool drops string",
+          "zh_cn": "使用其他工具破坏时掉落线"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:wither_skeleton_skull": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Place 3 wither skeleton skulls on top of a T of soul sand or soul soil to summon the Wither",
+          "zh_cn": "将 3 个凋灵骷髅头颅放置在灵魂沙或灵魂土构成的 T 形结构上方，即可召唤凋灵"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped by wither skeletons",
+          "zh_cn": "由凋灵骷髅掉落"
+        },
+        "color": "#00AAAA",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be worn on the head",
+          "zh_cn": "可以戴在头上"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Summoning structure:",
+          "zh_cn": "召唤结构："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/wither_structure.png",
+        "width": 96,
+        "height": 48
+      }
+    ]
+  },
+  "minecraft:carved_pumpkin": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Wearing it on the head stops endermen from becoming hostile",
+          "zh_cn": "戴在头上时末影人不会变为敌对"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Made by using shears on a pumpkin",
+          "zh_cn": "对南瓜使用剪刀可获得"
+        },
+        "color": "#00AAAA",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Placed above iron blocks it summons an Iron Golem; above snow blocks it summons a Snow Golem",
+          "zh_cn": "放置在铁块上方可召唤铁傀儡，放置在雪块上方可召唤雪傀儡"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Iron Golem summoning structure:",
+          "zh_cn": "铁傀儡召唤结构："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/iron_golem_structure.png",
+        "width": 48,
+        "height": 80
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Snow Golem summoning structure:",
+          "zh_cn": "雪傀儡召唤结构："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/snow_golem_structure.png",
+        "width": 48,
+        "height": 80
+      }
+    ]
+  },
+  "minecraft:jack_o_lantern": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Wearing it on the head stops endermen from becoming hostile",
+          "zh_cn": "戴在头上时末影人不会变为敌对"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits light level 15",
+          "zh_cn": "发出亮度 15 的光"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Placed above iron blocks it summons an Iron Golem; above snow blocks it summons a Snow Golem",
+          "zh_cn": "放置在铁块上方可召唤铁傀儡，放置在雪块上方可召唤雪傀儡"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Iron Golem summoning structure:",
+          "zh_cn": "铁傀儡召唤结构："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/iron_golem_structure.png",
+        "width": 48,
+        "height": 80
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Snow Golem summoning structure:",
+          "zh_cn": "雪傀儡召唤结构："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/snow_golem_structure.png",
+        "width": 48,
+        "height": 80
+      }
+    ]
+  },
+  "minecraft:pumpkin": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be carved into a carved pumpkin by using shears on it",
+          "zh_cn": "对南瓜使用剪刀可将其雕刻为雕刻南瓜"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A plain pumpkin cannot be worn",
+          "zh_cn": "普通南瓜不能戴在头上"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:end_crystal": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Placed on an obsidian pillar or on bedrock, it heals the Ender Dragon",
+          "zh_cn": "放置在黑曜石柱或基岩上时，会为末影龙恢复生命"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Placing all four crystals respawns the Ender Dragon",
+          "zh_cn": "放齐 4 个末地水晶可重新召唤末影龙"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Explodes when hit, dealing heavy damage to everything nearby",
+          "zh_cn": "被击中时爆炸，对周围造成大量伤害"
+        },
+        "color": "#FF5555",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cannot be obtained in survival",
+          "zh_cn": "生存模式下无法获得"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Placement:",
+          "zh_cn": "放置方式："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/end_crystal_structure.png",
+        "width": 32,
+        "height": 80
+      }
+    ]
+  },
+  "minecraft:dragon_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The trophy dropped when the Ender Dragon is defeated",
+          "zh_cn": "击败末影龙后掉落的战利品"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Teleports away when you try to mine or touch it",
+          "zh_cn": "尝试开采或接触时会传送离开"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be moved with a piston",
+          "zh_cn": "可使用活塞移动"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:spawner": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Spawns mobs of its stored type in a radius while a player is within 16 blocks",
+          "zh_cn": "当玩家位于 16 格范围内时，在其周围生成所存储类型的生物"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The spawning radius shrinks as more mobs of that type are nearby",
+          "zh_cn": "附近同类生物越多，生成半径越小"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be disabled by placing a torch on it or by keeping the area lit",
+          "zh_cn": "在其上放置火把或保持区域明亮可阻止刷怪"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cannot be obtained even with Silk Touch; spawn eggs are used to change its stored mob",
+          "zh_cn": "即使使用精准采集也无法获得，需用刷怪蛋改变其存储的生物"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:end_portal_frame": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "12 frames form a ring; right-click a frame with an Eye of Ender to fill it",
+          "zh_cn": "12 个框架围成一圈，手持末影之眼右键可将其填入框架"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Filling all 12 frames opens the End portal",
+          "zh_cn": "填满 12 个框架后末地传送门开启"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Some frames generate in strongholds already filled",
+          "zh_cn": "要塞中生成的框架有一部分已预填末影之眼"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A frame with an eye cannot be mined without breaking it, and never drops the eye",
+          "zh_cn": "已填眼的框架被破坏时不会掉落末影之眼"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Portal ring:",
+          "zh_cn": "传送门环："
+        },
+        "color": "#AAAAAA",
+        "shift": true
+      },
+      {
+        "type": "image",
+        "texture": "minecraft:textures/datatip/minecraft/end_portal_frame.png",
+        "width": 96,
+        "height": 96
+      }
+    ]
+  },
+  "minecraft:dragon_head": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A decorative trophy head that can be worn",
+          "zh_cn": "可穿戴的装饰性战利品头颅"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Opens and closes its jaw when powered by redstone",
+          "zh_cn": "被红石信号激活时上下开合下颚"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Does not prevent endermen from becoming hostile",
+          "zh_cn": "无法阻止末影人变为敌对"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:end_stone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Generates naturally in the End",
+          "zh_cn": "自然生成于末地"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be crafted into end stone bricks",
+          "zh_cn": "可用于合成末地石砖"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Blast resistant",
+          "zh_cn": "具有爆炸抗性"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:turtle_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Laid by turtles on sand",
+          "zh_cn": "由海龟产在沙子上"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hatches into baby turtles if left alone",
+          "zh_cn": "不被干扰时会孵化出海龟幼崽"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be trampled and destroyed by mobs stepping on it",
+          "zh_cn": "被生物踩踏时会破碎"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Silk Touch is required to pick it up",
+          "zh_cn": "需要精准采集才能将其采集"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:sniffer_egg": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hatches into a Sniffer after cracking through 3 stages",
+          "zh_cn": "经过 3 个阶段的裂纹后孵化出嗅探兽"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Found in suspicious sand in warm ocean ruins",
+          "zh_cn": "生成于暖水海洋废墟的可疑的沙子中"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hatches faster on moss blocks",
+          "zh_cn": "放置在苔藓块上时孵化更快"
+        },
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:skeleton_skull": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Commonly found in churches within Sky Village and under Nether Tower walkways",
+          "zh_cn": "常见于天空村庄中的教堂、下界塔的天桥下"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A decorative mob head that can be worn",
+          "zh_cn": "可穿戴的装饰性生物头颅"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used as a building block",
+          "zh_cn": "可作为建筑方块使用"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has no summoning function; only the wither skeleton skull is functional",
+          "zh_cn": "没有召唤功能，只有凋灵骷髅头颅具有实际用途"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:zombie_head": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A decorative mob head that can be worn",
+          "zh_cn": "可穿戴的装饰性生物头颅"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used as a building block",
+          "zh_cn": "可作为建筑方块使用"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has no summoning function; only the wither skeleton skull is functional",
+          "zh_cn": "没有召唤功能，只有凋灵骷髅头颅具有实际用途"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:creeper_head": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A decorative mob head that can be worn",
+          "zh_cn": "可穿戴的装饰性生物头颅"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used as a building block",
+          "zh_cn": "可作为建筑方块使用"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has no summoning function; only the wither skeleton skull is functional",
+          "zh_cn": "没有召唤功能，只有凋灵骷髅头颅具有实际用途"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:piglin_head": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A decorative mob head that can be worn",
+          "zh_cn": "可穿戴的装饰性生物头颅"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be used as a building block",
+          "zh_cn": "可作为建筑方块使用"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has no summoning function; only the wither skeleton skull is functional",
+          "zh_cn": "没有召唤功能，只有凋灵骷髅头颅具有实际用途"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:nether_portal": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Light the interior of an obsidian frame with flint and steel or a fire charge",
+          "zh_cn": "用打火石或火焰弹点燃黑曜石框架的内部"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The smallest frame is 4x5 (a 2x3 interior); the largest is 23x23",
+          "zh_cn": "最小框架为 4x5（内部 2x3），最大为 23x23"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Entering it travels between the Overworld and the Nether",
+          "zh_cn": "进入后可在主世界与下界之间往返"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The portal stays lit once created",
+          "zh_cn": "传送门生成后会一直保持开启"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Portal blocks cannot be obtained as an item",
+          "zh_cn": "传送门方块无法作为物品获得"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:end_portal": {
+    "type": "vbox",
+    "gap": 0,
+    "shift": true,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Appears when all 12 End portal frames are filled with Eyes of Ender",
+          "zh_cn": "填满 12 个末地传送门框架后出现"
+        },
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Touching the portal block teleports you to the End",
+          "zh_cn": "接触传送门方块会传送至末地"
+        },
+        "color": "#55FFFF",
+        "shift": true
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The portal block cannot be obtained or destroyed",
+          "zh_cn": "传送门方块无法获得，也无法破坏"
+        },
+        "color": "#FFFF55",
+        "shift": true
+      }
+    ]
+  },
+  "minecraft:ender_pearl": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to throw; teleports you to where it lands",
+          "zh_cn": "右键投掷，将你传送至落点"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The teleport deals 5 fall damage on arrival",
+          "zh_cn": "传送落地时受到5点摔落伤害"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also used to craft Eyes of Ender",
+          "zh_cn": "亦可用于合成末影之眼"
+        }
+      }
+    ]
+  },
+  "minecraft:ender_eye": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to throw; it flies toward the nearest Stronghold and then drops",
+          "zh_cn": "右键投掷，飞向最近的要塞后掉落"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a 20% chance to shatter instead of dropping",
+          "zh_cn": "有20%的概率在飞行途中破碎"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to fill End portal frames",
+          "zh_cn": "用于填充末地传送门框架"
+        }
+      }
+    ]
+  },
+  "minecraft:compass": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Points to the world spawn point",
+          "zh_cn": "指向世界出生点"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be bound to a Lodestone to point at it instead",
+          "zh_cn": "可与磁石绑定，改为指向该磁石"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Spins randomly in the Nether and the End",
+          "zh_cn": "在下界、末地中指针随机旋转"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:recovery_compass": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Points to the place where you last died",
+          "zh_cn": "指向你上次死亡的位置"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Spins randomly if you have never died, or if your death point lies in another dimension",
+          "zh_cn": "从未死亡或死亡点位于其他维度时随机旋转"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Found in Ancient City chests",
+          "zh_cn": "生成于远古城市的箱子中"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:clock": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Shows the time of day, but only while held in hand",
+          "zh_cn": "显示当前时间，仅在手持时生效"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Does not work in the Nether or the End",
+          "zh_cn": "在下界、末地中无法正常工作"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:brush": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click suspicious sand or gravel to brush it and reveal an archaeology item",
+          "zh_cn": "右键可疑的沙子或沙砾进行刷扫，以取出考古物品"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also brushes an armadillo to obtain scutes",
+          "zh_cn": "亦可用于刷扫犰狳以获取犰狳鳞甲"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Takes durability damage with each use",
+          "zh_cn": "每次使用消耗耐久度"
+        }
+      }
+    ]
+  },
+  "minecraft:spyglass": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click and hold to zoom in on a distant view",
+          "zh_cn": "右键按住以放大远处视野"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Narrows the field of view and slows your movement while in use",
+          "zh_cn": "使用时视野收窄，移动速度降低"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Crafted from an amethyst shard and copper ingots",
+          "zh_cn": "由紫水晶碎片与铜锭合成"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:bundle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Holds a single stack's worth of mixed items, weighing up to 64 items in total",
+          "zh_cn": "可装入总计一组即最多64个物品的混合物"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to insert all matching items; sneak and right-click to take the last one out",
+          "zh_cn": "右键存入物品，潜行右键取出最后一个物品"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Shulker boxes cannot be placed inside",
+          "zh_cn": "无法装入潜影盒"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:elytra": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Double-tap the jump key in midair to start gliding; equips in the chestplate slot",
+          "zh_cn": "空中双击跳跃键开始滑翔，装备于胸甲栏"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Firework rockets give you height and speed",
+          "zh_cn": "使用烟花火箭可获得高度与速度"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Wears down over time as you fly",
+          "zh_cn": "飞行过程中会持续消耗耐久度"
+        }
+      }
+    ]
+  },
+  "minecraft:trident": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to throw it; it drops where it lands and can be picked up again",
+          "zh_cn": "右键投掷，落在何处便掉落在何处且可拾回"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Loyalty makes a thrown trident fly back to you",
+          "zh_cn": "附魔忠诚的投掷三叉戟会飞回手中"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Riptide launches you forward in water or rain; Channeling summons lightning on a hit during a thunderstorm",
+          "zh_cn": "激流在雨中或水中将你向前推进，引雷在雷暴中命中时召唤闪电"
+        }
+      }
+    ]
+  },
+  "minecraft:goat_horn": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to blow it and play its sound",
+          "zh_cn": "右键吹响山羊角"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "There are 8 sounds in total and each horn keeps one fixed sound",
+          "zh_cn": "共有8种音色，每一只山羊角的音色固定"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped by a goat that rams into certain blocks",
+          "zh_cn": "山羊撞击特定方块时掉落"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:name_tag": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a mob to give it a name",
+          "zh_cn": "右键生物为其命名"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A named mob keeps its name and no longer despawns",
+          "zh_cn": "被命名的生物保留名字且不再消失"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Not craftable; found in loot chests, by fishing, or from villager trades. Use it again to rename the mob",
+          "zh_cn": "无法合成，仅来自战利品箱、钓鱼或村民交易；再次使用可改名"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:lead": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a mob to tie it to you, then right-click a fence post to bind it there",
+          "zh_cn": "右键生物将其拴住，再右键栅栏柱拴在其上"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-clicking a tied fence post pulls the mob toward it",
+          "zh_cn": "右键已拴住的栅栏柱可将生物拉向该处"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Snaps if the distance grows too great",
+          "zh_cn": "距离过远时拴绳会断裂"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:saddle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a horse, donkey, mule, pig, strider or camel to ride it bare-handed",
+          "zh_cn": "右键马、驴、骡、猪、炽足兽或骆驼即可骑乘"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Not craftable; found in dungeon loot and from villager trades",
+          "zh_cn": "无法合成，来自地牢战利品与村民交易"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:shears": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a sheep to shear its wool",
+          "zh_cn": "右键羊以剪取羊毛"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Use it on a full beehive for honeycomb, cut cave vines, and break cobwebs and leaves quickly",
+          "zh_cn": "对装满的蜂巢使用可获取蜜脾，亦可剪断洞穴藤蔓，并快速破坏蜘蛛网与树叶"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Each use costs durability",
+          "zh_cn": "每次使用消耗耐久度"
+        }
+      }
+    ]
+  },
+  "minecraft:flint_and_steel": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to start a fire on its face",
+          "zh_cn": "右键方块在其表面点火"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Lights a Nether portal and primes TNT",
+          "zh_cn": "可点燃下界传送门，也可引爆TNT"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Costs durability on every use",
+          "zh_cn": "每次使用消耗耐久度"
+        }
+      }
+    ]
+  },
+  "minecraft:bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a fluid source block to fill it",
+          "zh_cn": "右键流体源方块将其装填"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a cow or mooshroom with an empty bucket to get milk",
+          "zh_cn": "手持空桶右键牛或哞菇可获取牛奶"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Flowing fluid cannot be picked up",
+          "zh_cn": "无法装取流动的流体"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:water_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be transmuted in Shimmer",
+          "zh_cn": "可微光嬗变"
+        },
+        "color": "#FF69B4"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to place a water source",
+          "zh_cn": "右键方块放置水源"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The placed water can be used to break a fall",
+          "zh_cn": "放置的水可用于缓冲摔落"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can fill a cauldron; water cannot be placed in the Nether",
+          "zh_cn": "可倒入炼药锅；下界中无法放置水"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:lava_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be transmuted in Shimmer",
+          "zh_cn": "可微光嬗变"
+        },
+        "color": "#FF69B4"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to place a lava source",
+          "zh_cn": "右键方块放置岩浆源"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Burns in a furnace as fuel for a very long time",
+          "zh_cn": "可在熔炉中作为燃料，燃烧时间极长"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be poured into a cauldron",
+          "zh_cn": "可倒入炼药锅"
+        }
+      }
+    ]
+  },
+  "minecraft:milk_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drink it to remove every status effect, harmful ones included",
+          "zh_cn": "饮用后移除全部状态效果，包括负面效果"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "One of the ingredients of a Cake",
+          "zh_cn": "是合成蛋糕的材料之一"
+        }
+      }
+    ]
+  },
+  "minecraft:powder_snow_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to place powder snow",
+          "zh_cn": "右键方块放置细雪"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Wearing leather boots lets you walk on top of powder snow instead of sinking in",
+          "zh_cn": "穿着皮革靴子可在细雪上行走而不下陷"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be poured into a cauldron",
+          "zh_cn": "可倒入炼药锅"
+        }
+      }
+    ]
+  },
+  "minecraft:axolotl_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click water with an empty bucket to catch an axolotl",
+          "zh_cn": "手持空桶右键水面捕捉美西螈"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to release it",
+          "zh_cn": "右键方块将其放出"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The bucket stores the axolotl's colour variant",
+          "zh_cn": "桶中保留美西螈的变种颜色"
+        }
+      }
+    ]
+  },
+  "minecraft:cod_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click water with an empty bucket to catch a cod",
+          "zh_cn": "手持空桶右键水面捕捉鳕鱼"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to release it",
+          "zh_cn": "右键方块将其放出"
+        }
+      }
+    ]
+  },
+  "minecraft:salmon_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click water with an empty bucket to catch a salmon",
+          "zh_cn": "手持空桶右键水面捕捉鲑鱼"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to release it",
+          "zh_cn": "右键方块将其放出"
+        }
+      }
+    ]
+  },
+  "minecraft:pufferfish_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click water with an empty bucket to catch a pufferfish",
+          "zh_cn": "手持空桶右键水面捕捉河豚"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to release it",
+          "zh_cn": "右键方块将其放出"
+        }
+      }
+    ]
+  },
+  "minecraft:tropical_fish_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click water with an empty bucket to catch a tropical fish",
+          "zh_cn": "手持空桶右键水面捕捉热带鱼"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to release it",
+          "zh_cn": "右键方块将其放出"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The bucket stores the fish's variant and pattern",
+          "zh_cn": "桶中保留热带鱼的变种与花纹"
+        }
+      }
+    ]
+  },
+  "minecraft:tadpole_bucket": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click water with an empty bucket to catch a tadpole",
+          "zh_cn": "手持空桶右键水面捕捉蝌蚪"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a block to release it",
+          "zh_cn": "右键方块将其放出"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A released tadpole grows into a frog",
+          "zh_cn": "放出的蝌蚪会成长为青蛙"
+        }
+      }
+    ]
+  },
+  "minecraft:honey_bottle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drink it to restore hunger and cure Poison",
+          "zh_cn": "饮用后恢复饥饿值并解除中毒"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Obtained by using a glass bottle on a full beehive",
+          "zh_cn": "手持玻璃瓶对装满的蜂巢使用获得"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Drinking it leaves an empty glass bottle",
+          "zh_cn": "饮用后返还一个空玻璃瓶"
+        }
+      }
+    ]
+  },
+  "minecraft:glass_bottle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click water to fill it into a Water Bottle",
+          "zh_cn": "右键水面装填为水瓶"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Use it on a full beehive for a Honey Bottle, or on a dragon's breath cloud for Dragon's Breath",
+          "zh_cn": "对装满的蜂巢使用可得蜂蜜瓶，对龙息云使用可得龙息"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The base container for brewing potions",
+          "zh_cn": "是酿造药水的基础容器"
+        }
+      }
+    ]
+  },
+  "minecraft:totem_of_undying": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Held in the main hand or offhand, it is consumed instead of letting you die",
+          "zh_cn": "持于主手或副手时，在你将死亡时被消耗以代替死亡"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Restores health and grants Absorption and Regeneration",
+          "zh_cn": "恢复生命值并给予伤害吸收与生命恢复"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped by Evokers",
+          "zh_cn": "由唤魔者掉落"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:dragon_breath": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Left behind as a cloud by the Ender Dragon's breath attack",
+          "zh_cn": "由末影龙的龙息攻击留下成云"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Collect it with a glass bottle",
+          "zh_cn": "用玻璃瓶收集"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to brew Lingering Potions",
+          "zh_cn": "用于酿造滞留药水"
+        }
+      }
+    ]
+  },
+  "minecraft:golden_apple": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Eat it to restore hunger and grant Absorption and Regeneration for a short time",
+          "zh_cn": "食用后恢复饥饿值，并短时间内给予伤害吸收与生命恢复"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Combined with a Weakness potion, it cures a zombie villager",
+          "zh_cn": "配合虚弱药水可治愈僵尸村民"
+        }
+      }
+    ]
+  },
+  "minecraft:enchanted_golden_apple": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grants Absorption, Regeneration and Fire Resistance for far longer than a golden apple",
+          "zh_cn": "给予伤害吸收、生命恢复与防火，持续时间远长于金苹果"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Cannot be crafted; only found in loot chests",
+          "zh_cn": "无法合成，仅生成于战利品箱中"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:chorus_fruit": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Eat it to teleport a short distance in a random direction",
+          "zh_cn": "食用后会向随机方向短距离传送"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be eaten even when your hunger bar is full",
+          "zh_cn": "饥饿值已满时仍可食用"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Smelt it into Popped Chorus Fruit",
+          "zh_cn": "烧炼后得到爆裂紫颂果"
+        }
+      }
+    ]
+  },
+  "minecraft:rotten_flesh": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Eat it to restore a little hunger",
+          "zh_cn": "食用后恢复少量饥饿值"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Has a high chance to inflict Hunger",
+          "zh_cn": "有较高概率获得饥饿效果"
+        },
+        "color": "#FF5555"
+      }
+    ]
+  },
+  "minecraft:spider_eye": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Eat it to restore hunger, but it inflicts Poison",
+          "zh_cn": "食用后恢复饥饿值，但会造成中毒"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Crafted into a Fermented Spider Eye",
+          "zh_cn": "用于合成发酵蛛眼"
+        }
+      }
+    ]
+  },
+  "minecraft:pufferfish": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Eat it to restore hunger, but it inflicts Hunger, Poison and Nausea",
+          "zh_cn": "食用后恢复饥饿值，但会造成饥饿、中毒与反胃"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to brew Potions of Water Breathing",
+          "zh_cn": "用于酿造水肺药水"
+        }
+      }
+    ]
+  },
+  "minecraft:suspicious_stew": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grants one random status effect that depends on the flower used to make it",
+          "zh_cn": "给予一种随所用花而定的随机状态效果"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The tooltip does not reveal the effect until you eat it",
+          "zh_cn": "食用前提示框不会显示该效果"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Found in loot chests, or crafted from a bowl, a brown mushroom, a red mushroom and a flower",
+          "zh_cn": "来自战利品箱，或用碗、棕色蘑菇、红色蘑菇与一朵花合成"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:nether_star": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped by the Wither",
+          "zh_cn": "由凋灵掉落"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to craft a Beacon, and is consumed in the recipe",
+          "zh_cn": "用于合成信标，且合成时会被消耗"
+        }
+      }
+    ]
+  },
+  "minecraft:knowledge_book": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to unlock the recipes stored inside it",
+          "zh_cn": "右键以解锁其中记录的配方"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Only obtainable with commands",
+          "zh_cn": "仅能通过命令获取"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:writable_book": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to write and sign a book of at most 50 pages",
+          "zh_cn": "右键撰写并署名，最多50页"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Signing turns it into a Written Book and locks the text",
+          "zh_cn": "署名后变为成书，文字无法再修改"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:written_book": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be copied by combining it with a Book and Quill",
+          "zh_cn": "与书与笔一同放入合成栏可复制"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Its text cannot be edited",
+          "zh_cn": "其文字无法编辑"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Stacks only when the copies are identical",
+          "zh_cn": "仅内容完全相同的成书可以堆叠"
+        }
+      }
+    ]
+  },
+  "minecraft:map": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to activate it and record the area around you",
+          "zh_cn": "右键激活，并记录你周围的区域"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The map fills in as you travel",
+          "zh_cn": "随着探索逐步绘制出地形"
+        }
+      }
+    ]
+  },
+  "minecraft:filled_map": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be copied, zoomed out or locked on a Cartography Table",
+          "zh_cn": "可在制图台中复制、缩小比例或锁定"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A locked map can no longer be edited, and maps can be placed in item frames",
+          "zh_cn": "锁定后的地图无法再被修改，地图可放入物品展示框"
+        }
+      }
+    ]
+  },
+  "minecraft:shield": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hold it in the offhand and sneak to block melee and projectile damage from the front",
+          "zh_cn": "持于副手并潜行，可格挡来自正面的近战与弹射物伤害"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Blocking slows your movement, and an axe hit disables the shield for a short time",
+          "zh_cn": "格挡时移动速度降低，被斧击中会暂时失效"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A banner can be applied to it to display a pattern",
+          "zh_cn": "可附加旗帜以显示图案"
+        }
+      }
+    ]
+  },
+  "minecraft:turtle_helmet": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Worn as a helmet; crafted from scutes",
+          "zh_cn": "作为头盔穿戴，由鳞甲合成"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grants Water Breathing for 10 seconds while underwater and extends how long you can hold your breath",
+          "zh_cn": "在水下给予10秒水下呼吸，并延长可屏息的时间"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "minecraft:firework_star": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The payload of a Firework Rocket",
+          "zh_cn": "是烟花火箭的载荷"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dyes and extra ingredients set its shape, colours, fade colours and twinkle",
+          "zh_cn": "所用染料与附加材料决定其形状、颜色、褪色与闪烁"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A rocket made with firework stars can also damage entities",
+          "zh_cn": "装有烟花之星的火箭可对生物造成伤害"
+        },
+        "color": "#FF5555"
+      }
+    ]
+  },
+  "minecraft:experience_bottle": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click to throw; it shatters and releases experience orbs",
+          "zh_cn": "右键投掷，破碎后释放经验球"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The orbs must be collected before they disappear",
+          "zh_cn": "需在经验球消失前拾取"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Obtained from villager trades and loot chests",
+          "zh_cn": "来自村民交易与战利品箱"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:arrow": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Note: Also crafted at the Fletching Table",
+          "zh_cn": "注：制箭台亦可用于制作箭矢"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Standard ammunition for bows, crossbows and dispensers",
+          "zh_cn": "是弓、弩与发射器的标准弹药"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be tipped with a potion to carry its effect",
+          "zh_cn": "可用药水制成药箭以附加效果"
+        }
+      }
+    ]
+  },
+  "minecraft:spectral_arrow": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Crafted from glowstone dust",
+          "zh_cn": "由荧石粉合成"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Marks the entity it hits with a glowing outline, visible through blocks",
+          "zh_cn": "命中后使目标带有发光轮廓，可穿透方块看见"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "In Java Edition it can only be obtained by crafting",
+          "zh_cn": "在Java版中仅能通过合成获得"
+        }
+      }
+    ]
+  },
+  "minecraft:tipped_arrow": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "An arrow carrying a potion effect; crafted from arrows and a Lingering Potion",
+          "zh_cn": "带有药水效果的箭，由箭与滞留药水合成"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "The effect lasts one eighth as long as the potion's own duration",
+          "zh_cn": "效果持续时间为对应药水的八分之一"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:honeycomb": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Obtained by shearing a full beehive or bee nest",
+          "zh_cn": "用剪刀剪取装满的蜂巢或蜂箱获得"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to wax copper blocks so they stop oxidizing",
+          "zh_cn": "用于给铜块打蜡以停止氧化"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also crafts Candles and Bee Nests",
+          "zh_cn": "亦可用于合成蜡烛与蜂箱"
+        }
+      }
+    ]
+  },
+  "minecraft:glow_ink_sac": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a sign to make its text glow",
+          "zh_cn": "右键告示牌使其文字发光"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also crafts Glow Item Frames",
+          "zh_cn": "亦可用于合成荧光物品展示框"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped by glow squid",
+          "zh_cn": "由发光鱿鱼掉落"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:ink_sac": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a glowing sign to remove its glow",
+          "zh_cn": "右键发光的告示牌可去除其发光"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also used as a black dye",
+          "zh_cn": "亦可用作黑色染料"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped by squid",
+          "zh_cn": "由鱿鱼掉落"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:bone_meal": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a plant to instantly grow it one stage",
+          "zh_cn": "右键植物使其立即生长一个阶段"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a grass block to grow grass and flowers on nearby blocks",
+          "zh_cn": "右键草方块使附近的方块长出草与花"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Crafted from bones and bone blocks; also makes white dye",
+          "zh_cn": "由骨头与骨块合成，亦可制成白色染料"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:wheat_seeds": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Plant on farmland to grow wheat",
+          "zh_cn": "种植在耕地上以长出小麦"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to breed and lead chickens",
+          "zh_cn": "用于繁殖与牵引鸡"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Fed to a baby chicken to speed up its growth",
+          "zh_cn": "喂给幼年鸡可加速其成长"
+        }
+      }
+    ]
+  },
+  "minecraft:carrot_on_a_stick": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a saddled pig to ride it and steer it",
+          "zh_cn": "右键已装鞍的猪即可骑乘并控制方向"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Crafted with a fishing rod and a carrot",
+          "zh_cn": "由钓鱼竿与胡萝卜合成"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Takes durability damage as you ride",
+          "zh_cn": "骑乘过程中会消耗耐久度"
+        }
+      }
+    ]
+  },
+  "minecraft:warped_fungus_on_a_stick": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click a saddled Strider to ride it across lava and steer it",
+          "zh_cn": "右键已装鞍的炽足兽即可在岩浆上骑乘并控制方向"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Takes durability damage as you ride",
+          "zh_cn": "骑乘过程中会消耗耐久度"
+        }
+      }
+    ]
+  },
+  "minecraft:echo_shard": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Found in Ancient City chests",
+          "zh_cn": "生成于远古城市的箱子中"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Used to craft a Recovery Compass",
+          "zh_cn": "用于合成回溯指南针"
+        }
+      }
+    ]
+  },
+  "minecraft:disc_fragment_5": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Nine fragments combine into one Music Disc 5",
+          "zh_cn": "9个碎片可合成1张音乐唱片5"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Found in Ancient City chests",
+          "zh_cn": "生成于远古城市的箱子中"
+        },
+        "color": "#00AAAA"
+      }
+    ]
+  },
+  "minecraft:heart_of_the_sea": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Found in buried treasure chests",
+          "zh_cn": "生成于埋藏的宝藏箱子中"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Combined with nautilus shells to craft a Conduit",
+          "zh_cn": "与鹦鹉螺壳一同合成潮涌核心"
+        }
+      }
+    ]
+  },
+  "minecraft:nautilus_shell": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped by drowned holding one, and caught by fishing",
+          "zh_cn": "由手持鹦鹉螺壳的溺尸掉落，亦可钓得"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Eight of them with a Heart of the Sea craft a Conduit",
+          "zh_cn": "8个鹦鹉螺壳与1个海洋之心可合成潮涌核心"
+        }
+      }
+    ]
+  },
   "minecraft:gravel": {
     "type": "text",
     "text": {
       "en_us": "Can be refined",
       "zh_cn": "可提炼"
-    }
-  },
-  "minecraft:skeleton_skull": {
-    "type": "text",
-    "text": {
-      "en_us": "Commonly found in churches within Sky Village and under Nether Tower walkways",
-      "zh_cn": "常见于天空村庄中的教堂、下界塔的天桥下"
-    }
-  },
-  "minecraft:arrow": {
-    "type": "text",
-    "text": {
-      "en_us": "Note: Also crafted at the Fletching Table",
-      "zh_cn": "注：制箭台亦可用于制作箭矢"
     }
   },
   "minecraft:chest": {
@@ -51,20 +6298,393 @@
     },
     "color": "#FF69B4"
   },
-  "minecraft:water_bucket": {
-    "type": "text",
-    "text": {
-      "en_us": "Can be transmuted in Shimmer",
-      "zh_cn": "可微光嬗变"
-    },
-    "color": "#FF69B4"
+  "#minecraft:beds": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click during the day to set your respawn point",
+          "zh_cn": "白天右键可设置重生点"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click at night to sleep and skip to morning",
+          "zh_cn": "夜晚右键可睡觉并直接跳到清晨"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Using a bed in the Nether or the End causes an explosion",
+          "zh_cn": "在下界或末地使用床会引发爆炸"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Nearby hostile mobs prevent sleeping",
+          "zh_cn": "附近存在敌对生物时无法入睡"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A thunderstorm lets you sleep during the day",
+          "zh_cn": "雷暴天气下白天也可以睡觉"
+        }
+      }
+    ]
   },
-  "minecraft:lava_bucket": {
-    "type": "text",
-    "text": {
-      "en_us": "Can be transmuted in Shimmer",
-      "zh_cn": "可微光嬗变"
-    },
-    "color": "#FF69B4"
-  }
+  "#minecraft:wooden_buttons": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits a 1-second pulse, 10 redstone ticks, when pressed by hand",
+          "zh_cn": "被手按下时输出 1 秒即 10 红石刻的脉冲"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Hit by an arrow, it emits a longer pulse",
+          "zh_cn": "被箭射中时输出更长的脉冲"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be placed on the floor, ceiling or a wall",
+          "zh_cn": "可放置在地面、天花板或墙面上"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Arrows fired by a dispenser also press it",
+          "zh_cn": "发射器射出的箭也能按下它"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "#minecraft:wooden_pressure_plates": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Emits power of strength 15 while any entity stands on it",
+          "zh_cn": "有实体踩在其上时输出强度 15 的红石信号"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dropped items also trigger a wooden pressure plate, unlike a stone one",
+          "zh_cn": "与石质压力板不同，掉落的物品也会触发木质压力板"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Also triggered by arrows and other projectiles",
+          "zh_cn": "也会被箭等弹射物触发"
+        }
+      }
+    ]
+  },
+  "minecraft:pointed_dripstone": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A stalactite on a ceiling drips water or lava into the cauldron below",
+          "zh_cn": "天花板上的钟乳石会向下方炼药锅滴入水或熔岩"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Falling on a stalactite hurts; standing on a stalagmite hurts more",
+          "zh_cn": "落在钟乳石上会受到伤害，踩在石笋上伤害更高"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be waterlogged and is placed on any face",
+          "zh_cn": "可以含水，可附着在任意面上"
+        }
+      }
+    ]
+  },
+  "minecraft:powder_snow": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Entities sink into it unless they wear leather boots",
+          "zh_cn": "未穿皮革靴子的实体会陷进去"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Entities inside gradually freeze, taking freeze damage",
+          "zh_cn": "陷在其中的实体会逐渐冻结并受到冰冻伤害"
+        },
+        "color": "#FF5555"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Breaks your fall, and can be collected with a bucket",
+          "zh_cn": "可以缓冲摔落伤害，可用桶收集"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Falls away if you break the block below it",
+          "zh_cn": "破坏其下方的方块时会整块塌落"
+        },
+        "color": "#FFFF55"
+      }
+    ]
+  },
+  "minecraft:big_dripleaf": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Stays tilted up while you stand on it, then tilts down and drops you",
+          "zh_cn": "站上去时会先保持抬起，随后倾斜并使你掉落"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A redstone signal locks it in the up position",
+          "zh_cn": "接收红石信号时会保持抬起状态"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Bone meal makes it grow taller",
+          "zh_cn": "使用骨粉可使其长高"
+        }
+      }
+    ]
+  },
+  "minecraft:hanging_roots": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grows from the underside of dirt and grass blocks in Lush Caves",
+          "zh_cn": "生长在繁茂洞穴中泥土与草方块的下表面"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be climbed like a ladder",
+          "zh_cn": "可以像梯子一样攀爬"
+        }
+      }
+    ]
+  },
+  "minecraft:cave_vines": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grows downward from the ceiling in Lush Caves",
+          "zh_cn": "在繁茂洞穴中从天花板向下生长"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be climbed like a ladder, and bears glow berries",
+          "zh_cn": "可以像梯子一样攀爬，并结有发光浆果"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Bone meal and glow berries make it grow further",
+          "zh_cn": "使用骨粉或发光浆果可使其继续生长"
+        },
+        "color": "#55FFFF"
+      }
+    ]
+  },
+  "minecraft:item_frame": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click an empty frame with an item to display it",
+          "zh_cn": "手持物品右键空展示框即可将其展示出来"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click with a map to show a map on a wall",
+          "zh_cn": "手持地图右键可将地图挂在墙上"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Rotate the displayed item by right-clicking it again",
+          "zh_cn": "再次右键展示框内的物品可将其旋转"
+        }
+      }
+    ]
+  },
+  "minecraft:glow_item_frame": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Like an item frame, but the displayed item stays fully lit",
+          "zh_cn": "与展示框相同，但展示的物品始终保持全亮"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Crafted by combining an item frame with a glow ink sac",
+          "zh_cn": "由展示框与荧光墨囊合成"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click an empty frame with an item to display it",
+          "zh_cn": "手持物品右键空展示框即可将其展示出来"
+        }
+      }
+    ]
+  },
+  "minecraft:armor_stand": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Right-click with an item to equip it on the stand",
+          "zh_cn": "手持物品右键可将其装备在盔甲架上"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be posed by right-clicking its limbs",
+          "zh_cn": "右键其肢体可以摆出不同姿势"
+        },
+        "color": "#55FFFF"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A dispenser can equip armor onto a stand in front of it",
+          "zh_cn": "发射器可以为正前方的盔甲架装备盔甲"
+        }
+      }
+    ]
+  },
+  "minecraft:chorus_flower": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Grows the chorus plant when it receives a block tick",
+          "zh_cn": "收到方块更新时会使紫颂植物生长"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Dies and drops nothing if it cannot grow",
+          "zh_cn": "无法生长时会枯萎且不掉落任何物品"
+        },
+        "color": "#FFFF55"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be broken to stop a chorus plant from spreading",
+          "zh_cn": "破坏它可以阻止紫颂植物继续蔓延"
+        }
+      }
+    ]
+  },
+  "minecraft:bamboo": {
+    "type": "vbox",
+    "gap": 0,
+    "children": [
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be crafted into sticks, scaffolding and bamboo blocks",
+          "zh_cn": "可合成木棍、脚手架与竹块"
+        },
+        "color": "#00AAAA"
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "A fuel source, and grows very quickly on the surface",
+          "zh_cn": "可作为燃料，在地表生长极快"
+        }
+      },
+      {
+        "type": "text",
+        "text": {
+          "en_us": "Can be smelted into a bamboo block for storage",
+          "zh_cn": "可烧炼成竹块以便储存"
+        }
+      }
+    ]
+  },
+  "_the_end": "confluence_datatip minecraft namespace end"
 }

@@ -177,17 +177,17 @@ public final class ClientConfigs {
 
     public static void register(ModContainer container) {
         Builder builder = new Builder();
-        ENABLE_NON_SPIDER_MODEL = builder.comment("Replace spiders and sand poachers with non-spider models. Requires a game restart.")
-                .define("enableNonSpiderModel", false);
 
-        SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);
-        MIN_ECTO_MIST_EFFECT_RADIUS = builder.defineInRange("minEctoMistEffectRadius", 10, 0, 100);
         {
             builder.push("GUI");
+            {
+                builder.push("ItemTooltips");
+                WEAPON_TOOLTIP_BASE_STATS = builder.comment("Show weapon damage and critical strike chance with modifiers, excluding player equipment and effects. Disabled by default to show the final values with player bonuses.")
+                        .define("weaponTooltipBaseStats", false);
+                SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
+                builder.pop();
+            }
             ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
-            WEAPON_TOOLTIP_BASE_STATS = builder.comment("显示武器自身的伤害和暴击率（保留词缀），不计玩家装备和效果加成；默认显示加成后的数值。")
-                    .define("weaponTooltipBaseStats", false);
-            SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
             CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
             {
                 builder.push("Soulcerer");
@@ -247,6 +247,8 @@ public final class ClientConfigs {
         }
         {
             builder.push("Entity");
+            ENABLE_NON_SPIDER_MODEL = builder.comment("Replace spiders and sand poachers with non-spider models. Requires a game restart.")
+                    .define("enableNonSpiderModel", false);
             BLOODY_EFFECT = builder.define("bloodyEffect", true);
             GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
             DAMAGE_INDICATOR = builder.defineEnum("damageIndicator", IndicatorMode.VIRTUAL);
@@ -255,6 +257,7 @@ public final class ClientConfigs {
         }
         {
             builder.push("Biome");
+            MIN_ECTO_MIST_EFFECT_RADIUS = builder.defineInRange("minEctoMistEffectRadius", 10, 0, 100);
             {
                 builder.push("The Hallow");
                 RAINBOW_COUNT = builder.defineInRange("rainbowCount", 3, 0, 20);
@@ -276,6 +279,7 @@ public final class ClientConfigs {
             // 风系统里**纯视听**的两项放这里；影响玩法的那几项（风速频率、局地风向偏差、
             // 沙尘暴/暴风雪的实体受力）属于服务端行为，留在 CommonConfigs。
             builder.push("Weather");
+            SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);
             WIND_SLANTS_RAIN_CLOUDS = builder.define("windSlantsRainClouds", true);
             BLIZZARD_AMBIENCE = builder.define("blizzardAmbience", true);
             builder.pop();

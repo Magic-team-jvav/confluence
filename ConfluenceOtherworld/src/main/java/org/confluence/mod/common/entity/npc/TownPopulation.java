@@ -8,6 +8,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -58,7 +59,8 @@ public final class TownPopulation {
     /// 自定义自然生成器按玩家整轮判定，避免重试位置时绕过城镇抑制。
     public static boolean suppressesSpawn(ServerPlayer player) {
         ServerLevel level = player.serverLevel();
-        if (protectionDisabled(player)) return false;
+        if (!CommonConfigs.TOWN_SUPPRESSES_ENEMY_SPAWNING.get() || protectionDisabled(player))
+            return false;
         BlockPos pos = player.blockPosition();
         int residents = Math.min(count(level, pos), 3);
         if (residents == 0) return false;

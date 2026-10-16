@@ -486,7 +486,7 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void canSleep(CanPlayerSleepEvent event) {
-        if (BloodMoonGameEvent.INSTANCE.started()) {
+        if (!CommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
         } else if (ModSecretSeeds.NEVER_SLEEP.match(event.getEntity().server)) {
             event.setProblem(Player.BedSleepingProblem.OTHER_PROBLEM);
@@ -495,7 +495,7 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void canContinueSleeping(CanContinueSleepingEvent event) {
-        if (event.mayContinueSleeping() && BloodMoonGameEvent.INSTANCE.started()) {
+        if (event.mayContinueSleeping() && !CommonConfigs.ALLOW_SLEEP_DURING_BLOOD_MOON.get() && BloodMoonGameEvent.INSTANCE.started()) {
             event.setContinueSleeping(false);
         }
     }

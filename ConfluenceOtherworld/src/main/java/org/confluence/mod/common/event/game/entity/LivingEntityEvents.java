@@ -75,7 +75,10 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModBlockCounters;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
@@ -284,7 +287,7 @@ public final class LivingEntityEvents {
         AttackEffects.afterDamage(victim, damageSource);
         if (victim instanceof Mob mob && EnemyTargeting.isConfluenceEnemy(mob)) {
             LivingEntity retaliateAgainst = EnemyTargeting.attacker(damageSource);
-            if (retaliateAgainst != null && retaliateAgainst != victim && !EnemyDamageRules.isEnemy(retaliateAgainst)) {
+            if (retaliateAgainst != null && EnemyTargeting.allowsTarget(mob, retaliateAgainst)) {
                 mob.setLastHurtByMob(retaliateAgainst);
                 if (EnemyTargeting.applies(mob))
                     mob.setTarget(EnemyTargeting.select(mob, retaliateAgainst));

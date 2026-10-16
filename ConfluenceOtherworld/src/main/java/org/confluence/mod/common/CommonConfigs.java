@@ -33,6 +33,7 @@ public final class CommonConfigs {
     public static BooleanValue TERRA_STYLE_EXPLOSION;
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
+    public static BooleanValue VILLAGER_INVULNERABLE_TO_PLAYER;
     public static BooleanValue PREVENT_ENEMY_FRIENDLY_FIRE;
     public static BooleanValue ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES;
     public static BooleanValue ENHANCE_ALL_MONSTER;
@@ -68,6 +69,12 @@ public final class CommonConfigs {
     public static BooleanValue DO_NPC_SPAWNING;
     public static IntValue NPC_SPAWN_INTERVAL;
     public static BooleanValue BROADCAST_NPC_MSG;
+    public static BooleanValue TOWN_SUPPRESSES_ENEMY_SPAWNING;
+    public static BooleanValue NPC_HAPPINESS_AFFECTS_PRICES;
+    public static BooleanValue BROADCAST_NPC_DEATH_MSG;
+    public static BooleanValue NPC_AUTO_RESPAWN;
+    public static BooleanValue SPECIAL_SEED_BOSS_BEHAVIORS;
+    public static BooleanValue ALLOW_SLEEP_DURING_BLOOD_MOON;
     private static ConfigValue<List<? extends String>> NPC_ATTACK_BLACKLIST;
 
     public static BooleanValue EYE_OF_CTHULHU_NATURE_SPAWNING;
@@ -218,14 +225,38 @@ public final class CommonConfigs {
             });
             TERRA_STYLE_EXPLOSION = builder.define("terraStyleExplosion", true);
             TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
-            NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
-            PREVENT_ENEMY_FRIENDLY_FIRE = builder.comment("Enable the existing enemy faction friendly-fire protection. Does not change enemy targeting.")
-                    .define("preventEnemyFriendlyFire", true);
-            ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
-            DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
             STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
             {
-                builder.push("MonsterAttributes");
+                builder.push("AutomaticWeaponUse");
+                AUTO_SWING_ALL_SWORDS = builder.define("autoSwingAllSwords", false);
+                AUTO_RELEASE_ALL_BOWS = builder.define("autoReleaseAllBows", false);
+                AUTO_FIRE_ALL_GUNS = builder.define("autoFireAllGuns", false);
+                builder.pop();
+            }
+            builder.pop();
+        }
+        {
+            builder.push("NPC");
+            NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
+            VILLAGER_INVULNERABLE_TO_PLAYER = builder.comment("Protect villagers from player-owned damage, except damage caused by creative players.")
+                    .define("villagerInvulnerableToPlayer", true);
+            NPC_ATTACK_BLACKLIST = builder.defineListAllowEmpty("npcAttackBlacklist", List::of, () -> "[#]namespace:path", value -> value instanceof String entry && NPCAttackBlacklist.isValid(entry));
+            DO_NPC_SPAWNING = builder.define("doNPCSpawning", true);
+            NPC_SPAWN_INTERVAL = builder.defineInRange("npcSpawnInterval", 2400, 20, 20000);
+            BROADCAST_NPC_MSG = builder.define("broadcastNpcMsg", true);
+            TOWN_SUPPRESSES_ENEMY_SPAWNING = builder.comment("Allow town residents to suppress natural enemy spawning.").define("townSuppressesEnemySpawning", true);
+            NPC_HAPPINESS_AFFECTS_PRICES = builder.comment("Apply NPC happiness multipliers to buying and selling prices.").define("npcHappinessAffectsPrices", true);
+            NPC_AUTO_RESPAWN = builder.comment("Allow deceased resident professions to return automatically in their region. Does not prevent first arrivals or rescues.").define("npcAutoRespawn", true);
+            BROADCAST_NPC_DEATH_MSG = builder.comment("Broadcast NPC death messages independently of arrival and departure messages.").define("broadcastNpcDeathMsg", true);
+            builder.pop();
+        }
+        {
+            builder.push("Enemies");
+            PREVENT_ENEMY_FRIENDLY_FIRE = builder.comment("Enable the existing enemy faction friendly-fire protection. Does not change enemy targeting.")
+                    .define("preventEnemyFriendlyFire", true);
+            {
+                builder.push("Attributes");
+                ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
                 ENHANCE_ALL_MONSTER = builder
                         .comment("Apply these multipliers to vanilla and other mods' hostile mobs as well. Otherwise only Confluence enemies are affected. Bosses, summons and friendly creatures are excluded.")
                         .define("enhanceAllMonster", false);
@@ -253,6 +284,14 @@ public final class CommonConfigs {
                 MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = builder
                         .comment("Follow range attribute multiplier; existing line-of-sight and AI-specific range checks still apply.")
                         .defineInRange("monsterAttributesMultiplierFollowRange", 1.0D, 0.0D, 100.0D);
+                builder.pop();
+            }
+            builder.pop();
+        }
+        {
+            builder.push("Boss");
+            {
+                builder.push("Attributes");
                 BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder
                         .comment("Maximum health multiplier for Confluence bosses. Reloading does not heal existing bosses.")
                         .defineInRange("bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
@@ -280,22 +319,30 @@ public final class CommonConfigs {
                 builder.pop();
             }
             {
-                builder.push("AutomaticWeaponUse");
-                AUTO_SWING_ALL_SWORDS = builder.define("autoSwingAllSwords", false);
-                AUTO_RELEASE_ALL_BOWS = builder.define("autoReleaseAllBows", false);
-                AUTO_FIRE_ALL_GUNS = builder.define("autoFireAllGuns", false);
+                builder.push("Behavior");
+                SPECIAL_SEED_BOSS_BEHAVIORS = builder.comment("Enable additional boss behaviors from special world seeds. Does not change difficulty scaling.").define("specialSeedBossBehaviors", true);
+                ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD = builder.define("allowFleshBossesOutsideUnderworld", false);
+                BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
+                KING_SLIME_LARGE_MINIONS = builder.define("kingSlimeLargeMinions", false);
+                DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
                 builder.pop();
             }
             {
-                builder.push("LightningBolt");
-                TERRA_STYLE_LIGHTNING_BOLT = builder.define("terraStyleLightningBolt", true);
-                TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER = builder.defineInRange("terraStyleLightningBoltFrequencyMultiplier", 10, 1, 1000);
+                builder.push("Spawning");
+                EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
+                DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
                 builder.pop();
             }
             builder.pop();
         }
         {
             builder.push("Weather");
+            {
+                builder.push("LightningBolt");
+                TERRA_STYLE_LIGHTNING_BOLT = builder.define("terraStyleLightningBolt", true);
+                TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER = builder.defineInRange("terraStyleLightningBoltFrequencyMultiplier", 10, 1, 1000);
+                builder.pop();
+            }
             DO_WIND = builder.define("doWind", true);
             WIND_DIRECTION_NOISE = builder.define("windDirectionNoise", true);
             WIND_DIRECTION_AMPLITUDE = builder.defineInRange("windDirectionAmplitude", 90.0D, 0.0D, 180.0D);
@@ -322,23 +369,6 @@ public final class CommonConfigs {
                 FALLING_STAR_INTERVAL = builder.defineInRange("fallingStarInterval", 2400, 20, 20000);
                 builder.pop();
             }
-            {
-                builder.push("NPC");
-                DO_NPC_SPAWNING = builder.define("doNPCSpawning", true);
-                NPC_SPAWN_INTERVAL = builder.defineInRange("npcSpawnInterval", 2400, 20, 20000);
-                NPC_ATTACK_BLACKLIST = builder.defineListAllowEmpty("npcAttackBlacklist", List::of, () -> "[#]namespace:path", value -> value instanceof String entry && NPCAttackBlacklist.isValid(entry));
-                BROADCAST_NPC_MSG = builder.define("broadcastNpcMsg", true);
-                builder.pop();
-            }
-            {
-                builder.push("Boss");
-                EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
-                DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
-                ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD = builder.define("allowFleshBossesOutsideUnderworld", false);
-                BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
-                KING_SLIME_LARGE_MINIONS = builder.define("kingSlimeLargeMinions", false);
-                builder.pop();
-            }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);
             builder.pop();
         }
@@ -354,9 +384,13 @@ public final class CommonConfigs {
             builder.pop();
         }
         {
+            builder.push("WorldRules");
+            INSTANTLY_HARDMODE_CONVERSION = builder.define("instantlyHardmodeConversion", false);
+            builder.pop();
+        }
+        {
             builder.push("WorldGeneration");
             WRAPPED_CRIMSON_HEART = builder.define("wrappedCrimsonHeart", false);
-            INSTANTLY_HARDMODE_CONVERSION = builder.define("instantlyHardmodeConversion", false);
             builder.pop();
         }
         {
@@ -399,6 +433,7 @@ public final class CommonConfigs {
             }
             {
                 builder.push("BloodMoon");
+                ALLOW_SLEEP_DURING_BLOOD_MOON = builder.comment("Allow sleeping during a blood moon. Other sleeping restrictions still apply.").define("allowSleepDuringBloodMoon", false);
                 BLOOD_MOON_EVENT_MAX_ENEMIES_BASE = builder.defineInRange("bloodMoonEventMaxEnemiesBase", 30, 1, 1024);
                 BLOOD_MOON_EVENT_MAX_ENEMIES_PER_PLAYER = builder.defineInRange("bloodMoonEventMaxEnemiesPerPlayer", 30, 1, 1024);
                 BLOOD_MOON_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR = builder.defineInRange("bloodMoonEventSpawnEnemiesIntervalFactor", 1.5, 0.1, 10);

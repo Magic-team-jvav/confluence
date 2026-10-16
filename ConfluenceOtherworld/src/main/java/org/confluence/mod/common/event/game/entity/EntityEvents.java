@@ -6,6 +6,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
@@ -141,8 +142,8 @@ public final class EntityEvents {
             event.setInvulnerable(true);
             return;
         }
-        if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
-                victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER) &&
+        if ((victim instanceof Villager ? CommonConfigs.VILLAGER_INVULNERABLE_TO_PLAYER.get() :
+                CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() && victim.getType().is(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER)) &&
                 LibEntityUtils.getOwner(damageSource) instanceof Player player &&
                 !player.isCreative()
         ) {

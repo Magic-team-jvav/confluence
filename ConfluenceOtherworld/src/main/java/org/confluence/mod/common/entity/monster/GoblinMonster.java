@@ -21,8 +21,7 @@ public class GoblinMonster extends HumanoidWarriorMonster {
         this(type, level, defaultMainHand, animationProfile, DoorBehavior.NONE);
     }
 
-    public GoblinMonster(EntityType<? extends GoblinMonster> type, Level level, ItemStack defaultMainHand,
-                         LandAnimationProfile animationProfile, DoorBehavior doorBehavior) {
+    public GoblinMonster(EntityType<? extends GoblinMonster> type, Level level, ItemStack defaultMainHand, LandAnimationProfile animationProfile, DoorBehavior doorBehavior) {
         super(type, level, defaultMainHand, LandSoundProfile.ROUTINE, animationProfile);
         if (doorBehavior != DoorBehavior.NONE && navigation instanceof GroundPathNavigation groundNavigation) {
             configurePlayerTargetLineOfSight(false);

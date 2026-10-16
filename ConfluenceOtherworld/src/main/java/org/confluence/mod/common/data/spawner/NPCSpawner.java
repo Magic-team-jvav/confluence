@@ -93,6 +93,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private Map<Region, Reference2BooleanMap<EntityType<?>>> npcAlive = new Object2ObjectOpenHashMap<>();
+    private Map<Region, Reference2BooleanMap<EntityType<?>>> deceasedResidents = new Object2ObjectOpenHashMap<>();
     /// UUID 记录保留卸载实体；旧区域表继续作为可修改的兼容接口与旧存档保守占用。
     private final Map<UUID, ResidentRecord> residents = new HashMap<>();
     private final Set<UUID> removalNotified = new HashSet<>();
@@ -328,10 +329,15 @@ public enum NPCSpawner implements IGlobalData {
             dungeonEntityRemoved(oldMan);
             return;
         }
+        if (!living.isAlive() && !living.requiresRescue()) {
+            deceasedResidents.computeIfAbsent(living.getRegion(), ignored -> new Reference2BooleanOpenHashMap<>())
+                    .put(living.getType(), true);
+        }
         forgetNPC(living);
         if (living.shouldInteract() || living.getType() == NpcEntities.SKELETON_MERCHANT.get())
             return;
-        if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != NpcEntities.OLD_MAN.get()) {
+        if ((living.isAlive() ? CommonConfigs.BROADCAST_NPC_MSG.get() : CommonConfigs.BROADCAST_NPC_DEATH_MSG.get())
+                && living.getType() != NpcEntities.OLD_MAN.get()) {
             MutableComponent message;
             if (living.isTownPet()) {
                 message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
@@ -352,6 +358,7 @@ public enum NPCSpawner implements IGlobalData {
     @Override
     public void decode(CompoundTag tag) {
         residents.clear();
+        deceasedResidents.clear();
         removalNotified.clear();
         for (Tag element : tag.getList("ResidentRecords", Tag.TAG_COMPOUND)) {
             CompoundTag entry = (CompoundTag) element;
@@ -375,6 +382,8 @@ public enum NPCSpawner implements IGlobalData {
             });
         }
         NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcAlive")).ifSuccess(result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+        if (tag.contains("DeceasedResidents"))
+            NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("DeceasedResidents")).ifSuccess(result -> this.deceasedResidents = new Object2ObjectOpenHashMap<>(result));
         NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned")).ifSuccess(result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
         this.isAdvancedCombatTechniquesUsed = tag.getBoolean("AdvancedCombatTechniquesUsed");
         this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("AdvancedCombatTechniquesVolumeTwoUsed");
@@ -414,6 +423,7 @@ public enum NPCSpawner implements IGlobalData {
             }
         }
         NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).ifSuccess(nbt -> tag.put("NpcAlive", nbt));
+        NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, deceasedResidents).ifSuccess(nbt -> tag.put("DeceasedResidents", nbt));
         NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).ifSuccess(nbt -> tag.put("NpcSpawned", nbt));
         tag.putBoolean("AdvancedCombatTechniquesUsed", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("AdvancedCombatTechniquesVolumeTwoUsed", isAdvancedCombatTechniquesVolumeTwoUsed);
@@ -428,6 +438,7 @@ public enum NPCSpawner implements IGlobalData {
     @Override
     public void clear() {
         residents.clear();
+        deceasedResidents.clear();
         removalNotified.clear();
         dungeonResidents.clear();
         npcAlive.clear();
@@ -529,6 +540,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnCoolSlime(ServerLevel level, BlockPos pos, Region region) {
+        if (!canAutomaticallyReturn(region, NpcEntities.COOL_SLIME.get())) return false;
         if (!PartyGameEvent.INSTANCE.isNatural() ||
                 isNpcAlreadyPresent(level, pos, NpcEntities.COOL_SLIME.get())
         ) return false;
@@ -847,7 +859,8 @@ public enum NPCSpawner implements IGlobalData {
                 resident.oldMan = existing.getUUID();
                 continue;
             }
-            if (resident.respawnAfter != 0 && (level.getDayTime() < resident.respawnAfter || !LibDateUtils.isDay(level)))
+            if (resident.respawnAfter != 0 && (!CommonConfigs.NPC_AUTO_RESPAWN.get()
+                    || level.getDayTime() < resident.respawnAfter || !LibDateUtils.isDay(level)))
                 continue;
             OldManNPC oldMan = NpcEntities.OLD_MAN.get().create(level);
             if (oldMan == null) continue;
@@ -934,7 +947,16 @@ public enum NPCSpawner implements IGlobalData {
         return false;
     }
 
+    private boolean canAutomaticallyReturn(Region region, EntityType<?> type) {
+        if (CommonConfigs.NPC_AUTO_RESPAWN.get() || type == NpcEntities.TRAVELING_MERCHANT.get()
+                || type == NpcEntities.SKELETON_MERCHANT.get()) return true;
+        Reference2BooleanMap<EntityType<?>> deceased = deceasedResidents.get(region);
+        return deceased == null || deceased.reference2BooleanEntrySet().stream()
+                .noneMatch(entry -> entry.getBooleanValue() && NpcEntities.isSameProfession(entry.getKey(), type));
+    }
+
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
+        if (!canAutomaticallyReturn(new Region(pos), entityType)) return false;
         if (isNpcAlreadyPresent(level, pos, entityType)) return false;
         if (!(entityType.create(level) instanceof BaseNPC npc)) return false;
         /// 普通城镇刷新使用醒姿尺寸定位，不能在加入世界后才改变碰撞箱。
@@ -996,7 +1018,8 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     public static void broadcastMessageToRegion(Level level, BaseNPC npc, Component message) {
-        if (level.isClientSide || !CommonConfigs.BROADCAST_NPC_MSG.get()) return;
+        if (level.isClientSide || !(npc.isAlive() ? CommonConfigs.BROADCAST_NPC_MSG.get() : CommonConfigs.BROADCAST_NPC_DEATH_MSG.get()))
+            return;
         Region region = npc.getRegion();
         for (Player player : level.players()) {
             if (region.isOnRegion(player.chunkPosition()) || npc.distanceToSqr(player) < 96 * 96) {

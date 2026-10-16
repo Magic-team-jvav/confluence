@@ -326,7 +326,7 @@ public final class LivingEntityEvents {
         /// 只记录实际造成伤害的外部攻击者，射弹和部件追溯到所有者。
         if (victim instanceof Mob mob && EnemyTargeting.isConfluenceEnemy(mob)) {
             LivingEntity retaliateAgainst = EnemyTargeting.attacker(damageSource);
-            if (retaliateAgainst != null && retaliateAgainst != victim && !EnemyDamageRules.isEnemy(retaliateAgainst)) {
+            if (retaliateAgainst != null && EnemyTargeting.allowsTarget(mob, retaliateAgainst)) {
                 mob.setLastHurtByMob(retaliateAgainst);
                 if (EnemyTargeting.applies(mob))
                     mob.setTarget(EnemyTargeting.select(mob, retaliateAgainst));

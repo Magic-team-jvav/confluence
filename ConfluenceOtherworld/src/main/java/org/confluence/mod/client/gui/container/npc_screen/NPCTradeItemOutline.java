@@ -30,6 +30,8 @@ public final class NPCTradeItemOutline implements AutoCloseable {
         shader = instance;
     }
 
+    public static ShaderInstance getShader() {return shader;}
+
     private boolean isPrepared() {
         return prepared && shader != null;
     }

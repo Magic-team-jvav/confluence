@@ -22,12 +22,28 @@ import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceMenu {
+    // 槽位坐标相对于界面左上角，客户端显示与服务端点击区域共用。
+    public static final int REFORGE_SLOT_X = 50;
+    public static final int REFORGE_SLOT_Y = 70;
+    public static final int INVENTORY_X = 8;
+    public static final int INVENTORY_Y = 117;
+    public static final int INVENTORY_COLUMN_SPACING = 18;
+    public static final int INVENTORY_ROW_SPACING = 18;
+    public static final int HOTBAR_X = 8;
+    public static final int HOTBAR_Y = 175;
+    public static final int HOTBAR_SPACING = 18;
+
+    public static final int BEST_PREFIX_PAUSE_TICKS = 40;
+
     public static final int DATA_PREFIX_TYPE = 0;
     public static final int DATA_PREFIX_ID = 1;
     public static final int DATA_REFORGE_COST = 2;
     private final Player player;
     private final @Nullable BaseNPC npc;
-    private final int[] data = {PrefixType.UNKNOWN.ordinal(), -1, 0x3F3F3F3F};
+    private final int[] data = {PrefixType.UNKNOWN.ordinal(), -1, 0x3F3F3F3F, 0};
+    private int reforgeRevision;
+    private long availableMoney;
+    private long reforgeReadyAt;
     public final SimpleContainer container = new SimpleContainer(1);
 
     public NPCReforgeMenu(int containerId, Inventory inventory) {
@@ -47,7 +63,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
         }
         container.addListener(this::slotsChanged);
 
-        addSlot(new Slot(container, 0, 39, 44) {
+        addSlot(new Slot(container, 0, REFORGE_SLOT_X, REFORGE_SLOT_Y) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
                 return PrefixUtils.couldReforge(itemStack);
@@ -59,16 +75,47 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
 
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 9; l++) {
-                addSlot(new Slot(inventory, l + k * 9 + 9, 8 + l * 18, 84 + k * 18));
+                addSlot(new Slot(inventory, l + k * 9 + 9, INVENTORY_X + l * INVENTORY_COLUMN_SPACING, INVENTORY_Y + k * INVENTORY_ROW_SPACING));
             }
         }
         for (int m = 0; m < 9; m++) {
-            addSlot(new Slot(inventory, m, 8 + m * 18, 142));
+            addSlot(new Slot(inventory, m, HOTBAR_X + m * HOTBAR_SPACING, HOTBAR_Y));
         }
 
+        addDataSlot(new DataSlot() {
+            @Override
+            public int get() {return reforgeRevision;}
+
+            @Override
+            public void set(int value) {reforgeRevision = value & 0xFFFF;}
+        });
         addDataSlot(DataSlot.shared(data, DATA_PREFIX_TYPE));
         addDataSlot(DataSlot.shared(data, DATA_PREFIX_ID));
-        addDataSlot(DataSlot.shared(data, DATA_REFORGE_COST));
+        for (int half = 0; half < 2; half++) {
+            int shift = half * 16;
+            addDataSlot(new DataSlot() {
+                @Override
+                public int get() {return data[DATA_REFORGE_COST] >>> shift & 0xFFFF;}
+
+                @Override
+                public void set(int value) {
+                    data[DATA_REFORGE_COST] = data[DATA_REFORGE_COST] & ~(0xFFFF << shift) | (value & 0xFFFF) << shift;
+                }
+            });
+        }
+        for (int part = 0; part < 4; part++) {
+            int shift = part * 16;
+            addDataSlot(new DataSlot() {
+                @Override
+                public int get() {return (int) (availableMoney >>> shift & 0xFFFF);}
+
+                @Override
+                public void set(int value) {
+                    availableMoney = availableMoney & ~(0xFFFFL << shift) | (long) (value & 0xFFFF) << shift;
+                }
+            });
+        }
+        addDataSlot(DataSlot.shared(data, 3));
     }
 
     @Override
@@ -94,7 +141,10 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
     @Override
     public boolean clickMenuButton(Player player, int id) {
         // 重铸
-        if (id != 0 || !stillValid(player) || player.containerMenu != this) return false;
+        if (id != 0 || !stillValid(player) || player.containerMenu != this || getCooldownTicks() > 0
+                || !player.level().isClientSide && player.level().getGameTime() < reforgeReadyAt)
+            return false;
+        if (!player.level().isClientSide) refreshCost();
         int cost = data[DATA_REFORGE_COST];
         if (cost >= 0x3F3F3F3F) return false;
         PrefixType type = PrefixType.byId(data[DATA_PREFIX_TYPE]);
@@ -104,17 +154,47 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
             ModPrefix prefix = ModPrefix.ID_MAP.get(data[DATA_PREFIX_ID]);
             if (prefix == null) return false;
             if (!(player instanceof ServerPlayer)) {
-                return PlayerUtils.getMoney(player, true) >= cost;
+                return getAvailableMoney() >= cost;
             } else if (!PlayerUtils.tryCostMoney(player, cost, true)) {
                 return false;
             }
             PrefixUtils.setAndUpdate(stack, type, prefix);
+            reforgeRevision = (reforgeRevision + 1) & 0x7FFF;
+            if (type.isBestPrefix(prefix, stack)) {
+                reforgeRevision |= 0x8000;
+                reforgeReadyAt = player.level().getGameTime() + BEST_PREFIX_PAUSE_TICKS;
+                data[3] = BEST_PREFIX_PAUSE_TICKS;
+            }
             setRemoteSlot(0, stack);
             ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, stack));
             slotsChanged(container);
+            broadcastChanges();
         }
         return true;
     }
+
+    private void refreshCost() {
+        ItemStack stack = getReforgeItem();
+        data[DATA_REFORGE_COST] = PrefixUtils.couldReforge(stack) ? PrefixUtils.getReforgeCost(player, stack) : 0x3F3F3F3F;
+    }
+
+    @Override
+    public void broadcastChanges() {
+        if (!player.level().isClientSide) {
+            refreshCost();
+            availableMoney = PlayerUtils.getMoney(player, true);
+            data[3] = (int) Math.max(0, reforgeReadyAt - player.level().getGameTime());
+        }
+        super.broadcastChanges();
+    }
+
+    public long getAvailableMoney() {return availableMoney;}
+
+    public boolean isLastReforgeBest() {return (reforgeRevision & 0x8000) != 0;}
+
+    public int getReforgeRevision() {return reforgeRevision;}
+
+    public int getCooldownTicks() {return data[3];}
 
     public ItemStack getReforgeItem() {
         return container.getItem(0);

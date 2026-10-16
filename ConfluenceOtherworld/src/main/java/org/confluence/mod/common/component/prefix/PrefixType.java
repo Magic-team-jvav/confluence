@@ -182,4 +182,22 @@ public enum PrefixType implements StringRepresentable {
         if (id < 0 || id >= VALUES.length) return UNKNOWN;
         return VALUES[id];
     }
+
+    /// 判断词条是否为该物品可获得的最佳词条之一。
+    public boolean isBestPrefix(ModPrefix prefix, ItemStack stack) {
+        return switch (this) {
+            case UNIVERSAL -> stack.is(YoyoItems.TERRARIAN) ? prefix == Melee.LEGENDARY2
+                    : prefix == Universal.GODLY || prefix == Universal.DEMONIC;
+            case MELEE -> stack.is(ItemTags.SWORDS) ? prefix == Melee.LEGENDARY
+                    : stack.is(YoyoItems.TERRARIAN) ? prefix == Melee.LEGENDARY2
+                    : prefix == Universal.GODLY || prefix == Universal.DEMONIC;
+            case RANGED -> prefix == (hasKnockback(stack) ? Ranged.UNREAL : Universal.DEMONIC);
+            case MAGIC -> prefix == (hasKnockback(stack) ? Magic.MYTHICAL : Universal.DEMONIC);
+            case SUMMON -> prefix == Summon.FABLED;
+            case ACCESSORY -> prefix == Accessory.WARDING || prefix == Accessory.ARCANE
+                    || prefix == Accessory.LUCKY || prefix == Accessory.MENACING
+                    || prefix == Accessory.QUICK || prefix == Accessory.VIOLENT;
+            case UNKNOWN -> false;
+        };
+    }
 }

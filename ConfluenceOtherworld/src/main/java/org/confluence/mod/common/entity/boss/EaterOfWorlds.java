@@ -36,7 +36,6 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.WormSegment;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -727,7 +726,8 @@ public class EaterOfWorlds extends BaseWormBoss {
     /// 就可能让距离结果失效。这里先以头部的有限坐标完成搜索，再交给遭遇层同步到其他头部。
     private void acquireTargetFromHeadRange() {
         if (!(level() instanceof ServerLevel serverLevel)) return;
-        if (getAuthoritativeLivingTarget() instanceof BaseNPC) return;
+        if (getAuthoritativeLivingTarget() != null && !(getAuthoritativeLivingTarget() instanceof Player))
+            return;
         if (getTarget() instanceof Player current && isDirectlyTargetable(current)) return;
 
         double maximumAggro = Double.NEGATIVE_INFINITY;
@@ -777,7 +777,8 @@ public class EaterOfWorlds extends BaseWormBoss {
     /// 避免各头因实体执行顺序不同而各自累计脱战计时。
     private void restoreEncounterTargetBeforeLifecycle() {
         if (!(level() instanceof ServerLevel serverLevel) || getEncounterUUID() == null) return;
-        if (getAuthoritativeLivingTarget() instanceof BaseNPC) return;
+        if (getAuthoritativeLivingTarget() != null && !(getAuthoritativeLivingTarget() instanceof Player))
+            return;
         EncounterState state = encounterState(serverLevel, getEncounterUUID());
         Player sharedTarget = state.targetId == null ? null : serverLevel.getPlayerByUUID(state.targetId);
         if (sharedTarget != null && !isValidCurrentCombatPlayer(sharedTarget)) {
@@ -816,7 +817,8 @@ public class EaterOfWorlds extends BaseWormBoss {
         if (sharedTarget == null) return;
 
         for (EaterOfWorlds head : heads) {
-            if (head.getAuthoritativeLivingTarget() instanceof BaseNPC) continue;
+            if (head.getAuthoritativeLivingTarget() != null && !(head.getAuthoritativeLivingTarget() instanceof Player))
+                continue;
             if (!head.isValidCurrentCombatPlayer(sharedTarget)) continue;
             head.registerCombatParticipant(sharedTarget);
             if (head.getTarget() != sharedTarget) head.setTarget(sharedTarget);

@@ -14,7 +14,7 @@ import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.jetbrains.annotations.Nullable;
 
-/// 普通敌怪共用目标仲裁：有效玩家优先，其次保留或寻找受击反击目标。
+/// 普通敌怪保留指定或反击目标，没有有效交战目标时才主动寻找玩家。
 /// Boss 使用自己的遭遇范围和玩家死亡规则，不由这里覆盖。
 public final class EnemyTargeting {
     private EnemyTargeting() {}
@@ -45,6 +45,11 @@ public final class EnemyTargeting {
 
     public static @Nullable LivingEntity select(Mob mob, LivingEntity proposed) {
         LivingEntity current = mob.getTarget();
+        if (proposed != null && !(proposed instanceof Player) && valid(mob, proposed))
+            return proposed;
+        if (current != null && !(current instanceof Player) && valid(mob, current)) return current;
+        LivingEntity attacker = mob.getLastHurtByMob();
+        if (valid(mob, attacker)) return attacker;
         if (current instanceof Player player && validPlayer(mob, player)) return player;
         if (proposed instanceof Player player && validPlayer(mob, player)) return player;
         Player nearest = null;
@@ -59,10 +64,6 @@ public final class EnemyTargeting {
         if (mob instanceof BossOwnedEntity dependent && dependent.getBossOwner() != null
                 && proposed == dependent.getBossOwner().getTarget() && valid(mob, proposed))
             return proposed;
-        LivingEntity attacker = mob.getLastHurtByMob();
-        if (valid(mob, attacker)) return attacker;
-        /// 已经开始的反击不依赖原版短时受击记录一直存在。
-        if (current != null && !(current instanceof Player) && valid(mob, current)) return current;
         return null;
     }
 
@@ -71,8 +72,23 @@ public final class EnemyTargeting {
         return !(mob instanceof BaseMonster monster) || monster.canSelectPlayerTarget(player);
     }
 
+    /// 指定目标和反击共用关系校验，不主动搜索其他生物。
+    public static boolean allowsTarget(Mob mob, LivingEntity target) {
+        if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved())
+            return false;
+        if (target instanceof Player player && (player.isCreative() || player.isSpectator()))
+            return false;
+        if (EnemyDamageRules.isProtectedEnemy(mob) && EnemyDamageRules.isEnemy(target))
+            return false;
+        Entity source = mob instanceof BossOwnedEntity dependent && dependent.getBossOwner() != null
+                ? dependent.getBossOwner() : LibEntityUtils.encounterOwner(mob);
+        Entity destination = target instanceof BossOwnedEntity dependent && dependent.getBossOwner() != null
+                ? dependent.getBossOwner() : LibEntityUtils.encounterOwner(target);
+        return source != destination && LibEntityUtils.allowsAttack(mob, target);
+    }
+
     public static boolean valid(Mob mob, LivingEntity target) {
-        if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved() || EnemyDamageRules.isEnemy(target) || !mob.canAttack(target))
+        if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved() || !allowsTarget(mob, target) || !mob.canAttack(target))
             return false;
         if (target instanceof Player player && (player.isCreative() || player.isSpectator()))
             return false;

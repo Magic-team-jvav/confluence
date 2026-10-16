@@ -22,7 +22,7 @@ public final class NPCTradePortrait {
     private static final float PORTRAIT_MAX_YAW = 45.0F;
     private static final float PORTRAIT_MAX_PITCH = 30.0F;
     private static final float PORTRAIT_HEIGHT_FRACTION = 0.55F;
-    private static final float PORTRAIT_EYE_OFFSET_FRACTION = 0.40F;
+    private static final float PORTRAIT_EYE_Y_FRACTION = 0.50F;
     private static final Vector3f PORTRAIT_TOP_LIGHT = new Vector3f(0.2F, -1.0F, 0.7F).normalize();
     private static final Vector3f PORTRAIT_FILL_LIGHT = new Vector3f(-0.2F, -0.2F, 1.0F).normalize();
     private final BaseNPC npc;
@@ -42,10 +42,9 @@ public final class NPCTradePortrait {
     public void render(GuiGraphics graphics, int leftPos, int topPos, int mouseX, int mouseY) {
         float height = npc.getBbHeight() / npc.getScale();
         int scale = (int) (PORTRAIT_HEIGHT / (height * PORTRAIT_HEIGHT_FRACTION));
-        float offset = npc.getEyeHeight() / npc.getScale() - height * PORTRAIT_EYE_OFFSET_FRACTION;
         int centerX = leftPos + PORTRAIT_CENTER_X;
         int portraitTop = topPos + PORTRAIT_TOP;
-        float eyeY = portraitTop + PORTRAIT_HEIGHT / 2.0F + scale * (height / 2.0F + offset - npc.getEyeHeight() / npc.getScale());
+        float eyeY = portraitTop + PORTRAIT_HEIGHT * PORTRAIT_EYE_Y_FRACTION;
         float yaw = (float) (Math.atan((centerX - mouseX) / PORTRAIT_LOOK_DISTANCE) * 2 / Math.PI) * PORTRAIT_MAX_YAW;
         float pitch = (float) (Math.atan((mouseY - eyeY) / PORTRAIT_LOOK_DISTANCE) * 2 / Math.PI) * PORTRAIT_MAX_PITCH;
         npc.yBodyRot = npc.yBodyRotO = 180.0F;
@@ -61,9 +60,10 @@ public final class NPCTradePortrait {
         graphics.pose().pushPose();
         try {
             float actualScale = scale / npc.getScale();
-            graphics.pose().translate(centerX, portraitTop + PORTRAIT_HEIGHT / 2.0F, 50.0F);
+            graphics.pose().translate(centerX, eyeY, 50.0F);
             graphics.pose().scale(actualScale, actualScale, -actualScale);
-            graphics.pose().translate(0, npc.getBbHeight() / 2.0F + offset * npc.getScale(), 0);
+            // 将脚底到眼睛的距离补回，使不同身高 NPC 的眼高线对齐。
+            graphics.pose().translate(0, npc.getEyeHeight(), 0);
             graphics.pose().mulPose(new Quaternionf().rotateZ((float) Math.PI));
             RenderSystem.setShaderLights(PORTRAIT_TOP_LIGHT, PORTRAIT_FILL_LIGHT);
             dispatcher.overrideCameraOrientation(new Quaternionf().rotateY((float) Math.PI));

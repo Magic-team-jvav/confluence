@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public final class NPCMood {
 
     private final EntityType<?> ownerType;
     private int value = BASE_VALUE;
+    private boolean pricesAffected = true;
     private List<Component> reasons = List.of();
 
     public NPCMood(EntityType<?> ownerType) {
@@ -39,7 +41,7 @@ public final class NPCMood {
 
     /// 获取 NPC 向玩家出售商品时的价格系数。
     public float getBuyPriceMultiplier() {
-        return Mth.clamp((float) BASE_VALUE / getValue(), MIN_BUY_MULTIPLIER, MAX_BUY_MULTIPLIER);
+        return pricesAffected ? Mth.clamp((float) BASE_VALUE / getValue(), MIN_BUY_MULTIPLIER, MAX_BUY_MULTIPLIER) : 1.0F;
     }
 
     /// 获取 NPC 回收玩家物品时的价格系数。
@@ -49,6 +51,7 @@ public final class NPCMood {
 
     /// 根据附近 NPC 重新计算心情值。
     public void evaluate(Iterable<? extends LivingEntity> nearbyEntities) {
+        pricesAffected = CommonConfigs.NPC_HAPPINESS_AFFECTS_PRICES.get();
         List<BaseNPC> neighbors = new ArrayList<>();
         for (LivingEntity entity : nearbyEntities) {
             if (entity instanceof BaseNPC npc) neighbors.add(npc);
@@ -60,6 +63,7 @@ public final class NPCMood {
 
     /// 将邻居、群系与聚居密度分别计算，并保留玩家可见的原因。
     public void evaluate(MoodEnvironment environment) {
+        pricesAffected = CommonConfigs.NPC_HAPPINESS_AFFECTS_PRICES.get();
         List<Component> factors = new ArrayList<>();
         int total = calculateNeighbors(environment.neighbors(), factors);
         Mood positiveBiome = Mood.NEUTRAL;
@@ -123,6 +127,7 @@ public final class NPCMood {
     public CompoundTag toTag() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("Value", value);
+        tag.putBoolean("PricesAffected", pricesAffected);
         ListTag descriptions = new ListTag();
         for (Component reason : reasons)
             descriptions.add(StringTag.valueOf(Component.Serializer.toJson(reason)));
@@ -132,6 +137,7 @@ public final class NPCMood {
 
     public void loadTag(CompoundTag tag) {
         value = tag.getInt("Value");
+        pricesAffected = !tag.contains("PricesAffected") || tag.getBoolean("PricesAffected");
         List<Component> descriptions = new ArrayList<>();
         for (Tag entry : tag.getList("Reasons", Tag.TAG_STRING)) {
             Component description = Component.Serializer.fromJson(entry.getAsString());

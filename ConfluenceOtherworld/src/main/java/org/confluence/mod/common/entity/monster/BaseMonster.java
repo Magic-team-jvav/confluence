@@ -426,9 +426,9 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         return SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE;
     }
 
-    /// 只攻击当前实体可以合法攻击且类型不同的目标。
+    /// 接触攻击保留当前合法目标，同类实体只有被指定为目标时才可攻击。
     protected boolean canContactAttack(Entity entity) {
-        if (!(entity instanceof LivingEntity living) || entity.getType() == getType() || !canAttack(living)) {
+        if (!(entity instanceof LivingEntity living) || entity.getType() == getType() && entity != getTarget() || !canAttack(living)) {
             return false;
         }
         return living == getTarget() || living instanceof Player;

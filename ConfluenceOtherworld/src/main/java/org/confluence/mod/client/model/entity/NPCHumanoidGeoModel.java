@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.BowItem;
+import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
@@ -64,6 +65,12 @@ public final class NPCHumanoidGeoModel<T extends BaseNPC> extends GeoNormalModel
         if (right == null || left == null) return;
 
         float partialTick = state.getPartialTick();
+        if (Minecraft.getInstance().screen instanceof NPCReforgeScreen screen && screen.isTinkererPreview(npc)) {
+            right.setRotX(screen.getHammerArmRotation(partialTick));
+            right.setRotY(0.0F);
+            right.setRotZ(0.0F);
+            return;
+        }
         if (npc.isUsingItem() && npc.getUseItem().getItem() instanceof BowItem) {
             float progress = Mth.clamp((npc.getTicksUsingItem() + partialTick) / 5.0F, 0.0F, 1.0F);
             float pitch = Mth.lerp(partialTick, npc.xRotO, npc.getXRot()) * Mth.DEG_TO_RAD;

@@ -33,7 +33,6 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -299,8 +298,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     ///
     /// 直接读取世界的特殊种子标志，避免为单次查询引入额外桥接层。
     protected boolean isFtw() {
-        return level() instanceof ServerLevel serverLevel
-                && ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel);
+        return CommonConfigs.SPECIAL_SEED_BOSS_BEHAVIORS.get() && level() instanceof ServerLevel serverLevel && ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel);
     }
 
     // === Damage ===
@@ -324,22 +322,19 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         if (level().isClientSide || !isAlive()) return;
         LivingEntity attacker = EnemyTargeting.attacker(source);
         if (attacker instanceof Player player) registerCombatParticipant(player);
-        if (attacker == null || attacker == this || EnemyDamageRules.isEnemy(attacker)) return;
-        if (!(attacker instanceof Player)) retaliationTarget = attacker;
-        Player player = validCombatPlayer(getTarget());
-        if (player == null) player = findCombatPlayer();
-        if (player != null) setTarget(player);
-        else if (canAttack(attacker)) setTarget(attacker);
+        if (!EnemyTargeting.allowsTarget(this, attacker)) return;
+        retaliationTarget = attacker instanceof Player ? null : attacker;
+        if (canAttack(attacker)) setTarget(attacker);
     }
 
-    /// Boss 优先攻击玩家，也能反击非敌怪攻击者；不主动攻击无关生物。
+    /// Boss 可保留指定目标或反击攻击者，不主动搜索无关生物。
     @Override
     public boolean canAttack(LivingEntity target) {
         return isAlive() && shouldMaintainCombatTarget()
                 && target.level() == level() && target.isAlive() && !target.isRemoved()
                 && (!(target instanceof Player player) || !player.isCreative() && !player.isSpectator())
-                && !EnemyDamageRules.isEnemy(target)
-                && (target instanceof Player || target == retaliationTarget || target == getLastHurtByMob())
+                && EnemyTargeting.allowsTarget(this, target)
+                && (target instanceof Player || target == retaliationTarget || target == getTarget() || target == getLastHurtByMob())
                 && super.canAttack(target);
     }
 
@@ -438,12 +433,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 }
             }
             if (shouldMaintainCombatTarget()) {
-                targetBeforeAi = validCombatPlayer(getTarget());
-                if (targetBeforeAi == null) {
-                    targetBeforeAi = findCombatPlayer();
-                }
-                if (targetBeforeAi == null)
-                    targetBeforeAi = validRetaliationTarget(retaliationTarget);
+                targetBeforeAi = selectCombatTarget(getTarget());
                 if (getTarget() != targetBeforeAi) {
                     setTarget(targetBeforeAi);
                 }
@@ -473,11 +463,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return true;
     }
 
-    /// 更新多人目标与脱战计时。该方法只在服务端调用。
-    ///
-    /// 已有合格目标时保持仇恨稳定，不会因为另一名玩家仇恨值更高就每 tick 来回换目标；只有当前
-    /// 目标失效时才选择追踪范围内仇恨值最高的替代玩家。没有替代者时立即清空目标，使行为树停止
-    /// 攻击，再进入宽限计时。
+    /// 维持指定或反击目标，失效后按玩家仇恨重新索敌；无目标时推进脱战计时。
     private void updateCombatLifecycle(@Nullable LivingEntity targetBeforeAi) {
         if (!shouldMaintainCombatTarget()) {
             if (getTarget() != null) setTarget(null);
@@ -488,25 +474,11 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             return;
         }
 
-        // AI 运行期间可以刷新导航和攻击状态，但不能把仍然合法的权威玩家换成铁傀儡、
-        // 召唤物或另一名玩家。只有原目标已经失效，才接受 AI 找到的合法玩家或重新选取。
-        Player combatPlayer = validCombatPlayer(targetBeforeAi);
-        if (combatPlayer == null) combatPlayer = validCombatPlayer(getTarget());
-        if (combatPlayer == null) combatPlayer = findCombatPlayer();
-        if (combatPlayer != null) registerCombatParticipant(combatPlayer);
-        if (getTarget() != combatPlayer) setTarget(combatPlayer);
-
-        synchronizeCombatTarget(combatPlayer);
-        if (combatPlayer != null) {
-            noTargetTicks = 0;
-            encounterObserverNearby = false;
-            stopDisengageRetreat();
-            return;
-        }
-
-        LivingEntity retaliation = validRetaliationTarget(retaliationTarget);
-        if (retaliation != null) {
-            setTarget(retaliation);
+        LivingEntity combatTarget = selectCombatTarget(targetBeforeAi);
+        if (combatTarget instanceof Player player) registerCombatParticipant(player);
+        if (getTarget() != combatTarget) setTarget(combatTarget);
+        synchronizeCombatTarget(combatTarget);
+        if (combatTarget != null) {
             noTargetTicks = 0;
             encounterObserverNearby = false;
             stopDisengageRetreat();
@@ -743,6 +715,20 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return target instanceof Player player && isValidCurrentCombatPlayer(player) ? player : null;
     }
 
+    /// 优先维持非玩家交战目标，失效后恢复原有的玩家索敌规则。
+    private @Nullable LivingEntity selectCombatTarget(@Nullable LivingEntity previous) {
+        LivingEntity selected = validRetaliationTarget(previous);
+        if (selected == null) selected = validRetaliationTarget(getTarget());
+        if (selected == null) selected = validRetaliationTarget(retaliationTarget);
+        if (selected != null) {
+            retaliationTarget = selected;
+            return selected;
+        }
+        Player player = validCombatPlayer(previous);
+        if (player == null) player = validCombatPlayer(getTarget());
+        return player != null ? player : findCombatPlayer();
+    }
+
     private @Nullable LivingEntity validRetaliationTarget(@Nullable LivingEntity target) {
         return target != null && !(target instanceof Player)
                 && target.level() == level() && target.isAlive()
@@ -823,11 +809,16 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return null;
     }
 
-    private void synchronizeCombatTarget(@Nullable Player target) {
+    private void synchronizeCombatTarget(@Nullable LivingEntity target) {
         UUID targetUUID = target == null ? null : target.getUUID();
         if (Objects.equals(synchronizedCombatTarget, targetUUID)) return;
         synchronizedCombatTarget = targetUUID;
-        onCombatTargetChanged(target);
+        if (target == null || target instanceof Player) onCombatTargetChanged((Player) target);
+        else {
+            for (Entity part : subEntitiesSnapshot) {
+                if (part instanceof Mob mob && mob.isAlive()) mob.setTarget(target);
+            }
+        }
     }
 
     /// 遭遇的权威玩家目标发生变化时调用。所有已加载的生物型从属立即继承新目标；

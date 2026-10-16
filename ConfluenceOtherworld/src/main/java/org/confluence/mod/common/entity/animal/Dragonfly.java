@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
-import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
@@ -18,6 +17,7 @@ import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -50,10 +50,7 @@ public class Dragonfly extends BaseFlyingCritter implements VariantHolder<Dragon
         double dx = getX() - xo;
         double dz = getZ() - zo;
         if (dx * dx + dz * dz > 1.0E-6) {
-            float yaw = (float) (Mth.atan2(-dx, dz) * Mth.RAD_TO_DEG);
-            setYRot(yaw);
-            setYBodyRot(yaw);
-            setYHeadRot(yaw);
+            LibEntityUtils.turnEntityTowards(this, new Vec3(dx, 0.0D, dz), 180.0F, 0.0F);
             setXRot(0.0F);
         }
     }

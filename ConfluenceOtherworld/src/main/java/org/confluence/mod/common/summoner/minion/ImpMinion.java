@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.imp.ImpAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.imp.ImpIdleGoal;
@@ -62,6 +63,7 @@ public class ImpMinion extends MomentumMinion {
 
     @Override
     public void lookAtDirection(Vec3 direction) {
-        setDesiredRotation((float) Math.toDegrees(Math.atan2(-direction.x, direction.z)), 0, getRoll());
+        if (direction.horizontalDistanceSqr() < 1.0E-14D) return;
+        setDesiredRotation(PathNode.yawFromDirection(direction), 0, getRoll());
     }
 }

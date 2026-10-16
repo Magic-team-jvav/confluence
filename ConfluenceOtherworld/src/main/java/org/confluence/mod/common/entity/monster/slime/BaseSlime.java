@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -334,9 +335,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
                 return;
             }
 
-            mob.setYRot(rotlerp(mob.getYRot(), wantedYRot, 90.0F));
-            mob.setYHeadRot(mob.getYRot());
-            mob.setYBodyRot(mob.getYRot());
+            LibEntityUtils.setEntityYaw(mob, rotlerp(mob.getYRot(), wantedYRot, 90.0F));
             operation = Operation.WAIT;
             float speed = (float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
             if (!mob.onGround()) {

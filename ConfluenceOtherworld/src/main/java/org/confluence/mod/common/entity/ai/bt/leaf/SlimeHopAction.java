@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.ai.bt.leaf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
@@ -60,9 +61,7 @@ public class SlimeHopAction extends BTNode {
             if (dir.lengthSqr() > 1.0E-6) {
                 // 跳跃节点直接写入速度，不会像原版 MoveControl 那样自动更新朝向，因此必须在起跳时同步身体方向。
                 float wantedYaw = (float) (Mth.atan2(-dir.x, dir.z) * Mth.RAD_TO_DEG);
-                mob.setYRot(wantedYaw);
-                mob.setYBodyRot(wantedYaw);
-                mob.setYHeadRot(wantedYaw);
+                LibEntityUtils.setEntityYaw(mob, wantedYaw);
             }
             mob.setDeltaMovement(dir.x * h, jumpPower, dir.z * h);
             mob.hasImpulse = true;

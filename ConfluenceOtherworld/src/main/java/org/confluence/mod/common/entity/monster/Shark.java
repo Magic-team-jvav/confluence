@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -138,12 +139,8 @@ public class Shark extends BaseAquaticMonster {
             double distance = offset.length();
             if (distance < 0.05) return;
             float desiredYaw = (float) (Mth.atan2(offset.z, offset.x) * Mth.RAD_TO_DEG) - 90.0F;
-            float desiredPitch = (float) (-Mth.atan2(offset.y, offset.horizontalDistance()) * Mth.RAD_TO_DEG);
             float turn = Math.abs(Mth.wrapDegrees(desiredYaw - getYRot()));
-            setYRot(rotlerp(getYRot(), desiredYaw, 10.0F));
-            setXRot(rotlerp(getXRot(), desiredPitch, 5.0F));
-            setYBodyRot(getYRot());
-            setYHeadRot(getYRot());
+            LibEntityUtils.turnEntityTowards(Shark.this, offset, 10.0F, 5.0F);
 
             // 转弯和接近路径节点时自然收油，顺着身体朝向推进，不横着滑向目标。
             double throttle = Mth.lerp(Mth.clamp(turn / 90.0F, 0.0F, 1.0F), 1.0, 0.25);

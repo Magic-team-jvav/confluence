@@ -1,10 +1,11 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.sounds.SoundEvent;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -70,9 +71,7 @@ public final class EnchantedSword extends PhasingChargeMonster {
             if (++ticks > stateParameters(CombatState.WINDUP).duration()) return BTStatus.SUCCESS;
             setDeltaMovement(getDeltaMovement().scale(0.65));
             float yaw = getYRot() + 36.0F;
-            setYRot(yaw);
-            setYBodyRot(yaw);
-            setYHeadRot(yaw);
+            LibEntityUtils.setEntityYaw(EnchantedSword.this, yaw);
             hasImpulse = true;
             return BTStatus.RUNNING;
         }

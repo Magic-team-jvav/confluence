@@ -4,7 +4,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.MomentumAttachmentEntity;
-import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 
 public abstract class Projectile extends MomentumAttachmentEntity {
 
@@ -27,10 +26,7 @@ public abstract class Projectile extends MomentumAttachmentEntity {
         super.tickPhysics();
         if (isPhysics()) {
             Vec3 velocity = getVelocity();
-            float yaw = (float) Math.toDegrees(Math.atan2(-velocity.x, velocity.z));
-            float pitch = (float) Math.toDegrees(Math.atan2(-velocity.y, Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z)));
-            PathNode pathNode = getCurrentPathNode();
-            setCurrentPathNode(pathNode.modifyEuler(yaw, pitch, pathNode.roll()));
+            setCurrentPathNode(getCurrentPathNode().faceDirection(velocity));
         }
     }
 

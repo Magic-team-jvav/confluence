@@ -1,10 +1,10 @@
 package org.confluence.mod.common.entity.storage;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 
 /// 沿地面跟随所有者的切斯特。
 ///
@@ -37,9 +37,6 @@ public final class ChesterEntity extends StorageCompanionEntity {
         if (motion.horizontalDistanceSqr() <= 1.0E-5) {
             return;
         }
-        float targetYaw = (float) (Mth.atan2(motion.z, motion.x) * Mth.RAD_TO_DEG) - 90.0F;
-        setYRot(Mth.approachDegrees(getYRot(), targetYaw, 12.0F));
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        LibEntityUtils.turnEntityTowards(this, motion, 12.0F, 0.0F);
     }
 }

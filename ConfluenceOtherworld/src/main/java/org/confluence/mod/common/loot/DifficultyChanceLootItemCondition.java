@@ -3,7 +3,6 @@ package org.confluence.mod.common.loot;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -33,7 +32,7 @@ public record DifficultyChanceLootItemCondition(float normalChance,
 
     @Override
     public boolean test(LootContext context) {
-        boolean expert = LibUtils.isAtLeastExpert(context.getLevel(), BlockPos.containing(context.getParam(LootContextParams.ORIGIN)));
+        boolean expert = LibUtils.isAtLeastExpert(context.getLevel());
         return context.getRandom().nextFloat() < (expert ? expertChance : normalChance);
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -135,10 +136,7 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
         Vec3 root = getRootPosition(master);
         Vec3 direction = root.subtract(position());
         if (direction.lengthSqr() <= 1.0E-7) return;
-        float targetYaw = (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
-        float targetPitch = (float) (-Mth.atan2(direction.y, direction.horizontalDistance()) * Mth.RAD_TO_DEG);
-        setYRot(targetYaw);
-        setXRot(targetPitch);
+        LibEntityUtils.updateEntityRotation(this, direction);
     }
 
     public Vec3 getRootPosition() {

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -268,8 +269,7 @@ public class TheTwins extends BaseBoss {
     }
 
     private boolean prepareEyeSpawn(ServerLevel serverLevel, Mob mob) {
-        mob.yHeadRot = mob.getYRot();
-        mob.yBodyRot = mob.getYRot();
+        LibEntityUtils.setEntityYaw(mob, mob.getYRot());
         ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null, null);
         if (mob.isSpawnCancelled()) {
             mob.discard();

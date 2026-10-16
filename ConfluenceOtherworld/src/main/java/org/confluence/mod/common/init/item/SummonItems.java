@@ -18,14 +18,16 @@ import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.List;
+import java.util.function.Supplier;
+
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class SummonItems {
     public static void init() {}
     // 取wiki 75%的数值为基础再调
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final PortDeferredItem<SummonerWeaponItem<FinchMinion>> FINCH_STAFF = ITEMS.register("finch_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<FinchMinion>> FINCH_STAFF = registerItem("finch_staff", "雀杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
                     SummonerAttachmentEntityTypes.FINCH,
                     MinionSlotType.Minion,
@@ -36,8 +38,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<HornetMinion>> NEW_HORNET_STAFF = ITEMS.register("new_hornet_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<HornetMinion>> NEW_HORNET_STAFF = registerItemWithEnglishName("new_hornet_staff", "黄蜂法杖", "Hornet Staff", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.HORNET,
                     MinionSlotType.Minion,
@@ -48,8 +49,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<IronGolemMinion>> IRON_GOLEM_STAFF = ITEMS.register("iron_golem_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<IronGolemMinion>> IRON_GOLEM_STAFF = registerItem("iron_golem_staff", "铁傀儡杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
                     SummonerAttachmentEntityTypes.IRON_GOLEM,
                     MinionSlotType.Minion,
@@ -60,8 +60,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<SlimeMinion>> SLIME_STAFF = ITEMS.register("slime_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<SlimeMinion>> SLIME_STAFF = registerItem("slime_staff", "史莱姆法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
                     SummonerAttachmentEntityTypes.SLIME,
                     MinionSlotType.Minion,
@@ -72,8 +71,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<SculkWispMinion>> SCULK_WISP_STAFF = ITEMS.register("sculk_wisp_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<SculkWispMinion>> SCULK_WISP_STAFF = registerItem("sculk_wisp_staff", "幽匿游灵法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.SCULK_WISP,
                     MinionSlotType.Minion,
@@ -84,8 +82,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<ImpMinion>> IMP_STAFF = ITEMS.register("imp_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<ImpMinion>> IMP_STAFF = registerItem("imp_staff", "小鬼法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.IMP,
                     MinionSlotType.Minion,
@@ -96,8 +93,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<SnowFlinxMinion>> SNOW_FLINX_STAFF = ITEMS.register("snow_flinx_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<SnowFlinxMinion>> SNOW_FLINX_STAFF = registerItemWithEnglishName("snow_flinx_staff", "小雪怪法杖", "Flinx Staff", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.SNOW_FLINX,
                     MinionSlotType.Minion,
@@ -108,8 +104,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<VampireFrogMinion>> VAMPIRE_FROG_STAFF = ITEMS.register("vampire_frog_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<VampireFrogMinion>> VAMPIRE_FROG_STAFF = registerItem("vampire_frog_staff", "吸血鬼青蛙法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.VAMPIRE_FROG,
                     MinionSlotType.Minion,
@@ -120,8 +115,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<DeadlySphereMinion>> DEADLY_SPHERE_STAFF = ITEMS.register("deadly_sphere_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<DeadlySphereMinion>> DEADLY_SPHERE_STAFF = registerItem("deadly_sphere_staff", "致命球法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW),
                     SummonerAttachmentEntityTypes.DEADLY_SPHERE,
                     MinionSlotType.Minion,
@@ -132,8 +126,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<SanguineBatMinion>> SANGUINE_STAFF = ITEMS.register("sanguine_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<SanguineBatMinion>> SANGUINE_STAFF = registerItem("sanguine_staff", "血红法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
                     SummonerAttachmentEntityTypes.SANGUINE_BAT,
                     MinionSlotType.Minion,
@@ -144,8 +137,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<SpiderMinion>> SPIDER_STAFF = ITEMS.register("spider_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<SpiderMinion>> SPIDER_STAFF = registerItem("spider_staff", "蜘蛛法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
                     SummonerAttachmentEntityTypes.SPIDER,
                     MinionSlotType.Minion,
@@ -156,8 +148,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<DesertTigerMinion>> DESERT_TIGER_STAFF = ITEMS.register("desert_tiger_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<DesertTigerMinion>> DESERT_TIGER_STAFF = registerItem("desert_tiger_staff", "沙漠虎杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW),
                     SummonerAttachmentEntityTypes.DESERT_TIGER,
                     MinionSlotType.Minion,
@@ -190,8 +181,7 @@ public class SummonItems {
                     },
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<TerraprismaMinion>> TERRAPRISMA = ITEMS.register("terraprisma",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<TerraprismaMinion>> TERRAPRISMA = registerItem("terraprisma", "泰拉棱镜", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK),
                     SummonerAttachmentEntityTypes.TERRAPRISMA,
                     MinionSlotType.Minion,
@@ -211,8 +201,7 @@ public class SummonItems {
                     },
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<RuinRelicMinion>> RUIN_STAFF = ITEMS.register("ruin_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<RuinRelicMinion>> RUIN_STAFF = registerItemWithEnglishName("ruin_staff", "禁戒法杖", "Forbidden Staff", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE),
                     SummonerAttachmentEntityTypes.RUIN_RELIC,
                     MinionSlotType.Minion,
@@ -223,8 +212,7 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<EyeLaserTurretMinion>> EYE_LASER_TURRET_STAFF = ITEMS.register("eye_laser_turret_staff",
-            () -> new SummonerWeaponItem<>(
+    public static final PortDeferredItem<SummonerWeaponItem<EyeLaserTurretMinion>> EYE_LASER_TURRET_STAFF = registerItem("eye_laser_turret_staff", "眼球激光塔法杖", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.EYE_LASER_TURRET,
                     MinionSlotType.Sentry,
@@ -243,4 +231,16 @@ public class SummonItems {
                     },
                     null
             ));
+
+    private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
+        PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static <T extends Item> PortDeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
+        PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        return entry;
+    }
 }

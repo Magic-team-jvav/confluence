@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.WormChainTrail;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -190,8 +191,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
 
     @Override
     protected float tickHeadTurn(float bodyYaw, float animationSpeed) {
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        LibEntityUtils.setEntityYaw(this, getYRot());
         return animationSpeed;
     }
 
@@ -222,8 +222,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
                 Vec3 tangent = segmentTrail.headTangent();
                 if (tangent.lengthSqr() > 1.0E-7D) {
                     WormSegment.orientAlong(this, tangent);
-                    setYBodyRot(getYRot());
-                    setYHeadRot(getYRot());
+                    LibEntityUtils.setEntityYaw(this, getYRot());
                 }
             }
             tickCollision();

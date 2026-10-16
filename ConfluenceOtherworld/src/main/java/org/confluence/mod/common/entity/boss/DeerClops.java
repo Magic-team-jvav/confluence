@@ -17,6 +17,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -274,11 +275,9 @@ public class DeerClops extends BaseBoss {
     }
 
     private void applyLockedAttackFacing() {
-        setYRot(attackFacingYaw);
+        LibEntityUtils.setEntityYaw(this, attackFacingYaw);
         yRotO = attackFacingYaw;
-        yBodyRot = attackFacingYaw;
         yBodyRotO = attackFacingYaw;
-        yHeadRot = attackFacingYaw;
         yHeadRotO = attackFacingYaw;
     }
 

@@ -81,6 +81,10 @@ legacyForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+configurations.configureEach {
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
 configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
@@ -227,7 +231,9 @@ dependencies {
     modImplementation(jarJar("org.mesdag:ThreeDimensionParticle-forge-${minecraft_version}:${thr_dim_particle_version}"))
     modImplementation(jarJar("org.mesdag:OpalLight-forge-${minecraft_version}:${opallight_version}"))
     modImplementation(jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}"))
-    modImplementation(jarJar("com.coobird:DataTip-forge-1.20.1:${datatip_version}"))
+    modImplementation(jarJar("com.coobird:DataTip-forge-1.20.1:${datatip_version}")) {
+        changing = true
+    }
 
     modImplementation("top.theillusivec4.curios:curios-forge:${curios_version}")
 

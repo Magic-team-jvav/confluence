@@ -7,6 +7,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.SelectiveBlockCollision;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -70,9 +71,7 @@ public final class SandShark extends BaseMonster {
                             movement = movement.add(0.0, -0.08, 0.0).multiply(0.98, 0.98, 0.98);
                             if (onGround()) {
                                 movement = new Vec3((random.nextFloat() * 2 - 1) * 0.2, 0.5, (random.nextFloat() * 2 - 1) * 0.2);
-                                setYRot(random.nextFloat() * 360);
-                                setYBodyRot(getYRot());
-                                setYHeadRot(getYRot());
+                                LibEntityUtils.setEntityYaw(SandShark.this, random.nextFloat() * 360);
                                 setOnGround(false);
                                 hasImpulse = true;
                             }

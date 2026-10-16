@@ -27,6 +27,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.data.gen.language.TranslationConsumer;
 import org.confluence.mod.common.event.ItemGroupEvents;
 import org.confluence.mod.common.event.ModEvents;
 import org.confluence.mod.common.event.NetworkEvents;
@@ -46,9 +47,14 @@ import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 @Mod(Confluence.MODID)
 public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
+    public static final List<Consumer<TranslationConsumer>> LANGUAGE_PROVIDERS = new ArrayList<>();
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 

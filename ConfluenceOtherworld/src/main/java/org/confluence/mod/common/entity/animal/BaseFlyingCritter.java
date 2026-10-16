@@ -11,6 +11,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -72,7 +73,7 @@ public abstract class BaseFlyingCritter extends BaseCritter {
     // 将飞行小动物的注视偏航应用到身体。
     @Override
     protected float tickHeadTurn(float bodyYaw, float animationSpeed) {
-        setYBodyRot(getYHeadRot());
+        LibEntityUtils.setEntityYaw(this, getYHeadRot());
         return animationSpeed;
     }
 

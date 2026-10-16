@@ -67,7 +67,8 @@ public abstract class GroundMinion extends MomentumMinion implements IBlockColli
 
     @Override
     public void lookAtDirection(Vec3 direction) {
-        setDesiredRotation((float) Math.toDegrees(Math.atan2(-direction.x, direction.z)), 0, getRoll());
+        if (direction.horizontalDistanceSqr() < 1.0E-14D) return;
+        setDesiredRotation(PathNode.yawFromDirection(direction), 0, getRoll());
     }
 
     @Override

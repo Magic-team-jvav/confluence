@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -312,16 +313,10 @@ public final class PrimeEnderDragon extends BaseBoss {
 
     private void updateRotationFromVelocity(float yawStep) {
         Vec3 velocity = getDeltaMovement();
-        double horizontal = velocity.horizontalDistance();
         if (velocity.lengthSqr() < 1.0E-6) {
             return;
         }
-        float targetYaw = horizontal < 1.0E-7D ? getYRot() : (float) (Mth.atan2(-velocity.x, velocity.z) * Mth.RAD_TO_DEG);
-        float targetPitch = (float) (-Mth.atan2(velocity.y, horizontal) * Mth.RAD_TO_DEG);
-        setYRot(Mth.approachDegrees(getYRot(), targetYaw, yawStep));
-        setXRot(Mth.approachDegrees(getXRot(), targetPitch, 4.0F));
-        setYHeadRot(getYRot());
-        yBodyRot = getYRot();
+        LibEntityUtils.turnEntityTowards(this, velocity, yawStep, 4.0F);
     }
 
     private void setLanding(boolean landing) {

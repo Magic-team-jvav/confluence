@@ -108,9 +108,9 @@ public abstract class MomentumMinion extends Minion implements IMomentumAttachme
 
     /** 看向指定方向 */
     public void lookAtDirection(Vec3 direction) {
-        float targetYaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
-        float targetPitch = (float) Math.toDegrees(Math.asin(-direction.y));
-        setDesiredRotation(targetYaw, targetPitch, getRoll());
+        if (direction.lengthSqr() < 1.0E-14D) return;
+        PathNode facing = getCurrentPathNode().faceDirection(direction);
+        setDesiredRotation(facing.yaw(), facing.pitch(), getRoll());
     }
 
     /** 设置期望朝向 */

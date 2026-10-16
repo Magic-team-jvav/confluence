@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class ChestBlocks {
@@ -39,26 +40,26 @@ public class ChestBlocks {
     public static final ArrayList<PortDeferredBlock<BaseChestBlock>> NORMAL_CHESTS = new ArrayList<>();
     public static final ArrayList<PortDeferredBlock<DeathChestBlock>> DEATH_CHESTS = new ArrayList<>();
 
-    public static final PortDeferredBlock<BaseChestBlock> GOLDEN_CHEST = registerNormal("golden_chest", stack -> {
+    public static final PortDeferredBlock<BaseChestBlock> GOLDEN_CHEST = registerNormal("golden_chest", "金宝箱", stack -> {
         if (stack.is(ToolItems.GOLDEN_KEY)) {
             stack.shrink(1);
             return true;
         }
         return false;
     });
-    public static final PortDeferredBlock<DeathChestBlock> DEATH_GOLDEN_CHEST = registerDeath("death_golden_chest");
-    public static final PortDeferredBlock<BaseChestBlock> SHADOW_CHEST = registerNormal("shadow_chest", stack -> stack.is(ToolItems.SHADOW_KEY));
-    public static final PortDeferredBlock<BaseChestBlock> FROZEN_CHEST = registerNormal("frozen_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> IVY_CHEST = registerNormal("ivy_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> RICH_MAHOGANY_CHEST = registerNormal("rich_mahogany_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> MARBLE_CHEST = registerNormal("marble_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> GRANITE_CHEST = registerNormal("granite_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> WATER_CHEST = registerNormal("water_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> SKYWARE_CHEST = registerNormal("skyware_chest", null);
-    public static final PortDeferredBlock<DeathChestBlock> DEATH_WOODEN_CHEST = registerDeath("death_wooden_chest");
-    public static final PortDeferredBlock<BaseChestBlock> SANDSTONE_CHEST = registerNormal("sandstone_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> LIVING_WOOD_CHEST = registerNormal("living_wood_chest", null);
-    public static final PortDeferredBlock<BaseChestBlock> DUNGEON_CHEST = registerNormal("dungeon_chest", stack -> {
+    public static final PortDeferredBlock<DeathChestBlock> DEATH_GOLDEN_CHEST = registerDeath("death_golden_chest", "死人金箱");
+    public static final PortDeferredBlock<BaseChestBlock> SHADOW_CHEST = registerNormal("shadow_chest", "暗影箱", stack -> stack.is(ToolItems.SHADOW_KEY));
+    public static final PortDeferredBlock<BaseChestBlock> FROZEN_CHEST = registerNormal("frozen_chest", "冰冻箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> IVY_CHEST = registerNormal("ivy_chest", "常春藤箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> RICH_MAHOGANY_CHEST = registerNormal("rich_mahogany_chest", "红木箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> MARBLE_CHEST = registerNormal("marble_chest", "大理石箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> GRANITE_CHEST = registerNormal("granite_chest", "花岗岩箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> WATER_CHEST = registerNormal("water_chest", "水中箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> SKYWARE_CHEST = registerNormal("skyware_chest", "天域箱", null);
+    public static final PortDeferredBlock<DeathChestBlock> DEATH_WOODEN_CHEST = registerDeath("death_wooden_chest", "死人木箱");
+    public static final PortDeferredBlock<BaseChestBlock> SANDSTONE_CHEST = registerNormal("sandstone_chest", "沙岩箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> LIVING_WOOD_CHEST = registerNormal("living_wood_chest", "生命木箱", null);
+    public static final PortDeferredBlock<BaseChestBlock> DUNGEON_CHEST = registerNormal("dungeon_chest", "地牢箱", stack -> {
         if (stack.is(ToolItems.GOLDEN_DUNGEON_KEY)) {
             stack.shrink(1);
             return true;
@@ -68,15 +69,15 @@ public class ChestBlocks {
     public static final Supplier<BlockEntityType<BaseChestBlock.BEntity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.BEntity::new, NORMAL_CHESTS.stream().map(PortDeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
     public static final Supplier<BlockEntityType<DeathChestBlock.BEntity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.BEntity::new, DEATH_CHESTS.stream().map(PortDeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
-    public static final PortDeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> CRIMSON_CHEST = registerWithItem("crimson_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CRIMSON_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> HALLOWED_CHEST = registerWithItem("hallowed_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.HALLOWED_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> ICE_CHEST = registerWithItem("ice_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.FROZEN_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> DESERT_CHEST = registerWithItem("desert_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.DESERT_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> OCEAN_CHEST = registerWithItem("ocean_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.OCEAN_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> UNIVERSE_CHEST = registerWithItem("universe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.UNIVERSE_KEY)));
-    public static final PortDeferredBlock<BiomeChestBlock> MECHANIC_SAFE_CHEST = registerWithItem("mechanic_safe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.MECHANIC_SAFE_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", "丛林箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", "腐化箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> CRIMSON_CHEST = registerWithItem("crimson_chest", "猩红箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CRIMSON_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> HALLOWED_CHEST = registerWithItem("hallowed_chest", "神圣箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.HALLOWED_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> ICE_CHEST = registerWithItem("ice_chest", "冰雪箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.FROZEN_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> DESERT_CHEST = registerWithItem("desert_chest", "沙漠箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.DESERT_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> OCEAN_CHEST = registerWithItem("ocean_chest", "海洋箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.OCEAN_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> UNIVERSE_CHEST = registerWithItem("universe_chest", "太空箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.UNIVERSE_KEY)));
+    public static final PortDeferredBlock<BiomeChestBlock> MECHANIC_SAFE_CHEST = registerWithItem("mechanic_safe_chest", "机械保险箱", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.MECHANIC_SAFE_KEY)));
     public static final Supplier<BlockEntityType<BiomeChestBlock.BEntity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.BEntity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get(), OCEAN_CHEST.get(), UNIVERSE_CHEST.get(), MECHANIC_SAFE_CHEST.get()).build(DSL.remainderType()));
 
     private static PortDeferredBlock<BaseChestBlock> registerNormal(String id, @Nullable Predicate<ItemStack> predicate) {
@@ -117,5 +118,23 @@ public class ChestBlocks {
         PortDeferredBlock<B> block = BLOCKS.register(id, supplier);
         ModItems.BLOCK_ITEMS.register(id, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
+    }
+
+    private static PortDeferredBlock<BaseChestBlock> registerNormal(String registryId, String chineseName, @Nullable Predicate<ItemStack> predicate) {
+        PortDeferredBlock<BaseChestBlock> entry = registerNormal(registryId, predicate);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static PortDeferredBlock<DeathChestBlock> registerDeath(String registryId, String chineseName) {
+        PortDeferredBlock<DeathChestBlock> entry = registerDeath(registryId);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static <B extends Block> PortDeferredBlock<B> registerWithItem(String registryId, String chineseName, com.google.common.base.Supplier<B> supplier) {
+        PortDeferredBlock<B> entry = registerWithItem(registryId, supplier);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
     }
 }

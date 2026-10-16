@@ -7,6 +7,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 
 /// 由钱币槽召唤的飞行存钱罐。
 ///
@@ -56,10 +57,7 @@ public final class FlyingPiggyBankEntity extends StorageCompanionEntity implemen
         if (getOwner() != null) {
             Vec3 direction = getOwner().position().subtract(position());
             if (direction.horizontalDistanceSqr() > 1.0E-5) {
-                float yaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
-                setYRot(yaw);
-                yBodyRot = yaw;
-                yHeadRot = yaw;
+                LibEntityUtils.turnEntityTowards(this, direction, 180.0F, 0.0F);
             }
         }
     }

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
@@ -128,8 +129,7 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
 
     @Override
     protected float tickHeadTurn(float bodyYaw, float animationSpeed) {
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        LibEntityUtils.setEntityYaw(this, getYRot());
         return animationSpeed;
     }
 
@@ -151,8 +151,7 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
         synchronizeOwnerScaling(resolvedOwner);
         tickPart(resolvedOwner);
         // 部件完成位移和转向后，同步本刻的身体和头部朝向。
-        setYBodyRot(getYRot());
-        setYHeadRot(getYRot());
+        LibEntityUtils.setEntityYaw(this, getYRot());
     }
 
     private void synchronizeOwnerScaling(T owner) {

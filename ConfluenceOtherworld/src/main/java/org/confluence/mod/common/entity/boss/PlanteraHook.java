@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -147,8 +148,7 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
         if (movement.lengthSqr() < 1.0E-7) {
             return;
         }
-        setYRot((float) (Mth.atan2(movement.z, movement.x) * Mth.RAD_TO_DEG) - 90.0F);
-        setXRot((float) (-(Mth.atan2(movement.y, movement.horizontalDistance())) * Mth.RAD_TO_DEG));
+        LibEntityUtils.updateEntityRotation(this, movement);
     }
 
     @Override

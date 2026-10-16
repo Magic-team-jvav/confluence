@@ -24,6 +24,7 @@ import net.minecraft.world.level.material.PushReaction;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.gen.language.TranslationConsumer;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortDeferredBlock;
@@ -34,10 +35,12 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 import static org.confluence.mod.common.init.block.ModBlocks.registerWithoutItem;
 
@@ -572,6 +575,12 @@ public class LogBlockSet {
         public Builder sapling(Function<BlockBehaviour.Properties, ? extends SaplingBlock> function) {
             this.sapling = function;
             return this;
+        }
+
+        public LogBlockSet build(BiConsumer<LogBlockSet, TranslationConsumer> translations) {
+            LogBlockSet set = build();
+            LANGUAGE_PROVIDERS.add(language -> translations.accept(set, language));
+            return set;
         }
 
         public LogBlockSet build() {

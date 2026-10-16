@@ -11,6 +11,9 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
+import java.util.function.Supplier;
+
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.item.ModItems.attributes;
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 
@@ -19,23 +22,35 @@ public class AxeItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final PortDeferredItem<BaseAxeItem> COPPER_AXE = ITEMS.register("copper_axe", () -> new BaseAxeItem(ModTiers.COPPER, 3, 0.85F, new Item.Properties(), attributes(-1, 0.45), ModRarity.WHITE));
-    public static final PortDeferredItem<BaseAxeItem> TIN_AXE = ITEMS.register("tin_axe", () -> new BaseAxeItem(ModTiers.TIN, 4, 0.85F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
-    public static final PortDeferredItem<BaseAxeItem> LEAD_AXE = ITEMS.register("lead_axe", () -> new BaseAxeItem(ModTiers.LEAD, 6, 0.95F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
-    public static final PortDeferredItem<BaseAxeItem> SILVER_AXE = ITEMS.register("silver_axe", () -> new BaseAxeItem(ModTiers.SILVER, 6, 0.95F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
-    public static final PortDeferredItem<BaseAxeItem> TUNGSTEN_AXE = ITEMS.register("tungsten_axe", () -> new BaseAxeItem(ModTiers.TUNGSTEN, 7, 0.97F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
-    public static final PortDeferredItem<BaseAxeItem> GOLDEN_AXE = ITEMS.register("golden_axe", () -> new BaseAxeItem(ModTiers.GOLD, 7, 1, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
-    public static final PortDeferredItem<BaseAxeItem> PLATINUM_AXE = ITEMS.register("platinum_axe", () -> new BaseAxeItem(ModTiers.PLATINUM, 8, 1.1F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
-    public static final PortDeferredItem<BaseAxeItem> WAR_AXE_OF_THE_NIGHT = ITEMS.register("war_axe_of_the_night", () -> new BaseAxeItem(ModTiers.DEMONITE, 10, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
-    public static final PortDeferredItem<BaseAxeItem> BLOOD_LUST_CLUSTER = ITEMS.register("blood_lust_cluster", () -> new BaseAxeItem(ModTiers.CRIMTANE, 11, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> COPPER_AXE = registerItem("copper_axe", "铜斧", () -> new BaseAxeItem(ModTiers.COPPER, 3, 0.85F, new Item.Properties(), attributes(-1, 0.45), ModRarity.WHITE));
+    public static final PortDeferredItem<BaseAxeItem> TIN_AXE = registerItem("tin_axe", "锡斧", () -> new BaseAxeItem(ModTiers.TIN, 4, 0.85F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
+    public static final PortDeferredItem<BaseAxeItem> LEAD_AXE = registerItem("lead_axe", "铅斧", () -> new BaseAxeItem(ModTiers.LEAD, 6, 0.95F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
+    public static final PortDeferredItem<BaseAxeItem> SILVER_AXE = registerItem("silver_axe", "银斧", () -> new BaseAxeItem(ModTiers.SILVER, 6, 0.95F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
+    public static final PortDeferredItem<BaseAxeItem> TUNGSTEN_AXE = registerItem("tungsten_axe", "钨斧", () -> new BaseAxeItem(ModTiers.TUNGSTEN, 7, 0.97F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
+    public static final PortDeferredItem<BaseAxeItem> GOLDEN_AXE = registerItem("golden_axe", "金斧", () -> new BaseAxeItem(ModTiers.GOLD, 7, 1, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
+    public static final PortDeferredItem<BaseAxeItem> PLATINUM_AXE = registerItem("platinum_axe", "铂金斧", () -> new BaseAxeItem(ModTiers.PLATINUM, 8, 1.1F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
+    public static final PortDeferredItem<BaseAxeItem> WAR_AXE_OF_THE_NIGHT = registerItemWithEnglishName("war_axe_of_the_night", "暗夜战斧", "War Axe of the Night", () -> new BaseAxeItem(ModTiers.DEMONITE, 10, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> BLOOD_LUST_CLUSTER = registerItem("blood_lust_cluster", "嗜血狂斧", () -> new BaseAxeItem(ModTiers.CRIMTANE, 11, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
 
-    public static final PortDeferredItem<BaseAxeItem> COBALT_WARAXE = ITEMS.register("cobalt_waraxe", () -> new BaseAxeItem(ModTiers.COBALT, 15, 1.4F, unbreakable(), attributes(0, 0.55), ModRarity.LIGHT_RED).hasImage());
-    public static final PortDeferredItem<BaseAxeItem> PALLADIUM_WARAXE = ITEMS.register("palladium_waraxe", () -> new BaseAxeItem(ModTiers.PALLADIUM, 16, 1.4F, unbreakable(), attributes(0, 0.5), ModRarity.LIGHT_RED).hasImage());
-    public static final PortDeferredItem<BaseAxeItem> MYTHRIL_WARAXE = ITEMS.register("mythril_waraxe", () -> new BaseAxeItem(ModTiers.MYTHRIL, 18, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.LIGHT_RED).hasImage());
-    public static final PortDeferredItem<BaseAxeItem> ORICHALCUM_WARAXE = ITEMS.register("orichalcum_waraxe", () -> new BaseAxeItem(ModTiers.ORICHALCUM, 19, 1.6F, unbreakable(), attributes(0, 0.65), ModRarity.LIGHT_RED).hasImage());
-    public static final PortDeferredItem<BaseAxeItem> ADAMANTITE_WARAXE = ITEMS.register("adamantite_waraxe", () -> new BaseAxeItem(ModTiers.ADAMANTITE, 21, 2.0F, unbreakable(), attributes(0, 0.7), ModRarity.LIGHT_RED).hasImage());
-    public static final PortDeferredItem<BaseAxeItem> TITANIUM_WARAXE = ITEMS.register("titanium_waraxe", () -> new BaseAxeItem(ModTiers.TITANIUM, 23, 2.0F, unbreakable(), attributes(0, 0.475), ModRarity.LIGHT_RED).hasImage());
-    public static final PortDeferredItem<BaseAxeItem> CHLOROPHYTE_GREATAXE = ITEMS.register("chlorophyte_greataxe", () -> new BaseAxeItem(ModTiers.CHLOROPHYTE, 26, 2.5F, unbreakable(), attributes(1, 0.7), ModRarity.LIME));
-    public static final PortDeferredItem<BaseAxeItem> LUCY_THE_AXE = ITEMS.register("lucy_the_axe", LucyTheAxe::new);
-    public static final PortDeferredItem<AxeOfRegrowth> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", AxeOfRegrowth::new); // 再生之斧
+    public static final PortDeferredItem<BaseAxeItem> COBALT_WARAXE = registerItem("cobalt_waraxe", "钴战斧", () -> new BaseAxeItem(ModTiers.COBALT, 15, 1.4F, unbreakable(), attributes(0, 0.55), ModRarity.LIGHT_RED).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> PALLADIUM_WARAXE = registerItem("palladium_waraxe", "钯金战斧", () -> new BaseAxeItem(ModTiers.PALLADIUM, 16, 1.4F, unbreakable(), attributes(0, 0.5), ModRarity.LIGHT_RED).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> MYTHRIL_WARAXE = registerItem("mythril_waraxe", "秘银战斧", () -> new BaseAxeItem(ModTiers.MYTHRIL, 18, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.LIGHT_RED).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> ORICHALCUM_WARAXE = registerItem("orichalcum_waraxe", "山铜战斧", () -> new BaseAxeItem(ModTiers.ORICHALCUM, 19, 1.6F, unbreakable(), attributes(0, 0.65), ModRarity.LIGHT_RED).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> ADAMANTITE_WARAXE = registerItem("adamantite_waraxe", "精金战斧", () -> new BaseAxeItem(ModTiers.ADAMANTITE, 21, 2.0F, unbreakable(), attributes(0, 0.7), ModRarity.LIGHT_RED).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> TITANIUM_WARAXE = registerItem("titanium_waraxe", "钛金战斧", () -> new BaseAxeItem(ModTiers.TITANIUM, 23, 2.0F, unbreakable(), attributes(0, 0.475), ModRarity.LIGHT_RED).hasImage());
+    public static final PortDeferredItem<BaseAxeItem> CHLOROPHYTE_GREATAXE = registerItem("chlorophyte_greataxe", "叶绿巨斧", () -> new BaseAxeItem(ModTiers.CHLOROPHYTE, 26, 2.5F, unbreakable(), attributes(1, 0.7), ModRarity.LIME));
+    public static final PortDeferredItem<BaseAxeItem> LUCY_THE_AXE = registerItemWithEnglishName("lucy_the_axe", "露西斧", "Lucy the Axe", LucyTheAxe::new);
+    public static final PortDeferredItem<AxeOfRegrowth> AXE_OF_REGROWTH = registerItemWithEnglishName("axe_of_regrowth", "再生之斧", "Axe of Regrowth", AxeOfRegrowth::new); // 再生之斧
+
+    private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
+        PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static <T extends Item> PortDeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
+        PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        return entry;
+    }
 }

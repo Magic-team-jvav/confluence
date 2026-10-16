@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -340,8 +340,7 @@ public class EyeOfCthulhu extends BaseBoss {
     /// 客户端也重复约束俯仰，避免无目标的 LookControl 在两个移动包之间把姿态拉回水平。
     private void faceSkyward() {
         setXRot(-90.0F);
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        LibEntityUtils.setEntityYaw(this, getYRot());
         getLookControl().setLookAt(getX(), getEyeY() + 1.0, getZ());
     }
 

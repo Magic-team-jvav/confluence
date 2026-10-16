@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -99,8 +100,7 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
 
         Vec3 lookDirection = getEyePosition().subtract(anchor);
         if (lookDirection.lengthSqr() > 1.0E-6) {
-            setYRot((float) (Mth.atan2(lookDirection.z, lookDirection.x) * Mth.RAD_TO_DEG) - 90.0F);
-            setXRot((float) (-Mth.atan2(lookDirection.y, lookDirection.horizontalDistance()) * Mth.RAD_TO_DEG));
+            LibEntityUtils.updateEntityRotation(this, lookDirection);
         }
 
         if (contactCooldown > 0) contactCooldown--;

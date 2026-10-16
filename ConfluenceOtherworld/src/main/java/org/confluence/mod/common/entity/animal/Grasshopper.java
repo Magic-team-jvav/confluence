@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -205,9 +206,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
 
             float targetYaw = (float) (Mth.atan2(deltaZ, deltaX) * Mth.RAD_TO_DEG) - 90.0F;
             if (distanceSquared > 1.0 && grasshopper.onGround()) {
-                mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
-                mob.yHeadRot = mob.getYRot();
-                mob.yBodyRot = mob.getYRot();
+                LibEntityUtils.setEntityYaw(mob, rotlerp(mob.getYRot(), targetYaw, 90.0F));
             }
 
             if (!grasshopper.onGround()) {

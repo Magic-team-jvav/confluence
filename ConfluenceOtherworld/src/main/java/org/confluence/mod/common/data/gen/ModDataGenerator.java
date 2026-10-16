@@ -45,9 +45,9 @@ public final class ModDataGenerator {
         CompletableFuture<HolderLookup.Provider> registries = lookup;
 
         boolean client = event.includeClient();
-        generator.addProvider(client, new ModChineseProvider(output));
+        generator.addProvider(client, new ModLanguageProvider(output, "zh_cn", lookup));
         generator.addProvider(client, new ModDataTipProvider(output));
-        generator.addProvider(client, new ModEnglishProvider(output, lookup));
+        generator.addProvider(client, new ModLanguageProvider(output, "en_us", lookup));
         generator.addProvider(client, new ModEnUdProvider(output, lookup));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));

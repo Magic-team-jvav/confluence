@@ -1,254 +1,231 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.confluence.mod.common.entity.projectile.TwinEyeProjectile;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-import java.util.HashSet;
-import java.util.Set;
-
-/// 双子魔眼中的魔焰眼。
-///
-/// 一阶段以短魔焰齐射衔接冲刺，半血变形后改为贴近目标的连续火流和更快冲刺。
-/// 另一只魔眼死亡后，本体继续执行当前阶段的独立循环；没有额外的单眼
-/// 狂暴参数，因此这里也不虚构第三套战斗数值。
+/// 魔焰眼：同高射击与锁向长冲刺交替，变形后改为近距离持续喷焰。
 public class Spazmatism extends AbstractTwinEye {
-    private static final String STATE_TAG = "CombatState";
-    private static final String STATE_TICKS_TAG = "StateTicks";
-    private static final String SHOTS_TAG = "ShotsRemaining";
-    private static final String DASHES_TAG = "DashesRemaining";
-    private static final String DASH_X_TAG = "DashX";
-    private static final String DASH_Y_TAG = "DashY";
-    private static final String DASH_Z_TAG = "DashZ";
+    private static final int APPROACH_TICKS = 16;
+    private static final int FIRE_TICKS = 100;
+    private static final int WINDUP_TICKS = 10;
+    private static final int DASH_TICKS = 24;
+    private static final int RECOVER_TICKS = 6;
+    private static final int DASH_COUNT = 3;
+    private static final int PHASE_TWO_DASH_COUNT = 6;
+    private static final int STREAM_TICKS = 140;
+    private static final int MAX_COORDINATION_WAIT_TICKS = 80;
+    private static final int POSITION_REFRESH_TICKS = 12;
+    private static final double PHASE_ONE_DASH_SPEED = 1.9;
+    private static final double PHASE_TWO_DASH_SPEED = 2.7;
+    private static final double FIRE_DISTANCE = 11.0;
+    private static final double STREAM_DISTANCE = 6.0;
+    private static final float FLAME_BALL_SPEED = 1.1F;
+    private static final float STREAM_SPEED = 0.8F;
 
-    private static final int APPROACH = 0;
-    private static final int FLAME_VOLLEY = 1;
-    private static final int DASH_WINDUP = 2;
-    private static final int DASH = 3;
-
-    private int combatState = APPROACH;
-    private int stateTicks = 50;
-    private int shotsRemaining;
-    private int dashesRemaining;
+    private State state = State.APPROACH;
+    private int stateTicks;
+    private int shotTimer;
+    private int dashes;
     private Vec3 dashDirection = Vec3.ZERO;
+    private int orbitDirection = 1;
+    private Vec3 firingPosition;
 
-    public Spazmatism(EntityType<? extends BaseFlyingMonster> type, Level level) {
+    public Spazmatism(EntityType<? extends Monster> type, Level level) {
         super(type, level);
     }
 
     @Override
-    protected boolean isRetinazer() {
-        return false;
+    protected double getMuzzleDistance() {return isTransformed() ? 39.0 / 16.0 : 23.0 / 16.0;}
+
+    @Override
+    protected boolean isRetinazer() {return false;}
+
+    @Override
+    protected boolean isDashCombatState() {return state == State.DASH;}
+
+    @Override
+    protected int transformationDuration() {return 49;}
+
+    boolean isPreparingOrDashing() {
+        return state == State.WINDUP || state == State.DASH || state == State.RECOVER && dashes > 0;
     }
 
     @Override
-    protected boolean isDashCombatState() {
-        return combatState == DASH;
+    protected Vec3 getCombatLookDirection(LivingEntity target) {
+        return state == State.DASH || state == State.WINDUP ? dashDirection : super.getCombatLookDirection(target);
     }
 
     @Override
-    protected void tickTwinCombat(TheTwins master) {
+    protected void tickTwinCombat() {
         LivingEntity target = getTarget();
-        if (target == null || !target.isAlive()) {
-            return;
-        }
-        switch (combatState) {
-            case APPROACH -> tickApproach(target);
-            case FLAME_VOLLEY -> tickFlameVolley(target);
-            case DASH_WINDUP -> tickDashWindup(target);
-            case DASH -> tickDash();
-            default -> beginApproach();
-        }
-    }
-
-    private void tickApproach(LivingEntity target) {
-        moveTowardTarget(target, movementSpeed(), followDistance());
-        if (--stateTicks <= 0) {
-            combatState = FLAME_VOLLEY;
-            shotsRemaining = isTransformed() ? 33 : 5;
-            stateTicks = flameInterval();
-        }
-    }
-
-    private void tickFlameVolley(LivingEntity target) {
-        moveTowardTarget(target, movementSpeed(), followDistance());
-        if (--stateTicks > 0) {
-            return;
-        }
-        fireFlame(target);
-        if (--shotsRemaining <= 0) {
-            dashesRemaining = 5;
-            combatState = DASH_WINDUP;
-            stateTicks = 10;
-        } else {
-            stateTicks = flameInterval();
-        }
-    }
-
-    private void tickDashWindup(LivingEntity target) {
-        setDeltaMovement(getDeltaMovement().scale(0.68));
-        if (--stateTicks > 0) {
-            return;
-        }
-        dashDirection = target.getEyePosition().subtract(getEyePosition()).normalize();
-        combatState = DASH;
-        stateTicks = 10;
-        setDeltaMovement(dashDirection.scale(dashSpeed()));
-    }
-
-    private void tickDash() {
-        setDeltaMovement(dashDirection.scale(dashSpeed()));
-        if (--stateTicks > 0) {
-            return;
-        }
-        if (--dashesRemaining > 0) {
-            combatState = DASH_WINDUP;
-            stateTicks = 10;
-        } else {
-            beginApproach();
-        }
-    }
-
-    private void beginApproach() {
-        combatState = APPROACH;
-        stateTicks = 50;
-        dashDirection = Vec3.ZERO;
-    }
-
-    private void moveTowardTarget(LivingEntity target, double speed, double distance) {
-        if (distance <= 0.0) {
-            Vec3 direction = target.position().subtract(position());
-            setDeltaMovement(direction.lengthSqr() < 1.0E-7
-                    ? Vec3.ZERO
-                    : direction.normalize().scale(speed));
-            return;
-        }
-        Vec3 away = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
-        Vec3 desiredPosition = target.position()
-                .add(away.normalize().scale(distance))
-                .add(0.0, isTransformed() ? 0.0 : 1.0, 0.0);
-        Vec3 correction = desiredPosition.subtract(position());
-        Vec3 velocity = getDeltaMovement().scale(0.86D).add(correction.scale(speed * 0.014D));
-        if (velocity.lengthSqr() > speed * speed) velocity = velocity.normalize().scale(speed);
-        setDeltaMovement(velocity);
-        if (distanceToSqr(target) < 2.0) {
-            setDeltaMovement(getDeltaMovement().scale(0.95));
-        }
-    }
-
-    boolean fireFlame(LivingEntity target) {
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            return false;
-        }
-        if (isTransformed()) {
-            return fireContinuousFlame(serverLevel);
-        }
-        TwinEyeProjectile flame = ModEntities.SPAZMATISM_FLAME.get().create(serverLevel);
-        if (flame == null) {
-            return false;
-        }
-        flame.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 1.5F, 10.0F);
-        return serverLevel.addFreshEntity(flame);
-    }
-
-    /// 半血后的魔焰眼使用十格连续火流，而不是把火流替换成自动追踪弹丸。
-    /// 每个刻度只对同一生物结算一次伤害，并使用固定采样间距和碰撞半径。
-    private boolean fireContinuousFlame(ServerLevel serverLevel) {
-        Vec3 direction = getLookAngle();
-        if (direction.lengthSqr() <= 1.0E-7) {
-            return false;
-        }
-        direction = direction.normalize();
-        Vec3 origin = getBoundingBox().getCenter().add(direction);
-        Set<LivingEntity> hitEntities = new HashSet<>();
-        for (int step = 0; step < 10; step++) {
-            Vec3 point = origin.add(direction.scale(step));
-            serverLevel.sendParticles(ParticleTypes.FLAME, point.x, point.y, point.z, 3, 0.3, 0.3, 0.3, 0.02);
-            AABB hitBox = new AABB(point.add(-0.5, -0.5, -0.5), point.add(0.5, 0.5, 0.5));
-            hitEntities.addAll(serverLevel.getEntitiesOfClass(LivingEntity.class, hitBox, entity -> entity != this));
-        }
-        float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
-        for (LivingEntity entity : hitEntities) {
-            if (canAttack(entity)) {
-                if (entity.hurt(LibDamageTypes.of(level(), DamageTypes.IN_FIRE, this), damage)) {
-                    entity.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, 100));
+        if (target == null) return;
+        stateTicks++;
+        switch (state) {
+            case APPROACH -> {
+                approach(target);
+                if (distanceToSqr(target) < 14 * 14 && stateTicks >= APPROACH_TICKS) {
+                    shotTimer = 1;
+                    enter(State.FIRE);
+                }
+            }
+            case FIRE -> {
+                approach(target);
+                if (--shotTimer <= 0 && hasFiringLine(getMuzzlePosition(1.0F), target)) {
+                    fireFlame(target);
+                    shotTimer = isTransformed() ? 2 : 18;
+                }
+                int fireDuration = isTransformed() ? STREAM_TICKS : FIRE_TICKS;
+                AbstractTwinEye partner = getPartner();
+                boolean partnerBeam = sharesFirstPhaseTarget(partner) && partner instanceof Retinazer retinazer && retinazer.isBeamAttack();
+                if (stateTicks >= fireDuration && (!partnerBeam || stateTicks >= fireDuration + MAX_COORDINATION_WAIT_TICKS)) {
+                    dashes = isTransformed() ? PHASE_TWO_DASH_COUNT : DASH_COUNT;
+                    dashDirection = predictDashDirection(target);
+                    enter(State.WINDUP);
+                }
+            }
+            case WINDUP -> {
+                setDeltaMovement(getDeltaMovement().scale(0.7));
+                if (stateTicks <= WINDUP_TICKS - 3) {
+                    dashDirection = predictDashDirection(target);
+                }
+                if (stateTicks >= WINDUP_TICKS && (getLookAngle().dot(dashDirection) > 0.92 || stateTicks >= 26)) {
+                    enter(State.DASH);
+                    setDeltaMovement(dashDirection.scale(dashSpeed()));
+                    playSound(ModSoundEvents.ROAR.get(), 1.0F, isTransformed() ? 1.2F : 1.0F);
+                }
+            }
+            case DASH -> {
+                // 整段冲刺锁定方向，不在穿过玩家后掉头。
+                setDeltaMovement(dashDirection.scale(dashSpeed()));
+                if (stateTicks >= DASH_TICKS) {
+                    dashes--;
+                    enter(State.RECOVER);
+                }
+            }
+            case RECOVER -> {
+                setDeltaMovement(getDeltaMovement().scale(0.8));
+                if (stateTicks >= RECOVER_TICKS) {
+                    dashDirection = predictDashDirection(target);
+                    if (dashes <= 0) orbitDirection = -orbitDirection;
+                    enter(dashes > 0 ? State.WINDUP : State.APPROACH);
                 }
             }
         }
-        return true;
     }
 
-    private int flameInterval() {
-        if (isTransformed()) return 3;
-        TheTwins master = getMaster();
-        double rate = 1.0 + (master != null && master.isExpert() && getHealth() < getMaxHealth() * 0.8F ? 0.6 : 0.0)
-                + (master != null && master.isFtw() ? 0.4 : 0.0);
-        return (int) Math.round(20.0 / rate);
+    private double dashSpeed() {return isTransformed() ? PHASE_TWO_DASH_SPEED : PHASE_ONE_DASH_SPEED;}
+
+    private Vec3 predictDashDirection(LivingEntity target) {
+        double flightTicks = Math.min(10, distanceTo(target) / dashSpeed());
+        Vec3 direction = predictTargetPosition(target, flightTicks, legendaryCombat() ? 5 : 3.5).subtract(getEyePosition());
+        return direction.lengthSqr() < 1.0E-7 ? getLookAngle() : direction.normalize();
     }
 
-    private double movementSpeed() {
-        return (isTransformed() ? 1.0 : 1.5) * (getMaster() != null && getMaster().isFtw() ? 1.15 : 1.0);
+    private void approach(LivingEntity target) {
+        if (firingPosition == null || stateTicks % POSITION_REFRESH_TICKS == 0
+                || firingPosition.distanceToSqr(target.position()) > 20 * 20) {
+            chooseFiringPosition(target);
+        }
+        Vec3 destination = firingPosition;
+        if (!isTransformed()) destination = new Vec3(destination.x, target.getY(), destination.z);
+        Vec3 velocity = getDeltaMovement().scale(0.82).add(destination.subtract(position()).scale(0.035));
+        double speed = isTransformed() ? 0.6 : 0.7;
+        setDeltaMovement(separateFromPartner(velocity, speed));
     }
 
-    private double dashSpeed() {
-        return (isTransformed() ? 2.0 : 1.0) * (getMaster() != null && getMaster().isFtw() ? 1.2 : 1.0);
+    private void chooseFiringPosition(LivingEntity target) {
+        Vec3 away = position().subtract(target.position());
+        Vec3 center = predictTargetPosition(target, 4, 2).subtract(0, target.getEyeHeight(), 0);
+        double baseAngle = Math.atan2(away.z, away.x);
+        double radius = isTransformed() ? STREAM_DISTANCE : FIRE_DISTANCE;
+        double bestScore = -Double.MAX_VALUE;
+        Vec3 best = null;
+        AbstractTwinEye partner = getPartner();
+        for (int i = 0; i < 8; i++) {
+            double angle = baseAngle + orbitDirection * (0.2 + i * Math.PI / 4);
+            double height = isTransformed() ? Mth.clamp(away.y, -4, 4) + Math.sin(angle) * 2 : 0;
+            Vec3 candidate = center.add(Math.cos(angle) * radius, height, Math.sin(angle) * radius);
+            if (!level().noCollision(this, getBoundingBox().move(candidate.subtract(position()))))
+                continue;
+            double score = hasFiringLine(candidate.add(0, getBbHeight() * 0.5, 0), target) ? 40 : 0;
+            score -= position().distanceTo(candidate);
+            if (partner != null && partner.isAlive())
+                score -= Math.max(0, 7 - partner.position().distanceTo(candidate)) * 6;
+            if (score > bestScore) {
+                bestScore = score;
+                best = candidate;
+            }
+        }
+        firingPosition = best != null ? best : center.add(Math.cos(baseAngle) * radius, isTransformed() ? 4 : 0, Math.sin(baseAngle) * radius);
     }
 
-    private double followDistance() {
-        return isTransformed() ? 0.0 : 7.0;
+    private void fireFlame(LivingEntity target) {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
+        TwinEyeProjectile flame = ModEntities.SPAZMATISM_FLAME.get().create(serverLevel);
+        if (flame == null) return;
+        Vec3 aim = isTransformed() ? target.getEyePosition()
+                : predictTargetPosition(target, Math.min(10, distanceTo(target) / FLAME_BALL_SPEED), legendaryCombat() ? 3 : 2);
+        flame.configureFlame(this, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE),
+                isTransformed() ? STREAM_SPEED : FLAME_BALL_SPEED, isTransformed(), legendaryCombat());
+        serverLevel.addFreshEntity(flame);
+        if (!isTransformed() || stateTicks % 12 == 0)
+            playSound(ModSoundEvents.ITEM_FLAME_CAST.get(), 0.6F, 1.0F);
+    }
+
+    private void enter(State next) {
+        state = next;
+        stateTicks = 0;
     }
 
     @Override
     protected void resetCombatCycle() {
-        shotsRemaining = 0;
-        dashesRemaining = 0;
-        beginApproach();
+        enter(State.APPROACH);
+        shotTimer = 0;
+        dashes = 0;
+        dashDirection = Vec3.ZERO;
+        firingPosition = null;
     }
 
     @Override
     protected void saveTwinCombat(CompoundTag tag) {
-        tag.putInt(STATE_TAG, combatState);
-        tag.putInt(STATE_TICKS_TAG, stateTicks);
-        tag.putInt(SHOTS_TAG, shotsRemaining);
-        tag.putInt(DASHES_TAG, dashesRemaining);
-        tag.putDouble(DASH_X_TAG, dashDirection.x);
-        tag.putDouble(DASH_Y_TAG, dashDirection.y);
-        tag.putDouble(DASH_Z_TAG, dashDirection.z);
+        tag.putInt("AttackVersion", 2);
+        tag.putString("Attack", state.name());
+        tag.putInt("AttackTicks", stateTicks);
+        tag.putInt("ShotTimer", shotTimer);
+        tag.putInt("Dashes", dashes);
+        saveVector(tag, "Dash", dashDirection);
+        tag.putInt("OrbitDirection", orbitDirection);
     }
 
     @Override
     protected void loadTwinCombat(CompoundTag tag) {
-        combatState = tag.getInt(STATE_TAG);
-        stateTicks = tag.getInt(STATE_TICKS_TAG);
-        shotsRemaining = tag.getInt(SHOTS_TAG);
-        dashesRemaining = tag.getInt(DASHES_TAG);
-        dashDirection = new Vec3(tag.getDouble(DASH_X_TAG), tag.getDouble(DASH_Y_TAG), tag.getDouble(DASH_Z_TAG));
+        if (tag.getInt("AttackVersion") != 2) return;
+        try {state = State.valueOf(tag.getString("Attack"));} catch (
+                IllegalArgumentException ignored) {return;}
+        stateTicks = Mth.clamp(tag.getInt("AttackTicks"), 0, STREAM_TICKS + MAX_COORDINATION_WAIT_TICKS);
+        shotTimer = Mth.clamp(tag.getInt("ShotTimer"), 0, 18);
+        dashes = Mth.clamp(tag.getInt("Dashes"), 0, PHASE_TWO_DASH_COUNT);
+        dashDirection = loadVector(tag, "Dash").normalize();
+        orbitDirection = tag.getInt("OrbitDirection") < 0 ? -1 : 1;
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSoundEvents.METAL_HURT.get();
-    }
+    protected SoundEvent getHurtSound(DamageSource source) {return ModSoundEvents.METAL_HURT.get();}
 
     @Override
-    protected SoundEvent getDeathSound() {
-        return ModSoundEvents.METAL_DEATH.get();
-    }
+    protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}
 
+    private enum State {APPROACH, FIRE, WINDUP, DASH, RECOVER}
 }

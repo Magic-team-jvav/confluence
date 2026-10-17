@@ -29,6 +29,7 @@ import org.confluence.mod.client.renderer.item.PhasebladeRenderer;
 import org.confluence.mod.common.entity.projectile.sword.PhasebladeProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
+import software.bernie.geckolib.GeckoLibConstants;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -44,7 +45,7 @@ import java.util.function.Consumer;
 
 public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoItem {
     private static final String TURN_ON_KEY = "isTurnOn";
-    private static final String GECKOLIB_ID_KEY = "GeckoLibID";
+    private static final String LEGACY_GECKOLIB_ID_KEY = "GeckoLibID";
     private static final RawAnimation IDLE_OFF = RawAnimation.begin().thenLoop("idle_off");
     private static final RawAnimation IDLE_ON = RawAnimation.begin().thenLoop("idle_on");
 
@@ -130,9 +131,10 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
      */
     public static ItemStack createProjectileStack(ItemStack source) {
         ItemStack projectileStack = source.copyWithCount(1);
+        projectileStack.remove(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get());
         LibUtils.updateItemStackNbt(projectileStack, tag -> {
             tag.remove(TURN_ON_KEY);
-            tag.remove(GECKOLIB_ID_KEY);
+            tag.remove(LEGACY_GECKOLIB_ID_KEY);
         });
         return projectileStack;
     }
@@ -142,9 +144,10 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
      */
     public static ItemStack createProjectileRenderStack(ItemStack source, int entityId) {
         ItemStack renderStack = source.copyWithCount(1);
+        renderStack.set(GeckoLibConstants.STACK_ANIMATABLE_ID_COMPONENT.get(), Long.MIN_VALUE + Integer.toUnsignedLong(entityId));
         LibUtils.updateItemStackNbt(renderStack, tag -> {
             tag.remove(TURN_ON_KEY);
-            tag.putLong(GECKOLIB_ID_KEY, Long.MIN_VALUE + Integer.toUnsignedLong(entityId));
+            tag.remove(LEGACY_GECKOLIB_ID_KEY);
         });
         return renderStack;
     }

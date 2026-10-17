@@ -3,14 +3,15 @@ package org.confluence.mod.client.effect;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 
 public class RenderStateShardAccessor extends RenderStateShard {
@@ -19,6 +20,10 @@ public class RenderStateShardAccessor extends RenderStateShard {
     public static final RenderType LASER = RenderType.create("confluence_laser", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
             RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
                     .setCullState(CULL).setLightmapState(NO_LIGHTMAP).setWriteMaskState(COLOR_DEPTH_WRITE).createCompositeState(false));
+    public static final RenderType TRANSLUCENT_LASER = RenderType.create("confluence_translucent_laser", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, true,
+            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setCullState(CULL).setLightmapState(NO_LIGHTMAP).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setWriteMaskState(COLOR_WRITE).createCompositeState(false));
     public static final RenderType HILL_OF_FLESH_BOUNDARY = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/gui/noise.png"));
     public static final RenderType TRAIL_RENDER_TYPE = RenderType.create(
             "trail_render_type",
@@ -65,6 +70,19 @@ public class RenderStateShardAccessor extends RenderStateShard {
                             .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
                             .setOverlayState(OVERLAY)
                             .createCompositeState(false)));
+
+    private static final Function<ResourceLocation, RenderType> ENTITY_UNSHADED_GLOW = Util.memoize(texture ->
+            RenderType.create("confluence_entity_unshaded_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_EYES_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                            .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
+                            .createCompositeState(false)));
+
+    public static RenderType entityUnshadedGlow(ResourceLocation texture) {
+        return ENTITY_UNSHADED_GLOW.apply(texture);
+    }
 
     public static RenderType entityGlow(ResourceLocation texture) {
         return ENTITY_GLOW.apply(texture);

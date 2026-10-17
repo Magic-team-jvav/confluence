@@ -282,7 +282,6 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 BossEntities.HILL_OF_FLESH.get(),
                 BossEntities.DUNGEON_GUARDIAN.get(),
                 BossEntities.THE_DESTROYER.get(),
-                BossEntities.THE_TWINS.get(),
                 BossEntities.RETINAZER.get(),
                 BossEntities.SPAZMATISM.get(),
                 BossEntities.SKELETRON_PRIME.get(),

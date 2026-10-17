@@ -53,22 +53,18 @@ import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModBlockCounters;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -82,12 +78,7 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -105,7 +96,6 @@ public final class PlayerUtils {
     private static final float SOUL_ARMOR_WEIGHT = 0.1F;
     private static final float SOUL_COLLECTION_DIVISOR = 20.0F;
     private static final float MINIMUM_COLLECTED_SOUL = 1.0F;
-    private static final String SOUL_BOSS_KILLER_TAG = "confluence:soul_boss_killer";
 
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
         if (coin == ModItems.PLATINUM_COIN.get()) return 0;
@@ -597,27 +587,16 @@ public final class PlayerUtils {
         }
     }
 
-    /// 记录管理型 Boss 最后部件的玩家击杀归属。
-    public static void rememberSoulBossKiller(LivingEntity boss, DamageSource source) {
-        if (boss.level() instanceof ServerLevel && LibEntityUtils.getOwner(source) instanceof ServerPlayer player) {
-            boss.getPersistentData().putUUID(SOUL_BOSS_KILLER_TAG, player.getUUID());
-        }
-    }
-
     /// 击杀时直接补充灵魂；Boss 部件不参与普通敌怪收益。
     public static void collectSoul(LivingEntity victim, DamageSource source) {
         if (!Confluence.SOUL_SKILLS || !(victim.level() instanceof ServerLevel level)
                 || victim instanceof Boss boss && !boss.isMainBody()
-                || victim instanceof AbstractTwinEye
+                || victim instanceof AbstractTwinEye eye && !eye.shouldShowMessage()
                 || victim instanceof PartHitTarget part && part.encounterOwner() instanceof Boss && part.encounterOwner() != victim
                 || !EnemyDamageRules.isEnemy(victim)) {
             return;
         }
         Entity owner = LibEntityUtils.getOwner(source);
-        if (!(owner instanceof ServerPlayer) && victim instanceof Boss && victim.getPersistentData().hasUUID(SOUL_BOSS_KILLER_TAG)) {
-            owner = level.getPlayerByUUID(victim.getPersistentData().getUUID(SOUL_BOSS_KILLER_TAG));
-            victim.getPersistentData().remove(SOUL_BOSS_KILLER_TAG);
-        }
         if (!(owner instanceof ServerPlayer player) || !isSoulMode(player)) {
             return;
         }

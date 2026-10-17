@@ -12,6 +12,7 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.item.common.TwinEyeSpawnEggItem;
 
 import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
@@ -300,7 +301,7 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> PRIME_ENDER_DRAGON_SPAWN_EGG = register(BossEntities.PRIME_ENDER_DRAGON, "本源末影龙刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> RETINAZER_SPAWN_EGG = register(BossEntities.RETINAZER, "激光眼刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> SPAZMATISM_SPAWN_EGG = register(BossEntities.SPAZMATISM, "魔焰眼刷怪蛋");
-    public static final DeferredItem<DeferredSpawnEggItem> THE_TWINS_SPAWN_EGG = register(BossEntities.THE_TWINS, "双子魔眼刷怪蛋");
+    public static final DeferredItem<TwinEyeSpawnEggItem> THE_TWINS_SPAWN_EGG = registerTwins("双子魔眼刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> SKELETRON_PRIME_SPAWN_EGG = register(BossEntities.SKELETRON_PRIME, "机械骷髅王刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> THE_DESTROYER_SPAWN_EGG = register(BossEntities.THE_DESTROYER, "毁灭者刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> PLANTERA_SPAWN_EGG = register(BossEntities.PLANTERA, "世纪之花刷怪蛋");
@@ -316,6 +317,12 @@ public final class SpawnEggItems {
 
     private static DeferredItem<DeferredSpawnEggItem> register(DeferredHolder<EntityType<?>, ? extends EntityType<? extends Mob>> type, int bc, int hc) {
         return ITEMS.register(type.getId().getPath() + "_spawn_egg", () -> new DeferredSpawnEggItem(type, bc, hc, new Item.Properties()));
+    }
+
+    private static DeferredItem<TwinEyeSpawnEggItem> registerTwins(String chineseName) {
+        DeferredItem<TwinEyeSpawnEggItem> entry = ITEMS.register("the_twins_spawn_egg", TwinEyeSpawnEggItem::new);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
     }
 
     private SpawnEggItems() {}

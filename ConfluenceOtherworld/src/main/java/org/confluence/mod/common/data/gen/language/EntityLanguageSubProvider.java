@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 /// 生成实体和刷怪蛋名称的中英文翻译
 public final class EntityLanguageSubProvider {
     private EntityLanguageSubProvider() {}
@@ -81,6 +83,7 @@ public final class EntityLanguageSubProvider {
         language.add("entity.confluence.squirrel.gold", "Gold Squirrel", "金松鼠");
         language.add("entity.confluence.squirrel.normal", "Gray Squirrel", "灰松鼠");
         language.add("entity.confluence.squirrel.red", "Red Squirrel", "红松鼠");
+        language.add("entity.confluence.the_twins", "The Twins", "双子魔眼");
         language.add("entity.confluence.undead_miner", "Undead Miner", "不死矿工");
         language.add("entity.confluence.vicious_bunny", "Vicious Bunny", "毒兔兔");
         language.add("entity.confluence.wall_of_flesh_eye", "Wall Of Flesh Eye", "血肉墙之眼");

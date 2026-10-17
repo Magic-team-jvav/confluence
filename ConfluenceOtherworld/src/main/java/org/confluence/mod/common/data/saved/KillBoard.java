@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import org.confluence.mod.common.data.GamePhase;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
@@ -20,14 +19,15 @@ import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibStreamCodecUtils;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.KillBoardSyncPacketS2C;
-import org.confluence.mod.common.init.entity.BossEntities;
 
 import java.util.Set;
 
@@ -70,8 +70,12 @@ public enum KillBoard implements IGlobalData {
         return false;
     }
 
+    public boolean isTwinsDefeated() {
+        return isDefeated(BossEntities.RETINAZER.get()) && isDefeated(BossEntities.SPAZMATISM.get());
+    }
+
     public boolean isAnyMechBossDefeated() {
-        return isDefeated(BossEntities.THE_TWINS.get()) ||
+        return isTwinsDefeated() ||
                 isDefeated(BossEntities.THE_DESTROYER.get()) ||
                 isDefeated(BossEntities.SKELETRON_PRIME.get());
     }
@@ -161,7 +165,16 @@ public enum KillBoard implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_bosses"))
+        CompoundTag bosses = tag.getCompound("defeated_bosses").copy();
+        if (bosses.contains("confluence:the_twins")) {
+            boolean defeated = bosses.getBoolean("confluence:the_twins");
+            bosses.remove("confluence:the_twins");
+            if (defeated) {
+                bosses.putBoolean("confluence:retinazer", true);
+                bosses.putBoolean("confluence:spazmatism", true);
+            }
+        }
+        DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, bosses)
                 .ifSuccess(result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
         DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events"))
                 .ifSuccess(result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));

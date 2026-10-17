@@ -27,7 +27,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.language.TranslationConsumer;
+import org.confluence.mod.common.data.TranslationConsumer;
 import org.confluence.mod.common.init.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.*;
 

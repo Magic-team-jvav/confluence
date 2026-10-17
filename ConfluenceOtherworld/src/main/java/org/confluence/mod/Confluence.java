@@ -22,7 +22,7 @@ import org.confluence.mod.client.summoner.SummonerClientEvents;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
-import org.confluence.mod.common.data.gen.language.TranslationConsumer;
+import org.confluence.mod.common.data.TranslationConsumer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;

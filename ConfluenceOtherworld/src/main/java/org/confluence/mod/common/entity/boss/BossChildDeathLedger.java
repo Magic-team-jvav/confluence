@@ -11,7 +11,7 @@ import java.util.*;
 
 /// Boss 未加载时暂存持久化从属死亡事件的世界邮箱。
 ///
-/// 双子魔眼的两个眼球、脑怪飞眼等从属是独立存档实体。如果它们死亡时权威 Boss
+/// 脑怪飞眼等从属是独立存档实体。如果它们死亡时权威 Boss
 /// 所在区块没有加载，从属无法直接调用 Boss 实例更新阶段。邮箱用 Boss UUID 分组，
 /// 待 Boss 再次加载时一次性消费，保证死亡事件不会因区块边界丢失。
 final class BossChildDeathLedger extends SavedData {

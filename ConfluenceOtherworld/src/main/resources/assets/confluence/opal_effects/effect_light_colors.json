@@ -7,6 +7,14 @@
         ],
         "light_level": 10
     },
+    "confluence:retinazer_beam": {
+        "color": [
+            0.76862745,
+            0.28627451,
+            1.0
+        ],
+        "light_level": 12
+    },
     "confluence:effect_shine": {
         "color": [
             1.0,

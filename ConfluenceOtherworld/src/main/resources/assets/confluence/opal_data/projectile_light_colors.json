@@ -167,6 +167,22 @@
             ],
             "light_level": 10
         },
+        "confluence:retinazer_laser": {
+            "color": [
+                0.76862745,
+                0.28627451,
+                1.0
+            ],
+            "light_level": 10
+        },
+        "confluence:spazmatism_flame": {
+            "color": [
+                0.35,
+                1.0,
+                0.05
+            ],
+            "light_level": 12
+        },
         "confluence:martian_electric_bolt": {
             "color": [
                 0.4627451,

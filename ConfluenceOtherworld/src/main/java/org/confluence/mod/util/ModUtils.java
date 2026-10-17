@@ -66,6 +66,7 @@ import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.MoneyDropSource;
+import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
@@ -156,7 +157,11 @@ public final class ModUtils {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return;
 
         EntityType<?> type = living.getType();
-        KillBoard.INSTANCE.defeat(type);
+        if (living instanceof AbstractTwinEye eye) {
+            if (!eye.tryBeginDeathRewardSettlement()) return;
+            KillBoard.INSTANCE.defeat(BossEntities.RETINAZER.get());
+            KillBoard.INSTANCE.defeat(BossEntities.SPAZMATISM.get());
+        } else KillBoard.INSTANCE.defeat(type);
         boolean isEaterOfWorlds = type == BossEntities.EATER_OF_WORLDS.get();
         if (isEaterOfWorlds || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
@@ -168,7 +173,8 @@ public final class ModUtils {
         boolean stickySituation = type == BossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
         boolean is$WallOrHill$OfFlesh = type == BossEntities.WALL_OF_FLESH.get() || type == BossEntities.HILL_OF_FLESH.get();
         ResourceKey<Level> dimension = living.level().dimension();
-        level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
+        var participants = living instanceof AbstractTwinEye eye ? eye.getOnlineCombatParticipants() : level.players();
+        participants.stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);
             if (isEaterOfWorlds) {
                 AchievementUtils.awardAchievement(player, "worm_fodder");

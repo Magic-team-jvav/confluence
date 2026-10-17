@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 public class SoulLanguageSubProvider {
     /// 生成魂师技能、物品、界面和使用提示的中英文翻译。
     public static void addTranslations(TranslationConsumer language) {

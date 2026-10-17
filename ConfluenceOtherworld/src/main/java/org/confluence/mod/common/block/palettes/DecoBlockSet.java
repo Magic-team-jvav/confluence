@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.common.item.GroupItem;
-import org.confluence.mod.common.data.gen.language.TranslationConsumer;
+import org.confluence.mod.common.data.TranslationConsumer;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
 

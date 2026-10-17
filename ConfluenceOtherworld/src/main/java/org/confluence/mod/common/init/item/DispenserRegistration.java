@@ -10,13 +10,25 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
 import org.confluence.mod.common.item.common.SpongeItem;
 
 import java.util.stream.Stream;
 
 public class DispenserRegistration {
     public static void boostrap() {
+        DispenserBlock.registerBehavior(SpawnEggItems.THE_TWINS_SPAWN_EGG.get(), new OptionalDispenseItemBehavior() {
+            @Override
+            protected ItemStack execute(BlockSource source, ItemStack stack) {
+                BlockPos position = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
+                boolean spawned = TwinEyeEncounter.summon(source.level(), Vec3.atBottomCenterOf(position), null);
+                setSuccess(spawned);
+                if (spawned) stack.shrink(1);
+                return stack;
+            }
+        });
         DispenseItemBehavior simpleFluidOut = new DefaultDispenseItemBehavior() {
             @Override
             public ItemStack execute(BlockSource source, ItemStack itemStack) {

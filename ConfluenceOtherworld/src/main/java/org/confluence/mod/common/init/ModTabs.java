@@ -8,7 +8,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
@@ -2080,18 +2079,19 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(IconItems.SOULCERER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.soulcerer"))
                     .displayItems((parameters, output) -> {
-                        output = new WipNotDisplayOutput(output);
-
                         output.accept(SoulItems.FALLEN_SOUL_CORE);
-                        acceptSoulGroup(output, "soulcerer_main_weapons", List.of(SoulItems.BROKEN_GLIMMER.toStack()));
-                        acceptSoulGroup(output, "soulcerer_secondary_weapons", List.of());
-                        acceptSoulGroup(output, "soulcerer_artifacts", List.of());
-
-                        ItemStack spiritSurgeBook = SoulItems.SOUL_SKILL_BOOK.toStack();
+                        CreativeModeTab.Output soulcerer_main_weapons = GroupItem.belongsTo("soulcerer_main_weapons", output);
+                        soulcerer_main_weapons.accept(SoulItems.BROKEN_GLIMMER.get());
+                        CreativeModeTab.Output soulcerer_secondary_weapons = GroupItem.belongsTo("soulcerer_secondary_weapons", output);
+                        CreativeModeTab.Output soulcerer_artifacts = GroupItem.belongsTo("soulcerer_artifacts", output);
+                        CreativeModeTab.Output soulcerer_skill_books = GroupItem.belongsTo("soulcerer_skill_books", output);
+                        soulcerer_skill_books.accept(SoulItems.SOUL_SKILL_BOOK.get());
+                        var spiritSurgeBook = SoulItems.SOUL_SKILL_BOOK.toStack();
                         spiritSurgeBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SPIRIT_SURGE.get().getId());
-                        ItemStack survivalInstinctBook = SoulItems.SOUL_SKILL_BOOK.toStack();
+                        soulcerer_skill_books.accept(spiritSurgeBook);
+                        var survivalInstinctBook = SoulItems.SOUL_SKILL_BOOK.toStack();
                         survivalInstinctBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SURVIVAL_INSTINCT.get().getId());
-                        acceptSoulGroup(output, "soulcerer_skill_books", List.of(SoulItems.SOUL_SKILL_BOOK.toStack(), spiritSurgeBook, survivalInstinctBook));
+                        soulcerer_skill_books.accept(survivalInstinctBook);
                     })
                     .withTabsBefore(MAGES.getId())
                     .withTabsAfter(SUMMONERS.getId())
@@ -2442,15 +2442,6 @@ public final class ModTabs {
                     })
                     .withTabsBefore(SUMMONERS.getId())
                     .build());
-
-    /// 启用分组时保留空分类入口，关闭分组时按原序平铺物品。
-    private static void acceptSoulGroup(CreativeModeTab.Output output, String group, List<ItemStack> values) {
-        if (LibStartupConfig.itemGroups()) {
-            output.accept(GroupItem.of(Confluence.asResource(group), values));
-        } else {
-            values.forEach(output::accept);
-        }
-    }
 
     private static void acceptAll(DeferredRegister.Items register, CreativeModeTab.Output output) {
         register.getEntries().forEach(holder -> output.accept(holder.get()));

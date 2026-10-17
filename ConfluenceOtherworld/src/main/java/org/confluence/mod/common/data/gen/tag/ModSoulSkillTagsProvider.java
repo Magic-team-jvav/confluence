@@ -8,7 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.init.ModSoulSkillTags;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,9 +23,9 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
         for (var supplier : ModSoulSkills.getAllSkills()) {
             SoulSkill skill = supplier.get();
             TagKey<SoulSkill> tag = switch (ModSoulSkills.getCategory(supplier)) {
-                case SOUL -> ModSoulSkillTags.SOUL;
-                case BLOOD_NATURE -> ModSoulSkillTags.BLOOD_NATURE;
-                case STAR_LURE -> ModSoulSkillTags.STAR_LURE;
+                case SOUL -> ModTags.SoulSkills.SOUL;
+                case BLOOD_NATURE -> ModTags.SoulSkills.BLOOD_NATURE;
+                case STAR_LURE -> ModTags.SoulSkills.STAR_LURE;
                 case EMPTY -> null;
             };
             if (tag != null) {

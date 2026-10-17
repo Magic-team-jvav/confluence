@@ -149,7 +149,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("gui.confluence.mood.value", "Happiness: %s", "心情：%s");
         language.add("gui.confluence.quest", "Quest", "任务");
         language.add("gui.confluence.reforge.best_prefix_pause", "Best prefix obtained. Reforging pauses for two seconds.", "已获得最佳词条，暂停重铸两秒。");
-        language.add("gui.confluence.reforge.click_goblin", "Click the Goblin to reforge", "点击哥布林重铸");
+        language.add("gui.confluence.reforge.click_goblin", "Click the Goblin to reforge", "点击哥布林工匠重铸");
         language.add("gui.confluence.reforge.no_prefix", "None", "无");
         language.add("gui.confluence.reforge.pause", "%s s", "%s 秒");
         language.add("gui.confluence.sell", "Sell items", "卖出物品");

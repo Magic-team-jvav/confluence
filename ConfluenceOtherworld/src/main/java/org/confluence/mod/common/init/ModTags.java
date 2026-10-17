@@ -13,6 +13,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 
 public final class ModTags {
     public static class Blocks {
@@ -534,6 +535,16 @@ public final class ModTags {
 
         private static TagKey<Enchantment> register(String id) {
             return Confluence.asTagKey(Registries.ENCHANTMENT, id);
+        }
+    }
+
+    public static class SoulSkills {
+        public static final TagKey<SoulSkill> SOUL = register("soul");
+        public static final TagKey<SoulSkill> BLOOD_NATURE = register("blood_nature");
+        public static final TagKey<SoulSkill> STAR_LURE = register("star_lure");
+
+        private static TagKey<SoulSkill> register(String id) {
+            return Confluence.asTagKey(ModSoulSkills.REGISTRY_KEY, id);
         }
     }
 

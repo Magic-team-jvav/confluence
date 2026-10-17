@@ -73,6 +73,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.mixed.IPlayer;
@@ -361,6 +362,8 @@ public final class ModClientSetups {
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.VOID_BAG.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
+        // 技能书按绑定组件切换书皮，序号为 0 时回落到通用书皮
+        ItemProperties.register(SoulItems.SOUL_SKILL_BOOK.get(), Confluence.asResource("soul_book"), (stack, level, entity, seed) -> SoulBooks.styleIndex(stack));
     }
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");

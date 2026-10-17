@@ -25,6 +25,7 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.terra_curio.common.init.TCItems;
 
 import java.util.List;
@@ -67,6 +68,8 @@ public final class ModVillagers {
             tier1.add(new BasicItemListing(new ItemStack(MaterialItems.WEAVING_CLOUD_COTTON.get(), 5), new ItemStack(Items.EMERALD), 7, 5, 0.05f));
             tier2.add(new RandomItemListing(Items.DIRT, IntegerRange.of(61, 64), Items.EMERALD, 2, 10, 0.05f));
             tier3.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get()), new ItemStack(FoodItems.CLOUDWEAVER_SEED.get(), 3), 25, 10, 0.05f));
+            // 天穹倒转技能书：1 绿宝石币
+            tier3.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get()), SoulItems.soulBook(SoulBooks.FIRMAMENT_REVERSED), 12, 10, 0.05f));
             tier3.add(new BasicItemListing(new ItemStack(Items.WATER_BUCKET), new ItemStack(NatureBlocks.RAIN_CLOUD_BLOCK.get()), 12, 20, 0.05f));
             tier3.add(new RandomItemListing(MaterialItems.FALLING_STAR.get(), IntegerRange.of(2, 3), DecorativeBlocks.SUN_PLATE.FULL.get(), 10, 12, 20, 0.05f));
             tier4.add(new BasicItemListing(new ItemStack(Items.POWDER_SNOW_BUCKET), new ItemStack(Items.EMERALD), 12, 30, 0.05f));

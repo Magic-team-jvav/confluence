@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen.loot;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -19,8 +20,10 @@ import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.GamePhase;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoulSkills;
@@ -1192,6 +1195,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         // 骷髅王
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/classic"), LootTable.lootTable()
+                .withPool(memoryOfBonebrandLoot())
+                
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS).setWeight(105))
@@ -1205,6 +1210,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/expert"), LootTable.lootTable()
+                .withPool(memoryOfBonebrandLoot())
+                
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BONE_GLOVE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1222,6 +1229,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/master"), LootTable.lootTable()
+                .withPool(memoryOfBonebrandLoot())
+                
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BONE_GLOVE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1332,7 +1341,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         //克脑
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon().withPool(soulSkillBookLoot())
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 90)))
                 ))
@@ -1340,7 +1349,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon().withPool(soulSkillBookLoot())
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(80, 110)))
@@ -1355,7 +1364,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(13)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon().withPool(soulSkillBookLoot())
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(110, 135)))
@@ -1373,10 +1382,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
 
         // 世吞
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/classic"), eaterOfWorldsTreasureBagCommon().withPool(soulSkillBookLoot())
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/classic"), eaterOfWorldsTreasureBagCommon()
 
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/expert"), eaterOfWorldsTreasureBagCommon().withPool(soulSkillBookLoot())
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/expert"), eaterOfWorldsTreasureBagCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.WORM_SCARF)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
@@ -1385,7 +1394,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/master"), eaterOfWorldsTreasureBagCommon().withPool(soulSkillBookLoot())
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/master"), eaterOfWorldsTreasureBagCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.WORM_SCARF)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
@@ -1634,7 +1643,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                                 .add(LootItem.lootTableItem(SwordItems.BREAKER_BLADE))
                                 .add(LootItem.lootTableItem(WhipItems.FIRECRACKER))
                         // todo 另外三个
-                );
+                )
+                .withPool(soulBookLoot(SoulBooks.BLOOD_WORLD_WRATH));
     }
 
     // 克脑的也只有药
@@ -1705,7 +1715,8 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
-                ));
+                ))
+                .withPool(soulBookLoot(SoulBooks.SOUL_SURGE));
     }
 
     // 提炼机
@@ -1892,13 +1903,21 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 );
     }
-    /// 两类 Boss 的奖励链共用绑定灵魂激荡的独立技能书池。
-    private static LootPool.Builder soulSkillBookLoot() {
+
+
+    /// 骷髅王宝藏袋通用掉落：刻骨的记忆，独立 66% 池。
+    private static LootPool.Builder memoryOfBonebrandLoot() {
         return LootPool.lootPool()
-                .when(LootItemRandomChanceCondition.randomChance(SoulSkillParameters.LOOT_CHANCE_PERCENT / 100.0F))
-                .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK).setWeight(SoulSkillParameters.LOOT_WEIGHT)
-                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(SoulSkillParameters.LOOT_COUNT)))
-                        .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SPIRIT_SURGE.get().getId())));
+                .when(LootItemRandomChanceCondition.randomChance(0.66F))
+                .add(LootItem.lootTableItem(AccessoryItems.MEMORY_OF_BONEBRAND));
+    }
+
+    /// 100% 抽取池：必定掉落一本绑定指定书籍的通用技能书。
+    private static LootPool.Builder soulBookLoot(ResourceLocation bookId) {
+        return LootPool.lootPool()
+                .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
+                        .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), bookId))
+                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(bookId))));
     }
 
     // 困难模式匣子通用

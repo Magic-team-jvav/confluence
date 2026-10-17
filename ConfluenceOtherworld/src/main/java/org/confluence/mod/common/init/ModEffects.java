@@ -28,6 +28,7 @@ import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
 import org.confluence.mod.common.effect.soulcerer.EnhancedSoulEffect;
+import org.confluence.mod.common.effect.soulcerer.GoOverEffect;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -41,6 +42,7 @@ public final class ModEffects {
     public static final EffectCure FLASK = EffectCure.get("confluence:flask");
     public static final EffectCure CANNOT_REMOVE_BY_NURSE = EffectCure.get("confluence:cannot_remove_by_nurse");
     public static final DeferredHolder<MobEffect, EnhancedSoulEffect> ENHANCED_SOUL = registerEffectWithEnglishName("enhanced_soul", "强力附魂", "Enhanced Soul", EnhancedSoulEffect::new);
+    public static final DeferredHolder<MobEffect, GoOverEffect> GO_OVER = registerEffectWithEnglishName("go_over", "复习", "Go Over", GoOverEffect::new);
 
     public static final DeferredHolder<MobEffect, MobEffect> EXQUISITELY_STUFFED = registerEffect("exquisitely_stuffed", "酒足饭饱", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, ADD_VALUE, v -> exquisitelyStuffed(v, 0.04, 0.06, 0.08))

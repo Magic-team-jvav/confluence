@@ -58,6 +58,10 @@ public class AccessoryItems {
     public static final ValueType.UnitType LAVAPROOF$FISHING$HOOK = ValueType.ofUnit("lavaproof_fishing_hook");
     public static final ValueType.UnitType SPECTRE$GOGGLES = ValueType.ofUnit("spectre_goggles");
     public static final ValueType.UnitType PAINT$SPRAYER = ValueType.ofUnit("paint_sprayer");
+    /// 魂师饰品：灵魂缓慢回复的标记（手环三件共用）。
+    public static final ValueType.UnitType BAND$OF$SOUL = ValueType.ofUnit("band_of_soul");
+    /// 刻骨的记忆：无需手持主武器即可施放已装备技能。
+    public static final ValueType.UnitType MEMORY$OF$BONEBRAND = ValueType.ofUnit("memory_of_bonebrand");
     public static final ValueType.UnitType CLOTHIER$KILLER = ValueType.ofUnit("clothier_killer");
     public static final ValueType.UnitType $AFK = ValueType.ofUnit("afk"); // todo
     public static int AFK_INDEX = -1;
@@ -139,6 +143,11 @@ public class AccessoryItems {
             STRESS_BALL = registerCurio("stress_ball", "解压球", builder -> builder.rarity(BLUE).accessories(units($AFK)).tooltips(1));
 
     public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", "召唤师徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSummonDamage(), 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
+            BAND_OF_SOUL = registerCurio("band_of_soul", "灵魂手环", builder -> builder.rarity(BLUE).accessories(units(BAND$OF$SOUL))),
+            BAND_OF_SOUL_REGENERATION = registerCurio("band_of_soul_regeneration", "灵魂再生手环", builder -> builder.rarity(GREEN).accessories(units(BAND$OF$SOUL))),
+            BAND_OF_MEDIUMSHIP = registerCurio("band_of_mediumship", "通灵手环", builder -> builder.rarity(GREEN).attribute(ConfluenceMagicLib.ADDITIONAL_SOUL, 20.0, ADD_VALUE).accessories(units(BAND$OF$SOUL))),
+            MEMORY_OF_BONEBRAND = registerCurio("memory_of_bonebrand", "刻骨的记忆", builder -> builder.rarity(PURPLE).accessories(units(MEMORY$OF$BONEBRAND))),
+            SOULCERER_EMBLEM = registerCurio("soulcerer_emblem", "灵魂徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSoulDamage(), 0.12, ADD_MULTIPLIED_TOTAL)),
             APPRENTICES_SCARF = registerCurioWithEnglishName("apprentices_scarf", "学徒围巾", "Apprentice's Scarf", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾
             SQUIRES_SHIELD = registerCurioWithEnglishName("squires_shield", "侍卫护盾", "Squire's Shield", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 侍卫护盾
             HUNTRESSS_BUCKLER = registerCurioWithEnglishName("huntresss_buckler", "女猎人圆盾", "Huntress's Buckler", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 女猎人圆盾

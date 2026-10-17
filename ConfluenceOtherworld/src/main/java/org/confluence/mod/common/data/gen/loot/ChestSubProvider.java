@@ -16,11 +16,17 @@ import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.item.SoulItems;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -585,6 +591,13 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(BowItems.SCAREBOW.get()).setWeight(15))
                         .add(EmptyLootItem.emptyItem().setWeight(85))
+                )
+                //天穹倒转：独立池子 33% 概率
+                .withPool(LootPool.lootPool()
+                        .when(LootItemRandomChanceCondition.randomChance(0.33F))
+                        .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
+                                .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), SoulBooks.FIRMAMENT_REVERSED))
+                                .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(SoulBooks.FIRMAMENT_REVERSED))))
                 )
                 //先暂时使用空岛村箱子
         );

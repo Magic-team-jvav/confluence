@@ -317,6 +317,22 @@ public final class ModCommands {
                     ConfluenceData.get(overworld).setStopAskForSoftcore(true);
                     return 1;
                 }))
+                .then(Commands.literal("soulSkill")
+                        .then(Commands.literal("reset").executes(context -> {
+                            ServerPlayer player = context.getSource().getPlayerOrException();
+                            PlayerUtils.resetSoulSkillEquip(player);
+                            context.getSource().sendSuccess(() -> Component.literal("Soul skill equipment has been reset"), true);
+                            return 1;
+                        }))
+                        .then(Commands.literal("slots")
+                                .then(Commands.argument("count", IntegerArgumentType.integer(3, 6)).executes(context -> {
+                                    ServerPlayer player = context.getSource().getPlayerOrException();
+                                    int count = IntegerArgumentType.getInteger(context, "count");
+                                    PlayerUtils.setSoulSkillSlotCount(player, count);
+                                    context.getSource().sendSuccess(() -> Component.literal("Soul skill slots set to " + count), true);
+                                    return 1;
+                                })))
+                )
         );
     }
 

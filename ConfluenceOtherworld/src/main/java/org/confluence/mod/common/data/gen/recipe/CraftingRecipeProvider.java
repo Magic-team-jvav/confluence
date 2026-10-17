@@ -1016,6 +1016,18 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         shapeless(output, MaterialItems.RAW_ASPHALT.toStack(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
 
+        // 魂灯
+        shapeless(output, SoulItems.SOUL_CONDUIT.toStack(), Ingredient.of(Items.LANTERN), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
+        shapeless(output, SoulItems.PILLAGING_FLAME.toStack(), Ingredient.of(Items.EMERALD), Ingredient.of(MaterialItems.JADE), Ingredient.of(Items.OMINOUS_BOTTLE), Ingredient.of(SoulItems.SOUL_CONDUIT));
+        shapeless(output, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(SwordItems.STARFURY), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
+
+        // 祈灵之刃：堕魂星核 + 铁短剑/铅短剑
+        shapeless(output, SoulItems.SPIRITWARD_BLADE.toStack(), Ingredient.of(SoulItems.FALLEN_SOUL_CORE), Ingredient.of(SwordItems.IRON_SHORT_SWORD, SwordItems.LEAD_SHORT_SWORD));
+
+        // 灵魂手环：星力手环 + 堕魂星核，可反向拆回
+        shapeless(output, AccessoryItems.BAND_OF_SOUL.toStack(), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
+        shapeless(output, AccessoryItems.BAND_OF_STARPOWER.toStack(), Ingredient.of(AccessoryItems.BAND_OF_SOUL));
+
         output.accept(Confluence.asResource("boom_bunny"), BoomBunnyRecipe.getInstance(), null);
         output.accept(Confluence.asResource("dragon_pepper_extracting"), DragonPepperExtractingRecipe.getInstance(), null);
     }

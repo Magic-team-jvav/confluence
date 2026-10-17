@@ -51,6 +51,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.empowered_surge.name", "Empowered Surge", "强力激荡");
         language.add("confluence.soulcerer_skill.enhanced_lure.name", "Enhanced Lure", "强力引魂");
         language.add("confluence.soulcerer_skill.enhanced_soul.name", "Enhanced Soul", "强力附魂");
+        language.add("confluence.soulcerer_skill.firmament_reversed.name", "Firmament Reversed", "天穹倒转");
         language.add("confluence.soulcerer_skill.karma_flame.name", "Karma Flame", "灭却业火");
         language.add("confluence.soulcerer_skill.law_of_nature.name", "Law of Nature", "自然法则");
         language.add("confluence.soulcerer_skill.lure_surge.name", "Lure Surge", "引魂激荡");
@@ -60,7 +61,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.soul_lure.name", "Soul Lure", "引魂");
         language.add("confluence.soulcerer_skill.soul_mark.name", "Soul Mark", "附魂印记");
         language.add("confluence.soulcerer_skill.soul_plunder.name", "Soul Plunder", "掠夺之魄");
-        language.add("confluence.soulcerer_skill.soul_surge.name", "Soul Surge", "附魂激荡");
+        language.add("confluence.soulcerer_skill.soul_surge.name", "Soul Surge", "灵魂激荡");
         language.add("confluence.soulcerer_skill.spirit_surge.name", "Spirit Surge", "灵魂激荡");
         language.add("confluence.soulcerer_skill.spirit_trigger.name", "Spirit Trigger", "灵魂引发");
         language.add("confluence.soulcerer_skill.star_call.name", "Star Call", "魂引天星");

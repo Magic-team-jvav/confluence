@@ -32,5 +32,18 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
                 tag(tag).add(ResourceKey.create(ModSoulSkills.REGISTRY_KEY, skill.getId()));
             }
         }
+        // 引魂：迷魂孢雾、亵渎之魂、自然之惩戒、魂引天星、引魂激荡、强力引魂、引魂
+        tag(ModTags.SoulSkills.SOUL_LURE)
+                .add(key(ModSoulSkills.CONFUSE_SPORES.get()))
+                .add(key(ModSoulSkills.PROFANE_SOUL.get()))
+                .add(key(ModSoulSkills.NATURES_WRATH.get()))
+                .add(key(ModSoulSkills.STAR_CALL.get()))
+                .add(key(ModSoulSkills.LURE_SURGE.get()))
+                .add(key(ModSoulSkills.ENHANCED_LURE.get()))
+                .add(key(ModSoulSkills.SOUL_LURE.get()));
+    }
+
+    private static ResourceKey<SoulSkill> key(SoulSkill skill) {
+        return ResourceKey.create(ModSoulSkills.REGISTRY_KEY, skill.getId());
     }
 }

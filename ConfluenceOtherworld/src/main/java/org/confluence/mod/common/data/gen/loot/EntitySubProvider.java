@@ -26,6 +26,8 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -1134,6 +1136,15 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.WRAITH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).when(lootingScaledChance(registries, 0.02F)))
+                )
+        );
+        // 鬼魂：1% 概率掉落引渡者
+        add(MonsterEntities.GHOST.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
+                                .when(LootItemRandomChanceCondition.randomChance(0.01F))
+                                .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), SoulBooks.PSYCHOPOMP))
+                                .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(SoulBooks.PSYCHOPOMP))))
                 )
         );
         // 血水母 缺少未加入物品：怪物肉(Monster Meat, 0.07%)

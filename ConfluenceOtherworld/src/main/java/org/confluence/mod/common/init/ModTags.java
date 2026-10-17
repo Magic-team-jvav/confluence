@@ -542,6 +542,8 @@ public final class ModTags {
         public static final TagKey<SoulSkill> SOUL = register("soul");
         public static final TagKey<SoulSkill> BLOOD_NATURE = register("blood_nature");
         public static final TagKey<SoulSkill> STAR_LURE = register("star_lure");
+        /// 引魂系列：引渡者只对登记在此标签的技能生效。
+        public static final TagKey<SoulSkill> SOUL_LURE = register("soul_lure");
 
         private static TagKey<SoulSkill> register(String id) {
             return Confluence.asTagKey(ModSoulSkills.REGISTRY_KEY, id);

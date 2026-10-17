@@ -16,6 +16,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terra_furniture.common.init.TFBlocks;
@@ -2082,16 +2083,22 @@ public final class ModTabs {
                         output.accept(SoulItems.FALLEN_SOUL_CORE);
                         CreativeModeTab.Output soulcerer_main_weapons = GroupItem.belongsTo("soulcerer_main_weapons", output);
                         soulcerer_main_weapons.accept(SoulItems.BROKEN_GLIMMER.get());
+                        soulcerer_main_weapons.accept(SoulItems.SOUL_CONDUIT.get());
+                        soulcerer_main_weapons.accept(SoulItems.PILLAGING_FLAME.get());
+                        soulcerer_main_weapons.accept(SoulItems.TRUFFLE_LANTERN.get());
+                        soulcerer_main_weapons.accept(SoulItems.SOUL_CHANT_GUIDE.get());
+                        soulcerer_main_weapons.accept(SoulItems.LIFE_SPLENDOR.get());
+                        soulcerer_main_weapons.accept(SoulItems.STAR_SPIRIT.get());
+                        soulcerer_main_weapons.accept(SoulItems.DAY_AND_NIGHT_ALIKE.get());
+                        soulcerer_main_weapons.accept(SoulItems.SENIOR_PATHFINDER_PRO.get());
                         CreativeModeTab.Output soulcerer_secondary_weapons = GroupItem.belongsTo("soulcerer_secondary_weapons", output);
+                        soulcerer_secondary_weapons.accept(SoulItems.SPIRITWARD_BLADE.get());
                         CreativeModeTab.Output soulcerer_artifacts = GroupItem.belongsTo("soulcerer_artifacts", output);
                         CreativeModeTab.Output soulcerer_skill_books = GroupItem.belongsTo("soulcerer_skill_books", output);
                         soulcerer_skill_books.accept(SoulItems.SOUL_SKILL_BOOK.get());
-                        var spiritSurgeBook = SoulItems.SOUL_SKILL_BOOK.toStack();
-                        spiritSurgeBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SPIRIT_SURGE.get().getId());
-                        soulcerer_skill_books.accept(spiritSurgeBook);
-                        var survivalInstinctBook = SoulItems.SOUL_SKILL_BOOK.toStack();
-                        survivalInstinctBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SURVIVAL_INSTINCT.get().getId());
-                        soulcerer_skill_books.accept(survivalInstinctBook);
+                        for (SoulBooks.Definition book : SoulBooks.all()) {
+                            soulcerer_skill_books.accept(SoulItems.soulBook(book.id()));
+                        }
                     })
                     .withTabsBefore(MAGES.getId())
                     .withTabsAfter(SUMMONERS.getId())

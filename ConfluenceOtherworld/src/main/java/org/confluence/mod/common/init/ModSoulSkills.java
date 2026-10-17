@@ -31,6 +31,7 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> EMPOWERED_SURGE = register("empowered_surge", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> ENHANCED_LURE = register("enhanced_lure", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> ENHANCED_SOUL = register("enhanced_soul", rl -> new EnhancedSoulSkill(rl, rl), SkillCategory.SOUL);
+    public static final Supplier<SoulSkill> FIRMAMENT_REVERSED = register("firmament_reversed", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> KARMA_FLAME = register("karma_flame", 0, SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> LAW_OF_NATURE = register("law_of_nature", 0, SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> LURE_SURGE = register("lure_surge", 0, SkillCategory.STAR_LURE);
@@ -48,7 +49,7 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> STAR_REVERSAL = register("star_reversal", 0, SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> SURGE_BLAST = register("surge_blast", 0, SkillCategory.STAR_LURE);
 
-    public static final Supplier<SoulSkill> SURVIVAL_INSTINCT = register("survival_instinct", rl -> new SurvivalInstinctSkill(Confluence.asResource("soul_lure"), rl), SkillCategory.SOUL);
+    public static final Supplier<SoulSkill> SURVIVAL_INSTINCT = register("survival_instinct", rl -> new SurvivalInstinctSkill(rl, rl), SkillCategory.SOUL);
 
     public enum SkillCategory {
         EMPTY("", 0xFFFFFFFF, "confluence.screen.soulcerer_overview.tab.empty"),

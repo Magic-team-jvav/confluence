@@ -316,6 +316,10 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
         workshop(recipeOutput, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
         workshop(recipeOutput, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        // 魂师饰品（工匠作坊 + 灵雾）
+        workshop(recipeOutput, AccessoryItems.BAND_OF_SOUL_REGENERATION.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(AccessoryItems.BAND_OF_SOUL), Ingredient.of(TCItems.BAND_OF_REGENERATION));
+        workshop(recipeOutput, AccessoryItems.BAND_OF_MEDIUMSHIP.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(AccessoryItems.BAND_OF_SOUL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        workshop(recipeOutput, AccessoryItems.SOULCERER_EMBLEM.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(TCItems.WARRIOR_EMBLEM, TCItems.RANGER_EMBLEM, TCItems.SORCERER_EMBLEM, AccessoryItems.SUMMONER_EMBLEM));
         workshop(recipeOutput, TCItems.CELL_PHONE.toStack(), Ingredient.of(TCItems.PDA), Ingredient.of(ToolItems.ICE_MIRROR));
 
         solidifier(recipeOutput, DecorativeBlocks.BLUE_GEL_BLOCK.toStack(),
@@ -382,6 +386,11 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 AmountIngredient.of(20, Items.OBSIDIAN),
                 Ingredient.of(Items.IRON_BOOTS));
         hellforge(recipeOutput, TCItems.OBSIDIAN_SKULL.toStack(), 0.5F, 200, false, AmountIngredient.of(10, Items.OBSIDIAN), Ingredient.of(Items.SKELETON_SKULL));
+        hellforge(recipeOutput, SoulItems.DAY_AND_NIGHT_ALIKE.toStack(), 0.5F, 200, false,
+                Ingredient.of(Items.NETHERITE_INGOT),
+                AmountIngredient.of(10, MaterialItems.HELLSTONE_INGOT),
+                Ingredient.of(SoulItems.SOUL_CHANT_GUIDE),
+                AmountIngredient.of(2, Items.GHAST_TEAR));
 
         fletchingTable(recipeOutput, ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
         fletchingTable(recipeOutput, "_from_feather", new ItemStack(Items.ARROW, 20), Ingredient.of(Items.FEATHER), AmountIngredient.of(5, Items.STICK), Ingredient.of(Items.FLINT));
@@ -402,6 +411,10 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4, ModDataGenerator.INGOTS_EVIL), AmountIngredient.of(4, MaterialItems.FALLING_STAR));
         altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20, MaterialItems.GEL), Ingredient.of(VanityArmorItems.GOLD_CROWN, VanityArmorItems.PLATINUM_CROWN));
         altar(recipeOutput, ConsumableItems.DEER_THING.toStack(), AmountIngredient.of(3, MaterialItems.FLINX_FUR), AmountIngredient.of(5, Ingredient.of(ModTags.Items.EVIL_MATERIAL)));
+        altar(recipeOutput, SoulItems.SENIOR_PATHFINDER_PRO.toStack(),
+                AmountIngredient.of(20, ConsumableItems.DUNGEON_DEMON_BONE),
+                Ingredient.of(ToolItems.DUNGEON_COMPASS),
+                AmountIngredient.of(5, Items.COBWEB));
 
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));

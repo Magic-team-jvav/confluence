@@ -25,6 +25,8 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     private static final String CURRENT_SOUL_TAG = "currentSoul";
     private static final String RECOVERY_RATIO_TAG = "recoveryRatio";
     private static final String SOUL_MODE_TAG = "soulMode";
+    private static final String CONSUMED_SOUL_TAG = "consumedSoul";
+    private static final String SOULDANCER_BUFF_END_TAG = "souldancerBuffEnd";
 
     public static final AttachmentSyncHandler<SoulStorage> SYNC_HANDLER = new AttachmentSyncHandler<>() {
         @Override
@@ -57,6 +59,10 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     private float currentSoul;
     private float recoveryRatio;
     private boolean soulMode;
+    /// 累计消耗的灵魂余量，供套装按"每消耗 N 点"结算使用，只存服务端。
+    private float consumedSoul;
+    /// 魂舞全套增益的结束时间（游戏刻），0 表示未激活。
+    private long souldancerBuffEnd;
 
     public SoulStorage(IAttachmentHolder owner) {
         this.soulsCount = INITIAL_SOUL_COUNT;
@@ -74,6 +80,8 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         nbt.putFloat(CURRENT_SOUL_TAG, currentSoul);
         nbt.putFloat(RECOVERY_RATIO_TAG, recoveryRatio);
         nbt.putBoolean(SOUL_MODE_TAG, soulMode);
+        nbt.putFloat(CONSUMED_SOUL_TAG, consumedSoul);
+        nbt.putLong(SOULDANCER_BUFF_END_TAG, souldancerBuffEnd);
         return nbt;
     }
 
@@ -84,6 +92,28 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         this.soulMode = nbt.getBoolean(SOUL_MODE_TAG);
         this.currentSoul = soulMode ? nbt.getFloat(CURRENT_SOUL_TAG) : MIN_CURRENT_SOUL;
         this.recoveryRatio = nbt.getFloat(RECOVERY_RATIO_TAG);
+        this.consumedSoul = nbt.getFloat(CONSUMED_SOUL_TAG);
+        this.souldancerBuffEnd = nbt.getLong(SOULDANCER_BUFF_END_TAG);
+    }
+
+    /// 读取魂舞增益的结束时间（游戏刻）。
+    public long getSouldancerBuffEnd() {
+        return souldancerBuffEnd;
+    }
+
+    /// 设置魂舞增益的结束时间（游戏刻）。
+    public void setSouldancerBuffEnd(long souldancerBuffEnd) {
+        this.souldancerBuffEnd = souldancerBuffEnd;
+    }
+
+    /// 读取累计消耗的灵魂余量。
+    public float getConsumedSoul() {
+        return consumedSoul;
+    }
+
+    /// 覆盖累计消耗的灵魂余量。
+    public void setConsumedSoul(float consumedSoul) {
+        this.consumedSoul = consumedSoul;
     }
 
     /// 按当前灵魂上限压低超出上限的当前值。

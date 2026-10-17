@@ -1605,6 +1605,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 short_sword.add(holder.get());
             }
         }
+        // 祈灵之刃在魂师体系里属于短剑
+        short_sword.add(SoulItems.SPIRITWARD_BLADE.get());
 
         PylonBlocks.BLOCKS.getEntries().forEach(holder -> wip.add(holder.get().asItem()));
     }

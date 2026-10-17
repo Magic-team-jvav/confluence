@@ -98,7 +98,6 @@ import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.SwordProjectileRenderer;
-import org.confluence.mod.client.renderer.entity.soulcerer.SoulLureRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.CthulhuEyeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.TerrarianProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
@@ -367,7 +366,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
-        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), SoulLureRenderer::new);
+        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(CRYSTAL_VILE_SHARD.get(), CrystalVileShardProjectileRenderer::new);
@@ -1038,6 +1037,8 @@ public final class ModClientEvents {
                 event.registerItem(ShortSwordInHandRenderer.INSTANCE, holder.get());
             }
         }
+        // 祈灵之刃按短剑手持姿态渲染
+        event.registerItem(ShortSwordInHandRenderer.INSTANCE, SoulItems.SPIRITWARD_BLADE.get());
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FRIGHT);

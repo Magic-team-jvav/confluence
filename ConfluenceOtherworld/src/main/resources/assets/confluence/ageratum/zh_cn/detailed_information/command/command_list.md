@@ -133,3 +133,31 @@
     - confluence:goblin_army 哥布林军队来袭
     - confluence:lantern_night 灯笼夜
     - confluence:meteor_shower 流星雨
+
+# 重置灵魂技能装备
+
+## 格式：
+
+- /confluence soulSkill reset
+
+## 用途：
+
+- 把执行者的灵魂技能装备恢复到初始状态：清空全部装备槽位、当前选中索引归零、清空所有技能冷却。
+- 该指令不会删除已经永久学会的技能、临时可用状态或技能书记录，只重置"装了什么"。
+- 举例：
+    - /confluence soulSkill reset：把三个槽位全部清空，并重新计算当前可用技能。
+
+# 调整灵魂技能装备数量
+
+## 格式：
+
+- /confluence soulSkill slots <count>
+
+## 用途：
+
+- 修改执行者可装备的灵魂技能槽位数量，<count> 只能填 3 到 6 之间的整数。
+- 初始状态为 3 个槽位；数量增加时多出的槽位为空，数量减少时会裁掉超出部分的槽位内容。
+- 修改后会立即同步到客户端，并按其重新计算一次可用技能。
+- 举例：
+    - /confluence soulSkill slots 6：把槽位数量扩展到 6。
+    - /confluence soulSkill slots 3：把槽位数量收回初始的 3。

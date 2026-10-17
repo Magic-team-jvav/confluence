@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
-    public static final int DEFAULT_EQUIPPED_SOUL_SKILL_COUNT = 6;
+    public static final int DEFAULT_EQUIPPED_SOUL_SKILL_COUNT = 3;
     private static final String EQUIPPED_SKILL_MAX_NUMBER_TAG = "equippedSkillMaxNumber";
     private static final String CURRENT_INDEX_TAG = "currentIndex";
     private static final String EQUIPPED_SKILLS_TAG = "equippedSkills";
@@ -34,6 +34,7 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     private static final String SKILL_COOLDOWNS_TAG = "skillCooldowns";
     private static final String TEMPORARY_SKILLS_TAG = "temporarySkills";
     private static final String AVAILABLE_SKILLS_TAG = "availableSkills";
+    private static final String LEARNED_SOUL_BOOKS_TAG = "learnedSoulBooks";
 
     private int equippedSkillMaxNumber = DEFAULT_EQUIPPED_SOUL_SKILL_COUNT;
     private int currentIndex = 0;
@@ -42,6 +43,7 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     private final Map<ResourceLocation, SoulSkillStack> skillCooldowns = new HashMap<>();
     private final Set<ResourceLocation> temporarySkills = new HashSet<>();
     private final Set<ResourceLocation> availableSkills = new HashSet<>();
+    private final Set<ResourceLocation> learnedSoulBooks = new HashSet<>();
 
     public SoulSkillStorage() {
         for (int i = 0; i < equippedSkillMaxNumber; i++) {
@@ -86,6 +88,7 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
             cooldowns.add(entry);
         }
         nbt.put(SKILL_COOLDOWNS_TAG, cooldowns);
+        nbt.put(LEARNED_SOUL_BOOKS_TAG, serializeSkillIds(learnedSoulBooks));
         return nbt;
     }
 
@@ -141,6 +144,7 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
         }
         temporarySkills.clear();
         availableSkills.clear();
+        deserializeSkillIds(nbt.getList(LEARNED_SOUL_BOOKS_TAG, Tag.TAG_STRING), learnedSoulBooks);
     }
 
     /// 同步技能状态及临时可用性，不包含当前索引。
@@ -189,6 +193,16 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
 
     public Set<ResourceLocation> getAvailableSkills() {
         return availableSkills;
+    }
+
+    /// 返回只提供被动效果的技能书记录，供引渡者等被动查询。
+    public Set<ResourceLocation> getLearnedSoulBooks() {
+        return learnedSoulBooks;
+    }
+
+    /// 登记一本被动技能书，已登记时返回 false。
+    public boolean learnSoulBook(ResourceLocation bookId) {
+        return learnedSoulBooks.add(bookId);
     }
 
     public int getEquippedSoulSkillMaxNumber() {

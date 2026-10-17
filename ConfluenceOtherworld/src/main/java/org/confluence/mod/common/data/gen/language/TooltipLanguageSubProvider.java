@@ -152,6 +152,12 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.FROSTBITE.get(), "Slowly losing life", "持续损失生命值");
         language.addTooltip(ModEffects.FROZEN.get(), "You can't move!", "你不能移动！");
         language.addTooltip(ModEffects.GARDEN_GNOME_LUCK.get(), "A nearby garden gnome brings good luck", "附近的花园侏儒带来了好运");
+        language.addTooltip(ModEffects.GO_OVER.get(), "5% increased soul damage", "灵魂伤害提高5%");
+        language.addTooltip(AccessoryItems.BAND_OF_SOUL.get(), "Slowly regenerates soul, 1 soul every 3 seconds", "缓慢回复灵魂，每3秒回复1点");
+        language.addTooltip(AccessoryItems.BAND_OF_SOUL_REGENERATION.get(), "Slowly regenerates soul and life", "缓慢回复灵魂和生命");
+        language.addTooltip(AccessoryItems.BAND_OF_MEDIUMSHIP.get(), "Slowly regenerates soul and increases maximum soul by 20", "缓慢回复灵魂，灵魂上限提高20");
+        language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "You may use an equipped skill without holding a main weapon", "无需手持主武器即可使用已装备的技能");
+        language.addTooltip(AccessoryItems.SOULCERER_EMBLEM.get(), "12% increased soul damage", "灵魂伤害提高12%");
         language.addTooltip(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced", "移动速度提高，怪物生成减少");
         language.addTooltip(ModEffects.HEART_LANTERN.get(), "Life regen is increased ", "生命再生速度提高");
         language.addTooltip(ModEffects.HEART_REACH.get(), "Increased heart pickup range", "扩大心的拾取范围");

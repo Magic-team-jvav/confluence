@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +16,11 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +35,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
@@ -58,9 +64,12 @@ import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.common.init.item.SoulItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
@@ -88,6 +97,8 @@ import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 public final class PlayerUtils {
+    private static final ResourceLocation SOULDANCER_CRIT_ID = Confluence.asResource("souldancer_set_crit");
+    private static final ResourceLocation SOULDANCER_SPEED_ID = Confluence.asResource("souldancer_set_speed");
     private static final float HEALTH_PER_SOUL = 4.0F;
     private static final float SOUL_CONSUMPTION_FAILED = -1.0F;
     private static final float ENVIRONMENT_SOUL_RECOVERY_RATIO = 0.05F;
@@ -96,6 +107,7 @@ public final class PlayerUtils {
     private static final float SOUL_ARMOR_WEIGHT = 0.1F;
     private static final float SOUL_COLLECTION_DIVISOR = 20.0F;
     private static final float MINIMUM_COLLECTED_SOUL = 1.0F;
+    private static final String FIRST_OBTAIN_SOUL_SKILL_MESSAGE = "message.confluence.soulcerer_skill.first_obtain";
 
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
         if (coin == ModItems.PLATINUM_COIN.get()) return 0;
@@ -414,6 +426,95 @@ public final class PlayerUtils {
         return true;
     }
 
+    /// 判断技能书给玩家的效果是否已经生效：技能书看永久学习记录，被动书看书籍登记。
+    public static boolean isSoulBookGranted(Player player, SoulBooks.Definition book) {
+        return book.skill() == null ? isSoulBookLearned(player, book.id()) : isSoulSkillLearned(player, book.skill());
+    }
+
+    /// 首次使用技能书：技能书复用永久学习入口，被动书只登记书籍 ID。
+    public static boolean grantSoulBook(ServerPlayer player, SoulBooks.Definition book) {
+        if (book.skill() != null) {
+            SoulSkill skill = SoulSkillStorage.findSoulSkill(book.skill());
+            return skill != null && learnSoulSkill(player, skill);
+        }
+        if (!SoulSkillStorage.of(player).learnSoulBook(book.id())) {
+            return false;
+        }
+        SoulSkillSyncPacketS2C.sendToClient(player);
+        return true;
+    }
+
+    /// 判断被动技能书是否已被玩家登记。
+    public static boolean isSoulBookLearned(Player player, ResourceLocation bookId) {
+        return player != null && SoulSkillStorage.of(player).getLearnedSoulBooks().contains(bookId);
+    }
+
+    /// 复习：重复使用技能书时刷新为固定时长，不叠加层数。
+    public static void applySoulBookReview(ServerPlayer player) {
+        player.addEffect(new MobEffectInstance(ModEffects.GO_OVER, SoulSkillParameters.SOUL_BOOK_REVIEW_DURATION_TICKS, 0, false, true, true));
+    }
+
+    /// 重置灵魂技能装备状态：清空槽位与冷却、索引归零；永久学习与书籍记录保持不变。
+    public static void resetSoulSkillEquip(ServerPlayer player) {
+        SoulSkillStorage storage = SoulSkillStorage.of(player);
+        storage.getEquippedSoulSkills().clear();
+        storage.setCurrentSoulSkillIndex(0);
+        storage.getSkillCooldowns().clear();
+        updateSoulSkillSlots(player);
+        refreshSoulSkills(player);
+        SoulSkillSyncPacketS2C.sendToClient(player);
+        SoulSkillIndexSyncPacketS2C.sendToClient(player);
+    }
+
+    /// 设置可装备槽数并同步两端，槽数范围由调用方限制。
+    public static void setSoulSkillSlotCount(ServerPlayer player, int count) {
+        setEquippedSoulSkillMaxNumber(player, count);
+        updateSoulSkillSlots(player);
+        setCurrentSoulSkillIndex(player, getCurrentSoulSkillIndex(player));
+        refreshSoulSkills(player);
+        SoulSkillSyncPacketS2C.sendToClient(player);
+        SoulSkillIndexSyncPacketS2C.sendToClient(player);
+    }
+
+    /// 首次获得登记过的主武器即永久学会其附带技能，并在真正学会时提示一次。
+    public static void learnSoulSkillsOnFirstObtain(ServerPlayer player) {
+        if (!Confluence.SOUL_SKILLS || SoulItems.FIRST_OBTAIN_SOUL_SKILLS.isEmpty()) {
+            return;
+        }
+        for (var entry : SoulItems.FIRST_OBTAIN_SOUL_SKILLS.entrySet()) {
+            List<ResourceLocation> skillIds = entry.getValue();
+            if (skillIds.stream().allMatch(id -> isSoulSkillLearned(player, id))) {
+                continue;
+            }
+            Item item = entry.getKey().get();
+            if (!hasItemInInventory(player, item)) {
+                continue;
+            }
+            Component itemName = Component.translatable(item.getDescriptionId());
+            for (ResourceLocation skillId : skillIds) {
+                SoulSkill skill = SoulSkillStorage.findSoulSkill(skillId);
+                if (skill != null && learnSoulSkill(player, skill)) {
+                    player.displayClientMessage(Component.translatable(FIRST_OBTAIN_SOUL_SKILL_MESSAGE, itemName, skill.getNameComponent(skill.getStack())), true);
+                }
+            }
+        }
+    }
+
+    /// 判断主背包与副手是否持有目标物品，不比较物品组件。
+    private static boolean hasItemInInventory(Player player, Item item) {
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.is(item)) {
+                return true;
+            }
+        }
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (stack.is(item)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /// 冷却按技能 ID 共享，卸下和重复装备不会清除冷却。
     private static void setSoulSkillCooldown(Player player, SoulSkill skill, int ticks) {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
@@ -466,7 +567,12 @@ public final class PlayerUtils {
         ItemStack mainHand = player.getMainHandItem();
         float weaponDamage = mainHand.getItem() instanceof SoulWeaponItem weapon ? weapon.getSoulDamage(mainHand) : 0.0F;
         SoulSkillDamageEvent event = NeoForge.EVENT_BUS.post(new SoulSkillDamageEvent(player, stack, stack.getDamage(), weaponDamage));
-        return Math.max(0.0F, event.getAmount());
+        float amount = Math.max(0.0F, event.getAmount());
+        // 引渡者：引魂标签内的技能基础伤害固定 +1，不看技能分类
+        if (isSoulBookLearned(player, SoulBooks.PSYCHOPOMP) && stack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)) {
+            amount += SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_DAMAGE_BONUS;
+        }
+        return amount;
     }
 
     /// 先扣可用灵魂，返回需在效果执行后结算的生命代偿；负值表示取消。
@@ -482,7 +588,97 @@ public final class PlayerUtils {
         SoulStorage storage = SoulStorage.of(player);
         float paidSoul = Math.min(storage.getCurrentSoul(), cost);
         storage.extract(paidSoul);
+        onSoulSpent(player, paidSoul);
         return (cost - paidSoul) * Math.max(0.0F, event.getHealthPerSoul());
+    }
+
+    /// 蓝隐匿者全套：每累计消耗 10 点灵魂，削减 3 秒耐药性剩余时长。
+    public static void onSoulSpent(ServerPlayer player, float paidSoul) {
+        if (paidSoul <= 0.0F) {
+            return;
+        }
+        SoulStorage storage = SoulStorage.of(player);
+        float unit = SoulSkillParameters.BLUE_HERMIT_SOUL_PER_REDUCTION;
+        float accumulated = storage.getConsumedSoul() + paidSoul;
+        int triggers = (int) (accumulated / unit);
+        storage.setConsumedSoul(accumulated - triggers * unit);
+        if (triggers <= 0 || !isWearingBlueHermitSet(player)) {
+            return;
+        }
+        MobEffectInstance sickness = player.getEffect(ModEffects.POTION_SICKNESS);
+        if (sickness == null) {
+            return;
+        }
+        int reduction = triggers * SoulSkillParameters.BLUE_HERMIT_SICKNESS_REDUCTION_TICKS;
+        int duration = sickness.isInfiniteDuration() ? sickness.getDuration() : Math.max(0, sickness.getDuration() - reduction);
+        player.removeEffect(ModEffects.POTION_SICKNESS);
+        if (duration > 0) {
+            player.addEffect(new MobEffectInstance(ModEffects.POTION_SICKNESS, duration, sickness.getAmplifier(), sickness.isAmbient(), sickness.isVisible(), sickness.showIcon()));
+        }
+    }
+
+    /// 判断玩家是否穿戴完整的蓝隐匿者四件套。
+    public static boolean isWearingBlueHermitSet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.BLUE_HERMIT_HELMET.get())
+                && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.BLUE_HERMIT_CHESTPLATE.get())
+                && player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BLUE_HERMIT_LEGGINGS.get())
+                && player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BLUE_HERMIT_BOOTS.get());
+    }
+
+    /// 判断玩家是否穿戴完整的幻翼四件套。
+    public static boolean isWearingPhantomSet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.PHANTOM_HELMET.get())
+                && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.PHANTOM_CHESTPLATE.get())
+                && player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.PHANTOM_LEGGINGS.get())
+                && player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.PHANTOM_BOOTS.get());
+    }
+
+    /// 判断玩家是否穿戴完整的白南瓜四件套。
+    public static boolean isWearingWhitePumpkinSet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.WHITE_PUMPKIN_HELMET.get())
+                && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.WHITE_PUMPKIN_CHESTPLATE.get())
+                && player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.WHITE_PUMPKIN_LEGGINGS.get())
+                && player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.WHITE_PUMPKIN_BOOTS.get());
+    }
+
+    /// 判断玩家是否穿戴完整的逐灵四件套。
+    public static boolean isWearingSeekerSet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.SEEKER_HELLMET.get())
+                && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.SEEKER_CHESTPLATE.get())
+                && player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.SEEKER_LEGGINGS.get())
+                && player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.SEEKER_BOOTS.get());
+    }
+
+    /// 判断玩家是否穿戴完整的魂舞两件套（头 + 长袍）。
+    public static boolean isWearingSouldancerSet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.SOULDANCER_HOOD.get())
+                && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.SOULDANCER_ROBE.get());
+    }
+
+    /// 收集灵魂时刷新魂舞限时增益。
+    public static void onSoulCollected(Player player, long gameTime) {
+        if (isWearingSouldancerSet(player)) {
+            SoulStorage.of(player).setSouldancerBuffEnd(gameTime + SoulSkillParameters.SOULDANCER_BUFF_DURATION_TICKS);
+        }
+    }
+
+    /// 每刻同步魂舞增益的临时属性修饰符，到期自行移除。
+    public static void tickSoulArmorSets(ServerPlayer player, long gameTime) {
+        boolean active = gameTime < SoulStorage.of(player).getSouldancerBuffEnd();
+        applyTransientModifier(player, LibAttributes.getCriticalChance(), SOULDANCER_CRIT_ID, SoulSkillParameters.SOULDANCER_CRIT_BONUS, AttributeModifier.Operation.ADD_VALUE, active);
+        applyTransientModifier(player, Attributes.MOVEMENT_SPEED, SOULDANCER_SPEED_ID, SoulSkillParameters.SOULDANCER_SPEED_BONUS, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, active);
+    }
+
+    private static void applyTransientModifier(Player player, Holder<Attribute> attribute, ResourceLocation id, double value, AttributeModifier.Operation operation, boolean active) {
+        AttributeInstance instance = player.getAttribute(attribute);
+        if (instance == null) {
+            return;
+        }
+        if (active) {
+            instance.addOrUpdateTransientModifier(new AttributeModifier(id, value, operation));
+        } else if (instance.getModifier(id) != null) {
+            instance.removeModifier(id);
+        }
     }
 
     /// 生命代偿使用独立伤害来源，由伤害标签与 NeoForge 事件结算。
@@ -505,7 +701,7 @@ public final class PlayerUtils {
 
     /// 成功后提交冷却、两端执行，再结算可能致死的生命代偿。
     public static boolean tryUseSoulSkill(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS || !isSoulMode(player) || !isHoldingSoulWeapon(player)) {
+        if (!Confluence.SOUL_SKILLS || !isSoulMode(player) || (!isHoldingSoulWeapon(player) && !TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND))) {
             return false;
         }
         boolean availabilityChanged = refreshSoulSkills(player);
@@ -576,6 +772,10 @@ public final class PlayerUtils {
         }
         SoulStorage storage = SoulStorage.of(player);
         storage.freshMaxSoul();
+        // 灵魂手环：每 3 秒回复 1 点灵魂
+        if (TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL) && player.level().getGameTime() % 60 == 0 && (player.level().getGameTime() / 60) % 3 == 0) {
+            storage.receive(SoulSkillParameters.BAND_OF_SOUL_RECOVERY);
+        }
         float ratio = storage.getRecoveryRatio();
         if (ModBlockCounters.isGraveyard(player.level(), player.blockPosition())
                 || player.level().getBiome(player.blockPosition()).is(Biomes.SOUL_SAND_VALLEY)) {

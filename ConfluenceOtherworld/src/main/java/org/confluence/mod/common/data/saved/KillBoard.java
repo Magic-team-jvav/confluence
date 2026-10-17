@@ -57,8 +57,12 @@ public enum KillBoard implements IGlobalData {
         return false;
     }
 
+    public boolean isTwinsDefeated() {
+        return isDefeated(BossEntities.RETINAZER.get()) && isDefeated(BossEntities.SPAZMATISM.get());
+    }
+
     public boolean isAnyMechBossDefeated() {
-        return isDefeated(BossEntities.THE_TWINS.get()) ||
+        return isTwinsDefeated() ||
                 isDefeated(BossEntities.THE_DESTROYER.get()) ||
                 isDefeated(BossEntities.SKELETRON_PRIME.get());
     }
@@ -154,7 +158,16 @@ public enum KillBoard implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_bosses")),
+        CompoundTag bosses = tag.getCompound("defeated_bosses").copy();
+        if (bosses.contains("confluence:the_twins")) {
+            boolean defeated = bosses.getBoolean("confluence:the_twins");
+            bosses.remove("confluence:the_twins");
+            if (defeated) {
+                bosses.putBoolean("confluence:retinazer", true);
+                bosses.putBoolean("confluence:spazmatism", true);
+            }
+        }
+        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, bosses),
                 result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
         PortDataResultExtension.ifSuccess(DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events")),
                 result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));

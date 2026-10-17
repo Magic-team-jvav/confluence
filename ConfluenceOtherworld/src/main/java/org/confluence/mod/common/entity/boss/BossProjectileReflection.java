@@ -21,7 +21,7 @@ public final class BossProjectileReflection {
             return false;
         boolean reflectsStar = projectile.getType() == ModEntities.STAR_CANNON_BULLET.get()
                 && (boss instanceof EyeOfCthulhu || boss instanceof EaterOfWorlds || boss instanceof BrainOfCthulhu
-                || boss instanceof Skeletron || boss instanceof WallOfFlesh || boss instanceof TheTwins
+                || boss instanceof Skeletron || boss instanceof WallOfFlesh || boss instanceof AbstractTwinEye
                 || boss instanceof TheDestroyer || boss instanceof SkeletronPrime || boss instanceof Plantera);
         boolean reflectsAttack = target instanceof EyeOfCthulhu eye && eye.getCombatState() == EyeOfCthulhu.CombatState.TRANSFORMING
                 || target instanceof Skeletron skeleton && skeleton.isSpinning() && skeleton.getRemainingHandCount() > 0

@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 /// 生成重铸词缀的中英文翻译
 public final class PrefixLanguageSubProvider {
     private PrefixLanguageSubProvider() {}

@@ -27,7 +27,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.ModPrefix;
-import org.confluence.mod.common.data.gen.language.TranslationConsumer;
+import org.confluence.mod.common.data.TranslationConsumer;
 import org.confluence.mod.common.event.ItemGroupEvents;
 import org.confluence.mod.common.event.ModEvents;
 import org.confluence.mod.common.event.NetworkEvents;

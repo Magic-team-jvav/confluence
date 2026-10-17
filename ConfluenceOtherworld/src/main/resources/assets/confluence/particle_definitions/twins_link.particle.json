@@ -1,0 +1,52 @@
+{
+    "format_version": "1.10.0",
+    "particle_effect": {
+        "description": {
+            "identifier": "confluence:twins_link",
+            "basic_render_parameters": {
+                "material": "particles_blend",
+                "texture": "confluence:thunder_zapper"
+            }
+        },
+        "components": {
+            "minecraft:emitter_rate_instant": {
+                "num_particles": 256
+            },
+            "minecraft:emitter_lifetime_expression": {},
+            "minecraft:emitter_shape_point": {
+                "offset": [
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "minecraft:particle_lifetime_expression": {
+                "max_lifetime": 60,
+                "expiration_expression": "variable.link_active < 0.5"
+            },
+            "minecraft:particle_initial_speed": 0,
+            "minecraft:particle_appearance_billboard": {
+                "size": [
+                    0.3,
+                    0.3
+                ],
+                "facing_camera_mode": "lookat_xyz"
+            },
+            "minecraft:particle_appearance_tinting": {
+                "color": [
+                    1,
+                    1,
+                    1,
+                    0.9
+                ]
+            },
+            "minecraft:particle_motion_parametric": {
+                "relative_position": [
+                    "variable.link_x * variable.link_t + math.sin(variable.link_t * 180) * math.sin(variable.link_t * 2160 + variable.emitter_age * 180) * 0.08",
+                    "variable.link_y * variable.link_t + math.sin(variable.link_t * 180) * math.cos(variable.link_t * 2160 + variable.emitter_age * 180) * 0.08",
+                    "variable.link_z * variable.link_t"
+                ]
+            }
+        }
+    }
+}

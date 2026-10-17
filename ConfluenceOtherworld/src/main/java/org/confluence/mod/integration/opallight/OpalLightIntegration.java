@@ -24,6 +24,7 @@ import org.confluence.lib.client.DynamicLightRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.animal.Fairy;
 import org.confluence.mod.common.entity.boss.PrimeEnderDragon;
+import org.confluence.mod.common.entity.boss.Retinazer;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
@@ -56,6 +57,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     private static final ResourceLocation SHINE = Confluence.asResource("effect_shine");
     private static final ResourceLocation GLOWING = Confluence.asResource("effect_glowing");
     public static final ResourceLocation DRAGON_LASER = Confluence.asResource("prime_ender_dragon_laser");
+    public static final ResourceLocation RETINAZER_BEAM = Confluence.asResource("retinazer_beam");
     private static final Codec<Map<ResourceLocation, DynamicLightDefinition>> CODEC = Codec.unboundedMap(ResourceLocation.CODEC, DynamicLightDefinition.CODEC);
 
     private Map<ResourceLocation, Source> sources = Map.of();
@@ -254,6 +256,15 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
                 Vec3 start = dragon.getLaserOrigin(1.0F);
                 Vec3 end = start.add(dragon.getViewVector(1.0F).scale(dragon.getLaserRange()));
                 sink.line(id | 1L, start, end, source.profile().color(), source.brightness());
+            }
+        }
+        if (entity instanceof Retinazer eye && eye.isAlive() && eye.getBeamLength() > 0) {
+            Source source = sources.get(RETINAZER_BEAM);
+            if (source != null) {
+                Vec3 start = eye.getBeamOrigin();
+                Vec3 end = start.add(eye.getBeamDirection().scale(eye.getBeamLength()));
+                int brightness = eye.isBeamCharging() ? source.brightness() / 3 : source.brightness();
+                sink.line(id | 2L, start, end, source.profile().color(), brightness);
             }
         }
     }

@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 /// 生成声音字幕的中英文翻译
 public final class SoundLanguageSubProvider {
     private SoundLanguageSubProvider() {}

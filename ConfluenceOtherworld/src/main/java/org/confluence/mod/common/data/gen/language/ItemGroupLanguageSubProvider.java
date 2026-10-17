@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 /// 生成物品分组和创造模式分页的中英文翻译
 public final class ItemGroupLanguageSubProvider {
     private ItemGroupLanguageSubProvider() {}

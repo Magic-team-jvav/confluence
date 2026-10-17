@@ -10,6 +10,7 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.item.common.TwinEyeSpawnEggItem;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -301,7 +302,7 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> PRIME_ENDER_DRAGON_SPAWN_EGG = register(BossEntities.PRIME_ENDER_DRAGON, "本源末影龙刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> RETINAZER_SPAWN_EGG = register(BossEntities.RETINAZER, "激光眼刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> SPAZMATISM_SPAWN_EGG = register(BossEntities.SPAZMATISM, "魔焰眼刷怪蛋");
-    public static final PortDeferredItem<ForgeSpawnEggItem> THE_TWINS_SPAWN_EGG = register(BossEntities.THE_TWINS, "双子魔眼刷怪蛋");
+    public static final PortDeferredItem<TwinEyeSpawnEggItem> THE_TWINS_SPAWN_EGG = registerTwins("双子魔眼刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> SKELETRON_PRIME_SPAWN_EGG = register(BossEntities.SKELETRON_PRIME, "机械骷髅王刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> THE_DESTROYER_SPAWN_EGG = register(BossEntities.THE_DESTROYER, "毁灭者刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> PLANTERA_SPAWN_EGG = register(BossEntities.PLANTERA, "世纪之花刷怪蛋");
@@ -317,6 +318,12 @@ public final class SpawnEggItems {
 
     private static PortDeferredItem<ForgeSpawnEggItem> register(RegistryObject<? extends EntityType<? extends Mob>> type, int bc, int hc) {
         return ITEMS.register(type.getId().getPath() + "_spawn_egg", () -> new ForgeSpawnEggItem(type, bc, hc, new Item.Properties()));
+    }
+
+    private static PortDeferredItem<TwinEyeSpawnEggItem> registerTwins(String chineseName) {
+        PortDeferredItem<TwinEyeSpawnEggItem> entry = ITEMS.register("the_twins_spawn_egg", TwinEyeSpawnEggItem::new);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
     }
 
     private SpawnEggItems() {}

@@ -26,7 +26,7 @@ final class MechanicalMayhemTracker {
             if (!(entity instanceof BaseBoss boss) || !boss.isAlive()) {
                 continue;
             }
-            if (boss.getType() == BossEntities.THE_TWINS.get()) {
+            if (boss instanceof AbstractTwinEye eye && eye.ownsSharedBossBar() && eye.getEncounterUUID() != null) {
                 twins.add(boss);
             } else if (boss.getType() == BossEntities.THE_DESTROYER.get()) {
                 destroyers.add(boss);
@@ -60,7 +60,7 @@ final class MechanicalMayhemTracker {
     }
 
     private static boolean isMechanicalBoss(BaseBoss boss) {
-        return boss.getType() == BossEntities.THE_TWINS.get()
+        return boss instanceof AbstractTwinEye eye && eye.ownsSharedBossBar() && eye.getEncounterUUID() != null
                 || boss.getType() == BossEntities.THE_DESTROYER.get()
                 || boss.getType() == BossEntities.SKELETRON_PRIME.get();
     }

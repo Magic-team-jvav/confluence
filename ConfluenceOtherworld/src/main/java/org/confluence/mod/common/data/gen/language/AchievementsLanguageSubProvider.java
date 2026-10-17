@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 /// 生成成就的中英文翻译
 public final class AchievementsLanguageSubProvider {
     private AchievementsLanguageSubProvider() {}

@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 /// 生成怪物图鉴的中英文翻译
 public final class BestiaryLanguageSubProvider {
     private BestiaryLanguageSubProvider() {}

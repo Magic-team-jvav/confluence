@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.language;
 
+import org.confluence.mod.common.data.TranslationConsumer;
+
 /// 生成群系和世界事件的中英文翻译
 public final class WorldLanguageSubProvider {
     private WorldLanguageSubProvider() {}

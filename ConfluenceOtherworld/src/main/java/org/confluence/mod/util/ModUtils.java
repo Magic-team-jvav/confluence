@@ -64,6 +64,7 @@ import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.MoneyDropSource;
+import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
@@ -150,7 +151,10 @@ public final class ModUtils {
 
         List<ServerPlayer> participants = boss.getOnlineCombatParticipants();
         EntityType<?> type = boss.getType();
-        KillBoard.INSTANCE.defeat(level.getServer(), type);
+        if (boss instanceof AbstractTwinEye) {
+            KillBoard.INSTANCE.defeat(level.getServer(), BossEntities.RETINAZER.get());
+            KillBoard.INSTANCE.defeat(level.getServer(), BossEntities.SPAZMATISM.get());
+        } else KillBoard.INSTANCE.defeat(level.getServer(), type);
         if (type == BossEntities.EATER_OF_WORLDS.get() || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;

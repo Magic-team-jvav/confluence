@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.language;
+package org.confluence.mod.common.data;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;

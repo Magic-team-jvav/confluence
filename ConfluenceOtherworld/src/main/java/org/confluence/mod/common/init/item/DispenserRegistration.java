@@ -13,6 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
 import org.confluence.mod.common.item.common.SpongeItem;
 
 import java.util.stream.Stream;
@@ -23,6 +25,16 @@ public class DispenserRegistration {
     /// 注册本模组液体工具在发射器中的交互行为。
     /// 原版已经处理普通箭、船等常规物品，这里只补本模组新增的桶、无底桶、吸水海绵和空瓶。
     public static void boostrap() {
+        DispenserBlock.registerBehavior(SpawnEggItems.THE_TWINS_SPAWN_EGG.get(), new OptionalDispenseItemBehavior() {
+            @Override
+            protected ItemStack execute(BlockSource source, ItemStack stack) {
+                BlockPos position = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+                boolean spawned = TwinEyeEncounter.summon(source.getLevel(), Vec3.atBottomCenterOf(position), null);
+                setSuccess(spawned);
+                if (spawned) stack.shrink(1);
+                return stack;
+            }
+        });
         DispenseItemBehavior bucketEmptying = new DefaultDispenseItemBehavior() {
             @Override
             protected ItemStack execute(BlockSource source, ItemStack stack) {

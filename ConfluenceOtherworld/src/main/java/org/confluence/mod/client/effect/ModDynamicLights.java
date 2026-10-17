@@ -18,6 +18,7 @@ import org.confluence.lib.client.DynamicLightRegister;
 import org.confluence.lib.client.light.DynamicLightEffects;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.entity.boss.PrimeEnderDragon;
+import org.confluence.mod.common.entity.boss.Retinazer;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
@@ -81,6 +82,14 @@ public final class ModDynamicLights {
             }
             return null;
         });
+        DynamicLightRegister.registerEntity(Retinazer.class, (eye, partialTick) -> {
+            if (eye.isAlive() && eye.getBeamLength() > 0 && !OpalLightIntegration.handlesEffect(OpalLightIntegration.RETINAZER_BEAM)) {
+                Vec3 origin = eye.getMuzzlePosition(partialTick);
+                Vec3 end = origin.add(eye.getBeamDirection().scale(eye.getBeamLength()));
+                DynamicLightEffects.renderBeam(origin, end, eye.isBeamCharging() ? 4 : 12);
+            }
+            return null;
+        });
         DynamicLightRegister.register(ModEntities.FALLING_STAR.get(), DynamicLightProvider.entity(12));
         DynamicLightRegister.register(ModEntities.BALL_OF_FIRE.get(), DynamicLightProvider.entity(12));
         DynamicLightRegister.register(ModEntities.FLAMELASH.get(), DynamicLightProvider.entity(12));
@@ -99,6 +108,8 @@ public final class ModDynamicLights {
         DynamicLightRegister.register(ModEntities.BALL_OF_FROST.get(), DynamicLightProvider.entity(8));
         DynamicLightRegister.register(ModEntities.NPC_SHADOWFLAME_SKULL.get(), DynamicLightProvider.entity(8));
         DynamicLightRegister.register(ModEntities.MONSTER_LASER.get(), DynamicLightProvider.entity(10));
+        DynamicLightRegister.register(ModEntities.RETINAZER_LASER.get(), DynamicLightProvider.entity(10));
+        DynamicLightRegister.register(ModEntities.SPAZMATISM_FLAME.get(), DynamicLightProvider.entity(12));
         DynamicLightRegister.register(ModEntities.MARTIAN_ELECTRIC_BOLT.get(), DynamicLightProvider.entity(10));
         DynamicLightRegister.register(ModEntities.MAGIC_MISSILE.get(), DynamicLightProvider.entity(10));
         DynamicLightRegister.register(ModEntities.WATER_BOLT.get(), DynamicLightProvider.entity(8));

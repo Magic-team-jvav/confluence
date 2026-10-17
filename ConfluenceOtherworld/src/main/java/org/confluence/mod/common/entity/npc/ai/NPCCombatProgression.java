@@ -43,7 +43,7 @@ public final class NPCCombatProgression {
         if (board.isDefeated(BossEntities.QUEEN_BEE.get())) bonuses = bonuses.add(3, 0.10);
         if (board.isDefeated(BossEntities.SKELETRON.get())) bonuses = bonuses.add(3, 0.10);
         if (board.getGamePhase().isHardmode()) bonuses = bonuses.add(12, 0.40);
-        if (board.isDefeated(BossEntities.THE_TWINS.get())) bonuses = bonuses.add(6, 0.15);
+        if (board.isTwinsDefeated()) bonuses = bonuses.add(6, 0.15);
         if (board.isDefeated(BossEntities.THE_DESTROYER.get())) bonuses = bonuses.add(6, 0.15);
         if (board.isDefeated(BossEntities.SKELETRON_PRIME.get())) bonuses = bonuses.add(6, 0.15);
         if (board.isDefeated(BossEntities.PLANTERA.get())) bonuses = bonuses.add(8, 0.15);

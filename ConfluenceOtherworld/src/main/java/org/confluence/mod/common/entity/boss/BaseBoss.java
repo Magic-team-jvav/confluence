@@ -636,6 +636,16 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return Set.copyOf(combatParticipantIds);
     }
 
+    final Set<UUID> mechanicalMayhemParticipantIdsSnapshot() {
+        return Set.copyOf(mechanicalMayhemParticipantIds);
+    }
+
+    /// 并列本体共享奖励归属，但各自保留攻击目标和脱战时钟。
+    final void mergeEncounterParticipants(Set<UUID> participants, Set<UUID> mayhemParticipants) {
+        combatParticipantIds.addAll(participants);
+        mechanicalMayhemParticipantIds.addAll(mayhemParticipants);
+    }
+
     /// 将同一场战斗的目标与参与者转交给替代实体。
     /// 分裂、换头或阶段替换不能重新开始遭遇，否则会丢失目标、血条观察者和奖励归属。
     protected final void inheritEncounterState(BaseBoss source) {
@@ -716,7 +726,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     }
 
     /// 优先维持非玩家交战目标，失效后恢复原有的玩家索敌规则。
-    private @Nullable LivingEntity selectCombatTarget(@Nullable LivingEntity previous) {
+    protected @Nullable LivingEntity selectCombatTarget(@Nullable LivingEntity previous) {
         LivingEntity selected = validRetaliationTarget(previous);
         if (selected == null) selected = validRetaliationTarget(getTarget());
         if (selected == null) selected = validRetaliationTarget(retaliationTarget);

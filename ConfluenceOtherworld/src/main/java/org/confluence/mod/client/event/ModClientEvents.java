@@ -448,7 +448,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(PLANTERA_SEED.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_THORN_BALL.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_SPORE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(RETINAZER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFF0000, 0x8E0000, 0x4D0000));
+        event.registerEntityRenderer(RETINAZER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xF5DFFF, 0xC449FF, 0x6420A0));
         event.registerEntityRenderer(SPAZMATISM_FLAME.get(), NoopRenderer::new);
         event.registerEntityRenderer(DARK_CASTER_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(RUNE_BLAST.get(), NoopRenderer::new);
@@ -760,7 +760,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.RETINAZER.get(), TwinEyeDissolveRenderer::retinazer);
         event.registerEntityRenderer(BossEntities.SPAZMATISM.get(), TwinEyeDissolveRenderer::spazmatism);
         // 双子魔眼控制实体只负责生命周期，两只眼睛实体仍各自独立渲染。
-        event.registerEntityRenderer(BossEntities.THE_TWINS.get(), TheTwinsRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_PRIME.get(), SkeletronPrimeBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_PRIME_PART.get(), SkeletronPrimeArmRenderer::new);
         event.registerEntityRenderer(BossEntities.WALL_OF_FLESH.get(), WallOfFleshRenderer::new);
@@ -1006,6 +1005,7 @@ public final class ModClientEvents {
     }
 
     private static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        event.register((stack, tintIndex) -> 0xFFFFFFFF, SpawnEggItems.THE_TWINS_SPAWN_EGG.get());
         event.register((pStack, pTintIndex) -> VOID_B.get(), NatureBlocks.VOID_LOG_BLOCKS.LEAVES.get());
         event.register((pStack, pTintIndex) -> ColoredItem.getRGBA(pStack), MaterialItems.GEL.get());
         event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());

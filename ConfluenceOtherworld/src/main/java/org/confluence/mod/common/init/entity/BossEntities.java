@@ -99,14 +99,12 @@ public final class BossEntities {
                     .build());
 
     // 机械 Boss：双子魔眼及双眼
-    public static final RegistryObject<EntityType<TheTwins>> THE_TWINS = withAttributes(registerEntity("the_twins", "双子魔眼", EntityType.Builder.of(TheTwins::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(1).armor(5).attackDamage(15).followRange(0).armorToughness(2).build());
-    public static final RegistryObject<EntityType<Retinazer>> RETINAZER = withAttributes(registerEntity("retinazer", "激光眼", EntityType.Builder.of(Retinazer::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<Retinazer>> RETINAZER = withAttributes(registerEntity("retinazer", "激光眼", EntityType.Builder.of(Retinazer::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(16).updateInterval(1)),
             () -> CreatureAttributeBuilder.boss().maxHealth(7800).armor(5).attackDamage(19).followRange(300).movementSpeed(0.3).flyingSpeed(0.6).armorToughness(2)
                     .state(AbstractTwinEye.Form.TRANSFORMED, state -> state.multiply(Attributes.ARMOR, 2))
                     .projectile(ModEntities.RETINAZER_LASER, projectile -> projectile.attackDamage(1))
                     .build());
-    public static final RegistryObject<EntityType<Spazmatism>> SPAZMATISM = withAttributes(registerEntity("spazmatism", "魔焰眼", EntityType.Builder.of(Spazmatism::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<Spazmatism>> SPAZMATISM = withAttributes(registerEntity("spazmatism", "魔焰眼", EntityType.Builder.of(Spazmatism::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(16).updateInterval(1)),
             () -> CreatureAttributeBuilder.boss().maxHealth(8970).armor(5).attackDamage(22).followRange(300).movementSpeed(0.3).flyingSpeed(0.6).armorToughness(2)
                     .state(AbstractTwinEye.Form.TRANSFORMED, state -> state.multiply(Attributes.ARMOR, 2.8))
                     .projectile(ModEntities.SPAZMATISM_FLAME, projectile -> projectile.attackDamage(1))

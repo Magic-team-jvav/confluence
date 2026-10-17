@@ -418,7 +418,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 BossEntities.BRAIN_OF_CTHULHU.get(),
                 BossEntities.QUEEN_BEE.get(),
                 BossEntities.SKELETRON.get(),
-                BossEntities.THE_TWINS.get(),
+                BossEntities.RETINAZER.get(),
                 BossEntities.THE_DESTROYER.get(),
                 BossEntities.SKELETRON_PRIME.get(),
                 BossEntities.PLANTERA.get()

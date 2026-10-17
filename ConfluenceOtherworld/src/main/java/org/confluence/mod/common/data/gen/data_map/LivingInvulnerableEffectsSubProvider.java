@@ -144,7 +144,6 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(BossEntities.DEERCLOPS, MobEffects.POISON, ModEffects.SHIMMER.get(), LibEffects.CONFUSED.get())
                 .add(BossEntities.HILL_OF_FLESH, LibEffects.CONFUSED, ModEffects.HELLFIRE)
                 .add(BossEntities.WALL_OF_FLESH, LibEffects.CONFUSED, ModEffects.HELLFIRE)
-                .add(BossEntities.THE_TWINS, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.RETINAZER, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.SPAZMATISM, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.THE_DESTROYER, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES, ModEffects.DRYADS_BANE)

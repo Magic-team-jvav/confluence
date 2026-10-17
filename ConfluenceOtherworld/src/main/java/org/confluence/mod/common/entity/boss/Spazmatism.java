@@ -27,6 +27,7 @@ public class Spazmatism extends AbstractTwinEye {
     private static final int STREAM_TICKS = 140;
     private static final int MAX_COORDINATION_WAIT_TICKS = 80;
     private static final int POSITION_REFRESH_TICKS = 12;
+    private static final int STREAM_SOUND_INTERVAL_TICKS = 14;
     private static final double PHASE_ONE_DASH_SPEED = 1.9;
     private static final double PHASE_TWO_DASH_SPEED = 2.7;
     private static final double FIRE_DISTANCE = 11.0;
@@ -41,6 +42,7 @@ public class Spazmatism extends AbstractTwinEye {
     private Vec3 dashDirection = Vec3.ZERO;
     private int orbitDirection = 1;
     private Vec3 firingPosition;
+    private long nextStreamSoundTick;
 
     public Spazmatism(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -180,8 +182,12 @@ public class Spazmatism extends AbstractTwinEye {
         flame.configureFlame(this, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE),
                 isTransformed() ? STREAM_SPEED : FLAME_BALL_SPEED, isTransformed(), legendaryCombat());
         serverLevel.addFreshEntity(flame);
-        if (!isTransformed() || stateTicks % 12 == 0)
+        if (!isTransformed()) {
             playSound(ModSoundEvents.ITEM_FLAME_CAST.get(), 0.6F, 1.0F);
+        } else if (level().getGameTime() >= nextStreamSoundTick) {
+            playSound(ModSoundEvents.GUN_FLAMETHROWER.get(), 0.6F, 1.0F);
+            nextStreamSoundTick = level().getGameTime() + STREAM_SOUND_INTERVAL_TICKS;
+        }
     }
 
     private void enter(State next) {
@@ -196,6 +202,7 @@ public class Spazmatism extends AbstractTwinEye {
         dashes = 0;
         dashDirection = Vec3.ZERO;
         firingPosition = null;
+        nextStreamSoundTick = 0;
     }
 
     @Override

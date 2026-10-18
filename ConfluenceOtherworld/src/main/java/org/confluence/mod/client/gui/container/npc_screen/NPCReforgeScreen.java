@@ -172,7 +172,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 tinkererPreview.yHeadRot = tinkererPreview.yHeadRotO = MODEL_YAW;
                 var controller = tinkererPreview.getAnimatableInstanceCache().getManagerForId(tinkererPreview.getId())
                         .getAnimationControllers().get("movement");
-                if (controller != null) controller.setTransitionLength(0);
+                if (controller != null) controller.transitionLength(0);
                 tinkererPreview.setSilent(true);
             }
         }

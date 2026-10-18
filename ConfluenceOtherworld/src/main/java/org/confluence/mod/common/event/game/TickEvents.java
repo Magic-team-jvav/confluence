@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event.game;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,13 +17,13 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.BossDelaySpawner;
+import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
@@ -49,6 +48,8 @@ public final class TickEvents {
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {
         Level level = event.getLevel();
+        if (level instanceof ServerLevel machineLevel)
+            EnvironmentalMachines.INSTANCE.tick(machineLevel);
         ResourceKey<Level> dimensionKey = level.dimension();
         if (dimensionKey == Level.END) {
             // 让客户端也自己计算

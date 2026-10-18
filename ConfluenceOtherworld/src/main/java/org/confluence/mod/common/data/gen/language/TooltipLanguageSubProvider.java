@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.gen.language;
 
 import org.confluence.mod.common.data.TranslationConsumer;
-
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.*;
 
@@ -10,6 +9,7 @@ public final class TooltipLanguageSubProvider {
     private TooltipLanguageSubProvider() {}
 
     public static void addTranslations(TranslationConsumer language) {
+
         language.add("attribute.name.repeater.arrow_capacity", "Arrow Capacity", "箭矢容量");
         language.add("attribute.name.repeater.attack_speed", "Arrow Speed", "矢速度");
         language.add("attribute.name.repeater.concurrency_count", "Concurrency Count", "并发射击个数");
@@ -108,6 +108,7 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.summon.damage", "Base summon damage: %s", "基础召唤伤害：%s");
         language.add("tooltip.confluence.summon.retrieve", "Hold right-click to release all summons", "右键长按以解除所有召唤物");
         language.add("tooltip.confluence.summon.slots", "Minion slots: %s", "占用仆从栏：%s");
+        language.add("tooltip.confluence.terraformer", "Maintains a 3×3 chunk area. Uses 1 solution per day. Also accepts yellow, white and brown solutions. Use the base with an empty hand to toggle.", "维持周围3×3区块，每天消耗1个溶液。额外支持黄、白、棕溶液。空手点击底座启停。");
         language.add("tooltip.confluence.velocity", "Projectile Speed: %s", "射弹速度：%s");
         language.add("tooltip.confluence.void_crystal.clear_hint", "Sneak + Right-click to clear recorded data", "蹲下 + 右键以清除记录的数据");
         language.add("tooltip.confluence.void_crystal.empty", "§8Right-click a Void Root to begin linking.", "§8右键点击虚空根系以开始链接。");

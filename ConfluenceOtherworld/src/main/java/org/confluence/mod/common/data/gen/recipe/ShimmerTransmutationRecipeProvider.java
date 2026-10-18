@@ -23,7 +23,6 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.mod.common.init.item.SummonItems;
 
 import java.util.Arrays;
 import java.util.Collections;

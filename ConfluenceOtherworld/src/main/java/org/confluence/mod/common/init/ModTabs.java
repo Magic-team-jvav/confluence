@@ -25,7 +25,6 @@ import org.confluence.terra_furniture.common.init.TFRegistries;
 import java.util.Collection;
 import java.util.List;
 
-
 @SuppressWarnings("unused")
 public final class ModTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Confluence.MODID);
@@ -744,6 +743,8 @@ public final class ModTabs {
                         CreativeModeTab.Output crafting_stations = GroupItem.belongsTo("crafting_stations", output);
                         crafting_stations.accept(FunctionalBlocks.SHARPENING_STATION.get());
                         crafting_stations.accept(FunctionalBlocks.BEWITCHING_TABLE.get());
+                        crafting_stations.accept(FunctionalBlocks.CLENTAMINATOR.get());
+                        crafting_stations.accept(FunctionalBlocks.TERRAFORMER.get());
                         crafting_stations.accept(FunctionalBlocks.EXTRACTINATOR.get());
                         crafting_stations.accept(FunctionalBlocks.SKY_MILL.get());
                         crafting_stations.accept(FunctionalBlocks.HEAVY_WORK_BENCH.get());

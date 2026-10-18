@@ -41,7 +41,9 @@ public class MonsterLaser extends StraightMonsterProjectile {
         // 专家射弹伤害 × 26% 向上取整：120 -> 32、140 -> 37、96 -> 25。
         RAY_GUNNER(32.0F, 5.25F, 0.0F, 20, 0xFFFFFF, 0xFF5B4D, 0xB50000),
         MARTIAN_WALKER(37.0F, 3.5F, 1.5F, 30, 0xFFFFFF, 0x73DFFF, 0x0877FF),
-        BRAIN_SCRAMBLER(25.0F, 3.5F, 0.0F, 30, 0xE8FFE9, 0x68FF72, 0x0B9431);
+        BRAIN_SCRAMBLER(25.0F, 3.5F, 0.0F, 30, 0xE8FFE9, 0x68FF72, 0x0B9431),
+        // 工程师炮台激光采用枪手激光伤害的一半：32 / 2。
+        MARTIAN_ENGINEER(16.0F, 3.5F, 0.0F, 20, 0xFFFFFF, 0x64BEFF, 0x1455FF);
 
         private static final IntFunction<Variant> BY_ID = ByIdMap.sparse(Variant::ordinal, values(), RAY_GUNNER);
 

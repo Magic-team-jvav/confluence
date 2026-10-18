@@ -46,14 +46,15 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
 
     public SkeletronPrimeArm(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        this.noPhysics = true;
     }
 
     public void setMaster(SkeletronPrime master, int type) {
         if (type < LASER || type > CANNON) {
             throw new IllegalArgumentException("Arm type must be between 0 and 3");
         }
-        bindTo(master);
+        if (!bindTo(master)) {
+            return;
+        }
         entityData.set(ARM_TYPE, type);
         Vec3 initialPosition = getPinnedSlotPosition(master, 6.0F);
         setPos(initialPosition.x, initialPosition.y, initialPosition.z);
@@ -296,17 +297,10 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        SkeletronPrime owner = getOwner();
-        if (owner == null || !owner.isAlive() || isRemoved() || isInvulnerableTo(source)) {
+        if (!super.hurt(source, amount)) {
             return false;
         }
-        if (!super.hurt(source, amount)) return false;
-        float remaining = getHealth();
         indicateHurt();
-        onPartHealthChanged(owner, remaining);
-        if (remaining <= 0.0F) {
-            onPartDestroyed(owner);
-        }
         return true;
     }
 

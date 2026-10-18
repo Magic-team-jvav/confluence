@@ -57,7 +57,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     private @Nullable Projectile projectileDefinition;
     private ItemStack firedFromWeapon = ItemStack.EMPTY;
-    private @Nullable LivingEntity trackingTarget;
+    private @Nullable Entity trackingTarget;
     private float gravity;
     private float baseAttackDamage;
     private float baseKnockback;
@@ -156,8 +156,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     private void acquireTrackingTarget() {
         if (!(getOwner() instanceof LivingEntity owner)) return;
         trackingTarget = LibEntityUtils.nearest(
-                level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(50.0)),
-                living -> targeting().canAcquire(owner, living),
+                targeting().hitTargets(level(), this, owner, getBoundingBox().inflate(50.0), this::canHitEntity),
+                candidate -> true,
                 Comparator.comparingDouble(this::distanceToSqr));
     }
 

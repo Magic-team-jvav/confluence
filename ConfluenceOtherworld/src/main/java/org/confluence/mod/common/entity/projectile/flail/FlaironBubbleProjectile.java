@@ -4,6 +4,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -53,10 +54,10 @@ public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
         if (level().isClientSide()) {
             return;
         }
-        LivingEntity target = LibEntityUtils.nearest(
-                level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(TARGET_RANGE)),
+        Entity target = LibEntityUtils.nearest(
+                TARGETING.hitTargets(level(), this, getOwner(), getBoundingBox().inflate(TARGET_RANGE), candidate -> true),
                 // 气泡只主动锁定敌怪阵营；可被攻击的城镇 NPC 和和平生物不是索敌对象。
-                candidate -> TARGETING.canAcquire(getOwner(), candidate),
+                candidate -> true,
                 Comparator.comparingDouble(this::distanceToSqr));
 
         Vec3 velocity = getDeltaMovement();

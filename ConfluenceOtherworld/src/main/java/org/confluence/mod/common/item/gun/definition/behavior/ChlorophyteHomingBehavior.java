@@ -4,7 +4,6 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.*;
@@ -30,7 +29,7 @@ public final class ChlorophyteHomingBehavior extends AbstractBulletBehavior {
     public void tick(BaseBulletEntity entity) {
         Vec3 velocity = entity.getDeltaMovement();
         if (velocity.lengthSqr() < 1.0E-10D) return;
-        LivingEntity target;
+        Entity target;
         if (entity.level().isClientSide) {
             target = entity.getHomingTarget();
         } else {
@@ -43,18 +42,18 @@ public final class ChlorophyteHomingBehavior extends AbstractBulletBehavior {
         entity.setDeltaMovement(rotateVelocityToward(velocity, toTarget, TURN_RATE));
     }
 
-    private static LivingEntity findTarget(BaseBulletEntity entity) {
+    private static Entity findTarget(BaseBulletEntity entity) {
         Vec3 velocity = entity.getDeltaMovement();
         if (velocity.lengthSqr() < 1.0E-10D) return null;
         Vec3 direction = velocity.normalize();
         AABB searchBox = entity.getBoundingBox().expandTowards(direction.scale(FORWARD_RANGE)).inflate(HALF_WIDTH + HALF_HEIGHT + 1.0D);
-        return LibEntityUtils.nearest(entity.level().getEntitiesOfClass(LivingEntity.class, searchBox),
-                candidate -> BulletBehaviorSupport.canAcquireTarget(entity, candidate) && isInsideRectangle(entity, candidate, direction),
-                Comparator.comparingDouble((LivingEntity candidate) -> entity.position()
+        return LibEntityUtils.nearest(entity.targeting().hitTargets(entity.level(), entity, entity.getOwner(), searchBox, entity::canHitTarget),
+                candidate -> isInsideRectangle(entity, candidate, direction),
+                Comparator.comparingDouble((Entity candidate) -> entity.position()
                         .distanceToSqr(candidate.getBoundingBox().getCenter())).thenComparingInt(Entity::getId));
     }
 
-    private static boolean isInsideRectangle(BaseBulletEntity entity, LivingEntity target, Vec3 direction) {
+    private static boolean isInsideRectangle(BaseBulletEntity entity, Entity target, Vec3 direction) {
         return LibEntityUtils.insideForwardRectangle(entity.position(), direction, target,
                 FORWARD_RANGE, HALF_WIDTH, HALF_HEIGHT);
     }

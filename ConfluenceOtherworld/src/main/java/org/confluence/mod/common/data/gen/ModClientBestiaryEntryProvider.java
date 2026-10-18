@@ -515,6 +515,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(MonsterEntities.MARTIAN_PROBE, builder -> builder.order(33000).rarity(3).background(SURFACE).filters(FilterEntry.RARE_CREATURE))
                 .add(MonsterEntities.BRAIN_SCRAMBLER, builder -> builder.order(41200).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.GIGAZAPPER, builder -> builder.order(41600).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
+                .add(MonsterEntities.GIGAZAPPER_AF2, builder -> builder.order(41601).rarity(3).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.GRAY_GRUNT, builder -> builder.order(41800).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.MARTIAN_ENGINEER, builder -> builder.order(41400).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 .add(MonsterEntities.MARTIAN_OFFICER, builder -> builder.order(41500).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))

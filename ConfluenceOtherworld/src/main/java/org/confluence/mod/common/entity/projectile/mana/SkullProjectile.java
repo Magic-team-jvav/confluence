@@ -16,7 +16,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibMathUtils;
+import net.minecraftforge.entity.PartEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -31,7 +31,7 @@ public class SkullProjectile extends AbstractManaProjectile {
     private static final int NO_TARGET_ID = -114514;
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(SkullProjectile.class, EntityDataSerializers.INT);
     private UUID targetUUID;
-    private transient LivingEntity target;
+    private transient Entity target;
 
     public SkullProjectile(EntityType<? extends SkullProjectile> entityType, Level level) {
         super(entityType, level);
@@ -53,8 +53,7 @@ public class SkullProjectile extends AbstractManaProjectile {
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (level().isClientSide && DATA_TARGET_ID.equals(key)) {
-            Entity entity = level().getEntity(entityData.get(DATA_TARGET_ID));
-            this.target = entity instanceof LivingEntity living ? living : null;
+            this.target = LibEntityUtils.getEntityOrPart(level(), entityData.get(DATA_TARGET_ID));
         }
     }
 
@@ -62,23 +61,22 @@ public class SkullProjectile extends AbstractManaProjectile {
     public void baseTick() {
         super.baseTick();
 
-        if (getTarget() == null) {
+        Entity current = getTarget();
+        if (!TARGETING.canKeep(getOwner(), current)) {
+            this.target = null;
+            current = null;
             if (!level().isClientSide) {
-                LivingEntity nearest = LibEntityUtils.nearest(
-                        level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(12.5)),
-                        living -> TARGETING.canAcquire(getOwner(), living),
-                        Comparator.comparingDouble(living -> living.distanceToSqr(this)));
-                if (nearest != null) setTarget(nearest);
+                setTarget(LibEntityUtils.nearest(
+                        TARGETING.hitTargets(level(), this, getOwner(), new AABB(blockPosition()).inflate(12.5), this::canHitEntity),
+                        candidate -> true, Comparator.comparingDouble(this::distanceToSqr)));
+                current = getTarget();
             }
-        } else if (!target.isRemoved()) {
-            if (TARGETING.canKeep(getOwner(), target)) {
-                Vec3 vec3 = getDeltaMovement().add(LibMathUtils.getVectorA2B(this, target).scale(0.4375));
-                if (vec3.lengthSqr() > 0.4375 * 0.4375) {
-                    setDeltaMovement(vec3.normalize().scale(0.4375));
-                }
-            }
-        } else {
-            setTarget(null);
+        }
+        if (current != null) {
+            Vec3 direction = current.getBoundingBox().getCenter().subtract(position()).normalize();
+            Vec3 velocity = getDeltaMovement().add(direction.scale(0.4375));
+            if (velocity.lengthSqr() > 0.4375 * 0.4375) velocity = velocity.normalize().scale(0.4375);
+            setDeltaMovement(velocity);
         }
 
         doSimpleMove();
@@ -102,23 +100,26 @@ public class SkullProjectile extends AbstractManaProjectile {
         }
     }
 
-    public void setTarget(@Nullable LivingEntity target) {
+    public void setTarget(@Nullable Entity target) {
         this.target = target;
         if (target == null) {
             this.targetUUID = null;
             entityData.set(DATA_TARGET_ID, NO_TARGET_ID);
         } else {
-            this.targetUUID = target.getUUID();
+            this.targetUUID = target instanceof PartEntity<?> ? null : target.getUUID();
             entityData.set(DATA_TARGET_ID, target.getId());
         }
     }
 
-    public @Nullable LivingEntity getTarget() {
+    public @Nullable Entity getTarget() {
+        if (target == null && level().isClientSide) {
+            target = LibEntityUtils.getEntityOrPart(level(), entityData.get(DATA_TARGET_ID));
+        }
         if (target == null && targetUUID != null && level() instanceof ServerLevel level) {
             Entity entity = level.getEntity(targetUUID);
-            if (entity instanceof LivingEntity living) {
-                this.target = living;
-                entityData.set(DATA_TARGET_ID, living.getId());
+            if (entity != null) {
+                this.target = entity;
+                entityData.set(DATA_TARGET_ID, entity.getId());
             }
         }
         return target;

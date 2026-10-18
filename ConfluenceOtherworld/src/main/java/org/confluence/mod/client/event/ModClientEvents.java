@@ -469,6 +469,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(GASTROPOD_PROJECTILE.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xF091CF, 0xF44BB9));
         event.registerEntityRenderer(FROST_BEAM.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xA7E9FF, 0x408EFF));
         event.registerEntityRenderer(MARTIAN_ELECTRIC_BOLT.get(), MartianElectricBoltRenderer::new);
+        event.registerEntityRenderer(MARTIAN_REINFORCEMENT.get(), MartianReinforcementRenderer::new);
         event.registerEntityRenderer(FROST_BLAST.get(), NoopRenderer::new);
         event.registerEntityRenderer(THROWN_ROCK.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ANTLION_SAND_BALL.get(), ThrownItemRenderer::new);
@@ -714,10 +715,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.PIRATE_PARROT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRATE_PARROT.getId()));
         event.registerEntityRenderer(MonsterEntities.PIRATES_CURSE.get(), c -> new FullbrightGeoRenderer<PirateFlyingMonster>(c, MonsterEntities.PIRATES_CURSE.getId(), -0.75F));
         event.registerEntityRenderer(MonsterEntities.MARTIAN_PROBE.get(), MartianProbeRenderer::new);
-        event.registerEntityRenderer(ELECTRIC_SPEAR.get(), NoopRenderer::new);
         event.registerEntityRenderer(MonsterEntities.BRAIN_SCRAMBLER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/brain_scrambler.geo.json"), Confluence.asResource("textures/entity/brain_scrambler.png"), Confluence.asResource("animations/entity/brain_scrambler.animation.json")), false, 1.3F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GRAY_GRUNT.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/gray_grunt.geo.json"), Confluence.asResource("textures/entity/gray_grunt.png"), Confluence.asResource("animations/entity/gray_grunt.animation.json")), false, 1.3F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GIGAZAPPER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/gigazapper.geo.json"), Confluence.asResource("textures/entity/gigazapper.png"), Confluence.asResource("animations/entity/gigazapper.animation.json")), false, 1.3F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.GIGAZAPPER_AF2.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/gigazapper_af2.geo.json"), Confluence.asResource("textures/entity/gigazapper_af2.png"), Confluence.asResource("animations/entity/gigazapper_af2.animation.json")), false, 1.3F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.MARTIAN_ENGINEER.get(), c -> new GeoNormalRenderer<>(c,
                 new ExplicitGeoModel<>(Confluence.asResource("geo/entity/martian_engineer.geo.json"),
                         Confluence.asResource("textures/entity/martian_engineer.png"),

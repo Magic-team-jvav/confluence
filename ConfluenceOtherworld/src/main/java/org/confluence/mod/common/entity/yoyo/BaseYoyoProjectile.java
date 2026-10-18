@@ -63,10 +63,9 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
     public void shootAtNearest(YoyoEntity source, @Nullable LivingEntity excluded, float damageMultiplier, double speed, double targetRange) {
         Entity owner = source.getOwner();
         if (owner == null) return;
-        LivingEntity nearest = LibEntityUtils.nearest(
-                source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(targetRange)),
-                candidate -> candidate != excluded
-                        && targeting().canAcquire(owner, candidate)
+        Entity nearest = LibEntityUtils.nearest(
+                targeting().hitTargets(source.level(), source, owner, source.getBoundingBox().inflate(targetRange), candidate -> true),
+                candidate -> LibEntityUtils.encounterOwner(candidate) != excluded
                         && (!requiresLineOfSight() || LibEntityUtils.hasProjectileLineOfSight(source, candidate))
                         && source.distanceToSqr(candidate) < targetRange * targetRange,
                 Comparator.comparingDouble(source::distanceToSqr));

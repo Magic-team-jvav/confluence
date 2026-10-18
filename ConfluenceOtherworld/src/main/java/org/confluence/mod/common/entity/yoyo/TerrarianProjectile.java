@@ -47,10 +47,9 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
     public static void shootAtNearest(YoyoEntity source, float damageMultiplier, double speed, double targetRange) {
         Entity owner = source.getOwner();
         if (owner == null || source.level().isClientSide) return;
-        LivingEntity nearest = LibEntityUtils.nearest(
-                source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(targetRange)),
-                candidate -> TARGETING.canAcquire(owner, candidate)
-                        && source.distanceToSqr(candidate) < targetRange * targetRange,
+        Entity nearest = LibEntityUtils.nearest(
+                TARGETING.hitTargets(source.level(), source, owner, source.getBoundingBox().inflate(targetRange), candidate -> true),
+                candidate -> source.distanceToSqr(candidate) < targetRange * targetRange,
                 java.util.Comparator.comparingDouble(source::distanceToSqr));
         Vec3 direction = nearest != null ? nearest.getBoundingBox().getCenter().subtract(source.position())
                 : new Vec3(source.getRandom1211().nextGaussian(), source.getRandom1211().nextGaussian(), source.getRandom1211().nextGaussian());

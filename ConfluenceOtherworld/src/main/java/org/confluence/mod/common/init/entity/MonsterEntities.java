@@ -1164,7 +1164,9 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<MartianProbe>> MARTIAN_PROBE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_probe", "火星探测器", EntityType.Builder.of(MartianProbe::new, MobCategory.MONSTER).sized(1.4F, 1.0F).clientTrackingRange(12))),
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(3).attackDamage(3).add(LibAttributes.getArmorPenetration().get(), 0).add(Attributes.ARMOR_TOUGHNESS, 1).followRange(48).movementSpeed(0.25).flyingSpeed(0.65).knockbackResistance(0.4).build());
     public static final RegistryObject<EntityType<MartianEngineer>> MARTIAN_ENGINEER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_engineer", "火星工程师", EntityType.Builder.of(MartianEngineer::new, MobCategory.MONSTER).sized(0.8F, 2.0F).clientTrackingRange(10))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(16).attackDamage(21).add(LibAttributes.getArmorPenetration().get(), 6).add(Attributes.ARMOR_TOUGHNESS, 6).followRange(40).movementSpeed(0.24).knockbackResistance(0.55).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(16).attackDamage(21).add(LibAttributes.getArmorPenetration().get(), 6).add(Attributes.ARMOR_TOUGHNESS, 6).followRange(40).movementSpeed(0.24).knockbackResistance(0.55)
+                    .projectile(ModEntities.MONSTER_LASER, projectile -> projectile.damage(16))
+                    .build());
     public static final RegistryObject<EntityType<TeslaTurret>> TESLA_TURRET = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("tesla_turret", "特斯拉炮塔", EntityType.Builder.of(TeslaTurret::new, MobCategory.MONSTER).sized(1.0F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(18).attackDamage(6).add(LibAttributes.getArmorPenetration().get(), 1).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(36).movementSpeed(0.01).knockbackResistance(1.0)
                     .projectile(ModEntities.MARTIAN_ELECTRIC_BOLT, projectile -> projectile.damage(30))
@@ -1200,9 +1202,17 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<GrayGrunt>> GRAY_GRUNT = withAttributes(registerEntity("gray_grunt", "灰咕噜", EntityType.Builder.of(GrayGrunt::new, MobCategory.MONSTER).sized(0.8F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(390).armor(14).attackDamage(42).add(LibAttributes.getArmorPenetration().get(), 12).add(Attributes.ARMOR_TOUGHNESS, 6).followRange(36).movementSpeed(0.28).knockbackResistance(1.0).build());
     public static final RegistryObject<EntityType<Gigazapper>> GIGAZAPPER = withAttributes(registerEntity("gigazapper", "电击怪", EntityType.Builder.of(Gigazapper::new, MobCategory.MONSTER).sized(0.9F, 2.1F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(312).armor(18).attackDamage(39).add(LibAttributes.getArmorPenetration().get(), 12).add(Attributes.ARMOR_TOUGHNESS, 7).followRange(36).movementSpeed(0.26).knockbackResistance(0.7)
-                    .projectile(ModEntities.ELECTRIC_SPEAR, projectile -> projectile.damage(26))
-                    .build());
+            () -> gigazapperAttributes(36));
+    public static final RegistryObject<EntityType<GigazapperAf2>> GIGAZAPPER_AF2 = withAttributes(registerEntityWithEnglishName("gigazapper_af2", "电击怪 - AF2", "Gigazapper - AF2", EntityType.Builder.of(GigazapperAf2::new, MobCategory.MONSTER).sized(0.9F, 2.1F).clientTrackingRange(16)),
+            () -> gigazapperAttributes(72));
+
+    private static CreatureAttributeBuilder.Definition gigazapperAttributes(double followRange) {
+        return CreatureAttributeBuilder.creature().maxHealth(312).armor(18).attackDamage(39)
+                .add(LibAttributes.getArmorPenetration().get(), 12).armorToughness(7)
+                .followRange(followRange).movementSpeed(0.26).knockbackResistance(0.7)
+                .state(Gigazapper.AttackType.SPEAR, state -> state.attackDamage(26))
+                .build();
+    }
 
     // Boss 附属生物：克苏鲁之脑
     public static final RegistryObject<EntityType<VisualNeuron>> VISUAL_NEURON = withAttributes(registerEntity("visual_neuron", "视神经元", EntityType.Builder.of(VisualNeuron::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10)),

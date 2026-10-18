@@ -9,9 +9,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -26,6 +28,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.UUID;
+import java.util.Comparator;
 
 /** Mounted or dismounted Martian marksman. */
 public final class RayGunner extends MartianHumanoidMonster {
@@ -82,11 +85,12 @@ public final class RayGunner extends MartianHumanoidMonster {
         mountCache = mount;
         mountUUID = mount.getUUID();
         unresolvedMountTicks = 0;
+        updateMountedState();
     }
 
     @Override
     protected BTNode createLandBehavior() {
-        return SelectorNode.of(new BTNode() {
+        return SelectorNode.of(new VanillaGoalAction(new MountScutlixGoal()), new BTNode() {
             private int pathDelay;
 
             @Override
@@ -179,19 +183,108 @@ public final class RayGunner extends MartianHumanoidMonster {
             mountUUID = null;
             unresolvedMountTicks = 0;
         }
+        if (isPassenger() || mountCache != null && (!mountCache.isAlive() || mountCache.isRemoved())) {
+            mountUUID = null;
+            unresolvedMountTicks = 0;
+        }
 
         mountCache = null;
         if (mountUUID == null) return;
         Entity resolved = serverLevel.getEntity(mountUUID);
-        if (resolved instanceof Scutlix scutlix && scutlix.isAlive() && !scutlix.isRemoved()
-                && (getVehicle() == scutlix || startRiding(scutlix, true))) {
-            bindMount(scutlix);
-            shareTargetWith(scutlix);
-            return;
+        if (resolved instanceof Scutlix scutlix) {
+            if (!scutlix.isAlive() || scutlix.isRemoved() || scutlix.isVehicle()) {
+                mountUUID = null;
+                unresolvedMountTicks = 0;
+                return;
+            }
+            if (scutlix.tryMountGunner(this)) {
+                shareTargetWith(scutlix);
+                return;
+            }
         }
         if (++unresolvedMountTicks > LINK_GRACE_TICKS) {
             mountUUID = null;
             unresolvedMountTicks = 0;
+        }
+    }
+
+    private final class MountScutlixGoal extends Goal {
+        private static final double SEARCH_RANGE = 32.0;
+        private @Nullable Scutlix candidate;
+        private @Nullable Path path;
+        private int nextSearchTick;
+        private int candidateOffset;
+        private int pathDelay;
+        private int approachTicks;
+        private boolean pathFailed;
+
+        @Override
+        public boolean canUse() {
+            if (isPassenger() || !isAlive() || tickCount < nextSearchTick) {
+                return false;
+            }
+            nextSearchTick = tickCount + 20;
+            var mounts = level().getEntitiesOfClass(Scutlix.class, getBoundingBox().inflate(SEARCH_RANGE, 8, SEARCH_RANGE),
+                    mount -> mount.canAcceptGunner(RayGunner.this) && distanceToSqr(mount) <= SEARCH_RANGE * SEARCH_RANGE);
+            mounts.sort(Comparator.comparingDouble(RayGunner.this::distanceToSqr));
+            if (mounts.isEmpty()) {
+                return false;
+            }
+            int start = candidateOffset % mounts.size();
+            for (int index = 0; index < Math.min(8, mounts.size()); index++) {
+                Scutlix mount = mounts.get((start + index) % mounts.size());
+                if (mount.isWithinBoardingRange(RayGunner.this)) {
+                    candidate = mount;
+                    path = null;
+                    candidateOffset = 0;
+                    return true;
+                }
+                Path approach = getNavigation().createPath(mount, 0);
+                if (approach != null && approach.canReach()) {
+                    candidate = mount;
+                    path = approach;
+                    candidateOffset = 0;
+                    return true;
+                }
+            }
+            candidateOffset = (start + 8) % mounts.size();
+            return false;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return candidate != null && candidate.canAcceptGunner(RayGunner.this)
+                    && distanceToSqr(candidate) <= SEARCH_RANGE * SEARCH_RANGE && approachTicks < 200 && !pathFailed;
+        }
+
+        @Override
+        public void start() {
+            approachTicks = 0;
+            pathDelay = 10;
+            pathFailed = path != null && !getNavigation().moveTo(path, 1.2);
+        }
+
+        @Override
+        public void tick() {
+            if (candidate == null || !candidate.canAcceptGunner(RayGunner.this)) {
+                return;
+            }
+            approachTicks++;
+            if (candidate.tryMountGunner(RayGunner.this)) {
+                getNavigation().stop();
+            } else if (--pathDelay <= 0) {
+                pathDelay = 10;
+                path = getNavigation().createPath(candidate, 0);
+                pathFailed = path == null || !path.canReach() || !getNavigation().moveTo(path, 1.2);
+            }
+        }
+
+        @Override
+        public void stop() {
+            candidate = null;
+            path = null;
+            getNavigation().stop();
+            nextSearchTick = tickCount + 20;
         }
     }
 

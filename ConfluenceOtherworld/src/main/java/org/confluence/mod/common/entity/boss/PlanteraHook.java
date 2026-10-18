@@ -49,10 +49,12 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
     }
 
     public void setMaster(Plantera master, int hookIndex, @Nullable BlockPos anchor) {
+        if (!bindTo(master)) {
+            return;
+        }
         entityData.set(HOOK_INDEX, Mth.clamp(hookIndex, 0, Plantera.HOOK_COUNT - 1));
         setAnchor(anchor);
         setState(anchor == null ? STATE_IDLE : STATE_EXTENDING);
-        bindTo(master);
         master.bindHook(this);
     }
 

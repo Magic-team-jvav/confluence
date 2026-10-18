@@ -61,7 +61,6 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
 
     public SkeletronHand(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        this.noPhysics = true;
     }
 
     /// 手掌保留射线选取和受伤判定，但不作为原版实体障碍挤压玩家姿态空间。
@@ -73,7 +72,9 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
 
     public void setMaster(Skeletron master, int index) {
         if (index < 0 || index > 1) throw new IllegalArgumentException("Hand index must be 0 or 1");
-        bindTo(master);
+        if (!bindTo(master)) {
+            return;
+        }
         this.entityData.set(HAND_INDEX, index);
         this.slapInterval = (master.isExpert()
                 ? EXPERT_SLAP_INTERVAL : CLASSIC_SLAP_INTERVAL)
@@ -290,21 +291,15 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        Skeletron owner = getOwner();
-        if (owner == null || !owner.isAlive() || isRemoved() || isInvulnerableTo(source))
+        if (!super.hurt(source, amount)) {
             return false;
-        if (!super.hurt(source, amount)) return false;
-        float remaining = getHealth();
+        }
         indicateHurt();
         playSound(SoundEvents.SKELETON_HURT, 0.9F, 0.9F + random.nextFloat() * 0.2F);
         if (level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.DAMAGE_INDICATOR,
                     getX(), getY() + getBbHeight() * 0.5F, getZ(), 4,
                     getBbWidth() * 0.2F, getBbHeight() * 0.2F, getBbWidth() * 0.2F, 0.05D);
-        }
-        onPartHealthChanged(owner, remaining);
-        if (remaining <= 0.0F) {
-            onPartDestroyed(owner);
         }
         return true;
     }

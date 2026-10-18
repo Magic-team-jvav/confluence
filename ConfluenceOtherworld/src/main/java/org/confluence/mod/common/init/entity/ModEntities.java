@@ -60,7 +60,7 @@ public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Confluence.MODID);
 
     // 牢枕专用
-    public static final RegistryObject<EntityType<ElectricSpear>> ELECTRIC_SPEAR = register("electric_spear", "电矛", id -> EntityType.Builder.of(ElectricSpear::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    public static final RegistryObject<EntityType<MartianReinforcement>> MARTIAN_REINFORCEMENT = register("martian_reinforcement", "火星支援信标", id -> EntityType.Builder.of(MartianReinforcement::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(16).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<EmptyEntity>> EMPTY_ENTITY = register("empty_entity", "空实体", id -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(id.toString()));
 
     public static final RegistryObject<EntityType<MartianElectricBolt>> MARTIAN_ELECTRIC_BOLT = register("martian_electric_bolt", "火星电击束", id -> EntityType.Builder.of(MartianElectricBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).updateInterval(1).build(id.toString()));

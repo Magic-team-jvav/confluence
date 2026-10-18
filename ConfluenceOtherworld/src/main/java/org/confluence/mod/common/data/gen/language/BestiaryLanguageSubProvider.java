@@ -263,6 +263,7 @@ public final class BestiaryLanguageSubProvider {
         language.add("bestiary.entity.confluence.giant_shelly.desc", "To overcome their slow speed, shellies have developed the ability to hide inside their spiked shell and hurl themselves at their foes.", "为了弥补速度慢的缺点，巨型卷壳怪进化出了躲进尖壳中，然后向敌人猛冲的能力。");
         language.add("bestiary.entity.confluence.giant_worm.desc", "These itty bitty diggy dawgs dig through the earth and take focused spelunkers by surprise, causing unwanted distress.", "巨型蠕虫这些“小土拨鼠”会在地下挖掘隧道，突然袭击专注探索的洞穴者，带来不必要的麻烦。");
         language.add("bestiary.entity.confluence.gigazapper.desc", "A Martian assault soldier who charges an electrified energy spear.", "能够蓄力刺出带电能量矛的火星突击兵。");
+        language.add("bestiary.entity.confluence.gigazapper_af2.desc", "A flight-equipped Gigazapper that climbs before diving into a high-speed glide.", "装备飞行背包的电击怪，先爬升加速，再向目标滑翔冲刺。");
         language.add("bestiary.entity.confluence.glowing_snail.desc", "A snail that has mutated to adapt to the glowing mushroom environment. Fish are significantly attracted to these.", "发光蜗牛是为适应发光蘑菇环境而发生变异的蜗牛品种，鱼儿对它们的吸引力相当大。");
         language.add("bestiary.entity.confluence.gnome.desc", "A tiny long-bearded sneak who resides in oversized trees. Becomes a lawn ornament when exposed to sunlight.", "侏儒是长着长胡子的小巧地精，居住在高大的树木中。一旦暴露在阳光下，就会变成草坪装饰。");
         language.add("bestiary.entity.confluence.goblin_archer.desc", "Lending ranged support to the Goblin Army, archers keep a distance and pick off distracted and overwhelmed foes.", "弓箭手会保持距离为哥布林军队提供远程支援，帮助他们分散敌人的注意力，杀敌人一个措手不及。");

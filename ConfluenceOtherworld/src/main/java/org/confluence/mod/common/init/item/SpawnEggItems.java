@@ -312,6 +312,7 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> BRAIN_SCRAMBLER_SPAWN_EGG = register(MonsterEntities.BRAIN_SCRAMBLER, "扰脑怪刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> GRAY_GRUNT_SPAWN_EGG = register(MonsterEntities.GRAY_GRUNT, "灰咕噜刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> GIGAZAPPER_SPAWN_EGG = register(MonsterEntities.GIGAZAPPER, "电击怪刷怪蛋");
+    public static final PortDeferredItem<ForgeSpawnEggItem> GIGAZAPPER_AF2_SPAWN_EGG = registerWithEnglishName(MonsterEntities.GIGAZAPPER_AF2, "电击怪 - AF2刷怪蛋", "Gigazapper - AF2 Spawn Egg");
     public static final PortDeferredItem<ForgeSpawnEggItem> MARTIAN_OFFICER_SPAWN_EGG = register(MonsterEntities.MARTIAN_OFFICER, "火星军官刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> MARTIAN_WALKER_SPAWN_EGG = register(MonsterEntities.MARTIAN_WALKER, "火星走妖刷怪蛋");
     public static void init() {}

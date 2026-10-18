@@ -2286,6 +2286,7 @@ public final class ModTabs {
                         martian.accept(SpawnEggItems.BRAIN_SCRAMBLER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.GRAY_GRUNT_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.GIGAZAPPER_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.GIGAZAPPER_AF2_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.MARTIAN_OFFICER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.MARTIAN_WALKER_SPAWN_EGG.get());

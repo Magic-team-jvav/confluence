@@ -3,6 +3,10 @@ package org.confluence.mod.common.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -12,17 +16,30 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.entity.projectile.MonsterLaser;
+import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 
 /** Builds Tesla Turrets for the shared, world-wide four-per-engineer allowance. */
 public final class MartianEngineer extends MartianHumanoidMonster {
@@ -33,10 +50,38 @@ public final class MartianEngineer extends MartianHumanoidMonster {
     private static final RawAnimation STAND = RawAnimation.begin().thenLoop("Stand");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("Walk");
     private static final RawAnimation RUN = RawAnimation.begin().thenLoop("Run ME");
+    public static final int LASER_INTERVAL = 10;
+    private static final int SITE_SEARCH_INTERVAL = 20;
+    private static final int MAX_PATH_PROBES = 24;
+    private static final EntityDataAccessor<Boolean> TURRET_MODE =
+            SynchedEntityData.defineId(MartianEngineer.class, EntityDataSerializers.BOOLEAN);
+    private static final RawAnimation STAND_AIM = RawAnimation.begin().thenLoop("Stand Aim");
     private int deployCooldown;
+    private int laserCooldown;
+    private int quotaCheckCooldown;
+    private int siteSearchCooldown;
+    private int aimWarmup;
+    private boolean turretQuotaFull;
+    private boolean nextShotLeft = true;
+    private @Nullable BlockPos firingSite;
+    private @Nullable UUID firingTarget;
 
     public MartianEngineer(EntityType<? extends MartianEngineer> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(TURRET_MODE, false);
+    }
+
+    public boolean isTurretMode() {
+        return entityData.get(TURRET_MODE);
+    }
+
+    public Vec3 getMuzzlePosition(boolean left) {
+        return EngineerTurretGeometry.muzzle(position(), getYRot(), getScale(), left);
     }
 
     @Override
@@ -68,20 +113,57 @@ public final class MartianEngineer extends MartianHumanoidMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "engineer", 4, state -> state.setAndContinue(
-                state.isMoving() ? (isSprinting() ? RUN : WALK) : STAND)));
+        AnimationController<MartianEngineer> controller = new AnimationController<>(this, "engineer", 4, state -> {
+            RawAnimation movement = isSprinting() ? RUN : WALK;
+            RawAnimation idleOrWalk = state.isMoving() ? movement : STAND;
+            return state.setAndContinue(isTurretMode() ? STAND_AIM : idleOrWalk);
+        });
+        controllers.add(controller);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!(level() instanceof ServerLevel serverLevel) || !isAlive()) return;
-        if (deployCooldown > 0) deployCooldown--;
+        if (!(level() instanceof ServerLevel serverLevel) || !isAlive()) {
+            return;
+        }
+        if (deployCooldown > 0) {
+            deployCooldown--;
+        }
+        if (laserCooldown > 0) {
+            laserCooldown--;
+        }
+        if (siteSearchCooldown > 0) {
+            siteSearchCooldown--;
+        }
+        if (quotaCheckCooldown > 0) {
+            quotaCheckCooldown--;
+        }
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive() || !canAttack(target)) {
+            abandonFiringSite();
+            firingTarget = null;
             setSprinting(false);
             return;
         }
+        if (!target.getUUID().equals(firingTarget)) {
+            abandonFiringSite();
+            firingTarget = target.getUUID();
+        }
+        if (quotaCheckCooldown == 0) {
+            turretQuotaFull = !hasTurretCapacity(serverLevel);
+            quotaCheckCooldown = 20;
+        }
+        if (turretQuotaFull) {
+            tickTurretMode(serverLevel, target);
+            return;
+        }
+        abandonFiringSite();
+        tickBuilderMovement(target);
+        tryDeployTurret(serverLevel, target);
+    }
+
+    private void tickBuilderMovement(LivingEntity target) {
         double distance = distanceToSqr(target);
         if (distance < 64.0D) {
             getNavigation().moveTo(2.0D * getX() - target.getX(), getY(),
@@ -94,8 +176,12 @@ public final class MartianEngineer extends MartianHumanoidMonster {
             getNavigation().stop();
             setSprinting(false);
         }
+    }
+
+    private void tryDeployTurret(ServerLevel serverLevel, LivingEntity target) {
         if (deployCooldown != 0) return;
         if (!hasTurretCapacity(serverLevel)) {
+            turretQuotaFull = true;
             deployCooldown = 20;
             return;
         }
@@ -104,15 +190,7 @@ public final class MartianEngineer extends MartianHumanoidMonster {
             deployCooldown = 40;
             return;
         }
-        if (!MonsterEntities.TESLA_TURRET.isPresent()) {
-            deployCooldown = 40;
-            return;
-        }
         EntityType<TeslaTurret> turretType = MonsterEntities.TESLA_TURRET.get();
-        if (turretType == null) {
-            deployCooldown = 40;
-            return;
-        }
         TeslaTurret turret = turretType.create(serverLevel);
         if (turret == null) {
             deployCooldown = 40;
@@ -128,7 +206,186 @@ public final class MartianEngineer extends MartianHumanoidMonster {
             return;
         }
         deployCooldown = 200;
+        quotaCheckCooldown = 0;
     }
+
+    private void tickTurretMode(ServerLevel level, LivingEntity target) {
+        setSprinting(false);
+        if (firingSite != null && !isFiringSiteUsable(level, firingSite, target)) {
+            abandonFiringSite();
+        }
+        if (firingSite == null) {
+            setTurretMode(false);
+            if (siteSearchCooldown == 0) {
+                FiringPosition candidate = findFiringPosition(level, target);
+                siteSearchCooldown = SITE_SEARCH_INTERVAL;
+                if (candidate != null) {
+                    firingSite = candidate.site();
+                    getNavigation().moveTo(candidate.path(), 1.0);
+                    return;
+                }
+            }
+            retreatFromTarget(target);
+            return;
+        }
+        Vec3 siteCenter = Vec3.atBottomCenterOf(firingSite);
+        Vec3 displacement = position().subtract(siteCenter);
+        boolean reachedHeight = onGround() ? Math.abs(displacement.y) < 0.5
+                : displacement.y >= -0.5 && displacement.y <= 2;
+        if (displacement.horizontalDistanceSqr() > 0.75 * 0.75 || !reachedHeight) {
+            setTurretMode(false);
+            if (getNavigation().isDone()) {
+                abandonFiringSite();
+                siteSearchCooldown = SITE_SEARCH_INTERVAL;
+            }
+            return;
+        }
+        getNavigation().stop();
+        getMoveControl().setWantedPosition(getX(), getY(), getZ(), 0);
+        setSpeed(0);
+        setDeltaMovement(getDeltaMovement().multiply(0, 1, 0));
+        if (!onGround()) {
+            setTurretMode(false);
+            return;
+        }
+
+        faceCombatDirection(target.getEyePosition().subtract(getEyePosition()), 30, 15);
+        float desiredYaw = yawTo(position(), target);
+        if (Math.abs(Mth.wrapDegrees(getYRot() - desiredYaw)) > 5) {
+            setTurretMode(false);
+            return;
+        }
+        if (!hasClearFiringPaths(position(), getYRot(), target)) {
+            abandonFiringSite();
+            return;
+        }
+        if (!isTurretMode()) {
+            setTurretMode(true);
+            return;
+        }
+        if (aimWarmup > 0) {
+            aimWarmup--;
+            return;
+        }
+        if (laserCooldown == 0) {
+            fireLaser(level, target);
+        }
+    }
+
+    private void fireLaser(ServerLevel level, LivingEntity target) {
+        MonsterLaser laser = ModEntities.MONSTER_LASER.get().create(level);
+        if (laser == null) {
+            return;
+        }
+        laser.configureShot(this, target, getMuzzlePosition(nextShotLeft), MonsterLaser.Variant.MARTIAN_ENGINEER);
+        MartianEventHelper.inheritEventMembership(this, laser);
+        if (level.addFreshEntity(laser)) {
+            nextShotLeft = !nextShotLeft;
+            laserCooldown = LASER_INTERVAL;
+            playSound(ModSoundEvents.ITEM_LASER_SHOOT.get(), 0.8F, 1.0F);
+        } else {
+            laser.discard();
+        }
+    }
+
+    private void setTurretMode(boolean enabled) {
+        if (isTurretMode() != enabled) {
+            entityData.set(TURRET_MODE, enabled);
+            aimWarmup = enabled ? 4 : 0;
+        }
+    }
+
+    private void abandonFiringSite() {
+        if (firingSite != null || isTurretMode()) {
+            getNavigation().stop();
+        }
+        firingSite = null;
+        siteSearchCooldown = 0;
+        setTurretMode(false);
+    }
+
+    private void retreatFromTarget(LivingEntity target) {
+        Vec3 away = position().subtract(target.position()).multiply(1, 0, 1).normalize();
+        if (away.lengthSqr() < 1.0E-6) {
+            away = new Vec3(1, 0, 0);
+        }
+        Vec3 destination = position().add(away.scale(6));
+        getNavigation().moveTo(destination.x, destination.y, destination.z, 1.0);
+        setSprinting(position().subtract(target.position()).horizontalDistance() < 12);
+    }
+
+    private @Nullable FiringPosition findFiringPosition(ServerLevel level, LivingEntity target) {
+        List<ScoredSite> candidates = new ArrayList<>();
+        BlockPos center = blockPosition();
+        double minimumDistance = Math.min(24, Math.max(12,
+                position().subtract(target.position()).horizontalDistance() + 3));
+        for (int dx = -12; dx <= 12; dx += 2) {
+            for (int dz = -12; dz <= 12; dz += 2) {
+                for (int dy = 8; dy >= -3; dy--) {
+                    BlockPos site = center.offset(dx, dy, dz);
+                    Vec3 point = Vec3.atBottomCenterOf(site);
+                    double targetDistance = point.subtract(target.position()).horizontalDistance();
+                    if (targetDistance < minimumDistance || !isFiringSiteUsable(level, site, target)) {
+                        continue;
+                    }
+                    double travel = point.subtract(position()).horizontalDistance();
+                    double score = dy * 24 + targetDistance * 2 - travel;
+                    candidates.add(new ScoredSite(site, score));
+                }
+            }
+        }
+        candidates.sort(Comparator.comparingDouble(ScoredSite::score).reversed());
+        int probes = Math.min(MAX_PATH_PROBES, candidates.size());
+        for (int index = 0; index < probes; index++) {
+            BlockPos site = candidates.get(index).site();
+            Path path = getNavigation().createPath(site, 0);
+            if (path != null && path.canReach()) {
+                return new FiringPosition(site, path);
+            }
+        }
+        return null;
+    }
+
+    private boolean isFiringSiteUsable(ServerLevel level, BlockPos site, LivingEntity target) {
+        Vec3 point = Vec3.atBottomCenterOf(site);
+        double distance = point.subtract(target.position()).horizontalDistance();
+        if (distance < 10 || distance > 36 || site.getY() <= level.getMinBuildHeight()
+                || site.getY() + getBbHeight() >= level.getMaxBuildHeight()
+                || !level.hasChunksAt(site.offset(-1, -1, -1), site.offset(1, 2, 1))) {
+            return false;
+        }
+        BlockPos floor = site.below();
+        if (!level.getBlockState(floor).isFaceSturdy(level, floor, Direction.UP)
+                || !level.getFluidState(site).isEmpty() || !level.getFluidState(site.above()).isEmpty()
+                || !level.getFluidState(floor).isEmpty()
+                || !level.noCollision(this, getBoundingBox().move(point.subtract(position())))) {
+            return false;
+        }
+        return hasClearFiringPaths(point, yawTo(point, target), target);
+    }
+
+    private static float yawTo(Vec3 position, LivingEntity target) {
+        Vec3 offset = target.position().subtract(position);
+        return (float) Math.toDegrees(Math.atan2(offset.z, offset.x)) - 90;
+    }
+
+    private boolean hasClearFiringPaths(Vec3 position, float yaw, LivingEntity target) {
+        Vec3 body = position.add(0, getBbHeight() * 0.65, 0);
+        Vec3 left = EngineerTurretGeometry.muzzle(position, yaw, getScale(), true);
+        Vec3 right = EngineerTurretGeometry.muzzle(position, yaw, getScale(), false);
+        Vec3 destination = target.getEyePosition();
+        return clearRay(body, left) && clearRay(left, destination)
+                && clearRay(body, right) && clearRay(right, destination);
+    }
+
+    private boolean clearRay(Vec3 start, Vec3 end) {
+        return level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+    }
+
+    private record ScoredSite(BlockPos site, double score) {}
+
+    private record FiringPosition(BlockPos site, Path path) {}
 
     public static boolean hasTurretCapacity(int engineers, int turrets) {
         return engineers > 0 && turrets >= 0 && (long) turrets < (long) engineers * 4L;
@@ -192,11 +449,19 @@ public final class MartianEngineer extends MartianHumanoidMonster {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("DeployCooldown", deployCooldown);
+        tag.putInt("EngineerLaserCooldown", laserCooldown);
+        tag.putBoolean("EngineerNextShotLeft", nextShotLeft);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        deployCooldown = tag.contains("DeployCooldown") ? Math.max(0, tag.getInt("DeployCooldown")) : 0;
+        deployCooldown = Mth.clamp(tag.getInt("DeployCooldown"), 0, 200);
+        laserCooldown = Mth.clamp(tag.getInt("EngineerLaserCooldown"), 0, LASER_INTERVAL);
+        nextShotLeft = !tag.contains("EngineerNextShotLeft") || tag.getBoolean("EngineerNextShotLeft");
+        firingTarget = null;
+        quotaCheckCooldown = 0;
+        turretQuotaFull = false;
+        abandonFiringSite();
     }
 }

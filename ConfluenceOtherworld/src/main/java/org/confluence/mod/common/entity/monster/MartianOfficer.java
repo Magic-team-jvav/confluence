@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -11,10 +12,16 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
+import org.confluence.mod.common.entity.MartianReinforcement;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.lib.common.LibAttributes;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -31,6 +38,12 @@ public final class MartianOfficer extends MartianHumanoidMonster {
     public static final int RECOVERY_TICKS = 60;
     private static final EntityDataAccessor<Float> SHIELD = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> IMPACT_SEQUENCE = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> CALLING = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.BOOLEAN);
+    private static final RawAnimation CALL_FOR_ASSISTANCE = RawAnimation.begin().thenLoop("Call for Assistance");
+    private int assistanceCooldown;
+    private int callingTicks;
+    private int populationCheckCooldown;
+    private boolean prefersAssistance;
     private int visualShieldTicks = 20;
     private int visualBrokenTicks = 20;
     private int visualImpactTicks = 20;
@@ -52,6 +65,102 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         super.defineSynchedData();
         entityData.define(SHIELD, MAX_SHIELD);
         entityData.define(IMPACT_SEQUENCE, 0);
+        entityData.define(CALLING, false);
+    }
+
+    public boolean isCallingForAssistance() {
+        return entityData.get(CALLING);
+    }
+
+    @Override
+    protected BTNode createLandBehavior() {
+        return new ConditionalSwitchNode(() -> prefersAssistance || isCallingForAssistance(), new BTNode() {
+            @Override
+            public BTStatus execute() {
+                return BTStatus.RUNNING;
+            }
+
+            @Override
+            public void stop() {
+                getNavigation().stop();
+            }
+        }, super.createLandBehavior());
+    }
+
+    private void tickAssistance() {
+        if (assistanceCooldown > 0) {
+            assistanceCooldown--;
+        }
+        LivingEntity target = getTarget();
+        if (!(level() instanceof ServerLevel server) || !(target instanceof Player player)
+                || !player.isAlive() || !canAttack(player) || isNoAi() || isPassenger()) {
+            prefersAssistance = false;
+            callingTicks = 0;
+            entityData.set(CALLING, false);
+            return;
+        }
+        if (callingTicks > 0) {
+            callingTicks--;
+            stopForAssistance();
+            getLookControl().setLookAt(player, 30, 30);
+            entityData.set(CALLING, callingTicks > 0);
+            return;
+        }
+        if (populationCheckCooldown-- <= 0) {
+            prefersAssistance = MartianReinforcement.hasCapacity(server);
+            populationCheckCooldown = 20;
+        }
+        if (!prefersAssistance) {
+            return;
+        }
+        double distance = position().subtract(player.position()).horizontalDistance();
+        if (distance < 16) {
+            if (tickCount % 10 == 0 || getNavigation().isDone()) {
+                Vec3 away = position().subtract(player.position()).multiply(1, 0, 1);
+                if (away.lengthSqr() < 0.01) {
+                    away = new Vec3(1, 0, 0);
+                }
+                Vec3 destination = position().add(away.normalize().scale(8));
+                if (!getNavigation().moveTo(destination.x, getY(), destination.z, 1.2)) {
+                    // A trapped officer retains its melee pursuit instead of waiting forever.
+                    prefersAssistance = false;
+                    populationCheckCooldown = 40;
+                }
+            }
+            return;
+        }
+        if (!hasLineOfSight(player)) {
+            prefersAssistance = false;
+            populationCheckCooldown = 20;
+            return;
+        }
+        stopForAssistance();
+        getLookControl().setLookAt(player, 30, 30);
+        if (assistanceCooldown > 0) {
+            return;
+        }
+        // Recheck immediately: other officers may have reserved the last slot this tick.
+        if (!MartianReinforcement.hasCapacity(server)) {
+            prefersAssistance = false;
+            return;
+        }
+        MartianReinforcement drop = ModEntities.MARTIAN_REINFORCEMENT.get().create(server);
+        if (drop != null) {
+            drop.initialize(this, player.position());
+            if (server.addFreshEntity(drop)) {
+                callingTicks = MartianReinforcement.WARNING_TICKS;
+                entityData.set(CALLING, true);
+                assistanceCooldown = 100;
+            }
+        }
+    }
+
+    private void stopForAssistance() {
+        getNavigation().stop();
+        getMoveControl().setWantedPosition(getX(), getY(), getZ(), 0);
+        setSpeed(0);
+        setSprinting(false);
+        setDeltaMovement(0, getDeltaMovement().y, 0);
     }
 
     public float getShieldHealth() {
@@ -122,6 +231,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         if (hasShield()) {
             clearFire();
         }
+        tickAssistance();
         tickOfficerContact();
     }
 
@@ -141,6 +251,9 @@ public final class MartianOfficer extends MartianHumanoidMonster {
     }
 
     private void tickOfficerContact() {
+        if (getVehicle() instanceof MartianReinforcement) {
+            return;
+        }
         if (contactCooldown > 0) {
             contactCooldown--;
         }
@@ -224,6 +337,9 @@ public final class MartianOfficer extends MartianHumanoidMonster {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         AnimationController<MartianOfficer> controller = new AnimationController<>(this, "officer", 4, state -> {
+            if (isCallingForAssistance()) {
+                return state.setAndContinue(CALL_FOR_ASSISTANCE);
+            }
             RawAnimation movement = isSprinting() ? DASH : WALK;
             return state.setAndContinue(state.isMoving() ? movement : STAND);
         });
@@ -235,6 +351,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         super.addAdditionalSaveData(tag);
         tag.putFloat("Shield", getShieldHealth());
         tag.putInt("ShieldRecoveryTicks", recoveryTicks);
+        tag.putInt("AssistanceCooldown", assistanceCooldown);
     }
 
     @Override
@@ -244,5 +361,10 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         entityData.set(SHIELD, Float.isFinite(shield) ? Math.max(0, Math.min(MAX_SHIELD, shield)) : MAX_SHIELD);
         recoveryTicks = hasShield() ? 0 : Math.max(0, Math.min(RECOVERY_TICKS - 1, tag.getInt("ShieldRecoveryTicks")));
         shieldHitTicks = 0;
+        assistanceCooldown = Math.max(0, Math.min(100, tag.getInt("AssistanceCooldown")));
+        callingTicks = 0;
+        prefersAssistance = false;
+        populationCheckCooldown = 0;
+        entityData.set(CALLING, false);
     }
 }

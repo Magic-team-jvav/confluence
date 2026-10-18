@@ -13,8 +13,8 @@ public final class MartianWalkerRenderer extends GeoNormalRenderer<MartianWalker
         shadowRadius = 2.0F;
     }
     @Override public boolean shouldRender(MartianWalker walker, Frustum frustum, double cameraX, double cameraY, double cameraZ) {
-        double scale = walker.getScale();
-        return walker.shouldRender(cameraX,cameraY,cameraZ) && frustum.isVisible(new AABB(walker.position(),
-                walker.position().add(0, 9*scale, 0)).inflate(4*scale));
+        AABB bounds = walker.collisionBounds();
+        return walker.shouldRender(cameraX, cameraY, cameraZ)
+                && (bounds == null || frustum.isVisible(bounds));
     }
 }

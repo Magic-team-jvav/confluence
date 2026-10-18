@@ -1,6 +1,6 @@
 package org.confluence.mod.common.item.gun.definition.behavior;
 
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
@@ -18,7 +18,7 @@ public final class NanoRicochetBehavior extends AbstractBulletBehavior {
     @Override
     public boolean onHitBlock(BaseBulletEntity entity, BlockHitResult result) {
         if (entity.getEffectState() >= 1) return false;
-        LivingEntity target = BulletBehaviorSupport.findNearestTargetInRange(entity, 32.0D);
+        Entity target = BulletBehaviorSupport.findNearestTargetInRange(entity, 32.0D);
         if (target == null && entity.level().isClientSide) target = entity.getHomingTarget();
         if (!BulletBehaviorSupport.canAcquireTarget(entity, target) || BulletBehaviorSupport.homingDistance(entity, target) > 32.0D)
             return false;

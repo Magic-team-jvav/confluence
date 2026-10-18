@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.projectile.mana;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -54,10 +55,10 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
     protected abstract ResourceLocation getParticleId();
 
     protected void doTracking() {
-        LivingEntity target = targeting().angleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getOwner(), getTrackingRange(), 30, this::canHitEntity);
+        Entity target = targeting().angleHitTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getOwner(), getTrackingRange(), 30, this::canHitEntity);
         if (target != null) {
             Vec3 motion = getDeltaMovement();
-            Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());
+            Vec3 dir = target.getBoundingBox().getCenter().subtract(position());
             double angle = LibMathUtils.angleBetween(motion, dir);
             Vec3 movement = trackType.calDeltaMovement(getDeltaMovement(), dir, angle);
             setDeltaMovement(movement);

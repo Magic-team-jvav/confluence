@@ -19,8 +19,12 @@ public final class MartianWalkerModel extends ExplicitGeoModel<MartianWalker> {
             if (bone == null) continue;
             var rotation = WalkerGeometry.rotation(name, pose);
             var position = WalkerGeometry.translation(name, pose);
+            var scale = WalkerGeometry.scale(name, pose);
             bone.setRotX(rotation.x); bone.setRotY(rotation.y); bone.setRotZ(rotation.z);
             bone.setPosX(-position.x); bone.setPosY(position.y); bone.setPosZ(position.z);
+            bone.setScaleX(scale.x);
+            bone.setScaleY(scale.y);
+            bone.setScaleZ(scale.z);
             bone.setHidden(name.equals("left_fort") && walker.weaponDestroyed(0)
                     || name.equals("right_fort") && walker.weaponDestroyed(1));
         }

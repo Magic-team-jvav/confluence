@@ -138,12 +138,11 @@ public class BaseBulletEntity extends Projectile {
         entityData.set(IGNORE_BLOCK_COLLISION, ignoresBlockCollision);
     }
 
-    public @org.jetbrains.annotations.Nullable LivingEntity getHomingTarget() {
-        Entity target = level().getEntity(entityData.get(HOMING_TARGET_ID));
-        return target instanceof LivingEntity living ? living : null;
+    public @org.jetbrains.annotations.Nullable Entity getHomingTarget() {
+        return LibEntityUtils.getEntityOrPart(level(), entityData.get(HOMING_TARGET_ID));
     }
 
-    public void setHomingTarget(@org.jetbrains.annotations.Nullable LivingEntity target) {
+    public void setHomingTarget(@org.jetbrains.annotations.Nullable Entity target) {
         entityData.set(HOMING_TARGET_ID, target == null ? -1 : target.getId());
     }
 

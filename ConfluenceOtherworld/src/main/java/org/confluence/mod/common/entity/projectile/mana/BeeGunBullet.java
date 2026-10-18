@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -34,12 +35,12 @@ public class BeeGunBullet extends BeeProjectile {
 
     @Override
     protected void trackTarget() {
-        LivingEntity target = TARGETING.angleTarget(position(), position().add(getDeltaMovement().normalize()), level(), getOwner(), getOwner(), 10, 180, this::canHitEntity);
+        Entity target = TARGETING.angleHitTarget(position(), position().add(getDeltaMovement().normalize()), level(), getOwner(), getOwner(), 10, 180, this::canHitEntity);
         if (target == null) {
             setDeltaMovement(getDeltaMovement().normalize().scale(isGiant() ? 0.5 : 0.25));
         } else {
             Vec3 motion = getDeltaMovement();
-            Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5, 0).subtract(position());
+            Vec3 dir = target.getBoundingBox().getCenter().subtract(position());
             double angle = LibMathUtils.angleBetween(motion, dir);
             if (angle < 90 && !(trackType instanceof SimpleTrack)) {
                 this.trackType = new SimpleTrack(90, 0.5, isGiant() ? 0.5 : 0.25, Optional.of(0.5), 0.5);

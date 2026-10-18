@@ -89,27 +89,50 @@ public final class Scutlix extends BaseWarriorMonster {
     }
 
     private @Nullable RayGunner resolveSavedRider(ServerLevel serverLevel) {
-        if (riderCache != null && riderCache.isAlive() && !riderCache.isRemoved()) {
-            if (riderCache.getVehicle() == this || riderCache.startRiding(this, true)) {
-                bindRider(riderCache);
-                return riderCache;
+        RayGunner rider = riderCache;
+        if (rider == null || !rider.isAlive() || rider.isRemoved()) {
+            Entity resolved = riderUUID == null ? null : serverLevel.getEntity(riderUUID);
+            rider = resolved instanceof RayGunner gunner ? gunner : null;
+        }
+        if (rider != null && rider.isAlive() && !rider.isRemoved()) {
+            if (rider.getVehicle() == this || tryMountGunner(rider)) {
+                bindRider(rider);
+                return rider;
+            }
+            if (rider.isPassenger()) {
+                clearRiderLink();
+                return null;
             }
         }
         riderCache = null;
-        if (riderUUID == null) return null;
-
-        Entity resolved = serverLevel.getEntity(riderUUID);
-        if (resolved instanceof RayGunner rayGunner && rayGunner.isAlive() && !rayGunner.isRemoved()
-                && (rayGunner.getVehicle() == this || rayGunner.startRiding(this, true))) {
-            bindRider(rayGunner);
-            return rayGunner;
-        }
-
-        if (++unresolvedRiderTicks > LINK_GRACE_TICKS) {
-            riderUUID = null;
-            unresolvedRiderTicks = 0;
+        if (riderUUID != null && ++unresolvedRiderTicks > LINK_GRACE_TICKS) {
+            clearRiderLink();
         }
         return null;
+    }
+
+    private void clearRiderLink() {
+        riderCache = null;
+        riderUUID = null;
+        unresolvedRiderTicks = 0;
+    }
+
+    boolean canAcceptGunner(RayGunner gunner) {
+        return isAlive() && !isRemoved() && !isPassenger() && getPassengers().isEmpty()
+                && gunner.isAlive() && !gunner.isRemoved() && !gunner.isPassenger() && gunner.level() == level();
+    }
+
+    boolean isWithinBoardingRange(RayGunner gunner) {
+        return gunner.getBoundingBox().inflate(0.5).intersects(getBoundingBox());
+    }
+
+    boolean tryMountGunner(RayGunner gunner) {
+        if (!canAcceptGunner(gunner) || !isWithinBoardingRange(gunner) || !gunner.startRiding(this)) {
+            return false;
+        }
+        bindRider(gunner);
+        shareTargetWith(gunner);
+        return true;
     }
 
     /**
@@ -126,6 +149,7 @@ public final class Scutlix extends BaseWarriorMonster {
             shareTargetWith(current);
             return true;
         }
+        if (!getPassengers().isEmpty()) return false;
         RayGunner restored = resolveSavedRider(serverLevel);
         if (restored != null) {
             shareTargetWith(restored);
@@ -150,7 +174,7 @@ public final class Scutlix extends BaseWarriorMonster {
             rider.discard();
             return false;
         }
-        if (!rider.startRiding(this, true)) {
+        if (!rider.startRiding(this)) {
             rider.discard();
             return false;
         }

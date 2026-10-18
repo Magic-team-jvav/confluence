@@ -38,13 +38,14 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
 
     public PlanteraTentacle(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        this.noPhysics = true;
     }
 
     /// 将新建触手绑定到指定槽位。槽位必须由世纪之花分配，外部调用者不应自行复用。
     public void setMaster(Plantera master, int slot) {
+        if (!bindTo(master)) {
+            return;
+        }
         entityData.set(SLOT, Mth.clamp(slot, 0, Plantera.TENTACLE_COUNT - 1));
-        bindTo(master);
         master.bindTentacle(this);
     }
 
@@ -159,15 +160,10 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        Plantera owner = getOwner();
-        if (owner == null || !owner.isAlive() || isRemoved() || isInvulnerableTo(source))
+        if (!super.hurt(source, amount)) {
             return false;
-        if (!super.hurt(source, amount)) return false;
-        float remaining = getHealth();
-        indicateHurt();
-        if (remaining <= 0.0F) {
-            onPartDestroyed(owner);
         }
+        indicateHurt();
         return true;
     }
 

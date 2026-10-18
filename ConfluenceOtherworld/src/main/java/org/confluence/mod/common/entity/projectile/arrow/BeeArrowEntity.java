@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.arrow;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -43,10 +44,10 @@ public class BeeArrowEntity extends BaseArrowEntity {
         super.tick();
 
         if (!this.inGround && getOwner() != null) {
-            LivingEntity target = TARGETING.angleTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getOwner(), 20, 30, this::canHitEntity);
+            Entity target = TARGETING.angleHitTarget(position(), position().add(getDeltaMovement().normalize().scale(10)), level(), this, getOwner(), 20, 30, this::canHitEntity);
             if (target != null) {
                 Vec3 motion = getDeltaMovement();
-                Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());
+                Vec3 dir = target.getBoundingBox().getCenter().subtract(position());
                 double angle = LibMathUtils.angleBetween(motion, dir);
                 Vec3 movement = trackType.calDeltaMovement(getDeltaMovement(), dir, angle);
                 setDeltaMovement(movement);

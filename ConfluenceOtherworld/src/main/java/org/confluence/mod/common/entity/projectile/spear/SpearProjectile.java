@@ -68,7 +68,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     public float gravity = 0.0F;
 
     protected ItemStack firedFromWeapon = ItemStack.EMPTY;
-    protected LivingEntity target;
+    protected Entity target;
 
     // 数据同步
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION =
@@ -316,9 +316,9 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
             }
 
             target = LibEntityUtils.nearest(
-                    level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(50)),
-                    living -> targeting().canAcquire(owner1, living),
-                    Comparator.comparingDouble(living -> living.distanceToSqr(this)));
+                    targeting().hitTargets(level(), this, owner1, getBoundingBox().inflate(50), this::canHitEntity),
+                    candidate -> true,
+                    Comparator.comparingDouble(this::distanceToSqr));
         }
     }
 

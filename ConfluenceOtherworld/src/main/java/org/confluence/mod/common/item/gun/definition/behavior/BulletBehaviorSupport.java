@@ -16,25 +16,25 @@ import java.util.Comparator;
 final class BulletBehaviorSupport {
     private static final double RICOCHET_POSITION_EPSILON = 0.02D;
 
-    static boolean canAcquireTarget(BaseBulletEntity entity, LivingEntity target) {
+    static boolean canAcquireTarget(BaseBulletEntity entity, Entity target) {
         return entity.targeting().canAcquire(entity.getOwner(), target)
                 && entity.canHitTarget(target);
     }
 
-    static boolean canKeepTarget(BaseBulletEntity entity, LivingEntity target) {
+    static boolean canKeepTarget(BaseBulletEntity entity, Entity target) {
         return entity.targeting().canKeep(entity.getOwner(), target)
                 && LibEntityUtils.canHit(entity.getOwner(), target)
                 && entity.canHitTarget(target);
     }
 
-    static LivingEntity findNearestTargetInRange(BaseBulletEntity entity, double range) {
+    static Entity findNearestTargetInRange(BaseBulletEntity entity, double range) {
         return LibEntityUtils.nearest(
-                entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(range)),
-                candidate -> canAcquireTarget(entity, candidate) && homingDistance(entity, candidate) <= range,
-                Comparator.comparingDouble((LivingEntity candidate) -> homingDistance(entity, candidate)).thenComparingInt(Entity::getId));
+                entity.targeting().hitTargets(entity.level(), entity, entity.getOwner(), entity.getBoundingBox().inflate(range), entity::canHitTarget),
+                candidate -> homingDistance(entity, candidate) <= range,
+                Comparator.comparingDouble((Entity candidate) -> homingDistance(entity, candidate)).thenComparingInt(Entity::getId));
     }
 
-    static double homingDistance(BaseBulletEntity entity, LivingEntity target) {
+    static double homingDistance(BaseBulletEntity entity, Entity target) {
         return LibEntityUtils.horizontalVerticalDistance(entity.position(), target);
     }
 

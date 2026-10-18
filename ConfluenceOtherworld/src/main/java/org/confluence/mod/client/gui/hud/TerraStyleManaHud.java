@@ -2,11 +2,9 @@ package org.confluence.mod.client.gui.hud;
 
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
@@ -35,16 +33,8 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
     private static final float SOUL_TINT_GREEN = 1.0F;
     private static final float SOUL_TINT_BLUE = 0xFE / 255.0F;
     private static final int RESOURCE_PER_LEGACY_ICON = 20;
-    private static final int LEGACY_ICON_WIDTH = 17;
-    private static final int LEGACY_ICON_HEIGHT = 16;
-    private static final int LEGACY_ICON_SPACING = 12;
     private static final int OVERLAY_RESOURCE_DIVISOR = 10;
-    private static final int OVERLAY_UNITS_PER_LAYER = 20;
-    private static final int OVERLAY_ICON_HEIGHT = 9;
     private static final int OVERLAY_HUD_SPACING = 10;
-    private static final int OVERLAY_NUMBER_OFFSET_X = 85;
-    private static final int OVERLAY_NUMBER_OUTLINE = 1;
-    private static final int DETAIL_TEXT_GAP = 2;
     /// overlay 图集中魔力条使用的行（星星）。
     private static final int OVERLAY_DEFAULT_UV_Y = 10;
     /// overlay 图集中灵魂条使用的最下面一行图例。
@@ -71,16 +61,6 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
     /// 读取当前资源模式对应的资源上限。
     private static int getMaxResource(Minecraft minecraft) {
         return PlayerUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getMaxSoul() : ClientPacketHandler.getMaxMana();
-    }
-
-    /// 潜行时显示整数明细，按指定方向从锚点展开。
-    private static void renderResourceDetails(GuiGraphics guiGraphics, Minecraft minecraft, float current, int max, int x, int y, boolean rightAligned) {
-        if (minecraft.player == null || !minecraft.player.isShiftKeyDown()) {
-            return;
-        }
-        String text = (int) current + "/" + max;
-        Font font = minecraft.font;
-        guiGraphics.drawString(font, text, rightAligned ? x - font.width(text) : x, y, -1, true);
     }
 
     public enum Mana implements TranslatableEnum {
@@ -116,8 +96,6 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                 if (soulMode) {
                     guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
                 }
-                int detailsY = heightMana + Math.max(0, maxManaCount - 1) * LEGACY_ICON_SPACING + LEGACY_ICON_HEIGHT + DETAIL_TEXT_GAP;
-                renderResourceDetails(guiGraphics, minecraft, currentMana, maxMana, widthMana + LEGACY_ICON_WIDTH, detailsY, true);
             }
         },
         OVERLAY {
@@ -142,13 +120,6 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                 if (soulMode) {
                     guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
                 }
-                int detailsX = widthMana + OVERLAY_NUMBER_OFFSET_X + DETAIL_TEXT_GAP;
-                int layerCount = Math.ceilDiv(Mth.ceil(currentMana), OVERLAY_UNITS_PER_LAYER);
-                if (layerCount > 1) {
-                    detailsX += minecraft.font.width(Integer.toString(layerCount)) + OVERLAY_NUMBER_OUTLINE + DETAIL_TEXT_GAP;
-                }
-                renderResourceDetails(guiGraphics, minecraft, resourceCurrent, resourceMax, detailsX,
-                        heightMana + (OVERLAY_ICON_HEIGHT - minecraft.font.lineHeight) / 2, false);
             }
         };
 

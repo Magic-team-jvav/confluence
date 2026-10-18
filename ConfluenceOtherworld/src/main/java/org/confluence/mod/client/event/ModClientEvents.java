@@ -223,8 +223,10 @@ public final class ModClientEvents {
         event.registerBelow(VanillaGuiLayers.ARMOR_LEVEL, healthHud, new TerraStyleHealthHud());
         ResourceLocation armorHud = Confluence.asResource("armor_hud");
         event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
+        ResourceLocation manaHud = Confluence.asResource("mana_hud");
+        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
         ResourceLocation foodHud = Confluence.asResource("food_hud");
-        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, foodHud, new TerraStyleFoodHud());
+        event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
 
         event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHud());
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());

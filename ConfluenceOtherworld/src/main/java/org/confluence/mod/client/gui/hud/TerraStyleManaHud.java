@@ -43,7 +43,8 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || minecraft.player == null || minecraft.player.isSpectator()
+        if (minecraft.options.hideGui || minecraft.player == null
+                || minecraft.player.isCreative() || minecraft.player.isSpectator()
                 || !(minecraft.getCameraEntity() instanceof Player)) return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");

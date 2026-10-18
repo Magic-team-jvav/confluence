@@ -64,6 +64,13 @@ public final class TooltipLanguageSubProvider {
         language.add("lore.confluence.research_on_cloud_blocks_2", "The pages feel very soft, just like silk. Judging from the title, it seems there is another volume?", "书页摸起来非常柔软，就好像丝绸一样。看标题的样子好像还有另一本？");
         language.add("lore.confluence.research_on_wheat_mutation", "There are some powders mixed in the pages, but it doesn't seem to be the powder from the aging of the pages...", "书页中混杂着一些粉末，但是好像并不是书页老化出来的粉末......");
         language.add("lore.confluence.village_exploration", "It's hard to tell the exact age, but it seems to be very well - packaged...", "看不出详细的年代，但是感觉包装很精良的样子......");
+        language.add("message.confluence.boss_target_selector.cleared", "Disabled Creative mode aggro for %s", "已关闭 %s 对你的创造模式仇恨");
+        language.add("message.confluence.boss_target_selector.locked", "Enabled Creative mode aggro for %s", "已开启 %s 对你的创造模式仇恨");
+        language.add("message.confluence.environmental_machine.disabled", "Machine disabled", "机器已关闭");
+        language.add("message.confluence.environmental_machine.empty", "Empty", "无");
+        language.add("message.confluence.environmental_machine.enabled", "Machine enabled", "机器已开启");
+        language.add("message.confluence.environmental_machine.incompatible", "Only one compatible solution may be stored at a time", "只能存放同一种适用溶液");
+        language.add("message.confluence.environmental_machine.stock", "%s: %s stored", "%s：已存放 %s 个");
         language.add("tooltip.confluence.ability.chlorophyte_homing", "Special Effect: Homes in on nearby targets and leaves a bright green trail", "特殊效果：会追踪附近的目标，并留下明亮的绿色轨迹");
         language.add("tooltip.confluence.ability.crystal_split", "Special Effect: Splits backward into 2 shards at 50% damage; shards pass through blocks", "特殊效果：命中后向后分裂为 2 枚碎片，伤害为原弹 50%，可穿过方块");
         language.add("tooltip.confluence.ability.cursed_debuff", "Special Effect: Applies Wither", "特殊效果：施加凋零");
@@ -83,6 +90,8 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.boomerang.fly_speed", "Fly Speed", "飞行速度");
         language.add("tooltip.confluence.boomerang.max_count", "Max Count", "分身数量");
         language.add("tooltip.confluence.boomerang.penetration", "Penetrates Count", "穿透数量");
+        language.add("tooltip.confluence.boss_target_selector", "In Creative mode, right-click a BOSS or its parts to toggle its aggro toward you.", "创造模式下，右键指定BOSS或其部件，开启或关闭它对你的仇恨。");
+        language.add("tooltip.confluence.clentaminator", "Maintains a 3×3 chunk area. Uses 3 solutions per day. Use solution on each tank to insert; sneak with an empty hand to withdraw. Use the base with an empty hand to toggle.", "维持周围3×3区块，每天消耗3个溶液。手持溶液点击储液罐存入，潜行空手点击取出。空手点击底座启停。");
         language.add("tooltip.confluence.cooldown", "Cooldown: %s", "冷却：%s");
         language.add("tooltip.confluence.critical_chance", "Critical Strike Chance: %s%%", "暴击率：%s%%");
         language.add("tooltip.confluence.disabled", "Disabled", "已禁用");

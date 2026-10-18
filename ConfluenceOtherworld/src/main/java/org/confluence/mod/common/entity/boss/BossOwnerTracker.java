@@ -109,7 +109,7 @@ public final class BossOwnerTracker<T extends BaseBoss> {
     private static boolean isBasicCombatTarget(@Nullable LivingEntity target, Mob dependent) {
         return target != null && target.level() == dependent.level() && target.isAlive() && !target.isRemoved()
                 && EnemyTargeting.allowsTarget(dependent, target)
-                && (!(target instanceof Player player) || !player.isCreative() && !player.isSpectator());
+                && (!(target instanceof Player player) || (!player.isCreative() || EnemyTargeting.isDeveloperTarget(dependent, player)) && !player.isSpectator());
     }
 
     public void unbind(Entity dependent) {

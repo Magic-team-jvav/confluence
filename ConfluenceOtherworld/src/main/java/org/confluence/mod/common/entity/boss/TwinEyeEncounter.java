@@ -1,27 +1,53 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
-/// 双眼共同的持久化遭遇记录，不生成管理实体，也不驱动眼球的攻击。
-public final class TwinEyeEncounter extends SavedData {
+// 双眼共同的持久化遭遇记录，不生成管理实体，也不驱动眼球的攻击。
+public final class TwinEyeEncounter implements IGlobalData {
+    public static final TwinEyeEncounter INSTANCE = new TwinEyeEncounter();
     private static final String DATA_NAME = "confluence_twin_eye_encounters";
     private final Map<UUID, State> encounters = new HashMap<>();
+    private final Set<String> migratedDimensions = new HashSet<>();
+
+    private TwinEyeEncounter() {}
 
     private static TwinEyeEncounter get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(TwinEyeEncounter::load, TwinEyeEncounter::new, DATA_NAME);
+        INSTANCE.importLegacy(level);
+        return INSTANCE;
+    }
+
+    // 旧版独立数据文件只读迁移一次，后续仅由 IGlobalData 写入；不再注册旧存储类型。
+    private void importLegacy(ServerLevel level) {
+        String dimension = level.dimension().location().toString();
+        if (migratedDimensions.contains(dimension)) return;
+        Path file = DimensionType.getStorageFolder(level.dimension(), level.getServer().getWorldPath(LevelResource.ROOT))
+                .resolve("data").resolve(DATA_NAME + ".dat");
+        if (Files.exists(file)) {
+            try {
+                CompoundTag legacy = NbtIo.readCompressed(file.toFile());
+                readEntries(legacy.getCompound("data"));
+            } catch (IOException exception) {
+                Confluence.LOGGER.error("Failed to import legacy twin eye encounter data from {}", file, exception);
+                return;
+            }
+        }
+        migratedDimensions.add(dimension);
     }
 
     static State state(AbstractTwinEye eye) {
@@ -29,7 +55,6 @@ public final class TwinEyeEncounter extends SavedData {
         TwinEyeEncounter data = get(level);
         State state = data.encounters.computeIfAbsent(eye.getEncounterUUID(), ignored -> new State());
         state.update(eye);
-        data.setDirty();
         return state;
     }
 
@@ -40,10 +65,9 @@ public final class TwinEyeEncounter extends SavedData {
         state.removed |= eye.isRetinazer() ? 1 : 2;
         if (eye.isAlive()) state.abandoned = true;
         if (state.removed == 3) data.encounters.remove(eye.getEncounterUUID());
-        data.setDirty();
     }
 
-    /// 两个眼球先完成初始化并绑定同一个遭遇，再一起加入世界；任何一侧失败都撤销本次召唤。
+    // 两个眼球先完成初始化并绑定同一个遭遇，再一起加入世界；任何一侧失败都撤销本次召唤。
     public static boolean summon(ServerLevel level, Vec3 position, @Nullable Player summoner) {
         Retinazer laser = BossEntities.RETINAZER.get().create(level);
         Spazmatism flame = BossEntities.SPAZMATISM.get().create(level);
@@ -65,7 +89,6 @@ public final class TwinEyeEncounter extends SavedData {
             laser.discard();
             flame.discard();
             get(level).encounters.remove(encounterId);
-            get(level).setDirty();
             return false;
         }
         return true;
@@ -135,8 +158,15 @@ public final class TwinEyeEncounter extends SavedData {
         float maximumHealth() {return laserMaximum + flameMaximum;}
     }
 
-    private static TwinEyeEncounter load(CompoundTag tag) {
-        TwinEyeEncounter data = new TwinEyeEncounter();
+    @Override
+    public void decode(CompoundTag tag) {
+        clear();
+        for (Tag dimension : tag.getList("MigratedDimensions", Tag.TAG_STRING))
+            migratedDimensions.add(dimension.getAsString());
+        readEntries(tag);
+    }
+
+    private void readEntries(CompoundTag tag) {
         ListTag entries = tag.getList("Encounters", Tag.TAG_COMPOUND);
         for (int i = 0; i < entries.size(); i++) {
             CompoundTag entry = entries.getCompound(i);
@@ -154,9 +184,8 @@ public final class TwinEyeEncounter extends SavedData {
             state.abandoned = entry.getBoolean("Abandoned");
             readIds(entry, "Participants", state.participants);
             readIds(entry, "MayhemParticipants", state.mayhemParticipants);
-            data.encounters.put(entry.getUUID("Id"), state);
+            encounters.putIfAbsent(entry.getUUID("Id"), state);
         }
-        return data;
     }
 
     private static void readIds(CompoundTag tag, String key, Set<UUID> ids) {
@@ -170,7 +199,7 @@ public final class TwinEyeEncounter extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag) {
+    public void encode(CompoundTag tag) {
         ListTag entries = new ListTag();
         encounters.forEach((id, state) -> {
             CompoundTag entry = new CompoundTag();
@@ -190,6 +219,18 @@ public final class TwinEyeEncounter extends SavedData {
             entries.add(entry);
         });
         tag.put("Encounters", entries);
-        return tag;
+        ListTag dimensions = new ListTag();
+        migratedDimensions.stream().sorted().forEach(id -> dimensions.add(StringTag.valueOf(id)));
+        tag.put("MigratedDimensions", dimensions);
     }
+
+    @Override
+    public String serializeKey() {return "confluence:twin_eye_encounters";}
+
+    @Override
+    public void clear() {
+        encounters.clear();
+        migratedDimensions.clear();
+    }
+
 }

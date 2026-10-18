@@ -51,6 +51,11 @@ public final class NPCShopProvider implements DataProvider {
         TradeCondition graveyard = GraveyardCondition.INSTANCE;
         TradeCondition corruptionWorld = new WorldFlagCondition(IWorldOptions.THE_CORRUPTION);
         TradeCondition crimsonWorld = new WorldFlagCondition(IWorldOptions.THE_CRIMSON);
+        TradeCondition solutionSales = new WorldFlagCondition(IWorldOptions.DDU_MASK).not().and(new WorldFlagCondition(IWorldOptions.GFB_MASK).not());
+        TradeCondition solutionEvent = bloodMoon.or(new GameEventCondition(SolarEclipseGameEvent.KEY));
+        TradeCondition hallow = new BiomeCondition(List.of(ModBiomes.THE_HALLOW, ModBiomes.THE_HALLOW_DESERT, ModBiomes.THE_HALLOW_TUNDRA), List.of());
+        TradeCondition moonLord = new WorldFlagCondition(IWorldOptions.GRADUATED);
+
         shops.put(Confluence.asResource("merchant"), List.of(
                 offer(ToolItems.BUG_NET.toStack()),
                 offer(ArmorItems.MINING_HELMET.toStack()),
@@ -229,6 +234,13 @@ public final class NPCShopProvider implements DataProvider {
                 offer(VanityArmorItems.WIZARDS_HAT.toStack(), halloween())
         ));
         shops.put(Confluence.asResource("steampunker"), List.of(
+                offer(MaterialItems.GREEN_SOLUTION.toStack(), solutionSales.and(solutionEvent.not()).and(hallow.not())),
+                offer(MaterialItems.BLUE_SOLUTION.toStack(), solutionSales.and(solutionEvent.not()).and(hallow)),
+                offer(MaterialItems.PURPLE_SOLUTION.toStack(), solutionSales.and(solutionEvent).and(corruptionWorld)),
+                offer(MaterialItems.RED_SOLUTION.toStack(), solutionSales.and(solutionEvent).and(crimsonWorld)),
+                offer(MaterialItems.YELLOW_SOLUTION.toStack(), solutionSales.and(moonLord)),
+                offer(MaterialItems.WHITE_SOLUTION.toStack(), solutionSales.and(moonLord)),
+                offer(MaterialItems.BROWN_SOLUTION.toStack(), solutionSales.and(moonLord)),
                 offer(MaterialItems.COG.toStack()),
                 offer(FunctionalBlocks.BLEND_O_MATIC.toStack()),
                 offer(TCItems.JETPACK.toStack())

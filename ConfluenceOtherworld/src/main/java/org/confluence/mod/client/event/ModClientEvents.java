@@ -45,6 +45,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.effect.BrainDissolveTexture;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.effect.DivaSlimeVertexConsumer;
 import org.confluence.mod.client.effect.ModDynamicLights;
@@ -1159,7 +1160,7 @@ public final class ModClientEvents {
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(OpalLightIntegration.INSTANCE);
-        event.registerReloadListener((ResourceManagerReloadListener) manager -> org.confluence.mod.client.effect.BrainDissolveTexture.clearTextures());
+        event.registerReloadListener((ResourceManagerReloadListener) manager -> BrainDissolveTexture.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());
         event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());

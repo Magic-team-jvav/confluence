@@ -35,6 +35,8 @@ public class ToolItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
+    public static final PortDeferredItem<BossTargetSelectorItem> BOSS_TARGET_SELECTOR = registerItemWithEnglishName("boss_target_selector", "BOSS创造模式仇恨", "BOSS Creative Mode Aggro", BossTargetSelectorItem::new);
+
     public static final PortDeferredItem<VoidBagItem> VOID_BAG = registerItem("void_bag", "虚空袋", VoidBagItem::new);
 
     public static final PortDeferredItem<HoneyBucketItem> HONEY_BUCKET = registerItem("honey_bucket", "蜂蜜桶", HoneyBucketItem::new);

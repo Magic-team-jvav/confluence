@@ -56,6 +56,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        skip.add(ToolItems.BOSS_TARGET_SELECTOR.get());
+        for (var solution : Solution.values()) skip.add(solution.item());
         withExistingParent("shadow_candle", "item/generated").texture("layer0", Confluence.asResource("item/tool/shadow_candle"));
         GunItems.BULLET_ITEMS.forEach(item -> {
             String path = item.getId().getPath();

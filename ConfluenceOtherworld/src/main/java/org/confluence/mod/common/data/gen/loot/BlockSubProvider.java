@@ -126,6 +126,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(LESION_BLOCK.get());
         dropSelf(GEYSER_BLOCK.get());
         this.add(NatureBlocks.CRYSTAL_SHARDS.get(), p_344211_ -> this.createSilkTouchDispatchTable(p_344211_, (LootPoolEntryContainer.Builder<?>) this.applyExplosionDecay(p_344211_, LootItem.lootTableItem(NatureBlocks.CRYSTAL_SHARDS.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))));
+        dropSelf(CLENTAMINATOR.get());
+        dropSelf(TERRAFORMER.get());
         dropSelf(EXTRACTINATOR.get());
         dropSelf(SKY_MILL.get());
         dropSelf(COOKING_POT.get());

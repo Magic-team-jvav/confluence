@@ -498,7 +498,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     private void updateHorrifiedPlayers() {
         AABB pursuitBox = getPursuitBox();
         for (Player player : level().players()) {
-            if (player.isCreative() || player.isSpectator()) {
+            if ((player.isCreative() && !isDeveloperTarget(player)) || player.isSpectator()) {
                 continue;
             }
             if (tickCount % 20 == 0) {
@@ -628,7 +628,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     private void updatePartAssignments() {
         eyeAssignments.clear();
         mouthAssignments.clear();
-        List<Player> players = level().getEntitiesOfClass(Player.class, getPursuitBox(), player -> isValidFrontTarget(player) && !player.isCreative() && !player.isSpectator());
+        List<Player> players = level().getEntitiesOfClass(Player.class, getPursuitBox(), player -> isValidFrontTarget(player) && (!player.isCreative() || isDeveloperTarget(player)) && !player.isSpectator());
         assignNearestParts(players, livingParts(eyes), MAX_ASSIGNED_EYES, eyeAssignments);
         assignNearestParts(players, livingParts(mouths), MAX_ASSIGNED_MOUTHS, mouthAssignments);
         CompoundTag targets = new CompoundTag();

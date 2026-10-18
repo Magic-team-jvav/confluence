@@ -88,7 +88,6 @@ public final class ModItems {
     public static final DeferredItem<Item> MYSTERIOUS_SLATE = registerHidden("mysterious_slate", "神秘石板", () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<BestiaryItem> BESTIARY = registerHidden("bestiary", "怪物图鉴", BestiaryItem::new);
-    public static final DeferredItem<Item> BACKGROUND_IMAGE_MAKER = registerHidden("background_image_maker", "背景图生成器", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
 
     public static final DeferredItem<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final DeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN.get(), ModRarity.ORANGE, ModItems.GOLD_COIN, 100));

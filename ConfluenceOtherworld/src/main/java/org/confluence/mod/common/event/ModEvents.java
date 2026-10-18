@@ -61,15 +61,13 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
-import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.data.saved.GlobalCloakData;
-import org.confluence.mod.common.data.saved.HardmodeConvertor;
-import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.entity.TargetingIntegration;
+import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
@@ -84,7 +82,6 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 import org.confluence.mod.network.task.AchievementsTask;
@@ -158,6 +155,7 @@ public final class ModEvents {
             MagicMailBox.registerVariants();
             ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(
+                    TwinEyeEncounter.INSTANCE,
                     KillBoard.INSTANCE,
                     HardmodeConvertor.INSTANCE,
                     NPCSpawner.INSTANCE,

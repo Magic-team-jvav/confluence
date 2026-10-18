@@ -27,6 +27,16 @@ public class MaterialItems {
     public static final DeferredItem<Item> SILK = register("silk", "丝绸", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_ASPHALT = registerItem("raw_asphalt", "生沥青", () -> new CustomRarityItem(new Item.Properties().stacksTo(LibUtils.MAX_STACK_SIZE), ModRarity.WHITE));
 
+    public static final DeferredItem<Item> GREEN_SOLUTION = register("green_solution", "绿溶液");
+    public static final DeferredItem<Item> BLUE_SOLUTION = register("blue_solution", "蓝溶液");
+    public static final DeferredItem<Item> PURPLE_SOLUTION = register("purple_solution", "紫溶液");
+    public static final DeferredItem<Item> DARK_BLUE_SOLUTION = register("dark_blue_solution", "深蓝溶液");
+    public static final DeferredItem<Item> RED_SOLUTION = register("red_solution", "红溶液");
+    public static final DeferredItem<Item> YELLOW_SOLUTION = register("yellow_solution", "黄溶液");
+    public static final DeferredItem<Item> WHITE_SOLUTION = register("white_solution", "白溶液");
+    public static final DeferredItem<Item> BROWN_SOLUTION = register("brown_solution", "棕溶液");
+
+
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin", "粗锡");
     public static final DeferredItem<Item> TIN_INGOT = register("tin_ingot", "锡锭");
     public static final DeferredItem<Item> TIN_NUGGET = register("tin_nugget", "锡粒");

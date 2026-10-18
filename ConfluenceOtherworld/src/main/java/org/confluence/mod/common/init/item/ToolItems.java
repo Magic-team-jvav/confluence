@@ -32,6 +32,8 @@ import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 public class ToolItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
+    public static final DeferredItem<BossTargetSelectorItem> BOSS_TARGET_SELECTOR = registerItemWithEnglishName("boss_target_selector", "BOSS创造模式仇恨", "BOSS Creative Mode Aggro", BossTargetSelectorItem::new);
+
     public static final DeferredItem<VoidBagItem> VOID_BAG = registerItem("void_bag", "虚空袋", VoidBagItem::new);
 
     public static final DeferredItem<HoneyBucketItem> HONEY_BUCKET = registerItem("honey_bucket", "蜂蜜桶", HoneyBucketItem::new);

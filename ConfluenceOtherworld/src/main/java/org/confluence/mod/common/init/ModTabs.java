@@ -1010,6 +1010,15 @@ public final class ModTabs {
                         crafting_materials.accept(MaterialItems.AETHERIUM_GOLD.get());
                         crafting_materials.accept(MaterialItems.SILK.get());
                         crafting_materials.accept(MaterialItems.RAW_ASPHALT.get());
+                        crafting_materials.accept(MaterialItems.GREEN_SOLUTION.get());
+                        crafting_materials.accept(MaterialItems.BLUE_SOLUTION.get());
+                        crafting_materials.accept(MaterialItems.PURPLE_SOLUTION.get());
+                        crafting_materials.accept(MaterialItems.DARK_BLUE_SOLUTION.get());
+                        crafting_materials.accept(MaterialItems.RED_SOLUTION.get());
+                        crafting_materials.accept(MaterialItems.YELLOW_SOLUTION.get());
+                        crafting_materials.accept(MaterialItems.WHITE_SOLUTION.get());
+                        crafting_materials.accept(MaterialItems.BROWN_SOLUTION.get());
+
                         crafting_materials.accept(MaterialItems.SPELL_TOME.get());
                         crafting_materials.accept(MaterialItems.CHINA_PLATE.get());
                         crafting_materials.accept(MaterialItems.CHINA_BOWL.get());
@@ -2439,6 +2448,7 @@ public final class ModTabs {
                         output.accept(FoodItems.PIGLIN_STEW);
                         output.accept(BoomerangItems.BEIDOU_BOOMERANG);
                         output.accept(ToolItems.DEV_BUG_NET);
+                        output.accept(ToolItems.BOSS_TARGET_SELECTOR);
                         output.accept(SwordItems.DEVELOPER_SWORD);
                         output.accept(BoomerangItems.DEVELOPER_BOOMERANG);
                         output.accept(BowItems.DEVELOPER_BOW);

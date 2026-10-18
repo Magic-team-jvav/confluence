@@ -40,6 +40,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
+        item(recipeOutput, "purple_solution", addItem(MaterialItems.RED_SOLUTION.get(), MaterialItems.PURPLE_SOLUTION.get(), 1, GamePhase.MOON_LORD));
         // 黑名单
         item(recipeOutput, "deny_stairs", blacklist(ItemTags.STAIRS));
         item(recipeOutput, "deny_band_of_star_power", blacklist(AccessoryItems.BAND_OF_STARPOWER.get()));

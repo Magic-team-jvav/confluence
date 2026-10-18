@@ -78,6 +78,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     private boolean deathRewardsSettled;
     private boolean deathAnnouncementSent;
     // 死亡玩家丢失本场遭遇的自动仇恨；主动攻击 Boss 会重新加入目标候选。
+    // 仅开发者工具显式设置的玩家可以绕过创造模式目标过滤。
+    private UUID developerTargetId;
     private final Set<UUID> deathRetargetBlocked = new HashSet<>();
     private boolean disengageRetreating;
     private boolean noPhysicsBeforeRetreat;
@@ -333,6 +335,10 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// Boss 可保留指定目标或反击攻击者，不主动搜索无关生物。
     @Override
     public boolean canAttack(LivingEntity target) {
+        if (target instanceof Player player && isDeveloperTarget(player)) {
+            return isAlive() && shouldMaintainCombatTarget() && player.isAlive() && !player.isRemoved()
+                    && player.level() == level() && !player.isSpectator() && !isAlliedTo(player);
+        }
         return isAlive() && shouldMaintainCombatTarget()
                 && target.level() == level() && target.isAlive() && !target.isRemoved()
                 && (!(target instanceof Player player) || !player.isCreative() && !player.isSpectator())
@@ -489,7 +495,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         }
         retaliationTarget = null;
 
-        // 创造和旁观玩家只维持现场，不参与战斗，也绝不会进入 Mob#getTarget。
+        // 未被开发者工具选中的创造玩家只维持现场，旁观玩家不参与战斗。
         // 该检查必须放在脱战计时之前：创造模式玩家同样“在场”，Boss 却永远找不到
         // 合格战斗目标。若只按合格目标计时，创造模式实测时 Boss 会在 200 tick 后
         // 判空脱战并 discard，玩家看到的就是一个既打不动、又已经不存在于服务端的实体。
@@ -652,6 +658,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// 将同一场战斗的目标与参与者转交给替代实体。
     /// 分裂、换头或阶段替换不能重新开始遭遇，否则会丢失目标、血条观察者和奖励归属。
     protected final void inheritEncounterState(BaseBoss source) {
+        developerTargetId = source.developerTargetId;
         combatParticipantIds.addAll(source.combatParticipantIds);
         mechanicalMayhemParticipantIds.addAll(source.mechanicalMayhemParticipantIds);
         LivingEntity sourceTarget = source.getAuthoritativeLivingTarget();
@@ -714,8 +721,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     protected boolean isValidCurrentCombatPlayer(Player player) {
         double range = getCombatPlayerRange();
         return player.level() == level() && player.isAlive()
-                && !player.isCreative() && !player.isSpectator()
-                && player.canBeSeenAsEnemy()
+                && (!player.isCreative() || isDeveloperTarget(player)) && !player.isSpectator()
+                && (player.canBeSeenAsEnemy() || isDeveloperTarget(player))
                 && !hasLostAggroAfterDeath(player)
                 && combatAnchorDistanceSqr(player) < range * range;
     }
@@ -730,6 +737,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 优先维持非玩家交战目标，失效后恢复原有的玩家索敌规则。
     protected @Nullable LivingEntity selectCombatTarget(@Nullable LivingEntity previous) {
+        Player forced = developerTargetId == null ? null : level().getPlayerByUUID(developerTargetId);
+        if (forced != null && isValidCurrentCombatPlayer(forced)) return forced;
         LivingEntity selected = validRetaliationTarget(previous);
         if (selected == null) selected = validRetaliationTarget(getTarget());
         if (selected == null) selected = validRetaliationTarget(retaliationTarget);
@@ -747,6 +756,19 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 && target.level() == level() && target.isAlive()
                 && combatAnchorDistanceSqr(target) < getCombatPlayerRange() * getCombatPlayerRange()
                 && canAttack(target) ? target : null;
+    }
+
+    // 开发者工具只为被选择的 Boss 放行指定玩家，不影响全局创造模式索敌。
+    public final boolean isDeveloperTarget(Player player) {
+        return player.getUUID().equals(developerTargetId);
+    }
+
+    // 再次选择同一 Boss 取消锁定；普通战斗规则仍排除旁观者。
+    public final boolean toggleDeveloperTarget(Player player) {
+        developerTargetId = isDeveloperTarget(player) ? null : player.getUUID();
+        deathRetargetBlocked.remove(player.getUUID());
+        setTarget(developerTargetId == null ? null : player);
+        return developerTargetId != null;
     }
 
     private boolean isEncounterObserver(Player player) {
@@ -895,6 +917,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        if (developerTargetId != null) tag.putUUID("DeveloperTarget", developerTargetId);
         tag.put("CombatParticipants", saveUuidSet(combatParticipantIds));
         tag.put("MechanicalMayhemParticipants", saveUuidSet(mechanicalMayhemParticipantIds));
         tag.put("DeathRetargetBlocked", saveUuidSet(deathRetargetBlocked));
@@ -905,6 +928,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        developerTargetId = tag.hasUUID("DeveloperTarget") ? tag.getUUID("DeveloperTarget") : null;
         loadUuidSet(tag, "CombatParticipants", combatParticipantIds);
         loadUuidSet(tag, "MechanicalMayhemParticipants", mechanicalMayhemParticipantIds);
         loadUuidSet(tag, "DeathRetargetBlocked", deathRetargetBlocked);

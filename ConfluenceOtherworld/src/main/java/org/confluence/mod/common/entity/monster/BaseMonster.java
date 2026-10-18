@@ -359,10 +359,18 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     }
 
     /// 在 AI 执行前和接触伤害前清理失效目标，蓄力中的动作也不能继续追击创造玩家。
+    // 普通敌怪仍排除创造玩家，只有工具指定 Boss 的绑定从属获得相同权限。
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        if (target instanceof Player player && EnemyTargeting.isDeveloperTarget(this, player))
+            return target.isAlive() && !target.isRemoved() && target.level() == level() && EnemyTargeting.allowsTarget(this, target);
+        return super.canAttack(target);
+    }
+
     private void clearInvalidCombatTarget() {
         LivingEntity target = getTarget();
         if (target != null && (!target.isAlive() || target.isRemoved() || target.level() != level() || !canAttack(target)
-                || target instanceof Player player && (player.isCreative() || player.isSpectator()))) {
+                || target instanceof Player player && ((player.isCreative() && !EnemyTargeting.isDeveloperTarget(this, player)) || player.isSpectator()))) {
             setTarget(null);
         }
     }

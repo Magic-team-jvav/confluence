@@ -762,8 +762,8 @@ public class EaterOfWorlds extends BaseWormBoss {
 
     private boolean isDirectlyTargetable(Player player) {
         if (player.level() != level() || !player.isAlive()
-                || player.isCreative() || player.isSpectator()
-                || !player.canBeSeenAsEnemy()) {
+                || (player.isCreative() && !isDeveloperTarget(player)) || player.isSpectator()
+                || (!player.canBeSeenAsEnemy() && !isDeveloperTarget(player))) {
             return false;
         }
         return distanceToSqr(player) < TARGET_SEARCH_RANGE * TARGET_SEARCH_RANGE;

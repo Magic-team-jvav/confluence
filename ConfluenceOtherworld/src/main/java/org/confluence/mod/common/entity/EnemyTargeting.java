@@ -32,6 +32,12 @@ public final class EnemyTargeting {
         return null;
     }
 
+    // 只允许被开发者工具选中的 Boss 及其已绑定从属继承创造玩家目标。
+    public static boolean isDeveloperTarget(Mob mob, Player player) {
+        BaseBoss owner = mob instanceof BaseBoss boss ? boss : mob instanceof BossOwnedEntity dependent ? dependent.getBossOwner() : null;
+        return owner != null && owner.isDeveloperTarget(player) && !player.isSpectator();
+    }
+
     public static boolean applies(Mob mob) {
         return !mob.level().isClientSide && !mob.isNoAi() && mob.isAlive()
                 && !(mob instanceof BaseBoss) && isConfluenceEnemy(mob);
@@ -76,7 +82,7 @@ public final class EnemyTargeting {
     public static boolean allowsTarget(Mob mob, LivingEntity target) {
         if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved())
             return false;
-        if (target instanceof Player player && (player.isCreative() || player.isSpectator()))
+        if (target instanceof Player player && ((player.isCreative() && !isDeveloperTarget(mob, player)) || player.isSpectator()))
             return false;
         if (EnemyDamageRules.isProtectedEnemy(mob) && EnemyDamageRules.isEnemy(target))
             return false;
@@ -88,9 +94,9 @@ public final class EnemyTargeting {
     }
 
     public static boolean valid(Mob mob, LivingEntity target) {
-        if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved() || !allowsTarget(mob, target) || !mob.canAttack(target))
+        if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved() || !allowsTarget(mob, target) || !mob.canAttack(target) && !(target instanceof Player player && isDeveloperTarget(mob, player)))
             return false;
-        if (target instanceof Player player && (player.isCreative() || player.isSpectator()))
+        if (target instanceof Player player && ((player.isCreative() && !isDeveloperTarget(mob, player)) || player.isSpectator()))
             return false;
         double range = mob.getAttributeValue(Attributes.FOLLOW_RANGE);
         return mob.distanceToSqr(target) <= range * range;

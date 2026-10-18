@@ -134,6 +134,9 @@ public final class ModArmorBonus {
                     .add(LibAttributes.getSummonDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
+        // 白南瓜套装：近战暴击回魂由 LivingEntityEvents.processCriticalDamage 结算，这里只保留套装识别与说明行
+        register("white_pumpkin_set", 1, WHITE_PUMPKIN_HELMET, WHITE_PUMPKIN_CHESTPLATE, WHITE_PUMPKIN_LEGGINGS, WHITE_PUMPKIN_BOOTS, key -> {
+        });
         // 魂师套装：灵魂上限直接加在 ADDITIONAL_SOUL 属性上，SoulStorage 会实时读取
         register("hermit_set", 1, HERMIT_HELMET, HERMIT_CHESTPLATE, HERMIT_LEGGINGS, HERMIT_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.ADDITIONAL_SOUL, key.id, 20, AttributeModifier.Operation.ADD_VALUE));

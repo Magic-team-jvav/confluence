@@ -81,6 +81,9 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> LIVING_MAHOGANY_CARRY = register("gameplay/living_mahogany_carry");
 
+    // 蘑菇套装（Mushroom set）四件套：被发光蘑菇地下小屋金箱作为嵌套子表引用，一次发放整套。
+    public static final ResourceKey<LootTable> MUSHROOM_SET = register("chests/mushroom_set");
+
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
 
     public static final ResourceKey<LootTable> GOLDEN_LOCK_BOX = register("gameplay/crate/golden_lock_box");

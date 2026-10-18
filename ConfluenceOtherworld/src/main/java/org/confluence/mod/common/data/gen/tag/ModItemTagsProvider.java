@@ -1214,6 +1214,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.MUMMY_SHIRT.get(),
                 VanityArmorItems.MUMMY_PANTS.get(),
                 VanityArmorItems.MUMMY_SHOES.get(),
+                // 蘑菇套装（Mushroom set）：发光蘑菇地下小屋金箱掉落的新时装，四件套，模型与贴图待补
+                VanityArmorItems.MUSHROOM_HELMET.get(),
+                VanityArmorItems.MUSHROOM_CHESTPLATE.get(),
+                VanityArmorItems.MUSHROOM_LEGGINGS.get(),
+                VanityArmorItems.MUSHROOM_BOOTS.get(),
                 ArmorItems.GOGGLES.get(),
                 ArmorItems.GREEN_CAP.get(),
                 ArmorItems.WIZARD_HAT.get(),

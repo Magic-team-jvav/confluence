@@ -100,6 +100,7 @@ public final class TickEvents {
             PlayerUtils.tickSoulSkills(player);
             PlayerUtils.regenerateSoul(player);
             PlayerUtils.tickSoulArmorSets(player, gameTime);
+            PlayerUtils.tickSoulSkillStates(player, gameTime);
             ExtraInventory.of(player).sync(player);
             MountManager.validate(player);
             YoyoSession.of(player).tick(player);

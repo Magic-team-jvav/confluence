@@ -40,6 +40,7 @@ import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
+import org.confluence.mod.common.entity.soulcerer.SoulStingProjectile;
 import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
 import org.confluence.mod.common.entity.storage.ChesterEntity;
 import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
@@ -90,6 +91,7 @@ public final class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<SoulLureProjectile>> SOUL_LURE_PROJECTILE = registerEntityType("soul_lure_projectile", "引魂弹幕", id -> EntityType.Builder.<SoulLureProjectile>of(SoulLureProjectile::new, MobCategory.MISC).sized(SoulSkillParameters.SOUL_ENTITY_SIZE, SoulSkillParameters.SOUL_ENTITY_SIZE).clientTrackingRange(SoulSkillParameters.SOUL_ENTITY_TRACKING_RANGE).updateInterval(SoulSkillParameters.SOUL_ENTITY_UPDATE_INTERVAL).noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<SpiritSurgeEntity>> SPIRIT_SURGE = registerEntityType("spirit_surge", "灵魂激荡", id -> EntityType.Builder.<SpiritSurgeEntity>of(SpiritSurgeEntity::new, MobCategory.MISC).sized(SoulSkillParameters.SOUL_ENTITY_SIZE, SoulSkillParameters.SOUL_ENTITY_SIZE).clientTrackingRange(SoulSkillParameters.SOUL_ENTITY_TRACKING_RANGE).updateInterval(SoulSkillParameters.SOUL_ENTITY_UPDATE_INTERVAL).noSave().build(id.toString()));
+    public static final DeferredHolder<EntityType<?>, EntityType<SoulStingProjectile>> SOUL_STING = registerEntityType("soul_sting", "魂师毒刺", id -> EntityType.Builder.<SoulStingProjectile>of(SoulStingProjectile::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(8).updateInterval(1).noSave().build(id.toString()));
 
     // 魔法
     public static final DeferredHolder<EntityType<?>, EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = registerEntityType("base_mana_staff", "法杖射弹", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));

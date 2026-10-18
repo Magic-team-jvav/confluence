@@ -85,6 +85,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -334,6 +335,60 @@ public final class LivingEntityEvents {
         }
     }
 
+    /// 魂师召唤物被动：召唤物命中时概率回魂、耗魂换取增伤。
+    @SubscribeEvent
+    public static void soulSkillSummonDamage(LivingIncomingDamageEvent event) {
+        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer owner)) {
+            return;
+        }
+        Entity direct = event.getSource().getDirectEntity();
+        if (direct == owner || event.getEntity() == owner) {
+            return;
+        }
+        if (PlayerUtils.isSoulSkillLearned(owner, ModSoulSkills.SOUL_DEVOUR.get().getId())
+                && PlayerUtils.consumeSoul(owner, SoulSkillParameters.SOUL_DEVOUR_SOUL_COST)) {
+            event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.SOUL_DEVOUR_DAMAGE_BONUS));
+        }
+        if (PlayerUtils.isSoulSkillLearned(owner, ModSoulSkills.SOUL_HARVEST.get().getId())
+                && owner.getRandom().nextFloat() < SoulSkillParameters.SOUL_HARVEST_CHANCE) {
+            PlayerUtils.adjustSoul(owner, SoulSkillParameters.SOUL_HARVEST_SOUL);
+        }
+    }
+
+    /// 血液沸腾：把下一次近战攻击放大并消耗掉增益。
+    @SubscribeEvent
+    public static void boilingBloodHit(LivingIncomingDamageEvent event) {
+        if (!(event.getSource().getDirectEntity() instanceof ServerPlayer player) || !player.hasEffect(ModEffects.BOILING_BLOOD)) {
+            return;
+        }
+        event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.BOILING_BLOOD_DAMAGE_MULTIPLIER));
+        player.removeEffect(ModEffects.BOILING_BLOOD);
+    }
+
+    /// 天穹倒转把摔落伤害改成回复；生命归还记录期间失去的生命。
+    @SubscribeEvent
+    public static void soulSkillOnHurt(LivingIncomingDamageEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        if (event.getSource().is(DamageTypeTags.IS_FALL) && player.hasEffect(ModEffects.FIRMAMENT_REVERSED)) {
+            player.heal(event.getAmount() * SoulSkillParameters.FIRMAMENT_REVERSED_CONVERT_RATIO);
+            event.setCanceled(true);
+            return;
+        }
+        if (player.hasEffect(ModEffects.LIFE_RETURN)) {
+            SoulStorage storage = SoulStorage.of(player);
+            storage.setLifeReturnLost(storage.getLifeReturnLost() + event.getAmount());
+        }
+    }
+
+    /// 血怒：击杀额外收魂。
+    @SubscribeEvent
+    public static void bloodRageSoul(SoulCollectionEvent event) {
+        if (event.getEntity().hasEffect(ModEffects.BLOOD_RAGE)) {
+            event.setAmount(event.getAmount() + SoulSkillParameters.BLOOD_RAGE_KILL_SOUL_BONUS);
+        }
+    }
     /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。
     ///
     /// 该入口位于护甲、抗性和暴击等后续减伤之前，因此普通近战、固定接触伤害以及

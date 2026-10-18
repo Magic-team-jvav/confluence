@@ -1862,6 +1862,12 @@ public final class ModTabs {
                         sailor_set.accept(VanityArmorItems.SAILOR_HAT.get());
                         sailor_set.accept(VanityArmorItems.SAILOR_SHIRT.get());
                         sailor_set.accept(VanityArmorItems.SAILOR_PANTS.get());
+
+                        CreativeModeTab.Output mushroom_set = GroupItem.belongsTo("mushroom_set", output);
+                        mushroom_set.accept(VanityArmorItems.MUSHROOM_HELMET.get());
+                        mushroom_set.accept(VanityArmorItems.MUSHROOM_CHESTPLATE.get());
+                        mushroom_set.accept(VanityArmorItems.MUSHROOM_LEGGINGS.get());
+                        mushroom_set.accept(VanityArmorItems.MUSHROOM_BOOTS.get());
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
 

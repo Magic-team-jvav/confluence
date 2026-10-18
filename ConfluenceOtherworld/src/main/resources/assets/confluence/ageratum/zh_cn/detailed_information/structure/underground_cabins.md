@@ -5,6 +5,7 @@
 - id：confluence：jungle_underground_cabins
 - id：confluence：ice_underground_cabins
 - id：confluence：desert_underground_cabins
+- id：confluence：glowing_mushroom_underground_cabins
 
 ## 结构简介
 

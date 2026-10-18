@@ -368,6 +368,7 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
         event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(SOUL_STING.get(), SoulStingProjectileRenderer::new);
         event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(CRYSTAL_VILE_SHARD.get(), CrystalVileShardProjectileRenderer::new);

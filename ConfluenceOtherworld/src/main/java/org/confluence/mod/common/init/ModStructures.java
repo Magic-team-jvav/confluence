@@ -43,6 +43,7 @@ public final class ModStructures {
         public static final ResourceKey<Structure> EBONY_STONE_THORN = key("ebony_stone_thorn");
         public static final ResourceKey<Structure> SHIMMER_LAKE = key("shimmer_lake");
         public static final ResourceKey<Structure> ENCHANTED_SWORD_SHRINE = key("enchanted_sword_shrine");
+        public static final ResourceKey<Structure> GLOWING_MUSHROOM_UNDERGROUND_CABINS = key("glowing_mushroom_underground_cabins");
         public static final ResourceKey<Structure> HEAVEN_ISLANDS = key("heaven_islands");
         public static final ResourceKey<Structure> ICE_THORN = key("ice_thorn");
         public static final ResourceKey<Structure> ICE_UNDERGROUND_CABINS = key("ice_underground_cabins");

@@ -35,9 +35,9 @@ public final class SoulBooks {
         // 独立书皮的技能书，登记顺序即模型覆盖序号（从 1 开始）
         styled(PSYCHOPOMP, ModRarity.BLUE, null, null);
         styled(RAIDERS_PATH, ModRarity.BLUE, ModSoulSkills.BOILING_BLOOD.get().getId(), null);
-        styled(SOUL_SURGE, ModRarity.GREEN, ModSoulSkills.SOUL_SURGE.get().getId(), null);
-        // 收割者：必须先永久学会灵魂激荡（soul_surge），才能解锁灵魂激荡冲击（surge_blast）
-        styled(HARVESTER, ModRarity.ORANGE, ModSoulSkills.SURGE_BLAST.get().getId(), ModSoulSkills.SOUL_SURGE.get().getId());
+        styled(SOUL_SURGE, ModRarity.GREEN, ModSoulSkills.SPIRIT_SURGE.get().getId(), null);
+        // 收割者：必须先永久学会灵魂激荡（spirit_surge），才能解锁灵魂激荡冲击（surge_blast）
+        styled(HARVESTER, ModRarity.ORANGE, ModSoulSkills.SURGE_BLAST.get().getId(), ModSoulSkills.SPIRIT_SURGE.get().getId());
         styled(FIRMAMENT_REVERSED, ModRarity.GREEN, ModSoulSkills.FIRMAMENT_REVERSED.get().getId(), null);
         styled(BLOOD_WORLD_WRATH, ModRarity.ORANGE, ModSoulSkills.BLOOD_RAGE.get().getId(), null);
 

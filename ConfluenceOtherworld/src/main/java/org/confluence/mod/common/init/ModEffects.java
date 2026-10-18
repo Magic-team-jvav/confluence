@@ -29,6 +29,7 @@ import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
 import org.confluence.mod.common.effect.soulcerer.EnhancedSoulEffect;
 import org.confluence.mod.common.effect.soulcerer.GoOverEffect;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -43,6 +44,22 @@ public final class ModEffects {
     public static final EffectCure CANNOT_REMOVE_BY_NURSE = EffectCure.get("confluence:cannot_remove_by_nurse");
     public static final DeferredHolder<MobEffect, EnhancedSoulEffect> ENHANCED_SOUL = registerEffectWithEnglishName("enhanced_soul", "强力附魂", "Enhanced Soul", EnhancedSoulEffect::new);
     public static final DeferredHolder<MobEffect, GoOverEffect> GO_OVER = registerEffectWithEnglishName("go_over", "复习", "Go Over", GoOverEffect::new);
+
+    /// 魂师「附魂」类技能对应的同名增益：效果名、图标与技能一一对应，数值写在效果里。
+    public static final DeferredHolder<MobEffect, MobEffect> BLOOD_RAGE = registerEffectWithEnglishName("blood_rage", "血怒", "Blood Rage", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xC02020)
+            .addAttributeModifier(LibAttributes.getAttackDamage(), id, SoulSkillParameters.BLOOD_RAGE_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(LibAttributes.getRangedDamage(), id, SoulSkillParameters.BLOOD_RAGE_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL));
+    public static final DeferredHolder<MobEffect, MobEffect> SOUL_PLUNDER = registerEffectWithEnglishName("soul_plunder", "掠夺之魂", "Soul Plunder", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xE0A020)
+            .addAttributeModifier(LibAttributes.getAttackDamage(), id, SoulSkillParameters.SOUL_PLUNDER_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(LibAttributes.getRangedDamage(), id, SoulSkillParameters.SOUL_PLUNDER_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL));
+    public static final DeferredHolder<MobEffect, MobEffect> SOUL_DRAIN = registerEffectWithEnglishName("soul_drain", "灵魂透支", "Soul Drain", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x7030C0));
+    /// 灵魂透支结束后的代价：期间无法使用主武器。
+    public static final DeferredHolder<MobEffect, MobEffect> SOUL_DRAIN_LOCK = registerEffectWithEnglishName("soul_drain_lock", "灵魂枯竭", "Soul Depleted", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x301050));
+    public static final DeferredHolder<MobEffect, MobEffect> STAR_CALL = registerEffectWithEnglishName("star_call", "魂引天星", "Star Call", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFE070));
+    public static final DeferredHolder<MobEffect, MobEffect> LIFE_RETURN = registerEffectWithEnglishName("life_return", "生命归还", "Life Return", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF80A0));
+    public static final DeferredHolder<MobEffect, MobEffect> FIRMAMENT_REVERSED = registerEffectWithEnglishName("firmament_reversed", "天穹倒转", "Firmament Reversed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x80D0FF));
+    public static final DeferredHolder<MobEffect, MobEffect> BOILING_BLOOD = registerEffectWithEnglishName("boiling_blood", "血液沸腾", "Boiling Blood", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x900000));
+
 
     public static final DeferredHolder<MobEffect, MobEffect> EXQUISITELY_STUFFED = registerEffect("exquisitely_stuffed", "酒足饭饱", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, ADD_VALUE, v -> exquisitelyStuffed(v, 0.04, 0.06, 0.08))

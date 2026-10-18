@@ -144,7 +144,7 @@ public class AccessoryItems {
 
     public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", "召唤师徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSummonDamage(), 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
             BAND_OF_SOUL = registerCurio("band_of_soul", "灵魂手环", builder -> builder.rarity(BLUE).accessories(units(BAND$OF$SOUL))),
-            BAND_OF_SOUL_REGENERATION = registerCurio("band_of_soul_regeneration", "灵魂再生手环", builder -> builder.rarity(GREEN).accessories(units(BAND$OF$SOUL))),
+            BAND_OF_SOUL_REGENERATION = registerDirectly("band_of_soul_regeneration", "灵魂再生手环", name -> new BandOfSoulRegeneration(BaseCurioItem.builder(name).rarity(GREEN).accessories(units(BAND$OF$SOUL)))),
             BAND_OF_MEDIUMSHIP = registerCurio("band_of_mediumship", "通灵手环", builder -> builder.rarity(GREEN).attribute(ConfluenceMagicLib.ADDITIONAL_SOUL, 20.0, ADD_VALUE).accessories(units(BAND$OF$SOUL))),
             MEMORY_OF_BONEBRAND = registerCurio("memory_of_bonebrand", "刻骨的记忆", builder -> builder.rarity(PURPLE).accessories(units(MEMORY$OF$BONEBRAND))),
             SOULCERER_EMBLEM = registerCurio("soulcerer_emblem", "灵魂徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSoulDamage(), 0.12, ADD_MULTIPLIED_TOTAL)),

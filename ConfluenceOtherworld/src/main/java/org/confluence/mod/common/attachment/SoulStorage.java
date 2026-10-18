@@ -12,6 +12,7 @@ import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -27,6 +28,9 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     private static final String SOUL_MODE_TAG = "soulMode";
     private static final String CONSUMED_SOUL_TAG = "consumedSoul";
     private static final String SOULDANCER_BUFF_END_TAG = "souldancerBuffEnd";
+    private static final String RITUAL_COUNT_TAG = "ritualCount";
+    private static final String SURGE_BLAST_CHARGE_TAG = "surgeBlastCharge";
+    private static final String LIFE_RETURN_LOST_TAG = "lifeReturnLost";
 
     public static final AttachmentSyncHandler<SoulStorage> SYNC_HANDLER = new AttachmentSyncHandler<>() {
         @Override
@@ -40,6 +44,7 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
             buf.writeFloat(attachment.currentSoul);
             buf.writeFloat(attachment.recoveryRatio);
             buf.writeBoolean(attachment.soulMode);
+            buf.writeVarInt(attachment.ritualCount);
         }
 
         @Override
@@ -49,6 +54,7 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
             float currentSoul = buf.readFloat();
             storage.recoveryRatio = buf.readFloat();
             storage.soulMode = buf.readBoolean();
+            storage.ritualCount = buf.readVarInt();
             storage.currentSoul = storage.soulMode ? currentSoul : MIN_CURRENT_SOUL;
             return storage;
         }
@@ -63,6 +69,16 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     private float consumedSoul;
     /// 魂舞全套增益的结束时间（游戏刻），0 表示未激活。
     private long souldancerBuffEnd;
+    /// 已完成的仪式次数，每次提供 {@link SoulSkillParameters#SOUL_PER_RITUAL} 点灵魂上限。
+    private int ritualCount;
+    /// 灵魂激荡冲击的累计层数，满层时引爆终极爆炸并清零。
+    private int surgeBlastCharge;
+    /// 生命归还期间累计失去的生命值，结束时按比例转成灵魂。
+    private float lifeReturnLost;
+    /// 上一刻是否处于灵魂透支（仅内存，用于检测效果结束）。
+    private boolean soulDrainActive;
+    /// 上一刻是否处于生命归还（仅内存，用于检测效果结束）。
+    private boolean lifeReturnActive;
 
     public SoulStorage(IAttachmentHolder owner) {
         this.soulsCount = INITIAL_SOUL_COUNT;
@@ -82,6 +98,9 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         nbt.putBoolean(SOUL_MODE_TAG, soulMode);
         nbt.putFloat(CONSUMED_SOUL_TAG, consumedSoul);
         nbt.putLong(SOULDANCER_BUFF_END_TAG, souldancerBuffEnd);
+        nbt.putInt(RITUAL_COUNT_TAG, ritualCount);
+        nbt.putInt(SURGE_BLAST_CHARGE_TAG, surgeBlastCharge);
+        nbt.putFloat(LIFE_RETURN_LOST_TAG, lifeReturnLost);
         return nbt;
     }
 
@@ -94,6 +113,65 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         this.recoveryRatio = nbt.getFloat(RECOVERY_RATIO_TAG);
         this.consumedSoul = nbt.getFloat(CONSUMED_SOUL_TAG);
         this.souldancerBuffEnd = nbt.getLong(SOULDANCER_BUFF_END_TAG);
+        this.ritualCount = Mth.clamp(nbt.getInt(RITUAL_COUNT_TAG), 0, SoulSkillParameters.MAX_RITUAL_COUNT);
+        this.surgeBlastCharge = Math.max(0, nbt.getInt(SURGE_BLAST_CHARGE_TAG));
+        this.lifeReturnLost = Math.max(0.0F, nbt.getFloat(LIFE_RETURN_LOST_TAG));
+    }
+
+    /// 读取已完成的仪式次数。
+    public int getRitualCount() {
+        return ritualCount;
+    }
+
+    /// 设置仪式次数（0..6），超出上限的部分截断，并按新上限收拢当前灵魂值。
+    public void setRitualCount(int ritualCount) {
+        int clamped = Mth.clamp(ritualCount, 0, SoulSkillParameters.MAX_RITUAL_COUNT);
+        if (this.ritualCount == clamped) {
+            return;
+        }
+        this.ritualCount = clamped;
+        updateMaxSoul();
+        sync();
+    }
+
+    /// 读取灵魂激荡冲击的累计层数。
+    public int getSurgeBlastCharge() {
+        return surgeBlastCharge;
+    }
+
+    /// 设置灵魂激荡冲击的累计层数。
+    public void setSurgeBlastCharge(int surgeBlastCharge) {
+        this.surgeBlastCharge = Math.max(0, surgeBlastCharge);
+    }
+
+    /// 读取生命归还期间累计失去的生命值。
+    public float getLifeReturnLost() {
+        return lifeReturnLost;
+    }
+
+    /// 覆盖生命归还期间累计失去的生命值。
+    public void setLifeReturnLost(float lifeReturnLost) {
+        this.lifeReturnLost = Math.max(0.0F, lifeReturnLost);
+    }
+
+    /// 读取上一刻的灵魂透支状态。
+    public boolean isSoulDrainActive() {
+        return soulDrainActive;
+    }
+
+    /// 记录本刻的灵魂透支状态。
+    public void setSoulDrainActive(boolean soulDrainActive) {
+        this.soulDrainActive = soulDrainActive;
+    }
+
+    /// 读取上一刻的生命归还状态。
+    public boolean isLifeReturnActive() {
+        return lifeReturnActive;
+    }
+
+    /// 记录本刻的生命归还状态。
+    public void setLifeReturnActive(boolean lifeReturnActive) {
+        this.lifeReturnActive = lifeReturnActive;
     }
 
     /// 读取魂舞增益的结束时间（游戏刻）。
@@ -130,11 +208,11 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         return Float.compare(previousSoul, currentSoul) != 0;
     }
 
-    /// 永久成长容量加实体额外容量，小数部分向下取整。
+    /// 永久成长容量 + 实体额外容量 + 仪式提供的容量，小数部分向下取整。
     public int getMaxSoul() {
         AttributeInstance attribute = owner instanceof LivingEntity living ? living.getAttribute(ConfluenceMagicLib.ADDITIONAL_SOUL) : null;
         double additionalSoul = attribute == null ? ConfluenceMagicLib.ADDITIONAL_SOUL.value().getDefaultValue() : attribute.getValue();
-        return Mth.floor(soulsCount * SOUL_PER_COUNT + additionalSoul);
+        return Mth.floor(soulsCount * SOUL_PER_COUNT + additionalSoul + ritualCount * SoulSkillParameters.SOUL_PER_RITUAL);
     }
 
     /// 读取当前灵魂值，魔力模式固定为零。

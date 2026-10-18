@@ -111,15 +111,29 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
 
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/underground_chests"), initialWorldUndergroundCommon()
+                .withPool(undergroundCabinsGoldenChestPool())
+        );
+
+        // 发光蘑菇地下小屋的金箱：底子与普通地下小屋的金箱完全一致（共用 undergroundCabinsGoldenChestPool），
+        // 额外追加「蘑菇矿车 / 蘑菇套装 二选一」和「100% 松露灯」两个池子。
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/glowing_mushroom_chests"), initialWorldUndergroundCommon()
+                .withPool(undergroundCabinsGoldenChestPool())
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION).setWeight(3))
-                        .add(LootItem.lootTableItem(TCItems.MAGIC_MIRROR).setWeight(3))
-                        .add(LootItem.lootTableItem(TCItems.CLOUD_IN_A_BOTTLE).setWeight(3))
-                        .add(LootItem.lootTableItem(TCItems.SHOE_SPIKES).setWeight(3))
-                        .add(LootItem.lootTableItem(TCItems.HERMES_BOOTS).setWeight(3))
-                        .add(LootItem.lootTableItem(FlailItems.MACE).setWeight(3))
-                        .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(1))
+                        .add(LootItem.lootTableItem(MinecartItems.SHROOM_MINECART))
+                        .add(NestedLootTable.lootTableReference(ModLootTables.MUSHROOM_SET))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SoulItems.TRUFFLE_LANTERN))
+                )
+        );
+
+        // 蘑菇套装（Mushroom set）四件套：整包发放的嵌套子表，被发光蘑菇地下小屋金箱引用。
+        // TODO 该套装为新增注册的时装（见 VanityArmorItems），已加入 wip 物品标签，模型与贴图待补。
+        output.accept(ModLootTables.MUSHROOM_SET, LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.MUSHROOM_HELMET)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.MUSHROOM_CHESTPLATE)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.MUSHROOM_LEGGINGS)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.MUSHROOM_BOOTS)))
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/frozen_chests"), initialWorldUndergroundCommon()
@@ -650,6 +664,18 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
     }
 
 
+
+    // 地下小屋金箱的专属池：普通地下小屋与发光蘑菇地下小屋共用，保证两张表的这一部分完全一致
+    private static LootPool.Builder undergroundCabinsGoldenChestPool() {
+        return LootPool.lootPool()
+                .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION).setWeight(3))
+                .add(LootItem.lootTableItem(TCItems.MAGIC_MIRROR).setWeight(3))
+                .add(LootItem.lootTableItem(TCItems.CLOUD_IN_A_BOTTLE).setWeight(3))
+                .add(LootItem.lootTableItem(TCItems.SHOE_SPIKES).setWeight(3))
+                .add(LootItem.lootTableItem(TCItems.HERMES_BOOTS).setWeight(3))
+                .add(LootItem.lootTableItem(FlailItems.MACE).setWeight(3))
+                .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(1));
+    }
 
     // 困难模式前箱子地下通用
     private LootTable.Builder initialWorldUndergroundCommon() {

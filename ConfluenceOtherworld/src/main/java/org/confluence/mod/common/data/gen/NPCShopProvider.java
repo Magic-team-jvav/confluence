@@ -234,6 +234,7 @@ public final class NPCShopProvider implements DataProvider {
                 offer(VanityArmorItems.WIZARDS_HAT.toStack(), halloween())
         ));
         shops.put(Confluence.asResource("steampunker"), List.of(
+                offer(FunctionalBlocks.CLENTAMINATOR.toStack(), solutionSales),
                 offer(MaterialItems.GREEN_SOLUTION.toStack(), solutionSales.and(solutionEvent.not()).and(hallow.not())),
                 offer(MaterialItems.BLUE_SOLUTION.toStack(), solutionSales.and(solutionEvent.not()).and(hallow)),
                 offer(MaterialItems.PURPLE_SOLUTION.toStack(), solutionSales.and(solutionEvent).and(corruptionWorld)),

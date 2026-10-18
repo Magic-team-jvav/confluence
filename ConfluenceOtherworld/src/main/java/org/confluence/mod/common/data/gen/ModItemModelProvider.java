@@ -20,6 +20,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.terraform.Solution;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
@@ -61,6 +62,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         skip.add(ToolItems.BOSS_TARGET_SELECTOR.get());
         for (var solution : Solution.values()) skip.add(solution.item());
+        skip.add(FunctionalBlocks.CLENTAMINATOR.get().asItem());
+        skip.add(FunctionalBlocks.TERRAFORMER.get().asItem());
         GunItems.BULLET_ITEMS.forEach(item -> {
             String path = item.getId().getPath();
             withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));

@@ -39,7 +39,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        item(recipeOutput, "terraformer", addItem(FunctionalBlocks.CLENTAMINATOR.get().asItem(), FunctionalBlocks.TERRAFORMER.get().asItem(), 1, GamePhase.MOON_LORD));
+        //item(recipeOutput, "terraformer", addItem(FunctionalBlocks.CLENTAMINATOR.get().asItem(), FunctionalBlocks.TERRAFORMER.get().asItem(), 1, GamePhase.MOON_LORD));
         item(recipeOutput, "red_solution", addItem(MaterialItems.PURPLE_SOLUTION.get(), MaterialItems.RED_SOLUTION.get(), 1, GamePhase.MOON_LORD));
         item(recipeOutput, "purple_solution", addItem(MaterialItems.RED_SOLUTION.get(), MaterialItems.PURPLE_SOLUTION.get(), 1, GamePhase.MOON_LORD));
         // 黑名单

@@ -371,6 +371,9 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory", "放在物品栏中时能防止你意外破坏环境");
         language.add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects", "右键点击停用/激活其效果");
         language.addTooltip(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE.get(), "Allows the collection of Vine Rope from vines", "可从藤蔓收集藤蔓绳");
+        language.add("tooltip.item.confluence.guide_to_plant_fiber_cordage.1", "Right-click with an empty hand to eat Grass Blocks and plants", "空手右击可以食用草方块与植物");
+        language.add("tooltip.item.confluence.guide_to_plant_fiber_cordage.2", "Grass Blocks become Dirt, Jungle Grass Blocks become Mud; each bite restores half a hunger point", "草方块转为土块，丛林草方块转为泥块；每次食用回复半格饱食度");
+        language.add("tooltip.item.confluence.guide_to_plant_fiber_cordage.3", "Eating flowers grants the matching Suspicious Stew effect; two-block-tall plants count as two bites", "食用花可获得对应的迷之炖菜效果；两格高的植物计为两次");
         language.addTooltip(AccessoryItems.GUIDE_VOODOO_DOLL.get(), "'You are a terrible person'", "“你这人真可怕”");
         language.add("tooltip.item.confluence.guide_voodoo_doll.hill.0", "\"Karma's fire consumes the puppet, scarlet peaks surge with a tide of blood\"", "“业火焚傀儡，赤峰血潮腾”");
         language.add("tooltip.item.confluence.guide_voodoo_doll.hill.1", "Cast this innocent doll into the Underworld's magma, and the Hill of Flesh shall hatch from its nurturing cradle; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice", "将这无辜的娃娃投入地狱的岩浆中，血肉之山将从温床中孵化；只有地狱里的岩浆才能满足燃烧献祭所需的苛刻的高温");

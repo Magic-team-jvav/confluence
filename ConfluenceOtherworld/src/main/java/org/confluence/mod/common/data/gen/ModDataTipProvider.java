@@ -123,7 +123,10 @@ public final class ModDataTipProvider implements DataProvider {
         add(root, AccessoryItems.GREEN_YOYO_STRING.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.green_string.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE.get(), entry(vbox(0,
-                translate("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+                translate("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.guide_to_plant_fiber_cordage.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.guide_to_plant_fiber_cordage.2", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.guide_to_plant_fiber_cordage.3", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.HELIUM_MOSS_FISHING_BOBBER.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.helium_moss_fishing_bobber.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.HIGH_TEST_FISHING_LINE.get(), entry(vbox(0,

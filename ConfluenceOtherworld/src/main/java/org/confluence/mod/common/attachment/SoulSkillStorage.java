@@ -23,8 +23,11 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
-    public static final int DEFAULT_EQUIPPED_SOUL_SKILL_COUNT = 6;
+    public static final int DEFAULT_EQUIPPED_SOUL_SKILL_COUNT = 3;
+    /// 技能栏位上限：第 1 / 3 / 5 次仪式各解锁一个，最多 6 个。
+    public static final int MAX_EQUIPPED_SOUL_SKILL_COUNT = 6;
     private static final String EQUIPPED_SKILL_MAX_NUMBER_TAG = "equippedSkillMaxNumber";
+    private static final String LEARNED_SOUL_BOOKS_TAG = "learnedSoulBooks";
     private static final String CURRENT_INDEX_TAG = "currentIndex";
     private static final String EQUIPPED_SKILLS_TAG = "equippedSkills";
     private static final String UNLOCKED_SKILLS_TAG = "unlockedSkills";
@@ -39,6 +42,8 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     private int currentIndex = 0;
     private final List<SoulSkillStack> equippedSkills = NonNullList.createWithCapacity(DEFAULT_EQUIPPED_SOUL_SKILL_COUNT);
     private final Map<ResourceLocation, SoulSkill> unlockedSkills = new HashMap<>(DEFAULT_EQUIPPED_SOUL_SKILL_COUNT);
+    /// 只提供被动效果的技能书记录（如引渡者）。
+    private final Set<ResourceLocation> learnedSoulBooks = new HashSet<>();
     private final Map<ResourceLocation, SoulSkillStack> skillCooldowns = new HashMap<>();
     private final Set<ResourceLocation> temporarySkills = new HashSet<>();
     private final Set<ResourceLocation> availableSkills = new HashSet<>();
@@ -59,6 +64,7 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt(EQUIPPED_SKILL_MAX_NUMBER_TAG, equippedSkillMaxNumber);
+        nbt.put(LEARNED_SOUL_BOOKS_TAG, serializeSkillIds(learnedSoulBooks));
         nbt.putInt(CURRENT_INDEX_TAG, currentIndex);
         ListTag equipped = new ListTag();
         for (SoulSkillStack stack : equippedSkills) {
@@ -92,6 +98,7 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     /// 按技能 ID 还原状态；未知装备项置空，未知解锁项跳过。
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+        deserializeSkillIds(nbt.getList(LEARNED_SOUL_BOOKS_TAG, Tag.TAG_STRING), learnedSoulBooks);
         this.equippedSkillMaxNumber = nbt.contains(EQUIPPED_SKILL_MAX_NUMBER_TAG, Tag.TAG_INT)
                 ? nbt.getInt(EQUIPPED_SKILL_MAX_NUMBER_TAG) : DEFAULT_EQUIPPED_SOUL_SKILL_COUNT;
         this.currentIndex = nbt.getInt(CURRENT_INDEX_TAG);
@@ -191,6 +198,15 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
         return availableSkills;
     }
 
+    /// 只提供被动效果的技能书记录，供引渡者等被动查询。
+    public Set<ResourceLocation> getLearnedSoulBooks() {
+        return learnedSoulBooks;
+    }
+
+    /// 登记一本被动技能书，已登记时返回 false。
+    public boolean learnSoulBook(ResourceLocation bookId) {
+        return learnedSoulBooks.add(bookId);
+    }
     public int getEquippedSoulSkillMaxNumber() {
         return equippedSkillMaxNumber;
     }

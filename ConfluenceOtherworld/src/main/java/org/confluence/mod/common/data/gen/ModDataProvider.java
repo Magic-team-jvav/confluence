@@ -249,6 +249,7 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> DESERT_FOSSIL = key("desert_fossil");
         private static final ResourceKey<ConfiguredFeature<?, ?>> FALLING_SAND_TRAP = key("falling_sand_trap");
         private static final ResourceKey<ConfiguredFeature<?, ?>> ANTLION_EGGS = key("antlion_eggs");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> WHITE_PUMPKIN = key("white_pumpkin"); // 白南瓜地物：落点判定沿用原版南瓜，但每簇尝试次数更少
         private static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_CHESTS = key("cave_chests"); // 洞穴金箱
         private static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROUND_CHESTS = key("underground_chests"); // 地下木箱
         private static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_DROOPING_VINE = key("forest_drooping_vine");
@@ -616,6 +617,12 @@ public class ModDataProvider {
                     BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.matchesBlocks(Blocks.AIR),
                             BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.SANDSTONE, Blocks.RED_SANDSTONE))))));
             register(context, CAVE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(ChestBlocks.GOLDEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/cave_chests")));
+            // 白南瓜：保留原版 minecraft:patch_pumpkin 的落点判定（7/3 扩散、仅落在草方块上的空气中），
+            // 但每簇只尝试 8 次（原版 96 次），成簇通常只有 1~4 株；配合更高的放置频率得到零星散布而不是大团
+            register(context, WHITE_PUMPKIN, Feature.RANDOM_PATCH, new RandomPatchConfiguration(8, 7, 3, direct(
+                    Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(NatureBlocks.WHITE_PUMPKIN.get())),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.matchesBlocks(Blocks.AIR),
+                            BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.GRASS_BLOCK))))));
             register(context, UNDERGROUND_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(Blocks.CHEST.defaultBlockState(), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/underground_chests")));
             register(context, FOREST_DROOPING_VINE, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(NatureBlocks.FOREST_DROOPING_VINE.get()), false, 1, 9, Direction.DOWN, false));
             register(context, ModFeatures.Configured.ASH_TREE, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.ASH_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.ASH_BRANCHES.get()), 7, 3));
@@ -845,6 +852,7 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> DESERT_FOSSIL = key("desert_fossil");
         private static final ResourceKey<PlacedFeature> FALLING_SAND_TRAP = key("falling_sand_trap");
         private static final ResourceKey<PlacedFeature> ANTLION_EGGS = key("antlion_eggs");
+        private static final ResourceKey<PlacedFeature> PATCH_WHITE_PUMPKIN = key("patch_white_pumpkin"); // 白南瓜地物：种子密度远高于原版 patch_pumpkin，且用忽略树叶的高度图
         private static final ResourceKey<PlacedFeature> FOREST_POT = key("forest_pot");
         private static final ResourceKey<PlacedFeature> JUNGLE_POT = key("jungle_pot");
         private static final ResourceKey<PlacedFeature> CORRUPTION_POT = key("corruption_pot");
@@ -983,6 +991,10 @@ public class ModDataProvider {
         private static final CountPlacement count0_2$1_3 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 2).add(ConstantInt.of(1), 3).build()));
         private static final CountPlacement count1_5 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 4).add(ConstantInt.of(1), 1).build()));
         private static final CountPlacement count1_10 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 9).add(ConstantInt.of(1), 1).build()));
+        // 按比例折算后的平均抽取次数不是整数，用两档权重拼出：
+        private static final CountPlacement countAvg6_4 = weightedCount(6, 3, 7, 2);    // 平均 6.4 = 8 × 0.8
+        private static final CountPlacement countAvg7_8 = weightedCount(7, 1, 8, 4);    // 平均 7.8 = 13 × 0.6
+        private static final CountPlacement countAvg15_6 = weightedCount(15, 2, 16, 3); // 平均 15.6 = 26 × 0.6
         private static final HeightRangePlacement heightRandom10_100 = HeightRangePlacement.uniform(
                 VerticalAnchor.absolute(10),
                 VerticalAnchor.absolute(100)
@@ -1038,12 +1050,15 @@ public class ModDataProvider {
             register(context, DESERT_FOSSIL, configured.getOrThrow(ConfiguredFeatures.DESERT_FOSSIL), count14, inSquare, bottomThroughTop, biome);
             register(context, FALLING_SAND_TRAP, configured.getOrThrow(ConfiguredFeatures.FALLING_SAND_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, ANTLION_EGGS, configured.getOrThrow(ConfiguredFeatures.ANTLION_EGGS), CountPlacement.of(12), inSquare, bottomThroughUnderground, biome);
-            register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(8), inSquare, surfaceBand(-110, -80), targetSturdyAllowedAir, biome);
+            register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(10), inSquare, surfaceBand(-110, -80), targetSturdyAllowedAir, biome); // 地下木箱：1/8 → 1/10，0.125 → 0.1 个/区块（削减至 0.8）
             register(context, FOREST_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.FOREST_DROOPING_VINE), CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.STONE), air, 12), ySpreadN1, biome);
             register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, LIFE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.LIFE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, inSquare, worldSurfaceWG, biome);
             register(context, BLINKROOT, configured.getOrThrow(ConfiguredFeatures.BLINKROOT), count3, inSquare, bottomThroughUnderground, biome);
             register(context, DAYBLOOM, configured.getOrThrow(ConfiguredFeatures.DAYBLOOM), RarityFilter.onAverageOnceEvery(32), count2, inSquare, worldSurfaceWG, biome);
+            // 种子比原版密得多（1/13，原版 1/300），配合每簇更少的尝试次数，让白南瓜在黑森林里零星散布
+            // 高度图用 MOTION_BLOCKING_NO_LEAVES：黑森林树冠很密，MOTION_BLOCKING 会停在树叶上，导致「空气 + 下方草方块」几乎永不成立
+            register(context, PATCH_WHITE_PUMPKIN, configured.getOrThrow(ConfiguredFeatures.WHITE_PUMPKIN), RarityFilter.onAverageOnceEvery(13), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES), biome);
             register(context, DEATHWEED, configured.getOrThrow(ConfiguredFeatures.DEATHWEED), RarityFilter.onAverageOnceEvery(32), count3, inSquare, worldSurfaceWG, biome);
             register(context, WATERLEAF, configured.getOrThrow(ConfiguredFeatures.WATERLEAF), RarityFilter.onAverageOnceEvery(16), count2, inSquare, worldSurfaceWG, biome);
             register(context, MOONGLOW, configured.getOrThrow(ConfiguredFeatures.MOONGLOW), RarityFilter.onAverageOnceEvery(32), count5, inSquare, worldSurfaceWG, biome);
@@ -1091,7 +1106,7 @@ public class ModDataProvider {
             register(context, CRIMSON_STALACTITE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_STALACTITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetHangingAir, biome);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
-            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(26), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome);
+            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), countAvg15_6, inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome); // 发光蘑菇群系生命水晶：平均 26 → 15.6（削减至 0.6）
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
             register(context, HUGE_LIFE_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE), RarityFilter.onAverageOnceEvery(30), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
@@ -1123,7 +1138,7 @@ public class ModDataProvider {
             register(context, DART_TRAP, configured.getOrThrow(ConfiguredFeatures.DART_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, BOULDER_TRAP, configured.getOrThrow(ConfiguredFeatures.BOULDER_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(25), inSquare, throughCave, biome);
-            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(13), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome);
+            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), countAvg7_8, inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome); // 生命水晶：平均 13 → 7.8（削减至 0.6）
             register(context, WATER_CHESTS_ABOVE_30, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
                     RarityFilter.onAverageOnceEvery(16), inSquare, oceanFloorWG, yRange(30, 320),
                     BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.WATER)), biome
@@ -1167,7 +1182,7 @@ public class ModDataProvider {
 
             chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(3), -110, -80); // 1/8 × 3 = 0.375
             chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), RarityFilter.onAverageOnceEvery(6), CountPlacement.of(8), -80, -23); // 1/6 × 8 ≈ 1.33
-            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(6), CountPlacement.of(8), -80, -23); // 1/6 × 8 ≈ 1.33
+            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(6), countAvg6_4, -80, -23); // 1/6 × 6.4 ≈ 1.07（原 1/6 × 8 ≈ 1.33，削减至 0.8）
             chest(context, CAVE_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_SANDSTONE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(2), -110, -80); // 1/8 × 2 = 0.25
             chest(context, UNDERGROUND_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_SANDSTONE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(4), -80, -23); // 1/8 × 4 = 0.5
             chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(20), -23, -2); // 1/11 × 20 ≈ 1.82
@@ -1194,6 +1209,14 @@ public class ModDataProvider {
 
         private static void pot(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature) {
             register(context, key, feature, CountPlacement.of(9), inSquare, surfaceBand(-110, -2), targetSturdyAllowedAir, biome);
+        }
+
+        /// 用两档权重拼出小数的平均抽取次数，让「按比例削减」能落在整数抽取次数上。
+        private static CountPlacement weightedCount(int low, int lowWeight, int high, int highWeight) {
+            return CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+                    .add(ConstantInt.of(low), lowWeight)
+                    .add(ConstantInt.of(high), highWeight)
+                    .build()));
         }
 
         private static PlacementModifier surfaceBand(int minInclusive, int maxInclusive) {
@@ -1323,6 +1346,11 @@ public class ModDataProvider {
 
             addFeatures(context, "savana_vd", biome.getOrThrow(PortTags.Biomes.IS_SAVANNA), HolderSet.direct(factory,
                     PlacedFeatures.BAOBAB_TREE
+            ), GenerationStep.Decoration.VEGETAL_DECORATION);
+
+            // 黑森林额外一份白南瓜地物（原版 patch_pumpkin 本身就作用于黑森林，这里按需求再加一份白南瓜）
+            addFeatures(context, "dark_forest_vd", HolderSet.direct(biome.getOrThrow(net.minecraft.world.level.biome.Biomes.DARK_FOREST)), HolderSet.direct(factory,
+                    PlacedFeatures.PATCH_WHITE_PUMPKIN
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
 
             addFeatures(context, "snowy_icy_uo", snowyIcy, HolderSet.direct(factory,
@@ -2127,6 +2155,7 @@ public class ModDataProvider {
         private static final ResourceKey<StructureTemplatePool> ENCHANTED_SWORD_SHRINE$MAIN = key("enchanted_sword_shrine/enchanted_sword_shrine");
         private static final ResourceKey<StructureTemplatePool> ENCHANTED_SWORD_SHRINE$LINE = key("enchanted_sword_shrine/line");
         private static final ResourceKey<StructureTemplatePool> ENCHANTED_SWORD_SHRINE$SWORD = key("enchanted_sword_shrine/sword");
+        private static final ResourceKey<StructureTemplatePool> GLOWING_MUSHROOM_UNDERGROUND_CABINS$MAIN = key("glowing_mushroom_underground_cabins/glowing_mushroom_underground_cabins");
         private static final ResourceKey<StructureTemplatePool> ICE_UNDERGROUND_CABINS$MAIN = key("ice_underground_cabins/ice_underground_cabins");
         private static final ResourceKey<StructureTemplatePool> JUNGLE_SHRINE$MAIN = key("jungle_shrine/jungle_shrine");
         private static final ResourceKey<StructureTemplatePool> JUNGLE_UNDERGROUND_CABINS$MAIN = key("jungle_underground_cabins/jungle_underground_cabins");
@@ -2172,6 +2201,7 @@ public class ModDataProvider {
             register(context, ENCHANTED_SWORD_SHRINE$LINE, emptyTemplatePool, processorList, entry("enchanted_sword_shrine/line", 1, ProcessorListz.ENCHANTED_SWORD_SHRINE_LOCATION));
             register(context, ENCHANTED_SWORD_SHRINE$SWORD, emptyTemplatePool, processorList,
                     entry("enchanted_sword_shrine/enchanted_sword", 49), entry("enchanted_sword_shrine/rotten_sword", 2), entry("enchanted_sword_shrine/terragrim", 3));
+            register(context, GLOWING_MUSHROOM_UNDERGROUND_CABINS$MAIN, emptyTemplatePool, processorList, entry("glowing_mushroom_underground_cabins/glowing_mushroom_underground_cabins", 1, ProcessorListz.UNDERGROUND_CABINS));
             register(context, ICE_UNDERGROUND_CABINS$MAIN, emptyTemplatePool, processorList, entry("ice_underground_cabins/ice_underground_cabins", 1, ProcessorListz.ICE_UNDERGROUND_CABINS));
             register(context, JUNGLE_SHRINE$MAIN, emptyTemplatePool, processorList, entry("jungle_shrine/jungle_shrine", 1, ProcessorListz.JUNGLE_SHRINE));
             register(context, JUNGLE_UNDERGROUND_CABINS$MAIN, emptyTemplatePool, processorList, entry("jungle_underground_cabins/jungle_underground_cabins", 1, ProcessorListz.JUNGLE_UNDERGROUND_CABINS));
@@ -2340,6 +2370,7 @@ public class ModDataProvider {
             context.register(ModStructures.Keys.OBSIDIAN_CASTLE, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_NETHER_TOWER), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.BEARD_BOX, templatePool.getOrThrow(TemplatePools.OBSIDIAN_CASTLE$MAIN), 32, 40, 116));
             context.register(ModStructures.Keys.SKY_VILLAGE, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_SKY_VILLAGE), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE, templatePool.getOrThrow(TemplatePools.SKY_VILLAGE$CENTER), 250, 260, 128));
             context.register(ModStructures.Keys.UNDERGROUND_CABINS, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_UNDERGROUND_CABINS), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN, templatePool.getOrThrow(TemplatePools.UNDERGROUND_CABINS$MAIN), -50, 10, 116));
+            context.register(ModStructures.Keys.GLOWING_MUSHROOM_UNDERGROUND_CABINS, jigsaw(biome.getOrThrow(ModTags.Biomes.HAS_STRUCTURE_GLOWING_MUSHROOM_UNDERGROUND_CABINS), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN, templatePool.getOrThrow(TemplatePools.GLOWING_MUSHROOM_UNDERGROUND_CABINS$MAIN), -50, 10, 116));
             context.register(ModStructures.Keys.HEAVEN_ISLANDS, new HeavenIslandsStructure(settings(overworld, GenerationStep.Decoration.TOP_LAYER_MODIFICATION)));
             context.register(ModStructures.Keys.ICE_THORN, new IceThornStructure(settings(biome.getOrThrow(PortTags.Biomes.IS_SNOWY), GenerationStep.Decoration.TOP_LAYER_MODIFICATION)));
             context.register(ModStructures.Keys.LIVING_MAHOGANY_TREE, new LivingMahoganyTreeStructure(settings(biome.getOrThrow(PortTags.Biomes.IS_JUNGLE), GenerationStep.Decoration.VEGETAL_DECORATION)));
@@ -2467,6 +2498,7 @@ public class ModDataProvider {
             registerStructureSet(context, structure, structureSet, "sky_village", ModStructures.Keys.SKY_VILLAGE, 80, 70, 17846607, AIR, 16);
             registerStructureSet(context, structure, structureSet, "small_living_mahogany_tree", ModStructures.Keys.SMALL_LIVING_MAHOGANY_TREE, 22, 7, 42961406, BuiltinStructureSets.VILLAGES, 8);
             registerStructureSet(context, structure, structureSet, "underground_cabins", ModStructures.Keys.UNDERGROUND_CABINS, 5, 3, 61041867, SHIMMER_LAKE, 10);
+            registerStructureSet(context, structure, structureSet, "glowing_mushroom_underground_cabins", ModStructures.Keys.GLOWING_MUSHROOM_UNDERGROUND_CABINS, 5, 3, 73146905, SHIMMER_LAKE, 10);
         }
 
         private static ResourceKey<StructureSet> key(String path) {

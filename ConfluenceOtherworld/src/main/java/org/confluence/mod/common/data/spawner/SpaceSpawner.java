@@ -109,7 +109,8 @@ public class SpaceSpawner implements CustomSpawner {
         RandomSource random = level.random;
         --this.nextTick;
         if (nextTick > 0) return 0;
-        this.nextTick = nextTick + (15 + random.nextInt(11)) * 20;
+        // 鸟妖与飞龙共用的生成检查间隔：(22 + 0~14) * 20 = 440~720 tick，即 22~36 秒（平均 29 秒），两版本统一取同一区间
+        this.nextTick = nextTick + (22 + random.nextInt(15)) * 20;
 
         Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) return 0;

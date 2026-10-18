@@ -8,6 +8,7 @@ import org.mesdag.portlib.client.PortDeltaTicker;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.phys.Vec2;
@@ -94,7 +95,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
             poseStack.pushPose();
             {
                 int offset = -ROULETTE_SIZE / 2;
-                guiGraphics.blitSprite(TEXTURE, offset, offset, ROULETTE_SIZE, ROULETTE_SIZE);
+                guiGraphics.blitSprite(new PortSprite(TEXTURE, ROULETTE_SIZE, ROULETTE_SIZE), offset, offset, ROULETTE_SIZE, ROULETTE_SIZE);
                 poseStack.mulPose(Axis.ZP.rotationDegrees(renderAngle));
                 poseStack.translate(0, 0, 1);
 

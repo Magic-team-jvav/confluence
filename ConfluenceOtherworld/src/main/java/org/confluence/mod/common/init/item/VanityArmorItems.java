@@ -95,6 +95,11 @@ public class VanityArmorItems {
     public static final PortDeferredItem<BaseVanityArmorItem> SAILOR_HAT = registerVanityArmor("sailor_hat", "水手帽", "vanity_armor/sailor_set", ArmorItem.Type.HELMET, ModRarity.BLUE);
     public static final PortDeferredItem<BaseVanityArmorItem> SAILOR_SHIRT = registerVanityArmor("sailor_shirt", "水手衣", "vanity_armor/sailor_set", ArmorItem.Type.CHESTPLATE, ModRarity.BLUE);
     public static final PortDeferredItem<BaseVanityArmorItem> SAILOR_PANTS = registerVanityArmor("sailor_pants", "水手裤", "vanity_armor/sailor_set", ArmorItem.Type.LEGGINGS, ModRarity.BLUE);
+    // 蘑菇套装（Mushroom set）：来自发光蘑菇地下小屋金箱的四件套时装，暂为 WIP（见 LibTags.Items.WIP），模型与贴图待补
+    public static final PortDeferredItem<BaseVanityArmorItem> MUSHROOM_HELMET = registerVanityArmor("mushroom_helmet", "蘑菇头盔", "vanity_armor/mushroom_set", ArmorItem.Type.HELMET, ModRarity.GREEN);
+    public static final PortDeferredItem<BaseVanityArmorItem> MUSHROOM_CHESTPLATE = registerVanityArmor("mushroom_chestplate", "蘑菇胸甲", "vanity_armor/mushroom_set", ArmorItem.Type.CHESTPLATE, ModRarity.GREEN);
+    public static final PortDeferredItem<BaseVanityArmorItem> MUSHROOM_LEGGINGS = registerVanityArmor("mushroom_leggings", "蘑菇护腿", "vanity_armor/mushroom_set", ArmorItem.Type.LEGGINGS, ModRarity.GREEN);
+    public static final PortDeferredItem<BaseVanityArmorItem> MUSHROOM_BOOTS = registerVanityArmor("mushroom_boots", "蘑菇靴子", "vanity_armor/mushroom_set", ArmorItem.Type.BOOTS, ModRarity.GREEN);
 
     public static final PortDeferredItem<BaseDyeItem> DYE = registerColoredDye("dye", "染料", 0x39C5BB);
     public static final PortDeferredItem<BaseDyeItem> RED_DYE = registerColoredDye("red_dye", "红染料", 0xDB0909);

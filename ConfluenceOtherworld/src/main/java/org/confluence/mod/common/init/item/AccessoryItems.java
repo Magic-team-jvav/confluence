@@ -32,6 +32,9 @@ import java.util.function.Supplier;
 
 import static org.confluence.lib.common.component.ModRarity.*;
 import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
+import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.units;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_VALUE;
 
 @SuppressWarnings("unused")
 public class AccessoryItems {
@@ -50,6 +53,10 @@ public class AccessoryItems {
     public static final ValueType.UnitType SPECTRE$GOGGLES = ValueType.ofUnit("spectre_goggles");
     public static final ValueType.UnitType PAINT$SPRAYER = ValueType.ofUnit("paint_sprayer");
     public static final ValueType.UnitType CLOTHIER$KILLER = ValueType.ofUnit("clothier_killer");
+    /// 魂师饰品：灵魂缓慢回复的标记（三件手环共用）。
+    public static final ValueType.UnitType BAND$OF$SOUL = ValueType.ofUnit("band_of_soul");
+    /// 刻骨的记忆：无需手持主武器即可施放已装备技能。
+    public static final ValueType.UnitType MEMORY$OF$BONEBRAND = ValueType.ofUnit("memory_of_bonebrand");
     public static final ValueType.UnitType $AFK = ValueType.ofUnit("afk"); // todo
     public static final ValueType.UnitType YOYO$STRING = ValueType.ofUnit("yoyo_string");
     public static final ValueType.IntegerType YOYO$STRING_COLOR = ValueType.ofInteger("yoyo_string_color", IntegerValue.GET_MAX, -1);
@@ -167,6 +174,13 @@ public class AccessoryItems {
     public static final PortDeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", "经验吸管", builder -> builder.noTooltip().rarity(LIME)),//经验吸管
             TINSEL = registerCurio("tinsel", "金箔", builder -> builder.noTooltip().rarity(LIME)),//金箔
             SHINY_PIPETTE = registerCurio("shiny_pipette", "闪亮吸管", builder -> builder.noTooltip().rarity(YELLOW));//闪亮吸管
+
+    /// 魂师饰品：灵魂手环家族、刻骨的记忆、灵魂徽章。
+    public static final PortDeferredItem<BaseCurioItem> BAND_OF_SOUL = registerCurio("band_of_soul", "灵魂手环", builder -> builder.rarity(BLUE).accessories(units(BAND$OF$SOUL)));
+    public static final PortDeferredItem<BaseCurioItem> BAND_OF_SOUL_REGENERATION = registerDirectly("band_of_soul_regeneration", "灵魂再生手环", name -> new BandOfSoulRegeneration(BaseCurioItem.builder(name).rarity(GREEN).accessories(units(BAND$OF$SOUL))));
+    public static final PortDeferredItem<BaseCurioItem> BAND_OF_MEDIUMSHIP = registerCurio("band_of_mediumship", "通灵手环", builder -> builder.rarity(GREEN).attribute(org.confluence.lib.ConfluenceMagicLib.ADDITIONAL_SOUL, 20.0, ADD_VALUE).accessories(units(BAND$OF$SOUL)));
+    public static final PortDeferredItem<BaseCurioItem> MEMORY_OF_BONEBRAND = registerCurio("memory_of_bonebrand", "刻骨的记忆", builder -> builder.rarity(PURPLE).accessories(units(MEMORY$OF$BONEBRAND)));
+    public static final PortDeferredItem<BaseCurioItem> SOULCERER_EMBLEM = registerCurio("soulcerer_emblem", "灵魂徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(org.confluence.lib.common.LibAttributes.getSoulDamage(), 0.12, ADD_MULTIPLIED_TOTAL));
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {
         if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return;

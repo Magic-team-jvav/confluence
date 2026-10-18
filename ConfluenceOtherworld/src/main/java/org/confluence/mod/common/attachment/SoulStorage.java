@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.mesdag.portlib.attachment.PortAttachmentSyncHandler;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
@@ -25,6 +26,11 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     private static final String CURRENT_SOUL_TAG = "currentSoul";
     private static final String RECOVERY_RATIO_TAG = "recoveryRatio";
     private static final String SOUL_MODE_TAG = "soulMode";
+    private static final String CONSUMED_SOUL_TAG = "consumedSoul";
+    private static final String SOULDANCER_BUFF_END_TAG = "souldancerBuffEnd";
+    private static final String RITUAL_COUNT_TAG = "ritualCount";
+    private static final String SURGE_BLAST_CHARGE_TAG = "surgeBlastCharge";
+    private static final String LIFE_RETURN_LOST_TAG = "lifeReturnLost";
 
     public static final PortAttachmentSyncHandler<SoulStorage> SYNC_HANDLER = new PortAttachmentSyncHandler<>() {
         @Override
@@ -38,6 +44,7 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
             buf.writeFloat(attachment.currentSoul);
             buf.writeFloat(attachment.recoveryRatio);
             buf.writeBoolean(attachment.soulMode);
+            buf.writeVarInt(attachment.ritualCount);
         }
 
         @Override
@@ -47,6 +54,7 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
             float currentSoul = buf.readFloat();
             storage.recoveryRatio = buf.readFloat();
             storage.soulMode = buf.readBoolean();
+            storage.ritualCount = buf.readVarInt();
             storage.currentSoul = storage.soulMode ? currentSoul : MIN_CURRENT_SOUL;
             return storage;
         }
@@ -57,6 +65,16 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     private float currentSoul;
     private float recoveryRatio;
     private boolean soulMode;
+    /// 累计消耗的灵魂余量，供套装按"每消耗 N 点"结算使用，只存服务端。
+    private float consumedSoul;
+    /// 魂舞全套增益的结束时间（游戏刻），0 表示未激活。
+    private long souldancerBuffEnd;
+    /// 已完成的仪式次数，每次提供 {@link SoulSkillParameters#SOUL_PER_RITUAL} 点灵魂上限。
+    private int ritualCount;
+    private int surgeBlastCharge;
+    private float lifeReturnLost;
+    private boolean soulDrainActive;
+    private boolean lifeReturnActive;
 
     public SoulStorage(IPortAttachmentHolder owner) {
         this.soulsCount = INITIAL_SOUL_COUNT;
@@ -74,6 +92,11 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
         nbt.putFloat(CURRENT_SOUL_TAG, currentSoul);
         nbt.putFloat(RECOVERY_RATIO_TAG, recoveryRatio);
         nbt.putBoolean(SOUL_MODE_TAG, soulMode);
+        nbt.putFloat(CONSUMED_SOUL_TAG, consumedSoul);
+        nbt.putLong(SOULDANCER_BUFF_END_TAG, souldancerBuffEnd);
+        nbt.putInt(RITUAL_COUNT_TAG, ritualCount);
+        nbt.putInt(SURGE_BLAST_CHARGE_TAG, surgeBlastCharge);
+        nbt.putFloat(LIFE_RETURN_LOST_TAG, lifeReturnLost);
         return nbt;
     }
 
@@ -84,6 +107,77 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
         this.soulMode = nbt.getBoolean(SOUL_MODE_TAG);
         this.currentSoul = soulMode ? nbt.getFloat(CURRENT_SOUL_TAG) : MIN_CURRENT_SOUL;
         this.recoveryRatio = nbt.getFloat(RECOVERY_RATIO_TAG);
+        this.consumedSoul = nbt.getFloat(CONSUMED_SOUL_TAG);
+        this.souldancerBuffEnd = nbt.getLong(SOULDANCER_BUFF_END_TAG);
+        this.ritualCount = Mth.clamp(nbt.getInt(RITUAL_COUNT_TAG), 0, SoulSkillParameters.MAX_RITUAL_COUNT);
+        this.surgeBlastCharge = Math.max(0, nbt.getInt(SURGE_BLAST_CHARGE_TAG));
+        this.lifeReturnLost = Math.max(0.0F, nbt.getFloat(LIFE_RETURN_LOST_TAG));
+    }
+
+    public int getRitualCount() {
+        return ritualCount;
+    }
+
+    public void setRitualCount(int ritualCount) {
+        int clamped = Mth.clamp(ritualCount, 0, SoulSkillParameters.MAX_RITUAL_COUNT);
+        if (this.ritualCount == clamped) {
+            return;
+        }
+        this.ritualCount = clamped;
+        updateMaxSoul();
+        sync();
+    }
+
+    public int getSurgeBlastCharge() {
+        return surgeBlastCharge;
+    }
+
+    public void setSurgeBlastCharge(int surgeBlastCharge) {
+        this.surgeBlastCharge = Math.max(0, surgeBlastCharge);
+    }
+
+    public float getLifeReturnLost() {
+        return lifeReturnLost;
+    }
+
+    public void setLifeReturnLost(float lifeReturnLost) {
+        this.lifeReturnLost = Math.max(0.0F, lifeReturnLost);
+    }
+
+    public boolean isSoulDrainActive() {
+        return soulDrainActive;
+    }
+
+    public void setSoulDrainActive(boolean soulDrainActive) {
+        this.soulDrainActive = soulDrainActive;
+    }
+
+    public boolean isLifeReturnActive() {
+        return lifeReturnActive;
+    }
+
+    public void setLifeReturnActive(boolean lifeReturnActive) {
+        this.lifeReturnActive = lifeReturnActive;
+    }
+
+    /// 读取魂舞增益的结束时间（游戏刻）。
+    public long getSouldancerBuffEnd() {
+        return souldancerBuffEnd;
+    }
+
+    /// 设置魂舞增益的结束时间（游戏刻）。
+    public void setSouldancerBuffEnd(long souldancerBuffEnd) {
+        this.souldancerBuffEnd = souldancerBuffEnd;
+    }
+
+    /// 读取累计消耗的灵魂余量。
+    public float getConsumedSoul() {
+        return consumedSoul;
+    }
+
+    /// 覆盖累计消耗的灵魂余量。
+    public void setConsumedSoul(float consumedSoul) {
+        this.consumedSoul = consumedSoul;
     }
 
     /// 按当前灵魂上限压低超出上限的当前值。
@@ -104,7 +198,7 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     public int getMaxSoul() {
         AttributeInstance attribute = owner instanceof LivingEntity living ? living.getAttribute(ConfluenceMagicLib.ADDITIONAL_SOUL) : null;
         double additionalSoul = attribute == null ? ConfluenceMagicLib.ADDITIONAL_SOUL.value().getDefaultValue() : attribute.getValue();
-        return Mth.floor(soulsCount * SOUL_PER_COUNT + additionalSoul);
+        return Mth.floor(soulsCount * SOUL_PER_COUNT + additionalSoul + ritualCount * SoulSkillParameters.SOUL_PER_RITUAL);
     }
 
     /// 读取当前灵魂值，魔力模式固定为零。

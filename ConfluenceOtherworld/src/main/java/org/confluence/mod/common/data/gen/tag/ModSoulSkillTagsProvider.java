@@ -32,6 +32,42 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
                 tag(tag).add(ResourceKey.create(ModSoulSkills.REGISTRY_KEY, skill.getId()));
             }
         }
+        // 附魂：所有给自己挂同名增益的技能（含自动触发的附魂激荡与状态类技能）
+        tag(ModTags.SoulSkills.SOUL_ATTACH)
+                .add(key(ModSoulSkills.ENHANCED_SOUL.get()))
+                .add(key(ModSoulSkills.SOUL_MARK.get()))
+                .add(key(ModSoulSkills.SOUL_SURGE.get()))
+                .add(key(ModSoulSkills.BLOOD_RAGE.get()))
+                .add(key(ModSoulSkills.SOUL_PLUNDER.get()))
+                .add(key(ModSoulSkills.SOUL_DRAIN.get()))
+                .add(key(ModSoulSkills.STAR_CALL.get()))
+                .add(key(ModSoulSkills.BOILING_BLOOD.get()))
+                .add(key(ModSoulSkills.LIFE_RETURN.get()))
+                .add(key(ModSoulSkills.FIRMAMENT_REVERSED.get()));
+        // 被动：无法装备、学会即生效；术式轮转用这个标签跳过它们
+        tag(ModTags.SoulSkills.PASSIVE)
+                .add(key(ModSoulSkills.LAW_OF_NATURE.get()))
+                .add(key(ModSoulSkills.STAR_REVERSAL.get()))
+                .add(key(ModSoulSkills.STAR_LINK.get()))
+                .add(key(ModSoulSkills.SOUL_SURGE.get()))
+                .add(key(ModSoulSkills.SOUL_HARVEST.get()))
+                .add(key(ModSoulSkills.SOUL_DEVOUR.get()))
+                .add(key(ModSoulSkills.CURSE_RESISTANCE.get()))
+                .add(key(ModSoulSkills.FLOW_CONTROL.get()))
+                .add(key(ModSoulSkills.SPELL_ROTATION.get()));
+        // 引魂：迷魂孢雾、亵渎之魂、自然之惩戒、魂引天星、引魂激荡、强力引魂、引魂
+        tag(ModTags.SoulSkills.SOUL_LURE)
+                .add(key(ModSoulSkills.CONFUSE_SPORES.get()))
+                .add(key(ModSoulSkills.PROFANE_SOUL.get()))
+                .add(key(ModSoulSkills.NATURES_WRATH.get()))
+                .add(key(ModSoulSkills.STAR_CALL.get()))
+                .add(key(ModSoulSkills.LURE_SURGE.get()))
+                .add(key(ModSoulSkills.ENHANCED_LURE.get()))
+                .add(key(ModSoulSkills.SOUL_LURE.get()));
+    }
+
+    private static ResourceKey<SoulSkill> key(SoulSkill skill) {
+        return ResourceKey.create(ModSoulSkills.REGISTRY_KEY, skill.getId());
     }
 }
 

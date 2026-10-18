@@ -231,6 +231,8 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
         addBiomeGroups(tag(ModTags.Biomes.HAS_STRUCTURE_ICE_UNDERGROUND_CABINS), ICY_STRUCTURE_BIOMES);
         addBiomeGroups(tag(ModTags.Biomes.HAS_STRUCTURE_JUNGLE_UNDERGROUND_CABINS), JUNGLE_STRUCTURE_BIOMES);
+        // 发光蘑菇地下小屋只生成在发光蘑菇群系
+        tag(ModTags.Biomes.HAS_STRUCTURE_GLOWING_MUSHROOM_UNDERGROUND_CABINS).add(ModBiomes.GLOWING_MUSHROOM);
         tag(ModTags.Biomes.HAS_STRUCTURE_NETHER_TOWER).add(Biomes.NETHER_WASTES, ModBiomes.ASH_WASTELAND);
     }
 

@@ -221,19 +221,21 @@ public final class ModItems {
         };
     }
 
-//    public static PortItemAttributeModifiers createAttributes(Tier tier, float attackDamage, float attackSpeed, Consumer<PortItemAttributeModifiers.PortBuilder> consumer) {
-//        PortItemAttributeModifiers.PortBuilder builder = PortItemAttributeModifiers.builder();
-//        consumer.accept(builder);
-//        return builder.add(
-//                LibAttributes.getAttackDamage(),
-//                new PortAttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), PortAttributeModifier.PortOperation.ADD_VALUE),
-//                PortEquipmentSlotGroup.MAINHAND
-//        ).add(
-//                Attributes.ATTACK_SPEED,
-//                new PortAttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, PortAttributeModifier.PortOperation.ADD_VALUE),
-//                PortEquipmentSlotGroup.MAINHAND
-//        ).build();
-//    }
+    /// 生成武器的属性组件：伤害=攻击力+阶级加成（玩家基础 1 点另计），攻速为原始修正值，
+    /// 额外属性由 `consumer` 追加。与 1.21.1 的同名方法保持一致，便于双版本对齐。
+    public static PortItemAttributeModifiers createAttributes(Tier tier, float attackDamage, float attackSpeed, Consumer<PortItemAttributeModifiers.Builder> consumer) {
+        PortItemAttributeModifiers.Builder builder = PortItemAttributeModifiers.builder();
+        consumer.accept(builder);
+        return builder.add(
+                LibAttributes.getAttackDamage(),
+                new PortAttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), PortAttributeModifier.Operation.ADD_VALUE),
+                PortEquipmentSlotGroup.MAINHAND
+        ).add(
+                Attributes.ATTACK_SPEED,
+                new PortAttributeModifier(BASE_ATTACK_SPEED_ID, attackSpeed, PortAttributeModifier.Operation.ADD_VALUE),
+                PortEquipmentSlotGroup.MAINHAND
+        ).build();
+    }
 
     public static float getAttackSpeed(float rawSpeed) {
         return rawSpeed - 4;

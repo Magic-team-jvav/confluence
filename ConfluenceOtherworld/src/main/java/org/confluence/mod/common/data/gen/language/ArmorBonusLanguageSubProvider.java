@@ -67,7 +67,7 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.reinforced_mail_set.1", "7% damage reduction", "7%伤害减免");
         language.add("armor_set_bonus.confluence.reinforced_mail_set.2", "Movement speed reduced by 15% for 3 seconds after jumping", "跳跃后3秒降低移速15%");
         language.add("armor_set_bonus.confluence.seeker_set.0", "Increases Soul Capacity by 40", "灵魂上限增加40");
-        language.add("armor_set_bonus.confluence.seeker_set.1", "Deal 10% increased damage when Soul is above 20", "灵魂值大于20时，伤害提高10%");
+        language.add("armor_set_bonus.confluence.seeker_set.1", "Deal 7% increased damage when Soul is above 20", "灵魂值大于20时，伤害提高7%");
         language.add("armor_set_bonus.confluence.shadow_set.0", "Increased movement speed and acceleration", "提高移动速度和加速度");
         language.add("armor_set_bonus.confluence.silver_set.0", "+2 Armor", "+2 护甲值");
         language.add("armor_set_bonus.confluence.snow_set.0", "Cannot be frozen or chilled", "不会被冷冻或冰冻");
@@ -87,7 +87,7 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.titanium_helmet_set.0", "Attacking generates a defensive barrier of titanium shards", "攻击生成钛金碎片防御屏障");
         language.add("armor_set_bonus.confluence.titanium_mask_set.0", "Attacking generates a defensive barrier of titanium shards", "攻击生成钛金碎片防御屏障");
         language.add("armor_set_bonus.confluence.tungsten_set.0", "+1 Armor", "+1 护甲值");
-        language.add("armor_set_bonus.confluence.white_pumpkin_set.0", "Melee critical hits restore 1 Soul Point", "近战暴击会回复1点灵魂值");
+        language.add("armor_set_bonus.confluence.white_pumpkin_set.0", "Melee critical hits restore 3 Soul Points", "近战暴击会回复3点灵魂值");
         language.add("armor_set_bonus.when_applied", "Set Bonus:", "套装奖励：");
     }
 }

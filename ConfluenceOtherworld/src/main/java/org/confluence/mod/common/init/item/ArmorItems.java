@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -183,7 +184,8 @@ public class ArmorItems {
             .geo("armor/pumpkin_armor"));
 
     public static final PortDeferredItem<BaseArmorItem> WHITE_PUMPKIN_HELMET = register("white_pumpkin_helmet", "白南瓜头盔", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
-            .geo("armor/white_pumpkin_armor"));
+            .geo("armor/white_pumpkin_armor")
+            .attribute(LibAttributes.getSoulDamage(), 0.05, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final PortDeferredItem<BaseArmorItem> WHITE_PUMPKIN_CHESTPLATE = register("white_pumpkin_chestplate", "白南瓜胸甲", ModArmorMaterials.WHITE_PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/white_pumpkin_armor")
             .criticalChance(0.05));
@@ -348,31 +350,37 @@ public class ArmorItems {
 
     public static final PortDeferredItem<BaseArmorItem> PHANTOM_HELMET = register("phantom_helmet", "幻翼头盔", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/phantom_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(LibAttributes.getSoulDamage(), 0.03, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final PortDeferredItem<BaseArmorItem> PHANTOM_CHESTPLATE = register("phantom_chestplate", "幻翼胸甲", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/phantom_armor")
             .rarity(ModRarity.BLUE)
-            .criticalChance(0.08));
+            .criticalChance(0.03));
     public static final PortDeferredItem<BaseArmorItem> PHANTOM_LEGGINGS = register("phantom_leggings", "幻翼护腿", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/phantom_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .rangedDamage(0.03));
     public static final PortDeferredItem<BaseArmorItem> PHANTOM_BOOTS = register("phantom_boots", "幻翼靴子", ModArmorMaterials.PHANTOM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/phantom_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .rangedDamage(0.03));
 
     public static final PortDeferredItem<BaseArmorItem> HERMIT_HELMET = register("hermit_helmet", "隐匿者头盔", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/hermit_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(LibAttributes.getSoulDamage(), 0.03, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final PortDeferredItem<BaseArmorItem> HERMIT_CHESTPLATE = register("hermit_chestplate", "隐匿者胸甲", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/hermit_armor")
             .rarity(ModRarity.BLUE)
             .criticalChance(0.08));
     public static final PortDeferredItem<BaseArmorItem> HERMIT_LEGGINGS = register("hermit_leggings", "隐匿者护腿", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/hermit_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SOUL$DROP, 1.0F)));
     public static final PortDeferredItem<BaseArmorItem> HERMIT_BOOTS = register("hermit_boots", "隐匿者靴子", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/hermit_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(LibAttributes.getSoulDamage(), 0.03, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final PortDeferredItem<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", "蓝隐匿者头盔", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/blue_hermit_armor")
@@ -388,7 +396,8 @@ public class ArmorItems {
             .fourClassesDamage(0.04));
     public static final PortDeferredItem<BaseArmorItem> BLUE_HERMIT_BOOTS = register("blue_hermit_boots", "蓝隐匿者靴子", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/blue_hermit_armor")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SOUL$DROP, 1.0F)));
 
     public static final PortDeferredItem<BaseArmorItem> GUARDS_HELMET = register("guards_helmet", "守卫头盔", ModArmorMaterials.GUARDS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/guards_armor")
@@ -664,16 +673,20 @@ public class ArmorItems {
 
     public static final PortDeferredItem<BaseArmorItem> SEEKER_HELLMET = register("seeker_helmet", "逐灵头盔", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/seeker_armor")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .attribute(LibAttributes.getSoulDamage(), 0.05, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final PortDeferredItem<BaseArmorItem> SEEKER_CHESTPLATE = register("seeker_chestplate", "逐灵胸甲", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/seeker_armor")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .criticalChance(0.07));
     public static final PortDeferredItem<BaseArmorItem> SEEKER_LEGGINGS = register("seeker_leggings", "逐灵护腿", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/seeker_armor")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SOUL$DROP, 2.0F)));
     public static final PortDeferredItem<BaseArmorItem> SEEKER_BOOTS = register("seeker_boots", "逐灵靴子", ModArmorMaterials.SEEKER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/seeker_armor")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .attribute(LibAttributes.getSoulDamage(), 0.05, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final PortDeferredItem<BaseArmorItem> SHADOW_HELMET = register("shadow_helmet", "暗影头盔", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/shadow_armor")
@@ -1043,17 +1056,23 @@ public class ArmorItems {
 
     public static final PortDeferredItem<BaseArmorItem> SOUL_HOOD = register("soul_hood", "灵魂头套", ModArmorMaterials.SOUL_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/soul_robe")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SOUL$DROP, 1.0F)));
     public static final PortDeferredItem<BaseArmorItem> SOUL_ROBE = register("soul_robe", "灵魂长袍", ModArmorMaterials.SOUL_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/soul_robe")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .attribute(LibAttributes.getSoulDamage(), 0.05, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final PortDeferredItem<BaseArmorItem> SOULDANCER_HOOD = register("souldancer_hood", "魂舞头套", ModArmorMaterials.SOULDANCER_HOOD_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/souldancer_robe")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(LibAttributes.getSoulDamage(), 0.09, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SOUL$DROP, 1.0F)));
     public static final PortDeferredItem<BaseArmorItem> SOULDANCER_ROBE = register("souldancer_robe", "魂舞长袍", ModArmorMaterials.SOULDANCER_ROPE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/souldancer_robe")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.08)
+            .armorBonus(PrimitiveValueComponent.of(ModArmorBonus.SOUL$DROP, 1.0F)));
 
     public static final PortDeferredItem<BaseArmorItem> GOGGLES = register("goggles", "护目镜", ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, builder -> {});
     public static final PortDeferredItem<BaseArmorItem> GREEN_CAP = register("green_cap", "绿帽", ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, builder -> {});

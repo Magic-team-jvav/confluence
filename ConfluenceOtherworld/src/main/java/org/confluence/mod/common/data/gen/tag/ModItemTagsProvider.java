@@ -670,6 +670,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 short_sword.add(item.get());
             }
         });
+        // 祈灵之刃在魂师体系里属于短剑
+        short_sword.add(SoulItems.SPIRITWARD_BLADE.get());
 
         IntrinsicTagAppender<Item> head_armor = tag(PortTags.Items.HEAD_ARMOR);
         IntrinsicTagAppender<Item> chest_armor = tag(PortTags.Items.CHEST_ARMOR);
@@ -1227,6 +1229,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.MUMMY_SHIRT.get(),
                 VanityArmorItems.MUMMY_PANTS.get(),
                 VanityArmorItems.MUMMY_SHOES.get(),
+                // 蘑菇套装（Mushroom set）：发光蘑菇地下小屋金箱掉落的新时装，四件套，模型与贴图待补
+                VanityArmorItems.MUSHROOM_HELMET.get(),
+                VanityArmorItems.MUSHROOM_CHESTPLATE.get(),
+                VanityArmorItems.MUSHROOM_LEGGINGS.get(),
+                VanityArmorItems.MUSHROOM_BOOTS.get(),
                 ArmorItems.GOGGLES.get(),
                 ArmorItems.GREEN_CAP.get(),
                 ArmorItems.WIZARD_HAT.get(),

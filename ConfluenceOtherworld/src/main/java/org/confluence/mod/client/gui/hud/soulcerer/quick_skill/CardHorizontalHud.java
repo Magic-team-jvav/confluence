@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
@@ -214,7 +215,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     /// 绘制单张技能卡片及其选中效果。
     private void renderCard(GuiGraphics guiGraphics, SoulSkillStack stack, boolean selected, int skillIdx, float scale) {
         ResourceLocation tex = selected ? TEX_SEL : TEX;
-        guiGraphics.blitSprite(tex, 0, 0, CARD_WIDTH, CARD_HEIGHT);
+        guiGraphics.blitSprite(new PortSprite(tex, CARD_WIDTH, CARD_HEIGHT), 0, 0, CARD_WIDTH, CARD_HEIGHT);
 
         if (selected) {
             SoulSkillBox.renderBoxActivate(guiGraphics, 0, 0);

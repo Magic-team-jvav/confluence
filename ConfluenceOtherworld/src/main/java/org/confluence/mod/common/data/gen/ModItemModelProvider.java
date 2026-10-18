@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegistryEntry;
@@ -72,9 +73,23 @@ public class ModItemModelProvider extends ItemModelProvider {
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
 
         handheldTextureAlias(SoulItems.BROKEN_GLIMMER, Confluence.asResource("item/soul_lantern/broken_glimmer"));
+        handheldTextureAlias(SoulItems.SOUL_CONDUIT, Confluence.asResource("item/soul_lantern/soul_conduit"));
+        handheldTextureAlias(SoulItems.PILLAGING_FLAME, Confluence.asResource("item/soul_lantern/pillaging_flame"));
+        handheldTextureAlias(SoulItems.SOUL_CHANT_GUIDE, Confluence.asResource("item/soul_lantern/soul_chant_guide"));
+        handheldTextureAlias(SoulItems.TRUFFLE_LANTERN, Confluence.asResource("item/soul_lantern/truffle_lantern"));
+        handheldTextureAlias(SoulItems.LIFE_SPLENDOR, Confluence.asResource("item/soul_lantern/life_splendor"));
+        handheldTextureAlias(SoulItems.STAR_SPIRIT, Confluence.asResource("item/soul_lantern/star_spirit"));
+        handheldTextureAlias(SoulItems.DAY_AND_NIGHT_ALIKE, Confluence.asResource("item/soul_lantern/day_and_night_alike"));
+        handheldTextureAlias(SoulItems.SENIOR_PATHFINDER_PRO, Confluence.asResource("item/soul_lantern/senior_pathfinder_pro"));
+        handheldTextureAlias(SoulItems.SPIRITWARD_BLADE, Confluence.asResource("item/sword/spiritward_blade"));
         withExistingParent(SoulItems.FALLEN_SOUL_CORE.getId().getPath(), "item/generated").texture("layer0", Confluence.asResource("item/consumable/fallen_soul_core"));
         skip.add(SoulItems.FALLEN_SOUL_CORE.get());
-        withExistingParent(SoulItems.SOUL_SKILL_BOOK.getId().getPath(), "item/generated").texture("layer0", ResourceLocation.withDefaultNamespace("item/book"));
+        ItemModelBuilder skillBookModel = withExistingParent(SoulItems.SOUL_SKILL_BOOK.getId().getPath(), "item/generated").texture("layer0", ResourceLocation.withDefaultNamespace("item/book"));
+        for (SoulBooks.Definition book : SoulBooks.styled()) {
+            String path = SoulItems.SOUL_SKILL_BOOK.getId().getPath() + "/" + book.id().getPath();
+            ModelFile styledBook = withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/skill_book/" + book.id().getPath()));
+            skillBookModel.override().predicate(Confluence.asResource("soul_book"), SoulBooks.styleIndex(book.id())).model(styledBook).end();
+        }
         skip.add(SoulItems.SOUL_SKILL_BOOK.get());
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");

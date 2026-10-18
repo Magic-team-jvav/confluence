@@ -26,15 +26,20 @@ public class TerraStyleManaHud implements PortGuiLayer {
     private static final int[] MANA_LOW = new int[]{0x5d11ba, 0xac1a91};
     private static final int[] MANA_HIGH = new int[]{0x90aff8, 0xff94bd};
 
-    private static final int[] SOUL = new int[]{0x9b67e5, 0xbf87ec};
-    private static final int[] SOUL_LOW = new int[]{0x582c9b, 0x763fa6};
-    private static final int[] SOUL_HIGH = new int[]{0xd7b4ff, 0xeecaff};
-    private static final float SOUL_TINT_RED = 0.8F;
-    private static final float SOUL_TINT_GREEN = 0.6F;
-    private static final float SOUL_TINT_BLUE = 1.0F;
+    /// 灵魂条统一使用 #abfffe 淡蓝色：调色板改为中性亮度，最终颜色由染色决定。
+    private static final int[] SOUL = new int[]{0x9dfbff, 0x7ffff3};
+    private static final int[] SOUL_LOW = new int[]{0xF0FFFF, 0xF0FFFF};
+    private static final int[] SOUL_HIGH = new int[]{0x32fffb, 0x32d6ff};
+    private static final float SOUL_TINT_RED = 0xAB / 255.0F;
+    private static final float SOUL_TINT_GREEN = 1.0F;
+    private static final float SOUL_TINT_BLUE = 0xFE / 255.0F;
     private static final int RESOURCE_PER_LEGACY_ICON = 20;
     private static final int OVERLAY_RESOURCE_DIVISOR = 10;
     private static final int OVERLAY_HUD_SPACING = 10;
+    /// overlay 图集中魔力条使用的行（星星）。
+    private static final int OVERLAY_DEFAULT_UV_Y = 10;
+    /// overlay 图集中灵魂条使用的最下面一行图例。
+    private static final int OVERLAY_SOUL_UV_Y = 60;
 
     @Override
     public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
@@ -111,7 +116,8 @@ public class TerraStyleManaHud implements PortGuiLayer {
                 }
                 colorDraw(guiGraphics, minecraft, random, ModClientSetups.OVERLAY_SPRITE,
                         soulMode ? SOUL : MANA, soulMode ? SOUL_HIGH : MANA_HIGH, soulMode ? SOUL_LOW : MANA_LOW,
-                        maxMana, currentMana, widthMana, heightMana, ModClientSetups.OVERLAY_SIZE, 10, false);
+                        maxMana, currentMana, widthMana, heightMana, ModClientSetups.OVERLAY_SIZE,
+                        soulMode ? OVERLAY_SOUL_UV_Y : OVERLAY_DEFAULT_UV_Y, false);
                 if (soulMode) {
                     guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
                 }

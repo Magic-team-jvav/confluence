@@ -23,11 +23,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.mixed.ILibMobEffectInstance;
 import org.confluence.lib.util.LibDateUtils;
@@ -108,8 +112,11 @@ import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.living.*;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
+import org.confluence.mod.api.event.SoulCollectionEvent;
 import org.confluence.mod.api.event.SoulOverdraftEvent;
 import org.confluence.mod.common.attachment.SoulStorage;
+import org.confluence.mod.common.init.ModSoulSkills;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Collection;
@@ -147,6 +154,17 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::toBeBestiaryEntry);
         PortEventHandler.addListener(LivingEntityEvents::armorPenetration);
         PortEventHandler.addListener(LivingEntityEvents::potionColorCalculation);
+        // 魂师：祈灵之刃贯穿、额外增伤与额外收魂，外加套装被动
+        PortEventHandler.addListener(LivingEntityEvents::soulKnifeReach);
+        PortEventHandler.addListener(LivingEntityEvents::soulKnifeBonusDamage);
+        PortEventHandler.addListener(LivingEntityEvents::soulKnifeExtraSoul);
+        PortEventHandler.addListener(LivingEntityEvents::seekerSetDamage);
+        PortEventHandler.addListener(LivingEntityEvents::soulDropBonus);
+        PortEventHandler.addListener(LivingEntityEvents::souldancerDamageReduction);
+        PortEventHandler.addListener(LivingEntityEvents::soulSkillSummonDamage);
+        PortEventHandler.addListener(LivingEntityEvents::boilingBloodHit);
+        PortEventHandler.addListener(LivingEntityEvents::soulSkillOnHurt);
+        PortEventHandler.addListener(LivingEntityEvents::bloodRageSoul);
     }
 
     private static void death(LivingDeathEvent event) {
@@ -289,8 +307,128 @@ public final class LivingEntityEvents {
         }
     }
 
-    /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。
-    ///
+    /// 祈灵之刃：向前贯穿扁矩形范围，主目标仍由原版结算，这里只补打其余敌怪。
+    private static void soulKnifeReach(AttackEntityEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player) || !player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
+            return;
+        }
+        float scale = player.getAttackStrengthScale(0.5F);
+        if (scale < SoulSkillParameters.SPIRITWARD_BLADE_MIN_CHARGE) {
+            return;
+        }
+        Vec3 eye = player.getEyePosition();
+        AABB box = new AABB(eye, eye.add(player.getLookAngle().scale(SoulSkillParameters.SPIRITWARD_BLADE_REACH)))
+                .inflate(SoulSkillParameters.SPIRITWARD_BLADE_HALF_WIDTH, SoulSkillParameters.SPIRITWARD_BLADE_HALF_HEIGHT, SoulSkillParameters.SPIRITWARD_BLADE_HALF_WIDTH);
+        Entity primary = event.getTarget();
+        float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage().value()) * (0.2F + scale * scale * 0.8F);
+        DamageSource source = player.damageSources().playerAttack(player);
+        for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, box,
+                entity -> entity != player && entity != primary && entity.isAlive() && !entity.isSpectator() && player.canAttack(entity))) {
+            target.hurt(source, damage);
+        }
+    }
+
+    /// 祈灵之刃：当前灵魂高于阈值时，持有者造成的近战伤害额外提升。
+    private static void soulKnifeBonusDamage(PortLivingIncomingDamageEvent event) {
+        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
+                || !player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
+            return;
+        }
+        if (PlayerUtils.getSoul(player) > SoulSkillParameters.SPIRITWARD_BLADE_SOUL_THRESHOLD) {
+            event.setAmount(event.getAmount() + SoulSkillParameters.SPIRITWARD_BLADE_DAMAGE_BONUS);
+        }
+    }
+
+    /// 祈灵之刃：用它击杀的敌怪额外收取灵魂。
+    private static void soulKnifeExtraSoul(SoulCollectionEvent event) {
+        if (event.getEntity().getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
+            event.setAmount(event.getAmount() + SoulSkillParameters.SPIRITWARD_BLADE_KILL_SOUL_BONUS);
+        }
+    }
+
+    /// 逐灵全套：当前灵魂高于阈值时造成的伤害提高。
+    private static void seekerSetDamage(PortLivingIncomingDamageEvent event) {
+        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
+                || !PlayerUtils.isWearingSeekerSet(player)
+                || PlayerUtils.getSoul(player) <= SoulSkillParameters.SEEKER_DAMAGE_SOUL_THRESHOLD) {
+            return;
+        }
+        event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.SEEKER_DAMAGE_BONUS));
+    }
+
+    /// 魂师套装：逐件与套装的灵魂掉落加成统一汇总，幻翼套在夜间再加。
+    private static void soulDropBonus(SoulCollectionEvent event) {
+        Player player = event.getEntity();
+        float bonus = ModArmorBonus.getValue(player, ModArmorBonus.SOUL$DROP);
+        if (PlayerUtils.isWearingPhantomSet(player) && player.level().isNight()) {
+            bonus += SoulSkillParameters.PHANTOM_NIGHT_SOUL_DROP_BONUS;
+        }
+        if (bonus > 0.0F) {
+            event.setAmount(event.getAmount() + bonus);
+        }
+        PlayerUtils.onSoulCollected(player, player.level().getGameTime());
+    }
+
+    /// 魂舞全套：收集灵魂后的限时减伤。
+    private static void souldancerDamageReduction(PortLivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player
+                && player.level().getGameTime() < SoulStorage.of(player).getSouldancerBuffEnd()) {
+            event.setAmount(event.getAmount() * (1.0F - SoulSkillParameters.SOULDANCER_DAMAGE_REDUCTION));
+        }
+    }
+
+    /// 魂师召唤物被动：召唤物命中时概率回魂、耗魂换取增伤。
+    private static void soulSkillSummonDamage(PortLivingIncomingDamageEvent event) {
+        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer owner)) {
+            return;
+        }
+        Entity direct = event.getSource().getDirectEntity();
+        if (direct == owner || event.getEntity() == owner) {
+            return;
+        }
+        if (PlayerUtils.isSoulSkillLearned(owner, ModSoulSkills.SOUL_DEVOUR.get().getId())
+                && PlayerUtils.consumeSoul(owner, SoulSkillParameters.SOUL_DEVOUR_SOUL_COST)) {
+            event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.SOUL_DEVOUR_DAMAGE_BONUS));
+        }
+        if (PlayerUtils.isSoulSkillLearned(owner, ModSoulSkills.SOUL_HARVEST.get().getId())
+                && owner.getRandom().nextFloat() < SoulSkillParameters.SOUL_HARVEST_CHANCE) {
+            PlayerUtils.adjustSoul(owner, SoulSkillParameters.SOUL_HARVEST_SOUL);
+        }
+    }
+
+    /// 血液沸腾：把下一次近战攻击放大并消耗掉增益。
+    private static void boilingBloodHit(PortLivingIncomingDamageEvent event) {
+        if (!(event.getSource().getDirectEntity() instanceof ServerPlayer player) || !player.hasEffect(ModEffects.BOILING_BLOOD.get())) {
+            return;
+        }
+        event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.BOILING_BLOOD_DAMAGE_MULTIPLIER));
+        player.removeEffect(ModEffects.BOILING_BLOOD.get());
+    }
+
+    /// 天穹倒转把摔落伤害改成回复；生命归还记录期间失去的生命。
+    private static void soulSkillOnHurt(PortLivingIncomingDamageEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        if (event.getSource().is(DamageTypeTags.IS_FALL) && player.hasEffect(ModEffects.FIRMAMENT_REVERSED.get())) {
+            player.heal(event.getAmount() * SoulSkillParameters.FIRMAMENT_REVERSED_CONVERT_RATIO);
+            event.setCanceled(true);
+            return;
+        }
+        if (player.hasEffect(ModEffects.LIFE_RETURN.get())) {
+            SoulStorage storage = SoulStorage.of(player);
+            storage.setLifeReturnLost(storage.getLifeReturnLost() + event.getAmount());
+        }
+    }
+
+    /// 血怒：击杀额外收魂。
+    private static void bloodRageSoul(SoulCollectionEvent event) {
+        if (event.getEntity().hasEffect(ModEffects.BLOOD_RAGE.get())) {
+            event.setAmount(event.getAmount() + SoulSkillParameters.BLOOD_RAGE_KILL_SOUL_BONUS);
+        }
+    }
+
+    /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。    ///
     /// 该入口位于护甲、抗性和暴击等后续减伤之前，因此普通近战、固定接触伤害以及
     /// Boss 所有的弹幕共享完全相同的基础伤害倍率，不需要每个攻击类重复读取 JSON。
     private static void applyBossDefinitionDamage(PortLivingIncomingDamageEvent event, LivingEntity victim, DamageSource source) {
@@ -402,6 +540,11 @@ public final class LivingEntityEvents {
             event.setCritical(shot.getRandom1211().nextFloat() < shot.getCriticalChance());
         } else if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
+            // 白南瓜全套：近战暴击回复灵魂
+            if (event.isCritical() && event.getDamageSource().getDirectEntity() == player
+                    && PlayerUtils.isWearingWhitePumpkinSet(player)) {
+                SoulStorage.of(player).receive(SoulSkillParameters.WHITE_PUMPKIN_CRIT_SOUL);
+            }
         }
     }
 

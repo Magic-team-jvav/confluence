@@ -10,6 +10,6 @@ import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 public class EnhancedSoulEffect extends PortMobEffect {
     public EnhancedSoulEffect() {
         super(MobEffectCategory.BENEFICIAL, 0x6080FF);
-        addAttributeModifier(LibAttributes.getSoulDamage(), Confluence.asResource("enhanced_soul"), SoulSkillParameters.ENHANCED_SOUL_DAMAGE_MULTIPLIER - 1.0, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        addAttributeModifier(LibAttributes.getSoulDamage(), Confluence.asResource("enhanced_soul"), (double) SoulSkillParameters.ENHANCED_SOUL_DAMAGE_BONUS, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 }

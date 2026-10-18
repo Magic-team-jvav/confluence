@@ -1,10 +1,19 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModSoulSkills;
+import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
+import org.confluence.mod.common.item.soulcerer.SoulKnifeItem;
+import org.confluence.mod.common.item.soulcerer.SoulLanternItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.soulcerer.FallenSoulCoreItem;
@@ -13,12 +22,38 @@ import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import java.util.List;
+import java.util.Map;
 
 public class SoulItems {
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
     public static final PortDeferredItem<FallenSoulCoreItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new FallenSoulCoreItem(new Item.Properties(), ModRarity.BLUE));
     public static final PortDeferredItem<SoulSkillBookItem> SOUL_SKILL_BOOK = ITEMS.register("soulcerer_skill_book", () -> new SoulSkillBookItem(new Item.Properties(), ModRarity.WHITE));
     public static final PortDeferredItem<SoulWeaponItem> BROKEN_GLIMMER = ITEMS.register("broken_glimmer", () -> new SoulWeaponItem(new Item.Properties().stacksTo(1), ModRarity.WHITE, SoulSkillParameters.BROKEN_GLIMMER_DAMAGE, List.of(Confluence.asResource("survival_instinct"))));
+    public static final PortDeferredItem<SoulLanternItem> SOUL_CONDUIT = ITEMS.register("soul_conduit", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.WHITE, 5.0F, 0.04F));
+    public static final PortDeferredItem<SoulLanternItem> PILLAGING_FLAME = ITEMS.register("pillaging_flame", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, 7.0F, 0.04F, List.<ResourceLocation>of(ModSoulSkills.SOUL_PLUNDER.get().getId())));
+    public static final PortDeferredItem<SoulLanternItem> TRUFFLE_LANTERN = ITEMS.register("truffle_lantern", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.GREEN, 8.0F, 0.04F, List.<ResourceLocation>of(ModSoulSkills.CONFUSE_SPORES.get().getId())));
+    public static final PortDeferredItem<SoulLanternItem> SOUL_CHANT_GUIDE = ITEMS.register("soul_chant_guide", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.GREEN, 9.0F, 0.08F));
+    public static final PortDeferredItem<SoulLanternItem> LIFE_SPLENDOR = ITEMS.register("life_splendor", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.ORANGE, 11.0F, 0.04F, List.<ResourceLocation>of(ModSoulSkills.NATURES_WRATH.get().getId())));
+    public static final PortDeferredItem<SoulLanternItem> STAR_SPIRIT = ITEMS.register("star_spirit", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.ORANGE, 11.0F, 0.04F, List.<ResourceLocation>of(ModSoulSkills.STAR_CALL.get().getId())));
+    public static final PortDeferredItem<SoulLanternItem> DAY_AND_NIGHT_ALIKE = ITEMS.register("day_and_night_alike", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.LIGHT_RED, 13.0F, 0.04F, List.<ResourceLocation>of(ModSoulSkills.KARMA_FLAME.get().getId(), ModSoulSkills.PROFANE_SOUL.get().getId())));
+    public static final PortDeferredItem<SoulLanternItem> SENIOR_PATHFINDER_PRO = ITEMS.register("senior_pathfinder_pro", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.YELLOW, 16.0F, 0.04F));
+    /// 副武器：战士侧武器，只吃近战伤害加成（6 点伤害 / 1.6 攻速 / 4% 基础暴击 / +0.4 击退）。
+    public static final PortDeferredItem<SoulKnifeItem> SPIRITWARD_BLADE = ITEMS.register("spiritward_blade", () -> new SoulKnifeItem(
+            new Item.Properties().stacksTo(1).attributes(ModItems.createAttributes(ModTiers.UNBREAKABLE, 4.0F, -2.4F, ModItems.attributes(0, 0.4F))),
+            ModRarity.BLUE));
+
+    /// 首次获得即永久学会的技能：物品 → 技能 ID。新增首得解锁只在此登记，判定入口为 PlayerUtils.learnSoulSkillsOnFirstObtain。
+    public static final Map<PortDeferredItem<? extends Item>, List<ResourceLocation>> FIRST_OBTAIN_SOUL_SKILLS = Map.of(
+            LIFE_SPLENDOR, List.of(ModSoulSkills.LAW_OF_NATURE.get().getId())
+    );
+
+    /// 生成绑定指定书籍的技能书，供创造栏、战利品与交易共用。
+    public static ItemStack soulBook(ResourceLocation bookId) {
+        ItemStack stack = SOUL_SKILL_BOOK.toStack();
+        stack.set(ModDataComponentTypes.SOUL_SKILL.get(), bookId);
+        stack.set(ConfluenceMagicLib.MOD_RARITY, SoulBooks.rarity(bookId));
+        return stack;
+    }
 
     /// 注册魂师物品，不登记尚未定义的具体法器。
     public static void register(IEventBus eventBus) {

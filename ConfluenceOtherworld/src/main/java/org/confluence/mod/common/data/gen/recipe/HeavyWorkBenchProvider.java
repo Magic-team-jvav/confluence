@@ -74,6 +74,27 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#aa#"
         )), TFBlocks.GLASS_KILN.toStack());
 
+        // 魂灯
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(SoulItems.SOUL_CONDUIT),
+                'b', AmountIngredient.of(2, Items.GOLD_INGOT),
+                'c', AmountIngredient.of(4, MaterialItems.RUBY)
+        ), List.of(
+                "bbb",
+                "cac",
+                " b "
+        )), SoulItems.SOUL_CHANT_GUIDE.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(SoulItems.SOUL_CHANT_GUIDE),
+                'b', AmountIngredient.of(3, MaterialItems.STINGER),
+                'c', Ingredient.of(AccessoryItems.NATURES_GIFT),
+                'd', AmountIngredient.of(3, MaterialItems.JUNGLE_SPORE)
+        ), List.of(
+                "dcd",
+                "bab",
+                " d "
+        )), SoulItems.LIFE_SPLENDOR.toStack());
+
         // 基础钩爪
         baseHook(writer, Ingredient.of(MaterialItems.HOOK), Ingredient.of(Items.CHAIN), HookItems.GRAPPLING_HOOK.toStack());
         baseHook(writer, Ingredient.of(DecorativeBlocks.RUBY_BLOCK), Ingredient.of(DecorativeBlocks.RUBY_CHAIN), HookItems.RUBY_HOOK.toStack());

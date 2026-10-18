@@ -27,6 +27,8 @@ import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
 import org.mesdag.portlib.wrapper.common.PortEffectCure;
 import org.confluence.mod.common.effect.soulcerer.EnhancedSoulEffect;
+import org.confluence.mod.common.effect.soulcerer.GoOverEffect;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -41,6 +43,16 @@ public final class ModEffects {
     public static final RegistryObject<MobEffect> ELECTRIFIED = registerEffect("electrified", "带电", ElectrifiedEffect::new);
     public static final PortEffectCure CANNOT_REMOVE_BY_NURSE = PortEffectCure.get("confluence:cannot_remove_by_nurse");
     public static final RegistryObject<EnhancedSoulEffect> ENHANCED_SOUL = registerEffectWithEnglishName("enhanced_soul", "强力附魂", "Enhanced Soul", EnhancedSoulEffect::new);
+    public static final RegistryObject<GoOverEffect> GO_OVER = registerEffectWithEnglishName("go_over", "复习", "Go Over", GoOverEffect::new);
+    /// 魂师「附魂」类技能对应的同名增益：效果名、图标与技能一一对应。
+    public static final RegistryObject<MobEffect> BLOOD_RAGE = registerEffectWithEnglishName("blood_rage", "血怒", "Blood Rage", ModEffects::bloodRageEffect);
+    public static final RegistryObject<MobEffect> SOUL_PLUNDER = registerEffectWithEnglishName("soul_plunder", "掠夺之魂", "Soul Plunder", ModEffects::soulPlunderEffect);
+    public static final RegistryObject<MobEffect> SOUL_DRAIN = registerEffectWithEnglishName("soul_drain", "灵魂透支", "Soul Drain", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x7030C0));
+    public static final RegistryObject<MobEffect> SOUL_DRAIN_LOCK = registerEffectWithEnglishName("soul_drain_lock", "灵魂枯竭", "Soul Depleted", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x301050));
+    public static final RegistryObject<MobEffect> STAR_CALL = registerEffectWithEnglishName("star_call", "魂引天星", "Star Call", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFE070));
+    public static final RegistryObject<MobEffect> LIFE_RETURN = registerEffectWithEnglishName("life_return", "生命归还", "Life Return", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF80A0));
+    public static final RegistryObject<MobEffect> FIRMAMENT_REVERSED = registerEffectWithEnglishName("firmament_reversed", "天穹倒转", "Firmament Reversed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x80D0FF));
+    public static final RegistryObject<MobEffect> BOILING_BLOOD = registerEffectWithEnglishName("boiling_blood", "血液沸腾", "Boiling Blood", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x900000));
 
     public static final RegistryObject<MobEffect> EXQUISITELY_STUFFED = register("exquisitely_stuffed", "酒足饭饱", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, ADD_VALUE, v -> exquisitelyStuffed(v, 0.04, 0.06, 0.08))
@@ -208,6 +220,17 @@ public final class ModEffects {
         return entry;
     }
 
+    private static MobEffect bloodRageEffect() {
+        return new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xC02020)
+                .addAttributeModifier(LibAttributes.getAttackDamage(), Confluence.asResource("blood_rage"), SoulSkillParameters.BLOOD_RAGE_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL)
+                .addAttributeModifier(LibAttributes.getRangedDamage(), Confluence.asResource("blood_rage"), SoulSkillParameters.BLOOD_RAGE_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL);
+    }
+
+    private static MobEffect soulPlunderEffect() {
+        return new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xE0A020)
+                .addAttributeModifier(LibAttributes.getAttackDamage(), Confluence.asResource("soul_plunder"), SoulSkillParameters.SOUL_PLUNDER_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL)
+                .addAttributeModifier(LibAttributes.getRangedDamage(), Confluence.asResource("soul_plunder"), SoulSkillParameters.SOUL_PLUNDER_DAMAGE_BONUS, ADD_MULTIPLIED_TOTAL);
+    }
     private static <T extends MobEffect> RegistryObject<T> registerEffect(String registryId, String chineseName, Supplier<T> factory) {
         RegistryObject<T> entry = EFFECTS.register(registryId, factory);
         LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));

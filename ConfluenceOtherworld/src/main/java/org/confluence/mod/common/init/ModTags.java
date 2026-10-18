@@ -481,6 +481,7 @@ public final class ModTags {
         public static final TagKey<Biome> THE_END_SEA = register("the_end_sea");
         public static final TagKey<Biome> VANITY_TREES_REPLACEABLE = register("vanity_trees_replaceable");
         public static final TagKey<Biome> HAS_STRUCTURE_ENCHANTED_SWORD_SHRINE = register("has_structure/enchanted_sword_shrine");
+        public static final TagKey<Biome> HAS_STRUCTURE_GLOWING_MUSHROOM_UNDERGROUND_CABINS = register("has_structure/glowing_mushroom_underground_cabins");
         public static final TagKey<Biome> HAS_STRUCTURE_ICE_UNDERGROUND_CABINS = register("has_structure/ice_underground_cabins");
         public static final TagKey<Biome> HAS_STRUCTURE_JUNGLE_UNDERGROUND_CABINS = register("has_structure/jungle_underground_cabins");
         public static final TagKey<Biome> HAS_STRUCTURE_MINE_TUNNELS = register("has_structure/mine_tunnels");
@@ -534,6 +535,12 @@ public final class ModTags {
         public static final TagKey<SoulSkill> SOUL = register("soul");
         public static final TagKey<SoulSkill> BLOOD_NATURE = register("blood_nature");
         public static final TagKey<SoulSkill> STAR_LURE = register("star_lure");
+        /// 附魂：所有给自己挂同名增益的技能，含自动触发的附魂激荡与状态类技能。
+        public static final TagKey<SoulSkill> SOUL_ATTACH = register("soul_attach");
+        /// 被动：无法装备、学会即生效；术式轮转用这个标签跳过它们。
+        public static final TagKey<SoulSkill> PASSIVE = register("passive");
+        /// 引魂：迷魂孢雾、亵渎之魂、自然之惩戒、魂引天星、引魂激荡、强力引魂、引魂。
+        public static final TagKey<SoulSkill> SOUL_LURE = register("soul_lure");
 
         private static TagKey<SoulSkill> register(String id) {
             return Confluence.asTagKey(ModSoulSkills.REGISTRY_KEY, id);

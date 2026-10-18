@@ -100,7 +100,6 @@ import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.SwordProjectileRenderer;
-import org.confluence.mod.client.renderer.entity.soulcerer.SoulLureRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.CthulhuEyeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.TerrarianProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
@@ -365,7 +364,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
         event.registerEntityRenderer(WHIP_ATTACK.get(), WhipAttackRenderer::new);
-        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), SoulLureRenderer::new);
+        // 引魂弹幕改由粒子风暴渲染，与服务端弹幕本身无需网格
+        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(SOUL_STING.get(), SoulStingProjectileRenderer::new);
         event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);
@@ -1041,6 +1042,8 @@ public final class ModClientEvents {
                 event.registerItem(ShortSwordInHandRenderer.INSTANCE, holder.get());
             }
         }
+        // 祈灵之刃在魂师体系里属于短剑，手持姿态与短剑一致
+        event.registerItem(ShortSwordInHandRenderer.INSTANCE, SoulItems.SPIRITWARD_BLADE.get());
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FRIGHT);

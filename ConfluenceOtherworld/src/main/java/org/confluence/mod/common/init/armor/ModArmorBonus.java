@@ -78,6 +78,8 @@ public final class ModArmorBonus {
 
     public static final ValueType.UnitType CACTUS$THORNS = ValueType.UnitType.of(Confluence.asResource("thorns"));
     public static final ValueType.FloatType SKIP$CONSUME$AMMO$CHANCE = ValueType.FloatType.of(Confluence.asResource("skip_consume_ammo_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
+    /// 收魂时额外获得的灵魂，逐件与套装共用同一个值类型。
+    public static final ValueType.FloatType SOUL$DROP = ValueType.FloatType.of(Confluence.asResource("soul_drop"), FloatValue.ADDITION, 0);
     public static final ValueType.UnitType SPACE$GUN$FREE = ValueType.UnitType.of(Confluence.asResource("space_gun_free"));
     public static final ValueType.FloatType HEAL$AMOUNT$MULTIPLIER = ValueType.FloatType.of(Confluence.asResource("heal_amount_multiplier"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
     public static final ValueType<List<MobEffectInstanceData>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
@@ -129,6 +131,25 @@ public final class ModArmorBonus {
                     .add(LibAttributes.getMagicDamage(), key.id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(LibAttributes.getSummonDamage(), key.id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
+        });
+        // 白南瓜套装：近战暴击回魂由 LivingEntityEvents.processCriticalDamage 结算，这里只保留套装识别与说明行
+        register("white_pumpkin_set", 1, WHITE_PUMPKIN_HELMET, WHITE_PUMPKIN_CHESTPLATE, WHITE_PUMPKIN_LEGGINGS, WHITE_PUMPKIN_BOOTS, key -> {
+        });
+        // 魂师套装：灵魂上限直接加在 ADDITIONAL_SOUL 属性上，SoulStorage 会实时读取
+        register("hermit_set", 1, HERMIT_HELMET, HERMIT_CHESTPLATE, HERMIT_LEGGINGS, HERMIT_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.ADDITIONAL_SOUL, key.id, 20, PortAttributeModifier.Operation.ADD_VALUE));
+        });
+        register("seeker_set", 2, SEEKER_HELLMET, SEEKER_CHESTPLATE, SEEKER_LEGGINGS, SEEKER_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.ADDITIONAL_SOUL, key.id, 40, PortAttributeModifier.Operation.ADD_VALUE));
+        });
+        register("souldancer_robe_set", 2, SOULDANCER_HOOD, SOULDANCER_ROBE, Items.AIR, Items.AIR, key -> {
+            // 收集灵魂后的限时增益由 PlayerUtils.tickSoulArmorSets 结算，这里只保留套装识别与说明行
+        });
+        register("phantom_set", 1, PHANTOM_HELMET, PHANTOM_CHESTPLATE, PHANTOM_LEGGINGS, PHANTOM_BOOTS, key -> {
+            key.of(SOUL$DROP, 1.0F); // 夜间再 +2 由 SoulCollectionEvent 监听补足
+        });
+        // 蓝隐匿者的耐药性削减由 PlayerUtils.onSoulSpent 结算，这里只保留套装识别与说明行
+        register("blue_hermit_set", 1, BLUE_HERMIT_HELMET, BLUE_HERMIT_CHESTPLATE, BLUE_HERMIT_LEGGINGS, BLUE_HERMIT_BOOTS, key -> {
         });
         NINJA_SET = register("ninja_set", 1, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));

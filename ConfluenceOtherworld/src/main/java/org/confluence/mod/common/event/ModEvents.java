@@ -209,10 +209,14 @@ public final class ModEvents {
                     AccessoryItems.MANA_CLOAK, AccessoryItems.PHILOSOPHERS_STONE, AccessoryItems.CHARM_OF_MYTHS);
             // 战斗
             TCTabs.acceptGroup(output, "combat",
-                    AccessoryItems.CELESTIAL_EMBLEM, AccessoryItems.SUMMONER_EMBLEM, AccessoryItems.APPRENTICES_SCARF,
+                    AccessoryItems.CELESTIAL_EMBLEM, AccessoryItems.SUMMONER_EMBLEM, AccessoryItems.SOULCERER_EMBLEM,
+                    AccessoryItems.APPRENTICES_SCARF,
                     AccessoryItems.SQUIRES_SHIELD, AccessoryItems.HUNTRESSS_BUCKLER, AccessoryItems.MONKS_BELT,
                     AccessoryItems.HERCULES_BEETLE, AccessoryItems.NECROMANTIC_SCROLL, AccessoryItems.PAPYRUS_SCARAB,
-                    AccessoryItems.PYGMY_NECKLACE);
+                    AccessoryItems.PYGMY_NECKLACE,
+                    // 魂师：灵魂手环与刻骨的记忆
+                    AccessoryItems.BAND_OF_SOUL, AccessoryItems.BAND_OF_SOUL_REGENERATION,
+                    AccessoryItems.BAND_OF_MEDIUMSHIP, AccessoryItems.MEMORY_OF_BONEBRAND);
             // 减益免疫
             TCTabs.acceptGroup(output, "debuff_immunity",
                     AccessoryItems.ADHESIVE_BANDAGE, AccessoryItems.MEDICATED_BANDAGE, AccessoryItems.POCKET_MIRROR,

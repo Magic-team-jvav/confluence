@@ -1011,6 +1011,19 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         shapeless(writer, MaterialItems.RAW_ASPHALT.toStack(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
 
+        // 魂灯
+        shapeless(writer, SoulItems.SOUL_CONDUIT.toStack(), Ingredient.of(Items.LANTERN), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
+        // 劫掠之火：1.20.1 没有不祥之瓶（1.21 新增），用同档的龙息替代
+        shapeless(writer, SoulItems.PILLAGING_FLAME.toStack(), Ingredient.of(Items.EMERALD), Ingredient.of(MaterialItems.JADE), Ingredient.of(Items.DRAGON_BREATH), Ingredient.of(SoulItems.SOUL_CONDUIT));
+        shapeless(writer, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(SwordItems.STARFURY), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
+
+        // 祈灵之刃：堕魂星核 + 铁短剑/铅短剑
+        shapeless(writer, SoulItems.SPIRITWARD_BLADE.toStack(), Ingredient.of(SoulItems.FALLEN_SOUL_CORE), Ingredient.of(SwordItems.IRON_SHORT_SWORD, SwordItems.LEAD_SHORT_SWORD));
+
+        // 灵魂手环：星力手环 + 堕魂星核，可反向拆回
+        shapeless(writer, AccessoryItems.BAND_OF_SOUL.toStack(), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
+        shapeless(writer, AccessoryItems.BAND_OF_STARPOWER.toStack(), Ingredient.of(AccessoryItems.BAND_OF_SOUL));
+
         registerTemporaryRecipes(writer);
 
         writer.accept(new UnitFinishedRecipe(BoomBunnyRecipe.getInstance()));

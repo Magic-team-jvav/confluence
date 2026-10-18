@@ -7,6 +7,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.soulcerer.SoulOverviewScreen;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
@@ -52,15 +53,15 @@ public class HotbarWidget extends AbstractWidget {
         if (slots.isEmpty()) {
             return;
         }
-        guiGraphics.blitSprite(BOTTOM_BOX_HEAD, getX(), getY(), 16, 32);
+        guiGraphics.blitSprite(new PortSprite(BOTTOM_BOX_HEAD, 16, 32), getX(), getY(), 16, 32);
         int x = getX() + 16;
         if (slots.size() > 1) {
             for (int i = 1; i < slots.size(); i++) {
-                guiGraphics.blitSprite(BOTTOM_BOX_CENTRE, x, getY(), 20, 32);
+                guiGraphics.blitSprite(new PortSprite(BOTTOM_BOX_CENTRE, 20, 32), x, getY(), 20, 32);
                 x += 20;
             }
         }
-        guiGraphics.blitSprite(BOTTOM_BOX_TAIL, x, getY(), 16, 32);
+        guiGraphics.blitSprite(new PortSprite(BOTTOM_BOX_TAIL, 16, 32), x, getY(), 16, 32);
     }
 
     /// 设置快捷栏横坐标并更新槽位位置。

@@ -30,6 +30,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.loot.*;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -82,6 +83,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(BossEntities.THE_DESTROYER_PROBE.get(), LootTable.lootTable());
         add(BossEntities.LUNATIC_CULTIST_CLONE.get(), LootTable.lootTable());
+        // 鬼魂：1% 概率掉落引渡者
+        add(MonsterEntities.GHOST.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
+                                .when(LootItemRandomChanceCondition.randomChance(0.01F))
+                                .apply(BindSoulSkillFunction.bind(SoulBooks.PSYCHOPOMP)))
+                )
+        );
         add(MonsterEntities.VISUAL_NEURON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(50, hearts))))
                 .withPool(LootPool.lootPool()

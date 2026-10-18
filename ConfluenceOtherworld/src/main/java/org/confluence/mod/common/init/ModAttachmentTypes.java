@@ -12,8 +12,9 @@ public final class ModAttachmentTypes {
 
     public static final PortAttachmentRegistration TYPES = PortRegisterHandler.attachment(Confluence.MODID);
 
-    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ManaStorage>> MANA_STORAGE = TYPES.register("mana", () -> PortAttachmentType.serializable(ManaStorage::new).copyOnDeath().build());
-    //    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SoulStorage>> SOUL_STORAGE = TYPES.register("soul", () -> PortAttachmentType.serializable(SoulStorage::new).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ManaStorage>> MANA_STORAGE = TYPES.register("mana", () -> PortAttachmentType.serializable(holder -> new ManaStorage(holder)).copyOnDeath().build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SoulStorage>> SOUL_STORAGE = TYPES.register("soul", () -> PortAttachmentType.serializable(SoulStorage::new).copyOnDeath().sync(SoulStorage.SYNC_HANDLER).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SoulSkillStorage>> SOUL_SKILL_STORAGE = TYPES.register("soulcerer_skill", () -> PortAttachmentType.serializable(SoulSkillStorage::new).copyOnDeath().build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<EverBeneficial>> EVER_BENEFICIAL = TYPES.register("ever_beneficial", () -> PortAttachmentType.serializable(EverBeneficial::new).copyOnDeath().build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ExtraInventory>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> PortAttachmentType.serializable(() -> new ExtraInventory(true)).copyOnDeath().build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerPiggyBankContainer>> PIGGY_BANK = TYPES.register("piggy_bank", () -> PortAttachmentType.serializable(PlayerPiggyBankContainer::new).copyOnDeath().build());

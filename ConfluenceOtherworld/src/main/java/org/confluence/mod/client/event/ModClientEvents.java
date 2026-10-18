@@ -63,7 +63,7 @@ import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeItemOutline;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.SoulSkillHandler;
+import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
@@ -133,6 +133,7 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
 import org.mesdag.portlib.registries.PortRegistryEntry;
+import org.confluence.mod.client.renderer.entity.soulcerer.SoulLureRenderer;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
@@ -240,21 +241,19 @@ public final class ModClientEvents {
         event.registerBelow(VanillaGuiOverlay.ARMOR_LEVEL.id(), healthHud, new TerraStyleHealthHud());
         ResourceLocation armorHud = Confluence.asResource("armor_hud");
         event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
-        ResourceLocation manaHud = Confluence.asResource("mana_hud");
-        event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(), manaHud, new TerraStyleManaHud());
         ResourceLocation foodHud = Confluence.asResource("food_hud");
-        event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
+        event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(), foodHud, new TerraStyleFoodHud());
 
         event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), Confluence.asResource("house_select"), new HouseSelectHud());
         event.registerBelow(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id(), Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
 
         if (Confluence.SOUL_SKILLS) {
-            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_l_hud"), SoulSkillHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_r_hud"), SoulSkillHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("roulette_wheel_small_hud"), SoulSkillHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
-            event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("current_selected_skill_hud"), SoulSkillHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
-            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("roulette_wheel_big_hud"), SoulSkillHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
-            SoulSkillHandler.INSTANCE.init();
+            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_l_hud"), ClientSoulHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
+            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_r_hud"), ClientSoulHandler.CARD_HORIZONTAL_R_HUD_INSTANCE);
+            event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("roulette_wheel_small_hud"), ClientSoulHandler.ROULETTE_WHEEL_SMALL_HUD_INSTANCE);
+            event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), Confluence.asResource("current_selected_skill_hud"), ClientSoulHandler.CURRENT_SELECTED_SKILL_HUD_INSTANCE);
+            event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("roulette_wheel_big_hud"), ClientSoulHandler.ROULETTE_WHEEL_BIG_HUD_INSTANCE);
+            ClientSoulHandler.initSoulSkills();
         }
     }
 
@@ -363,6 +362,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
         event.registerEntityRenderer(WHIP_ATTACK.get(), WhipAttackRenderer::new);
+        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), SoulLureRenderer::new);
+        event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(CRYSTAL_VILE_SHARD.get(), CrystalVileShardProjectileRenderer::new);

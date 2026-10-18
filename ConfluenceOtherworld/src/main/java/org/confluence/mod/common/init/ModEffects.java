@@ -26,6 +26,7 @@ import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
 import org.mesdag.portlib.wrapper.common.PortEffectCure;
+import org.confluence.mod.common.effect.soulcerer.EnhancedSoulEffect;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -39,6 +40,7 @@ public final class ModEffects {
     public static final RegistryObject<MobEffect> JUNGLES_FURY = registerEffectWithEnglishName("jungles_fury", "丛林之怒", "Jungle's Fury", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x669933));
     public static final RegistryObject<MobEffect> ELECTRIFIED = registerEffect("electrified", "带电", ElectrifiedEffect::new);
     public static final PortEffectCure CANNOT_REMOVE_BY_NURSE = PortEffectCure.get("confluence:cannot_remove_by_nurse");
+    public static final RegistryObject<EnhancedSoulEffect> ENHANCED_SOUL = registerEffectWithEnglishName("enhanced_soul", "强力附魂", "Enhanced Soul", EnhancedSoulEffect::new);
 
     public static final RegistryObject<MobEffect> EXQUISITELY_STUFFED = register("exquisitely_stuffed", "酒足饭饱", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, ADD_VALUE, v -> exquisitelyStuffed(v, 0.04, 0.06, 0.08))

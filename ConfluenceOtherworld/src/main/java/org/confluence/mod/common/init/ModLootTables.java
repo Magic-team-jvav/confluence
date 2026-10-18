@@ -139,6 +139,8 @@ public final class ModLootTables {
     public static class ItemFunctions {
         public static final DeferredRegister<LootItemFunctionType> TYPES = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, Confluence.MODID);
 
+        public static final RegistryObject<LootItemFunctionType> BIND_SOUL_SKILL = register("bind_soul_skill", BindSoulSkillFunction.CODEC);
+
         public static final RegistryObject<LootItemFunctionType> LOOTING_BONUS_COUNT =
                 TYPES.register("looting_bonus_count", () -> new LootItemFunctionType(new LootingBonusCountFunction.Serializer()));
 

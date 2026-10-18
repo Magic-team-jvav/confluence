@@ -26,6 +26,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
+import org.objectweb.asm.Opcodes;
 
 import javax.annotation.Nullable;
 
@@ -43,6 +46,14 @@ public abstract class MinecraftMixin {
     @Shadow
     @Nullable
     public Screen screen;
+
+    /// 数字键完成快捷栏选择后尝试使用前三格中的法器。
+    @Inject(method = "handleKeybinds", at = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/player/Inventory;selected:I", opcode = Opcodes.PUTFIELD, shift = At.Shift.AFTER))
+    private void confluence$useQuickSoulArtifact(CallbackInfo ci) {
+        if (Confluence.SOUL_SKILLS) {
+            ClientSoulHandler.useQuickSoulArtifact();
+        }
+    }
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
     private void setSecretFlag(CallbackInfo ci, @Local(argsOnly = true) WorldStem worldStem, @Local LevelLoadingScreen screen) {

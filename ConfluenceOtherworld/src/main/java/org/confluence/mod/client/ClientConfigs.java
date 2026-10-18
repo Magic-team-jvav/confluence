@@ -17,7 +17,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.SoulSkillHandler;
+import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
@@ -60,7 +60,7 @@ public final class ClientConfigs {
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
-    public static SoulSkillHandler.Type soulQuickSkillStyle;
+    public static ClientSoulHandler.Type soulQuickSkillStyle;
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
@@ -105,7 +105,7 @@ public final class ClientConfigs {
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
-    private static EnumValue<SoulSkillHandler.Type> SOUL_QUICK_SKILL_STYLE;
+    private static EnumValue<ClientSoulHandler.Type> SOUL_QUICK_SKILL_STYLE;
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
@@ -230,8 +230,8 @@ public final class ClientConfigs {
                 builder.pop();
             }
             if (Confluence.SOUL_SKILLS) {
-                builder.push("Soul");
-                SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulQuickSkillStyle", SoulSkillHandler.Type.ROULETTE_WHEEL_SMALL);
+                builder.push("Soulcerer");
+                SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulcererQuickSkillStyle", ClientSoulHandler.Type.ROULETTE_WHEEL_SMALL);
                 builder.pop();
             }
             {

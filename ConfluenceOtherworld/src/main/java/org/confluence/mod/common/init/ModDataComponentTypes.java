@@ -1,5 +1,7 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.resources.ResourceLocation;
+
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.RepeaterContents;
@@ -10,6 +12,7 @@ import org.mesdag.portlib.component.PortDataComponentType;
 import org.mesdag.portlib.registries.PortDataComponentRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
+import org.mesdag.portlib.wrapper.common.extensions.IPortResourceLocationExtension;
 
 public final class ModDataComponentTypes {
     public static void init() {}
@@ -21,5 +24,6 @@ public final class ModDataComponentTypes {
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<ValueComponent>> VALUE = TYPES.builder("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.builder("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.builder("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<ResourceLocation>> SOUL_SKILL = TYPES.builder("soulcerer_skill", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(IPortResourceLocationExtension.STREAM_CODEC));
 
 }

@@ -16,8 +16,10 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
+import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 
 public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
+    private IPortAttachmentHolder owner;
     private int stars;
     private int additionalMana;
     private float currentMana;
@@ -36,6 +38,11 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         this.fastManaRegeneration = false;
 
         this.arcaneCrystalUsed = false;
+    }
+
+    public ManaStorage(IPortAttachmentHolder owner) {
+        this();
+        this.owner = owner;
     }
 
     @Override
@@ -84,7 +91,12 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
     }
 
     public float getCurrentMana() {
-        return currentMana;
+        return isSoulMode() ? 0.0F : currentMana;
+    }
+
+    /// 设置当前魔力，灵魂模式始终保持为零。
+    public void setCurrentMana(float currentMana) {
+        this.currentMana = isSoulMode() ? 0.0F : Mth.clamp(currentMana, 0.0F, getMaxMana());
     }
 
     public int getRegenerateDelay() {
@@ -108,17 +120,25 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     public void freshMaxMana() {
         this.maxMana = stars * 20 + additionalMana;
-        if (currentMana > maxMana) {
+        if (isSoulMode()) {
+            this.currentMana = 0.0F;
+        } else if (currentMana > maxMana) {
             this.currentMana = maxMana;
         }
     }
 
     public boolean canExtract() {
-        return currentMana > 0;
+        return !isSoulMode() && currentMana > 0;
     }
 
     public boolean canReceive() {
-        return currentMana < getMaxMana();
+        return !isSoulMode() && currentMana < getMaxMana();
+    }
+
+    /// 只读取已存在的灵魂附件，避免构造和读档阶段相互创建。
+    private boolean isSoulMode() {
+        return owner instanceof LivingEntity living && living.hasData(ModAttachmentTypes.SOUL_STORAGE)
+                && SoulStorage.of(living).isSoulMode();
     }
 
     public boolean addStar() {

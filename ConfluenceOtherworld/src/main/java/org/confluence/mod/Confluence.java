@@ -46,6 +46,7 @@ import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.confluence.mod.common.init.item.SoulItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,6 +114,7 @@ public final class Confluence {
 
         ModBlocks.init(eventBus);
         ModItems.init();
+        SoulItems.register(eventBus);
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
@@ -129,6 +131,7 @@ public final class Confluence {
         ModDataComponentTypes.init();
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.init();
+        ModSoulSkills.register(eventBus);
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.init();

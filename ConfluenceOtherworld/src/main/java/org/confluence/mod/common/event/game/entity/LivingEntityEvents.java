@@ -108,6 +108,8 @@ import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.living.*;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
+import org.confluence.mod.api.event.SoulOverdraftEvent;
+import org.confluence.mod.common.attachment.SoulStorage;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Collection;
@@ -119,6 +121,7 @@ public final class LivingEntityEvents {
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.HIGHEST, LivingEntityEvents::blockEnemyFriendlyFire);
         PortEventHandler.addListener(LivingEntityEvents::death);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::deathSoul);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::dropMoneyOnDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, DungeonSpirit::onDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
@@ -210,6 +213,15 @@ public final class LivingEntityEvents {
         }
     }
 
+    /// 在未取消的死亡结算后保留玩家灵魂，并处理击杀收魂。
+    private static void deathSoul(LivingDeathEvent event) {
+        LivingEntity victim = event.getEntity();
+        if (victim instanceof ServerPlayer player) {
+            SoulStorage.of(player).onDeath();
+        }
+        PlayerUtils.collectSoul(victim, event.getSource());
+    }
+
     private static void dropMoneyOnDeath(LivingDeathEvent event) {
         if (!event.isCanceled() && event.getEntity() instanceof ServerPlayer player) {
             PlayerUtils.dropMoney(player);
@@ -245,11 +257,26 @@ public final class LivingEntityEvents {
     }
 
     private static void incomingDamage(PortLivingIncomingDamageEvent event) {
+        DamageSource damageSource = event.getSource();
+        if (damageSource.is(LibTags.DamageTypes.SOUL_OVERDRAFT)) {
+            if (event.getEntity() instanceof ServerPlayer player) {
+                SoulOverdraftEvent overdraftEvent = PortEventHandler.postEventWithReturn(new SoulOverdraftEvent(player, event.getAmount()));
+                float amount = Math.max(0.0F, overdraftEvent.getAmount());
+                if (overdraftEvent.isCanceled() || !player.isAlive() || amount <= 0.0F) {
+                    event.setCanceled(true);
+                    return;
+                }
+
+                event.setAmount(amount);
+            }
+
+            return;
+        }
+
         if (EnemyDamageRules.blocks(event.getEntity(), event.getSource())) {
             event.setCanceled(true);
             return;
         }
-        DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
 
         applyBossDefinitionDamage(event, living, damageSource);

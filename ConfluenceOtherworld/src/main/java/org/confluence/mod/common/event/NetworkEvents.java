@@ -20,6 +20,9 @@ public final class NetworkEvents {
         PortPayloadHandler handler = event.registrar("1");
 
         // C2S
+        handler.registerInGameC2S(SoulSkillUsePacketC2S.class, SoulSkillUsePacketC2S.ID, SoulSkillUsePacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(SoulSkillIndexRequestPacketC2S.class, SoulSkillIndexRequestPacketC2S.ID, SoulSkillIndexRequestPacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(SoulSkillRequestPacketC2S.class, SoulSkillRequestPacketC2S.ID, SoulSkillRequestPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(NPCDialogSessionPacketC2S.class, NPCDialogSessionPacketC2S.ID, NPCDialogSessionPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(ApplySelectionPacketC2S.class, ApplySelectionPacketC2S.ID, ApplySelectionPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(DyeMixPacketC2S.class, DyeMixPacketC2S.ID, DyeMixPacketC2S.STREAM_CODEC);
@@ -47,6 +50,9 @@ public final class NetworkEvents {
         handler.registerInGameC2S(WhipControlPacketC2S.class, WhipControlPacketC2S.ID, WhipControlPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(WhipPlaybackCompletePacketC2S.class, WhipPlaybackCompletePacketC2S.ID, WhipPlaybackCompletePacketC2S.STREAM_CODEC);
         // S2C
+        handler.registerInGameS2C(SoulSkillIndexSyncPacketS2C.class, SoulSkillIndexSyncPacketS2C.ID, SoulSkillIndexSyncPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(SoulSkillSyncPacketS2C.class, SoulSkillSyncPacketS2C.ID, SoulSkillSyncPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(SoulSkillUsePacketS2C.class, SoulSkillUsePacketS2C.ID, SoulSkillUsePacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(AchievementOffsetSyncPacketS2C.class, AchievementOffsetSyncPacketS2C.ID, AchievementOffsetSyncPacketS2C.STREAM_CODEC);
 //        handler.registerInGameS2C(AchievementsDataSyncPacketS2C.class, AchievementsDataSyncPacketS2C.ID, AchievementsDataSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(AvailableHouseSelectPacketS2C.class, AvailableHouseSelectPacketS2C.ID, AvailableHouseSelectPacketS2C.STREAM_CODEC);

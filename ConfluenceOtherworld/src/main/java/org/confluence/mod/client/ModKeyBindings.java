@@ -36,7 +36,7 @@ public final class ModKeyBindings {
 
     /// 灵魂总览
     public static final Lazy<KeyMapping> SOUL_OVERVIEW = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
-            "key.confluence.soul.overview",
+            "key.confluence.soulcerer.overview",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_C,
@@ -45,7 +45,7 @@ public final class ModKeyBindings {
 
     /// 灵魂快捷技能切换
     public static final Lazy<KeyMapping> MAGIC_QUICK_SKILL_SWITCHING = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
-            "key.confluence.soul.quick_skill_switching",
+            "key.confluence.soulcerer.quick_skill_switching",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_LEFT_SHIFT,

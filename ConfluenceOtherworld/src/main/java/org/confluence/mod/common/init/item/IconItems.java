@@ -16,6 +16,7 @@ public class IconItems {
     public static final PortDeferredItem<IconItem> MATERIAL_ICON = register("material_icon", "材料图标");
     public static final PortDeferredItem<IconItem> BLOCKS_ICON = register("blocks_icon", "方块图标");
     public static final PortDeferredItem<IconItem> SORCERER_ICON = register("sorcerer_icon", "魔法职业图标");
+    public static final PortDeferredItem<IconItem> SOULCERER_ICON = register("soulcerer_icon", "魂师职业图标");
     public static final PortDeferredItem<IconItem> WARRIOR_ICON = register("warrior_icon", "近战职业图标");
     public static final PortDeferredItem<IconItem> RANGER_ICON = register("ranger_icon", "远程职业图标");
     public static final PortDeferredItem<IconItem> ARMOR_ICON = register("armor_icon", "盔甲图标");

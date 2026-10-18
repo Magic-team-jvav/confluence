@@ -96,6 +96,7 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
 import org.mesdag.portlib.event.client.PortInputEvent;
+import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Iterator;
@@ -192,7 +193,7 @@ public final class GameClientEvents {
             ClientBiomeEffectSystem.tick(player);
             ScryingOrbHandler.handle(minecraft, player);
             if (Confluence.SOUL_SKILLS) {
-                SoulSkillHandler.handle(minecraft);
+                ClientSoulHandler.handleSoulSkills(minecraft);
             }
             if (!minecraft.isPaused()) {
                 if (player.hasEffect(ModEffects.ELECTRIFIED.get())) {
@@ -304,7 +305,7 @@ public final class GameClientEvents {
         if (LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
             event.setCanceled(true);
         } else if (Confluence.SOUL_SKILLS) {
-            if (SoulSkillHandler.INSTANCE.scrolling(scrollDeltaY)) {
+            if (ClientSoulHandler.scrollSoulSkills(scrollDeltaY)) {
                 event.setCanceled(true);
             }
         }

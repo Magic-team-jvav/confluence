@@ -1081,6 +1081,7 @@ public final class ModTabs {
                         environment_items.accept(ModItems.ASH_GRASS_SEED.get());
 
                         CreativeModeTab.Output gain = GroupItem.belongsTo("gain", output);
+                        gain.accept(SoulItems.FALLEN_SOUL_CORE);
                         gain.accept(ConsumableItems.MANA_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_CRYSTAL.get());
                         gain.accept(ConsumableItems.RECALL_MANA_CRYSTAL.get());
@@ -2042,6 +2043,27 @@ public final class ModTabs {
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SUMMONER_PACT.get(), 3));
                     })
                     .withTabsBefore(MAGES.getId())
+                    .build());
+    public static final RegistryObject<CreativeModeTab> SOUL = TABS.register("soulcerer",
+            () -> CreativeModeTab.builder().icon(IconItems.SOULCERER_ICON::toStack)
+                    .title(Component.translatable("creativetab.confluence.soulcerer"))
+                    .displayItems((parameters, output) -> {
+                        output.accept(SoulItems.FALLEN_SOUL_CORE);
+                        CreativeModeTab.Output soulcerer_main_weapons = GroupItem.belongsTo("soulcerer_main_weapons", output);
+                        soulcerer_main_weapons.accept(SoulItems.BROKEN_GLIMMER.get());
+                        CreativeModeTab.Output soulcerer_secondary_weapons = GroupItem.belongsTo("soulcerer_secondary_weapons", output);
+                        CreativeModeTab.Output soulcerer_artifacts = GroupItem.belongsTo("soulcerer_artifacts", output);
+                        CreativeModeTab.Output soulcerer_skill_books = GroupItem.belongsTo("soulcerer_skill_books", output);
+                        soulcerer_skill_books.accept(SoulItems.SOUL_SKILL_BOOK.get());
+                        var spiritSurgeBook = SoulItems.SOUL_SKILL_BOOK.toStack();
+                        spiritSurgeBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SPIRIT_SURGE.get().getId());
+                        soulcerer_skill_books.accept(spiritSurgeBook);
+                        var survivalInstinctBook = SoulItems.SOUL_SKILL_BOOK.toStack();
+                        survivalInstinctBook.set(ModDataComponentTypes.SOUL_SKILL.get(), ModSoulSkills.SURVIVAL_INSTINCT.get().getId());
+                        soulcerer_skill_books.accept(survivalInstinctBook);
+                    })
+                    .withTabsBefore(MAGES.getId())
+                    .withTabsAfter(SUMMONERS.getId())
                     .build());
     public static final RegistryObject<CreativeModeTab> ENTITY = TABS.register("entity",
             () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)

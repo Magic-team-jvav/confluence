@@ -196,6 +196,13 @@ public final class PlayerEvents {
 
         ItemStack itemStack = event.getItemStack();
 
+        // 植物纤维绳索宝典：空手右键食用草方块、植物与花
+        if (PlantFiberCordageEvents.handle(player, level, event.getHand(), itemStack, blockPos)) {
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            event.setCanceled(true);
+            return;
+        }
+
         if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() &&
                 !(itemStack.getItem() instanceof BlockItem) &&
                 !itemStack.is(ModTags.Items.MINECART) &&

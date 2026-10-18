@@ -183,7 +183,7 @@ public enum PrefixType implements StringRepresentable {
         return VALUES[id];
     }
 
-    /// 判断词条是否为该物品可获得的最佳词条之一。
+    // 判断词条是否为该物品可获得的最佳词条之一。
     public boolean isBestPrefix(ModPrefix prefix, ItemStack stack) {
         return switch (this) {
             case UNIVERSAL -> stack.is(YoyoItems.TERRARIAN) ? prefix == Melee.LEGENDARY2

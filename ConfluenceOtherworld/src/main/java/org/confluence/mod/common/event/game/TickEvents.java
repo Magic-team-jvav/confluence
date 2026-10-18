@@ -8,6 +8,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.network.PathService;
+import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.data.spawner.BossDelaySpawner;
@@ -47,6 +48,8 @@ public final class TickEvents {
 
     private static void levelTick$Post(TickEvent.LevelTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        if (event.level instanceof ServerLevel machineLevel)
+            EnvironmentalMachines.INSTANCE.tick(machineLevel);
         if (event.level.dimension() == Level.END) {
             /// 客户端和服务端按各自世界时间更新潮位。
             VoidSeaHelper.tick(event.level);

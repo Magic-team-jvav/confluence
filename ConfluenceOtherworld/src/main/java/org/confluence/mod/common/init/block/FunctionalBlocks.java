@@ -25,6 +25,7 @@ import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.block.functional.crafting.*;
 import org.confluence.mod.common.block.functional.crafting.LoomBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
+import org.confluence.mod.common.block.functional.terraform.EnvironmentalMachineBlock;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.TreeHolesBlock;
 import org.confluence.mod.common.entity.projectile.boulder.*;
@@ -50,6 +51,11 @@ public class FunctionalBlocks {
 
     public static final PortBlockRegistration BLOCKS = PortRegisterHandler.block(Confluence.MODID);
     static List<PortDeferredBlock<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
+
+    public static final PortDeferredBlock<EnvironmentalMachineBlock> CLENTAMINATOR = registerWithItem("clentaminator", "环境改造器", () -> new EnvironmentalMachineBlock(false), EnvironmentalMachineBlock.BItem::new);
+    public static final PortDeferredBlock<EnvironmentalMachineBlock> TERRAFORMER = registerWithItem("terraformer", "世界改造器", () -> new EnvironmentalMachineBlock(true), EnvironmentalMachineBlock.BItem::new);
+    public static final RegistryObject<BlockEntityType<EnvironmentalMachineBlock.BEntity>> ENVIRONMENTAL_MACHINE_ENTITY = BLOCK_ENTITIES.register("environmental_machine", () -> BlockEntityType.Builder.of(EnvironmentalMachineBlock.BEntity::new, CLENTAMINATOR.get(), TERRAFORMER.get()).build(DSL.remainderType()));
+
 
     public static final PortDeferredBlock<ExtractinatorBlock> EXTRACTINATOR = registerWithItem("extractinator", "提炼机", () -> new ExtractinatorBlock(BlockBehaviour.Properties.of().strength(2.2F, 5.0F).requiresCorrectToolForDrops()), ExtractinatorBlock.BItem::new);
     public static final RegistryObject<BlockEntityType<ExtractinatorBlock.BEntity>> EXTRACTINATOR_ENTITY = BLOCK_ENTITIES.register("extractinator_entity", () -> BlockEntityType.Builder.of(ExtractinatorBlock.BEntity::new, EXTRACTINATOR.get()).build(DSL.remainderType()));

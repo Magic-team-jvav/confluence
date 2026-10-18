@@ -54,7 +54,6 @@ import org.confluence.mod.common.init.item.DispenserRegistration;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.common.entity.TargetingIntegration;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;

@@ -16,6 +16,7 @@ import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.*;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.SolarEclipseGameEvent;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -302,6 +303,7 @@ public final class NPCShopProvider implements DataProvider {
                 offer(FishingPoleItems.SITTING_DUCKS_FISHING_POLE.toStack())
         ));
         shops.put(Confluence.asResource("truffle"), List.of(
+                offer(MaterialItems.DARK_BLUE_SOLUTION.toStack(), solutionSales),
                 exchange(BoomerangItems.SHROOMERANG.toStack(), new ItemStack(Items.EMERALD, 10)),
                 exchange(new ItemStack(Items.EMERALD), new ItemStack(Items.BROWN_MUSHROOM, 10)),
                 exchange(new ItemStack(Items.EMERALD), new ItemStack(Items.RED_MUSHROOM, 10))

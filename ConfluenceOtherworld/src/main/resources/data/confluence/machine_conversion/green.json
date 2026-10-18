@@ -1,0 +1,183 @@
+{
+    "solution": "green",
+    "rules": [
+        {
+            "source": "minecraft:tall_grass",
+            "properties": {
+                "half": "upper"
+            },
+            "target": "minecraft:air"
+        },
+        {
+            "source": "minecraft:tall_grass",
+            "properties": {
+                "half": "lower"
+            },
+            "target": "minecraft:grass"
+        },
+        {
+            "source": "confluence:jungle_cattail_block",
+            "target": "confluence:cattail_block"
+        },
+        {
+            "source": "confluence:glowing_mushroom_cattail_block",
+            "target": "confluence:cattail_block"
+        },
+        {
+            "source": "confluence:hallow_cattail_block",
+            "target": "confluence:cattail_block"
+        },
+        {
+            "source": "confluence:ebony_cattail_block",
+            "target": "confluence:cattail_block"
+        },
+        {
+            "source": "confluence:crimson_cattail_block",
+            "target": "confluence:cattail_block"
+        },
+        {
+            "source": "confluence:mushroom_grass_block",
+            "target": "confluence:jungle_grass_block"
+        },
+        {
+            "source": "#minecraft:logs",
+            "target": "minecraft:oak_log"
+        },
+        {
+            "source": "#minecraft:leaves",
+            "target": "minecraft:oak_leaves"
+        },
+        {
+            "source": "#confluence:pure_conversion_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "#confluence:pure_conversion_jungle_grass_block",
+            "target": "confluence:jungle_grass_block"
+        },
+        {
+            "source": "#confluence:pure_conversion_short_grass",
+            "target": "minecraft:grass"
+        },
+        {
+            "source": "#confluence:pure_conversion_packed_ice",
+            "target": "minecraft:packed_ice"
+        },
+        {
+            "source": "#confluence:pure_conversion_ice",
+            "target": "minecraft:ice"
+        },
+        {
+            "source": "#confluence:pure_conversion_sand",
+            "target": "minecraft:sand"
+        },
+        {
+            "source": "#confluence:pure_conversion_sandstone",
+            "target": "minecraft:sandstone"
+        },
+        {
+            "source": "#confluence:pure_conversion_hardened_sand_block",
+            "target": "confluence:hardened_sand_block"
+        },
+        {
+            "source": "#confluence:pure_conversion_moist_sand_block",
+            "target": "confluence:moistened_sand_block"
+        },
+        {
+            "source": "#confluence:pure_conversion_cactus",
+            "target": "minecraft:cactus"
+        },
+        {
+            "source": "#minecraft:base_stone_overworld",
+            "target": "minecraft:stone"
+        },
+        {
+            "source": "#forge:cobblestone",
+            "target": "minecraft:cobblestone"
+        },
+        {
+            "source": "#forge:ores/redstone",
+            "target": "minecraft:redstone_ore"
+        },
+        {
+            "source": "#forge:ores/coal",
+            "target": "minecraft:coal_ore"
+        },
+        {
+            "source": "#forge:ores/lapis",
+            "target": "minecraft:lapis_ore"
+        },
+        {
+            "source": "#forge:ores/ruby",
+            "target": "confluence:ruby_ore"
+        },
+        {
+            "source": "#forge:ores/amber",
+            "target": "confluence:amber_ore"
+        },
+        {
+            "source": "#forge:ores/topaz",
+            "target": "confluence:topaz_ore"
+        },
+        {
+            "source": "#forge:ores/jade",
+            "target": "confluence:jade_ore"
+        },
+        {
+            "source": "#forge:ores/emerald",
+            "target": "minecraft:emerald_ore"
+        },
+        {
+            "source": "#forge:ores/sapphire",
+            "target": "confluence:sapphire_ore"
+        },
+        {
+            "source": "#forge:ores/amethyst",
+            "target": "confluence:amethyst_ore"
+        },
+        {
+            "source": "#forge:ores/diamond",
+            "target": "minecraft:diamond_ore"
+        },
+        {
+            "source": "#forge:ores/tin",
+            "target": "confluence:tin_ore"
+        },
+        {
+            "source": "#forge:ores/copper",
+            "target": "minecraft:copper_ore"
+        },
+        {
+            "source": "#forge:ores/iron",
+            "target": "minecraft:iron_ore"
+        },
+        {
+            "source": "#forge:ores/lead",
+            "target": "confluence:lead_ore"
+        },
+        {
+            "source": "#forge:ores/silver",
+            "target": "confluence:silver_ore"
+        },
+        {
+            "source": "#forge:ores/tungsten",
+            "target": "confluence:tungsten_ore"
+        },
+        {
+            "source": "#forge:ores/gold",
+            "target": "minecraft:gold_ore"
+        },
+        {
+            "source": "#forge:ores/platinum",
+            "target": "confluence:platinum_ore"
+        },
+        {
+            "source": "#forge:ores/demonite",
+            "target": "confluence:demonite_ore"
+        },
+        {
+            "source": "#forge:ores/crimtane",
+            "target": "confluence:crimtane_ore"
+        }
+    ]
+}

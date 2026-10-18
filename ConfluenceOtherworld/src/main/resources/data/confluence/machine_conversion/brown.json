@@ -1,0 +1,189 @@
+{
+    "solution": "brown",
+    "rules": [
+        {
+            "source": "minecraft:dirt",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "minecraft:coarse_dirt",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "minecraft:podzol",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "minecraft:mycelium",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "minecraft:mud",
+            "target": "minecraft:dirt"
+        },
+        {
+            "source": "minecraft:sand",
+            "target": "minecraft:dirt"
+        },
+        {
+            "source": "minecraft:red_sand",
+            "target": "minecraft:dirt"
+        },
+        {
+            "source": "minecraft:snow_block",
+            "target": "minecraft:dirt"
+        },
+        {
+            "source": "confluence:jungle_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:mushroom_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:corrupt_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:ebonsandstone",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:hardened_ebonsand_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:ebonsand",
+            "target": "minecraft:dirt"
+        },
+        {
+            "source": "confluence:moistened_ebonsand_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:ebonsand_layer_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:corrupt_jungle_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:hallow_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:hardened_pearlsand_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:pearlsandstone",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:pearlsand",
+            "target": "minecraft:dirt"
+        },
+        {
+            "source": "confluence:moistened_pearlsand_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:pearlsand_layer_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:crimson_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:hardened_crimsand_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:crimsandstone",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:crimsand",
+            "target": "minecraft:dirt"
+        },
+        {
+            "source": "confluence:moistened_crimsand_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:crimsand_layer_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:crimson_jungle_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:ash_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:void_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:inverse_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "confluence:moonlit_grass_block",
+            "target": "minecraft:grass_block"
+        },
+        {
+            "source": "minecraft:sandstone",
+            "target": "minecraft:stone"
+        },
+        {
+            "source": "minecraft:red_sandstone",
+            "target": "minecraft:stone"
+        },
+        {
+            "source": "minecraft:ice",
+            "target": "minecraft:stone"
+        },
+        {
+            "source": "minecraft:packed_ice",
+            "target": "minecraft:stone"
+        },
+        {
+            "source": "minecraft:blue_ice",
+            "target": "minecraft:stone"
+        },
+        {
+            "source": "confluence:hardened_sand_block",
+            "target": "minecraft:stone"
+        },
+        {
+            "source": "confluence:purple_ice",
+            "target": "confluence:ebonstone"
+        },
+        {
+            "source": "confluence:purple_packed_ice",
+            "target": "confluence:ebonstone"
+        },
+        {
+            "source": "confluence:red_ice",
+            "target": "confluence:crimstone"
+        },
+        {
+            "source": "confluence:red_packed_ice",
+            "target": "confluence:crimstone"
+        },
+        {
+            "source": "confluence:pink_ice",
+            "target": "confluence:pearlstone"
+        },
+        {
+            "source": "confluence:pink_packed_ice",
+            "target": "confluence:pearlstone"
+        }
+    ]
+}

@@ -3,19 +3,18 @@ package org.confluence.mod.common.data.gen.loot;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
-import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -23,18 +22,17 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.GamePhase;
-import org.confluence.mod.common.item.soulcerer.SoulBooks;
-import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
+import org.confluence.mod.common.loot.PercentageLootEntry;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 
@@ -63,28 +61,34 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_crate"), environmentLavaCrateCommon()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD).setWeight(19))
-                        .add(EmptyLootItem.emptyItem().setWeight(81)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(19, LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD))
+                        )))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.WET_BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 10))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ConsumableItems.WET_BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 10))))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.OBSIDIAN_LOCK_BOX)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
-                        .add(EmptyLootItem.emptyItem().setWeight(4))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TFBlocks.HANGING_POT).apply(SetItemCountFunction.setCount(new ConstantValue(2))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(TFBlocks.HANGING_POT).apply(SetItemCountFunction.setCount(new ConstantValue(2))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FunctionalBlocks.HELLFORGE).setWeight(5))
-                        .add(EmptyLootItem.emptyItem().setWeight(95))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(FunctionalBlocks.HELLFORGE))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_lock_box"), LootTable.lootTable()
@@ -96,31 +100,34 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(FlailItems.SUNFURY))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.TREASURE_MAGNET))
-                        .add(EmptyLootItem.emptyItem().setWeight(4))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(TCItems.TREASURE_MAGNET))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/dungeon_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/golden_lock_box"), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(PercentageLootEntry.exclusive(true,
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SwordItems.MURAMASA)),
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(TCItems.COBALT_SHIELD)),
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(GunItems.HAND_GUN)),
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER)),
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE)),
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(YoyoItems.VALOR)),
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(TCItems.RAM_RUNE)),
+                        PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(FlailItems.BLUE_MOON))
+                )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.MURAMASA))
-                        .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
-                        .add(LootItem.lootTableItem(GunItems.HAND_GUN))
-                        .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
-                        .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
-                        .add(LootItem.lootTableItem(YoyoItems.VALOR))
-                        .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
-                        .add(LootItem.lootTableItem(FlailItems.BLUE_MOON))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ToolItems.SHADOW_KEY))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ToolItems.SHADOW_KEY))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hallowed_crate"), environmentCrateCommon()
@@ -135,16 +142,19 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ToolItems.MAGIC_CONCH))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.SANDSTORM_IN_A_BOTTLE))
-                        .add(EmptyLootItem.emptyItem().setWeight(34))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 35, LootItem.lootTableItem(TCItems.SANDSTORM_IN_A_BOTTLE))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL).apply(count2To5))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.SCARAB_BOMB).apply(count1To3))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ConsumableItems.SCARAB_BOMB).apply(count1To3))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/corrupt_crate"), environmentCrateCommon()
@@ -175,8 +185,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/ocean_crate"), environmentCrateCommon()
@@ -200,12 +211,14 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(AccessoryItems.CELESTIAL_MAGNET))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(NatureBlocks.CLOUD_BLOCK).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(NatureBlocks.CLOUD_BLOCK).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
-                        .add(EmptyLootItem.emptyItem().setWeight(39))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 40, LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/crimson_crate"), environmentCrateCommon()
@@ -218,201 +231,231 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/wooden_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.SAILFISH_BOOTS).setWeight(250))
-                        .add(LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE).setWeight(244))
-                        .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(186))
-                        .add(EmptyLootItem.emptyItem().setWeight(9134))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 250 / 9814, LootItem.lootTableItem(TCItems.SAILFISH_BOOTS)),
+                                PercentageLootEntry.rule(100.0 * 244 / 9814, LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE)),
+                                PercentageLootEntry.rule(100.0 * 186 / 9814, LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.AGLET))
-                        .add(LootItem.lootTableItem(TCItems.RADAR))
-                        .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
-                        .add(LootItem.lootTableItem(TCItems.STEP_STOOL))
-                        .add(LootItem.lootTableItem(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE))
-                        .add(EmptyLootItem.emptyItem().setWeight(15))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.AGLET)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.RADAR)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.CLIMBING_CLAWS)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.STEP_STOOL)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 90))).setWeight(2))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
-                        .add(EmptyLootItem.emptyItem().setWeight(18))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 2 / 21, LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 90)))),
+                                PercentageLootEntry.rule(100.0 / 21, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(count3To6))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(count3To6))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count3To6))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count3To6))
-                        .add(EmptyLootItem.emptyItem().setWeight(24))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 28, LootItem.lootTableItem(Items.RAW_COPPER).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 28, LootItem.lootTableItem(Items.RAW_IRON).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 28, LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 28, LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count3To6))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(EmptyLootItem.emptyItem().setWeight(112))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 3 / 124, LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 * 3 / 124, LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 * 3 / 124, LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 * 3 / 124, LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.NIGHT_OWL_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.SHINE_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.GILLS_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.DANGERSENSE_POTION.get()).apply(count1To3))
-                        .add(EmptyLootItem.emptyItem().setWeight(70))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.NIGHT_OWL_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.SHINE_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.GILLS_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.DANGERSENSE_POTION.get()).apply(count1To3))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION).apply(count5To15))
-                        .add(LootItem.lootTableItem(PotionItems.LESSER_MANA_POTION).apply(count5To15))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION).apply(count5To15)),
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(PotionItems.LESSER_MANA_POTION).apply(count5To15))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count1To4))
-                        .add(LootItem.lootTableItem(BaitItems.APPRENTICE_BAIT).apply(count1To4).setWeight(2))
-                        .add(EmptyLootItem.emptyItem().setWeight(6))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 9, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count1To4)),
+                                PercentageLootEntry.rule(100.0 * 2 / 9, LootItem.lootTableItem(BaitItems.APPRENTICE_BAIT).apply(count1To4))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/iron_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.SAILFISH_BOOTS).setWeight(426))
-                        .add(LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE).setWeight(404))
-                        .add(LootItem.lootTableItem(SwordItems.FALCON_BLADE).setWeight(608))
-                        .add(EmptyLootItem.emptyItem().setWeight(8376))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 426 / 9814, LootItem.lootTableItem(TCItems.SAILFISH_BOOTS)),
+                                PercentageLootEntry.rule(100.0 * 404 / 9814, LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE)),
+                                PercentageLootEntry.rule(100.0 * 608 / 9814, LootItem.lootTableItem(SwordItems.FALCON_BLADE))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(count3To6))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(count3To6))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count3To6))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count3To6))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count3To6))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count3To6))
-                        .add(EmptyLootItem.emptyItem().setWeight(30))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 36, LootItem.lootTableItem(Items.RAW_COPPER).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 36, LootItem.lootTableItem(Items.RAW_IRON).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 36, LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 36, LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 36, LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 / 36, LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count3To6))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))).setWeight(3))
-                        .add(EmptyLootItem.emptyItem().setWeight(82))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(3, LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(3, LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(3, LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(3, LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(3, LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(3, LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
-
-                        .add(EmptyLootItem.emptyItem().setWeight(42))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(count5To15))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(count5To15))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(count5To15)),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(count5To15))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count2To4).setWeight(2))
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(count2To4))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 2 / 6, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count2To4)),
+                                PercentageLootEntry.rule(100.0 / 6, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(count2To4))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/golden_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.LIFE_CRYSTAL).setWeight(10))
-                        // todo 海龟鞍
-                        .add(EmptyLootItem.emptyItem().setWeight(70))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 10 / 80, LootItem.lootTableItem(ConsumableItems.LIFE_CRYSTAL))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(8, 20))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(8, 20))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_GOLD).apply(count3To6).setWeight(4))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count3To6).setWeight(4))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count3To6).setWeight(4))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(count3To6).setWeight(4))
-                        .add(EmptyLootItem.emptyItem().setWeight(80))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 4 / 96, LootItem.lootTableItem(Items.RAW_GOLD).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 * 4 / 96, LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 * 4 / 96, LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count3To6)),
+                                PercentageLootEntry.rule(100.0 * 4 / 96, LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(count3To6))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(EmptyLootItem.emptyItem().setWeight(11))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem().setWeight(10))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To5))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20))))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.ENCHANTED_SWORD))
-                        .add(EmptyLootItem.emptyItem().setWeight(29))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 30, LootItem.lootTableItem(SwordItems.ENCHANTED_SWORD))
+                        ))
                 )
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hellstone_crate"), environmentLavaCrateHardModeCommon()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD).setWeight(19))
-                        .add(EmptyLootItem.emptyItem().setWeight(81)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(19, LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD))
+                        )))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.WET_BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 10))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ConsumableItems.WET_BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 10))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FunctionalBlocks.HELLFORGE).setWeight(5))
-                        .add(EmptyLootItem.emptyItem().setWeight(95))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(FunctionalBlocks.HELLFORGE))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.OBSIDIAN_LOCK_BOX)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
-                        .add(EmptyLootItem.emptyItem().setWeight(4))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TFBlocks.HANGING_POT).apply(SetItemCountFunction.setCount(new ConstantValue(2))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(TFBlocks.HANGING_POT).apply(SetItemCountFunction.setCount(new ConstantValue(2))))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"),environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/divine_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_LIGHT).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.SOUL_OF_LIGHT).apply(count2To5))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.CRYSTAL_SHARDS).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 10))))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.CRYSTAL_SHARDS).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 10))))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/mirage_crate"), environmentCrateHardModeCommon()
@@ -425,16 +468,19 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ToolItems.MAGIC_CONCH))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.SANDSTORM_IN_A_BOTTLE))
-                        .add(EmptyLootItem.emptyItem().setWeight(34))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 35, LootItem.lootTableItem(TCItems.SANDSTORM_IN_A_BOTTLE))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL).apply(count2To5))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.SCARAB_BOMB).apply(count1To3))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ConsumableItems.SCARAB_BOMB).apply(count1To3))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/defiled_crate"), environmentCrateHardModeCommon()
@@ -445,8 +491,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(FlailItems.BALL_O_HURT))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/boreal_crate"), environmentCrateHardModeCommon()
@@ -469,8 +516,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(GunItems.BOOMSTICK).setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(Items.BAMBOO).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50))))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/beach_crate"), environmentCrateHardModeCommon()
@@ -494,12 +542,14 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(AccessoryItems.CELESTIAL_MAGNET))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(NatureBlocks.CLOUD_BLOCK).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(NatureBlocks.CLOUD_BLOCK).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
-                        .add(EmptyLootItem.emptyItem().setWeight(39))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 40, LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hematic_crate"), environmentCrateHardModeCommon()
@@ -510,186 +560,206 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/pearlwood_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        // todo 锚
-                        // todo 附魔日晷
-                        .add(LootItem.lootTableItem(TCItems.SAILFISH_BOOTS).setWeight(250))
-                        .add(LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE).setWeight(244))
-                        .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(186))
-                        .add(EmptyLootItem.emptyItem().setWeight(9134))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 250 / 9814, LootItem.lootTableItem(TCItems.SAILFISH_BOOTS)),
+                                PercentageLootEntry.rule(100.0 * 244 / 9814, LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE)),
+                                PercentageLootEntry.rule(100.0 * 186 / 9814, LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.AGLET))
-                        .add(LootItem.lootTableItem(TCItems.RADAR))
-                        .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
-                        .add(LootItem.lootTableItem(TCItems.STEP_STOOL))
-                        .add(LootItem.lootTableItem(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE))
-                        .add(EmptyLootItem.emptyItem().setWeight(15))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.AGLET)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.RADAR)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.CLIMBING_CLAWS)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.STEP_STOOL)),
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 90))).setWeight(2))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
-                        .add(EmptyLootItem.emptyItem().setWeight(18))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 2 / 21, LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 90)))),
+                                PercentageLootEntry.rule(100.0 / 21, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(count4To15))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(count4To15))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count4To15))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count4To15))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_COBALT).apply(count4To15))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PALLADIUM).apply(count4To15))
-                        .add(EmptyLootItem.emptyItem().setWeight(78))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 84, LootItem.lootTableItem(Items.RAW_COPPER).apply(count4To15)),
+                                PercentageLootEntry.rule(100.0 / 84, LootItem.lootTableItem(Items.RAW_IRON).apply(count4To15)),
+                                PercentageLootEntry.rule(100.0 / 84, LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count4To15)),
+                                PercentageLootEntry.rule(100.0 / 84, LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count4To15)),
+                                PercentageLootEntry.rule(100.0 / 84, LootItem.lootTableItem(MaterialItems.RAW_COBALT).apply(count4To15)),
+                                PercentageLootEntry.rule(100.0 / 84, LootItem.lootTableItem(MaterialItems.RAW_PALLADIUM).apply(count4To15))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(count2To5).setWeight(3))
-                        .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(count2To5).setWeight(3))
-                        .add(LootItem.lootTableItem(MaterialItems.COBALT_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))).setWeight(3))
-                        .add(LootItem.lootTableItem(MaterialItems.PALLADIUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))).setWeight(3))
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(count2To5).setWeight(3))
-                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(count2To5).setWeight(3))
-                        .add(EmptyLootItem.emptyItem().setWeight(150))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 3 / 168, LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 * 3 / 168, LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 * 3 / 168, LootItem.lootTableItem(MaterialItems.COBALT_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))),
+                                PercentageLootEntry.rule(100.0 * 3 / 168, LootItem.lootTableItem(MaterialItems.PALLADIUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))),
+                                PercentageLootEntry.rule(100.0 * 3 / 168, LootItem.lootTableItem(Items.IRON_INGOT).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 * 3 / 168, LootItem.lootTableItem(Items.COPPER_INGOT).apply(count2To5))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.NIGHT_OWL_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.SHINE_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.GILLS_POTION).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count1To3))
-                        .add(LootItem.lootTableItem(PotionItems.DANGERSENSE_POTION.get()).apply(count1To3))
-                        .add(EmptyLootItem.emptyItem().setWeight(70))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.NIGHT_OWL_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.SHINE_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.GILLS_POTION).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(PotionItems.DANGERSENSE_POTION.get()).apply(count1To3))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION).apply(count5To15))
-                        .add(LootItem.lootTableItem(PotionItems.LESSER_MANA_POTION).apply(count5To15))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION).apply(count5To15)),
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(PotionItems.LESSER_MANA_POTION).apply(count5To15))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count1To4))
-                        .add(LootItem.lootTableItem(BaitItems.APPRENTICE_BAIT).apply(count1To4).setWeight(2))
-                        .add(EmptyLootItem.emptyItem().setWeight(6))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 9, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count1To4)),
+                                PercentageLootEntry.rule(100.0 * 2 / 9, LootItem.lootTableItem(BaitItems.APPRENTICE_BAIT).apply(count1To4))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/mythril_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.SAILFISH_BOOTS).setWeight(426))
-                        .add(LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE).setWeight(404))
-                        .add(LootItem.lootTableItem(SwordItems.FALCON_BLADE).setWeight(608))
-                        .add(EmptyLootItem.emptyItem().setWeight(8376))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 426 / 9814, LootItem.lootTableItem(TCItems.SAILFISH_BOOTS)),
+                                PercentageLootEntry.rule(100.0 * 404 / 9814, LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE)),
+                                PercentageLootEntry.rule(100.0 * 608 / 9814, LootItem.lootTableItem(SwordItems.FALCON_BLADE))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(count12To21))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_COBALT).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PALLADIUM).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_MYTHRIL).apply(count12To21))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_ORICHALCUM).apply(count12To21))
-                        .add(EmptyLootItem.emptyItem().setWeight(110))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(Items.RAW_COPPER).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(Items.RAW_IRON).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_COBALT).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_PALLADIUM).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_MYTHRIL).apply(count12To21)),
+                                PercentageLootEntry.rule(100.0 / 120, LootItem.lootTableItem(MaterialItems.RAW_ORICHALCUM).apply(count12To21))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(count4To7).setWeight(5))
-                        .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(count4To7).setWeight(5))
-                        .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(count4To7).setWeight(5))
-                        .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(count4To7).setWeight(5))
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(count4To7).setWeight(5))
-                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(count4To7).setWeight(5))
-                        .add(LootItem.lootTableItem(MaterialItems.COBALT_INGOT).apply(count4To7).setWeight(10))
-                        .add(LootItem.lootTableItem(MaterialItems.PALLADIUM_INGOT).apply(count4To7).setWeight(10))
-                        .add(LootItem.lootTableItem(MaterialItems.MYTHRIL_INGOT).apply(count4To7).setWeight(10))
-                        .add(LootItem.lootTableItem(MaterialItems.ORICHALCUM_INGOT).apply(count4To7).setWeight(10))
-                        .add(EmptyLootItem.emptyItem().setWeight(650))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 5 / 720, LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 5 / 720, LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 5 / 720, LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 5 / 720, LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 5 / 720, LootItem.lootTableItem(Items.IRON_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 5 / 720, LootItem.lootTableItem(Items.COPPER_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 10 / 720, LootItem.lootTableItem(MaterialItems.COBALT_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 10 / 720, LootItem.lootTableItem(MaterialItems.PALLADIUM_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 10 / 720, LootItem.lootTableItem(MaterialItems.MYTHRIL_INGOT).apply(count4To7)),
+                                PercentageLootEntry.rule(100.0 * 10 / 720, LootItem.lootTableItem(MaterialItems.ORICHALCUM_INGOT).apply(count4To7))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4))
-                        .add(LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
-                        .add(EmptyLootItem.emptyItem().setWeight(42))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4)),
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(count5To15))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(count5To15))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(count5To15)),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(count5To15))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count2To4).setWeight(2))
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(count2To4))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 2 / 6, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(count2To4)),
+                                PercentageLootEntry.rule(100.0 / 6, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(count2To4))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/titanium_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.LIFE_CRYSTAL).setWeight(10))
-                        // todo 海龟鞍
-                        // todo 附魔日晷
-                        .add(EmptyLootItem.emptyItem().setWeight(70))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 10 / 80, LootItem.lootTableItem(ConsumableItems.LIFE_CRYSTAL))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(8, 20))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(8, 20))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_GOLD).apply(count25To34))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count25To34))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count25To34))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(count25To34))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_MYTHRIL).apply(count25To34))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_ORICHALCUM).apply(count25To34))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_ADAMANTITE).apply(count25To34))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TITANIUM).apply(count25To34))
-                        .add(EmptyLootItem.emptyItem().setWeight(72))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(Items.RAW_GOLD).apply(count25To34)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count25To34)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count25To34)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(count25To34)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(MaterialItems.RAW_MYTHRIL).apply(count25To34)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(MaterialItems.RAW_ORICHALCUM).apply(count25To34)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(MaterialItems.RAW_ADAMANTITE).apply(count25To34)),
+                                PercentageLootEntry.rule(100.0 / 80, LootItem.lootTableItem(MaterialItems.RAW_TITANIUM).apply(count25To34))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(count8To11).setWeight(4))
-                        .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(count8To11).setWeight(4))
-                        .add(LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(count8To11).setWeight(4))
-                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(count8To11).setWeight(4))
-                        .add(LootItem.lootTableItem(MaterialItems.MYTHRIL_INGOT).apply(count8To11).setWeight(8))
-                        .add(LootItem.lootTableItem(MaterialItems.ORICHALCUM_INGOT).apply(count8To11).setWeight(8))
-                        .add(LootItem.lootTableItem(MaterialItems.ADAMANTITE_INGOT).apply(count8To11).setWeight(8))
-                        .add(LootItem.lootTableItem(MaterialItems.TITANIUM_INGOT).apply(count8To11).setWeight(8))
-                        .add(EmptyLootItem.emptyItem().setWeight(312))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 4 / 360, LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(count8To11)),
+                                PercentageLootEntry.rule(100.0 * 4 / 360, LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(count8To11)),
+                                PercentageLootEntry.rule(100.0 * 4 / 360, LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(count8To11)),
+                                PercentageLootEntry.rule(100.0 * 4 / 360, LootItem.lootTableItem(Items.GOLD_INGOT).apply(count8To11)),
+                                PercentageLootEntry.rule(100.0 * 8 / 360, LootItem.lootTableItem(MaterialItems.MYTHRIL_INGOT).apply(count8To11)),
+                                PercentageLootEntry.rule(100.0 * 8 / 360, LootItem.lootTableItem(MaterialItems.ORICHALCUM_INGOT).apply(count8To11)),
+                                PercentageLootEntry.rule(100.0 * 8 / 360, LootItem.lootTableItem(MaterialItems.ADAMANTITE_INGOT).apply(count8To11)),
+                                PercentageLootEntry.rule(100.0 * 8 / 360, LootItem.lootTableItem(MaterialItems.TITANIUM_INGOT).apply(count8To11))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem().setWeight(10))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To5)),
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To5))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20))))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 20))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.ENCHANTED_SWORD))
-                        .add(EmptyLootItem.emptyItem().setWeight(14))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(SwordItems.ENCHANTED_SWORD))
+                        ))
                 )
         );
 
@@ -706,10 +776,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/clam"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.SHUCKED_OYSTER)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.PEARL).setWeight(30))
-                        .add(LootItem.lootTableItem(MaterialItems.BLACK_PEARL).setWeight(16))
-                        .add(LootItem.lootTableItem(MaterialItems.PINK_PEARL).setWeight(5))
-                        .add(EmptyLootItem.emptyItem().setWeight(151))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 30 / 202, LootItem.lootTableItem(MaterialItems.PEARL)),
+                                PercentageLootEntry.rule(100.0 * 16 / 202, LootItem.lootTableItem(MaterialItems.BLACK_PEARL)),
+                                PercentageLootEntry.rule(100.0 * 5 / 202, LootItem.lootTableItem(MaterialItems.PINK_PEARL))
+                        ))
                 )
         );
         // 蠕虫罐头
@@ -719,14 +790,15 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.ENCHANTED_NIGHTCRAWLER).setWeight(3)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
-                        )
-                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(30, LootItem.lootTableItem(BaitItems.ENCHANTED_NIGHTCRAWLER)
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.WORM))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(BaitItems.WORM))
+                        ))
                 )
         );
         // 圣诞礼物
@@ -824,30 +896,32 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         // 史莱姆嵌套携带
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/slime_carry"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.TORCH).setWeight(42).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
-                        .add(LootItem.lootTableItem(ConsumableItems.BOMB).setWeight(42).apply(count1To3))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).setWeight(21).apply(count1To3))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).setWeight(21).apply(count1To3))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).setWeight(21).apply(count1To3))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).setWeight(21).apply(count1To3))
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).setWeight(21).apply(count1To3))
-                        .add(LootItem.lootTableItem(Items.RAW_GOLD).setWeight(21).apply(count1To3))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).setWeight(21).apply(count1To3))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).setWeight(56).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).setWeight(56).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 99))))
-                        .add(LootItem.lootTableItem(ModItems.COPPER_COIN).setWeight(56).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 99))))
-                        .add(LootItem.lootTableItem(ModBlocks.ROPE).setWeight(42).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(AlternativesEntry.alternatives(
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 42 / 628, LootItem.lootTableItem(Items.TORCH).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))),
+                                PercentageLootEntry.rule(100.0 * 42 / 628, LootItem.lootTableItem(ConsumableItems.BOMB).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 21 / 628, LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 21 / 628, LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 21 / 628, LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 21 / 628, LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 21 / 628, LootItem.lootTableItem(Items.RAW_COPPER).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 21 / 628, LootItem.lootTableItem(Items.RAW_GOLD).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 21 / 628, LootItem.lootTableItem(Items.RAW_IRON).apply(count1To3)),
+                                PercentageLootEntry.rule(100.0 * 56 / 628, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))),
+                                PercentageLootEntry.rule(100.0 * 56 / 628, LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 99)))),
+                                PercentageLootEntry.rule(100.0 * 56 / 628, LootItem.lootTableItem(ModItems.COPPER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 99)))),
+                                PercentageLootEntry.rule(100.0 * 42 / 628, LootItem.lootTableItem(ModBlocks.ROPE).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6)))),
+                                PercentageLootEntry.rule(100.0 / 628, AlternativesEntry.alternatives(
                                 LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
                                 LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
                                 LootItem.lootTableItem(ModItems.CANDY_CANE).when(christmas)
-                        ).append(EmptyLootItem.emptyItem().setWeight(42)))
-                        .add(LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(24))
+                                )),
+                                PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION)),
+                                PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION)),
+                                PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION)),
+                                PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.MINING_POTION)),
+                                PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.RECALL_POTION)),
+                                PercentageLootEntry.rule(100.0 * 24 / 628, LootItem.lootTableItem(PotionItems.WORMHOLE_POTION))
+                        ))
                 )
         );
         // 初始任务
@@ -1196,11 +1270,12 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/classic"), LootTable.lootTable()
                 .withPool(memoryOfBonebrandLoot())
-                
+
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS).setWeight(105))
-                        .add(EmptyLootItem.emptyItem().setWeight(895))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 105 / 1000, LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
@@ -1211,7 +1286,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/expert"), LootTable.lootTable()
                 .withPool(memoryOfBonebrandLoot())
-                
+
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BONE_GLOVE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1221,8 +1296,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(17)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
@@ -1230,7 +1306,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/master"), LootTable.lootTable()
                 .withPool(memoryOfBonebrandLoot())
-                
+
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BONE_GLOVE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
@@ -1240,8 +1316,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(17)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.SKELETRON_RELIC)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
@@ -1254,17 +1331,21 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ROYAL_WAX)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(16, 26)))
                 ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BEENADE).setWeight(3)
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(75, LootItem.lootTableItem(ConsumableItems.BEENADE)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 30))))
-                        .add(EmptyLootItem.emptyItem())
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.HIVE_WAND))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ModItems.HIVE_WAND))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MountItems.HONEYED_GOGGLES))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(MountItems.HONEYED_GOGGLES))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
@@ -1282,8 +1363,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ModItems.HIVE_WAND))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MountItems.HONEYED_GOGGLES).setWeight(11))
-                        .add(EmptyLootItem.emptyItem().setWeight(89))
+                        .add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(100.0 / 9, LootItem.lootTableItem(MountItems.HONEYED_GOGGLES))))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
@@ -1304,8 +1384,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ModItems.HIVE_WAND))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MountItems.HONEYED_GOGGLES).setWeight(11))
-                        .add(EmptyLootItem.emptyItem().setWeight(89))
+                        .add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(100.0 / 9, LootItem.lootTableItem(MountItems.HONEYED_GOGGLES))))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
@@ -1383,7 +1462,6 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
         // 世吞
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/classic"), eaterOfWorldsTreasureBagCommon()
-
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eater_of_worlds/expert"), eaterOfWorldsTreasureBagCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.WORM_SCARF)))
@@ -1409,32 +1487,29 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/king_slime/classic"), KingSlimeTreasureBagCommon()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(4))
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_HELMET))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_LEGGINGS))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_BOOTS))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 12, LootItem.lootTableItem(ArmorItems.NINJA_HELMET)),
+                                PercentageLootEntry.rule(100.0 / 12, LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE)),
+                                PercentageLootEntry.rule(100.0 / 12, LootItem.lootTableItem(ArmorItems.NINJA_LEGGINGS)),
+                                PercentageLootEntry.rule(100.0 / 12, LootItem.lootTableItem(ArmorItems.NINJA_BOOTS))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/king_slime/expert"), KingSlimeTreasureBagCommon()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(4))
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_HELMET).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_LEGGINGS).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_BOOTS).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_HELMET)),
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE)),
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_LEGGINGS)),
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_BOOTS))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.ROYAL_GEL)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
@@ -1444,21 +1519,20 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                         ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
+                        ))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/king_slime/master"), KingSlimeTreasureBagCommon()
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(4))
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_HELMET).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_LEGGINGS).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
-                        .add(LootItem.lootTableItem(ArmorItems.NINJA_BOOTS).setWeight(2))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_HELMET)),
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE)),
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_LEGGINGS)),
+                                PercentageLootEntry.rule(100.0 * 2 / 12, LootItem.lootTableItem(ArmorItems.NINJA_BOOTS))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.ROYAL_GEL)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
@@ -1468,19 +1542,22 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MountItems.SLIMY_SADDLE))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.KING_SLIME_RELIC)))
         );
         // 克眼
 
         LootPool.Builder binoculars_1$40 = LootPool.lootPool()
-                .add(LootItem.lootTableItem(ToolItems.BINOCULARS))
-                .add(EmptyLootItem.emptyItem().setWeight(39));
+                .add(PercentageLootEntry.independent(false,
+                        PercentageLootEntry.rule(100.0 / 40, LootItem.lootTableItem(ToolItems.BINOCULARS))
+                ));
         LootPool.Builder binoculars_1$30 = LootPool.lootPool()
-                .add(LootItem.lootTableItem(ToolItems.BINOCULARS))
-                .add(EmptyLootItem.emptyItem().setWeight(29));
+                .add(PercentageLootEntry.independent(false,
+                        PercentageLootEntry.rule(100.0 / 30, LootItem.lootTableItem(ToolItems.BINOCULARS))
+                ));
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/classic_corruption"), eyeOfCthulhuTreasureBagCorruption()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
@@ -1662,8 +1739,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setWeight(333))
-                        .add(EmptyLootItem.emptyItem().setWeight(9667))
+                        .add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(100.0 / 30, LootItem.lootTableItem(SummonItems.SLIME_STAFF))))
                 );
     }
 
@@ -1675,8 +1751,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ManaWeaponItems.BEE_GUN))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.HONEY_COMB))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(TCItems.HONEY_COMB))
+                        ))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.HONEY_BOTTLE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
@@ -1689,18 +1766,21 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.RADIO_THING))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(AccessoryItems.RADIO_THING))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PetItems.CHESTER_STAFF))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(PetItems.CHESTER_STAFF))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ManaWeaponItems.WEATHER_PAIN))
-                        .add(LootItem.lootTableItem(AxeItems.LUCY_THE_AXE))
-                        .add(LootItem.lootTableItem(SummonItems.EYE_LASER_TURRET_STAFF))
-                        .add(EmptyLootItem.emptyItem().setWeight(1))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ManaWeaponItems.WEATHER_PAIN)),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(AxeItems.LUCY_THE_AXE)),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(SummonItems.EYE_LASER_TURRET_STAFF))
+                        ))
                 );
     }
 
@@ -1771,8 +1851,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.GREATER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(HamaxeItems.THE_AXE))
-                        .add(EmptyLootItem.emptyItem().setWeight(49)));
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(HamaxeItems.THE_AXE))
+                        )));
     }
 
     private static LootTable.Builder lunaticCultistTreasureBag(int goldCoins, int ancientCloth) {
@@ -1788,48 +1869,54 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
     private static LootTable.Builder environmentCrateCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_GOLD).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(EmptyLootItem.emptyItem().setWeight(42))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 49, LootItem.lootTableItem(Items.RAW_GOLD).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6)))),
+                                PercentageLootEntry.rule(100.0 / 49, LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6)))),
+                                PercentageLootEntry.rule(100.0 / 49, LootItem.lootTableItem(Items.RAW_IRON).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6)))),
+                                PercentageLootEntry.rule(100.0 / 49, LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6)))),
+                                PercentageLootEntry.rule(100.0 / 49, LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6)))),
+                                PercentageLootEntry.rule(100.0 / 49, LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6)))),
+                                PercentageLootEntry.rule(100.0 / 49, LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(EmptyLootItem.emptyItem().setWeight(16))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(MaterialItems.TIN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4)))),
+                                PercentageLootEntry.rule(100.0 / 24, LootItem.lootTableItem(Items.COPPER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(EmptyLootItem.emptyItem().setWeight(16))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        ))
                 );
     }
 
@@ -1837,70 +1924,82 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
     private static LootTable.Builder environmentLavaCrateCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_HELLSTONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
-                        .add(EmptyLootItem.emptyItem().setWeight(6))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 7, LootItem.lootTableItem(MaterialItems.RAW_HELLSTONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 6))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.HELLSTONE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.HELLSTONE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(EmptyLootItem.emptyItem().setWeight(16))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        ))
                 );
     }
     // 困难模式岩浆匣子通用
     private static LootTable.Builder environmentLavaCrateHardModeCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_HELLSTONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(EmptyLootItem.emptyItem().setWeight(6))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 7, LootItem.lootTableItem(MaterialItems.RAW_HELLSTONE).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.HELLSTONE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.HELLSTONE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(EmptyLootItem.emptyItem().setWeight(16))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        ))
                 );
     }
 
@@ -1924,61 +2023,64 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
     private static LootTable.Builder environmentCrateHardModeCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
-                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.RAW_GOLD).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_COBALT).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PALLADIUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_MYTHRIL).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_ORICHALCUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_ADAMANTITE).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TITANIUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(EmptyLootItem.emptyItem().setWeight(83))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(Items.RAW_GOLD).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(Items.RAW_IRON).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_COBALT).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_PALLADIUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_MYTHRIL).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_ORICHALCUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_ADAMANTITE).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35)))),
+                                PercentageLootEntry.rule(100.0 / 96, LootItem.lootTableItem(MaterialItems.RAW_TITANIUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16))))
-                        .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16))))
-                        .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16))))
-                        .add(LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16))))
-                        .add(LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16))))
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16))))
-
-                        .add(LootItem.lootTableItem(MaterialItems.COBALT_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16))).setWeight(2))
-                        .add(LootItem.lootTableItem(MaterialItems.PALLADIUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16))).setWeight(2))
-                        .add(LootItem.lootTableItem(MaterialItems.MYTHRIL_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16))).setWeight(2))
-                        .add(LootItem.lootTableItem(MaterialItems.ORICHALCUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16))).setWeight(2))
-                        .add(LootItem.lootTableItem(MaterialItems.ADAMANTITE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16))).setWeight(2))
-                        .add(LootItem.lootTableItem(MaterialItems.TITANIUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16))).setWeight(2))
-
-                        .add(EmptyLootItem.emptyItem().setWeight(90))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 108, LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16)))),
+                                PercentageLootEntry.rule(100.0 / 108, LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16)))),
+                                PercentageLootEntry.rule(100.0 / 108, LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16)))),
+                                PercentageLootEntry.rule(100.0 / 108, LootItem.lootTableItem(MaterialItems.PLATINUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16)))),
+                                PercentageLootEntry.rule(100.0 / 108, LootItem.lootTableItem(Items.GOLD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16)))),
+                                PercentageLootEntry.rule(100.0 / 108, LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(6, 16)))),
+                                PercentageLootEntry.rule(100.0 * 2 / 108, LootItem.lootTableItem(MaterialItems.COBALT_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16)))),
+                                PercentageLootEntry.rule(100.0 * 2 / 108, LootItem.lootTableItem(MaterialItems.PALLADIUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16)))),
+                                PercentageLootEntry.rule(100.0 * 2 / 108, LootItem.lootTableItem(MaterialItems.MYTHRIL_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16)))),
+                                PercentageLootEntry.rule(100.0 * 2 / 108, LootItem.lootTableItem(MaterialItems.ORICHALCUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16)))),
+                                PercentageLootEntry.rule(100.0 * 2 / 108, LootItem.lootTableItem(MaterialItems.ADAMANTITE_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16)))),
+                                PercentageLootEntry.rule(100.0 * 2 / 108, LootItem.lootTableItem(MaterialItems.TITANIUM_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 16))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                        .add(EmptyLootItem.emptyItem().setWeight(16))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.OBSIDIAN_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HUNTER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.MINING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.HEART_REACH_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(PotionItems.SPELUNKER_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.HEALING_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(PotionItems.MANA_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 17))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.JOURNEYMAN_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6)))),
+                                PercentageLootEntry.rule(25, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 6))))
+                        ))
                 );
     }
 }

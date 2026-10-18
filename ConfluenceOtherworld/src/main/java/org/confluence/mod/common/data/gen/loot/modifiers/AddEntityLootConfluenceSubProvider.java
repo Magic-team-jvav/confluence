@@ -11,7 +11,6 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
@@ -20,13 +19,10 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.item.FlailItems;
-import org.confluence.mod.common.init.item.FoodItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.loot.PercentageLootEntry;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.mod.common.init.item.SummonItems;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -151,25 +147,29 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
         entries.add(new AddedEntityLoot(EntityType.SLIME,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(NestedLootTable.lootTableReference(
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(5, NestedLootTable.lootTableReference(
                                         ModLootTables.SLIME_CARRY
-                                ).setWeight(1))
-                                .add(EmptyLootItem.emptyItem().setWeight(19))
+                                        ))
+                                ))
                 ).withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
-                                .add(EmptyLootItem.emptyItem().setWeight(98))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(2, LootItem.lootTableItem(TCItems.COMPASS))
+                                ))
                 ).withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setWeight(1))
-                                .add(EmptyLootItem.emptyItem().setWeight(6999))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(100.0 / 7000, LootItem.lootTableItem(SummonItems.SLIME_STAFF))
+                                ))
                 )
         ));
         entries.add(new AddedEntityLoot(EntityType.WARDEN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(SummonItems.SCULK_WISP_STAFF).setWeight(1))
-                                .add(EmptyLootItem.emptyItem().setWeight(4))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(20, LootItem.lootTableItem(SummonItems.SCULK_WISP_STAFF))
+                                ))
                 )
         ));
         entries.add(new AddedEntityLoot(EntityType.WITHER_SKELETON,
@@ -203,22 +203,25 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
         entries.add(new AddedEntityLoot(EntityType.ZOMBIFIED_PIGLIN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(TCItems.ENERGY_BAR).setWeight(2))
-                                .add(EmptyLootItem.emptyItem().setWeight(98))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(2, LootItem.lootTableItem(TCItems.ENERGY_BAR))
+                                ))
                 )
         ));
         entries.add(new AddedEntityLoot(EntityType.GUARDIAN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FlailItems.GUARDIAN_FLAIL).setWeight(1))
-                                .add(EmptyLootItem.emptyItem().setWeight(14))
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(FlailItems.GUARDIAN_FLAIL))
+                                ))
                 )
         ));
         entries.add(new AddedEntityLoot(EntityType.ELDER_GUARDIAN,
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FlailItems.ANCIENT_GUARDIAN_FLAIL))
-                                .add(EmptyLootItem.emptyItem())
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(50, LootItem.lootTableItem(FlailItems.ANCIENT_GUARDIAN_FLAIL))
+                                ))
                 )
         ));
         return entries;

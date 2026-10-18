@@ -4,16 +4,12 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.loot.DateLootItemCondition;
-import org.confluence.mod.common.loot.DifficultyChanceLootItemCondition;
-import org.confluence.mod.common.loot.EntityVariantLootItemCondition;
-import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
-import org.confluence.mod.common.loot.LootingBonusCountFunction;
-import org.confluence.mod.common.loot.SecretFlagLootItemCondition;
+import org.confluence.mod.common.loot.*;
 
 import java.util.function.Supplier;
 
@@ -92,6 +88,12 @@ public final class ModLootTables {
 
     private static ResourceKey<LootTable> register(String name) {
         return Confluence.asResourceKey(Registries.LOOT_TABLE, name);
+    }
+
+    // 注册战利品条目类型，使数据包能够通过 type 字段使用自定义的子规则组。
+    public static class EntryTypes {
+        public static final DeferredRegister<LootPoolEntryType> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_POOL_ENTRY_TYPE, Confluence.MODID);
+        public static final Supplier<LootPoolEntryType> PERCENTAGE = TYPES.register("percentage", () -> new LootPoolEntryType(PercentageLootEntry.CODEC));
     }
 
     public static class ItemConditions {

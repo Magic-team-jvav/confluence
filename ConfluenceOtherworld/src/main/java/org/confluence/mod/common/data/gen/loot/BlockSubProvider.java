@@ -18,10 +18,8 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
@@ -41,6 +39,7 @@ import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.loot.PercentageLootEntry;
 
 import java.util.Set;
 import java.util.stream.Stream;
@@ -65,7 +64,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         HolderLookup.RegistryLookup<Enchantment> registrylookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
-        LootPoolSingletonContainer.Builder<?> emptyWeight59 = EmptyLootItem.emptyItem().setWeight(59);
+
 
         // region ore
         dropSelf(TIN_BLOCK.get());
@@ -555,8 +554,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         add(ATTACHED_BALLOON_STEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(FoodItems.BALLOON_SEED).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        )))
         );
 
         dropSelf(WHITE_PAPER_PANE.get());
@@ -785,122 +785,149 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.MUSHROOM_GRASS_SEED))
-                        .add(EmptyLootItem.emptyItem().setWeight(39)))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 40, LootItem.lootTableItem(ModItems.MUSHROOM_GRASS_SEED))
+                        )))
         );
         dropOther(NatureBlocks.LIFE_MUSHROOM.get(), MaterialItems.LIFE_MUSHROOM.get());
         add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(setCount(UniformGenerator.between(1, 3))))));
         add(NatureBlocks.AMBER_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AMBER))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(AMBER))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AMBER_SAPLING))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(AMBER_SAPLING))
+                        )))
         );
         add(NatureBlocks.RUBY_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(RUBY))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(RUBY))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(RUBY_SAPLING))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(RUBY_SAPLING))
+                        )))
         );
         add(NatureBlocks.TOPAZ_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TOPAZ))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(TOPAZ))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TOPAZ_SAPLING))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(TOPAZ_SAPLING))
+                        )))
         );
         add(NatureBlocks.JADE_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(JADE))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(JADE))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(JADE_SAPLING))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(JADE_SAPLING))
+                        )))
         );
         add(NatureBlocks.DIAMOND_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.DIAMOND))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(Items.DIAMOND))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DIAMOND_SAPLING))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(DIAMOND_SAPLING))
+                        )))
         );
         add(NatureBlocks.SAPPHIRE_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SAPPHIRE))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(SAPPHIRE))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SAPPHIRE_SAPLING))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(SAPPHIRE_SAPLING))
+                        )))
         );
         add(NatureBlocks.AMETHYST_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AMETHYST))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(AMETHYST))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AMETHYST_SAPLING))
-                        .add(emptyWeight59))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 60, LootItem.lootTableItem(AMETHYST_SAPLING))
+                        )))
         );
         add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(159)))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 160, LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(159)))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 160, LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
+                        )))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(15)))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 16, LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
+                        )))
         );
         add(SMALL_STONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Blocks.COBBLESTONE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(Blocks.COBBLESTONE))
+                        )))
         );
         add(SMALL_SANDSTONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Blocks.SANDSTONE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(Blocks.SANDSTONE))
+                        )))
         );
         add(SMALL_RED_SANDSTONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Blocks.RED_SANDSTONE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(Blocks.RED_SANDSTONE))
+                        )))
         );
         add(SMALL_EBONSANDSTONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(EBONSANDSTONE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(EBONSANDSTONE))
+                        )))
         );
         add(SMALL_CRIMSANDSTONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CRIMSANDSTONE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(CRIMSANDSTONE))
+                        )))
         );
         add(SMALL_PEARLSANDSTONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PEARLSANDSTONE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(PEARLSANDSTONE))
+                        )))
         );
         add(SMALL_GRANITE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(NatureBlocks.GRANITE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(NatureBlocks.GRANITE))
+                        )))
         );
         add(SMALL_REMAINS_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BONE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(Items.BONE))
+                        )))
         );
         add(SMALL_MARBLE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(NatureBlocks.MARBLE))
-                        .add(EmptyLootItem.emptyItem()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(NatureBlocks.MARBLE))
+                        )))
         );
         addGrassLoot(ASH_GRASS.get(), ASH_GRASS.asItem());
         addGrassLoot(DESERT_GRASS.get(), DESERT_GRASS.asItem());

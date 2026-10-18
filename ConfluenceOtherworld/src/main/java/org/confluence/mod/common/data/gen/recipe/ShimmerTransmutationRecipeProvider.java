@@ -39,6 +39,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> writer) {
+        item(writer, "terraformer", addItem(FunctionalBlocks.CLENTAMINATOR.get().asItem(), FunctionalBlocks.TERRAFORMER.get().asItem(), 1, GamePhase.MOON_LORD));
+        item(writer, "red_solution", addItem(MaterialItems.PURPLE_SOLUTION.get(), MaterialItems.RED_SOLUTION.get(), 1, GamePhase.MOON_LORD));
         item(writer, "purple_solution", addItem(MaterialItems.RED_SOLUTION.get(), MaterialItems.PURPLE_SOLUTION.get(), 1, GamePhase.MOON_LORD));
         // 黑名单
         item(writer, "deny_stairs", blacklist(ItemTags.STAIRS));

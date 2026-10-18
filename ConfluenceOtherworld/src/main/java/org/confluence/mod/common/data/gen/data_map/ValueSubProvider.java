@@ -2026,6 +2026,8 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.LOOM, 60)
                 .add(FunctionalBlocks.DYE_VAT, gold1)
                 .add(FunctionalBlocks.SILLY_BALLOON_MACHINE, gold1)
+                .add(FunctionalBlocks.CLENTAMINATOR, 400000)
+                .add(FunctionalBlocks.TERRAFORMER, 400000)
                 .add(MaterialItems.GREEN_SOLUTION, 300)
                 .add(MaterialItems.BLUE_SOLUTION, 300)
                 .add(MaterialItems.PURPLE_SOLUTION, 300)

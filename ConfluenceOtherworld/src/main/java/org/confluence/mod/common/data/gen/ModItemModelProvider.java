@@ -58,6 +58,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     protected void registerModels() {
         skip.add(ToolItems.BOSS_TARGET_SELECTOR.get());
         for (var solution : Solution.values()) skip.add(solution.item());
+        skip.add(FunctionalBlocks.CLENTAMINATOR.get().asItem());
+        skip.add(FunctionalBlocks.TERRAFORMER.get().asItem());
         withExistingParent("shadow_candle", "item/generated").texture("layer0", Confluence.asResource("item/tool/shadow_candle"));
         GunItems.BULLET_ITEMS.forEach(item -> {
             String path = item.getId().getPath();

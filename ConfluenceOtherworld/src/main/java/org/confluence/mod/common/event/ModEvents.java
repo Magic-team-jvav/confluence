@@ -134,6 +134,7 @@ public final class ModEvents {
             MagicMailBox.registerVariants();
             ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(
+                    EnvironmentalMachines.INSTANCE,
                     TwinEyeEncounter.INSTANCE,
                     KillBoard.INSTANCE,
                     HardmodeConvertor.INSTANCE,

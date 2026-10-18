@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
@@ -43,6 +44,7 @@ public final class VanillaHumanoidRenderer<T extends Mob & GeoEntity> extends Ge
         @Nullable
         @Override
         protected ItemStack getStackForBone(GeoBone bone, T entity) {
+            if (entity instanceof BaseNPC npc && !npc.hasCombatTarget()) return null;
             String name = bone.getName();
             if (name.startsWith(rightArm)) {
                 return entity.isLeftHanded() ? entity.getOffhandItem() : entity.getMainHandItem();

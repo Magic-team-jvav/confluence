@@ -71,6 +71,8 @@ public final class NPCHumanoidGeoModel<T extends BaseNPC> extends GeoNormalModel
             right.setRotZ(0.0F);
             return;
         }
+        // 重铸预览已在上方处理；普通待机不叠加持械姿势，保留模型自身的待机和行走动画。
+        if (!npc.hasCombatTarget()) return;
         if (npc.isUsingItem() && npc.getUseItem().getItem() instanceof BowItem) {
             float progress = Mth.clamp((npc.getTicksUsingItem() + partialTick) / 5.0F, 0.0F, 1.0F);
             float pitch = Mth.lerp(partialTick, npc.xRotO, npc.getXRot()) * Mth.DEG_TO_RAD;

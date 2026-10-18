@@ -11,6 +11,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryType;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -97,6 +98,12 @@ public final class ModLootTables {
 
     private static ResourceLocation register(String name) {
         return Confluence.asResource(name);
+    }
+
+    // 注册战利品条目类型，使数据包能够通过 type 字段使用自定义的子规则组。
+    public static class EntryTypes {
+        public static final DeferredRegister<LootPoolEntryType> TYPES = DeferredRegister.create(Registries.LOOT_POOL_ENTRY_TYPE, Confluence.MODID);
+        public static final RegistryObject<LootPoolEntryType> PERCENTAGE = TYPES.register("percentage", () -> new LootPoolEntryType(new PercentageLootEntry.Serializer()));
     }
 
     public static class ItemConditions {

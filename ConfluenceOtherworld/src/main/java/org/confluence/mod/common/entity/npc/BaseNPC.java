@@ -79,6 +79,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final EntityDataAccessor<CompoundTag> DATA_MOOD = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final EntityDataAccessor<Boolean> DATA_SHIMMERED = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_HAS_COMBAT_TARGET = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation TAX_COLLECTOR_ATTACK = RawAnimation.begin().thenPlay("attack");
@@ -135,6 +136,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         entityData.define(DATA_CHAT, new CompoundTag());
         entityData.define(DATA_MOOD, new CompoundTag());
         entityData.define(DATA_SHIMMERED, false);
+        entityData.define(DATA_HAS_COMBAT_TARGET, false);
     }
 
     // === Goals ===
@@ -410,6 +412,11 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         return true;
     }
 
+    // 客户端使用同步状态控制自卫武器和战斗姿势，避免读取未同步的攻击目标。
+    public boolean hasCombatTarget() {
+        return isAlive() && entityData.get(DATA_HAS_COMBAT_TARGET);
+    }
+
     /// 返回注册项为该 NPC 固定的自卫方式和默认数值。
     public NPCCombatProfile getCombatProfile() {
         return combatProfile;
@@ -658,6 +665,10 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+        if (!level().isClientSide) {
+            LivingEntity target = getTarget();
+            entityData.set(DATA_HAS_COMBAT_TARGET, isAlive() && target != null && target.isAlive() && !target.isRemoved());
+        }
         if (!level().isClientSide && tickCount % 100 == 0) NPCSpawner.INSTANCE.trackNPC(this);
         if (chatDisplayTicks > 0 && --chatDisplayTicks == 0) setCurrentChat(null);
     }
@@ -687,7 +698,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "movement", 5, state -> {
-            if (getType() == NpcEntities.TAX_COLLECTOR.get() && swinging)
+            if (getType() == NpcEntities.TAX_COLLECTOR.get() && hasCombatTarget() && swinging)
                 return state.setAndContinue(TAX_COLLECTOR_ATTACK);
             return state.setAndContinue(state.isMoving() ? WALK : IDLE);
         }));

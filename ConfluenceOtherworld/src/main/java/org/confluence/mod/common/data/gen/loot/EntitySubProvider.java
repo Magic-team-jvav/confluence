@@ -12,7 +12,10 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.*;
+import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -61,31 +64,35 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         LootItemConditionalFunction.Builder<?> count1To2 = SetItemCountFunction.setCount(UniformGenerator.between(1, 2));
         LootItemConditionalFunction.Builder<?> count2To5 = SetItemCountFunction.setCount(UniformGenerator.between(2, 5));
         LootItemConditionalFunction.Builder<?> count2To6 = SetItemCountFunction.setCount(UniformGenerator.between(2, 6));
-        LootPoolSingletonContainer.Builder<?> emptyWeight98 = EmptyLootItem.emptyItem().setWeight(98);
+
         LootPoolSingletonContainer.Builder<?> boneWeight2 = LootItem.lootTableItem(Items.BONE).setWeight(2);
 
         add(BossEntities.EATER_OF_WORLDS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
+                .withPool(LootPool.lootPool().add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(25, hearts))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SHADOW_SCALE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(SHADOW_SCALE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(BossEntities.THE_DESTROYER_PROBE.get(), LootTable.lootTable());
         add(BossEntities.LUNATIC_CULTIST_CLONE.get(), LootTable.lootTable());
         add(MonsterEntities.VISUAL_NEURON.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem())))
+                .withPool(LootPool.lootPool().add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(50, hearts))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.TISSUE_SAMPLE).apply(count2To5).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.TISSUE_SAMPLE).apply(count2To5).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.GOBLIN_SCOUT.get(), LootTable.lootTable()
@@ -108,46 +115,67 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         // 蚁狮 掉落物已齐全（蚁狮上颚、芭菲）
         add(MonsterEntities.ANTLION.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(2)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2)).add(emptyWeight98))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.BANANA_SPLIT))
+                        )))
         );
         add(MonsterEntities.ANTLION_LARVA.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(5))));
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 6, LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))));
         add(MonsterEntities.ANTLION_CHARGER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2)).add(emptyWeight98))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE).setWeight(2)).add(emptyWeight98))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.BANANA_SPLIT))
+                        )))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE))
+                        )))
         );
         add(MonsterEntities.ANTLION_SWARMER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2)).apply(random0To1)
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.BANANA_SPLIT))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE))
+                        ))
                 )
         );
         add(MonsterEntities.GIANT_ANTLION_SWARMER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2)).apply(random0To1)
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.BANANA_SPLIT))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE))
+                        ))
                 )
         );
         add(MonsterEntities.ANGER_BONES.get(), LootTable.lootTable()
@@ -157,7 +185,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0033F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 300)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -170,7 +198,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0033F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 300)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -183,7 +211,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0033F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 300)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -196,7 +224,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0033F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 300)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -209,7 +237,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0033F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 300)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -222,7 +250,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0033F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 300)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -239,7 +267,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0033F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 300)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -255,18 +283,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.NAZAR).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(AccessoryItems.NAZAR)).when(() -> new DifficultyChanceLootItemCondition(1 / 100F, 1.99F / 100F))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.CREAM_SODA).setWeight(3)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(197))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 70, LootItem.lootTableItem(FoodItems.CREAM_SODA))
+                        )).apply(random0To1)
                 )
         );
         add(MonsterEntities.BLOOD_CRAWLER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 33 / 99, LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.TENTACLE_MACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0019F)).setQuality(1))
@@ -274,40 +303,44 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.BLOOD_ZOMBIE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0067F)).setQuality(1))
+                        .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).when(difficultyLootChance(100F / 150, 100F / 75)).setQuality(1))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(1, LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR.get()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get()).setWeight(5))
-                        .add(EmptyLootItem.emptyItem().setWeight(995))
+                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get())).when(() -> new DifficultyChanceLootItemCondition(0.5F / 100F, 1F / 100F))
                 )
         );
         // 僵尸新娘 缺少未加入物品：婚纱(Wedding Dress, 100%)
         add(MonsterEntities.THE_BRIDE.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(4)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
         );
         // 僵尸新郎 缺少未加入物品：大脑(Brain, 75%)（高顶礼帽、血泪已实现）
         add(MonsterEntities.THE_GROOM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.TOP_HAT)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(4))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.DRIPPLER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0067F)).setQuality(1))
+                        .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).when(difficultyLootChance(100F / 150, 100F / 75)).setQuality(1))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(1, LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR.get()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get()).setWeight(5))
-                        .add(EmptyLootItem.emptyItem().setWeight(995))
+                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get())).when(() -> new DifficultyChanceLootItemCondition(0.5F / 100F, 1F / 100F))
                 )
         );
         add(MonsterEntities.BLOODY_SPORE.get(), LootTable.lootTable()
@@ -315,8 +348,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.BLOOD_CLOT_POWDER)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(33, LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.TENTACLE_MACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0019F)).setQuality(1))
@@ -382,10 +416,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.CARTON_OF_MILK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0067F)))
+                        .add(LootItem.lootTableItem(FoodItems.CARTON_OF_MILK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 150)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.BONE_SWORD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0005F)).setQuality(1))
+                        .add(LootItem.lootTableItem(SwordItems.BONE_SWORD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.00492525F)).setQuality(1))
                 )
         );
         add(MonsterEntities.UNDEAD_VIKING.get(), LootTable.lootTable()
@@ -393,11 +427,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ArmorItems.VIKING_HELMET).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(ArmorItems.VIKING_HELMET))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(2 / 100F)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.HOOK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.04F)))
@@ -410,7 +445,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         // 装甲维京海盗 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（罗盘已实现）
         add(MonsterEntities.ARMORED_VIKING.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(2 / 100F)))
                 )
         );
         // 冰雪鱼人 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
@@ -432,21 +467,24 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.CRIMERA.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 33 / 99, LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.TENTACLE_MACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0019F)).setQuality(1))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.BURGER)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(1, LootItem.lootTableItem(FoodItems.BURGER))
+                        )).apply(random0To1)
                 )
         );
         add(MonsterEntities.FACE_MONSTER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 33 / 99, LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.TENTACLE_MACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0019F)).setQuality(1))
@@ -454,8 +492,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.DECAYEDER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(33, LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.ROTTEN_BONE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
@@ -466,8 +505,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.DEMON_EYE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.LENS).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(33, LootItem.lootTableItem(MaterialItems.LENS).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.BLACK_LENS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
@@ -475,16 +515,26 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         // 僵尸鱼人 缺少未加入物品：血雨弓(Blood Rain Bow, 12.5%)、钱币槽(Money Trough, 6.67%)、鱼饵桶(Chum Bucket, 50%)
         add(MonsterEntities.ZOMBIE_MERMAN.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(7)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FishingPoleItems.CHUM_CASTER).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(FishingPoleItems.CHUM_CASTER).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.04F)))));
         add(MonsterEntities.WANDERING_EYE_FISH.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
         );
         add(MonsterEntities.DEVOURER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).apply(count1To2).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 33 / 99, LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).apply(count1To2).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.WORM_TOOTH)).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 8))).apply(random0To1)
@@ -513,13 +563,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.NYMPH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.METAL_DETECTOR))
+                        .add(LootItem.lootTableItem(TCItems.METAL_DETECTOR)).when(() -> new DifficultyChanceLootItemCondition(50F / 100F, 100F / 100F))
                 )
         );
         add(MonsterEntities.SNATCHER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.COFFEE).setWeight(333).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(9667))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 333 / 9990, LootItem.lootTableItem(FoodItems.COFFEE).setWeight(333).setQuality(1))
+                        )).apply(random0To1)
                 )
         );
         // 真菌球怪 / 巨型真菌球怪 无掉落物（仅钱币），掉落表已齐全
@@ -532,79 +583,90 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.MAN_EATER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.MAN_EATER_VINE)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem())
+                        .when(() -> new DifficultyChanceLootItemCondition(50 / 100F, 100 / 100F))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.COFFEE).setWeight(333).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(9667))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 333 / 9990, LootItem.lootTableItem(FoodItems.COFFEE).setWeight(333).setQuality(1))
+                        )).apply(random0To1)
                 )
         );
         add(MonsterEntities.FLYING_FISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.FILAMENTOUS_FIN).setWeight(33).setQuality(1)).apply(count1To2).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(33, LootItem.lootTableItem(MaterialItems.FILAMENTOUS_FIN).setWeight(33).setQuality(1))
+                        )).apply(count1To2).apply(random0To1)
                 )
         );
         add(MonsterEntities.EATER_OF_SOULS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 33 / 99, LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.TENTACLE_MACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0019F)).setQuality(1))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.BURGER)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(1, LootItem.lootTableItem(FoodItems.BURGER))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.CORRUPTION_CARRY).setWeight(19).setQuality(1))
-                        .add(EmptyLootItem.emptyItem().setWeight(9981))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 19 / 10000, LootTableReference.lootTableReference(ModLootTables.CORRUPTION_CARRY).setWeight(19).setQuality(1))
+                        ))
                 )
         );
         add(MonsterEntities.GIANT_SHELLY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0123F)))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(79F / 6400)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.DEPTH_METER).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0125F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.POTATO_CHIPS).setWeight(133)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(9867))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 75, LootItem.lootTableItem(FoodItems.POTATO_CHIPS))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(YoyoItems.RALLY).setWeight(667).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9333))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 6241 / 96000, LootItem.lootTableItem(YoyoItems.RALLY).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.CRAWDAD.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0123F)))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(79F / 6400)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.DEPTH_METER).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0125F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.POTATO_CHIPS).setWeight(133)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(9867))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 75, LootItem.lootTableItem(FoodItems.POTATO_CHIPS))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(YoyoItems.RALLY).setWeight(667).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9333))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 6241 / 96000, LootItem.lootTableItem(YoyoItems.RALLY).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.GIANT_WORM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION))
+                        ))
                 )
         );
         // 挖掘怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、可疑苹果(Suspicious Looking Apple, 40%)
         add(MonsterEntities.DIGGER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION))
+                        ))
                 )
         );
         // 吞世怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)、吞世怪风筝(World Feeder Kite, 4%)、可疑苹果(Suspicious Looking Apple, 45%)
@@ -628,17 +690,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GIANT_HARPY_FEATHER).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.006666666666666667F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.HARPY_FEATHER).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.HARPY_FEATHER).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.CHICKEN_NUGGET)).apply(random0To1)
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.CHICKEN_NUGGET))
+                        )).apply(random0To1)
                 )
         );
         add(MonsterEntities.HELL_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.MAGMA_STONE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.034F)))
+                        .add(LootItem.lootTableItem(TCItems.MAGMA_STONE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 150)))
                 )
                 .withPool(LootPool.lootPool().when(afterSkeletronBehindWallOfFlesh)
                         .add(LootItem.lootTableItem(YoyoItems.CASCADE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0025F)))
@@ -646,8 +710,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.FIRE_IMP.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool().when(afterSkeletronBehindWallOfFlesh)
                         .add(LootItem.lootTableItem(YoyoItems.CASCADE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0025F)))
@@ -667,7 +732,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(YoyoItems.CASCADE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0025F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ManaWeaponItems.DEMON_SCYTHE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0286F)))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.DEMON_SCYTHE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 35)))
                 )
         );
         add(MonsterEntities.VOODOO_DEMON.get(), LootTable.lootTable()
@@ -678,12 +743,15 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(YoyoItems.CASCADE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0025F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ManaWeaponItems.DEMON_SCYTHE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0286F)))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.DEMON_SCYTHE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 35)))
                 )
         );
         // 青苔黄蜂 缺少未加入物品：破碎蜂翼(Tattered Bee Wing, 1%)（蜂刺、牛黄已实现）
         add(MonsterEntities.MOSS_HORNET.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.STINGER).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(5)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 6, LootItem.lootTableItem(MaterialItems.STINGER).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BEZOAR))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
         add(MonsterEntities.HORNET.get(), LootTable.lootTable()
@@ -691,19 +759,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.STINGER)).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.BEZOAR).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(TCItems.BEZOAR)).when(() -> new DifficultyChanceLootItemCondition(1 / 100F, 1.99F / 100F))
                 )
         );
         add(MonsterEntities.ICE_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.ICE_CREAM)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(149))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.ICE_CREAM))
+                        )).apply(random0To1)
                 )
         );
         add(MonsterEntities.SNOW_FLINX.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(2 / 100F)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.FLINX_FUR)).apply(random0To1).apply(count1To2)
@@ -713,10 +781,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.PIRANHA.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0133F)))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 75)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.HOOK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.033F)))
+                        .add(LootItem.lootTableItem(MaterialItems.HOOK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0332F)))
                 )
         );
         // 腐化金鱼 / 毒金鱼 无掉落物（仅钱币），掉落表已齐全
@@ -730,24 +798,37 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         // 沙鲨 / 腐化沙鲨 / 猩红沙鲨 / 神圣沙鲨 缺少未加入物品：沙鲨风筝(Sand Shark Kite, 4%)
         add(MonsterEntities.SAND_SHARK.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.03333333333333333F)))));
         add(MonsterEntities.BONE_BITER.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.03333333333333333F))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.04F)))));
         add(MonsterEntities.FLESH_REAVER.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.03333333333333333F))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.04F)))));
         add(MonsterEntities.CRYSTAL_THRESHER.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(7)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(MaterialItems.SHARK_FIN).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.03333333333333333F))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.04F)))));
         add(MonsterEntities.SHARK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.DIVING_HELMET))
@@ -764,8 +845,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(Items.BONE_BLOCK)).apply(count1To2).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.HOTDOG).setWeight(333)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(667))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 30, LootItem.lootTableItem(FoodItems.HOTDOG))
+                        )).apply(random0To1)
                 )
         );
         add(MonsterEntities.WITHER_BONE_SERPENT.get(), LootTable.lootTable()
@@ -776,21 +858,22 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(Items.COAL_BLOCK)).apply(count1To2).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.HOTDOG).setWeight(333)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(667))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 333 / 1000, LootItem.lootTableItem(FoodItems.HOTDOG))
+                        )).apply(random0To1)
                 )
         );
-        add(MonsterEntities.ANGER_GOBLIN.get(), goblinCommon());
-        add(MonsterEntities.GOBLIN_ARCHER.get(), goblinCommon());
-        add(MonsterEntities.GOBLIN_PEON.get(), goblinCommon());
-        add(MonsterEntities.GOBLIN_SORCERER.get(), goblinCommon());
+        add(MonsterEntities.ANGER_GOBLIN.get(), goblinCommon(50F));
+        add(MonsterEntities.GOBLIN_ARCHER.get(), goblinCommon(49.75F));
+        add(MonsterEntities.GOBLIN_PEON.get(), goblinCommon(49.75F));
+        add(MonsterEntities.GOBLIN_SORCERER.get(), goblinCommon(49.75F));
         // 哥布林术士 缺少未加入物品：暗影焰弓(Shadowflame Bow, 33.3%)、暗影焰巫术娃娃(Shadowflame Hex Doll, 33.3%)、暗影焰刀(Shadowflame Knife, 33.3%)
-        add(MonsterEntities.GOBLIN_WARLOCK.get(), goblinCommon());
+        add(MonsterEntities.GOBLIN_WARLOCK.get(), goblinCommon(50F));
         add(MonsterEntities.SHADOWFLAME_APPARITION.get(), LootTable.lootTable());
         // 侏儒 无掉落物（仅钱币），掉落表已齐全
         add(MonsterEntities.GNOME.get(), LootTable.lootTable());
-        add(MonsterEntities.GOBLIN_THIEF.get(), goblinCommon());
-        add(MonsterEntities.GOBLIN_WARRIOR.get(), goblinCommon());
+        add(MonsterEntities.GOBLIN_THIEF.get(), goblinCommon(49.75F));
+        add(MonsterEntities.GOBLIN_WARRIOR.get(), goblinCommon(49.75F));
         // 海盗七怪（水手/私船海盗/神射手/弩手/船长/诅咒/鹦鹉）缺少未加入物品：钱币枪、桶式发射器、海盗法杖、弯刀、水手帽/眼罩/水手上衣/水手裤、金平台、船长帽、诅咒之眼等
         add(MonsterEntities.PIRATE_DECKHAND.get(), pirateCommon(1));
         add(MonsterEntities.PIRATE_DEADEYE.get(), pirateCommon(1));
@@ -813,20 +896,23 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.SCUTLIX.get(), LootTable.lootTable());
         add(NpcEntities.MECHANIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BoomerangItems.COMBAT_WRENCH).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(BoomerangItems.COMBAT_WRENCH).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(NpcEntities.STYLIST.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.STYLISH_SCISSORS).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SwordItems.STYLISH_SCISSORS).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(NpcEntities.DYE_TRADER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.EXOTIC_SCIMITAR).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SwordItems.EXOTIC_SCIMITAR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(NpcEntities.TRAVELING_MERCHANT.get(), LootTable.lootTable()
@@ -904,8 +990,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(CritterEntities.CRAB.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY).setWeight(2))
-                        .add(emptyWeight98).apply(random0To1)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY))
+                        )).apply(random0To1)
                 )
         );
         add(CritterEntities.HOSTILE_BUNNY.get(), LootTable.lootTable());
@@ -921,13 +1008,17 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(CritterEntities.BUGGY.get(), LootTable.lootTable());
         add(CritterEntities.LIGHTNING_BUG.get(), LootTable.lootTable());
         add(MonsterEntities.ANGRY_NIMBUS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ManaWeaponItems.NIMBUS_ROD).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(14)))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(ManaWeaponItems.NIMBUS_ROD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
         );
         // 愤怒蒲公英 掉落物已齐全（太阳花）
         add(MonsterEntities.ANGRY_DANDELION.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DAYBLOOM).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(MaterialItems.DAYBLOOM).apply(count1To2).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         // 花岗岩巨人 缺少未加入物品：晶洞(Geode, 5%)、夜视头盔(Night Vision Helmet, 3.3%)、响石(Snapping Stone, 1.25%)（花岗岩、意大利面已实现）
@@ -935,14 +1026,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(NatureBlocks.GRANITE))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.SPAGHETTI).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.SPAGHETTI))
+                        ))
                 )
         );
         add(MonsterEntities.GRANITE_ELEMENTAL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.SPAGHETTI).setWeight(2))
-                        .add(emptyWeight98).apply(random0To1)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.SPAGHETTI))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
@@ -950,87 +1043,105 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         // 装甲步兵 缺少未加入物品：压力球(Stress Ball, 1%)、角斗士胸甲(Gladiator Breastplate, 4.76%)（标枪、角斗士头盔/护腿、短剑、钩爪、披萨已实现）
         add(MonsterEntities.HOPLITE.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PIZZA).setWeight(2)).add(emptyWeight98))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.JAVELIN).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem()))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_HELMET))
-                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_CHESTPLATE))
-                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_LEGGINGS))
-                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_BOOTS))
-                        .add(EmptyLootItem.emptyItem().setWeight(18)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.GLADIUS).setWeight(5).apply(LootingBonusCountFunction.lootingBonusCount())).add(EmptyLootItem.emptyItem().setWeight(95)))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(FoodItems.PIZZA))
+                        )))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(ConsumableItems.JAVELIN).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(ArmorItems.GLADIATOR_HELMET)),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(ArmorItems.GLADIATOR_CHESTPLATE)),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(ArmorItems.GLADIATOR_LEGGINGS)),
+                                PercentageLootEntry.rule(100.0 / 22, LootItem.lootTableItem(ArmorItems.GLADIATOR_BOOTS))
+                        )))
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(SwordItems.GLADIUS).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        )))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HOOK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.04F))))
         );
         add(MonsterEntities.METEOR_HEAD.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().when(beforeSkeletronBehindWallOfFlesh)
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_METEORITE).setWeight(2))
-                        .add(emptyWeight98).apply(random0To1)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(MaterialItems.RAW_METEORITE))
+                        )).apply(random0To1)
                 )
         );
-        add(MonsterEntities.BLUE_SLIME.get(), slimeCommon(-10644993));
-        add(MonsterEntities.DESERT_SLIME.get(), slimeCommon(-2727));
-        add(MonsterEntities.GREEN_DUMPLING_SLIME.get(), slimeCommon(-8470674)
+        add(MonsterEntities.BLUE_SLIME.get(), slimeCommon(-10644993, 100F / 10000, 100F / 7000));
+        add(MonsterEntities.DESERT_SLIME.get(), slimeCommon(-2727, 100F / 8000, 100F / 5600));
+        add(MonsterEntities.GREEN_DUMPLING_SLIME.get(), slimeCommon(-8470674, 100F / 10000, 100F / 7000)
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get()))
+                        ))
                         .apply(random0To1)
-                        .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(MonsterEntities.GREEN_SLIME.get(), slimeCommon(-8470674));
-        add(MonsterEntities.PURPLE_SLIME.get(), slimeCommon(-6326333));
-        add(MonsterEntities.RED_SLIME.get(), slimeCommon(-1079407));
-        add(MonsterEntities.YELLOW_SLIME.get(), slimeCommon(-871089));
+        add(MonsterEntities.GREEN_SLIME.get(), slimeCommon(-8470674, 100F / 10000, 100F / 7000));
+        add(MonsterEntities.PURPLE_SLIME.get(), slimeCommon(-6326333, 100F / 10000, 100F / 7000));
+        add(MonsterEntities.RED_SLIME.get(), slimeCommon(-1079407, 100F / 10000, 100F / 7000));
+        add(MonsterEntities.YELLOW_SLIME.get(), slimeCommon(-871089, 100F / 10000, 100F / 7000));
         add(MonsterEntities.SLIMELING.get(), corruptionSlimeLoot(-6522185));
-        add(MonsterEntities.JUNGLE_SLIME.get(), slimeCommon(-6570130));
-        add(MonsterEntities.ICE_SLIME.get(), slimeCommon(-10628609)
+        add(MonsterEntities.JUNGLE_SLIME.get(), slimeCommon(-6570130, 100F / 10000, 100F / 7000));
+        add(MonsterEntities.ICE_SLIME.get(), slimeCommon(-10628609, 100F / 10000, 100F / 7000)
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
+                        ))
                         .apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(149))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(2, LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get())
                                 .when(DamageSourceCondition.hasDamageSource(
                                         DamageSourcePredicate.Builder.damageType()
                                                 .tag(TagPredicate.is(
                                                         DamageTypeTags.IS_FALL
                                                 ))
-                                ))
-
-                        )
-                        .add(EmptyLootItem.emptyItem().setWeight(49))
+                                )))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(149))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get())
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(ModItems.ICE_TOFU_BRICK.get())
                                 .when(AnyOfCondition.anyOf(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.KILLER_PLAYER, EntityPredicate.Builder.entity()
                                         .of(EntityType.PLAYER)
                                         .equipment(EntityEquipmentPredicate.Builder.equipment()
                                                 .mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FROST_WALKER, MinMaxBounds.Ints.atLeast(1))).build()).build())))))
-                        .add(EmptyLootItem.emptyItem().setWeight(14))
+                        ))
                 )
         );
         add(MonsterEntities.LAVA_SLIME.get(), lavaSlimeLoot());
         add(MonsterEntities.BLACK_SLIME.get(), blackSlimeLoot());
         add(MonsterEntities.MOTHER_SLIME.get(), motherSlimeLoot());
         add(MonsterEntities.BABY_SLIME.get(), blackSlimeLoot());
-        add(MonsterEntities.TROPIC_SLIME.get(), slimeCommon(-10644993)
+        add(MonsterEntities.TROPIC_SLIME.get(), slimeCommon(-10644993, 100F / 10000, 100F / 7000)
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.TROPICAL_FISH).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(Items.TROPICAL_FISH).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.PINK_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.SLIME_CARRY))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootTableReference.lootTableReference(ModLootTables.SLIME_CARRY))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).setQuality(1).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(1, LootItem.lootTableItem(SummonItems.SLIME_STAFF).setQuality(1).apply(LootingBonusCountFunction.lootingBonusCount()).when(() -> new DifficultyChanceLootItemCondition(1, 0))),
+                                PercentageLootEntry.rule(100.0 / 70, LootItem.lootTableItem(SummonItems.SLIME_STAFF).setQuality(1).apply(LootingBonusCountFunction.lootingBonusCount()).when(() -> new DifficultyChanceLootItemCondition(0, 1)))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.GOLD_COIN))
@@ -1043,11 +1154,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.SWAMP_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.SLIME_CARRY))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootTableReference.lootTableReference(ModLootTables.SLIME_CARRY))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.00014285714285714287F)).setQuality(1))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(100F / 10000, 100F / 7000)).setQuality(1))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.SKELETON_SKULL).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.025F)))
@@ -1058,20 +1170,21 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                 )
         );
-        add(MonsterEntities.SPIKED_SLIME.get(), slimeCommon(-10644993)
+        add(MonsterEntities.SPIKED_SLIME.get(), slimeCommon(-10644993, 100F / 10000, 100F / 7000)
         );
-        add(MonsterEntities.SPIKED_ICE_SLIME.get(), slimeCommon(-10628609)
+        add(MonsterEntities.SPIKED_ICE_SLIME.get(), slimeCommon(-10628609, 100F / 10000, 100F / 7000)
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
+                        ))
                         .apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(933))
                 )
         );
-        add(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), slimeCommon(-6570130)
+        add(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), slimeCommon(-6570130, 100F / 10000, 100F / 7000)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.STINGER.get()))
                         .apply(random0To1)
-                        .add(EmptyLootItem.emptyItem())
+                        .when(() -> new DifficultyChanceLootItemCondition(50 / 100F, 100 / 100F))
                 )
         );
         add(MonsterEntities.BLUE_JELLYFISH.get(), LootTable.lootTable()
@@ -1095,12 +1208,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.PIXIE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK)).when(() -> new DifficultyChanceLootItemCondition(1 / 100F, 1.99F / 100F))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE)).when(() -> new DifficultyChanceLootItemCondition(1 / 100F, 1.99F / 100F))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.PIXIE_DUST)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
@@ -1108,8 +1219,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.WRAITH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK)).when(() -> new DifficultyChanceLootItemCondition(1 / 100F, 1.99F / 100F))
                 )
         );
         // 血水母 缺少未加入物品：怪物肉(Monster Meat, 0.07%)
@@ -1118,8 +1228,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.FUNGO_FISH.get(), LootTable.lootTable());
         add(MonsterEntities.GREEN_JELLYFISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).setWeight(2))
-                        .add(emptyWeight98)
+                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE)).when(() -> new DifficultyChanceLootItemCondition(1 / 100F, 1.99F / 100F))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
@@ -1127,11 +1236,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.LUMINOUS_SLIME.get(), LootTable.lootTable()
                         .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.00010013016921998598F)).setQuality(14))
+                                .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(100F / 10000, 100F / 7000)).setQuality(14))
                         )
                         .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FoodItems.APPLE_PIE).setWeight(67))
-                                .add(EmptyLootItem.emptyItem().setWeight(9933)).apply(random0To1)
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.APPLE_PIE))
+                                )).apply(random0To1)
                         )
                         .withPool(LootPool.lootPool()
                                         .add(LootItem.lootTableItem(MaterialItems.GEL))
@@ -1180,111 +1290,125 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         // 夺命杖
                         // 飞镖手枪
                         // 臭虎爪
-                        .add(LootItem.lootTableItem(HookItems.TENDON_HOOK))
-                        .add(LootItem.lootTableItem(TCItems.FLESH_KNUCKLES))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(HookItems.TENDON_HOOK)),
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(TCItems.FLESH_KNUCKLES))
+                        ))
                 )
         );
         add(MonsterEntities.CORRUPT_MIMIC.get(), bigMimicCommon()
                 .withPool(LootPool.lootPool()
                         // 爬藤怪法杖
                         // 飞镖步枪
-                        .add(LootItem.lootTableItem(FlailItems.CHAIN_GUILLOTINES))
-                        .add(LootItem.lootTableItem(HookItems.WORM_HOOK))
-                        .add(LootItem.lootTableItem(TCItems.PUTRID_SCENT))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(FlailItems.CHAIN_GUILLOTINES)),
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(HookItems.WORM_HOOK)),
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(TCItems.PUTRID_SCENT))
+                        ))
                 )
         );
         add(MonsterEntities.HALLOWED_MIMIC.get(), bigMimicCommon()
                 .withPool(LootPool.lootPool()
                         // 飞刀
-                        .add(LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_VILE_SHARD))
-                        .add(LootItem.lootTableItem(BowItems.DAEDALUS_STORM_BOW))
-                        .add(LootItem.lootTableItem(HookItems.ILLUMINANT_HOOK))
+                        .add(PercentageLootEntry.exclusive(false,
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_VILE_SHARD)),
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(BowItems.DAEDALUS_STORM_BOW)),
+                                PercentageLootEntry.rule(20, LootItem.lootTableItem(HookItems.ILLUMINANT_HOOK))
+                        ))
                 )
         );
         add(MonsterEntities.JUNGLE_MIMIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FART_IN_A_JAR).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(TCItems.FART_IN_A_JAR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ManaWeaponItems.GOLDEN_SHOWER).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ManaWeaponItems.GOLDEN_SHOWER).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(NatureBlocks.POO).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(NatureBlocks.POO).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 // 天使雕像
                 // 水枪
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.SPARKLE_SLIME_BALLOON.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(69))))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ConsumableItems.SPARKLE_SLIME_BALLOON.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(69))))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.COAL).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(Items.COAL).apply(LootingBonusCountFunction.lootingBonusCount()))
                         ))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.RED_POTION).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(PotionItems.RED_POTION).apply(LootingBonusCountFunction.lootingBonusCount()))
                         ))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.STINK_POTION).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(PotionItems.STINK_POTION).apply(LootingBonusCountFunction.lootingBonusCount()))
                         ))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
 
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(BaitItems.MASTER_BAIT).apply(LootingBonusCountFunction.lootingBonusCount()))
                         ))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
         );
         add(MonsterEntities.MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).when(difficultyLootChance(1.0F, 1.99F)))
                 )
         );
         add(MonsterEntities.DARK_MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).when(difficultyLootChance(1.0F, 1.99F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).when(difficultyLootChance(1.0F, 1.99F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(10, LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.BLOOD_MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).when(difficultyLootChance(1.0F, 1.99F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).when(difficultyLootChance(1.0F, 1.99F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(10, LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.LIGHT_MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.TRIFOLD_MAP).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.TRIFOLD_MAP).when(difficultyLootChance(1.0F, 1.99F)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(10, LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.DERPLING.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.GRAPE).setWeight(25))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 25 / 1000, LootItem.lootTableItem(FoodItems.GRAPE))
+                        ))
                         .apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(975))
                 )
         );
         // 蛇蜥怪 缺少未加入物品：远古号角(Ancient Horn, 2%)（坚固化石已实现）
@@ -1294,55 +1418,65 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.VILE_GHOUL.get(), ghoulCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(0, LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).setWeight(667).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9333))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModBlocks.CURSED_FLAME).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(ModBlocks.CURSED_FLAME).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
         add(MonsterEntities.TAINTED_GHOUL.get(), ghoulCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(0, LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DARK_SHARD).setWeight(667).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9333))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(MaterialItems.DARK_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ICHOR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.ICHOR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
         add(MonsterEntities.DREAMER_GHOUL.get(), ghoulCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).setWeight(667).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9333))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 15, LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ICHOR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(MaterialItems.ICHOR).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
         add(MonsterEntities.SAND_POACHER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.FRIED_EGG).setWeight(333))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 30, LootItem.lootTableItem(FoodItems.FRIED_EGG))
+                        ))
                         .apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
         add(MonsterEntities.GIANT_TORTOISE.get(), LootTable.lootTable().withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.TURTLE_SHELL).setWeight(833).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9167))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 12, LootItem.lootTableItem(MaterialItems.TURTLE_SHELL).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 )
         );
         add(MonsterEntities.GIANT_FLYING_FOX.get(), batCommon()
@@ -1351,11 +1485,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 ));
         add(MonsterEntities.CORRUPTOR.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1)).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 * 33 / 99, LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1))
+                        )).apply(random0To1)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.VITAMINS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.02F)))
+                        .add(LootItem.lootTableItem(TCItems.VITAMINS).when(difficultyLootChance(1.0F, 1.99F)))
                 )
         );
         add(MonsterEntities.SLIMER.get(), LootTable.lootTable());
@@ -1374,19 +1509,20 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable()
                 // 混沌传送杖
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.APPLE_PIE).setWeight(67))
-                        .add(EmptyLootItem.emptyItem().setWeight(9933)).apply(random0To1)
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.APPLE_PIE))
+                        )).apply(random0To1)
                 )
         );
         add(MonsterEntities.ENCHANTED_SWORD.get(), LootTable.lootTable());
         add(MonsterEntities.PALADIN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PALADINS_SHIELD).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(14))));
+                        .when(() -> new DifficultyChanceLootItemCondition(1F / 10, 1F - (1F - 1F / 10) * (1F - 1F / 10)))));
         add(MonsterEntities.BONE_LEE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLACK_BELT).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(11))));
+                        .when(() -> new DifficultyChanceLootItemCondition(1F / 12, 1F - (1F - 1F / 12) * (1F - 1F / 12)))));
         // 死灵法师 缺少未加入物品：暗影束法杖(Shadowbeam Staff, 9.75%)
         add(MonsterEntities.NECROMANCER.get(), LootTable.lootTable());
         add(MonsterEntities.DIABOLIST.get(), LootTable.lootTable());
@@ -1417,21 +1553,22 @@ public final class EntitySubProvider extends EntityLootSubProvider {
     private static LootTable.Builder ghoulCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ANCIENT_CLOTH).apply(LootingBonusCountFunction.lootingBonusCount()))
-                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(10, LootItem.lootTableItem(MaterialItems.ANCIENT_CLOTH).apply(LootingBonusCountFunction.lootingBonusCount()))
+                        ))
                 );
     }
 
     private static LootTable.Builder mummyCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(VanityArmorItems.MUMMY_MASK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0133F)))
+                        .add(LootItem.lootTableItem(VanityArmorItems.MUMMY_MASK).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 75)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(VanityArmorItems.MUMMY_SHIRT).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0133F)))
+                        .add(LootItem.lootTableItem(VanityArmorItems.MUMMY_SHIRT).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 75)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(VanityArmorItems.MUMMY_PANTS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0133F)))
+                        .add(LootItem.lootTableItem(VanityArmorItems.MUMMY_PANTS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(1F / 75)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(VanityArmorItems.MUMMY_SHOES).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0133F)))
@@ -1480,15 +1617,17 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 );
     }
 
-    private LootTable.Builder slimeCommon(int gelColor) {
+    // 复用凝胶和携带物掉落；法杖概率按普通、专家分别填写百分比，沙漠史莱姆使用自己的数值。
+    private LootTable.Builder slimeCommon(int gelColor, float normalPercent, float expertPercent) {
         LootItemConditionalFunction.Builder<?> random0To1 = LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootTableReference.lootTableReference(ModLootTables.SLIME_CARRY))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootTableReference.lootTableReference(ModLootTables.SLIME_CARRY))
+                        ))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.00014285714285714287F)).setQuality(1))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(normalPercent, expertPercent)).setQuality(1))
                 )
                 .withPool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(MaterialItems.GEL))
@@ -1512,7 +1651,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         LootItemConditionalFunction.Builder<?> random0To1 = LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.00014285714285714287F)))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(100F / 10000, 100F / 7000)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
@@ -1520,12 +1659,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                         .apply(setGelColor(-7697782)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(2 / 100F)))
                 );
     }
 
     private LootTable.Builder blackSlimeLoot() {
-        return slimeCommon(-7697782)
+        return slimeCommon(-7697782, 100F / 10000, 100F / 7000)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.01F)))
                 );
@@ -1537,7 +1676,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         LootItemConditionalFunction.Builder<?> random0To1 = LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.00014285714285714287F)))
+                        .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(100F / 10000, 100F / 7000)))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
@@ -1545,7 +1684,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
                         .apply(setGelColor(gelColor)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.02F)))
+                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).when(difficultyLootChance(1.0F, 1.99F)))
                 );
     }
 
@@ -1569,16 +1708,26 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .when(LootItemRandomChanceCondition.randomChance(0.002F * multiplier)));
     }
 
-    private LootTable.Builder goblinCommon() {
+    // 尖球概率直接填写百分比；普通哥布林计入鱼叉枪失败链，扩展哥布林保留原概率。
+    private LootTable.Builder goblinCommon(float chancePercent) {
         LootItemConditionalFunction.Builder<?> count1To5 = SetItemCountFunction.setCount(UniformGenerator.between(1, 5));
         LootItemConditionalFunction.Builder<?> random0To1 = LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.SPIKY_BALL)).apply(count1To5).apply(random0To1)
-                        .add(EmptyLootItem.emptyItem())
+                        .add(PercentageLootEntry.independent(false, PercentageLootEntry.rule(chancePercent,
+                                LootItem.lootTableItem(ConsumableItems.SPIKY_BALL)))).apply(count1To5).apply(random0To1)
                 );
     }
 
+
+    // 按难度选择百分比概率，并保留原有抢夺倍率；1、1.99 分别表示普通 1% 和专家 1.99%。
+    private static LootItemCondition.Builder difficultyLootChance(float normalPercent, float expertPercent) {
+        return AnyOfCondition.anyOf(
+                AllOfCondition.allOf(() -> new DifficultyChanceLootItemCondition(1, 0),
+                        LootingScaledChanceLootItemCondition.lootingScaledChance(normalPercent / 100F)),
+                AllOfCondition.allOf(() -> new DifficultyChanceLootItemCondition(0, 1),
+                        LootingScaledChanceLootItemCondition.lootingScaledChance(expertPercent / 100F)));
+    }
 
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {

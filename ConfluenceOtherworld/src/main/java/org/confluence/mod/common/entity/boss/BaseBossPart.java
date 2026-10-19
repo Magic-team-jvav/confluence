@@ -17,8 +17,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;

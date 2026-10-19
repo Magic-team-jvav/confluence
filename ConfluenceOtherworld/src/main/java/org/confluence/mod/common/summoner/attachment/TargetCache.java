@@ -1,8 +1,5 @@
 package org.confluence.mod.common.summoner.attachment;
 
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
-import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
@@ -12,6 +9,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
@@ -22,6 +20,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
@@ -80,6 +82,25 @@ public class TargetCache {
         return targetCache.computeIfAbsent(target.getUUID().hashCode(), key ->
                 LibEntityUtils.isSummonThreat(owner, target,
                         living -> hurterHistory.containsKey(living.getUUID().hashCode())));
+    }
+
+    public boolean canKeep(@Nullable Entity target) {
+        return TARGETING.canKeep(owner, target) && canKeep(ProjectileHitRules.logicalLivingTarget(target));
+    }
+
+    /// 精确碰撞使用原始部位，生命实体缓存继续服务于寻路和威胁判断。
+    public List<Entity> getHitTargets(AABB bounds, Predicate<Entity> filter) {
+        if (serverLevel == null) return List.of();
+        return serverLevel.getEntities(owner, bounds, target -> ProjectileHitRules.canHit(owner, target)
+                && canKeep(target) && filter.test(target));
+    }
+
+    public List<Entity> getHitTargets(Vec3 position, double radius, Predicate<Entity> filter) {
+        if (serverLevel == null || radius <= 0) return List.of();
+        AABB bounds = AABB.ofSize(position, radius * 2, radius * 2, radius * 2);
+        return ProjectileHitRules.areaTargets(serverLevel, owner, bounds,
+                target -> canKeep(target) && filter.test(target)
+                        && target.getBoundingBox().getCenter().distanceToSqr(position) <= radius * radius);
     }
 
     private static long cellKey(int x, int y, int z) {

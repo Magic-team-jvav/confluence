@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.init.ModEffects;
 import org.joml.Vector3f;
@@ -102,10 +103,12 @@ public final class DeerclopsIcePillarProjectile extends Projectile implements Ge
         Vec3 direction = new Vec3(axis.x(), axis.y(), axis.z()).normalize();
         for (int blockIndex = 0; blockIndex < visibleBlocks; blockIndex++) {
             Vec3 center = position().add(direction.scale(blockIndex + 0.5));
-            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().move(center.subtract(position())).inflate(0.35),
-                    target -> target != owner && owner.canAttack(target))) {
-                if (hitEntities.add(target.getUUID()) && target.hurt(damageSources().mobProjectile(this, owner), damage)) {
-                    target.addEffect(new MobEffectInstance(ModEffects.FROST_BURN.get(), 100));
+            for (Entity target : ProjectileHitRules.areaTargets(level(), this,
+                    getBoundingBox().move(center.subtract(position())).inflate(0.35), this::canHitEntity)) {
+                if (hitEntities.add(ProjectileHitRules.dedupeIdentity(target).getUUID())
+                        && ProjectileHitRules.hurt(target, damageSources().mobProjectile(this, owner), damage)) {
+                    LivingEntity living = ProjectileHitRules.effectTarget(target);
+                    if (living != null) living.addEffect(new MobEffectInstance(ModEffects.FROST_BURN.get(), 100));
                 }
             }
         }
@@ -113,7 +116,8 @@ public final class DeerclopsIcePillarProjectile extends Projectile implements Ge
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return target instanceof LivingEntity living && getOwner() instanceof Mob owner && living != owner && owner.canAttack(living) && !hitEntities.contains(target.getUUID());
+        return ProjectileHitRules.canMobHit(getOwner(), target)
+                && !hitEntities.contains(ProjectileHitRules.dedupeIdentity(target).getUUID());
     }
 
     @Override

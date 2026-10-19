@@ -7,7 +7,6 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.component.ModRarity;
@@ -55,9 +54,7 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
 
         EntityHitResult entityHitResult = CloudProjectile.TARGETING.viewTarget(player, 64);
         if (entityHitResult != null) {
-            if (entityHitResult.getEntity() instanceof LivingEntity living) {
-                projectile.setTarget(living);
-            }
+            projectile.setTarget(entityHitResult.getEntity());
         }
     }
 

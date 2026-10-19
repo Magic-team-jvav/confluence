@@ -29,9 +29,9 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.boss.BossProjectileReflection;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
 import org.confluence.mod.mixed.Immunity;
@@ -181,7 +181,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     private void tickCollisionDamage() {
         if (--collisionCooldown > 0) return;
         collisionCooldown = collisionInterval;
-        for (Entity target : level().getEntities(this, getBoundingBox().inflate(collisionInflation), this::canHitEntity)) {
+        for (Entity target : ProjectileHitRules.areaTargets(level(), this, getBoundingBox().inflate(collisionInflation), this::canHitEntity)) {
             hurtTarget(target);
         }
     }
@@ -237,15 +237,16 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
         LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
         DamageSource source = damageSource();
-        boolean hurt = damageRecipient instanceof LivingEntity living
-                ? Immunity.hurt(this, living, source, baseAttackDamage)
-                : Immunity.withCause(this, () -> damageRecipient.hurt(source, baseAttackDamage));
+        boolean hurt = logicalTarget != null
+                ? Immunity.hurt(this, damageRecipient, logicalTarget, source, baseAttackDamage)
+                : Immunity.withCause(this, () -> ProjectileHitRules.hurt(target, source, baseAttackDamage));
         if (!hurt) {
             return false;
         }
         if (logicalTarget != null) {
             LibEntityUtils.knockBackA2B(this, logicalTarget, (baseKnockback + bonusKnockback) * 0.5, 0.2);
-            applyHitEffect(logicalTarget);
+            LivingEntity effectTarget = ProjectileHitRules.effectTarget(target);
+            if (effectTarget != null) applyHitEffect(effectTarget);
         }
         level().broadcastEntityEvent(this, EVENT_ENTITY_HIT);
         if (--remainingHits <= 0) discard();

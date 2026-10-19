@@ -13,10 +13,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.LibMathUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
 
@@ -37,8 +37,10 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
                 tag.putLong("StartTime", level.getGameTime());
 
                 EntityHitResult entityHitResult = TARGETING.viewTarget(player, 64);
-                if (entityHitResult != null && entityHitResult.getEntity() instanceof LivingEntity living) {
-                    float[] rot = LibMathUtils.dirToRot(new Vec3(living.getX() - player.getX(), living.getEyeY() - player.getEyeY(), living.getZ() - player.getZ()), true);
+                if (entityHitResult != null) {
+                    Entity target = entityHitResult.getEntity();
+                    Vec3 aim = target instanceof LivingEntity living ? living.getEyePosition() : target.getBoundingBox().getCenter();
+                    float[] rot = LibMathUtils.dirToRot(aim.subtract(player.getEyePosition()), true);
                     tag.putFloat("XRot", rot[1]);
                     tag.putFloat("YRot", rot[0]);
                 } else {

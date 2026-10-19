@@ -20,7 +20,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 
@@ -84,11 +84,8 @@ public class BoomerangProjectile extends Projectile {
     @Override
     protected boolean canHitEntity(Entity target) {
         Entity owner = getOwner();
-        if (owner instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return target != owner
-                && target.isAlive()
-                && !hitEntities.contains(target.getUUID())
+        return ProjectileHitRules.canHit(owner, target)
+                && !hitEntities.contains(ProjectileHitRules.dedupeIdentity(target).getUUID())
                 && super.canHitEntity(target);
     }
 
@@ -101,12 +98,12 @@ public class BoomerangProjectile extends Projectile {
         Entity owner = getOwner();
         if (owner instanceof LivingEntity livingOwner) {
             DamageSource source = damageSources().mobProjectile(this, livingOwner);
-            if (target.hurt(source, entityData.get(DATA_DAMAGE))) {
-                hitEntities.add(target.getUUID());
-                if (target instanceof LivingEntity livingTarget) {
-                    Vec3 push = getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(0.35);
-                    livingTarget.push(push.x, 0.1, push.z);
-                    livingOwner.setLastHurtMob(target);
+            if (ProjectileHitRules.hurt(target, source, entityData.get(DATA_DAMAGE))) {
+                hitEntities.add(ProjectileHitRules.dedupeIdentity(target).getUUID());
+                LivingEntity livingTarget = ProjectileHitRules.effectTarget(target);
+                if (livingTarget != null) {
+                    ProjectileHitRules.applyResolvedKnockback(this, target, 0.35F, 0.1);
+                    livingOwner.setLastHurtMob(livingTarget);
                     if (livingTarget.isAlive() && getWeapon().getItem() instanceof BoomerangItem boomerang)
                         boomerang.onProjectileHit(this, livingOwner, livingTarget);
                 }

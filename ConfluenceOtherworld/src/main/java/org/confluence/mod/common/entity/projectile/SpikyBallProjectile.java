@@ -13,7 +13,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 
@@ -56,10 +56,10 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
             EntityHitResult result = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
             if (result != null) {
                 Entity entity = result.getEntity();
-                if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), damage)) {
-                    LibEntityUtils.knockBackA2B(this, entity, 0.1, 0.02);
+                if (ProjectileHitRules.hurt(entity, damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), damage)) {
+                    LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(entity), 0.1, 0.02);
                 }
-                if (passThrough.add(entity) && passThrough.size() >= 7) {
+                if (passThrough.add(ProjectileHitRules.dedupeIdentity(entity)) && passThrough.size() >= 7) {
                     discard();
                 }
             }
@@ -75,9 +75,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return !passThrough.contains(ProjectileHitRules.dedupeIdentity(target)) && ProjectileHitRules.canHit(getOwner(), target);
     }
 
     public void setDamage(float damage) {

@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.projectile;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
@@ -31,9 +32,8 @@ public class ImpFireball extends Projectile implements IEntityCollision<ImpFireb
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
         HitContext context = hitContexts.get(0);
-        LivingEntity target = context.entity();
-        attack(target, getDamage(), 4);
-        target.setSecondsOnFire(5);
+        LivingEntity target = ProjectileHitRules.effectTarget(context.entity());
+        if (attack(context.entity(), getDamage(), 4) && target != null) target.setSecondsOnFire(5);
         setCurrentPathNode(getCurrentPathNode().modifyPos(context.hitPoint()));
         setRemove();
     }

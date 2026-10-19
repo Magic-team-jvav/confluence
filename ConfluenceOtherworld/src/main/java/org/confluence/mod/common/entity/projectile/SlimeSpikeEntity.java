@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -60,9 +62,10 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-        if (!level().isClientSide && result.getEntity() instanceof LivingEntity target
-                && getOwner() instanceof Mob owner && owner.canAttack(target)
-                && target.hurt(damageSources().mobProjectile(this, owner), damage)) {
+        Entity rawTarget = result.getEntity();
+        LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
+        if (getOwner() instanceof Mob owner && ProjectileHitRules.canMobHit(owner, rawTarget)
+                && ProjectileHitRules.hurt(rawTarget, damageSources().mobProjectile(this, owner), damage) && target != null) {
             if (getVariant() == Variant.JUNGLE) {
                 if (random.nextInt(8) < 5) {
                     int baseDuration = random.nextBoolean() ? 100 : 400;
@@ -94,6 +97,11 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         discard();
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        return ProjectileHitRules.canMobHit(getOwner(), target) && super.canHitEntity(target);
     }
 
     @Override

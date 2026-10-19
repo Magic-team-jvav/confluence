@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.jetbrains.annotations.Nullable;
@@ -29,9 +30,12 @@ public final class NPCProjectileEffects {
     });
     /// 单体伤害成功后施加 3 到 5 秒中毒。
     public static final ResourceLocation POISON = register("poison", (context, target) -> {
-        if (target instanceof LivingEntity living && context.hurt(living)) {
-            living.addEffect(new MobEffectInstance(MobEffects.POISON,
-                    60 + context.projectile().getRandom1211().nextInt(41)));
+        if (target != null && context.hurt(target)) {
+            LivingEntity living = ProjectileHitRules.effectTarget(target);
+            if (living != null) {
+                living.addEffect(new MobEffectInstance(MobEffects.POISON,
+                        60 + context.projectile().getRandom1211().nextInt(41)));
+            }
         }
     });
     /// 在命中点造成范围伤害、声音和爆炸粒子，但不破坏方块。
@@ -40,12 +44,12 @@ public final class NPCProjectileEffects {
     public static final ResourceLocation HEAL = register("heal", new ImpactEffect() {
         // 治疗追踪友方，不使用攻击弹的敌我过滤。
         @Override
-        public boolean canAcquireTarget(Context context, LivingEntity target) {
+        public boolean canAcquireTarget(Context context, Entity target) {
             return canHit(context, target);
         }
 
         @Override
-        public boolean canKeepTarget(Context context, LivingEntity target) {
+        public boolean canKeepTarget(Context context, Entity target) {
             return target.isAlive();
         }
 
@@ -84,18 +88,17 @@ public final class NPCProjectileEffects {
         /// 处理一次实体或方块命中；方块命中时 target 为 null。
         void apply(Context context, @Nullable Entity target);
 
-        default boolean canAcquireTarget(Context context, LivingEntity target) {
+        default boolean canAcquireTarget(Context context, Entity target) {
             return ATTACK_TARGETING.canAcquire(context.owner(), target) && canHit(context, target);
         }
 
-        default boolean canKeepTarget(Context context, LivingEntity target) {
+        default boolean canKeepTarget(Context context, Entity target) {
             return ATTACK_TARGETING.canKeep(context.owner(), target) && canHit(context, target);
         }
 
         /// 判断该策略是否允许弹体命中指定实体；默认沿用 NPC 友军过滤。
         default boolean canHit(Context context, Entity target) {
-            return !(context.owner() instanceof BaseNPC npc && target instanceof LivingEntity living)
-                    || npc.canAttack(living);
+            return ProjectileHitRules.canHit(context.owner(), target);
         }
     }
 
@@ -104,7 +107,7 @@ public final class NPCProjectileEffects {
                           float damage) {
         /// 使用该 NPC 弹体的统一远程伤害来源攻击指定实体。
         public boolean hurt(Entity target) {
-            return target.hurt(projectile.damageSources().mobProjectile(projectile, owner), damage);
+            return ProjectileHitRules.hurt(target, projectile.damageSources().mobProjectile(projectile, owner), damage);
         }
 
         /// 在弹体周围造成不破坏方块且不会伤害 NPC 友军的范围伤害。
@@ -113,8 +116,9 @@ public final class NPCProjectileEffects {
                 level.sendParticles(ParticleTypes.EXPLOSION, projectile.getX(), projectile.getY(), projectile.getZ(), 1, 0, 0, 0, 0);
                 level.playSound(null, projectile.blockPosition(), SoundEvents.GENERIC_EXPLODE, projectile.getSoundSource(), 0.7F, 1.2F);
             }
-            for (LivingEntity target : projectile.level().getEntitiesOfClass(LivingEntity.class, AABB.ofSize(projectile.position(), radius * 2, radius * 2, radius * 2))) {
-                if (owner instanceof BaseNPC npc && !npc.canAttack(target)) continue;
+            AABB bounds = AABB.ofSize(projectile.position(), radius * 2, radius * 2, radius * 2);
+            for (Entity target : ProjectileHitRules.areaTargets(projectile.level(), projectile, bounds,
+                    candidate -> ProjectileHitRules.canHit(owner, candidate))) {
                 hurt(target);
             }
         }

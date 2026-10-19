@@ -1,14 +1,14 @@
 package org.confluence.mod.common.entity.flail;
 
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
-import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.flail.FlowerPowerPetalProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -42,8 +42,8 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
         }
         shootTimer = interval;
 
-        LivingEntity target = LibEntityUtils.nearest(
-                level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(parameters.maxDistance())),
+        Entity target = LibEntityUtils.nearest(
+                TARGETING.hitTargets(level(), this, player, getBoundingBox().inflate(parameters.maxDistance()), candidate -> true),
                 candidate -> TARGETING.canAcquire(player, candidate),
                 Comparator.comparingDouble(this::distanceToSqr));
         if (target == null) {

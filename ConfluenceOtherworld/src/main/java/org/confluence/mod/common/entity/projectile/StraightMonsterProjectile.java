@@ -12,6 +12,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
@@ -146,10 +147,10 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide && result.getEntity() instanceof LivingEntity target
-                && getOwner() instanceof Mob owner
-                && owner.canAttack(target)) {
-            if (target.hurt(damageSources().mobProjectile(this, owner), damage)) {
+        Entity rawTarget = result.getEntity();
+        LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
+        if (getOwner() instanceof Mob owner && ProjectileHitRules.canMobHit(owner, rawTarget)) {
+            if (ProjectileHitRules.hurt(rawTarget, damageSources().mobProjectile(this, owner), damage) && target != null) {
                 if (knockback > 0) {
                     Vec3 direction = getDeltaMovement();
                     target.knockback(knockback, -direction.x, -direction.z);
@@ -209,9 +210,6 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return target instanceof LivingEntity living
-                && getOwner() instanceof Mob owner
-                && owner.canAttack(living)
-                && super.canHitEntity(target);
+        return ProjectileHitRules.canMobHit(getOwner(), target) && super.canHitEntity(target);
   }
 }

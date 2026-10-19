@@ -24,9 +24,9 @@ import net.minecraft.world.phys.*;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.common.entity.boss.BossProjectileReflection;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.BaseBullet;
@@ -374,18 +374,15 @@ public class BaseBulletEntity extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.canBeHitByProjectile()) return false;
         Entity owner = getOwner();
-        if (owner instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return target != owner && !hitEntityIds.contains(target.getUUID())
-                && (owner == null || !owner.isPassengerOfSameVehicle(target));
+        return !hitEntityIds.contains(ProjectileHitRules.dedupeIdentity(target).getUUID())
+                && ProjectileHitRules.canHit(owner, target);
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity hit = result.getEntity();
-        hitEntityIds.add(hit.getUUID());
+        hitEntityIds.add(ProjectileHitRules.dedupeIdentity(hit).getUUID());
         BulletEvent.HitEvent.Entity hitEvent = new BulletEvent.HitEvent.Entity(this, getBullet(), result);
         PortEventHandler.postEvent(hitEvent);
         if (hitEvent.isCanceled()) return;
@@ -394,12 +391,12 @@ public class BaseBulletEntity extends Projectile {
         BulletEvent.DamageEntityEvent damageEvent = new BulletEvent.DamageEntityEvent(this, getBullet(), shooter, hit);
         PortEventHandler.postEvent(damageEvent);
         if (damageEvent.isCanceled()) return;
-        hit.hurt(getDamageSource(), damage);
+        ProjectileHitRules.hurt(hit, getDamageSource(), damage);
         getBullet().getBehavior().onHitEntity(this, result);
         if (knockback > 0.0F) {
             BulletEvent.KnockbackEvent knockbackEvent = new BulletEvent.KnockbackEvent(this, getBullet(), knockback / 8.0F, 0.0F);
             PortEventHandler.postEvent(knockbackEvent);
-            LibEntityUtils.knockBackA2B(this, hit, knockbackEvent.getScale(), knockbackEvent.getMotionY());
+            LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(hit), knockbackEvent.getScale(), knockbackEvent.getMotionY());
         }
         BulletEvent.PenetrateEvent penetrateEvent = new BulletEvent.PenetrateEvent(this, getBullet(), penetrate);
         PortEventHandler.postEvent(penetrateEvent);

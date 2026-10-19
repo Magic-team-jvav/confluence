@@ -24,6 +24,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -87,7 +88,7 @@ public class TerraStyleExplosion extends Explosion {
                 if (damage < 0) {
                     damage = amount;
                 }
-                entity.hurt(damageSource, Math.min(port.modifyEntityDamage(this, entity, damage), radius * 10));
+                ProjectileHitRules.hurt(entity, damageSource, Math.min(port.modifyEntityDamage(this, entity, damage), radius * 10));
             }
             if (entity instanceof Player player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
                 hitPlayers.put(player, Vec3.ZERO);

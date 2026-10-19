@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
@@ -26,6 +27,8 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
     private ResourceLocation effect = NPCProjectileEffects.NONE;
     @Nullable
     private UUID homingTargetId;
+    @Nullable
+    private Entity homingTarget;
 
     /// 注册表工厂与客户端生成实体使用的基础构造器。
     public NPCWeaponProjectile(EntityType<? extends NPCWeaponProjectile> type, Level level) {
@@ -45,9 +48,12 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
     }
 
     /// 设置服务端追踪目标；不设置时保持普通抛射运动。
-    public void setHomingTarget(@Nullable LivingEntity target) {
-        homingTargetId = target != null && NPCProjectileEffects.get(effect).canAcquireTarget(createContext(), target)
-                ? target.getUUID() : null;
+    public void setHomingTarget(@Nullable Entity target) {
+        Entity aim = target == null ? null : ProjectileHitRules.aimTarget(target, position());
+        homingTarget = aim != null && NPCProjectileEffects.get(effect).canAcquireTarget(createContext(), aim) ? aim : null;
+        // 普通 PartEntity 不单独存档，用本体 UUID 在重载后重新选取有效部位。
+        homingTargetId = homingTarget == null ? null : (homingTarget instanceof LivingEntity
+                ? homingTarget : ProjectileHitRules.encounterOwner(homingTarget)).getUUID();
     }
 
     /// 缺少同步物品时使用原版箭矢作为安全回退外观。
@@ -113,6 +119,7 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
         effect = ResourceLocation.tryParse(tag.getString("Effect"));
         if (effect == null) effect = NPCProjectileEffects.NONE;
         homingTargetId = tag.hasUUID("HomingTarget") ? tag.getUUID("HomingTarget") : null;
+        homingTarget = null;
     }
 
     /// 创建包含当前所有者和伤害值的命中上下文。
@@ -124,13 +131,14 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
     /// 逐步把现有速度转向存活目标，避免追踪弹体瞬间折线转向。
     private void updateHomingMovement() {
         if (!(level() instanceof ServerLevel level) || homingTargetId == null) return;
-        Entity entity = level.getEntity(homingTargetId);
-        if (!(entity instanceof LivingEntity target) || !target.isAlive()) {
+        if (homingTarget == null || !NPCProjectileEffects.get(effect).canKeepTarget(createContext(), homingTarget)) {
+            setHomingTarget(level.getEntity(homingTargetId));
+        }
+        if (homingTarget == null) {
             homingTargetId = null;
             return;
         }
-        if (!NPCProjectileEffects.get(effect).canKeepTarget(createContext(), target)) return;
-        Vec3 offset = target.getEyePosition().subtract(position());
+        Vec3 offset = homingTarget.getBoundingBox().getCenter().subtract(position());
         if (offset.lengthSqr() < 0.0001) return;
         double speed = Math.max(0.5, getDeltaMovement().length());
         Vec3 desired = offset.normalize().scale(speed);

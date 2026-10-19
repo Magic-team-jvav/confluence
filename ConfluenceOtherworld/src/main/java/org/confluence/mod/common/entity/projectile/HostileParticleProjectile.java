@@ -11,6 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -20,6 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.Corruptor;
 import org.confluence.mod.common.entity.monster.FireImp;
@@ -135,10 +137,11 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
             return;
         }
         if (!(getOwner() instanceof Mob owner)) return;
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class,
-                getBoundingBox().inflate(INFERNO_BLAST_RADIUS), owner::canAttack)) {
-            if (target.hurt(damageSources().mobProjectile(this, owner), getDamage())) {
-                onSuccessfulHit(owner, target);
+        for (Entity target : ProjectileHitRules.areaTargets(level(), this,
+                getBoundingBox().inflate(INFERNO_BLAST_RADIUS), candidate -> ProjectileHitRules.canMobHit(owner, candidate))) {
+            if (ProjectileHitRules.hurt(target, damageSources().mobProjectile(this, owner), getDamage())) {
+                LivingEntity living = ProjectileHitRules.effectTarget(target);
+                if (living != null) onSuccessfulHit(owner, living);
             }
         }
     }

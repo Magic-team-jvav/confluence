@@ -13,9 +13,8 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,9 +72,7 @@ public abstract class DamageSettableProjectile extends Projectile {
 
     @Override
     public boolean canHitEntity(Entity target) {
-        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return ProjectileHitRules.canHit(getOwner(), target);
     }
 
     public void setDefaultVelocity(float defaultVelocity) {

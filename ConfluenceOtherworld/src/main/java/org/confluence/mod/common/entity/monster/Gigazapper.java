@@ -153,7 +153,7 @@ public class Gigazapper extends MartianHumanoidMonster {
         }
     }
 
-    /** Model shaft [-6,8,-9] + [1,1,12], attack arm offset [1,4,0]. */
+    // Model shaft [-6,8,-9] + [1,1,12], attack arm offset [1,4,0].
     private Vec3 spearPoint(double z) {
         double yaw = Math.toRadians(yBodyRot);
         double unit = MODEL_UNIT * getScale();

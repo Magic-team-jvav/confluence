@@ -7,12 +7,14 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.init.ModEffects;
@@ -63,9 +65,12 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
                     return;
                 }
                 if (groundTicks % 10 == 0) {
-                    for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1.2, 0.4, 1.2), owner::canAttack)) {
-                        if (target.hurt(damageSources().mobProjectile(this, owner), getDamage()))
-                            onSuccessfulHit(owner, target);
+                    for (Entity target : ProjectileHitRules.areaTargets(level(), this, getBoundingBox().inflate(1.2, 0.4, 1.2),
+                            candidate -> ProjectileHitRules.canMobHit(owner, candidate))) {
+                        if (ProjectileHitRules.hurt(target, damageSources().mobProjectile(this, owner), getDamage())) {
+                            LivingEntity living = ProjectileHitRules.effectTarget(target);
+                            if (living != null) onSuccessfulHit(owner, living);
+                        }
                     }
                 }
             }

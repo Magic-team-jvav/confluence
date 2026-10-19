@@ -2,7 +2,7 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.phys.Vec3;
 
-/** 与 left_aim/right_aim 及 Stand Aim 的固定炮架姿态对应，不依赖客户端骨骼。 */
+// 与 left_aim/right_aim 及 Stand Aim 的固定炮架姿态对应，不依赖客户端骨骼。
 public final class EngineerTurretGeometry {
     private EngineerTurretGeometry() {}
 

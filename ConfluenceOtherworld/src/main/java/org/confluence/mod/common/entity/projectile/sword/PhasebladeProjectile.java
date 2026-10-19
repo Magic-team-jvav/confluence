@@ -19,9 +19,9 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.particle.BladeTrailEmitter;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.sword.Phasesaber;
 import org.jetbrains.annotations.NotNull;
@@ -325,17 +325,16 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         if (!(owner instanceof LivingEntity livingOwner)) return;
         DamageSource source = damageSources().mobProjectile(this, livingOwner);
         float damage = entityData.get(DATA_DAMAGE) * (state() == State.STUCK ? groundDamageMultiplier() : airDamageMultiplier());
-        Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
-        int previousInvulnerableTime = damageRecipient instanceof LivingEntity living ? living.invulnerableTime : 0;
-        if (damageRecipient instanceof LivingEntity living) living.invulnerableTime = 0;
+        LivingEntity immunityTarget = ProjectileHitRules.effectTarget(target);
+        int previousInvulnerableTime = immunityTarget == null ? 0 : immunityTarget.invulnerableTime;
+        if (immunityTarget != null) immunityTarget.invulnerableTime = 0;
         boolean hurt;
         try {
             // 泰拉式局部无敌帧不能被 LivingEntity 的全局受伤帧吞掉；每个投掷剑实例
             // 通过 nextHitTicks 独立限制同一目标 10 tick 内只能命中一次。
-            hurt = damageRecipient.hurt(source, damage);
+            hurt = ProjectileHitRules.hurt(target, source, damage);
         } finally {
-            if (damageRecipient instanceof LivingEntity living)
-                living.invulnerableTime = previousInvulnerableTime;
+            if (immunityTarget != null) immunityTarget.invulnerableTime = previousInvulnerableTime;
         }
         if (hurt) {
             nextHitTicks.put(ProjectileHitRules.dedupeIdentity(target).getUUID(), tickCount + LOCAL_HIT_COOLDOWN_TICKS);

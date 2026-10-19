@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 
 import java.util.HashSet;

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
@@ -94,10 +95,11 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
                 }
             }
             AABB blast = getBoundingBox().inflate(BLAST_RADIUS);
-            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, blast, prime::canAttack)) {
+            for (Entity target : ProjectileHitRules.areaTargets(level(), this, blast,
+                    candidate -> ProjectileHitRules.canMobHit(prime, candidate))) {
                 double distance = Math.sqrt(distanceToSqr(target));
                 float scale = (float) Math.max(0.4, 1.0 - distance / (BLAST_RADIUS * 1.6));
-                target.hurt(damageSources().mobProjectile(this, prime), damage * scale);
+                ProjectileHitRules.hurt(target, damageSources().mobProjectile(this, prime), damage * scale);
             }
         }
         discard();
@@ -105,9 +107,6 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return target instanceof LivingEntity living
-                && getOwner() instanceof SkeletronPrime prime
-                && prime.canAttack(living)
-                && super.canHitEntity(target);
+        return ProjectileHitRules.canMobHit(getOwner(), target) && super.canHitEntity(target);
     }
 }

@@ -54,14 +54,13 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
         AABB searchBox = new AABB(victimPos.add(-SEARCH_RANGE, -SEARCH_RANGE, -SEARCH_RANGE),
                 victimPos.add(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE));
 
-        List<LivingEntity> enemies = level.getEntitiesOfClass(LivingEntity.class, searchBox,
-                e -> GhastlyProjectile.TARGETING.canAcquire(owner, e));
+        List<Entity> enemies = GhastlyProjectile.TARGETING.hitTargets(level, null, owner, searchBox, candidate -> true);
 
         if (enemies.isEmpty()) return;
 
         // 取最近敌人
         enemies.sort(Comparator.comparingDouble(e -> e.distanceToSqr(victim)));
-        LivingEntity nearestEnemy = PortListExtension.getFirst(enemies);
+        Entity nearestEnemy = PortListExtension.getFirst(enemies);
 
         // 在最近敌人周围圆上随机生成：x²+z²=SPAWN_RADIUS²，y 随机偏移 [-2, 2]
         double angle = owner.getRandom1211().nextDouble() * Math.PI * 2;
@@ -81,7 +80,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
     }
 
     /// 在世界提交前锁定目标，再由统一事务安装 MELEE 快照并生成实体。
-    private GhastlyProjectile spawnProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, Parameters component, LivingEntity target) {
+    private GhastlyProjectile spawnProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, Parameters component, Entity target) {
         GhastlyProjectile projectile = new GhastlyProjectile(ModEntities.GHASTLY.get(), level);
         fireDerivedProjectile(weapon, level, owner, component, projectile, pos, direction, 0.0F, value -> value.setLockedTarget(target));
         return projectile;

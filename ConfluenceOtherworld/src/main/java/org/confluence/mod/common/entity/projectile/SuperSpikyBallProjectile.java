@@ -16,6 +16,7 @@ import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.TrapDamageHelper;
@@ -64,11 +65,12 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
             if (result != null) {
                 Entity entity = result.getEntity();
                 float damage = LibUtils.switchByDifficulty(level(), 16, 32, 48);
-                if (entity instanceof LivingEntity living) {
+                LivingEntity living = ProjectileHitRules.effectTarget(entity);
+                if (living != null) {
                     damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                 }
-                if (entity.hurt(LibDamageTypes.of(level(), DamageTypes.STING), damage)) {
-                    LibEntityUtils.knockBackA2B(this, entity, 0.2, 0.04);
+                if (ProjectileHitRules.hurt(entity, LibDamageTypes.of(level(), DamageTypes.STING), damage)) {
+                    LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(entity), 0.2, 0.04);
                 }
             }
         }
@@ -83,7 +85,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return ProjectileHitRules.canHit(getOwner(), target);
     }
 
     @Override

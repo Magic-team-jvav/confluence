@@ -28,6 +28,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.enchantment.TurbineEnchantment;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
@@ -428,12 +429,12 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (damageMultiplier <= 0) return;
 
         AABB checkBox = getBoundingBox().inflate(0.5);
-        var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox,
-                e -> e != player && e.isAlive() && LibEntityUtils.canHitEntity(e, this));
+        var entities = ProjectileHitRules.areaTargets(level(), this, checkBox,
+                target -> ProjectileHitRules.canHit(player, target));
 
         boolean anyHit = false;
         LivingEntity firstHit = null;
-        for (LivingEntity target : entities) {
+        for (Entity target : entities) {
             float baseDamage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
             // 涡轮附魔：按旋转时长提升伤害
             float turbineBonus = TurbineEnchantment.getBonus(player, spinTickCounter);
@@ -444,12 +445,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             }
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
-            if (target.hurt(source, finalDamage)) {
-                if (!anyHit) firstHit = target;
+            if (ProjectileHitRules.hurt(target, source, finalDamage)) {
+                LivingEntity living = ProjectileHitRules.effectTarget(target);
+                if (!anyHit) firstHit = living;
                 anyHit = true;
-                LibEntityUtils.knockBackA2B(this, target, parameters.behavior().knockback(), 0.15f);
-                if (isHitEffectEnabled() && held.getItem() instanceof BaseFlailItem flailItem) {
-                    flailItem.onFlailHit(player, target, this);
+                LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(target), parameters.behavior().knockback(), 0.15f);
+                if (living != null && isHitEffectEnabled() && held.getItem() instanceof BaseFlailItem flailItem) {
+                    flailItem.onFlailHit(player, living, this);
                 }
                 if (phase == PHASE_THROWN && startsLaunched()) {
                     onLaunchedEntityImpact(player, parameters, target);
@@ -520,7 +522,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     }
 
     /// 直接发射型链锤命中实体时的扩展点。
-    protected void onLaunchedEntityImpact(Player player, Parameters parameters, LivingEntity target) {
+    protected void onLaunchedEntityImpact(Player player, Parameters parameters, Entity target) {
         if (!parameters.equals(Parameters.GOLEM_FIST.get())) return;
         applyGolemFistConfusion(target);
         triggerGolemFistShockwave(player, parameters, target);
@@ -530,17 +532,18 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     protected void onThrownToRetract(Player player, Parameters parameters) {
     }
 
-    private void triggerGolemFistShockwave(Player player, Parameters parameters, @Nullable LivingEntity excluded) {
+    private void triggerGolemFistShockwave(Player player, Parameters parameters, @Nullable Entity excluded) {
         if (position().distanceTo(player.position()) <= 9.375) return;
 
         float damage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
         DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
         double inflate = Math.max(0.5, (12.5 - getBbWidth()) * 0.5);
         AABB area = getBoundingBox().inflate(inflate);
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area,
-                entity -> entity != player && entity != excluded && entity.isAlive() && LibEntityUtils.canHitEntity(entity, this))) {
-            if (target.hurt(source, damage)) {
-                LibEntityUtils.knockBackA2B(this, target, parameters.behavior().knockback(), 0.15F);
+        for (Entity target : ProjectileHitRules.areaTargets(level(), this, area,
+                entity -> ProjectileHitRules.canHit(player, entity)
+                        && (excluded == null || ProjectileHitRules.dedupeIdentity(entity) != ProjectileHitRules.dedupeIdentity(excluded)))) {
+            if (ProjectileHitRules.hurt(target, source, damage)) {
+                LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(target), parameters.behavior().knockback(), 0.15F);
                 applyGolemFistConfusion(target);
             }
         }
@@ -553,8 +556,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
     }
 
-    private void applyGolemFistConfusion(LivingEntity target) {
-        if (target.getRandom1211().nextFloat() < 1.0F / 3.0F) {
+    private void applyGolemFistConfusion(Entity rawTarget) {
+        LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
+        if (target != null && target.getRandom1211().nextFloat() < 1.0F / 3.0F) {
             target.addEffect(new MobEffectInstance(LibEffects.CONFUSED.get(), 40));
         }
     }

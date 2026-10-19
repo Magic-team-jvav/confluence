@@ -4,6 +4,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -15,6 +16,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 
 public class PirateShot extends StraightMonsterProjectile implements ItemSupplier {
     private final Kind kind;
@@ -53,9 +55,9 @@ public class PirateShot extends StraightMonsterProjectile implements ItemSupplie
         if (level() instanceof ServerLevel server && getOwner() instanceof Mob owner) {
             server.sendParticles(ParticleTypes.EXPLOSION, point.x, point.y, point.z, 1, 0, 0, 0, 0);
             server.playSound(null, blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 1, 1);
-            for (LivingEntity target : server.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(3))) {
-                if (owner.canAttack(target))
-                    target.hurt(damageSources().mobProjectile(this, owner), getDamage());
+            for (Entity target : ProjectileHitRules.areaTargets(server, this, getBoundingBox().inflate(3),
+                    candidate -> ProjectileHitRules.canMobHit(owner, candidate))) {
+                ProjectileHitRules.hurt(target, damageSources().mobProjectile(this, owner), getDamage());
             }
         }
         discard();

@@ -1,9 +1,11 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
@@ -27,7 +29,7 @@ import java.util.Set;
 public class TerraprismaMinion extends Minion implements IEntityCollision<TerraprismaMinion> {
 
     public boolean attacking = false;
-    public final Set<LivingEntity> hitTargets = new HashSet<>();
+    public final Set<Entity> hitTargets = new HashSet<>();
     public int trailTimer = 0;
     public float lastIdleBlend = 0;
     public float idleBlend = 0;
@@ -87,7 +89,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
         for (HitContext hit : hitContexts) {
-            if (hitTargets.add(hit.entity())) {
+            if (hitTargets.add(ProjectileHitRules.dedupeIdentity(hit.entity()))) {
                 attack(hit.entity(), getDamage(), 4);
             }
         }

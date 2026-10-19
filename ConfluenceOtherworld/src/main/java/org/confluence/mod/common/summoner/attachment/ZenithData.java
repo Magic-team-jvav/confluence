@@ -2,7 +2,7 @@ package org.confluence.mod.common.summoner.attachment;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -46,20 +46,20 @@ public class ZenithData {
             Vec3 eyePos = owner.getEyePosition();
             int reach = 32;
             Vec3 endEndPos = eyePos.add(lookAngle.scale(reach));
-            EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(owner, eyePos, endEndPos, owner.getBoundingBox().inflate(reach), entity -> entity instanceof LivingEntity && Zenith.TARGETING.canAcquire(owner, entity), reach * reach);
-            if (entityHit != null && entityHit.getEntity() instanceof LivingEntity) {
+            EntityHitResult entityHit = ProjectileUtil.getEntityHitResult(owner, eyePos, endEndPos, owner.getBoundingBox().inflate(reach), entity -> Zenith.TARGETING.canAcquire(owner, entity), reach * reach);
+            if (entityHit != null) {
                 endEndPos = entityHit.getLocation();
             }
             TargetCache targetCache = owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
-            Predicate<LivingEntity> predicate = target -> Zenith.TARGETING.canAcquire(owner, target);
-            List<LivingEntity> targetList = targetCache.getEntitiesInRadius(endEndPos, 32, predicate);
-            LivingEntity best = null;
+            Predicate<Entity> predicate = target -> Zenith.TARGETING.canAcquire(owner, target);
+            List<Entity> targetList = targetCache.getHitTargets(endEndPos, 32, predicate);
+            Entity best = null;
             if (!targetList.isEmpty()) {
                 int searchRange = 32;
                 double fovAngle = 30;
                 double distanceWeight = 0.2;
                 double bestScore = Double.MAX_VALUE;
-                for (LivingEntity living : targetList) {
+                for (Entity living : targetList) {
                     Vec3 targetPoint = living.getBoundingBox().getCenter();
                     Vec3 toEntity = targetPoint.subtract(center);
                     double angle = Math.toDegrees(Math.acos(toEntity.dot(lookAngle) / toEntity.length()));
@@ -83,9 +83,9 @@ public class ZenithData {
                 float distance = (float) eyePos.distanceTo(endEndPos);
                 Vec3 endPos = endEndPos.offsetRandom(random, distance * 0.1f);
                 if (zenith.renderType != Zenith.RenderType.ZENITH) {
-                    List<LivingEntity> radius = zenith.getTargetCache().getEntitiesInRadius(endPos, 10, predicate);
+                    List<Entity> radius = zenith.getTargetCache().getHitTargets(endPos, 10, predicate);
                     if (!radius.isEmpty()) {
-                        LivingEntity living = radius.get(random.nextInt(radius.size()));
+                        Entity living = radius.get(random.nextInt(radius.size()));
                         endPos = living.getBoundingBox().getCenter();
                         zenith.target = living;
                     } else {

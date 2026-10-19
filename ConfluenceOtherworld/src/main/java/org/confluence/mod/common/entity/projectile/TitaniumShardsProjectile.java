@@ -14,6 +14,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
@@ -106,8 +107,8 @@ public class TitaniumShardsProjectile extends Projectile {
                 Vec3 endVec = position().add(end.x, end.y, end.z);
                 AABB aabb = new AABB(startVec, endVec).inflate(0.5);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, startVec, endVec, aabb, this::canHitEntity);
-                if (hitResult != null && hitResult.getEntity().hurt(damageSources().playerAttack(player), 25)) {
-                    LibEntityUtils.knockBackA2B(this, hitResult.getEntity(), 1, 0.4);
+                if (hitResult != null && ProjectileHitRules.hurt(hitResult.getEntity(), damageSources().playerAttack(player), 25)) {
+                    LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(hitResult.getEntity()), 1, 0.4);
                     entityData.set(DATA_SHARDS_AMOUNT, amount - 1);
                 }
             }
@@ -116,7 +117,7 @@ public class TitaniumShardsProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return ProjectileHitRules.canHit(getOwner(), target);
     }
 
     @Override

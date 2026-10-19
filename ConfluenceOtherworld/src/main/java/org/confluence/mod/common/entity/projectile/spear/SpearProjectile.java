@@ -27,9 +27,9 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.*;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.item.spear.AbstractSpearItem.Parameters;
 import org.confluence.mod.mixed.Immunity;
@@ -236,13 +236,12 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
         if (logicalTarget == null) return false;
         DamageSource source = damageSource();
-        boolean hurt = damageRecipient instanceof LivingEntity living
-                ? Immunity.hurt(this, living, source, getDamage())
-                : Immunity.withCause(this, () -> damageRecipient.hurt(source, getDamage()));
+        boolean hurt = Immunity.hurt(this, damageRecipient, logicalTarget, source, getDamage());
         if (!hurt) {
             return false;
         }
-        if (getOwner() instanceof LivingEntity owner) applyHitEffect(owner, logicalTarget);
+        LivingEntity effectTarget = ProjectileHitRules.effectTarget(target);
+        if (getOwner() instanceof LivingEntity owner && effectTarget != null) applyHitEffect(owner, effectTarget);
         LibEntityUtils.knockBackA2B(this, logicalTarget, (getBaseKnockBack() + knockBack) * 0.5, 0.2);
         applyPenetration();
         return true;

@@ -30,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -281,16 +282,17 @@ public class BoulderEntity extends Projectile {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        UUID uuid1 = entity.getUUID();
+        UUID uuid1 = ProjectileHitRules.dedupeIdentity(entity).getUUID();
 
         // TODO 需要重写
         int i = hitHistory.containsKey(uuid1) ? hitHistory.addTo(uuid1, -1) : 0;
         if (i <= 0) {
             float damage = 100.0F;
-            if (entity instanceof LivingEntity living) {
+            LivingEntity living = ProjectileHitRules.effectTarget(entity);
+            if (living != null) {
                 damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
             }
-            entity.hurt(LibDamageTypes.of(entity.level(), LibDamageTypes.BOULDER, this), damage);
+            ProjectileHitRules.hurt(entity, LibDamageTypes.of(entity.level(), LibDamageTypes.BOULDER, this), damage);
             hitHistory.put(uuid1, 5);
         }
     }

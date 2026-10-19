@@ -14,6 +14,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.LunaticCultist;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
@@ -95,11 +97,13 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
 
     private void homeTowardTarget() {
         if (tickCount > HOMING_TICKS) return;
-        Entity target = level().getEntity(getTargetId());
-        if (!(target instanceof LivingEntity living) || !living.isAlive()) return;
+        Entity target = LibEntityUtils.getEntityOrPart(level(), getTargetId());
+        if (target == null) return;
+        target = ProjectileHitRules.aimTarget(target, position());
+        if (target == null || !ProjectileHitRules.canMobHit(getOwner(), target)) return;
 
         Vec3 velocity = getDeltaMovement();
-        Vec3 desired = living.getEyePosition().subtract(position()).normalize();
+        Vec3 desired = target.getBoundingBox().getCenter().subtract(position()).normalize();
         double speed = Math.min(maximumSpeed, velocity.length() + 0.012);
         Vec3 steered = velocity.normalize().scale(0.88).add(desired.scale(0.12)).normalize();
         setDeltaMovement(steered.scale(speed));
@@ -107,8 +111,10 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide && result.getEntity() instanceof LivingEntity target && getOwner() instanceof LunaticCultist cultist && cultist.canAttack(target)) {
-            if (target.hurt(damageSources().mobProjectile(this, cultist), damage) && knockback > 0) {
+        Entity rawTarget = result.getEntity();
+        LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
+        if (getOwner() instanceof LunaticCultist cultist && ProjectileHitRules.canMobHit(cultist, rawTarget)) {
+            if (ProjectileHitRules.hurt(rawTarget, damageSources().mobProjectile(this, cultist), damage) && knockback > 0 && target != null) {
                 target.knockback(knockback, -getDeltaMovement().x, -getDeltaMovement().z);
             }
         }
@@ -122,9 +128,6 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return target instanceof LivingEntity living
-                && getOwner() instanceof LunaticCultist cultist
-                && cultist.canAttack(living)
-                && super.canHitEntity(target);
+        return ProjectileHitRules.canMobHit(getOwner(), target) && super.canHitEntity(target);
     }
 }

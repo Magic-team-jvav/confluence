@@ -16,6 +16,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.particlestorm.data.molang.MolangExp;
@@ -114,10 +115,10 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     @Override
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
         float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
-        if (target.hurt(getDamageSource(), damage)) {
+        if (ProjectileHitRules.hurt(target, getDamageSource(), damage)) {
             float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
             if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
-                LibEntityUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
+                LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(target), attackKnockback * knockbackStrength, knockbackMotionY);
             }
             afterHurtTarget(target);
             return true;

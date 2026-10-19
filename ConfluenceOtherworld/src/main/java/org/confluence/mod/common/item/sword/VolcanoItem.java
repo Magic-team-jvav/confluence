@@ -12,7 +12,7 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.mixed.Immunity;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;

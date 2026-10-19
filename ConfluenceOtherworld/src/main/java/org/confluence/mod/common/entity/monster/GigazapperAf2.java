@@ -28,7 +28,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.UUID;
 
-/** 地面电矛、抬升、爬升加速和滑翔冲刺共用一套服务端状态机。 */
+// 地面电矛、抬升、爬升加速和滑翔冲刺共用一套服务端状态机。
 public final class GigazapperAf2 extends Gigazapper {
     public static final int DASH_COOLDOWN_TICKS = 30 * 20;
     private static final double CLOSE_DISTANCE = 10.0;
@@ -359,7 +359,7 @@ public final class GigazapperAf2 extends Gigazapper {
         return false;
     }
 
-    /** 速度使用 Minecraft 的格/tick 单位；仅计相互接近的速度分量，额外伤害不超过十。 */
+    // 速度使用 Minecraft 的格/tick 单位；仅计相互接近的速度分量，额外伤害不超过十。
     public static double projectedSpeedBonus(Vec3 attackerVelocity, Vec3 targetVelocity, Vec3 impactDirection) {
         Vec3 direction = impactDirection.lengthSqr() < 1.0E-8 ? attackerVelocity.normalize() : impactDirection.normalize();
         double projection = attackerVelocity.subtract(targetVelocity).dot(direction);

@@ -7,8 +7,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.entity.PartHitTarget;
 
 /// 原生多部件茎部，由头部创建、定位与销毁，不独立生成或同步。
 public class PlantStemPart extends PartEntity<Snatcher> implements PartHitTarget {

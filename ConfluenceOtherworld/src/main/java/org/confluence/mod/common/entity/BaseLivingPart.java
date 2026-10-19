@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;

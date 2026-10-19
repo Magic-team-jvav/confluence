@@ -15,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.util.PrefixUtils;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;

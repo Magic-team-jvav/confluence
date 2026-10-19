@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -40,7 +41,8 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (doPenetrateCheck(entity)) {
-            if (doHurtAndKnockback(entity, 3.5, 0.2) && entity instanceof LivingEntity living) {
+            LivingEntity living = ProjectileHitRules.effectTarget(entity);
+            if (doHurtAndKnockback(entity, 3.5, 0.2) && living != null) {
                 living.addEffect(new MobEffectInstance(ModEffects.ICHOR.get(), 200));
             }
             doDiscardInMaxPenetrate(4);

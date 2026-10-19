@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import org.confluence.lib.util.ProjectileHitRules;
 
 public class WandOfSparkingProjectile extends BaseManaStaffProjectileEntity {
     public WandOfSparkingProjectile(LivingEntity living) {
@@ -10,8 +11,9 @@ public class WandOfSparkingProjectile extends BaseManaStaffProjectileEntity {
 
     @Override
     protected void afterHurtTarget(Entity target) {
-        if (!level().isClientSide) {
-            target.igniteForTicks(100);
+        LivingEntity living = ProjectileHitRules.effectTarget(target);
+        if (!level().isClientSide && living != null) {
+            living.igniteForTicks(100);
         }
     }
 }

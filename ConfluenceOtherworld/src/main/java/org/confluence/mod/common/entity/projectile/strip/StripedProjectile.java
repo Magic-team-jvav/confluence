@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 
 /// 长条形射弹?
@@ -104,8 +105,8 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
+        if (ProjectileHitRules.hurt(entity, getDamageSource(), getCalculatedDamage())) {
+            LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(entity), 0.5, 0.2);
         }
     }
 

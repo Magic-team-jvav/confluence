@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
@@ -82,13 +83,14 @@ public class SporeCloudProjectile extends SpearProjectile {
     @Override
     protected boolean doHurt(Entity target) {
         int currentTick = tickCount;
-        int lastTick = lastHitTicks.getOrDefault(target, -damageInterval);
+        Entity identity = ProjectileHitRules.dedupeIdentity(target);
+        int lastTick = lastHitTicks.getOrDefault(identity, -damageInterval);
         if (currentTick - lastTick < damageInterval) {
             return false;
         }
         boolean hurt = super.doHurt(target);
         if (hurt) {
-            lastHitTicks.put(target, currentTick);
+            lastHitTicks.put(identity, currentTick);
         }
         return hurt;
     }

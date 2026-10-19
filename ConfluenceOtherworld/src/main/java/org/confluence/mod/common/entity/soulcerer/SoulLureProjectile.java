@@ -2,8 +2,8 @@ package org.confluence.mod.common.entity.soulcerer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -13,6 +13,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
@@ -109,7 +110,7 @@ public class SoulLureProjectile extends Projectile {
         if (!level().isClientSide && hit.getType() != HitResult.Type.MISS) {
             setPos(hit.getLocation());
             if (hit instanceof EntityHitResult entityHit) {
-                entityHit.getEntity().hurt(LibDamageTypes.soul(level(), this, getOwner()), damage);
+                ProjectileHitRules.hurt(entityHit.getEntity(), LibDamageTypes.soul(level(), this, getOwner()), damage);
             }
             applyAoeDamage();
             discard();
@@ -129,11 +130,9 @@ public class SoulLureProjectile extends Projectile {
             return;
         }
         Vec3 center = position();
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(aoeRadius),
-                target -> target.isAlive() && !target.isSpectator() && target != getOwner() && canHitEntity(target))) {
-            if (target.position().distanceToSqr(center) <= aoeRadius * aoeRadius) {
-                target.hurt(LibDamageTypes.soul(level(), this, getOwner()), aoeDamage);
-            }
+        for (Entity target : ProjectileHitRules.areaTargets(level(), this, getBoundingBox().inflate(aoeRadius),
+                candidate -> canHitEntity(candidate) && candidate.getBoundingBox().getCenter().distanceToSqr(center) <= aoeRadius * aoeRadius)) {
+            ProjectileHitRules.hurt(target, LibDamageTypes.soul(level(), this, getOwner()), aoeDamage);
         }
     }
 
@@ -151,6 +150,11 @@ public class SoulLureProjectile extends Projectile {
         maxAge = tag.getInt(MAX_AGE_TAG);
         aoeRadius = tag.getDouble(AOE_RADIUS_TAG);
         aoeDamage = tag.getFloat(AOE_DAMAGE_TAG);
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        return super.canHitEntity(target) && ProjectileHitRules.canHit(getOwner(), target);
     }
 
     @Override

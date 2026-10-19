@@ -10,13 +10,14 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
-import org.confluence.mod.common.entity.PartHitTarget;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -43,6 +44,7 @@ public final class MartianWalker extends BaseMonster {
     private static final EntityDataAccessor<Integer> FLIGHT_PHASE = SynchedEntityData.defineId(MartianWalker.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Long> PHASE_STARTED = SynchedEntityData.defineId(MartianWalker.class, EntityDataSerializers.LONG);
     private static final int LAUNCH_TICKS = 105;
+    private static final float MAX_TURN_PER_TICK = 10.0F;
     private final Gait gait = new Gait();
     private final UUID[] weaponUUIDs = new UUID[2];
     private final WalkerWeapon[] weapons = new WalkerWeapon[2];
@@ -50,6 +52,7 @@ public final class MartianWalker extends BaseMonster {
     private final float[] savedWeaponHealth = {-1, -1};
     private int attackCooldown;
     private int contactCooldown;
+    private int meleePauseTicks;
     private int nextWeapon;
     private List<WalkerGeometry.Box> collisionBoxes = List.of();
     private final LegHitbox[] legHitboxes;
@@ -59,6 +62,7 @@ public final class MartianWalker extends BaseMonster {
     public MartianWalker(EntityType<? extends MartianWalker> type, Level level) {
         super(type, level);
         setMaxUpStep(1.0F);
+        moveControl = new WalkerMoveControl(this);
         legHitboxes = new LegHitbox[30];
         for (int i = 0; i < legHitboxes.length; i++) legHitboxes[i] = new LegHitbox(this);
         bodyHitbox = new BodyHitbox(this);
@@ -256,6 +260,15 @@ public final class MartianWalker extends BaseMonster {
     }
 
     @Override
+    protected float tickHeadTurn(float yaw, float animationStep) {
+        float previousBodyYaw = yBodyRot;
+        float result = super.tickHeadTurn(yaw, animationStep);
+        // 原版身体控制在停步后会追随头部，模型和碰撞几何也必须限制转速。
+        yBodyRot = Mth.approachDegrees(previousBodyYaw, yBodyRot, MAX_TURN_PER_TICK);
+        return result;
+    }
+
+    @Override
     public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
         return !isLaunching() && !isSpaceship() && super.causeFallDamage(distance, multiplier, source);
     }
@@ -316,6 +329,13 @@ public final class MartianWalker extends BaseMonster {
         CombatTactic tactic = combatTactic(target);
         boolean changedRetreat = retreating != (tactic == CombatTactic.RETREAT);
         retreating = tactic == CombatTactic.RETREAT;
+        if (tactic == CombatTactic.LEG_MELEE && (meleePauseTicks > 0
+                || collisionBoxes.stream().anyMatch(box -> box.leg() && box.intersects(target.getBoundingBox())))) {
+            if (meleePauseTicks == 0) meleePauseTicks = 10;
+            getNavigation().stop();
+            setDeltaMovement(getDeltaMovement().multiply(0, 1, 0));
+            return;
+        }
         if (tactic == CombatTactic.RANGED) {
             getNavigation().stop();
             setDeltaMovement(getDeltaMovement().multiply(0, 1, 0));
@@ -336,21 +356,8 @@ public final class MartianWalker extends BaseMonster {
             }
             getNavigation().stop();
         } else if (tactic == CombatTactic.LEG_MELEE) {
-            WalkerGeometry.Box foot = collisionBoxes.stream()
-                    .filter(box -> box.bone().matches("(front|left|right)_leg4"))
-                    .min(Comparator.comparingDouble(box -> box.bounds().getCenter().subtract(target.position()).horizontalDistanceSqr()))
-                    .orElse(null);
-            if (foot == null) {
-                getNavigation().moveTo(target, 1.25);
-                return;
-            }
-            if (collisionBoxes.stream().anyMatch(box -> box.leg() && box.intersects(target.getBoundingBox()))) {
-                getNavigation().stop();
-                setDeltaMovement(getDeltaMovement().multiply(0, 1, 0));
-            } else {
-                Vec3 offset = target.position().subtract(foot.bounds().getCenter());
-                getNavigation().moveTo(getX() + offset.x, target.getY(), getZ() + offset.z, 1.25);
-            }
+            // 追踪稳定的玩家位置；动画脚掌偏移会随转向变化，不能反过来驱动寻路终点。
+            getNavigation().moveTo(target, 1.25);
         } else if (tactic == CombatTactic.APPROACH) getNavigation().moveTo(target, 1.0);
     }
 
@@ -359,6 +366,7 @@ public final class MartianWalker extends BaseMonster {
         Vec3 beforeMove = position();
         super.tick();
         if (!isAlive()) return;
+        if (meleePauseTicks > 0) meleePauseTicks--;
         if (!level().isClientSide) {
             tryStartLaunch();
             if (isLaunching() && phaseTicks(0) >= LAUNCH_TICKS) {
@@ -623,6 +631,7 @@ public final class MartianWalker extends BaseMonster {
         gait.reset();
         attackCooldown = tag.contains("AttackCooldown") ? Mth.clamp(tag.getInt("AttackCooldown"), 0, 200) : 0;
         contactCooldown = tag.contains("ContactCooldown") ? Mth.clamp(tag.getInt("ContactCooldown"), 0, 20) : 0;
+        meleePauseTicks = 0;
         nextWeapon = tag.contains("NextWeapon") ? Mth.clamp(tag.getInt("NextWeapon"), 0, 1) : 0;
         retreating = false;
         for (int i = 0; i < 2; i++) {
@@ -727,6 +736,32 @@ public final class MartianWalker extends BaseMonster {
 
         @Override
         public boolean acceptsDirectHit() {return getParent().isAlive();}
+    }
+
+    private static final class WalkerMoveControl extends MoveControl {
+        private WalkerMoveControl(MartianWalker walker) {
+            super(walker);
+        }
+
+        @Override
+        public void tick() {
+            boolean moving = operation == Operation.MOVE_TO;
+            super.tick();
+            if (!moving || !mob.onGround()) return;
+            double dx = wantedX - mob.getX();
+            double dz = wantedZ - mob.getZ();
+            double distance = Math.sqrt(dx * dx + dz * dz);
+            float targetYaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
+            float alignment = Math.max(0.0F, Mth.cos(Mth.wrapDegrees(targetYaw - mob.getYRot()) * Mth.DEG_TO_RAD));
+            // 大角度转弯时减速，避免越过近处的路径节点后持续绕圈。
+            mob.setSpeed((float) Math.min(mob.getSpeed() * alignment, distance));
+        }
+
+        @Override
+        protected float rotlerp(float current, float target, float maximumChange) {
+            // 原版允许每 tick 转向 90 度，路径节点切换时会导致大型步行者急转。
+            return super.rotlerp(current, target, Math.min(maximumChange, MAX_TURN_PER_TICK));
+        }
     }
 
     /**

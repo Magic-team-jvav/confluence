@@ -12,6 +12,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -38,10 +39,10 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            hitSet.add(entity.getUUID());
+        if (ProjectileHitRules.hurt(entity, getDamageSource(), getCalculatedDamage())) {
+            hitSet.add(ProjectileHitRules.dedupeIdentity(entity).getUUID());
             this.damage -= deltaDamage;
-            LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(entity), 0.5, 0.2);
             if (penetrate >= 2) {
                 discard();
             } else {

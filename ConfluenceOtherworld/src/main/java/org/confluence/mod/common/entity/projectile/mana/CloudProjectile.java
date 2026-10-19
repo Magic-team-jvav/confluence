@@ -14,8 +14,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +34,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     protected static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(CloudProjectile.class, EntityDataSerializers.INT);
     private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
     protected UUID targetUUID;
-    protected transient LivingEntity target;
+    protected transient Entity target;
     protected transient double motionY;
     private EntityType<? extends RainProjectile> rainType;
     private int duration;
@@ -60,12 +62,12 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (DATA_TARGET_ID.equals(key)) {
-            if (level().isClientSide && level().getEntity(entityData.get(DATA_TARGET_ID)) instanceof LivingEntity living) {
-                this.target = living;
+            if (level().isClientSide) {
+                this.target = LibEntityUtils.getEntityOrPart(level(), entityData.get(DATA_TARGET_ID));
             }
             if (target != null) {
-                double d = target.distanceTo(this);
-                double h = getY() - target.getY() - target.getBbHeight();
+                double d = Math.max(0.001, target.distanceTo(this));
+                double h = getY() - target.getBoundingBox().maxY;
                 double v0 = getDefaultVelocity();
                 double vy = getDeltaMovement().y;
                 this.motionY = 2 * v0 * v0 * (2 - h) / (d * d) - 2 * vy * v0 / d;
@@ -106,9 +108,13 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
                 }
             }
         } else if (getTarget() != null && !target.isRemoved()) {
-            if (!TARGETING.canKeep(getOwner(), target)) return;
+            if (!TARGETING.canKeep(getOwner(), target)) {
+                setTarget(null);
+                return;
+            }
             if (Mth.square(getX() - target.getX()) + Mth.square(getZ() - target.getZ()) < 4) {
-                setPos(target.position().add(0, target.getBbHeight() + 2, 0));
+                Vec3 center = target.getBoundingBox().getCenter();
+                setPos(center.x, target.getBoundingBox().maxY + 2, center.z);
                 setDeltaMovement(Vec3.ZERO);
                 setTarget(null);
             } else {
@@ -122,22 +128,23 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     @Override
     protected void doHitCheck() {}
 
-    public void setTarget(@Nullable LivingEntity target) {
+    public void setTarget(@Nullable Entity target) {
+        target = target == null ? null : ProjectileHitRules.aimTarget(target, position());
         this.target = target;
         if (target == null) {
             this.targetUUID = null;
             entityData.set(DATA_TARGET_ID, -114514);
         } else {
-            this.targetUUID = target.getUUID();
+            this.targetUUID = (target instanceof LivingEntity ? target : ProjectileHitRules.encounterOwner(target)).getUUID();
             entityData.set(DATA_TARGET_ID, target.getId());
         }
     }
 
-    public @Nullable LivingEntity getTarget() {
+    public @Nullable Entity getTarget() {
         if (target == null && targetUUID != null && level() instanceof ServerLevel level) {
             Entity entity = level.getEntity(targetUUID);
-            if (entity instanceof LivingEntity living) {
-                this.target = living;
+            if (entity != null) {
+                this.target = ProjectileHitRules.aimTarget(entity, position());
             }
         }
         return target;
@@ -147,6 +154,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        target = null;
         if (compound.hasUUID("TargetUUID")) {
             this.targetUUID = compound.getUUID("TargetUUID");
         }

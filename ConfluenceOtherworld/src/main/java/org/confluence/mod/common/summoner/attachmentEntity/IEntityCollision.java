@@ -1,9 +1,10 @@
 package org.confluence.mod.common.summoner.attachmentEntity;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -46,7 +47,7 @@ public interface IEntityCollision<T extends AttachmentEntity> {
     /**
      * 判断目标是否为有效的碰撞对象
      */
-    default boolean isValidCollisionTarget(T entity, LivingEntity target) {
+    default boolean isValidCollisionTarget(T entity, Entity target) {
         return entity.getTargetCache().canKeep(target);
     }
 
@@ -73,14 +74,14 @@ public interface IEntityCollision<T extends AttachmentEntity> {
                 return;
             }
 
-            List<LivingEntity> potentialTargets = findPotentialTargets(entity, sweep);
+            List<Entity> potentialTargets = findPotentialTargets(entity, sweep);
             if (potentialTargets.isEmpty()) {
                 return;
             }
 
             // 精确碰撞检测并收集碰撞点
-            Map<LivingEntity, Vec3> hitPoints = new HashMap<>();
-            for (LivingEntity target : potentialTargets) {
+            Map<Entity, Vec3> hitPoints = new HashMap<>();
+            for (Entity target : potentialTargets) {
                 Vec3 hitPoint = findHitPoint(sweep, target.getBoundingBox(), prevTick.pos());
                 if (hitPoint != null) {
                     hitPoints.put(target, hitPoint);
@@ -89,7 +90,11 @@ public interface IEntityCollision<T extends AttachmentEntity> {
 
             if (!hitPoints.isEmpty()) {
                 // 按碰撞点距离上一tick位置的远近排序
-                List<HitContext> hitContexts = hitPoints.entrySet().stream().sorted(Comparator.comparingDouble(e -> e.getValue().distanceToSqr(prevTick.pos()))).map(e -> new HitContext(e.getKey(), e.getValue())).toList();
+                Set<UUID> identities = new HashSet<>();
+                List<HitContext> hitContexts = hitPoints.entrySet().stream()
+                        .sorted(Comparator.comparingDouble(e -> e.getValue().distanceToSqr(prevTick.pos())))
+                        .filter(e -> identities.add(ProjectileHitRules.dedupeIdentity(e.getKey()).getUUID()))
+                        .map(e -> new HitContext(e.getKey(), e.getValue())).toList();
                 onCollisionAttack(hitContexts);
             }
         }
@@ -140,8 +145,8 @@ public interface IEntityCollision<T extends AttachmentEntity> {
         return result.isEmpty() ? null : new Sweep(result, new AABB(minX, minY, minZ, maxX, maxY, maxZ));
     }
 
-    private List<LivingEntity> findPotentialTargets(T entity, Sweep sweep) {
-        return entity.getTargetCache().getEntitiesInRadius(entity.getPos(), sweep.bounds().getSize() * 1.5f, target -> isValidCollisionTarget(entity, target));
+    private List<Entity> findPotentialTargets(T entity, Sweep sweep) {
+        return entity.getTargetCache().getHitTargets(sweep.bounds(), target -> isValidCollisionTarget(entity, target));
     }
 
     /**
@@ -232,6 +237,6 @@ public interface IEntityCollision<T extends AttachmentEntity> {
     /**
      * 碰撞命中上下文
      */
-    record HitContext(LivingEntity entity, Vec3 hitPoint) {
+    record HitContext(Entity entity, Vec3 hitPoint) {
     }
 }

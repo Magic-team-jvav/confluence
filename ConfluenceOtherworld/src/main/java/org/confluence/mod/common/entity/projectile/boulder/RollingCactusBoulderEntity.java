@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TrapDamageHelper;
 
@@ -73,11 +74,12 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
                     Entity entity = entityHitResult.getEntity();
                     float damage = 8.0F;
-                    if (entity instanceof LivingEntity living) {
+                    LivingEntity living = ProjectileHitRules.effectTarget(entity);
+                    if (living != null) {
                         damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                     }
-                    if (entity.hurt(damageSources().cactus(), damage)) {
-                        LibEntityUtils.knockBackA2B(this, entity, 1.0, 0.2);
+                    if (ProjectileHitRules.hurt(entity, damageSources().cactus(), damage)) {
+                        LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(entity), 1.0, 0.2);
                     }
                 }
             }

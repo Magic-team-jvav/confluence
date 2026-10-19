@@ -7,7 +7,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -15,8 +14,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.*;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
         }
 
         boolean hadTargets = hasTargetIds();
-        List<LivingEntity> targets = getBeamTargets();
+        List<Entity> targets = getBeamTargets();
         if (hadTargets) {
             targets.removeIf(target -> !canContinueTargeting(target));
             syncTargets(targets);
@@ -96,22 +97,22 @@ public class GuardianFlailEntity extends BaseFlailEntity {
         }
 
         float damage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()) / 2.0F);
-        for (LivingEntity target : targets) {
-            target.hurt(level().damageSources().mobAttack(player), damage);
+        for (Entity target : targets) {
+            ProjectileHitRules.hurt(target, level().damageSources().mobAttack(player), damage);
             level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.GUARDIAN_ATTACK, SoundSource.HOSTILE, 1.0F, 1.0F);
         }
     }
 
-    private List<LivingEntity> findTargets(Player player) {
+    private List<Entity> findTargets(Player player) {
         double range = elder ? 20.0 : 15.0;
         AABB searchBox = getBoundingBox().inflate(range);
-        List<LivingEntity> candidates = level().getEntitiesOfClass(LivingEntity.class, searchBox, target -> TARGETING.canAcquire(player, target) && canSee(target));
+        List<Entity> candidates = ProjectileHitRules.areaTargets(level(), this, searchBox, target -> TARGETING.canAcquire(player, target) && canSee(target));
         candidates.sort(Comparator.comparingDouble(this::distanceToSqr));
         int count = Math.min(elder ? 3 : 1, candidates.size());
         return new ArrayList<>(candidates.subList(0, count));
     }
 
-    private boolean canContinueTargeting(LivingEntity target) {
+    private boolean canContinueTargeting(Entity target) {
         double range = elder ? 20.0 : 15.0;
         return TARGETING.canKeep(getOwner(), target)
                 && distanceToSqr(target) <= range * range
@@ -124,13 +125,13 @@ public class GuardianFlailEntity extends BaseFlailEntity {
         return level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
     }
 
-    private void syncTargets(List<LivingEntity> targets) {
+    private void syncTargets(List<Entity> targets) {
         entityData.set(TARGET_ONE, targetId(targets, 0));
         entityData.set(TARGET_TWO, targetId(targets, 1));
         entityData.set(TARGET_THREE, targetId(targets, 2));
     }
 
-    private static int targetId(List<LivingEntity> targets, int index) {
+    private static int targetId(List<Entity> targets, int index) {
         return index < targets.size() ? targets.get(index).getId() : 0;
     }
 
@@ -152,18 +153,18 @@ public class GuardianFlailEntity extends BaseFlailEntity {
     }
 
     /// 返回客户端当前可以解析的光束目标。
-    public List<LivingEntity> getBeamTargets() {
-        List<LivingEntity> targets = new ArrayList<>(3);
+    public List<Entity> getBeamTargets() {
+        List<Entity> targets = new ArrayList<>(3);
         addTarget(targets, entityData.get(TARGET_ONE));
         addTarget(targets, entityData.get(TARGET_TWO));
         addTarget(targets, entityData.get(TARGET_THREE));
         return targets;
     }
 
-    private void addTarget(List<LivingEntity> targets, int entityId) {
-        Entity entity = level().getEntity(entityId);
-        if (entity instanceof LivingEntity living && living.isAlive()) {
-            targets.add(living);
+    private void addTarget(List<Entity> targets, int entityId) {
+        Entity entity = LibEntityUtils.getEntityOrPart(level(), entityId);
+        if (entity != null && ProjectileHitRules.acceptsDirectHit(entity)) {
+            targets.add(entity);
         }
     }
 

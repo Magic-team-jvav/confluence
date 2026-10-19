@@ -223,7 +223,7 @@ public final class WalkerGeometry {
         return boxes;
     }
 
-    /** 方形水平外接箱覆盖所有偏航角，避免旋转时炮台受击范围忽大忽小。 */
+    // 方形水平外接箱覆盖所有偏航角，避免旋转时炮台受击范围忽大忽小。
     static AABB weaponBounds(MartianWalker walker, List<Box> geometry, int slot) {
         String bone = slot == 0 ? "left_fort" : "right_fort";
         float yaw = (float) Math.toRadians(180 - walker.yBodyRot);

@@ -25,8 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.monster.BaseMimic;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
@@ -174,13 +174,14 @@ public class BaseArrowEntity extends PortAbstractArrow {
             }
             return;
         }
-        if (!(entity instanceof LivingEntity living)) {
+        LivingEntity living = ProjectileHitRules.effectTarget(entity);
+        if (living == null) {
             super.onHitEntity(result);
             return;
         }
-        if (!havenBeen.add(living.getUUID())) return;
+        if (!havenBeen.add(ProjectileHitRules.dedupeIdentity(entity).getUUID())) return;
         DamageSource damageSource = getDamageSource();
-        if (entity.hurt(damageSource, getCalculatedDamage())) {
+        if (ProjectileHitRules.hurt(entity, damageSource, getCalculatedDamage())) {
             playSound(getSound(), 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
             Entity owner = getOwner();
             boolean reflectedByMimic = owner instanceof BaseMimic;
@@ -196,7 +197,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
             if (knockback > 0 && horizontal.lengthSqr() > 0)
                 living.knockback(knockback * 0.6, -horizontal.x, -horizontal.z);
             if (!reflectedByMimic && !level().isClientSide && owner instanceof LivingEntity) {
-                IPortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
+                IPortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), living, damageSource);
             }
             if (living != owner && living instanceof Player && owner instanceof ServerPlayer player && !isSilent()) {
                 player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
@@ -280,9 +281,8 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return super.canHitEntity(target) && !havenBeen.contains(target.getUUID());
+        return super.canHitEntity(target) && ProjectileHitRules.canHit(getOwner(), target)
+                && !havenBeen.contains(ProjectileHitRules.dedupeIdentity(target).getUUID());
     }
 
     @Override

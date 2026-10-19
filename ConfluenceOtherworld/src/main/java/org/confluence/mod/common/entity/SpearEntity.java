@@ -1,5 +1,7 @@
 package org.confluence.mod.common.entity;
 
+import org.confluence.lib.util.ProjectileHitRules;
+
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -95,12 +97,13 @@ public class SpearEntity extends Entity {
         Vec3 startVec = position().relative(getDirection().getOpposite(), 1);
         Vec3 endVec = position().relative(getDirection(), Mth.ceil(13 * progress));
         AABB boundingBox = getBoundingBox().inflate(0.3F);
-        for (Entity entity1 : level().getEntities(this, boundingBox, entity -> entity instanceof LivingEntity)) {
-            AABB aabb = entity1.getBoundingBox().inflate(0.3);
-            if (aabb.clip(startVec, endVec).isPresent()) {
-                float damage = LibUtils.switchByDifficulty(level(), 24, 48, 72);
-                entity1.hurt(LibDamageTypes.of(level(), DamageTypes.STING), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity1, damage));
-            }
+        for (Entity target : ProjectileHitRules.areaTargets(level(), this, boundingBox,
+                entity -> ProjectileHitRules.logicalLivingTarget(entity) != null
+                        && entity.getBoundingBox().inflate(0.3).clip(startVec, endVec).isPresent())) {
+            float damage = LibUtils.switchByDifficulty(level(), 24, 48, 72);
+            LivingEntity living = ProjectileHitRules.effectTarget(target);
+            if (living != null) damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+            ProjectileHitRules.hurt(target, LibDamageTypes.of(level(), DamageTypes.STING), damage);
         }
     }
 

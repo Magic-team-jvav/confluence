@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
 
@@ -39,7 +39,7 @@ public final class GuardianFlailBeamRenderer {
         int color = 0xFF000000 | red << 16 | green << 8 | blue;
 
         Vec3 renderPosition = entity.getPosition(partialTick);
-        for (LivingEntity target : entity.getBeamTargets()) {
+        for (Entity target : entity.getBeamTargets()) {
             Vec3 beam = target.getBoundingBox().getCenter().subtract(renderPosition);
             renderSingleBeam(poseStack, bufferSource, new Vec3(0.0, 0.25, 0.0), beam, color, entity.tickCount + partialTick);
         }

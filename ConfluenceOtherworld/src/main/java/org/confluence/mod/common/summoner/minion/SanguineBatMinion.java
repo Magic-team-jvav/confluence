@@ -1,9 +1,11 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
@@ -29,7 +31,7 @@ public class SanguineBatMinion extends Minion implements IEntityCollision<Sangui
     public float progress = 0;
     public Vec3 normal = new Vec3(0, 1, 0);
     public boolean hasDamaged = false;
-    public final Set<LivingEntity> hitTargets = new HashSet<>();
+    public final Set<Entity> hitTargets = new HashSet<>();
 
     public SanguineBatMinion() {
         super(SummonerAttachmentEntityTypes.SANGUINE_BAT);
@@ -72,9 +74,9 @@ public class SanguineBatMinion extends Minion implements IEntityCollision<Sangui
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
         for (HitContext hit : hitContexts) {
-            if (hitTargets.add(hit.entity())) {
+            if (hitTargets.add(ProjectileHitRules.dedupeIdentity(hit.entity()))) {
                 attack(hit.entity(), getDamage(), 4);
-                if (hit.entity() == getTarget()) {
+                if (hit.entity() == getTarget() || ProjectileHitRules.logicalLivingTarget(hit.entity()) == getTarget()) {
                     hasDamaged = true;
                 }
             }

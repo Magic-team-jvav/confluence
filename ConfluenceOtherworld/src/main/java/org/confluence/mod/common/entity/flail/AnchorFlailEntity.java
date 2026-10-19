@@ -5,14 +5,14 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 
 /// 锚的直接发射、重力和落点冲击行为。
@@ -30,8 +30,9 @@ public final class AnchorFlailEntity extends LaunchedFlailEntity {
                 * (float) player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)
                 * 0.6F;
         AABB area = getBoundingBox().inflate(2.0, 0.5, 2.0);
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area, candidate -> candidate != player && candidate.isAlive() && LibEntityUtils.canHitEntity(candidate, this))) {
-            target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage);
+        for (Entity target : ProjectileHitRules.areaTargets(level(), this, area,
+                candidate -> ProjectileHitRules.canHit(player, candidate))) {
+            ProjectileHitRules.hurt(target, LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage);
         }
         level().playSound(null, blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.8F, 0.9F + random.nextFloat() * 0.2F);
         if (level() instanceof ServerLevel serverLevel) {

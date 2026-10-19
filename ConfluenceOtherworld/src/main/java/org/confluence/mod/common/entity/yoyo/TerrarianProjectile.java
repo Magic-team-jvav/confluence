@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.yoyo;
 
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
-import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -16,9 +13,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.attachment.YoyoSession;
 import org.confluence.mod.common.entity.*;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;

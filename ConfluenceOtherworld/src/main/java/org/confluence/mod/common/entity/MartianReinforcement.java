@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-/** A reserved spawn slot, followed by a falling carrier. Passengers never accumulate fall damage. */
+// A reserved spawn slot, followed by a falling carrier. Passengers never accumulate fall damage.
 public class MartianReinforcement extends Entity {
     public static final int MONSTERS_PER_PLAYER = 40;
     public static final int WARNING_TICKS = 40;
@@ -145,7 +145,7 @@ public class MartianReinforcement extends Entity {
         }
     }
 
-    /** Return a registered sound once landing audio is available; null leaves the landing silent. */
+    // Return a registered sound once landing audio is available; null leaves the landing silent.
     @Nullable
     protected SoundEvent getLandingSound() {
         return null;

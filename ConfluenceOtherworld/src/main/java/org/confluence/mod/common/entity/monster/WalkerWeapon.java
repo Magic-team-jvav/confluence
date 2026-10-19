@@ -15,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.BaseLivingPart;
 
-/** 持久化的炮台受击体；外观对应本体模型中的同名骨骼。 */
+// 持久化的炮台受击体；外观对应本体模型中的同名骨骼。
 public final class WalkerWeapon extends BaseLivingPart<MartianWalker> {
     static final int RESOLUTION_GRACE_TICKS = 200;
 

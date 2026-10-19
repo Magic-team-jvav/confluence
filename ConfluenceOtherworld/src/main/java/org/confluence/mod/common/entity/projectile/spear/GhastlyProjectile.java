@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 
 /// <h1>恶魂弹射物</h1>
@@ -33,7 +34,7 @@ public class GhastlyProjectile extends SpearProjectile {
     ///
     /// 目标配置早于实体加入世界，因此不会先触发基类自动索敌，也不依赖生成后的可变状态
     /// 修补。锁定目标只控制运动方向，战斗数值仍完全来自服务端冻结快照。
-    public void setLockedTarget(LivingEntity target) {
+    public void setLockedTarget(Entity target) {
         this.target = target;
     }
 
@@ -90,13 +91,14 @@ public class GhastlyProjectile extends SpearProjectile {
     @Override
     protected boolean doHurt(Entity target) {
         int currentTick = tickCount;
-        int lastTick = lastHitTicks.getOrDefault(target, -DAMAGE_INTERVAL);
+        Entity identity = ProjectileHitRules.dedupeIdentity(target);
+        int lastTick = lastHitTicks.getOrDefault(identity, -DAMAGE_INTERVAL);
         if (currentTick - lastTick < DAMAGE_INTERVAL) {
             return false;
         }
         boolean hurt = super.doHurt(target);
         if (hurt) {
-            lastHitTicks.put(target, currentTick);
+            lastHitTicks.put(identity, currentTick);
         }
         return hurt;
     }

@@ -2,13 +2,14 @@ package org.confluence.mod.common.summoner.attachmentEntity;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
@@ -99,24 +100,23 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
         return owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
     }
 
-    public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
-        if (!Immunity.isActive(this, target)) {
+    public boolean attack(@NotNull Entity target, float damageAmount, int invincibleTime) {
+        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
+        if (logicalTarget != null && ProjectileHitRules.canHit(owner, target)) {
             AttachmentEntityDamageSource damageSource = getDamageSource();
             WhipMarkTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
-            if (tracker.isSummonMarkTarget(target)) {
+            if (tracker.isSummonMarkTarget(logicalTarget)) {
                 damageAmount = tracker.getDamageModifier(damageSource, damageAmount);
             }
             damageAmount = (float) (damageAmount * owner.getAttributeValue(LibAttributes.getSummonDamage()));
             immunityDuration = invincibleTime;
-            int invulnerableTime = target.invulnerableTime;
-            target.invulnerableTime = 0;
-            boolean hurt = target.hurt(damageSource, damageAmount);
-            target.invulnerableTime = invulnerableTime;
-            if (hurt) {
-                Immunity.apply(this, damageSource, target);
+            try {
+                return Immunity.hurt(this, ProjectileHitRules.damageRecipient(target), logicalTarget, damageSource, damageAmount);
+            } finally {
+                immunityDuration = 0;
             }
-            immunityDuration = 0;
         }
+        return false;
     }
 
     public void copyAttributes(AttachmentEntity other) {

@@ -5,10 +5,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 public class SoulSkill {
     private static final float DEFAULT_BASIC_SOUL_COST = 0.0F;
@@ -23,8 +27,9 @@ public class SoulSkill {
 
     /// 技能类型：主动释放、附魂增益（自身 Buff）、被动。
     ///
-    /// 只有 `ACTIVE` 与 `BUFF` 能被装备并主动释放；`PASSIVE` 学会即生效，
-    /// 装备栏自动跳过（见 `PlayerUtils.getSoulSkillIndexes` 与术式轮转）。
+    /// 三类技能都占用灵魂技能槽：`ACTIVE` 与 `BUFF` 可主动释放，
+    /// `PASSIVE` 不能释放，但只有装备在槽里才会结算效果
+    /// （见 `PlayerUtils.isPassiveSoulSkillActive`；术式轮转与当前槽选择会跳过被动）。
     public enum Kind {
         ACTIVE,
         BUFF,
@@ -146,6 +151,28 @@ public class SoulSkill {
             return null;
         }
         return Component.translatable(getDescriptionKey()).withStyle(ChatFormatting.GRAY);
+    }
+
+    /// tooltip 里的一条「BUFF持续时间」：效果名 + 持续 tick。
+    public record BuffDuration(Component effectName, int durationTicks) {}
+
+    /// 技能自带的自增益及其持续时间，供 tooltip 逐条列出；没有自增益的技能返回空表。
+    ///
+    /// 只在 `use` 里真正给自己挂增益的技能才需要覆盖。
+    public List<BuffDuration> getBuffDurations(SoulSkillStack skillStack) {
+        return List.of();
+    }
+
+    /// 用效果提供器与持续 tick 构造一条增益时长；1.20.1 的效果直接以 `MobEffect` 形式注册。
+    protected static BuffDuration buffDuration(Supplier<MobEffect> effect, int durationTicks) {
+        return new BuffDuration(effect.get().getDisplayName(), durationTicks);
+    }
+
+    /// 该技能的增益是否正挂在玩家身上；非增益技能恒为 false。
+    ///
+    /// 供「附魂激荡」这类需要感知“任意增益在身”的被动统一查询。
+    public boolean isBuffActive(Player player) {
+        return false;
     }
 
     /// 空技能复用共享空栈，其余创建新技能栈。

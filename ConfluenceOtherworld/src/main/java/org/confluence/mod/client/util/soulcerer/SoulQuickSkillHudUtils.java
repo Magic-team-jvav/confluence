@@ -2,6 +2,8 @@ package org.confluence.mod.client.util.soulcerer;
 
 import net.minecraft.util.Mth;
 
+import java.util.function.IntPredicate;
+
 /**
  * 灵魂技能快速切换HUD工具类
  * 提供与轮盘式技能选择器相关的通用计算方法
@@ -123,6 +125,51 @@ public final class SoulQuickSkillHudUtils {
         int rotationOffset = calculateDefaultRotationOffset(0); // 这里可以根据实际需要调整
         return getSkillIndex(slotIdx, rotationOffset, currentIdx, totalSkills,
                 DEFAULT_DISPLAY_COUNT, DEFAULT_HALF_DISPLAY);
+    }
+
+    /**
+     * 按方向切换技能槽，并跳过 {@code skip} 判定为不可选的槽（例如空槽与被动技能）。
+     *
+     * <p>返回值是<b>实际滑过的槽位数</b>（带符号），既可以直接喂给
+     * {@link #calculateSkillIndex(int, int, int)} 求落点，也可以直接传给 HUD 的
+     * {@code adjustTarget(...)} 让转动动画与落点保持同步。
+     *
+     * <p>一个可选槽都没有时<b>退化为不跳过</b>：照原样返回 {@code offset}，
+     * 让高亮仍然能移动（例如新角色技能槽全空时滚轮不会毫无反应）。
+     *
+     * @param offset       期望移动的方向与格数（可负）
+     * @param currentIndex 当前技能索引
+     * @param totalSkills  技能总槽数
+     * @param skip         返回 true 表示该槽要被跳过
+     * @return 实际移动的槽位数；0 表示没有槽（{@code totalSkills <= 0} 或 {@code offset == 0}）
+     */
+    public static int calculateSkippingOffset(int offset, int currentIndex, int totalSkills, IntPredicate skip) {
+        if (totalSkills <= 0 || offset == 0) {
+            return 0;
+        }
+        int direction = offset > 0 ? 1 : -1;
+        int wanted = Math.abs(offset);
+        int traversed = 0;
+        int landed = 0;
+        int lastValid = 0;
+        int index = currentIndex;
+        for (int step = 0; step < totalSkills; step++) {
+            index = (index + direction + totalSkills) % totalSkills;
+            traversed += direction;
+            if (skip.test(index)) {
+                continue;
+            }
+            lastValid = traversed;
+            if (++landed >= wanted) {
+                return lastValid;
+            }
+        }
+        // 一个可选槽都没有：退化为不跳过，高亮照常移动
+        if (landed == 0) {
+            return offset;
+        }
+        // 有可选槽但一圈内凑不够格数：停在最后一个可用落点
+        return lastValid;
     }
 }
 

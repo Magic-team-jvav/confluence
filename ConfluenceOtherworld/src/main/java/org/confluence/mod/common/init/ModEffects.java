@@ -53,6 +53,8 @@ public final class ModEffects {
     public static final RegistryObject<MobEffect> LIFE_RETURN = registerEffectWithEnglishName("life_return", "生命归还", "Life Return", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF80A0));
     public static final RegistryObject<MobEffect> FIRMAMENT_REVERSED = registerEffectWithEnglishName("firmament_reversed", "天穹倒转", "Firmament Reversed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x80D0FF));
     public static final RegistryObject<MobEffect> BOILING_BLOOD = registerEffectWithEnglishName("boiling_blood", "血液沸腾", "Boiling Blood", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x900000));
+    /// 灵魂枪手：增益期间持续把灵魂转成子弹。
+    public static final RegistryObject<MobEffect> SOUL_GUNNER = registerEffectWithEnglishName("soul_gunner", "灵魂枪手", "Soul Gunner", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x50C0FF));
 
     public static final RegistryObject<MobEffect> EXQUISITELY_STUFFED = register("exquisitely_stuffed", "酒足饭饱", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, ADD_VALUE, v -> exquisitelyStuffed(v, 0.04, 0.06, 0.08))

@@ -208,9 +208,9 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.BAND_OF_SOUL.get(), "Slowly regenerates soul, 1 soul every 3 seconds", "缓慢回复灵魂，每3秒回复1点");
         language.addTooltip(AccessoryItems.BAND_OF_SOUL_REGENERATION.get(), "Slowly regenerates soul and life", "缓慢回复灵魂和生命");
         language.addTooltip(AccessoryItems.BAND_OF_MEDIUMSHIP.get(), "Slowly regenerates soul and increases maximum soul by 20", "缓慢回复灵魂，灵魂上限提高20");
-        language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "You may use an equipped skill without holding a main weapon", "无需手持主武器即可使用已装备的技能");
+        language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "Lets one weapon-granted skill be used without holding its weapon; rerolled after each cast", "无需手持武器即可使用一个由武器提供的技能，每次使用技能后重新随机");
         language.addTooltip(AccessoryItems.SOULCERER_EMBLEM.get(), "12% increased soul damage", "灵魂伤害提高12%");
-        language.addTooltip(ModEffects.BLOOD_RAGE.get(), "40% increased melee and ranged damage", "近战与远程伤害提高40%");
+        language.addTooltip(ModEffects.BLOOD_RAGE.get(), "7% increased melee and ranged damage", "近战与远程伤害提高7%");
         language.addTooltip(ModEffects.SOUL_PLUNDER.get(), "25% increased melee and ranged damage", "近战与远程伤害提高25%");
         language.addTooltip(ModEffects.SOUL_DRAIN.get(), "Soul costs are ignored", "施放技能不消耗灵魂");
         language.addTooltip(ModEffects.SOUL_DRAIN_LOCK.get(), "You cannot use your main weapon", "无法使用主武器");

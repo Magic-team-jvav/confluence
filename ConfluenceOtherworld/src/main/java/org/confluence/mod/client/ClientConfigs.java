@@ -58,6 +58,7 @@ public final class ClientConfigs {
     public static boolean terraStyleFood = true;
     public static TerraStyleFoodHud.Food foodStyle = TerraStyleFoodHud.Food.OVERLAY;
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
+    public static TerraStyleManaHud.Soul soulStyle = TerraStyleManaHud.Soul.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
     public static ClientSoulHandler.Type soulQuickSkillStyle;
@@ -103,6 +104,7 @@ public final class ClientConfigs {
     private static BooleanValue TERRA_STYLE_FOOD;
     private static EnumValue<TerraStyleFoodHud.Food> FOOD_STYLE;
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
+    private static EnumValue<TerraStyleManaHud.Soul> SOUL_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
     private static EnumValue<ClientSoulHandler.Type> SOUL_QUICK_SKILL_STYLE;
@@ -155,6 +157,7 @@ public final class ClientConfigs {
         manaOffsetX = MANA_OFFSET_X.get();
         manaOffsetY = MANA_OFFSET_Y.get();
         if (Confluence.SOUL_SKILLS) {
+            soulStyle = SOUL_STYLE.get();
             soulQuickSkillStyle = SOUL_QUICK_SKILL_STYLE.get();
         }
         terraStyleArmor = TERRA_STYLE_ARMOR.get();
@@ -231,6 +234,7 @@ public final class ClientConfigs {
             }
             if (Confluence.SOUL_SKILLS) {
                 builder.push("Soulcerer");
+                SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleManaHud.Soul.OVERLAY);
                 SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulcererQuickSkillStyle", ClientSoulHandler.Type.ROULETTE_WHEEL_SMALL);
                 builder.pop();
             }

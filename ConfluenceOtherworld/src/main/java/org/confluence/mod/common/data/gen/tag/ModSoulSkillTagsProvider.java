@@ -44,7 +44,7 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
                 .add(key(ModSoulSkills.BOILING_BLOOD.get()))
                 .add(key(ModSoulSkills.LIFE_RETURN.get()))
                 .add(key(ModSoulSkills.FIRMAMENT_REVERSED.get()));
-        // 被动：无法装备、学会即生效；术式轮转用这个标签跳过它们
+        // 被动：可以装备但不能主动释放，装备后才结算效果；术式轮转用这个标签跳过它们
         tag(ModTags.SoulSkills.PASSIVE)
                 .add(key(ModSoulSkills.LAW_OF_NATURE.get()))
                 .add(key(ModSoulSkills.STAR_REVERSAL.get()))

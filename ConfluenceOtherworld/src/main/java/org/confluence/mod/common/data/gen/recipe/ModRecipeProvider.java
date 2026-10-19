@@ -365,6 +365,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(ToolItems.DUNGEON_COMPASS),
                 AmountIngredient.of(5, Items.COBWEB));
 
+        // 幻翼套装：邪恶祭坛无序，幻翼膜 + 同级银制部件
+        altar(writer, ArmorItems.PHANTOM_HELMET.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_HELMET));
+        altar(writer, ArmorItems.PHANTOM_CHESTPLATE.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_CHESTPLATE));
+        altar(writer, ArmorItems.PHANTOM_LEGGINGS.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_LEGGINGS));
+        altar(writer, ArmorItems.PHANTOM_BOOTS.toStack(), Ingredient.of(Items.PHANTOM_MEMBRANE), Ingredient.of(ArmorItems.SILVER_BOOTS));
+
         alchemyTable(writer, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(writer, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));
         alchemyTable(writer, PotionItems.THORNS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(Items.CACTUS));

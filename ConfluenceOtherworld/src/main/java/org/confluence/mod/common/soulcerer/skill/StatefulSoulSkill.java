@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.attachment.SoulStorage;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /// 魂引天星 / 灵魂透支 / 生命归还 共用的“限时状态技能”：施放后只挂一个同名增益。
@@ -35,5 +36,15 @@ public class StatefulSoulSkill extends SoulSkill {
             SoulStorage.of(serverPlayer).setLifeReturnLost(0.0F);
         }
         serverPlayer.addEffect(new MobEffectInstance(effect.get(), durationTicks, 0, false, true, true));
+    }
+
+    @Override
+    public List<BuffDuration> getBuffDurations(SoulSkillStack skillStack) {
+        return List.of(buffDuration(effect, durationTicks));
+    }
+
+    @Override
+    public boolean isBuffActive(Player player) {
+        return player.hasEffect(effect.get());
     }
 }

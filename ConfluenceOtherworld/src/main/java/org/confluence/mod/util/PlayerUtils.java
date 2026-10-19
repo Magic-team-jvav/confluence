@@ -3,9 +3,8 @@ package org.confluence.mod.util;
 import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.SharedConstants;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
@@ -14,28 +13,26 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
+import net.minecraft.SharedConstants;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.biome.Biomes;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
-import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
@@ -44,25 +41,21 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.SoulCollectionEvent;
-import org.confluence.mod.api.event.SoulConsumeEvent;
-import org.confluence.mod.api.event.SoulRecoveryEvent;
-import org.confluence.mod.api.event.SoulSkillDamageEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.boss.AbstractTwinEye;
-import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
-import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModBlockCounters;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
+import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
+import net.minecraft.world.phys.Vec3;
+import java.util.function.Supplier;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -72,13 +65,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SoulItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
-import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
-import org.confluence.mod.common.item.soulcerer.SoulBooks;
-import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.soulcerer.skill.SoulSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.AskForSoftcorePacket;
@@ -86,17 +73,32 @@ import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.registries.PortDeferredItem;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.api.event.SoulCollectionEvent;
+import org.confluence.mod.api.event.SoulConsumeEvent;
+import org.confluence.mod.api.event.SoulRecoveryEvent;
+import org.confluence.mod.api.event.SoulSkillDamageEvent;
+import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.PartHitTarget;
+import org.confluence.mod.common.entity.boss.AbstractTwinEye;
+import org.confluence.mod.common.init.ModSoulSkills;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
+import org.confluence.mod.common.soulcerer.skill.SoulGunnerSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import java.util.*;
 import java.util.function.IntFunction;
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+import java.util.*;
 
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
@@ -207,6 +209,22 @@ public final class PlayerUtils {
         return player == null ? Collections.emptyList() : Collections.unmodifiableList(SoulSkillStorage.of(player).getEquippedSoulSkills());
     }
 
+    /// 下一次施法的灵魂是否不够付：为 true 时这一下会走生命代偿（扣血）。
+    ///
+    /// 只按「当前选中技能 vs 当前灵魂」预测，供 HUD 做透支警示；
+    /// 创造模式、非法术状态、零消耗技能都不提示。
+    public static boolean isSoulOverdraftPending(@Nullable Player player) {
+        if (player == null || !isSoulMode(player) || player.isCreative()) {
+            return false;
+        }
+        SoulSkillStack stack = getCurrentSkillStack(player);
+        if (stack.isEmpty() || stack.getSoulSkill().isPassive()) {
+            return false;
+        }
+        float soulCost = stack.getSoulSkill().getSoulCost(stack);
+        return soulCost > 0.0F && getSoul(player) < soulCost;
+    }
+
     /// 将非空技能栈装入指定槽位；空槽使用 Empty。
     public static boolean equipSoulSkill(@Nullable Player player, int index, SoulSkillStack skillStack) {
         return setSoulSkillStack(player, index, skillStack);
@@ -233,7 +251,8 @@ public final class PlayerUtils {
         if (player instanceof ServerPlayer serverPlayer) {
             refreshSoulSkills(serverPlayer);
         }
-        if (!skillStack.isEmpty() && (!isSoulSkillAvailable(player, skillStack.getSoulSkill().getId()) || skillStack.getSoulSkill().isPassive())) {
+        /// 被动技能同样占槽：只有装备后才结算效果，见 isPassiveSoulSkillActive。
+        if (!skillStack.isEmpty() && !isSoulSkillAvailable(player, skillStack.getSoulSkill().getId())) {
             return false;
         }
         equippedSkills.set(index, skillStack);
@@ -379,6 +398,18 @@ public final class PlayerUtils {
         return player != null && SoulSkillStorage.of(player).getAvailableSkills().contains(skillId);
     }
 
+    /// 被动技能是否正在生效：既已学会（可用），又装备在灵魂技能槽里。
+    ///
+    /// 被动技能的效果一律走这里判定，不再用“已学会”直接放行；卸下即失效。
+    public static boolean isPassiveSoulSkillActive(@Nullable Player player, ResourceLocation skillId) {
+        return isSoulSkillAvailable(player, skillId) && isSoulSkillEquipped(player, skillId);
+    }
+
+    /// 被动技能是否正在生效，参数为技能定义。
+    public static boolean isPassiveSoulSkillActive(@Nullable Player player, SoulSkill skill) {
+        return skill != null && isPassiveSoulSkillActive(player, skill.getId());
+    }
+
     public static int getSoulSkillCooldown(@Nullable Player player, ResourceLocation skillId) {
         if (player == null) {
             return 0;
@@ -405,6 +436,11 @@ public final class PlayerUtils {
         }
         Set<ResourceLocation> available = new HashSet<>(storage.getUnlockedSoulSkills().keySet());
         available.addAll(temporary);
+        /// 刻骨的记忆：每次刷新时维护它当前放行的那一个技能。
+        ResourceLocation memorySkill = resolveMemoryOfBonebrandSkill(player);
+        if (memorySkill != null) {
+            available.add(memorySkill);
+        }
         available.removeIf(id -> {
             SoulSkill skill = SoulSkillStorage.findSoulSkill(id);
             return skill == null || skill == ModSoulSkills.EMPTY.get() || !skill.isAvailable(player);
@@ -416,6 +452,80 @@ public final class PlayerUtils {
         storage.getAvailableSkills().addAll(available);
         mirrorSoulSkillCooldowns(player);
         return changed;
+    }
+
+    /// 佩戴刻骨的记忆时，保证「武器临时技能」里有一个被放行；没佩戴则清空选择。
+    ///
+    /// 候选是背包里所有 {@link SoulWeaponItem} 提供的技能中**尚未永久学会**的那些；
+    /// 每次刷新只在选择失效时重掷，真正使用技能后由 {@link #rerollMemoryOfBonebrandSkill} 重掷。
+    @Nullable
+    private static ResourceLocation resolveMemoryOfBonebrandSkill(ServerPlayer player) {
+        SoulSkillStorage storage = SoulSkillStorage.of(player);
+        if (!TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
+            if (storage.getMemoryOfBonebrandSkill() != null) {
+                storage.setMemoryOfBonebrandSkill(null);
+            }
+            return null;
+        }
+        List<ResourceLocation> candidates = collectMemoryOfBonebrandCandidates(player);
+        ResourceLocation current = storage.getMemoryOfBonebrandSkill();
+        if (current != null && candidates.contains(current)) {
+            return current;
+        }
+        ResourceLocation picked = pickMemoryOfBonebrandSkill(player, candidates);
+        storage.setMemoryOfBonebrandSkill(picked);
+        return picked;
+    }
+
+    /// 使用技能后重掷刻骨的记忆放行的技能（未佩戴时清空）。
+    public static void rerollMemoryOfBonebrandSkill(ServerPlayer player) {
+        SoulSkillStorage storage = SoulSkillStorage.of(player);
+        if (!TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
+            storage.setMemoryOfBonebrandSkill(null);
+            return;
+        }
+        storage.setMemoryOfBonebrandSkill(pickMemoryOfBonebrandSkill(player, collectMemoryOfBonebrandCandidates(player)));
+    }
+
+    /// 该技能是否是刻骨的记忆当前放行的技能。
+    public static boolean isMemoryOfBonebrandSkill(Player player, @Nullable SoulSkill skill) {
+        if (skill == null || !TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
+            return false;
+        }
+        return skill.getId().equals(SoulSkillStorage.of(player).getMemoryOfBonebrandSkill());
+    }
+
+    /// 收集「只由武器临时提供」的候选技能：背包（含副手）里魂师武器授予的技能，排除已永久学会的。
+    private static List<ResourceLocation> collectMemoryOfBonebrandCandidates(Player player) {
+        SoulSkillStorage storage = SoulSkillStorage.of(player);
+        Set<ResourceLocation> candidates = new LinkedHashSet<>();
+        for (ItemStack stack : player.getInventory().items) {
+            collectGrantedSkills(stack, storage, candidates);
+        }
+        for (ItemStack stack : player.getInventory().offhand) {
+            collectGrantedSkills(stack, storage, candidates);
+        }
+        return new ArrayList<>(candidates);
+    }
+
+    private static void collectGrantedSkills(ItemStack stack, SoulSkillStorage storage, Set<ResourceLocation> out) {
+        if (!(stack.getItem() instanceof SoulWeaponItem weapon)) {
+            return;
+        }
+        for (ResourceLocation id : weapon.getGrantedSoulSkills(stack)) {
+            if (SoulSkillStorage.findSoulSkill(id) != null && !storage.getUnlockedSoulSkills().containsKey(id)) {
+                out.add(id);
+            }
+        }
+    }
+
+    /// 从候选里均匀随机取一个；没有候选时返回 null。
+    @Nullable
+    private static ResourceLocation pickMemoryOfBonebrandSkill(Player player, List<ResourceLocation> candidates) {
+        if (candidates.isEmpty()) {
+            return null;
+        }
+        return candidates.get(player.getRandom().nextInt(candidates.size()));
     }
 
     /// 永久学习成功才消耗技能书，已有记录时不重复学习。
@@ -434,7 +544,7 @@ public final class PlayerUtils {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         if (ticks > 0) {
             // 分流管控：技能冷却延长
-            if (isSoulSkillLearned(player, ModSoulSkills.FLOW_CONTROL.get().getId())) {
+            if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
                 ticks = Math.round(ticks * SoulSkillParameters.FLOW_CONTROL_COOLDOWN_MULTIPLIER);
             }
             SoulSkillStack cooldown = skill.getStack();
@@ -491,11 +601,11 @@ public final class PlayerUtils {
             amount += SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_DAMAGE_BONUS;
         }
         // 星魂联结：灵魂伤害共用一半的魔法伤害加成
-        if (isSoulSkillLearned(player, ModSoulSkills.STAR_LINK.get().getId())) {
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.STAR_LINK.get())) {
             amount *= (float) (1.0 + player.getAttributeValue(LibAttributes.getMagicDamage().value()) * SoulSkillParameters.STAR_LINK_SHARE_RATIO);
         }
         // 分流管控：技能伤害翻倍（冷却同时延长）
-        if (isSoulSkillLearned(player, ModSoulSkills.FLOW_CONTROL.get().getId())) {
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
             amount *= SoulSkillParameters.FLOW_CONTROL_DAMAGE_MULTIPLIER;
         }
         return amount;
@@ -511,7 +621,7 @@ public final class PlayerUtils {
             return 0.0F;
         }
         // 自然法则：概率不消耗灵魂
-        if (amount > 0.0F && isSoulSkillLearned(player, ModSoulSkills.LAW_OF_NATURE.get().getId()) && player.getRandom().nextFloat() < SoulSkillParameters.LAW_OF_NATURE_FREE_CHANCE) {
+        if (amount > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.LAW_OF_NATURE.get()) && player.getRandom().nextFloat() < SoulSkillParameters.LAW_OF_NATURE_FREE_CHANCE) {
             return 0.0F;
         }
         // 创造模式：不扣灵魂、不结算生命代偿
@@ -623,7 +733,7 @@ public final class PlayerUtils {
     /// 生命代偿使用独立伤害来源，由伤害标签与 PortLib 事件结算。
     private static void applySoulOverdraft(ServerPlayer player, float healthCost) {
         // 诅咒抵抗：生命代偿伤害减免
-        if (healthCost > 0.0F && isSoulSkillLearned(player, ModSoulSkills.CURSE_RESISTANCE.get().getId())) {
+        if (healthCost > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.CURSE_RESISTANCE.get())) {
             healthCost *= 1.0F - SoulSkillParameters.CURSE_RESISTANCE_REDUCTION;
         }
         if (healthCost <= 0.0F || !player.isAlive()) {
@@ -640,7 +750,7 @@ public final class PlayerUtils {
         }
         applySoulOverdraft(player, healthCost);
         // 术式轮转：用一次技能后自动切到下一个可主动释放的技能
-        if (isSoulSkillLearned(player, ModSoulSkills.SPELL_ROTATION.get().getId())) {
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
         return true;
@@ -652,15 +762,29 @@ public final class PlayerUtils {
         if (player.hasEffect(ModEffects.SOUL_DRAIN_LOCK.get())) {
             return false;
         }
-        if (!Confluence.SOUL_SKILLS || !isSoulMode(player) || (!isHoldingSoulWeapon(player) && !TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND))) {
+        if (!Confluence.SOUL_SKILLS || !isSoulMode(player)) {
             return false;
         }
         boolean availabilityChanged = refreshSoulSkills(player);
         SoulSkillStack skillStack = getCurrentSkillStack(player);
+        /// 当前槽是空槽或被动时，同一次按键直接跳到下一个可释放的技能，避免按键毫无反应。
+        if (skillStack.isEmpty() || skillStack.getSoulSkill().isPassive()) {
+            int next = findNextCastableSoulSkillIndex(player);
+            if (next < 0) {
+                return rejectSoulSkillUse(player, availabilityChanged);
+            }
+            setCurrentSoulSkillIndex(player, next);
+            SoulSkillIndexSyncPacketS2C.sendToClient(player);
+            skillStack = getSkillStack(player, next);
+        }
         if (skillStack.isEmpty()) {
             return rejectSoulSkillUse(player, availabilityChanged);
         }
         SoulSkill skill = skillStack.getSoulSkill();
+        /// 不持武器时只能放刻骨的记忆当前放行的那一个技能。
+        if (!isHoldingSoulWeapon(player) && !isMemoryOfBonebrandSkill(player, skill)) {
+            return rejectSoulSkillUse(player, availabilityChanged);
+        }
         if (!isSoulSkillAvailable(player, skill.getId()) || getSoulSkillCooldown(player, skill.getId()) > 0 || !skill.canUse(player, skillStack)) {
             return rejectSoulSkillUse(player, availabilityChanged);
         }
@@ -675,8 +799,10 @@ public final class PlayerUtils {
         skill.use(player, skillStack);
         SoulSkillUsePacketS2C.sendToClient(player, castStack);
         applySoulOverdraft(player, healthCost);
+        /// 刻骨的记忆：用掉一次技能后重掷它放行的那个技能。
+        rerollMemoryOfBonebrandSkill(player);
         // 术式轮转：用一次技能后自动切到下一个可主动释放的技能
-        if (isSoulSkillLearned(player, ModSoulSkills.SPELL_ROTATION.get().getId())) {
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
         return true;
@@ -717,7 +843,7 @@ public final class PlayerUtils {
         artifact.useArtifact(player, stack);
         applySoulOverdraft(player, healthCost);
         // 术式轮转：用一次技能后自动切到下一个可主动释放的技能
-        if (isSoulSkillLearned(player, ModSoulSkills.SPELL_ROTATION.get().getId())) {
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
         return true;
@@ -1407,6 +1533,30 @@ public final class PlayerUtils {
         player.addEffect(new MobEffectInstance(ModEffects.GO_OVER.get(), SoulSkillParameters.SOUL_BOOK_REVIEW_DURATION_TICKS, 0, false, true, true));
     }
 
+    /// 从当前槽向后（含回绕）找第一个「非空、非被动、当前可用且未冷却」的槽位；找不到返回 -1。
+    private static int findNextCastableSoulSkillIndex(ServerPlayer player) {
+        List<SoulSkillStack> equipped = getEquippedSoulSkills(player);
+        int size = equipped.size();
+        if (size <= 0) {
+            return -1;
+        }
+        int current = getCurrentSoulSkillIndex(player);
+        for (int step = 1; step <= size; step++) {
+            int index = (current + step) % size;
+            SoulSkillStack candidate = equipped.get(index);
+            if (candidate.isEmpty() || candidate.getSoulSkill().isPassive()) {
+                continue;
+            }
+            ResourceLocation id = candidate.getSoulSkill().getId();
+            /// 冷却中的技能不跳过：只按“空槽 / 被动 / 当前不可用”筛选。
+            if (!isSoulSkillAvailable(player, id)) {
+                continue;
+            }
+            return index;
+        }
+        return -1;
+    }
+
     private static void rotateToNextSkill(ServerPlayer player) {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         List<SoulSkillStack> equipped = storage.getEquippedSoulSkills();
@@ -1426,6 +1576,17 @@ public final class PlayerUtils {
         }
     }
 
+    /// 是否正挂着任意「附魂」类增益（BUFF 类技能），供附魂激荡判断触发时机。
+    private static boolean hasAnySoulBuffActive(Player player) {
+        for (Supplier<SoulSkill> supplier : ModSoulSkills.getAllSkills()) {
+            SoulSkill skill = supplier.get();
+            if (skill.isBuff() && skill.isBuffActive(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void tickSoulSkillStates(ServerPlayer player, long gameTime) {
         if (!Confluence.SOUL_SKILLS) {
             return;
@@ -1434,10 +1595,16 @@ public final class PlayerUtils {
         if (player.hasEffect(ModEffects.STAR_CALL.get()) && gameTime % SoulSkillParameters.STAR_CALL_INTERVAL_TICKS == 0) {
             tickStarCall(player, storage);
         }
-        if (isSoulSkillLearned(player, ModSoulSkills.SOUL_SURGE.get().getId()) && player.hasEffect(ModEffects.ENHANCED_SOUL.get())
-                && gameTime % (SoulSkillParameters.ACTIVE_COOLDOWN_TICKS * 3) == 0) {
+        // 附魂激荡：只要身上挂着任意附魂类增益，就定时自动释放一次灵魂激荡
+        if (gameTime % (SoulSkillParameters.ACTIVE_COOLDOWN_TICKS * 3) == 0
+                && isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_SURGE.get())
+                && hasAnySoulBuffActive(player)) {
             float damage = getSoulSkillDamage(player, ModSoulSkills.SPIRIT_SURGE.get().getStack());
             player.level().addFreshEntity(new SpiritSurgeEntity(player, damage));
+        }
+        // 灵魂枪手：增益期间按间隔把灵魂转成子弹
+        if (player.hasEffect(ModEffects.SOUL_GUNNER.get()) && gameTime % SoulSkillParameters.SOUL_GUNNER_INTERVAL_TICKS == 0) {
+            SoulGunnerSkill.fireBurst(player);
         }
         boolean draining = player.hasEffect(ModEffects.SOUL_DRAIN.get());
         if (storage.isSoulDrainActive() && !draining) {

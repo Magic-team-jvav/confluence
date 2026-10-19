@@ -12,7 +12,7 @@ import org.confluence.mod.util.PlayerUtils;
 public class SurgeBlastSkill extends SoulSkill {
     public SurgeBlastSkill(ResourceLocation icon, ResourceLocation id) {
         super(icon, id, SoulSkillParameters.SURGE_BLAST_DAMAGE, Kind.ACTIVE,
-                SoulSkillParameters.ACTIVE_SOUL_COST, SoulSkillParameters.ACTIVE_COOLDOWN_TICKS);
+                SoulSkillParameters.SURGE_BLAST_SOUL_COST, SoulSkillParameters.ACTIVE_COOLDOWN_TICKS);
     }
 
     @Override

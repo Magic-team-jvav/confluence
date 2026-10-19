@@ -1024,6 +1024,105 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(writer, AccessoryItems.BAND_OF_SOUL.toStack(), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
         shapeless(writer, AccessoryItems.BAND_OF_STARPOWER.toStack(), Ingredient.of(AccessoryItems.BAND_OF_SOUL));
 
+        // 灵魂短弓 / 灵魂弓：堕魂星核 + 铁短弓/铅短弓、铁弓/铅弓
+        shaped(writer, "", "_from_iron_or_lead_short_bow", PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(SoulItems.FALLEN_SOUL_CORE),
+                'b', Ingredient.of(BowItems.IRON_SHORT_BOW, BowItems.LEAD_SHORT_BOW)
+        ), List.of(
+                "a",
+                "b"
+        )), BowItems.SOUL_SHORT_BOW.toStack());
+        shaped(writer, "", "_from_iron_or_lead_bow", PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(SoulItems.FALLEN_SOUL_CORE),
+                'b', Ingredient.of(BowItems.IRON_BOW, BowItems.LEAD_BOW)
+        ), List.of(
+                "a",
+                "b"
+        )), BowItems.SOUL_BOW.toStack());
+
+        // 灵魂头套 / 灵魂长袍：皮革帽子、长袍 + 魂瓶
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.LEATHER_HELMET),
+                'b', Ingredient.of(FunctionalBlocks.SOUL_BOTTLE)
+        ), List.of(
+                "bbb",
+                "bab"
+        )), ArmorItems.SOUL_HOOD.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'b', Ingredient.of(FunctionalBlocks.SOUL_BOTTLE),
+                'c', Ingredient.of(VanityArmorItems.ROBE)
+        ), List.of(
+                "bcb"
+        )), ArmorItems.SOUL_ROBE.toStack());
+
+        // 隐匿者套装：黑橡木原木 + 紫水晶碎片 + 绿宝石
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD),
+                'c', Ingredient.of(Items.EMERALD)
+        ), List.of(
+                "aba",
+                "c c"
+        )), ArmorItems.HERMIT_HELMET.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD),
+                'c', Ingredient.of(Items.EMERALD)
+        ), List.of(
+                "a a",
+                "aba",
+                "cac"
+        )), ArmorItems.HERMIT_CHESTPLATE.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD)
+        ), List.of(
+                "aaa",
+                "b b",
+                "a a"
+        )), ArmorItems.HERMIT_LEGGINGS.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.DARK_OAK_LOG),
+                'b', Ingredient.of(Items.AMETHYST_SHARD)
+        ), List.of(
+                "b b",
+                "a a"
+        )), ArmorItems.HERMIT_BOOTS.toStack());
+
+        // 蓝隐匿者套装：发光蘑菇 + 紫水晶碎片 + 绿宝石
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD),
+                'c', Ingredient.of(Items.EMERALD)
+        ), List.of(
+                "aba",
+                "c c"
+        )), ArmorItems.BLUE_HERMIT_HELMET.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD),
+                'c', Ingredient.of(Items.EMERALD)
+        ), List.of(
+                "a a",
+                "aba",
+                "cac"
+        )), ArmorItems.BLUE_HERMIT_CHESTPLATE.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD)
+        ), List.of(
+                "aaa",
+                "b b",
+                "a a"
+        )), ArmorItems.BLUE_HERMIT_LEGGINGS.toStack());
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
+                'b', Ingredient.of(Items.AMETHYST_SHARD)
+        ), List.of(
+                "b b",
+                "a a"
+        )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
+
         registerTemporaryRecipes(writer);
 
         writer.accept(new UnitFinishedRecipe(BoomBunnyRecipe.getInstance()));

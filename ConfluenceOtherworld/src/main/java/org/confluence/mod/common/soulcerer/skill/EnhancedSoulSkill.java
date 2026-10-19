@@ -8,9 +8,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModEffects;
 
+import java.util.List;
+
 public class EnhancedSoulSkill extends SoulSkill {
     public EnhancedSoulSkill(ResourceLocation icon, ResourceLocation id) {
-        super(icon, id, 0.0F, SoulSkillParameters.ACTIVE_SOUL_COST, SoulSkillParameters.ACTIVE_COOLDOWN_TICKS);
+        super(icon, id, 0.0F, Kind.BUFF, SoulSkillParameters.ENHANCED_SOUL_SOUL_COST, SoulSkillParameters.SOUL_BUFF_COOLDOWN_TICKS);
     }
 
     /// 服务端添加灵魂伤害增益，客户端只生成施法粒子。
@@ -23,5 +25,15 @@ public class EnhancedSoulSkill extends SoulSkill {
         if (level.isClientSide) {
             level.addParticle(ParticleTypes.SOUL, player.getX(), player.getEyeY(), player.getZ(), 0, 0, 0);
         }
+    }
+
+    @Override
+    public List<BuffDuration> getBuffDurations(SoulSkillStack skillStack) {
+        return List.of(new BuffDuration(ModEffects.ENHANCED_SOUL.get().getDisplayName(), SoulSkillParameters.ENHANCED_SOUL_DURATION_TICKS));
+    }
+
+    @Override
+    public boolean isBuffActive(Player player) {
+        return player.hasEffect(ModEffects.ENHANCED_SOUL.get());
     }
 }

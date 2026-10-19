@@ -37,6 +37,8 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     private static final String SKILL_COOLDOWNS_TAG = "skillCooldowns";
     private static final String TEMPORARY_SKILLS_TAG = "temporarySkills";
     private static final String AVAILABLE_SKILLS_TAG = "availableSkills";
+    /// 刻骨的记忆当前放行的技能。
+    private static final String MEMORY_OF_BONEBRAND_TAG = "memoryOfBonebrandSkill";
 
     private int equippedSkillMaxNumber = DEFAULT_EQUIPPED_SOUL_SKILL_COUNT;
     private int currentIndex = 0;
@@ -47,6 +49,8 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     private final Map<ResourceLocation, SoulSkillStack> skillCooldowns = new HashMap<>();
     private final Set<ResourceLocation> temporarySkills = new HashSet<>();
     private final Set<ResourceLocation> availableSkills = new HashSet<>();
+    /// 刻骨的记忆：一次只放行一个“只由武器临时提供”的技能，使用技能后重掷。
+    private @Nullable ResourceLocation memoryOfBonebrandSkill;
 
     public SoulSkillStorage() {
         for (int i = 0; i < equippedSkillMaxNumber; i++) {
@@ -65,6 +69,9 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt(EQUIPPED_SKILL_MAX_NUMBER_TAG, equippedSkillMaxNumber);
         nbt.put(LEARNED_SOUL_BOOKS_TAG, serializeSkillIds(learnedSoulBooks));
+        if (memoryOfBonebrandSkill != null) {
+            nbt.putString(MEMORY_OF_BONEBRAND_TAG, memoryOfBonebrandSkill.toString());
+        }
         nbt.putInt(CURRENT_INDEX_TAG, currentIndex);
         ListTag equipped = new ListTag();
         for (SoulSkillStack stack : equippedSkills) {
@@ -99,6 +106,8 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         deserializeSkillIds(nbt.getList(LEARNED_SOUL_BOOKS_TAG, Tag.TAG_STRING), learnedSoulBooks);
+        memoryOfBonebrandSkill = nbt.contains(MEMORY_OF_BONEBRAND_TAG, Tag.TAG_STRING)
+                ? ResourceLocation.tryParse(nbt.getString(MEMORY_OF_BONEBRAND_TAG)) : null;
         this.equippedSkillMaxNumber = nbt.contains(EQUIPPED_SKILL_MAX_NUMBER_TAG, Tag.TAG_INT)
                 ? nbt.getInt(EQUIPPED_SKILL_MAX_NUMBER_TAG) : DEFAULT_EQUIPPED_SOUL_SKILL_COUNT;
         this.currentIndex = nbt.getInt(CURRENT_INDEX_TAG);
@@ -207,6 +216,17 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     public boolean learnSoulBook(ResourceLocation bookId) {
         return learnedSoulBooks.add(bookId);
     }
+
+    /// 刻骨的记忆当前放行的技能 ID；null 表示没有（未佩戴饰品或没有候选）。
+    @Nullable
+    public ResourceLocation getMemoryOfBonebrandSkill() {
+        return memoryOfBonebrandSkill;
+    }
+
+    public void setMemoryOfBonebrandSkill(@Nullable ResourceLocation skillId) {
+        this.memoryOfBonebrandSkill = skillId;
+    }
+
     public int getEquippedSoulSkillMaxNumber() {
         return equippedSkillMaxNumber;
     }

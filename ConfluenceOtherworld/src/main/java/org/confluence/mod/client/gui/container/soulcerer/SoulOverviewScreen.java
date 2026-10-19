@@ -65,6 +65,16 @@ public class SoulOverviewScreen extends Screen {
     private Float targetScrollX, targetScrollY;
     private double minScrollX, maxScrollX, minScrollY, maxScrollY;
 
+    /* 缩放：以屏幕中心为原点，节点位置与绘制尺寸同时按 zoom 缩放 */
+    private static final double MIN_ZOOM = 0.5;
+    private static final double MAX_ZOOM = 2.0;
+    /// 滚轮每一格的缩放倍率。
+    private static final double ZOOM_STEP = 1.1;
+    /// 技能节点连线在 1.0× 下的芯线/辉光宽度，随缩放等比放大。
+    private static final float CONNECTION_THICKNESS = 2.0F;
+    private static final float CONNECTION_LIGHT_THICKNESS = 5.0F;
+    private double zoom = 1.0;
+
     /* 拖拽 */
     private boolean isDragging;
     private double dragStartMouseX, dragStartMouseY;
@@ -259,6 +269,10 @@ public class SoulOverviewScreen extends Screen {
         addNode(OverviewNode.Builder.of(ModSoulSkills.LIFE_RETURN)
                 .pos(-240, 120)
                 .connections(ModSoulSkills.SPELL_ROTATION));
+        // 天穹倒转
+        addNode(OverviewNode.Builder.of(ModSoulSkills.FIRMAMENT_REVERSED)
+                .pos(-120, -80)
+                .connections(ModSoulSkills.STAR_CALL));
     }
 
     /// 构建节点并登记其标识。
@@ -362,6 +376,9 @@ public class SoulOverviewScreen extends Screen {
     }
 
     /// 根据节点范围计算视口滚动边界。
+    ///
+    /// 节点屏幕坐标是 `中心 + (orig + scroll) * zoom`，所以同一段滚动量在放大后对应的
+    /// 屏幕位移更大：边界按 1/zoom 收缩，保证任何缩放下都能把内容拖到边距内。
     private void calcScrollBounds() {
         if (nodes.isEmpty()) {
             minScrollX = maxScrollX = minScrollY = maxScrollY = 0;
@@ -369,16 +386,19 @@ public class SoulOverviewScreen extends Screen {
         }
         double marginX = width / 3.0;
         double marginY = height / 3.0;
+        double centerX = width / 2.0;
+        double centerY = height / 2.0;
 
+        // 节点范围，orig 空间（不含 scroll 与 zoom）
         double minLeft = Double.MAX_VALUE;
         double maxRight = -Double.MAX_VALUE;
         double minTop = Double.MAX_VALUE;
         double maxBottom = -Double.MAX_VALUE;
 
         for (OverviewNode node : nodes) {
-            double left = node.getOrigX() + width / 2.0;
+            double left = node.getOrigX();
             double right = left + SoulSkillBox.BOX_SIZE;
-            double top = node.getOrigY() + height / 2.0;
+            double top = node.getOrigY();
             double bottom = top + SoulSkillBox.BOX_SIZE;
 
             if (left < minLeft) minLeft = left;
@@ -387,10 +407,10 @@ public class SoulOverviewScreen extends Screen {
             if (bottom > maxBottom) maxBottom = bottom;
         }
 
-        minScrollX = width - marginX - maxRight;
-        maxScrollX = marginX - minLeft;
-        minScrollY = height - marginY - maxBottom;
-        maxScrollY = marginY - minTop;
+        minScrollX = (width - marginX - centerX) / zoom - maxRight;
+        maxScrollX = (marginX - centerX) / zoom - minLeft;
+        minScrollY = (height - marginY - centerY) / zoom - maxBottom;
+        maxScrollY = (marginY - centerY) / zoom - minTop;
 
         if (minScrollX > maxScrollX) {
             double center = (minScrollX + maxScrollX) / 2.0;
@@ -408,12 +428,15 @@ public class SoulOverviewScreen extends Screen {
         scrollY = Mth.clamp(scrollY, minScrollY, maxScrollY);
     }
 
-    /// 根据视口偏移定位所有技能节点。
+    /// 根据视口偏移与缩放定位所有技能节点。
     private void positionAllNodes() {
         int cx = width / 2;
         int cy = height / 2;
+        float scale = (float) zoom;
         for (OverviewNode node : nodes) {
-            node.setPosition((int) (node.getOrigX() + scrollX + cx), (int) (node.getOrigY() + scrollY + cy));
+            node.setUiScale(scale);
+            node.setPosition((int) Math.round(cx + (node.getOrigX() + scrollX) * zoom),
+                    (int) Math.round(cy + (node.getOrigY() + scrollY) * zoom));
         }
     }
 
@@ -438,6 +461,41 @@ public class SoulOverviewScreen extends Screen {
     public void navigateTo(OverviewNavButton.Target target) {
         targetScrollX = (float) target.scrollX();
         targetScrollY = (float) target.scrollY();
+    }
+
+    /// 当前缩放倍率。
+    public double getZoom() {return zoom;}
+
+    /// 以鼠标位置为锚点缩放：缩放前后，鼠标下的技能树位置保持不动。
+    ///
+    /// 节点屏幕坐标 `m = c + (o + scroll) * zoom`，令锚点处的 `o` 不变即可解出偏移补偿：
+    /// `scroll += (m - c) * (1 / newZoom - 1 / oldZoom)`。
+    public void setZoom(double targetZoom, double anchorX, double anchorY) {
+        double newZoom = Mth.clamp(targetZoom, MIN_ZOOM, MAX_ZOOM);
+        if (Math.abs(newZoom - zoom) < 1.0E-4) {
+            return;
+        }
+        double cx = width / 2.0;
+        double cy = height / 2.0;
+        double compensation = 1.0 / newZoom - 1.0 / zoom;
+        scrollX += (anchorX - cx) * compensation;
+        scrollY += (anchorY - cy) * compensation;
+        zoom = newZoom;
+        targetScrollX = null;
+        targetScrollY = null;
+        calcScrollBounds();
+        clampScroll();
+        positionAllNodes();
+    }
+
+    /// 滚轮缩放界面；1.20.1 的鼠标滚轮只有竖直分量。
+    @Override
+    public boolean mouseScrolled(double mouseX, double mouseY, double scrollDeltaY) {
+        if (scrollDeltaY == 0.0) {
+            return super.mouseScrolled(mouseX, mouseY, scrollDeltaY);
+        }
+        setZoom(scrollDeltaY > 0.0 ? zoom * ZOOM_STEP : zoom / ZOOM_STEP, mouseX, mouseY);
+        return true;
     }
 
     /// 平滑移动视口并更新节点位置。
@@ -1193,17 +1251,22 @@ public class SoulOverviewScreen extends Screen {
     }
 
     /// 绘制可见节点之间的连线并避免重复。
+    ///
+    /// 端点直接取两端节点的**屏幕包围盒中心**（`OverviewNode#getScreenCenter`），
+    /// 不再自己按 `orig + scroll` 推算：节点位置早已由 `positionAllNodes` 摆好，
+    /// 自行推算会与控件实际位置差半个框，缩放后误差还会被放大。
     private void renderConnections(GuiGraphics guiGraphics, float partialTick) {
         RenderSystem.enableBlend();
         Set<String> drawn = new HashSet<>();
 
-        float cx = width / 2f;
-        float cy = height / 2f;
+        /// 线宽跟着缩放走，否则放大后节点变粗、连线还是原来那么细。
+        float thickness = CONNECTION_THICKNESS * (float) zoom;
+        float lightThickness = CONNECTION_LIGHT_THICKNESS * (float) zoom;
 
         for (OverviewNode node : nodes) {
-            Vec2 src = node.getCenterPos();
-            float sx = src.x + (float) scrollX + cx;
-            float sy = src.y + (float) scrollY + cy;
+            Vec2 src = node.getScreenCenter();
+            float sx = src.x;
+            float sy = src.y;
 
             for (ResourceLocation connId : node.getConnections()) {
                 OverviewNode target = nodeById.get(connId);
@@ -1212,9 +1275,9 @@ public class SoulOverviewScreen extends Screen {
                 String key = node.getNodeId().toString().compareTo(connId.toString()) < 0 ? node.getNodeId() + ">" + connId : connId + ">" + node.getNodeId();
                 if (!drawn.add(key)) continue;
 
-                Vec2 dst = target.getCenterPos();
-                float tx = dst.x + (float) scrollX + cx;
-                float ty = dst.y + (float) scrollY + cy;
+                Vec2 dst = target.getScreenCenter();
+                float tx = dst.x;
+                float ty = dst.y;
 
                 float minX = Math.min(sx, tx);
                 float maxX = Math.max(sx, tx);
@@ -1224,7 +1287,7 @@ public class SoulOverviewScreen extends Screen {
                 if (maxX < 0 || minX > this.width || maxY < 0 || minY > this.height) {
                     continue;
                 }
-                drawGradientLine(guiGraphics, sx, sy, tx, ty, 2, 5, 0xFF66FFE3, 0xFF28698d, 0x0028698d);
+                drawGradientLine(guiGraphics, sx, sy, tx, ty, thickness, lightThickness, 0xFF66FFE3, 0xFF28698d, 0x0028698d);
             }
         }
         RenderSystem.disableBlend();
@@ -1267,8 +1330,9 @@ public class SoulOverviewScreen extends Screen {
             if (contrastSlider.isMouseOver(mouseX, mouseY)) return contrastSlider.mouseDragged(mouseX, mouseY, button, dx, dy);
         }
         if (isDragging && button == 0) {
-            scrollX = dragStartScrollX + (mouseX - dragStartMouseX);
-            scrollY = dragStartScrollY + (mouseY - dragStartMouseY);
+            /// scroll 是节点空间量，屏幕位移还要乘 zoom；这里除掉 zoom 让节点始终贴着鼠标走。
+            scrollX = dragStartScrollX + (mouseX - dragStartMouseX) / zoom;
+            scrollY = dragStartScrollY + (mouseY - dragStartMouseY) / zoom;
             clampScroll();
             positionAllNodes();
             return true;
@@ -1330,9 +1394,9 @@ public class SoulOverviewScreen extends Screen {
 
     // ============ 通用工具 ============
 
-    /// 将快捷栏定位到界面底部中央。
+    /// 将快捷栏定位到界面底部中央（略微下移，给技能树留出更多竖向空间）。
     protected void updateHotbarPos() {
-        hotbar.setPosition(width / 2 - hotbar.getWidth() / 2, (int) (height * 0.82f));
+        hotbar.setPosition(width / 2 - hotbar.getWidth() / 2, (int) (height * 0.87f));
     }
 
     /// 播放总览界面的按钮点击音效。

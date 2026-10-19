@@ -47,6 +47,10 @@ public final class ClientUtils {
     public static final String DEATH_BONE_NAME = "_death";
     /// 以这个后缀命名的bone需要爆整个bone
     public static final String ENTIRE_BONE_SUFFIX = "_entire";
+    /// 魂师资源（灵魂条、灵魂不足以支付时的生命条）统一使用的淡蓝色 #ABFFFE。
+    public static final float SOUL_TINT_RED = 0xAB / 255.0F;
+    public static final float SOUL_TINT_GREEN = 1.0F;
+    public static final float SOUL_TINT_BLUE = 0xFE / 255.0F;
 
     public static void clearCache() {
         failed.clear();

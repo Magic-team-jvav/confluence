@@ -68,6 +68,10 @@ public class BowItems {
     // 开发者弓
     public static final PortDeferredItem<DeveloperBow> DEVELOPER_BOW = registerItem("developer_bow", "开发者弓", DeveloperBow::new);
 
+    // 魂师弓：击杀额外收魂，灵魂高于阈值时箭矢增伤（见 LivingEntityEvents）
+    public static final PortDeferredItem<SoulShortBowItem> SOUL_SHORT_BOW = registerItem("soul_short_bow", "灵魂短弓", () -> new SoulShortBowItem(5.5F, 1024));
+    public static final PortDeferredItem<SoulBowItem> SOUL_BOW = registerItem("soul_bow", "灵魂弓", () -> new SoulBowItem(4.0F, 1024));
+
     public static PortDeferredItem<BaseTerraBowItem> register(String name, Supplier<BaseTerraBowItem> supplier) {
         return ITEMS.register(name, supplier);
     }

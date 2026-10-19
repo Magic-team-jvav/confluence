@@ -2041,6 +2041,7 @@ public final class ValueSubProvider {
 
                 .add(FunctionalBlocks.HEART_LANTERN, 20)
                 .add(FunctionalBlocks.STAR_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_BOTTLE, 20)
                 .add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE, 20)
                 .add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE, 20)
                 .add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE, 20)

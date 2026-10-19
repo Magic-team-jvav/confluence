@@ -11,6 +11,7 @@ import org.confluence.mod.common.soulcerer.skill.SoulProjectileSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulBuffSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSurgeSkill;
 import org.confluence.mod.common.soulcerer.skill.SurgeBlastSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulMarkSkill;
 import org.confluence.mod.common.soulcerer.skill.PassiveSoulSkill;
 import org.confluence.mod.common.soulcerer.skill.KarmaFlameSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulGunnerSkill;
@@ -50,10 +51,7 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> ENHANCED_LURE = register("enhanced_lure", rl -> new SoulProjectileSkill(rl, rl, SoulProjectileSkill.builder(SoulLureProjectile.PARTICLE)
             .damage(SoulSkillParameters.ENHANCED_LURE_DAMAGE)
             .cost(SoulSkillParameters.ENHANCED_LURE_SOUL_COST, SoulSkillParameters.ENHANCED_LURE_COOLDOWN_TICKS)), SkillCategory.STAR_LURE);
-    public static final Supplier<SoulSkill> SOUL_MARK = register("soul_mark", rl -> new SoulProjectileSkill(rl, rl, SoulProjectileSkill.builder(SoulLureProjectile.PARTICLE)
-            .damage(SoulSkillParameters.ACTIVE_DAMAGE)
-            .cost(SoulSkillParameters.SOUL_MARK_SOUL_COST, SoulSkillParameters.SOUL_MARK_COOLDOWN_TICKS)
-            .selfEffect(() -> ModEffects.ENHANCED_SOUL.get(), SoulSkillParameters.ENHANCED_SOUL_DURATION_TICKS)), SkillCategory.SOUL);
+    public static final Supplier<SoulSkill> SOUL_MARK = register("soul_mark", rl -> new SoulMarkSkill(rl, rl), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> LURE_SURGE = register("lure_surge", rl -> new SoulProjectileSkill(rl, rl, SoulProjectileSkill.builder(SoulLureProjectile.PARTICLE)
             .damage(SoulSkillParameters.LURE_SURGE_DAMAGE)
             .cost(SoulSkillParameters.LURE_SURGE_SOUL_COST, SoulSkillParameters.LURE_SURGE_COOLDOWN_TICKS)
@@ -88,7 +86,7 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> ENHANCED_SOUL = register("enhanced_soul", rl -> new EnhancedSoulSkill(rl, rl), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> BLOOD_RAGE = register("blood_rage", rl -> new SoulBuffSkill(rl, rl,
             SoulSkillParameters.BLOOD_RAGE_SOUL_COST, SoulSkillParameters.BLOOD_RAGE_COOLDOWN_TICKS,
-            () -> ModEffects.BLOOD_RAGE.get(), SoulSkillParameters.BLOOD_RAGE_DURATION_TICKS, SoulSkillParameters.BLOOD_RAGE_HEALTH_RATIO), SkillCategory.BLOOD_NATURE);
+            () -> ModEffects.BLOOD_RAGE.get(), SoulSkillParameters.BLOOD_RAGE_DURATION_TICKS, SoulSkillParameters.BLOOD_RAGE_HEALTH_COST), SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> SOUL_PLUNDER = register("soul_plunder", rl -> new SoulBuffSkill(rl, rl,
             SoulSkillParameters.SOUL_PLUNDER_SOUL_COST, SoulSkillParameters.SOUL_PLUNDER_COOLDOWN_TICKS,
             () -> ModEffects.SOUL_PLUNDER.get(), SoulSkillParameters.SOUL_PLUNDER_DURATION_TICKS, 0.0F), SkillCategory.SOUL);

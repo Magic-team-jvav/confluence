@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.util.PlayerUtils;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /// 血液沸腾：消耗当前灵魂的固定比例，换取“下一次近战攻击”的巨额伤害加成。
@@ -35,5 +36,15 @@ public class BoilingBloodSkill extends SoulSkill {
             return;
         }
         serverPlayer.addEffect(new MobEffectInstance(effect.get(), SoulSkillParameters.BOILING_BLOOD_DURATION_TICKS, 0, false, true, true));
+    }
+
+    @Override
+    public List<BuffDuration> getBuffDurations(SoulSkillStack skillStack) {
+        return List.of(buffDuration(effect, SoulSkillParameters.BOILING_BLOOD_DURATION_TICKS));
+    }
+
+    @Override
+    public boolean isBuffActive(Player player) {
+        return player.hasEffect(effect.get());
     }
 }

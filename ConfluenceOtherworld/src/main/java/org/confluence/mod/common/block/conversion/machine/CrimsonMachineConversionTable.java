@@ -1,0 +1,143 @@
+package org.confluence.mod.common.block.conversion.machine;
+
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraftforge.common.Tags;
+import org.confluence.mod.common.block.conversion.ConversionTable;
+import org.confluence.mod.common.block.natural.CattailBlock;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
+import org.jetbrains.annotations.Nullable;
+
+public class CrimsonMachineConversionTable extends ConversionTable {
+    @Override
+    protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
+        if (source.is(NatureBlocks.JUNGLE_THORN.get())) {
+            return NatureBlocks.CRIMSON_THORN.get();
+        }
+        if (source.is(NatureBlocks.CORRUPTION_THORN.get()) || source.is(NatureBlocks.PLANTERA_THORN.get())) {
+            return NatureBlocks.CRIMSON_THORN.get();
+        }
+        if (source.is(Blocks.TALL_GRASS)) {
+            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER
+                    ? NatureBlocks.CRIMSON_GRASS.get() : Blocks.AIR;
+        }
+        if (source.getBlock() instanceof CattailBlock && !source.is(NatureBlocks.CRIMSON_CATTAIL_BLOCK.get())) {
+            return NatureBlocks.CRIMSON_CATTAIL_BLOCK.get();
+        }
+        if (source.is(BlockTags.LOGS)) {
+            return NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get();
+        }
+        if (source.is(BlockTags.LEAVES)) {
+            return NatureBlocks.SHADOW_LOG_BLOCKS.LEAVES.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_DIRT)) {
+            return Blocks.DIRT;
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_GRASS_BLOCK)) {
+            return NatureBlocks.CRIMSON_GRASS_BLOCK.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_JUNGLE_GRASS_BLOCK)) {
+            return NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_SHORT_GRASS)) {
+            return NatureBlocks.CRIMSON_GRASS.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_PACKED_ICE)) {
+            return NatureBlocks.RED_PACKED_ICE.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_ICE)) {
+            return NatureBlocks.RED_ICE.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_SAND)) {
+            return NatureBlocks.CRIMSAND.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE)) {
+            return NatureBlocks.CRIMSANDSTONE.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_HARDENED_SAND_BLOCK)) {
+            return NatureBlocks.HARDENED_CRIMSAND_BLOCK.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_MOIST_SAND_BLOCK)) {
+            return NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get();
+        }
+        if (source.is(ModTags.Blocks.CRIMSON_CONVERSION_CACTUS)) {
+            return NatureBlocks.CRIMSON_CACTUS.get();
+        }
+        if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
+            return NatureBlocks.CRIMSTONE.get();
+        }
+        if (source.is(Tags.Blocks.COBBLESTONE)) {
+            return NatureBlocks.COBBLED_CRIMSTONE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_REDSTONE)) {
+            return OreBlocks.FLESHIFICATION_REDSTONE_ORE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_COAL)) {
+            return OreBlocks.FLESHIFICATION_COAL_ORE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_LAPIS)) {
+            return OreBlocks.FLESHIFICATION_LAPIS_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_RUBY)) {
+            return OreBlocks.FLESHIFICATION_RUBY_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_AMBER)) {
+            return OreBlocks.FLESHIFICATION_AMBER_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_TOPAZ)) {
+            return OreBlocks.FLESHIFICATION_TOPAZ_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_JADE)) {
+            return OreBlocks.FLESHIFICATION_JADE_ORE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_EMERALD)) {
+            return OreBlocks.FLESHIFICATION_EMERALD_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_SAPPHIRE)) {
+            return OreBlocks.FLESHIFICATION_SAPPHIRE_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_AMETHYST)) {
+            return OreBlocks.FLESHIFICATION_AMETHYST_ORE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_DIAMOND)) {
+            return OreBlocks.FLESHIFICATION_DIAMOND_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_TIN)) {
+            return OreBlocks.FLESHIFICATION_TIN_ORE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_COPPER)) {
+            return OreBlocks.FLESHIFICATION_COPPER_ORE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_IRON)) {
+            return OreBlocks.FLESHIFICATION_IRON_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_LEAD)) {
+            return OreBlocks.FLESHIFICATION_LEAD_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_SILVER)) {
+            return OreBlocks.FLESHIFICATION_SILVER_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_TUNGSTEN)) {
+            return OreBlocks.FLESHIFICATION_TUNGSTEN_ORE.get();
+        }
+        if (source.is(Tags.Blocks.ORES_GOLD)) {
+            return OreBlocks.FLESHIFICATION_GOLD_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_PLATINUM)) {
+            return OreBlocks.FLESHIFICATION_PLATINUM_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_DEMONITE)) {
+            return OreBlocks.FLESHIFICATION_DEMONITE_ORE.get();
+        }
+        if (source.is(ModTags.Blocks.ORES_CRIMTANE)) {
+            return OreBlocks.FLESHIFICATION_CRIMTANE_ORE.get();
+        }
+        return null;
+    }
+}

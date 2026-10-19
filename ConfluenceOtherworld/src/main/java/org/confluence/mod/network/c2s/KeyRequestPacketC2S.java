@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.item.potion.EffectPotionItem;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.menu.CrystalBallMenu;
@@ -19,6 +20,7 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
     public static final byte KEY_HEALING = 0;
     public static final byte KEY_MANA = 1;
     public static final byte KEY_CLAIRVOYANCE = 2; // 水晶球给予的灵视
+    public static final byte KEY_QUICK_BUFF = 3;
     public static final ResourceLocation ID = Confluence.asResource("key_request");
     public static final PortStreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = PortByteBufCodecs.BYTE.map(KeyRequestPacketC2S::new, KeyRequestPacketC2S::key);
 
@@ -33,6 +35,8 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
             HealingPotionItem.use(player);
         } else if (key == KEY_MANA) {
             ManaPotionItem.use(player);
+        } else if (key == KEY_QUICK_BUFF) {
+            EffectPotionItem.quickBuff(player);
         } else if (key == KEY_CLAIRVOYANCE) {
             /// 客户端只能报告水晶球界面按钮被点击，不能直接授予效果。
             /// 服务端重新验证当前菜单及方块距离，关闭界面、破坏方块或伪造数据包
@@ -54,6 +58,10 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
 
     public static void requestMana() {
         PortPacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_MANA));
+    }
+
+    public static void requestQuickBuff() {
+        PortPacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_QUICK_BUFF));
     }
 
     public static void requestClairvoyance() {

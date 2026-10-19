@@ -12,6 +12,9 @@ public final class KeyRequestHandler {
     private static boolean keyMountDown = false;
 
     public static void handle() {
+        while (ModKeyBindings.QUICK_BUFF.get().consumeClick()) {
+            KeyRequestPacketC2S.requestQuickBuff();
+        }
         if (ModKeyBindings.HEALING.get().isDown()) {
             if (!keyHealingDown) {
                 KeyRequestPacketC2S.requestHealing();

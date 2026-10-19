@@ -13,7 +13,6 @@ import net.minecraftforge.common.BasicItemListing;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import org.confluence.lib.util.range.IntegerRange;
 import org.confluence.mod.StartupConfigs;
-import org.confluence.mod.common.block.functional.terraform.MachineConversionTable;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AnglerQuestLoader;
@@ -102,7 +101,6 @@ public final class GameEvents {
         event.addListener(ChatManager.getLoader());
         event.addListener(new MoodData.Loader());
         event.addListener(NPCTradeList.Loader.getInstance());
-        event.addListener(MachineConversionTable.INSTANCE);
         event.addListener(AnglerQuestLoader.getInstance());
     }
 

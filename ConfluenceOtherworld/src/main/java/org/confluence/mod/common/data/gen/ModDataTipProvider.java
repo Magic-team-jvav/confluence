@@ -700,6 +700,26 @@ public final class ModDataTipProvider implements DataProvider {
 
     private static JsonObject materialDescriptions() {
         JsonObject root = new JsonObject();
+        add(root, MaterialItems.GREEN_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.green_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.green_solution.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, MaterialItems.BLUE_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.blue_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.blue_solution.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, MaterialItems.PURPLE_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.purple_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.purple_solution.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, MaterialItems.DARK_BLUE_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.dark_blue_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, MaterialItems.RED_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.red_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.red_solution.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, MaterialItems.YELLOW_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.yellow_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, MaterialItems.WHITE_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.white_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, MaterialItems.BROWN_SOLUTION.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.brown_solution.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         // 材料的背景描述和固定制作指引。
         add(root, MaterialItems.GEL.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.gel.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));

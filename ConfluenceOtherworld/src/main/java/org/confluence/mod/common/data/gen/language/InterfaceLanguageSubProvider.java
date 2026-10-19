@@ -241,6 +241,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("key.confluence.mana", "Quick Use Mana Potion", "快捷喝药（魔力）");
         language.add("key.confluence.mount", "Toggle Mount", "切换坐骑");
         language.add("key.confluence.mount_descend", "Mount Descend", "坐骑下降");
+        language.add("key.confluence.quick_buff", "Quick Buff", "快捷喝增益药水");
         language.add("key.confluence.shoot", "Shoot", "射击");
         language.add("key.confluence.specular_detail", "Detail observation of visual potions", "视觉药水细节观测");
         language.add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!", "书中的知识赋予了城镇居民力量！");

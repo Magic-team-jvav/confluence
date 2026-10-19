@@ -212,6 +212,7 @@ dependencies {
     implementation jarJar("com.coobird:DataTip-neoforge-1.21.1:${datatip_version}") {
         changing = true
     }
+    implementation jarJar(files('libs/LanguageFixer.jar'))
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 

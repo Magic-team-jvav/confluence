@@ -1,25 +1,35 @@
 package org.confluence.mod.common.block.functional.terraform;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -31,6 +41,7 @@ import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.mod.client.renderer.block.EnvironmentalMachineRenderer;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -42,51 +53,55 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Consumer;
 
-// 手持溶液右键存入，潜行空手右键取出；漏斗使用同一个三槽库存，不允许混装。
+// 玩家和漏斗共用逐槽库存；允许跨槽混装，混装会停机并在尝试启动时引发事故。
 public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVerticalTwoPartBlock implements EntityBlock {
-    private static final VoxelShape BASE_SHAPE = box(0, 0, 0, 16, 16, 16);
+    private static final int SLOT_COUNT = EnvironmentalMachines.SLOT_COUNT;
+    private static final float MODEL_UNITS = 16;
+    private static final float BLOCK_STRENGTH = 3.5F;
+    private static final String[] SLOT_NAMES = {"left", "right", "back"};
+    private static final double MODEL_CENTER = MODEL_UNITS / 2;
+    private static final double HIT_TOLERANCE = 0.001;
+    private static final double INTERACTION_DISTANCE_SQUARED = 64;
+    private static final float SWITCH_VOLUME = 0.5F;
+    private static final float SWITCH_ON_PITCH = 0.6F;
+    private static final float SWITCH_OFF_PITCH = 0.5F;
+    // 爆炸强度与末地水晶一致，污染范围和转换概率可独立调整。
+    public static final int FAILURE_RADIUS = 8;
+    public static final float FAILURE_CONVERSION_CHANCE = 0.80F;
+    public static final float FAILURE_EXPLOSION_POWER = 6.0F;
+    public static final int FAILURE_MIN_SOLUTION_COST = 5;
+    public static final int FAILURE_MAX_SOLUTION_COST = 20;
+    private static final VoxelShape BASE_SHAPE = box(0, 0, 0, MODEL_UNITS, MODEL_UNITS, MODEL_UNITS);
     // 三个插入口固定在机身顶部，装填前后使用同一组交互范围。
-    private static final double[][][] TANK_BOUNDS = {
-            {{-9.5, 13, -2, -5.5, 16, 2}, {5.5, 13, -2, 9.5, 16, 2}, {-2, 13, 5.5, 2, 16, 9.5}},
-            {{-9.5, 13, -2, -5.5, 16, 2}, {5.5, 13, -2, 9.5, 16, 2}, {-2, 13, 5.5, 2, 16, 9.5}}
+    private static final double[][] TANK_BOUNDS = {
+            {-9.5, 13, -2, -5.5, 16, 2}, {5.5, 13, -2, 9.5, 16, 2}, {-2, 13, 5.5, 2, 16, 9.5}
     };
-    private static final VoxelShape[][][] MACHINE_SHAPES = new VoxelShape[4][8][2];
+    private static final VoxelShape[] MACHINE_SHAPES = new VoxelShape[4];
 
     static {
-        // 交互形状只覆盖机身与三个插入口，动画中的悬空罐体不参与碰撞。
+        // 悬空罐体只用于动画；三个插入口保持固定交互区域。
         for (Direction front : Direction.Plane.HORIZONTAL) {
-            for (int mask = 0; mask < 8; mask++) {
-                for (int part = 0; part < 2; part++) {
-                    VoxelShape shape = part == 0 ? BASE_SHAPE : Shapes.empty();
-                    for (int slot = 0; slot < 3; slot++) {
-                        AABB tank = tankBounds(front, slot, (mask & 1 << slot) != 0);
-                        double minY = Math.max(tank.minY, part * 16);
-                        double maxY = Math.min(tank.maxY, (part + 1) * 16);
-                        if (minY < maxY)
-                            shape = Shapes.or(shape, box(tank.minX, minY - part * 16, tank.minZ,
-                                    tank.maxX, maxY - part * 16, tank.maxZ));
-                    }
-                    MACHINE_SHAPES[front.get2DDataValue()][mask][part] = shape;
-                }
+            VoxelShape shape = BASE_SHAPE;
+            for (int slot = 0; slot < SLOT_COUNT; slot++) {
+                AABB tank = tankBounds(front, slot);
+                shape = Shapes.or(shape, box(tank.minX, tank.minY, tank.minZ, tank.maxX, tank.maxY, tank.maxZ));
             }
+            MACHINE_SHAPES[front.get2DDataValue()] = shape;
         }
     }
 
-    private static AABB tankBounds(Direction front, int slot, boolean inserted) {
-        double[] bounds = TANK_BOUNDS[inserted ? 1 : 0][slot];
+    private static AABB tankBounds(Direction front, int slot) {
+        double[] bounds = TANK_BOUNDS[slot];
         Direction right = front.getClockWise();
         double minX = Double.POSITIVE_INFINITY, minZ = Double.POSITIVE_INFINITY;
         double maxX = Double.NEGATIVE_INFINITY, maxZ = Double.NEGATIVE_INFINITY;
         for (int x : new int[]{0, 3}) {
             for (int z : new int[]{2, 5}) {
-                // Geo 模型导出时翻转了 X 轴，交互区域必须使用相同的变换。
-                double px = 8 - bounds[x] * right.getStepX() - bounds[z] * front.getStepX();
-                double pz = 8 - bounds[x] * right.getStepZ() - bounds[z] * front.getStepZ();
+                double px = MODEL_CENTER + bounds[x] * right.getStepX() - bounds[z] * front.getStepX();
+                double pz = MODEL_CENTER + bounds[x] * right.getStepZ() - bounds[z] * front.getStepZ();
                 minX = Math.min(minX, px);
                 maxX = Math.max(maxX, px);
                 minZ = Math.min(minZ, pz);
@@ -96,26 +111,17 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         return new AABB(minX, bounds[1], minZ, maxX, bounds[4], maxZ);
     }
 
-    private static int filledSlots(BlockGetter level, BlockPos pos) {
-        int mask = 0;
-        if (level.getBlockEntity(pos) instanceof BEntity entity) {
-            for (int slot = 0; slot < 3; slot++)
-                if (entity.hasSolutionInSlot(slot)) mask |= 1 << slot;
-        }
-        return mask;
-    }
-
     public final boolean world;
 
     public EnvironmentalMachineBlock(boolean world) {
-        super(Properties.of().strength(3.5F).dynamicShape().noOcclusion().pushReaction(PushReaction.BLOCK));
+        super(Properties.of().strength(BLOCK_STRENGTH).dynamicShape().noOcclusion().pushReaction(PushReaction.BLOCK));
         this.world = world;
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        int part = state.getValue(PART) == StateProperties.VerticalTwoPart.BASE ? 0 : 1;
-        return MACHINE_SHAPES[state.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue()][filledSlots(level, pos)][part];
+        return state.getValue(PART) == StateProperties.VerticalTwoPart.BASE
+                ? MACHINE_SHAPES[state.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue()] : Shapes.empty();
     }
 
     @Override
@@ -126,73 +132,143 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        interact(level, pos, player, stack, slot(state, pos, hit, filledSlots(level, pos)));
+        if (hand == InteractionHand.MAIN_HAND)
+            interact(level, pos, player, stack, slot(state, pos, hit));
         return ItemInteractionResult.SUCCESS;
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-        interact(level, pos, player, ItemStack.EMPTY, slot(state, pos, hit, filledSlots(level, pos)));
+        interact(level, pos, player, ItemStack.EMPTY, slot(state, pos, hit));
         return InteractionResult.SUCCESS;
     }
 
     // 三个插入口位置固定，上下两半都以底座坐标计算。
-    private static int slot(BlockState state, BlockPos pos, BlockHitResult hit, int mask) {
+    private static int slot(BlockState state, BlockPos pos, BlockHitResult hit) {
         BlockPos base = state.getValue(PART) == StateProperties.VerticalTwoPart.BASE ? pos : pos.below();
-        double x = (hit.getLocation().x - base.getX()) * 16;
-        double y = (hit.getLocation().y - base.getY()) * 16;
-        double z = (hit.getLocation().z - base.getZ()) * 16;
+        double x = (hit.getLocation().x - base.getX()) * MODEL_UNITS;
+        double y = (hit.getLocation().y - base.getY()) * MODEL_UNITS;
+        double z = (hit.getLocation().z - base.getZ()) * MODEL_UNITS;
         Direction front = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        for (int slot = 0; slot < 3; slot++) {
-            AABB bounds = tankBounds(front, slot, (mask & 1 << slot) != 0).inflate(0.001);
+        for (int slot = 0; slot < SLOT_COUNT; slot++) {
+            AABB bounds = tankBounds(front, slot).inflate(HIT_TOLERANCE);
             if (bounds.contains(x, y, z)) return slot;
         }
         return -1;
     }
 
-    // 玩家与自动化都由服务端校验种类；预付工作时间未用完时也不能换成另一种溶液。
+    // 每个槽只存放一种溶液；跨槽种类不同则停机，由启动操作处理混合反应。
     private void interact(Level level, BlockPos pos, Player player, ItemStack stack, int slot) {
         if (!(level instanceof ServerLevel server) || !(level.getBlockEntity(pos) instanceof BEntity entity))
             return;
+        // 上半部的命中也统一使用底座库存，避免存入和取出操作落在不同方块实体上。
+        if (!entity.isBase) {
+            if (!(level.getBlockEntity(entity.basePos()) instanceof BEntity base)) return;
+            entity = base;
+        }
+        if (!entity.stillValid(player) || !player.mayBuild()) return;
         if (slot < 0) {
-            if (entity.isBase && stack.isEmpty() && !player.isShiftKeyDown()) {
-                var state = entity.data();
-                // 先结算当前时间，再切换开关，停机不会丢失已付费时长。
-                if (!state.enabled) {
-                    state.power(level.getDayTime());
-                    // 空罐不能开启；已付费且尚未消耗完的溶液仍允许继续使用。
-                    if (state.solution == null || (state.stored() == 0 && state.paidUntil <= level.getDayTime()))
-                        return;
-                } else state.lastTime = level.getDayTime();
-                state.enabled = !state.enabled;
-                entity.setChanged();
-                player.displayClientMessage(Component.translatable(state.enabled
-                        ? "message.confluence.environmental_machine.enabled" : "message.confluence.environmental_machine.disabled"), true);
+            if (stack.isEmpty() && !player.isShiftKeyDown()) {
+                var data = entity.data();
+                if (!data.enabled && data.hasMixedSolutions()) {
+                    failMixedSolutions(server, entity.basePos(), player);
+                    return;
+                }
+                if (data.setEnabled(!data.enabled, level.getDayTime())) {
+                    entity.setChanged();
+                    level.playSound(null, entity.basePos(), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, SWITCH_VOLUME, data.enabled ? SWITCH_ON_PITCH : SWITCH_OFF_PITCH);
+                    player.displayClientMessage(Component.translatable(data.enabled ? "message.confluence.environmental_machine.enabled" : "message.confluence.environmental_machine.disabled"), true);
+                }
             }
             return;
         }
         var data = entity.data();
-        if (data.solution != null && data.stored() == 0 && level.getDayTime() >= data.paidUntil)
-            data.solution = null;
-        if (stack.isEmpty() && player.isShiftKeyDown()) {
+        if (player.isShiftKeyDown()) {
             ItemStack taken = entity.removeItem(slot, data.slots[slot]);
+            if (taken.isEmpty()) return;
             if (!player.addItem(taken)) player.drop(taken, false);
         } else if (!stack.isEmpty()) {
             Solution solution = Solution.of(stack);
-            if (solution == null || (solution.advanced && !world) || (data.solution != null && data.solution != solution)) {
+            if (solution != null && solution.advanced && !world) {
+                player.displayClientMessage(Component.translatable("message.confluence.environmental_machine.requires_terraformer"), true);
+                return;
+            }
+            if (solution == null || (data.slots[slot] > 0 && data.slotSolutions[slot] != solution)) {
                 player.displayClientMessage(Component.translatable("message.confluence.environmental_machine.incompatible"), true);
                 return;
             }
             int amount = Math.min(stack.getCount(), EnvironmentalMachines.CAPACITY - data.slots[slot]);
             if (amount > 0) {
-                data.solution = solution;
+                data.slotSolutions[slot] = solution;
                 data.slots[slot] += amount;
                 if (!player.getAbilities().instabuild) stack.shrink(amount);
                 entity.setChanged();
             }
         }
         player.displayClientMessage(Component.translatable("message.confluence.environmental_machine.stock",
-                data.solution == null ? Component.translatable("message.confluence.environmental_machine.empty") : data.solution.item().getDescription(), data.slots[slot]), true);
+                data.slotSolutions[slot] == null ? Component.translatable("message.confluence.environmental_machine.empty")
+                        : data.slotSolutions[slot].item().getDescription(), data.slots[slot]), true);
+    }
+
+    // 混装事故消耗参与反应的溶液并污染地形，爆炸保留机器的上下两部分。
+    private static void failMixedSolutions(ServerLevel level, BlockPos origin, Player player) {
+        if (!CommonConfigs.ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION.get()) {
+            player.displayClientMessage(Component.translatable("message.confluence.environmental_machine.mixed"), true);
+            return;
+        }
+        if (!(level.getBlockEntity(origin) instanceof BEntity entity)) return;
+        var data = entity.data();
+        EnumSet<Solution> solutions = EnumSet.noneOf(Solution.class);
+        // 已付费但未耗尽的溶液同样参与反应，保持与混装判定一致。
+        if (data.paidUntil > data.lastTime && data.solution != null) solutions.add(data.solution);
+        for (int slot = 0; slot < SLOT_COUNT; slot++) {
+            if (data.slots[slot] > 0 && data.slotSolutions[slot] != null)
+                solutions.add(data.slotSolutions[slot]);
+        }
+        if (solutions.size() < 2) return;
+        List<BlockState> results = solutions.stream().map(Solution::failureBlock).distinct().toList();
+        data.setEnabled(false, level.getDayTime());
+        // 每种溶液独立抽取消耗量，同种溶液跨槽扣除，不足时全部耗尽。
+        for (Solution solution : solutions) {
+            int remaining = level.random.nextInt(FAILURE_MAX_SOLUTION_COST - FAILURE_MIN_SOLUTION_COST + 1) + FAILURE_MIN_SOLUTION_COST;
+            for (int slot = 0; slot < SLOT_COUNT && remaining > 0; slot++) {
+                if (data.slotSolutions[slot] != solution) continue;
+                int consumed = Math.min(remaining, data.slots[slot]);
+                data.slots[slot] -= consumed;
+                remaining -= consumed;
+            }
+        }
+        // 已注入的剩余液体随反应失效，避免事故后仍保留已付费的工作时长。
+        data.paidUntil = Long.MIN_VALUE;
+        data.activeSlot = -1;
+        data.solution = null;
+        data.inventoryChanged(level.getDayTime());
+        entity.setChanged();
+        level.explode(player, null, new ExplosionDamageCalculator() {
+                    // 爆炸从机身内发出；机器不能吸收爆炸射线，否则会把周围的爆炸范围一起挡住。
+                    @Override
+                    public Optional<Float> getBlockExplosionResistance(Explosion explosion, BlockGetter world, BlockPos pos, BlockState state, FluidState fluid) {
+                        return state.getBlock() instanceof EnvironmentalMachineBlock ? Optional.of(0.0F) : super.getBlockExplosionResistance(explosion, world, pos, state, fluid);
+                    }
+
+                    @Override
+                    public boolean shouldBlockExplode(Explosion explosion, BlockGetter world, BlockPos pos, BlockState state, float power) {
+                        return !(state.getBlock() instanceof EnvironmentalMachineBlock)
+                                && super.shouldBlockExplode(explosion, world, pos, state, power);
+                    }
+                }, origin.getX() + 0.5, origin.getY() + 0.5, origin.getZ() + 0.5,
+                FAILURE_EXPLOSION_POWER, false, Level.ExplosionInteraction.BLOCK);
+        for (BlockPos target : BlockPos.betweenClosed(origin.offset(-FAILURE_RADIUS, -FAILURE_RADIUS, -FAILURE_RADIUS),
+                origin.offset(FAILURE_RADIUS, FAILURE_RADIUS, FAILURE_RADIUS))) {
+            if (origin.distSqr(target) > FAILURE_RADIUS * FAILURE_RADIUS || !level.hasChunkAt(target)
+                    || !level.getWorldBorder().isWithinBounds(target) || level.random.nextFloat() >= FAILURE_CONVERSION_CHANCE)
+                continue;
+            BlockState source = level.getBlockState(target);
+            if (source.isAir() || source.hasBlockEntity() || source.getBlock() instanceof EnvironmentalMachineBlock
+                    || !source.getFluidState().isEmpty() || source.getDestroySpeed(level, target) < 0)
+                continue;
+            level.setBlock(target, results.get(level.random.nextInt(results.size())), 2);
+        }
     }
 
     @Override
@@ -201,14 +277,10 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         if (level instanceof ServerLevel server) {
             BlockPos basePos = state.getValue(PART) == StateProperties.VerticalTwoPart.BASE ? pos : pos.below();
             var data = EnvironmentalMachines.INSTANCE.remove(server, basePos);
-            if (data != null && data.solution != null) {
-                int remaining = data.stored();
-                while (remaining > 0) {
-                    ItemStack stack = new ItemStack(data.solution.item());
-                    int amount = Math.min(remaining, stack.getMaxStackSize());
-                    stack.setCount(amount);
-                    popResource(level, pos, stack);
-                    remaining -= amount;
+            if (data != null) {
+                for (int slot = 0; slot < SLOT_COUNT; slot++) {
+                    if (data.slotSolutions[slot] != null && data.slots[slot] > 0)
+                        popResource(level, basePos, new ItemStack(data.slotSolutions[slot].item(), data.slots[slot]));
                 }
             }
         }
@@ -219,14 +291,20 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
         public final boolean isBase;
         public Solution solution;
-        public final int[] stored = new int[3];
+        public final Solution[] slotSolutions = new Solution[SLOT_COUNT];
+        public boolean mixedSolutions;
+        public boolean mixedExplosionEnabled = true;
+        public final int[] stored = new int[SLOT_COUNT];
         public int activeSlot = -1;
-        public long cycle;
         public boolean enabled;
+        public int fuelProgress;
+        public int rangeChunks;
 
         public BEntity(BlockPos pos, BlockState state) {
             super(FunctionalBlocks.ENVIRONMENTAL_MACHINE_ENTITY.get(), pos, state);
             isBase = state.getValue(PART) == StateProperties.VerticalTwoPart.BASE;
+            rangeChunks = ((EnvironmentalMachineBlock) state.getBlock()).world
+                    ? EnvironmentalMachines.DEFAULT_TERRAFORMER_RANGE_CHUNKS : EnvironmentalMachines.DEFAULT_CLENTAMINATOR_RANGE_CHUNKS;
         }
 
         public BlockPos basePos() {return isBase ? worldPosition : worldPosition.below();}
@@ -239,10 +317,18 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
             if (level instanceof ServerLevel) {
                 var data = data();
                 solution = data.solution;
-                System.arraycopy(data.slots, 0, stored, 0, 3);
+                System.arraycopy(data.slotSolutions, 0, slotSolutions, 0, SLOT_COUNT);
+                mixedSolutions = data.hasMixedSolutions();
+                mixedExplosionEnabled = CommonConfigs.ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION.get();
+                System.arraycopy(data.slots, 0, stored, 0, SLOT_COUNT);
                 activeSlot = data.activeSlot;
-                cycle = data.cycle;
                 enabled = data.enabled;
+                long duration = EnvironmentalMachines.DAY_TICKS / (data.world
+                        ? EnvironmentalMachines.TERRAFORMER_DAILY_COST : EnvironmentalMachines.CLENTAMINATOR_DAILY_COST);
+                rangeChunks = EnvironmentalMachines.rangeChunks(data.world);
+                long remaining = data.solution == null || data.paidUntil <= data.lastTime ? 0 : data.paidUntil - data.lastTime;
+                fuelProgress = (int) Math.min(EnvironmentalMachines.FUEL_PROGRESS_MAX,
+                        remaining * EnvironmentalMachines.FUEL_PROGRESS_MAX / duration);
             }
         }
 
@@ -255,42 +341,31 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         @Override
         public void setChanged() {
             super.setChanged();
-            if (level instanceof ServerLevel server) EnvironmentalMachines.sync(server, basePos());
+            if (level instanceof ServerLevel server) {
+                data().inventoryChanged(level.getDayTime());
+                EnvironmentalMachines.sync(server, basePos());
+            }
         }
 
-        // 库存和当前已付费的溶液均属于对应槽位，动画与存放数量分开控制。
+        // 罐体仅反映该槽的实际库存；已经注入机器的工作余量不占用储液槽。
         public boolean hasSolutionInSlot(int slot) {
-            return solution != null && (stored[slot] > 0 || activeSlot == slot);
+            return slotSolutions[slot] != null && stored[slot] > 0;
         }
 
         public boolean isWorking() {
-            return enabled && solution != null && (stored[0] > 0 || stored[1] > 0 || stored[2] > 0 || activeSlot >= 0);
+            return enabled && !mixedSolutions && solution != null && (stored[0] > 0 || stored[1] > 0 || stored[2] > 0 || activeSlot >= 0);
         }
 
         @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
             if (!isBase) return;
-            String[] sides = {"left", "right", "back"};
-            for (int slot = 0; slot < sides.length; slot++) {
+            for (int slot = 0; slot < SLOT_COUNT; slot++) {
                 int index = slot;
-                String side = sides[slot];
-                RawAnimation idle = RawAnimation.begin().thenPlayAndHold("slot_" + side + "_empty");
-                // 每实际消耗一个溶液才播放一轮，库存数量不参与动画进度。
-                RawAnimation consume = RawAnimation.begin().thenPlay(side + "_inserting")
-                        .thenPlay(side + "_insert").thenPlay(side + "_opening")
-                        .thenPlay(side + "_open").thenPlay(side + "_closing")
-                        .thenPlayAndHold(side + "_close");
-                long[] playedCycle = {0};
-                controllers.add(new AnimationController<>(this, "slot_" + side, 0, state -> {
-                    var controller = state.getController();
-                    controller.setAnimationSpeed(enabled ? 1 : 0);
-                    if (enabled && activeSlot == index && cycle > playedCycle[0]) {
-                        playedCycle[0] = cycle;
-                        controller.forceAnimationReset();
-                        return state.setAndContinue(consume);
-                    }
-                    return state.setAndContinue(playedCycle[0] > 0 ? consume : idle);
-                }));
+                String side = SLOT_NAMES[slot];
+                RawAnimation idle = RawAnimation.begin().thenPlayAndHold(side + "_idle");
+                RawAnimation inserted = RawAnimation.begin().thenPlay(side + "_inserting").thenPlayAndHold(side + "_insert");
+                // 装入即播放该槽插入动画，随后保持；补充库存、启停和扣量均不重播。
+                controllers.add(new AnimationController<>(this, "slot_" + side, 0, state -> state.setAndContinue(hasSolutionInSlot(index) ? inserted : idle)));
             }
         }
 
@@ -304,7 +379,14 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
             CompoundTag tag = new CompoundTag();
             if (solution != null) tag.putString("Solution", solution.id());
             tag.putBoolean("Enabled", enabled);
-            tag.putLong("Cycle", cycle);
+            tag.putBoolean("MixedSolutions", mixedSolutions);
+            tag.putBoolean("MixedExplosionEnabled", mixedExplosionEnabled);
+            ListTag solutions = new ListTag();
+            for (Solution solution : slotSolutions)
+                solutions.add(StringTag.valueOf(solution == null ? "" : solution.id()));
+            tag.put("SlotSolutions", solutions);
+            tag.putInt("FuelProgress", fuelProgress);
+            tag.putInt("RangeChunks", rangeChunks);
             tag.putIntArray("Stored", stored);
             tag.putInt("ActiveSlot", activeSlot);
             return tag;
@@ -317,6 +399,18 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.loadAdditional(tag, registries);
             enabled = tag.getBoolean("Enabled");
+            mixedSolutions = tag.getBoolean("MixedSolutions");
+            mixedExplosionEnabled = !tag.contains("MixedExplosionEnabled") || tag.getBoolean("MixedExplosionEnabled");
+            Arrays.fill(slotSolutions, null);
+            ListTag solutions = tag.getList("SlotSolutions", Tag.TAG_STRING);
+            for (int slot = 0; slot < Math.min(SLOT_COUNT, solutions.size()); slot++) {
+                try {
+                    slotSolutions[slot] = Solution.valueOf(solutions.getString(slot).toUpperCase(Locale.ROOT));
+                } catch (IllegalArgumentException ignored) {}
+            }
+            fuelProgress = Math.clamp(tag.getInt("FuelProgress"), 0, EnvironmentalMachines.FUEL_PROGRESS_MAX);
+            if (tag.contains("RangeChunks")) rangeChunks = Math.clamp(tag.getInt("RangeChunks"),
+                    EnvironmentalMachines.MIN_RANGE_CHUNKS, EnvironmentalMachines.MAX_RANGE_CHUNKS);
             solution = null;
             try {
                 if (tag.contains("Solution"))
@@ -324,13 +418,12 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
             } catch (IllegalArgumentException ignored) {}
             int[] values = tag.getIntArray("Stored");
             Arrays.fill(stored, 0);
-            System.arraycopy(values, 0, stored, 0, Math.min(3, values.length));
-            cycle = tag.getLong("Cycle");
+            System.arraycopy(values, 0, stored, 0, Math.min(SLOT_COUNT, values.length));
             activeSlot = tag.contains("ActiveSlot") ? tag.getInt("ActiveSlot") : -1;
         }
 
         @Override
-        public int getContainerSize() {return 3;}
+        public int getContainerSize() {return SLOT_COUNT;}
 
         @Override
         public int getMaxStackSize() {return EnvironmentalMachines.CAPACITY;}
@@ -340,9 +433,10 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
         @Override
         public ItemStack getItem(int slot) {
-            if (slot < 0 || slot >= 3 || !(level instanceof ServerLevel)) return ItemStack.EMPTY;
+            if (slot < 0 || slot >= SLOT_COUNT || !(level instanceof ServerLevel))
+                return ItemStack.EMPTY;
             var data = data();
-            return data.solution == null || data.slots[slot] == 0 ? ItemStack.EMPTY : new ItemStack(data.solution.item(), data.slots[slot]);
+            return data.slotSolutions[slot] == null || data.slots[slot] == 0 ? ItemStack.EMPTY : new ItemStack(data.slotSolutions[slot].item(), data.slots[slot]);
         }
 
         @Override
@@ -350,7 +444,8 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
             ItemStack stack = getItem(slot);
             if (amount <= 0 || stack.isEmpty()) return ItemStack.EMPTY;
             stack.setCount(Math.min(amount, stack.getCount()));
-            data().slots[slot] -= stack.getCount();
+            var data = data();
+            data.slots[slot] -= stack.getCount();
             setChanged();
             return stack;
         }
@@ -360,16 +455,16 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
         @Override
         public void setItem(int slot, ItemStack stack) {
-            if (!(level instanceof ServerLevel) || slot < 0 || slot >= 3 || (!stack.isEmpty() && !canPlaceItem(slot, stack)))
+            if (!(level instanceof ServerLevel) || slot < 0 || slot >= SLOT_COUNT || (!stack.isEmpty() && !canPlaceItem(slot, stack)))
                 return;
             var data = data();
-            if (!stack.isEmpty()) data.solution = Solution.of(stack);
+            data.slotSolutions[slot] = stack.isEmpty() ? null : Solution.of(stack);
             data.slots[slot] = Math.min(EnvironmentalMachines.CAPACITY, stack.getCount());
             setChanged();
         }
 
         @Override
-        public boolean stillValid(Player player) {return level != null && level.getBlockEntity(worldPosition) == this && player.distanceToSqr(worldPosition.getX() + .5, worldPosition.getY() + .5, worldPosition.getZ() + .5) <= 64;}
+        public boolean stillValid(Player player) {return level != null && level.getBlockEntity(worldPosition) == this && player.distanceToSqr(worldPosition.getX() + .5, worldPosition.getY() + .5, worldPosition.getZ() + .5) <= INTERACTION_DISTANCE_SQUARED;}
 
         @Override
         public void clearContent() {
@@ -381,12 +476,11 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
         @Override
         public boolean canPlaceItem(int slot, ItemStack stack) {
-            if (slot < 0 || slot >= 3 || !(level instanceof ServerLevel)) return false;
+            if (slot < 0 || slot >= SLOT_COUNT || !(level instanceof ServerLevel)) return false;
             Solution incoming = Solution.of(stack);
             var data = data();
-            boolean empty = data.stored() == 0 && level.getDayTime() >= data.paidUntil;
             return incoming != null && (!incoming.advanced || ((EnvironmentalMachineBlock) getBlockState().getBlock()).world)
-                    && (data.solution == null || empty || data.solution == incoming);
+                    && (data.slots[slot] == 0 || data.slotSolutions[slot] == incoming);
         }
 
         @Override
@@ -396,13 +490,25 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         public boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction direction) {return canPlaceItem(slot, stack);}
 
         @Override
-        public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {return slot >= 0 && slot < 3;}
+        public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction direction) {return slot >= 0 && slot < SLOT_COUNT;}
     }
 
     public static class BItem extends TooltipBlockItem implements GeoItem {
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-        public BItem(EnvironmentalMachineBlock block) {super(block, new Properties(), ModRarity.LIME, List.of(Component.translatable(block.world ? "tooltip.confluence.terraformer" : "tooltip.confluence.clentaminator")));}
+        public BItem(EnvironmentalMachineBlock block) {
+            super(block, new Properties(), ModRarity.LIME, List.of(Component.translatable(block.world ? "tooltip.confluence.terraformer" : "tooltip.confluence.clentaminator").withStyle(ChatFormatting.GRAY)));
+        }
+
+        @Override
+        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+            super.appendHoverText(stack, context, tooltip, flag);
+            boolean world = ((EnvironmentalMachineBlock) getBlock()).world;
+            tooltip.add(Component.translatable("tooltip.confluence.environmental_machine.consumption", world ? EnvironmentalMachines.TERRAFORMER_DAILY_COST : EnvironmentalMachines.CLENTAMINATOR_DAILY_COST).withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.confluence.environmental_machine.insert").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.confluence.environmental_machine.withdraw").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.translatable("tooltip.confluence.environmental_machine.toggle").withStyle(ChatFormatting.GRAY));
+        }
 
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {

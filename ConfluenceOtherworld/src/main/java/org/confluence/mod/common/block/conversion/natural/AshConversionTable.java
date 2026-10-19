@@ -1,7 +1,8 @@
-package org.confluence.mod.common.block.natural.spreadable.conversion_table;
+package org.confluence.mod.common.block.conversion.natural;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.common.block.conversion.ConversionTable;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 

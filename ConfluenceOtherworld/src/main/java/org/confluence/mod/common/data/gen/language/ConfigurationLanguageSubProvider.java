@@ -204,6 +204,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.broadcastNpcDeathMsg.tooltip", "Broadcast NPC deaths independently of arrival and departure messages.", "独立控制 NPC 死亡消息广播。");
         language.add("confluence.configuration.broadcastNpcMsg", "Broadcast NPC Arrival and Departure Messages", "广播NPC到达与离开消息");
         language.add("confluence.configuration.broadcastNpcMsg.tooltip", "Broadcast NPC arrivals and voluntary departures. Death messages have a separate switch.", "广播 NPC 到达和主动离开的消息；死亡消息由独立开关控制。");
+        language.add("confluence.configuration.clentaminatorRangeChunks", "Clentaminator Range (Chunks)", "环境改造器范围（区块）");
+        language.add("confluence.configuration.clentaminatorRangeChunks.tooltip", "Side length of the maintained square: 1-20 chunks. Default: 3 (3x3). Independent of the Terraformer.", "维持范围的正方形边长，允许1至20区块，默认3（3×3），与世界改造器分别设置。");
         language.add("confluence.configuration.convertArsNouveauMana", "Use Confluence's mana system when enabled", "开启后将使用汇流来世的魔力");
         language.add("confluence.configuration.convertIronsSpellMana", "Use Confluence's mana system when enabled", "开启后将使用汇流来世的魔力");
         language.add("confluence.configuration.customTitle", "Custom Title", "自定义标题");
@@ -233,6 +235,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.enemyDropsMoney.tooltip", "When enabled, enemies will drop coins upon death.", "启用时，敌怪死亡后会掉落钱币");
         language.add("confluence.configuration.enhanceAllMonster", "Include All Mods' Enemies", "同时调整所有模组的敌怪");
         language.add("confluence.configuration.enhanceAllMonster.tooltip", "Off: only Confluence enemies. On: also vanilla and other mods' hostile mobs. Bosses, summons and friendly creatures are excluded.", "关闭时仅影响汇流来世敌怪；开启时也影响原版及其他模组的敌怪。不影响 Boss、召唤物、NPC 和小动物。");
+        language.add("confluence.configuration.environmentalMachineMixedExplosion", "Mixed Solution Explosions", "混装溶液爆炸");
+        language.add("confluence.configuration.environmentalMachineMixedExplosion.tooltip", "Allow machine explosions and terrain contamination when starting with mixed solutions. Disabling this still prevents starting. Default: enabled.", "混装溶液时尝试启动是否引发爆炸及地形污染。关闭后仍禁止混装启动，默认开启。");
         language.add("confluence.configuration.extraInventoryButtonOffsetX", "Extra Inventory Button Offset X", "额外物品栏按钮X轴偏移");
         language.add("confluence.configuration.extraInventoryButtonOffsetY", "Extra Inventory Button Offset Y", "额外物品栏按钮Y轴偏移");
         language.add("confluence.configuration.eyeOfCthulhuNatureSpawning", "Eye of Cthulhu Natural Spawning", "克苏鲁之眼自然生成");
@@ -402,6 +406,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.", "开启后，生命值显示为泰拉样式");
         language.add("confluence.configuration.terraStyleLightningBolt", "Terraria-Style Lightning Bolt", "泰拉闪电束");
         language.add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "Lightning Bolt Frequency Multiplier", "闪电束频率提升倍率");
+        language.add("confluence.configuration.terraformerRangeChunks", "Terraformer Range (Chunks)", "世界改造器范围（区块）");
+        language.add("confluence.configuration.terraformerRangeChunks.tooltip", "Side length of the maintained square: 1-20 chunks. Default: 5 (5x5). Independent of the Clentaminator.", "维持范围的正方形边长，允许1至20区块，默认5（5×5），与环境改造器分别设置。");
         language.add("confluence.configuration.title", "Configuration Screen", "配置界面");
         language.add("confluence.configuration.townSuppressesEnemySpawning", "Town Suppresses Enemy Spawning", "城镇抑制敌怪生成");
         language.add("confluence.configuration.townSuppressesEnemySpawning.tooltip", "Allow town population to suppress natural enemy spawning. Town critters remain enabled.", "允许城镇人口抑制敌怪自然生成；不影响城镇小动物生成。");

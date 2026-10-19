@@ -13,7 +13,6 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
-import org.confluence.mod.common.block.functional.terraform.MachineConversionTable;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AnglerQuestLoader;
@@ -86,6 +85,5 @@ public final class GameEvents {
         event.addListener(new MoodData.Loader());
         event.addListener(NPCTradeList.Loader.getInstance());
         event.addListener(AnglerQuestLoader.getInstance());
-        event.addListener(MachineConversionTable.INSTANCE);
     }
 }

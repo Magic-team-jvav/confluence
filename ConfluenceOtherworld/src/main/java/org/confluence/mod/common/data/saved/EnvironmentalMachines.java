@@ -5,60 +5,121 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundChunksBiomesPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.PalettedContainer;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.terraform.EnvironmentalMachineBlock;
-import org.confluence.mod.common.block.functional.terraform.MachineConversionTable;
 import org.confluence.mod.common.block.functional.terraform.Solution;
 import org.confluence.mod.common.init.ModBiomes;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
-// 机器的库存、已付费工作时间和扫描游标统一写入 level.dat，不与方块实体重复保存。
+// 机器坐标、库存与已付费工作时间通过 IGlobalData 持久化；环境维持由自然蔓延的随机刻触发。
 public enum EnvironmentalMachines implements IGlobalData {
     INSTANCE;
-    public static final int RANGE_CHUNKS = 3;
+    public static final int SLOT_COUNT = 3;
+    public static final int FUEL_PROGRESS_MAX = 100;
+    public static final int CHUNK_WIDTH = 16;
+    public static final int DAY_TICKS = 24000;
+    public static final int CLENTAMINATOR_DAILY_COST = 3;
+    public static final int TERRAFORMER_DAILY_COST = 1;
+    private static final int STATUS_SYNC_INTERVAL = 20;
+    public static final int MIN_RANGE_CHUNKS = 1;
+    public static final int MAX_RANGE_CHUNKS = 20;
+    public static final int DEFAULT_CLENTAMINATOR_RANGE_CHUNKS = 3;
+    public static final int DEFAULT_TERRAFORMER_RANGE_CHUNKS = 5;
     // 每个储液槽最多保存一组溶液。
     public static final int CAPACITY = 64;
-    public static final int GLOBAL_SCAN_BUDGET = 4096;
-    public static final int MACHINE_SCAN_BUDGET = 1024;
-    public static final int GLOBAL_CHANGE_BUDGET = 128;
-    public static final int MACHINE_CHANGE_BUDGET = 32;
     private final Map<Key, State> machines = new LinkedHashMap<>();
-    private int nextMachine;
+    // 索引只保存机器引用，开关和库存实时读取；不遍历覆盖范围内的方块。
+    private final Map<ResourceKey<Level>, Map<Long, List<Key>>> coverage = new HashMap<>();
+    private final Map<ResourceKey<Level>, Set<Long>> biomeUpdates = new HashMap<>();
+
+    private int indexedClentaminatorRange = -1;
+    private int indexedTerraformerRange = -1;
 
     private record Key(ResourceKey<Level> dimension, BlockPos pos) {}
 
-    private record Work(int scanned, int changed) {}
-
     public static final class State {
+        // 当前已注入的溶液与各槽库存分离，停机后保留尚未使用的工作余量。
         public Solution solution;
-        public final int[] slots = new int[3];
+        public final int[] slots = new int[SLOT_COUNT];
+        public final Solution[] slotSolutions = new Solution[SLOT_COUNT];
         public int activeSlot = -1;
-        public long cycle;
-
-        public int stored() {return slots[0] + slots[1] + slots[2];}
-
         public long paidUntil = Long.MIN_VALUE;
         public long lastTime = Long.MIN_VALUE;
-        public int cursor;
         public boolean world;
         public boolean enabled;
+        private long nextStatusSync;
+
+        public int stored() {
+            int count = 0;
+            for (int amount : slots) count += amount;
+            return count;
+        }
+
+        // 已注入且未耗尽的溶液也参与判断，避免更换库存后绕过混合反应。
+        public boolean hasMixedSolutions() {
+            Solution selected = paidUntil > lastTime ? solution : null;
+            for (int slot = 0; slot < SLOT_COUNT; slot++) {
+                if (slots[slot] <= 0 || slotSolutions[slot] == null) continue;
+                if (selected != null && selected != slotSolutions[slot]) return true;
+                selected = slotSolutions[slot];
+            }
+            return false;
+        }
+
+        // 玩家和漏斗共用库存变更逻辑，混装立即停机，但只有手动启动才引发事故。
+        public void inventoryChanged(long now) {
+            for (int slot = 0; slot < SLOT_COUNT; slot++)
+                if (slots[slot] == 0) slotSolutions[slot] = null;
+            long clock = enabled ? now : lastTime;
+            if (paidUntil <= clock) {
+                solution = null;
+                activeSlot = -1;
+                for (int slot = 0; slot < SLOT_COUNT; slot++) {
+                    if (slots[slot] > 0 && slotSolutions[slot] != null) {
+                        solution = slotSolutions[slot];
+                        break;
+                    }
+                }
+            }
+            if (hasMixedSolutions() || (stored() == 0 && paidUntil <= clock)) {
+                enabled = false;
+                lastTime = now;
+            }
+        }
+
+        // 启动前校验库存或已付费余量；混装不允许进入工作状态。
+        public boolean setEnabled(boolean requested, long now) {
+            if (requested && hasMixedSolutions()) return false;
+            if (enabled == requested) return true;
+            if (requested) {
+                power(now);
+                inventoryChanged(now);
+                if (solution == null || (stored() == 0 && paidUntil <= now)) return false;
+                enabled = true;
+                power(now);
+            } else {
+                enabled = false;
+                lastTime = now;
+            }
+            return true;
+        }
 
         // 预付一个溶液的工作时长；时间倒退只平移余量，避免重复收费或无限延长。
         public boolean power(long now) {
-            // 停机期间保留已付工作时长，不消耗库存或推进改造。
             if (!enabled) {
                 if (lastTime != Long.MIN_VALUE && paidUntil > lastTime)
                     paidUntil = now + paidUntil - lastTime;
@@ -67,126 +128,209 @@ public enum EnvironmentalMachines implements IGlobalData {
             }
             if (lastTime != Long.MIN_VALUE && now < lastTime && paidUntil > lastTime)
                 paidUntil = now + paidUntil - lastTime;
-            lastTime = now;
-            if (solution == null) return false;
-            if (now < paidUntil) return true;
-            if (stored() == 0) {
-                solution = null;
+            if (hasMixedSolutions()) {
+                enabled = false;
+                lastTime = now;
                 return false;
             }
-            activeSlot = (activeSlot + 1) % 3;
-            while (slots[activeSlot] == 0) activeSlot = (activeSlot + 1) % 3;
+            lastTime = now;
+            if (solution != null && now < paidUntil) return true;
+            if (stored() == 0) {
+                solution = null;
+                activeSlot = -1;
+                enabled = false;
+                return false;
+            }
+            activeSlot = (activeSlot + 1) % SLOT_COUNT;
+            while (slots[activeSlot] == 0) activeSlot = (activeSlot + 1) % SLOT_COUNT;
+            solution = slotSolutions[activeSlot];
             slots[activeSlot]--;
-            cycle++;
-            paidUntil = now + (world ? 24000L : 8000L);
+            if (slots[activeSlot] == 0) slotSolutions[activeSlot] = null;
+            paidUntil = now + DAY_TICKS / (world ? TERRAFORMER_DAILY_COST : CLENTAMINATOR_DAILY_COST);
             return true;
         }
     }
 
+    // 配置表示边长；偶数范围在负方向多覆盖一个区块，确保实际宽度严格等于配置。
+    public static int rangeChunks(boolean world) {
+        return world ? CommonConfigs.TERRAFORMER_RANGE_CHUNKS.get() : CommonConfigs.CLENTAMINATOR_RANGE_CHUNKS.get();
+    }
+
     public State get(ServerLevel level, BlockPos pos, boolean world) {
-        State state = machines.computeIfAbsent(new Key(level.dimension(), pos.immutable()), key -> new State());
-        state.world = world;
+        Key key = new Key(level.dimension(), pos.immutable());
+        State state = machines.get(key);
+        if (state == null) {
+            state = new State();
+            state.world = world;
+            machines.put(key, state);
+            coverage.remove(level.dimension());
+        } else if (state.world != world) {
+            state.world = world;
+            coverage.remove(level.dimension());
+        }
         return state;
     }
 
-    // 拆除时移除全局记录，由方块负责把剩余库存还给玩家。
-    public State remove(ServerLevel level, BlockPos pos) {return machines.remove(new Key(level.dimension(), pos));}
+    // 拆除时同时失效覆盖索引，剩余库存仍由方块交还玩家。
+    public State remove(ServerLevel level, BlockPos pos) {
+        State state = machines.remove(new Key(level.dimension(), pos));
+        if (state != null) coverage.remove(level.dimension());
+        return state;
+    }
 
-    // 所有机器共享扫描预算，轮转调度；只操作已经加载的完整区块，不强制加载或生成邻区块。
+    // 按维度与区块建立覆盖索引；这里只展开区块坐标，不读取或加载地形。
+    private Map<Long, List<Key>> coverage(ResourceKey<Level> dimension) {
+        int normalRange = rangeChunks(false);
+        int worldRange = rangeChunks(true);
+        if (indexedClentaminatorRange != normalRange || indexedTerraformerRange != worldRange) {
+            coverage.clear();
+            indexedClentaminatorRange = normalRange;
+            indexedTerraformerRange = worldRange;
+        }
+        return coverage.computeIfAbsent(dimension, key -> {
+            Map<Long, List<Key>> chunks = new HashMap<>();
+            machines.forEach((machine, state) -> {
+                if (!machine.dimension.equals(dimension)) return;
+                int range = rangeChunks(state.world);
+                int startX = (machine.pos.getX() >> 4) - range / 2;
+                int startZ = (machine.pos.getZ() >> 4) - range / 2;
+                for (int x = startX; x < startX + range; x++) {
+                    for (int z = startZ; z < startZ + range; z++) {
+                        chunks.computeIfAbsent(ChunkPos.asLong(x, z), ignored -> new ArrayList<>()).add(machine);
+                    }
+                }
+            });
+            return chunks;
+        });
+    }
+
+    // 只查询目标区块的候选机器；范围重叠时选择距离最近的有效机器，同距按坐标排序。
+    public Solution solutionAt(ServerLevel level, BlockPos pos) {
+        List<Key> candidates = coverage(level.dimension()).get(ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4));
+        if (candidates == null) return null;
+        Key selected = null;
+        Solution solution = null;
+        double distance = Double.POSITIVE_INFINITY;
+        for (Key key : candidates) {
+            State state = machines.get(key);
+            if (state == null || !state.enabled) continue;
+            if (level.hasChunkAt(key.pos) && !(level.getBlockState(key.pos).getBlock() instanceof EnvironmentalMachineBlock)) {
+                remove(level, key.pos);
+                continue;
+            }
+            if (!power(level, key, state)) continue;
+            double candidate = key.pos.distSqr(pos);
+            if (candidate < distance || (candidate == distance && (selected == null || key.pos.asLong() < selected.pos.asLong()))) {
+                selected = key;
+                solution = state.solution;
+                distance = candidate;
+            }
+        }
+        return solution;
+    }
+
+    // 返回是否受机器维持；即使无需替换方块，也要阻止外来感染覆盖已匹配的环境。
+    public boolean maintain(ServerLevel level, BlockPos pos) {
+        if (level.isOutsideBuildHeight(pos) || !level.isLoaded(pos)) return false;
+        Solution solution = solutionAt(level, pos);
+        if (solution == null) return false;
+        var source = level.getBlockState(pos);
+        if (!source.isAir() && !source.hasBlockEntity()) {
+            var target = solution.convert(level, pos, source);
+            if (target != source) level.setBlock(pos, target, 2);
+            convertBiome(level, pos, solution);
+        }
+        return true;
+    }
+
+    // 计费独立于随机刻；查询和世界刻共用入口，避免在到期边界继续免费维持。
+    private boolean power(ServerLevel level, Key key, State state) {
+        Solution previous = state.solution;
+        int count = state.stored();
+        boolean wasEnabled = state.enabled;
+        boolean powered = state.power(level.getDayTime());
+        if (previous != state.solution || count != state.stored() || wasEnabled != state.enabled)
+            sync(level, key.pos);
+        return powered;
+    }
+
+    // 世界刻只计费、同步状态并清除失效记录，不扫描或改造地形，也不强制加载机器区块。
     public void tick(ServerLevel level) {
-        List<Map.Entry<Key, State>> entries = machines.entrySet().stream().filter(e -> e.getKey().dimension.equals(level.dimension())).toList();
-        if (entries.isEmpty()) return;
-        int budget = GLOBAL_SCAN_BUDGET;
-        int changes = GLOBAL_CHANGE_BUDGET;
-        int start = Math.floorMod(nextMachine, entries.size());
-        int visited = 0;
-        for (; visited < entries.size() && budget > 0 && changes > 0; visited++) {
-            var entry = entries.get((start + visited) % entries.size());
+        Iterator<Map.Entry<Key, State>> iterator = machines.entrySet().iterator();
+        while (iterator.hasNext()) {
+            var entry = iterator.next();
             Key key = entry.getKey();
+            if (!key.dimension.equals(level.dimension())) continue;
             State state = entry.getValue();
-            if (!level.hasChunkAt(key.pos)) continue;
-            if (!(level.getBlockState(key.pos).getBlock() instanceof EnvironmentalMachineBlock block)) {
-                machines.remove(key);
-                continue;
+            if (level.hasChunkAt(key.pos)) {
+                if (!(level.getBlockState(key.pos).getBlock() instanceof EnvironmentalMachineBlock block)) {
+                    iterator.remove();
+                    coverage.remove(level.dimension());
+                    continue;
+                }
+                if (state.world != block.world) {
+                    state.world = block.world;
+                    coverage.remove(level.dimension());
+                }
             }
-            state.world = block.world;
-            Solution previous = state.solution;
-            int count = state.stored();
-            boolean powered = state.power(level.getDayTime());
-            if (previous != state.solution || count != state.stored()) sync(level, key.pos);
-            if (powered) {
-                Work work = scan(level, key.pos, state, Math.min(MACHINE_SCAN_BUDGET, budget), Math.min(MACHINE_CHANGE_BUDGET, changes));
-                budget -= work.scanned;
-                changes -= work.changed;
+            power(level, key, state);
+            if (level.hasChunkAt(key.pos) && level.getGameTime() >= state.nextStatusSync) {
+                state.nextStatusSync = level.getGameTime() + STATUS_SYNC_INTERVAL;
+                sync(level, key.pos);
             }
         }
-        nextMachine = start + visited;
-    }
-
-    // 与肉后转换一样按区块推进；进一步拆成固定数量的方块，防止整区块转换卡住主线程。
-    private Work scan(ServerLevel level, BlockPos origin, State state, int budget, int changeBudget) {
-        int height = level.getHeight();
-        int chunkVolume = height * 256;
-        int total = RANGE_CHUNKS * RANGE_CHUNKS * chunkVolume;
-        int scanned = 0;
-        int changed = 0;
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        while (scanned < budget && changed < changeBudget) {
-            state.cursor = Math.floorMod(state.cursor, total);
-            int chunkIndex = state.cursor / chunkVolume;
-            int cx = (origin.getX() >> 4) + chunkIndex % RANGE_CHUNKS - RANGE_CHUNKS / 2;
-            int cz = (origin.getZ() >> 4) + chunkIndex / RANGE_CHUNKS - RANGE_CHUNKS / 2;
-            LevelChunk chunk = level.getChunkSource().getChunkNow(cx, cz);
-            if (chunk == null) {
-                state.cursor = (chunkIndex + 1) * chunkVolume % total;
-                scanned += Math.min(256, budget - scanned);
-                continue;
+        // 同一区块在一秒内的多次群系修改合并发送，避免每次随机刻都发包。
+        if (level.getGameTime() % STATUS_SYNC_INTERVAL == 0) {
+            Set<Long> updates = biomeUpdates.remove(level.dimension());
+            if (updates != null) {
+                for (long packed : updates) {
+                    ChunkPos pos = new ChunkPos(packed);
+                    LevelChunk chunk = level.getChunkSource().getChunkNow(pos.x, pos.z);
+                    if (chunk == null) continue;
+                    var packet = ClientboundChunksBiomesPacket.forChunks(List.of(chunk));
+                    for (var player : level.getChunkSource().chunkMap.getPlayers(pos, false))
+                        player.connection.send(packet);
+                }
             }
-            int local = state.cursor % chunkVolume;
-            pos.set((cx << 4) + (local & 15), level.getMinBuildHeight() + (local >> 8), (cz << 4) + ((local >> 4) & 15));
-            var source = chunk.getBlockState(pos);
-            if (!source.isAir() && !source.hasBlockEntity()) {
-                var target = MachineConversionTable.INSTANCE.convert(state.solution, source);
-                if (target != source && level.setBlock(pos, target, 2)) changed++;
-            }
-            state.cursor++;
-            scanned++;
-            if (state.cursor % chunkVolume == 0) convertBiomes(level, chunk, state.solution);
         }
-        return new Work(scanned, changed);
     }
 
-    // 完成一个区块后刷新群系容器并单独发送群系包，不重发整张区块和其中的方块实体。
-    private void convertBiomes(ServerLevel level, LevelChunk chunk, Solution solution) {
-        var registry = level.registryAccess().registryOrThrow(Registries.BIOME);
-        chunk.fillBiomesFromNoise((x, y, z, sampler) -> {
-            Holder<Biome> source = chunk.getNoiseBiome(x, y, z);
-            String id = source.unwrapKey().map(k -> k.location().getPath()).orElse("");
-            boolean desert = id.contains("desert") || id.contains("badlands");
-            boolean snow = id.contains("snow") || id.contains("tundra") || id.contains("frozen") || id.contains("ice");
-            ResourceKey<Biome> target = switch (solution) {
-                case PURPLE ->
-                        desert ? ModBiomes.THE_CORRUPTION_DESERT : snow ? ModBiomes.THE_CORRUPTION_TUNDRA : ModBiomes.THE_CORRUPTION;
-                case RED ->
-                        desert ? ModBiomes.THE_CRIMSON_DESERT : snow ? ModBiomes.THE_CRIMSON_TUNDRA : ModBiomes.THE_CRIMSON;
-                case BLUE ->
-                        desert ? ModBiomes.THE_HALLOW_DESERT : snow ? ModBiomes.THE_HALLOW_TUNDRA : ModBiomes.THE_HALLOW;
-                case DARK_BLUE -> ModBiomes.GLOWING_MUSHROOM;
-                case YELLOW -> Biomes.DESERT;
-                case WHITE -> Biomes.SNOWY_PLAINS;
-                case BROWN -> Biomes.FOREST;
-                case GREEN ->
-                        desert ? Biomes.DESERT : snow ? Biomes.SNOWY_PLAINS : id.contains("mushroom") || id.contains("jungle") ? Biomes.JUNGLE : Biomes.FOREST;
-            };
-            return registry.getHolderOrThrow(target);
-        }, level.getChunkSource().randomState().sampler());
+    // 随实际维持位置修改一个群系采样格，不再整区块反复填充群系。
+    private void convertBiome(ServerLevel level, BlockPos pos, Solution solution) {
+        LevelChunk chunk = level.getChunkSource().getChunkNow(pos.getX() >> 4, pos.getZ() >> 4);
+        if (chunk == null) return;
+        int x = (pos.getX() >> 2) & 3;
+        int y = (pos.getY() >> 2) & 3;
+        int z = (pos.getZ() >> 2) & 3;
+        var biomes = chunk.getSection(chunk.getSectionIndex(pos.getY())).getBiomes();
+        if (!(biomes instanceof PalettedContainer<Holder<Biome>> mutable)) return;
+        Holder<Biome> source = biomes.get(x, y, z);
+        String id = source.unwrapKey().map(k -> k.location().getPath()).orElse("");
+        boolean desert = id.contains("desert") || id.contains("badlands");
+        boolean snow = id.contains("snow") || id.contains("tundra") || id.contains("frozen") || id.contains("ice");
+        ResourceKey<Biome> target = switch (solution) {
+            case PURPLE ->
+                    desert ? ModBiomes.THE_CORRUPTION_DESERT : snow ? ModBiomes.THE_CORRUPTION_TUNDRA : ModBiomes.THE_CORRUPTION;
+            case RED ->
+                    desert ? ModBiomes.THE_CRIMSON_DESERT : snow ? ModBiomes.THE_CRIMSON_TUNDRA : ModBiomes.THE_CRIMSON;
+            case BLUE ->
+                    desert ? ModBiomes.THE_HALLOW_DESERT : snow ? ModBiomes.THE_HALLOW_TUNDRA : ModBiomes.THE_HALLOW;
+            case DARK_BLUE -> ModBiomes.GLOWING_MUSHROOM;
+            case YELLOW -> Biomes.DESERT;
+            case WHITE -> Biomes.SNOWY_PLAINS;
+            case BROWN -> Biomes.FOREST;
+            case GREEN ->
+                    desert ? Biomes.DESERT : snow ? Biomes.SNOWY_PLAINS : id.contains("mushroom") || id.contains("jungle") ? Biomes.JUNGLE : Biomes.FOREST;
+        };
+        Holder<Biome> replacement = level.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(target);
+        if (replacement.equals(source)) return;
+        mutable.set(x, y, z, replacement);
         chunk.setUnsaved(true);
-        var packet = ClientboundChunksBiomesPacket.forChunks(List.of(chunk));
-        for (var player : level.getChunkSource().chunkMap.getPlayers(chunk.getPos(), false))
-            player.connection.send(packet);
+        biomeUpdates.computeIfAbsent(level.dimension(), ignored -> new HashSet<>()).add(chunk.getPos().toLong());
     }
 
     public static void sync(ServerLevel level, BlockPos pos) {
+        if (!level.hasChunkAt(pos)) return;
         for (BlockPos part : List.of(pos, pos.above())) {
             if (level.getBlockEntity(part) instanceof EnvironmentalMachineBlock.BEntity entity) {
                 entity.refresh();
@@ -203,12 +347,14 @@ public enum EnvironmentalMachines implements IGlobalData {
             data.putString("Dimension", key.dimension.location().toString());
             data.putLong("Position", key.pos.asLong());
             if (state.solution != null) data.putString("Solution", state.solution.id());
-            data.putLong("Cycle", state.cycle);
             data.putIntArray("Slots", state.slots);
+            ListTag solutions = new ListTag();
+            for (Solution solution : state.slotSolutions)
+                solutions.add(StringTag.valueOf(solution == null ? "" : solution.id()));
+            data.put("SlotSolutions", solutions);
             data.putInt("ActiveSlot", state.activeSlot);
             data.putLong("PaidUntil", state.paidUntil);
             data.putLong("LastTime", state.lastTime);
-            data.putInt("Cursor", state.cursor);
             data.putBoolean("World", state.world);
             data.putBoolean("Enabled", state.enabled);
             list.add(data);
@@ -230,13 +376,21 @@ public enum EnvironmentalMachines implements IGlobalData {
                     state.solution = Solution.valueOf(data.getString("Solution").toUpperCase(Locale.ROOT));
             } catch (IllegalArgumentException ignored) {continue;}
             int[] slots = data.getIntArray("Slots");
-            for (int i = 0; i < Math.min(3, slots.length); i++)
-                state.slots[i] = Math.max(0, Math.min(CAPACITY, slots[i]));
-            state.cycle = data.getLong("Cycle");
-            state.activeSlot = Math.max(-1, Math.min(2, data.getInt("ActiveSlot")));
+            ListTag solutions = data.getList("SlotSolutions", Tag.TAG_STRING);
+            for (int slot = 0; slot < Math.min(SLOT_COUNT, slots.length); slot++) {
+                state.slots[slot] = Math.clamp(slots[slot], 0, CAPACITY);
+                // 旧存档只有一个溶液类型，按原有库存逐槽迁移，不丢失物品。
+                if (!data.contains("SlotSolutions")) state.slotSolutions[slot] = state.solution;
+                else if (slot < solutions.size()) {
+                    try {
+                        state.slotSolutions[slot] = Solution.valueOf(solutions.getString(slot).toUpperCase(Locale.ROOT));
+                    } catch (IllegalArgumentException ignored) {}
+                }
+                if (state.slotSolutions[slot] == null) state.slots[slot] = 0;
+            }
+            state.activeSlot = Math.clamp(data.getInt("ActiveSlot"), -1, SLOT_COUNT - 1);
             state.paidUntil = data.getLong("PaidUntil");
             state.lastTime = data.getLong("LastTime");
-            state.cursor = Math.max(0, data.getInt("Cursor"));
             state.world = data.getBoolean("World");
             state.enabled = data.getBoolean("Enabled");
             machines.put(new Key(ResourceKey.create(Registries.DIMENSION, dimension), BlockPos.of(data.getLong("Position"))), state);
@@ -249,6 +403,9 @@ public enum EnvironmentalMachines implements IGlobalData {
     @Override
     public void clear() {
         machines.clear();
-        nextMachine = 0;
+        coverage.clear();
+        biomeUpdates.clear();
+        indexedClentaminatorRange = -1;
+        indexedTerraformerRange = -1;
     }
 }

@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
-import org.confluence.mod.common.block.natural.spreadable.conversion_table.MoistenConversionTable;
+import org.confluence.mod.common.block.conversion.natural.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.storage.VoidBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -115,7 +115,7 @@ public abstract class AbstractPotionItem extends Item {
         return InteractionResult.PASS;
     }
 
-    private static void finishQuickUse(ItemStack stack, Player player) {
+    protected static void finishQuickUse(ItemStack stack, Player player) {
         PlayerVoidVaultContainer vault = PlayerVoidVaultContainer.of(player);
         for (int slot = 0; slot < vault.getContainerSize(); slot++) {
             if (vault.getItem(slot) == stack) {

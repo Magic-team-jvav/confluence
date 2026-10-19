@@ -8,51 +8,66 @@
                 "left_battery": {
                     "rotation": {
                         "0": [
-                            0.0,
-                            0.0,
+                            -0.0,
+                            -0.0,
                             0.0
                         ],
-                        "0.5": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "0.83333": [
-                            0.0,
-                            -55.0,
-                            0.0
-                        ],
-                        "1.08333": [
-                            0.0,
-                            -55.0,
-                            0.0
-                        ],
-                        "1.20833": [
-                            0.0,
-                            -90.0,
-                            0.0
-                        ]
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "0.83333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "1.08333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        },
+                        "1.20833": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
                     }
                 },
                 "left_point": {
                     "rotation": {
                         "0": [
-                            0.0,
-                            0.0,
+                            -0.0,
+                            -0.0,
                             20.0
                         ]
                     },
                     "position": {
                         "0": [
-                            0.0,
+                            -0.0,
                             0.0,
                             0.0
                         ],
-                        "0.5": [
-                            2.75,
-                            -7.5,
-                            0.0
-                        ]
+                        "0.5": {
+                            "vector": [
+                                -3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
                     },
                     "scale": [
                         1,
@@ -61,11 +76,13 @@
                     ]
                 },
                 "left_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
-                    ]
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
                 }
             }
         },
@@ -75,150 +92,63 @@
             "bones": {
                 "left_battery": {
                     "rotation": {
-                        "0": [
-                            0.0,
-                            -90.0,
-                            0.0
-                        ]
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
                     }
                 },
                 "left_point": {
                     "rotation": {
                         "0": [
-                            0.0,
-                            0.0,
+                            -0.0,
+                            -0.0,
                             20.0
                         ]
                     },
                     "position": {
-                        "0": [
-                            2.75,
-                            -7.5,
-                            0.0
-                        ]
+                        "0": {
+                            "vector": [
+                                -3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
                     },
                     "scale": [
                         1,
                         1,
                         1
                     ]
-                },
-                "left_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
-                    ]
-                }
-            }
         },
-        "left_opening": {
-            "animation_length": 1.29167,
-            "loop": "hold_on_last_frame",
-            "bones": {
-                "left_solutions": {
-                    "scale": {
-                        "0.04167": [
-                            1.0,
-                            0.0,
-                            1.0
-                        ],
-                        "0.54167": [
-                            1.0,
-                            0.0,
-                            1.0
-                        ],
-                        "1.29167": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ]
-                    }
-                },
-                "left_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "left_open": {
-            "animation_length": 0.5,
-            "loop": "hold_on_last_frame",
-            "bones": {
                 "left_solutions": {
                     "scale": {
                         "0": [
                             1.0,
-                            1.0,
-                            1.0
-                        ]
-                    }
-                },
-                "left_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "left_closing": {
-            "animation_length": 1.29167,
-            "loop": "hold_on_last_frame",
-            "bones": {
-                "left_solutions": {
-                    "scale": {
-                        "0.5": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "1.25": [
-                            1.0,
                             0.0,
                             1.0
                         ]
                     }
-                },
-                "left_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
                 }
             }
         },
-        "left_close": {
+        "left_idle": {
             "animation_length": 0.16667,
             "loop": "hold_on_last_frame",
             "bones": {
-                "left_solutions": {
+                "left_point": {
                     "scale": {
                         "0": [
-                            1.0,
                             0.0,
-                            1.0
+                            0.0,
+                            0.0
                         ]
-                    }
-                },
-                "left_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "slot_left_empty": {
-            "loop": true,
-            "bones": {
-                "left_point": {
+                    },
                     "position": [
                         0,
                         0,
@@ -228,25 +158,22 @@
                         0,
                         0,
                         0
-                    ],
-                    "scale": [
-                        0,
-                        0,
-                        0
                     ]
+        },
+                "left_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
                 },
                 "left_battery": {
                     "rotation": [
                         0,
                         0,
                         0
-                    ]
-                },
-                "left_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
                     ]
                 }
             }
@@ -258,51 +185,66 @@
                 "right_battery": {
                     "rotation": {
                         "0": [
-                            0.0,
-                            0.0,
+                            -0.0,
+                            -0.0,
                             0.0
                         ],
-                        "0.5": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "0.83333": [
-                            0.0,
-                            -55.0,
-                            0.0
-                        ],
-                        "1.08333": [
-                            0.0,
-                            -55.0,
-                            0.0
-                        ],
-                        "1.20833": [
-                            0.0,
-                            -90.0,
-                            0.0
-                        ]
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "0.83333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "1.08333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        },
+                        "1.20833": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
                     }
                 },
                 "right_point": {
                     "rotation": {
                         "0": [
-                            0.0,
-                            0.0,
+                            -0.0,
+                            -0.0,
                             -20.0
                         ]
                     },
                     "position": {
                         "0": [
-                            0.0,
+                            -0.0,
                             0.0,
                             0.0
                         ],
-                        "0.5": [
-                            -2.75,
-                            -7.5,
-                            0.0
-                        ]
+                        "0.5": {
+                            "vector": [
+                                3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
                     },
                     "scale": [
                         1,
@@ -311,11 +253,13 @@
                     ]
                 },
                 "right_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
-                    ]
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
                 }
             }
         },
@@ -325,27 +269,33 @@
             "bones": {
                 "right_battery": {
                     "rotation": {
-                        "0": [
-                            0.0,
-                            -90.0,
-                            0.0
-                        ]
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
                     }
                 },
                 "right_point": {
                     "rotation": {
                         "0": [
-                            0.0,
-                            0.0,
+                            -0.0,
+                            -0.0,
                             -20.0
                         ]
                     },
                     "position": {
-                        "0": [
-                            -2.75,
-                            -7.5,
-                            0.0
-                        ]
+                        "0": {
+                            "vector": [
+                                3.75,
+                                -10.5,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        }
                     },
                     "scale": [
                         1,
@@ -354,121 +304,28 @@
                     ]
                 },
                 "right_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
-                    ]
-                }
-            }
-        },
-        "right_opening": {
-            "animation_length": 1.29167,
-            "loop": "hold_on_last_frame",
-            "bones": {
-                "right_solutions": {
-                    "scale": {
-                        "0.04167": [
-                            1.0,
-                            0.0,
-                            1.0
-                        ],
-                        "0.54167": [
-                            1.0,
-                            0.0,
-                            1.0
-                        ],
-                        "1.29167": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ]
-                    }
-                },
-                "right_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "right_open": {
-            "animation_length": 0.5,
-            "loop": "hold_on_last_frame",
-            "bones": {
-                "right_solutions": {
                     "scale": {
                         "0": [
                             1.0,
-                            1.0,
-                            1.0
-                        ]
-                    }
-                },
-                "right_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "right_closing": {
-            "animation_length": 1.29167,
-            "loop": "hold_on_last_frame",
-            "bones": {
-                "right_solutions": {
-                    "scale": {
-                        "0.5": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "1.25": [
-                            1.0,
                             0.0,
                             1.0
                         ]
                     }
-                },
-                "right_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
                 }
             }
         },
-        "right_close": {
+        "right_idle": {
             "animation_length": 0.16667,
             "loop": "hold_on_last_frame",
             "bones": {
-                "right_solutions": {
+                "right_point": {
                     "scale": {
                         "0": [
-                            1.0,
                             0.0,
-                            1.0
+                            0.0,
+                            0.0
                         ]
-                    }
-                },
-                "right_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "slot_right_empty": {
-            "loop": true,
-            "bones": {
-                "right_point": {
+                    },
                     "position": [
                         0,
                         0,
@@ -478,25 +335,22 @@
                         0,
                         0,
                         0
-                    ],
-                    "scale": [
-                        0,
-                        0,
-                        0
                     ]
+        },
+                "right_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
                 },
                 "right_battery": {
                     "rotation": [
                         0,
                         0,
                         0
-                    ]
-                },
-                "right_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
                     ]
                 }
             }
@@ -508,51 +362,66 @@
                 "back_battery": {
                     "rotation": {
                         "0": [
-                            0.0,
-                            0.0,
+                            -0.0,
+                            -0.0,
                             0.0
                         ],
-                        "0.5": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "0.83333": [
-                            0.0,
-                            -55.0,
-                            0.0
-                        ],
-                        "1.08333": [
-                            0.0,
-                            -55.0,
-                            0.0
-                        ],
-                        "1.20833": [
-                            0.0,
-                            -90.0,
-                            0.0
-                        ]
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -0.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "0.83333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeInElastic"
+                        },
+                        "1.08333": {
+                            "vector": [
+                                -0.0,
+                                55.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        },
+                        "1.20833": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
                     }
                 },
                 "back_point": {
                     "rotation": {
                         "0": [
-                            20.0,
-                            0.0,
+                            -20.0,
+                            -0.0,
                             0.0
                         ]
                     },
                     "position": {
                         "0": [
-                            0.0,
+                            -0.0,
                             0.0,
                             0.0
                         ],
-                        "0.5": [
-                            0.0,
-                            -7.5,
-                            -2.75
-                        ]
+                        "0.5": {
+                            "vector": [
+                                -0.0,
+                                -10.5,
+                                -3.75
+                            ],
+                            "easing": "easeInElastic"
+                        }
                     },
                     "scale": [
                         1,
@@ -561,11 +430,13 @@
                     ]
                 },
                 "back_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
-                    ]
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
                 }
             }
         },
@@ -575,150 +446,63 @@
             "bones": {
                 "back_battery": {
                     "rotation": {
-                        "0": [
-                            0.0,
-                            -90.0,
-                            0.0
-                        ]
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                90.0,
+                                0.0
+                            ],
+                            "easing": "easeOutBack"
+                        }
                     }
                 },
                 "back_point": {
                     "rotation": {
                         "0": [
-                            20.0,
-                            0.0,
+                            -20.0,
+                            -0.0,
                             0.0
                         ]
                     },
                     "position": {
-                        "0": [
-                            0.0,
-                            -7.5,
-                            -2.75
-                        ]
+                        "0": {
+                            "vector": [
+                                -0.0,
+                                -10.5,
+                                -3.75
+                            ],
+                            "easing": "easeInElastic"
+                        }
                     },
                     "scale": [
                         1,
                         1,
                         1
                     ]
-                },
-                "back_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
-                    ]
-                }
-            }
         },
-        "back_opening": {
-            "animation_length": 1.29167,
-            "loop": "hold_on_last_frame",
-            "bones": {
                 "back_solutions": {
                     "scale": {
                         "0": [
                             1.0,
                             0.0,
                             1.0
-                        ],
-                        "0.5": [
-                            1.0,
-                            0.0,
-                            1.0
-                        ],
-                        "1.25": [
-                            1.0,
-                            1.0,
-                            1.0
                         ]
                     }
-                },
-                "back_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
                 }
             }
         },
-        "back_open": {
-            "animation_length": 0.5,
-            "loop": "hold_on_last_frame",
-            "bones": {
-                "back_solutions": {
-                    "scale": {
-                        "0": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ]
-                    }
-                },
-                "back_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "back_closing": {
-            "animation_length": 1.29167,
-            "loop": "hold_on_last_frame",
-            "bones": {
-                "back_solutions": {
-                    "scale": {
-                        "0.5": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "1.25": [
-                            1.0,
-                            0.0,
-                            1.0
-                        ]
-                    }
-                },
-                "back_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "back_close": {
+        "back_idle": {
             "animation_length": 0.16667,
             "loop": "hold_on_last_frame",
             "bones": {
-                "back_solutions": {
+                "back_point": {
                     "scale": {
                         "0": [
-                            1.0,
                             0.0,
-                            1.0
+                            0.0,
+                            0.0
                         ]
-                    }
-                },
-                "back_point": {
-                    "scale": [
-                        0,
-                        0,
-                        0
-                    ]
-                }
-            }
-        },
-        "slot_back_empty": {
-            "loop": true,
-            "bones": {
-                "back_point": {
+                    },
                     "position": [
                         0,
                         0,
@@ -728,25 +512,22 @@
                         0,
                         0,
                         0
-                    ],
-                    "scale": [
-                        0,
-                        0,
-                        0
                     ]
+        },
+                "back_solutions": {
+                    "scale": {
+                        "0": [
+                            1.0,
+                            0.0,
+                            1.0
+                        ]
+                    }
                 },
                 "back_battery": {
                     "rotation": [
                         0,
                         0,
                         0
-                    ]
-                },
-                "back_solutions": {
-                    "scale": [
-                        1,
-                        0,
-                        1
                     ]
                 }
             }

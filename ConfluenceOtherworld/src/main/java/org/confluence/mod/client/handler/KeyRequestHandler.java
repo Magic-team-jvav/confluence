@@ -14,6 +14,9 @@ public final class KeyRequestHandler {
     private static boolean keyMountDown = false;
 
     public static void handle() {
+        while (ModKeyBindings.QUICK_BUFF.get().consumeClick()) {
+            KeyRequestPacketC2S.requestQuickBuff();
+        }
         if (Minecraft.getInstance().isPaused()) return;
         if (ModKeyBindings.HEALING.get().isDown()) {
             if (!keyHealingDown) {

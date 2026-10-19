@@ -123,6 +123,14 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
+    public static final Lazy<KeyMapping> QUICK_BUFF = register(() -> new KeyMapping(
+            "key.confluence.quick_buff",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.UNKNOWN.getValue(),
+            KEY_BINDINGS_CATEGORY
+    ));
+
     public static final Lazy<KeyMapping> MANA = register(() -> new KeyMapping(
             "key.confluence.mana",
             KeyConflictContext.IN_GAME,

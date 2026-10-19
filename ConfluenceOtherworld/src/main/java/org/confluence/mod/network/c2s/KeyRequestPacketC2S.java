@@ -10,6 +10,7 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.item.potion.EffectPotionItem;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 
@@ -17,6 +18,7 @@ public record KeyRequestPacketC2S(byte key) implements IPacketC2S {
     public static final byte KEY_HEALING = 0;
     public static final byte KEY_MANA = 1;
     public static final byte KEY_CLAIRVOYANCE = 2; // 水晶球给予的灵视
+    public static final byte KEY_QUICK_BUFF = 3;
     public static final Type<KeyRequestPacketC2S> TYPE = Confluence.createType("key_request");
     public static final StreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = ByteBufCodecs.BYTE.map(KeyRequestPacketC2S::new, KeyRequestPacketC2S::key);
 
@@ -31,6 +33,8 @@ public record KeyRequestPacketC2S(byte key) implements IPacketC2S {
             HealingPotionItem.use(player);
         } else if (key == KEY_MANA) {
             ManaPotionItem.use(player);
+        } else if (key == KEY_QUICK_BUFF) {
+            EffectPotionItem.quickBuff(player);
         } else if (key == KEY_CLAIRVOYANCE) {
             player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
             ManaStorage.of(player).flushAbility(player);
@@ -43,6 +47,10 @@ public record KeyRequestPacketC2S(byte key) implements IPacketC2S {
 
     public static void requestMana() {
         PacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_MANA));
+    }
+
+    public static void requestQuickBuff() {
+        PacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_QUICK_BUFF));
     }
 
     public static void requestClairvoyance() {

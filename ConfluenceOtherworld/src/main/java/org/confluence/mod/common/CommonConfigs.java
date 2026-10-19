@@ -11,6 +11,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.*;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
 import org.confluence.mod.common.entity.npc.NPCAttackBlacklist;
 import org.confluence.mod.common.wind.WindMath;
@@ -119,6 +120,9 @@ public final class CommonConfigs {
 
     public static BooleanValue WRAPPED_CRIMSON_HEART;
     public static BooleanValue INSTANTLY_HARDMODE_CONVERSION;
+    public static IntValue CLENTAMINATOR_RANGE_CHUNKS;
+    public static IntValue TERRAFORMER_RANGE_CHUNKS;
+    public static BooleanValue ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION;
 
     public static BooleanValue CONVERT_ARS_NOUVEAU_MANA;
     public static BooleanValue CONVERT_IRONS_SPELL_MANA;
@@ -385,7 +389,13 @@ public final class CommonConfigs {
         }
         {
             builder.push("WorldRules");
+            ENVIRONMENTAL_MACHINE_MIXED_EXPLOSION = builder.comment("Allow explosions and terrain contamination when starting a machine with mixed solutions.")
+                    .define("environmentalMachineMixedExplosion", true);
             INSTANTLY_HARDMODE_CONVERSION = builder.define("instantlyHardmodeConversion", false);
+            CLENTAMINATOR_RANGE_CHUNKS = builder.comment("Maintained square side length in chunks. Independent of the Terraformer.")
+                    .defineInRange("clentaminatorRangeChunks", EnvironmentalMachines.DEFAULT_CLENTAMINATOR_RANGE_CHUNKS, EnvironmentalMachines.MIN_RANGE_CHUNKS, EnvironmentalMachines.MAX_RANGE_CHUNKS);
+            TERRAFORMER_RANGE_CHUNKS = builder.comment("Maintained square side length in chunks. Independent of the Clentaminator.")
+                    .defineInRange("terraformerRangeChunks", EnvironmentalMachines.DEFAULT_TERRAFORMER_RANGE_CHUNKS, EnvironmentalMachines.MIN_RANGE_CHUNKS, EnvironmentalMachines.MAX_RANGE_CHUNKS);
             builder.pop();
         }
         {

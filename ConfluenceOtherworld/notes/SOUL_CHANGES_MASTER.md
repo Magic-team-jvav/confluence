@@ -12,7 +12,7 @@
 
 ## 0. 一句话总览
 
-十一批改动，全部围绕既有魂师框架扩展，没有另起并行体系：
+十一批改动 + 一次收尾补丁，全部围绕既有魂师框架扩展，没有另起并行体系：
 
 | # | 批次 | 新增 | 主要落点 |
 | --- | --- | --- | --- |
@@ -27,6 +27,7 @@
 | 9 | 五件饰品 | 灵魂手环家族 3 件 + 刻骨的记忆 + 灵魂徽章（配方/掉落/提示） | `AccessoryItems` / 配方 / 战利品 / lang |
 | 10 | 饰品分组 | 5 件新饰品归入饰品页签的**战斗**组 | `ModEvents` |
 | 11 | 弹幕调参 | 引魂弹幕速度降低 1/3 | `SoulSkillParameters` |
+| 12 | 收尾补丁 | 补 `white_pumpkin_set` 套装键；灵魂再生手环接上生命回复 | `ModArmorBonus` / `BandOfSoulRegeneration` |
 
 ---
 
@@ -294,13 +295,13 @@ if (isSoulBookLearned(player, SoulBooks.PSYCHOPOMP) && stack.getSoulSkill().is(M
 | `phantom_set` | 1 | 收魂 **+1**；夜间再 **+2** | `soulDropBonus` |
 | `blue_hermit_set` | 1 | 每累计消耗 **10** 灵魂，耐药性剩余时长 **-3 秒** | `SoulStorage.consumedSoul` + `PlayerUtils.onSoulSpent` |
 | `souldancer_robe_set` | 2 | 收魂后 **10 秒**：暴击 +8%（ADD_VALUE）、移速 +7%、受伤 -7% | `SoulStorage.souldancerBuffEnd` + `tickSoulArmorSets` / `souldancerDamageReduction` |
-| `white_pumpkin_set` | — | 近战暴击回复 **3** 点灵魂 | `processCriticalDamage` + `isWearingWhitePumpkinSet` |
+| `white_pumpkin_set` | 1 | 近战暴击回复 **3** 点灵魂 | `processCriticalDamage` + `isWearingWhitePumpkinSet` |
 
 要点：
 
 - 蓝隐匿者的"累计消耗"存**余量**（`consumedSoul` 只保留不足 10 的部分），跨刻累加不丢；
 - 魂舞增益用**游戏刻结束时间**判定，`tickSoulArmorSets` 每刻 `addOrUpdateTransientModifier`，到期 `removeModifier`，不写永久属性；
-- 白南瓜走手动 4 件判定，与 `ModArmorBonus` 无关（见 §10 风险 3）。
+- 白南瓜的套装键 `white_pumpkin_set` 与 `blue_hermit_set` / `souldancer_robe_set` 一样**只用于套装识别与说明行**（`register` 的 consumer 为空），实际回魂在 `processCriticalDamage` 里按四件判定结算。原先漏了这条注册，说明行不会显示，已补（见 §14.1）。
 
 ---
 
@@ -330,7 +331,7 @@ public static final ValueType.UnitType MEMORY$OF$BONEBRAND = ValueType.ofUnit("m
 | 物品 | ID | 稀有度 | 属性/标记 |
 | --- | --- | --- | --- |
 | 灵魂手环 | `band_of_soul` | BLUE | `BAND$OF$SOUL`（每 3 秒 +1 灵魂） |
-| 灵魂再生手环 | `band_of_soul_regeneration` | GREEN | `BAND$OF$SOUL` |
+| 灵魂再生手环 | `band_of_soul_regeneration` | GREEN | `BAND$OF$SOUL` + 每秒 0.2 生命（`BandOfSoulRegeneration`） |
 | 通灵手环 | `band_of_mediumship` | GREEN | `ADDITIONAL_SOUL +20`（ADD_VALUE）+ `BAND$OF$SOUL` |
 | 刻骨的记忆 | `memory_of_bonebrand` | PURPLE | `MEMORY$OF$BONEBRAND`（无武器也能施法） |
 | 灵魂徽章 | `soulcerer_emblem` | LIGHT_RED | `getSoulDamage() +12%`（ADD_MULTIPLIED_TOTAL），`noTooltip` |
@@ -347,6 +348,26 @@ if (TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL) && gameTime % 60 == 0 &
 ```
 
 挂在原有的"每秒一次"入口里，用 `(gameTime / 60) % 3` 做 3 秒节拍；数值 `BAND_OF_SOUL_RECOVERY = 1.0F`。
+
+### 9.2b 生命回复逻辑（`BandOfSoulRegeneration`）
+
+灵魂再生手环的名字里有"再生"，因此额外带一份缓慢回血，做法与泰拉瑞亚再生手环完全一致——**在物品的 `curioTick` 里调 MagicLib 的每秒节拍**，不自己计时：
+
+```java
+public class BandOfSoulRegeneration extends BaseCurioItem {
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        super.curioTick(slotContext, stack);
+        if (slotContext.entity() instanceof ServerPlayer player) {
+            LibEffects.healPerSecond(player, SoulSkillParameters.BAND_OF_SOUL_REGENERATION_HEAL_PER_SECOND);
+        }
+    }
+}
+```
+
+- 注册从 `registerCurio` 改为 `registerDirectly(... new BandOfSoulRegeneration(BaseCurioItem.builder(name)...))`，物品 ID、稀有度、`BAND$OF$SOUL` 标记、语言产出全部不变；
+- 速率 `BAND_OF_SOUL_REGENERATION_HEAL_PER_SECOND = 0.2F`（每秒 0.2 点 = 每 5 秒 1 点），与 `TCItems.BAND_OF_REGENERATION` 同档；
+- 只在服务端结算（`ServerPlayer` 判定），且与灵魂模式无关——不开灵魂模式也照常回血。
 
 ### 9.3 刻骨的记忆
 
@@ -452,6 +473,7 @@ public static final float SOUL_LURE_SPEED = 1.6F * 2.0F / 3.0F;
 | `SOULDANCER_BUFF_DURATION_TICKS` | 200 | 魂舞增益时长 |
 | `SOULDANCER_CRIT_BONUS / SPEED_BONUS / DAMAGE_REDUCTION` | 0.08 / 0.07 / 0.07 | 魂舞三效果 |
 | `BAND_OF_SOUL_RECOVERY` | 1.0 | 手环每次回复量（每 3 秒） |
+| `BAND_OF_SOUL_REGENERATION_HEAL_PER_SECOND` | 0.2 | 灵魂再生手环每秒回血 |
 
 ---
 
@@ -481,16 +503,27 @@ public static final float SOUL_LURE_SPEED = 1.6F * 2.0F / 3.0F;
 
 ## 14. 未完成与风险
 
+### 14.1 已补齐的两处缺失
+
+1. **白南瓜套装说明行**：`ModArmorBonus` 补上 `register("white_pumpkin_set", 1, WHITE_PUMPKIN_HELMET, …, key -> {})`。与 `blue_hermit_set` / `souldancer_robe_set` 同款——consumer 为空，只做套装识别 + 占位说明行；效果本身仍在 `LivingEntityEvents.processCriticalDamage` 按四件判定。补完后 `armor_set_bonus.confluence.white_pumpkin_set.0`（「近战暴击会回复3点灵魂值」）能正常显示。
+2. **灵魂再生手环的回血**：新增 `common/item/accessory/BandOfSoulRegeneration`，在 `curioTick` 里调 `LibEffects.healPerSecond(player, 0.2F)`；注册从 `registerCurio` 换成 `registerDirectly`（物品 ID / 稀有度 / `BAND$OF$SOUL` 标记 / 语言产出全部不变），数值进 `SoulSkillParameters.BAND_OF_SOUL_REGENERATION_HEAL_PER_SECOND`。详见 §9.2b。
+
+两处补完后 `compileJava` 与 `runData` 均 BUILD SUCCESSFUL。
+
+3. **`soul_sting` 渲染器**：`SoulStingProjectileRenderer`（自然之惩戒毒刺，复用黄蜂毒刺模型）此前**只建了类、从未注册**，导致毒刺不可见。已在 `ModClientEvents` 补 `event.registerEntityRenderer(SOUL_STING.get(), SoulStingProjectileRenderer::new)`，1.20.1 侧同步补齐。
+
+4. **1.20.1 移植完成**：1.20.1 侧的本批内容（魂灯、书、祈灵之刃、6 套套装、5 件饰品、指令、创造栏、数据生成、客户端）已全部补齐并 `compileJava` + `runData` 双绿，细节见 `confluence-1.20.1/ConfluenceOtherworld/notes/SOUL_PORT_HANDOVER.md`。1.20.1 用 `BindSoulSkillFunction` 代替 1.20.1 不存在的 `SetComponentsFunction`，书池写入的是**书籍 ID**（此前写成技能 ID，掉出的是查不到定义的坏书，已修）。
+
+### 14.2 仍未完成与风险
+
 | # | 项 | 说明 |
 | --- | --- | --- |
 | 1 | `go_over` 图标是占位 | `textures/mob_effect/go_over.png` 为 `enhanced_soul.png` 的字节复制，待正式美术替换 |
 | 2 | `firmament_reversed` 是原型 | 只注册 + 解锁，没有 `use` 效果 |
-| 3 | `white_pumpkin_set` 未注册套装键 | `ArmorBonusLanguageSubProvider` 有 `armor_set_bonus.confluence.white_pumpkin_set.0`（已从"回复 1 点"改为"3 点"），但 `ModArmorBonus` 里**没有** `register("white_pumpkin_set", ...)` → 该说明行不会显示；实际效果靠 `PlayerUtils.isWearingWhitePumpkinSet` 手动判定，**功能可用，tooltip 缺失** |
-| 4 | 灵魂再生手环只实现了灵魂回复 | 提示写"回复灵魂和生命"，但物品只带 `BAND$OF$SOUL` 标记，**生命回复尚未接线**（配方消耗了 `BAND_OF_REGENERATION`） |
-| 5 | 中文名撞车 | `soulcerer_skill.soul_surge` 与 `soulcerer_skill.spirit_surge` 中文都是「灵魂激荡」（ID 不同，无功能冲突） |
-| 6 | 松露灯无获取途径 | 仅注册 + 创造栏 |
-| 7 | 未游戏实测 | 施法、书皮切换、复习刷新、贯穿手感、套装触发、饰品分组排序、弹幕速度均为逻辑层完成 |
-| 8 | 旧记录未同步 | `notes/SOUL_DEVELOPMENT.md`、`notes/SOUL_PLAN.md` 未包含本批内容；`i18n/{zh_cn,en_us}.json` 是更早的对照快照，仍写「白南瓜：回复 1 点灵魂」等旧值 |
+| 3 | 中文名撞车 | `soulcerer_skill.soul_surge` 与 `soulcerer_skill.spirit_surge` 中文都是「灵魂激荡」（ID 不同，无功能冲突） |
+| 4 | 松露灯无获取途径 | 仅注册 + 创造栏 |
+| 5 | 未游戏实测 | 施法、书皮切换、复习刷新、贯穿手感、套装触发、饰品分组排序、弹幕速度均为逻辑层完成 |
+| 6 | 旧记录未同步 | `notes/SOUL_DEVELOPMENT.md`、`notes/SOUL_PLAN.md` 未包含本批内容；`i18n/{zh_cn,en_us}.json` 是更早的对照快照，仍写「白南瓜：回复 1 点灵魂」等旧值 |
 | 9 | 1.20.1 完全未改 | 该版本缺 `SoulStorage`/`SoulSkillStorage`、6 个灵魂事件、6 个灵魂包、全部灵魂物品/实体/效果，以及 Magic-Lib 的 `SOUL_DAMAGE` / `ADDITIONAL_SOUL` / `soul_overdraft` 伤害类型；同步时按本文逐项移植 |
 
 ---
@@ -502,6 +535,7 @@ public static final float SOUL_LURE_SPEED = 1.6F * 2.0F / 3.0F;
 ### 15.1 新增（Java）
 
 - `common/effect/soulcerer/GoOverEffect.java`
+- `common/item/accessory/BandOfSoulRegeneration.java`（灵魂再生手环的回血实现）
 - `common/item/soulcerer/SoulBooks.java`
 - `common/item/soulcerer/SoulLanternItem.java`
 - `common/item/soulcerer/SoulKnifeItem.java`（祈灵之刃，类名沿用旧称）
@@ -544,8 +578,8 @@ public static final float SOUL_LURE_SPEED = 1.6F * 2.0F / 3.0F;
 | `common/init/ModTabs.java` | 1/3/5（主武器、副武器、技能书组） |
 | `common/init/ModTags.java` | 3（`SOUL_LURE` 标签键） |
 | `common/init/ModVillagers.java` | 3（天师 3 级交易） |
-| `common/init/armor/ModArmorBonus.java` | 7（`SOUL$DROP`、5 个套装键） |
-| `common/init/item/AccessoryItems.java` | 9（2 个值类型 + 5 件饰品） |
+| `common/init/armor/ModArmorBonus.java` | 7/14（`SOUL$DROP`、6 个套装键含白南瓜） |
+| `common/init/item/AccessoryItems.java` | 9/14（2 个值类型 + 5 件饰品，再生手环改 `registerDirectly`） |
 | `common/init/item/ArmorItems.java` | 7/8（7 套逐件数值） |
 | `common/init/item/SoulItems.java` | 1/5（8 魂灯、祈灵之刃、首得映射、`soulBook`） |
 | `common/item/soulcerer/SoulSkillBookItem.java` | 3/4（使用逻辑、名称、tooltip） |
@@ -587,5 +621,129 @@ public static final float SOUL_LURE_SPEED = 1.6F * 2.0F / 3.0F;
 | 9 饰品 | BUILD SUCCESSFUL | BUILD SUCCESSFUL |
 | 10 饰品分组 | BUILD SUCCESSFUL（仅代码） | — |
 | 11 弹幕速度 | BUILD SUCCESSFUL（仅代码） | — |
+| 14 收尾补丁（白南瓜套装键 + 手环回血） | BUILD SUCCESSFUL | BUILD SUCCESSFUL |
 
 注：PowerShell 调用 `gradlew` 时 stderr 的“过时 API”提示会让包装进程回传 exit 1，判定以输出中的 `BUILD SUCCESSFUL` 为准。
+---
+
+## 17. 全技能实装与仪式系统（本次批次）
+
+### 17.1 技能总表（31 项，含空技能）
+
+| 中文 | ID | 类型 | 机制要点 | 解锁 |
+| --- | --- | --- | --- | --- |
+| 引魂 | `soul_lure` | 主动 | 单体灵魂弹幕（粒子风暴 `confluence:soul_projectile`） | 初始 |
+| 强力附魂 | `enhanced_soul` | 附魂 | 同名增益，灵魂伤害 ×5，5 秒 | 初始 |
+| 灵魂激荡 | `spirit_surge` | 主动 | 以自身为中心的扩散冲击波 | 技能书【灵魂激荡】 |
+| 灵魂激荡冲击 | `surge_blast` | 主动 | 每 3 次激荡追加半径 8 的终极爆炸 | 技能书【收割者】（需先学灵魂激荡） |
+| 血怒 | `blood_rage` | 附魂 | 扣 20% 生命换近战/远程 +40%，期间击杀 +1 魂 | 技能书【血与世界之怒】 |
+| 强力引魂 | `enhanced_lure` | 主动 | 引魂强化弹幕，基础伤害 8 | 仪式 1 |
+| 附魂印记 | `soul_mark` | 主动 | 弹幕 + 同步获得强力附魂同时长增益 | 仪式 1 |
+| 附魂激荡 | `soul_surge` | 被动 | 强力附魂期间每 3 秒自动释放一次灵魂激荡 | 仪式 1（需先学灵魂激荡） |
+| 引魂激荡 | `lure_surge` | 主动 | 弹幕命中引发半径 3 爆炸 | 仪式 1（需先学灵魂激荡） |
+| 强力激荡 | `empowered_surge` | 主动 | 与灵魂激荡同机制，半径 8、伤害 12 | 仪式 1（需先学灵魂激荡） |
+| 灵魂引发 | `spirit_trigger` | 主动 | 激荡命中后从目标位置射 6 道连锁弹幕 | 仪式 1（需先学灵魂激荡） |
+| 灵魂透支 | `soul_drain` | 附魂 | 8 秒不耗魂，结束后 15 秒无法使用主武器 | 仪式 1 |
+| 星魂逆转 | `star_reversal` | 被动 | 魔力/灵魂转化不再清空双方（转化入口待实现） | 仪式 2 |
+| 星魂联结 | `star_link` | 被动 | 灵魂伤害共用 50% 魔法伤害加成 | 仪式 2 |
+| 代行收割 | `soul_harvest` | 被动 | 召唤物命中 5% 概率回 1 魂 | 仪式 2 |
+| 灵魂枪手 | `soul_gunner` | 主动 | 灵魂 1:1 换子弹（上限 10），命中 20% 回魂 | 仪式 3 |
+| 噬魂提气 | `soul_devour` | 被动 | 召唤物攻击耗 1 魂，该次伤害 +50% | 仪式 3 |
+| 诅咒抵抗 | `curse_resistance` | 被动 | 生命代偿伤害 -60% | 仪式 4 |
+| 分流管控 | `flow_control` | 被动 | 技能伤害 ×2，冷却 ×1.5 | 仪式 4 |
+| 术式轮转 | `spell_rotation` | 被动 | 施法后自动切到下一个可主动释放的技能 | 仪式 4 |
+| 生命归还 | `life_return` | 附魂 | 记录期间失去的生命，结束按 70% 转灵魂 | 仪式 4 |
+| 魂引天星 | `star_call` | 附魂 | 持续 8 秒，每 0.5 秒 1 魂换一颗坠星，20% 回魂 | 手持【星魄】 |
+| 迷魂孢雾 | `confuse_spores` | 主动 | 8 枚小型孢子弹幕，从上方飘落 | 手持【松露灯】 |
+| 自然法则 | `law_of_nature` | 被动 | 20% 概率不消耗灵魂 | 首次获得【生机灿烂】 |
+| 自然之惩戒 | `natures_wrath` | 主动 | 5 枚扇形毒刺，命中中毒 | 手持【生机灿烂】 |
+| 灭却业火 | `karma_flame` | 主动 | 消耗全部灵魂，处决生命低于消耗量的目标 | 手持【无分昼夜】 |
+| 亵渎之魂 | `profane_soul` | 主动 | 从地面钻出火球，命中半径 2.5 爆炸 | 手持【无分昼夜】 |
+| 掠夺之魂 | `soul_plunder` | 附魂 | 近战/远程 +25%，15 秒 | 手持【劫掠之火】 |
+| 血液沸腾 | `boiling_blood` | 附魂 | 耗 80% 灵魂，下一次近战 ×5 后移除增益 | 技能书【劫掠之道】 |
+| 天穹倒转 | `firmament_reversed` | 附魂 | 10 秒内摔落伤害改为等量回复 | 技能书【天穹倒转】 |
+| 求生欲 | `survival_instinct` | 主动 | 血量 <40 且耐药性时，耗 10 魂把时长减半 | 手持【残破微光】 |
+
+七个新英文 ID（原先只有中文名的技能）：`soul_harvest` 代行收割、`soul_gunner` 灵魂枪手、`soul_devour` 噬魂提气、`curse_resistance` 诅咒抵抗、`flow_control` 分流管控、`spell_rotation` 术式轮转、`life_return` 生命归还。
+
+### 17.2 弹幕与外观复用
+
+| 技能族 | 实现 | 外观来源 |
+| --- | --- | --- |
+| 引魂 / 强力引魂 / 附魂印记 / 引魂激荡 / 灵魂枪手 / 灵魂引发连锁 | `SoulLureProjectile`（新增可配置构造：特效、速度、重力、射程、命中半径、范围伤害） | 粒子风暴 `confluence:soul_projectile` |
+| 迷魂孢雾 | 同上（重力 + 上方生成） | 粒子风暴 `confluence:spore_cloud` |
+| 魂引天星 | 同上（向下发射） | 粒子风暴 `confluence:falling_star` |
+| 亵渎之魂 | 同上（从地面向上发射 + 命中爆炸） | 粒子风暴 `confluence:ball_of_fire`（火焰花同款） |
+| 自然之惩戒 | 新实体 `SoulStingProjectile` | **复用黄蜂毒刺模型**（同一份 `createBodyLayer` 与 `stinger.png`） |
+| 灵魂激荡系列 | `SpiritSurgeEntity`（半径/时长/连锁参数化） | 原版灵魂粒子环 |
+
+### 17.3 附魂标签与同名药水效果
+
+- 新标签：`confluence:soul_attach`（附魂，10 员）与 `confluence:passive`（被动，9 员），生成源 `ModSoulSkillTagsProvider`。
+- 新效果（与技能同名、图标同为技能图标）：`blood_rage`、`soul_plunder`、`soul_drain`、`soul_drain_lock`、`star_call`、`life_return`、`firmament_reversed`、`boiling_blood`。
+- 属性的部分写在效果里（`addAttributeModifier`），需要跨刻数据的存在 `SoulStorage`（`surgeBlastCharge` / `lifeReturnLost` / `soulDrainActive` / `lifeReturnActive`）。
+
+### 17.4 仪式系统
+
+| 项 | 实现 |
+| --- | --- |
+| 数据 | `SoulStorage.ritualCount`（NBT + 同步），`getMaxSoul()` 追加 `ritualCount × 30` |
+| 上限 | `SoulSkillParameters.SOUL_PER_RITUAL = 30`、`MAX_RITUAL_COUNT = 6` |
+| 指令 | `/confluence soulSkill ritual <0..6>`，降低次数会同步压低灵魂上限并收拢当前值 |
+| 自动解锁 | `PlayerUtils.RITUAL_UNLOCKS` 表：`(仪式次数, 前置技能, 目标技能)`，每次变化后重跑 |
+| 文案 | 提升时动作条 `message.confluence.soul_ritual.activate`（「你唤醒了世界上的古老之魂...」），解锁时 `message.confluence.soul_ritual.unlock` |
+| 触发入口 | **本轮未接**（按需求只做数据层与指令），后续挂方块或 Boss 首杀时调 `PlayerUtils.setSoulRitualCount` 即可 |
+
+### 17.5 图标
+
+- 8 个新技能的图标暂用问号占位，文件名仍是技能 ID（`hud/soulcerer_skill/<id>.png`），美术直接覆盖同名文件即可：`firmament_reversed`、`soul_harvest`、`soul_gunner`、`soul_devour`、`curse_resistance`、`flow_control`、`spell_rotation`、`life_return`。
+- 8 个药水效果图标由技能图标复制（`textures/mob_effect/<id>.png`），换成正式图时两处同步。
+
+### 17.6 本轮仍缺的实现
+
+1. `star_reversal`：`convertManaToSoul` / `convertSoulToMana` 仍是空实现（「兑换比例尚未定义」），被动已注册但暂时没有可作用的对象。
+2. `star_link` 只实现灵魂侧（共用 50% 魔法加成）；魔法伤害侧需要 MagicLib 的伤害分支，未接线。
+3. 仪式触发入口未接（见 17.4）。
+4. 技能书映射调整：书 `soul_surge`（名称「灵魂激荡」）现在解锁 `spirit_surge`，收割者前置改为 `spirit_surge`，与技能表一致。
+5. 全部技能仍未做游戏内实测。
+### 17.7 创造模式豁免
+
+创造模式（以及任何带无限材料的玩家）使用灵魂技能**不消耗灵魂**：
+
+- 判定统一放在 `PlayerUtils.prepareSoulConsumption`：事件 `SoulConsumeEvent` 仍照常发出，之后若 `player.isCreative() || player.hasInfiniteMaterials()` 直接返回 0（既不扣魂，也不结算生命代偿）。
+- 技能、法器、套装被动里“把全部/部分灵魂当消耗”的技能（灭却业火、灵魂枪手、血液沸腾、魂引天星逐颗扣魂）都走这一个入口，因此一次性全部豁免。
+- 灭却业火 / 灵魂枪手 / 血液沸腾的 `canUse` 额外放行创造模式，避免灵魂为 0 时连施法都被拦。
+- 冷却与施法流程不变：创造模式仍然要走冷却与前端判定，只是不扣资源。
+### 17.8 附魂统一时长与强力附魂数值调整
+
+| 项 | 调整 |
+| --- | --- |
+| 附魂系列增益时长 | 全部统一为 **15 秒**（`SOUL_BUFF_DURATION_TICKS`） |
+| 附魂系列冷却 | 全部统一为 **15 秒**（`SOUL_BUFF_COOLDOWN_TICKS`） |
+| 强力附魂效果 | 由「灵魂伤害 ×5（+400%）」改为 **灵魂伤害 +12%**（`ENHANCED_SOUL_DAMAGE_BONUS = 0.12F`，`ADD_MULTIPLIED_TOTAL`） |
+
+受影响的技能（时长与冷却现在都指向同一对常量，后续调整只改这两行）：
+
+| 技能 | 旧时长 / 旧冷却 | 新时长 / 新冷却 |
+| --- | --- | --- |
+| 强力附魂 `enhanced_soul` | 5s / 1s | 15s / 15s |
+| 附魂印记 `soul_mark`（附带强力附魂） | 5s / 2s | 15s / 15s |
+| 血怒 `blood_rage` | 20s / 30s | 15s / 15s |
+| 掠夺之魂 `soul_plunder` | 15s / 20s | 15s / 15s |
+| 灵魂透支 `soul_drain` | 8s / 60s | 15s / 15s |
+| 魂引天星 `star_call` | 8s / 30s | 15s / 15s |
+| 血液沸腾 `boiling_blood` | 10s / 20s | 15s / 15s |
+| 生命归还 `life_return` | 10s / 40s | 15s / 15s |
+| 天穹倒转 `firmament_reversed` | 10s / 30s | 15s / 15s |
+
+附魂激荡 `soul_surge` 是被动自动触发，没有自身增益与冷却，不受影响。
+
+文案同步：技能说明改为「灵魂伤害提高12%，持续15秒。」，并新增效果说明 `tooltip.effect.confluence.enhanced_soul.0`（「灵魂伤害提高12%」）。
+### 17.9 仪式解锁技能栏位
+
+第 1 / 3 / 5 次仪式各解锁一个技能栏位，栏位数 3 → 4 → 5 → 6：
+
+- 派生规则：`PlayerUtils.getRitualSlotCount(ritualCount)`（阈值表 `RITUAL_SLOT_UNLOCKS = {1, 3, 5}`，上限 `SoulSkillStorage.MAX_EQUIPPED_SOUL_SKILL_COUNT = 6`）。
+- 生效时机：`PlayerUtils.setSoulRitualCount` 里每次仪式次数变化都重算一次栏位；次数提高且超过 3 时动作条提示「古老之力拓宽了你的灵魂栏位：%s」。
+- 次数的提高与回退是对称的：`/confluence soulSkill ritual 0` 会把栏位退回 3（多出的栏位内容被裁掉，原逻辑与 `slots` 指令共用 `setSoulSkillSlotCount`）。
+- `/confluence soulSkill slots <3..6>` 仍然保留，作为手动覆盖；下一次仪式次数变化会按仪式进度重算。

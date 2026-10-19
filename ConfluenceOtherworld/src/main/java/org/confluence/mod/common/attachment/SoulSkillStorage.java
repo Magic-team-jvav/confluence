@@ -37,6 +37,8 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     private static final String TEMPORARY_SKILLS_TAG = "temporarySkills";
     private static final String AVAILABLE_SKILLS_TAG = "availableSkills";
     private static final String LEARNED_SOUL_BOOKS_TAG = "learnedSoulBooks";
+    /// 刻骨的记忆当前放行的技能；空字符串表示还没有选。
+    private static final String MEMORY_OF_BONEBRAND_TAG = "memoryOfBonebrandSkill";
 
     private int equippedSkillMaxNumber = DEFAULT_EQUIPPED_SOUL_SKILL_COUNT;
     private int currentIndex = 0;
@@ -46,6 +48,8 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     private final Set<ResourceLocation> temporarySkills = new HashSet<>();
     private final Set<ResourceLocation> availableSkills = new HashSet<>();
     private final Set<ResourceLocation> learnedSoulBooks = new HashSet<>();
+    /// 刻骨的记忆：一次只放行一个“只由武器临时提供”的技能，使用技能后重掷。
+    private @Nullable ResourceLocation memoryOfBonebrandSkill;
 
     public SoulSkillStorage() {
         for (int i = 0; i < equippedSkillMaxNumber; i++) {
@@ -91,6 +95,9 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
         }
         nbt.put(SKILL_COOLDOWNS_TAG, cooldowns);
         nbt.put(LEARNED_SOUL_BOOKS_TAG, serializeSkillIds(learnedSoulBooks));
+        if (memoryOfBonebrandSkill != null) {
+            nbt.putString(MEMORY_OF_BONEBRAND_TAG, memoryOfBonebrandSkill.toString());
+        }
         return nbt;
     }
 
@@ -147,6 +154,8 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
         temporarySkills.clear();
         availableSkills.clear();
         deserializeSkillIds(nbt.getList(LEARNED_SOUL_BOOKS_TAG, Tag.TAG_STRING), learnedSoulBooks);
+        memoryOfBonebrandSkill = nbt.contains(MEMORY_OF_BONEBRAND_TAG, Tag.TAG_STRING)
+                ? ResourceLocation.tryParse(nbt.getString(MEMORY_OF_BONEBRAND_TAG)) : null;
     }
 
     /// 同步技能状态及临时可用性，不包含当前索引。
@@ -205,6 +214,16 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     /// 登记一本被动技能书，已登记时返回 false。
     public boolean learnSoulBook(ResourceLocation bookId) {
         return learnedSoulBooks.add(bookId);
+    }
+
+    /// 刻骨的记忆当前放行的技能 ID；null 表示没有（未佩戴饰品或没有候选）。
+    @Nullable
+    public ResourceLocation getMemoryOfBonebrandSkill() {
+        return memoryOfBonebrandSkill;
+    }
+
+    public void setMemoryOfBonebrandSkill(@Nullable ResourceLocation skillId) {
+        this.memoryOfBonebrandSkill = skillId;
     }
 
     public int getEquippedSoulSkillMaxNumber() {

@@ -375,9 +375,9 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.soulcererQuickSkillStyle.ROULETTE_WHEEL_BIG", "Big Roulette Wheel", "大转盘");
         language.add("confluence.configuration.soulcererQuickSkillStyle.ROULETTE_WHEEL_SMALL", "Small Roulette Wheel", "小转盘");
         language.add("confluence.configuration.soulStyle", "Soul Style", "灵魂值样式");
-        language.add("confluence.configuration.soulStyle.legacy", "Soul Style: Elegant", "灵魂值样式:叠加");
+        language.add("confluence.configuration.soulStyle.legacy", "Soul Style: Elegant", "灵魂值样式:精致");
         language.add("confluence.configuration.soulStyle.overlay", "Soul Style: Overlay", "灵魂值样式:叠加");
-        language.add("confluence.configuration.soulStyle.tooltip", "Soul Style", "灵魂样式");
+        language.add("confluence.configuration.soulStyle.tooltip", "Soul Style", "灵魂值样式");
         language.add("confluence.configuration.soulcererBackgroundContrast", "Background Contrast", "背景对比度");
         language.add("confluence.configuration.soulcererBackgroundContrast.tooltip", "Set the contrast of the interface background.", "设置界面背景的对比度。");
         language.add("confluence.configuration.soulcererBackgroundHue", "Background Hue", "背景色相");

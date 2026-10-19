@@ -17,6 +17,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -45,6 +46,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.SoulCollectionEvent;
 import org.confluence.mod.api.event.SoulOverdraftEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
+import org.confluence.mod.api.item.ISoulBow;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
@@ -301,6 +303,28 @@ public final class LivingEntityEvents {
         }
     }
 
+    /// 灵魂短弓 / 灵魂弓：当前灵魂高于阈值时，由它射出的箭矢额外提升伤害。
+    @SubscribeEvent
+    public static void soulBowBonusDamage(LivingIncomingDamageEvent event) {
+        if (!(event.getSource().getDirectEntity() instanceof AbstractArrow arrow)
+                || !(arrow.getOwner() instanceof ServerPlayer player)
+                || !(ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem()))) {
+            return;
+        }
+        if (PlayerUtils.getSoul(player) > SoulSkillParameters.SOUL_BOW_SOUL_THRESHOLD) {
+            event.setAmount(event.getAmount() + SoulSkillParameters.SOUL_BOW_DAMAGE_BONUS);
+        }
+    }
+
+    /// 灵魂短弓 / 灵魂弓：用它击杀的敌怪额外收取灵魂。
+    @SubscribeEvent
+    public static void soulBowExtraSoul(SoulCollectionEvent event) {
+        Player player = event.getEntity();
+        if (ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem())) {
+            event.setAmount(event.getAmount() + SoulSkillParameters.SOUL_BOW_KILL_SOUL_BONUS);
+        }
+    }
+
     /// 逐灵全套：当前灵魂高于阈值时造成的伤害提高。
     @SubscribeEvent
     public static void seekerSetDamage(LivingIncomingDamageEvent event) {
@@ -345,11 +369,11 @@ public final class LivingEntityEvents {
         if (direct == owner || event.getEntity() == owner) {
             return;
         }
-        if (PlayerUtils.isSoulSkillLearned(owner, ModSoulSkills.SOUL_DEVOUR.get().getId())
+        if (PlayerUtils.isPassiveSoulSkillActive(owner, ModSoulSkills.SOUL_DEVOUR.get())
                 && PlayerUtils.consumeSoul(owner, SoulSkillParameters.SOUL_DEVOUR_SOUL_COST)) {
             event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.SOUL_DEVOUR_DAMAGE_BONUS));
         }
-        if (PlayerUtils.isSoulSkillLearned(owner, ModSoulSkills.SOUL_HARVEST.get().getId())
+        if (PlayerUtils.isPassiveSoulSkillActive(owner, ModSoulSkills.SOUL_HARVEST.get())
                 && owner.getRandom().nextFloat() < SoulSkillParameters.SOUL_HARVEST_CHANCE) {
             PlayerUtils.adjustSoul(owner, SoulSkillParameters.SOUL_HARVEST_SOUL);
         }

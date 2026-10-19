@@ -805,6 +805,7 @@ public final class ModTabs {
                         storage.accept(TFBlocks.TRASH_CAN);
 
                         CreativeModeTab.Output souls = GroupItem.belongsTo("souls", output);
+                        souls.accept(FunctionalBlocks.SOUL_BOTTLE.get());
                         souls.accept(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE.get());
                         souls.accept(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE.get());
                         souls.accept(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE.get());
@@ -2015,6 +2016,7 @@ public final class ModTabs {
                         short_bow.accept(BowItems.TIN_SHORT_BOW.get());
                         short_bow.accept(BowItems.IRON_SHORT_BOW.get());
                         short_bow.accept(BowItems.LEAD_SHORT_BOW.get());
+                        short_bow.accept(BowItems.SOUL_SHORT_BOW.get());
                         short_bow.accept(BowItems.SILVER_SHORT_BOW.get());
                         short_bow.accept(BowItems.TUNGSTEN_SHORT_BOW.get());
                         short_bow.accept(BowItems.GOLDEN_SHORT_BOW.get());
@@ -2029,6 +2031,7 @@ public final class ModTabs {
                         bow.accept(BowItems.TIN_BOW.get());
                         bow.accept(BowItems.IRON_BOW.get());
                         bow.accept(BowItems.LEAD_BOW.get());
+                        bow.accept(BowItems.SOUL_BOW.get());
                         bow.accept(BowItems.SILVER_BOW.get());
                         bow.accept(BowItems.TUNGSTEN_BOW.get());
                         bow.accept(BowItems.GOLDEN_BOW.get());

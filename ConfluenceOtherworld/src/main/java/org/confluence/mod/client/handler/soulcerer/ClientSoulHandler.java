@@ -187,16 +187,30 @@ public final class ClientSoulHandler {
     }
 
     /// 更新快捷面板的选择动画，并切换当前技能槽位。
+    ///
+    /// 切换时跳过空槽与被动技能槽（两者都不能释放，停在上面只会让施法键无效）；
+    /// 一个可切槽都没有时退化为不跳过，高亮照常移动。
+    /// 动画与落点用同一份「实际滑过的槽位数」，避免跳格后画面与选中不同步。
     public static void adjustSoulSkillTarget(int offset) {
         Player player = Minecraft.getInstance().player;
         if (player == null) {
             return;
         }
+        int maxNumber = PlayerUtils.getEquippedSoulSkillMaxNumber(player);
+        int currentIndex = PlayerUtils.getCurrentSoulSkillIndex(player);
+        int effectiveOffset = SoulQuickSkillHudUtils.calculateSkippingOffset(offset, currentIndex, maxNumber,
+                index -> {
+                    SoulSkillStack stack = PlayerUtils.getSkillStack(player, index);
+                    return stack.isEmpty() || stack.getSoulSkill().isPassive();
+                });
+        if (effectiveOffset == 0) {
+            return;
+        }
 
-        ROULETTE_WHEEL_SMALL_HUD_INSTANCE.adjustTarget(offset);
-        CARD_HORIZONTAL_L_HUD_INSTANCE.adjustTarget(offset);
-        CARD_HORIZONTAL_R_HUD_INSTANCE.adjustTarget(offset);
-        setCurrentSoulSkillIndex(SoulQuickSkillHudUtils.calculateSkillIndex(offset, PlayerUtils.getCurrentSoulSkillIndex(player), PlayerUtils.getEquippedSoulSkillMaxNumber(player)));
+        ROULETTE_WHEEL_SMALL_HUD_INSTANCE.adjustTarget(effectiveOffset);
+        CARD_HORIZONTAL_L_HUD_INSTANCE.adjustTarget(effectiveOffset);
+        CARD_HORIZONTAL_R_HUD_INSTANCE.adjustTarget(effectiveOffset);
+        setCurrentSoulSkillIndex(SoulQuickSkillHudUtils.calculateSkillIndex(effectiveOffset, currentIndex, maxNumber));
     }
 
     /// 检测快捷选择键松开，关闭已打开的技能面板。

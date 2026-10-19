@@ -30,6 +30,8 @@ public class OverviewNode extends SoulSkillBox {
     private final List<Component> tooltipLines;
     private final int origX;
     private final int origY;
+    /// 总览界面的缩放倍率：只影响本节点的绘制尺寸与判定范围，提示文本始终按原字号跟随鼠标。
+    private float uiScale = 1.0F;
 
     private OverviewNode(SoulOverviewScreen screen, Builder builder) {
         super(builder.x, builder.y);
@@ -43,9 +45,75 @@ public class OverviewNode extends SoulSkillBox {
         isTooltip = true;
     }
 
-    /** 屏幕中心相对坐标系中的中心点，不含 scroll 偏移 */
-    public Vec2 getCenterPos() {
-        return new Vec2(getOrigX() + (float) getWidth() / 2, getOrigY() + (float) getHeight() / 2);
+    /** 技能框贴图从控件 y-2 开始绘制，因此视觉中心比控件中心高 2 像素。 */
+    private static final float BOX_SPRITE_OFFSET_Y = 2.0F;
+
+    /// 节点的**屏幕坐标**视觉中心：技能框、图标、缩放锚点与连线端点统一用这一点。
+    ///
+    /// 控件位置（`getX/getY`）已经由 {@link SoulOverviewScreen#positionAllNodes()} 按缩放摆好，
+    /// 所以这里不需要再乘 zoom；缩放由绘制时的 pose 绕本点进行。
+    public Vec2 getScreenCenter() {
+        return new Vec2(getX() + BOX_SIZE * 0.5F, getY() + BOX_SIZE * 0.5F - BOX_SPRITE_OFFSET_Y);
+    }
+
+    /// 设置本节点的缩放倍率，由 {@link SoulOverviewScreen} 在每次定位时同步。
+    public void setUiScale(float uiScale) {
+        this.uiScale = uiScale <= 0.0F ? 1.0F : uiScale;
+    }
+
+    /// 按缩放倍率换算后的节点半径。
+    private float getScaledHalfSize() {
+        return BOX_SIZE * 0.5F * uiScale;
+    }
+
+    /// 悬停与点击按缩放后的实际范围判定，鼠标坐标仍是原始屏幕坐标。
+    private boolean isMouseOverScaled(double mouseX, double mouseY) {
+        float half = getScaledHalfSize();
+        Vec2 center = getScreenCenter();
+        return mouseX >= center.x - half && mouseX < center.x + half
+                && mouseY >= center.y - half && mouseY < center.y + half;
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY) {
+        return isMouseOverScaled(mouseX, mouseY);
+    }
+
+    @Override
+    protected boolean clicked(double mouseX, double mouseY) {
+        return this.active && this.visible && isMouseOverScaled(mouseX, mouseY);
+    }
+
+    /// 根据选中和装备状态绘制节点，并按 uiScale 以节点中心为锚点缩放。
+    ///
+    /// 提示文本留在缩放之外绘制：它在未缩放坐标系里跟随鼠标，
+    /// 若一起缩放会既被放大、又偏离鼠标位置。
+    @Override
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        /// 包围盒是未缩放尺寸，悬停要按缩放后的实际范围重新判定。
+        this.isHovered = isMouseOverScaled(mouseX, mouseY);
+        boolean isSelected = screen.theCurrentlySelectedSkill == getSkill();
+        boolean isEquipped = PlayerUtils.isSoulSkillEquipped(Minecraft.getInstance().player, getSkill());
+        isSelect = isSelected || this.isHovered;
+        isActivate = isEquipped;
+        isFlame = isEquipped;
+
+        /// 绕视觉中心缩放，这样技能框、图标与连线端点在任何倍率下都对齐同一点。
+        Vec2 center = getScreenCenter();
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
+        poseStack.translate(center.x, center.y, 0.0F);
+        poseStack.scale(uiScale, uiScale, 1.0F);
+        poseStack.translate(-center.x, -center.y, 0.0F);
+        super.renderWidget(guiGraphics, getX(), getY());
+        int iconOffset = (BOX_SIZE - SKILL_SIZE) / 2;
+        SoulSkillBox.renderSkillCooldown(guiGraphics,
+                PlayerUtils.getSoulSkillCooldown(Minecraft.getInstance().player, skillId()),
+                PlayerUtils.getSoulSkillMaxCooldown(Minecraft.getInstance().player, skillId()),
+                getX() + iconOffset, getY() + iconOffset);
+        poseStack.popPose();
+
+        renderTooltip(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     /// 获取节点所表示的技能标识。
@@ -59,22 +127,6 @@ public class OverviewNode extends SoulSkillBox {
 
     /// 获取节点连接目标的标识列表。
     public List<ResourceLocation> getConnections() {return connections;}
-
-    /// 根据选中和装备状态绘制节点。
-    @Override
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        boolean isSelected = screen.theCurrentlySelectedSkill == getSkill();
-        boolean isEquipped = PlayerUtils.isSoulSkillEquipped(Minecraft.getInstance().player, getSkill());
-        isSelect = isSelected || isHovered();
-        isActivate = isEquipped;
-        isFlame = isEquipped;
-        super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
-        int iconOffset = (BOX_SIZE - SKILL_SIZE) / 2;
-        SoulSkillBox.renderSkillCooldown(guiGraphics,
-                PlayerUtils.getSoulSkillCooldown(Minecraft.getInstance().player, skillId()),
-                PlayerUtils.getSoulSkillMaxCooldown(Minecraft.getInstance().player, skillId()),
-                getX() + iconOffset, getY() + iconOffset);
-    }
 
     /// 优先绘制节点自定义提示文本。
     @Override

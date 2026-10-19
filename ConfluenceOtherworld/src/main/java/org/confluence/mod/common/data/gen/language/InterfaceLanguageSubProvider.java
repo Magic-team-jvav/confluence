@@ -76,14 +76,20 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.spell_rotation.name", "Spell Rotation", "术式轮转");
         language.add("confluence.soulcerer_skill.life_return.name", "Life Return", "生命归还");
         // 技能说明：与技能一一对应，C 键总览与技能框都会显示
+        // 数值行统一话术：名称之后依次是伤害 / 冷却 / BUFF持续时间 / 所需灵魂数 / 技能描述
+        language.add("confluence.soulcerer_skill.tooltip.damage", "Damage: %s", "伤害：%s");
+        language.add("confluence.soulcerer_skill.tooltip.cooldown", "Cooldown: %ss", "冷却：%s 秒");
+        language.add("confluence.soulcerer_skill.tooltip.buff_duration", "Buff duration: %ss (%s)", "BUFF持续时间：%s 秒（%s）");
+        language.add("confluence.soulcerer_skill.tooltip.soul_cost", "Soul cost: %s", "所需消耗的灵魂数：%s");
+        language.add("confluence.soulcerer_skill.tooltip.description", "Description: %s", "技能描述：%s");
         language.add("confluence.soulcerer_skill.soul_lure.desc", "Fires a single soul projectile.", "释放一道远程单体灵魂弹幕。");
-        language.add("confluence.soulcerer_skill.enhanced_soul.desc", "Increases soul damage by 12% for 15 seconds.", "灵魂伤害提高12%，持续15秒。");
+        language.add("confluence.soulcerer_skill.enhanced_soul.desc", "Increases soul damage by 12%.", "灵魂伤害提高 12%。");
         language.add("confluence.soulcerer_skill.spirit_surge.desc", "Releases a shockwave that damages nearby enemies.", "以自身为中心释放一圈冲击波，造成群体灵魂伤害。");
         language.add("confluence.soulcerer_skill.surge_blast.desc", "Every third surge detonates a much larger finishing blast.", "连续三次激荡后追加更大范围、更强威力的终极爆炸。");
-        language.add("confluence.soulcerer_skill.blood_rage.desc", "Trade health for damage; kills grant extra soul.", "消耗生命换取近战与远程增益，期间击杀额外获得灵魂。");
+        language.add("confluence.soulcerer_skill.blood_rage.desc", "Spends 10 health for 7% melee and ranged damage; kills grant extra soul.", "消耗 10 点生命，近战与远程伤害提高 7%；期间击杀额外获得灵魂。");
         language.add("confluence.soulcerer_skill.enhanced_lure.desc", "A stronger Soul Lure projectile.", "强化版引魂，弹幕基础威力大幅提升。");
-        language.add("confluence.soulcerer_skill.soul_mark.desc", "Fires a projectile and grants Enhanced Soul's buff.", "发射灵魂弹幕，同时获得与强力附魂同时长的增益。");
-        language.add("confluence.soulcerer_skill.soul_surge.desc", "Automatically casts Spirit Surge while Enhanced Soul is active.", "强力附魂生效期间，每隔数秒自动释放一次灵魂激荡。");
+        language.add("confluence.soulcerer_skill.soul_mark.desc", "Fires a soul projectile; hits grant 3 seconds of Enhanced Soul, kills grant 8 seconds.", "发射灵魂弹幕，命中敌人获得 3 秒强力附魂，击杀敌人获得 8 秒。");
+        language.add("confluence.soulcerer_skill.soul_surge.desc", "Automatically casts Spirit Surge while any soulcerer buff is active.", "任意附魂类增益生效期间，每隔数秒自动释放一次灵魂激荡。");
         language.add("confluence.soulcerer_skill.lure_surge.desc", "Projectiles explode on impact.", "弹幕命中目标时引发范围爆炸，兼具单体与群体。");
         language.add("confluence.soulcerer_skill.empowered_surge.desc", "A much larger and stronger surge.", "范围与威力都远超普通激荡的强化版。");
         language.add("confluence.soulcerer_skill.spirit_trigger.desc", "Surge hits spray chain projectiles from the target.", "激荡命中后从敌人位置向随机方向射出多道弹幕。");
@@ -91,7 +97,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.star_reversal.desc", "Mana and soul conversion no longer empties either pool.", "被动：进行魔力与灵魂转化时，不再清空双方数值。");
         language.add("confluence.soulcerer_skill.star_link.desc", "Soul damage shares half of your magic damage bonus.", "被动：灵魂伤害与魔法伤害互相共用其 50% 加成。");
         language.add("confluence.soulcerer_skill.soul_harvest.desc", "Minion hits have a 5% chance to restore 1 soul.", "被动：召唤物击中敌人有 5% 概率回复 1 点灵魂。");
-        language.add("confluence.soulcerer_skill.soul_gunner.desc", "Converts soul into soul bullets, one bullet per soul.", "消耗灵魂转化为等量灵魂子弹，伤害更高且概率回魂。");
+        language.add("confluence.soulcerer_skill.soul_gunner.desc", "While active, converts soul into soul bullets, one bullet per soul.", "增益期间持续把灵魂转化为等量灵魂子弹，伤害更高且概率回魂。");
         language.add("confluence.soulcerer_skill.soul_devour.desc", "Minion attacks spend 1 soul to deal 50% more damage.", "被动：召唤物攻击消耗 1 点灵魂，提升本次伤害 50%。");
         language.add("confluence.soulcerer_skill.curse_resistance.desc", "Overdraft damage is reduced by 60%.", "被动：耗尽灵魂扣血施法时，扣除伤害减少 60%。");
         language.add("confluence.soulcerer_skill.flow_control.desc", "Skill damage doubled, cooldowns lengthened by 50%.", "被动：技能伤害提高 100%，冷却延长 50%。");
@@ -106,7 +112,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.profane_soul.desc", "Fireballs erupt from the ground and explode in a small area.", "释放从地面钻出的火球弹幕，击中小范围爆炸。");
         language.add("confluence.soulcerer_skill.soul_plunder.desc", "Briefly increases melee and ranged damage.", "短时间提升近战与远程伤害。");
         language.add("confluence.soulcerer_skill.boiling_blood.desc", "Spends 80% of your soul to empower the next melee hit.", "消耗 80% 灵魂，使下一次近战攻击造成 5 倍伤害。");
-        language.add("confluence.soulcerer_skill.firmament_reversed.desc", "Fall damage is converted into healing for a while.", "一段时间内摔落伤害转化为回复血量。");
+        language.add("confluence.soulcerer_skill.firmament_reversed.desc", "For 8 seconds, fall damage becomes healing instead.", "8 秒内，摔落伤害完全转化为生命回复。");
         language.add("message.confluence.soul_ritual.activate", "You have awakened the ancient souls of this world...", "你唤醒了世界上的古老之魂...");
         language.add("message.confluence.soul_ritual.unlock", "The ancient souls teach you %s", "古老之魂授予你%s");
         language.add("message.confluence.soul_ritual.slot", "Ancient power expands your soul slots: %s", "古老之力拓宽了你的灵魂栏位：%s");

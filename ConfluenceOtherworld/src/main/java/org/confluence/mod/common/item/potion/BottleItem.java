@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.potion;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.SoulItems;
 
 public class BottleItem extends Item {
     public BottleItem() {
@@ -24,8 +26,15 @@ public class BottleItem extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         ItemStack itemstack = player.getItemInHand(hand);
+        /// 魂瓶：灵魂条状态下用玻璃瓶装魂，优先于取水。
+        if (SoulItems.canFillSoulBottle(player)) {
+            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+                SoulItems.fillSoulBottle(serverPlayer, hand);
+            }
+            return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
+        }
+        BlockHitResult blockhitresult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
         if (blockhitresult.getType() == HitResult.Type.BLOCK) {
             BlockPos blockpos = blockhitresult.getBlockPos();
             if (!level.mayInteract(player, blockpos)) {

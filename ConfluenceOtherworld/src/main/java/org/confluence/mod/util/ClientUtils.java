@@ -44,6 +44,10 @@ public final class ClientUtils {
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final int LEGACY_SIZE = 128;
     public static final int OVERLAY_SIZE = 128;
+    /// 魂师资源（灵魂条、灵魂不足以支付时的生命条）统一使用的淡蓝色 #ABFFFE。
+    public static final float SOUL_TINT_RED = 0xAB / 255.0F;
+    public static final float SOUL_TINT_GREEN = 1.0F;
+    public static final float SOUL_TINT_BLUE = 0xFE / 255.0F;
     /// 以这个命名的bone就是专门的死亡模型
     public static final String DEATH_BONE_NAME = "_death";
     /// 以这个后缀命名的bone需要爆整个bone

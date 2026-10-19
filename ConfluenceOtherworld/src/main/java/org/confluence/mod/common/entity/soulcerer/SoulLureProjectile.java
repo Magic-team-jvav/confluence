@@ -4,6 +4,9 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -14,6 +17,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.jetbrains.annotations.Nullable;
@@ -45,6 +49,7 @@ public class SoulLureProjectile extends Projectile {
     private static final String MAX_AGE_TAG = "MaxAge";
     private static final String AOE_RADIUS_TAG = "AoeRadius";
     private static final String AOE_DAMAGE_TAG = "AoeDamage";
+    private static final String ENHANCED_SOUL_ON_HIT_TAG = "EnhancedSoulOnHit";
 
     private float damage;
     private double travelledDistance;
@@ -54,6 +59,8 @@ public class SoulLureProjectile extends Projectile {
     private int maxAge = SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS;
     private double aoeRadius;
     private float aoeDamage;
+    /// 附魂印记专用：命中时给自己挂几 tick 强力附魂；0 表示没有该效果。
+    private int enhancedSoulOnHitTicks;
     private @Nullable ParticleEmitter emitter;
 
     public SoulLureProjectile(EntityType<? extends SoulLureProjectile> type, Level level) {
@@ -88,6 +95,21 @@ public class SoulLureProjectile extends Projectile {
         setDeltaMovement(direction.normalize().scale(speed));
     }
 
+    /// 附魂印记：设置命中时给自己挂的强力附魂时长（tick），0 表示关闭。
+    public void setEnhancedSoulOnHit(int ticks) {
+        this.enhancedSoulOnHitTicks = Math.max(0, ticks);
+    }
+
+    /// 附魂印记：命中给短增益，若这一下直接击杀则换成更长的增益。
+    private void grantEnhancedSoul(Entity victim) {
+        if (enhancedSoulOnHitTicks <= 0 || !(getOwner() instanceof ServerPlayer owner)) {
+            return;
+        }
+        boolean killed = victim instanceof LivingEntity living && living.getHealth() <= 0.0F;
+        int ticks = killed ? SoulSkillParameters.SOUL_MARK_KILL_BUFF_TICKS : enhancedSoulOnHitTicks;
+        owner.addEffect(new MobEffectInstance(ModEffects.ENHANCED_SOUL, ticks, 0, false, true, true));
+    }
+
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {}
 
@@ -109,7 +131,9 @@ public class SoulLureProjectile extends Projectile {
         if (!level().isClientSide && hit.getType() != HitResult.Type.MISS) {
             setPos(hit.getLocation());
             if (hit instanceof EntityHitResult entityHit) {
-                entityHit.getEntity().hurt(LibDamageTypes.soul(level(), this, getOwner()), damage);
+                Entity victim = entityHit.getEntity();
+                victim.hurt(LibDamageTypes.soul(level(), this, getOwner()), damage);
+                grantEnhancedSoul(victim);
             }
             applyAoeDamage();
             discard();
@@ -151,6 +175,7 @@ public class SoulLureProjectile extends Projectile {
         maxAge = tag.getInt(MAX_AGE_TAG);
         aoeRadius = tag.getDouble(AOE_RADIUS_TAG);
         aoeDamage = tag.getFloat(AOE_DAMAGE_TAG);
+        enhancedSoulOnHitTicks = tag.getInt(ENHANCED_SOUL_ON_HIT_TAG);
     }
 
     @Override
@@ -164,5 +189,6 @@ public class SoulLureProjectile extends Projectile {
         tag.putInt(MAX_AGE_TAG, maxAge);
         tag.putDouble(AOE_RADIUS_TAG, aoeRadius);
         tag.putFloat(AOE_DAMAGE_TAG, aoeDamage);
+        tag.putInt(ENHANCED_SOUL_ON_HIT_TAG, enhancedSoulOnHitTicks);
     }
 }

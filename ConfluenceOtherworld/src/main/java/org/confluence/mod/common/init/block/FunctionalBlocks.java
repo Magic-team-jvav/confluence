@@ -214,8 +214,11 @@ public class FunctionalBlocks {
     public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_SIGHT_IN_A_BOTTLE = registerWithItemWithEnglishName("soul_of_sight_in_a_bottle", "视域之魂瓶", "Soul of Sight in a Bottle", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_LIGHT_GREEN)));
     public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_BRIGHT_IN_A_BOTTLE = registerWithItem("soul_of_bright_in_a_bottle", "启迪之魂瓶", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_YELLOW)));
     public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_OF_VOIGHT_IN_A_BOTTLE = registerWithItem("soul_of_voight_in_a_bottle", "虚空之魂瓶", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_PURPLE)));
+    /// 魂瓶：灵魂条状态下用玻璃瓶消耗 20 灵魂装填得到，配方里的通用灵魂材料。
+    public static final DeferredBlock<BaseSoulInABottleBlock> SOUL_BOTTLE = registerWithItem("soul_bottle", "魂瓶", () -> new BaseSoulInABottleBlock(BlockBehaviour.Properties.ofFullCopy(LANTERN).lightLevel(state -> 7).mapColor(MapColor.COLOR_LIGHT_BLUE)));
     public static final Supplier<BlockEntityType<BaseSoulInABottleBlock.BEntity>> SOUL_BOTTLE_ENTITY = BLOCK_ENTITIES.register("soul_bottle_entity", () ->
             BlockEntityType.Builder.of(BaseSoulInABottleBlock.BEntity::new,
+                    SOUL_BOTTLE.get(),
                     SOUL_OF_FLIGHT_IN_A_BOTTLE.get(),
                     SOUL_OF_LIGHT_IN_A_BOTTLE.get(),
                     SOUL_OF_FRIGHT_IN_A_BOTTLE.get(),

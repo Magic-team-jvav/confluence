@@ -7,6 +7,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /// 附魂类技能：施放后给自己一层同名增益。
@@ -16,14 +17,14 @@ import java.util.function.Supplier;
 public class SoulBuffSkill extends SoulSkill {
     private final Supplier<Holder<MobEffect>> effect;
     private final int durationTicks;
-    private final float healthCostRatio;
+    private final float healthCost;
 
     public SoulBuffSkill(ResourceLocation icon, ResourceLocation id, float soulCost, int cooldown,
-                         Supplier<Holder<MobEffect>> effect, int durationTicks, float healthCostRatio) {
+                         Supplier<Holder<MobEffect>> effect, int durationTicks, float healthCost) {
         super(icon, id, 0.0F, Kind.BUFF, soulCost, cooldown);
         this.effect = effect;
         this.durationTicks = durationTicks;
-        this.healthCostRatio = healthCostRatio;
+        this.healthCost = healthCost;
     }
 
     /// 服务端施加增益；有生命代价时先扣血再上 Buff。
@@ -32,10 +33,19 @@ public class SoulBuffSkill extends SoulSkill {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        if (healthCostRatio > 0.0F) {
-            float cost = serverPlayer.getMaxHealth() * healthCostRatio;
-            serverPlayer.setHealth(Math.max(1.0F, serverPlayer.getHealth() - cost));
+        if (healthCost > 0.0F) {
+            serverPlayer.setHealth(Math.max(1.0F, serverPlayer.getHealth() - healthCost));
         }
         serverPlayer.addEffect(new MobEffectInstance(effect.get(), durationTicks, 0, false, true, true));
+    }
+
+    @Override
+    public List<BuffDuration> getBuffDurations(SoulSkillStack skillStack) {
+        return List.of(buffDuration(effect, durationTicks));
+    }
+
+    @Override
+    public boolean isBuffActive(Player player) {
+        return player.hasEffect(effect.get());
     }
 }

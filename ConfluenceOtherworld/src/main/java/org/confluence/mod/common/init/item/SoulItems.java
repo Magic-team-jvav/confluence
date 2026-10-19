@@ -2,8 +2,17 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -13,6 +22,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.item.soulcerer.FallenSoulCoreItem;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.item.soulcerer.SoulKnifeItem;
@@ -20,6 +30,7 @@ import org.confluence.mod.common.item.soulcerer.SoulLanternItem;
 import org.confluence.mod.common.item.soulcerer.SoulSkillBookItem;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.util.PlayerUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -59,5 +70,26 @@ public class SoulItems {
         stack.set(ModDataComponentTypes.SOUL_SKILL.get(), bookId);
         stack.set(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(bookId));
         return stack;
+    }
+
+    /// 玻璃瓶装魂：灵魂条状态下右键玻璃瓶，消耗 {@link SoulSkillParameters#SOUL_BOTTLE_SOUL_COST} 点灵魂得到魂瓶。
+    ///
+    /// 客户端只做可用性判断并回成功，实际扣除与替换只在服务端执行，避免两端状态分叉。
+    public static boolean canFillSoulBottle(Player player) {
+        return player != null
+                && PlayerUtils.isSoulMode(player)
+                && PlayerUtils.getSoul(player) >= SoulSkillParameters.SOUL_BOTTLE_SOUL_COST;
+    }
+
+    public static void fillSoulBottle(ServerPlayer player, InteractionHand hand) {
+        if (!canFillSoulBottle(player) || !PlayerUtils.consumeSoul(player, SoulSkillParameters.SOUL_BOTTLE_SOUL_COST)) {
+            return;
+        }
+        Level level = player.level();
+        ItemStack inHand = player.getItemInHand(hand);
+        player.setItemInHand(hand, ItemUtils.createFilledResult(inHand, player, FunctionalBlocks.SOUL_BOTTLE.toStack()));
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
+        level.gameEvent(player, GameEvent.FLUID_PICKUP, player.blockPosition());
+        player.awardStat(Stats.ITEM_USED.get(PotionItems.BOTTLE.get()));
     }
 }

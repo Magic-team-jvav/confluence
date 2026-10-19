@@ -173,6 +173,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SAWMILL.get());
         dropSelf(HEART_LANTERN.get());
         dropSelf(STAR_IN_A_BOTTLE.get());
+        dropSelf(SOUL_BOTTLE.get());
         dropSelf(SOUL_OF_FLIGHT_IN_A_BOTTLE.get());
         dropSelf(SOUL_OF_LIGHT_IN_A_BOTTLE.get());
         dropSelf(SOUL_OF_FRIGHT_IN_A_BOTTLE.get());

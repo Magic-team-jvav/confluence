@@ -166,7 +166,7 @@
 
 ## 格式：
 
-- /confluence soulSkill ritual <count>
+- /confluence soulSkill ritual <count/confluence soulSkill ritual <count
 
 ## 用途：
 

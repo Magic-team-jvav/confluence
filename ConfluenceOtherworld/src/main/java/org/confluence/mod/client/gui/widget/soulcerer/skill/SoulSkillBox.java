@@ -107,17 +107,22 @@ public class SoulSkillBox extends AbstractWidget {
     }
 
     /// 在顶层绘制非空技能的提示文本。
+    ///
+    /// 行序固定：名称 → 伤害 / 冷却 / BUFF持续时间 / 灵魂消耗 → 状态 → 技能描述。
     public static void renderTooltip(Font font, GuiGraphics guiGraphics, SoulSkillStack skillStack, int mouseX, int mouseY, float partialTick) {
         if (skillStack.isEmpty()) {
             return;
         }
+        List<Component> components = new ArrayList<>(skillStack.getSkillHeaderLines());
+        components.addAll(getSkillStateComponents(skillStack));
+        Component description = skillStack.getSkillDescriptionLine();
+        if (description != null) {
+            components.add(description);
+        }
+        List<FormattedCharSequence> lines = components.stream().map(Component::getVisualOrderText).toList();
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 1000);
-        List<FormattedCharSequence> lines = new ArrayList<>(skillStack.getSkillTooltipLines());
-        for (Component state : getSkillStateComponents(skillStack)) {
-            lines.add(state.getVisualOrderText());
-        }
         guiGraphics.renderTooltip(font, lines, mouseX, mouseY);
         poseStack.popPose();
     }

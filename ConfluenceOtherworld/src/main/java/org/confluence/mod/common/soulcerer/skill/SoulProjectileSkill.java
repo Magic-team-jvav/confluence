@@ -65,8 +65,10 @@ public class SoulProjectileSkill extends SoulSkill {
             Vec3 origin = spawnAbove > 0.0
                     ? eye.add(look.scale(2.0)).add(0.0, spawnAbove, 0.0)
                     : eye;
-            player.level().addFreshEntity(new SoulLureProjectile(serverPlayer, origin, direction, damage, particle, speed,
-                    gravity, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE, SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, aoeRadius, aoeDamage));
+            SoulLureProjectile projectile = new SoulLureProjectile(serverPlayer, origin, direction, damage, particle, speed,
+                    gravity, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE, SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, aoeRadius, aoeDamage);
+            modifyProjectile(projectile);
+            player.level().addFreshEntity(projectile);
         }
         if (refundChance > 0.0F && random.nextFloat() < refundChance) {
             PlayerUtils.adjustSoul(player, 1.0F);
@@ -76,9 +78,11 @@ public class SoulProjectileSkill extends SoulSkill {
         }
     }
 
+    /// 生成弹幕后的定制钩子，派生类可在这里给弹幕打标记（默认不改）。
+    protected void modifyProjectile(SoulLureProjectile projectile) {}
+
     /// 以视线为轴做锥形散布，用于孢子弹幕一类多枚齐射。
-    private Vec3 jitter(Vec3 look, RandomSource random) {
-        double dx = (random.nextDouble() - 0.5) * spread;
+    private Vec3 jitter(Vec3 look, RandomSource random) {        double dx = (random.nextDouble() - 0.5) * spread;
         double dy = (random.nextDouble() - 0.5) * spread;
         double dz = (random.nextDouble() - 0.5) * spread;
         return look.add(dx, dy, dz).normalize();

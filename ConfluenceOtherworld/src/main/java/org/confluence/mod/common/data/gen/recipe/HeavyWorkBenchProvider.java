@@ -1384,71 +1384,77 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " d "
         )), CrossbowItems.PALLADIUM_REPEATER.toStack());
 
-        // 隐匿者套
+        // 隐匿者 / 蓝隐匿者套装改到工作台有序合成（见 CraftingRecipeProvider），此处不再生成重型工作台配方。
+
+        // 白南瓜套装：白南瓜 + 灵魂头套/灵魂长袍/魂瓶
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, Blocks.DARK_OAK_LOG)
+                'a', Ingredient.of(NatureBlocks.WHITE_PUMPKIN),
+                'b', Ingredient.of(ArmorItems.SOUL_HOOD),
+                'c', Ingredient.of(DecorativeBlocks.CARVED_WHITE_PUMPKIN)
         ), List.of(
-                "aaa",
-                "a a"
-        )), ArmorItems.HERMIT_HELMET.toStack());
+                "aba",
+                "aca"
+        )), ArmorItems.WHITE_PUMPKIN_HELMET.toStack());
 
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4, Blocks.DARK_OAK_LOG),
-                'b', AmountIngredient.of(4, Items.AMETHYST_SHARD,MaterialItems.AMETHYST),
-                'c', AmountIngredient.of(4, Items.EMERALD,MaterialItems.JADE)
+                'a', Ingredient.of(NatureBlocks.WHITE_PUMPKIN),
+                'b', Ingredient.of(ArmorItems.SOUL_ROBE)
+        ), List.of(
+                "aaa",
+                " b "
+        )), ArmorItems.WHITE_PUMPKIN_CHESTPLATE.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(NatureBlocks.WHITE_PUMPKIN),
+                'b', Ingredient.of(FunctionalBlocks.SOUL_BOTTLE)
+        ), List.of(
+                "aaa",
+                "a a",
+                "b b"
+        )), ArmorItems.WHITE_PUMPKIN_LEGGINGS.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(NatureBlocks.WHITE_PUMPKIN),
+                'b', Ingredient.of(FunctionalBlocks.SOUL_BOTTLE)
         ), List.of(
                 "a a",
-                "bcb",
+                "b b"
+        )), ArmorItems.WHITE_PUMPKIN_BOOTS.toStack());
+
+        // 逐灵套装：地牢魔骨 + 蛛网
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(10, ConsumableItems.DUNGEON_DEMON_BONE),
+                'b', AmountIngredient.of(4, Items.COBWEB)
+        ), List.of(
+                "bab",
+                "a a"
+        )), ArmorItems.SEEKER_HELLMET.toStack());
+
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(8, ConsumableItems.DUNGEON_DEMON_BONE),
+                'b', AmountIngredient.of(2, Items.COBWEB)
+        ), List.of(
+                "a a",
+                "bab",
                 "bab"
-        )), ArmorItems.HERMIT_CHESTPLATE.toStack());
+        )), ArmorItems.SEEKER_CHESTPLATE.toStack());
 
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4, Blocks.DARK_OAK_LOG)
+                'a', AmountIngredient.of(10, ConsumableItems.DUNGEON_DEMON_BONE),
+                'b', AmountIngredient.of(2, Items.COBWEB)
         ), List.of(
-                "aaa",
-                "a a",
+                "bab",
+                "b b",
                 "a a"
-        )), ArmorItems.HERMIT_LEGGINGS.toStack());
+        )), ArmorItems.SEEKER_LEGGINGS.toStack());
 
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4, Blocks.DARK_OAK_LOG)
-        ), List.of(
-                "a a",
-                "a a"
-        )), ArmorItems.HERMIT_BOOTS.toStack());
-
-        // 蓝隐匿者套
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM)
-        ), List.of(
-                "aaa",
-                "a a"
-        )), ArmorItems.BLUE_HERMIT_HELMET.toStack());
-
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM),
-                'b', AmountIngredient.of(4, Items.AMETHYST_SHARD,MaterialItems.AMETHYST),
-                'c', AmountIngredient.of(4, Items.EMERALD,MaterialItems.JADE)
+                'a', AmountIngredient.of(10, ConsumableItems.DUNGEON_DEMON_BONE),
+                'b', AmountIngredient.of(4, Items.COBWEB)
         ), List.of(
                 "a a",
-                "ccc",
-                "bab"
-        )), ArmorItems.BLUE_HERMIT_CHESTPLATE.toStack());
-
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM)
-        ), List.of(
-                "aaa",
-                "a a",
-                "a a"
-        )), ArmorItems.BLUE_HERMIT_LEGGINGS.toStack());
-
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(6, MaterialItems.GLOWING_MUSHROOM)
-        ), List.of(
-                "a a",
-                "a a"
-        )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
+                "b b"
+        )), ArmorItems.SEEKER_BOOTS.toStack());
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, FunctionalBlocks.SHADOW_CANDLE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3, MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT));

@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.animal;
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -19,19 +20,19 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.navigation.AmphibiousPathNavigation;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -49,12 +50,18 @@ import javax.annotation.Nullable;
 import java.util.Locale;
 import java.util.function.IntFunction;
 
-// 鸭子独立管理陆地巡游、水面游泳、受惊起飞和降落。
-public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duck.Variant> {
+/// 鸭子独立管理陆地巡游、水面游泳、受惊起飞和降落。
+public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
     public static final String VARIANT_KEY = "Variant";
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation SWIM = RawAnimation.begin().thenLoop("move.swim");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
+    private static final EntityDataAccessor<Boolean> DATA_FLYING = SynchedEntityData.defineId(Duck.class, EntityDataSerializers.BOOLEAN);
+    private static final double SWIM_SPEED = 0.08;
+    private static final double FLIGHT_SPEED = 0.20;
+    private static final int FLIGHT_DURATION = 60;
+    private static final int FLIGHT_COOLDOWN = 100;
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Duck.class, EntityDataSerializers.INT);
     private static final VariantSpawnProfile<Variant> SPAWN_VARIANTS = VariantSpawnProfile.<Variant>builder()
             .add(Variant.MALLARD, 1)
@@ -85,25 +92,16 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
     }
 
     @Override
-    protected BodyRotationControl createBodyControl() {
-        return new BodyRotationControl(this) {
-            @Override
-            public void clientTick() {
-                // 身体与视线使用同一偏航，避免客户端实体转向和头部同步产生偏差。
-                LibEntityUtils.setEntityYaw(Duck.this, getYHeadRot());
-            }
-        };
-    }
-
-    @Override
     protected PathNavigation createNavigation(Level level) {
-        return new AmphibiousPathNavigation(this, level);
+        GroundPathNavigation navigation = new GroundPathNavigation(this, level);
+        navigation.setCanFloat(true);
+        return navigation;
     }
 
     private void setMovementMode(MovementMode mode) {
         MoveControl nextControl = switch (mode) {
-            case LAND, WATER -> groundControl;
-            case FLYING, LANDING -> flightControl;
+            case LAND -> groundControl;
+            case WATER, FLYING, LANDING -> flightControl;
         };
         if (moveControl != nextControl) {
             navigation.stop();
@@ -114,13 +112,15 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
             setYya(0.0F);
             setZza(0.0F);
         }
-        setNoGravity(mode == MovementMode.WATER || mode == MovementMode.FLYING);
+        setNoGravity(mode != MovementMode.LAND);
+        entityData.set(DATA_FLYING, mode == MovementMode.FLYING || mode == MovementMode.LANDING);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_VARIANT, Variant.MALLARD.ordinal());
+        entityData.define(DATA_FLYING, false);
     }
 
     @Override
@@ -183,24 +183,24 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
         return false;
     }
 
-    @Override
+    /// 飞行状态只用于同步和动画；陆地保留普通动物物理，避免 FlyingAnimal 的竖直阻尼压低跳跃。
     public boolean isFlying() {
-        return !onGround() && !isInWater();
+        return entityData.get(DATA_FLYING);
     }
 
     @Override
     public void tick() {
-        // NoAI 时行为树不运行，仍需解除可能残留的飞行控制。
+        /// NoAI 时行为树不运行，仍需解除可能残留的飞行控制。
         if (!level().isClientSide && isNoAi() && behavior != null) behavior.reset();
         super.tick();
         if (!level().isClientSide && !isNoAi()) {
-            // 将注视偏航同步到实体和身体，保持整身朝向一致。
-            boolean flying = behavior != null && (behavior.mode == MovementMode.FLYING
-                    || behavior.mode == MovementMode.LANDING);
-            if (flying && behavior.flightDirection.horizontalDistanceSqr() > 1.0E-6) {
-                LibEntityUtils.updateEntityRotation(this, behavior.flightDirection.multiply(1.0D, 0.0D, 1.0D));
-            } else {
-                LibEntityUtils.setEntityYaw(this, navigation.isDone() ? getYHeadRot() : getYRot());
+            /// 朝向跟随实际位移，不能用随机注视方向覆盖寻路方向。
+            Vec3 movement = new Vec3(getX() - xo, 0.0, getZ() - zo);
+            if (movement.horizontalDistanceSqr() > 1.0E-5) {
+                float yaw = (float) (Mth.atan2(movement.z, movement.x) * Mth.RAD_TO_DEG) - 90.0F;
+                setYRot(yaw);
+                setYBodyRot(yaw);
+                setYHeadRot(yaw);
             }
         }
         if (level().isClientSide && isInWater() && tickCount % 16 == 0) {
@@ -220,11 +220,16 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Swim/Idle/Move", 5, state -> {
-            if (isInWater()) {
-                return state.setAndContinue(SWIM);
-            }
-            return state.setAndContinue(state.isMoving() ? WALK : IDLE);
+        controllers.add(new AnimationController<>(this, "movement", 3, state -> {
+            state.getController().setAnimationSpeed(1.0);
+            if (isFlying()) return state.setAndContinue(FLY);
+            if (isInWater()) return state.setAndContinue(SWIM);
+            double dx = getX() - xo;
+            double dz = getZ() - zo;
+            boolean walking = onGround() && dx * dx + dz * dz > 1.0E-5;
+            if (walking)
+                state.getController().setAnimationSpeed(Mth.clamp(Math.sqrt(dx * dx + dz * dz) / 0.06, 0.5, 2.0));
+            return state.setAndContinue(walking ? WALK : IDLE);
         }));
     }
 
@@ -252,26 +257,32 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
         return accepted;
     }
 
+    /// 水面和飞行使用各自的速度，不再叠加地面 MoveControl 或原版水中加速。
     @Override
     public void travel(Vec3 input) {
-        if (isEffectiveAi() && isInWater() && !isNoAi() && behavior != null && behavior.mode == MovementMode.WATER) {
-            moveRelative(getSpeed(), input);
-            double targetY = waterSurface() - getBbHeight() * 0.35;
-            Vec3 movement = getDeltaMovement();
-            double vertical = Mth.clamp((targetY - getY()) * 0.2, -0.08, 0.08);
-            setDeltaMovement(movement.x, vertical, movement.z);
-            move(MoverType.SELF, getDeltaMovement());
-            setDeltaMovement(getDeltaMovement().multiply(0.9, 0.0, 0.9));
+        if (isEffectiveAi() && !isNoAi() && behavior != null && behavior.mode != MovementMode.LAND) {
+            Vec3 motion = getDeltaMovement();
+            if (behavior.mode == MovementMode.WATER) {
+                double surface = waterSurface();
+                double vertical = Double.isNaN(surface) ? -0.04
+                        : Mth.clamp((surface - getBbHeight() * 0.15 - getY()) * 0.3, -0.10, 0.10);
+                motion = new Vec3(motion.x, vertical, motion.z);
+            }
+            move(MoverType.SELF, motion);
+            setDeltaMovement(getDeltaMovement().multiply(0.90, 1.0, 0.90));
             calculateEntityAnimation(false);
-        } else super.travel(input);
+            return;
+        }
+        super.travel(input);
     }
 
+    /// 只读取当前水柱的实际液面；离水后不能把空气方块顶面当成液面。
     private double waterSurface() {
         BlockPos pos = blockPosition();
         if (!level().getFluidState(pos).is(FluidTags.WATER)) pos = pos.below();
-        for (int i = 0; i < 8 && level().getFluidState(pos.above()).is(FluidTags.WATER); i++) {
+        if (!level().getFluidState(pos).is(FluidTags.WATER)) return Double.NaN;
+        while (pos.getY() < level().getMaxBuildHeight() - 1 && level().getFluidState(pos.above()).is(FluidTags.WATER))
             pos = pos.above();
-        }
         return pos.getY() + level().getFluidState(pos).getHeight(level(), pos);
     }
 
@@ -279,14 +290,18 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
         LAND, WATER, FLYING, LANDING
     }
 
-    // 管理巡游、游泳、受惊起飞和降落，并在状态切换时结束上一动作。
+    /// 管理巡游、游泳、受惊起飞和降落，并在状态切换时结束上一动作。
     private final class DuckBehavior extends BTNode {
         private final BTNode landRoutine = routine(new WaterAvoidingRandomStrollGoal(Duck.this, 1.0D));
-        private final BTNode waterRoutine = routine(new RandomSwimmingGoal(Duck.this, 1.0D, 30));
         private MovementMode mode = MovementMode.LAND;
         private BTNode active;
         private Vec3 flightDirection = Vec3.ZERO;
         private int flightTicks;
+        private int flightCooldown;
+        private int swimTurnTicks;
+        private int shoreTicks;
+        private int swimPauseTicks;
+        private Vec3 swimDirection = Vec3.ZERO;
         private boolean flewThisFall;
         private boolean flightRequested;
         private Entity threat;
@@ -300,7 +315,7 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
         }
 
         private void requestFlight(Entity attacker) {
-            if (!airborne()) {
+            if (!airborne() && flightCooldown == 0) {
                 flightRequested = true;
                 threat = attacker;
             }
@@ -315,11 +330,19 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
             stopAction();
             mode = next;
             setMovementMode(next);
+            if (next == MovementMode.WATER) {
+                swimDirection = Vec3.directionFromRotation(0, getYRot());
+                swimTurnTicks = 100 + random.nextInt(100);
+            }
         }
 
         private void updateEnvironment() {
             boolean inWater = isInWater();
+            if (shoreTicks > 0 && inWater) return;
             if (onGround() || inWater) flewThisFall = false;
+            if (mode == MovementMode.FLYING && (onGround() || inWater) && flightTicks < FLIGHT_DURATION - 10) {
+                changeMode(inWater ? MovementMode.WATER : MovementMode.LAND);
+            }
             if (mode == MovementMode.FLYING) return;
             if (mode == MovementMode.LANDING && !onGround() && !inWater) return;
             MovementMode next = inWater ? MovementMode.WATER : MovementMode.LAND;
@@ -336,10 +359,20 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
                 reset();
                 return BTStatus.SUCCESS;
             }
+            if (flightCooldown > 0) flightCooldown--;
+            if (shoreTicks > 0) {
+                shoreTicks--;
+                if (!isInWater() && onGround()) shoreTicks = 0;
+                else if (shoreTicks > 0 && !navigation.isDone()) {
+                    if (horizontalCollision || isInWater()) getJumpControl().jump();
+                    return BTStatus.RUNNING;
+                } else shoreTicks = 0;
+            }
             updateEnvironment();
             if (mode == MovementMode.WATER && !flightRequested) {
                 Player player = level().getNearestPlayer(Duck.this, 3.0);
-                if (player != null && !player.isSpectator()) requestFlight(player);
+                if (player != null && !player.isSpectator() && !player.isCreative() && hasLineOfSight(player))
+                    requestFlight(player);
             }
             if (flightRequested || mode == MovementMode.LAND && !onGround()
                     && !flewThisFall && fallDistance >= 3.0F) beginFlight();
@@ -347,8 +380,12 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
                 tickFlight();
                 return BTStatus.RUNNING;
             }
+            if (mode == MovementMode.WATER) {
+                tickSwimming();
+                return BTStatus.RUNNING;
+            }
             if (active == null) {
-                active = mode == MovementMode.WATER ? waterRoutine : landRoutine;
+                active = landRoutine;
                 active.start();
             }
             if (active.execute() != BTStatus.RUNNING) stopAction();
@@ -366,36 +403,104 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
             flightRequested = false;
             threat = null;
             flewThisFall = true;
-            flightTicks = 100;
+            flightTicks = FLIGHT_DURATION;
+            flightCooldown = FLIGHT_COOLDOWN;
             changeMode(MovementMode.FLYING);
-            setDeltaMovement(flightDirection.scale(0.2).add(0.0, 0.25, 0.0));
+            setDeltaMovement(flightDirection.scale(FLIGHT_SPEED).add(0.0, 0.25, 0.0));
             hasImpulse = true;
         }
 
-        private void tickFlight() {
-            if (mode == MovementMode.FLYING && --flightTicks <= 0) {
-                changeMode(MovementMode.LANDING);
+        /// 优先沿当前方向游动，遇到可站立的岸边时交回地面寻路和跳跃。
+        private void tickSwimming() {
+            if (swimPauseTicks > 0) {
+                swimPauseTicks--;
+                setDeltaMovement(0.0, getDeltaMovement().y, 0.0);
+                return;
             }
-            Vec3 movement = getDeltaMovement();
-            if (horizontalCollision) flightDirection = flightDirection.scale(-1.0);
-            double vertical = movement.y;
-            if (mode == MovementMode.FLYING) {
-                // 根据前下方的地面和水面调整飞行高度。
-                BlockPos ahead = BlockPos.containing(position().add(flightDirection).add(0.0, -0.5, 0.0));
-                double desired = -0.12;
-                for (int depth = 0; depth < 8; depth++) {
-                    BlockPos pos = ahead.below(depth);
-                    if (!level().hasChunkAt(pos)) break;
-                    if (!level().getBlockState(pos).getCollisionShape(level(), pos).isEmpty() || level().getFluidState(pos).is(FluidTags.WATER)) {
-                        desired = depth < 3 ? 0.16 : -0.08;
+            if (--swimTurnTicks <= 0) {
+                Vec3 candidate = swimDirection.yRot((random.nextFloat() - 0.5F) * Mth.HALF_PI);
+                if (canSwim(candidate)) swimDirection = candidate;
+                swimTurnTicks = 100 + random.nextInt(100);
+            }
+            if (!canSwim(swimDirection)) {
+                if (tryLeaveWater()) return;
+                Vec3 next = Vec3.ZERO;
+                for (int turn = 1; turn <= 8; turn++) {
+                    Vec3 candidate = swimDirection.yRot(turn * Mth.PI / 4);
+                    if (canSwim(candidate)) {
+                        next = candidate;
                         break;
                     }
                 }
-                vertical += Mth.clamp(desired - vertical, -0.02, 0.02);
-                if (verticalCollision && vertical > 0.0) vertical = -0.08;
+                if (next.lengthSqr() > 0.0) swimDirection = next;
+                /// 狭窄水域无路时停留，不每 tick 转动身体试探岸边。
+                swimPauseTicks = 30;
+                setDeltaMovement(0.0, getDeltaMovement().y, 0.0);
+                return;
             }
-            setDeltaMovement(flightDirection.x * 0.2, vertical, flightDirection.z * 0.2);
-            getLookControl().setLookAt(getX() + flightDirection.x, getEyeY(), getZ() + flightDirection.z);
+            Vec3 desired = swimDirection.scale(SWIM_SPEED);
+            Vec3 current = getDeltaMovement();
+            setDeltaMovement(Mth.lerp(0.2, current.x, desired.x), current.y, Mth.lerp(0.2, current.z, desired.z));
+        }
+
+        /// 检查前方完整碰撞箱和脚下水体，避免只看一个水方块就认为能够通过。
+        private boolean canSwim(Vec3 direction) {
+            Vec3 offset = direction.scale(0.45);
+            if (!level().noCollision(Duck.this, getBoundingBox().move(offset))) return false;
+            double half = getBbWidth() * 0.5;
+            for (int x = -1; x <= 1; x += 2) {
+                for (int z = -1; z <= 1; z += 2) {
+                    BlockPos pos = BlockPos.containing(getX() + offset.x + x * half, getY(), getZ() + offset.z + z * half);
+                    if (!level().getFluidState(pos).is(FluidTags.WATER)
+                            && !level().getFluidState(pos.below()).is(FluidTags.WATER))
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        /// 岸边必须有支撑和足够空间，并且能生成实际路径；允许跳上一格高的岸。
+        private boolean tryLeaveWater() {
+            for (int turn = 0; turn < 8; turn++) {
+                Vec3 direction = swimDirection.yRot(turn * Mth.PI / 4);
+                BlockPos ahead = BlockPos.containing(position().add(direction.scale(0.9)));
+                for (int height = 0; height <= 1; height++) {
+                    BlockPos feet = ahead.above(height);
+                    if (!level().getBlockState(feet.below()).isFaceSturdy(level(), feet.below(), Direction.UP)
+                            || !level().getFluidState(feet).isEmpty()) continue;
+                    Vec3 destination = Vec3.atBottomCenterOf(feet);
+                    if (!level().noCollision(Duck.this, getBoundingBox().move(destination.subtract(position()))))
+                        continue;
+                    var path = navigation.createPath(feet, 0);
+                    if (path == null || !path.canReach()) continue;
+                    changeMode(MovementMode.LAND);
+                    if (navigation.moveTo(path, 1.0)) {
+                        shoreTicks = 60;
+                        getJumpControl().jump();
+                        return true;
+                    }
+                    changeMode(MovementMode.WATER);
+                }
+            }
+            return false;
+        }
+
+        /// 起飞后只完成一段上升、下降过程，不追着脚下地面反复爬升。
+        private void tickFlight() {
+            if (horizontalCollision) {
+                flightDirection = flightDirection.yRot(Mth.HALF_PI);
+            }
+            double vertical = getDeltaMovement().y;
+            if (mode == MovementMode.FLYING) {
+                vertical -= 0.012;
+                if (--flightTicks <= 0 || vertical <= 0.0 || verticalCollision && vertical > 0.0) {
+                    changeMode(MovementMode.LANDING);
+                    vertical = Math.min(0.0, vertical);
+                }
+            } else {
+                vertical = Math.max(-0.30, vertical - 0.03);
+            }
+            setDeltaMovement(flightDirection.x * FLIGHT_SPEED, vertical, flightDirection.z * FLIGHT_SPEED);
             hasImpulse = true;
         }
 
@@ -419,12 +524,16 @@ public class Duck extends BaseCritter implements FlyingAnimal, VariantHolder<Duc
             flightRequested = false;
             threat = null;
             flewThisFall = false;
+            flightCooldown = 0;
+            swimDirection = Vec3.ZERO;
+            shoreTicks = 0;
+            swimPauseTicks = 0;
             mode = MovementMode.LAND;
             setMovementMode(mode);
         }
     }
 
-    // 鸭子的两种基础外观。枚举同时承担同步值、持久化值和纹理路径的解析。
+    /// 鸭子的两种基础外观。枚举同时承担同步值、持久化值和纹理路径的解析。
     public enum Variant implements IVariant {
         MALLARD("duck_1"),
         COMMON("duck_2");

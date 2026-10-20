@@ -88,10 +88,14 @@ public final class DirectFloatingPursuitAction extends BTNode {
     }
 
     private boolean hasSupportBelow() {
-        BlockPos.MutableBlockPos cursor = mob.blockPosition().mutable();
-        int distance = (int) Math.ceil(maxHoverHeight);
+        /// 无限高度表示不受离地高度约束，不能转换成 Integer.MAX_VALUE 再扫描。
+        if (Double.isInfinite(maxHoverHeight)) return true;
+        BlockPos origin = mob.blockPosition();
+        BlockPos.MutableBlockPos cursor = origin.mutable();
+        int distance = (int) Math.min(Math.ceil(maxHoverHeight), Math.max(0L, (long) origin.getY() - mob.level().getMinBuildHeight()));
         for (int step = 1; step <= distance; step++) {
-            cursor.set(mob.blockPosition()).move(Direction.DOWN, step);
+            cursor.set(origin).move(Direction.DOWN, step);
+            if (!mob.level().hasChunkAt(cursor)) return false;
             BlockState state = mob.level().getBlockState(cursor);
             if (!state.getFluidState().isEmpty() || state.isFaceSturdy(mob.level(), cursor, Direction.UP))
                 return true;

@@ -13,6 +13,7 @@ import org.joml.Vector3f;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /// 模型空间姿态与碰撞几何的共享实现；可在专用服务器上使用。
 public final class WalkerGeometry {
@@ -22,6 +23,9 @@ public final class WalkerGeometry {
     public static final float OFFSET_Y = 0.0F;
     private static final Map<String, JsonObject> BONES = new LinkedHashMap<>();
     private static final JsonObject ANIMATIONS;
+    /// 几何采样会逐刻重复匹配，正则只编译一次，避免随立方体数量放大临时分配。
+    private static final Pattern KEYFRAME_TIME = Pattern.compile("[0-9]+(?:\\.[0-9]+)?");
+    private static final Pattern LEG_BONE = Pattern.compile("(front|left|right)_leg[0-4]");
     static {
         JsonObject animations = new JsonObject();
         try {
@@ -99,7 +103,7 @@ public final class WalkerGeometry {
         if (track.isJsonArray()) return vector(track);
         JsonObject keys = track.getAsJsonObject();
         if (keys.has("vector")) return vector(keys.get("vector"));
-        List<Double> times = keys.keySet().stream().filter(key -> key.matches("[0-9]+(?:\\.[0-9]+)?"))
+        List<Double> times = keys.keySet().stream().filter(key -> KEYFRAME_TIME.matcher(key).matches())
                 .map(Double::parseDouble).sorted().toList();
         if (times.isEmpty()) return new Vector3f();
         double length = animation.get("animation_length").getAsDouble();
@@ -152,7 +156,8 @@ public final class WalkerGeometry {
     }
 
     private static JsonElement key(JsonObject keys, double time) {
-        for (var entry : keys.entrySet()) if (entry.getKey().matches("[0-9]+(?:\\.[0-9]+)?")
+        for (var entry : keys.entrySet())
+            if (KEYFRAME_TIME.matcher(entry.getKey()).matches()
                 && Double.parseDouble(entry.getKey()) == time) return entry.getValue();
         return new JsonArray();
     }
@@ -277,6 +282,7 @@ public final class WalkerGeometry {
             }
             return true;
         }
-        public boolean leg() { return bone.matches("(front|left|right)_leg[0-4]"); }
+
+        public boolean leg() {return LEG_BONE.matcher(bone).matches();}
     }
 }

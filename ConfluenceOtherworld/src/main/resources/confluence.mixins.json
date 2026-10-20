@@ -29,7 +29,6 @@
         "neoforge.items.ItemStackHandlerMixin",
         "resources.RegistryDataLoader$RegistryDataMixin",
         "server.MinecraftServerMixin",
-        "server.PlayerAdvancementsMixin",
         "server.ServerAdvancementManagerMixin",
         "server.commands.AdvancementCommands$Action$2Mixin",
         "server.level.ServerLevelMixin",
@@ -168,7 +167,6 @@
         "integration.terracurio.TCKeyBindingsMixin",
         "integration.terracurio.TCUtilsMixin",
         "neoforge.client.model.RegistryAwareItemModelShaperMixin",
-        "server.LocalPlayerAdvancementsMixin",
         "world.entity.LocalEntityMixin",
         "world.entity.LocalLivingEntityMixin",
         "world.level.block.LocalBlockMixin"

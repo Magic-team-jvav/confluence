@@ -43,7 +43,6 @@ import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
-import net.neoforged.neoforge.network.event.RegisterConfigurationTasksEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.LibAttributes;
@@ -84,7 +83,6 @@ import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
-import org.confluence.mod.network.task.AchievementsTask;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
@@ -210,11 +208,6 @@ public final class ModEvents {
                 if (pack != null) consumer.accept(pack);
             });
         }
-    }
-
-    @SubscribeEvent
-    public static void registerConfigurationTasks(RegisterConfigurationTasksEvent event) {
-        event.register(new AchievementsTask(event.getListener()));
     }
 
     @SubscribeEvent

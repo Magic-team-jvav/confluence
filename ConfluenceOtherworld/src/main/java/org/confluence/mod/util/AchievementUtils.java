@@ -38,9 +38,7 @@ import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IPlayerAdvancements;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -109,15 +107,6 @@ public final class AchievementUtils {
         Codec<PlayerAdvancements.Data> dataCodec = Codec.unboundedMap(ResourceLocation.CODEC, AchievementProgress.CODEC)
                 .xmap(PlayerAdvancements.Data::new, PlayerAdvancements.Data::map);
         return DataFixTypes.ADVANCEMENTS.wrapCodec(dataCodec, LibClientUtils.getDataFixer(), 1343);
-    }
-
-    public static void setData(ServerPlayer player) {
-        Map<UUID, PlayerAdvancements.Data> map = player.connection.getConnection().channel().attr(ReplyAchievementsPacketC2S.ACHIEVEMENTS).get();
-        if (map == null) return;
-        UUID id = player.getGameProfile().getId();
-        PlayerAdvancements.Data data = map.get(id);
-        if (data == null) return;
-        IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
     }
 
     public static void handleData(PlayerAdvancements.Data data, boolean override) {

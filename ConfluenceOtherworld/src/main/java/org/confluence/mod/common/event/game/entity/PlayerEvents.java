@@ -48,15 +48,10 @@ import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.attachment.SoulStorage;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.Team;
@@ -297,7 +292,8 @@ public final class PlayerEvents {
             event.setCanceled(true);
             return;
         }
-        if (!(player instanceof ServerPlayer serverPlayer) || !BloodMoonGameEvent.INSTANCE.started()) return;
+        if (!(player instanceof ServerPlayer serverPlayer) || !BloodMoonGameEvent.INSTANCE.started())
+            return;
         var hook = event.getHookEntity();
         if (!hook.getInBlockState().getFluidState().is(FluidTags.WATER)) return;
         if (player.getRandom().nextInt(10) == 0) {
@@ -417,11 +413,8 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void advancementProgress(AdvancementEvent.AdvancementProgressEvent event) {
-        ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!LibEntityUtils.isSingleplayerOwner(player) &&
-                AchievementOffset.Loader.getDisplayOffset().containsKey(event.getAdvancement().id())
-        ) {
-            AchievementsDataSyncPacketS2C.sendToPlayer(player);
+        if (AchievementOffset.Loader.getDisplayOffset().containsKey(event.getAdvancement().id())) {
+            AchievementsDataSyncPacketS2C.sendToPlayer((ServerPlayer) event.getEntity());
         }
     }
 

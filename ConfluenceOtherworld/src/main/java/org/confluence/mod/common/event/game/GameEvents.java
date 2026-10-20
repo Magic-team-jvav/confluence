@@ -26,7 +26,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.NPCDialogSyncPacketS2C;
-import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PrefixUtils;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 
@@ -72,7 +71,6 @@ public final class GameEvents {
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(sendTo, sendTo);
             AchievementOffsetSyncPacketS2C.sendToClient(sendTo);
-            AchievementUtils.setData(sendTo);
         }
     }
 

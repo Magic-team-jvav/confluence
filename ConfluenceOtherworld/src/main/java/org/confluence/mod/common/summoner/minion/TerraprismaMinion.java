@@ -1,9 +1,12 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
@@ -21,13 +24,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * 泰拉棱镜：跟随主人的浮游剑，蓄势后以直线／椭圆／刺击等轨迹连续斩击目标。
- */
+/// 泰拉棱镜：跟随主人的浮游剑，蓄势后以直线／椭圆／刺击等轨迹连续斩击目标。
 public class TerraprismaMinion extends Minion implements IEntityCollision<TerraprismaMinion> {
 
     public boolean attacking = false;
-    public final Set<LivingEntity> hitTargets = new HashSet<>();
+    public final Set<Entity> hitTargets = new HashSet<>();
     public int trailTimer = 0;
     public float lastIdleBlend = 0;
     public float idleBlend = 0;
@@ -87,7 +88,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
         for (HitContext hit : hitContexts) {
-            if (hitTargets.add(hit.entity())) {
+            if (hitTargets.add(LibEntityUtils.dedupeIdentity(hit.entity()))) {
                 attack(hit.entity(), getDamage(), 4);
             }
         }
@@ -103,9 +104,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
         return super.getRenderNode(partialTick).lerp(getInterpolatedIdleState(partialTick), Mth.lerp(partialTick, lastIdleBlend, idleBlend));
     }
 
-    /**
-     * 按次序在主人身后错开漂浮，并按呼吸节奏上下浮动。
-     */
+    /// 按次序在主人身后错开漂浮，并按呼吸节奏上下浮动。
     public PathNode getInterpolatedIdleState(float partialTick) {
         float bodyYaw = Mth.rotLerp(partialTick, getOwner().yBodyRotO, getOwner().yBodyRot);
         float headYaw = Mth.rotLerp(partialTick, getOwner().yHeadRotO, getOwner().yHeadRot);
@@ -125,9 +124,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
         return new PathNode(targetPos, playerYaw - 90, 75 - getOrder() * 5.0F, 100);
     }
 
-    /**
-     * 按次序错开色相，并随呼吸周期轻微改变饱和度。
-     */
+    /// 按次序错开色相，并随呼吸周期轻微改变饱和度。
     public int getColor(float partialTick) {
         int total = Math.max(1, getSameSize());
         int animationTick = getOwner() != null ? getOwner().tickCount : getTickCount();

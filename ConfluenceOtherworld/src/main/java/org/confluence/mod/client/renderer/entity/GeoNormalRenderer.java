@@ -3,6 +3,7 @@ package org.confluence.mod.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -10,15 +11,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.entity.GeoNormalModel;
 import org.confluence.mod.client.renderer.ColoredGeoRenderer;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseWormBoss;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -52,6 +55,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         if (rotateAlongPitch && model instanceof GeoNormalModel<?> normalModel) {
             normalModel.setHeadPitchEnabled(false);
         }
+
         this.modelScale = modelScale;
         this.modelOffsetY = modelOffsetY;
         this.shadowRadius = 0.25F;
@@ -64,6 +68,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             light = EntityLightSampler.sample(entity.getLightProbePosition(partialTick),
                     pos -> getBlockLightLevel(entity, pos), pos -> getSkyLightLevel(entity, pos));
         }
+
         super.render(entity, yaw, partialTick, poseStack, buffers, light);
     }
 
@@ -75,6 +80,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             if (hasNegativeCubes(entity))
                 return type == RenderType.entityTranslucent(texture) ? RenderStateShardAccessor.entityTranslucentCullOverlay(texture) : RenderType.entityCutout(texture);
         }
+
         return type;
     }
 
@@ -90,6 +96,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             cullingModel = model;
             needsFaceCulling = model.topLevelBones().stream().anyMatch(GeoNormalRenderer::needsFaceCulling);
         }
+
         return needsFaceCulling;
     }
 
@@ -127,8 +134,8 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         poseStack.scale(effectiveScale, effectiveScale, effectiveScale);
         poseStack.translate(0.0F, modelOffsetY, 0.0F);
         if (shouldRotateAlongPitch(animatable) && getWormModelCenter(animatable) == null) {
-            // 实体渲染原点位于碰撞箱脚底。直接在此处俯仰会把长模型绕脚底甩出链条，
-            // 接近 90° 时尤其明显；先移到实际碰撞箱中心，旋转后再移回。
+            /// 实体渲染原点位于碰撞箱脚底。直接在此处俯仰会把长模型绕脚底甩出链条，
+            /// 接近 90° 时尤其明显；先移到实际碰撞箱中心，旋转后再移回。
             float pivotY = animatable.getBbHeight() * 0.5F / effectiveScale - modelOffsetY;
             poseStack.translate(0.0F, pivotY, 0.0F);
             double yaw = getRenderYaw(animatable, partialTick) * Mth.DEG_TO_RAD;
@@ -136,12 +143,12 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             poseStack.mulPose(Axis.of(axis).rotationDegrees(getRenderPitch(animatable, partialTick)));
             poseStack.translate(0.0F, -pivotY, 0.0F);
         }
+
         adjustPose(poseStack, animatable, model, partialTick);
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
     }
 
     protected void adjustPose(PoseStack poseStack, T animatable, BakedGeoModel model, float partialTick) {}
-
     protected boolean shouldRotateAlongPitch(T animatable) {
         return rotateAlongPitch;
     }
@@ -157,6 +164,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             if (tangent.lengthSqr() > 1.0E-7)
                 return (float) (-Mth.atan2(tangent.y, tangent.horizontalDistance()) * Mth.RAD_TO_DEG);
         }
+
         return Mth.rotLerp(partialTick, animatable.xRotO, animatable.getXRot());
     }
 
@@ -166,6 +174,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             if (tangent.horizontalDistanceSqr() > 1.0E-10)
                 return (float) (Mth.atan2(tangent.z, tangent.x) * Mth.RAD_TO_DEG) - 90.0F;
         }
+
         return Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot());
     }
 
@@ -189,23 +198,25 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
     protected void applyRotations(T animatable, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTick, float scale) {
         Vector3f center = getWormModelCenter(animatable);
         if (center != null) {
-            // 将主干中心放到统一链节点，再在同一个局部坐标系内执行偏航和俯仰。
-            // 不能在 preRender 中按不同碰撞箱旋转后，又在这里分别绕模型原点偏航。
+            /// 将主干中心放到统一链节点，再在同一个局部坐标系内执行偏航和俯仰。
+            /// 不能在 preRender 中按不同碰撞箱旋转后，又在这里分别绕模型原点偏航。
             poseStack.translate(0, center.y, 0);
             poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - getRenderYaw(animatable, partialTick)));
             poseStack.mulPose(Axis.XP.rotationDegrees(-getRenderPitch(animatable, partialTick)));
             poseStack.translate(-center.x, -center.y - 0.01F, -center.z);
             return;
         }
+
         if (!(animatable instanceof LivingEntity) || animatable instanceof WormSegment) {
             rotationYaw = getRenderYaw(animatable, partialTick);
         }
+
         super.applyRotations(animatable, poseStack, ageInTicks, rotationYaw, partialTick, scale);
     }
 
     @Override
     protected float getDeathMaxRotation(T animatable) {
-        // 分段蠕虫不能只让头部执行原版侧翻，否则会与保留原姿态的体节断开。
+        /// 分段蠕虫不能只让头部执行原版侧翻，否则会与保留原姿态的体节断开。
         return animatable instanceof BaseWormMonster || animatable instanceof BaseWormBoss ? 0.0F : super.getDeathMaxRotation(animatable);
     }
 

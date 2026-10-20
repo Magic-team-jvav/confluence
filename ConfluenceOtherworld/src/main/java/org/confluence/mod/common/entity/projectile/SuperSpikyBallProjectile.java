@@ -12,6 +12,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
@@ -53,11 +54,12 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 float damage = LibUtils.switchByDifficulty(level(), 16, 32, 48);
-                if (entity instanceof LivingEntity living) {
+                LivingEntity living = LibEntityUtils.effectTarget(entity);
+                if (living != null) {
                     damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
                 }
                 if (entity.hurt(LibDamageTypes.of(level(), DamageTypes.STING), damage)) {
-                    LibEntityUtils.knockBackA2B(this, entity, 0.2, 0.04);
+                    LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(entity), 0.2, 0.04);
                 }
             }
         }
@@ -72,7 +74,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override

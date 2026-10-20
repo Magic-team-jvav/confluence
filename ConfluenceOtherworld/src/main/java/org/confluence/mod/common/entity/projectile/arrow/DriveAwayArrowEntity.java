@@ -13,6 +13,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.effect.harmful.DriveAwayController;
 import org.confluence.mod.common.entity.monster.Harpy;
 import org.confluence.mod.common.init.ModEffects;
@@ -58,7 +60,8 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        hittingFlyingTarget = result.getEntity() instanceof LivingEntity living && isDriveAwayTarget(living);
+        LivingEntity living = LibEntityUtils.effectTarget(result.getEntity());
+        hittingFlyingTarget = living != null && isDriveAwayTarget(living);
         try {
             super.onHitEntity(result);
         } finally {

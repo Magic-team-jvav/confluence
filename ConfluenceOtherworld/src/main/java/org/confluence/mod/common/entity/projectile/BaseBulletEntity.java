@@ -28,7 +28,6 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.common.entity.boss.BossProjectileReflection;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.BaseBullet;
@@ -375,18 +374,15 @@ public class BaseBulletEntity extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (!target.canBeHitByProjectile()) return false;
         Entity owner = getOwner();
-        if (owner instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return target != owner && !hitEntityIds.contains(target.getUUID())
-                && (owner == null || !owner.isPassengerOfSameVehicle(target));
+        return !hitEntityIds.contains(LibEntityUtils.dedupeIdentity(target).getUUID())
+                && LibEntityUtils.canHit(owner, target);
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity hit = result.getEntity();
-        hitEntityIds.add(hit.getUUID());
+        hitEntityIds.add(LibEntityUtils.dedupeIdentity(hit).getUUID());
         BulletEvent.HitEvent.Entity hitEvent = new BulletEvent.HitEvent.Entity(this, getBullet(), result);
         NeoForge.EVENT_BUS.post(hitEvent);
         if (hitEvent.isCanceled()) return;
@@ -400,7 +396,7 @@ public class BaseBulletEntity extends Projectile {
         if (knockback > 0.0F) {
             BulletEvent.KnockbackEvent knockbackEvent = new BulletEvent.KnockbackEvent(this, getBullet(), knockback / 8.0F, 0.0F);
             NeoForge.EVENT_BUS.post(knockbackEvent);
-            LibEntityUtils.knockBackA2B(this, hit, knockbackEvent.getScale(), knockbackEvent.getMotionY());
+            LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(hit), knockbackEvent.getScale(), knockbackEvent.getMotionY());
         }
         BulletEvent.PenetrateEvent penetrateEvent = new BulletEvent.PenetrateEvent(this, getBullet(), penetrate);
         NeoForge.EVENT_BUS.post(penetrateEvent);
@@ -427,7 +423,7 @@ public class BaseBulletEntity extends Projectile {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("ColorID", CompoundTag.TAG_STRING)) setColorID(tag.getString("ColorID"));
-        // 1.21 差异：`ItemStack.of(CompoundTag)` 已删 → `ItemStack.parseOptional(HolderLookup.Provider, CompoundTag)`
+        /// 1.21 差异：`ItemStack.of(CompoundTag)` 已删 → `ItemStack.parseOptional(HolderLookup.Provider, CompoundTag)`
         setBullet(tag.contains("Item", CompoundTag.TAG_COMPOUND) ? ItemStack.parseOptional(level().registryAccess(), tag.getCompound("Item")) : getDefaultItem());
         damage = tag.getFloat("Damage");
         knockback = tag.getFloat("Knockback");

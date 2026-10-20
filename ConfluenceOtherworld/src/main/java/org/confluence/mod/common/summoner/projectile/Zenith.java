@@ -9,10 +9,12 @@ import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibStreamCodecUtils;
@@ -32,7 +34,7 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
     public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
 
     public Vec3 offest;
-    public LivingEntity target;
+    public Entity target;
     public RenderType renderType;
     public Random random;
     public float alpha;
@@ -54,13 +56,7 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
         super.registerSyncFields(fields);
         fields.field(LibStreamCodecUtils.VEC_3, () -> offest, value -> offest = value);
         fields.field(ZENITH_RENDER_TYPE, () -> renderType, value -> renderType = value);
-        fields.field(ByteBufCodecs.INT, () -> target != null ? target.getId() : -1, (level, value) -> {
-            if (value != -1 && level.getEntity(value) instanceof LivingEntity living) {
-                target = living;
-            } else {
-                target = null;
-            }
-        });
+        fields.field(ByteBufCodecs.INT, () -> target != null ? target.getId() : -1, (level, value) -> target = LibEntityUtils.getEntityOrPart(level, value));
     }
 
     @Override
@@ -159,24 +155,23 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
     }
 
     @Override
-    public boolean isValidCollisionTarget(Zenith zenith, LivingEntity target) {
+    public boolean isValidCollisionTarget(Zenith zenith, Entity target) {
         return TARGETING.canAcquire(owner, target);
     }
 
     @Override
-    public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
-        if (!Immunity.isActive(this, target)) {
+    public boolean attack(@NotNull Entity target, float damageAmount, int invincibleTime) {
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
+        if (logicalTarget != null && LibEntityUtils.allowsAttack(owner, target)) {
             DamageSource damageSource = owner.damageSources().playerAttack(owner);
             immunityDuration = invincibleTime;
-            int invulnerableTime = target.invulnerableTime;
-            target.invulnerableTime = 0;
-            boolean hurt = target.hurt(damageSource, damageAmount);
-            target.invulnerableTime = invulnerableTime;
-            if (hurt) {
-                Immunity.apply(this, damageSource, target);
+            try {
+                return Immunity.hurt(this, target, logicalTarget, damageSource, damageAmount);
+            } finally {
+                immunityDuration = 0;
             }
-            immunityDuration = 0;
         }
+        return false;
     }
 
     @Override

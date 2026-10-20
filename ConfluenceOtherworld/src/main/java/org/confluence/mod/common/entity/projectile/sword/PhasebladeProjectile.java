@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +9,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -19,22 +18,22 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.particle.BladeTrailEmitter;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.sword.Phasesaber;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.phys.*;
 
-
-public abstract class PhasebladeProjectile extends Projectile implements ItemSupplier {
+public abstract class PhasebladeProjectile extends Projectile implements ItemSupplier, Immunity {
     private static final EntityDataAccessor<ItemStack> DATA_WEAPON = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Byte> DATA_STATE = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Float> DATA_DAMAGE = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.FLOAT);
@@ -47,14 +46,12 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
     private static final int LOCAL_HIT_COOLDOWN_TICKS = 10;
     private static final BasePhasebladeItem.ProjectileGeometry DEFAULT_GEOMETRY = new BasePhasebladeItem.ProjectileGeometry(-0.125F, 0.0625F, 0.0F, 2.1875F, -0.125F, 0.0625F, 1.5F);
     private static final double RETURN_SPEED = 1.5D;
-    private final Map<UUID, Integer> nextHitTicks = new HashMap<>();
     private int stuckTicks;
     private ItemStack clientRenderItem = ItemStack.EMPTY;
     private ParticleEmitter tipEmitter;
     private ParticleEmitter tailEmitter;
     private State observedState = State.FORWARD;
     private int stateTicks;
-
     public PhasebladeProjectile(EntityType<? extends PhasebladeProjectile> type, Level level) {
         super(type, level);
     }
@@ -89,6 +86,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         if (clientRenderItem.isEmpty()) {
             clientRenderItem = BasePhasebladeItem.createProjectileRenderStack(getItem(), getId());
         }
+
         return clientRenderItem;
     }
 
@@ -143,6 +141,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
             observedState = state();
             stateTicks = 0;
         }
+
         if (DATA_STATE.equals(key) || DATA_WEAPON.equals(key) || DATA_FALL_YAW.equals(key) || DATA_FALL_ROLL.equals(key)) {
             if (DATA_WEAPON.equals(key)) clientRenderItem = ItemStack.EMPTY;
             refreshDimensionsKeepingCenter();
@@ -156,6 +155,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         if (observedState == State.STUCK) {
             return EntityDimensions.scalable(geometry.width(), geometry.length());
         }
+
         return EntityDimensions.scalable(geometry.length(), geometry.width());
     }
 
@@ -221,7 +221,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         if (!level().isClientSide) return;
         ResourceLocation particle = bladeParticle();
         if (state == State.STUCK || particle == null) return;
-
         Vec3 axis = bladeDirection(0.0F);
         double halfLength = projectileGeometry().length() * 0.5D;
         Vec3 center = collisionCenter();
@@ -248,7 +247,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         Vec3 nextAxis = bladeDirection(1.0F);
         BladeBlockHit nearest = null;
         double nearestDistance = Double.MAX_VALUE;
-
         for (int index = 0; index < COLLISION_SAMPLES; index++) {
             double offset = -halfBladeLength + bladeLength * index / (COLLISION_SAMPLES - 1.0D);
             Vec3 from = center.add(currentAxis.scale(offset));
@@ -262,13 +260,12 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
                 nearest = new BladeBlockHit(blockHit, offset);
             }
         }
+
         return nearest;
     }
 
-    /**
-     * 单独检测真正的剑尖。通用七点扫描用于阻止整把剑穿墙，但不能用其中“最近的任意点”
-     * 判断插地，否则护手或剑身先处于方块内时会永远错过剑尖落地。
-     */
+    /// 单独检测真正的剑尖。通用七点扫描用于阻止整把剑穿墙，但不能用其中“最近的任意点”
+    /// 判断插地，否则护手或剑身先处于方块内时会永远错过剑尖落地。
     private BlockHitResult findBladeTipHit() {
         double tipOffset = projectileGeometry().length() * 0.5D;
         Vec3 center = collisionCenter();
@@ -277,7 +274,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         HitResult hit = level().clip(new ClipContext(currentTip, nextTip, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
         BlockHitResult directHit = hit instanceof BlockHitResult blockHit && hit.getType() != HitResult.Type.MISS ? blockHit : null;
         if (directHit != null && directHit.getDirection() == Direction.UP) return directHit;
-
         BlockPos pos = BlockPos.containing(nextTip);
         VoxelShape shape = level().getBlockState(pos).getCollisionShape(level(), pos);
         if (shape.isEmpty()) return directHit;
@@ -290,15 +286,14 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         Vec3 contact = result.getLocation();
         setDeltaMovement(Vec3.ZERO);
         setState(State.STUCK);
-        // Entity 坐标是碰撞箱底部。只把实际剑刃长度的 1/3 埋入接触面，
-        // 剑柄和余下剑刃均留在地面上方。
+        /// Entity 坐标是碰撞箱底部。只把实际剑刃长度的 1/3 埋入接触面，
+        /// 剑柄和余下剑刃均留在地面上方。
         setPos(contact.x, contact.y - projectileGeometry().insertionDepth(), contact.z);
     }
 
     private void handleBladeBlockHit(BladeBlockHit collision) {
         BlockHitResult result = collision.result();
         Vec3 normal = Vec3.atLowerCornerOf(result.getDirection().getNormal());
-
         boolean bladeTip = collision.axisOffset() >= projectileGeometry().length() * 0.325D;
         if (result.getDirection() == net.minecraft.core.Direction.UP && bladeTip && fallingAlignment(0.0F) >= 0.8F) {
             stickBladeFirst(result);
@@ -314,8 +309,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        UUID hitIdentity = ProjectileHitRules.dedupeIdentity(target).getUUID();
-        return target != getOwner() && tickCount >= nextHitTicks.getOrDefault(hitIdentity, 0) && ProjectileHitRules.canHit(getOwner(), target) && super.canHitEntity(target);
+        return target != getOwner() && LibEntityUtils.canHit(getOwner(), target) && super.canHitEntity(target);
     }
 
     @Override
@@ -326,24 +320,27 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         if (!(owner instanceof LivingEntity livingOwner)) return;
         DamageSource source = damageSources().mobProjectile(this, livingOwner);
         float damage = entityData.get(DATA_DAMAGE) * (state() == State.STUCK ? groundDamageMultiplier() : airDamageMultiplier());
-        Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
-        int previousInvulnerableTime = damageRecipient instanceof LivingEntity living ? living.invulnerableTime : 0;
-        if (damageRecipient instanceof LivingEntity living) living.invulnerableTime = 0;
-        boolean hurt;
-        try {
-            // 泰拉式局部无敌帧不能被 LivingEntity 的全局受伤帧吞掉；每个投掷剑实例
-            // 通过 nextHitTicks 独立限制同一目标 10 tick 内只能命中一次。
-            hurt = damageRecipient.hurt(source, damage);
-        } finally {
-            if (damageRecipient instanceof LivingEntity living)
-                living.invulnerableTime = previousInvulnerableTime;
-        }
+        LivingEntity immunityTarget = LibEntityUtils.logicalLivingTarget(target);
+        boolean hurt = immunityTarget != null
+                ? Immunity.hurt(this, target, immunityTarget, source, damage)
+                : Immunity.withCause(this, () -> target.hurt(source, damage));
         if (hurt) {
-            nextHitTicks.put(ProjectileHitRules.dedupeIdentity(target).getUUID(), tickCount + LOCAL_HIT_COOLDOWN_TICKS);
             float knockback = entityData.get(DATA_KNOCKBACK) * (state() == State.STUCK ? groundKnockbackMultiplier() : airKnockbackMultiplier());
-            ProjectileHitRules.applyResolvedKnockback(this, target, knockback, knockback * 0.1F);
+            applyHitKnockback(immunityTarget != null ? immunityTarget : target, knockback);
             livingOwner.setLastHurtMob(target);
         }
+    }
+
+    /// 使用发射时保存的击退值，不叠加玩家当前手持物的攻击击退属性。
+    private void applyHitKnockback(Entity target, float strength) {
+        if (strength <= 0) return;
+        var resistance = target instanceof LivingEntity living ? living.getAttribute(Attributes.KNOCKBACK_RESISTANCE) : null;
+        double resolvedStrength = strength * (resistance == null ? 1 : 1 - resistance.getValue());
+        Vec3 horizontal = target.position().subtract(position()).multiply(1, 0, 1);
+        if (horizontal.lengthSqr() < 1.0E-8) horizontal = getDeltaMovement().multiply(1, 0, 1);
+        horizontal = horizontal.lengthSqr() >= 1.0E-8 && resolvedStrength > 0
+                ? horizontal.normalize().scale(resolvedStrength) : Vec3.ZERO;
+        target.addDeltaMovement(horizontal.add(0, strength * 0.1F, 0));
     }
 
     @Override
@@ -359,9 +356,8 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
             discard();
             return;
         }
+
         super.tick();
-
-
         State state = state();
         if (state != observedState) {
             observedState = state;
@@ -369,13 +365,16 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         } else {
             stateTicks++;
         }
+
         if (state == State.FORWARD && tickCount >= FORWARD_TICKS) {
             beginFalling();
             state = State.FALLING;
         }
+
         if (state == State.FORWARD || state == State.FALLING || state == State.RETURNING) {
             refreshDimensionsKeepingCenter();
         }
+
         tickClientEmitters(state);
         if (state == State.RETURNING && owner instanceof LivingEntity livingOwner) {
             Vec3 offset = livingOwner.getEyePosition().subtract(position());
@@ -383,6 +382,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
                 discard();
                 return;
             }
+
             setDeltaMovement(offset.normalize().scale(RETURN_SPEED));
         }
 
@@ -391,12 +391,14 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
                 recall();
                 return;
             }
+
             if (!level().isClientSide) {
                 AABB damageArea = getBoundingBox().inflate(0.1D);
                 for (Entity target : level().getEntities(this, damageArea, this::canHitEntity)) {
                     onHitEntity(new EntityHitResult(target));
                 }
             }
+
             return;
         }
 
@@ -408,6 +410,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
                     return;
                 }
             }
+
             BladeBlockHit bladeHit = findBladeBlockHit();
             if (bladeHit != null) {
                 handleBladeBlockHit(bladeHit);
@@ -420,6 +423,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
             hitTargetOrDeflectSelf(hit);
             state = state();
         }
+
         Vec3 movement = getDeltaMovement();
         setPos(getX() + movement.x, getY() + movement.y, getZ() + movement.z);
         if (state == State.FALLING)
@@ -453,19 +457,21 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
     }
 
     protected abstract float airDamageMultiplier();
-
     protected abstract float airKnockbackMultiplier();
-
     protected float groundDamageMultiplier() {return 0.75F;}
-
     protected float groundKnockbackMultiplier() {return 0.75F;}
-
     private record BladeBlockHit(BlockHitResult result, double axisOffset) {}
-
     public enum State {
         FORWARD,
         FALLING,
         STUCK,
         RETURNING
     }
+
+    @Override
+    public Type confluence$getImmunityType() {return Type.LOCAL;}
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource source) {return LOCAL_HIT_COOLDOWN_TICKS;}
+
 }

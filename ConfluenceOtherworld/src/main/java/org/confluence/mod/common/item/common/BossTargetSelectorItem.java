@@ -14,8 +14,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 
@@ -30,7 +31,7 @@ public class BossTargetSelectorItem extends Item {
         tooltip.add(Component.translatable("tooltip.confluence.boss_target_selector"));
     }
 
-    // 支持直接选择本体，以及射线命中的大型 Boss 部件。
+    /// 支持直接选择本体，以及射线命中的大型 Boss 部件。
     private static BaseBoss boss(Entity entity) {
         Entity owner = entity instanceof PartHitTarget part ? part.encounterOwner() : LibEntityUtils.encounterOwner(entity);
         return owner instanceof BaseBoss boss ? boss : entity instanceof BaseBoss boss ? boss : null;
@@ -41,7 +42,7 @@ public class BossTargetSelectorItem extends Item {
         if (boss == null || !player.isCreative()) return InteractionResult.PASS;
         if (!player.level().isClientSide) {
             boolean enabled = boss.toggleDeveloperTarget(player);
-            // 双子魔眼共用一阶段目标，两眼同步开发者锁定，避免更新顺序导致目标被另一眼覆盖。
+            /// 双子魔眼共用一阶段目标，两眼同步开发者锁定，避免更新顺序导致目标被另一眼覆盖。
             if (boss instanceof AbstractTwinEye eye && eye.getPartner() != null && eye.getPartner().isDeveloperTarget(player) != enabled)
                 eye.getPartner().toggleDeveloperTarget(player);
             player.displayClientMessage(Component.translatable(enabled ? "message.confluence.boss_target_selector.locked" : "message.confluence.boss_target_selector.cleared", boss.getDisplayName()), true);

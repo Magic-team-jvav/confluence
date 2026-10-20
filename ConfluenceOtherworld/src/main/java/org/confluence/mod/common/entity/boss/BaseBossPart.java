@@ -17,13 +17,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
-
 
 /// 非生物型、短暂 Boss 部件的共享生命周期。
 ///
@@ -31,11 +31,9 @@ import java.util.UUID;
 /// 追踪本场 Boss，服务端额外保留 UUID 处理加载顺序不同的恢复窗口。Boss 加载后会按槽位重建部件，
 /// 因此不会出现“Boss 已恢复，旧部件又从区块 NBT 复活”的双份实体。
 ///
-/// 可破坏部件拥有自己的同步生命值，但攻击仍可按倍率转发给 Boss。所有者在 100 tick
-/// 宽限内仍无法解析时丢弃孤儿部件，防止损坏存档或非正常生成遗留永久实体。
+/// 可破坏部件拥有自己的同步生命值，伤害仍可按倍率转发给 Boss。
+/// 服务端生成时必须绑定本体；客户端等待同步，本体离开后清理临时部件。
 public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements Boss.BossPart, PartHitTarget {
-    // 客户端可能先收到部件再收到本体，允许 100 tick 的实体解析窗口后才清理孤儿部件。
-    private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";
     private static final String HEALTH_TAG = "PartHealth";
 
@@ -45,7 +43,6 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
 
     private @Nullable T owner;
     private @Nullable UUID ownerUUID;
-    private int unresolvedOwnerTicks;
     private @Nullable Vec3 contactSweepStart;
     private long contactMovementTick = Long.MIN_VALUE;
     private int clientLerpSteps;
@@ -67,7 +64,7 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         this.entityData.set(OWNER_ID, owner.getId());
         contactSweepStart = position();
         contactMovementTick = level().getGameTime();
-        // 只在首次绑定/新建部件时补满生命，不覆盖从存档恢复的剩余生命。
+        /// 只在首次绑定/新建部件时补满生命，不覆盖从存档恢复的剩余生命。
         if (isDestructible() && getPartHealth() <= 0.0F) {
             this.entityData.set(PART_HEALTH, getMaxPartHealth());
         }
@@ -98,11 +95,6 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
 
     protected final boolean isDestructible() {
         return getMaxPartHealth() > 0.0F;
-    }
-
-    @Override
-    public final Entity damageRecipient() {
-        return this;
     }
 
     @Override
@@ -177,13 +169,12 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         }
         T resolvedOwner = getOwner();
         if (resolvedOwner == null) {
-            // 宽限用于容纳 Boss/部件的加载顺序差，而不是让孤儿部件无限期存活。
-            if (!level().isClientSide && ++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS) {
+            if (!level().isClientSide) {
                 discard();
             }
             return;
         }
-        unresolvedOwnerTicks = 0;
+
         if (!resolvedOwner.isAlive()) {
             discard();
             return;
@@ -253,7 +244,7 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         }
         owner = null;
 
-        // 先走客户端也能使用的运行时 ID 快速路径，服务端失败后再以 UUID 精确恢复。
+        /// 先走客户端也能使用的运行时 ID 快速路径，服务端失败后再以 UUID 精确恢复。
         Entity byNetworkId = level().getEntity(entityData.get(OWNER_ID));
         if (getOwnerType().isInstance(byNetworkId)) {
             owner = getOwnerType().cast(byNetworkId);

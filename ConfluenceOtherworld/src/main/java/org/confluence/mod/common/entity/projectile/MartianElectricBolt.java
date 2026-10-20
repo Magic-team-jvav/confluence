@@ -8,14 +8,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.init.ModEffects;
 
-/** Imprecise Tesla shot; native projectile owner persistence prevents orphaned damage. */
+/// 带散布的特斯拉弹幕，使用原版弹射物所有者存档避免无主伤害。
 public final class MartianElectricBolt extends StraightMonsterProjectile {
     public static final float SHOT_DAMAGE = 5.0F;
     private int missingOwnerTicks;
-
     public MartianElectricBolt(EntityType<? extends MartianElectricBolt> type, Level level) {
         super(type, level);
     }

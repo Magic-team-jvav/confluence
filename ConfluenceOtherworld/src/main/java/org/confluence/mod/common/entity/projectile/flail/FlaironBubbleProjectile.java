@@ -6,17 +6,15 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.LibEntityUtils;
 
 import java.util.Comparator;
-
 
 /// 猪鲨链球发射的可追踪气泡。
 public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
@@ -56,7 +54,7 @@ public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
         }
         LivingEntity target = LibEntityUtils.nearest(
                 level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(TARGET_RANGE)),
-                // 气泡只主动锁定敌怪阵营；可被攻击的城镇 NPC 和和平生物不是索敌对象。
+                /// 气泡只主动锁定敌怪阵营；可被攻击的城镇 NPC 和和平生物不是索敌对象。
                 candidate -> TARGETING.canAcquire(getOwner(), candidate),
                 Comparator.comparingDouble(this::distanceToSqr));
 
@@ -100,14 +98,8 @@ public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
     }
 
     @Override
-    protected void onHitLiving(LivingEntity target) {
-        if (!(getOwner() instanceof Player player)) {
-            discard();
-            return;
-        }
-        if (target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage)) {
-            LibEntityUtils.knockBackA2B(this, target, 0.1F, 0.05F);
-        }
+    protected void onHitEntity(EntityHitResult hit) {
+        hurtTarget(hit.getEntity(), 0.1F, 0.05F);
         discard();
     }
 }

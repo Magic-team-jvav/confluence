@@ -10,9 +10,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
+
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,21 +22,25 @@ public abstract class WallOfFleshPart extends PartEntity<WallOfFlesh> implements
     private final float width;
     private final float height;
     private final int index;
-    private final float visualRoll;
+    private float visualRoll;
     private Vec3 sweepStart = Vec3.ZERO;
 
     protected WallOfFleshPart(WallOfFlesh parent, int index, float width, float height) {
         super(parent);
         this.index = index;
-        /// 固定布局种子与部件序号决定倾斜，重载、多人追踪时一致，不逐帧随机。
-        long hash = parent.getLayoutSeed() + index * 0x9E3779B97F4A7C15L;
-        hash = (hash ^ (hash >>> 30)) * 0xBF58476D1CE4E5B9L;
-        hash = (hash ^ (hash >>> 27)) * 0x94D049BB133111EBL;
-        visualRoll = (((hash ^ (hash >>> 31)) >>> 40) / 16777215.0F - 0.5F) * 30.0F;
+        updateVisualRoll();
         this.width = width;
         this.height = height;
         noPhysics = true;
         refreshDimensions();
+    }
+
+    final void updateVisualRoll() {
+        /// 固定布局种子与部件序号决定倾斜，重载、多人追踪时一致，不逐帧随机。
+        long hash = getParent().getLayoutSeed() + index * 0x9E3779B97F4A7C15L;
+        hash = (hash ^ (hash >>> 30)) * 0xBF58476D1CE4E5B9L;
+        hash = (hash ^ (hash >>> 27)) * 0x94D049BB133111EBL;
+        visualRoll = (((hash ^ (hash >>> 31)) >>> 40) / 16777215.0F - 0.5F) * 30.0F;
     }
 
     public final int getPartIndex() {return index;}
@@ -100,9 +105,6 @@ public abstract class WallOfFleshPart extends PartEntity<WallOfFlesh> implements
 
     @Override
     public boolean fireImmune() {return true;}
-
-    @Override
-    public Entity damageRecipient() {return this;}
 
     @Override
     public Entity encounterOwner() {return getParent();}

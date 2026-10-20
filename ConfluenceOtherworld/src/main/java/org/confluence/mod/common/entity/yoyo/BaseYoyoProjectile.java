@@ -11,10 +11,9 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,11 +22,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-
 /// 悠悠球的短寿命衍生攻击，保留发射伤害，不读取玩家后来切换的武器。
 public abstract class BaseYoyoProjectile extends Projectile implements Immunity {
     protected static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
-
     protected WeaponTargeting targeting() {
         return TARGETING;
     }
@@ -38,7 +35,6 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
     private float knockback;
     private @Nullable UUID excludedTarget;
     private boolean spent;
-
     protected BaseYoyoProjectile(EntityType<? extends BaseYoyoProjectile> type, Level level) {
         super(type, level);
         noPhysics = true;
@@ -81,7 +77,6 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {}
-
     @Override
     public void tick() {
         super.tick();
@@ -93,21 +88,22 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
                 discard();
                 return;
             }
+
             if (!spent) {
                 for (Entity candidate : level().getEntities(this, getBoundingBox().expandTowards(motion).inflate(0.3))) {
                     /// 自动衍生弹幕的命中与索敌采用同一敌怪规则，不误伤沿途城镇 NPC。
-                    if (!targeting().canAcquire(owner, candidate) || !ProjectileHitRules.canHit(owner, candidate))
+                    if (!targeting().canAcquire(owner, candidate) || !LibEntityUtils.canHit(owner, candidate))
                         continue;
-                    Entity identity = ProjectileHitRules.dedupeIdentity(candidate);
+                    Entity identity = LibEntityUtils.dedupeIdentity(candidate);
                     UUID id = identity.getUUID();
-                    LivingEntity logical = ProjectileHitRules.logicalLivingTarget(candidate);
+                    LivingEntity logical = LibEntityUtils.logicalLivingTarget(candidate);
                     if (logical == null) continue;
                     if (logical.getUUID().equals(excludedTarget) && ignoresExcludedTarget())
                         continue;
                     if (hitTargets.contains(id)) continue;
                     if (!candidate.getBoundingBox().inflate(0.3).contains(position()) && candidate.getBoundingBox().inflate(0.3).clip(position(), position().add(motion)).isEmpty())
                         continue;
-                    Entity recipient = ProjectileHitRules.damageRecipient(candidate);
+                    Entity recipient = candidate;
                     DamageSource damageSource = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, owner);
                     Immunity immunity = confluence$getImmunityType() == Type.LOCAL ? this : (Immunity) getType();
                     if (!Immunity.hurt(immunity, recipient, logical, damageSource, damage))
@@ -122,38 +118,27 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
                 }
             }
         }
+
         setPos(position().add(motion));
         setDeltaMovement(motion.scale(velocityRetention()));
     }
 
     public float getCriticalChance() {return criticalChance;}
-
     protected abstract ParticleOptions particle();
-
     /// 默认射弹在后半程减速；特殊射弹可从出现时开始逐渐减速。
     protected double velocityRetention() {return tickCount > 10 ? 0.85 : 1.0;}
-
     protected boolean requiresLineOfSight() {return false;}
-
     protected boolean fallsBackToExcludedTarget() {return false;}
-
     protected boolean excludesInitialTarget() {return true;}
-
     protected boolean ignoresExcludedTarget() {return true;}
-
     protected boolean pierces() {return false;}
-
     protected void onHit(Entity recipient) {}
-
     @Override
     public boolean shouldBeSaved() {return false;}
-
     @Override
     public boolean canChangeDimensions(Level oldLevel, Level newLevel) {return false;}
-
     @Override
     public Type confluence$getImmunityType() {return Type.LOCAL;}
-
     @Override
     public int confluence$getImmunityDuration(DamageSource source) {return 4;}
 }

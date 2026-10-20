@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -43,9 +44,9 @@ import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 public final class MonsterEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Confluence.MODID);
 
-    // ------------------------------------------------------------------
-    // 血腥之地 / 腐化之地
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// 血腥之地 / 腐化之地
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<BloodCrawler>> BLOOD_CRAWLER = withAttributes(registerEntity("blood_crawler", "血爬虫", EntityType.Builder.of(BloodCrawler::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(4).attackDamage(15).followRange(32).attackKnockback(1).knockbackResistance(0.8).movementSpeed(0.38).spawnReinforcementsChance(0.01).armorToughness(1)
@@ -54,8 +55,8 @@ public final class MonsterEntities {
                             .multiply(LibAttributes.getAttackDamage(), 0.9))
                     .build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<Werewolf>> WEREWOLF = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("werewolf", "狼人", EntityType.Builder.of(Werewolf::new, MobCategory.MONSTER).sized(0.9F, 2.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(182).armor(18).attackDamage(37).followRange(32).attackKnockback(1).knockbackResistance(0.64).movementSpeed(0.3).armorToughness(7).build());
@@ -68,8 +69,8 @@ public final class MonsterEntities {
                     .projectile(ModEntities.DANDELION_SEED, projectile -> projectile.damage(8).scaleWithAttack(8))
                     .build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<CaveBat>> CAVE_BAT = withAttributes(registerEntity("cave_bat", "洞穴蝙蝠", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(8).armor(1).attackDamage(4).followRange(16).attackKnockback(0.2).knockbackResistance(0.5)
@@ -138,8 +139,8 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<CaveBat>> LAVA_BAT = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("lava_bat", "熔岩蝙蝠", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.LAVA), MobCategory.MONSTER).sized(0.8F, 1.25F).clientTrackingRange(10).fireImmune())),
             () -> CreatureAttributeBuilder.creature().maxHealth(84).armor(8).attackDamage(26).followRange(32).attackKnockback(0.2).knockbackResistance(0.46).armorToughness(3).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<WoodenMimic>> WOODEN_MIMIC = withAttributes(registerEntity("wooden_mimic", "木宝箱怪", EntityType.Builder.of(WoodenMimic::new, MobCategory.MONSTER).sized(0.8F, 0.8F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(14).attackDamage(42).followRange(32).attackKnockback(1).knockbackResistance(0.73).armorToughness(6).build());
@@ -181,8 +182,8 @@ public final class MonsterEntities {
                     .state(BaseMimic.CombatState.SLAMMING, state -> state.duration(40).chargeSpeed(1.2))
                     .build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<MeleeSkeleton>> SPORE_SKELETON = withAttributes(registerEntity("spore_skeleton", "孢子骷髅", EntityType.Builder.<MeleeSkeleton>of((type, level) -> new MeleeSkeleton(type, level, true, MeleeSkeleton.BehaviorProfile.OPEN_DOORS), MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(4).attackDamage(11).followRange(60).attackKnockback(0.5).knockbackResistance(0.28).armorToughness(1)
@@ -252,8 +253,8 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<MeleeSkeleton>> ARMORED_SKELETON = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerSkeleton("armored_skeleton", "装甲骷髅", 0.8F, 2.45F, MeleeSkeleton.BehaviorProfile.NORMAL)),
             () -> CreatureAttributeBuilder.creature().maxHealth(136).armor(13).attackDamage(21).knockbackResistance(0.64).movementSpeed(0.23).followRange(32).armorToughness(5).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<GoblinMonster>> GOBLIN_SCOUT = withAttributes(registerGoblinLand("goblin_scout", "哥布林侦察兵", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE, GoblinMonster.DoorBehavior.OPEN),
             () -> CreatureAttributeBuilder.creature().maxHealth(41).armor(3).attackDamage(10).followRange(32).attackKnockback(1).knockbackResistance(0.37).armorToughness(1)
@@ -321,8 +322,8 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Zombie>> ZOMBIE = withAttributes(registerEntity("zombie", "僵尸", EntityType.Builder.<Zombie>of(Zombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(20).armor(3).armorToughness(1).attackDamage(4).followRange(16).attackKnockback(0.5).knockbackResistance(0.0).movementSpeed(0.23).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> DOCTOR_BONES = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerLand("doctor_bones", "骷髅博士", 1.0F, 2.0F, BaseWarriorMonster.LandSoundProfile.ZOMBIE, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.0, true, BaseWarriorMonster.DoorBehavior.BLOOD_MOON)),
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(5).attackDamage(11).knockbackResistance(0.55).followRange(32).armorToughness(2).build());
@@ -364,8 +365,8 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> ANTLION_LARVA = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerLand("antlion_larva", "蚁狮幼虫", 0.7F, 0.5F, BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.3, true)),
             () -> CreatureAttributeBuilder.creature().maxHealth(16).armor(1).attackDamage(6).movementSpeed(0.3).knockbackResistance(0.33).followRange(24).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     /// 木乃伊（1.20 `:308`，按脚下沙块分型；`JumpProfile` 传 `null`，`mummy=true`）。
     public static final DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> MUMMY = withAttributes(registerJumpingLand("mummy", "木乃伊", 0.75F, 1.95F, null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.0, true),
@@ -415,8 +416,8 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> DREAMER_GHOUL = withAttributes(registerJumpingLand("dreamer_ghoul", "神梦食尸鬼", 0.75F, 1.95F, null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6, false),
             () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(15).attackDamage(29).followRange(64).attackKnockback(1).knockbackResistance(0.64).stepHeight(3.2).jumpStrength(0.7).armorToughness(6).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<BaseWormPart>> WYVERN_SEGMENT = registerWormSegment("wyvern_segment", "飞龙体节");
     public static final DeferredHolder<EntityType<?>, EntityType<Wyvern>> WYVERN = withAttributes(registerEntity("wyvern", "飞龙", EntityType.Builder.<Wyvern>of((type, level) -> new Wyvern(type, level, MonsterEntities.WYVERN_SEGMENT.get()), MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10).updateInterval(1)),
@@ -466,7 +467,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<SimpleWormMonster>> LEECH = withAttributes(registerWorm("leech", "血蛭", 2F, 2F, SimpleWormMonster.Role.UNDERWORLD, SimpleWormMonster.Anatomy.LEECH, () -> MonsterEntities.LEECH_SEGMENT.get()),
             () -> CreatureAttributeBuilder.creature().maxHealth(36).armor(2).attackDamage(10).movementSpeed(0.145).armorToughness(1).build());
 
-    // 地下水域：水母与琵琶鱼
+    /// 地下水域：水母与琵琶鱼
     public static final DeferredHolder<EntityType<?>, EntityType<JellyFish>> BLUE_JELLYFISH = withAttributes(registerJellyFish("blue_jellyfish", "蓝水母", JellyFish.Profile.ROUTINE),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(17).armor(2).attackDamage(13).followRange(16).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).armorToughness(1)
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))
@@ -486,7 +487,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<AnglerFish>> ANGLER_FISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("angler_fish", "琵琶鱼", EntityType.Builder.of(AnglerFish::new, MobCategory.MONSTER).sized(0.8F, 0.6F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(47).armor(10).attackDamage(42).followRange(24).movementSpeed(1.5).attackKnockback(0.5).knockbackResistance(0.1).armorToughness(4).build());
 
-    // 花岗岩洞：元素与巨人
+    /// 花岗岩洞：元素与巨人
     public static final DeferredHolder<EntityType<?>, EntityType<GraniteElemental>> GRANITE_ELEMENTAL = withAttributes(registerEntity("granite_elemental", "花岗精", EntityType.Builder.of(GraniteElemental::new, MobCategory.MONSTER).sized(1.5F, 1.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(46).armor(4).attackDamage(17).followRange(32).attackKnockback(1).knockbackResistance(0.73).armorToughness(1)
                     .state(GraniteElemental.DefensePhase.ENTERING, state -> state.duration(7))
@@ -508,7 +509,7 @@ public final class MonsterEntities {
                     .state(GraniteGolem.DefensePhase.EXITING, state -> state.duration(5))
                     .build());
 
-    // 丛林：蜘蛛、蹦跳兽与陆龟
+    /// 丛林：蜘蛛、蹦跳兽与陆龟
     public static final DeferredHolder<EntityType<?>, EntityType<GiantShelly>> GIANT_SHELLY = withAttributes(registerEntity("giant_shelly", "巨型卷壳怪", EntityType.Builder.of(GiantShelly::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(26).armor(6).attackDamage(9).followRange(20).attackKnockback(0).knockbackResistance(0.4).movementSpeed(0.1).armorToughness(2)
                     .state(GiantShelly.Phase.ENTERING_SHELL, state -> state.bonus(Attributes.ARMOR, 12).duration(20))
@@ -536,7 +537,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Derpling>> DERPLING = withAttributes(registerEntity("derpling", "跳跳兽", EntityType.Builder.of(Derpling::new, MobCategory.MONSTER).sized(2F, 2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(12).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).armorToughness(5).build());
 
-    // 冰雪：蝙蝠、雪怪与陆龟
+    /// 冰雪：蝙蝠、雪怪与陆龟
     public static final DeferredHolder<EntityType<?>, EntityType<GiantTortoise>> ICE_TORTOISE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_tortoise", "冰雪陆龟", EntityType.Builder.of(GiantTortoise::new, MobCategory.MONSTER).sized(2.25F, 1.85F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(13).attackDamage(29).followRange(48).attackKnockback(1).knockbackResistance(0.73).movementSpeed(0.2).armorToughness(5)
                     .state(GiantTortoise.Phase.SPINNING, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.8).multiplyBase(Attributes.ARMOR, 2))
@@ -546,21 +547,21 @@ public final class MonsterEntities {
                     .state(GiantTortoise.Phase.WALK, state -> state.attackInterval(20))
                     .build());
 
-    // 地下沙漠：蛇蜥怪、沙贼与沙漠蠕虫
+    /// 地下沙漠：蛇蜥怪、沙贼与沙漠蠕虫
     public static final DeferredHolder<EntityType<?>, EntityType<SandPoacher>> SAND_POACHER = withAttributes(registerEntity("sand_poacher", "沙贼", EntityType.Builder.of(SandPoacher::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(166).armor(11).attackDamage(34).followRange(64).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).armorToughness(4)
                     .state(SandPoacher.CombatState.CLIMBING, state -> state.bonus(Attributes.MOVEMENT_SPEED, 0.25))
                     .build());
 
-    // 猩红：史莱姆、脸怪与蹦跳兽
+    /// 猩红：史莱姆、脸怪与蹦跳兽
     public static final DeferredHolder<EntityType<?>, EntityType<Derpling>> HERPLING = withAttributes(registerEntity("herpling", "蹦蹦兽", EntityType.Builder.of(Derpling::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(114).armor(12).attackDamage(33).followRange(48).attackKnockback(1).knockbackResistance(0.73).stepHeight(3.2).jumpStrength(0.5).armorToughness(5).build());
 
-    // 海洋：鲨鱼、水母与史莱姆
+    /// 海洋：鲨鱼、水母与史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<Shark>> SHARK = withAttributes(registerEntity("shark", "鲨鱼", EntityType.Builder.of(Shark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(106).armor(1).attackDamage(20).followRange(48).movementSpeed(1.2).attackKnockback(0.37).knockbackResistance(0.1).build());
 
-    // 地牢：诅咒骷髅与幽魂
+    /// 地牢：诅咒骷髅与幽魂
     public static final DeferredHolder<EntityType<?>, EntityType<CursedSkull>> CURSED_SKULL = withAttributes(registerEntity("cursed_skull", "诅咒骷髅头", EntityType.Builder.of(CursedSkull::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(21).armor(3).attackDamage(18).followRange(32).attackKnockback(1).knockbackResistance(0.82).armorToughness(1)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -568,11 +569,11 @@ public final class MonsterEntities {
                             .multiply(LibAttributes.getAttackDamage(), 0.9))
                     .build());
 
-    // 陨石：流星头
+    /// 陨石：流星头
     public static final DeferredHolder<EntityType<?>, EntityType<MeteorHead>> METEOR_HEAD = withAttributes(registerEntity("meteor_head", "流星头", EntityType.Builder.of(MeteorHead::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(13).armor(3).attackDamage(21).followRange(32).attackKnockback(1).knockbackResistance(0.64).armorToughness(1).build());
 
-    // 墓地：幽灵
+    /// 墓地：幽灵
     public static final DeferredHolder<EntityType<?>, EntityType<Ghost>> GHOST = withAttributes(registerEntity("ghost", "鬼魂", EntityType.Builder.of(Ghost::new, MobCategory.MONSTER).sized(1F, 1.8F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(26).armor(2).attackDamage(8).followRange(16).attackKnockback(0).knockbackResistance(0.55).gravity(0).armorToughness(0)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -585,7 +586,7 @@ public final class MonsterEntities {
                             .multiply(Attributes.ARMOR, 3))
                     .build());
 
-    // 血月：血腥僵尸与滴滴怪
+    /// 血月：血腥僵尸与滴滴怪
     public static final DeferredHolder<EntityType<?>, EntityType<Drippler>> DRIPPLER = withAttributes(registerEntity("drippler", "滴滴怪", EntityType.Builder.of(Drippler::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(26).armor(7).attackDamage(14).followRange(64).attackKnockback(0.5).knockbackResistance(0.2).armorToughness(2)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -615,9 +616,9 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<BloodTumor>> BLOOD_TUMORS = withAttributes(registerEntity("blood_tumors", "血瘤", EntityType.Builder.of(BloodTumor::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(5).armor(1).attackDamage(0).followRange(0).attackKnockback(0).knockbackResistance(0).movementSpeed(0).safeFallDistance(100).build());
 
-    // ------------------------------------------------------------------
-    // 地表人形（`registerLand` 系列）
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// 地表人形（`registerLand` 系列）
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> FACE_MONSTER = withAttributes(registerLand("face_monster", "脸怪", 0.75F, 1.95F, BaseWarriorMonster.LandSoundProfile.FACE_MONSTER, BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, 1.0, true, BaseWarriorMonster.DoorBehavior.OPEN),
             () -> CreatureAttributeBuilder.creature().maxHealth(36).armor(5).attackDamage(13).stepHeight(3.2).jumpStrength(0.8).armorToughness(2)
@@ -626,8 +627,8 @@ public final class MonsterEntities {
                             .multiply(LibAttributes.getAttackDamage(), 0.9))
                     .build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<DarkCaster>> DARK_CASTER = withAttributes(registerCaster("dark_caster", "暗黑法师", 0.65F, 1.85F, DarkCaster.Profile.DARK_CASTER),
             () -> CreatureAttributeBuilder.creature().maxHealth(26).armor(1).attackDamage(10).followRange(20).attackKnockback(1).knockbackResistance(0.82)
@@ -670,15 +671,15 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<ShadowflameApparition>> SHADOWFLAME_APPARITION = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("shadowflame_apparition", "暗影焰幻鬼", EntityType.Builder.of(ShadowflameApparition::new, MobCategory.MONSTER).sized(0.8F, 1.0F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(80).armor(9).attackDamage(21).followRange(48).knockbackResistance(1).armorToughness(3).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<Gnome>> GNOME = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("gnome", "侏儒", EntityType.Builder.of(Gnome::new, MobCategory.MONSTER).sized(0.5F, 0.8F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(13).armor(0).attackDamage(6).movementSpeed(0.3).followRange(24).knockbackResistance(0.1).build());
 
-    // ------------------------------------------------------------------
-    // 血月与邪恶转化：企鹅和金鱼
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// 血月与邪恶转化：企鹅和金鱼
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<EvilPenguin>> CORRUPT_PENGUIN = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("corrupt_penguin", "腐化企鹅", EntityType.Builder.of(EvilPenguin::new, MobCategory.MONSTER).sized(0.7F, 1.0F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(37).armor(2).attackDamage(11).followRange(32).attackKnockback(1).knockbackResistance(0.1).movementSpeed(0.25).armorToughness(0).build());
@@ -692,8 +693,8 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Piranha>> VICIOUS_GOLDFISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("vicious_goldfish", "毒金鱼", EntityType.Builder.<Piranha>of((type, level) -> new Piranha(type, level, Piranha.AnimationProfile.GOLDFISH), MobCategory.MONSTER).sized(0.6F, 0.45F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(58).armor(4).attackDamage(17).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).armorToughness(1).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     public static final DeferredHolder<EntityType<?>, EntityType<LittleHornet>> LITTLE_HORNET = withAttributes(registerEntity("little_hornet", "小黄蜂", EntityType.Builder.of(LittleHornet::new, MobCategory.MONSTER).sized(0.4F, 0.4F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(3).armor(1).attackDamage(3).followRange(20).attackKnockback(0).knockbackResistance(0.2)
@@ -750,10 +751,10 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<PirateFlyingMonster>> PIRATES_CURSE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntityWithEnglishName("pirates_curse", "海盗诅咒", "Pirate's Curse", EntityType.Builder.<PirateFlyingMonster>of((type, level) -> new PirateFlyingMonster(type, level, true), MobCategory.MONSTER).sized(0.8F, 1.3F))),
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(10).attackDamage(39).movementSpeed(0.3).followRange(40).knockbackResistance(0.82).armorToughness(4).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
-    //
-    //
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    ///
+    ///
 
     public static final DeferredHolder<EntityType<?>, EntityType<DemonEye>> DEMON_EYE = withAttributes(registerEntity("demon_eye", "恶魔眼", EntityType.Builder.<DemonEye>of(DemonEye::new, MobCategory.MONSTER).sized(1.1F, 1.1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(15).armor(1).attackDamage(3.5).followRange(40).attackKnockback(0).knockbackResistance(0).movementSpeed(0.2).flyingSpeed(0.6)
@@ -769,7 +770,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Wraith>> WRAITH = withAttributes(registerEntity("wraith", "幻灵", EntityType.Builder.of(Wraith::new, MobCategory.MONSTER).sized(1F, 2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(83).armor(8).armorToughness(3).attackDamage(33).followRange(32).attackKnockback(1).knockbackResistance(0.37).gravity(0).build());
 
-    // 空岛与高空：鸟妖和飞龙
+    /// 空岛与高空：鸟妖和飞龙
     public static final DeferredHolder<EntityType<?>, EntityType<Harpy>> HARPY = withAttributes(registerEntity("harpy", "鸟妖", EntityType.Builder.of(Harpy::new, MobCategory.MONSTER).sized(1f, 2f).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(41).armor(4).attackDamage(13).followRange(50).armorToughness(1)
                     .projectile(ModEntities.HARPY_FEATHER, projectile -> projectile.attackDamage(1))
@@ -779,7 +780,7 @@ public final class MonsterEntities {
                             .multiply(LibAttributes.getAttackDamage(), 0.9))
                     .build());
 
-    // 地下与洞穴：法师
+    /// 地下与洞穴：法师
     public static final DeferredHolder<EntityType<?>, EntityType<DarkCaster>> TIM = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerCaster("tim", "蒂姆", 1.0F, 3.2F, DarkCaster.Profile.TIM)),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(2).attackDamage(11).knockbackResistance(0.46).followRange(32).armorToughness(1)
                     .projectile(ModEntities.CHAOS_BALL_PROJECTILE, projectile -> projectile.damage(38))
@@ -790,7 +791,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.RUNE_BLAST, projectile -> projectile.damage(42))
                     .build());
 
-    // 地下与洞穴：岩石巨人及稀有敌怪
+    /// 地下与洞穴：岩石巨人及稀有敌怪
     public static final DeferredHolder<EntityType<?>, EntityType<RockGolem>> ROCK_GOLEM = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("rock_golem", "岩石巨人", EntityType.Builder.of(RockGolem::new, MobCategory.MONSTER).sized(1.5F, 2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(16).attackDamage(45).knockbackResistance(0.91).movementSpeed(0.2).followRange(32).armorToughness(7)
                     .projectile(ModEntities.THROWN_ROCK, projectile -> projectile.attackDamage(40.0 / 85.0))
@@ -801,7 +802,7 @@ public final class MonsterEntities {
                     .state(Nymph.CombatState.PURSUING, state -> state.bonus(Attributes.MOVEMENT_SPEED, 0.25))
                     .build());
 
-    // 蜘蛛洞：爬墙蜘蛛与黑隐士
+    /// 蜘蛛洞：爬墙蜘蛛与黑隐士
     public static final DeferredHolder<EntityType<?>, EntityType<ClimbingSpider>> WALL_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("wall_creeper", "爬墙蜘蛛", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.WALL), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(42).armor(5).attackDamage(16).followRange(32).knockbackResistance(0.78).movementSpeed(0.23).armorToughness(2)
                     .state(ClimbingSpider.CombatState.SPITTING, state -> state.attackInterval(60))
@@ -814,13 +815,13 @@ public final class MonsterEntities {
                     .projectile(ModEntities.SPIDER_WEB_SPIT, projectile -> projectile.damage(10).speed(0.8).lifetime(80))
                     .build());
 
-    // 大理石洞：装甲步兵
+    /// 大理石洞：装甲步兵
     public static final DeferredHolder<EntityType<?>, EntityType<Hoplite>> HOPLITE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("hoplite", "装甲步兵", EntityType.Builder.of(Hoplite::new, MobCategory.MONSTER).sized(1.0F, 2.7F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(37).armor(5).attackDamage(12).knockbackResistance(0.64).movementSpeed(0.23).followRange(32).armorToughness(2)
                     .projectile(ModEntities.HOPLITE_JAVELIN, projectile -> projectile.damage(19).scaleWithAttack(19))
                     .build());
 
-    // 丛林：黄蜂及幼蜂
+    /// 丛林：黄蜂及幼蜂
     public static final DeferredHolder<EntityType<?>, EntityType<Hornet>> HORNET = withAttributes(registerEntity("hornet", "黄蜂", EntityType.Builder.<Hornet>of(Hornet::new, MobCategory.MONSTER).sized(0.8F, 1.8F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(32).armor(6).attackDamage(13).followRange(32).attackKnockback(0).knockbackResistance(0.55).movementSpeed(0.5).armorToughness(2)
                     .projectile(ModEntities.HORNET_STINGER, projectile -> projectile.attackDamage(1))
@@ -838,7 +839,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.HORNET_STINGER, projectile -> projectile.attackDamage(6.0 / 7.0))
                     .build());
 
-    // 丛林：食人植物
+    /// 丛林：食人植物
     public static final DeferredHolder<EntityType<?>, EntityType<Snatcher>> SNATCHER = withAttributes(registerSnatcher("snatcher", "抓人草", Snatcher.Profile.SNATCHER),
             () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(5).attackDamage(13).followRange(20).attackKnockback(1).knockbackResistance(1).armorToughness(2)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -849,7 +850,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Snatcher>> MAN_EATER = withAttributes(registerSnatcher("man_eater", "食人怪", Snatcher.Profile.MAN_EATER),
             () -> CreatureAttributeBuilder.creature().maxHealth(57).armor(5).attackDamage(15).followRange(20).attackKnockback(1).knockbackResistance(1).armorToughness(2).build());
 
-    // 丛林：蜘蛛、蹦跳兽与陆龟
+    /// 丛林：蜘蛛、蹦跳兽与陆龟
     public static final DeferredHolder<EntityType<?>, EntityType<ClimbingSpider>> JUNGLE_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("jungle_creeper", "丛林蜘蛛", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.JUNGLE), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(13).attackDamage(52).followRange(32).knockbackResistance(0.78).movementSpeed(0.28).armorToughness(5)
                     .state(ClimbingSpider.CombatState.SPITTING, state -> state.attackInterval(60))
@@ -865,7 +866,7 @@ public final class MonsterEntities {
                     .state(GiantTortoise.Phase.WALK, state -> state.attackInterval(20))
                     .build());
 
-    // 丛林水域：食人鱼与巨骨舌鱼
+    /// 丛林水域：食人鱼与巨骨舌鱼
     public static final DeferredHolder<EntityType<?>, EntityType<Piranha>> PIRANHA = withAttributes(registerEntity("piranha", "食人鱼", EntityType.Builder.<Piranha>of(Piranha::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(15).armor(1).attackDamage(13).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -877,7 +878,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Arapaima>> ARAPAIMA = withAttributes(registerEntity("arapaima", "巨骨舌鱼", EntityType.Builder.of(Arapaima::new, MobCategory.MONSTER).sized(2.2F, 0.7F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(104).armor(14).attackDamage(39).followRange(32).movementSpeed(1.2).attackKnockback(0.1).knockbackResistance(0.1).armorToughness(6).build());
 
-    // 冰雪：冰雪精与鱼人
+    /// 冰雪：冰雪精与鱼人
     public static final DeferredHolder<EntityType<?>, EntityType<IceElemental>> ICE_ELEMENTAL = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_elemental", "冰雪精", EntityType.Builder.of(IceElemental::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(9).attackDamage(29).knockbackResistance(0.46).movementSpeed(0.18).followRange(40).armorToughness(4)
                     .projectile(ModEntities.FROST_BLAST, projectile -> projectile.attackDamage(180.0 / 110.0))
@@ -890,7 +891,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.ICEWATER_SPIT, projectile -> projectile.attackDamage(148.0 / 120.0).speed(0.8).inaccuracy(0).lifetime(100))
                     .build());
 
-    // 地下沙漠：蚁狮及幼虫
+    /// 地下沙漠：蚁狮及幼虫
     public static final DeferredHolder<EntityType<?>, EntityType<Antlion>> ANTLION = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("antlion", "蚁狮", EntityType.Builder.of(Antlion::new, MobCategory.MONSTER).sized(1.2F, 0.8F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(24).armor(3).attackDamage(6).movementSpeed(0.0).knockbackResistance(1.0).followRange(24).projectile(ModEntities.ANTLION_SAND_BALL, projectile -> projectile.damage(10).speed(1.1).lifetime(120)).armorToughness(1)
                     .build());
@@ -917,13 +918,13 @@ public final class MonsterEntities {
                     .projectile(ModEntities.DESERT_SPIRIT_CURSE, projectile -> projectile.damage(23))
                     .build());
 
-    // 腐化：爬藤怪与宝箱怪
+    /// 腐化：爬藤怪与宝箱怪
     public static final DeferredHolder<EntityType<?>, EntityType<SpittingPlant>> CLINGER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("clinger", "爬藤怪", EntityType.Builder.<SpittingPlant>of((type, level) -> new SpittingPlant(type, level, Snatcher.Profile.CLINGER), MobCategory.MONSTER).sized(1.0F, 1.0F).fireImmune().clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(167).armor(14).attackDamage(37).followRange(32).knockbackResistance(0.82).armorToughness(6)
                     .projectile(ModEntities.CLINGER_FLAME, projectile -> projectile.damage(18).scaleWithAttack(37))
                     .build());
 
-    // 猩红水域：血蛭与血水母
+    /// 猩红水域：血蛭与血水母
     public static final DeferredHolder<EntityType<?>, EntityType<Piranha>> BLOOD_FEEDER = withAttributes(registerEntity("blood_feeder", "嗜血怪", EntityType.Builder.<Piranha>of(Piranha::new, MobCategory.MONSTER).sized(0.7F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(78).armor(9).attackDamage(26).followRange(32).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.10).armorToughness(4).build());
 
@@ -937,14 +938,14 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Pixie>> PIXIE = withAttributes(registerEntity("pixie", "妖精", EntityType.Builder.of(Pixie::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(78).armor(9).attackDamage(28).followRange(16).attackKnockback(1).knockbackResistance(0.46).armorToughness(4).build());
 
-    // 神圣：独角兽与腹足怪
+    /// 神圣：独角兽与腹足怪
     public static final DeferredHolder<EntityType<?>, EntityType<Unicorn>> UNICORN = withAttributes(registerEntity("unicorn", "独角兽", EntityType.Builder.of(Unicorn::new, MobCategory.MONSTER).sized(1.4F, 2.25F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(14).attackDamage(65).followRange(64).attackKnockback(1).knockbackResistance(0.82).movementSpeed(0.35).armorToughness(6)
                     .state(Unicorn.MovementState.PURSUING, state -> state.chargeSpeed(0.36).duration(40))
                     .state(Unicorn.MovementState.RECOVERING, state -> state.duration(12))
                     .build());
 
-    // 地下神圣：附魔剑、混沌精与宝箱怪
+    /// 地下神圣：附魔剑、混沌精与宝箱怪
     public static final DeferredHolder<EntityType<?>, EntityType<EnchantedSword>> ENCHANTED_SWORD = withAttributes(registerEntity("enchanted_sword_monster", "魔法剑", EntityType.Builder.of(EnchantedSword::new, MobCategory.MONSTER).sized(0.35F, 1.4F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(9).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.82).armorToughness(3)
                     .state(EnchantedSword.CombatState.WINDUP, state -> state.duration(40))
@@ -954,7 +955,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<ChaosElemental>> CHAOS_ELEMENTAL = withAttributes(registerEntity("chaos_elemental", "混沌精", EntityType.Builder.of(ChaosElemental::new, MobCategory.MONSTER).sized(0.7F, 1.9F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(193).armor(14).attackDamage(21).followRange(48).attackKnockback(1).knockbackResistance(0.64).armorToughness(6).build());
 
-    // 发光蘑菇：真菌球怪
+    /// 发光蘑菇：真菌球怪
     public static final DeferredHolder<EntityType<?>, EntityType<Snatcher>> FUNGI_BULB = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerSnatcher("fungi_bulb", "真菌球怪", Snatcher.Profile.FUNGI_BULB)),
             () -> CreatureAttributeBuilder.creature().maxHealth(47).armor(2).attackDamage(13).followRange(20).knockbackResistance(1).armorToughness(1).build());
 
@@ -963,7 +964,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.FUNGI_SPORE, projectile -> projectile.damage(42).scaleWithAttack(37))
                     .build());
 
-    // 发光蘑菇水域：蘑菇水母
+    /// 发光蘑菇水域：蘑菇水母
     public static final DeferredHolder<EntityType<?>, EntityType<JellyFish>> FUNGO_FISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("fungo_fish", "蘑菇鱼", EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, JellyFish.Profile.FUNGO), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(73).armor(9).attackDamage(47).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).armorToughness(4)
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))
@@ -997,7 +998,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.LOST_SOUL_PROJECTILE, projectile -> projectile.attackDamage(1))
                     .build());
 
-    // 地牢：圣骑士与骷髅李
+    /// 地牢：圣骑士与骷髅李
     public static final DeferredHolder<EntityType<?>, EntityType<Paladin>> PALADIN = withAttributes(registerEntity("paladin", "圣骑士", EntityType.Builder.of(Paladin::new, MobCategory.MONSTER).sized(1.2F, 2.4F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(23).attackDamage(52).followRange(64).attackKnockback(1).knockbackResistance(1).armorToughness(8)
                     .projectile(ModEntities.PALADIN_HAMMER_PROJECTILE, projectile -> projectile.attackDamage(mob -> CreatureDefinition.get(mob.getType()).behavior().shotMultiplierOr(1.1)))
@@ -1006,7 +1007,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<ChargingMonster>> BONE_LEE = withAttributes(registerCharger("bone_lee", "骷髅李", 0.7F, 1.9F, 0.82, 6),
             () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(16).attackDamage(48).followRange(48).attackKnockback(1).knockbackResistance(0.95).movementSpeed(0.38).armorToughness(7).build());
 
-    // 地狱：恶魔与火小鬼
+    /// 地狱：恶魔与火小鬼
     public static final DeferredHolder<EntityType<?>, EntityType<Demon>> DEMON = withAttributes(registerEntity("demon", "恶魔", EntityType.Builder.of(Demon::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(62).armor(4).attackDamage(20).followRange(16).attackKnockback(1).knockbackResistance(0.28).armorToughness(1)
                     .projectile(ModEntities.HOSTILE_DEMON_SCYTHE, projectile -> projectile.attackDamage(1))
@@ -1028,7 +1029,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.UNHOLY_TRIDENT, projectile -> projectile.attackDamage(3.2))
                     .build());
 
-    // 血月垂钓：游荡眼球怪与僵尸鱼人
+    /// 血月垂钓：游荡眼球怪与僵尸鱼人
     public static final DeferredHolder<EntityType<?>, EntityType<FlyingFishMonster>> WANDERING_EYE_FISH = withAttributes(registerFlyingFish("wandering_eye_fish", "游荡眼球怪鱼", 1.2F, 1.2F, new FlyingFishMonster.PursuitProfile(0.98, 2.2, 0.01, 10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(9).attackDamage(15).followRange(60).attackKnockback(1).knockbackResistance(1).movementSpeed(2.2).armorToughness(4).build());
 
@@ -1043,7 +1044,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.NIMBUS_RAIN, projectile -> projectile.damage(21).scaleWithAttack(21))
                     .build());
 
-    // 暴风雪：冰雪巨人
+    /// 暴风雪：冰雪巨人
     public static final DeferredHolder<EntityType<?>, EntityType<FrostFighter>> ICE_GOLEM = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_golem", "冰雪巨人", EntityType.Builder.<FrostFighter>of((type, level) -> new FrostFighter(type, level, FrostFighter.Kind.GOLEM), MobCategory.MONSTER).sized(3F, 8.0F).clientTrackingRange(12))),
             () -> CreatureAttributeBuilder.creature().maxHealth(2080).armor(15).attackDamage(32).knockbackResistance(0.96).movementSpeed(0.2).followRange(48).armorToughness(6)
                     .state(FrostFighter.CombatState.SHOOTING, state -> state.moveSpeed(0.6).attackInterval(20, 309))
@@ -1051,13 +1052,13 @@ public final class MonsterEntities {
                     .projectile(ModEntities.FROST_BEAM, projectile -> projectile.attackDamage(128.0 / 120.0).speed(2.5).inaccuracy(0).lifetime(100))
                     .build());
 
-    // 沙尘暴：愤怒翻滚怪
+    /// 沙尘暴：愤怒翻滚怪
     public static final DeferredHolder<EntityType<?>, EntityType<AngryTumbler>> ANGRY_TUMBLER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("angry_tumbler", "愤怒翻滚怪", EntityType.Builder.<AngryTumbler>of(AngryTumbler::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(26).armor(3).attackDamage(16).knockbackResistance(0.28).movementSpeed(0.25).followRange(32).armorToughness(1)
                     .state(AngryTumbler.MovementState.PURSUING, state -> state.chargeSpeed(2).duration(25))
                     .build());
 
-    // 沙尘暴：普通、腐化、猩红与神圣沙鲨
+    /// 沙尘暴：普通、腐化、猩红与神圣沙鲨
     public static final DeferredHolder<EntityType<?>, EntityType<SandShark>> SAND_SHARK = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("sand_shark", "沙鲨", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(188).armor(9).attackDamage(26).knockbackResistance(0.19).followRange(40).armorToughness(4).build());
 
@@ -1070,7 +1071,7 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<SandShark>> CRYSTAL_THRESHER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("crystal_thresher", "水晶沙鲨", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(234).armor(12).attackDamage(29).knockbackResistance(0.37).followRange(40).armorToughness(5).build());
 
-    // 哥布林入侵：法师及召唤体
+    /// 哥布林入侵：法师及召唤体
     public static final DeferredHolder<EntityType<?>, EntityType<DarkCaster>> GOBLIN_SORCERER = withAttributes(registerCaster("goblin_sorcerer", "哥布林巫士", 0.65F, 1.85F, DarkCaster.Profile.GOBLIN_SORCERER),
             () -> CreatureAttributeBuilder.creature().maxHealth(20).armor(1).attackDamage(10).followRange(32).attackKnockback(1).knockbackResistance(0.46)
                     .projectile(ModEntities.CHAOS_BALL_PROJECTILE, projectile -> projectile.attackDamage(1))
@@ -1085,7 +1086,7 @@ public final class MonsterEntities {
                             .multiply(Attributes.ARMOR, 3))
                     .build());
 
-    //火星人事件
+    /// 火星人事件
     public static final DeferredHolder<EntityType<?>, EntityType<MartianProbe>> MARTIAN_PROBE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_probe", "火星探测器", EntityType.Builder.of(MartianProbe::new, MobCategory.MONSTER).sized(1.4F, 1.0F).clientTrackingRange(12))),
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(3).attackDamage(3).add(LibAttributes.getArmorPenetration(), 0).add(Attributes.ARMOR_TOUGHNESS, 1).followRange(48).movementSpeed(0.25).flyingSpeed(0.65).knockbackResistance(0.4).build());
     public static final DeferredHolder<EntityType<?>, EntityType<MartianEngineer>> MARTIAN_ENGINEER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_engineer", "火星工程师", EntityType.Builder.of(MartianEngineer::new, MobCategory.MONSTER).sized(0.8F, 2.0F).clientTrackingRange(10))),
@@ -1110,8 +1111,6 @@ public final class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(1040).armor(18).attackDamage(32).add(LibAttributes.getArmorPenetration(), 10).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(48).movementSpeed(0.55).knockbackResistance(1)
                     .projectile(ModEntities.MONSTER_LASER, projectile -> projectile.damage(37))
                     .build());
-    public static final DeferredHolder<EntityType<?>, EntityType<WalkerWeapon>> WALKER_WEAPON = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_walker_weapon", "火星走妖炮座", EntityType.Builder.of(WalkerWeapon::new, MobCategory.MONSTER).sized(0.8F, 1.0F).clientTrackingRange(16))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(18).attackDamage(0).add(LibAttributes.getArmorPenetration(), 0).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(0).movementSpeed(0).knockbackResistance(1).build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<BrainScrambler>> BRAIN_SCRAMBLER = withAttributes(registerEntity("brain_scrambler", "扰脑怪", EntityType.Builder.of(BrainScrambler::new, MobCategory.MONSTER).sized(0.8F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(182).armor(12).attackDamage(26).add(LibAttributes.getArmorPenetration(), 8).add(Attributes.ARMOR_TOUGHNESS, 5).followRange(40).movementSpeed(0.24).knockbackResistance(0.65)
@@ -1124,9 +1123,20 @@ public final class MonsterEntities {
                     .projectile(ModEntities.ELECTRIC_SPEAR, projectile -> projectile.damage(26))
                     .build());
 
-    // Boss 附属生物：克苏鲁之脑
+    /// Boss 附属生物：克苏鲁之脑
 
-    // Boss 附属生物：血肉墙与血肉山
+    /// Boss 附属生物：血肉墙与血肉山
+
+    public static final DeferredHolder<EntityType<?>, EntityType<GigazapperAf2>> GIGAZAPPER_AF2 = withAttributes(registerEntity("gigazapper_af2", "电击怪 - AF2", EntityType.Builder.of(GigazapperAf2::new, MobCategory.MONSTER).sized(0.9F, 2.1F).clientTrackingRange(16)),
+            () -> gigazapperAttributes(72));
+
+    private static CreatureAttributeBuilder.Definition gigazapperAttributes(double followRange) {
+        return CreatureAttributeBuilder.creature().maxHealth(312).armor(18).attackDamage(39)
+                .add(LibAttributes.getArmorPenetration(), 12).armorToughness(7)
+                .followRange(followRange).movementSpeed(0.26).knockbackResistance(0.7)
+                .state(Gigazapper.AttackType.SPEAR, state -> state.attackDamage(26))
+                .build();
+    }
 
     public static final DeferredHolder<EntityType<?>, EntityType<DungeonSpirit>> DUNGEON_SPIRIT = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("dungeon_spirit", "地牢幽魂", EntityType.Builder.of(DungeonSpirit::new, MobCategory.MONSTER).sized(0.8F, 0.7F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(14).attackDamage(70).movementSpeed(0.35).followRange(32).knockbackResistance(0.8).gravity(0).armorToughness(6).build());
@@ -1174,7 +1184,7 @@ public final class MonsterEntities {
         return registerEntity(name, EntityType.Builder.<BaseSlime>of((entityType, level) -> new BaseSlime(entityType, level, passiveByDay, size, honeyConvertible), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10));
     }
 
-    // 地表与森林：史莱姆（passiveByDay 控制白天是否被动）
+    /// 地表与森林：史莱姆（passiveByDay 控制白天是否被动）
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> GREEN_SLIME = withAttributes(registerSlime("green_slime", "绿史莱姆", true, 2, true),
             () -> CreatureAttributeBuilder.slime().maxHealth(9).armor(0).attackDamage(3)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -1217,15 +1227,15 @@ public final class MonsterEntities {
                             .multiply(Attributes.ARMOR, 2))
                     .build());
 
-    // 地表与森林：金史莱姆
+    /// 地表与森林：金史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<GoldenSlime>> GOLDEN_SLIME = withAttributes(registerEntity("golden_slime", "金史莱姆", EntityType.Builder.of(GoldenSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(97).armor(3).armorToughness(1).attackDamage(5).build());
 
-    // 沼泽：史莱姆
+    /// 沼泽：史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> SWAMP_SLIME = withAttributes(registerSlime("swamp_slime", "沼泽史莱姆", false, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(1).attackDamage(5).build());
 
-    // 地下与洞穴：史莱姆及分裂体
+    /// 地下与洞穴：史莱姆及分裂体
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> RED_SLIME = withAttributes(registerSlime("red_slime", "红史莱姆", false, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(2).attackDamage(5).armorToughness(1)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -1282,7 +1292,7 @@ public final class MonsterEntities {
                             .multiply(Attributes.ARMOR, 3))
                     .build());
 
-    // 丛林：史莱姆
+    /// 丛林：史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> JUNGLE_SLIME = withAttributes(registerSlime("jungle_slime", "丛林史莱姆", true, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(46).armor(3).attackDamage(12).armorToughness(1)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -1295,7 +1305,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.SLIME_SPIKE, projectile -> projectile.attackDamage(1))
                     .build());
 
-    // 冰雪：史莱姆
+    /// 冰雪：史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> ICE_SLIME = withAttributes(registerSlime("ice_slime", "冰雪史莱姆", true, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(13).armor(2).attackDamage(5).armorToughness(1)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -1312,7 +1322,7 @@ public final class MonsterEntities {
                     .projectile(ModEntities.SLIME_SPIKE, projectile -> projectile.attackDamage(1))
                     .build());
 
-    // 沙漠：史莱姆
+    /// 沙漠：史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> DESERT_SLIME = withAttributes(registerSlime("desert_slime", "沙漠史莱姆", false, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(21).armor(3).attackDamage(6).armorToughness(1)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -1325,7 +1335,7 @@ public final class MonsterEntities {
                             .multiply(Attributes.ARMOR, 3))
                     .build());
 
-    // 地牢与腐化：史莱姆及分裂体
+    /// 地牢与腐化：史莱姆及分裂体
     public static final DeferredHolder<EntityType<?>, EntityType<CorruptSlime>> CORRUPT_SLIME = withAttributes(registerEntity("corrupt_slime", "腐化史莱姆", EntityType.Builder.of(CorruptSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(88).armor(9).attackDamage(28).armorToughness(4).build());
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> SLIMELING = withAttributes(registerEntity("slimeling", "小史莱姆", EntityType.Builder.<BaseSlime>of((type, level) -> new BaseSlime(type, level, false, 1), MobCategory.MONSTER).sized(0.4F, 0.4F).clientTrackingRange(10)),
@@ -1343,19 +1353,19 @@ public final class MonsterEntities {
                             .multiply(LibAttributes.getAttackDamage(), 0.9))
                     .build());
 
-    // 血腥之地：猩红史莱姆
+    /// 血腥之地：猩红史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> CRIMSLIME = withAttributes(registerEntity("crimslime", "猩红史莱姆", EntityType.Builder.<BaseSlime>of((type, level) -> new BaseSlime(type, level, false, 2, false, true), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(104).armor(12).attackDamage(31.2).armorToughness(5).build());
 
-    // 神圣之地：夜明史莱姆
+    /// 神圣之地：夜明史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<LuminousSlime>> LUMINOUS_SLIME = withAttributes(registerEntity("luminous_slime", "夜明史莱姆", EntityType.Builder.of(LuminousSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(93).armor(14).attackDamage(36.4).armorToughness(6).build());
 
-    // 丛林水域：热带史莱姆
+    /// 丛林水域：热带史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<TropicSlime>> TROPIC_SLIME = withAttributes(registerEntity("tropic_slime", "热带史莱姆", EntityType.Builder.of(TropicSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(13).armor(1).attackDamage(5).build());
 
-    // 地牢：地牢史莱姆
+    /// 地牢：地牢史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> DUNGEON_SLIME = withAttributes(registerSlime("dungeon_slime", "地牢史莱姆", false, 3),
             () -> CreatureAttributeBuilder.slime().maxHealth(78).armor(1).attackDamage(15.6)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -1363,7 +1373,7 @@ public final class MonsterEntities {
                             .multiply(LibAttributes.getAttackDamage(), 0.9))
                     .build());
 
-    // 地狱：熔岩史莱姆
+    /// 地狱：熔岩史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<LavaSlime>> LAVA_SLIME = withAttributes(registerEntity("lava_slime", "熔岩史莱姆", EntityType.Builder.of(LavaSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10).fireImmune()),
             () -> CreatureAttributeBuilder.slime().maxHealth(30).armor(5).attackDamage(10).armorToughness(2)
                     .phase(GamePhase.WALL_OF_FLESH, phase -> phase
@@ -1372,11 +1382,11 @@ public final class MonsterEntities {
                             .multiply(Attributes.ARMOR, 2))
                     .build());
 
-    // 血腥之地（血肉）：血肉史莱姆
+    /// 血腥之地（血肉）：血肉史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<FleshSlime>> FLESH_SLIME = withAttributes(registerEntity("flesh_slime", "血肉史莱姆", EntityType.Builder.of(FleshSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10).fireImmune()),
             () -> CreatureAttributeBuilder.slime().maxHealth(50).armor(3).attackDamage(14).armorToughness(1).build());
 
-    // Boss 附属生物：尖刺史莱姆
+    /// Boss 附属生物：尖刺史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<SpikedSlime>> SPIKED_SLIME = withAttributes(registerEntity("spiked_slime", "尖刺史莱姆", EntityType.Builder.<SpikedSlime>of(SpikedSlime::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(26).armor(3).attackDamage(7).armorToughness(1)
                     .projectile(ModEntities.SLIME_SPIKE, projectile -> projectile.attackDamage(1))
@@ -1387,15 +1397,15 @@ public final class MonsterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<TownSlimeRescue>> CLUMSY_BALLOON_SLIME = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("clumsy_balloon_slime", "笨拙气球史莱姆", EntityType.Builder.<TownSlimeRescue>of((type, level) -> new TownSlimeRescue(type, level, true), MobCategory.CREATURE).sized(0.8F, 0.8F))),
             () -> CreatureAttributeBuilder.creature().maxHealth(1).attackDamage(0).movementSpeed(0.0).build());
 
-    // 丛林：绿饺史莱姆
+    /// 丛林：绿饺史莱姆
     public static final DeferredHolder<EntityType<?>, EntityType<BaseSlime>> GREEN_DUMPLING_SLIME = withAttributes(registerSlime("green_dumpling_slime", "青团史莱姆", false, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(0).attackDamage(5).build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<SweetSlime>> SWEET_SLIME = withAttributes(registerEntity("sweet_slime", "甜蜜史莱姆", EntityType.Builder.of(SweetSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(16).armor(0).attackDamage(0).build());
 
-    // ------------------------------------------------------------------
-    // ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
+    /// ------------------------------------------------------------------
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerEntity(String name, EntityType.Builder<T> builder) {
         return ENTITIES.register(name, id -> builder.build(id.toString()));

@@ -7,6 +7,7 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
@@ -312,6 +313,7 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> BRAIN_SCRAMBLER_SPAWN_EGG = register(MonsterEntities.BRAIN_SCRAMBLER, "扰脑怪刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> GRAY_GRUNT_SPAWN_EGG = register(MonsterEntities.GRAY_GRUNT, "灰咕噜刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> GIGAZAPPER_SPAWN_EGG = register(MonsterEntities.GIGAZAPPER, "电击怪刷怪蛋");
+    public static final DeferredItem<DeferredSpawnEggItem> GIGAZAPPER_AF2_SPAWN_EGG = register(MonsterEntities.GIGAZAPPER_AF2, "电击怪 - AF2刷怪蛋");
 
     public static void init() {}
 

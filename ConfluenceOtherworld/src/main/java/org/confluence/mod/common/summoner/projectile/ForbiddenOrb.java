@@ -1,9 +1,11 @@
 package org.confluence.mod.common.summoner.projectile;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
@@ -13,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-/** 禁戒弹：命中时对半径 3.5 格内所有有效目标造成范围伤害。 */
+/// 禁戒弹：命中时对半径 3.5 格内所有有效目标造成范围伤害。
 public class ForbiddenOrb extends Projectile implements IEntityCollision<ForbiddenOrb>, IBlockCollision<ForbiddenOrb> {
 
     private boolean exploded;
@@ -68,12 +70,15 @@ public class ForbiddenOrb extends Projectile implements IEntityCollision<Forbidd
         explode(getPos());
     }
 
-    /** 在指定位置结算一次范围伤害并生成金色与白色粒子。 */
+    /// 在指定位置结算一次范围伤害并生成金色与白色粒子。
     private void explode(Vec3 hitPoint) {
         if (!exploded) {
             exploded = true;
-            List<LivingEntity> entities = getTargetCache().getEntitiesInRadius(hitPoint, 3.5, target -> getTargetCache().canKeep(target));
-            for (LivingEntity entity : entities) {
+            AABB bounds = AABB.ofSize(hitPoint, 7, 7, 7);
+            List<Entity> entities = LibEntityUtils.areaTargets(getLevel(), getOwner(), bounds,
+                    target -> getTargetCache().canKeep(target)
+                            && target.getBoundingBox().getCenter().distanceToSqr(hitPoint) <= 3.5 * 3.5);
+            for (Entity entity : entities) {
                 attack(entity, getDamage(), 0);
             }
             ParticleHelper.create(getLevel())

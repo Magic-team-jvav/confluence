@@ -7,19 +7,21 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+
 import software.bernie.geckolib.animation.EasingType;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class GhastlyglaiveItem extends AbstractSpearItem {
-    /** 索敌范围（格） */
+    /// 索敌范围（格）
     private static final double SEARCH_RANGE = 20.0;
-    /** 生成圆半径（格），x²+z²=25 */
+    /// 生成圆半径（格），x²+z²=25
     private static final double SPAWN_RADIUS = 5.0;
 
     public GhastlyglaiveItem() {
@@ -36,36 +38,33 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
         hurtVictim(damageSource, owner, victim);
         LibEntityUtils.knockBackA2B(owner, victim, 0.31, 0.2);
 
-        // 生成恶魂弹射物
+        /// 生成恶魂弹射物
         if (!owner.level().isClientSide && owner.level() instanceof ServerLevel serverLevel) {
             spawnGhastlyProjectile(serverLevel, owner, victim);
         }
     }
 
-    /**
-     * 在受害者周围搜寻最近敌人，并在其周围圆形区域生成 {@link GhastlyProjectile}。
-     */
+    /// 在受害者周围搜寻最近敌人，并在其周围圆形区域生成 {@link GhastlyProjectile}。
     private void spawnGhastlyProjectile(ServerLevel level, LivingEntity owner, Entity victim) {
         Vec3 victimPos = victim.position();
         AABB searchBox = new AABB(victimPos.add(-SEARCH_RANGE, -SEARCH_RANGE, -SEARCH_RANGE),
                 victimPos.add(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE));
 
-        List<LivingEntity> enemies = level.getEntitiesOfClass(LivingEntity.class, searchBox,
-                e -> GhastlyProjectile.TARGETING.canAcquire(owner, e));
+        List<Entity> enemies = GhastlyProjectile.TARGETING.hitTargets(level, null, owner, searchBox, candidate -> true);
 
         if (enemies.isEmpty()) return;
 
-        // 取最近敌人
+        /// 取最近敌人
         enemies.sort(Comparator.comparingDouble(e -> e.distanceToSqr(victim)));
-        LivingEntity nearestEnemy = enemies.getFirst();
+        Entity nearestEnemy = enemies.getFirst();
 
-        // 在最近敌人周围圆上随机生成：x²+z²=SPAWN_RADIUS²，y 随机偏移 [-2, 2]
+        /// 在最近敌人周围圆上随机生成：x²+z²=SPAWN_RADIUS²，y 随机偏移 [-2, 2]
         double angle = owner.getRandom().nextDouble() * Math.PI * 2;
         double spawnX = nearestEnemy.getX() + SPAWN_RADIUS * Math.cos(angle);
         double spawnZ = nearestEnemy.getZ() + SPAWN_RADIUS * Math.sin(angle);
         double spawnY = nearestEnemy.getY() + (owner.getRandom().nextDouble() * 4.0 - 2.0);
 
-        // 发射方向：水平指向锁定敌人
+        /// 发射方向：水平指向锁定敌人
         Vec3 dir = new Vec3(
                 nearestEnemy.getX() - spawnX,
                 0.0,
@@ -74,20 +73,10 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
 
         GhastlyProjectile projectile = spawnProjectile(level, owner,
                 new Vec3(spawnX, spawnY, spawnZ), dir);
-        // addFreshEntity 会触发 onAddedToLevel 自动索敌，此处显式覆盖以确保锁定正确目标
+        /// addFreshEntity 会触发 onAddedToLevel 自动索敌，此处显式覆盖以确保锁定正确目标
         projectile.setLockedTarget(nearestEnemy);
     }
 
-    /**
-     * 生成 {@link GhastlyProjectile} 并添加到世界。
-     *
-     * @param level     服务端世界
-     * @param owner     弹射物主人
-     * @param pos       生成位置
-     * @param direction 发射方向
-     * @param component 弹射物配置组件
-     * @return 已生成的弹射物实例
-     */
     private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction) {
         GhastlyProjectile projectile = new GhastlyProjectile(
                 ModEntities.GHASTLY.get(), level);
@@ -102,6 +91,6 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
 
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
-        // 恶魂长戟不通过刺痛 Tick 生成弹射物，改为在 onHitEntity 中生成
+        /// 恶魂长戟不通过刺痛 Tick 生成弹射物，改为在 onHitEntity 中生成
     }
 }

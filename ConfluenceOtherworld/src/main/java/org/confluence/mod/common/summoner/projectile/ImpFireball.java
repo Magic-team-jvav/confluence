@@ -1,17 +1,17 @@
 package org.confluence.mod.common.summoner.projectile;
 
-import java.util.List;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 
-/**
- * 小鬼火球：直线飞行的附着弹幕，命中后点燃目标。
- */
+/// 小鬼火球：直线飞行的附着弹幕，命中后点燃目标。
 public class ImpFireball extends Projectile implements IEntityCollision<ImpFireball>, IBlockCollision<ImpFireball> {
 
     public ImpFireball() {
@@ -31,9 +31,9 @@ public class ImpFireball extends Projectile implements IEntityCollision<ImpFireb
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
         HitContext context = hitContexts.get(0);
-        LivingEntity target = context.entity();
-        attack(target, getDamage(), 4);
-        target.igniteForSeconds(5);
+        LivingEntity target = LibEntityUtils.effectTarget(context.entity());
+        attack(context.entity(), getDamage(), 4);
+        if (target != null) target.igniteForSeconds(5);
         setCurrentPathNode(getCurrentPathNode().modifyPos(context.hitPoint()));
         setRemove();
     }

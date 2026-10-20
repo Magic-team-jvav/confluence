@@ -16,6 +16,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.LunaticCultist;
 
@@ -25,12 +27,10 @@ public final class AncientLightProjectile extends Projectile {
     private static final int HOMING_TICKS = 30;
     private static final double MAX_SPEED = 0.95;
     private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(AncientLightProjectile.class, EntityDataSerializers.INT);
-
     private float damage = DAMAGE;
     private float knockback;
     private int lifetime = MAX_LIFETIME;
     private double maximumSpeed = MAX_SPEED;
-
     public AncientLightProjectile(EntityType<? extends AncientLightProjectile> type, Level level) {
         super(type, level);
         setNoGravity(true);
@@ -45,7 +45,6 @@ public final class AncientLightProjectile extends Projectile {
         maximumSpeed = parameters.speed() >= 0 ? parameters.speed() : MAX_SPEED;
         entityData.set(TARGET_ID, target.getId());
         setPos(owner.getX(), owner.getEyeY() - 0.2, owner.getZ());
-
         Vec3 aim = target.getEyePosition().subtract(position()).normalize();
         double cosine = Math.cos(spreadAngle);
         double sine = Math.sin(spreadAngle);
@@ -83,8 +82,8 @@ public final class AncientLightProjectile extends Projectile {
                 && !NeoForge.EVENT_BUS.post(new ProjectileImpactEvent(this, hitResult)).isCanceled()) {
             hitTargetOrDeflectSelf(hitResult);
         }
-        if (isRemoved()) return;
 
+        if (isRemoved()) return;
         checkInsideBlocks();
         Vec3 velocity = getDeltaMovement();
         setPos(getX() + velocity.x, getY() + velocity.y, getZ() + velocity.z);
@@ -93,11 +92,12 @@ public final class AncientLightProjectile extends Projectile {
 
     private void homeTowardTarget() {
         if (tickCount > HOMING_TICKS) return;
-        Entity target = level().getEntity(getTargetId());
-        if (!(target instanceof LivingEntity living) || !living.isAlive()) return;
-
+        Entity target = LibEntityUtils.getEntityOrPart(level(), getTargetId());
+        if (target == null) return;
+        target = LibEntityUtils.aimTarget(target, position());
+        if (target == null || !LibEntityUtils.canMobHit(getOwner(), target)) return;
         Vec3 velocity = getDeltaMovement();
-        Vec3 desired = living.getEyePosition().subtract(position()).normalize();
+        Vec3 desired = target.getBoundingBox().getCenter().subtract(position()).normalize();
         double speed = Math.min(maximumSpeed, velocity.length() + 0.012);
         Vec3 steered = velocity.normalize().scale(0.88).add(desired.scale(0.12)).normalize();
         setDeltaMovement(steered.scale(speed));
@@ -105,11 +105,14 @@ public final class AncientLightProjectile extends Projectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide && result.getEntity() instanceof LivingEntity target && getOwner() instanceof LunaticCultist cultist && cultist.canAttack(target)) {
-            if (target.hurt(damageSources().mobProjectile(this, cultist), damage) && knockback > 0) {
+        Entity rawTarget = result.getEntity();
+        LivingEntity target = LibEntityUtils.effectTarget(rawTarget);
+        if (!level().isClientSide && getOwner() instanceof LunaticCultist cultist && LibEntityUtils.canMobHit(cultist, rawTarget)) {
+            if (rawTarget.hurt(damageSources().mobProjectile(this, cultist), damage) && knockback > 0 && target != null) {
                 target.knockback(knockback, -getDeltaMovement().x, -getDeltaMovement().z);
             }
         }
+
         discard();
     }
 
@@ -120,9 +123,6 @@ public final class AncientLightProjectile extends Projectile {
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return target instanceof LivingEntity living
-                && getOwner() instanceof LunaticCultist cultist
-                && cultist.canAttack(living)
-                && super.canHitEntity(target);
+        return LibEntityUtils.canMobHit(getOwner(), target) && super.canHitEntity(target);
     }
 }

@@ -7,6 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -32,7 +34,7 @@ public final class EnemyTargeting {
         return null;
     }
 
-    // 只允许被开发者工具选中的 Boss 及其已绑定从属继承创造玩家目标。
+    /// 只允许被开发者工具选中的 Boss 及其已绑定从属继承创造玩家目标。
     public static boolean isDeveloperTarget(Mob mob, Player player) {
         BaseBoss owner = mob instanceof BaseBoss boss ? boss : mob instanceof BossOwnedEntity dependent ? dependent.getBossOwner() : null;
         return owner != null && owner.isDeveloperTarget(player) && !player.isSpectator();

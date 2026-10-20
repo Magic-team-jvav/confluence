@@ -19,12 +19,12 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -36,9 +36,10 @@ import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
-import org.confluence.lib.common.LibTags;
-import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibTags;
+import org.confluence.lib.common.entity.PartHitTarget;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
@@ -66,7 +67,6 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.EnemyTargeting;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
@@ -85,16 +85,11 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
-import org.confluence.mod.common.init.ModBlockCounters;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
@@ -104,6 +99,7 @@ import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.whip.WhipDamageSource;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -458,7 +454,7 @@ public final class LivingEntityEvents {
             amount = AbstractEnemyBannerBlock.processVictim(player, attacker, amount);
         }
         amount = ArcheryEffect.apply(victim, damageSource, amount);
-        // 芦苇呼吸管对溺水伤害减半
+        /// 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN) && LibEntityUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
             amount *= 0.5F;
         }
@@ -526,7 +522,7 @@ public final class LivingEntityEvents {
             event.setCritical(shot.getRandom().nextFloat() < shot.getCriticalChance());
         } else if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
-            // 白南瓜全套：近战暴击回复灵魂
+            /// 白南瓜全套：近战暴击回复灵魂
             if (event.isCritical() && event.getDamageSource().getDirectEntity() == player
                     && PlayerUtils.isWearingWhitePumpkinSet(player)) {
                 SoulStorage.of(player).receive(SoulSkillParameters.WHITE_PUMPKIN_CRIT_SOUL);
@@ -810,12 +806,12 @@ public final class LivingEntityEvents {
         if (event.getResult() == MobSpawnEvent.SpawnPlacementCheck.Result.FAIL) return;
         if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
             EntityType<?> entityType = event.getEntityType();
-//            if (entityType == MonsterEntities.GHOST.get()) {
-//                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
-//                event.setResult(iSection != null && iSection.confluence$isGraveyard()
-//                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
-//                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
-//            } else
+///            if (entityType == MonsterEntities.GHOST.get()) {
+///                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
+///                event.setResult(iSection != null && iSection.confluence$isGraveyard()
+///                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
+///                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
+///            } else
             if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
                 if (ModBlockCounters.isGraveyard(event.getLevel(), event.getPos())) {
                     event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED);

@@ -230,6 +230,9 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         if (!level.isClientSide) {
             layoutSeed = random.nextLong();
             ensureWallLayout();
+        } else {
+            generateWallLayout(RandomSource.create(layoutSeed));
+            buildParts();
         }
     }
 
@@ -433,6 +436,16 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
                 && (isValidFrontTarget(player) || HorrifiedEffect.isBoundTo(player, this));
     }
 
+    /// 巨型墙面的战斗距离从实际墙体边界计算，不能用远离玩家的管理原点触发脱战。
+    @Override
+    protected double combatAnchorDistanceSqr(LivingEntity target) {
+        AABB bounds = getWallBounds();
+        double x = target.getX() - Mth.clamp(target.getX(), bounds.minX, bounds.maxX);
+        double y = target.getY() - Mth.clamp(target.getY(), bounds.minY, bounds.maxY);
+        double z = target.getZ() - Mth.clamp(target.getZ(), bounds.minZ, bounds.maxZ);
+        return x * x + y * y + z * z;
+    }
+
     /// 墙后的参战者仍属于当前战斗，必须由狂卷之舌拉回墙前，而不是被当作无目标脱战。
     public boolean isBehindWall(LivingEntity living) {
         return living.position().subtract(position()).dot(getForwardVector()) < 0.0;
@@ -497,11 +510,12 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
             if ((player.isCreative() && !isDeveloperTarget(player)) || player.isSpectator()) {
                 continue;
             }
+            /// 首次进入战斗带立即绑定，避免玩家在效果刷新前穿到背面后被当作无目标。
+            if (player.getBoundingBox().intersects(pursuitBox) && !HorrifiedEffect.isBoundTo(player, this)) {
+                HorrifiedEffect.bind(player, this);
+                registerCombatParticipant(player);
+            }
             if (tickCount % 20 == 0) {
-                if (player.getBoundingBox().intersects(pursuitBox)) {
-                    HorrifiedEffect.bind(player, this);
-                    registerCombatParticipant(player);
-                }
                 if (HorrifiedEffect.isBoundTo(player, this)) {
                     player.addEffect(new MobEffectInstance(ModEffects.HORRIFIED, 100), this);
                 }
@@ -533,6 +547,11 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
     }
 
     private void buildParts() {
+        if (wallParts.length > 0 && eyes.size() == eyeAnchors.size() && mouths.size() == mouthAnchors.size()) {
+            for (WallOfFleshPart part : wallParts) part.updateVisualRoll();
+            updatePartPositions();
+            return;
+        }
         eyes.clear();
         mouths.clear();
         wallParts = new WallOfFleshPart[eyeAnchors.size() + mouthAnchors.size()];

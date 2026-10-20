@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.projectile.flail;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -13,20 +12,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 /// 链锤附属弹幕共享的移动与碰撞骨架。
 ///
-/// 这里只处理所有花瓣、血肉弹和气泡都需要的所有者校验、射线碰撞、位移与寿命。
-/// 伤害、重力、反弹和索敌仍由具体弹幕类实现，避免形成需要注册多份策略的第二套系统。
+/// 统一所有者校验、射线碰撞、部位伤害、穿透去重、位移与寿命。
+/// 具体弹幕类决定命中后的存续、重力、反弹和索敌。
 public abstract class FlailAuxiliaryProjectile extends Projectile {
     protected float damage;
     @Nullable
     private BaseFlailEntity parentFlail;
     private int lifetime;
     private int maximumLifetime = 100;
+    private final Set<UUID> hitTargets = new HashSet<>();
 
     protected FlailAuxiliaryProjectile(EntityType<? extends FlailAuxiliaryProjectile> type, Level level) {
         super(type, level);
@@ -58,9 +64,10 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
 
         HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (hit.getType() == HitResult.Type.ENTITY) {
-            Entity target = ((EntityHitResult) hit).getEntity();
-            if (target instanceof LivingEntity living && target.isAlive()) {
-                onHitLiving(living);
+            if (!level().isClientSide) {
+                EntityHitResult entityHit = (EntityHitResult) hit;
+                hitTargets.add(LibEntityUtils.dedupeIdentity(entityHit.getEntity()).getUUID());
+                onHitEntity(entityHit);
             }
         } else if (hit.getType() == HitResult.Type.BLOCK) {
             if (!onHitBlockAndContinue((BlockHitResult) hit)) {
@@ -69,6 +76,7 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
             }
         }
 
+        if (isRemoved()) return;
         move(MoverType.SELF, getDeltaMovement());
         if (++lifetime >= maximumLifetime && !level().isClientSide()) {
             discard();
@@ -104,7 +112,13 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
         return false;
     }
 
-    protected abstract void onHitLiving(LivingEntity target);
+    /// 伤害交给实际受击部位，击退作用于其所属主体。
+    protected final void hurtTarget(Entity rawTarget, double knockback, double motionY) {
+        if (level().isClientSide || !(getOwner() instanceof Player player)) return;
+        if (rawTarget.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage)) {
+            LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(rawTarget), knockback, motionY);
+        }
+    }
 
     @Nullable
     protected final BaseFlailEntity getParentFlail() {
@@ -113,6 +127,8 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return target != parentFlail && LibEntityUtils.canHitEntity(target, getOwner());
+        return target != parentFlail && LibEntityUtils.logicalLivingTarget(target) != null
+                && !hitTargets.contains(LibEntityUtils.dedupeIdentity(target).getUUID())
+                && LibEntityUtils.canHit(getOwner(), target);
     }
 }

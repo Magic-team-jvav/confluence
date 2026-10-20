@@ -18,22 +18,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.SpearTrapBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TrapDamageHelper;
 
-/**
- * 长矛机关的发射物
- */
+/// 长矛机关的发射物
 public class SpearEntity extends Entity {
     private static final EntityDataAccessor<Direction> DATA_DIRECTION = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.DIRECTION);
     private boolean opened = false;
     private float progress = 0;
     public transient BlockPos trapPos;
-
     public SpearEntity(EntityType<SpearEntity> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
@@ -61,9 +60,11 @@ public class SpearEntity extends Entity {
                     SpearTrapBlock block = FunctionalBlocks.SPEAR_TRAP.get();
                     level().scheduleTick(trapPos, block, block.delay());
                 }
+
                 discard();
                 return;
             }
+
         } else {
             this.progress += 0.05F;
             if (progress >= 1.0F) {
@@ -78,16 +79,17 @@ public class SpearEntity extends Entity {
         }
 
         setBoundingBox(Shulker.getProgressAabb(1.0F, getDirection(), 13 * progress).move(getX() - 0.5, getY(), getZ() - 0.5));
-
         Vec3 startVec = position().relative(getDirection().getOpposite(), 1);
         Vec3 endVec = position().relative(getDirection(), Mth.ceil(13 * progress));
         AABB boundingBox = getBoundingBox().inflate(0.3F);
-        for (Entity entity1 : level().getEntities(this, boundingBox, entity -> entity instanceof LivingEntity)) {
-            AABB aabb = entity1.getBoundingBox().inflate(0.3);
-            if (aabb.clip(startVec, endVec).isPresent()) {
-                float damage = LibUtils.switchByDifficulty(level(), 24, 48, 72);
-                entity1.hurt(LibDamageTypes.of(level(), DamageTypes.STING), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity1, damage));
-            }
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, boundingBox,
+                entity -> LibEntityUtils.logicalLivingTarget(entity) != null
+                        && entity.getBoundingBox().inflate(0.3).clip(startVec, endVec).isPresent())) {
+            float damage = LibUtils.switchByDifficulty(level(), 24, 48, 72);
+            LivingEntity living = LibEntityUtils.effectTarget(target);
+            if (living != null)
+                damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+            target.hurt(LibDamageTypes.of(level(), DamageTypes.STING), damage);
         }
     }
 

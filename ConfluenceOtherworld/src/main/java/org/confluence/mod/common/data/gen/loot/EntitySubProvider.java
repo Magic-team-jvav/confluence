@@ -25,6 +25,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.common.data.GamePhase;
@@ -120,12 +121,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(MonsterEntities.JUNGLE_CREEPER.get(), LootTable.lootTable());
-        // 沙漠幽魂 缺少未加入物品：沙漠幽魂灯(Desert Spirit Lamp, 2.5%)、神灯诅咒(Djinn's Curse, 3.25%)、生命吞噬者(Eater Of Life, 0.67%)
+        /// 沙漠幽魂 缺少未加入物品：沙漠幽魂灯(Desert Spirit Lamp, 2.5%)、神灯诅咒(Djinn's Curse, 3.25%)、生命吞噬者(Eater Of Life, 0.67%)
         add(MonsterEntities.DESERT_SPIRIT.get(), LootTable.lootTable());
         add(MonsterEntities.WALL_CREEPER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.FRIED_EGG).when(lootingScaledChance(registries, 0.03333333333333333F))))
         );
-        // 黑隐士 缺少未加入物品：毒刺法杖(Poison Staff, 2.5%)
+        /// 黑隐士 缺少未加入物品：毒刺法杖(Poison Staff, 2.5%)
         add(MonsterEntities.BLACK_RECLUSE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SPIDER_FANG).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
                         .when(() -> new DifficultyChanceLootItemCondition(0.5F, 0.9F)))
@@ -315,14 +316,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get()).when(difficultyLootChance(registries, 0.5F, 1F)))
                 )
         );
-        // 僵尸新娘 缺少未加入物品：婚纱(Wedding Dress, 100%)
+        /// 僵尸新娘 缺少未加入物品：婚纱(Wedding Dress, 100%)
         add(MonsterEntities.THE_BRIDE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(20, LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
                         )))
         );
-        // 僵尸新郎 缺少未加入物品：大脑(Brain, 75%)（高顶礼帽、血泪已实现）
+        /// 僵尸新郎 缺少未加入物品：大脑(Brain, 75%)（高顶礼帽、血泪已实现）
         add(MonsterEntities.THE_GROOM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.TOP_HAT)))
                 .withPool(LootPool.lootPool()
@@ -360,20 +361,20 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.GIANT_BAT.get(), batCommon(registries)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.TRIFOLD_MAP))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
-        // 巨型蝙蝠 缺少未加入物品：深度计(Depth Meter, 1%)（三折地图已实现）
-        // 装甲骷髅 缺少未加入物品：光束剑(Beam Sword, 0.67%)
+        /// 巨型蝙蝠 缺少未加入物品：深度计(Depth Meter, 1%)（三折地图已实现）
+        /// 装甲骷髅 缺少未加入物品：光束剑(Beam Sword, 0.67%)
         add(MonsterEntities.ARMORED_SKELETON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ARMOR_POLISH))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
-        // 岩石巨人 缺少未加入物品：岩石巨人头(Rock Golem Head, 33.33%)
+        /// 岩石巨人 缺少未加入物品：岩石巨人头(Rock Golem Head, 33.33%)
         add(MonsterEntities.ROCK_GOLEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.STONE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20)))));
-        // 狼人 缺少未加入物品：狼牙(Wolf Fang, 1.5%)
+        /// 狼人 缺少未加入物品：狼牙(Wolf Fang, 1.5%)
         add(MonsterEntities.WEREWOLF.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.MOON_CHARM).when(lootingScaledChance(registries, 0.016666666666666666F))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ADHESIVE_BANDAGE))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
-        // 夜明蝙蝠 缺少未加入物品：结晶(Crystallize, 0.67%)（苹果派、蝙蝠棍已实现）
+        /// 夜明蝙蝠 缺少未加入物品：结晶(Crystallize, 0.67%)（苹果派、蝙蝠棍已实现）
         add(MonsterEntities.ILLUMINANT_BAT.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.APPLE_PIE).when(lootingScaledChance(registries, 0.006666666666666667F))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.BAT_BAT).when(lootingScaledChance(registries, 0.0033333333333333335F)))));
@@ -435,25 +436,25 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.HOOK).when(lootingScaledChance(registries, 0.04F)))
                 )
         );
-        // 冰雪巨人 缺少未加入物品：冰雪羽(Ice Feather, 33.3%)
+        /// 冰雪巨人 缺少未加入物品：冰雪羽(Ice Feather, 33.3%)
         add(MonsterEntities.ICE_GOLEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.FROST_CORE)))
         );
-        // 装甲维京海盗 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（罗盘已实现）
+        /// 装甲维京海盗 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（罗盘已实现）
         add(MonsterEntities.ARMORED_VIKING.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).when(lootingScaledChance(registries, 2 / 100F)))
                 )
         );
-        // 冰雪鱼人 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
+        /// 冰雪鱼人 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
         add(MonsterEntities.ICY_MERMAN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.MILKSHAKE).when(lootingScaledChance(registries, 0.013333333333333334F)))
                 )
         );
-        // 冰雪精 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
+        /// 冰雪精 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
         add(MonsterEntities.ICE_ELEMENTAL.get(), LootTable.lootTable());
-        // 冰雪陆龟 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（龟壳、奶昔已实现）
+        /// 冰雪陆龟 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（龟壳、奶昔已实现）
         add(MonsterEntities.ICE_TORTOISE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FROZEN_TURTLE_SHELL).when(lootingScaledChance(registries, 0.02F)))
@@ -510,7 +511,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.BLACK_LENS).when(lootingScaledChance(registries, 0.01F)))
                 )
         );
-        // 僵尸鱼人 缺少未加入物品：血雨弓(Blood Rain Bow, 12.5%)、钱币槽(Money Trough, 6.67%)、鱼饵桶(Chum Bucket, 50%)
+        /// 僵尸鱼人 缺少未加入物品：血雨弓(Blood Rain Bow, 12.5%)、钱币槽(Money Trough, 6.67%)、鱼饵桶(Chum Bucket, 50%)
         add(MonsterEntities.ZOMBIE_MERMAN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
@@ -572,7 +573,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.FUNGI_BULB.get(), LootTable.lootTable());
         add(MonsterEntities.GIANT_FUNGI_BULB.get(), LootTable.lootTable());
-        // 爬藤怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)（诅咒焰已实现，但缺专家掉率提升）
+        /// 爬藤怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)（诅咒焰已实现，但缺专家掉率提升）
         add(MonsterEntities.CLINGER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.CURSED_FLAME)).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FunctionalBlocks.MEAT_GRINDER).when(lootingScaledChance(registries, 0.005F)))));
@@ -653,20 +654,20 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).when(lootingScaledChance(registries, 0.02F)))
                 )
         );
-        // 挖掘怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、可疑苹果(Suspicious Looking Apple, 40%)
+        /// 挖掘怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、可疑苹果(Suspicious Looking Apple, 40%)
         add(MonsterEntities.DIGGER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).when(lootingScaledChance(registries, 0.02F)))
                 )
         );
-        // 吞世怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)、吞世怪风筝(World Feeder Kite, 4%)、可疑苹果(Suspicious Looking Apple, 45%)
+        /// 吞世怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)、吞世怪风筝(World Feeder Kite, 4%)、可疑苹果(Suspicious Looking Apple, 45%)
         add(MonsterEntities.WORLD_FEEDER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.CURSED_FLAME))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
                 )
         );
-        // 符文法师 缺少未加入物品：符文帽(Rune Hat, 100%)、符文长袍(Rune Robe, 100%)
+        /// 符文法师 缺少未加入物品：符文帽(Rune Hat, 100%)、符文长袍(Rune Robe, 100%)
         add(MonsterEntities.RUNE_WIZARD.get(), LootTable.lootTable());
         add(MonsterEntities.TIM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArmorItems.WIZARD_HAT)))
@@ -712,7 +713,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.WINDY_BALLOON.get(), LootTable.lootTable());
         add(MonsterEntities.OLD_SHAKING_CHEST.get(), LootTable.lootTable());
         add(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), LootTable.lootTable());
-        // 红魔鬼 缺少未加入物品：火焰羽(Fire Feather, 2%)、烈火之花(Flower of Fire, 3.33%)（热狗、邪恶三叉戟已实现）
+        /// 红魔鬼 缺少未加入物品：火焰羽(Fire Feather, 2%)、烈火之花(Flower of Fire, 3.33%)（热狗、邪恶三叉戟已实现）
         add(MonsterEntities.RED_DEVIL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.HOTDOG).when(lootingScaledChance(registries, 0.03333333333333333F)))));
         add(MonsterEntities.DEMON.get(), LootTable.lootTable()
@@ -734,7 +735,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(ManaWeaponItems.DEMON_SCYTHE).when(lootingScaledChance(registries, 1F / 35)))
                 )
         );
-        // 青苔黄蜂 缺少未加入物品：破碎蜂翼(Tattered Bee Wing, 1%)（蜂刺、牛黄已实现）
+        /// 青苔黄蜂 缺少未加入物品：破碎蜂翼(Tattered Bee Wing, 1%)（蜂刺、牛黄已实现）
         add(MonsterEntities.MOSS_HORNET.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
@@ -777,13 +778,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.CORRUPT_GOLDFISH.get(), LootTable.lootTable());
         add(MonsterEntities.VICIOUS_GOLDFISH.get(), LootTable.lootTable());
-        // 琵琶鱼 缺少未加入物品：机器人帽(Robot Hat, 0.4%)（粘性绷带已实现）
+        /// 琵琶鱼 缺少未加入物品：机器人帽(Robot Hat, 0.4%)（粘性绷带已实现）
         add(MonsterEntities.ANGLER_FISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.ROBOT_HAT).when(lootingScaledChance(registries, 0.004F))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ADHESIVE_BANDAGE))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F)))
         );
-        // 沙鲨 / 腐化沙鲨 / 猩红沙鲨 / 神圣沙鲨 缺少未加入物品：沙鲨风筝(Sand Shark Kite, 4%)
+        /// 沙鲨 / 腐化沙鲨 / 猩红沙鲨 / 神圣沙鲨 缺少未加入物品：沙鲨风筝(Sand Shark Kite, 4%)
         add(MonsterEntities.SAND_SHARK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
@@ -856,7 +857,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.GOBLIN_SORCERER.get(), goblinCommon(49.75F)
         );
-        // 哥布林术士 缺少未加入物品：暗影焰弓(Shadowflame Bow, 33.3%)、暗影焰巫术娃娃(Shadowflame Hex Doll, 33.3%)、暗影焰刀(Shadowflame Knife, 33.3%)
+        /// 哥布林术士 缺少未加入物品：暗影焰弓(Shadowflame Bow, 33.3%)、暗影焰巫术娃娃(Shadowflame Hex Doll, 33.3%)、暗影焰刀(Shadowflame Knife, 33.3%)
         add(MonsterEntities.GOBLIN_WARLOCK.get(), goblinCommon(50F));
         add(MonsterEntities.SHADOWFLAME_APPARITION.get(), LootTable.lootTable());
         add(MonsterEntities.GNOME.get(), LootTable.lootTable());
@@ -864,7 +865,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.GOBLIN_WARRIOR.get(), goblinCommon(49.75F)
         );
-        // 海盗七怪（水手/私船海盗/神射手/弩手/船长/诅咒/鹦鹉）缺少未加入物品：钱币枪、桶式发射器、海盗法杖、弯刀、水手帽/眼罩/水手上衣/水手裤、金平台、船长帽、诅咒之眼等
+        /// 海盗七怪（水手/私船海盗/神射手/弩手/船长/诅咒/鹦鹉）缺少未加入物品：钱币枪、桶式发射器、海盗法杖、弯刀、水手帽/眼罩/水手上衣/水手裤、金平台、船长帽、诅咒之眼等
         add(MonsterEntities.PIRATE_DECKHAND.get(), pirateCommon(registries, 1));
         add(MonsterEntities.PIRATE_DEADEYE.get(), pirateCommon(registries, 1));
         add(MonsterEntities.PIRATE_CROSSBOWER.get(), pirateCommon(registries, 1));
@@ -873,14 +874,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.PIRATE_PARROT.get(), LootTable.lootTable());
         add(MonsterEntities.PIRATES_CURSE.get(), LootTable.lootTable());
         add(MonsterEntities.MARTIAN_PROBE.get(), LootTable.lootTable());
-        //火星人事件
+        ///火星人事件
         add(MonsterEntities.MARTIAN_ENGINEER.get(), LootTable.lootTable());
         add(MonsterEntities.BRAIN_SCRAMBLER.get(), LootTable.lootTable());
         add(MonsterEntities.GRAY_GRUNT.get(), LootTable.lootTable());
         add(MonsterEntities.GIGAZAPPER.get(), LootTable.lootTable());
+        add(MonsterEntities.GIGAZAPPER_AF2.get(), LootTable.lootTable());
         add(MonsterEntities.MARTIAN_OFFICER.get(), LootTable.lootTable());
         add(MonsterEntities.MARTIAN_WALKER.get(), LootTable.lootTable());
-        add(MonsterEntities.WALKER_WEAPON.get(), LootTable.lootTable());
         add(MonsterEntities.TESLA_TURRET.get(), LootTable.lootTable());
         add(MonsterEntities.RAY_GUNNER.get(), LootTable.lootTable());
         add(MonsterEntities.SCUTLIX.get(), LootTable.lootTable());
@@ -989,7 +990,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(CritterEntities.PENGUIN.get(), LootTable.lootTable());
         add(CritterEntities.MYSTIC_FROG.get(), LootTable.lootTable());
         add(CritterEntities.GOLDFISH.get(), LootTable.lootTable());
-        // 腐化企鹅 / 猩红企鹅 缺少未加入物品：Pedguin 套装（兜帽/夹克/裤子，各 0.67%）
+        /// 腐化企鹅 / 猩红企鹅 缺少未加入物品：Pedguin 套装（兜帽/夹克/裤子，各 0.67%）
         add(MonsterEntities.CORRUPT_PENGUIN.get(), LootTable.lootTable());
         add(MonsterEntities.VICIOUS_PENGUIN.get(), LootTable.lootTable());
         add(CritterEntities.STINKBUG.get(), LootTable.lootTable());
@@ -1010,7 +1011,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         ))
                 )
         );
-        // 花岗岩巨人 缺少未加入物品：晶洞(Geode, 5%)、夜视头盔(Night Vision Helmet, 3.3%)、响石(Snapping Stone, 1.25%)（花岗岩、意大利面已实现）
+        /// 花岗岩巨人 缺少未加入物品：晶洞(Geode, 5%)、夜视头盔(Night Vision Helmet, 3.3%)、响石(Snapping Stone, 1.25%)（花岗岩、意大利面已实现）
         add(MonsterEntities.GRANITE_GOLEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(NatureBlocks.GRANITE))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
@@ -1028,7 +1029,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
-        // 装甲步兵 缺少未加入物品：压力球(Stress Ball, 1%)、角斗士胸甲(Gladiator Breastplate, 4.76%)（标枪、角斗士头盔/护腿、短剑、钩爪、披萨已实现）
+        /// 装甲步兵 缺少未加入物品：压力球(Stress Ball, 1%)、角斗士胸甲(Gladiator Breastplate, 4.76%)（标枪、角斗士头盔/护腿、短剑、钩爪、披萨已实现）
         add(MonsterEntities.HOPLITE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PIZZA).when(lootingScaledChance(registries, 0.02F))))
                 .withPool(LootPool.lootPool()
@@ -1104,7 +1105,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         ))
                 )
         );
-        // 岩浆史莱姆不携带额外物品也不掉落凝胶，只保留其独立的稀有史莱姆法杖掉落。
+        /// 岩浆史莱姆不携带额外物品也不掉落凝胶，只保留其独立的稀有史莱姆法杖掉落。
         add(MonsterEntities.LAVA_SLIME.get(), LootTable.lootTable().withPool(LootPool.lootPool()
                 .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(lootingScaledChance(registries, 0.000125F)))
         ));
@@ -1113,7 +1114,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.COMPASS).when(lootingScaledChance(registries, 0.01F)))
                 )
         );
-        // 史莱姆之母不携带随机物品，但保留凝胶、史莱姆法杖和指南针掉落。
+        /// 史莱姆之母不携带随机物品，但保留凝胶、史莱姆法杖和指南针掉落。
         add(MonsterEntities.MOTHER_SLIME.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SummonItems.SLIME_STAFF).when(difficultyLootChance(registries, 100F / 10000, 100F / 7000)))
@@ -1206,7 +1207,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE).when(lootingScaledChance(registries, 0.01F)))
                 )
         );
-        // 肉后怪
+        /// 肉后怪
         add(MonsterEntities.WYVERN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.GOLD_COIN)).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))
@@ -1231,7 +1232,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).when(difficultyLootChance(registries, 1.0F, 1.99F)))
                 )
         );
-        // 鬼魂：1% 概率掉落引渡者
+        /// 鬼魂：1% 概率掉落引渡者
         add(MonsterEntities.GHOST.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
@@ -1240,7 +1241,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                                 .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(SoulBooks.PSYCHOPOMP))))
                 )
         );
-        // 血水母 缺少未加入物品：怪物肉(Monster Meat, 0.07%)
+        /// 血水母 缺少未加入物品：怪物肉(Monster Meat, 0.07%)
         add(MonsterEntities.BLOOD_JELLY.get(), LootTable.lootTable());
         add(MonsterEntities.FUNGO_FISH.get(), LootTable.lootTable());
         add(MonsterEntities.GREEN_JELLYFISH.get(), LootTable.lootTable()
@@ -1296,7 +1297,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(MonsterEntities.WINGLESS_SLIMER.get(), corruptionSlimeLoot(-6522185));
-        // 宝箱怪
+        /// 宝箱怪
         add(MonsterEntities.WOODEN_MIMIC.get(), mimicCommon(registries)
         );
         add(MonsterEntities.GOLDEN_MIMIC.get(), mimicCommon(registries)
@@ -1305,19 +1306,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.ICE_MIMIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        // 冰雪弓
+                        /// 冰雪弓
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FROST))
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(25)))
                 ))
         );
-        // todo秘密种子冰雪宝箱怪使用这个common
+        /// todo秘密种子冰雪宝箱怪使用这个common
         /*
         add(MonsterEntities.ICE_MIMIC.get(),LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        // 玩具雪橇
-                        // 冰雪弓
+                        /// 玩具雪橇
+                        /// 冰雪弓
                         .add(LootItem.lootTableItem(TCItems.ICE_SKATES))
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS))
                         .add(LootItem.lootTableItem(BoomerangItems.ICE_BOOMERANG))
@@ -1331,9 +1332,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         */
         add(MonsterEntities.CRIMSON_MIMIC.get(), bigMimicCommon(registries)
                 .withPool(LootPool.lootPool()
-                        // 夺命杖
-                        // 飞镖手枪
-                        // 臭虎爪
+                        /// 夺命杖
+                        /// 飞镖手枪
+                        /// 臭虎爪
                         .add(PercentageLootEntry.exclusive(false,
                                 PercentageLootEntry.rule(20, LootItem.lootTableItem(HookItems.TENDON_HOOK)),
                                 PercentageLootEntry.rule(20, LootItem.lootTableItem(TCItems.FLESH_KNUCKLES))
@@ -1342,8 +1343,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.CORRUPT_MIMIC.get(), bigMimicCommon(registries)
                 .withPool(LootPool.lootPool()
-                        // 爬藤怪法杖
-                        // 飞镖步枪
+                        /// 爬藤怪法杖
+                        /// 飞镖步枪
                         .add(PercentageLootEntry.exclusive(false,
                                 PercentageLootEntry.rule(20, LootItem.lootTableItem(FlailItems.CHAIN_GUILLOTINES)),
                                 PercentageLootEntry.rule(20, LootItem.lootTableItem(HookItems.WORM_HOOK)),
@@ -1353,7 +1354,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.HALLOWED_MIMIC.get(), bigMimicCommon(registries)
                 .withPool(LootPool.lootPool()
-                        // 飞刀
+                        /// 飞刀
                         .add(PercentageLootEntry.exclusive(false,
                                 PercentageLootEntry.rule(20, LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_VILE_SHARD)),
                                 PercentageLootEntry.rule(20, LootItem.lootTableItem(BowItems.DAEDALUS_STORM_BOW)),
@@ -1377,9 +1378,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                                 PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(NatureBlocks.POO).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
                         ))
                 )
-                // 天使雕像
-                // 水枪
-                // 闪耀史莱姆气球
+                /// 天使雕像
+                /// 水枪
+                /// 闪耀史莱姆气球
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(Items.COAL).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15))).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
@@ -1447,7 +1448,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(random0To1)
                 )
         );
-        // 蛇蜥怪 缺少未加入物品：远古号角(Ancient Horn, 2%)（坚固化石已实现）
+        /// 蛇蜥怪 缺少未加入物品：远古号角(Ancient Horn, 2%)（坚固化石已实现）
         add(MonsterEntities.BASILISK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))));
         add(MonsterEntities.GHOUL.get(), ghoulCommon(registries)
@@ -1537,9 +1538,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
                         .apply(random0To1)));
-        // 混沌精 缺少未加入物品：混乱之杖(Rod of Discord, 0.25%)（苹果派已实现，需要补 0.67% 概率）
+        /// 混沌精 缺少未加入物品：混乱之杖(Rod of Discord, 0.25%)（苹果派已实现，需要补 0.67% 概率）
         add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable()
-                // 混沌传送杖
+                /// 混沌传送杖
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(100.0 / 150, LootItem.lootTableItem(FoodItems.APPLE_PIE))
@@ -1555,7 +1556,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLACK_BELT).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
                         .when(() -> new DifficultyChanceLootItemCondition(1F / 12, 1F - (1F - 1F / 12) * (1F - 1F / 12)))));
-        // 死灵法师 缺少未加入物品：暗影束法杖(Shadowbeam Staff, 9.75%)
+        /// 死灵法师 缺少未加入物品：暗影束法杖(Shadowbeam Staff, 9.75%)
         add(MonsterEntities.NECROMANCER.get(), LootTable.lootTable());
         add(MonsterEntities.DIABOLIST.get(), LootTable.lootTable());
         add(MonsterEntities.RAGGED_CASTER.get(), LootTable.lootTable());
@@ -1652,7 +1653,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 );
     }
 
-    // 复用凝胶和携带物掉落；法杖概率按普通、专家分别填写百分比，沙漠史莱姆使用自己的数值。
+    /// 复用凝胶和携带物掉落；法杖概率按普通、专家分别填写百分比，沙漠史莱姆使用自己的数值。
     private LootTable.Builder slimeCommon(int gelColor, float normalPercent, float expertPercent) {
         EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
@@ -1672,9 +1673,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 );
     }
 
-    /**
-     * 腐化、猩红和恶翼史莱姆族系共用凝胶、黑暗免疫饰品与史莱姆法杖掉落。
-     */
+    /// 腐化、猩红和恶翼史莱姆族系共用凝胶、黑暗免疫饰品与史莱姆法杖掉落。
     private LootTable.Builder corruptionSlimeLoot(int gelColor) {
         EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
         return LootTable.lootTable()
@@ -1702,7 +1701,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .when(LootItemRandomChanceCondition.randomChance(0.002F * multiplier)));
     }
 
-    // 尖球概率直接填写百分比；普通哥布林计入鱼叉枪失败链，扩展哥布林保留原概率。
+    /// 尖球概率直接填写百分比；普通哥布林计入鱼叉枪失败链，扩展哥布林保留原概率。
     private LootTable.Builder goblinCommon(float chancePercent) {
         LootItemConditionalFunction.Builder<?> count1To5 = SetItemCountFunction.setCount(UniformGenerator.between(1, 5));
         EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
@@ -1713,17 +1712,23 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 );
     }
 
-    /**
-     * 低概率池专用的抢夺适配：基础掉落率为 {@code base}，抢夺等级每高一级使最终掉落率多乘一倍。
-     * <p>即 无抢夺 {@code base} → 抢夺I {@code 2 * base} → 抢夺II {@code 3 * base} → 抢夺III及以上 {@code 4 * base}。
-     * <p>注意必须这样构造，不能用 {@code randomChanceAndLootingBoost}：原版
-     * {@code LootItemRandomChanceWithEnchantedBonusCondition} 在等级大于 0 时<b>只</b>取
-     * {@code enchantedChance.calculate(level)}，完全忽略 {@code unenchanted_chance}，
-     * 而 {@code randomChanceAndLootingBoost} 生成的 {@code Linear(base + perLevel, perLevel)}
-     * 是“加算”的，等级越高越会退化成必定掉落。
-     * <p>抢夺III之后按III级封顶：{@code Linear(1, 1)} 在等级 3 得 4，等级 4 得 5，
-     * 这里通过 {@code LevelBasedValue.Lookup} 显式封顶。
-     */
+    /// 低概率池专用的抢夺适配：基础掉落率为 {@code base}，抢夺等级每高一级使最终掉落率多乘一倍。
+
+    /// 即 无抢夺 {@code base} → 抢夺I {@code 2 * base} → 抢夺II {@code 3 * base} → 抢夺III及以上 {@code 4 * base}。
+
+    /// 注意必须这样构造，不能用 {@code randomChanceAndLootingBoost}：原版
+
+    /// {@code LootItemRandomChanceWithEnchantedBonusCondition} 在等级大于 0 时只取
+
+    /// {@code enchantedChance.calculate(level)}，完全忽略 {@code unenchanted_chance}，
+
+    /// 而 {@code randomChanceAndLootingBoost} 生成的 {@code Linear(base + perLevel, perLevel)}
+
+    /// 是“加算”的，等级越高越会退化成必定掉落。
+
+    /// 抢夺III之后按III级封顶：{@code Linear(1, 1)} 在等级 3 得 4，等级 4 得 5，
+
+    /// 这里通过 {@code LevelBasedValue.Lookup} 显式封顶。
     private static LootItemCondition.Builder lootingScaledChance(HolderLookup.Provider registries, float base) {
         HolderLookup.RegistryLookup<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
         LevelBasedValue multiplier = LevelBasedValue.lookup(List.of(base * 2.0F, base * 3.0F), LevelBasedValue.constant(base * 4.0F));
@@ -1731,7 +1736,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 base, multiplier, enchantments.getOrThrow(Enchantments.LOOTING));
     }
 
-    // 按难度选择百分比概率，并保留原有抢夺倍率；1、1.99 分别表示普通 1% 和专家 1.99%。
+    /// 按难度选择百分比概率，并保留原有抢夺倍率；1、1.99 分别表示普通 1% 和专家 1.99%。
     private static LootItemCondition.Builder difficultyLootChance(HolderLookup.Provider registries, float normalPercent, float expertPercent) {
         return AnyOfCondition.anyOf(
                 AllOfCondition.allOf(() -> new DifficultyChanceLootItemCondition(1, 0),

@@ -17,6 +17,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.boss.Retinazer;
@@ -90,7 +92,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         entityData.set(LINGERING, lingering);
     }
 
-    // 发射方向与旋转后的眼球一致，继承少量冲刺速度并向上抛射，随后由重力落地。
+    /// 发射方向与旋转后的眼球一致，继承少量冲刺速度并向上抛射，随后由重力落地。
     public void configureArcingFlame(AbstractTwinEye owner, float damage, boolean lingering) {
         Vec3 velocity = owner.getLookAngle().scale(ARC_SPEED).add(owner.getDeltaMovement().scale(ARC_MOVEMENT_INHERITANCE)).add(0, ARC_LIFT, 0);
         configure(owner, owner.getMuzzlePosition(1.0F), velocity, damage, ARC_LIFETIME);
@@ -99,7 +101,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         entityData.set(LINGERING, lingering);
     }
 
-    // 巨焰先飞往预告位置，抵达后等待同组激光眼引爆，不能被其他组的激光触发。
+    /// 巨焰先飞往预告位置，抵达后等待同组激光眼引爆，不能被其他组的激光触发。
     public void configureGiantFlame(Spazmatism owner, Vec3 destination, float damage, boolean lingering) {
         Vec3 origin = owner.getMuzzlePosition(1.0F);
         configure(owner, origin, destination.subtract(origin).normalize().scale(GIANT_SPEED), damage, GIANT_LIFETIME);
@@ -110,7 +112,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
 
     public boolean isGiantFlame() {return entityData.get(GIANT);}
 
-    // 只有实际光束命中且发射者为同组搭档时才分裂；固定五枚弹体，分散后再有限转向追踪。
+    /// 只有实际光束命中且发射者为同组搭档时才分裂；固定五枚弹体，分散后再有限转向追踪。
     public boolean detonateFromLaser(Retinazer laser) {
         if (!isGiantFlame() || isRemoved() || !(level() instanceof ServerLevel server)
                 || !(getOwner() instanceof Spazmatism owner) || !owner.isAlive() || owner.getPartner() != laser)
@@ -146,7 +148,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
 
     @Override
     public void tick() {
-        // 活动边界以引爆位置为圆心，不随目标移动；超界、超时或发射者死亡都会清理。
+        /// 活动边界以引爆位置为圆心，不随目标移动；超界、超时或发射者死亡都会清理。
         if (!level().isClientSide && (isGiantFlame() || entityData.get(HOMING))) {
             if (!(getOwner() instanceof Spazmatism owner) || !owner.isAlive()
                     || entityData.get(HOMING) && position().distanceToSqr(splitOrigin) > SPLIT_RANGE * SPLIT_RANGE) {
@@ -155,7 +157,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
             }
         }
         if (entityData.get(GROUNDED)) {
-            // 落地后不再调用直线弹幕的移动与碰撞；同一生物仍遵守正常受伤无敌帧。
+            /// 落地后不再调用直线弹幕的移动与碰撞；同一生物仍遵守正常受伤无敌帧。
             baseTick();
             if (!level().isClientSide) {
                 if (++groundTicks >= GROUND_LIFETIME || !(getOwner() instanceof Mob owner) || !owner.isAlive()) {
@@ -163,9 +165,12 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
                     return;
                 }
                 if (groundTicks % 10 == 0) {
-                    for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1.2, 0.4, 1.2), owner::canAttack)) {
-                        if (target.hurt(damageSources().mobProjectile(this, owner), getDamage()))
-                            onSuccessfulHit(owner, target);
+                    for (Entity target : LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(1.2, 0.4, 1.2),
+                            candidate -> LibEntityUtils.canMobHit(owner, candidate))) {
+                        if (target.hurt(damageSources().mobProjectile(this, owner), getDamage())) {
+                            LivingEntity living = LibEntityUtils.effectTarget(target);
+                            if (living != null) onSuccessfulHit(owner, living);
+                        }
                     }
                 }
             }
@@ -181,7 +186,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
             flameEmitter.hideOutline = true;
             MolangParticleEngine.INSTANCE.addEmitter(flameEmitter);
         }
-        // 新联动特效全部由粒子风暴定义维护，不再叠加逐刻生成的原版粒子。
+        /// 新联动特效全部由粒子风暴定义维护，不再叠加逐刻生成的原版粒子。
         if (isGiantFlame() || entityData.get(HOMING)) return;
         int count = entityData.get(STREAM) || entityData.get(GROUNDED) ? 8 : 4;
         for (int i = 0; i < count; i++) {
@@ -189,12 +194,12 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         }
     }
 
-    // 引爆是独立的一次性世界特效，不能附着即将删除的巨焰，否则库会在生成前将其清理。
+    /// 引爆是独立的一次性世界特效，不能附着即将删除的巨焰，否则库会在生成前将其清理。
     @Override
     public void handleEntityEvent(byte event) {
         if (event == FLAME_BURST_EVENT && level().isClientSide) {
             ParticleEmitter burst = new ParticleEmitter(level(), position(), Confluence.asResource("twins_flame_burst"));
-            // 一次性发射数量和寿命由粒子定义控制，Java 只负责触发。
+            /// 一次性发射数量和寿命由粒子定义控制，Java 只负责触发。
             burst.hideOutline = true;
             MolangParticleEngine.INSTANCE.addEmitter(burst);
         } else super.handleEntityEvent(event);
@@ -222,7 +227,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
             }
             return velocity.add(0, -HOMING_GRAVITY, 0);
         }
-        // 抛物线在所有难度下都下落，传奇只决定落地后是否滞留。
+        /// 抛物线在所有难度下都下落，传奇只决定落地后是否滞留。
         if (entityData.get(ARCING)) return velocity.add(0, -ARC_GRAVITY, 0);
         if (!entityData.get(STREAM)) return velocity;
         return velocity.scale(0.97).add(0, entityData.get(LINGERING) ? -0.025 : 0, 0);
@@ -245,7 +250,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     @Override
     protected boolean ownsBlockImpactMovement(BlockHitResult result) {return isGiantFlame() || entityData.get(GROUNDED);}
 
-    // 巨焰是等待激光触发的联动载体，不在碰到玩家时提前消失。
+    /// 巨焰是等待激光触发的联动载体，不在碰到玩家时提前消失。
     @Override
     public boolean canHitEntity(Entity target) {
         return !isGiantFlame() && super.canHitEntity(target);
@@ -287,7 +292,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         groundTicks = Math.max(0, tag.getInt("GroundTicks"));
     }
 
-    // 运动目标与范围中心保留小数精度，重载后不会偏移到方块角落。
+    /// 运动目标与范围中心保留小数精度，重载后不会偏移到方块角落。
     private static void writeVector(CompoundTag tag, String name, Vec3 vector) {
         tag.putDouble(name + "X", vector.x);
         tag.putDouble(name + "Y", vector.y);

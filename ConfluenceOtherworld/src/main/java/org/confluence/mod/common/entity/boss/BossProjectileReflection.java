@@ -4,7 +4,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.PartHitTarget;
+
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 

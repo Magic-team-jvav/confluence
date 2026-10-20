@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -12,9 +9,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModParticleTypes;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class LightBaneProjectile extends SwordProjectile {
     private static final EntityDataAccessor<Boolean> BIG_SLASH = SynchedEntityData.defineId(LightBaneProjectile.class, EntityDataSerializers.BOOLEAN);
@@ -47,13 +48,13 @@ public class LightBaneProjectile extends SwordProjectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        Entity identity = ProjectileHitRules.dedupeIdentity(target);
+        Entity identity = LibEntityUtils.dedupeIdentity(target);
         return !hitTargets.contains(identity.getUUID()) && super.canHitEntity(target);
     }
 
     @Override
     protected boolean hurtTarget(Entity target) {
-        Entity identity = ProjectileHitRules.dedupeIdentity(target);
+        Entity identity = LibEntityUtils.dedupeIdentity(target);
         if (!super.hurtTarget(target)) return false;
         hitTargets.add(identity.getUUID());
         ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(), getX(), getY(), getZ(), 1, 0.0, 0.0, 0.0, 0.0);

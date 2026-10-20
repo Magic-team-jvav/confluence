@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.entity;
 
 import com.google.common.collect.Iterables;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +12,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
 import org.confluence.lib.common.entitiy.EmptyEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.*;
@@ -61,14 +63,15 @@ public final class ModEntities {
     private static final Map<Supplier<? extends EntityType<? extends LivingEntity>>, Supplier<CreatureAttributeBuilder.Definition>> ATTRIBUTES = new LinkedHashMap<>();
     private static final Map<EntityType<?>, CreatureAttributeBuilder.Definition> CREATURE_DEFINITIONS = new LinkedHashMap<>();
 
-    // 牢枕专用
+    /// 牢枕专用
     public static final DeferredHolder<EntityType<?>, EntityType<EmptyEntity>> EMPTY_ENTITY = registerEntityType("empty_entity", "空实体", id -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(id.toString()));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<MartianReinforcement>> MARTIAN_REINFORCEMENT = registerEntityType("martian_reinforcement", "火星支援信标", id -> EntityType.Builder.of(MartianReinforcement::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(16).updateInterval(1).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<MartianElectricBolt>> MARTIAN_ELECTRIC_BOLT = registerEntityType("martian_electric_bolt", "火星电击束", id -> EntityType.Builder.of(MartianElectricBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<ElectricSpear>> ELECTRIC_SPEAR = registerEntityType("electric_spear", "电矛", id -> EntityType.Builder.of(ElectricSpear::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<MonsterLaser>> MONSTER_LASER = registerEntityType("monster_laser", "怪物激光", id -> EntityType.Builder.of(MonsterLaser::new, MobCategory.MISC).sized(0.2F, 0.2F).clientTrackingRange(16).updateInterval(1).build(id.toString()));
 
-    // 炸弹
+    /// 炸弹
     public static final DeferredHolder<EntityType<?>, EntityType<BaseBombEntity>> BOMB_ENTITY = registerBomb("bomb_entity", "炸弹", BaseBombEntity::new, BaseBombEntity.DIAMETER);
     public static final DeferredHolder<EntityType<?>, EntityType<BouncyBombEntity>> BOUNCY_BOMB_ENTITY = registerBomb("bouncy_bomb_entity", "弹力炸弹", BouncyBombEntity::new, BaseBombEntity.DIAMETER);
     public static final DeferredHolder<EntityType<?>, EntityType<ScarabBombEntity>> SCARAB_BOMB_ENTITY = registerBomb("scarab_bomb_entity", "圣甲虫炸弹", ScarabBombEntity::new, BaseBombEntity.DIAMETER);
@@ -93,7 +96,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<SpiritSurgeEntity>> SPIRIT_SURGE = registerEntityType("spirit_surge", "灵魂激荡", id -> EntityType.Builder.<SpiritSurgeEntity>of(SpiritSurgeEntity::new, MobCategory.MISC).sized(SoulSkillParameters.SOUL_ENTITY_SIZE, SoulSkillParameters.SOUL_ENTITY_SIZE).clientTrackingRange(SoulSkillParameters.SOUL_ENTITY_TRACKING_RANGE).updateInterval(SoulSkillParameters.SOUL_ENTITY_UPDATE_INTERVAL).noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<SoulStingProjectile>> SOUL_STING = registerEntityType("soul_sting", "魂师毒刺", id -> EntityType.Builder.<SoulStingProjectile>of(SoulStingProjectile::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(8).updateInterval(1).noSave().build(id.toString()));
 
-    // 魔法
+    /// 魔法
     public static final DeferredHolder<EntityType<?>, EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = registerEntityType("base_mana_staff", "法杖射弹", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<VilethronProjectile>> VILETHRON = registerEntityType("vilethron", "魔刺射弹", id -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = registerEntityType("crystal_vile_shard", "魔晶碎块射弹", id -> EntityType.Builder.<CrystalVileShardProjectile>of(CrystalVileShardProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
@@ -122,7 +125,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<CrystalChargeProjectile>> CRYSTAL_CHARGE_1 = registerEntityType("crystal_charge_1", "爆炸水晶1", id -> EntityType.Builder.<CrystalChargeProjectile>of(CrystalChargeProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<CrystalChargeProjectile>> CRYSTAL_CHARGE_2 = registerEntityType("crystal_charge_2", "爆炸水晶2", id -> EntityType.Builder.<CrystalChargeProjectile>of(CrystalChargeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
 
-    // 剑气
+    /// 剑气
     public static final DeferredHolder<EntityType<?>, EntityType<GeoSwordProjectile>> GEO_SWORD_PROJECTILE = registerEntityType("geo_sword_projectile", "地质剑射弹", id -> EntityType.Builder.of(GeoSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).updateInterval(1).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<IceBladeSwordProjectile>> ICE_BLADE_SWORD = registerEntityType("ice_blade_sword", "冰刃剑", id -> EntityType.Builder.of(IceBladeSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<StarFuryProjectile>> STAR_FURY = registerEntityType("star_fury", "天堂怒火", id -> EntityType.Builder.of(StarFuryProjectile::new, MobCategory.MISC).sized(1F, 1F).build(id.toString()));//星怒弹幕
@@ -134,7 +137,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownPhasebladeProjectile>> PHASEBLADE_PROJECTILE = registerEntityType("phaseblade_projectile", "晶光刃射弹", id -> EntityType.Builder.of(ThrownPhasebladeProjectile::new, MobCategory.MISC).sized(0.55F, 0.55F).clientTrackingRange(10).updateInterval(1).noSave().noSummon().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownPhasesaberProjectile>> PHASESABER_PROJECTILE = registerEntityType("phasesaber_projectile", "晶光剑射弹", id -> EntityType.Builder.of(ThrownPhasesaberProjectile::new, MobCategory.MISC).sized(0.55F, 0.55F).clientTrackingRange(10).updateInterval(1).noSave().noSummon().build(id.toString()));
 
-    // 弓箭
+    /// 弓箭
     public static final DeferredHolder<EntityType<?>, EntityType<BaseArrowEntity>> BASE_ARROW = registerEntityType("arrow", "泰拉箭", id -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<BeeArrowEntity>> BEE_ARROW = registerEntityType("bee_arrow", "蜜蜂箭", id -> EntityType.Builder.<BeeArrowEntity>of(BeeArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<HellBatArrowEntity>> HELL_BAT_ARROW = registerEntityType("hell_bat_arrow", "地狱蝙蝠箭", id -> EntityType.Builder.<HellBatArrowEntity>of(HellBatArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
@@ -150,7 +153,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<FlyFishArrowEntity>> FLY_FISH_ARROW = registerEntityType("fly_fish_arrow", "飞鱼箭", id -> EntityType.Builder.<FlyFishArrowEntity>of(FlyFishArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<DeveloperArrowEntity>> DEVELOPER_ARROW = registerEntityType("developer_arrow", "开发者箭", id -> EntityType.Builder.<DeveloperArrowEntity>of(DeveloperArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
 
-    // 其它
+    /// 其它
     public static final DeferredHolder<EntityType<?>, EntityType<BoulderEntity>> BOULDER = registerEntityType("boulder", "巨石", id -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<FollowerBoulderEntity>> FOLLOWER_BOULDER = registerEntityType("follower_boulder", "跟踪巨石", id -> EntityType.Builder.<FollowerBoulderEntity>of(FollowerBoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<ExplodeBoulderEntity>> EXPLODE_BOULDER = registerEntityType("explode_boulder", "爆炸巨石", id -> EntityType.Builder.<ExplodeBoulderEntity>of(ExplodeBoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));
@@ -193,13 +196,13 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<MushroomProjectile>> MUSHROOM = registerEntityType("mushroom", "蘑菇孢子", id -> EntityType.Builder.of(MushroomProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(6).fireImmune().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<GhastlyProjectile>> GHASTLY = registerEntityType("ghastly", "恐魂射弹", id -> EntityType.Builder.of(GhastlyProjectile::new, MobCategory.MISC).sized(2.5F, 2.5F).clientTrackingRange(6).fireImmune().build(id.toString()));
 
-    // 鱼钩
+    /// 鱼钩
     public static final DeferredHolder<EntityType<?>, EntityType<BaseFishingHook>> BASE_FISHING_HOOK = registerEntityType("base_fishing_hook", "钓鱼钩", id -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<HotlineFishingHook>> HOTLINE_FISHING_HOOK = registerEntityType("hotline_fishing_hook", "熔线钓鱼钩", id -> EntityType.Builder.<HotlineFishingHook>of(HotlineFishingHook::new, MobCategory.MISC).noSave().noSummon().fireImmune().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<CurioFishingHook>> CURIO_FISHING_HOOK = registerEntityType("curio_fishing_hook", "钓鱼钩", id -> EntityType.Builder.<CurioFishingHook>of(CurioFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<BloodyFishingHook>> BLOODY_FISHING_HOOK = registerEntityType("bloody_fishing_hook", "血腥钓鱼钩", id -> EntityType.Builder.<BloodyFishingHook>of(BloodyFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build(id.toString()));
 
-    // 钩爪
+    /// 钩爪
     public static final DeferredHolder<EntityType<?>, EntityType<BaseHookEntity>> BASE_HOOK = registerHook("base_hook", "钩", BaseHookEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractHookEntity.Impl>> WEB_SLINGER = registerHook("web_slinger", "蛛丝吊索钩", AbstractHookEntity.Impl::new);
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractHookEntity.Impl>> SKELETRON_HAND = registerHook("skeletron_hand_hook", "骷髅王之手", AbstractHookEntity.Impl::new);
@@ -218,7 +221,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<LunarHookEntity>> LUNAR_HOOK = registerHook("lunar_hook", "月亮钩", LunarHookEntity::new);
     /* todo 静止钩 */
 
-    // 连枷
+    /// 连枷
     public static final DeferredHolder<EntityType<?>, EntityType<BaseFlailEntity>> FLAIL_ENTITY = registerEntityType("flail", "链球", id -> EntityType.Builder.of(BaseFlailEntity::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(6).noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<GuardianFlailEntity>> GUARDIAN_FLAIL_ENTITY = registerEntityType("guardian_flail", "守卫连枷", id -> EntityType.Builder.<GuardianFlailEntity>of((type, level) -> new GuardianFlailEntity(type, level, false), MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(20).updateInterval(1).noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<GuardianFlailEntity>> ANCIENT_GUARDIAN_FLAIL_ENTITY = registerEntityType("ancient_guardian_flail", "远古守卫连枷", id -> EntityType.Builder.<GuardianFlailEntity>of((type, level) -> new GuardianFlailEntity(type, level, true), MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(24).updateInterval(1).noSave().build(id.toString()));
@@ -228,12 +231,12 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<LaunchedFlailEntity>> CHAIN_KNIFE_FLAIL = registerEntityType("chain_knife", "链刀", id -> EntityType.Builder.<LaunchedFlailEntity>of((type, level) -> new LaunchedFlailEntity(type, level, 0.0), MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(20).updateInterval(1).noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<AnchorFlailEntity>> ANCHOR_FLAIL = registerEntityType("anchor", "锚", id -> EntityType.Builder.of(AnchorFlailEntity::new, MobCategory.MISC).sized(0.9F, 0.9F).clientTrackingRange(24).updateInterval(1).noSave().build(id.toString()));
 
-    // 连枷投射物
+    /// 连枷投射物
     public static final DeferredHolder<EntityType<?>, EntityType<FlowerPowerPetalProjectile>> FLOWER_POWER_PETAL = registerEntityType("flower_power_petal", "花之力花瓣", id -> EntityType.Builder.of(FlowerPowerPetalProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(12).updateInterval(1).noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<DripplerCripplerProjectile>> DRIPPLER_CRIPPLER_PROJECTILE = registerEntityType("drippler_crippler_projectile", "血肉射弹", id -> EntityType.Builder.of(DripplerCripplerProjectile::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(12).updateInterval(1).noSave().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<FlaironBubbleProjectile>> FLAIRON_BUBBLE = registerEntityType("flairon_bubble", "泡泡", id -> EntityType.Builder.of(FlaironBubbleProjectile::new, MobCategory.MISC).sized(0.65F, 0.65F).clientTrackingRange(12).updateInterval(1).noSave().build(id.toString()));
 
-    // 矿车
+    /// 矿车
     public static final DeferredHolder<EntityType<?>, EntityType<BaseMinecartEntity>> VANILLA_MINECART = registerMinecart("vanilla_minecart", "矿车", BaseMinecartEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<BaseMinecartEntity>> WOODEN_MINECART = registerMinecart("wooden_minecart", "木制矿车", BaseMinecartEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<GenericMinecartEntity>> GENERIC_MINECART = registerMinecart("generic_minecart", "矿车", GenericMinecartEntity::new);
@@ -245,7 +248,7 @@ public final class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<BestiaryEntryDisplay>> BESTIARY_ENTRY_DISPLAY = registerEntityType("bestiary_entry_display", "基础展示实体", id -> EntityType.Builder.of(BestiaryEntryDisplay::new, MobCategory.MISC).sized(1, 1).build(id.toString()));
 
-    // 子弹
+    /// 子弹
     public static final DeferredHolder<EntityType<?>, EntityType<StarCannonBulletEntity>> STAR_CANNON_BULLET = registerEntityType("star_cannon_bullet", "星星炮射弹", id -> EntityType.Builder.<StarCannonBulletEntity>of(StarCannonBulletEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<BeeGunBullet>> BEE_GUN_BULLET = registerEntityType("bee_gun_bullet", "蜜蜂枪射弹", id -> EntityType.Builder.<BeeGunBullet>of(BeeGunBullet::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build(id.toString()));
 
@@ -287,7 +290,7 @@ public final class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<PrimeCannonballProjectile>> PRIME_CANNONBALL = registerEntityType("prime_cannonball", "机械炮弹", id -> EntityType.Builder.of(PrimeCannonballProjectile::new, MobCategory.MISC).sized(0.55F, 0.55F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
 
-    // 魔法
+    /// 魔法
     public static final DeferredHolder<EntityType<?>, EntityType<WhipAttackEntity>> WHIP_ATTACK = registerEntityType("whip_attack", "鞭击", id -> EntityType.Builder.of(WhipAttackEntity::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
 
     public static final DeferredHolder<EntityType<?>, EntityType<ChesterEntity>> CHESTER = withAttributes(registerStorageCompanion("chester", "切斯特", ChesterEntity::new),

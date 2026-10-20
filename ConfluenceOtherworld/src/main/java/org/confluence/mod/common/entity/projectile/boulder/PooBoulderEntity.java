@@ -12,6 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.MobEffectInstanceData;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEffects;
@@ -58,7 +60,8 @@ public class PooBoulderEntity extends BoulderEntity {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        if (entity instanceof LivingEntity livingEntity) {
+        LivingEntity livingEntity = LibEntityUtils.effectTarget(entity);
+        if (!level().isClientSide && livingEntity != null) {
             livingEntity.addEffect(new MobEffectInstanceData(ModEffects.STINKY, 20 * 10, 1).create());
             livingEntity.addEffect(new MobEffectInstanceData(MobEffects.POISON, 20 * 10).create());
         }

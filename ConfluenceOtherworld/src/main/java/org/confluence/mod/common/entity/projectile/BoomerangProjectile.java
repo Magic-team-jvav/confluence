@@ -21,14 +21,14 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
 
 public class BoomerangProjectile extends Projectile {
     private static final EntityDataAccessor<ItemStack> DATA_WEAPON = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.ITEM_STACK);
@@ -58,8 +58,8 @@ public class BoomerangProjectile extends Projectile {
     public void configure(LivingEntity owner, ItemStack weapon, BoomerangItem.Settings settings) {
         configure(owner, weapon, settings.damage(), settings.flySpeed(), settings.backSpeed(), settings.forwardTicks(), settings.penetration());
         this.fire = settings.fire();
-        // 1.21 差异：`Entity#setSecondsOnFire(int)` 已改名成 `igniteForSeconds(float)`
-        // （既有同名写法：`CultistProjectile.java:44`、`TwinEyeProjectile.java:41`、`PirateShot.java:35`）。
+        /// 1.21 差异：`Entity#setSecondsOnFire(int)` 已改名成 `igniteForSeconds(float)`
+        /// （既有同名写法：`CultistProjectile.java:44`、`TwinEyeProjectile.java:41`、`PirateShot.java:35`）。
         if (fire) igniteForSeconds(4);
     }
 
@@ -88,11 +88,8 @@ public class BoomerangProjectile extends Projectile {
     @Override
     protected boolean canHitEntity(Entity target) {
         Entity owner = getOwner();
-        if (owner instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return target != owner
-                && target.isAlive()
-                && !hitEntities.contains(target.getUUID())
+        return LibEntityUtils.canHit(owner, target)
+                && !hitEntities.contains(LibEntityUtils.dedupeIdentity(target).getUUID())
                 && super.canHitEntity(target);
     }
 
@@ -106,11 +103,12 @@ public class BoomerangProjectile extends Projectile {
         if (owner instanceof LivingEntity livingOwner) {
             DamageSource source = damageSources().mobProjectile(this, livingOwner);
             if (target.hurt(source, entityData.get(DATA_DAMAGE))) {
-                hitEntities.add(target.getUUID());
-                if (target instanceof LivingEntity livingTarget) {
+                hitEntities.add(LibEntityUtils.dedupeIdentity(target).getUUID());
+                LivingEntity livingTarget = LibEntityUtils.effectTarget(target);
+                if (livingTarget != null) {
                     Vec3 push = getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(0.35);
                     livingTarget.push(push.x, 0.1, push.z);
-                    livingOwner.setLastHurtMob(target);
+                    livingOwner.setLastHurtMob(livingTarget);
                     if (livingTarget.isAlive() && getWeapon().getItem() instanceof BoomerangItem boomerang)
                         boomerang.onProjectileHit(this, livingOwner, livingTarget);
                 }
@@ -191,8 +189,8 @@ public class BoomerangProjectile extends Projectile {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        // 1.21 差异：`ItemStack.of(CompoundTag)` 已删 → `ItemStack.parseOptional(HolderLookup.Provider, CompoundTag)`
-        // （先例：`BaseBulletEntity.java:420-421`）。
+        /// 1.21 差异：`ItemStack.of(CompoundTag)` 已删 → `ItemStack.parseOptional(HolderLookup.Provider, CompoundTag)`
+        /// （先例：`BaseBulletEntity.java:420-421`）。
         entityData.set(DATA_WEAPON, ItemStack.parseOptional(level().registryAccess(), tag.getCompound("Weapon")));
         entityData.set(DATA_RETURNING, tag.getBoolean("Returning"));
         entityData.set(DATA_DAMAGE, Math.max(0.0F, tag.getFloat("Damage")));

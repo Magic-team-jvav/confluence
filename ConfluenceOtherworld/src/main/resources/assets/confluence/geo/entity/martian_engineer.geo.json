@@ -320,6 +320,24 @@
 							}
 						}
 					]
+                },
+                {
+                    "name": "left_aim",
+                    "parent": "left_fort",
+                    "pivot": [
+                        11.8097,
+                        18.95671,
+                        -8.01
+                    ]
+                },
+                {
+                    "name": "right_aim",
+                    "parent": "right_fort",
+                    "pivot": [
+                        -11.8097,
+                        18.95671,
+                        -8.01
+                    ]
 				}
 			]
 		}

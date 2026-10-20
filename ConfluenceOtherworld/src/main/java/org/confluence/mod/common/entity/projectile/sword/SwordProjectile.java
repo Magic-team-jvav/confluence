@@ -28,7 +28,6 @@ import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.boss.BossProjectileReflection;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
 import org.confluence.mod.mixed.Immunity;
@@ -36,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Comparator;
-
 
 /// 剑气实体的服务端运行时，负责运动、追踪、碰撞、伤害与快照同步。
 public abstract class SwordProjectile extends AbstractHurtingProjectile implements IEntityWithComplexSpawn, Immunity {
@@ -179,7 +177,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     private void tickCollisionDamage() {
         if (--collisionCooldown > 0) return;
         collisionCooldown = collisionInterval;
-        for (Entity target : level().getEntities(this, getBoundingBox().inflate(collisionInflation), this::canHitEntity)) {
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(collisionInflation), this::canHitEntity)) {
             hurtTarget(target);
         }
     }
@@ -204,7 +202,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return remainingHits > 0 && ProjectileHitRules.canHit(getOwner(), target);
+        return remainingHits > 0 && LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override
@@ -232,18 +230,20 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     protected boolean hurtTarget(Entity target) {
         if (!canHitEntity(target) || BossProjectileReflection.reflect(this, target)) return false;
-        Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
-        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
+        Entity damageRecipient = target;
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
         DamageSource source = damageSource();
-        boolean hurt = damageRecipient instanceof LivingEntity living
-                ? Immunity.hurt(this, living, source, baseAttackDamage)
-                : Immunity.withCause(this, () -> damageRecipient.hurt(source, baseAttackDamage));
+        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
+        boolean hurt = logicalTarget != null
+                ? Immunity.hurt(cause, damageRecipient, logicalTarget, source, baseAttackDamage)
+                : Immunity.withCause(cause, () -> target.hurt(source, baseAttackDamage));
         if (!hurt) {
             return false;
         }
         if (logicalTarget != null) {
             LibEntityUtils.knockBackA2B(this, logicalTarget, (baseKnockback + bonusKnockback) * 0.5, 0.2);
-            applyHitEffect(logicalTarget);
+            LivingEntity effectTarget = LibEntityUtils.effectTarget(target);
+            if (effectTarget != null) applyHitEffect(effectTarget);
         }
         level().broadcastEntityEvent(this, EVENT_ENTITY_HIT);
         if (--remainingHits <= 0) discard();
@@ -315,7 +315,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         buffer.writeBoolean(projectileDefinition != null);
         if (projectileDefinition != null)
             Projectile.STREAM_CODEC.encode(buffer, projectileDefinition);
-        ItemStack.STREAM_CODEC.encode(buffer, firedFromWeapon);
+        ItemStack.OPTIONAL_STREAM_CODEC.encode(buffer, firedFromWeapon);
         Entity owner = getOwner();
         buffer.writeBoolean(owner != null);
         if (owner != null) buffer.writeVarInt(owner.getId());
@@ -325,8 +325,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public void readSpawnData(RegistryFriendlyByteBuf buffer) {
         if (buffer.readBoolean())
             setProjectileComponent(Projectile.STREAM_CODEC.decode(buffer));
-        firedFromWeapon = ItemStack.STREAM_CODEC.decode(buffer);
-        /// Forge 自定义生成包不携带原版射弹的 owner ID，永夜剑客户端无 owner 就不会生成拖尾。
+        firedFromWeapon = ItemStack.OPTIONAL_STREAM_CODEC.decode(buffer);
+        /// 额外同步射弹所属者，确保永夜剑客户端能正确生成拖尾。
         if (buffer.readBoolean()) {
             Entity owner = level().getEntity(buffer.readVarInt());
             if (owner != null) setOwner(owner);

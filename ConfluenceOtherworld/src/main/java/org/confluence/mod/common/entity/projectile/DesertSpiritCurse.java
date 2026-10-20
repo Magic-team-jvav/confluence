@@ -12,6 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import org.confluence.lib.util.LibEntityUtils;
+
 public final class DesertSpiritCurse extends StraightMonsterProjectile {
     public DesertSpiritCurse(EntityType<? extends DesertSpiritCurse> type, Level level) {
         super(type, level);
@@ -56,7 +58,8 @@ public final class DesertSpiritCurse extends StraightMonsterProjectile {
             level().addParticle(ParticleTypes.DRAGON_BREATH, getX(), getY(), getZ(), 0.0, 0.01, 0.0);
         } else if (tickCount >= 60) {
             if (getOwner() instanceof Mob owner) {
-                for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(1.5), owner::canAttack)) {
+                for (Entity target : LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(1.5),
+                        candidate -> LibEntityUtils.canMobHit(owner, candidate))) {
                     if (target.getBoundingBox().getCenter().distanceToSqr(position()) <= 2.25)
                         target.hurt(damageSources().mobProjectile(this, owner), getDamage());
                 }

@@ -6,32 +6,48 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.confluence.mod.common.entity.projectile.ElectricSpear;
-import org.confluence.mod.common.gameevent.MartianEventHelper;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.entity.ModEntities;
+
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-/// 使用随模型移动的电矛进行近战攻击，每十个游戏刻最多攻击一次。
-public final class Gigazapper extends MartianHumanoidMonster {
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+/// 使用随模型移动的电矛进行近战攻击，每十 tick 最多攻击一次。
+public class Gigazapper extends MartianHumanoidMonster {
+    public enum AttackType {SPEAR}
+
     public static final int ATTACK_INTERVAL = 10;
+    private static final double MODEL_UNIT = 1.3 / 16.0;
     private static final EntityDataAccessor<Boolean> AIMING = SynchedEntityData.defineId(Gigazapper.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation STAND = RawAnimation.begin().thenLoop("Stand");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("Walk");
     private static final RawAnimation STAND_AIM = RawAnimation.begin().thenLoop("Stand Aim");
     private static final RawAnimation WALK_AIM = RawAnimation.begin().thenLoop("Walk Aim");
+    private final Set<UUID> spearHitTargets = new HashSet<>();
     private int attackCooldown;
+    private int spearAttackTicks;
+    private float spearDamage;
 
     public Gigazapper(EntityType<? extends Gigazapper> type, Level level) {
         super(type, level);
@@ -45,7 +61,15 @@ public final class Gigazapper extends MartianHumanoidMonster {
 
     @Override
     protected boolean hasEntityContactAttack() {
+        return !isNoAi() && !isPassenger();
+    }
+
+    public boolean canUseSpear() {
         return true;
+    }
+
+    protected final boolean isAiming() {
+        return entityData.get(AIMING);
     }
 
     private boolean isUsableTarget(LivingEntity target) {
@@ -57,29 +81,31 @@ public final class Gigazapper extends MartianHumanoidMonster {
         BTNode combatBehavior = new BTNode() {
             @Override
             public boolean canStart() {
-                return isUsableTarget(getTarget());
+                return !isPassenger() && isUsableTarget(getTarget()) && canUseSpear();
             }
 
             @Override
             public BTStatus execute() {
                 LivingEntity target = getTarget();
-                if (!isUsableTarget(target)) {
+                if (!canStart()) {
                     return BTStatus.FAILURE;
                 }
 
                 getLookControl().setLookAt(target, 30, 30);
-                if (!ElectricSpear.withinReach(Gigazapper.this, target) || !hasLineOfSight(target)) {
+                if (!withinSpearReach(target) || !hasLineOfSight(target)) {
                     getNavigation().moveTo(target, 1);
                 } else {
                     getNavigation().stop();
                 }
 
+                tickSpearCombat(target);
                 return BTStatus.RUNNING;
             }
 
             @Override
             public void stop() {
                 getNavigation().stop();
+                stopSpearAttack();
             }
 
         };
@@ -91,40 +117,100 @@ public final class Gigazapper extends MartianHumanoidMonster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide || !isAlive()) {
-            return;
+        if (!level().isClientSide && (isNoAi() || isPassenger() || !canUseSpear() || !isUsableTarget(getTarget()))) {
+            stopSpearAttack();
         }
+    }
 
-        if (attackCooldown > 0) {
-            attackCooldown--;
-        }
+    /// 取消刺击时同时复位动画、去重记录和瞄准状态。
+    private void stopSpearAttack() {
+        if (spearAttackTicks > 0) stopTriggeredAnim("gigazapper", "strike");
+        spearAttackTicks = 0;
+        spearHitTargets.clear();
+        entityData.set(AIMING, false);
+    }
 
-        LivingEntity target = getTarget();
+    private void tickSpearCombat(LivingEntity target) {
+        if (attackCooldown > 0) attackCooldown--;
+
         if (isUsableTarget(target)) {
-            ElectricSpear.faceTarget(this, target);
+            faceSpearTarget(target);
         }
-
-        boolean aiming = isUsableTarget(target) && ElectricSpear.withinReach(this, target) && hasLineOfSight(target);
+        boolean aiming = isUsableTarget(target) && withinSpearReach(target) && hasLineOfSight(target);
         entityData.set(AIMING, aiming);
-        if (!aiming || attackCooldown > 0) {
-            return;
-        }
-
-        ElectricSpear spear = ModEntities.ELECTRIC_SPEAR.get().create(level());
-        if (spear == null) {
-            return;
-        }
-
-        spear.configure(this);
-        MartianEventHelper.inheritEventMembership(this, spear);
-        if (level().addFreshEntity(spear)) {
+        if (aiming && attackCooldown == 0) {
             attackCooldown = ATTACK_INTERVAL;
+            spearAttackTicks = ATTACK_INTERVAL;
+            spearDamage = specialAttackDamage(AttackType.SPEAR);
+            spearHitTargets.clear();
             triggerAnim("gigazapper", "strike");
             playSound(ModSoundEvents.ITEM_LASER_SHOOT.get(), 0.8F, 1.0F);
-        } else {
-            spear.discard();
         }
+        if (spearAttackTicks > 0) {
+            tickSpearAttack(ATTACK_INTERVAL - spearAttackTicks);
+            if (--spearAttackTicks == 0) {
+                spearHitTargets.clear();
+            }
+        }
+    }
 
+    /// 模型枪杆起点为 [-6,8,-9]、尺寸为 [1,1,12]，攻击手臂偏移为 [1,4,0]。
+    private Vec3 spearPoint(double z) {
+        double yaw = Math.toRadians(yBodyRot);
+        double unit = MODEL_UNIT * getScale();
+        double x = -4.5 * unit;
+        return position().add(x * Math.cos(yaw) + z * unit * Math.sin(yaw),
+                12.5 * unit, x * Math.sin(yaw) - z * unit * Math.cos(yaw));
+    }
+
+    private boolean withinSpearReach(LivingEntity target) {
+        return intersectsSpear(target.getBoundingBox(), spearPoint(-1), spearPoint(-13));
+    }
+
+    private boolean intersectsSpear(AABB bounds, Vec3 start, Vec3 end) {
+        AABB expanded = bounds.inflate(0.55 * MODEL_UNIT * getScale());
+        return expanded.contains(start) || expanded.contains(end) || expanded.clip(start, end).isPresent();
+    }
+
+    private void faceSpearTarget(LivingEntity target) {
+        Vec3 direction = target.position().subtract(position());
+        /// 以右手枪杆对准目标，补偿枪杆相对身体中心的偏移。
+        double offset = Math.asin(Math.min(1.0,
+                4.5 * MODEL_UNIT * getScale() / Math.max(direction.horizontalDistance(), 0.001)));
+        faceCombatDirection(direction.yRot((float) offset), 30, 0);
+    }
+
+    private void tickSpearAttack(int age) {
+        /// 刺击动画在第 0–2 刻伸出，保持至第 5 刻，再于第 5–7 刻收回。
+        if (age > 7) {
+            return;
+        }
+        double extension;
+        if (age < 2) {
+            extension = age * 2.0;
+        } else if (age <= 5) {
+            extension = 4.0;
+        } else {
+            extension = (7 - age) * 2.0;
+        }
+        Vec3 start = spearPoint(3 - extension);
+        Vec3 end = spearPoint(-9 - extension);
+        var wall = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        if (wall.getType() != HitResult.Type.MISS) {
+            end = wall.getLocation();
+        }
+        AABB bounds = new AABB(start, end).inflate(0.55 * MODEL_UNIT * getScale());
+        for (LivingEntity victim : level().getEntitiesOfClass(LivingEntity.class, bounds)) {
+            if (victim == this || !victim.isAlive() || !canAttack(victim) || EnemyDamageRules.isProtectedEnemy(victim)
+                    || spearHitTargets.contains(victim.getUUID()) || !intersectsSpear(victim.getBoundingBox(), start, end)) {
+                continue;
+            }
+            spearHitTargets.add(victim.getUUID());
+            if (victim.hurt(damageSources().mobAttack(this), spearDamage)) {
+                setLastHurtMob(victim);
+                victim.addEffect(new MobEffectInstance(ModEffects.ELECTRIFIED, 80 + random.nextInt(81)));
+            }
+        }
     }
 
     @Override
@@ -153,6 +239,9 @@ public final class Gigazapper extends MartianHumanoidMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         attackCooldown = Mth.clamp(tag.getInt("ShootingCooldown"), 0, ATTACK_INTERVAL);
+        /// 重载时取消未完成的刺击，避免恢复后再次命中同一目标。
+        spearAttackTicks = 0;
+        spearHitTargets.clear();
         entityData.set(AIMING, false);
     }
 }

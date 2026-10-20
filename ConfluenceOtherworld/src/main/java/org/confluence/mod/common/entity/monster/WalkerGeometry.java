@@ -1,6 +1,9 @@
 package org.confluence.mod.common.entity.monster;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
@@ -11,11 +14,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/** 模型空间姿态与碰撞几何的共享实现；可在专用服务器上使用。 */
+/// 模型空间姿态与碰撞几何的共享实现；可在专用服务器上使用。
 public final class WalkerGeometry {
     public static final float SCALE = 0.7F;
-    // 旋转后的腿部链已将脚底置于模型 Y=0。
-    // 渲染与碰撞几何共用此值；无需额外抬高。
+    /// 旋转后的腿部链已将脚底置于模型 Y=0。
+    /// 渲染与碰撞几何共用此值；无需额外抬高。
     public static final float OFFSET_Y = 0.0F;
     private static final Map<String, JsonObject> BONES = new LinkedHashMap<>();
     private static final JsonObject ANIMATIONS;
@@ -43,9 +46,15 @@ public final class WalkerGeometry {
     }
 
     public static Set<String> boneNames() { return BONES.keySet(); }
-    public record Pose(double standSeconds, double walkSeconds, float walkWeight) {}
 
-    /** 基岩版旋转通过反转 X、Y 转换为 Gecko 坐标。 */
+    public record Pose(double standSeconds, double walkSeconds, float walkWeight, String animation,
+                       double animationSeconds) {
+        public Pose(double standSeconds, double walkSeconds, float walkWeight) {
+            this(standSeconds, walkSeconds, walkWeight, null, 0);
+        }
+    }
+
+    /// 基岩版旋转通过反转 X、Y 转换为 Gecko 坐标。
     public static Vector3f rotation(String name, boolean moving, double seconds) {
         return rotation(name, new Pose(seconds, seconds, moving ? 1 : 0));
     }
@@ -63,18 +72,32 @@ public final class WalkerGeometry {
         return blendedChannel(name, "position", pose).mul(-1, 1, 1);
     }
     private static Vector3f blendedChannel(String name, String channel, Pose pose) {
+        if (pose.animation() != null) {
+            Vector3f value = channel(name, channel, pose.animation(), pose.animationSeconds());
+            if (pose.animation().equals("Spaceship") && !channel.equals("scale")) {
+                float blend = (float) Math.max(0, Math.min(1, pose.animationSeconds() / 0.4));
+                blend = blend * blend * (3 - 2 * blend);
+                return channel(name, channel, "Catapult launch", 5.25).lerp(value, blend);
+            }
+            return value;
+        }
         float weight = Float.isFinite(pose.walkWeight()) ? Math.max(0, Math.min(1, pose.walkWeight())) : 0;
-        return channel(name, channel, false, pose.standSeconds())
-                .lerp(channel(name, channel, true, pose.walkSeconds()), weight);
+        return channel(name, channel, "Stand", pose.standSeconds())
+                .lerp(channel(name, channel, "Walk", pose.walkSeconds()), weight);
     }
 
-    private static Vector3f channel(String name, String channel, boolean moving, double seconds) {
-        JsonObject animation = ANIMATIONS.getAsJsonObject(moving ? "Walk" : "Stand");
-        if (animation == null) return new Vector3f();
+    public static Vector3f scale(String name, Pose pose) {
+        return blendedChannel(name, "scale", pose);
+    }
+
+    private static Vector3f channel(String name, String channel, String animationName, double seconds) {
+        Vector3f fallback = new Vector3f(channel.equals("scale") ? 1 : 0);
+        JsonObject animation = ANIMATIONS.getAsJsonObject(animationName);
+        if (animation == null) return fallback;
         JsonObject bones = animation.getAsJsonObject("bones");
-        if (bones == null || !bones.has(name)) return new Vector3f();
+        if (bones == null || !bones.has(name)) return fallback;
         JsonElement track = bones.getAsJsonObject(name).get(channel);
-        if (track == null) return new Vector3f();
+        if (track == null) return fallback;
         if (track.isJsonArray()) return vector(track);
         JsonObject keys = track.getAsJsonObject();
         if (keys.has("vector")) return vector(keys.get("vector"));
@@ -82,7 +105,9 @@ public final class WalkerGeometry {
                 .map(Double::parseDouble).sorted().toList();
         if (times.isEmpty()) return new Vector3f();
         double length = animation.get("animation_length").getAsDouble();
-        double time = length > 0 ? Math.floorMod((long) (seconds * 1000000), (long) (length * 1000000)) / 1000000.0 : 0;
+        boolean looping = !animationName.equals("Catapult launch");
+        double time = length <= 0 ? 0 : looping ? seconds - Math.floor(seconds / length) * length
+                : Math.max(0, Math.min(length, seconds));
         int right = 0;
         while (right < times.size() && times.get(right) < time) right++;
         if (right == 0) return keyVector(keys, times.get(0));
@@ -106,7 +131,7 @@ public final class WalkerGeometry {
             Vector3f result = new Vector3f();
             for (int axis = 0; axis < 3; axis++) {
                 float p0 = p.get(axis), p1 = a.get(axis), p2 = b.get(axis), p3 = q.get(axis);
-                // 时间感知的 Catmull-Rom Hermite 形式：关键帧间距不均匀。
+                /// 时间感知的 Catmull-Rom Hermite 形式：关键帧间距不均匀。
                 float m1 = (float) ((p2 - p0) * (after - before) / Math.max(1.0E-6, after - previousTime));
                 float m2 = (float) ((p3 - p1) * (after - before) / Math.max(1.0E-6, nextTime - before));
                 float t2 = t*t, t3 = t2*t;
@@ -114,6 +139,17 @@ public final class WalkerGeometry {
                         + (-2*t3+3*t2)*p2 + (t3-t2)*m2);
             }
             return result;
+        }
+        if (key.isJsonObject() && key.getAsJsonObject().has("easing")) {
+            String easing = key.getAsJsonObject().get("easing").getAsString();
+            float overshoot = 1.70158F;
+            t = switch (easing) {
+                case "easeInBack" -> (overshoot + 1) * t * t * t - overshoot * t * t;
+                case "easeOutBack" ->
+                        1 + (overshoot + 1) * (float) Math.pow(t - 1, 3) + overshoot * (t - 1) * (t - 1);
+                case "easeInOutSine" -> (float) (-(Math.cos(Math.PI * t) - 1) / 2);
+                default -> t;
+            };
         }
         return a.lerp(b, t);
     }
@@ -156,7 +192,8 @@ public final class WalkerGeometry {
         Vector3f rotation = rotation(name, pose);
         Vector3f translation = translation(name, pose);
         Matrix4f result = new Matrix4f(parent).translate(translation.x, translation.y, translation.z)
-                .translate(pivot).rotateZ(rotation.z).rotateY(rotation.y).rotateX(rotation.x).translate(new Vector3f(pivot).negate());
+                .translate(pivot).rotateZ(rotation.z).rotateY(rotation.y).rotateX(rotation.x)
+                .scale(scale(name, pose)).translate(new Vector3f(pivot).negate());
         cache.put(name, result);
         return result;
     }
@@ -177,6 +214,8 @@ public final class WalkerGeometry {
                 JsonObject cube = element.getAsJsonObject();
                 Vector3f origin = vector(cube.get("origin")), size = vector(cube.get("size"));
                 Matrix4f transform = new Matrix4f(matrix(entry.getKey(), root, pose, cache));
+                /// Spaceship 将 lower_part 缩放为零；其腿部不能留下隐形碰撞。
+                if (Math.abs(transform.determinant3x3()) < 1.0E-12F) continue;
                 if (cube.has("rotation")) {
                     Vector3f pivot = vector(cube.get("pivot")).mul(-1, 1, 1);
                     Vector3f rot = vector(cube.get("rotation")).mul((float) (-Math.PI/180), (float) (-Math.PI/180), (float) (Math.PI/180));
@@ -190,7 +229,25 @@ public final class WalkerGeometry {
         return boxes;
     }
 
-    /** 带朝向的立方体，包含骨骼与立方体旋转。SAT 可避免在空棱角处造成伤害。 */
+    /// 方形水平外接箱覆盖所有偏航角，避免旋转时炮台受击范围忽大忽小。
+    static AABB weaponBounds(MartianWalker walker, List<Box> geometry, int slot) {
+        String bone = slot == 0 ? "left_fort" : "right_fort";
+        float yaw = (float) Math.toRadians(180 - walker.yBodyRot);
+        Matrix4f root = new Matrix4f().translate((float) walker.getX(), (float) walker.getY(), (float) walker.getZ()).rotateY(yaw);
+        Matrix4f inverse = new Matrix4f(root).invert();
+        AABB localBounds = null;
+        for (Box box : geometry) {
+            if (!box.bone().equals(bone)) continue;
+            AABB bounds = new Box(bone, new Matrix4f(inverse).mul(box.transform()), box.halfSize()).bounds();
+            localBounds = localBounds == null ? bounds : localBounds.minmax(bounds);
+        }
+        if (localBounds == null) return null;
+        Vector3f center = root.transformPosition(localBounds.getCenter().toVector3f());
+        double diameter = Math.hypot(localBounds.getXsize(), localBounds.getZsize());
+        return AABB.ofSize(new Vec3(center.x, center.y, center.z), diameter, localBounds.getYsize(), diameter);
+    }
+
+    /// 带朝向的立方体，包含骨骼与立方体旋转。SAT 可避免在空棱角处造成伤害。
     public record Box(String bone, Matrix4f transform, Vector3f halfSize) {
         public AABB bounds() {
             Vector3f min = new Vector3f(Float.POSITIVE_INFINITY), max = new Vector3f(Float.NEGATIVE_INFINITY);

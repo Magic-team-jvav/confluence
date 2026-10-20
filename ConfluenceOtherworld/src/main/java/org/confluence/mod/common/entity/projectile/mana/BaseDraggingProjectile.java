@@ -3,13 +3,14 @@ package org.confluence.mod.common.entity.projectile.mana;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
@@ -86,9 +87,10 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
 
     protected void doExplosion(double range, double knockback) {
         if (level().isClientSide) return;
-        level().playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.VOICE);
-        for (LivingEntity living : level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPosition()).inflate(range / 2), this::canHitEntity)) {
-            doHurtAndKnockback(living, knockback, 0.2);
+        level().playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.VOICE, 1, 1);
+        for (Entity target : LibEntityUtils.areaTargets(level(), this,
+                new AABB(blockPosition()).inflate(range / 2), this::canHitEntity)) {
+            doHurtAndKnockback(target, knockback, 0.2);
         }
         discardInTicks(1);
     }

@@ -5,22 +5,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.UUID;
 
@@ -91,34 +87,53 @@ public final class Scutlix extends BaseWarriorMonster {
     }
 
     private @Nullable RayGunner resolveSavedRider(ServerLevel serverLevel) {
-        if (riderCache != null && riderCache.isAlive() && !riderCache.isRemoved()) {
-            if (riderCache.getVehicle() == this || riderCache.startRiding(this, true)) {
-                bindRider(riderCache);
-                return riderCache;
+        RayGunner rider = riderCache;
+        if (rider == null || !rider.isAlive() || rider.isRemoved()) {
+            Entity resolved = riderUUID == null ? null : serverLevel.getEntity(riderUUID);
+            rider = resolved instanceof RayGunner gunner ? gunner : null;
+        }
+        if (rider != null && rider.isAlive() && !rider.isRemoved()) {
+            if (rider.getVehicle() == this || tryMountGunner(rider)) {
+                bindRider(rider);
+                return rider;
+            }
+            if (rider.isPassenger()) {
+                clearRiderLink();
+                return null;
             }
         }
         riderCache = null;
-        if (riderUUID == null) return null;
-
-        Entity resolved = serverLevel.getEntity(riderUUID);
-        if (resolved instanceof RayGunner rayGunner && rayGunner.isAlive() && !rayGunner.isRemoved()
-                && (rayGunner.getVehicle() == this || rayGunner.startRiding(this, true))) {
-            bindRider(rayGunner);
-            return rayGunner;
-        }
-
-        if (++unresolvedRiderTicks > LINK_GRACE_TICKS) {
-            riderUUID = null;
-            unresolvedRiderTicks = 0;
+        if (riderUUID != null && ++unresolvedRiderTicks > LINK_GRACE_TICKS) {
+            clearRiderLink();
         }
         return null;
     }
 
-    /**
-     * Ensures this mount has its one initial rider. Event spawning calls this
-     * synchronously before tagging or tracking the riding tree; normal entity
-     * spawning reaches the same path from {@link #tick()}.
-     */
+    private void clearRiderLink() {
+        riderCache = null;
+        riderUUID = null;
+        unresolvedRiderTicks = 0;
+    }
+
+    boolean canAcceptGunner(RayGunner gunner) {
+        return isAlive() && !isRemoved() && !isPassenger() && getPassengers().isEmpty()
+                && gunner.isAlive() && !gunner.isRemoved() && !gunner.isPassenger() && gunner.level() == level();
+    }
+
+    boolean isWithinBoardingRange(RayGunner gunner) {
+        return gunner.getBoundingBox().inflate(0.5).intersects(getBoundingBox());
+    }
+
+    boolean tryMountGunner(RayGunner gunner) {
+        if (!canAcceptGunner(gunner) || !isWithinBoardingRange(gunner) || !gunner.startRiding(this)) {
+            return false;
+        }
+        bindRider(gunner);
+        shareTargetWith(gunner);
+        return true;
+    }
+
+    /// 确保坐骑只生成一次初始骑手，事件生成和常规生成共用此入口。
     public boolean ensureRider(ServerLevel serverLevel) {
         if (serverLevel == null || serverLevel != level() || !isAlive() || isRemoved()) return false;
 
@@ -128,17 +143,19 @@ public final class Scutlix extends BaseWarriorMonster {
             shareTargetWith(current);
             return true;
         }
+        if (!getPassengers().isEmpty()) return false;
         RayGunner restored = resolveSavedRider(serverLevel);
         if (restored != null) {
             shareTargetWith(restored);
             return true;
         }
-        // A handled mount has already had a rider. Its death or permanent loss
-        // must not manufacture a replacement.
+        /// 已经生成过骑手的坐骑，在骑手死亡或永久丢失后
+        /// 不会再自动补充骑手。
         if (riderSpawnHandled) return false;
 
         if (!MonsterEntities.RAY_GUNNER.isBound()) return false;
         EntityType<RayGunner> type = MonsterEntities.RAY_GUNNER.get();
+        if (type == null) return false;
         RayGunner rider = type.create(serverLevel);
         if (rider == null) return false;
 
@@ -148,11 +165,12 @@ public final class Scutlix extends BaseWarriorMonster {
                 MobSpawnType.JOCKEY, null);
         rider.setTarget(getTarget());
 
+        MartianEventHelper.inheritEventMembership(this, rider);
         if (!serverLevel.addFreshEntity(rider)) {
             rider.discard();
             return false;
         }
-        if (!rider.startRiding(this, true)) {
+        if (!rider.startRiding(this)) {
             rider.discard();
             return false;
         }

@@ -15,10 +15,12 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -27,14 +29,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.UUID;
 
-
-// 分段生物的共用部件实现；实体类型由所属家族决定，位置由本体的连续轨迹驱动。
+/// 分段生物的共用部件实现；实体类型由所属家族决定，位置由本体的连续轨迹驱动。
 public class BaseWormPart extends Entity implements WormSegment, GeoEntity, PartHitTarget {
-    // 未命中时每 10 tick 重试；命中后给同一体节 20 tick 接触伤害冷却。
+    /// 未命中时每 10 tick 重试；命中后给同一体节 20 tick 接触伤害冷却。
     private static final int COLLISION_DETECTION_INTERVAL = 10;
     private static final int COLLISION_ATTACK_INTERVAL = 20;
-    // 仅暂时无法解析本体时保留加载宽限，已确认死亡的体节立即清理。
-    private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";
     private static final String INDEX_TAG = "SegmentIndex";
     private static final String TAIL_TAG = "Tail";
@@ -47,7 +46,6 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private @Nullable BaseWormMonster owner;
     private @Nullable UUID ownerUUID;
-    private int unresolvedOwnerTicks;
     private int hurtCooldown;
     private @Nullable Vec3 contactSweepStart;
     private int clientLerpSteps;
@@ -100,13 +98,8 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     }
 
     public void indicateHurt() {
-        // 体节独立同步视觉状态，不依赖客户端是否正在追踪头部及其受伤事件。
+        /// 体节独立同步视觉状态，不依赖客户端是否正在追踪头部及其受伤事件。
         entityData.set(HURT_FLASH_TICKS, 10);
-    }
-
-    @Override
-    public Entity damageRecipient() {
-        return this;
     }
 
     @Override
@@ -166,18 +159,15 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         if (level().isClientSide) tickClientInterpolation();
         BaseWormMonster head = getOwner();
         if (head != null && !head.isAlive()) {
-            // 已确认死亡，不再等待本体的死亡动画或所有权解析宽限。
+            /// 已确认死亡，立即清理本体的临时体节。
             discard();
             return;
         }
         if (head == null) {
-            /// 客户端可能先收到体节、后收到头部，因此真正未解析到所有者时仍保留较长宽限期。
-            /// 该分支不能与“已确认头部死亡”共用时长，否则无 AI 蠕虫会留下可选中的体节尸体。
-            if (!level().isClientSide && ++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS)
+            if (!level().isClientSide)
                 discard();
             return;
         }
-        unresolvedOwnerTicks = 0;
 
         if (!level().isClientSide) {
             tickCollisionAttack(head);
@@ -259,7 +249,7 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         if (owner != null) {
             /// 已经解析过的头部即使进入移除状态，也必须保留到 tick 中判断死亡。
             /// 若在这里先清空引用，体节会把“头部已死亡”误判成“客户端尚未收到头部”，
-            /// 从而错误等待完整的网络解析宽限期。
+            /// 从而丢失本体已经死亡的确定状态。
             return;
         }
         owner = null;
@@ -308,8 +298,8 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     }
 
     private void tickClientInterpolation() {
-        // 渲染帧使用旧角度到当前角度的 partial tick 插值；即使本 tick 没有新网络目标，
-        // 也必须推进旧角度，否则会在同一小段旋转上反复播放。
+        /// 渲染帧使用旧角度到当前角度的 partial tick 插值；即使本 tick 没有新网络目标，
+        /// 也必须推进旧角度，否则会在同一小段旋转上反复播放。
         yRotO = getYRot();
         xRotO = getXRot();
         if (clientLerpSteps <= 0) return;

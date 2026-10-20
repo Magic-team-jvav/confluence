@@ -3,9 +3,10 @@ package org.confluence.mod.client.model.entity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.MartianWalker;
 import org.confluence.mod.common.entity.monster.WalkerGeometry;
+
 import software.bernie.geckolib.animation.AnimationState;
 
-//火星走妖模型，将两边激光炮拆分
+/// 火星走妖模型，将两边激光炮拆分
 public final class MartianWalkerModel extends ExplicitGeoModel<MartianWalker> {
     public MartianWalkerModel() {
         super(Confluence.asResource("geo/entity/martian_walker.geo.json"),
@@ -19,8 +20,12 @@ public final class MartianWalkerModel extends ExplicitGeoModel<MartianWalker> {
             if (bone == null) continue;
             var rotation = WalkerGeometry.rotation(name, pose);
             var position = WalkerGeometry.translation(name, pose);
+            var scale = WalkerGeometry.scale(name, pose);
             bone.setRotX(rotation.x); bone.setRotY(rotation.y); bone.setRotZ(rotation.z);
             bone.setPosX(-position.x); bone.setPosY(position.y); bone.setPosZ(position.z);
+            bone.setScaleX(scale.x);
+            bone.setScaleY(scale.y);
+            bone.setScaleZ(scale.z);
             bone.setHidden(name.equals("left_fort") && walker.weaponDestroyed(0)
                     || name.equals("right_fort") && walker.weaponDestroyed(1));
         }

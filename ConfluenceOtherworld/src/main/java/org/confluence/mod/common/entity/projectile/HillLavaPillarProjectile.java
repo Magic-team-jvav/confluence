@@ -5,12 +5,14 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 
 /// 血肉山二阶段生成的熔岩柱。
@@ -77,8 +79,9 @@ public final class HillLavaPillarProjectile extends Projectile {
     private void damageEntities() {
         AABB area = getBoundingBox().inflate(tickCount > WARNING_TICKS + ACTIVE_TICKS / 2 ? 1.0 : 0.0);
         area = area.setMaxY(getY() + 3.0);
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area)) {
-            if (getOwner() instanceof Mob owner && owner.canAttack(target)) {
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, area,
+                candidate -> LibEntityUtils.canMobHit(getOwner(), candidate))) {
+            if (getOwner() instanceof Mob owner) {
                 target.hurt(damageSources().mobProjectile(this, owner), damage);
             }
         }

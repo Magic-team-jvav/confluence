@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.projectile;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -14,8 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public final class HopliteJavelin extends StraightMonsterProjectile implements ItemSupplier {
     public static final double GRAVITY = 0.025;
@@ -32,12 +34,12 @@ public final class HopliteJavelin extends StraightMonsterProjectile implements I
 
     @Override
     protected void finishEntityHit(EntityHitResult result) {
-        hitEntities.add(result.getEntity().getUUID());
+        hitEntities.add(LibEntityUtils.dedupeIdentity(result.getEntity()).getUUID());
     }
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return !hitEntities.contains(target.getUUID()) && super.canHitEntity(target);
+        return !hitEntities.contains(LibEntityUtils.dedupeIdentity(target).getUUID()) && super.canHitEntity(target);
     }
 
     @Override

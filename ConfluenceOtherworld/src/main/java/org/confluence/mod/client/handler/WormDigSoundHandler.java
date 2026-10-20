@@ -10,7 +10,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
-import org.confluence.mod.common.entity.PartHitTarget;
+
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.confluence.mod.common.init.ModSoundEvents;
 

@@ -12,6 +12,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.monster.Gigazapper;
@@ -79,8 +80,7 @@ public final class ElectricSpear extends Projectile {
             return;
         }
         strikeAge++;
-        if (!(getOwner() instanceof Gigazapper owner) || !owner.isAlive()
-                || strikeAge > STRIKE_TICKS) {
+        if (!(getOwner() instanceof Gigazapper owner) || !owner.isAlive() || owner.isNoAi() || owner.isPassenger() || strikeAge > STRIKE_TICKS) {
             discard();
             return;
         }

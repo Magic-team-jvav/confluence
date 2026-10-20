@@ -9,6 +9,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
@@ -20,9 +21,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -33,11 +34,9 @@ import java.util.List;
 import java.util.function.IntToDoubleFunction;
 import java.util.function.Predicate;
 
-
 public class TargetCache {
-    // 召唤物沿用接触攻击的目标资格，不额外要求目标可被射弹命中。
+    /// 召唤物沿用接触攻击的目标资格，不额外要求目标可被射弹命中。
     private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ATTACKABLE, false);
-
     private final Int2BooleanOpenHashMap visibilityCache = new Int2BooleanOpenHashMap();
     private final Int2IntOpenHashMap hurterHistory = new Int2IntOpenHashMap();
     private final Int2BooleanOpenHashMap targetCache = new Int2BooleanOpenHashMap();
@@ -47,7 +46,6 @@ public class TargetCache {
     private final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
     private final ServerPlayer owner;
     private ServerLevel serverLevel;
-
     public TargetCache(IAttachmentHolder owner) {
         if (owner instanceof ServerPlayer player) {
             this.owner = player;
@@ -82,6 +80,27 @@ public class TargetCache {
                         living -> hurterHistory.containsKey(living.getUUID().hashCode())));
     }
 
+    public boolean canKeep(@Nullable Entity target) {
+        return TARGETING.canKeep(owner, target) && canKeep(LibEntityUtils.logicalLivingTarget(target));
+    }
+
+    /// 精确碰撞使用原始部位，生命实体缓存继续服务于寻路和威胁判断。
+    public List<Entity> getHitTargets(AABB bounds, Predicate<Entity> filter) {
+        if (serverLevel == null) return List.of();
+        /// 普通生命实体沿用接触资格；多部件本体和部件仍检查实际受击范围。
+        return serverLevel.getEntities(owner, bounds, target -> canKeep(target)
+                && (target instanceof LivingEntity && !target.isMultipartEntity() || LibEntityUtils.canHit(owner, target))
+                && filter.test(target));
+    }
+
+    public List<Entity> getHitTargets(Vec3 position, double radius, Predicate<Entity> filter) {
+        if (serverLevel == null || radius <= 0) return List.of();
+        AABB bounds = AABB.ofSize(position, radius * 2, radius * 2, radius * 2);
+        return LibEntityUtils.areaTargets(serverLevel, owner, bounds,
+                target -> canKeep(target) && filter.test(target)
+                        && target.getBoundingBox().getCenter().distanceToSqr(position) <= radius * radius);
+    }
+
     private static long cellKey(int x, int y, int z) {
         return ((long) x & 0x3FFFFFFL) << 38 | ((long) y & 0x3FFFFFFL) << 12 | ((long) z & 0x3FFFFFFL);
     }
@@ -91,6 +110,7 @@ public class TargetCache {
         if (radius <= 0 || serverLevel == null) {
             return result;
         }
+
         double radiusSq = radius * radius;
         int minCellX = Mth.floor(pos.x - radius) >> 4;
         int maxCellX = Mth.floor(pos.x + radius) >> 4;
@@ -109,6 +129,7 @@ public class TargetCache {
                 }
             }
         }
+
         if (searchBox != null) {
             for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, searchBox)) {
                 if (owner != entity && entity.isAlive()) {
@@ -124,6 +145,7 @@ public class TargetCache {
                 }
             }
         }
+
         for (int cellX = minCellX; cellX <= maxCellX; cellX++) {
             for (int cellY = minCellY; cellY <= maxCellY; cellY++) {
                 for (int cellZ = minCellZ; cellZ <= maxCellZ; cellZ++) {
@@ -131,6 +153,7 @@ public class TargetCache {
                     if (cell == null) {
                         continue;
                     }
+
                     for (LivingEntity entity : cell) {
                         if (entity.isAlive() && entity.getBoundingBox().getCenter().distanceToSqr(pos) <= radiusSq) {
                             if (filter == null || filter.test(entity)) {
@@ -141,6 +164,7 @@ public class TargetCache {
                 }
             }
         }
+
         return result;
     }
 
@@ -148,8 +172,7 @@ public class TargetCache {
         return new AABB(cellX << 4, cellY << 4, cellZ << 4, (cellX + 1) << 4, (cellY + 1) << 4, (cellZ + 1) << 4);
     }
 
-    // ==================== Chunk 缓存（每tick预加载） ====================
-
+    /// ==================== Chunk 缓存（每tick预加载） ====================
     public LivingEntity getNewTarget(Minion minion, List<LivingEntity> targets, float ownerWarningDistance, boolean selfCenter) {
         Player owner = minion.getOwner();
         LivingEntity currentTarget = minion.getTarget();
@@ -159,19 +182,23 @@ public class TargetCache {
             if (owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).isSummonMarkTarget(entity)) {
                 return entity;
             }
+
             double score = selfCenter ? getDistance(minion, entity) : getDistance(owner, entity);
             if (ownerWarningDistance > 0 && getDistance(owner, entity) < ownerWarningDistance) {
                 score -= 10000.0;
             }
+
             if (entity == currentTarget) {
                 score -= 1000.0;
             }
+
             score += ((entity.getId() * 31 + minion.hashCode() * 17) % 5) * 40;
             if (score < bestScore) {
                 bestScore = score;
                 newTarget = entity;
             }
         }
+
         return newTarget;
     }
 
@@ -185,7 +212,7 @@ public class TargetCache {
         return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) living1.getEyePosition().distanceTo(living2.getBoundingBox().getCenter())));
     }
 
-    //此缓存不能被共享，极易卡顿，不建议使用
+    /// 此缓存不能被共享，极易卡顿，不建议使用
     @Deprecated
     public boolean isVisibility(AttachmentEntity attachmentEntity, LivingEntity living) {
         Integer key = attachmentEntity.getUuid().hashCode() + living.getUUID().hashCode();
@@ -197,6 +224,7 @@ public class TargetCache {
             Integer key = living1.getUUID().hashCode() + living2.getUUID().hashCode();
             return visibilityCache.computeIfAbsent(key, k -> hasLineOfSight(living1.getEyePosition(), living2.getEyePosition()));
         }
+
         return false;
     }
 
@@ -204,6 +232,7 @@ public class TargetCache {
         if (serverLevel == null) {
             return false;
         }
+
         if (from.distanceToSqr(to) > 128.0 * 128.0) {
             return false;
         }
@@ -214,42 +243,34 @@ public class TargetCache {
         double endX = Mth.lerp(-1.0E-7, to.x, from.x);
         double endY = Mth.lerp(-1.0E-7, to.y, from.y);
         double endZ = Mth.lerp(-1.0E-7, to.z, from.z);
-
         int curX = Mth.floor(endX);
         int curY = Mth.floor(endY);
         int curZ = Mth.floor(endZ);
-
         double dx = startX - endX;
         double dy = startY - endY;
         double dz = startZ - endZ;
-
         int stepX = Mth.sign(dx);
         int stepY = Mth.sign(dy);
         int stepZ = Mth.sign(dz);
-
         double tDeltaX = stepX == 0 ? Double.MAX_VALUE : (double) stepX / dx;
         double tDeltaY = stepY == 0 ? Double.MAX_VALUE : (double) stepY / dy;
         double tDeltaZ = stepZ == 0 ? Double.MAX_VALUE : (double) stepZ / dz;
-
         double tMaxX = tDeltaX * (stepX > 0 ? 1.0 - Mth.frac(endX) : Mth.frac(endX));
         double tMaxY = tDeltaY * (stepY > 0 ? 1.0 - Mth.frac(endY) : Mth.frac(endY));
         double tMaxZ = tDeltaZ * (stepZ > 0 ? 1.0 - Mth.frac(endZ) : Mth.frac(endZ));
-
         int minBuildHeight = serverLevel.getMinBuildHeight();
         int maxBuildHeight = serverLevel.getMaxBuildHeight();
-
-        // 局部缓存：同一条射线内复用 chunk/section 引用
+        /// 局部缓存：同一条射线内复用 chunk/section 引用
         long lastChunkKey = Long.MIN_VALUE;
         LevelChunk chunk = null;
         int lastSectionY = Integer.MIN_VALUE;
         LevelChunkSection section = null;
-
         for (int steps = 0; steps < 128; steps++) {
             if (tMaxX > 1.0 && tMaxY > 1.0 && tMaxZ > 1.0) {
                 return true;
             }
 
-            // 步进
+            /// 步进
             if (tMaxX < tMaxY) {
                 if (tMaxX < tMaxZ) {
                     curX += stepX;
@@ -258,6 +279,7 @@ public class TargetCache {
                     curZ += stepZ;
                     tMaxZ += tDeltaZ;
                 }
+
             } else {
                 if (tMaxY < tMaxZ) {
                     curY += stepY;
@@ -268,12 +290,12 @@ public class TargetCache {
                 }
             }
 
-            // 高度裁剪
+            /// 高度裁剪
             if (curY < minBuildHeight || curY >= maxBuildHeight) {
                 continue;
             }
 
-            // 从缓存取 chunk，未命中则加载并写入缓存
+            /// 从缓存取 chunk，未命中则加载并写入缓存
             int chunkX = SectionPos.blockToSectionCoord(curX);
             int chunkZ = SectionPos.blockToSectionCoord(curZ);
             long chunkKey = ChunkPos.asLong(chunkX, chunkZ);
@@ -285,6 +307,7 @@ public class TargetCache {
                         chunkCache.put(chunkKey, chunk);
                     }
                 }
+
                 lastChunkKey = chunkKey;
                 lastSectionY = Integer.MIN_VALUE;
             }
@@ -293,7 +316,7 @@ public class TargetCache {
                 return false;
             }
 
-            // 缓存 Section
+            /// 缓存 Section
             int sectionY = chunk.getSectionIndex(curY);
             if (sectionY != lastSectionY) {
                 section = chunk.getSection(sectionY);
@@ -305,7 +328,6 @@ public class TargetCache {
             }
 
             BlockState blockState = section.getBlockState(curX & 15, curY & 15, curZ & 15);
-
             if (!blockState.canOcclude()) {
                 continue;
             }

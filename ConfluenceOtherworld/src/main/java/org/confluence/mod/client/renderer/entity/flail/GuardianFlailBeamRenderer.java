@@ -3,14 +3,16 @@ package org.confluence.mod.client.renderer.entity.flail;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
 
 /// 使用原版守卫者光束纹理渲染链锤与同步目标之间的实体光束。
@@ -39,7 +41,7 @@ public final class GuardianFlailBeamRenderer {
         int color = 0xFF000000 | red << 16 | green << 8 | blue;
 
         Vec3 renderPosition = entity.getPosition(partialTick);
-        for (LivingEntity target : entity.getBeamTargets()) {
+        for (Entity target : entity.getBeamTargets()) {
             Vec3 beam = target.getBoundingBox().getCenter().subtract(renderPosition);
             renderSingleBeam(poseStack, bufferSource, new Vec3(0.0, 0.25, 0.0), beam, color, entity.tickCount + partialTick);
         }
@@ -88,7 +90,7 @@ public final class GuardianFlailBeamRenderer {
         vertex(consumer, pose, thirdX, 0.0F, thirdZ, red, green, blue, 0.4999F, startV);
         vertex(consumer, pose, fourthX, 0.0F, fourthZ, red, green, blue, 0.0F, startV);
         vertex(consumer, pose, fourthX, end, fourthZ, red, green, blue, 0.0F, endV);
-        // 封住光束末端，避免从目标方向观察时看到中空截面。
+        /// 封住光束末端，避免从目标方向观察时看到中空截面。
         float endFrameV = ((int) time & 1) == 0 ? 0.5F : 0.0F;
         float endFirstX = Mth.cos(rotation + 2.3561945F) * 0.282F;
         float endFirstZ = Mth.sin(rotation + 2.3561945F) * 0.282F;

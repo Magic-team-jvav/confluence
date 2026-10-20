@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
@@ -21,7 +22,6 @@ import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
 
 public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
     private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
-
     public SkyFractureItem() {
         super(ModRarity.LIGHT_RED, SkyFractureProjectile::new, 24, 17, 17.5F, 10, 0.24);
     }
@@ -34,18 +34,21 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
             player.getCooldowns().addCooldown(this, cooldown);
             LibUtils.updateItemStackNbt(stack, tag -> {
                 tag.putLong("StartTime", level.getGameTime());
-
                 EntityHitResult entityHitResult = TARGETING.viewTarget(player, 64);
-                if (entityHitResult != null && entityHitResult.getEntity() instanceof LivingEntity living) {
-                    float[] rot = LibMathUtils.dirToRot(new Vec3(living.getX() - player.getX(), living.getEyeY() - player.getEyeY(), living.getZ() - player.getZ()), true);
+                if (entityHitResult != null) {
+                    Entity target = entityHitResult.getEntity();
+                    Vec3 aim = target instanceof LivingEntity living ? living.getEyePosition() : target.getBoundingBox().getCenter();
+                    float[] rot = LibMathUtils.dirToRot(aim.subtract(player.getEyePosition()), true);
                     tag.putFloat("XRot", rot[1]);
                     tag.putFloat("YRot", rot[0]);
                 } else {
                     tag.putFloat("XRot", player.getXRot());
                     tag.putFloat("YRot", player.getYRot());
                 }
+
             });
         }
+
         return InteractionResultHolder.success(stack);
     }
 

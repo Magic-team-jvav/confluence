@@ -5,12 +5,13 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -66,12 +67,10 @@ public class CyborgExplosiveProjectile extends NPCWeaponProjectile {
             createContext().areaDamage(2.5);
             discard();
         } else if (mode == 2 && settled && getOwner() instanceof BaseNPC owner) {
-            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(2))) {
-                if (owner.canAttack(target)) {
-                    createContext().areaDamage(2.5);
-                    discard();
-                    break;
-                }
+            if (!LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(2),
+                    candidate -> LibEntityUtils.canMobHit(owner, candidate)).isEmpty()) {
+                createContext().areaDamage(2.5);
+                discard();
             }
         }
     }

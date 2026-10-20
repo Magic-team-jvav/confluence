@@ -16,11 +16,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -103,11 +106,12 @@ public class SpiritSurgeEntity extends Projectile {
             return;
         }
         Entity owner = getOwner();
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(radius, verticalRange, radius),
-                target -> target.isAlive() && !target.isSpectator() && target != owner && (owner == null || !owner.isAlliedTo(target)))) {
-            double dx = target.getX() - getX();
-            double dz = target.getZ() - getZ();
-            if (dx * dx + dz * dz <= radius * radius && hitEntities.add(target.getUUID())) {
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(radius, verticalRange, radius),
+                candidate -> {
+                    Vec3 offset = candidate.getBoundingBox().getCenter().subtract(position());
+                    return LibEntityUtils.canHit(owner, candidate) && offset.horizontalDistanceSqr() <= radius * radius;
+                })) {
+            if (hitEntities.add(LibEntityUtils.dedupeIdentity(target).getUUID())) {
                 target.hurt(LibDamageTypes.soul(level(), this, owner), damage);
                 spawnChainProjectiles(target);
             }
@@ -118,7 +122,7 @@ public class SpiritSurgeEntity extends Projectile {
     }
 
     /// 灵魂引发：在被命中的目标位置向随机方向射出连锁弹幕。
-    private void spawnChainProjectiles(LivingEntity target) {
+    private void spawnChainProjectiles(Entity target) {
         if (chainCount <= 0 || chainDamage <= 0.0F || !(getOwner() instanceof LivingEntity owner)) {
             return;
         }

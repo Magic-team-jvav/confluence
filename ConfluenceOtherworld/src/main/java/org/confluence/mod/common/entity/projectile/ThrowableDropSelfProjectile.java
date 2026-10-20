@@ -15,9 +15,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.util.LibEntityUtils;
 
 import javax.annotation.Nullable;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -28,7 +30,6 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     protected int penetrate;
     protected float deltaDamage;
     protected final Set<UUID> hitSet = new HashSet<>();
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder.define(DATA_FLY_TICKS, 5).define(DATA_ITEM_STACK, ItemStack.EMPTY));
@@ -67,13 +68,14 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            hitSet.add(entity.getUUID());
+            hitSet.add(LibEntityUtils.dedupeIdentity(entity).getUUID());
             this.damage -= deltaDamage;
-            LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(entity), 0.5, 0.2);
             if (penetrate >= 3) {
                 if (random.nextBoolean()) {
                     LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
                 }
+
                 discard();
             } else {
                 ++this.penetrate;
@@ -87,6 +89,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
         if (random.nextBoolean()) {
             LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
         }
+
         discard();
     }
 
@@ -98,7 +101,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && !hitSet.contains(target.getUUID());
+        return super.canHitEntity(target) && !hitSet.contains(LibEntityUtils.dedupeIdentity(target).getUUID());
     }
 
     @Override

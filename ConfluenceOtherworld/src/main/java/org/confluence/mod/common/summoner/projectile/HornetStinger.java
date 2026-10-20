@@ -5,6 +5,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
@@ -25,11 +27,13 @@ public class HornetStinger extends Projectile implements IEntityCollision<Hornet
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
         HitContext context = hitContexts.get(0);
-        LivingEntity target = context.entity();
-        attack(target, getDamage(), 0);
+        LivingEntity target = LibEntityUtils.effectTarget(context.entity());
+        attack(context.entity(), getDamage(), 0);
         Player owner = getOwner();
         int amplifier = owner != null && TCUtils.hasType(owner, TCItems.HIVE$PACK) ? 1 : 0;
-        target.addEffect(new MobEffectInstance(MobEffects.POISON, 80 + getRandom().nextInt(60), amplifier), owner);
+        if (target != null) {
+            target.addEffect(new MobEffectInstance(MobEffects.POISON, 80 + getRandom().nextInt(60), amplifier), owner);
+        }
         setCurrentPathNode(getCurrentPathNode().modifyPos(context.hitPoint()));
         setRemove();
     }

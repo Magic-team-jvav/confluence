@@ -11,10 +11,10 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
+
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 
@@ -58,9 +58,9 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), damage)) {
-                    LibEntityUtils.knockBackA2B(this, entity, 0.1, 0.02);
+                    LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(entity), 0.1, 0.02);
                 }
-                if (passThrough.add(entity) && passThrough.size() >= 7) {
+                if (passThrough.add(LibEntityUtils.dedupeIdentity(entity)) && passThrough.size() >= 7) {
                     discard();
                 }
             }
@@ -80,10 +80,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living)) {
-            return false;
-        }
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override

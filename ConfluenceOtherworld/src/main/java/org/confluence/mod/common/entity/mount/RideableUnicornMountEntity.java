@@ -10,10 +10,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.util.PrefixUtils;
+
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -78,7 +80,7 @@ public class RideableUnicornMountEntity extends AbstractMountEntity implements G
             float damage = (float) (60.0 * PrefixUtils.attributeWithoutHeldItem(owner, LibAttributes.getSummonDamage(), owner.getMainHandItem()));
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, owner);
             for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, previousBox.minmax(getBoundingBox()).inflate(0.2),
-                    target -> ProjectileHitRules.canHit(player, target))) {
+                    target -> LibEntityUtils.canHit(player, target))) {
                 if (target.hurt(source, damage)) {
                     protectRider();
                     target.knockback(0.6, -velocity.x, -velocity.z);

@@ -2,13 +2,10 @@ package org.confluence.mod.common.entity.projectile.flail;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.common.LibDamageTypes;
 
 /// 滴滴怪致残者在开始收回时抛出的血肉弹。
 ///
@@ -47,14 +44,8 @@ public final class DripplerCripplerProjectile extends FlailAuxiliaryProjectile {
     }
 
     @Override
-    protected void onHitLiving(LivingEntity target) {
-        if (!(getOwner() instanceof Player player)) {
-            discard();
-            return;
-        }
-        if (target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage)) {
-            LibEntityUtils.knockBackA2B(this, target, 0.15F, 0.08F);
-        }
+    protected void onHitEntity(EntityHitResult hit) {
+        hurtTarget(hit.getEntity(), 0.15F, 0.08F);
         if (--hitsLeft <= 0) {
             discard();
         }

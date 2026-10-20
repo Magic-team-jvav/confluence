@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
@@ -37,6 +38,7 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.registries.DeferredHolder;
+
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.api.animation.third_person.AddPlayerGeoModelEvent;
@@ -137,6 +139,7 @@ import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
@@ -192,7 +195,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-        // block
+        /// block
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
         event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
@@ -210,7 +213,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
         event.register(ModMenuTypes.PIGGY_BANK.get(), PiggyBankScreen::new);
         event.register(ModMenuTypes.VOID_VAULT.get(), VoidVaultScreen::new);
-        // npc
+        /// npc
         event.register(ModMenuTypes.NPC_TRADE.get(), NPCTradeScreens::create);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
     }
@@ -832,13 +835,14 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.MARTIAN_WALKER.get(), MartianWalkerRenderer::new);
         event.registerEntityRenderer(MonsterEntities.BRAIN_SCRAMBLER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/brain_scrambler.geo.json"), Confluence.asResource("textures/entity/brain_scrambler.png"), Confluence.asResource("animations/entity/brain_scrambler.animation.json")), false, 1.3F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GRAY_GRUNT.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/gray_grunt.geo.json"), Confluence.asResource("textures/entity/gray_grunt.png"), Confluence.asResource("animations/entity/gray_grunt.animation.json")), false, 1.3F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.GIGAZAPPER_AF2.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/gigazapper_af2.geo.json"), Confluence.asResource("textures/entity/gigazapper_af2.png"), Confluence.asResource("animations/entity/gigazapper_af2.animation.json")), false, 1.3F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GIGAZAPPER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/gigazapper.geo.json"), Confluence.asResource("textures/entity/gigazapper.png"), Confluence.asResource("animations/entity/gigazapper.animation.json")), false, 1.3F, 0.0F));
         event.registerEntityRenderer(ELECTRIC_SPEAR.get(), NoopRenderer::new);
-        event.registerEntityRenderer(MonsterEntities.WALKER_WEAPON.get(), NoopRenderer::new);
         Map<MonsterLaser.Variant, LaserProjectileRenderer.Style> laserStyles = new EnumMap<>(MonsterLaser.Variant.class);
         for (MonsterLaser.Variant variant : MonsterLaser.Variant.values()) {
             laserStyles.put(variant, new LaserProjectileRenderer.Style(variant.innerColor(), variant.middleColor(), variant.outerColor()));
         }
+        event.registerEntityRenderer(MARTIAN_REINFORCEMENT.get(), MartianReinforcementRenderer::new);
         event.registerEntityRenderer(MONSTER_LASER.get(), c -> new LaserProjectileRenderer<MonsterLaser>(c, laser -> laserStyles.get(laser.variant())));
         event.registerEntityRenderer(MonsterEntities.TESLA_TURRET.get(), c -> new GeoNormalRenderer<>(c,
                 new ExplicitGeoModel<>(Confluence.asResource("geo/entity/tesla_turret.geo.json"),
@@ -1046,7 +1050,7 @@ public final class ModClientEvents {
                 event.registerItem(ShortSwordInHandRenderer.INSTANCE, holder.get());
             }
         }
-        // 祈灵之刃按短剑手持姿态渲染
+        /// 祈灵之刃按短剑手持姿态渲染
         event.registerItem(ShortSwordInHandRenderer.INSTANCE, SoulItems.SPIRITWARD_BLADE.get());
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);

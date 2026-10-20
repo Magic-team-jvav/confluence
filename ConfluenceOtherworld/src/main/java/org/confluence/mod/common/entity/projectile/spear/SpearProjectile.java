@@ -18,10 +18,12 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.ITrackType;
+import org.confluence.mod.common.data.map.ImmunityDataMap;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -31,14 +33,14 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-/**
- * <h1>长矛弹射物基类</h1>
- * <p>
- * 子类应覆写 {@link #updateMotion()} 方法实现自定义运动曲线，
- * 可选覆写配置方法（{@link #getDamageFactor}、{@link #getAcceleration} 等）实现数据驱动。
- * 可选覆写 {@link #getTrailParticle()} 提供拖尾粒子效果。
- */
-public abstract class SpearProjectile extends AbstractHurtingProjectile {
+/// 长矛弹射物基类
+
+/// 子类应覆写 {@link #updateMotion()} 方法实现自定义运动曲线，
+
+/// 可选覆写配置方法（{@link #getDamageFactor}、{@link #getAcceleration} 等）实现数据驱动。
+
+/// 可选覆写 {@link #getTrailParticle()} 提供拖尾粒子效果。
+public abstract class SpearProjectile extends AbstractHurtingProjectile implements Immunity {
     public static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
 
     protected WeaponTargeting targeting() {
@@ -61,7 +63,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
     public float gravity;
 
     protected ItemStack firedFromWeapon;
-    protected LivingEntity target;
+    protected Entity target;
 
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION =
             SynchedEntityData.defineId(SpearProjectile.class, EntityDataSerializers.VECTOR3);
@@ -111,7 +113,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
         }
     }
 
-    // ===== 策略方法（子类覆写以自定义参数） =====
+    /// ===== 策略方法（子类覆写以自定义参数） =====
 
     protected float getDamageFactor() { return config.damageFactor; }
     public float getBaseSpeed() { return config.baseSpeed; }
@@ -121,7 +123,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
     protected float getAcceleration() { return config.acceleration; }
     protected Optional<ITrackType> getTrackType() { return config.trackType; }
 
-    /** 弹射物配置，子类构造时通过链式调用设置 */
+    /// 弹射物配置，子类构造时通过链式调用设置
     protected Config config = Config.DEFAULT;
 
     public static class Config {
@@ -156,14 +158,14 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
         fire(direction, speed, knockBack);
     }
 
-    // ===== 运动逻辑 =====
+    /// ===== 运动逻辑 =====
     protected abstract void updateMotion();
 
     protected Vec3 initVelocity(LivingEntity owner, Vec3 direction, float speed) {
         return direction.scale(speed);
     }
 
-    // ===== 粒子 =====
+    /// ===== 粒子 =====
 
     @Override
     @Nullable
@@ -230,7 +232,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
         }
     }
 
-    // ===== 碰撞与伤害 =====
+    /// ===== 碰撞与伤害 =====
 
     @Override
     protected boolean canHitEntity(Entity target) {
@@ -308,7 +310,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
         }
     }
 
-    // ===== 伤害计算（子类可覆写） =====
+    /// ===== 伤害计算（子类可覆写） =====
     protected float getDamage() {
         return getBaseDamage() * getDamageFactor();
     }
@@ -322,35 +324,28 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
     }
 
     protected boolean doHurt(Entity target) {
-        if (LibEntityUtils.canHitEntity(this, target)) {
-            float damage = getDamage();
-            DamageSource damageSource = damageSource();
-
-            LivingEntity hurter;
-            if (LibEntityUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
-                hurter = living;
-            } else {
-                return false;
-            }
-
-            if (getOwner() instanceof LivingEntity owner) {
-                applyHitEffect(owner, hurter);
-            }
-
-            if (target.hurt(damageSource, damage)) {
-                float attackKnockBack = getBaseKnockBack() + knockBack;
-                LibEntityUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
-                applyPenetration();
-            }
-            return true;
+        if (!canHitEntity(target)) return false;
+        Entity damageRecipient = target;
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
+        if (logicalTarget == null) return false;
+        DamageSource source = damageSource();
+        /// 静态无敌帧按弹射物类型共享，局部无敌帧按当前实例区分。
+        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
+        boolean hurt = Immunity.hurt(cause, damageRecipient, logicalTarget, source, getDamage());
+        if (!hurt) {
+            return false;
         }
-        return false;
+        LivingEntity effectTarget = LibEntityUtils.effectTarget(target);
+        if (getOwner() instanceof LivingEntity owner && effectTarget != null)
+            applyHitEffect(owner, effectTarget);
+        LibEntityUtils.knockBackA2B(this, logicalTarget, (getBaseKnockBack() + knockBack) * 0.5, 0.2);
+        applyPenetration();
+        return true;
     }
 
     public DamageSource damageSource() {
         return LibDamageTypes.of(level(), LibDamageTypes.SPEAR_PROJECTILE, this, getOwner());
     }
-
 
     @Nullable
     public net.minecraft.resources.ResourceLocation getProjTexture() { return null; }
@@ -392,7 +387,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
         this.entityData.set(DATA_INIT_SPEED, getDeltaMovement().toVector3f());
     }
 
-    // ===== 初始化 =====
+    /// ===== 初始化 =====
 
     @Override
     public void onAddedToLevel() {
@@ -483,5 +478,15 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile {
         if (!level().isClientSide) {
             discard();
         }
+    }
+
+    @Override
+    public Type confluence$getImmunityType() {
+        return ImmunityDataMap.getImmunityType(this);
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        return ImmunityDataMap.getImmunityDuration(this, damageSource, source -> 1);
     }
 }

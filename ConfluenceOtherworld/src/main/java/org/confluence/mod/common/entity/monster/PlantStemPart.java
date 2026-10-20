@@ -8,13 +8,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
+
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.entity.PartHitTarget;
 
 /// 原生多部件茎部，由头部创建、定位与销毁，不独立生成或同步。
 public class PlantStemPart extends PartEntity<Snatcher> implements PartHitTarget {
     private final int index;
-
     public PlantStemPart(Snatcher parent, int index) {
         super(parent);
         this.index = index;
@@ -52,7 +52,6 @@ public class PlantStemPart extends PartEntity<Snatcher> implements PartHitTarget
 
     @Override
     public boolean isPickable() {return isAttackable();}
-
     @Override
     public boolean isAttackable() {
         return !isRemoved() && getParent().isAlive() && getParent().isAnchored();
@@ -60,31 +59,20 @@ public class PlantStemPart extends PartEntity<Snatcher> implements PartHitTarget
 
     @Override
     public boolean canBeHitByProjectile() {return isAttackable();}
-
     @Override
     public boolean is(Entity entity) {return this == entity || getParent() == entity;}
-
-    @Override
-    public Entity damageRecipient() {return this;}
-
     @Override
     public Entity encounterOwner() {return getParent();}
-
     @Override
     public Entity dedupeIdentity() {return getParent();}
-
     @Override
     public boolean acceptsDirectHit() {return isAttackable();}
-
     @Override
     public boolean shouldBeSaved() {return false;}
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {}
-
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {}
-
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {}
 }

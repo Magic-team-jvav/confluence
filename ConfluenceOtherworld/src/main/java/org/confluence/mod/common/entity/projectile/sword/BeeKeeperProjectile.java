@@ -15,23 +15,20 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.mixed.Immunity;
 
 /// 养蜂人剑与蜂巢球共用的本体蜜蜂；飞行、穿透和无敌帧不借用剑气或饰品弹幕。
 public class BeeKeeperProjectile extends Projectile implements Immunity {
     private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_ONLY);
-
     private static final EntityDataAccessor<Boolean> GIANT = SynchedEntityData.defineId(BeeKeeperProjectile.class, EntityDataSerializers.BOOLEAN);
     private float damage;
     private float criticalChance;
     private float knockback;
     private int remainingHits = 3;
-
     public BeeKeeperProjectile(EntityType<? extends BeeKeeperProjectile> type, Level level) {
         super(type, level);
         setNoGravity(true);
@@ -54,9 +51,7 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
     }
 
     public boolean isGiant() {return entityData.get(GIANT);}
-
     public float getCriticalChance() {return criticalChance;}
-
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         EntityDimensions dimensions = getType().getDimensions();
@@ -77,11 +72,13 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
             updateRotation();
             return;
         }
+
         Entity owner = getOwner();
         if (owner == null || !owner.isAlive() || isInWater() || isInLava() || tickCount >= (isGiant() ? 220 : 200)) {
             discard();
             return;
         }
+
         if (tickCount >= 10) trackTarget();
         Vec3 from = position();
         Vec3 motion = getDeltaMovement();
@@ -91,7 +88,6 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
         boolean hitX = Math.abs(moved.x - motion.x) > 1.0E-7;
         boolean hitY = Math.abs(moved.y - motion.y) > 1.0E-7;
         boolean hitZ = Math.abs(moved.z - motion.z) > 1.0E-7;
-
         /// 检查实际轨迹，避免高速穿过一格水或熔岩而没有消失。
         BlockHitResult fluidHit = level().clip(new ClipContext(from, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, this));
         if (fluidHit.getType() != HitResult.Type.MISS) {
@@ -101,12 +97,14 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
                 return;
             }
         }
+
         for (Entity candidate : level().getEntities(this, new AABB(from, end).inflate(getBbWidth() * 0.5), this::canHitEntity)) {
             AABB box = candidate.getBoundingBox().inflate(getBbWidth() * 0.5);
             if (!box.contains(from) && box.clip(from, end).isEmpty()) continue;
             hurtTarget(candidate);
             if (isRemoved()) return;
         }
+
         /// 多个碰撞轴独立反转，不能在拐角用后一轴的计算覆盖前一轴。
         if (hitX || hitY || hitZ) {
             setDeltaMovement(new Vec3(hitX ? -motion.x : motion.x, hitY ? -motion.y : motion.y, hitZ ? -motion.z : motion.z));
@@ -142,17 +140,18 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
     }
 
     private void hurtTarget(Entity candidate) {
-        LivingEntity logical = ProjectileHitRules.logicalLivingTarget(candidate);
+        LivingEntity logical = LibEntityUtils.logicalLivingTarget(candidate);
         if (logical == null) return;
         DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, getOwner());
         /// 静态配置使用实体类型作为键，普通蜂与巨蜂共享，不能每只蜂各算一份。
         Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
-        if (!Immunity.hurt(cause, ProjectileHitRules.damageRecipient(candidate), logical, source, damage))
+        if (!Immunity.hurt(cause, candidate, logical, source, damage))
             return;
         if (knockback > 0) {
             Vec3 motion = getDeltaMovement();
             logical.knockback(knockback, -motion.x, -motion.z);
         }
+
         consumeImpact();
     }
 
@@ -163,7 +162,7 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return remainingHits > 0 && target.isAlive() && !target.isSpectator() && ProjectileHitRules.canHit(getOwner(), target);
+        return remainingHits > 0 && target.isAlive() && !target.isSpectator() && LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override
@@ -178,13 +177,10 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
 
     @Override
     public boolean shouldBeSaved() {return false;}
-
     @Override
     public boolean canChangeDimensions(Level oldLevel, Level newLevel) {return false;}
-
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {super.readAdditionalSaveData(tag);}
-
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {super.addAdditionalSaveData(tag);}
 }

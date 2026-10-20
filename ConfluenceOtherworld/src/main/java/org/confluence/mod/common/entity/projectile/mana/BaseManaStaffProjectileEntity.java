@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.Lifecycle;
+
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
@@ -121,7 +123,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         if (target.hurt(getDamageSource(), damage)) {
             float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
             if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
-                LibEntityUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
+                LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), attackKnockback * knockbackStrength, knockbackMotionY);
             }
             afterHurtTarget(target);
             return true;
@@ -183,9 +185,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
             }
         });
 
-        /**
-         * @param rawKnockBack 换算前的击退
-         */
+        /// @param rawKnockBack 换算前的击退
         private static Variant register(String name, double gravity, float rawKnockBack, float red, float green, float blue) {
             Variant variant = new Variant(VALUES.size(), name, gravity, rawKnockBack / 8.0F, new FloatRGB(red, green, blue));
             VALUES.add(variant);

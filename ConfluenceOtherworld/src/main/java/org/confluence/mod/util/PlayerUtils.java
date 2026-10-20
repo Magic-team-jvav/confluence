@@ -38,6 +38,7 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
@@ -56,7 +57,6 @@ import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
 import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
@@ -64,11 +64,7 @@ import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ManaWeaponItems;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.SoulItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
@@ -292,7 +288,7 @@ public final class PlayerUtils {
         return false;
     }
 
-    // ---- 解锁技能 ----
+    /// ---- 解锁技能 ----
 
     /// 将灵魂技能登记到玩家的已解锁集合。
     public static void addUnlockedSoulSkill(@Nullable Player player, SoulSkill skill) {
@@ -634,7 +630,7 @@ public final class PlayerUtils {
     private static void setSoulSkillCooldown(Player player, SoulSkill skill, int ticks) {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         if (ticks > 0) {
-            // 分流管控：技能冷却延长
+            /// 分流管控：技能冷却延长
             if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
                 ticks = Math.round(ticks * SoulSkillParameters.FLOW_CONTROL_COOLDOWN_MULTIPLIER);
             }
@@ -687,16 +683,16 @@ public final class PlayerUtils {
         float weaponDamage = mainHand.getItem() instanceof SoulWeaponItem weapon ? weapon.getSoulDamage(mainHand) : 0.0F;
         SoulSkillDamageEvent event = NeoForge.EVENT_BUS.post(new SoulSkillDamageEvent(player, stack, stack.getDamage(), weaponDamage));
         float amount = Math.max(0.0F, event.getAmount());
-        // 引渡者：引魂标签内的技能基础伤害固定 +1，不看技能分类
+        /// 引渡者：引魂标签内的技能基础伤害固定 +1，不看技能分类
         if (isSoulBookLearned(player, SoulBooks.PSYCHOPOMP) && stack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)) {
             amount += SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_DAMAGE_BONUS;
         }
-        // 星魂联结：灵魂伤害共用一半的魔法伤害加成
+        /// 星魂联结：灵魂伤害共用一半的魔法伤害加成
         if (isPassiveSoulSkillActive(player, ModSoulSkills.STAR_LINK.get())) {
             double magicBonus = player.getAttributeValue(LibAttributes.getMagicDamage());
             amount *= (float) (1.0 + magicBonus * SoulSkillParameters.STAR_LINK_SHARE_RATIO);
         }
-        // 分流管控：技能伤害翻倍（冷却同时延长）
+        /// 分流管控：技能伤害翻倍（冷却同时延长）
         if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
             amount *= SoulSkillParameters.FLOW_CONTROL_DAMAGE_MULTIPLIER;
         }
@@ -708,11 +704,11 @@ public final class PlayerUtils {
         if (!isSoulMode(player)) {
             return SOUL_CONSUMPTION_FAILED;
         }
-        // 灵魂透支：持续期间完全不消耗灵魂
+        /// 灵魂透支：持续期间完全不消耗灵魂
         if (amount > 0.0F && isSoulSkillLearned(player, ModSoulSkills.SOUL_DRAIN.get().getId()) && player.hasEffect(ModEffects.SOUL_DRAIN)) {
             return 0.0F;
         }
-        // 自然法则：概率不消耗灵魂
+        /// 自然法则：概率不消耗灵魂
         if (amount > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.LAW_OF_NATURE.get())
                 && player.getRandom().nextFloat() < SoulSkillParameters.LAW_OF_NATURE_FREE_CHANCE) {
             return 0.0F;
@@ -721,7 +717,7 @@ public final class PlayerUtils {
         if (event.isCanceled()) {
             return SOUL_CONSUMPTION_FAILED;
         }
-        // 创造模式：照常发事件与走施法流程，但不扣灵魂、不结算生命代偿
+        /// 创造模式：照常发事件与走施法流程，但不扣灵魂、不结算生命代偿
         if (player.isCreative() || player.hasInfiniteMaterials()) {
             return 0.0F;
         }
@@ -827,7 +823,7 @@ public final class PlayerUtils {
         if (healthCost <= 0.0F || !player.isAlive()) {
             return;
         }
-        // 诅咒抵抗：生命代偿伤害减免
+        /// 诅咒抵抗：生命代偿伤害减免
         if (isPassiveSoulSkillActive(player, ModSoulSkills.CURSE_RESISTANCE.get())) {
             healthCost *= 1.0F - SoulSkillParameters.CURSE_RESISTANCE_REDUCTION;
         }
@@ -884,7 +880,7 @@ public final class PlayerUtils {
         applySoulOverdraft(player, healthCost);
         /// 刻骨的记忆：用掉一次技能后重掷它放行的那个技能。
         rerollMemoryOfBonebrandSkill(player);
-        // 术式轮转：用一次技能后自动切到下一个可主动释放的技能
+        /// 术式轮转：用一次技能后自动切到下一个可主动释放的技能
         if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
@@ -981,7 +977,7 @@ public final class PlayerUtils {
         }
         SoulStorage storage = SoulStorage.of(player);
         storage.freshMaxSoul();
-        // 灵魂手环：每 3 秒回复 1 点灵魂
+        /// 灵魂手环：每 3 秒回复 1 点灵魂
         if (TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL) && player.level().getGameTime() % 60 == 0 && (player.level().getGameTime() / 60) % 3 == 0) {
             storage.receive(SoulSkillParameters.BAND_OF_SOUL_RECOVERY);
         }
@@ -1054,7 +1050,7 @@ public final class PlayerUtils {
         float starBottleBonusPerTick = hasStarBottle ? 0.25F : 0.0F;
 
         FloatSupplier receive = () -> {
-            // 1.0F / 7.0F = 0.14285715F
+            /// 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
@@ -1329,7 +1325,7 @@ public final class PlayerUtils {
     public static Coins decodeCoin(long money) {
         if (money < 0) throw new IllegalArgumentException("Money cannot be negative");
 
-        // jit自动优化
+        /// jit自动优化
         int p = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT)); // 铂金
         money %= UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT;
         int g = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT)); // 金币
@@ -1493,7 +1489,7 @@ public final class PlayerUtils {
         PacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
     }
 
-    // ===== 技能持续状态 =====
+    /// ===== 技能持续状态 =====
 
     /// 仪式次数改变时同步上限，并在提升时播放一次“唤醒古老之魂”的提示。
     public static void setSoulRitualCount(ServerPlayer player, int ritualCount) {
@@ -1508,7 +1504,7 @@ public final class PlayerUtils {
         if (current > previous) {
             player.displayClientMessage(Component.translatable(SOUL_RITUAL_MESSAGE), true);
         }
-        // 第 1 / 3 / 5 次仪式各解锁一个技能栏位
+        /// 第 1 / 3 / 5 次仪式各解锁一个技能栏位
         int slots = getRitualSlotCount(current);
         if (getEquippedSoulSkillMaxNumber(player) != slots) {
             setSoulSkillSlotCount(player, slots);
@@ -1567,7 +1563,7 @@ public final class PlayerUtils {
     public record RitualUnlock(int ritual, List<Supplier<SoulSkill>> required, Supplier<SoulSkill> skill) {}
 
     private static final List<RitualUnlock> RITUAL_UNLOCKS = List.of(
-            // 第一次仪式
+            /// 第一次仪式
             new RitualUnlock(1, List.of(), ModSoulSkills.ENHANCED_LURE),
             new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_MARK),
             new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_DRAIN),
@@ -1575,14 +1571,14 @@ public final class PlayerUtils {
             new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.LURE_SURGE),
             new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.EMPOWERED_SURGE),
             new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.SPIRIT_TRIGGER),
-            // 第二次仪式
+            /// 第二次仪式
             new RitualUnlock(2, List.of(), ModSoulSkills.STAR_REVERSAL),
             new RitualUnlock(2, List.of(), ModSoulSkills.STAR_LINK),
             new RitualUnlock(2, List.of(), ModSoulSkills.SOUL_HARVEST),
-            // 第三次仪式
+            /// 第三次仪式
             new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_GUNNER),
             new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_DEVOUR),
-            // 第四次仪式
+            /// 第四次仪式
             new RitualUnlock(4, List.of(), ModSoulSkills.CURSE_RESISTANCE),
             new RitualUnlock(4, List.of(), ModSoulSkills.FLOW_CONTROL),
             new RitualUnlock(4, List.of(), ModSoulSkills.SPELL_ROTATION),
@@ -1606,28 +1602,28 @@ public final class PlayerUtils {
             return;
         }
         SoulStorage storage = SoulStorage.of(player);
-        // 魂引天星：持续期间按间隔消耗灵魂召唤坠星
+        /// 魂引天星：持续期间按间隔消耗灵魂召唤坠星
         if (player.hasEffect(ModEffects.STAR_CALL) && gameTime % SoulSkillParameters.STAR_CALL_INTERVAL_TICKS == 0) {
             tickStarCall(player, storage);
         }
-        // 附魂激荡：只要身上挂着任意附魂类增益，就定时自动释放一次灵魂激荡
+        /// 附魂激荡：只要身上挂着任意附魂类增益，就定时自动释放一次灵魂激荡
         if (gameTime % (SoulSkillParameters.ACTIVE_COOLDOWN_TICKS * 3) == 0
                 && isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_SURGE.get())
                 && hasAnySoulBuffActive(player)) {
             float damage = getSoulSkillDamage(player, ModSoulSkills.SPIRIT_SURGE.get().getStack());
             player.level().addFreshEntity(new SpiritSurgeEntity(player, damage));
         }
-        // 灵魂枪手：增益期间按间隔把灵魂转成子弹
+        /// 灵魂枪手：增益期间按间隔把灵魂转成子弹
         if (player.hasEffect(ModEffects.SOUL_GUNNER) && gameTime % SoulSkillParameters.SOUL_GUNNER_INTERVAL_TICKS == 0) {
             SoulGunnerSkill.fireBurst(player);
         }
-        // 灵魂透支：结束时施加无法使用主武器的代价
+        /// 灵魂透支：结束时施加无法使用主武器的代价
         boolean draining = player.hasEffect(ModEffects.SOUL_DRAIN);
         if (storage.isSoulDrainActive() && !draining) {
             player.addEffect(new MobEffectInstance(ModEffects.SOUL_DRAIN_LOCK, SoulSkillParameters.SOUL_DRAIN_LOCKOUT_TICKS, 0, false, true, true));
         }
         storage.setSoulDrainActive(draining);
-        // 生命归还：结束时把记录到的生命损失按比例返还为灵魂
+        /// 生命归还：结束时把记录到的生命损失按比例返还为灵魂
         boolean returning = player.hasEffect(ModEffects.LIFE_RETURN);
         if (storage.isLifeReturnActive() && !returning) {
             float lost = storage.getLifeReturnLost();

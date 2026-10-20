@@ -26,9 +26,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.util.LibEnchantmentUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.monster.BaseMimic;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
@@ -86,7 +87,7 @@ public class BaseArrowEntity extends AbstractArrow {
         return 0.05;
     }
 
-    // 这个命名是为了防止有些模组加了个final getLuminance()I方法导致崩溃
+    /// 这个命名是为了防止有些模组加了个final getLuminance()I方法导致崩溃
     public int confluence$getLuminance() {
         return 0;
     }
@@ -169,17 +170,18 @@ public class BaseArrowEntity extends AbstractArrow {
                 return;
             }
         }
-        if (!(entity instanceof LivingEntity living)) {
+        LivingEntity living = LibEntityUtils.effectTarget(entity);
+        if (living == null) {
             super.onHitEntity(result);
             return;
         }
-        if (!havenBeen.add(living.getUUID())) return;
+        if (!havenBeen.add(LibEntityUtils.dedupeIdentity(entity).getUUID())) return;
         DamageSource damageSource = getDamageSource();
         if (entity.hurt(damageSource, getCalculatedDamage())) {
             playSound(getSound(), 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
             Entity owner = getOwner();
             boolean reflectedByMimic = owner instanceof BaseMimic;
-            // 宝箱怪反射的箭只造成折半后的直接伤害，不附加箭种减益或武器附魔效果。
+            /// 宝箱怪反射的箭只造成折半后的直接伤害，不附加箭种减益或武器附魔效果。
             if (!reflectedByMimic) {
                 doPostHurtEffects(living);
             }
@@ -192,7 +194,7 @@ public class BaseArrowEntity extends AbstractArrow {
             if (knockback > 0 && horizontal.lengthSqr() > 0)
                 living.knockback(knockback * 0.6, -horizontal.x, -horizontal.z);
             if (!reflectedByMimic && !level().isClientSide && owner instanceof LivingEntity) {
-                EnchantmentHelper.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
+                EnchantmentHelper.doPostAttackEffects((ServerLevel) level(), living, damageSource);
             }
             if (living != owner && living instanceof Player && owner instanceof ServerPlayer player && !isSilent()) {
                 player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
@@ -276,9 +278,8 @@ public class BaseArrowEntity extends AbstractArrow {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
-            return false;
-        return super.canHitEntity(target) && !havenBeen.contains(target.getUUID());
+        return super.canHitEntity(target) && LibEntityUtils.canHit(getOwner(), target)
+                && !havenBeen.contains(LibEntityUtils.dedupeIdentity(target).getUUID());
     }
 
     @Override

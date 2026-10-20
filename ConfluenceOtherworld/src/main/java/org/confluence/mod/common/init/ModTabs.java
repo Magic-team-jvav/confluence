@@ -8,6 +8,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
@@ -191,7 +192,6 @@ public final class ModTabs {
                         snow.accept(NatureBlocks.THIN_ICE_BLOCK);
                         snow.accept(NatureBlocks.ICE_TAPERED_BLOCK);
 
-
                         CreativeModeTab.Output jungle = GroupItem.belongsTo("jungle", output);
                         jungle.accept(NatureBlocks.JUNGLE_GRASS_BLOCK);
                         jungle.accept(NatureBlocks.JUNGLE_THORN);
@@ -290,7 +290,6 @@ public final class ModTabs {
                         special_plants.accept(NatureBlocks.CORRODED_WORM_ROOTS_BLOCK);
                         special_plants.accept(NatureBlocks.CORRUPTED_OVARIES_BLOCK);
                         special_plants.accept(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK);
-
 
                         CreativeModeTab.Output sanctificationOres = GroupItem.belongsTo("sanctification_ores", output);
                         sanctificationOres.accept(OreBlocks.SANCTIFICATION_COAL_ORE);
@@ -532,7 +531,6 @@ public final class ModTabs {
                         marble_bricks.accept(DecorativeBlocks.MARBLE_SMALL_BRICKS.get());
                         marble_bricks.accept(DecorativeBlocks.GILDED_MARBLE.get());
                         marble_bricks.accept(DecorativeBlocks.POLISHED_MARBLE.get());
-
 
                         CreativeModeTab.Output glass = GroupItem.belongsTo("glass", output);
                         glass.accept(DecorativeBlocks.PURE_GLASS.get());
@@ -1042,9 +1040,9 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-//                        acceptAll(ModItems.ITEMS, output);
+///                        acceptAll(ModItems.ITEMS, output);
 
-                        // 如果删掉上边两行就会崩
+                        /// 如果删掉上边两行就会崩
                         acceptAll(TreasureBagItems.ITEMS, output, "treasure_bag");
                         acceptAll(ModBlocks.TOMBSTONES.keySet(), GroupItem.belongsTo("tombstone", output));
                         acceptAll(BaitItems.ITEMS, output, "bait");
@@ -1175,7 +1173,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.food_and_potions"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-                        // 不要改成group，已经够清晰了
+                        /// 不要改成group，已经够清晰了
                         acceptAll(PotionItems.ITEMS, output);
                         acceptAll(FoodItems.ITEMS, output);
                     })
@@ -1762,7 +1760,7 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.PEDDLERS_HAT.get());
                         output.accept(VanityArmorItems.RUNE_HAT.get());
                         output.accept(VanityArmorItems.RUNE_ROBE.get());
-                        // output.accept(VanityArmorItems.BUCKET_HAT.get());
+                        /// output.accept(VanityArmorItems.BUCKET_HAT.get());
                         output.accept(VanityArmorItems.WEDDING_VEIL.get());
                         output.accept(VanityArmorItems.WEDDING_DRESS.get());
                         output.accept(VanityArmorItems.ALIEN_HAT.get());
@@ -1877,7 +1875,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-                        //附魔书
+                        ///附魔书
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 1));
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 2));
@@ -2338,6 +2336,7 @@ public final class ModTabs {
                         martian.accept(SpawnEggItems.BRAIN_SCRAMBLER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.GRAY_GRUNT_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.GIGAZAPPER_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.GIGAZAPPER_AF2_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.RAY_GUNNER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.SCUTLIX_SPAWN_EGG.get());

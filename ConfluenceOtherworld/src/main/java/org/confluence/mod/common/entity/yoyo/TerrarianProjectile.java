@@ -11,11 +11,10 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.attachment.YoyoSession;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
@@ -27,14 +26,12 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 /// 泰拉悠悠球的独立射弹：发射时选敌，直线飞行，前十 tick 可命中一次，随后减速消失。
 public final class TerrarianProjectile extends Projectile implements Immunity, GeoEntity {
     private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
-
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private float damage;
     private float criticalChance;
     private float knockback;
     private @Nullable YoyoEntity sourceYoyo;
     private boolean spent;
-
     public TerrarianProjectile(EntityType<? extends TerrarianProjectile> type, Level level) {
         super(type, level);
         noPhysics = true;
@@ -73,17 +70,18 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
                 discard();
                 return;
             }
+
             if (tickCount > 10) spent = true;
             if (!spent) {
                 for (Entity candidate : level().getEntities(this, getBoundingBox().expandTowards(motion).inflate(0.3))) {
-                    if (!TARGETING.canAcquire(owner, candidate) || !ProjectileHitRules.canHit(owner, candidate))
+                    if (!TARGETING.canAcquire(owner, candidate) || !LibEntityUtils.canHit(owner, candidate))
                         continue;
-                    LivingEntity logical = ProjectileHitRules.logicalLivingTarget(candidate);
+                    LivingEntity logical = LibEntityUtils.logicalLivingTarget(candidate);
                     if (logical == null) continue;
                     if (!candidate.getBoundingBox().inflate(0.3).contains(position())
                             && candidate.getBoundingBox().inflate(0.3).clip(position(), position().add(motion)).isEmpty())
                         continue;
-                    Entity recipient = ProjectileHitRules.damageRecipient(candidate);
+                    Entity recipient = candidate;
                     DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, owner);
                     /// 实体类型作为共享无敌帧身份，多发泰拉射弹仍共用四 tick 冷却。
                     if (!Immunity.hurt((Immunity) getType(), recipient, logical, source, damage))
@@ -95,30 +93,24 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
                 }
             }
         }
+
         setPos(position().add(motion));
         if (tickCount > 10) setDeltaMovement(motion.scale(0.85));
     }
 
     public float getCriticalChance() {return criticalChance;}
-
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {return animationCache;}
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
-
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {}
-
     @Override
     public boolean shouldBeSaved() {return false;}
-
     @Override
     public boolean canChangeDimensions(Level oldLevel, Level newLevel) {return false;}
-
     @Override
     public Type confluence$getImmunityType() {return Type.STATIC;}
-
     @Override
     public int confluence$getImmunityDuration(DamageSource source) {return 4;}
 }

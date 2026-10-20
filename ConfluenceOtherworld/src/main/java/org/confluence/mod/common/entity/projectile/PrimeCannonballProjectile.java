@@ -14,6 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;
 
@@ -22,7 +24,6 @@ public final class PrimeCannonballProjectile extends Projectile {
     private static final double BLAST_RADIUS = 3.0;
     private float damage;
     private int lifetime = MAX_LIFETIME;
-
     public PrimeCannonballProjectile(EntityType<? extends PrimeCannonballProjectile> type, Level level) {
         super(type, level);
     }
@@ -40,7 +41,6 @@ public final class PrimeCannonballProjectile extends Projectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {}
-
     @Override
     public void tick() {
         super.tick();
@@ -61,8 +61,8 @@ public final class PrimeCannonballProjectile extends Projectile {
                 && !NeoForge.EVENT_BUS.post(new ProjectileImpactEvent(this, hitResult)).isCanceled()) {
             hitTargetOrDeflectSelf(hitResult);
         }
-        if (isRemoved()) return;
 
+        if (isRemoved()) return;
         checkInsideBlocks();
         Vec3 velocity = getDeltaMovement().add(0.0, -0.018, 0.0);
         setDeltaMovement(velocity);
@@ -92,21 +92,21 @@ public final class PrimeCannonballProjectile extends Projectile {
                         level().destroyBlock(pos, true, this);
                 }
             }
+
             AABB blast = getBoundingBox().inflate(BLAST_RADIUS);
-            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, blast, prime::canAttack)) {
+            for (Entity target : LibEntityUtils.areaTargets(level(), this, blast,
+                    candidate -> LibEntityUtils.canMobHit(prime, candidate))) {
                 double distance = Math.sqrt(distanceToSqr(target));
                 float scale = (float) Math.max(0.4, 1.0 - distance / (BLAST_RADIUS * 1.6));
                 target.hurt(damageSources().mobProjectile(this, prime), damage * scale);
             }
         }
+
         discard();
     }
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return target instanceof LivingEntity living
-                && getOwner() instanceof SkeletronPrime prime
-                && prime.canAttack(living)
-                && super.canHitEntity(target);
+        return LibEntityUtils.canMobHit(getOwner(), target) && super.canHitEntity(target);
     }
 }

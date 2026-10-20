@@ -9,25 +9,31 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.projectile.MonsterLaser;
+import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
+import java.util.Comparator;
 import java.util.UUID;
 
-/// 可以骑乘鳞甲怪作战，也能在坐骑死亡后徒步作战的火星射手。
+/// 激光枪手共用一套射击行为，骑手身份恢复独立于战斗调度。
 public final class RayGunner extends MartianHumanoidMonster {
     public enum CombatState {
         MOUNTED
@@ -82,22 +88,23 @@ public final class RayGunner extends MartianHumanoidMonster {
         mountCache = mount;
         mountUUID = mount.getUUID();
         unresolvedMountTicks = 0;
+        updateMountedState();
     }
 
     @Override
     protected BTNode createLandBehavior() {
-        return SelectorNode.of(new BTNode() {
+        return SelectorNode.of(new VanillaGoalAction(new MountScutlixGoal()), new BTNode() {
             private int pathDelay;
 
             @Override
             public boolean canStart() {
-                return usableTarget(getTarget());
+                return (!isPassenger() || isMountedOnLivingScutlix()) && usableTarget(getTarget());
             }
 
             @Override
             public BTStatus execute() {
                 LivingEntity target = getTarget();
-                if (!usableTarget(target)) {
+                if (!canStart()) {
                     getNavigation().stop();
                     return BTStatus.FAILURE;
                 }
@@ -119,7 +126,7 @@ public final class RayGunner extends MartianHumanoidMonster {
                         getNavigation().stop();
                     }
                 }
-                faceCombatPosition(target.getEyePosition(), 25.0F, 25.0F);
+                tickShooting((ServerLevel) level(), target);
                 return BTStatus.RUNNING;
             }
 
@@ -127,6 +134,8 @@ public final class RayGunner extends MartianHumanoidMonster {
             public void stop() {
                 pathDelay = 0;
                 getNavigation().stop();
+                aimTicks = 0;
+                entityData.set(DATA_AIMING, false);
             }
         }, new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(this, 0.8D)),
                 new VanillaGoalAction(new RandomLookAroundGoal(this)));
@@ -137,10 +146,15 @@ public final class RayGunner extends MartianHumanoidMonster {
         if (level() instanceof ServerLevel serverLevel) resolveMount(serverLevel);
         updateMountedState();
         super.tick();
-        if (!(level() instanceof ServerLevel serverLevel) || !isAlive()) return;
+        /// 身份恢复不受 AI 开关影响，停止战斗时只复位瞄准表现。
+        if (!level().isClientSide && (isNoAi() || isPassenger() && !isMountedOnLivingScutlix() || !usableTarget(getTarget()))) {
+            entityData.set(DATA_AIMING, false);
+            aimTicks = 0;
+        }
+    }
 
+    private void tickShooting(ServerLevel serverLevel, LivingEntity target) {
         if (shotCooldown > 0) shotCooldown--;
-        LivingEntity target = getTarget();
         boolean aiming = usableTarget(target) && distanceToSqr(target) <= MAXIMUM_SHOT_RANGE_SQUARED
                 && hasLineOfSight(target);
         entityData.set(DATA_AIMING, aiming);
@@ -179,19 +193,108 @@ public final class RayGunner extends MartianHumanoidMonster {
             mountUUID = null;
             unresolvedMountTicks = 0;
         }
+        if (isPassenger() || mountCache != null && (!mountCache.isAlive() || mountCache.isRemoved())) {
+            mountUUID = null;
+            unresolvedMountTicks = 0;
+        }
 
         mountCache = null;
         if (mountUUID == null) return;
         Entity resolved = serverLevel.getEntity(mountUUID);
-        if (resolved instanceof Scutlix scutlix && scutlix.isAlive() && !scutlix.isRemoved()
-                && (getVehicle() == scutlix || startRiding(scutlix, true))) {
-            bindMount(scutlix);
-            shareTargetWith(scutlix);
-            return;
+        if (resolved instanceof Scutlix scutlix) {
+            if (!scutlix.isAlive() || scutlix.isRemoved() || scutlix.isVehicle()) {
+                mountUUID = null;
+                unresolvedMountTicks = 0;
+                return;
+            }
+            if (scutlix.tryMountGunner(this)) {
+                shareTargetWith(scutlix);
+                return;
+            }
         }
         if (++unresolvedMountTicks > LINK_GRACE_TICKS) {
             mountUUID = null;
             unresolvedMountTicks = 0;
+        }
+    }
+
+    private final class MountScutlixGoal extends Goal {
+        private static final double SEARCH_RANGE = 32.0;
+        private @Nullable Scutlix candidate;
+        private @Nullable Path path;
+        private int nextSearchTick;
+        private int candidateOffset;
+        private int pathDelay;
+        private int approachTicks;
+        private boolean pathFailed;
+
+        @Override
+        public boolean canUse() {
+            if (isPassenger() || !isAlive() || tickCount < nextSearchTick) {
+                return false;
+            }
+            nextSearchTick = tickCount + 20;
+            var mounts = level().getEntitiesOfClass(Scutlix.class, getBoundingBox().inflate(SEARCH_RANGE, 8, SEARCH_RANGE),
+                    mount -> mount.canAcceptGunner(RayGunner.this) && distanceToSqr(mount) <= SEARCH_RANGE * SEARCH_RANGE);
+            mounts.sort(Comparator.comparingDouble(RayGunner.this::distanceToSqr));
+            if (mounts.isEmpty()) {
+                return false;
+            }
+            int start = candidateOffset % mounts.size();
+            for (int index = 0; index < Math.min(8, mounts.size()); index++) {
+                Scutlix mount = mounts.get((start + index) % mounts.size());
+                if (mount.isWithinBoardingRange(RayGunner.this)) {
+                    candidate = mount;
+                    path = null;
+                    candidateOffset = 0;
+                    return true;
+                }
+                Path approach = getNavigation().createPath(mount, 0);
+                if (approach != null && approach.canReach()) {
+                    candidate = mount;
+                    path = approach;
+                    candidateOffset = 0;
+                    return true;
+                }
+            }
+            candidateOffset = (start + 8) % mounts.size();
+            return false;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return candidate != null && candidate.canAcceptGunner(RayGunner.this)
+                    && distanceToSqr(candidate) <= SEARCH_RANGE * SEARCH_RANGE && approachTicks < 200 && !pathFailed;
+        }
+
+        @Override
+        public void start() {
+            approachTicks = 0;
+            pathDelay = 10;
+            pathFailed = path != null && !getNavigation().moveTo(path, 1.2);
+        }
+
+        @Override
+        public void tick() {
+            if (candidate == null || !candidate.canAcceptGunner(RayGunner.this)) {
+                return;
+            }
+            approachTicks++;
+            if (candidate.tryMountGunner(RayGunner.this)) {
+                getNavigation().stop();
+            } else if (--pathDelay <= 0) {
+                pathDelay = 10;
+                path = getNavigation().createPath(candidate, 0);
+                pathFailed = path == null || !path.canReach() || !getNavigation().moveTo(path, 1.2);
+            }
+        }
+
+        @Override
+        public void stop() {
+            candidate = null;
+            path = null;
+            getNavigation().stop();
+            nextSearchTick = tickCount + 20;
         }
     }
 
@@ -214,6 +317,7 @@ public final class RayGunner extends MartianHumanoidMonster {
         MonsterLaser laser = ModEntities.MONSTER_LASER.get().create(serverLevel);
         if (laser == null) return false;
         laser.configureShot(this, target, new Vec3(getX(), getEyeY() - 0.1D * getScale(), getZ()), MonsterLaser.Variant.RAY_GUNNER);
+        MartianEventHelper.inheritEventMembership(this, laser);
         if (!serverLevel.addFreshEntity(laser)) {
             laser.discard();
             return false;
@@ -225,8 +329,8 @@ public final class RayGunner extends MartianHumanoidMonster {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "ray_gunner", 3, state -> {
-            // The supplied asset has a dedicated seated aiming pose but no seated idle pose.
-            // Keep the rider seated at all times; aiming state still controls the wind-up and shot.
+            /// 模型只有坐姿瞄准动画，没有单独的坐姿待机动画。
+            /// 骑手持续保持坐姿，由瞄准状态控制蓄力和射击。
             if (isPassenger()) return state.setAndContinue(SIT_AIM);
             if (isAiming()) {
                 return state.setAndContinue(state.isMoving() ? WALK_AIM : STAND_AIM);
@@ -237,9 +341,8 @@ public final class RayGunner extends MartianHumanoidMonster {
 
     @Override
     protected boolean hasEntityContactAttack() {
-        // While mounted, the Scutlix owns the encounter's contact hit. This prevents the
-        // overlapping passenger hitbox from applying a second, independently-timed strike.
-        return !isMountedOnLivingScutlix();
+        /// 骑乘时由蝎怪结算接触伤害，运输和禁用 AI 时也不额外攻击。
+        return !isNoAi() && !isPassenger();
     }
 
     @Override

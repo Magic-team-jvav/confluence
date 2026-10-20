@@ -28,9 +28,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 
 /// 丛林黄蜂。
 ///
-/// 黄蜂的射击与战斗走位独立于普通飞行预制体：射击前停止导航并
-/// 转正，发射后按固定周期重新寻找悬空路径。相关计时保留在实体专用节点中，避免为单个
-/// 特例增加公共飞行参数。
+/// 可见目标时持续平滑追踪并射击；失去视线后按固定间隔寻路，避免受阻时逐刻重试。
 public class Hornet extends BaseFlyingMonster {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack.cast");
@@ -52,7 +50,7 @@ public class Hornet extends BaseFlyingMonster {
 
     HornetStingerProjectile createStinger(LivingEntity target) {
         HornetStingerProjectile projectile = new HornetStingerProjectile(ModEntities.HORNET_STINGER.get(), level());
-        Vec3 origin = position();
+        Vec3 origin = getBoundingBox().getCenter();
         Vec3 aim = new Vec3(target.getX() - getX(), target.getY() + target.getEyeHeight() * 0.5F - getY(), target.getZ() - getZ());
         projectile.configure(this, origin, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 5.0F, 0);
         return projectile;
@@ -66,6 +64,17 @@ public class Hornet extends BaseFlyingMonster {
     @Override
     protected boolean hasPushableBody() {
         return true;
+    }
+
+    /// 泰拉黄蜂入水后向上脱离水体，不在水底继续悬停和射击。
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide && !isNoAi() && isInWater()) {
+            Vec3 movement = getDeltaMovement();
+            setDeltaMovement(movement.x, Math.max(0.2, movement.y), movement.z);
+            hasImpulse = true;
+        }
     }
 
     /// 黄蜂可以穿过门洞，但不会把水面当作可漂浮路径。
@@ -100,15 +109,14 @@ public class Hornet extends BaseFlyingMonster {
         target.addEffect(new MobEffectInstance(MobEffects.POISON, duration), this);
     }
 
+    /// 持续平滑追踪并沿飞行方向射击，不使用停下瞄准后突然加速的伪冲刺。
     private final class HornetCombatNode extends BTNode {
         private static final int SHOOT_INTERVAL = 25;
-        private static final int REPATH_RESET = 200;
-        private static final int REPATH_THRESHOLD = 180;
-        private static final double FIRE_ANGLE = 0.1;
-
+        private static final int REPATH_INTERVAL = 20;
+        private static final double FIRE_ANGLE = 0.7;
+        private static final double HOVER_HEIGHT = 1.5;
         private int shootCooldown;
         private int repathTicks;
-        private boolean aiming;
 
         @Override
         public boolean canStart() {
@@ -118,56 +126,56 @@ public class Hornet extends BaseFlyingMonster {
 
         @Override
         public void start() {
-            aiming = false;
+            repathTicks = 0;
+            getNavigation().stop();
         }
 
         @Override
         public BTStatus execute() {
             LivingEntity target = getTarget();
-            if (target == null || !target.isAlive()) {
-                aiming = false;
-                return BTStatus.FAILURE;
-            }
-
-            if (aiming) {
-                lookAtTarget(target, 10.0F, 89.0F);
-                if (angleBetween(getLookAngle(), target.getEyePosition().subtract(getEyePosition())) < FIRE_ANGLE) {
-                    HornetStingerProjectile projectile = createStinger(target);
-                    if (level().addFreshEntity(projectile)) {
-                        swing(InteractionHand.MAIN_HAND);
-                    } else {
-                        projectile.discard();
-                    }
-                    shootCooldown = SHOOT_INTERVAL;
-                    aiming = false;
-                }
-                return BTStatus.RUNNING;
-            }
-
-            if (--shootCooldown <= 0) {
+            if (target == null || !target.isAlive() || !canAttack(target)) return BTStatus.FAILURE;
+            boolean visible = getSensing().hasLineOfSight(target);
+            if (visible) {
                 getNavigation().stop();
                 getMoveControl().setWantedPosition(getX(), getY(), getZ(), 0.0);
-                aiming = true;
-                return BTStatus.RUNNING;
+                setSpeed(0.0F);
+                setXxa(0.0F);
+                setYya(0.0F);
+                setZza(0.0F);
+                Vec3 offset = target.getBoundingBox().getCenter().add(0.0, HOVER_HEIGHT, 0.0).subtract(getBoundingBox().getCenter());
+                double speed = getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.6;
+                Vec3 desired = offset.normalize().scale(speed);
+                Vec3 current = getDeltaMovement();
+                double acceleration = speed * 0.06;
+                Vec3 next = current.add(Mth.clamp(desired.x - current.x, -acceleration, acceleration),
+                        Mth.clamp(desired.y - current.y, -acceleration, acceleration),
+                        Mth.clamp(desired.z - current.z, -acceleration, acceleration));
+                setDeltaMovement(next);
+                faceCombatMovement(10.0F, 30.0F);
+                hasImpulse = true;
+                repathTicks = 0;
+            } else if (--repathTicks <= 0) {
+                /// 失去视线才寻路，失败也等待下一轮，不在每 tick 重复分配路径节点。
+                var path = getNavigation().createPath(target, 0);
+                if (path != null) getNavigation().moveTo(path, 1.0);
+                repathTicks = REPATH_INTERVAL;
             }
-
-            if (--repathTicks <= 0 || getNavigation().isDone() || repathTicks == REPATH_THRESHOLD) {
-                Vec3 destination = findFlightPosition(6, 3);
-                if (destination != null && getNavigation().createPath(destination.x, destination.y, destination.z, 0) != null) {
-                    getNavigation().moveTo(destination.x, destination.y, destination.z, 1.5);
-                } else {
-                    Vec3 pursuit = target.getEyePosition();
-                    getNavigation().moveTo(pursuit.x, pursuit.y, pursuit.z, 1.5);
-                }
-                repathTicks = REPATH_RESET;
+            if (shootCooldown > 0) shootCooldown--;
+            if (shootCooldown == 0 && visible && !isInWater() && distanceToSqr(target) <= 32.0 * 32.0
+                    && angleBetween(getLookAngle(), target.getEyePosition().subtract(getEyePosition())) < FIRE_ANGLE) {
+                HornetStingerProjectile projectile = createStinger(target);
+                if (level().addFreshEntity(projectile)) swing(InteractionHand.MAIN_HAND);
+                else projectile.discard();
+                shootCooldown = SHOOT_INTERVAL;
             }
             return BTStatus.RUNNING;
         }
 
         @Override
         public void stop() {
-            aiming = false;
             getNavigation().stop();
+            setSpeed(0.0F);
+            setZza(0.0F);
         }
     }
 
@@ -175,6 +183,7 @@ public class Hornet extends BaseFlyingMonster {
     /// 幼蜂沿用同一套路径选择，只替换战斗节点。
     protected class HornetWanderNode extends BTNode {
         private boolean moving;
+        private int retryTicks;
 
         @Override
         public void start() {
@@ -191,9 +200,10 @@ public class Hornet extends BaseFlyingMonster {
                         ? BTStatus.RUNNING
                         : BTStatus.SUCCESS;
             }
-            if (!getNavigation().isDone() || getRandom().nextInt(10) != 0) {
+            if (--retryTicks > 0 || !getNavigation().isDone()) {
                 return BTStatus.SUCCESS;
             }
+            retryTicks = 20 + random.nextInt(20);
             Vec3 destination = findFlightPosition(3, 1);
             if (destination == null) {
                 return BTStatus.SUCCESS;
@@ -211,17 +221,13 @@ public class Hornet extends BaseFlyingMonster {
                 : AirAndWaterRandomPos.getPos(this, 8, 4, -2, view.x, view.z, Math.PI / 2.0);
     }
 
-    private void lookAtTarget(LivingEntity target, float yawLimit, float pitchLimit) {
-        faceCombatPosition(target.getEyePosition(), yawLimit, pitchLimit);
-    }
-
     private static double angleBetween(Vec3 first, Vec3 second) {
         double denominator = first.length() * second.length();
         if (denominator < 1.0E-7) {
             return 0.0;
         }
         double cosine = first.dot(second) / denominator;
-        return Math.acos(Math.max(-1.0, Math.min(1.0, cosine)));
+        return Math.acos(Mth.clamp(cosine, -1.0, 1.0));
     }
 
 }

@@ -107,6 +107,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         }));
         addRenderableWidget(this.bestiaryButton = new PortImageButton(leftPos + 125, topPos + 166, 16, 16, BESTIARY_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
+                super.onClose();
                 getMinecraft().pushGuiLayer(this);
                 getMinecraft().setScreen(new BestiaryScreen());
             }

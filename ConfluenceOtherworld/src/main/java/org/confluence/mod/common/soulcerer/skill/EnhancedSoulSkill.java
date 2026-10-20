@@ -12,7 +12,7 @@ import java.util.List;
 
 public class EnhancedSoulSkill extends SoulSkill {
     public EnhancedSoulSkill(ResourceLocation icon, ResourceLocation id) {
-        super(icon, id, 0.0F, Kind.BUFF, SoulSkillParameters.ENHANCED_SOUL_SOUL_COST, SoulSkillParameters.SOUL_BUFF_COOLDOWN_TICKS);
+        super(icon, id, 0.0F, Kind.BUFF, SoulSkillParameters.ENHANCED_SOUL_SOUL_COST, SoulSkillParameters.ENHANCED_SOUL_COOLDOWN_TICKS);
     }
 
     /// 服务端添加灵魂伤害增益，客户端只生成施法粒子。

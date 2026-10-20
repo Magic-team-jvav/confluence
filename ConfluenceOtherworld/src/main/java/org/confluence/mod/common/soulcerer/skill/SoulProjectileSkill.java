@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 /// 通用弹幕技能：一次施放生成 1..n 枚 `SoulLureProjectile`，可选附带自身增益与命中范围爆炸。
 ///
-/// 引魂、强力引魂、附魂印记、引魂激荡、迷魂孢雾、灵魂枪手与灵魂引发的连锁弹幕都由它派生，
+/// 引魂、强力引魂、附魂印记、引魂激荡、迷魂孢雾、灵魂突击与灵魂引发的连锁弹幕都由它派生，
 /// 差异只在 {@link Builder} 里的参数——新增同类技能不需要再写类。
 public class SoulProjectileSkill extends SoulSkill {
     private final ResourceLocation particle;

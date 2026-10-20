@@ -29,7 +29,7 @@ public class SoulSkill {
     ///
     /// 三类技能都占用灵魂技能槽：`ACTIVE` 与 `BUFF` 可主动释放，
     /// `PASSIVE` 不能释放，但只有装备在槽里才会结算效果
-    /// （见 `PlayerUtils.isPassiveSoulSkillActive`；术式轮转与当前槽选择会跳过被动）。
+    /// （见 `PlayerUtils.isPassiveSoulSkillActive`；魂术轮转与当前槽选择会跳过被动）。
     public enum Kind {
         ACTIVE,
         BUFF,

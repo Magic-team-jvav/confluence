@@ -537,7 +537,9 @@ public final class ModTags {
         public static final TagKey<SoulSkill> STAR_LURE = register("star_lure");
         /// 附魂：所有给自己挂同名增益的技能，含自动触发的附魂激荡与状态类技能。
         public static final TagKey<SoulSkill> SOUL_ATTACH = register("soul_attach");
-        /// 被动：无法装备、学会即生效；术式轮转用这个标签跳过它们。
+        /// 强力附魂系列：束魂锁链同时使用、魂术轮转连锁释放的那一组限时增益技能。
+        public static final TagKey<SoulSkill> ENHANCED_SOUL_SERIES = register("enhanced_soul_series");
+        /// 被动：无法装备、学会即生效；魂术轮转用这个标签跳过它们。
         public static final TagKey<SoulSkill> PASSIVE = register("passive");
         /// 引魂：迷魂孢雾、亵渎之魂、自然之惩戒、魂引天星、引魂激荡、强力引魂、引魂。
         public static final TagKey<SoulSkill> SOUL_LURE = register("soul_lure");

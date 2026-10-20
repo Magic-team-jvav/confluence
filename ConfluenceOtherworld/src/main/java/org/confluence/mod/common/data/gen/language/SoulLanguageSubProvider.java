@@ -6,9 +6,9 @@ import org.confluence.mod.common.init.item.SoulItems;
 public class SoulLanguageSubProvider {
     /// 生成魂师技能、物品、界面和使用提示的中英文翻译。
     public static void addTranslations(TranslationConsumer language) {
-        // TODO 补充灵魂总览，灵魂快捷技能切换按键翻译
-        language.add("key.confluence.soulcerer.overview", "****", "****");
-        language.add("key.confluence.soulcerer.quick_skill_switching", "****", "****");
+        // 魂师涉及的按键设置
+        language.add("key.confluence.soulcerer.overview", "Soulcerer Overview", "魂师技能总览");
+        language.add("key.confluence.soulcerer.quick_skill_switching", "Soul Skill Quick Switch", "灵魂快捷技能切换");
         language.add("creativetab.confluence.soulcerer", "Confluence | Soul Mage", "汇流来世 | 魂师");
         language.add("itemGroup.confluence.soulcerer_main_weapons", "Primary Weapons", "主武器");
         language.add("itemGroup.confluence.soulcerer_secondary_weapons", "Secondary Weapons", "副武器");

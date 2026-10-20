@@ -118,6 +118,8 @@ public final class CommonConfigs {
     public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE;
 
     public static BooleanValue WRAPPED_CRIMSON_HEART;
+    /// 醉酒世界（种子 5162020）是否抬升海平面以上的地面高度。
+    public static BooleanValue DRUNK_WORLD_RAISE_SURFACE;
     public static BooleanValue INSTANTLY_HARDMODE_CONVERSION;
     public static IntValue CLENTAMINATOR_RANGE_CHUNKS;
     public static IntValue TERRAFORMER_RANGE_CHUNKS;
@@ -402,6 +404,8 @@ public final class CommonConfigs {
         {
             builder.push("WorldGeneration");
             WRAPPED_CRIMSON_HEART = builder.define("wrappedCrimsonHeart", false);
+            DRUNK_WORLD_RAISE_SURFACE = builder.comment("Whether the Drunk World (seed 5162020) raises terrain height above sea level.")
+                    .define("drunkWorldRaiseSurface", true);
             builder.pop();
         }
         {

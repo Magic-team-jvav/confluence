@@ -2,6 +2,8 @@ package org.confluence.mod.common.entity.soulcerer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,6 +21,7 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.item.sword.SwordProjectileAppearance;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
@@ -26,10 +29,11 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-/// 魂师通用弹幕：由粒子风暴特效负责外观，命中可附带范围伤害。
+/// 魂师通用弹幕：默认由粒子风暴特效负责外观，命中可附带范围伤害。
 ///
-/// 引魂、强力引魂、附魂印记、引魂激荡、迷魂孢雾、灵魂枪手与灵魂引发的连锁弹幕共用同一个实体，
+/// 引魂、强力引魂、附魂印记、引魂激荡、迷魂孢雾、灵魂突击与灵魂引发的连锁弹幕共用同一个实体，
 /// 差异全部来自构造参数（特效、速度、重力、射程、命中范围），不为每个技能再注册实体。
+/// 魂引天星是唯一的例外：外观换成星怒的坠星面片（见 {@link #STAR_APPEARANCE}），因此不再带粒子。
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class SoulLureProjectile extends Projectile {
@@ -37,9 +41,16 @@ public class SoulLureProjectile extends Projectile {
     public static final ResourceLocation PARTICLE = Confluence.asResource("soul_projectile");
     /// 迷魂孢雾使用的孢子特效。
     public static final ResourceLocation SPORE_PARTICLE = Confluence.asResource("spore_cloud");
-    /// 魂引天星与亵渎之魂复用的星、火球特效。
-    public static final ResourceLocation STAR_PARTICLE = Confluence.asResource("falling_star");
+    /// 亵渎之魂使用的火球特效。
     public static final ResourceLocation FIREBALL_PARTICLE = Confluence.asResource("ball_of_fire");
+    /// 魂引天星的外观：直接复刻星怒坠星弹射物的交叉面片，取代原来的 `falling_star` 粒子。
+    ///
+    /// 参数与 `SwordItems#STARFURY` 的 `SwordProjectileAppearance.Cross` 完全一致，
+    /// 换成这里只是为了让魂师技能不必依赖一把武器。
+    public static final SwordProjectileAppearance.Cross STAR_APPEARANCE = new SwordProjectileAppearance.Cross(
+            Confluence.asResource("textures/entity/star_fury_projectile.png"), 0xFFFF9696, 2.0F, 18.0F, 10);
+
+    private static final EntityDataAccessor<Boolean> DATA_STAR_APPEARANCE = SynchedEntityData.defineId(SoulLureProjectile.class, EntityDataSerializers.BOOLEAN);
 
     private static final String DAMAGE_TAG = "Damage";
     private static final String TRAVELLED_TAG = "TravelledDistance";
@@ -50,6 +61,7 @@ public class SoulLureProjectile extends Projectile {
     private static final String AOE_RADIUS_TAG = "AoeRadius";
     private static final String AOE_DAMAGE_TAG = "AoeDamage";
     private static final String ENHANCED_SOUL_ON_HIT_TAG = "EnhancedSoulOnHit";
+    private static final String STAR_APPEARANCE_TAG = "StarAppearance";
 
     private float damage;
     private double travelledDistance;
@@ -100,6 +112,24 @@ public class SoulLureProjectile extends Projectile {
         this.enhancedSoulOnHitTicks = Math.max(0, ticks);
     }
 
+    /// 魂引天星的坠星：从指定位置向下坠落，外观使用星怒的坠星面片、不带粒子。
+    public static SoulLureProjectile star(LivingEntity owner, Vec3 position, Vec3 direction, float damage, float speed, double gravity) {
+        SoulLureProjectile projectile = new SoulLureProjectile(owner, position, direction, damage, PARTICLE, speed, gravity,
+                SoulSkillParameters.SOUL_LURE_MAX_DISTANCE, SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, 0.0, 0.0F);
+        projectile.setStarAppearance(true);
+        return projectile;
+    }
+
+    /// 切换成星怒坠星的外观；打开后客户端不再生成任何粒子特效。
+    public void setStarAppearance(boolean value) {
+        entityData.set(DATA_STAR_APPEARANCE, value);
+    }
+
+    /// 是否使用星怒坠星的外观（由客户端渲染器读取）。
+    public boolean isStarAppearance() {
+        return entityData.get(DATA_STAR_APPEARANCE);
+    }
+
     /// 附魂印记：命中给短增益，若这一下直接击杀则换成更长的增益。
     private void grantEnhancedSoul(Entity victim) {
         if (enhancedSoulOnHitTicks <= 0 || !(getOwner() instanceof ServerPlayer owner)) {
@@ -111,13 +141,16 @@ public class SoulLureProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData() {}
+    protected void defineSynchedData() {
+        entityData.define(DATA_STAR_APPEARANCE, false);
+    }
 
     /// 每刻沿移动线段碰撞，先处理命中再检查最大距离；客户端维护粒子特效。
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+        /// 星怒外观由实体渲染器负责，这里不再叠一层粒子。
+        if (level().isClientSide && !isStarAppearance() && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), particle);
             emitter.attachEntity(this);
             emitter.hideOutline = true;
@@ -176,6 +209,7 @@ public class SoulLureProjectile extends Projectile {
         aoeRadius = tag.getDouble(AOE_RADIUS_TAG);
         aoeDamage = tag.getFloat(AOE_DAMAGE_TAG);
         enhancedSoulOnHitTicks = tag.getInt(ENHANCED_SOUL_ON_HIT_TAG);
+        setStarAppearance(tag.getBoolean(STAR_APPEARANCE_TAG));
     }
 
     @Override
@@ -190,5 +224,6 @@ public class SoulLureProjectile extends Projectile {
         tag.putDouble(AOE_RADIUS_TAG, aoeRadius);
         tag.putFloat(AOE_DAMAGE_TAG, aoeDamage);
         tag.putInt(ENHANCED_SOUL_ON_HIT_TAG, enhancedSoulOnHitTicks);
+        tag.putBoolean(STAR_APPEARANCE_TAG, isStarAppearance());
     }
 }

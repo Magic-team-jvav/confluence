@@ -68,12 +68,12 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.star_link.name", "Star Link", "星魂联结");
         language.add("confluence.soulcerer_skill.star_reversal.name", "Star Reversal", "星魂逆转");
         language.add("confluence.soulcerer_skill.surge_blast.name", "Surge Blast", "灵魂激荡冲击");
-        language.add("confluence.soulcerer_skill.soul_harvest.name", "Soul Harvest", "代行收割");
-        language.add("confluence.soulcerer_skill.soul_gunner.name", "Soul Gunner", "灵魂枪手");
-        language.add("confluence.soulcerer_skill.soul_devour.name", "Soul Devour", "噬魂提气");
-        language.add("confluence.soulcerer_skill.curse_resistance.name", "Curse Resistance", "诅咒抵抗");
-        language.add("confluence.soulcerer_skill.flow_control.name", "Flow Control", "分流管控");
-        language.add("confluence.soulcerer_skill.spell_rotation.name", "Spell Rotation", "术式轮转");
+        language.add("confluence.soulcerer_skill.soul_harvest.name", "Soul Harvest", "灵魂收割");
+        language.add("confluence.soulcerer_skill.soul_assault.name", "Soul Assault", "灵魂突击");
+        language.add("confluence.soulcerer_skill.soul_devour.name", "Soul Devour", "噬魂借力");
+        language.add("confluence.soulcerer_skill.backlash_resistance.name", "Backlash Resistance", "反噬抵抗");
+        language.add("confluence.soulcerer_skill.soul_control.name", "Soul Control", "分魂驾驭");
+        language.add("confluence.soulcerer_skill.soul_rotation.name", "Soul Rotation", "魂术轮转");
         language.add("confluence.soulcerer_skill.life_return.name", "Life Return", "生命归还");
         // 技能说明：与技能一一对应，C 键总览与技能框都会显示
         // 数值行统一话术：名称之后依次是伤害 / 冷却 / BUFF持续时间 / 所需灵魂数 / 技能描述
@@ -89,7 +89,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.blood_rage.desc", "Spends 10 health for 7% melee and ranged damage; kills grant extra soul.", "消耗 10 点生命，近战与远程伤害提高 7%；期间击杀额外获得灵魂。");
         language.add("confluence.soulcerer_skill.enhanced_lure.desc", "A stronger Soul Lure projectile.", "强化版引魂，弹幕基础威力大幅提升。");
         language.add("confluence.soulcerer_skill.soul_mark.desc", "Fires a soul projectile; hits grant 3 seconds of Enhanced Soul, kills grant 8 seconds.", "发射灵魂弹幕，命中敌人获得 3 秒强力附魂，击杀敌人获得 8 秒。");
-        language.add("confluence.soulcerer_skill.soul_surge.desc", "Automatically casts Spirit Surge while any soulcerer buff is active.", "任意附魂类增益生效期间，每隔数秒自动释放一次灵魂激荡。");
+        language.add("confluence.soulcerer_skill.soul_surge.desc", "While active, casts a free Spirit Surge every few seconds.", "增益期间每隔数秒自动释放一次灵魂激荡，且不消耗灵魂。");
         language.add("confluence.soulcerer_skill.lure_surge.desc", "Projectiles explode on impact.", "弹幕命中目标时引发范围爆炸，兼具单体与群体。");
         language.add("confluence.soulcerer_skill.empowered_surge.desc", "A much larger and stronger surge.", "范围与威力都远超普通激荡的强化版。");
         language.add("confluence.soulcerer_skill.spirit_trigger.desc", "Surge hits spray chain projectiles from the target.", "激荡命中后从敌人位置向随机方向射出多道弹幕。");
@@ -97,11 +97,11 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.star_reversal.desc", "Mana and soul conversion no longer empties either pool.", "被动：进行魔力与灵魂转化时，不再清空双方数值。");
         language.add("confluence.soulcerer_skill.star_link.desc", "Soul damage shares half of your magic damage bonus.", "被动：灵魂伤害与魔法伤害互相共用其 50% 加成。");
         language.add("confluence.soulcerer_skill.soul_harvest.desc", "Minion hits have a 5% chance to restore 1 soul.", "被动：召唤物击中敌人有 5% 概率回复 1 点灵魂。");
-        language.add("confluence.soulcerer_skill.soul_gunner.desc", "While active, converts soul into soul bullets, one bullet per soul.", "增益期间持续把灵魂转化为等量灵魂子弹，伤害更高且概率回魂。");
+        language.add("confluence.soulcerer_skill.soul_assault.desc", "While active, converts soul into soul bullets, one bullet per soul.", "增益期间持续把灵魂转化为等量灵魂子弹，伤害更高且概率回魂。");
         language.add("confluence.soulcerer_skill.soul_devour.desc", "Minion attacks spend 1 soul to deal 50% more damage.", "被动：召唤物攻击消耗 1 点灵魂，提升本次伤害 50%。");
-        language.add("confluence.soulcerer_skill.curse_resistance.desc", "Overdraft damage is reduced by 60%.", "被动：耗尽灵魂扣血施法时，扣除伤害减少 60%。");
-        language.add("confluence.soulcerer_skill.flow_control.desc", "Skill damage doubled, cooldowns lengthened by 50%.", "被动：技能伤害提高 100%，冷却延长 50%。");
-        language.add("confluence.soulcerer_skill.spell_rotation.desc", "Automatically switches to the next active skill after casting.", "被动：使用一次技能后自动切换到下一个可主动释放的技能。");
+        language.add("confluence.soulcerer_skill.backlash_resistance.desc", "Overdraft damage is reduced by 60%.", "被动：耗尽灵魂扣血施法时，扣除伤害减少 60%。");
+        language.add("confluence.soulcerer_skill.soul_control.desc", "Skill damage doubled, cooldowns lengthened by 50%.", "被动：技能伤害提高 100%，冷却延长 50%。");
+        language.add("confluence.soulcerer_skill.soul_rotation.desc", "Chains the whole Enhanced Soul series in rotation after casting; other skills simply advance the selection.", "被动：施放强力附魂系列技能后，一次按键即可把该系列其余技能依次连锁释放；其他技能只自动切换到下一个。");
         language.add("confluence.soulcerer_skill.life_return.desc", "Lost health is recorded and returned as soul.", "开启后记录失去的生命，结束时按 70% 转化为灵魂值。");
         language.add("confluence.soulcerer_skill.survival_instinct.desc", "Below 40 health, spend soul to halve potion sickness.", "血量低于 40 时，消耗 10 灵魂使耐药性 debuff 时长减半。");
         language.add("confluence.soulcerer_skill.star_call.desc", "Keeps spending soul to summon falling stars, with a chance to refund.", "持续期间消耗灵魂召唤坠星，命中时概率回魂。");
@@ -244,6 +244,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("key.confluence.healing", "Quick Use Health Potion", "快捷喝药（生命）");
         language.add("key.confluence.hook", "Throwing Hook", "使用钩爪");
         language.add("key.confluence.inspect", "Inspect", "检视");
+        language.add("key.confluence.magic.skill_release", "Soul Skill Cast", "释放灵魂技能");
         language.add("key.confluence.mana", "Quick Use Mana Potion", "快捷喝药（魔力）");
         language.add("key.confluence.mount", "Toggle Mount", "切换坐骑");
         language.add("key.confluence.mount_descend", "Mount Descend", "坐骑下降");

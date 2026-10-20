@@ -214,9 +214,10 @@ public final class ModEvents {
                     AccessoryItems.SQUIRES_SHIELD, AccessoryItems.HUNTRESSS_BUCKLER, AccessoryItems.MONKS_BELT,
                     AccessoryItems.HERCULES_BEETLE, AccessoryItems.NECROMANTIC_SCROLL, AccessoryItems.PAPYRUS_SCARAB,
                     AccessoryItems.PYGMY_NECKLACE,
-                    // 魂师：灵魂手环与刻骨的记忆
+                    // 魂师：灵魂手环、刻骨的记忆、束魂锁链与冰冷魂戒
                     AccessoryItems.BAND_OF_SOUL, AccessoryItems.BAND_OF_SOUL_REGENERATION,
-                    AccessoryItems.BAND_OF_MEDIUMSHIP, AccessoryItems.MEMORY_OF_BONEBRAND);
+                    AccessoryItems.BAND_OF_MEDIUMSHIP, AccessoryItems.MEMORY_OF_BONEBRAND,
+                    AccessoryItems.SOUL_BINDING_CHAIN, AccessoryItems.FROSTBITE_SOUL_RING);
             // 减益免疫
             TCTabs.acceptGroup(output, "debuff_immunity",
                     AccessoryItems.ADHESIVE_BANDAGE, AccessoryItems.MEDICATED_BANDAGE, AccessoryItems.POCKET_MIRROR,
@@ -253,7 +254,7 @@ public final class ModEvents {
                     AccessoryItems.LUCKY_COIN, AccessoryItems.GOLD_RING, AccessoryItems.COIN_RING,
                     AccessoryItems.DISCOUNT_CARD, AccessoryItems.GREEDY_RING, AccessoryItems.RADIO_THING,
                     AccessoryItems.STRESS_BALL, AccessoryItems.CLOTHIER_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL,
-                    AccessoryItems.EXPERIENCE_PIPETTE, AccessoryItems.TINSEL, AccessoryItems.SHINY_PIPETTE);
+                    AccessoryItems.EXPERIENCE_PIPETTE, AccessoryItems.STICKY_CRYSTAL_PENDANT, AccessoryItems.SHINY_PIPETTE);
         }
     }
 

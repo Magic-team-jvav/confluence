@@ -277,7 +277,7 @@ public class AccessoriesSubProvider {
                 }) // 贪婪戒指
                 // 吸管
                 .add(AccessoryItems.EXPERIENCE_PIPETTE, helper -> helper.unit(AccessoryItems.AUTO$GET$EXPERIENCE)) // 经验吸管
-                .add(AccessoryItems.TINSEL, helper -> helper.unit(AccessoryItems.AUTO$GET$COIN)) // 金箔
+                .add(AccessoryItems.STICKY_CRYSTAL_PENDANT, helper -> helper.unit(AccessoryItems.AUTO$GET$COIN)) // 黏晶吊坠
                 .add(AccessoryItems.SHINY_PIPETTE, helper -> {
                     helper.unit(AccessoryItems.AUTO$GET$EXPERIENCE);
                     helper.unit(AccessoryItems.AUTO$GET$COIN);

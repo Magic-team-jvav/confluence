@@ -11,7 +11,8 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 public class ZenithItem extends BaseSwordItem implements ILeftClickStateItem {
 
     public ZenithItem(Tier tier, ModRarity red, int rawDamage, float rawSpeed) {
-        super(tier, red, rawDamage, rawSpeed);
+        super(tier, red, rawDamage, rawSpeed, SwordDefinition.builder()
+                .tooltipImage());
     }
 
     @Override

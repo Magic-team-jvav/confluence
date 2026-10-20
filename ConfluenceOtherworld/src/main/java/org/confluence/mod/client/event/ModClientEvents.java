@@ -361,8 +361,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
         event.registerEntityRenderer(WHIP_ATTACK.get(), WhipAttackRenderer::new);
-        // 引魂弹幕改由粒子风暴渲染，与服务端弹幕本身无需网格
-        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), NoopRenderer::new);
+        // 引魂弹幕平时由粒子风暴渲染，魂引天星改用星怒坠星的交叉面片
+        event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), SoulLureProjectileRenderer::new);
         event.registerEntityRenderer(SOUL_STING.get(), SoulStingProjectileRenderer::new);
         event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);

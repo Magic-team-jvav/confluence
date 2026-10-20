@@ -14,7 +14,7 @@ import org.confluence.mod.common.soulcerer.skill.SurgeBlastSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulMarkSkill;
 import org.confluence.mod.common.soulcerer.skill.PassiveSoulSkill;
 import org.confluence.mod.common.soulcerer.skill.KarmaFlameSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulGunnerSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulAssaultSkill;
 import org.confluence.mod.common.soulcerer.skill.BoilingBloodSkill;
 import org.confluence.mod.common.soulcerer.skill.StatefulSoulSkill;
 import org.confluence.mod.common.soulcerer.skill.NaturesWrathSkill;
@@ -66,7 +66,7 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> NATURES_WRATH = register("natures_wrath", rl -> new NaturesWrathSkill(rl, rl), SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> PROFANE_SOUL = register("profane_soul", rl -> new ProfaneSoulSkill(rl, rl), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> KARMA_FLAME = register("karma_flame", rl -> new KarmaFlameSkill(rl, rl), SkillCategory.BLOOD_NATURE);
-    public static final Supplier<SoulSkill> SOUL_GUNNER = register("soul_gunner", rl -> new SoulGunnerSkill(rl, rl), SkillCategory.SOUL);
+    public static final Supplier<SoulSkill> SOUL_ASSAULT = register("soul_assault", rl -> new SoulAssaultSkill(rl, rl), SkillCategory.SOUL);
 
     // ===== 灵魂激荡系列 =====
     public static final Supplier<SoulSkill> SPIRIT_SURGE = register("spirit_surge", rl -> new SpiritSurgeSkill(rl, rl), SkillCategory.BLOOD_NATURE);
@@ -80,10 +80,13 @@ public final class ModSoulSkills {
             SoulSkillParameters.SPIRIT_SURGE_DURATION_TICKS, SoulSkillParameters.SPIRIT_TRIGGER_CHAIN_COUNT,
             SoulSkillParameters.SPIRIT_TRIGGER_CHAIN_DAMAGE), SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> SURGE_BLAST = register("surge_blast", rl -> new SurgeBlastSkill(rl, rl), SkillCategory.STAR_LURE);
-    public static final Supplier<SoulSkill> SOUL_SURGE = register("soul_surge", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.SOUL);
 
     // ===== 附魂（自身增益） =====
     public static final Supplier<SoulSkill> ENHANCED_SOUL = register("enhanced_soul", rl -> new EnhancedSoulSkill(rl, rl), SkillCategory.SOUL);
+    /// 附魂激荡：主动释放的限时增益，增益期间免费自动释放灵魂激荡（见 `PlayerUtils.tickSoulSkillStates`）。
+    public static final Supplier<SoulSkill> SOUL_SURGE = register("soul_surge", rl -> new StatefulSoulSkill(rl, rl,
+            SoulSkillParameters.SOUL_SURGE_SOUL_COST, SoulSkillParameters.SOUL_SURGE_COOLDOWN_TICKS,
+            () -> ModEffects.SOUL_SURGE.get(), SoulSkillParameters.SOUL_SURGE_DURATION_TICKS, false), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> BLOOD_RAGE = register("blood_rage", rl -> new SoulBuffSkill(rl, rl,
             SoulSkillParameters.BLOOD_RAGE_SOUL_COST, SoulSkillParameters.BLOOD_RAGE_COOLDOWN_TICKS,
             () -> ModEffects.BLOOD_RAGE.get(), SoulSkillParameters.BLOOD_RAGE_DURATION_TICKS, SoulSkillParameters.BLOOD_RAGE_HEALTH_COST), SkillCategory.BLOOD_NATURE);
@@ -111,9 +114,9 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> STAR_LINK = register("star_link", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> SOUL_HARVEST = register("soul_harvest", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> SOUL_DEVOUR = register("soul_devour", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.SOUL);
-    public static final Supplier<SoulSkill> CURSE_RESISTANCE = register("curse_resistance", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.SOUL);
-    public static final Supplier<SoulSkill> FLOW_CONTROL = register("flow_control", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.STAR_LURE);
-    public static final Supplier<SoulSkill> SPELL_ROTATION = register("spell_rotation", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.STAR_LURE);
+    public static final Supplier<SoulSkill> BACKLASH_RESISTANCE = register("backlash_resistance", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.SOUL);
+    public static final Supplier<SoulSkill> SOUL_CONTROL = register("soul_control", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.STAR_LURE);
+    public static final Supplier<SoulSkill> SOUL_ROTATION = register("soul_rotation", rl -> new PassiveSoulSkill(rl, rl), SkillCategory.STAR_LURE);
     public enum SkillCategory {
         EMPTY("", 0xFFFFFFFF, "confluence.screen.soulcerer_overview.tab.empty"),
         SOUL("S", 0xFF6080FF, "confluence.screen.soulcerer_overview.tab.soul"),

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -19,12 +20,25 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
+
+import java.util.Optional;
 
 public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
     private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ENEMY_FACTION);
+    private TooltipComponent tooltipImage;
 
     public SkyFractureItem() {
         super(ModRarity.LIGHT_RED, SkyFractureProjectile::new, 24, 17, 17.5F, 10, 0.24);
+    }
+
+    /// 与其它长剑一致，在 tooltip 里额外画出 24x 的剑身预览图（使用 HEAD 视角模型）。
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (tooltipImage == null) {
+            this.tooltipImage = AltImageComponent.of(stack.getItem());
+        }
+        return Optional.of(tooltipImage);
     }
 
     @Override

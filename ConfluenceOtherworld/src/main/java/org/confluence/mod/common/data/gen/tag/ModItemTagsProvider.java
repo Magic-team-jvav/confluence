@@ -1622,6 +1622,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.TITANIUM_SWORD.get(),
                 SwordItems.MURAMASA.get()
         );
+        // 祈灵之刃：魂师副武器，自带自动挥舞
+        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());
         // 标签本身即为公开扩展点；本体目前没有额外的普通自动发射弓。
         tag(ModTags.Items.AUTOMATIC_BOW);
         tag(ModTags.Items.MIMIC_SUMMON_KEY).add(

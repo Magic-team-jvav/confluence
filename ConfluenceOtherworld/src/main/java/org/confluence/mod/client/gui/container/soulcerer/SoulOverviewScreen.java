@@ -241,34 +241,34 @@ public class SoulOverviewScreen extends Screen {
         addNode(OverviewNode.Builder.of(ModSoulSkills.SPIRIT_TRIGGER)
                 .pos(200, -120)
                 .connections(ModSoulSkills.SURGE_BLAST));
-        // 灵魂枪手
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_GUNNER)
+        // 灵魂突击
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_ASSAULT)
                 .pos(120, 80)
                 .connections(ModSoulSkills.SOUL_LURE));
-        // 代行收割
+        // 灵魂收割
         addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_HARVEST)
                 .pos(-120, 40)
                 .connections(ModSoulSkills.ENHANCED_SOUL));
-        // 噬魂提气
+        // 噬魂借力
         addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_DEVOUR)
                 .pos(-160, 40)
                 .connections(ModSoulSkills.SOUL_HARVEST));
-        // 诅咒抵抗
-        addNode(OverviewNode.Builder.of(ModSoulSkills.CURSE_RESISTANCE)
+        // 反噬抵抗
+        addNode(OverviewNode.Builder.of(ModSoulSkills.BACKLASH_RESISTANCE)
                 .pos(-200, 40)
                 .connections(ModSoulSkills.SOUL_DEVOUR));
-        // 分流管控
-        addNode(OverviewNode.Builder.of(ModSoulSkills.FLOW_CONTROL)
+        // 分魂驾驭
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_CONTROL)
                 .pos(-200, 80)
-                .connections(ModSoulSkills.CURSE_RESISTANCE));
-        // 术式轮转
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SPELL_ROTATION)
+                .connections(ModSoulSkills.BACKLASH_RESISTANCE));
+        // 魂术轮转
+        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_ROTATION)
                 .pos(-240, 80)
-                .connections(ModSoulSkills.FLOW_CONTROL));
+                .connections(ModSoulSkills.SOUL_CONTROL));
         // 生命归还
         addNode(OverviewNode.Builder.of(ModSoulSkills.LIFE_RETURN)
                 .pos(-240, 120)
-                .connections(ModSoulSkills.SPELL_ROTATION));
+                .connections(ModSoulSkills.SOUL_ROTATION));
         // 天穹倒转
         addNode(OverviewNode.Builder.of(ModSoulSkills.FIRMAMENT_REVERSED)
                 .pos(-120, -80)

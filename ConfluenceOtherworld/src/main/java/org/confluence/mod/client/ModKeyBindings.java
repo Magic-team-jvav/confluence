@@ -3,6 +3,7 @@ package org.confluence.mod.client;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.common.util.Lazy;
 import org.confluence.mod.Confluence;
 import org.lwjgl.glfw.GLFW;
@@ -34,10 +35,11 @@ public final class ModKeyBindings {
 
     //region 魔法系列
 
-    /// 灵魂总览
+    /// 灵魂总览（魂师大界面）：默认 Shift + C
     public static final Lazy<KeyMapping> SOUL_OVERVIEW = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
             "key.confluence.soulcerer.overview",
             KeyConflictContext.IN_GAME,
+            KeyModifier.SHIFT,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_C,
             KEY_BINDINGS_CATEGORY

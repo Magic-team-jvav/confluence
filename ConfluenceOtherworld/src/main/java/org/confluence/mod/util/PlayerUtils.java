@@ -68,7 +68,7 @@ import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.soulcerer.skill.SoulGunnerSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulAssaultSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
@@ -534,10 +534,7 @@ public final class PlayerUtils {
     private static void setSoulSkillCooldown(Player player, SoulSkill skill, int ticks) {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         if (ticks > 0) {
-            /// 分流管控：技能冷却延长
-            if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
-                ticks = Math.round(ticks * SoulSkillParameters.FLOW_CONTROL_COOLDOWN_MULTIPLIER);
-            }
+            ticks = getSoulCooldownTicks(player, ticks);
             SoulSkillStack cooldown = skill.getStack();
             cooldown.setCd(ticks);
             cooldown.setMaxCd(ticks);
@@ -546,6 +543,22 @@ public final class PlayerUtils {
             storage.getSkillCooldowns().remove(skill.getId());
         }
         mirrorSoulSkillCooldowns(player);
+    }
+
+    /// 统一结算「分魂驾驭延长」与「冰冷魂戒缩短」后的灵魂技能冷却。
+    private static int getSoulCooldownTicks(Player player, int ticks) {
+        if (ticks <= 0) {
+            return ticks;
+        }
+        /// 分魂驾驭：技能冷却延长
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_CONTROL.get())) {
+            ticks = Math.round(ticks * SoulSkillParameters.SOUL_CONTROL_COOLDOWN_MULTIPLIER);
+        }
+        /// 冰冷魂戒：技能冷却缩短
+        if (TCUtils.hasType(player, AccessoryItems.FROSTBITE$SOUL$RING)) {
+            ticks = Math.round(ticks * (1.0F - SoulSkillParameters.FROSTBITE_SOUL_RING_COOLDOWN_REDUCTION));
+        }
+        return ticks;
     }
 
     private static void mirrorSoulSkillCooldowns(Player player) {
@@ -595,9 +608,9 @@ public final class PlayerUtils {
         if (isPassiveSoulSkillActive(player, ModSoulSkills.STAR_LINK.get())) {
             amount *= (float) (1.0 + player.getAttributeValue(LibAttributes.getMagicDamage().value()) * SoulSkillParameters.STAR_LINK_SHARE_RATIO);
         }
-        /// 分流管控：技能伤害翻倍（冷却同时延长）
-        if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
-            amount *= SoulSkillParameters.FLOW_CONTROL_DAMAGE_MULTIPLIER;
+        /// 分魂驾驭：技能伤害翻倍（冷却同时延长）
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_CONTROL.get())) {
+            amount *= SoulSkillParameters.SOUL_CONTROL_DAMAGE_MULTIPLIER;
         }
         return amount;
     }
@@ -723,9 +736,9 @@ public final class PlayerUtils {
 
     /// 生命代偿使用独立伤害来源，由伤害标签与 PortLib 事件结算。
     private static void applySoulOverdraft(ServerPlayer player, float healthCost) {
-        /// 诅咒抵抗：生命代偿伤害减免
-        if (healthCost > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.CURSE_RESISTANCE.get())) {
-            healthCost *= 1.0F - SoulSkillParameters.CURSE_RESISTANCE_REDUCTION;
+        /// 反噬抵抗：生命代偿伤害减免
+        if (healthCost > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.BACKLASH_RESISTANCE.get())) {
+            healthCost *= 1.0F - SoulSkillParameters.BACKLASH_RESISTANCE_REDUCTION;
         }
         if (healthCost <= 0.0F || !player.isAlive()) {
             return;
@@ -740,10 +753,6 @@ public final class PlayerUtils {
             return false;
         }
         applySoulOverdraft(player, healthCost);
-        /// 术式轮转：用一次技能后自动切到下一个可主动释放的技能
-        if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
-            rotateToNextSkill(player);
-        }
         return true;
     }
 
@@ -771,6 +780,16 @@ public final class PlayerUtils {
         if (skillStack.isEmpty()) {
             return rejectSoulSkillUse(player, availabilityChanged);
         }
+        /// 魂术轮转：当前技能还在冷却时，直接跳到下一个能马上施放的技能，不让这次按键空转。
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_ROTATION.get())
+                && getSoulSkillCooldown(player, skillStack.getSoulSkill().getId()) > 0) {
+            int next = findNextReadySoulSkillIndex(player, getCurrentSoulSkillIndex(player));
+            if (next >= 0) {
+                setCurrentSoulSkillIndex(player, next);
+                SoulSkillIndexSyncPacketS2C.sendToClient(player);
+                skillStack = getSkillStack(player, next);
+            }
+        }
         SoulSkill skill = skillStack.getSoulSkill();
         /// 不持武器时只能放刻骨的记忆当前放行的那一个技能。
         if (!isHoldingSoulWeapon(player) && !isMemoryOfBonebrandSkill(player, skill)) {
@@ -779,24 +798,89 @@ public final class PlayerUtils {
         if (!isSoulSkillAvailable(player, skill.getId()) || getSoulSkillCooldown(player, skill.getId()) > 0 || !skill.canUse(player, skillStack)) {
             return rejectSoulSkillUse(player, availabilityChanged);
         }
-        float healthCost = prepareSoulConsumption(player, skill.getSoulCost(skillStack));
-        if (healthCost < 0.0F) {
+        int castIndex = getCurrentSoulSkillIndex(player);
+        if (!castSoulSkill(player, skillStack)) {
             return rejectSoulSkillUse(player, availabilityChanged);
         }
+        /// 刻骨的记忆：用掉一次技能后重掷它放行的那个技能。
+        rerollMemoryOfBonebrandSkill(player);
+        /// 束魂锁链 / 魂术轮转：整套附魂技能的联动
+        applySoulSkillSynergy(player, skill, castIndex);
+        return true;
+    }
 
+    /// 一次成功的单体施放：结算耗魂、冷却、两端效果与生命代偿；取消时返回 false。
+    private static boolean castSoulSkill(ServerPlayer player, SoulSkillStack skillStack) {
+        SoulSkill skill = skillStack.getSoulSkill();
+        float healthCost = prepareSoulConsumption(player, skill.getSoulCost(skillStack));
+        if (healthCost < 0.0F) {
+            return false;
+        }
         setSoulSkillCooldown(player, skill, skill.getCooldown(skillStack));
         SoulSkillStack castStack = skillStack.copy();
         SoulSkillSyncPacketS2C.sendToClient(player);
         skill.use(player, skillStack);
         SoulSkillUsePacketS2C.sendToClient(player, castStack);
         applySoulOverdraft(player, healthCost);
-        /// 刻骨的记忆：用掉一次技能后重掷它放行的那个技能。
-        rerollMemoryOfBonebrandSkill(player);
-        /// 术式轮转：用一次技能后自动切到下一个可主动释放的技能
-        if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
+        return true;
+    }
+
+    /// 施放成功后的饰品与被动联动。
+    ///
+    /// - `束魂锁链`：施放任意「附魂」技能时，把其余已装备的「附魂」技能同时放出。
+    /// - `魂术轮转`：施放「强力附魂系列」技能时，沿技能栏把该系列其余技能依次连锁放出，结束后选择回到起手技能；
+    ///   非该系列技能仍沿用原来的「自动切到下一个可释放技能」，且同样会跳过冷却中的技能。
+    ///
+    /// 连锁施放统一走 `castSoulSkill`，不会再回到本方法，因此不存在自递归。
+    private static void applySoulSkillSynergy(ServerPlayer player, SoulSkill primary, int castIndex) {
+        if (TCUtils.hasType(player, AccessoryItems.SOUL$BINDING$CHAIN) && primary.is(ModTags.SoulSkills.SOUL_ATTACH)) {
+            for (SoulSkillStack stack : new ArrayList<>(getEquippedSoulSkills(player))) {
+                if (stack.isEmpty() || stack.getSoulSkill() == primary) {
+                    continue;
+                }
+                if (stack.getSoulSkill().is(ModTags.SoulSkills.SOUL_ATTACH)) {
+                    castSoulSkillIfReady(player, stack);
+                }
+            }
+        }
+        if (!isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_ROTATION.get())) {
+            return;
+        }
+        if (primary.is(ModTags.SoulSkills.ENHANCED_SOUL_SERIES)) {
+            chainCastEnhancedSoulSeries(player, castIndex);
+        } else {
             rotateToNextSkill(player);
         }
-        return true;
+    }
+
+    /// 联动施放：只放当前「已学会 + 可用 + 不在冷却 + 非被动」的技能，各自结算自己的耗魂与冷却。
+    private static void castSoulSkillIfReady(ServerPlayer player, SoulSkillStack stack) {
+        SoulSkill skill = stack.getSoulSkill();
+        if (skill.isPassive() || !isSoulSkillAvailable(player, skill.getId())
+                || getSoulSkillCooldown(player, skill.getId()) > 0 || !skill.canUse(player, stack)) {
+            return;
+        }
+        castSoulSkill(player, stack);
+    }
+
+    /// 魂术轮转：沿技能栏把「强力附魂系列」技能逐个连锁放出，结束后落到下一个能施放的槽位。
+    private static void chainCastEnhancedSoulSeries(ServerPlayer player, int startIndex) {
+        List<SoulSkillStack> equipped = new ArrayList<>(getEquippedSoulSkills(player));
+        int size = equipped.size();
+        if (size <= 0) {
+            return;
+        }
+        for (int step = 1; step <= size; step++) {
+            SoulSkillStack candidate = equipped.get((startIndex + step) % size);
+            if (candidate.isEmpty() || !candidate.getSoulSkill().is(ModTags.SoulSkills.ENHANCED_SOUL_SERIES)) {
+                continue;
+            }
+            castSoulSkillIfReady(player, candidate);
+        }
+        /// 连锁过后起手技能本身也在冷却中，所以优先挑一个不在冷却的槽位；全都在冷却才留在起手技能。
+        int next = findNextReadySoulSkillIndex(player, startIndex);
+        setCurrentSoulSkillIndex(player, next >= 0 ? next : startIndex);
+        SoulSkillIndexSyncPacketS2C.sendToClient(player);
     }
 
     private static boolean rejectSoulSkillUse(ServerPlayer player, boolean availabilityChanged) {
@@ -830,11 +914,12 @@ public final class PlayerUtils {
         if (healthCost < 0.0F) {
             return false;
         }
-        player.getCooldowns().addCooldown(stack.getItem(), artifact.getCooldown(stack));
+        /// 冰冷魂戒：法器冷却同样缩短
+        player.getCooldowns().addCooldown(stack.getItem(), getSoulCooldownTicks(player, artifact.getCooldown(stack)));
         artifact.useArtifact(player, stack);
         applySoulOverdraft(player, healthCost);
-        /// 术式轮转：用一次技能后自动切到下一个可主动释放的技能
-        if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
+        /// 魂术轮转：用一次法器后自动切到下一个可主动释放的技能
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
         return true;
@@ -1429,14 +1514,14 @@ public final class PlayerUtils {
             new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.LURE_SURGE),
             new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.EMPOWERED_SURGE),
             new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.SPIRIT_TRIGGER),
+            new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_ROTATION),
             new RitualUnlock(2, List.of(), ModSoulSkills.STAR_REVERSAL),
             new RitualUnlock(2, List.of(), ModSoulSkills.STAR_LINK),
             new RitualUnlock(2, List.of(), ModSoulSkills.SOUL_HARVEST),
-            new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_GUNNER),
+            new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_ASSAULT),
             new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_DEVOUR),
-            new RitualUnlock(4, List.of(), ModSoulSkills.CURSE_RESISTANCE),
-            new RitualUnlock(4, List.of(), ModSoulSkills.FLOW_CONTROL),
-            new RitualUnlock(4, List.of(), ModSoulSkills.SPELL_ROTATION),
+            new RitualUnlock(4, List.of(), ModSoulSkills.BACKLASH_RESISTANCE),
+            new RitualUnlock(4, List.of(), ModSoulSkills.SOUL_CONTROL),
             new RitualUnlock(4, List.of(), ModSoulSkills.LIFE_RETURN));
 
     public static void resetSoulSkillEquip(ServerPlayer player) {
@@ -1546,34 +1631,37 @@ public final class PlayerUtils {
         return -1;
     }
 
-    private static void rotateToNextSkill(ServerPlayer player) {
-        SoulSkillStorage storage = SoulSkillStorage.of(player);
-        List<SoulSkillStack> equipped = storage.getEquippedSoulSkills();
+    /// 魂术轮转：从 `start` 之后（含回绕，不含 `start` 本身）找第一个「非空、非被动、当前可用且不在冷却」的槽位；
+    /// 找不到返回 -1，调用方保持当前选中位不变。
+    private static int findNextReadySoulSkillIndex(ServerPlayer player, int start) {
+        List<SoulSkillStack> equipped = getEquippedSoulSkills(player);
         int size = equipped.size();
-        if (size <= 1) {
-            return;
-        }
-        int current = storage.getCurrentSoulSkillIndex();
-        for (int step = 1; step <= size; step++) {
-            int index = (current + step) % size;
+        for (int step = 1; step < size; step++) {
+            int index = Math.floorMod(start + step, size);
             SoulSkillStack candidate = equipped.get(index);
-            if (!candidate.isEmpty() && !candidate.getSoulSkill().isPassive()) {
-                setCurrentSoulSkillIndex(player, index);
-                SoulSkillIndexSyncPacketS2C.sendToClient(player);
-                return;
+            if (candidate.isEmpty() || candidate.getSoulSkill().isPassive()) {
+                continue;
             }
+            ResourceLocation id = candidate.getSoulSkill().getId();
+            if (!isSoulSkillAvailable(player, id) || getSoulSkillCooldown(player, id) > 0) {
+                continue;
+            }
+            return index;
         }
+        return -1;
     }
 
-    /// 是否正挂着任意「附魂」类增益（BUFF 类技能），供附魂激荡判断触发时机。
-    private static boolean hasAnySoulBuffActive(Player player) {
-        for (Supplier<SoulSkill> supplier : ModSoulSkills.getAllSkills()) {
-            SoulSkill skill = supplier.get();
-            if (skill.isBuff() && skill.isBuffActive(player)) {
-                return true;
-            }
+    private static void rotateToNextSkill(ServerPlayer player) {
+        SoulSkillStorage storage = SoulSkillStorage.of(player);
+        if (storage.getEquippedSoulSkills().size() <= 1) {
+            return;
         }
-        return false;
+        int next = findNextReadySoulSkillIndex(player, storage.getCurrentSoulSkillIndex());
+        if (next < 0) {
+            return;
+        }
+        setCurrentSoulSkillIndex(player, next);
+        SoulSkillIndexSyncPacketS2C.sendToClient(player);
     }
 
     public static void tickSoulSkillStates(ServerPlayer player, long gameTime) {
@@ -1584,16 +1672,16 @@ public final class PlayerUtils {
         if (player.hasEffect(ModEffects.STAR_CALL.get()) && gameTime % SoulSkillParameters.STAR_CALL_INTERVAL_TICKS == 0) {
             tickStarCall(player, storage);
         }
-        /// 附魂激荡：只要身上挂着任意附魂类增益，就定时自动释放一次灵魂激荡
-        if (gameTime % (SoulSkillParameters.ACTIVE_COOLDOWN_TICKS * 3) == 0
-                && isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_SURGE.get())
-                && hasAnySoulBuffActive(player)) {
+        /// 附魂激荡：「附魂激荡」增益期间按间隔自动释放灵魂激荡，且完全不消耗灵魂
+        if (gameTime % SoulSkillParameters.SOUL_SURGE_INTERVAL_TICKS == 0
+                && player.hasEffect(ModEffects.SOUL_SURGE.get())
+                && isSoulSkillLearned(player, ModSoulSkills.SOUL_SURGE.get().getId())) {
             float damage = getSoulSkillDamage(player, ModSoulSkills.SPIRIT_SURGE.get().getStack());
             player.level().addFreshEntity(new SpiritSurgeEntity(player, damage));
         }
-        /// 灵魂枪手：增益期间按间隔把灵魂转成子弹
-        if (player.hasEffect(ModEffects.SOUL_GUNNER.get()) && gameTime % SoulSkillParameters.SOUL_GUNNER_INTERVAL_TICKS == 0) {
-            SoulGunnerSkill.fireBurst(player);
+        /// 灵魂突击：增益期间按间隔把灵魂转成子弹
+        if (player.hasEffect(ModEffects.SOUL_ASSAULT.get()) && gameTime % SoulSkillParameters.SOUL_ASSAULT_INTERVAL_TICKS == 0) {
+            SoulAssaultSkill.fireBurst(player);
         }
         boolean draining = player.hasEffect(ModEffects.SOUL_DRAIN.get());
         if (storage.isSoulDrainActive() && !draining) {
@@ -1617,7 +1705,8 @@ public final class PlayerUtils {
         }
         LivingEntity target = null;
         for (LivingEntity candidate : player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(16.0),
-                candidate -> candidate.isAlive() && !candidate.isSpectator() && !candidate.isAlliedTo(player))) {
+                candidate -> candidate.isAlive() && !candidate.isSpectator() && !candidate.isAlliedTo(player)
+                        && EnemyDamageRules.isEnemy(candidate))) {
             target = candidate;
             break;
         }
@@ -1625,9 +1714,8 @@ public final class PlayerUtils {
         double z = target != null ? target.getZ() : player.getZ() + player.getLookAngle().z * 4.0;
         double y = player.getY() + 8.0;
         float damage = getSoulSkillDamage(player, ModSoulSkills.STAR_CALL.get().getStack());
-        player.level().addFreshEntity(new SoulLureProjectile(player, new Vec3(x, y, z), new Vec3(0, -1, 0), damage,
-                SoulLureProjectile.STAR_PARTICLE, 1.2F, 0.02, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE,
-                SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, 0.0, 0.0F));
+        /// 外观改用星怒的坠星弹射物，不再走 `falling_star` 粒子。
+        player.level().addFreshEntity(SoulLureProjectile.star(player, new Vec3(x, y, z), new Vec3(0, -1, 0), damage, 1.2F, 0.02));
         if (!consumeSoul(player, SoulSkillParameters.STAR_CALL_SOUL_PER_STAR)) {
             return;
         }

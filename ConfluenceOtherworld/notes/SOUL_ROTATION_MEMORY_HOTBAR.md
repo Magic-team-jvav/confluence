@@ -18,7 +18,8 @@ if (!isSoulSkillAvailable(player, candidate.getSoulSkill().getId())) continue;
 return index;
 ```
 
-- 术式轮转（`rotateToNextSkill`）本来就不看冷却，行为不变；
+- 术式轮转（`rotateToNextSkill`）当时不看冷却，行为不变；**已作废**：后续按新需求改为自动跳过冷却中的技能，
+  见 `SOUL_STAR_CALL_STARFURY_ROTATION_COOLDOWN.md`；
 - 滚轮/快捷切换只看空槽与被动，也不看冷却，三者口径现在一致；
 - 按施法键落到一个正在冷却的技能上时，会照常失败（冷却提示由技能框自己画），不再把选中位甩到别的技能。
 

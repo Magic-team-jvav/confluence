@@ -9,39 +9,21 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.gui.hud.BossBarStyles.BarSection;
+import org.confluence.mod.client.gui.hud.BossBarStyles.BarStyle;
 import org.confluence.mod.client.handler.ClientBossBarTracker;
 import org.confluence.mod.client.handler.ClientBossBarTracker.BossBarData;
-import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.network.s2c.BossBarSyncPacketS2C.Health;
 import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix4f;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
 import java.util.Locale;
-import java.util.Map;
 
 public final class CustomBossBarRenderer {
-    private static final int TEXTURE_WIDTH = 256;
-    private static final int TEXTURE_HEIGHT = 46;
-    private static final int HEALTH_LEFT = 37;
-    private static final int HEALTH_WIDTH = 182;
-    private static final int NUMBER_CENTER_X = 61;
-    private static final int VERTICAL_INCREMENT = 40;
     private static ShaderInstance flowingFillShader;
-    private static final Map<ResourceLocation, BarStyle> STYLES = Map.ofEntries(
-            style(BossEntities.KING_SLIME),
-            style(BossEntities.EYE_OF_CTHULHU),
-            style(BossEntities.EATER_OF_WORLDS),
-            style(BossEntities.BRAIN_OF_CTHULHU),
-            style(BossEntities.QUEEN_BEE),
-            style(BossEntities.SKELETRON),
-            style(BossEntities.DEERCLOPS),
-            style(BossEntities.WALL_OF_FLESH),
-            style(BossEntities.HILL_OF_FLESH)
-    );
 
     private CustomBossBarRenderer() {}
 
@@ -49,37 +31,80 @@ public final class CustomBossBarRenderer {
         if (ClientConfigs.bossBarStyle == Style.VANILLA) return;
         BossBarData data = ClientBossBarTracker.get(event.getBossEvent().getId());
         if (data == null) return;
-        BarStyle style = STYLES.get(data.entityType());
+        BarStyle style = BossBarStyles.INSTANCE.get(data.styleId());
         if (style == null) return;
 
         GuiGraphics graphics = event.getGuiGraphics();
-        int x = (event.getWindow().getGuiScaledWidth() - TEXTURE_WIDTH) / 2;
+        int screenWidth = event.getWindow().getGuiScaledWidth();
+        int x = (screenWidth - style.frameWidth()) / 2;
         int y = event.getY();
-        int filledWidth = Mth.floor(HEALTH_WIDTH * Mth.clamp(event.getBossEvent().getProgress(), 0.0F, 1.0F));
-        graphics.blit(style.frame(), x, y, 0.0F, 0.0F, TEXTURE_WIDTH, TEXTURE_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-        if (filledWidth > 0) {
-            if (ClientConfigs.bossBarStyle == Style.DYNAMIC && flowingFillShader != null) {
-                renderFlowingFill(graphics, style.fill(), x + HEALTH_LEFT, y, filledWidth);
-            } else {
-                graphics.blit(style.fill(), x + HEALTH_LEFT, y, HEALTH_LEFT, 0.0F, filledWidth, TEXTURE_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-            }
+        graphics.blit(style.frame(), x, y, 0, 0, style.frameWidth(), style.frameHeight(), style.textureWidth(), style.textureHeight());
+        // 血量与布局按同一顺序配对，渲染器无需认识激光眼、魔焰眼或其他具体 Boss。
+        for (int i = 0; i < style.sections().size() && i < data.health().size(); i++) {
+            drawHealth(graphics, style, style.sections().get(i), data.health().get(i), x, y);
         }
-
         Minecraft minecraft = Minecraft.getInstance();
         graphics.drawString(minecraft.font, event.getBossEvent().getName(),
-                (event.getWindow().getGuiScaledWidth() - minecraft.font.width(event.getBossEvent().getName())) / 2,
-                y - 9, 0xFFFFFF);
-        if (ClientConfigs.bossBarNumbersVisible && data.maximumHealth() > 0.0F) {
-            String value = String.format(Locale.ROOT, "%.0f / %.0f",
-                    Math.max(0.0F, data.health()), data.maximumHealth());
-            graphics.drawString(minecraft.font, value, x + NUMBER_CENTER_X - minecraft.font.width(value) / 2,
-                    y + 14, 0xBFA268);
-        }
-        event.setIncrement(VERTICAL_INCREMENT);
+                (screenWidth - minecraft.font.width(event.getBossEvent().getName())) / 2, y - 9, 0xFFFFFF);
+        event.setIncrement(style.verticalIncrement());
         event.setCanceled(true);
     }
 
-    private static void renderFlowingFill(GuiGraphics graphics, ResourceLocation texture, int x, int y, int width) {
+    // 静态和动态样式只在填充绘制处选择，底框、裁切方向与数字排版保持一致。
+    private static void drawHealth(GuiGraphics graphics, BarStyle style, BarSection section, Health health, int x, int y) {
+        int width = filledWidth(section.width(), health.current(), health.maximum());
+        int sourceX = section.left() + (section.reverse() ? section.width() - width : 0);
+        if (width > 0) {
+            if (ClientConfigs.bossBarStyle == Style.DYNAMIC && flowingFillShader != null) {
+                graphics.flush();
+                renderFlowingFill(graphics, style.fill(), x + sourceX, y + style.healthY(), width,
+                        sourceX, style.fillY(), style.fillHeight(), style.textureWidth(), style.textureHeight());
+            } else {
+                graphics.blit(style.fill(), x + sourceX, y + style.healthY(), sourceX, style.fillY(),
+                        width, style.fillHeight(), style.textureWidth(), style.textureHeight());
+            }
+        }
+        if (!ClientConfigs.bossBarNumbersVisible || health.maximum() <= 0) return;
+        var font = Minecraft.getInstance().font;
+        String value = String.format(Locale.ROOT, "%.0f / %.0f", Math.max(0.0F, health.current()), health.maximum());
+        // 按该段可用宽度缩放，普通血条保持原字号，双子长数字也不会盖到中间眼睛。
+        float scale = Math.min(1.0F, (section.width() - 4.0F) / font.width(value));
+        graphics.pose().pushPose();
+        graphics.pose().translate(x + section.numberCenter(), y + section.numberY(), 0);
+        graphics.pose().scale(scale, scale, 1);
+        int left = -font.width(value) / 2;
+        if (section.numberColor() == section.numberEndColor()) {
+            graphics.drawString(font, value, left, 0, section.numberColor());
+        } else {
+            // 按整行位置插值，数字从左到右渐变，空格宽度也计入排版。
+            int offset = 0;
+            int span = Math.max(1, font.width(value) - font.width(value.substring(value.length() - 1)));
+            for (int i = 0; i < value.length(); i++) {
+                String glyph = value.substring(i, i + 1);
+                float progress = offset / (float) span;
+                int color = interpolateColor(section.numberColor(), section.numberEndColor(), progress);
+                graphics.drawString(font, glyph, left + offset, 0, color);
+                offset += font.width(glyph);
+            }
+        }
+        graphics.pose().popPose();
+    }
+
+    // 逐通道插值，避免直接插值打包颜色导致进位串色。
+    private static int interpolateColor(int start, int end, float progress) {
+        int red = Math.round(Mth.lerp(progress, (start >> 16) & 255, (end >> 16) & 255));
+        int green = Math.round(Mth.lerp(progress, (start >> 8) & 255, (end >> 8) & 255));
+        int blue = Math.round(Mth.lerp(progress, start & 255, end & 255));
+        return red << 16 | green << 8 | blue;
+    }
+
+    // 只计算各段自身的有效长度，归零后不再向眼睛装饰和连接区域继续收缩。
+    private static int filledWidth(int width, float health, float maximum) {
+        return maximum > 0 ? Mth.floor(width * Mth.clamp(health / maximum, 0.0F, 1.0F)) : 0;
+    }
+
+    private static void renderFlowingFill(GuiGraphics graphics, ResourceLocation texture, int x, int y, int width,
+                                          int sourceX, int sourceY, int height, int textureWidth, int textureHeight) {
         ShaderInstance shader = flowingFillShader;
         if (shader == null) return;
         if (shader.getUniform("Time") != null)
@@ -87,28 +112,17 @@ public final class CustomBossBarRenderer {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShader(() -> shader);
         Matrix4f matrix = graphics.pose().last().pose();
-        float minU = HEALTH_LEFT / (float) TEXTURE_WIDTH;
-        float maxU = (HEALTH_LEFT + width) / (float) TEXTURE_WIDTH;
+        float minU = sourceX / (float) textureWidth;
+        float maxU = (sourceX + width) / (float) textureWidth;
+        float minV = sourceY / (float) textureHeight;
+        float maxV = (sourceY + height) / (float) textureHeight;
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        builder.vertex(matrix, x, y, 0.0F).uv(minU, 0.0F).endVertex();
-        builder.vertex(matrix, x, y + TEXTURE_HEIGHT, 0.0F).uv(minU, 1.0F).endVertex();
-        builder.vertex(matrix, x + width, y + TEXTURE_HEIGHT, 0.0F).uv(maxU, 1.0F).endVertex();
-        builder.vertex(matrix, x + width, y, 0.0F).uv(maxU, 0.0F).endVertex();
+        builder.vertex(matrix, x, y, 0.0F).uv(minU, minV).endVertex();
+        builder.vertex(matrix, x, y + height, 0.0F).uv(minU, maxV).endVertex();
+        builder.vertex(matrix, x + width, y + height, 0.0F).uv(maxU, maxV).endVertex();
+        builder.vertex(matrix, x + width, y, 0.0F).uv(maxU, minV).endVertex();
         BufferUploader.drawWithShader(builder.end());
-    }
-
-    private static Map.Entry<ResourceLocation, BarStyle> style(RegistryObject<? extends EntityType<?>> entityType) {
-        return style(entityType, entityType.getId().getPath());
-    }
-
-    private static Map.Entry<ResourceLocation, BarStyle> style(RegistryObject<? extends EntityType<?>> entityType, String textureName) {
-        ResourceLocation id = entityType.getId();
-        String basePath = "textures/entity/boss_bar/" + textureName + "_bar_";
-        return Map.entry(id, new BarStyle(
-                ResourceLocation.fromNamespaceAndPath(id.getNamespace(), basePath + "1.png"),
-                ResourceLocation.fromNamespaceAndPath(id.getNamespace(), basePath + "2.png")
-        ));
     }
 
     @ApiStatus.Internal
@@ -127,5 +141,4 @@ public final class CustomBossBarRenderer {
         }
     }
 
-    private record BarStyle(ResourceLocation frame, ResourceLocation fill) {}
 }

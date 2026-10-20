@@ -19,10 +19,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.TwinEyeProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.joml.Vector3f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 /// 激光眼：定点射击、五连发、慢速追踪光束和近身反制。
 public class Retinazer extends AbstractTwinEye {
@@ -50,10 +53,18 @@ public class Retinazer extends AbstractTwinEye {
     private static final int BLOCKED_RELOCATE_TICKS = 16;
     private static final int HOVER_CANDIDATES = 10;
     private static final int AIM_SETTLE_TICKS = 8;
+    private static final int COMBO_AIM_TIMEOUT_TICKS = 100;
+    private static final int COMBO_FIRE_TICKS = 10;
+    private static final int COMBO_MIN_FLIGHT_TICKS = 16;
+    private static final int FOLLOWUP_WINDOW_TICKS = 30;
+    private static final double FOLLOWUP_RANGE_SQUARED = 24 * 24;
+    private static final double CROSS_FIRE_SCORE = 24.0;
+    private static final byte MUZZLE_WARNING_EVENT = 66;
+    private static final byte MUZZLE_FLASH_EVENT = 67;
     private static final double BEAM_RANGE = 96.0;
     private static final double BEAM_RADIUS = 0.4;
     private static final double BLAST_RADIUS = 3.5;
-    private static final double HOVER_SPEED = 1.1;
+    private static final double HOVER_SPEED = 1.25;
     private static final float LASER_SPEED = 3.2F;
     private static final float TRACK_TURN_DEGREES = 1.2F;
     private static final DustParticleOptions CHARGE_PARTICLE = new DustParticleOptions(new Vector3f(0.65F, 0.2F, 1.0F), 1.3F);
@@ -72,6 +83,8 @@ public class Retinazer extends AbstractTwinEye {
     private int closeAttackCooldown;
     private int blockedTicks;
     private boolean closeTarget;
+    private boolean partnerDashCycle;
+    private int followupTicks;
 
     public Retinazer(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -108,19 +121,29 @@ public class Retinazer extends AbstractTwinEye {
 
     @Override
     protected Vec3 getCombatLookDirection(LivingEntity target) {
-        return getBeamLength() > 0 ? getBeamDirection() : super.getCombatLookDirection(target);
+        if (state == State.COMBO_AIM && getBeamLength() <= 0 && getPartner() instanceof Spazmatism flame)
+            return flame.getMuzzlePosition(1.0F).subtract(getEyePosition());
+        return getBeamLength() > 0 ? getBeamDirection()
+                : predictInterceptPosition(target, getBeamOrigin(), LASER_SPEED, 0, legendaryCombat() ? 4 : 3).subtract(getEyePosition());
     }
 
     @Override
     protected void tickTwinCombat() {
         LivingEntity target = getTarget();
         if (target == null) return;
+        updatePartnerCoordination(target);
         clearBeam();
         if (closeAttackCooldown > 0) closeAttackCooldown--;
         double targetDistance = distanceToSqr(target);
         if (targetDistance < CLOSE_RANGE_SQUARED) closeTarget = true;
         else if (targetDistance > CLOSE_EXIT_RANGE_SQUARED) closeTarget = false;
         stateTicks++;
+        // 冲刺链结束后的短窗口接光束；保留蓄力、冷却与遮挡检查，不在冲刺中叠加横扫。
+        if (followupTicks > 0 && !isBeamAttack() && closeAttackCooldown == 0
+                && targetDistance < FOLLOWUP_RANGE_SQUARED && hasFiringLine(getBeamOrigin(), target)) {
+            followupTicks = 0;
+            beginCloseAttack(target);
+        }
         switch (state) {
             case RELOCATE -> {
                 if (hoverPosition == null) chooseHoverPosition(target);
@@ -145,6 +168,7 @@ public class Retinazer extends AbstractTwinEye {
                     break;
                 }
                 steerTo(hoverPosition, HOVER_SPEED);
+                if (shotTimer == 3) muzzleFlash(true);
                 blockedTicks = hasFiringLine(getBeamOrigin(), target) ? 0 : blockedTicks + 1;
                 if (isClose(target)) {
                     beginCloseAttack(target);
@@ -163,7 +187,7 @@ public class Retinazer extends AbstractTwinEye {
                     if (isTransformed() && shots >= VOLLEY_SIZE) {
                         volleys++;
                         enter(State.RECOVER);
-                    } else if (!isTransformed() && stateTicks >= HOVER_TICKS) {
+                    } else if (!isTransformed() && !partnerDashCycle && stateTicks >= HOVER_TICKS) {
                         relocate();
                     }
                 }
@@ -216,6 +240,39 @@ public class Retinazer extends AbstractTwinEye {
                     else relocate();
                 }
             }
+            case COMBO_AIM -> {
+                brake();
+                if (!(getPartner() instanceof Spazmatism flame) || !flame.isAlive() || stateTicks >= COMBO_AIM_TIMEOUT_TICKS) {
+                    relocate();
+                    break;
+                }
+                TwinEyeProjectile giant = flame.getComboFlame();
+                if (giant == null) {
+                    if (!flame.isChargingComboFlame()) relocate();
+                    else if (stateTicks % 4 == 0) muzzleFlash(true);
+                } else {
+                    Vec3 direction = giant.position().subtract(getBeamOrigin()).normalize();
+                    updateBeam(direction, true);
+                    if (giant.tickCount >= COMBO_MIN_FLIGHT_TICKS && getLookAngle().dot(direction) > 0.96)
+                        enter(State.COMBO_FIRE);
+                }
+            }
+            case COMBO_FIRE -> {
+                brake();
+                if (!(getPartner() instanceof Spazmatism flame) || flame.getComboFlame() == null || stateTicks >= COMBO_FIRE_TICKS) {
+                    relocate();
+                    break;
+                }
+                TwinEyeProjectile giant = flame.getComboFlame();
+                Vec3 direction = giant.position().subtract(getBeamOrigin()).normalize();
+                Vec3 end = updateBeam(direction, false);
+                // 必须真的被光束命中；墙壁截断射线时不会隔墙引爆。
+                var box = giant.getBoundingBox().inflate(0.9);
+                if ((box.contains(getBeamOrigin()) || box.clip(getBeamOrigin(), end).isPresent()) && giant.detonateFromLaser(this)) {
+                    entityData.set(BEAM_LENGTH, (float) getBeamOrigin().distanceTo(giant.position()));
+                    relocate();
+                }
+            }
             case BLAST_CHARGE -> {
                 brake();
                 updateBeam(lockedDirection, true);
@@ -234,14 +291,41 @@ public class Retinazer extends AbstractTwinEye {
         }
     }
 
+    // 同目标的一阶段才协调技能：蓄冲时提前换侧，普通激光继续压制，冲刺链后再接蓄力光束。
+    private void updatePartnerCoordination(LivingEntity target) {
+        AbstractTwinEye partner = getPartner();
+        if (!sharesFirstPhaseTarget(partner) || !(partner instanceof Spazmatism flame)) {
+            partnerDashCycle = false;
+            followupTicks = 0;
+            return;
+        }
+        boolean preparingOrDashing = flame.isPreparingOrDashing();
+        if (preparingOrDashing && !partnerDashCycle) chooseHoverPosition(target);
+        if (!preparingOrDashing && partnerDashCycle) followupTicks = FOLLOWUP_WINDOW_TICKS;
+        else if (followupTicks > 0) followupTicks--;
+        partnerDashCycle = preparingOrDashing;
+    }
+
     private boolean isClose(LivingEntity target) {
         AbstractTwinEye partner = getPartner();
         return closeTarget && closeAttackCooldown == 0 && hasFiringLine(getBeamOrigin(), target)
                 && !(sharesFirstPhaseTarget(partner) && partner instanceof Spazmatism spazmatism && spazmatism.isPreparingOrDashing());
     }
 
+    // 联动可以跨形态配合，但只能由同组二阶段魔焰眼发起，且不打断正在释放的大招。
+    boolean beginFlameCombo(Spazmatism flame) {
+        if (!flame.isTransformed() || !flame.isAlive() || getPartner() != flame || !isAlive()
+                || getTarget() == null || isBeamAttack() || distanceToSqr(flame) > 48 * 48)
+            return false;
+        followupTicks = 0;
+        enter(State.COMBO_AIM);
+        return true;
+    }
+
+    boolean isFlameComboActive() {return state == State.COMBO_AIM || state == State.COMBO_FIRE;}
+
     boolean isBeamAttack() {
-        return state == State.TRACK_CHARGE || state == State.TRACK || state == State.SWEEP_CHARGE
+        return isFlameComboActive() || state == State.TRACK_CHARGE || state == State.TRACK || state == State.SWEEP_CHARGE
                 || state == State.SWEEP || state == State.BLAST_CHARGE || state == State.BLAST;
     }
 
@@ -292,8 +376,14 @@ public class Retinazer extends AbstractTwinEye {
                 score += 20;
             score -= position().distanceTo(candidate) * 0.3;
             if (previous != null) score += Math.min(6, previous.distanceTo(candidate));
-            if (partner != null && partner.isAlive())
+            if (partner != null && partner.isAlive()) {
                 score -= Math.max(0, 8 - partner.position().distanceTo(candidate)) * 8;
+                if (sharesFirstPhaseTarget(partner)) {
+                    Vec3 partnerSide = partner.position().subtract(target.position()).multiply(1, 0, 1).normalize();
+                    Vec3 candidateSide = candidate.subtract(target.position()).multiply(1, 0, 1).normalize();
+                    score -= partnerSide.dot(candidateSide) * CROSS_FIRE_SCORE;
+                }
+            }
             if (score > bestScore) {
                 bestScore = score;
                 best = candidate;
@@ -314,7 +404,7 @@ public class Retinazer extends AbstractTwinEye {
     private void enter(State next) {
         state = next;
         stateTicks = 0;
-        if (next == State.SWEEP_CHARGE || next == State.TRACK_CHARGE || next == State.BLAST_CHARGE)
+        if (next == State.SWEEP_CHARGE || next == State.TRACK_CHARGE || next == State.BLAST_CHARGE || next == State.COMBO_AIM)
             playSound(ModSoundEvents.ITEM_LASER_SHOOT.get(), 0.7F, 0.5F);
     }
 
@@ -382,12 +472,30 @@ public class Retinazer extends AbstractTwinEye {
         TwinEyeProjectile laser = ModEntities.RETINAZER_LASER.get().create(serverLevel);
         if (laser != null) {
             Vec3 origin = getMuzzlePosition(1.0F);
-            double flightTicks = Math.min(8, origin.distanceTo(target.getEyePosition()) / LASER_SPEED);
-            Vec3 direction = predictTargetPosition(target, flightTicks, legendaryCombat() ? 3 : 2).subtract(origin).normalize();
+            Vec3 direction = predictInterceptPosition(target, origin, LASER_SPEED, 0,
+                    legendaryCombat() ? 4 : 3).subtract(origin).normalize();
             laser.configure(this, origin, direction.scale(LASER_SPEED), (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 60);
             serverLevel.addFreshEntity(laser);
+            muzzleFlash(false);
             playSound(ModSoundEvents.ITEM_DEATH_LASER.get(), 0.6F, 1.2F);
         }
+    }
+
+    // 枪口短闪配合弹体拖尾提示射击来源，粒子不产生额外伤害。
+    private void muzzleFlash(boolean warning) {
+        if (level() instanceof ServerLevel serverLevel)
+            serverLevel.broadcastEntityEvent(this, warning ? MUZZLE_WARNING_EVENT : MUZZLE_FLASH_EVENT);
+    }
+
+    // 短闪是一次性发射器，使用世界发射口位置；不附着持续发射，也不逐帧重复创建。
+    @Override
+    public void handleEntityEvent(byte event) {
+        if ((event == MUZZLE_WARNING_EVENT || event == MUZZLE_FLASH_EVENT) && level().isClientSide) {
+            ParticleEmitter flash = new ParticleEmitter(level(), getBeamOrigin(), Confluence.asResource("twins_laser_flash"));
+            flash.hideOutline = true;
+            flash.getVars().setValue("variable.flash_scale", instance -> event == MUZZLE_WARNING_EVENT ? 0.6F : 1.0F);
+            MolangParticleEngine.INSTANCE.addEmitter(flash);
+        } else super.handleEntityEvent(event);
     }
 
     @Override
@@ -395,6 +503,8 @@ public class Retinazer extends AbstractTwinEye {
         shots = 0;
         volleys = 0;
         sweeps = 0;
+        partnerDashCycle = false;
+        followupTicks = 0;
         clearBeam();
         relocate();
     }
@@ -442,5 +552,5 @@ public class Retinazer extends AbstractTwinEye {
     @Override
     protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}
 
-    private enum State {RELOCATE, SHOOT, RECOVER, TRACK_CHARGE, TRACK, SWEEP_CHARGE, SWEEP, BLAST_CHARGE, BLAST}
+    private enum State {RELOCATE, SHOOT, RECOVER, TRACK_CHARGE, TRACK, SWEEP_CHARGE, SWEEP, BLAST_CHARGE, BLAST, COMBO_AIM, COMBO_FIRE}
 }

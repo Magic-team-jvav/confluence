@@ -1,9 +1,11 @@
 package org.confluence.mod.client.handler;
 
 import net.minecraft.resources.ResourceLocation;
+import org.confluence.mod.network.s2c.BossBarSyncPacketS2C.Health;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -12,8 +14,8 @@ public final class ClientBossBarTracker {
 
     private ClientBossBarTracker() {}
 
-    public static void synchronize(UUID eventId, ResourceLocation entityType, float health, float maximumHealth) {
-        ACTIVE_BARS.put(eventId, new BossBarData(entityType, health, maximumHealth));
+    public static void synchronize(UUID eventId, ResourceLocation styleId, List<Health> health) {
+        ACTIVE_BARS.put(eventId, new BossBarData(styleId, List.copyOf(health)));
     }
 
     public static @Nullable BossBarData get(UUID eventId) {
@@ -28,5 +30,5 @@ public final class ClientBossBarTracker {
         ACTIVE_BARS.clear();
     }
 
-    public record BossBarData(ResourceLocation entityType, float health, float maximumHealth) {}
+    public record BossBarData(ResourceLocation styleId, List<Health> health) {}
 }

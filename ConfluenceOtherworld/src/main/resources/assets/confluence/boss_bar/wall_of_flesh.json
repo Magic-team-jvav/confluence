@@ -1,0 +1,21 @@
+{
+    "frame": "confluence:textures/entity/boss_bar/wall_of_flesh_bar_1.png",
+    "fill": "confluence:textures/entity/boss_bar/wall_of_flesh_bar_2.png",
+    "texture_width": 256,
+    "texture_height": 46,
+    "frame_width": 256,
+    "frame_height": 46,
+    "fill_source_y": 0,
+    "fill_target_y": 0,
+    "fill_height": 46,
+    "vertical_increment": 40,
+    "sections": [
+        {
+            "left": 37,
+            "width": 182,
+            "reverse": false,
+            "number_center": 61,
+            "number_y": 14
+        }
+    ]
+}

@@ -116,6 +116,7 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.*;
 import org.confluence.mod.common.entity.mount.RideableBeeMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
+import org.confluence.mod.common.entity.projectile.MonsterLaser;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
@@ -453,7 +454,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(PLANTERA_SEED.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_THORN_BALL.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_SPORE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(RETINAZER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xF5DFFF, 0xC449FF, 0x6420A0));
+        event.registerEntityRenderer(RETINAZER_LASER.get(), c -> new LaserProjectileRenderer<>(c,
+                new LaserProjectileRenderer.Style(0xF5DFFF, 0xC449FF, 0x6420A0, 2.5F, 3.0F / 32.0F * 1.3F, 3.0F, 1.5F)));
         event.registerEntityRenderer(SPAZMATISM_FLAME.get(), NoopRenderer::new);
         event.registerEntityRenderer(DARK_CASTER_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(RUNE_BLAST.get(), NoopRenderer::new);
@@ -833,7 +835,11 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GIGAZAPPER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/gigazapper.geo.json"), Confluence.asResource("textures/entity/gigazapper.png"), Confluence.asResource("animations/entity/gigazapper.animation.json")), false, 1.3F, 0.0F));
         event.registerEntityRenderer(ELECTRIC_SPEAR.get(), NoopRenderer::new);
         event.registerEntityRenderer(MonsterEntities.WALKER_WEAPON.get(), NoopRenderer::new);
-        event.registerEntityRenderer(MONSTER_LASER.get(), c -> new LaserProjectileRenderer<>(c));
+        Map<MonsterLaser.Variant, LaserProjectileRenderer.Style> laserStyles = new EnumMap<>(MonsterLaser.Variant.class);
+        for (MonsterLaser.Variant variant : MonsterLaser.Variant.values()) {
+            laserStyles.put(variant, new LaserProjectileRenderer.Style(variant.innerColor(), variant.middleColor(), variant.outerColor()));
+        }
+        event.registerEntityRenderer(MONSTER_LASER.get(), c -> new LaserProjectileRenderer<MonsterLaser>(c, laser -> laserStyles.get(laser.variant())));
         event.registerEntityRenderer(MonsterEntities.TESLA_TURRET.get(), c -> new GeoNormalRenderer<>(c,
                 new ExplicitGeoModel<>(Confluence.asResource("geo/entity/tesla_turret.geo.json"),
                         Confluence.asResource("textures/entity/tesla_turret.png"),
@@ -1194,6 +1200,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(OpalLightIntegration.INSTANCE);
+        event.registerReloadListener(BossBarStyles.INSTANCE);
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> BrainDissolveTexture.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());

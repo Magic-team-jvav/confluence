@@ -9,6 +9,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -38,6 +39,7 @@ import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.network.s2c.BossBarSyncPacketS2C;
+import org.confluence.mod.network.s2c.BossBarSyncPacketS2C.Health;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -179,7 +181,17 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     }
 
     private void sendBossBar(ServerPlayer player, float health, float maximumHealth, boolean visible) {
-        PacketDistributor.sendToPlayer(player, new BossBarSyncPacketS2C(bossEvent.getId(), BuiltInRegistries.ENTITY_TYPE.getKey(getType()), health, maximumHealth, visible));
+        PacketDistributor.sendToPlayer(player, new BossBarSyncPacketS2C(bossEvent.getId(), getBossBarStyle(), visible ? getBossBarHealth(health, maximumHealth) : List.of(), visible));
+    }
+
+    // 默认使用实体注册名对应的客户端样式，特殊 Boss 可指定共享样式。
+    protected ResourceLocation getBossBarStyle() {
+        return BuiltInRegistries.ENTITY_TYPE.getKey(getType());
+    }
+
+    // 总血量用于原版进度条，分段快照用于自定义进度条，两者共用发送与显隐逻辑。
+    protected List<Health> getBossBarHealth(float health, float maximumHealth) {
+        return List.of(new Health(health, maximumHealth));
     }
 
     // === Boss interface ===

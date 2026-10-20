@@ -1,7 +1,5 @@
 package org.confluence.mod.client.gui;
 
-import org.confluence.mod.common.data.saved.Bestiary;
-
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -18,7 +16,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.CheckBannerAvailableEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 import org.confluence.mod.integration.jei.JeiHelper;
 import org.confluence.mod.integration.jei.ModJeiPlugin;

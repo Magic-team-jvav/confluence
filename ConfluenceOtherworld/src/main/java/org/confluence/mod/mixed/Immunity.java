@@ -35,7 +35,7 @@ public interface Immunity {
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if (weaponItemStack != null) {
             if (weaponItemStack.isEmpty()) {
-                return directEntity instanceof Player ? (Immunity) (Object) weaponItemStack : null;
+                return directEntity instanceof Player ? (Immunity) weaponItemStack : null;
             }
 
             Item weaponItem = weaponItemStack.getItem();
@@ -45,10 +45,10 @@ public interface Immunity {
             } else if (weaponItem instanceof Immunity im) { // 非汇流但是实现了Immunity
                 return switch (im.confluence$getImmunityType()) {
                     case STATIC -> im;
-                    case LOCAL -> (Immunity) (Object) weaponItemStack;
+                    case LOCAL -> (Immunity) weaponItemStack;
                 };
             } else if (fromConfluence) { // 其他所有汇流武器
-                return (Immunity) (Object) weaponItemStack;
+                return (Immunity) weaponItemStack;
             }
         }
         if (directEntity instanceof Projectile proj && directEntity instanceof Immunity im && ModUtils.isFromConfluence(BuiltInRegistries.ENTITY_TYPE, directEntity.getType())) { // 汇流射弹
@@ -71,7 +71,6 @@ public interface Immunity {
         }
     }
 
-    ///
     static boolean isActive(Immunity cause, LivingEntity victim) {
         return ILivingEntity.of(victim).confluence$getImmunityTicks().containsKey(cause);
     }
@@ -176,13 +175,9 @@ public interface Immunity {
     }
 
     enum Type implements StringRepresentable {
-        /**
-         * 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个魔刺弹幕叠在一起伤害频率也不会变快
-         */
+        /// 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个 魔刺弹幕叠在一起伤害频率也不会变快
         STATIC,
-        /**
-         * 局部无敌帧，以对象区分不同的伤害，比如召唤物，多个同种召唤物同时击中不会骗伤
-         */
+        /// 局部无敌帧，以对象区分不同的伤害，比如召唤物，多个同种召唤物同时击中不会骗伤
         LOCAL;
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);

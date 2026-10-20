@@ -10,7 +10,6 @@ import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public final class ConfluenceData extends SavedData {
     }
 
     @Override
-    public @NotNull CompoundTag save(CompoundTag nbt) {
+    public CompoundTag save(CompoundTag nbt) {
         nbt.putBoolean("initialized", initialized);
         nbt.putInt("revealStep", revealStep);
         meteoriteTracker.serialize(nbt);
@@ -75,6 +74,9 @@ public final class ConfluenceData extends SavedData {
     }
 
     public boolean increaseRevealStep() {
+        if (revealStep >= 8) {
+            this.revealStep = -1; // 允许再一轮敲
+        }
         BlockState[][] pairs = StepRevealingBlock.PAIRS.get();
         int nextStep = revealStep + 1;
         if (nextStep >= 0 && nextStep < pairs.length) {

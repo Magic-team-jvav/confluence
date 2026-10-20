@@ -1,6 +1,7 @@
 package org.confluence.mod.client.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
@@ -9,14 +10,13 @@ import org.confluence.mod.network.c2s.ApplySelectionPacketC2S;
 import org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C;
 import org.mesdag.portlib.PortLib;
 import org.mesdag.portlib.client.gui.components.PortImageButton;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 
 public class SelectionsScreen extends Screen {
     private static final PortWidgetSprites SPRITES = new PortWidgetSprites(
-            new PortSprite(PortLib.asResource("widget/button"), 200, 20),
-            new PortSprite(PortLib.asResource("widget/button_disabled"), 200, 20),
-            new PortSprite(PortLib.asResource("widget/button_highlighted"), 200, 20)
+            PortLib.asResource("widget/button"),
+            PortLib.asResource("widget/button_disabled"),
+            PortLib.asResource("widget/button_highlighted")
     );
     private static final int INTERVAL = 8;
     private final Component[] selections;

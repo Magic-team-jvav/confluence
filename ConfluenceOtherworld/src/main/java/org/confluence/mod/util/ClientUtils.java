@@ -30,7 +30,6 @@ import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3i;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,7 +83,7 @@ public final class ClientUtils {
         guiGraphics.drawString(font, text, x, y, color, false);
     }
 
-    public static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, PortSprite icon, int color, int colorHigh, int colorLow, int size, int part, int partDis) {
+    public static void drawColor(GuiGraphics guiGraphics, int x, int y, int iconX, int iconY, ResourceLocation icon, int color, int colorHigh, int colorLow, int size, int part, int partDis) {
         float red = ((color >> 16) & 0xFF) / 255.0F;
         float green = ((color >> 8) & 0xFF) / 255.0F;
         float blue = (color & 0xFF) / 255.0F;
@@ -135,7 +134,7 @@ public final class ClientUtils {
         return new Vector3i(color, colorHigh, colorLow);
     }
 
-    public static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow, PortSprite icon, int size, int uvX, int uvY, boolean left, int part, int partDis) {
+    public static void draw(int x, int y, GuiGraphics guiGraphics, int count, int color, int colorHigh, int colorLow, ResourceLocation icon, int size, int uvX, int uvY, boolean left, int part, int partDis) {
         int countT = count / 2;
         int xT = left ? (x - 8) : (x + 80);
         for (int i = 0; i < countT; i++) {
@@ -147,15 +146,15 @@ public final class ClientUtils {
         }
     }
 
-    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, PortSprite texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left) {
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left) {
         colorDraw(guiGraphics, minecraft, random, texture, COLOR, COLOR_HIGH, COLOR_LOW, max, current, x, y, size, uvY, left, true);
     }
 
-    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, PortSprite texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float current, int x, int y, int size, int uvY, boolean left) {
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float current, int x, int y, int size, int uvY, boolean left) {
         colorDraw(guiGraphics, minecraft, random, texture, COLOR, COLOR_HIGH, COLOR_LOW, 0.0F, current, x, y, size, uvY, left, false);
     }
 
-    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, PortSprite texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left, boolean background) {
+    public static void colorDraw(GuiGraphics guiGraphics, Minecraft minecraft, RandomSource random, ResourceLocation texture, int[] COLOR, int[] COLOR_HIGH, int[] COLOR_LOW, float max, float current, int x, int y, int size, int uvY, boolean left, boolean background) {
         int backCount = (int) (max / 2);
         int heartCount = (int) (current);
         if (max / 2 > (float) backCount) {backCount++;}

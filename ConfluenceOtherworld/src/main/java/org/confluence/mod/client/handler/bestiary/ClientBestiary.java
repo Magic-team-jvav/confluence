@@ -39,7 +39,6 @@ import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
@@ -55,6 +54,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public final class ClientBestiary extends PortContextAwareReloadListener {
+    private static final ResourceLocation BESTIARY_RESOURCE = Confluence.asResource("bestiary.json");
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static ClientBestiary INSTANCE;
 
@@ -86,15 +86,14 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
 
     protected Map<String, JsonElement> prepare(ResourceManager resourceManager) {
         Map<String, JsonElement> map = new HashMap<>();
-        ResourceLocation resourceLocation = Confluence.asResource("bestiary.json");
-        for (Resource resource : resourceManager.getResourceStack(resourceLocation)) {
+        for (Resource resource : resourceManager.getResourceStack(BESTIARY_RESOURCE)) {
             try (Reader reader = resource.openAsReader()) {
                 JsonObject jsonobject = GsonHelper.fromJson(GSON, reader, JsonObject.class);
                 for (Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
                     map.put(entry.getKey(), entry.getValue());
                 }
             } catch (RuntimeException | IOException ioexception) {
-                Confluence.LOGGER.error("Couldn't read {} in resource pack {}", resourceLocation, resource.sourcePackId(), ioexception);
+                Confluence.LOGGER.error("Couldn't read {} in resource pack {}", BESTIARY_RESOURCE, resource.sourcePackId(), ioexception);
             }
         }
         return map;
@@ -299,6 +298,8 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
 
     @SuppressWarnings({"unused", "OptionalUsedAsFieldOrParameterType"})
     public static class Entry extends Bestiary.Entry {
+        private static final String GUI_SPRITE_DIRECTORY = "textures/gui/sprites/";
+        private static final String PNG_SUFFIX = ".png";
         public static final ResourceLocation SURFACE = background("surface");
         public static final ResourceLocation SURFACE_SUN = background("surface_sun");
         public static final ResourceLocation SURFACE_NIGHTTIME = background("surface_nighttime");
@@ -364,7 +365,8 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
                 BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(entry -> entry.type),
                 PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "order", 1000000).forGetter(entry -> entry.order),
                 PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.intRange(0, 5), "rarity", 1).forGetter(entry -> entry.rarity),
-                PortCodecExtension.lenientOptionalFieldOf(ResourceLocation.CODEC, "background", SURFACE).forGetter(entry -> entry.background.path()),
+                PortCodecExtension.lenientOptionalFieldOf(ResourceLocation.CODEC, "background", SURFACE).forGetter(entry -> entry.background.getPath().endsWith(PNG_SUFFIX)
+                        ? entry.background : entry.background.withPrefix(GUI_SPRITE_DIRECTORY).withSuffix(PNG_SUFFIX)),
                 PortCodecExtension.lenientOptionalFieldOf(PortComponentSerialization.CODEC, "description", UNKNOWN).forGetter(entry -> entry.description),
                 PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.homogenousList(FilterEntry.CODEC, false), "filters", List.of()).forGetter(entry -> entry.filters),
                 PortCodecExtension.lenientOptionalFieldOf(TagParser.LENIENT_CODEC, "entity_nbt").forGetter(entry -> entry.entityNbt)
@@ -372,7 +374,7 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
 
         public final int order;
         public final int rarity;
-        public final PortSprite background;
+        public final ResourceLocation background;
         public final Component description;
         public final List<FilterEntry> filters;
         public final Optional<CompoundTag> entityNbt;
@@ -383,7 +385,7 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
         public Entry() {
             this.order = 1000000;
             this.rarity = 1;
-            this.background = new PortSprite(SURFACE, 48, 48);
+            this.background = SURFACE;
             this.description = UNKNOWN;
             this.filters = List.of();
             this.entityNbt = Optional.empty();
@@ -393,7 +395,8 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
             this.type = type;
             this.order = order;
             this.rarity = rarity;
-            this.background = new PortSprite(background, 48, 48);
+            this.background = background.getPath().startsWith(GUI_SPRITE_DIRECTORY) && background.getPath().endsWith(PNG_SUFFIX)
+                    ? background.withPath(path -> path.substring(GUI_SPRITE_DIRECTORY.length(), path.length() - PNG_SUFFIX.length())) : background;
             this.description = description;
             this.filters = filters;
             this.entityNbt = entityNbt;
@@ -451,7 +454,7 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
                     type,
                     order,
                     rarity,
-                    background.path(),
+                    background,
                     description,
                     filters,
                     entityNbt

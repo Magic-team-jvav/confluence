@@ -7,7 +7,6 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.container.soulcerer.SoulOverviewScreen;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
@@ -29,11 +28,14 @@ public class HotbarWidget extends AbstractWidget {
     public static final ResourceLocation BOTTOM_BOX_CENTRE = Confluence.asResource("container/soulcerer_overview/hotbar_box_centre");
     public static final ResourceLocation BOTTOM_BOX_HEAD = Confluence.asResource("container/soulcerer_overview/hotbar_box_head");
     public static final ResourceLocation BOTTOM_BOX_TAIL = Confluence.asResource("container/soulcerer_overview/hotbar_box_tail");
+    private static final int CAP_WIDTH = 16;
+    private static final int CENTRE_WIDTH = 20;
+    private static final int BACKGROUND_HEIGHT = 32;
     private final List<HotbarSlot> slots = new ArrayList<>();
     private final SoulOverviewScreen screen;
 
     public HotbarWidget(SoulOverviewScreen screen, int x, int y) {
-        super(x, y, 0, 32, Component.empty());
+        super(x, y, 0, BACKGROUND_HEIGHT, Component.empty());
         this.screen = screen;
 
         for (int i = 0; i < PlayerUtils.getEquippedSoulSkillMaxNumber(Minecraft.getInstance().player); i++) {
@@ -53,15 +55,15 @@ public class HotbarWidget extends AbstractWidget {
         if (slots.isEmpty()) {
             return;
         }
-        guiGraphics.blitSprite(new PortSprite(BOTTOM_BOX_HEAD, 16, 32), getX(), getY(), 16, 32);
-        int x = getX() + 16;
+        guiGraphics.blitSprite(BOTTOM_BOX_HEAD, getX(), getY(), CAP_WIDTH, BACKGROUND_HEIGHT);
+        int x = getX() + CAP_WIDTH;
         if (slots.size() > 1) {
             for (int i = 1; i < slots.size(); i++) {
-                guiGraphics.blitSprite(new PortSprite(BOTTOM_BOX_CENTRE, 20, 32), x, getY(), 20, 32);
-                x += 20;
+                guiGraphics.blitSprite(BOTTOM_BOX_CENTRE, x, getY(), CENTRE_WIDTH, BACKGROUND_HEIGHT);
+                x += CENTRE_WIDTH;
             }
         }
-        guiGraphics.blitSprite(new PortSprite(BOTTOM_BOX_TAIL, 16, 32), x, getY(), 16, 32);
+        guiGraphics.blitSprite(BOTTOM_BOX_TAIL, x, getY(), CAP_WIDTH, BACKGROUND_HEIGHT);
     }
 
     /// 设置快捷栏横坐标并更新槽位位置。

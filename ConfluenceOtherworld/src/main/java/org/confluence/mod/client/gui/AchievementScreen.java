@@ -16,15 +16,14 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.util.AchievementUtils;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 
 import java.util.*;
 
 public class AchievementScreen extends Screen {
     public static final PortWidgetSprites SPRITES = new PortWidgetSprites(
-            new PortSprite(Confluence.asResource("achievement_icon"), 20, 20),
-            new PortSprite(Confluence.asResource("achievement_icon_highlighted"), 20, 20));
+            Confluence.asResource("achievement_icon"),
+            Confluence.asResource("achievement_icon_highlighted"));
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement.png");
     private static final int ENTRY_X = 4;
     private static final int ENTRY_Y = 22;

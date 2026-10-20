@@ -74,7 +74,6 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes
 import org.confluence.mod.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 import org.mesdag.portlib.wrapper.common.extensions.IPortModelResourceLocationExtension;
@@ -90,14 +89,14 @@ public final class ModClientSetups {
     public static final ResourceLocation ENTITY_BLOOD_ATLAS = Confluence.asResource("textures/atlas/entity_blood.png");
 
     public static final PortWidgetSprites EXTRA_INVENTORY_BUTTON = new PortWidgetSprites(
-            new PortSprite(Confluence.asResource("widget/extra_inventory_button"), 16, 16),
-            new PortSprite(Confluence.asResource("widget/extra_inventory_button_highlighted"), 16, 16)
+            Confluence.asResource("widget/extra_inventory_button"),
+            Confluence.asResource("widget/extra_inventory_button_highlighted")
     );
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
     public static final int LEGACY_SIZE = 128;
-    public static final PortSprite LEGACY_SPRITE = new PortSprite(Confluence.asResource("hud/icon"), LEGACY_SIZE, LEGACY_SIZE);
+    public static final ResourceLocation LEGACY_SPRITE = Confluence.asResource("hud/icon");
     public static final int OVERLAY_SIZE = 128;
-    public static final PortSprite OVERLAY_SPRITE = new PortSprite(Confluence.asResource("hud/overlay"), OVERLAY_SIZE, OVERLAY_SIZE);
+    public static final ResourceLocation OVERLAY_SPRITE = Confluence.asResource("hud/overlay");
     // region sun todo dynamic texture
     public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png");
     public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");

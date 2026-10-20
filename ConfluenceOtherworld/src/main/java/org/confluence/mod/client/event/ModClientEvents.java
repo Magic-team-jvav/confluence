@@ -128,7 +128,6 @@ import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.ClientUtils;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
@@ -145,6 +144,10 @@ import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.entity.ModEntities.*;
 
 public final class ModClientEvents {
+    private static final int GROUP_ICON_SIZE = 7;
+    private static final ResourceLocation PLUS_SPRITE = Confluence.asResource("plus");
+    private static final ResourceLocation MINUS_SPRITE = Confluence.asResource("minus");
+
     public static void init() {
         PortEventHandler.addListener(ModClientEvents::fmlClientSetup);
         PortEventHandler.addListener(ModClientEvents::modConfig$Loading);
@@ -1199,16 +1202,14 @@ public final class ModClientEvents {
             }
         }
         if (LibStartupConfig.itemGroups()) {
-            // PortSprite 记录的是 PNG 的真实源尺寸；这两张图本身为 7×7，不能填入控件或预期显示尺寸。
-            PortSprite plus = new PortSprite(Confluence.asResource("plus"), 7, 7);
-            PortSprite minus = new PortSprite(Confluence.asResource("minus"), 7, 7);
+            // 这两张图本身为 7×7，不能填入控件或预期显示尺寸。
             event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {
                 GroupItem.Stacks stacks = stack.get(ConfluenceMagicLib.GROUP_STACKS);
                 if (stacks != null) {
                     PoseStack pose = guiGraphics.pose();
                     pose.pushPose();
                     pose.translate(xOffset + 9, yOffset + 9, 200);
-                    guiGraphics.blitSprite(stacks.isVisible() ? minus : plus, 0, 0, 7, 7);
+                    guiGraphics.blitSprite(stacks.isVisible() ? MINUS_SPRITE : PLUS_SPRITE, 0, 0, GROUP_ICON_SIZE, GROUP_ICON_SIZE);
                     pose.popPose();
                 }
                 return false;

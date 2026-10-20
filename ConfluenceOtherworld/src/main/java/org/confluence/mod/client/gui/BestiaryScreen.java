@@ -1,6 +1,7 @@
 package org.confluence.mod.client.gui;
 
 import com.google.common.collect.Iterables;
+import net.minecraft.resources.ResourceLocation;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
@@ -19,7 +20,6 @@ import org.confluence.mod.integration.jei.JeiHelper;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
 import org.confluence.mod.network.c2s.GiveBannerPacketC2S;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.common.extensions.IPortInventoryScreenExtension;
 
@@ -28,8 +28,11 @@ import java.util.*;
 public class BestiaryScreen extends Screen {
     private static final int textureW = 512;
     private static final int textureH = 256;
-    private static final PortSprite BACKGROUND = new PortSprite(Confluence.asResource("bestiary/background"), textureW, textureH);
-    private static final PortSprite FILTERS = new PortSprite(Confluence.asResource("bestiary/filters"), 256, 256);
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("bestiary/background");
+    private static final int FILTER_TEXTURE_SIZE = 256;
+    private static final int ENTRY_BACKGROUND_SIZE = 48;
+    private static final String PNG_SUFFIX = ".png";
+    private static final ResourceLocation FILTERS = Confluence.asResource("bestiary/filters");
 
     private static final int imageWidth = 220;
     private static final int imageHeight = 230;
@@ -97,18 +100,18 @@ public class BestiaryScreen extends Screen {
         }
         updateRenderedEntries(0);
 
-        this.slider = new GuiSprite(BACKGROUND, 221, 37, 7, 15).setX(leftPos + 153);
+        this.slider = new GuiSprite(BACKGROUND, textureW, textureH, 221, 37, 7, 15).setX(leftPos + 153);
 
         int searchBoxX = leftPos + imageWidth;
         int searchBoxY = topPos;
-        this.closedSearchBox = new GuiSprite(BACKGROUND, 257, 0, 13, 16).setPos(searchBoxX, searchBoxY)
-                .setHovered(new GuiSprite(BACKGROUND, 257, 34, 13, 16).setPos(searchBoxX, searchBoxY));
-        this.openedSearchBox = new GuiSprite(BACKGROUND, 285, 0, 72, 16).setPos(searchBoxX, searchBoxY);
+        this.closedSearchBox = new GuiSprite(BACKGROUND, textureW, textureH, 257, 0, 13, 16).setPos(searchBoxX, searchBoxY)
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 257, 34, 13, 16).setPos(searchBoxX, searchBoxY));
+        this.openedSearchBox = new GuiSprite(BACKGROUND, textureW, textureH, 285, 0, 72, 16).setPos(searchBoxX, searchBoxY);
         this.editBoxArea = new ClickableArea(49, 16).setPos(searchBoxX, searchBoxY);
         this.searchButtonArea = new ClickableArea(13, 16).setPos(editBoxArea.getEndX(), searchBoxY)
-                .setHovered(new GuiSprite(BACKGROUND, 358, 0, 13, 16).setPos(editBoxArea.getEndX(), searchBoxY));
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 358, 0, 13, 16).setPos(editBoxArea.getEndX(), searchBoxY));
         this.closeSearchBoxArea = new ClickableArea(9, 16).setPos(searchButtonArea.getEndX(), searchBoxY)
-                .setHovered(new GuiSprite(BACKGROUND, 372, 0, 10, 16).setPos(searchButtonArea.getEndX(), searchBoxY));
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 372, 0, 10, 16).setPos(searchButtonArea.getEndX(), searchBoxY));
         addRenderableWidget(this.editBox = new EditBox(font, searchBoxX + 1, searchBoxY + 2, 48, 9, Component.empty()));
         editBox.setBordered(false);
 
@@ -117,35 +120,35 @@ public class BestiaryScreen extends Screen {
         this.filterMaxPage = bestiary.getFilterEntries().size() / 28;
         this.filterPage = 0;
         this.renderedFilters = Iterables.limit(bestiary.getFilterEntries(), 28);
-        this.closedFilter = new GuiSprite(BACKGROUND, 257, 17, 13, 16).setPos(filterX, filterY);
-        closedFilter.setHovered(new GuiSprite(BACKGROUND, 257, 51, 13, 16).setPos(closedFilter.getX(), closedFilter.getY()));
-        this.openedFilter = new GuiSprite(BACKGROUND, 285, 17, 72, 136).setPos(filterX, filterY);
+        this.closedFilter = new GuiSprite(BACKGROUND, textureW, textureH, 257, 17, 13, 16).setPos(filterX, filterY);
+        closedFilter.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 257, 51, 13, 16).setPos(closedFilter.getX(), closedFilter.getY()));
+        this.openedFilter = new GuiSprite(BACKGROUND, textureW, textureH, 285, 17, 72, 136).setPos(filterX, filterY);
         this.closeFilterArea = new ClickableArea(10, 13);
         closeFilterArea.setPos(openedFilter.getEndX() - closeFilterArea.getW(), openedFilter.getY());
-        closeFilterArea.setHovered(new GuiSprite(BACKGROUND, 358, 17, 10, 14).setPos(closeFilterArea.getX(), closeFilterArea.getY()));
+        closeFilterArea.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 358, 17, 10, 14).setPos(closeFilterArea.getX(), closeFilterArea.getY()));
 
-        this.closedSort = new GuiSprite(BACKGROUND, 271, 0, 13, 16);
-        closedSort.setPos(leftPos - closedSort.getW(), topPos).setHovered(new GuiSprite(BACKGROUND, 271, 34, 13, 16).setPos(closedSort.getX(), closedSort.getY()));
+        this.closedSort = new GuiSprite(BACKGROUND, textureW, textureH, 271, 0, 13, 16);
+        closedSort.setPos(leftPos - closedSort.getW(), topPos).setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 271, 34, 13, 16).setPos(closedSort.getX(), closedSort.getY()));
         int sortWidth = 72;
-        this.openedSortTop = new GuiSprite(BACKGROUND, 285, 202, sortWidth, 12).setPos(leftPos - sortWidth, topPos);
+        this.openedSortTop = new GuiSprite(BACKGROUND, textureW, textureH, 285, 202, sortWidth, 12).setPos(leftPos - sortWidth, topPos);
         this.closeSortArea = new ClickableArea(10, 12).setPos(openedSortTop.getX(), openedSortTop.getY());
-        closeSortArea.setHovered(new GuiSprite(BACKGROUND, 248, 202, 10, 12).setPos(closeSortArea.getX(), closeSortArea.getY()));
+        closeSortArea.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 248, 202, 10, 12).setPos(closeSortArea.getX(), closeSortArea.getY()));
         this.reverseSortArea = new ClickableArea(12, 12).setPos(closeSortArea.getEndX(), openedSortTop.getY());
-        this.incSort = new GuiSprite(BACKGROUND, 272, 202, 12, 12).setPos(reverseSortArea.getX(), reverseSortArea.getY());
-        incSort.setHovered(new GuiSprite(BACKGROUND, 259, 202, 12, 12).setPos(incSort.getX(), incSort.getY()));
-        this.decSort = new GuiSprite(BACKGROUND, 272, 215, 12, 12).setPos(reverseSortArea.getX(), reverseSortArea.getY());
-        decSort.setHovered(new GuiSprite(BACKGROUND, 259, 215, 12, 12).setPos(decSort.getX(), decSort.getY()));
+        this.incSort = new GuiSprite(BACKGROUND, textureW, textureH, 272, 202, 12, 12).setPos(reverseSortArea.getX(), reverseSortArea.getY());
+        incSort.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 259, 202, 12, 12).setPos(incSort.getX(), incSort.getY()));
+        this.decSort = new GuiSprite(BACKGROUND, textureW, textureH, 272, 215, 12, 12).setPos(reverseSortArea.getX(), reverseSortArea.getY());
+        decSort.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 259, 215, 12, 12).setPos(decSort.getX(), decSort.getY()));
         this.sortSelections = new EnumMap<>(ClientBestiary.SortType.class);
         int selectionY = openedSortTop.getEndY();
         for (ClientBestiary.SortType sortType : ClientBestiary.SortType.values()) {
-            GuiSprite sprite = new GuiSprite(BACKGROUND, 285, 215, sortWidth, 13).setPos(openedSortTop.getX(), selectionY);
+            GuiSprite sprite = new GuiSprite(BACKGROUND, textureW, textureH, 285, 215, sortWidth, 13).setPos(openedSortTop.getX(), selectionY);
             sortSelections.put(sortType, sprite);
             selectionY += sprite.getH();
         }
-        this.selectedSort = new GuiSprite(BACKGROUND, 285, 239, sortWidth, 13);
-        this.openedSortBottom = new GuiSprite(BACKGROUND, 285, 229, sortWidth, 9).setPos(openedSortTop.getX(), selectionY);
-        this.banner = new GuiSprite(BACKGROUND, 383, 0, 16, 16).setPos(leftPos - 16, topPos + imageHeight - 16);
-        banner.setHovered(new GuiSprite(BACKGROUND, 383, 17, 16, 16).setPos(leftPos - 16, topPos + imageHeight - 16));
+        this.selectedSort = new GuiSprite(BACKGROUND, textureW, textureH, 285, 239, sortWidth, 13);
+        this.openedSortBottom = new GuiSprite(BACKGROUND, textureW, textureH, 285, 229, sortWidth, 9).setPos(openedSortTop.getX(), selectionY);
+        this.banner = new GuiSprite(BACKGROUND, textureW, textureH, 383, 0, 16, 16).setPos(leftPos - 16, topPos + imageHeight - 16);
+        banner.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 383, 17, 16, 16).setPos(leftPos - 16, topPos + imageHeight - 16));
     }
 
     @Override
@@ -443,8 +446,12 @@ public class BestiaryScreen extends Screen {
             x1 = leftPos + 164;
             y1 = topPos + 10;
             // 背景图
-            PortSprite sprite = showedEntry.background;
-            guiGraphics.blitSprite(sprite, sprite.textureW(), sprite.textureH(), 0, 0, x1, y1, 48, 48);
+            ResourceLocation sprite = showedEntry.background;
+            if (sprite.getPath().endsWith(PNG_SUFFIX)) {
+                guiGraphics.blit(sprite, x1, y1, 0, 0, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE);
+            } else {
+                guiGraphics.blitSprite(sprite, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE, 0, 0, x1, y1, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE);
+            }
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
             if (living != null) {
@@ -528,8 +535,8 @@ public class BestiaryScreen extends Screen {
 
     private void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y, int alignX, int alignY) {
         RenderSystem.enableBlend();
-        PortSprite sprite = filter.sprite == null ? FILTERS : filter.sprite;
-        guiGraphics.blitSprite(sprite, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
+        ResourceLocation sprite = filter.sprite == null ? FILTERS : filter.sprite;
+        guiGraphics.blitSprite(sprite, FILTER_TEXTURE_SIZE, FILTER_TEXTURE_SIZE, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
         RenderSystem.disableBlend();
     }
 

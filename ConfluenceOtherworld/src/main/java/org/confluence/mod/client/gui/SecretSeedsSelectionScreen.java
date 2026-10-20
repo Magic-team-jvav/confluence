@@ -39,7 +39,6 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 
 import java.io.IOException;
@@ -52,28 +51,32 @@ import java.util.function.Predicate;
 
 public class SecretSeedsSelectionScreen extends Screen {
     public static final PortWidgetSprites SPRITES = new PortWidgetSprites(
-            new PortSprite(Confluence.asResource("seed_icon"), 20, 20),
-            new PortSprite(Confluence.asResource("seed_icon_highlighted"), 20, 20)
+            Confluence.asResource("seed_icon"),
+            Confluence.asResource("seed_icon_highlighted")
     );
+    private static final int FIRST_TEXTURE_SIZE = 256;
+    private static final int SECOND_TEXTURE_SIZE = 310;
+    private static final int WORLD_ICON_SIZE = 18;
+    private static final ResourceLocation NORMAL_WORLD_ICON = Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/normal.png");
+    private static final ResourceLocation SECRET_WORLD_ICON = Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/secret_seed.png");
     private static final ResourceLocation FIRST = Confluence.asResource("textures/gui/secret_seeds_selection/first.png");
     private static final SecretSeed[] SPECIAL_SEEDS = ModSecretSeeds.VALUES.stream().filter(Predicate.not(SecretSeed::isHided)).toArray(SecretSeed[]::new);
     private static final Path UNLOCKED_SECRET_SEEDS_PATH = FMLPaths.GAMEDIR.get().resolve("confluence").resolve("unlocked_secret_seeds.json");
     private static final Codec<Set<SecretSeed>> UNLOCKED_SECRET_SEEDS_CODEC = ModSecretSeeds.CODEC.listOf().xmap(LinkedHashSet::new, ArrayList::new);
     private static final SecretSeed[] SECRET_SEEDS = ModSecretSeeds.VALUES.stream().filter(SecretSeed::isHided).toArray(SecretSeed[]::new);
     private static final Long2ObjectArrayMap<Triple<ResourceLocation, Component, Component>> DESCRIPTIONS = Util.make(new Long2ObjectArrayMap<>(12), map -> {
-        ResourceLocation normal = Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/normal.png");
         map.defaultReturnValue(new ImmutableTriple<>(
-                normal,
+                NORMAL_WORLD_ICON,
                 Component.translatable("title.confluence.secret_seeds_selection.empty"),
                 Component.translatable("description.confluence.secret_seeds_selection.empty")
         ));
         map.put(-1, new ImmutableTriple<>(
-                Confluence.asResource("textures/gui/secret_seeds_selection/world_icon/secret_seed.png"),
+                SECRET_WORLD_ICON,
                 Component.translatable("title.confluence.secret_seeds_selection.secret_seed"),
                 Component.translatable("description.confluence.secret_seeds_selection.secret_seed")
         ));
         map.put(0, new ImmutableTriple<>(
-                normal,
+                NORMAL_WORLD_ICON,
                 Component.translatable("title.confluence.secret_seeds_selection.normal"),
                 Component.translatable("description.confluence.secret_seeds_selection.normal")
         ));
@@ -164,14 +167,14 @@ public class SecretSeedsSelectionScreen extends Screen {
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         BackgroundLayer.renderLayers(guiGraphics, partialTick);
 
-        guiGraphics.blit(FIRST, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
+        guiGraphics.blit(FIRST, leftPos, topPos, 0, 0, imageWidth, imageHeight, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
         // 确认按钮
         int x = leftPos + 6;
         int y = topPos + 164;
         if (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 260) {
-            guiGraphics.blit(FIRST, x, y, 6, 191, 178, 26, 256, 256);
+            guiGraphics.blit(FIRST, x, y, 6, 191, 178, 26, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
         } else {
-            guiGraphics.blit(FIRST, x, y, 6, 164, 178, 26, 256, 256);
+            guiGraphics.blit(FIRST, x, y, 6, 164, 178, 26, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
         }
         int centerX = width / 2;
         guiGraphics.drawCenteredString(font, CommonComponents.GUI_CONTINUE, centerX, y + (26 - font.lineHeight) / 2, -1);
@@ -195,13 +198,13 @@ public class SecretSeedsSelectionScreen extends Screen {
                 v += 31;
                 hovered = entry;
             }
-            guiGraphics.blit(FIRST, x1, y1, 228, v, 28, 30, 256, 256);
-            guiGraphics.blit(DESCRIPTIONS.get(entry.getLongKey()).getLeft(), x1 + 5, y1 + 4, 0, 0, 18, 18, 18, 18);
+            guiGraphics.blit(FIRST, x1, y1, 228, v, 28, 30, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
+            guiGraphics.blit(DESCRIPTIONS.get(entry.getLongKey()).getLeft(), x1 + 5, y1 + 4, 0, 0, WORLD_ICON_SIZE, WORLD_ICON_SIZE, WORLD_ICON_SIZE, WORLD_ICON_SIZE);
             ++i;
         }
 
         if (unlockedSecretSeeds.isEmpty()) {
-            guiGraphics.blit(FIRST, x + 120, y + 32, 228, 155, 28, 30, 256, 256);
+            guiGraphics.blit(FIRST, x + 120, y + 32, 228, 155, 28, 30, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
         } else {
             offsetX = i % 6 * 30;
             offsetY = i < 6 ? 0 : 32;
@@ -214,10 +217,10 @@ public class SecretSeedsSelectionScreen extends Screen {
                     hovered = new AbstractLong2BooleanMap.BasicEntry(-1, selectedSecretSeed());
                 }
             }
-            guiGraphics.blit(FIRST, x1, y1, 228, v, 28, 30, 256, 256);
-            guiGraphics.blit(DESCRIPTIONS.get(-1).getLeft(), x1 + 5, y1 + 4, 0, 0, 18, 18, 18, 18);
+            guiGraphics.blit(FIRST, x1, y1, 228, v, 28, 30, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
+            guiGraphics.blit(DESCRIPTIONS.get(-1).getLeft(), x1 + 5, y1 + 4, 0, 0, WORLD_ICON_SIZE, WORLD_ICON_SIZE, WORLD_ICON_SIZE, WORLD_ICON_SIZE);
         }
-        guiGraphics.blit(FIRST, x + 150, y + 32, 228, 155, 28, 30, 256, 256);
+        guiGraphics.blit(FIRST, x + 150, y + 32, 228, 155, 28, 30, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
 
         Triple<ResourceLocation, Component, Component> triple;
         if (hovered == null) {
@@ -237,13 +240,13 @@ public class SecretSeedsSelectionScreen extends Screen {
             if (skip > 0) {
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().translate(0, -Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
-                guiGraphics.blit(FIRST, leftPos + 181, j, 245, 186, 5, 4, 256, 256);
+                guiGraphics.blit(FIRST, leftPos + 181, j, 245, 186, 5, 4, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
                 guiGraphics.pose().popPose();
             }
             if (end < lines && lines > maxDescLines()) {
                 guiGraphics.pose().pushPose();
                 guiGraphics.pose().translate(0, Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
-                guiGraphics.blit(FIRST, leftPos + 181, j + 45, 251, 186, 5, 4, 256, 256);
+                guiGraphics.blit(FIRST, leftPos + 181, j + 45, 251, 186, 5, 4, FIRST_TEXTURE_SIZE, FIRST_TEXTURE_SIZE);
                 guiGraphics.pose().popPose();
             }
             for (FormattedCharSequence sequence : list.subList(skip, end)) {
@@ -467,7 +470,7 @@ public class SecretSeedsSelectionScreen extends Screen {
         }
 
         public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-            guiGraphics.blit(SECOND, leftPos, topPos, 0, 0, imageWidth, imageHeight, 310, 310);
+            guiGraphics.blit(SECOND, leftPos, topPos, 0, 0, imageWidth, imageHeight, SECOND_TEXTURE_SIZE, SECOND_TEXTURE_SIZE);
 
             Object2BooleanMap.Entry<SecretSeed> hovered = null;
             ObjectSet<Object2BooleanMap.Entry<SecretSeed>> entries = unlockedSecretSeeds.object2BooleanEntrySet();
@@ -481,9 +484,9 @@ public class SecretSeedsSelectionScreen extends Screen {
                     v += 28;
                     hovered = entry;
                 }
-                guiGraphics.blit(SECOND, x, y, 9, v, 172, 26, 310, 310);
+                guiGraphics.blit(SECOND, x, y, 9, v, 172, 26, SECOND_TEXTURE_SIZE, SECOND_TEXTURE_SIZE);
                 SecretSeed seed = entry.getKey();
-                guiGraphics.blit(DESCRIPTIONS.get(seed.getFlag()).getLeft(), x + 1, y + 2, 0, 0, 18, 18, 18, 18);
+                guiGraphics.blit(DESCRIPTIONS.get(seed.getFlag()).getLeft(), x + 1, y + 2, 0, 0, WORLD_ICON_SIZE, WORLD_ICON_SIZE, WORLD_ICON_SIZE, WORLD_ICON_SIZE);
                 guiGraphics.drawString(font, LibUtils.toTitleCase(seed.getId().getPath()), x + 20, y + 8, -1, false);
                 ++i;
             }
@@ -505,13 +508,13 @@ public class SecretSeedsSelectionScreen extends Screen {
                 if (this.skip > 0) {
                     guiGraphics.pose().pushPose();
                     guiGraphics.pose().translate(0, -Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
-                    guiGraphics.blit(SECOND, leftPos + 181, j, 193, 2, 5, 4, 310, 310);
+                    guiGraphics.blit(SECOND, leftPos + 181, j, 193, 2, 5, 4, SECOND_TEXTURE_SIZE, SECOND_TEXTURE_SIZE);
                     guiGraphics.pose().popPose();
                 }
                 if (end < this.lines && this.lines > maxDescLines()) {
                     guiGraphics.pose().pushPose();
                     guiGraphics.pose().translate(0, Mth.sin(System.currentTimeMillis() % 1000 / 1000F), 0);
-                    guiGraphics.blit(FIRST, leftPos + 181, j + 45, 199, 2, 5, 4, 310, 310);
+                    guiGraphics.blit(FIRST, leftPos + 181, j + 45, 199, 2, 5, 4, SECOND_TEXTURE_SIZE, SECOND_TEXTURE_SIZE);
                     guiGraphics.pose().popPose();
                 }
                 for (FormattedCharSequence sequence : list.subList(this.skip, end)) {

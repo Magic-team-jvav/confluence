@@ -11,7 +11,6 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
@@ -30,6 +29,8 @@ public class SoulSkillBox extends AbstractWidget {
     public static final int SKILL_SIZE = 16;
     public static final int BOX_SIZE = 32;
     public static final int BOX_GRAY_SIZE = 22;
+    private static final int BOX_ACTIVATE_TEXTURE_HEIGHT = 128;
+    private static final int BOX_FLAME_TEXTURE_HEIGHT = 256;
     private static final int COOLDOWN_OVERLAY_COLOR = Integer.MAX_VALUE;
     private static final int UNAVAILABLE_OVERLAY_COLOR = 0x99000000;
     private static final String STATE_LEARNED = "confluence.soulcerer_skill.state.learned";
@@ -131,22 +132,22 @@ public class SoulSkillBox extends AbstractWidget {
 
     /// 绘制普通技能框。
     public static void renderBox(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(new PortSprite(BOX, BOX_SIZE, BOX_SIZE), x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     /// 绘制技能激活边框。
     public static void renderBoxActivate(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(new PortSprite(BOX_ACTIVATE, BOX_SIZE, 128), BOX_SIZE, 128, 0, 0, x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX_ACTIVATE, BOX_SIZE, BOX_ACTIVATE_TEXTURE_HEIGHT, 0, 0, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     /// 绘制技能选中边框。
     public static void renderBoxSelect(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(new PortSprite(BOX_SELECT, BOX_SIZE, BOX_SIZE), x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX_SELECT, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     /// 绘制技能激活时的火焰边框。
     public static void renderBoxActivateFlame(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(new PortSprite(BOX_ACTIVATE_FLAME, BOX_SIZE, 256), BOX_SIZE, 256, 0, 0, x, y - 2, BOX_SIZE, BOX_SIZE);
+        guiGraphics.blitSprite(BOX_ACTIVATE_FLAME, BOX_SIZE, BOX_FLAME_TEXTURE_HEIGHT, 0, 0, x, y - 2, BOX_SIZE, BOX_SIZE);
     }
 
     /// 绘制非空技能的图标。
@@ -154,7 +155,7 @@ public class SoulSkillBox extends AbstractWidget {
         if (skillStack.isEmpty()) {
             return;
         }
-        guiGraphics.blitSprite(new PortSprite(skillStack.getSoulSkill().getIcon(), SKILL_SIZE, SKILL_SIZE), x, y, SKILL_SIZE, SKILL_SIZE);
+        guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE);
         if (!PlayerUtils.isSoulSkillAvailable(Minecraft.getInstance().player, skillStack.getSoulSkill().getId())) {
             guiGraphics.fill(RenderType.guiOverlay(), x, y, x + SKILL_SIZE, y + SKILL_SIZE, UNAVAILABLE_OVERLAY_COLOR);
         }
@@ -193,7 +194,7 @@ public class SoulSkillBox extends AbstractWidget {
 
     /// 绘制灰色技能框。
     public static void renderBoxGray(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blitSprite(new PortSprite(SoulSkillBox.BOX_GRAY, BOX_GRAY_SIZE, BOX_GRAY_SIZE), x, y, BOX_GRAY_SIZE, BOX_GRAY_SIZE);
+        guiGraphics.blitSprite(SoulSkillBox.BOX_GRAY, x, y, BOX_GRAY_SIZE, BOX_GRAY_SIZE);
     }
 
     /// 绘制技能名称并按需居中。

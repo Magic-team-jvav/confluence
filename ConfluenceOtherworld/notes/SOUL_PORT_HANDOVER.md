@@ -40,7 +40,7 @@
 | 物品属性组件 | `PortItemAttributeModifiers.builder()`；攻击力/攻速的固定 ID 用 `ModItems.BASE_ATTACK_DAMAGE_ID`（1.20.1 没有 `Item.BASE_ATTACK_DAMAGE_ID`） |
 | 效果类 | 继承 `PortMobEffect`；`hasEffect/removeEffect` 用 `ModEffects.X.get()` |
 | 随机数 | 魂师代码统一用 `entity.getRandom()`；`getRandom1211()` 是 PortLib 兼容用，两者都可 |
-| GUI 图标 | `guiGraphics.blitSprite(new PortSprite(loc, texW, texH), x, y, w, h)` |
+| GUI 图标 | `guiGraphics.blitSprite(loc, x, y, w, h)`；裁剪时显式传入源尺寸，图集外 PNG 使用 `blit` |
 | 战利品组件 | 1.20.1 没有 `SetComponentsFunction`，用 `BindSoulSkillFunction.bind(id)`（只写 `SOUL_SKILL`，不写稀有度） |
 | 1.21 独有物品 | `Items.OMINOUS_BOTTLE` 不存在，劫掠之火配方改用 `Items.DRAGON_BREATH` |
 

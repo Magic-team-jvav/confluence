@@ -1,10 +1,10 @@
 package org.confluence.mod.client.handler.bestiary;
 
 import com.google.common.collect.Maps;
+import net.minecraft.resources.ResourceLocation;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 
 import java.util.List;
 import java.util.Map;
@@ -94,7 +94,7 @@ public class FilterEntry {
     private final int w;
     private final int h;
 
-    public @Nullable PortSprite sprite;
+    public @Nullable ResourceLocation sprite;
     private transient List<Component> tooltip;
 
     private FilterEntry(String name, int order, int u, int v, int w, int h) {

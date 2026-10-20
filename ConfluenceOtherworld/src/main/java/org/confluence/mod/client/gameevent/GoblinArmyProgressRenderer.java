@@ -1,16 +1,16 @@
 package org.confluence.mod.client.gameevent;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.client.PortGuiLayer;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 
 public final class GoblinArmyProgressRenderer implements PortGuiLayer {
-    static final PortSprite SPRITE = new PortSprite(Confluence.asResource("hud/goblin_army"), 256, 96);
+    static final ResourceLocation SPRITE = Confluence.asResource("hud/goblin_army");
     static final int IMAGE_WIDTH = 256;
     static final int IMAGE_HEIGHT = 96;
     static final int HALF_U_WIDTH = IMAGE_WIDTH / 2;

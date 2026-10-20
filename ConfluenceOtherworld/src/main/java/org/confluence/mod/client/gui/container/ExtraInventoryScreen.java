@@ -42,7 +42,6 @@ import org.confluence.terra_curio.client.renderer.tooltip.MultiFunctionTooltip;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.InfoDisablePacket;
 import org.mesdag.portlib.client.gui.components.PortImageButton;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 import org.mesdag.portlib.wrapper.common.extensions.IPortInventoryScreenExtension;
 import top.theillusivec4.curios.common.network.NetworkHandler;
@@ -54,33 +53,37 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/extra_inventory.png");
     private static final ResourceLocation ACCESSORY = TerraCurio.asResource("textures/slot/accessory.png");
     private static final PortWidgetSprites BESTIARY_BUTTON = new PortWidgetSprites(
-            new PortSprite(Confluence.asResource("widget/bestiary_button"), 16, 16),
-            new PortSprite(Confluence.asResource("widget/bestiary_button_highlighted"), 16, 16)
+            Confluence.asResource("widget/bestiary_button"),
+            Confluence.asResource("widget/bestiary_button_highlighted")
     );
     private static final PortWidgetSprites HOUSE_BUTTON = new PortWidgetSprites(
-            new PortSprite(Confluence.asResource("widget/house_button"), 16, 16),
-            new PortSprite(Confluence.asResource("widget/house_button_highlighted"), 16, 16)
+            Confluence.asResource("widget/house_button"),
+            Confluence.asResource("widget/house_button_highlighted")
     );
     //    private static final TooltipComponentsValue.Storage MECHANICAL$LENS = new TooltipComponentsValue.Storage(Confluence.asResource("textures/gui/information/mechanical_lens.png"), Component.translatable("tooltip.confluence.mechanical_lens"));
     private static final int TEAM_PVPF_INDEX = 0;
     private static final int TEAM_PVPT_INDEX = 1;
     private static final int TEAM_ICON_INDEX = 2;
+    private static final ResourceLocation TEAM_ICON = Confluence.asResource("team/icon");
+    private static final ResourceLocation TEAM_PVP = Confluence.asResource("team/pvp");
+    private static final int TEAM_ICON_TEXTURE_WIDTH = 10;
+    private static final int TEAM_ICON_TEXTURE_HEIGHT = 170;
+    private static final int TEAM_PVP_TEXTURE_WIDTH = 36;
+    private static final int TEAM_PVP_TEXTURE_HEIGHT = 306;
     private static final GuiSprite[][] TEAM_SPRITES;
 
     static {
         int length = Team.TEAMS.length;
         TEAM_SPRITES = new GuiSprite[length][3];
-        ResourceLocation teamIcon = Confluence.asResource("team/icon");
-        ResourceLocation teamPvp = Confluence.asResource("team/pvp");
-        GuiSprite pvpFB = new GuiSprite(teamPvp, 36, 306, 0, 288, 18, 18);
-        GuiSprite pvpTB = new GuiSprite(teamPvp, 36, 306, 18, 288, 18, 18);
+        GuiSprite pvpFB = new GuiSprite(TEAM_PVP, TEAM_PVP_TEXTURE_WIDTH, TEAM_PVP_TEXTURE_HEIGHT, 0, 288, 18, 18);
+        GuiSprite pvpTB = new GuiSprite(TEAM_PVP, TEAM_PVP_TEXTURE_WIDTH, TEAM_PVP_TEXTURE_HEIGHT, 18, 288, 18, 18);
         for (int i = 0; i < length; i++) {
             int j = i * 18;
             TEAM_SPRITES[i] = new GuiSprite[]{
-                    new GuiSprite(teamPvp, 36, 306, 0, j, 18, 18).setHovered(pvpFB),
-                    new GuiSprite(teamPvp, 36, 306, 18, j, 18, 18).setHovered(pvpTB),
-                    new GuiSprite(teamIcon, 10, 170, 0, i * 10, 10, 10)
-                            .setHovered(new GuiSprite(teamIcon, 10, 170, 0, 160, 10, 10))
+                    new GuiSprite(TEAM_PVP, TEAM_PVP_TEXTURE_WIDTH, TEAM_PVP_TEXTURE_HEIGHT, 0, j, 18, 18).setHovered(pvpFB),
+                    new GuiSprite(TEAM_PVP, TEAM_PVP_TEXTURE_WIDTH, TEAM_PVP_TEXTURE_HEIGHT, 18, j, 18, 18).setHovered(pvpTB),
+                    new GuiSprite(TEAM_ICON, TEAM_ICON_TEXTURE_WIDTH, TEAM_ICON_TEXTURE_HEIGHT, 0, i * 10, 10, 10)
+                            .setHovered(new GuiSprite(TEAM_ICON, TEAM_ICON_TEXTURE_WIDTH, TEAM_ICON_TEXTURE_HEIGHT, 0, 160, 10, 10))
             };
         }
     }

@@ -8,11 +8,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.EnhancedForgeMenu;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 
 public abstract class EnhanceForgeScreen<M extends EnhancedForgeMenu> extends AbstractContainerScreen<M> {
+    private static final int TEXTURE_SIZE = 256;
+    private static final int SUPER_LIT_PROGRESS_SIZE = 14;
     public static final ResourceLocation SUPER_LIT_PROGRESS = Confluence.asResource("textures/gui/container/super_lit_progress.png");
-    public static final PortSprite BURN_PROGRESS_SPRITE = new PortSprite(ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png"), 256, 256);
+    public static final ResourceLocation BURN_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png");
     public static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/hellforge.png");
 
     public EnhanceForgeScreen(M menu, Inventory playerInventory, Component title) {
@@ -38,10 +39,10 @@ public abstract class EnhanceForgeScreen<M extends EnhancedForgeMenu> extends Ab
         guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         if (menu.isLit()) {
             int l = Mth.ceil(menu.getLitProgress() * 16);
-            guiGraphics.blit(SUPER_LIT_PROGRESS, leftPos + 57, topPos + 59, 0, 0, 14, 14, 14, 14);
-            guiGraphics.blit(BACKGROUND, leftPos + 56, topPos + 75, 177, 0, l, 3, 256, 256);
+            guiGraphics.blit(SUPER_LIT_PROGRESS, leftPos + 57, topPos + 59, 0, 0, SUPER_LIT_PROGRESS_SIZE, SUPER_LIT_PROGRESS_SIZE, SUPER_LIT_PROGRESS_SIZE, SUPER_LIT_PROGRESS_SIZE);
+            guiGraphics.blit(BACKGROUND, leftPos + 56, topPos + 75, 177, 0, l, 3, TEXTURE_SIZE, TEXTURE_SIZE);
         }
         int j1 = Mth.ceil(menu.getBurnProgress() * 24);
-        guiGraphics.blitSprite(BURN_PROGRESS_SPRITE, 256, 256, 176, 14, leftPos + 91, topPos + 34, j1, 16);
+        guiGraphics.blit(BURN_PROGRESS_SPRITE, leftPos + 91, topPos + 34, 176, 14, j1, 16, TEXTURE_SIZE, TEXTURE_SIZE);
     }
 }

@@ -3,10 +3,11 @@ package org.confluence.mod.client.gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.client.gui.components.PortSprite;
 
 public class GuiSprite {
-    protected final PortSprite sprite;
+    protected final ResourceLocation sprite;
+    protected final int textureW;
+    protected final int textureH;
     protected final int u;
     protected final int v;
     protected final int w;
@@ -17,19 +18,13 @@ public class GuiSprite {
     protected @Nullable GuiSprite hovered;
 
     public GuiSprite(ResourceLocation path, int width, int height) {
-        this(new PortSprite(path, width, height), width, height);
+        this(path, width, height, 0, 0, width, height);
     }
 
     public GuiSprite(ResourceLocation path, int textureW, int textureH, int u, int v, int w, int h) {
-        this(new PortSprite(path, textureW, textureH), u, v, w, h);
-    }
-
-    public GuiSprite(PortSprite sprite, int width, int height) {
-        this(sprite, 0, 0, width, height);
-    }
-
-    public GuiSprite(PortSprite sprite, int u, int v, int w, int h) {
-        this.sprite = sprite;
+        this.sprite = path;
+        this.textureW = textureW;
+        this.textureH = textureH;
         this.u = u;
         this.v = v;
         this.w = w;
@@ -37,11 +32,11 @@ public class GuiSprite {
     }
 
     public int getTextureW() {
-        return sprite.textureW();
+        return textureW;
     }
 
     public int getTextureH() {
-        return sprite.textureH();
+        return textureH;
     }
 
     public int getU() {
@@ -102,7 +97,7 @@ public class GuiSprite {
     }
 
     public void render(GuiGraphics guiGraphics) {
-        guiGraphics.blitSprite(sprite, sprite.textureW(), sprite.textureH(), u, v, x, y, w, h);
+        guiGraphics.blitSprite(sprite, textureW, textureH, u, v, x, y, w, h);
     }
 
     public void render(GuiGraphics guiGraphics, float partialTick) {
@@ -136,6 +131,6 @@ public class GuiSprite {
     }
 
     public void renderAligned(GuiGraphics guiGraphics, int alignX, int alignY) {
-        guiGraphics.blitSprite(sprite, sprite.textureW(), sprite.textureH(), u, v, x + (alignX - w) / 2, y + (alignY - h) / 2, w, h);
+        guiGraphics.blitSprite(sprite, textureW, textureH, u, v, x + (alignX - w) / 2, y + (alignY - h) / 2, w, h);
     }
 }

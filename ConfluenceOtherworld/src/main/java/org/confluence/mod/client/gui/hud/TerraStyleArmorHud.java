@@ -113,7 +113,7 @@ public class TerraStyleArmorHud implements PortGuiLayer {
             widthOffset = widthOffset > 0 ? widthOffset : 0;
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(-widthOffset, 0.0F, 0.0F);
-            guiGraphics.blit(ModClientSetups.LEGACY_SPRITE.path(), widthArmor, heightArmor, 0, 51, 23, 25, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE);
+            guiGraphics.blit(ModClientSetups.LEGACY_SPRITE, widthArmor, heightArmor, 0, 51, 23, 25, ModClientSetups.LEGACY_SIZE, ModClientSetups.LEGACY_SIZE);
             guiGraphics.pose().popPose();
             if (armorToughnessNum == 0) {
                 drawString(guiGraphics, minecraft.font, armor, widthArmor + 11.5F - v - widthOffset, heightArmor + 12.5F - v2, colorArmor);

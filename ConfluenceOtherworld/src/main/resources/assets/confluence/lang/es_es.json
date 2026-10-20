@@ -2029,8 +2029,6 @@
   "confluence.configuration.soulStyle.legacy": "Estilo de alma: Elegante",
   "confluence.configuration.soulStyle.overlay": "Estilo de alma: Superpuesto",
   "confluence.configuration.soulStyle.tooltip": "Estilo de alma",
-  "confluence.configuration.starPhase": "Fase estelar",
-  "confluence.configuration.starPhase.tooltip": "Actualmente no tiene función. No se recomienda habilitar.",
   "confluence.configuration.terraStyleArmor": "Armadura estilo Terra",
   "confluence.configuration.terraStyleArmor.tooltip": "Cuando está habilitado, la armadura se muestra en estilo Terra.",
   "confluence.configuration.terraStyleExplosion": "Explosión estilo Terra",

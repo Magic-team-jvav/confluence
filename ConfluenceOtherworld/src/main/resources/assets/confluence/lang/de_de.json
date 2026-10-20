@@ -1895,9 +1895,7 @@
   "confluence.configuration.showMoneyDrops": "Show Coin Drops on Death Screen",
   "confluence.configuration.showMoneyDrops.tooltip": "Enable to display the amount of coins dropped on the death screen",
   "confluence.configuration.showWindParticles": "Wind Particles Ratio",
-  "confluence.configuration.showWindParticles.tooltip": "Adjust the value to decide how many wind particles are visible.",
-  "confluence.configuration.starPhase": "Stellar Phase",
-  "confluence.configuration.starPhase.tooltip": "Currently has no function. Not recommended to enable.",
+  "confluence.configuration.showWindParticles.tooltip": "Adjust the value to decide how many wind particles are visible."
   "confluence.configuration.terraStyleArmor": "Terra Style Armor",
   "confluence.configuration.terraStyleArmor.tooltip": "When enabled, armor is displayed in Terra style.",
   "confluence.configuration.terraStyleExplosion": "Terra Style Explosion",

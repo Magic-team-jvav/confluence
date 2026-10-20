@@ -289,20 +289,4 @@ public enum WindState implements IGlobalData {
         clearOverride();
         rerollHold = 0;
     }
-
-    /// 从旧格式迁移：旧版把风速存在 `ConfluenceData` 的 `windSpeedX`/`windSpeedZ`（旧单位 [-1,1] 向量）。
-    ///
-    /// 只在全局数据尚未初始化时生效，由 {@code ConfluenceData} 在构造时调用（那时 level.dat 已经解析完）。
-    public void migrateLegacy(float legacyX, float legacyZ) {
-        if (initialized) return;
-        float legacy = Mth.sqrt(legacyX * legacyX + legacyZ * legacyZ);
-        if (legacy <= 0.0F) return;
-        // 旧单位 1.0 ↔ 30 mph ↔ 13.41 m/s
-        this.initialized = true;
-        this.speedCurrent = this.speedTarget = legacy * WindMath.REF_SPEED;
-        this.angleCurrent = this.angleTarget = (float) Mth.atan2(legacyZ, legacyX);
-        this.timer = REROLL_MIN;
-        // 旧存档没有阵风相位，用旧向量派生一个稳定的相位（同一存档每次读档结果一致）
-        this.gustPhase = Mth.frac(Mth.abs(legacyX) * 7.0F + Mth.abs(legacyZ) * 13.0F);
-    }
 }

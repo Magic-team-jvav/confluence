@@ -47,7 +47,6 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.data.GamePhase;
-import org.confluence.mod.common.data.StarPhase;
 import org.confluence.mod.common.data.command.GameEventArgument;
 import org.confluence.mod.common.data.command.PrefixArgument;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -56,13 +55,13 @@ import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.item.PaintItems;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.wind.WindField;
 import org.confluence.mod.common.wind.WindMath;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
@@ -70,8 +69,6 @@ import org.joml.Vector2f;
 import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.*;
-
-import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
 public final class ModCommands {
     public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPE_INFOS = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, Confluence.MODID);
@@ -83,31 +80,6 @@ public final class ModCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))
-                .then(Commands.literal("starPhases")
-                        .then(Commands.literal("get").then(Commands.argument("index", IntegerArgumentType.integer(0, STAR_PHASES_SIZE - 1)).executes(context -> {
-                            int index = IntegerArgumentType.getInteger(context, "index");
-                            StarPhase starPhase = ConfluenceData.get(context.getSource().getLevel()).getStarPhase(index);
-                            if (starPhase == null) {
-                                context.getSource().sendFailure(Component.literal("No such StarPhase!"));
-                                return 0;
-                            }
-                            context.getSource().sendSystemMessage(Component.literal(starPhase.toString()));
-                            return 1;
-                        })))
-                        .then(Commands.literal("set").then(Commands.argument("index", IntegerArgumentType.integer(0, STAR_PHASES_SIZE - 1)).then(Commands.argument("timeOffset", IntegerArgumentType.integer()).then(Commands.argument("radius", FloatArgumentType.floatArg()).then(Commands.argument("angle", FloatArgumentType.floatArg()).executes(context -> {
-                            int index = IntegerArgumentType.getInteger(context, "index");
-                            int timeOffset = IntegerArgumentType.getInteger(context, "timeOffset");
-                            float radius = FloatArgumentType.getFloat(context, "radius");
-                            float angle = FloatArgumentType.getFloat(context, "angle");
-                            ConfluenceData data = ConfluenceData.get(context.getSource().getLevel());
-                            if (!data.setStarPhase(index, timeOffset, radius, angle)) {
-                                context.getSource().sendFailure(Component.literal("Can not set StarPhase!"));
-                                return 0;
-                            }
-                            context.getSource().sendSuccess(() -> Component.literal("Has been set to " + data.getStarPhase(index)), true);
-                            return 1;
-                        }))))))
-                )
                 .then(Commands.literal("gamePhase")
                         .then(Commands.literal("get").executes(context -> {
                             String gamePhase = KillBoard.INSTANCE.getGamePhase().getSerializedName();
@@ -227,7 +199,8 @@ public final class ModCommands {
                     BlockPos finalPos = pos;
                     List<MiniBiome.Marker> markers = MiniBiome.markersAt(level, pos);
                     context.getSource().sendSuccess(() -> {
-                        if (markers.isEmpty()) return Component.literal(finalPos + " no mini biome");
+                        if (markers.isEmpty())
+                            return Component.literal(finalPos + " no mini biome");
                         StringBuilder builder = new StringBuilder(finalPos + " mini biomes:");
                         for (MiniBiome.Marker marker : markers) {
                             builder.append("\n  ").append(marker.id())
@@ -441,7 +414,7 @@ public final class ModCommands {
     /// （负值天然合法，不必再约定"负风速 = 反向"）。`set 0 0` 就是强制静风。
     ///
     /// @param ticks 强制风持续的 **tick** 数（20 tick = 1 秒）。传 {@link Integer#MAX_VALUE} 表示本局一直有效，
-    ///              由 `/confluence wind stop` 解除。参数名带 `Ticks` 是为了让 Brigadier 的用法提示自己说明单位。
+    ///                           由 `/confluence wind stop` 解除。参数名带 `Ticks` 是为了让 Brigadier 的用法提示自己说明单位。
     private static int windSet(CommandContext<CommandSourceStack> context, int ticks) {
         float x = FloatArgumentType.getFloat(context, "x");
         float z = FloatArgumentType.getFloat(context, "z");

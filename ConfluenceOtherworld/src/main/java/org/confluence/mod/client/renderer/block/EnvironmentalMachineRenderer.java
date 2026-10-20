@@ -29,6 +29,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.RenderUtils;
 
 import java.util.Arrays;
+import java.util.function.BooleanSupplier;
 
 public final class EnvironmentalMachineRenderer extends GeoBlockRenderer<EnvironmentalMachineBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/clentamachine.geo.json");
@@ -338,23 +339,14 @@ public final class EnvironmentalMachineRenderer extends GeoBlockRenderer<Environ
     }
 
     // 物品形态也使用负尺寸剔除；空机器不绘制储液罐中的液体。
-    public static IClientItemExtensions itemRenderer(boolean world) {
+    public static IClientItemExtensions itemRenderer(BooleanSupplier world) {
         return new IClientItemExtensions() {
             private GeoItemRenderer<EnvironmentalMachineBlock.BItem> renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (renderer == null)
-                    renderer = new GeoItemRenderer<>(new GeoModel<EnvironmentalMachineBlock.BItem>() {
-                        @Override
-                        public ResourceLocation getModelResource(EnvironmentalMachineBlock.BItem item) {return MODEL;}
-
-                        @Override
-                        public ResourceLocation getTextureResource(EnvironmentalMachineBlock.BItem item) {return texture(world);}
-
-                        @Override
-                        public ResourceLocation getAnimationResource(EnvironmentalMachineBlock.BItem item) {return ANIMATION;}
-                    }) {
+                    renderer = new GeoItemRenderer<>(new BItemGeoModel(world)) {
                         @Override
                         public RenderType getRenderType(EnvironmentalMachineBlock.BItem item, ResourceLocation texture, MultiBufferSource source, float partialTick) {
                             return RenderType.entityCutout(texture);
@@ -371,6 +363,21 @@ public final class EnvironmentalMachineRenderer extends GeoBlockRenderer<Environ
                         }
                     };
                 return renderer;
+            }
+
+            private static class BItemGeoModel extends GeoModel<EnvironmentalMachineBlock.BItem> {
+                private final BooleanSupplier world;
+
+                public BItemGeoModel(BooleanSupplier world) {this.world = world;}
+
+                @Override
+                public ResourceLocation getModelResource(EnvironmentalMachineBlock.BItem item) {return MODEL;}
+
+                @Override
+                public ResourceLocation getTextureResource(EnvironmentalMachineBlock.BItem item) {return texture(world.getAsBoolean());}
+
+                @Override
+                public ResourceLocation getAnimationResource(EnvironmentalMachineBlock.BItem item) {return ANIMATION;}
             }
         };
     }

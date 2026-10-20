@@ -64,7 +64,6 @@ import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeItemOutline;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
-import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
@@ -107,7 +106,6 @@ import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.summoner.model.ZenithSwordModels;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.animal.Fairy;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
@@ -177,7 +175,6 @@ public final class ModClientEvents {
         event.enqueueWork(() -> {
             ModDynamicLights.register();
             OpalLightIntegration.register();
-            StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
             ArrowInBowRenderer.initAdaptionMap();
@@ -201,7 +198,6 @@ public final class ModClientEvents {
     private static void modConfig$Reloading(ModConfigEvent.Reloading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
             ClientConfigs.onLoad();
-            StarPhaseHandler.enabled = CommonConfigs.SPEC.isLoaded() ? CommonConfigs.STAR_PHASE.get() : false;
         }
     }
 

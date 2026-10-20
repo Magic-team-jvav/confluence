@@ -1,24 +1,15 @@
 package org.confluence.mod.common.data.saved;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
-import org.confluence.mod.common.data.StarPhase;
-import org.confluence.mod.common.wind.WindMath;
-import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
-import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,35 +19,19 @@ public final class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 10;
 
     private boolean initialized = false;
-    private final Int2ObjectMap<StarPhase> starPhases = new Int2ObjectArrayMap<>();
     private int revealStep = -1;
     private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
     private int evilBrokenCount = 0;
     private boolean stopAskForSoftcore = false;
 
-    ConfluenceData() {
-        fillDefaultStarPhases();
-    }
+    ConfluenceData() {}
 
     ConfluenceData(CompoundTag nbt) {
         this.initialized = nbt.getBoolean("initialized");
-        // 风已于本版本迁移到 IGlobalData（写进 level.dat），这里只负责把旧格式的 key 交给它迁移
-        WindState.INSTANCE.migrateLegacy(nbt.getFloat("windSpeedX"), nbt.getFloat("windSpeedZ"));
-        for (Tag tag : nbt.getList("starPhases", Tag.TAG_COMPOUND)) {
-            CompoundTag phase = (CompoundTag) tag;
-            starPhases.put(phase.getInt("index"), new StarPhase(phase));
-        }
         this.revealStep = nbt.getInt("revealStep");
         this.meteoriteTracker.deserialize(nbt);
         this.evilBrokenCount = nbt.getInt("evilBrokenCount");
         this.stopAskForSoftcore = nbt.getBoolean("stopAskForSoftcore");
-    }
-
-    /// 保证星相映射始终包含固定的十个槽位。
-    private void fillDefaultStarPhases() {
-        for (int i = 0; i < STAR_PHASES_SIZE; i++) {
-            starPhases.put(i, StarPhase.DEFAULT);
-        }
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
@@ -84,9 +59,6 @@ public final class ConfluenceData extends SavedData {
                 ra += random.nextFloat() * (ra * 0.1F) * (random.nextBoolean() ? 1 : -1);
                 raList.add(random.nextInt(raList.size() + 1), ra);
             }
-            for (int i = 0; i < STAR_PHASES_SIZE; i++) {
-                data.starPhases.put(i, new StarPhase(180 - random.nextInt(361), raList.get(i), 20.0F - random.nextFloat() * 40.0F));
-            }
             data.initialized = true;
             data.setDirty();
         }
@@ -95,40 +67,11 @@ public final class ConfluenceData extends SavedData {
     @Override
     public @NotNull CompoundTag save(CompoundTag nbt) {
         nbt.putBoolean("initialized", initialized);
-        // 旧格式的键继续写回（由 WindState 换算）：单方面回滚到旧版本时不会读出一堆 0
-        float normalized = WindState.INSTANCE.speed() / WindMath.REF_SPEED;
-        nbt.putFloat("windSpeedX", WindState.INSTANCE.dirX() * normalized);
-        nbt.putFloat("windSpeedZ", WindState.INSTANCE.dirZ() * normalized);
-        ListTag listTag = new ListTag();
-        for (int i = 0; i < STAR_PHASES_SIZE; i++) {
-            CompoundTag tag = new CompoundTag();
-            tag.putInt("index", i);
-            starPhases.getOrDefault(i, StarPhase.DEFAULT).writeTo(tag);
-            listTag.add(tag);
-        }
-        nbt.put("starPhases", listTag);
         nbt.putInt("revealStep", revealStep);
         meteoriteTracker.serialize(nbt);
         nbt.putInt("evilBrokenCount", evilBrokenCount);
         nbt.putBoolean("stopAskForSoftcore", stopAskForSoftcore);
         return nbt;
-    }
-
-    public boolean setStarPhase(int index, int timeOffset, float radius, float angle) {
-        if (index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return false;
-        starPhases.put(index, new StarPhase(timeOffset, radius, angle));
-        StarPhasesPacketS2C.sendToAll(index, timeOffset, radius, angle);
-        setDirty();
-        return true;
-    }
-
-    public StarPhase getStarPhase(int index) {
-        if (index < 0 || index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return null;
-        return starPhases.getOrDefault(index, StarPhase.DEFAULT);
-    }
-
-    public Int2ObjectMap<StarPhase> getStarPhases() {
-        return starPhases;
     }
 
     public boolean increaseRevealStep() {

@@ -2403,8 +2403,6 @@
   "confluence.configuration.soulStyle.legacy": "Soul Style: Elegant",
   "confluence.configuration.soulStyle.overlay": "Soul Style: Overlay",
   "confluence.configuration.soulStyle.tooltip": "Soul Style",
-  "confluence.configuration.starPhase": "Stellar Phase",
-  "confluence.configuration.starPhase.tooltip": "Currently has no function. Not recommended to enable.",
   "confluence.configuration.stopAskForSoftcore": "Stop Ask for Softcore",
   "confluence.configuration.stopAskForSoftcore.tooltip": "When enabled, the server will not ask for the Softcore.",
   "confluence.configuration.terraStyleArmor": "Terra Style Armor",

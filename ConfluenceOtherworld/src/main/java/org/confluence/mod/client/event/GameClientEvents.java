@@ -60,6 +60,7 @@ import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.client.renderer.entity.MartianOfficerRenderer;
 import org.confluence.mod.client.renderer.entity.TongueRenderer;
 import org.confluence.mod.client.renderer.entity.WallOfFleshRenderer;
@@ -96,7 +97,6 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
 import org.mesdag.portlib.event.client.PortInputEvent;
-import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Iterator;
@@ -377,7 +377,6 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
         if (player == null) return;
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            StarPhaseHandler.render(event, player.clientLevel);
             MeteorLandingHandler.render(event, player);
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);

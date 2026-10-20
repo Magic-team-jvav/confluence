@@ -516,7 +516,7 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
         @Override
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-            consumer.accept(EnvironmentalMachineRenderer.itemRenderer(((EnvironmentalMachineBlock) getBlock()).world));
+            consumer.accept(EnvironmentalMachineRenderer.itemRenderer(() -> ((EnvironmentalMachineBlock) getBlock()).world));
         }
 
         @Override

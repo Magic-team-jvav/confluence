@@ -23,8 +23,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.ProjectileHitRules;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -37,7 +35,7 @@ import java.util.function.IntToDoubleFunction;
 import java.util.function.Predicate;
 
 public class TargetCache {
-    // 召唤物沿用接触攻击的目标资格，不额外要求目标可被射弹命中。
+    /// 召唤物沿用接触攻击的目标资格，不额外要求目标可被射弹命中。
     private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ATTACKABLE, false);
 
     private final Int2BooleanOpenHashMap visibilityCache = new Int2BooleanOpenHashMap();
@@ -85,20 +83,22 @@ public class TargetCache {
     }
 
     public boolean canKeep(@Nullable Entity target) {
-        return TARGETING.canKeep(owner, target) && canKeep(ProjectileHitRules.logicalLivingTarget(target));
+        return TARGETING.canKeep(owner, target) && canKeep(LibEntityUtils.logicalLivingTarget(target));
     }
 
     /// 精确碰撞使用原始部位，生命实体缓存继续服务于寻路和威胁判断。
     public List<Entity> getHitTargets(AABB bounds, Predicate<Entity> filter) {
         if (serverLevel == null) return List.of();
-        return serverLevel.getEntities(owner, bounds, target -> ProjectileHitRules.canHit(owner, target)
-                && canKeep(target) && filter.test(target));
+        /// 普通生命实体沿用接触资格；多部件本体和部件仍检查实际受击范围。
+        return serverLevel.getEntities(owner, bounds, target -> canKeep(target)
+                && (target instanceof LivingEntity && !target.isMultipartEntity() || LibEntityUtils.canHit(owner, target))
+                && filter.test(target));
     }
 
     public List<Entity> getHitTargets(Vec3 position, double radius, Predicate<Entity> filter) {
         if (serverLevel == null || radius <= 0) return List.of();
         AABB bounds = AABB.ofSize(position, radius * 2, radius * 2, radius * 2);
-        return ProjectileHitRules.areaTargets(serverLevel, owner, bounds,
+        return LibEntityUtils.areaTargets(serverLevel, owner, bounds,
                 target -> canKeep(target) && filter.test(target)
                         && target.getBoundingBox().getCenter().distanceToSqr(position) <= radius * radius);
     }
@@ -169,7 +169,7 @@ public class TargetCache {
         return new AABB(cellX << 4, cellY << 4, cellZ << 4, (cellX + 1) << 4, (cellY + 1) << 4, (cellZ + 1) << 4);
     }
 
-    // ==================== Chunk 缓存（每tick预加载） ====================
+    /// ==================== Chunk 缓存（每tick预加载） ====================
 
     public LivingEntity getNewTarget(Minion minion, List<LivingEntity> targets, float ownerWarningDistance, boolean selfCenter) {
         Player owner = minion.getOwner();
@@ -206,7 +206,7 @@ public class TargetCache {
         return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) living1.getEyePosition().distanceTo(living2.getBoundingBox().getCenter())));
     }
 
-    //此缓存不能被共享，极易卡顿，不建议使用
+    /// 此缓存不能被共享，极易卡顿，不建议使用
     @Deprecated
     public boolean isVisibility(AttachmentEntity attachmentEntity, LivingEntity living) {
         Integer key = attachmentEntity.getUuid().hashCode() + living.getUUID().hashCode();
@@ -259,7 +259,7 @@ public class TargetCache {
         int minBuildHeight = serverLevel.getMinBuildHeight();
         int maxBuildHeight = serverLevel.getMaxBuildHeight();
 
-        // 局部缓存：同一条射线内复用 chunk/section 引用
+        /// 局部缓存：同一条射线内复用 chunk/section 引用
         long lastChunkKey = Long.MIN_VALUE;
         LevelChunk chunk = null;
         int lastSectionY = Integer.MIN_VALUE;
@@ -270,7 +270,7 @@ public class TargetCache {
                 return true;
             }
 
-            // 步进
+            /// 步进
             if (tMaxX < tMaxY) {
                 if (tMaxX < tMaxZ) {
                     curX += stepX;
@@ -289,12 +289,12 @@ public class TargetCache {
                 }
             }
 
-            // 高度裁剪
+            /// 高度裁剪
             if (curY < minBuildHeight || curY >= maxBuildHeight) {
                 continue;
             }
 
-            // 从缓存取 chunk，未命中则加载并写入缓存
+            /// 从缓存取 chunk，未命中则加载并写入缓存
             int chunkX = SectionPos.blockToSectionCoord(curX);
             int chunkZ = SectionPos.blockToSectionCoord(curZ);
             long chunkKey = ChunkPos.asLong(chunkX, chunkZ);
@@ -314,7 +314,7 @@ public class TargetCache {
                 return false;
             }
 
-            // 缓存 Section
+            /// 缓存 Section
             int sectionY = chunk.getSectionIndex(curY);
             if (sectionY != lastSectionY) {
                 section = chunk.getSection(sectionY);

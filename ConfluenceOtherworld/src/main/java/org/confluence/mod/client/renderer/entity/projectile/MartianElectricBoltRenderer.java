@@ -2,6 +2,7 @@ package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -10,11 +11,12 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.SpearProjectileModels;
 import org.confluence.mod.common.entity.projectile.MartianElectricBolt;
 
-/** Tesla shots reuse the Storm Spear mesh and texture with full-bright emissive rendering. */
+/// 特斯拉弹幕复用风暴长矛的模型与贴图，并以全亮方式渲染。
 public final class MartianElectricBoltRenderer extends EntityRenderer<MartianElectricBolt> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/storm_spear_shot_projectile.png");
     private static final RenderType GLOW = RenderType.entityTranslucentEmissive(TEXTURE);

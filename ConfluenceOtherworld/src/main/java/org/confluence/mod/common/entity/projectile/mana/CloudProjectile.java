@@ -17,8 +17,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.ProjectileHitRules;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -129,13 +127,13 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     protected void doHitCheck() {}
 
     public void setTarget(@Nullable Entity target) {
-        target = target == null ? null : ProjectileHitRules.aimTarget(target, position());
+        target = target == null ? null : LibEntityUtils.aimTarget(target, position());
         this.target = target;
         if (target == null) {
             this.targetUUID = null;
             entityData.set(DATA_TARGET_ID, -114514);
         } else {
-            this.targetUUID = (target instanceof LivingEntity ? target : ProjectileHitRules.encounterOwner(target)).getUUID();
+            this.targetUUID = (target instanceof LivingEntity ? target : LibEntityUtils.encounterOwner(target)).getUUID();
             entityData.set(DATA_TARGET_ID, target.getId());
         }
     }
@@ -144,7 +142,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
         if (target == null && targetUUID != null && level() instanceof ServerLevel level) {
             Entity entity = level.getEntity(targetUUID);
             if (entity != null) {
-                this.target = ProjectileHitRules.aimTarget(entity, position());
+                this.target = LibEntityUtils.aimTarget(entity, position());
             }
         }
         return target;

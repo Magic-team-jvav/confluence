@@ -8,8 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 
 import java.util.Comparator;
@@ -54,7 +54,7 @@ final class BulletBehaviorSupport {
     }
 
     static void applyEffect(Entity target, MobEffect effect, int duration, int amplifier) {
-        LivingEntity living = ProjectileHitRules.effectTarget(target);
+        LivingEntity living = LibEntityUtils.effectTarget(target);
         if (living != null && !living.level().isClientSide) {
             living.addEffect(new MobEffectInstance(effect, duration, amplifier));
         }

@@ -11,24 +11,26 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.UUID;
 
-// 地面电矛、抬升、爬升加速和滑翔冲刺共用一套服务端状态机。
+/// 地面电矛、抬升、爬升加速和滑翔冲刺共用一套服务端状态机。
 public final class GigazapperAf2 extends Gigazapper {
     public static final int DASH_COOLDOWN_TICKS = 30 * 20;
     private static final double CLOSE_DISTANCE = 10.0;
@@ -96,8 +98,8 @@ public final class GigazapperAf2 extends Gigazapper {
 
     @Override
     protected boolean hasEntityContactAttack() {
-        // 冲刺单独检测，不受普通身体接触的二十 tick 冷却影响，也不会重复结算。
-        return getFlightPhase() != FlightPhase.FLYING_DASH;
+        /// 冲刺单独检测，不受普通身体接触的二十 tick 冷却影响，也不会重复结算。
+        return super.hasEntityContactAttack() && getFlightPhase() != FlightPhase.FLYING_DASH;
     }
 
     @Override
@@ -161,6 +163,11 @@ public final class GigazapperAf2 extends Gigazapper {
         boolean wasDashing = getFlightPhase() == FlightPhase.FLYING_DASH;
         super.tick();
         if (level().isClientSide || !isAlive()) {
+            return;
+        }
+        if (isNoAi() || isPassenger()) {
+            if (isFlying()) finishFlight();
+            entityData.set(RETREATING, false);
             return;
         }
         if (dashCooldown > 0) {
@@ -238,7 +245,7 @@ public final class GigazapperAf2 extends Gigazapper {
             }
             beginRetreat(target);
         }
-        // Retreat stays latched through the 10–30 block interval instead of launching as soon as ten is crossed.
+        /// 进入撤退后保持至拉开三十格，避免刚越过十格就再次起飞。
         if (isRetreating() && distance <= RETREAT_DISTANCE) {
             tickRetreat(target);
             return;
@@ -278,7 +285,7 @@ public final class GigazapperAf2 extends Gigazapper {
         if (path != null && path.canReach() && getNavigation().moveTo(path, 1.2)) {
             retreatPathFailures = 0;
         } else if (++retreatPathFailures >= 3) {
-            // 无法拉开距离时短暂恢复地面战斗，之后重试，避免在死角永久停住。
+            /// 无法拉开距离时短暂恢复地面战斗，之后重试，避免在死角永久停住。
             stopRetreat();
             retreatTarget = target.getUUID();
             retreatRetryCooldown = 40;
@@ -323,7 +330,7 @@ public final class GigazapperAf2 extends Gigazapper {
             double speed = Math.min(1.35, 0.45 + phaseTicks * 0.025);
             velocity = horizontal.scale(Math.min(speed, approachDistance)).add(0, 0.18, 0);
         } else {
-            // 向下滑翔把下降速度转成水平加速；每刻限制转向，允许玩家侧移躲闪。
+            /// 向下滑翔把下降速度转成水平加速；每刻限制转向，允许玩家侧移躲闪。
             Vec3 current = getDeltaMovement();
             double speed = Math.min(2.8, Math.max(0.45, current.horizontalDistance())
                     + 0.035 + Math.max(0, -current.y) * 0.1);
@@ -336,7 +343,7 @@ public final class GigazapperAf2 extends Gigazapper {
             float yaw = Mth.approachDegrees((float) Math.toDegrees(currentYaw), (float) Math.toDegrees(desiredYaw), 4);
             double radians = Math.toRadians(yaw);
             double descent = Mth.clamp(offset.y / Math.max(1, distance) * speed, -4.0, -0.08);
-            // 正上方俯冲时收小水平位移，避免零瞄准方向产生任意朝向的侧冲。
+            /// 正上方俯冲时收小水平位移，避免零瞄准方向产生任意朝向的侧冲。
             double horizontalSpeed = speed * Math.min(1, distance);
             velocity = new Vec3(Math.cos(radians) * horizontalSpeed, descent, Math.sin(radians) * horizontalSpeed);
         }
@@ -359,7 +366,7 @@ public final class GigazapperAf2 extends Gigazapper {
         return false;
     }
 
-    // 速度使用 Minecraft 的格/tick 单位；仅计相互接近的速度分量，额外伤害不超过十。
+    /// 速度使用 Minecraft 的格/tick 单位；仅计相互接近的速度分量，额外伤害不超过十。
     public static double projectedSpeedBonus(Vec3 attackerVelocity, Vec3 targetVelocity, Vec3 impactDirection) {
         Vec3 direction = impactDirection.lengthSqr() < 1.0E-8 ? attackerVelocity.normalize() : impactDirection.normalize();
         double projection = attackerVelocity.subtract(targetVelocity).dot(direction);
@@ -410,7 +417,7 @@ public final class GigazapperAf2 extends Gigazapper {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         dashCooldown = Mth.clamp(tag.getInt("Af2DashCooldown"), 0, DASH_COOLDOWN_TICKS);
-        // 重载时安全取消未完成的飞行，不允许通过卸载区块跳过冲刺冷却。
+        /// 重载时安全取消未完成的飞行，不允许通过卸载区块跳过冲刺冷却。
         if (tag.getBoolean("Af2WasFlying")) {
             dashCooldown = DASH_COOLDOWN_TICKS;
             setDeltaMovement(Vec3.ZERO);

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -18,22 +19,23 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
 import org.confluence.lib.common.entity.PartHitTarget;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.projectile.MonsterLaser;
+import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.mixed.Immunity;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * 三足地面攻击者，左右两侧的 left_fort/right_fort 炮台可独立被摧毁。
- */
+/// 三足地面攻击者，左右两侧的 left_fort/right_fort 炮台可独立被摧毁。
 public final class MartianWalker extends BaseMonster {
     public enum CombatTactic {IDLE, RETREAT, APPROACH, RANGED, LEG_MELEE}
 
@@ -46,10 +48,10 @@ public final class MartianWalker extends BaseMonster {
     private static final int LAUNCH_TICKS = 105;
     private static final float MAX_TURN_PER_TICK = 10.0F;
     private final Gait gait = new Gait();
-    private final UUID[] weaponUUIDs = new UUID[2];
+    private static final float WEAPON_HEALTH_RATIO = 0.25F;
+    private static final EntityDataAccessor<Float> LEFT_WEAPON_HEALTH = SynchedEntityData.defineId(MartianWalker.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> RIGHT_WEAPON_HEALTH = SynchedEntityData.defineId(MartianWalker.class, EntityDataSerializers.FLOAT);
     private final WalkerWeapon[] weapons = new WalkerWeapon[2];
-    private final int[] missingTicks = new int[2];
-    private final float[] savedWeaponHealth = {-1, -1};
     private int attackCooldown;
     private int contactCooldown;
     private int meleePauseTicks;
@@ -57,7 +59,7 @@ public final class MartianWalker extends BaseMonster {
     private List<WalkerGeometry.Box> collisionBoxes = List.of();
     private final LegHitbox[] legHitboxes;
     private final BodyHitbox bodyHitbox;
-    private final net.minecraftforge.entity.PartEntity<?>[] hitboxes;
+    private final PartEntity<?>[] hitboxes;
 
     public MartianWalker(EntityType<? extends MartianWalker> type, Level level) {
         super(type, level);
@@ -66,8 +68,12 @@ public final class MartianWalker extends BaseMonster {
         legHitboxes = new LegHitbox[30];
         for (int i = 0; i < legHitboxes.length; i++) legHitboxes[i] = new LegHitbox(this);
         bodyHitbox = new BodyHitbox(this);
-        hitboxes = Arrays.copyOf(legHitboxes, legHitboxes.length + 1, net.minecraftforge.entity.PartEntity[].class);
+        hitboxes = Arrays.copyOf(legHitboxes, legHitboxes.length + 3, PartEntity[].class);
         hitboxes[legHitboxes.length] = bodyHitbox;
+        for (int slot = 0; slot < weapons.length; slot++) {
+            weapons[slot] = new WalkerWeapon(this, slot);
+            hitboxes[legHitboxes.length + 1 + slot] = weapons[slot];
+        }
         setId(ENTITY_COUNTER.getAndAdd(hitboxes.length + 1) + 1);
     }
 
@@ -82,9 +88,9 @@ public final class MartianWalker extends BaseMonster {
     public boolean isMultipartEntity() {return true;}
 
     @Override
-    public net.minecraftforge.entity.PartEntity<?>[] getParts() {return hitboxes;}
+    public PartEntity<?>[] getParts() {return hitboxes;}
 
-    // 根包围盒仅用于地面寻路，不用于玩家碰撞或拾取。
+    /// 根包围盒仅用于地面寻路，不用于玩家碰撞或拾取。
     @Override
     public boolean canBeCollidedWith() {return false;}
 
@@ -99,7 +105,7 @@ public final class MartianWalker extends BaseMonster {
 
     @Override
     protected void pushEntities() {
-        // 即使本体不可被推动，LivingEntity 仍会推动其他实体。
+        /// 即使本体不可被推动，LivingEntity 仍会推动其他实体。
         updateCollisionGeometry();
         AABB bounds = collisionBounds();
         if (bounds == null || !isAlive()) return;
@@ -107,8 +113,6 @@ public final class MartianWalker extends BaseMonster {
         for (Entity entity : level().getEntities(this, bounds,
                 candidate -> candidate instanceof LivingEntity && pushable.test(candidate))) {
             if (level().isClientSide && !(entity instanceof net.minecraft.world.entity.player.Player))
-                continue;
-            if (entity instanceof WalkerWeapon weapon && weapon.belongsTo(this, weapon.slot()))
                 continue;
             doPush(entity);
         }
@@ -122,7 +126,7 @@ public final class MartianWalker extends BaseMonster {
 
     @Override
     public boolean canCollideWith(Entity entity) {
-        // 玩家和生物由动画部件几何推挤，不将寻路包围盒作为实体障碍。
+        /// 玩家和生物由动画部件几何推挤，不将寻路包围盒作为实体障碍。
         return false;
     }
 
@@ -148,12 +152,19 @@ public final class MartianWalker extends BaseMonster {
             while (index < legHitboxes.length) legHitboxes[index++].deactivate();
         }
         if (body != null && bodyHitbox != null) bodyHitbox.follow(body);
+        if (weapons != null) {
+            for (int slot = 0; slot < weapons.length; slot++) {
+                if (weapons[slot] != null) weapons[slot].follow(weaponBounds(slot));
+            }
+        }
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DESTROYED, 0);
+        entityData.define(LEFT_WEAPON_HEALTH, -1.0F);
+        entityData.define(RIGHT_WEAPON_HEALTH, -1.0F);
         entityData.define(WALKING, false);
         entityData.define(WALK_SPEED, 0.0F);
         entityData.define(FLIGHT_PHASE, 0);
@@ -210,6 +221,7 @@ public final class MartianWalker extends BaseMonster {
     }
 
     private void tryStartLaunch() {
+        if (isNoAi() || isPassenger()) return;
         if (level().isClientSide || !isAlive() || entityData.get(FLIGHT_PHASE) != 0 || weaponsDestroyed()
                 || getHealth() >= getMaxHealth() * 0.25F) return;
         entityData.set(PHASE_STARTED, level().getGameTime());
@@ -263,7 +275,7 @@ public final class MartianWalker extends BaseMonster {
     protected float tickHeadTurn(float yaw, float animationStep) {
         float previousBodyYaw = yBodyRot;
         float result = super.tickHeadTurn(yaw, animationStep);
-        // 原版身体控制在停步后会追随头部，模型和碰撞几何也必须限制转速。
+        /// 原版身体控制在停步后会追随头部，模型和碰撞几何也必须限制转速。
         yBodyRot = Mth.approachDegrees(previousBodyYaw, yBodyRot, MAX_TURN_PER_TICK);
         return result;
     }
@@ -346,7 +358,7 @@ public final class MartianWalker extends BaseMonster {
             Vec3 away = position().subtract(target.position()).multiply(1, 0, 1);
             if (away.lengthSqr() < 1.0E-6) away = new Vec3(1, 0, 0);
             away = away.normalize();
-            // 优先选择可达的撤退点，然后尝试绕开地形障碍的两侧。
+            /// 优先选择可达的撤退点，然后尝试绕开地形障碍的两侧。
             for (double angle : new double[]{0, Math.PI / 3, -Math.PI / 3}) {
                 Vec3 destination = position().add(away.yRot((float) angle).scale(10));
                 BlockPos block = BlockPos.containing(destination);
@@ -356,7 +368,7 @@ public final class MartianWalker extends BaseMonster {
             }
             getNavigation().stop();
         } else if (tactic == CombatTactic.LEG_MELEE) {
-            // 追踪稳定的玩家位置；动画脚掌偏移会随转向变化，不能反过来驱动寻路终点。
+            /// 追踪稳定的玩家位置；动画脚掌偏移会随转向变化，不能反过来驱动寻路终点。
             getNavigation().moveTo(target, 1.25);
         } else if (tactic == CombatTactic.APPROACH) getNavigation().moveTo(target, 1.0);
     }
@@ -383,14 +395,8 @@ public final class MartianWalker extends BaseMonster {
         gait.tick(walking(), entityData.get(WALK_SPEED));
         updateCollisionGeometry();
         if (!(level() instanceof ServerLevel server)) return;
-        resolveAndCreateWeapons(server);
-        for (int slot = 0; slot < 2; slot++) {
-            if (weapons[slot] != null && weapons[slot].isAlive()) {
-                savedWeaponHealth[slot] = weapons[slot].getHealth();
-                AABB bounds = weaponBounds(slot);
-                if (bounds != null) weapons[slot].follow(bounds);
-            }
-        }
+        /// 部件与本体共同加载和卸载，不生成独立实体。
+        if (isNoAi() || isPassenger()) return;
         tickContact();
         if (attackCooldown > 0) attackCooldown--;
         LivingEntity target = getTarget();
@@ -405,6 +411,7 @@ public final class MartianWalker extends BaseMonster {
             MonsterLaser laser = ModEntities.MONSTER_LASER.get().create(server);
             if (laser == null) return;
             laser.configureShot(this, target, weapon.getBoundingBox().getCenter(), MonsterLaser.Variant.MARTIAN_WALKER);
+            MartianEventHelper.inheritEventMembership(this, laser);
             if (!server.addFreshEntity(laser)) {
                 laser.discard();
                 return;
@@ -420,8 +427,8 @@ public final class MartianWalker extends BaseMonster {
             contactCooldown--;
             return;
         }
-        // 每个立方体都跟随与客户端模型相同的动画骨骼变换。
-        // 不使用外围三脚架包围盒：玩家可以站在腿部之间的空隙中。
+        /// 每个立方体都跟随与客户端模型相同的动画骨骼变换。
+        /// 不使用外围三脚架包围盒：玩家可以站在腿部之间的空隙中。
         boolean hit = false;
         AABB bounds = collisionBounds();
         if (bounds == null) return;
@@ -458,95 +465,45 @@ public final class MartianWalker extends BaseMonster {
         return WalkerGeometry.weaponBounds(this, collisionBoxes, slot);
     }
 
-    private void resolveAndCreateWeapons(ServerLevel server) {
-        List<WalkerWeapon> created = new ArrayList<>();
-        for (int slot = 0; slot < 2; slot++) {
-            if (weaponDestroyed(slot)) continue;
-            WalkerWeapon weapon = weapons[slot];
-            if (weapon != null && !weapon.isRemoved()) continue;
-            weapons[slot] = null;
-            if (weaponUUIDs[slot] != null) {
-                Entity restored = server.getEntity(weaponUUIDs[slot]);
-                if (restored instanceof WalkerWeapon part && part.isAlive() && part.belongsTo(this, slot)) {
-                    weapons[slot] = part;
-                    missingTicks[slot] = 0;
-                    continue;
-                }
-                if (++missingTicks[slot] <= WalkerWeapon.RESOLUTION_GRACE_TICKS) {
-                    continue;
-                }
-                // 加载宽限结束后放弃旧身份，允许新炮台登记到该槽位。
-                weaponUUIDs[slot] = null;
-            }
-            AABB bounds = weaponBounds(slot);
-            if (bounds == null || !MonsterEntities.WALKER_WEAPON.isPresent()) continue;
-            WalkerWeapon part = MonsterEntities.WALKER_WEAPON.get().create(server);
-            if (part == null) {
-                rollback(created);
-                return;
-            }
-            if (!part.bind(this, slot)) {
-                part.discard();
-                rollback(created);
-                return;
-            }
-            if (savedWeaponHealth[slot] > 0) {
-                part.setHealth(Math.min(part.getMaxHealth(), savedWeaponHealth[slot]));
-            }
-            part.follow(bounds);
-            if (!server.addFreshEntity(part)) {
-                part.discard();
-                rollback(created);
-                return;
-            }
-            created.add(part);
-        }
+    /// 首次生成时按本体血量缩放炮台血量；旧存档继续读取 WeaponHealth0/1。
+    public float weaponHealth(int slot) {
+        if (weaponDestroyed(slot)) return 0;
+        float health = entityData.get(slot == 0 ? LEFT_WEAPON_HEALTH : RIGHT_WEAPON_HEALTH);
+        return health < 0 ? getMaxHealth() * WEAPON_HEALTH_RATIO : health;
     }
 
-    private void rollback(List<WalkerWeapon> created) {
-        for (WalkerWeapon part : created) {
-            part.discard();
-        }
-    }
+    public WalkerWeapon weapon(int slot) {return weapons[slot];}
 
-    boolean acceptWeapon(WalkerWeapon part, int slot) {
-        if (part == null || slot < 0 || slot > 1 || weaponDestroyed(slot) || !isAlive()
-                || !part.isAlive() || !part.belongsTo(this, slot)) {
+    /// 炮台独立扣血，不调用本体 hurt，也不触发本体死亡、掉落或入侵计分。
+    boolean hurtWeapon(int slot, DamageSource source, float amount) {
+        if (level().isClientSide || !isAlive() || weaponDestroyed(slot) || isInvulnerableTo(source)
+                || EnemyDamageRules.blocks(this, source) || !Float.isFinite(amount) || amount <= 0)
             return false;
-        }
-        if (part.getUUID().equals(weaponUUIDs[slot ^ 1])) {
-            return false;
-        }
-        if (weaponUUIDs[slot] != null && !weaponUUIDs[slot].equals(part.getUUID())) {
-            return false;
-        }
-        weapons[slot] = part;
-        weaponUUIDs[slot] = part.getUUID();
-        missingTicks[slot] = 0;
+        Immunity cause = Immunity.getCause(source);
+        if (cause != null ? Immunity.isActive(cause, this) : invulnerableTime > 10) return false;
+        float damage = getDamageAfterMagicAbsorb(source, getDamageAfterArmorAbsorb(source, amount));
+        if (!Float.isFinite(damage) || damage <= 0) return false;
+        float remaining = Math.max(0, weaponHealth(slot) - damage);
+        entityData.set(slot == 0 ? LEFT_WEAPON_HEALTH : RIGHT_WEAPON_HEALTH, remaining);
+        if (cause != null) Immunity.apply(cause, source, this);
+        else invulnerableTime = 20;
+        delayLaserAttack();
+        if (source.getEntity() instanceof LivingEntity attacker) setLastHurtByMob(attacker);
+        playSound(ModSoundEvents.METAL_HURT.get(), 1, 1);
+        if (remaining <= 0) destroyWeapon(slot);
         return true;
     }
 
-    void releaseWeapon(WalkerWeapon weapon, RemovalReason reason) {
-        int slot = weapon.slot();
-        if (weapons[slot] != weapon) {
-            return;
-        }
-        if (weapon.isAlive() && !weaponDestroyed(slot)) {
-            savedWeaponHealth[slot] = weapon.getHealth();
-        }
-        weapons[slot] = null;
-        if (reason.shouldDestroy()) {
-            weaponUUIDs[slot] = null;
-            missingTicks[slot] = 0;
-        }
-    }
-
     public void destroyWeapon(int slot) {
-        if (slot < 0 || slot > 1) return;
+        if (slot < 0 || slot >= weapons.length || weaponDestroyed(slot)) return;
+        AABB bounds = weapons[slot].getBoundingBox();
+        entityData.set(slot == 0 ? LEFT_WEAPON_HEALTH : RIGHT_WEAPON_HEALTH, 0.0F);
         entityData.set(DESTROYED, entityData.get(DESTROYED) | (1 << slot));
-        weapons[slot] = null;
-        weaponUUIDs[slot] = null;
-        savedWeaponHealth[slot] = -1;
+        weapons[slot].follow(null);
+        if (level() instanceof ServerLevel server) {
+            Vec3 center = bounds.getCenter();
+            server.sendParticles(ParticleTypes.EXPLOSION, center.x, center.y, center.z, 8, 0.3, 0.3, 0.3, 0);
+        }
         if (weaponsDestroyed()) {
             retreating = false;
             getNavigation().stop();
@@ -565,29 +522,6 @@ public final class MartianWalker extends BaseMonster {
     }
 
     public void delayLaserAttack() {attackCooldown = Math.max(attackCooldown, 8);}
-
-    private void clearWeapons() {
-        if (!(level() instanceof ServerLevel server)) return;
-        entityData.set(DESTROYED, 3);
-        for (int i = 0; i < 2; i++) {
-            Entity part = weapons[i] != null ? weapons[i] : weaponUUIDs[i] == null ? null : server.getEntity(weaponUUIDs[i]);
-            if (part instanceof WalkerWeapon weapon && weapon.belongsTo(this, i)) weapon.discard();
-        }
-    }
-
-    @Override
-    public void die(DamageSource source) {
-        super.die(source);
-        if (dead) {
-            clearWeapons();
-        }
-    }
-
-    @Override
-    public void remove(RemovalReason reason) {
-        if (reason.shouldDestroy()) clearWeapons();
-        super.remove(reason);
-    }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
@@ -610,11 +544,7 @@ public final class MartianWalker extends BaseMonster {
         tag.putInt("NextWeapon", nextWeapon);
         tag.putInt("FlightPhase", entityData.get(FLIGHT_PHASE));
         tag.putInt("FlightPhaseTicks", (int) Math.min(Integer.MAX_VALUE, phaseTicks(0)));
-        for (int i = 0; i < 2; i++) {
-            if (weaponUUIDs[i] != null) tag.putUUID("Weapon" + i, weaponUUIDs[i]);
-            float health = weapons[i] != null && weapons[i].isAlive() ? weapons[i].getHealth() : savedWeaponHealth[i];
-            if (health > 0 && Float.isFinite(health)) tag.putFloat("WeaponHealth" + i, health);
-        }
+        for (int i = 0; i < weapons.length; i++) tag.putFloat("WeaponHealth" + i, weaponHealth(i));
     }
 
     @Override
@@ -634,21 +564,17 @@ public final class MartianWalker extends BaseMonster {
         meleePauseTicks = 0;
         nextWeapon = tag.contains("NextWeapon") ? Mth.clamp(tag.getInt("NextWeapon"), 0, 1) : 0;
         retreating = false;
-        for (int i = 0; i < 2; i++) {
-            weaponUUIDs[i] = tag.hasUUID("Weapon" + i) ? tag.getUUID("Weapon" + i) : null;
-            weapons[i] = null;
-            missingTicks[i] = 0;
+        for (int i = 0; i < weapons.length; i++) {
             float health = tag.contains("WeaponHealth" + i) ? tag.getFloat("WeaponHealth" + i) : -1;
-            savedWeaponHealth[i] = Float.isFinite(health) && health > 0 ? Mth.clamp(health, 0, 100000) : -1;
+            health = Float.isFinite(health) ? Mth.clamp(health, -1, getMaxHealth() * WEAPON_HEALTH_RATIO) : -1;
+            entityData.set(i == 0 ? LEFT_WEAPON_HEALTH : RIGHT_WEAPON_HEALTH, health);
+            if (health == 0) entityData.set(DESTROYED, entityData.get(DESTROYED) | (1 << i));
         }
-        if (weaponUUIDs[0] != null && weaponUUIDs[0].equals(weaponUUIDs[1])) weaponUUIDs[1] = null;
         collisionBoxes = List.of();
         setTarget(null);
     }
 
-    /**
-     * 每个实体独立的瞬时步态时钟。渲染与碰撞使用相同的混合姿态。
-     */
+    /// 每个实体独立的瞬时步态时钟。渲染与碰撞使用相同的混合姿态。
     public static final class Gait {
         private float weight, previousWeight, rate;
         private double walkSeconds, previousWalkSeconds;
@@ -659,7 +585,7 @@ public final class MartianWalker extends BaseMonster {
             weight = Mth.clamp(weight + (moving ? 1.0F / 8 : -1.0F / 10), 0, 1);
             float targetRate = moving && Float.isFinite(speed) ? Mth.clamp(speed, 0.35F, 1.6F) : 0;
             rate += (targetRate - rate) * 0.25F;
-            // 在淡出时完成当前步伐，而不是让抬起的脚冻结。
+            /// 在淡出时完成当前步伐，而不是让抬起的脚冻结。
             if (weight > 0 || previousWeight > 0) walkSeconds += rate / 20.0;
             else {
                 rate = 0;
@@ -681,9 +607,7 @@ public final class MartianWalker extends BaseMonster {
         }
     }
 
-    /**
-     * 上半身受击体，与本体基于脚部的寻路包围盒分离。
-     */
+    /// 上半身受击体，与本体基于脚部的寻路包围盒分离。
     public static final class BodyHitbox extends PartEntity<MartianWalker> implements PartHitTarget {
         private int followedTick = Integer.MIN_VALUE;
 
@@ -704,7 +628,7 @@ public final class MartianWalker extends BaseMonster {
         public boolean isPickable() {return getParent().isAlive();}
 
         @Override
-        // Living entities are pushed by the owner; projectiles only perform damage collision.
+        /// 生物推挤由本体处理，弹射物只参与受击碰撞。
         public boolean canBeCollidedWith() {return false;}
 
         @Override
@@ -724,9 +648,6 @@ public final class MartianWalker extends BaseMonster {
 
         @Override
         public boolean shouldBeSaved() {return false;}
-
-        @Override
-        public Entity damageRecipient() {return this;}
 
         @Override
         public Entity encounterOwner() {return getParent();}
@@ -753,20 +674,18 @@ public final class MartianWalker extends BaseMonster {
             double distance = Math.sqrt(dx * dx + dz * dz);
             float targetYaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
             float alignment = Math.max(0.0F, Mth.cos(Mth.wrapDegrees(targetYaw - mob.getYRot()) * Mth.DEG_TO_RAD));
-            // 大角度转弯时减速，避免越过近处的路径节点后持续绕圈。
+            /// 大角度转弯时减速，避免越过近处的路径节点后持续绕圈。
             mob.setSpeed((float) Math.min(mob.getSpeed() * alignment, distance));
         }
 
         @Override
         protected float rotlerp(float current, float target, float maximumChange) {
-            // 原版允许每 tick 转向 90 度，路径节点切换时会导致大型步行者急转。
+            /// 原版允许每 tick 转向 90 度，路径节点切换时会导致大型步行者急转。
             return super.rotlerp(current, target, Math.min(maximumChange, MAX_TURN_PER_TICK));
         }
     }
 
-    /**
-     * 腿部的一个立方体，将伤害转发给本体。两个炮台是独立的 LivingEntity。
-     */
+    /// 腿部的一个立方体，与身体共享本体血量。
     public static final class LegHitbox extends PartEntity<MartianWalker> implements PartHitTarget {
         private WalkerGeometry.Box cube;
         private int followedTick = Integer.MIN_VALUE;
@@ -817,9 +736,6 @@ public final class MartianWalker extends BaseMonster {
 
         @Override
         public boolean shouldBeSaved() {return false;}
-
-        @Override
-        public Entity damageRecipient() {return this;}
 
         @Override
         public Entity encounterOwner() {return getParent();}

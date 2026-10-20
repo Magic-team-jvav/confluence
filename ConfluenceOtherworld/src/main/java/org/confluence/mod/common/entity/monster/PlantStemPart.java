@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+
 import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibUtils;
 
@@ -62,9 +63,6 @@ public class PlantStemPart extends PartEntity<Snatcher> implements PartHitTarget
 
     @Override
     public boolean is(Entity entity) {return this == entity || getParent() == entity;}
-
-    @Override
-    public Entity damageRecipient() {return this;}
 
     @Override
     public Entity encounterOwner() {return getParent();}

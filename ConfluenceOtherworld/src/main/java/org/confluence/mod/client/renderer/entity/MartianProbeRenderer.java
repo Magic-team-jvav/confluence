@@ -4,16 +4,18 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
+
 import org.confluence.mod.client.model.entity.MartianProbeModel;
 import org.confluence.mod.common.entity.monster.MartianProbe;
 
-/** Four conical scan bands with one spherical cap closing the bottom. */
+/// 四层锥形扫描光带，底部使用球冠封闭。
 public final class MartianProbeRenderer extends GeoNegativeVolumeRenderer<MartianProbe> {
     private static final int AZIMUTH_SEGMENTS = 48;
     private static final int CAP_SEGMENTS = 12;
@@ -58,7 +60,7 @@ public final class MartianProbeRenderer extends GeoNegativeVolumeRenderer<Martia
             float bottomDepth = CONE_HEIGHT * (layer + 1.0F) / LAYERS;
             float topRadius = CONE_BASE_RADIUS * topDepth / CONE_HEIGHT;
             float bottomRadius = CONE_BASE_RADIUS * bottomDepth / CONE_HEIGHT;
-            // Each lower band is fainter overall, but the bottom of each band is more opaque.
+            /// 光带逐层减弱，每一层内部的底部透明度较低。
             float topOpacity = 0.28F - 0.07F * layer;
             float bottomOpacity = topOpacity * 1.25F;
             for (int segment = 0; segment < AZIMUTH_SEGMENTS; segment++) {

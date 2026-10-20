@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -21,6 +22,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.DemonEye;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -52,7 +54,7 @@ public class EyeOfCthulhu extends BaseBoss {
 
     private static final int PHASE_ONE_STARE_TICKS = 100;
     private static final int PHASE_TWO_STARE_TICKS = 60;
-    // switching 动画资源长度为 1.5 秒，即 30 tick；状态时长必须覆盖完整单次播放。
+    /// switching 动画资源长度为 1.5 秒，即 30 tick；状态时长必须覆盖完整单次播放。
     private static final int TRANSFORM_TICKS = 30;
     private static final int PHASE_ONE_WINDUP_TICKS = 20;
     private static final int PHASE_ONE_DASH_TICKS = 10;
@@ -63,7 +65,7 @@ public class EyeOfCthulhu extends BaseBoss {
     private static final int PHASE_ONE_SERVANT_COOLDOWN = 20;
     private static final int TRANSFORM_SERVANT_COOLDOWN = 7;
 
-    // 非冲刺阶段以目标眼睛上方 5 方块为悬停中心；其余速度单位均为方块/tick。
+    /// 非冲刺阶段以目标眼睛上方 5 方块为悬停中心；其余速度单位均为方块/tick。
     private static final double HOVER_HEIGHT_ABOVE_TARGET = 5.0;
     private static final double PHASE_ONE_HOVER_SPEED = 0.50;
     private static final double PHASE_TWO_HOVER_SPEED = 0.75;
@@ -77,6 +79,8 @@ public class EyeOfCthulhu extends BaseBoss {
     private int servantTimer = PHASE_ONE_SERVANT_COOLDOWN;
     private int leavingTicks;
     private Vec3 lockedDashDirection = Vec3.ZERO;
+    public static final int AFTERIMAGE_LIFETIME_TICKS = 16;
+    private static final int AFTERIMAGE_INTERVAL_TICKS = 2;
     private final Deque<AfterimageSnapshot> afterimages = new ArrayDeque<>();
 
     public EyeOfCthulhu(EntityType<? extends Monster> type, Level level) {
@@ -110,7 +114,6 @@ public class EyeOfCthulhu extends BaseBoss {
             }
         };
     }
-
 
     /// 白天升空和主动离场期间不再维持攻击目标。
     ///
@@ -234,11 +237,11 @@ public class EyeOfCthulhu extends BaseBoss {
                 : isEnhancedDash()
                 ? ENHANCED_DASH_SPEED
                 : PHASE_TWO_DASH_SPEED;
-        // 蓄力结束时已经锁定穿过玩家的方向。冲刺期间保持该方向直到时长结束，
-        // 命中玩家只结算接触伤害，不能立即掉头或把这一轮冲刺提前截断。
+        /// 蓄力结束时已经锁定穿过玩家的方向。冲刺期间保持该方向直到时长结束，
+        /// 命中玩家只结算接触伤害，不能立即掉头或把这一轮冲刺提前截断。
         setDeltaMovement(lockedDashDirection.scale(speed));
-        // 直接使用冲刺方向。若构造 position+direction 再交给 faceCombatPosition，
-        // 该方法会从眼睛位置相减，额外减去眼高并让模型无故向下俯冲。
+        /// 直接使用冲刺方向。若构造 position+direction 再交给 faceCombatPosition，
+        /// 该方法会从眼睛位置相减，额外减去眼高并让模型无故向下俯冲。
         faceCombatDirection(lockedDashDirection, 360.0F, 360.0F);
         int duration = getCombatStage() == 1
                 ? PHASE_ONE_DASH_TICKS : PHASE_TWO_DASH_TICKS;
@@ -296,7 +299,7 @@ public class EyeOfCthulhu extends BaseBoss {
 
     /// 克苏鲁之眼在所有阶段都属于真正的飞行实体。
     ///
-    /// 不能只在构造器调用一次 {@link #setNoGravity(boolean)}：实体加入世界后的通用
+    /// 不能只在构造器调用一次 #setNoGravity(boolean)：实体加入世界后的通用
     /// 状态恢复、微光处理以及网络标志同步都可能重新写入该标志，因此覆盖
     /// 此查询保持永久无重力，避免在水体中或没有合格目标时逐渐沉底。
     @Override
@@ -323,7 +326,7 @@ public class EyeOfCthulhu extends BaseBoss {
     /// 低血量专家冲刺再增加随机偏差，保持泰拉瑞亚狂暴阶段“更快但不精确”的特征。
     /// 将实体真实旋转同步到目标位置。
     ///
-    /// 克苏鲁之眼的 Geo 模型会读取实体的 {@code YRot/XRot} 来决定朝向和俯仰。
+    /// 克苏鲁之眼的 Geo 模型会读取实体的 YRot/XRot 来决定朝向和俯仰。
     /// 如果只设置 LookControl，服务端本 tick 计算出的悬停、蓄力和冲刺方向不会稳定写入同步旋转，
     /// 客户端就可能看到 Boss 贴地滑行、侧脸滑动或不正面朝向玩家。这里不改变速度、阶段时长、
     /// 召唤物和伤害，只补齐渲染所依赖的朝向数据。
@@ -402,18 +405,16 @@ public class EyeOfCthulhu extends BaseBoss {
         }
     }
 
-
-
     /// 专家难度下，克苏鲁之眼会在极低生命值时进入负防御区间。原版护甲属性
     /// 不能表达负数，因此把泰拉瑞亚的负防御换算成每次命中的等效额外伤害。
-    // 低于 12% 和 4% 分别补偿 7 和 15 点伤害，不叠加两档。
+    /// 低于 12% 和 4% 分别补偿 7 和 15 点伤害，不叠加两档。
     @Override
     public boolean hurt(DamageSource source, float amount) {
         amount += getLowHealthDamageBonus(isExpert(), getHealth() / getMaxHealth());
         return super.hurt(source, amount);
     }
 
-    // 专家和大师提前进入第二阶段。
+    /// 专家和大师提前进入第二阶段。
     static float getTransformationHealthThreshold(boolean expert) {
         return expert ? 0.65F : 0.5F;
     }
@@ -458,15 +459,16 @@ public class EyeOfCthulhu extends BaseBoss {
         return List.copyOf(afterimages);
     }
 
+    /// 按实际年龄淘汰残影，结束冲刺后继续自然淡出。
     private void tickAfterimages() {
+        while (!afterimages.isEmpty() && tickCount - afterimages.peekFirst().tick() >= AFTERIMAGE_LIFETIME_TICKS) {
+            afterimages.removeFirst();
+        }
         boolean enabled = getCombatStage() == 2
                 && getCombatState() == CombatState.DASHING
                 && getHealth() / getMaxHealth() < 0.30F;
-        if (enabled) {
-            afterimages.addLast(new AfterimageSnapshot(position(), getXRot(), getYRot()));
-            while (afterimages.size() > 20) afterimages.pollFirst();
-        } else {
-            afterimages.pollFirst();
+        if (enabled && tickCount % AFTERIMAGE_INTERVAL_TICKS == 0) {
+            afterimages.addLast(new AfterimageSnapshot(position(), getXRot(), yBodyRot, tickCount));
         }
     }
 
@@ -484,10 +486,9 @@ public class EyeOfCthulhu extends BaseBoss {
         return false;
     }
 
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // 变身是一段严格的一次性拓扑切换动画，不能用 5 tick 淡入吞掉开头关键帧。
+        /// 变身是一段严格的一次性拓扑切换动画，不能用 5 tick 淡入吞掉开头关键帧。
         controllers.add(new AnimationController<>(this, "Controller", 0, state -> state.setAndContinue(animationForCurrentState())));
     }
 
@@ -544,5 +545,5 @@ public class EyeOfCthulhu extends BaseBoss {
         LEAVING
     }
 
-    public record AfterimageSnapshot(Vec3 position, float xRot, float yRot) {}
+    public record AfterimageSnapshot(Vec3 position, float xRot, float yRot, int tick) {}
 }

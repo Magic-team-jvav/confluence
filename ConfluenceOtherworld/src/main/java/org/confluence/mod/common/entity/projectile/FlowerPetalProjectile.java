@@ -11,13 +11,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-// 山铜套装奖励
+/// 山铜套装奖励
 public class FlowerPetalProjectile extends Projectile {
     private ParticleEmitter emitter;
 
@@ -70,11 +71,11 @@ public class FlowerPetalProjectile extends Projectile {
             discard();
             return;
         }
-        ProjectileHitRules.hurt(result.getEntity(), damageSources().mobProjectile(this, owner), 18.2F);
+        result.getEntity().hurt(damageSources().mobProjectile(this, owner), 18.2F);
     }
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return ProjectileHitRules.canHit(getOwner(), target);
+        return LibEntityUtils.canHitEntity(target, getOwner());
     }
 }

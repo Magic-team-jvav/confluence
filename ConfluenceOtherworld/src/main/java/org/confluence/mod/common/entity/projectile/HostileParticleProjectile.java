@@ -20,8 +20,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.Corruptor;
 import org.confluence.mod.common.entity.monster.FireImp;
@@ -137,10 +138,10 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
             return;
         }
         if (!(getOwner() instanceof Mob owner)) return;
-        for (Entity target : ProjectileHitRules.areaTargets(level(), this,
-                getBoundingBox().inflate(INFERNO_BLAST_RADIUS), candidate -> ProjectileHitRules.canMobHit(owner, candidate))) {
-            if (ProjectileHitRules.hurt(target, damageSources().mobProjectile(this, owner), getDamage())) {
-                LivingEntity living = ProjectileHitRules.effectTarget(target);
+        for (Entity target : LibEntityUtils.areaTargets(level(), this,
+                getBoundingBox().inflate(INFERNO_BLAST_RADIUS), candidate -> LibEntityUtils.canMobHit(owner, candidate))) {
+            if (target.hurt(damageSources().mobProjectile(this, owner), getDamage())) {
+                LivingEntity living = LibEntityUtils.effectTarget(target);
                 if (living != null) onSuccessfulHit(owner, living);
             }
         }
@@ -193,7 +194,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
                 target.igniteForTicks(duration);
             }
             case WATER_SPHERE, CHAOS_BALL, RUNE_BLAST, GASTROPOD, WALL_OF_FLESH_LASER -> {
-                // 这些能量弹幕只结算直接伤害，不附加状态。
+                /// 这些能量弹幕只结算直接伤害，不附加状态。
             }
         }
     }

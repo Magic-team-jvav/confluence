@@ -9,11 +9,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -21,7 +23,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.Comparator;
 import java.util.UUID;
 
-/** Scans survival players and escapes upward after detecting one. */
+/// 扫描生存模式玩家，完成探测后向上逃离。
 public final class MartianProbe extends BaseFlyingMonster {
     public static final double SEARCH_RADIUS = 20.0D;
     private static final double LOCK_RELEASE_RADIUS = 48.0D;
@@ -30,7 +32,7 @@ public final class MartianProbe extends BaseFlyingMonster {
     public static final double SCAN_CONE_HEIGHT = 14.0D;
     public static final double SCAN_CONE_BASE_RADIUS = 8.0D;
     public static final double SCAN_CAP_SPHERE_RADIUS = 17.0D;
-    /** The sphere intersects the cone's bottom circle at depth 14 and closes two blocks below it. */
+    /// 球面与深度十四格处的锥底圆相交，并在其下方两格处封闭。
     public static final double SCAN_CAP_CENTER_DEPTH = SCAN_CONE_HEIGHT
             - Math.sqrt(SCAN_CAP_SPHERE_RADIUS * SCAN_CAP_SPHERE_RADIUS
             - SCAN_CONE_BASE_RADIUS * SCAN_CONE_BASE_RADIUS);
@@ -41,7 +43,7 @@ public final class MartianProbe extends BaseFlyingMonster {
     private static volatile MartianProbeEventTrigger eventTrigger = NO_EVENT;
 
     public enum State {
-        // Keep the first four ordinals stable for existing entity NBT.
+        /// 保持前四个状态的序号不变，以兼容已有实体存档。
         IDLE, SCANNING, ALERT, FLEEING, APPROACHING, EXPOSING;
 
         public static State fromOrdinal(int ordinal) {
@@ -59,7 +61,7 @@ public final class MartianProbe extends BaseFlyingMonster {
         setDiscardFriction(true);
     }
 
-    /** The event module may register this hook later; null restores the safe no-op. */
+    /// 事件模块通过此入口注册触发回调，空值恢复为不执行任何操作。
     public static void setEventTrigger(@Nullable MartianProbeEventTrigger trigger) {
         eventTrigger = trigger == null ? NO_EVENT : trigger;
     }
@@ -89,7 +91,18 @@ public final class MartianProbe extends BaseFlyingMonster {
                     private boolean wandering;
 
                     @Override
+                    public boolean canStart() {
+                        return !isPassenger();
+                    }
+
+                    @Override
                     public BTStatus execute() {
+                        if (!canStart()) {
+                            stopWandering();
+                            return BTStatus.FAILURE;
+                        }
+                        tickProbe();
+                        if (isRemoved()) return BTStatus.SUCCESS;
                         if (state == State.IDLE || state == State.SCANNING) {
                             if (!wandering) {
                                 wander.start();
@@ -116,12 +129,10 @@ public final class MartianProbe extends BaseFlyingMonster {
         };
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (level().isClientSide || !isAlive()) return;
+    /// 扫描、接近和逃离与空闲飞行共用行为树调度。
+    private void tickProbe() {
 
-        // ALERT is retained as an NBT-compatible legacy state from the previous implementation.
+        /// 保留旧存档中的 ALERT 状态并转换为逃离状态。
         if (state == State.ALERT) setState(State.FLEEING);
 
         if (state == State.IDLE || state == State.SCANNING) {

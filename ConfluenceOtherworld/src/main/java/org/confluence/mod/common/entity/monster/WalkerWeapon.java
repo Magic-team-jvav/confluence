@@ -1,136 +1,84 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.BaseLivingPart;
+import net.minecraftforge.entity.PartEntity;
 
-// 持久化的炮台受击体；外观对应本体模型中的同名骨骼。
-public final class WalkerWeapon extends BaseLivingPart<MartianWalker> {
-    static final int RESOLUTION_GRACE_TICKS = 200;
+import org.confluence.lib.common.entity.PartHitTarget;
 
-    private static final EntityDataAccessor<Integer> SLOT = SynchedEntityData.defineId(WalkerWeapon.class, EntityDataSerializers.INT);
+/// 炮台只提供受击位置，血量、破坏状态和存档均由步行者本体管理。
+public final class WalkerWeapon extends PartEntity<MartianWalker> implements PartHitTarget {
+    private final int slot;
+    private int followedTick = Integer.MIN_VALUE;
 
-    public WalkerWeapon(EntityType<? extends WalkerWeapon> type, Level level) {
-        super(type, level);
-        xpReward = 0;
+    public WalkerWeapon(MartianWalker parent, int slot) {
+        super(parent);
+        this.slot = slot;
     }
 
-    public int slot() {
-        return entityData.get(SLOT);
-    }
+    public int slot() {return slot;}
+
+    public float getHealth() {return getParent().weaponHealth(slot);}
 
     @Override
     public Component getName() {
-        return hasCustomName() ? super.getName() : Component.translatable(slot() == 0
-                ? "entity.confluence.martian_walker_weapon.left" : "entity.confluence.martian_walker_weapon.right");
+        return Component.translatable(slot == 0 ? "entity.confluence.martian_walker_weapon.left"
+                : "entity.confluence.martian_walker_weapon.right");
     }
 
-    public boolean bind(MartianWalker walker, int slot) {
-        if (walker == null || slot < 0 || slot > 1) {
-            return false;
-        }
-        MartianWalker current = getOwner();
-        if (current != null && (current != walker || slot() != slot)) {
-            return false;
-        }
-        int previousSlot = slot();
-        entityData.set(SLOT, slot);
-        if (bindTo(walker)) {
-            return true;
-        }
-        entityData.set(SLOT, previousSlot);
-        return false;
-    }
-
-    public boolean belongsTo(MartianWalker walker, int slot) {
-        return slot >= 0 && slot <= 1 && slot() == slot && isOwnedBy(walker);
-    }
-
+    /// 与模型炮座保持相同位置；已破坏的炮座收起受击范围。
     public void follow(AABB bounds) {
-        Vec3 center = bounds.getCenter();
-        setPos(center.x, bounds.minY, center.z);
+        if (bounds == null) {
+            setPos(getParent().position());
+            setBoundingBox(new AABB(position(), position()));
+            return;
+        }
+        boolean first = followedTick == Integer.MIN_VALUE;
+        if (followedTick != getParent().tickCount) {
+            setOldPosAndRot();
+            followedTick = getParent().tickCount;
+        }
+        setPos(bounds.getCenter().x, bounds.minY, bounds.getCenter().z);
         setBoundingBox(bounds);
+        if (first) setOldPosAndRot();
     }
 
     @Override
-    protected Class<MartianWalker> getOwnerType() {
-        return MartianWalker.class;
-    }
+    public boolean hurt(DamageSource source, float amount) {return acceptsDirectHit() && getParent().hurtWeapon(slot, source, amount);}
 
     @Override
-    protected boolean attachToOwner(MartianWalker owner) {
-        return level().isClientSide || owner.acceptWeapon(this, slot());
-    }
+    public boolean isAlive() {return getParent().isAlive() && !getParent().weaponDestroyed(slot);}
 
     @Override
-    protected void detachFromOwner(MartianWalker owner, RemovalReason reason) {
-        if (!level().isClientSide) {
-            owner.releaseWeapon(this, reason);
-        }
-    }
+    public boolean isPickable() {return acceptsDirectHit();}
 
     @Override
-    protected void tickPart(MartianWalker owner) {
-        // 跟随在自身原版 tick 之后执行，避免默认尺寸覆盖模型碰撞箱。
-        AABB bounds = owner.weaponBounds(slot());
-        if (bounds != null) {
-            follow(bounds);
-        }
-    }
+    public boolean canBeCollidedWith() {return false;}
 
     @Override
-    protected void onPartHurt(MartianWalker owner, DamageSource source) {
-        owner.delayLaserAttack();
-    }
+    public boolean is(Entity entity) {return entity == this;}
 
     @Override
-    protected void onPartDestroyed(MartianWalker owner) {
-        owner.destroyWeapon(slot());
-        if (level() instanceof ServerLevel server) {
-            server.sendParticles(ParticleTypes.EXPLOSION, getX(), getBoundingBox().getCenter().y, getZ(),
-                    8, 0.3, 0.3, 0.3, 0);
-        }
-    }
+    public Entity encounterOwner() {return getParent();}
 
     @Override
-    protected boolean discardImmediatelyOnDeath() {
-        // 炮台死亡不单独结算掉落物和入侵得分。
-        return true;
-    }
+    public Entity dedupeIdentity() {return this;}
 
     @Override
-    protected int ownerResolutionGraceTicks() {
-        return RESOLUTION_GRACE_TICKS;
-    }
+    public boolean acceptsDirectHit() {return isAlive() && getBoundingBox().getSize() > 0;}
 
     @Override
-    protected String ownerSaveTag() {
-        return "WalkerOwner";
-    }
+    protected void defineSynchedData() {}
 
     @Override
-    protected void addPartSaveData(CompoundTag tag) {
-        tag.putInt("WeaponSlot", slot());
-    }
+    protected void addAdditionalSaveData(CompoundTag tag) {}
 
     @Override
-    protected void readPartSaveData(CompoundTag tag) {
-        entityData.set(SLOT, Mth.clamp(tag.getInt("WeaponSlot"), 0, 1));
-    }
+    protected void readAdditionalSaveData(CompoundTag tag) {}
 
     @Override
-    protected void definePartSynchedData() {
-        entityData.define(SLOT, 0);
-    }
+    public boolean shouldBeSaved() {return false;}
 }

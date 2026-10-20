@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -23,6 +24,7 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -31,7 +33,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/** 使用随模型移动的电矛进行近战攻击，每十 tick 最多攻击一次。 */
+/// 使用随模型移动的电矛进行近战攻击，每十 tick 最多攻击一次。
 public class Gigazapper extends MartianHumanoidMonster {
     public enum AttackType { SPEAR }
 
@@ -59,7 +61,7 @@ public class Gigazapper extends MartianHumanoidMonster {
 
     @Override
     protected boolean hasEntityContactAttack() {
-        return true;
+        return !isNoAi() && !isPassenger();
     }
 
     public boolean canUseSpear() {
@@ -79,13 +81,13 @@ public class Gigazapper extends MartianHumanoidMonster {
         BTNode combatBehavior = new BTNode() {
             @Override
             public boolean canStart() {
-                return isUsableTarget(getTarget());
+                return !isPassenger() && isUsableTarget(getTarget()) && canUseSpear();
             }
 
             @Override
             public BTStatus execute() {
                 LivingEntity target = getTarget();
-                if (!isUsableTarget(target)) {
+                if (!canStart()) {
                     return BTStatus.FAILURE;
                 }
 
@@ -96,12 +98,14 @@ public class Gigazapper extends MartianHumanoidMonster {
                     getNavigation().stop();
                 }
 
+                tickSpearCombat(target);
                 return BTStatus.RUNNING;
             }
 
             @Override
             public void stop() {
                 getNavigation().stop();
+                stopSpearAttack();
             }
 
         };
@@ -113,25 +117,22 @@ public class Gigazapper extends MartianHumanoidMonster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide || !isAlive()) {
-            return;
+        if (!level().isClientSide && (isNoAi() || isPassenger() || !canUseSpear() || !isUsableTarget(getTarget()))) {
+            stopSpearAttack();
         }
+    }
 
-        if (attackCooldown > 0) {
-            attackCooldown--;
-        }
+    /// 取消刺击时同时复位动画、去重记录和瞄准状态。
+    private void stopSpearAttack() {
+        if (spearAttackTicks > 0) stopTriggeredAnimation("gigazapper", "strike");
+        spearAttackTicks = 0;
+        spearHitTargets.clear();
+        entityData.set(AIMING, false);
+    }
 
-        if (!canUseSpear() || isNoAi()) {
-            if (spearAttackTicks > 0) {
-                stopTriggeredAnimation("gigazapper", "strike");
-            }
-            spearAttackTicks = 0;
-            spearHitTargets.clear();
-            entityData.set(AIMING, false);
-            return;
-        }
+    private void tickSpearCombat(LivingEntity target) {
+        if (attackCooldown > 0) attackCooldown--;
 
-        LivingEntity target = getTarget();
         if (isUsableTarget(target)) {
             faceSpearTarget(target);
         }
@@ -153,7 +154,7 @@ public class Gigazapper extends MartianHumanoidMonster {
         }
     }
 
-    // Model shaft [-6,8,-9] + [1,1,12], attack arm offset [1,4,0].
+    /// 模型枪杆起点为 [-6,8,-9]、尺寸为 [1,1,12]，攻击手臂偏移为 [1,4,0]。
     private Vec3 spearPoint(double z) {
         double yaw = Math.toRadians(yBodyRot);
         double unit = MODEL_UNIT * getScale();
@@ -173,14 +174,14 @@ public class Gigazapper extends MartianHumanoidMonster {
 
     private void faceSpearTarget(LivingEntity target) {
         Vec3 direction = target.position().subtract(position());
-        // Align the right-hand shaft rather than the body's centre with the victim.
+        /// 以右手枪杆对准目标，补偿枪杆相对身体中心的偏移。
         double offset = Math.asin(Math.min(1.0,
                 4.5 * MODEL_UNIT * getScale() / Math.max(direction.horizontalDistance(), 0.001)));
         faceCombatDirection(direction.yRot((float) offset), 30, 0);
     }
 
     private void tickSpearAttack(int age) {
-        // attack.spear: extend during ticks 0-2, hold to tick 5, retract during ticks 5-7.
+        /// 刺击动画在第 0–2 刻伸出，保持至第 5 刻，再于第 5–7 刻收回。
         if (age > 7) {
             return;
         }
@@ -238,7 +239,7 @@ public class Gigazapper extends MartianHumanoidMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         attackCooldown = Mth.clamp(tag.getInt("ShootingCooldown"), 0, ATTACK_INTERVAL);
-        // Unfinished melee strikes must not resume and hit a victim again after loading.
+        /// 重载时取消未完成的刺击，避免恢复后再次命中同一目标。
         spearAttackTicks = 0;
         spearHitTargets.clear();
         entityData.set(AIMING, false);

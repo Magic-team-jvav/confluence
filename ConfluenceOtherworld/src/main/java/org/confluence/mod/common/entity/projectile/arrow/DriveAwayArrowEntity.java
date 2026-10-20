@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.arrow;
 
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +13,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.effect.harmful.DriveAwayController;
 import org.confluence.mod.common.entity.monster.Harpy;
 import org.confluence.mod.common.init.ModEffects;
@@ -60,7 +60,7 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        LivingEntity living = ProjectileHitRules.effectTarget(result.getEntity());
+        LivingEntity living = LibEntityUtils.effectTarget(result.getEntity());
         hittingFlyingTarget = living != null && isDriveAwayTarget(living);
         try {
             super.onHitEntity(result);
@@ -86,10 +86,8 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
             return;
         }
         AABB area = AABB.ofSize(center, radius * 2.0, radius * 2.0, radius * 2.0);
-        for (Entity rawTarget : ProjectileHitRules.areaTargets(level(), this, area,
-                entity -> ProjectileHitRules.canHit(getOwner(), entity))) {
-            LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
-            if (target == null || !isDriveAwayTarget(target) || target.hasEffect(ModEffects.SCARED.get())) continue;
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area,
+                entity -> entity != getOwner() && entity.isAlive() && isDriveAwayTarget(entity) && !entity.hasEffect(ModEffects.SCARED.get()))) {
             target.addEffect(new MobEffectInstance(ModEffects.SCARED.get(), duration, 0), getOwner());
             if (target instanceof Mob mob) DriveAwayController.start(mob, center, speed, duration);
         }

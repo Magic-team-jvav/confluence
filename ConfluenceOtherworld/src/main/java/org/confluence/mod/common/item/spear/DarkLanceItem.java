@@ -4,10 +4,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.init.ModEffects;
+
 import software.bernie.geckolib.core.animation.EasingType;
 
 public class DarkLanceItem extends AbstractSpearItem {
@@ -23,10 +24,10 @@ public class DarkLanceItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        LivingEntity living = ProjectileHitRules.effectTarget(victim);
+        LivingEntity living = LibEntityUtils.effectTarget(victim);
         if (living != null) {
             living.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME.get(), 300));
         }
-        LibEntityUtils.knockBackA2B(owner, ProjectileHitRules.encounterOwner(victim), 0.25, 0.1);
+        LibEntityUtils.knockBackA2B(owner, LibEntityUtils.encounterOwner(victim), 0.25, 0.1);
     }
 }

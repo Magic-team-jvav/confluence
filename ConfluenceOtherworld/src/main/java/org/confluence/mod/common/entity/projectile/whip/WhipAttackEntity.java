@@ -23,9 +23,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.lib.util.ProjectileHitRules;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.api.whip.WhipFriendlyHitContext;
@@ -151,7 +152,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         } else {
             float previous = entityData.get(SWING_PROGRESS);
             if (previous >= 1.0F) {
-                // 正常等待持有者播放完成；非玩家来源及异常客户端保留有界清理。
+                /// 正常等待持有者播放完成；非玩家来源及异常客户端保留有界清理。
                 int timeout = owner instanceof net.minecraft.server.level.ServerPlayer ? 100 : 2;
                 if (playbackComplete || ++completionTicks >= timeout) discard();
                 return;
@@ -165,7 +166,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             if (previous < soundProgress && progress >= soundProgress) {
                 owner.playSound(ModSoundEvents.WHIP_ATTACK.get(), 0.6F + getRandom1211().nextFloat() * 0.2F, 1.0F);
             }
-            // 高攻速下也走过中间轨迹，避免一个 tick 跨过整段伸展而漏判。
+            /// 高攻速下也走过中间轨迹，避免一个 tick 跨过整段伸展而漏判。
             int samples = Mth.ceil((progress - previous) / 0.05F);
             for (int sample = 1; sample <= samples; sample++) {
                 entityData.set(PREVIOUS_PROGRESS, Mth.lerp((sample - 1) / (float) samples, previous, progress));
@@ -197,7 +198,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         float serverPrevious = entityData.get(PREVIOUS_PROGRESS);
         float step = Math.max(0.0F, serverProgress - serverPrevious);
         if (!clientProgressInitialized) {
-            // 出生数据尚未到齐时不能按默认的一 tick 时长播放完整次挥动。
+            /// 出生数据尚未到齐时不能按默认的一 tick 时长播放完整次挥动。
             if (step <= 0.0F) return;
             clientProgress = 0.0F;
             clientProgressInitialized = true;
@@ -206,12 +207,12 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         if (step > 0.0F && (serverProgress < 1.0F || clientProgressStep == 0.0F))
             clientProgressStep = step;
         if (serverProgress >= 1.0F) {
-            // 逻辑攻击已结束，但显示仍需走完剩余回收，不能直接跳到终帧。
+            /// 逻辑攻击已结束，但显示仍需走完剩余回收，不能直接跳到终帧。
             clientProgress = limitClientReturnProgress(Math.min(1.0F, clientProgress + clientProgressStep));
             return;
         }
         float predicted = clientProgress + step;
-        // 插值区间从当前服务端进度向前预测一 tick，避免实体移除时仍滞后在回收段。
+        /// 插值区间从当前服务端进度向前预测一 tick，避免实体移除时仍滞后在回收段。
         float targetProgress = Math.min(1.0F, serverProgress + step);
         float correction = Mth.clamp(targetProgress - predicted, -step * 0.5F, step * 0.5F);
         float predictionLimit = Math.max(clientProgress, targetProgress);
@@ -223,7 +224,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         if (sweepLevel() > 0 || whip == null || !(whip.curve() instanceof RetractingWhipCurve curve))
             return next;
         float start = (float) curve.returnStart();
-        // 去程到回收的边界至少显示一帧，回收期间不允许网络追赶压缩播放时间。
+        /// 去程到回收的边界至少显示一帧，回收期间不允许网络追赶压缩播放时间。
         if (clientProgress < start) return Math.min(next, start);
         float maximumStep = (1.0F - start) / MINIMUM_CLIENT_RETURN_TICKS;
         return Math.min(next, Math.min(1.0F, clientProgress + maximumStep));
@@ -262,7 +263,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
 
     private List<Vec3> transformLocalPoints(List<Vec3> localPoints, float partialTick) {
         Vec3 forward = launchDirection();
-        // 以发射视线建立坐标系，垂直瞄准时仍保留左右手方向。
+        /// 以发射视线建立坐标系，垂直瞄准时仍保留左右手方向。
         Vec3 right = swingRight();
         Vec3 up = right.cross(forward).normalize();
         int side = attackArm() == HumanoidArm.RIGHT ? 1 : -1;
@@ -281,7 +282,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
     public Vec3 swingRight() {
         Vec3 forward = launchDirection();
         Vec3 right = new Vec3(-forward.z, 0.0, forward.x);
-        // 普通瞄准完全由同一份发射方向建立正交坐标系，避免实体 yaw 与方向不同步。
+        /// 普通瞄准完全由同一份发射方向建立正交坐标系，避免实体 yaw 与方向不同步。
         return right.lengthSqr() > 1.0E-10 ? right.normalize() : Vec3.directionFromRotation(0.0F, getYRot() + 90.0F);
     }
 
@@ -331,20 +332,20 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             bounds = bounds.minmax(curveBounds(previousCurve));
         }
         List<Entity> candidates = level().getEntities(this, bounds.inflate(radius), rawTarget -> {
-            Entity identity = ProjectileHitRules.dedupeIdentity(rawTarget);
-            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
+            Entity identity = LibEntityUtils.dedupeIdentity(rawTarget);
+            LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(rawTarget);
             return logicalTarget != null
                     && logicalTarget != owner
                     && canHitAgain(identity.getUUID())
-                    && (ProjectileHitRules.canHit(owner, rawTarget)
+                    && (LibEntityUtils.canHit(owner, rawTarget)
                     || isFriendlySummon(owner, logicalTarget, whip));
         });
         candidates.sort(Comparator.comparingDouble(rawTarget -> WhipCollisionGeometry.firstContactProgress(
                 previousCurve, currentCurve, rawTarget.getBoundingBox().inflate(radius))));
         for (Entity rawTarget : candidates) {
-            Entity damageRecipient = ProjectileHitRules.damageRecipient(rawTarget);
-            Entity identity = ProjectileHitRules.dedupeIdentity(rawTarget);
-            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
+            Entity damageRecipient = rawTarget;
+            Entity identity = LibEntityUtils.dedupeIdentity(rawTarget);
+            LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(rawTarget);
             if (logicalTarget == null || !canHitAgain(identity.getUUID())) {
                 continue;
             }
@@ -402,9 +403,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         float multiplier = Math.max(whip.minimumDamageMultiplier(), (float) Math.pow(whip.damageFalloff(), successfulHits));
         float damage = baseDamage * multiplier
                 * (1.0F + sweepLevel() * 0.2F);
-        if (Immunity.isActive(this, logicalTarget)) return;
-        if (!Immunity.withCause(this, () -> LibDamageTypes.hurtWithoutKnockback(damageRecipient,
-                LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, this, owner), damage))) {
+        if (!Immunity.hurt(this, damageRecipient, logicalTarget,
+                LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, this, owner), damage)) {
             return;
         }
         completedTargets.add(identity.getUUID());
@@ -457,10 +457,11 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             return false;
         }
         if (Immunity.isActive(this, target)) return false;
+        /// 友方命中特效先于伤害触发，不能因召唤物拒绝受伤而丢失效果。
         WhipFriendlyHitContext context = new WhipFriendlyHitContext(player, target, weapon());
         whip.onFriendlyHit(context);
         float baseDamage = getDamage() > 0.0F ? getDamage() : whip.baseDamage();
-        Immunity.withCause(this, () -> LibDamageTypes.hurtWithoutKnockback(target, LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, this, owner), baseDamage * 0.2F));
+        Immunity.hurt(this, target, LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, this, owner), baseDamage * 0.2F);
         return true;
     }
 

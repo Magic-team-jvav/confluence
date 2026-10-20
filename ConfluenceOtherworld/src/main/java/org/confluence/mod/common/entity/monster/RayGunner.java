@@ -15,22 +15,25 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.projectile.MonsterLaser;
+import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-import java.util.UUID;
 import java.util.Comparator;
+import java.util.UUID;
 
-/** Mounted or dismounted Martian marksman. */
+/// 激光枪手共用一套射击行为，骑手身份恢复独立于战斗调度。
 public final class RayGunner extends MartianHumanoidMonster {
     public enum CombatState {
         MOUNTED
@@ -95,13 +98,13 @@ public final class RayGunner extends MartianHumanoidMonster {
 
             @Override
             public boolean canStart() {
-                return usableTarget(getTarget());
+                return (!isPassenger() || isMountedOnLivingScutlix()) && usableTarget(getTarget());
             }
 
             @Override
             public BTStatus execute() {
                 LivingEntity target = getTarget();
-                if (!usableTarget(target)) {
+                if (!canStart()) {
                     getNavigation().stop();
                     return BTStatus.FAILURE;
                 }
@@ -123,7 +126,7 @@ public final class RayGunner extends MartianHumanoidMonster {
                         getNavigation().stop();
                     }
                 }
-                faceCombatPosition(target.getEyePosition(), 25.0F, 25.0F);
+                tickShooting((ServerLevel) level(), target);
                 return BTStatus.RUNNING;
             }
 
@@ -131,6 +134,8 @@ public final class RayGunner extends MartianHumanoidMonster {
             public void stop() {
                 pathDelay = 0;
                 getNavigation().stop();
+                aimTicks = 0;
+                entityData.set(DATA_AIMING, false);
             }
         }, new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(this, 0.8D)),
                 new VanillaGoalAction(new RandomLookAroundGoal(this)));
@@ -141,10 +146,15 @@ public final class RayGunner extends MartianHumanoidMonster {
         if (level() instanceof ServerLevel serverLevel) resolveMount(serverLevel);
         updateMountedState();
         super.tick();
-        if (!(level() instanceof ServerLevel serverLevel) || !isAlive()) return;
+        /// 身份恢复不受 AI 开关影响，停止战斗时只复位瞄准表现。
+        if (!level().isClientSide && (isNoAi() || isPassenger() && !isMountedOnLivingScutlix() || !usableTarget(getTarget()))) {
+            entityData.set(DATA_AIMING, false);
+            aimTicks = 0;
+        }
+    }
 
+    private void tickShooting(ServerLevel serverLevel, LivingEntity target) {
         if (shotCooldown > 0) shotCooldown--;
-        LivingEntity target = getTarget();
         boolean aiming = usableTarget(target) && distanceToSqr(target) <= MAXIMUM_SHOT_RANGE_SQUARED
                 && hasLineOfSight(target);
         entityData.set(DATA_AIMING, aiming);
@@ -307,6 +317,7 @@ public final class RayGunner extends MartianHumanoidMonster {
         MonsterLaser laser = ModEntities.MONSTER_LASER.get().create(serverLevel);
         if (laser == null) return false;
         laser.configureShot(this, target, new Vec3(getX(), getEyeY() - 0.1D * getScale(), getZ()), MonsterLaser.Variant.RAY_GUNNER);
+        MartianEventHelper.inheritEventMembership(this, laser);
         if (!serverLevel.addFreshEntity(laser)) {
             laser.discard();
             return false;
@@ -318,8 +329,8 @@ public final class RayGunner extends MartianHumanoidMonster {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "ray_gunner", 3, state -> {
-            // The supplied asset has a dedicated seated aiming pose but no seated idle pose.
-            // Keep the rider seated at all times; aiming state still controls the wind-up and shot.
+            /// 模型只有坐姿瞄准动画，没有单独的坐姿待机动画。
+            /// 骑手持续保持坐姿，由瞄准状态控制蓄力和射击。
             if (isPassenger()) return state.setAndContinue(SIT_AIM);
             if (isAiming()) {
                 return state.setAndContinue(state.isMoving() ? WALK_AIM : STAND_AIM);
@@ -330,9 +341,8 @@ public final class RayGunner extends MartianHumanoidMonster {
 
     @Override
     protected boolean hasEntityContactAttack() {
-        // While mounted, the Scutlix owns the encounter's contact hit. This prevents the
-        // overlapping passenger hitbox from applying a second, independently-timed strike.
-        return !isMountedOnLivingScutlix();
+        /// 骑乘时由蝎怪结算接触伤害，运输和禁用 AI 时也不额外攻击。
+        return !isNoAi() && !isPassenger();
     }
 
     @Override

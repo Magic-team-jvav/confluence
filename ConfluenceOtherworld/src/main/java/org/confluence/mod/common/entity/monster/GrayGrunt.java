@@ -5,15 +5,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
+
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/** A relentless contact fighter with complete knockback resistance. */
+/// 持续追击并造成接触伤害的战士，完全免疫击退。
 public final class GrayGrunt extends MartianHumanoidMonster {
     private static final RawAnimation STAND = RawAnimation.begin().thenLoop("Stand");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("Walk");

@@ -13,10 +13,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.lib.util.ProjectileHitRules;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.util.PrefixUtils;
+
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -127,7 +129,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
         DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, player);
         boolean hit = false;
         for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, previousBox.minmax(getBoundingBox()).inflate(0.1),
-                target -> ProjectileHitRules.canHit(player, target))) {
+                target -> LibEntityUtils.canHit(player, target))) {
             double top = target.getBoundingBox().maxY;
             if (previousBox.minY >= top - 0.1 && getY() <= top + 0.1 && target.hurt(source, damage)) {
                 hit = true;

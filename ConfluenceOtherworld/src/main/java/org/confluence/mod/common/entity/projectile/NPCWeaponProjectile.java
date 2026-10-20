@@ -14,8 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
-import org.confluence.mod.common.entity.*;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,11 +48,11 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
 
     /// 设置服务端追踪目标；不设置时保持普通抛射运动。
     public void setHomingTarget(@Nullable Entity target) {
-        Entity aim = target == null ? null : ProjectileHitRules.aimTarget(target, position());
+        Entity aim = target == null ? null : LibEntityUtils.aimTarget(target, position());
         homingTarget = aim != null && NPCProjectileEffects.get(effect).canAcquireTarget(createContext(), aim) ? aim : null;
-        // 普通 PartEntity 不单独存档，用本体 UUID 在重载后重新选取有效部位。
+        /// 普通 PartEntity 不单独存档，用本体 UUID 在重载后重新选取有效部位。
         homingTargetId = homingTarget == null ? null : (homingTarget instanceof LivingEntity
-                ? homingTarget : ProjectileHitRules.encounterOwner(homingTarget)).getUUID();
+                ? homingTarget : LibEntityUtils.encounterOwner(homingTarget)).getUUID();
     }
 
     /// 缺少同步物品时使用原版箭矢作为安全回退外观。

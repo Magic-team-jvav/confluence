@@ -17,8 +17,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.ProjectileHitRules;
-import org.confluence.mod.common.entity.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -80,8 +78,8 @@ public class GuardianFlailEntity extends BaseFlailEntity {
             targets = findTargets(player);
             syncTargets(targets);
             resetAttack();
-            // 与 1.21 一致：完成首次锁定的当刻只同步光束，
-            // 攻击计时从下一次服务端 tick 开始。
+            /// 与 1.21 一致：完成首次锁定的当刻只同步光束，
+            /// 攻击计时从下一次服务端 tick 开始。
             return;
         }
 
@@ -98,7 +96,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
 
         float damage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()) / 2.0F);
         for (Entity target : targets) {
-            ProjectileHitRules.hurt(target, level().damageSources().mobAttack(player), damage);
+            target.hurt(level().damageSources().mobAttack(player), damage);
             level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.GUARDIAN_ATTACK, SoundSource.HOSTILE, 1.0F, 1.0F);
         }
     }
@@ -106,7 +104,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
     private List<Entity> findTargets(Player player) {
         double range = elder ? 20.0 : 15.0;
         AABB searchBox = getBoundingBox().inflate(range);
-        List<Entity> candidates = ProjectileHitRules.areaTargets(level(), this, searchBox, target -> TARGETING.canAcquire(player, target) && canSee(target));
+        List<Entity> candidates = LibEntityUtils.areaTargets(level(), this, searchBox, target -> TARGETING.canAcquire(player, target) && canSee(target));
         candidates.sort(Comparator.comparingDouble(this::distanceToSqr));
         int count = Math.min(elder ? 3 : 1, candidates.size());
         return new ArrayList<>(candidates.subList(0, count));
@@ -163,7 +161,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
 
     private void addTarget(List<Entity> targets, int entityId) {
         Entity entity = LibEntityUtils.getEntityOrPart(level(), entityId);
-        if (entity != null && ProjectileHitRules.acceptsDirectHit(entity)) {
+        if (entity != null && LibEntityUtils.acceptsDirectHit(entity)) {
             targets.add(entity);
         }
     }

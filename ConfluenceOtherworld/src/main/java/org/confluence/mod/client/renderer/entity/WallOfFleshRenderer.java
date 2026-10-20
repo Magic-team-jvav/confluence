@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -107,17 +108,27 @@ public final class WallOfFleshRenderer extends GeoEntityRenderer<WallOfFlesh> {
         float halfWidth = GRID_WIDTH * GRID_SPACING * 0.5F;
         float halfHeight = GRID_HEIGHT * GRID_SPACING * 0.5F;
         int overlay = getPackedOverlay(wall, 0, partialTick);
+        double halfCell = GRID_SPACING * scale * 0.5;
+        long layoutSeed = wall.getLayoutSeed();
         for (int x = 0; x < GRID_WIDTH; x++) {
             float left = x * GRID_SPACING - halfWidth;
             float right = left + GRID_SPACING;
+            double columnOffset = (left + GRID_SPACING * 0.5F) * scale;
+            double centerX = origin.x + lateral.x * columnOffset;
+            double centerZ = origin.z + lateral.z * columnOffset;
+            /// 整列包围盒包含原有全部网格，先跳过视野外的列，再保留逐格精确剔除。
+            if (!frustum.isVisible(new AABB(centerX - halfCell, origin.y - halfHeight * scale, centerZ - halfCell,
+                    centerX + halfCell, origin.y + halfHeight * scale, centerZ + halfCell)))
+                continue;
             for (int y = 0; y < GRID_HEIGHT; y++) {
                 float bottom = y * GRID_SPACING - halfHeight;
                 float top = bottom + GRID_SPACING;
-                Vec3 center = origin.add(lateral.scale((left + GRID_SPACING * 0.5F) * scale)).add(0, (bottom + GRID_SPACING * 0.5F) * scale, 0);
-                if (!frustum.isVisible(AABB.ofSize(center, GRID_SPACING * scale, GRID_SPACING * scale, GRID_SPACING * scale)))
+                double centerY = origin.y + (bottom + GRID_SPACING * 0.5F) * scale;
+                if (!frustum.isVisible(new AABB(centerX - halfCell, centerY - halfCell, centerZ - halfCell,
+                        centerX + halfCell, centerY + halfCell, centerZ + halfCell)))
                     continue;
                 /// 同一布局种子与网格坐标决定纹理，视角、帧数和多人加入顺序均不影响结果。
-                long variation = Mth.getSeed(x, (int) wall.getLayoutSeed(), y) ^ (wall.getLayoutSeed() >>> 32);
+                long variation = Mth.getSeed(x, (int) layoutSeed, y) ^ (layoutSeed >>> 32);
                 /// 普通墙面与脓包纹理权重为 6:1，按布局种子固定每格的选择。
                 int variant = (variation >>> 16) % 7 == 0 ? 1 : 0;
                 backgroundFace(poses, background, left, bottom, right, top, 0, 0, false, variant, light, overlay);
@@ -148,8 +159,26 @@ public final class WallOfFleshRenderer extends GeoEntityRenderer<WallOfFlesh> {
             poses.translate(0, -pivotY, 0);
             super.renderRecursively(poses, wall, part instanceof WallOfFleshEye ? eye : mouth,
                     type, buffers, vertices, false, partialTick, light,
-                    getPackedOverlay(wall, 0, partialTick), 1, 1, 1, 1);
+                    overlay, 1, 1, 1, 1);
             poses.popPose();
+        }
+        poses.popPose();
+        renderPartHitboxes(wall, poses, buffers, frustum, camera, partialTick);
+    }
+
+    /// 本体原点可能不进入常规实体绘制，调试碰撞箱随墙面事件绘制，位置取自真实部件。
+    private static void renderPartHitboxes(WallOfFlesh wall, PoseStack poses, MultiBufferSource buffers,
+                                           Frustum frustum, Vec3 camera, float partialTick) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (!minecraft.getEntityRenderDispatcher().shouldRenderHitBoxes() || minecraft.showOnlyReducedInfo() || wall.isInvisible())
+            return;
+        VertexConsumer lines = buffers.getBuffer(RenderType.lines());
+        poses.pushPose();
+        poses.translate(-camera.x, -camera.y, -camera.z);
+        for (WallOfFleshPart part : wall.getParts()) {
+            AABB bounds = part.getBoundingBox().move(part.getPosition(partialTick).subtract(part.position()));
+            if (frustum.isVisible(bounds))
+                LevelRenderer.renderLineBox(poses, lines, bounds, 0.25F, 1.0F, 0.0F, 1.0F);
         }
         poses.popPose();
     }

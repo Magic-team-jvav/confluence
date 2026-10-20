@@ -12,7 +12,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
@@ -20,7 +21,7 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 /// 敌对生物直线弹幕的公共运行时。
 ///
 /// 本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
-/// 具体弹幕只需要提供初始参数，并可通过 {@link #modifyVelocity(Vec3)}
+/// 具体弹幕只需要提供初始参数，并可通过 #modifyVelocity(Vec3)
 /// 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。
 public abstract class StraightMonsterProjectile extends Projectile implements IPortProjectileExtension {
     private static final String DAMAGE_KEY = "Damage";
@@ -148,9 +149,9 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity rawTarget = result.getEntity();
-        LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
-        if (getOwner() instanceof Mob owner && ProjectileHitRules.canMobHit(owner, rawTarget)) {
-            if (ProjectileHitRules.hurt(rawTarget, damageSources().mobProjectile(this, owner), damage) && target != null) {
+        LivingEntity target = LibEntityUtils.effectTarget(rawTarget);
+        if (!level().isClientSide && getOwner() instanceof Mob owner && LibEntityUtils.canMobHit(owner, rawTarget)) {
+            if (rawTarget.hurt(damageSources().mobProjectile(this, owner), damage) && target != null) {
                 if (knockback > 0) {
                     Vec3 direction = getDeltaMovement();
                     target.knockback(knockback, -direction.x, -direction.z);
@@ -179,7 +180,7 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     /// 方块命中回调是否已经决定了本 tick 的最终位置与速度。
     ///
-    /// 反弹弹体需要返回 {@code true}，防止公共直线移动在回调结束后再次使用命中前速度，
+    /// 反弹弹体需要返回 true，防止公共直线移动在回调结束后再次使用命中前速度，
     /// 穿墙弹体则保持默认值并继续完成原位移。
     protected boolean ownsBlockImpactMovement(BlockHitResult result) {
         return false;
@@ -210,6 +211,6 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return ProjectileHitRules.canMobHit(getOwner(), target) && super.canHitEntity(target);
+        return LibEntityUtils.canMobHit(getOwner(), target) && super.canHitEntity(target);
   }
 }

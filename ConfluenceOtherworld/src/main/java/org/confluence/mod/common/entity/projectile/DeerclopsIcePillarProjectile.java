@@ -11,10 +11,12 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.init.ModEffects;
 import org.joml.Vector3f;
+
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -103,11 +105,11 @@ public final class DeerclopsIcePillarProjectile extends Projectile implements Ge
         Vec3 direction = new Vec3(axis.x(), axis.y(), axis.z()).normalize();
         for (int blockIndex = 0; blockIndex < visibleBlocks; blockIndex++) {
             Vec3 center = position().add(direction.scale(blockIndex + 0.5));
-            for (Entity target : ProjectileHitRules.areaTargets(level(), this,
+            for (Entity target : LibEntityUtils.areaTargets(level(), this,
                     getBoundingBox().move(center.subtract(position())).inflate(0.35), this::canHitEntity)) {
-                if (hitEntities.add(ProjectileHitRules.dedupeIdentity(target).getUUID())
-                        && ProjectileHitRules.hurt(target, damageSources().mobProjectile(this, owner), damage)) {
-                    LivingEntity living = ProjectileHitRules.effectTarget(target);
+                if (hitEntities.add(LibEntityUtils.dedupeIdentity(target).getUUID())
+                        && target.hurt(damageSources().mobProjectile(this, owner), damage)) {
+                    LivingEntity living = LibEntityUtils.effectTarget(target);
                     if (living != null) living.addEffect(new MobEffectInstance(ModEffects.FROST_BURN.get(), 100));
                 }
             }
@@ -116,8 +118,8 @@ public final class DeerclopsIcePillarProjectile extends Projectile implements Ge
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return ProjectileHitRules.canMobHit(getOwner(), target)
-                && !hitEntities.contains(ProjectileHitRules.dedupeIdentity(target).getUUID());
+        return LibEntityUtils.canMobHit(getOwner(), target)
+                && !hitEntities.contains(LibEntityUtils.dedupeIdentity(target).getUUID());
     }
 
     @Override

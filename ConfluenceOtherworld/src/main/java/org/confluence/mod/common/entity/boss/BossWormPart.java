@@ -15,12 +15,14 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -34,10 +36,8 @@ import java.util.UUID;
 /// 体节把伤害转交给具有权威状态的头部；区块重新加载后也由头部重建整条体节链。
 /// 因此体节只保存恢复归属所需的最小信息，不能独立决定 Boss 生命周期。
 public class BossWormPart extends Monster implements WormSegment, GeoEntity, PartHitTarget {
-    // 一次接触命中后的冷却（tick）。
+    /// 一次接触命中后的冷却（tick）。
     private static final int COLLISION_COOLDOWN = 10;
-    // 允许本体后到达的网络/区块加载宽限，单位为 tick。
-    private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";
     private static final String INDEX_TAG = "SegmentIndex";
     private static final String TAIL_TAG = "Tail";
@@ -54,7 +54,6 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private @Nullable BaseWormBoss owner;
     private @Nullable UUID ownerUUID;
-    private int unresolvedOwnerTicks;
     private int hurtCooldown;
     private boolean destroyerDimensions;
     private float previousSegmentRoll;
@@ -111,13 +110,8 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     public boolean isHurtFlashing() {
         BaseWormBoss head = getOwner();
-        // 共享生命的链条跟随本体闪红，独立体节仍保留自身的受伤反馈。
+        /// 共享生命的链条跟随本体闪红，独立体节仍保留自身的受伤反馈。
         return head != null && head.sharesHurtAnimation() && head.hurtTime > 0 || entityData.get(HURT_FLASH_TICKS) > 0;
-    }
-
-    @Override
-    public Entity damageRecipient() {
-        return this;
     }
 
     @Override
@@ -186,16 +180,16 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
         }
         BaseWormBoss head = getOwner();
         if (head == null) {
-            if (!level().isClientSide && ++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS)
+            if (!level().isClientSide)
                 discard();
             return;
         }
         if (!head.isAlive()) {
-            // 已确认本体死亡，立即清理体节，不保留静止的链条。
+            /// 已确认本体死亡，立即清理体节，不保留静止的链条。
             discard();
             return;
         }
-        unresolvedOwnerTicks = 0;
+
         boolean shouldUseDestroyerDimensions = head instanceof TheDestroyer;
         if (destroyerDimensions != shouldUseDestroyerDimensions) {
             destroyerDimensions = shouldUseDestroyerDimensions;
@@ -408,7 +402,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     }
 
     private void tickClientInterpolation() {
-        // 每 tick 推进渲染插值起点；俯仰和偏航都按最短角路径跨越正负一百八十度。
+        /// 每 tick 推进渲染插值起点；俯仰和偏航都按最短角路径跨越正负一百八十度。
         yRotO = getYRot();
         xRotO = getXRot();
         if (clientLerpSteps <= 0) return;

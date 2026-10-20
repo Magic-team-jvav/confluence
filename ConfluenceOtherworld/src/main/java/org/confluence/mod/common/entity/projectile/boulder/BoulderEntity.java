@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -27,10 +28,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -68,7 +70,7 @@ public class BoulderEntity extends Projectile {
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
 
-    // 可修改参数
+    /// 可修改参数
     public float radius = 0.5F; // 半径
     public int maxRemoveTick = 1200; // 最大移除时间
     public int maxStillTick = 20; // 最大静止时间
@@ -240,12 +242,12 @@ public class BoulderEntity extends Projectile {
             return;
         }
 
-        // 如果水平速度几乎为零则尝试添加水平向量
+        /// 如果水平速度几乎为零则尝试添加水平向量
         if (getHorizontalVectorLength(getDeltaMovement()) < 0.0001) {
-            // 先尝试获取最近的目标
+            /// 先尝试获取最近的目标
             Player nearestPlayer = getNearestPlayer();
             if (nearestPlayer == null) {
-                // 这里仅在服务端处理因为客户端的随机有可能于服务器的随机不同导致出现问题
+                /// 这里仅在服务端处理因为客户端的随机有可能于服务器的随机不同导致出现问题
                 if (!level.isClientSide) {
                     List<Direction> directions = new ArrayList<>();
                     for (Direction direction1 : Direction.Plane.HORIZONTAL) {
@@ -282,17 +284,17 @@ public class BoulderEntity extends Projectile {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        UUID uuid1 = ProjectileHitRules.dedupeIdentity(entity).getUUID();
+        UUID uuid1 = LibEntityUtils.dedupeIdentity(entity).getUUID();
 
-        // TODO 需要重写
+        /// TODO 需要重写
         int i = hitHistory.containsKey(uuid1) ? hitHistory.addTo(uuid1, -1) : 0;
         if (i <= 0) {
             float damage = 100.0F;
-            LivingEntity living = ProjectileHitRules.effectTarget(entity);
+            LivingEntity living = LibEntityUtils.effectTarget(entity);
             if (living != null) {
                 damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
             }
-            ProjectileHitRules.hurt(entity, LibDamageTypes.of(entity.level(), LibDamageTypes.BOULDER, this), damage);
+            entity.hurt(LibDamageTypes.of(entity.level(), LibDamageTypes.BOULDER, this), damage);
             hitHistory.put(uuid1, 5);
         }
     }

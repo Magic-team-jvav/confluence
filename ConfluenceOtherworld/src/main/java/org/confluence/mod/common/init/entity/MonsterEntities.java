@@ -1187,8 +1187,6 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(1040).armor(18).attackDamage(32).add(LibAttributes.getArmorPenetration().get(), 10).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(48).movementSpeed(0.55).knockbackResistance(1)
                     .projectile(ModEntities.MONSTER_LASER, projectile -> projectile.damage(37))
                     .build());
-    public static final RegistryObject<EntityType<WalkerWeapon>> WALKER_WEAPON = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_walker_weapon", "火星走妖炮座", EntityType.Builder.of(WalkerWeapon::new, MobCategory.MONSTER).sized(0.8F, 1.0F).clientTrackingRange(16))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(18).attackDamage(0).add(LibAttributes.getArmorPenetration().get(), 0).add(Attributes.ARMOR_TOUGHNESS, 8).followRange(0).movementSpeed(0).knockbackResistance(1).build());
 
     // 新年：大飞龙
     public static final RegistryObject<EntityType<BaseWormPart>> ARCH_WYVERN_SEGMENT = registerWormSegment("arch_wyvern_segment", "大飞龙体节");

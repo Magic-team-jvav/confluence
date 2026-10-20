@@ -1,6 +1,9 @@
 package org.confluence.mod.common.entity.monster;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
@@ -11,11 +14,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-/** 模型空间姿态与碰撞几何的共享实现；可在专用服务器上使用。 */
+/// 模型空间姿态与碰撞几何的共享实现；可在专用服务器上使用。
 public final class WalkerGeometry {
     public static final float SCALE = 0.7F;
-    // 旋转后的腿部链已将脚底置于模型 Y=0。
-    // 渲染与碰撞几何共用此值；无需额外抬高。
+    /// 旋转后的腿部链已将脚底置于模型 Y=0。
+    /// 渲染与碰撞几何共用此值；无需额外抬高。
     public static final float OFFSET_Y = 0.0F;
     private static final Map<String, JsonObject> BONES = new LinkedHashMap<>();
     private static final JsonObject ANIMATIONS;
@@ -49,7 +52,7 @@ public final class WalkerGeometry {
         }
     }
 
-    /** 基岩版旋转通过反转 X、Y 转换为 Gecko 坐标。 */
+    /// 基岩版旋转通过反转 X、Y 转换为 Gecko 坐标。
     public static Vector3f rotation(String name, boolean moving, double seconds) {
         return rotation(name, new Pose(seconds, seconds, moving ? 1 : 0));
     }
@@ -126,7 +129,7 @@ public final class WalkerGeometry {
             Vector3f result = new Vector3f();
             for (int axis = 0; axis < 3; axis++) {
                 float p0 = p.get(axis), p1 = a.get(axis), p2 = b.get(axis), p3 = q.get(axis);
-                // 时间感知的 Catmull-Rom Hermite 形式：关键帧间距不均匀。
+                /// 时间感知的 Catmull-Rom Hermite 形式：关键帧间距不均匀。
                 float m1 = (float) ((p2 - p0) * (after - before) / Math.max(1.0E-6, after - previousTime));
                 float m2 = (float) ((p3 - p1) * (after - before) / Math.max(1.0E-6, nextTime - before));
                 float t2 = t*t, t3 = t2*t;
@@ -208,7 +211,7 @@ public final class WalkerGeometry {
                 JsonObject cube = element.getAsJsonObject();
                 Vector3f origin = vector(cube.get("origin")), size = vector(cube.get("size"));
                 Matrix4f transform = new Matrix4f(matrix(entry.getKey(), root, pose, cache));
-                // Spaceship 将 lower_part 缩放为零；其腿部不能留下隐形碰撞。
+                /// Spaceship 将 lower_part 缩放为零；其腿部不能留下隐形碰撞。
                 if (Math.abs(transform.determinant3x3()) < 1.0E-12F) continue;
                 if (cube.has("rotation")) {
                     Vector3f pivot = vector(cube.get("pivot")).mul(-1, 1, 1);
@@ -223,7 +226,7 @@ public final class WalkerGeometry {
         return boxes;
     }
 
-    // 方形水平外接箱覆盖所有偏航角，避免旋转时炮台受击范围忽大忽小。
+    /// 方形水平外接箱覆盖所有偏航角，避免旋转时炮台受击范围忽大忽小。
     static AABB weaponBounds(MartianWalker walker, List<Box> geometry, int slot) {
         String bone = slot == 0 ? "left_fort" : "right_fort";
         float yaw = (float) Math.toRadians(180 - walker.yBodyRot);
@@ -241,7 +244,7 @@ public final class WalkerGeometry {
         return AABB.ofSize(new Vec3(center.x, center.y, center.z), diameter, localBounds.getYsize(), diameter);
     }
 
-    /** 带朝向的立方体，包含骨骼与立方体旋转。SAT 可避免在空棱角处造成伤害。 */
+    /// 带朝向的立方体，包含骨骼与立方体旋转。SAT 可避免在空棱角处造成伤害。
     public record Box(String bone, Matrix4f transform, Vector3f halfSize) {
         public AABB bounds() {
             Vector3f min = new Vector3f(Float.POSITIVE_INFINITY), max = new Vector3f(Float.NEGATIVE_INFINITY);

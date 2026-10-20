@@ -1,6 +1,7 @@
 package org.confluence.mod.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -10,13 +11,14 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.ExplicitGeoModel;
 import org.confluence.mod.common.entity.monster.MartianOfficer;
 import org.confluence.mod.common.entity.monster.OfficerShieldGeometry;
 import org.joml.Vector3f;
 
-/** 朝向内侧的护盾外壳，类似火星探测器顶盖，带有发光接缝、下降波纹与受击时的不透明度闪烁。 */
+/// 朝向内侧的护盾外壳，类似火星探测器顶盖，带有发光接缝、下降波纹与受击时的不透明度闪烁。
 public final class MartianOfficerRenderer extends GeoNormalRenderer<MartianOfficer> {
     private static final int SEGMENTS = 24;
     private static final float RADIUS = OfficerShieldGeometry.RADIUS;
@@ -40,7 +42,7 @@ public final class MartianOfficerRenderer extends GeoNormalRenderer<MartianOffic
     @Override public void render(MartianOfficer entity, float yaw, float partialTick, PoseStack poses,
                                  MultiBufferSource buffers, int light) {
         super.render(entity, yaw, partialTick, poses, buffers, light);
-        // 仅在所有实体材质绘制完成后再提交护盾外壳。
+        /// 仅在所有实体材质绘制完成后再提交护盾外壳。
     }
 
     public static void renderShields(RenderLevelStageEvent event) {
@@ -75,23 +77,23 @@ public final class MartianOfficerRenderer extends GeoNormalRenderer<MartianOffic
         float time = (entity.tickCount + partialTick) * 0.05F;
         float health = Mth.clamp(entity.getShieldHealth() / MartianOfficer.MAX_SHIELD, 0, 1);
         float impactAge = entity.shieldImpactAge(partialTick);
-        // 恰好两次不透明度下降（第 3 与第 9 tick），并在第 12 tick 恢复正常。
+        /// 恰好两次不透明度下降（第 3 与第 9 tick），并在第 12 tick 恢复正常。
         float hitFlicker = impactAge < 12 ? 0.5F + 0.5F * Mth.cos(impactAge * Mth.PI / 3) : 1;
         float opacity = visibility * health;
         poses.pushPose();
         poses.scale(entity.getScale(), entity.getScale(), entity.getScale());
         float size = entity.hasShield() ? 0.96F + formation * 0.04F : 1 + dissolve * 0.06F;
-        // 将形成/消散缩放的锚点设在脚部而非护盾中心。
+        /// 将形成/消散缩放的锚点设在脚部而非护盾中心。
         poses.translate(0, OfficerShieldGeometry.BOTTOM_Y + HALF[1] * size, 0);
         poses.scale(size, size, size);
 
-        // 与探测器的负尺寸顶盖立方体类似，实际外壳朝向内侧。
-        // 背面剔除会移除其靠近相机的一面；远侧仍留在军官身后。
+        /// 与探测器的负尺寸顶盖立方体类似，实际外壳朝向内侧。
+        /// 背面剔除会移除其靠近相机的一面；远侧仍留在军官身后。
         VertexConsumer membrane = buffers.getBuffer(ShieldTypes.MEMBRANE);
         for (int f = 0; f < 6; f++) for (int u = 0; u < SEGMENTS; u++) for (int v = 0; v < SEGMENTS; v++) {
             for (Vector3f p : quad(f, u, v)) {
-                // 正的时间相位使同相位的波峰向下移动。
-                // 每三秒有两道柔和水平波纹穿过表面。
+                /// 正的时间相位使同相位的波峰向下移动。
+                /// 每三秒有两道柔和水平波纹穿过表面。
                 float wave = 0.5F + 0.5F * Mth.sin(p.y * (Mth.TWO_PI / HALF[1]) + time * (Mth.TWO_PI / 3));
                 float brightness = 0.42F + wave * 0.58F;
                 float membraneOpacity = visibility * shieldOpacity(health, wave, impactAge);
@@ -102,7 +104,7 @@ public final class MartianOfficerRenderer extends GeoNormalRenderer<MartianOffic
             }
         }
         VertexConsumer glow = buffers.getBuffer(ShieldTypes.GLOW);
-        // 将圆角体积投影到面向相机的单个平面上，然后仅描出其轮廓。
+        /// 将圆角体积投影到面向相机的单个平面上，然后仅描出其轮廓。
         Vec3 camera = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vec3 eyePosition = camera.subtract(entity.getPosition(partialTick)).scale(1.0 / entity.getScale())
                 .subtract(0, OfficerShieldGeometry.BOTTOM_Y + HALF[1] * size, 0).scale(1.0 / size);
@@ -127,7 +129,7 @@ public final class MartianOfficerRenderer extends GeoNormalRenderer<MartianOffic
         Vector3f[][] quads = new Vector3f[6 * SEGMENTS * SEGMENTS][];
         for (int face = 0; face < 6; face++) for (int u = 0; u < SEGMENTS; u++) for (int v = 0; v < SEGMENTS; v++) {
         Vector3f[][] f = FACES[face];
-        // 反转整个膜面，而不是额外添加第二层反向的装饰外壳。
+            /// 反转整个膜面，而不是额外添加第二层反向的装饰外壳。
         quads[(face * SEGMENTS + u) * SEGMENTS + v] = face % 2 == 0 ? new Vector3f[]{f[u][v + 1], f[u + 1][v + 1], f[u + 1][v], f[u][v]}
                 : new Vector3f[]{f[u][v], f[u + 1][v], f[u + 1][v + 1], f[u][v + 1]};
         }

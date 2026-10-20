@@ -15,15 +15,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
+
+import javax.annotation.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import javax.annotation.Nullable;
 
 public class ThrowableDropSelfProjectile extends DamageSettableProjectile implements IPortProjectileExtension, ItemSupplier {
     protected static final EntityDataAccessor<Integer> DATA_FLY_TICKS = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.INT);
@@ -70,10 +71,10 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (ProjectileHitRules.hurt(entity, getDamageSource(), getCalculatedDamage())) {
-            hitSet.add(ProjectileHitRules.dedupeIdentity(entity).getUUID());
+        if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
+            hitSet.add(LibEntityUtils.dedupeIdentity(entity).getUUID());
             this.damage -= deltaDamage;
-            LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(entity), 0.5, 0.2);
+            LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(entity), 0.5, 0.2);
             if (penetrate >= 3) {
                 if (random.nextBoolean()) {
                     LibEntityUtils.createItemEntity(getItem(), getX(), getY(), getZ(), level(), 0);
@@ -102,7 +103,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && !hitSet.contains(ProjectileHitRules.dedupeIdentity(target).getUUID());
+        return super.canHitEntity(target) && !hitSet.contains(LibEntityUtils.dedupeIdentity(target).getUUID());
     }
 
     @Override
@@ -127,10 +128,9 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
         return distance < d0 * d0;
     }
 
-//    @Override
-//    public boolean canUsePortal(boolean allowPassengers) {
-//        return true;
-//    }
+    /// @Override public boolean canUsePortal(boolean allowPassengers) {
+    ///        return true;
+    ///    }
 
     @Override
     public void tick() {

@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
+
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -20,11 +21,12 @@ import org.confluence.mod.common.entity.projectile.MonsterLaser;
 import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/** Martian ranged fighter; shot interval is explicitly seven Minecraft ticks. */
+/// 扰脑怪的走位、瞄准与七刻一次的射击由同一战斗节点推进。
 public final class BrainScrambler extends MartianHumanoidMonster {
     public static final int SHOT_INTERVAL = 7;
     private static final EntityDataAccessor<Boolean> AIMING = SynchedEntityData.defineId(BrainScrambler.class, EntityDataSerializers.BOOLEAN);
@@ -46,7 +48,7 @@ public final class BrainScrambler extends MartianHumanoidMonster {
 
     @Override
     protected boolean hasEntityContactAttack() {
-        return true;
+        return !isNoAi() && !isPassenger();
     }
 
     private boolean isUsableTarget(LivingEntity target) {
@@ -58,13 +60,13 @@ public final class BrainScrambler extends MartianHumanoidMonster {
         BTNode combatBehavior = new BTNode() {
             @Override
             public boolean canStart() {
-                return isUsableTarget(getTarget());
+                return !isPassenger() && isUsableTarget(getTarget());
             }
 
             @Override
             public BTStatus execute() {
                 LivingEntity target = getTarget();
-                if (!isUsableTarget(target)) {
+                if (!canStart()) {
                     return BTStatus.FAILURE;
                 }
 
@@ -78,12 +80,14 @@ public final class BrainScrambler extends MartianHumanoidMonster {
                     getNavigation().stop();
                 }
 
+                tickShooting(target);
                 return BTStatus.RUNNING;
             }
 
             @Override
             public void stop() {
                 getNavigation().stop();
+                entityData.set(AIMING, false);
             }
 
         };
@@ -95,15 +99,18 @@ public final class BrainScrambler extends MartianHumanoidMonster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide || !isAlive()) {
-            return;
+        /// 禁用 AI 时行为树不再推进，只清理客户端使用的瞄准状态。
+        if (!level().isClientSide && (isNoAi() || isPassenger() || !isUsableTarget(getTarget()))) {
+            entityData.set(AIMING, false);
         }
+    }
 
+    /// 与走位共用行为树调度，允许边移动边射击。
+    private void tickShooting(LivingEntity target) {
         if (shotCooldown > 0) {
             shotCooldown--;
         }
 
-        LivingEntity target = getTarget();
         boolean aiming = isUsableTarget(target) && distanceToSqr(target) <= 1024 && hasLineOfSight(target);
         entityData.set(AIMING, aiming);
         if (!aiming || shotCooldown > 0) {

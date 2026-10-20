@@ -29,7 +29,6 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.boss.BossProjectileReflection;
 import org.confluence.mod.common.init.ModParticleTypes;
@@ -181,7 +180,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     private void tickCollisionDamage() {
         if (--collisionCooldown > 0) return;
         collisionCooldown = collisionInterval;
-        for (Entity target : ProjectileHitRules.areaTargets(level(), this, getBoundingBox().inflate(collisionInflation), this::canHitEntity)) {
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(collisionInflation), this::canHitEntity)) {
             hurtTarget(target);
         }
     }
@@ -206,7 +205,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return remainingHits > 0 && ProjectileHitRules.canHit(getOwner(), target);
+        return remainingHits > 0 && LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override
@@ -234,18 +233,20 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     protected boolean hurtTarget(Entity target) {
         if (!canHitEntity(target) || BossProjectileReflection.reflect(this, target)) return false;
-        Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
-        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
+        Entity damageRecipient = target;
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
         DamageSource source = damageSource();
+        /// 静态无敌帧按弹射物类型共享，局部无敌帧按当前实例区分。
+        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
         boolean hurt = logicalTarget != null
-                ? Immunity.hurt(this, damageRecipient, logicalTarget, source, baseAttackDamage)
-                : Immunity.withCause(this, () -> ProjectileHitRules.hurt(target, source, baseAttackDamage));
+                ? Immunity.hurt(cause, damageRecipient, logicalTarget, source, baseAttackDamage)
+                : Immunity.withCause(cause, () -> target.hurt(source, baseAttackDamage));
         if (!hurt) {
             return false;
         }
         if (logicalTarget != null) {
             LibEntityUtils.knockBackA2B(this, logicalTarget, (baseKnockback + bonusKnockback) * 0.5, 0.2);
-            LivingEntity effectTarget = ProjectileHitRules.effectTarget(target);
+            LivingEntity effectTarget = LibEntityUtils.effectTarget(target);
             if (effectTarget != null) applyHitEffect(effectTarget);
         }
         level().broadcastEntityEvent(this, EVENT_ENTITY_HIT);

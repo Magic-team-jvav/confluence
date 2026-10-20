@@ -6,11 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -26,16 +22,14 @@ import java.util.UUID;
 
 /// 活体子实体的共用所有权、网络同步、存档恢复和生命周期。
 /// 服务端以 UUID 为权威身份；客户端同时校验同步 ID 和 UUID，避免实体 ID 复用后串绑。
-/// 区块卸载只释放缓存，明确死亡或超过加载宽限才清理部件。
+/// 区块卸载只释放缓存；等待 UUID 对应的本体恢复，不用超时猜测本体是否死亡。
 public abstract class BaseLivingPart<T extends LivingEntity> extends Monster implements PartHitTarget {
-    private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";
     private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(BaseLivingPart.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(BaseLivingPart.class, EntityDataSerializers.OPTIONAL_UUID);
 
     private @Nullable T owner;
     private @Nullable UUID ownerUuid;
-    private int unresolvedOwnerTicks;
     private @Nullable CreatureDifficultyRules.Difficulty appliedDifficulty;
     private boolean deathNotified;
     private boolean releasingOwner;
@@ -67,7 +61,7 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
             }
             return false;
         }
-        unresolvedOwnerTicks = 0;
+
         if (!level().isClientSide) {
             applyDifficulty(freshBinding);
             updateOwnerAttributes(owner);
@@ -111,11 +105,6 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
     }
 
     @Override
-    public final Entity damageRecipient() {
-        return this;
-    }
-
-    @Override
     public final Entity encounterOwner() {
         T resolvedOwner = getOwner();
         return resolvedOwner == null ? this : resolvedOwner;
@@ -140,10 +129,6 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
     }
 
     protected void onPartHealthChanged(T owner, float remainingHealth) {
-    }
-
-    protected int ownerResolutionGraceTicks() {
-        return OWNER_RESOLUTION_GRACE_TICKS;
     }
 
     protected String ownerSaveTag() {
@@ -190,7 +175,7 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
             setHealth(0);
         } else {
             super.die(source);
-            // Forge 可以取消死亡；只有原版确认死亡后才销毁本体中的部件槽位。
+            /// Forge 可以取消死亡；只有原版确认死亡后才销毁本体中的部件槽位。
             if (!dead) {
                 deathNotified = false;
                 return;
@@ -229,12 +214,11 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
         }
         T resolvedOwner = getOwner();
         if (resolvedOwner == null) {
-            if (!level().isClientSide && ++unresolvedOwnerTicks > ownerResolutionGraceTicks()) {
-                discard();
-            }
+            /// 客户端等待本体同步；服务端仅清理没有归属身份或不独立存档的临时部件。
+            if (!level().isClientSide && (ownerUuid == null || !persistPart())) discard();
             return;
         }
-        unresolvedOwnerTicks = 0;
+
         if (!resolvedOwner.isAlive() || !level().isClientSide && !attachToOwner(resolvedOwner)) {
             discard();
             return;
@@ -244,7 +228,7 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
             updateOwnerAttributes(resolvedOwner);
         }
         tickPart(resolvedOwner);
-        // 部件完成位移和转向后，同步本刻的身体和头部朝向。
+        /// 部件完成位移和转向后，同步本刻的身体和头部朝向。
         LibEntityUtils.setEntityYaw(this, getYRot());
     }
 
@@ -295,7 +279,7 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
         String key = ownerSaveTag();
         ownerUuid = tag.hasUUID(key) ? tag.getUUID(key) : null;
         entityData.set(OWNER_UUID, Optional.ofNullable(ownerUuid));
-        unresolvedOwnerTicks = 0;
+
         deathNotified = false;
         appliedDifficulty = null;
         onPartLoaded();
@@ -353,14 +337,14 @@ public abstract class BaseLivingPart<T extends LivingEntity> extends Monster imp
         if (!level().isClientSide) {
             entityData.set(OWNER_ID, resolved.getId());
         }
-        unresolvedOwnerTicks = 0;
+
     }
 
     private void releaseOwner(RemovalReason reason) {
         T previous = owner;
         owner = null;
         if (previous != null) {
-            // 解绑回调可能查询归属；在回调结束前禁止重新登记正在释放的部件。
+            /// 解绑回调可能查询归属；在回调结束前禁止重新登记正在释放的部件。
             releasingOwner = true;
             try {
                 detachFromOwner(previous, reason);

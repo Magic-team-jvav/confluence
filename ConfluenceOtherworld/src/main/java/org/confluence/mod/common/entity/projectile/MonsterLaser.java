@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibEffects;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 
@@ -22,7 +23,7 @@ import java.util.function.IntFunction;
 /// 通用敌对镭射弹幕。
 ///
 /// 原先的“激光枪手射线”与“火星走妖激光”在此合并为同一实体，
-/// 仅由 {@link Variant} 区分伤害、速度、散布、寿命与三层配色；
+/// 仅由 Variant 区分伤害、速度、散布、寿命与三层配色；
 /// 变种随发射写入同步数据，客户端据此还原外观。
 public class MonsterLaser extends StraightMonsterProjectile {
     private static final EntityDataAccessor<Integer> DATA_VARIANT =
@@ -38,11 +39,11 @@ public class MonsterLaser extends StraightMonsterProjectile {
 
     /// 镭射变种：一次射击的伤害、速度、散布、寿命与三层配色。
     public enum Variant {
-        // 专家射弹伤害 × 26% 向上取整：120 -> 32、140 -> 37、96 -> 25。
+        /// 专家射弹伤害 × 26% 向上取整：120 -> 32、140 -> 37、96 -> 25。
         RAY_GUNNER(32.0F, 5.25F, 0.0F, 20, 0xFFFFFF, 0xFF5B4D, 0xB50000),
         MARTIAN_WALKER(37.0F, 3.5F, 1.5F, 30, 0xFFFFFF, 0x73DFFF, 0x0877FF),
         BRAIN_SCRAMBLER(25.0F, 3.5F, 0.0F, 30, 0xE8FFE9, 0x68FF72, 0x0B9431),
-        // 工程师炮台激光采用枪手激光伤害的一半：32 / 2。
+        /// 工程师炮台激光采用枪手激光伤害的一半：32 / 2。
         MARTIAN_ENGINEER(16.0F, 3.5F, 0.0F, 20, 0xFFFFFF, 0x64BEFF, 0x1455FF);
 
         private static final IntFunction<Variant> BY_ID = ByIdMap.sparse(Variant::ordinal, values(), RAY_GUNNER);
@@ -106,7 +107,7 @@ public class MonsterLaser extends StraightMonsterProjectile {
         }
     }
 
-    // 开启敌怪不互伤时，镭射穿过同阵营敌怪。
+    /// 开启敌怪不互伤时，镭射穿过同阵营敌怪。
     @Override
     public boolean canHitEntity(Entity target) {
         return target != null && !EnemyDamageRules.isProtectedEnemy(target) && super.canHitEntity(target);

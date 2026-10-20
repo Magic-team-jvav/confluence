@@ -11,26 +11,30 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import org.confluence.lib.common.LibEffects;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.projectile.MartianElectricBolt;
-import org.confluence.lib.common.LibEffects;
+import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.UUID;
 
-/** Immobile turret that survives its builder and fires after a two-second assembly. */
+/// 固定炮塔装配两秒后开火，工程师死亡不会销毁已经部署的炮塔。
 public final class TeslaTurret extends BaseWarriorMonster {
     private static final int BUILD_TICKS = 40;
     private static final int FIRE_INTERVAL = 60;
+    private static final double SHOT_RANGE_SQUARED = 36.0D * 36.0D;
     private static final int HIT_DELAY = 30;
     private static final EntityDataAccessor<Integer> DATA_BUILD_TICKS = SynchedEntityData.defineId(TeslaTurret.class, EntityDataSerializers.INT);
     private static final RawAnimation EXPAND = RawAnimation.begin().thenPlayAndHold("Expand");
@@ -77,7 +81,14 @@ public final class TeslaTurret extends BaseWarriorMonster {
     protected BTNode createLandBehavior() {
         return new BTNode() {
             @Override
+            public boolean canStart() {
+                return !isPassenger();
+            }
+
+            @Override
             public BTStatus execute() {
+                if (!canStart()) return BTStatus.FAILURE;
+                tickTurret((ServerLevel) level());
                 return BTStatus.RUNNING;
             }
         };
@@ -89,49 +100,32 @@ public final class TeslaTurret extends BaseWarriorMonster {
                 getBuildTicks() < BUILD_TICKS ? EXPAND : READY)));
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (!(level() instanceof ServerLevel serverLevel) || !isAlive()) return;
+    /// 固定炮塔的常驻行为负责装配计时、锁定和开火。
+    private void tickTurret(ServerLevel serverLevel) {
         setDeltaMovement(Vec3.ZERO);
         getNavigation().stop();
         if (fireCooldown > 0) fireCooldown--;
-        Player target = nearestTarget();
-        if (getTarget() != target) setTarget(target);
+        LivingEntity target = getTarget();
         if (target != null) faceCombatDirection(target.getEyePosition().subtract(getEyePosition()), 18.0F, 18.0F);
         if (buildTicks < BUILD_TICKS) {
             entityData.set(DATA_BUILD_TICKS, ++buildTicks);
             return;
         }
-        if (target != null && fireCooldown == 0 && hasLineOfSight(target)) {
+        if (target != null && target.isAlive() && canAttack(target) && distanceToSqr(target) <= SHOT_RANGE_SQUARED
+                && fireCooldown == 0 && hasLineOfSight(target)) {
             fire(serverLevel, target);
             fireCooldown = FIRE_INTERVAL;
         }
     }
 
-    private @Nullable Player nearestTarget() {
-        Player nearest = null;
-        double nearestDistance = 36.0D * 36.0D;
-        for (Player player : level().players()) {
-            if (!player.isAlive() || player.isRemoved() || player.isCreative() || player.isSpectator()
-                    || !canAttack(player)) continue;
-            double distance = distanceToSqr(player);
-            if (distance < nearestDistance) {
-                nearestDistance = distance;
-                nearest = player;
-            }
-        }
-        return nearest;
-    }
-
-    private void fire(ServerLevel level, Player target) {
+    private void fire(ServerLevel level, LivingEntity target) {
         if (!ModEntities.MARTIAN_ELECTRIC_BOLT.isPresent()) return;
         EntityType<MartianElectricBolt> type = ModEntities.MARTIAN_ELECTRIC_BOLT.get();
         if (type == null) return;
         MartianElectricBolt bolt = type.create(level);
         if (bolt == null) return;
         bolt.configureShot(this, target);
-        if (getTags().contains(MartianEngineer.EVENT_TAG)) bolt.addTag(MartianEngineer.EVENT_TAG);
+        MartianEventHelper.inheritEventMembership(this, bolt);
         if (!level.addFreshEntity(bolt)) bolt.discard();
     }
 
@@ -145,7 +139,7 @@ public final class TeslaTurret extends BaseWarriorMonster {
 
     @Override
     protected boolean hasEntityContactAttack() {
-        return true;
+        return !isNoAi() && !isPassenger();
     }
 
     @Override

@@ -11,7 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
 import java.util.HashSet;
@@ -33,12 +34,12 @@ public final class HopliteJavelin extends StraightMonsterProjectile implements I
 
     @Override
     protected void finishEntityHit(EntityHitResult result) {
-        hitEntities.add(ProjectileHitRules.dedupeIdentity(result.getEntity()).getUUID());
+        hitEntities.add(LibEntityUtils.dedupeIdentity(result.getEntity()).getUUID());
     }
 
     @Override
     public boolean canHitEntity(Entity target) {
-        return !hitEntities.contains(ProjectileHitRules.dedupeIdentity(target).getUUID()) && super.canHitEntity(target);
+        return !hitEntities.contains(LibEntityUtils.dedupeIdentity(target).getUUID()) && super.canHitEntity(target);
     }
 
     @Override

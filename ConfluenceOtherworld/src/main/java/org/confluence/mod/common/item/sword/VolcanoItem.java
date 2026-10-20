@@ -9,10 +9,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
+
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.util.ProjectileHitRules;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.mixed.Immunity;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -59,7 +60,7 @@ public class VolcanoItem extends BaseSwordItem {
         /// 命中目标加最多两个附近目标；局部结算不会清掉主攻击的原版受伤帧。
         hitExplosion(localHit, victim, explosion, damage);
         level.getEntitiesOfClass(LivingEntity.class, new AABB(victim.position(), victim.position()).inflate(EXPLOSION_RADIUS),
-                        other -> other != victim && other.isAlive() && ProjectileHitRules.canHit(attacker, other))
+                        other -> other != victim && other.isAlive() && LibEntityUtils.canHit(attacker, other))
                 .stream().sorted(Comparator.comparingDouble(other -> other.distanceToSqr(victim)))
                 .limit(2).forEach(other -> hitExplosion(localHit, other, explosion, damage));
         level.sendParticles(ParticleTypes.EXPLOSION, victim.getX(), victim.getY(0.5), victim.getZ(), 1, 0, 0, 0, 0);

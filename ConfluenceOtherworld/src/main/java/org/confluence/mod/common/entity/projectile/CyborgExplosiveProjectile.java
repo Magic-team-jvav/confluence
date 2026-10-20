@@ -10,7 +10,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -66,8 +67,8 @@ public class CyborgExplosiveProjectile extends NPCWeaponProjectile {
             createContext().areaDamage(2.5);
             discard();
         } else if (mode == 2 && settled && getOwner() instanceof BaseNPC owner) {
-            if (!ProjectileHitRules.areaTargets(level(), this, getBoundingBox().inflate(2),
-                    candidate -> ProjectileHitRules.canMobHit(owner, candidate)).isEmpty()) {
+            if (!LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(2),
+                    candidate -> LibEntityUtils.canMobHit(owner, candidate)).isEmpty()) {
                 createContext().areaDamage(2.5);
                 discard();
             }

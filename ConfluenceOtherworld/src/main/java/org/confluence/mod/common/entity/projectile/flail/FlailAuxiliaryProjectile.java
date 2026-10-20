@@ -11,9 +11,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,7 +65,7 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
         if (hit.getType() == HitResult.Type.ENTITY) {
             if (!level().isClientSide) {
                 EntityHitResult entityHit = (EntityHitResult) hit;
-                hitTargets.add(ProjectileHitRules.dedupeIdentity(entityHit.getEntity()).getUUID());
+                hitTargets.add(LibEntityUtils.dedupeIdentity(entityHit.getEntity()).getUUID());
                 onHitEntity(entityHit);
             }
         } else if (hit.getType() == HitResult.Type.BLOCK) {
@@ -114,8 +114,8 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
     /// 伤害交给实际受击部位，击退作用于其所属主体。
     protected final void hurtTarget(Entity rawTarget, double knockback, double motionY) {
         if (level().isClientSide || !(getOwner() instanceof Player player)) return;
-        if (ProjectileHitRules.hurt(rawTarget, LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage)) {
-            LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(rawTarget), knockback, motionY);
+        if (rawTarget.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage)) {
+            LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(rawTarget), knockback, motionY);
         }
     }
 
@@ -126,8 +126,8 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return target != parentFlail && ProjectileHitRules.logicalLivingTarget(target) != null
-                && !hitTargets.contains(ProjectileHitRules.dedupeIdentity(target).getUUID())
-                && ProjectileHitRules.canHit(getOwner(), target);
+        return target != parentFlail && LibEntityUtils.logicalLivingTarget(target) != null
+                && !hitTargets.contains(LibEntityUtils.dedupeIdentity(target).getUUID())
+                && LibEntityUtils.canHit(getOwner(), target);
     }
 }

@@ -14,9 +14,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
@@ -66,9 +66,9 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
 
     /// common
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
-        if (ProjectileHitRules.hurt(target, getDamageSource(), getCalculatedDamage())) {
+        if (target.hurt(getDamageSource(), getCalculatedDamage())) {
             if (knockbackStrength > 0 || knockbackMotionY > 0) {
-                LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(target), knockbackStrength, knockbackMotionY);
+                LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), knockbackStrength, knockbackMotionY);
             }
             return true;
         }
@@ -78,13 +78,13 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     /// server side only
     protected boolean doPenetrateCheck(Entity entity) {
         if (level().isClientSide) return false;
-        return getPenetrateSet().add(ProjectileHitRules.dedupeIdentity(entity).getUUID());
+        return getPenetrateSet().add(LibEntityUtils.dedupeIdentity(entity).getUUID());
     }
 
     @Override
     public boolean canHitEntity(Entity target) {
         return super.canHitEntity(target) && (penetrateSet == null
-                || !penetrateSet.contains(ProjectileHitRules.dedupeIdentity(target).getUUID()));
+                || !penetrateSet.contains(LibEntityUtils.dedupeIdentity(target).getUUID()));
     }
 
     /// server side only

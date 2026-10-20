@@ -7,7 +7,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -44,7 +45,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (!doPenetrateCheck(entity)) return;
-        LivingEntity living = ProjectileHitRules.effectTarget(entity);
+        LivingEntity living = LibEntityUtils.effectTarget(entity);
         if (doHurtAndKnockback(entity, 0.6, 0.2) && living != null) {
             living.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO.get(), 140));
         }

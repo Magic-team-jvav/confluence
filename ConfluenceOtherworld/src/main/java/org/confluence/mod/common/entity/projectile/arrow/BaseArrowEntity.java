@@ -25,7 +25,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
@@ -89,7 +90,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
         return 0.05;
     }
 
-    // 这个命名是为了防止有些模组加了个final getLuminance()I方法导致崩溃
+    /// 这个命名是为了防止有些模组加了个final getLuminance()I方法导致崩溃
     public int confluence$getLuminance() {
         return 0;
     }
@@ -174,18 +175,18 @@ public class BaseArrowEntity extends PortAbstractArrow {
             }
             return;
         }
-        LivingEntity living = ProjectileHitRules.effectTarget(entity);
+        LivingEntity living = LibEntityUtils.effectTarget(entity);
         if (living == null) {
             super.onHitEntity(result);
             return;
         }
-        if (!havenBeen.add(ProjectileHitRules.dedupeIdentity(entity).getUUID())) return;
+        if (!havenBeen.add(LibEntityUtils.dedupeIdentity(entity).getUUID())) return;
         DamageSource damageSource = getDamageSource();
-        if (ProjectileHitRules.hurt(entity, damageSource, getCalculatedDamage())) {
+        if (entity.hurt(damageSource, getCalculatedDamage())) {
             playSound(getSound(), 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
             Entity owner = getOwner();
             boolean reflectedByMimic = owner instanceof BaseMimic;
-            // 宝箱怪反射的箭只造成折半后的直接伤害，不附加箭种减益或武器附魔效果。
+            /// 宝箱怪反射的箭只造成折半后的直接伤害，不附加箭种减益或武器附魔效果。
             if (!reflectedByMimic) {
                 doPostHurtEffects(living);
             }
@@ -281,8 +282,8 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && ProjectileHitRules.canHit(getOwner(), target)
-                && !havenBeen.contains(ProjectileHitRules.dedupeIdentity(target).getUUID());
+        return super.canHitEntity(target) && LibEntityUtils.canHit(getOwner(), target)
+                && !havenBeen.contains(LibEntityUtils.dedupeIdentity(target).getUUID());
     }
 
     @Override

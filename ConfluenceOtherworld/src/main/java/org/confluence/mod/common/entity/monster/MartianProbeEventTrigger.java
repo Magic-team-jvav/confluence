@@ -2,7 +2,7 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.server.level.ServerPlayer;
 
-/** Integration point for the Martian invasion; the probe itself does not start an event. */
+/// 火星入侵的触发接口，探测器通过回调请求启动事件。
 @FunctionalInterface
 public interface MartianProbeEventTrigger {
     boolean requestStart(ServerPlayer player);

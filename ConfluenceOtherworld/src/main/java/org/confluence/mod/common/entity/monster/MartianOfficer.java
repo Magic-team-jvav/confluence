@@ -1,37 +1,38 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.ai.SweptContactAttack;
+
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.MartianReinforcement;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.lib.common.LibAttributes;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 由可再生护盾保护的战士
- */
+/// 由可再生护盾保护的战士
 public final class MartianOfficer extends MartianHumanoidMonster {
-    // 护盾没有专家生命加成：1000 × 26%；防御 20 分别换算为护甲 9、韧性 4。
+    /// 护盾没有专家生命加成：1000 × 26%；防御 20 分别换算为护甲 9、韧性 4。
     public static final float MAX_SHIELD = 260.0F;
     public static final float SHIELD_ARMOR = 9.0F;
     public static final float SHIELD_TOUGHNESS = 4.0F;
@@ -122,7 +123,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
                 }
                 Vec3 destination = position().add(away.normalize().scale(8));
                 if (!getNavigation().moveTo(destination.x, getY(), destination.z, 1.2)) {
-                    // A trapped officer retains its melee pursuit instead of waiting forever.
+                    /// 无法部署增援时继续近战追击，避免原地持续等待。
                     prefersAssistance = false;
                     populationCheckCooldown = 40;
                 }
@@ -139,7 +140,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         if (assistanceCooldown > 0) {
             return;
         }
-        // Recheck immediately: other officers may have reserved the last slot this tick.
+        /// 立即复查名额，其他军官可能已经在本刻预留最后一个位置。
         if (!MartianReinforcement.hasCapacity(server)) {
             prefersAssistance = false;
             return;
@@ -240,7 +241,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         return new MeleeAttackGoal(this, speed, true) {
             @Override
             protected void checkAndPerformAttack(LivingEntity target, double distance) {
-                // 仅用于寻路：伤害完全由下方的物理接触判定造成。
+                /// 仅用于寻路：伤害完全由下方的物理接触判定造成。
             }
         };
     }
@@ -251,6 +252,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
     }
 
     private void tickOfficerContact() {
+        if (isNoAi() || isPassenger()) return;
         if (getVehicle() instanceof MartianReinforcement) {
             return;
         }
@@ -281,7 +283,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!Float.isFinite(amount) || amount <= 0.0F) {
+        if (!Float.isFinite(amount) || amount <= 0.0F || EnemyDamageRules.blocks(this, source)) {
             return false;
         }
         if (!hasShield() || source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {

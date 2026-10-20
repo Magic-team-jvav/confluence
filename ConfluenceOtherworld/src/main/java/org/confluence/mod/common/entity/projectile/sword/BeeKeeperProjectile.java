@@ -21,9 +21,7 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.mixed.Immunity;
 
 /// 养蜂人剑与蜂巢球共用的本体蜜蜂；飞行、穿透和无敌帧不借用剑气或饰品弹幕。
@@ -146,12 +144,12 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
     }
 
     private void hurtTarget(Entity candidate) {
-        LivingEntity logical = ProjectileHitRules.logicalLivingTarget(candidate);
+        LivingEntity logical = LibEntityUtils.logicalLivingTarget(candidate);
         if (logical == null) return;
         DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, getOwner());
         /// 静态配置使用实体类型作为键，普通蜂与巨蜂共享，不能每只蜂各算一份。
         Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
-        if (!Immunity.hurt(cause, ProjectileHitRules.damageRecipient(candidate), logical, source, damage))
+        if (!Immunity.hurt(cause, candidate, logical, source, damage))
             return;
         if (knockback > 0) {
             Vec3 motion = getDeltaMovement();
@@ -167,7 +165,7 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return remainingHits > 0 && target.isAlive() && !target.isSpectator() && ProjectileHitRules.canHit(getOwner(), target);
+        return remainingHits > 0 && target.isAlive() && !target.isSpectator() && LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override

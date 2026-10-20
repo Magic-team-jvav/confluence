@@ -13,8 +13,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.lib.util.ProjectileHitRules;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
@@ -63,8 +64,8 @@ public class SoulStingProjectile extends Projectile {
             setPos(hit.getLocation());
             if (hit instanceof EntityHitResult entityHit) {
                 Entity rawTarget = entityHit.getEntity();
-                LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
-                if (ProjectileHitRules.hurt(rawTarget, LibDamageTypes.soul(level(), this, getOwner()), damage)
+                LivingEntity target = LibEntityUtils.effectTarget(rawTarget);
+                if (rawTarget.hurt(LibDamageTypes.soul(level(), this, getOwner()), damage)
                         && poisonDuration > 0 && target != null) {
                     target.addEffect(new MobEffectInstance(MobEffects.POISON, poisonDuration, 0), getOwner());
                 }
@@ -88,7 +89,7 @@ public class SoulStingProjectile extends Projectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && ProjectileHitRules.canHit(getOwner(), target);
+        return super.canHitEntity(target) && LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override

@@ -16,15 +16,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.lib.util.ProjectileHitRules;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 /// 灵魂激荡的冲击波实体。
 ///
@@ -104,13 +106,13 @@ public class SpiritSurgeEntity extends Projectile {
             return;
         }
         Entity owner = getOwner();
-        for (Entity target : ProjectileHitRules.areaTargets(level(), this, getBoundingBox().inflate(radius, verticalRange, radius),
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(radius, verticalRange, radius),
                 candidate -> {
                     Vec3 offset = candidate.getBoundingBox().getCenter().subtract(position());
-                    return ProjectileHitRules.canHit(owner, candidate) && offset.horizontalDistanceSqr() <= radius * radius;
+                    return LibEntityUtils.canHit(owner, candidate) && offset.horizontalDistanceSqr() <= radius * radius;
                 })) {
-            if (hitEntities.add(ProjectileHitRules.dedupeIdentity(target).getUUID())) {
-                ProjectileHitRules.hurt(target, LibDamageTypes.soul(level(), this, owner), damage);
+            if (hitEntities.add(LibEntityUtils.dedupeIdentity(target).getUUID())) {
+                target.hurt(LibDamageTypes.soul(level(), this, owner), damage);
                 spawnChainProjectiles(target);
             }
         }

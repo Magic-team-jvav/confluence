@@ -27,9 +27,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.item.spear.AbstractSpearItem.Parameters;
 import org.confluence.mod.mixed.Immunity;
@@ -49,18 +47,18 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         return TARGETING;
     }
 
-    // 可调参数
+    /// 可调参数
     public int lifetime = 40;
     public int pierceRemaining = 1;
     protected float attackDamageFactor = 1.0F;
     protected float baseAttackDamage = 0.0F;
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
-    //    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0.5F);
+    ///    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0.5F);
     protected Parameters projComponent;
     public final IAxisZRotate.Rotate rotate = new IAxisZRotate.Rotate();
 
-    // 弹射物自身状态
+    /// 弹射物自身状态
     public int ticksAlive = 0;
     public Vec3 velocity = new Vec3(0, 0, 0);
     public Vec3 direction = new Vec3(0, 0, 0);
@@ -70,7 +68,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     protected ItemStack firedFromWeapon = ItemStack.EMPTY;
     protected Entity target;
 
-    // 数据同步
+    /// 数据同步
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION =
             SynchedEntityData.defineId(SpearProjectile.class, EntityDataSerializers.VECTOR3);
     public static final EntityDataAccessor<Vector3f> DATA_INIT_SPEED =
@@ -113,7 +111,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         }
     }
 
-    // ===== 配置注入 =====
+    /// ===== 配置注入 =====
 
     /// 注入弹射物固定参数并初始化字段。
     public void setProjComponent(Parameters projComponent, LivingEntity owner) {
@@ -129,7 +127,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         this.pierceRemaining = projComponent.pierceCount().orElse(1);
     }
 
-    // ===== 运动逻辑（子类覆写） =====
+    /// ===== 运动逻辑（子类覆写） =====
 
     /// 更新当前速度向量。子类必须实现此方法以提供自定义运动曲线。
     protected abstract void updateMotion();
@@ -139,14 +137,14 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         return direction.scale(speed);
     }
 
-    // ===== 粒子 =====
+    /// ===== 粒子 =====
 
     @Override
     protected ParticleOptions getTrailParticle() {
         return ModParticleTypes.NO_TRAIL.get();
     }
 
-    // ===== 核心 Tick =====
+    /// ===== 核心 Tick =====
 
     @Override
     public void tick() {
@@ -162,8 +160,8 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
 
         super.tick();
 
-        // 覆盖 AbstractHurtingProjectile.tick() 自动计算yRot/xRot
-        // 始终使用发射时设定的 direction 作为朝向，避免因 deltaMovement 变化导致模型抖动
+        /// 覆盖 AbstractHurtingProjectile.tick() 自动计算yRot/xRot
+        /// 始终使用发射时设定的 direction 作为朝向，避免因 deltaMovement 变化导致模型抖动
         if (direction.lengthSqr() > 0.01) {
             float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
             float horizontalDist = Mth.sqrt((float) (direction.x * direction.x + direction.z * direction.z));
@@ -179,7 +177,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
                 discard();
             }
         } else {
-            // 客户端：生成拖尾粒子
+            /// 客户端：生成拖尾粒子
             if (random.nextInt(2) == 0) {
                 level().addParticle(getTrailParticle(), getX(), getY(), getZ(), 0, 0, 0);
             }
@@ -199,11 +197,11 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         velocity = projComponent.trackType().get().calDeltaMovement(velocity, targetDirection, angle);
     }
 
-    // ===== 碰撞与伤害 =====
+    /// ===== 碰撞与伤害 =====
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        return pierceRemaining > 0 && ProjectileHitRules.canHit(getOwner(), target);
+        return pierceRemaining > 0 && LibEntityUtils.canHit(getOwner(), target);
     }
 
     @Override
@@ -211,7 +209,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         if (!level().isClientSide) doHurt(result.getEntity());
     }
 
-    // ===== 伤害计算（子类可覆写） =====
+    /// ===== 伤害计算（子类可覆写） =====
 
     /// 计算伤害值。默认是基础攻击伤害乘以组件伤害系数。
     protected float getDamage() {
@@ -232,15 +230,17 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     /// 造成伤害。子类可按需覆写 `getDamage`、`applyHitEffect` 或 `applyPenetration`。
     protected boolean doHurt(Entity target) {
         if (!canHitEntity(target)) return false;
-        Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
-        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
+        Entity damageRecipient = target;
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
         if (logicalTarget == null) return false;
         DamageSource source = damageSource();
-        boolean hurt = Immunity.hurt(this, damageRecipient, logicalTarget, source, getDamage());
+        /// 静态无敌帧按弹射物类型共享，局部无敌帧按当前实例区分。
+        Immunity cause = confluence$getImmunityType() == Type.STATIC ? (Immunity) getType() : this;
+        boolean hurt = Immunity.hurt(cause, damageRecipient, logicalTarget, source, getDamage());
         if (!hurt) {
             return false;
         }
-        LivingEntity effectTarget = ProjectileHitRules.effectTarget(target);
+        LivingEntity effectTarget = LibEntityUtils.effectTarget(target);
         if (getOwner() instanceof LivingEntity owner && effectTarget != null) applyHitEffect(owner, effectTarget);
         LibEntityUtils.knockBackA2B(this, logicalTarget, (getBaseKnockBack() + knockBack) * 0.5, 0.2);
         applyPenetration();
@@ -251,7 +251,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         return LibDamageTypes.of(level(), LibDamageTypes.SPEAR_PROJECTILE, this, getOwner());
     }
 
-    // ===== 发射 =====
+    /// ===== 发射 =====
 
     /// 发射弹射物并立即同步速度，保证首帧正常移动。
     ///
@@ -269,7 +269,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         this.entityData.set(DATA_INIT_SPEED, initialVelocity.toVector3f());
     }
 
-    // ===== 渲染元数据（子类覆写以实现一类一物品）=====
+    /// ===== 渲染元数据（子类覆写以实现一类一物品）=====
 
     /// 弹射物模型纹理，默认 null（无模型）。
     @Nullable
@@ -302,7 +302,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         this.entityData.set(DATA_INIT_SPEED, getDeltaMovement().toVector3f());
     }
 
-    // ===== 初始化 =====
+    /// ===== 初始化 =====
 
     @Override
     public void onAddedToWorld() {
@@ -321,7 +321,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         }
     }
 
-    // ===== 属性辅助方法 =====
+    /// ===== 属性辅助方法 =====
 
     protected float getBaseDamage() {
         return baseAttackDamage;
@@ -396,7 +396,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         entityData.set(DATA_DIRECTION, direction.toVector3f());
     }
 
-    // ===== 不可攻击/不可拾取/免疫火焰 =====
+    /// ===== 不可攻击/不可拾取/免疫火焰 =====
 
     @Override
     public boolean fireImmune() {
@@ -438,10 +438,9 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         return ImmunityDataMap.getImmunityDuration(this, damageSource, source -> 1);
     }
 
-//    @Override
-//    public CollisionProperties getCollisionProperties() {
-//        return collisionProperties;
-//    }
+    /// @Override public CollisionProperties getCollisionProperties() {
+    ///        return collisionProperties;
+    ///    }
 
     @Override
     protected void onHitBlock(net.minecraft.world.phys.BlockHitResult result) {

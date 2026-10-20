@@ -9,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.EnemyDamageRules;
@@ -99,9 +100,6 @@ public abstract class WallOfFleshPart extends PartEntity<WallOfFlesh> implements
 
     @Override
     public boolean fireImmune() {return true;}
-
-    @Override
-    public Entity damageRecipient() {return this;}
 
     @Override
     public Entity encounterOwner() {return getParent();}

@@ -28,7 +28,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.enchantment.TurbineEnchantment;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
@@ -50,13 +49,13 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 /// STAY：受重力停留地面，造成 50% 伤害
 /// RETRACT：飞回玩家并消失
 public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
-    // ── 状态常量 ──
+    /// ── 状态常量 ──
     public static final int PHASE_SPIN = 0;
     public static final int PHASE_THROWN = 1;
     public static final int PHASE_STAY = 2;
     public static final int PHASE_RETRACT = 3;
 
-    // ── 同步数据 ──
+    /// ── 同步数据 ──
     private static final EntityDataAccessor<Integer> DATA_PHASE =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_SPIN_ANGLE =
@@ -66,9 +65,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private static final EntityDataAccessor<Boolean> DATA_HIT_EFFECT_ENABLED =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.BOOLEAN);
 
-    // ── 运行时状态 ──
+    /// ── 运行时状态 ──
     public float spinAngle = 0.0F;
-    private int hitCooldown = 0;
     /// 风爆附魔独立冷却，防止每 tick 多次触发
     private int windBurstCooldown = 0;
     private int stayDuration = 0;
@@ -121,7 +119,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         launch(owner);
     }
 
-    // ── 数据同步 ──
+    /// ── 数据同步 ──
     @Override
     protected void defineSynchedData() {
         this.entityData.define(DATA_PHASE, PHASE_SPIN);
@@ -205,7 +203,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     /// 方块碰撞处理：RETRACT 阶段击中方块时直接落地
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        // THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
+        /// THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
         if (!level().isClientSide() && getPhase() == PHASE_RETRACT) {
             if (isLaunchMode()) {
                 discard();
@@ -216,7 +214,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
     }
 
-    // ── Tick ──
+    /// ── Tick ──
     @Override
     public void tick() {
         Entity owner = getOwner();
@@ -232,10 +230,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
 
         super.tick();
-        // 重新读取 phase：super.tick() 中的 onHitBlock 可能已改变阶段
+        /// 重新读取 phase：super.tick() 中的 onHitBlock 可能已改变阶段
         int phase = getPhase();
 
-        // 涡轮附魔：退出 SPIN 时重置计数
+        /// 涡轮附魔：退出 SPIN 时重置计数
         if (previousPhase == PHASE_SPIN && phase != PHASE_SPIN) {
             spinTickCounter = 0;
         }
@@ -247,7 +245,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (parameters == null) return;
 
         tickItemBehavior(player);
-        if (hitCooldown > 0) hitCooldown--;
         if (windBurstCooldown > 0) windBurstCooldown--;
 
         this.noPhysics = false;
@@ -260,13 +257,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         tickSpecialBehavior(player, parameters, phase);
         tickItemBehavior(player);
 
-        if (!level().isClientSide() && hitCooldown <= 0) {
+        if (!level().isClientSide()) {
             /// 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
             /// 否则直接发射型链锤撞墙后仍会在同一 tick 以投出伤害命中附近实体。
             doCollisionCheck(player, getPhase(), parameters);
         }
 
-        // 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
+        /// 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
         if (!level().isClientSide() && phase != PHASE_RETRACT
                 && position().distanceToSqr(player.position()) > parameters.maxDistance() * parameters.maxDistance()) {
             setPhase(PHASE_RETRACT);
@@ -278,9 +275,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private void tickSpin(Player player, Parameters parameters) {
         this.noPhysics = true;
         setNoGravity(true);
-        // 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
+        /// 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
         spinTickCounter++;
-        // 涡轮附魔：按旋转时长提升挥舞速度
+        /// 涡轮附魔：按旋转时长提升挥舞速度
         float turbineBonus = TurbineEnchantment.getBonus(player, spinTickCounter);
         spinAngle += parameters.getSpinSpeed(player) * (1.0F + turbineBonus);
         Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
@@ -290,7 +287,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         double r = parameters.spinRadius();
         double localY = r * Math.sin(spinAngle);
         double localZ = r * Math.cos(spinAngle);
-        // MC 坐标系：forward = (-sin(yaw), 0, cos(yaw))
+        /// MC 坐标系：forward = (-sin(yaw), 0, cos(yaw))
         double x = pivot.x - localZ * sinYaw;
         double y = pivot.y + localY;
         double z = pivot.z + localZ * cosYaw;
@@ -320,7 +317,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private void tickThrown(Player player, Parameters parameters) {
         Vec3 motion = getDeltaMovement().add(0.0, -getThrownGravity(), 0.0);
 
-        // 速度过低直接收回（仅服务端判断）
+        /// 速度过低直接收回（仅服务端判断）
         if (!level().isClientSide() && motion.lengthSqr() < 0.1) {
             setPhase(PHASE_RETRACT);
             return;
@@ -340,7 +337,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
                 return;
             }
 
-            // 反射速度：仅当朝向墙面时反弹，防浅角度卡住
+            /// 反射速度：仅当朝向墙面时反弹，防浅角度卡住
             double dot = motion.dot(normal);
             if (dot < 0) {
                 motion = motion.subtract(normal.scale(2.0 * dot));
@@ -348,7 +345,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             motion = motion.scale(0.6);
             setDeltaMovement(motion);
 
-            // 反弹次数耗尽 或 反射后速度过低 直接收回（仅服务端判断）
+            /// 反弹次数耗尽 或 反射后速度过低 直接收回（仅服务端判断）
             if (!level().isClientSide() && (bounceCount >= parameters.maxBounces() || motion.lengthSqr() < 0.1)) {
                 setPhase(PHASE_RETRACT);
                 return;
@@ -375,18 +372,18 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     private void tickStay(Player player, Parameters parameters) {
         setNoGravity(true);
-        // 手动施加重力并使用 move() 进行碰撞位移
+        /// 手动施加重力并使用 move() 进行碰撞位移
         Vec3 motion = getDeltaMovement().add(0, -parameters.gravity(), 0);
         setDeltaMovement(motion);
 
-        // 速度过低 收回（仅服务端判断，玩家主动丢出时不收回）
+        /// 速度过低 收回（仅服务端判断，玩家主动丢出时不收回）
         if (!level().isClientSide() && !playerDropped && getDeltaMovement().lengthSqr() < 0.1) {
             setPhase(PHASE_RETRACT);
             return;
         }
         move(MoverType.SELF, motion);
 
-        // 着地时清零垂直速度 + 施加水平摩擦，防止重力累积导致永不收回
+        /// 着地时清零垂直速度 + 施加水平摩擦，防止重力累积导致永不收回
         if (onGround()) {
             Vec3 vel = getDeltaMovement();
             setDeltaMovement(new Vec3(vel.x * 0.5, 0.0, vel.z * 0.5));
@@ -412,7 +409,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
-        // 卡墙时瞬移绕过方块，同时避免高速回收跨过玩家后往返振荡。
+        /// 卡墙时瞬移绕过方块，同时避免高速回收跨过玩家后往返振荡。
         if (horizontalCollision || verticalCollision) {
             setPos(position().add(dir.scale(Math.min(parameters.retractSpeed() * 2.0, distance))));
         }
@@ -429,14 +426,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (damageMultiplier <= 0) return;
 
         AABB checkBox = getBoundingBox().inflate(0.5);
-        var entities = ProjectileHitRules.areaTargets(level(), this, checkBox,
-                target -> ProjectileHitRules.canHit(player, target));
+        var entities = LibEntityUtils.areaTargets(level(), this, checkBox,
+                target -> LibEntityUtils.canHit(player, target));
 
         boolean anyHit = false;
         LivingEntity firstHit = null;
         for (Entity target : entities) {
             float baseDamage = (float) (parameters.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
-            // 涡轮附魔：按旋转时长提升伤害
+            /// 涡轮附魔：按旋转时长提升伤害
             float turbineBonus = TurbineEnchantment.getBonus(player, spinTickCounter);
             float finalDamage = baseDamage * damageMultiplier * (1.0F + turbineBonus);
             ItemStack held = player.getMainHandItem();
@@ -445,11 +442,12 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             }
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
-            if (ProjectileHitRules.hurt(target, source, finalDamage)) {
-                LivingEntity living = ProjectileHitRules.effectTarget(target);
+            LivingEntity immunityTarget = LibEntityUtils.logicalLivingTarget(target);
+            if (immunityTarget != null && Immunity.hurt(this, target, immunityTarget, source, finalDamage)) {
+                LivingEntity living = LibEntityUtils.effectTarget(target);
                 if (!anyHit) firstHit = living;
                 anyHit = true;
-                LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(target), parameters.behavior().knockback(), 0.15f);
+                LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), parameters.behavior().knockback(), 0.15f);
                 if (living != null && isHitEffectEnabled() && held.getItem() instanceof BaseFlailItem flailItem) {
                     flailItem.onFlailHit(player, living, this);
                 }
@@ -464,10 +462,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
 
         if (anyHit) {
-            // 涡轮附魔：按旋转时长缩短命中间隔
-            float turbineBonus = TurbineEnchantment.getBonus(player, spinTickCounter);
-            hitCooldown = phase == PHASE_THROWN ? 3 : (int) Math.max(4, 8 / (1.0F + turbineBonus));
-            // 风爆附魔：命中实体后击飞命中点周围生物，独立 3 秒冷却
+            /// 风爆附魔：命中实体后击飞命中点周围生物，独立 3 秒冷却
             if (player instanceof ServerPlayer serverPlayer && windBurstCooldown <= 0 && firstHit != null) {
                 EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,
                         LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player));
@@ -539,11 +534,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
         double inflate = Math.max(0.5, (12.5 - getBbWidth()) * 0.5);
         AABB area = getBoundingBox().inflate(inflate);
-        for (Entity target : ProjectileHitRules.areaTargets(level(), this, area,
-                entity -> ProjectileHitRules.canHit(player, entity)
-                        && (excluded == null || ProjectileHitRules.dedupeIdentity(entity) != ProjectileHitRules.dedupeIdentity(excluded)))) {
-            if (ProjectileHitRules.hurt(target, source, damage)) {
-                LibEntityUtils.knockBackA2B(this, ProjectileHitRules.encounterOwner(target), parameters.behavior().knockback(), 0.15F);
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, area,
+                entity -> LibEntityUtils.canHit(player, entity)
+                        && (excluded == null || LibEntityUtils.dedupeIdentity(entity) != LibEntityUtils.dedupeIdentity(excluded)))) {
+            if (target.hurt(source, damage)) {
+                LibEntityUtils.knockBackA2B(this, LibEntityUtils.encounterOwner(target), parameters.behavior().knockback(), 0.15F);
                 applyGolemFistConfusion(target);
             }
         }
@@ -557,7 +552,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     }
 
     private void applyGolemFistConfusion(Entity rawTarget) {
-        LivingEntity target = ProjectileHitRules.effectTarget(rawTarget);
+        LivingEntity target = LibEntityUtils.effectTarget(rawTarget);
         if (target != null && target.getRandom1211().nextFloat() < 1.0F / 3.0F) {
             target.addEffect(new MobEffectInstance(LibEffects.CONFUSED.get(), 40));
         }
@@ -579,11 +574,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         Vec3 launchDirection = look.scale(parameters.maxDistance()).add(eye.subtract(palm)).normalize();
         faceDirection(launchDirection);
 
-        // 涡轮附魔：旋转越久投出越快
+        /// 涡轮附魔：旋转越久投出越快
         float velocity = parameters.getVelocity(player) * (1.0F + TurbineEnchantment.getBonus(player, spinTickCounter));
         setDeltaMovement(launchDirection.scale(velocity));
 
-        // 物品扩展点：投出瞬间的附属效果（如风锚在链球位置召唤痛苦飓风）
+        /// 物品扩展点：投出瞬间的附属效果（如风锚在链球位置召唤痛苦飓风）
         if (player.getMainHandItem().getItem() instanceof BaseFlailItem flailItem) {
             flailItem.onFlailLaunch(player, this);
         }
@@ -649,7 +644,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     @Override
     public int confluence$getImmunityDuration(DamageSource damageSource) {
-        return 7;
+        if (getPhase() == PHASE_THROWN) return 3;
+        float bonus = getOwner() instanceof Player player ? TurbineEnchantment.getBonus(player, spinTickCounter) : 0;
+        return (int) Math.max(4, 8 / (1.0F + bonus));
     }
 
     @Override

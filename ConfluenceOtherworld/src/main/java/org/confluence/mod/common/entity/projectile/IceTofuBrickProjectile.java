@@ -13,7 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.lib.util.ProjectileHitRules;
+
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
@@ -46,11 +47,11 @@ public class IceTofuBrickProjectile extends ThrowableItemProjectile {
     private void freezeTarget() {
         DamageSource source = damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null);
         AABB bounds = new AABB(position().add(-1, -1, -1), position().add(1, 1, 1));
-        for (Entity target : ProjectileHitRules.areaTargets(level(), this, bounds,
-                candidate -> !(ProjectileHitRules.logicalLivingTarget(candidate) instanceof Player)
-                        && ProjectileHitRules.canHit(getOwner(), candidate))) {
-            if (!ProjectileHitRules.hurt(target, source, 4)) continue;
-            LivingEntity living = ProjectileHitRules.effectTarget(target);
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, bounds,
+                candidate -> !(LibEntityUtils.logicalLivingTarget(candidate) instanceof Player)
+                        && LibEntityUtils.canHit(getOwner(), candidate))) {
+            target.hurt(source, 4);
+            LivingEntity living = LibEntityUtils.effectTarget(target);
             if (living != null) {
                 living.addEffect(new MobEffectInstance(ModEffects.FROST_BURN.get(), 200, 0));
                 living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1));

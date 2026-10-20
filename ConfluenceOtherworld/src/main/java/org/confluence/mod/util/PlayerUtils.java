@@ -3,8 +3,9 @@ package org.confluence.mod.util;
 import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.core.Holder;
+import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
@@ -13,26 +14,28 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.ToolActions;
-import net.minecraft.SharedConstants;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolActions;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
@@ -41,31 +44,34 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.SoulCollectionEvent;
+import org.confluence.mod.api.event.SoulConsumeEvent;
+import org.confluence.mod.api.event.SoulRecoveryEvent;
+import org.confluence.mod.api.event.SoulSkillDamageEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
-import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModBlockCounters;
-import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
 import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
-import org.confluence.mod.common.item.soulcerer.SoulBooks;
-import net.minecraft.world.phys.Vec3;
-import java.util.function.Supplier;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.ManaWeaponItems;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.SoulItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
+import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.common.soulcerer.skill.SoulGunnerSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulSkill;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.AskForSoftcorePacket;
@@ -73,32 +79,17 @@ import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.registries.PortDeferredItem;
-import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.mod.api.event.SoulCollectionEvent;
-import org.confluence.mod.api.event.SoulConsumeEvent;
-import org.confluence.mod.api.event.SoulRecoveryEvent;
-import org.confluence.mod.api.event.SoulSkillDamageEvent;
-import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.common.entity.PartHitTarget;
-import org.confluence.mod.common.entity.boss.AbstractTwinEye;
-import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
-import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
-import org.confluence.mod.common.soulcerer.skill.SoulGunnerSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import java.util.function.IntFunction;
-import java.util.function.ToIntFunction;
 import java.util.*;
+import java.util.function.IntFunction;
+import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
@@ -293,7 +284,7 @@ public final class PlayerUtils {
         return false;
     }
 
-    // ---- 解锁技能 ----
+    /// ---- 解锁技能 ----
 
     /// 将灵魂技能登记到玩家的已解锁集合。
     public static void addUnlockedSoulSkill(@Nullable Player player, SoulSkill skill) {
@@ -543,7 +534,7 @@ public final class PlayerUtils {
     private static void setSoulSkillCooldown(Player player, SoulSkill skill, int ticks) {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         if (ticks > 0) {
-            // 分流管控：技能冷却延长
+            /// 分流管控：技能冷却延长
             if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
                 ticks = Math.round(ticks * SoulSkillParameters.FLOW_CONTROL_COOLDOWN_MULTIPLIER);
             }
@@ -596,15 +587,15 @@ public final class PlayerUtils {
         float weaponDamage = mainHand.getItem() instanceof SoulWeaponItem weapon ? weapon.getSoulDamage(mainHand) : 0.0F;
         SoulSkillDamageEvent event = PortEventHandler.postEventWithReturn(new SoulSkillDamageEvent(player, stack, stack.getDamage(), weaponDamage));
         float amount = Math.max(0.0F, event.getAmount());
-        // 引渡者：引魂标签内的技能基础伤害固定 +1，不看技能分类
+        /// 引渡者：引魂标签内的技能基础伤害固定 +1，不看技能分类
         if (isSoulBookLearned(player, SoulBooks.PSYCHOPOMP) && stack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)) {
             amount += SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_DAMAGE_BONUS;
         }
-        // 星魂联结：灵魂伤害共用一半的魔法伤害加成
+        /// 星魂联结：灵魂伤害共用一半的魔法伤害加成
         if (isPassiveSoulSkillActive(player, ModSoulSkills.STAR_LINK.get())) {
             amount *= (float) (1.0 + player.getAttributeValue(LibAttributes.getMagicDamage().value()) * SoulSkillParameters.STAR_LINK_SHARE_RATIO);
         }
-        // 分流管控：技能伤害翻倍（冷却同时延长）
+        /// 分流管控：技能伤害翻倍（冷却同时延长）
         if (isPassiveSoulSkillActive(player, ModSoulSkills.FLOW_CONTROL.get())) {
             amount *= SoulSkillParameters.FLOW_CONTROL_DAMAGE_MULTIPLIER;
         }
@@ -616,15 +607,15 @@ public final class PlayerUtils {
         if (!isSoulMode(player)) {
             return SOUL_CONSUMPTION_FAILED;
         }
-        // 灵魂透支：不消耗灵魂
+        /// 灵魂透支：不消耗灵魂
         if (amount > 0.0F && isSoulSkillLearned(player, ModSoulSkills.SOUL_DRAIN.get().getId()) && player.hasEffect(ModEffects.SOUL_DRAIN.get())) {
             return 0.0F;
         }
-        // 自然法则：概率不消耗灵魂
+        /// 自然法则：概率不消耗灵魂
         if (amount > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.LAW_OF_NATURE.get()) && player.getRandom().nextFloat() < SoulSkillParameters.LAW_OF_NATURE_FREE_CHANCE) {
             return 0.0F;
         }
-        // 创造模式：不扣灵魂、不结算生命代偿
+        /// 创造模式：不扣灵魂、不结算生命代偿
         if (player.isCreative() || player.hasInfiniteMaterials()) {
             return 0.0F;
         }
@@ -732,7 +723,7 @@ public final class PlayerUtils {
 
     /// 生命代偿使用独立伤害来源，由伤害标签与 PortLib 事件结算。
     private static void applySoulOverdraft(ServerPlayer player, float healthCost) {
-        // 诅咒抵抗：生命代偿伤害减免
+        /// 诅咒抵抗：生命代偿伤害减免
         if (healthCost > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.CURSE_RESISTANCE.get())) {
             healthCost *= 1.0F - SoulSkillParameters.CURSE_RESISTANCE_REDUCTION;
         }
@@ -749,7 +740,7 @@ public final class PlayerUtils {
             return false;
         }
         applySoulOverdraft(player, healthCost);
-        // 术式轮转：用一次技能后自动切到下一个可主动释放的技能
+        /// 术式轮转：用一次技能后自动切到下一个可主动释放的技能
         if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
@@ -758,7 +749,7 @@ public final class PlayerUtils {
 
     /// 成功后提交冷却、两端执行，再结算可能致死的生命代偿。
     public static boolean tryUseSoulSkill(ServerPlayer player) {
-        // 灵魂枯竭：暂时无法使用主武器
+        /// 灵魂枯竭：暂时无法使用主武器
         if (player.hasEffect(ModEffects.SOUL_DRAIN_LOCK.get())) {
             return false;
         }
@@ -801,7 +792,7 @@ public final class PlayerUtils {
         applySoulOverdraft(player, healthCost);
         /// 刻骨的记忆：用掉一次技能后重掷它放行的那个技能。
         rerollMemoryOfBonebrandSkill(player);
-        // 术式轮转：用一次技能后自动切到下一个可主动释放的技能
+        /// 术式轮转：用一次技能后自动切到下一个可主动释放的技能
         if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
@@ -842,7 +833,7 @@ public final class PlayerUtils {
         player.getCooldowns().addCooldown(stack.getItem(), artifact.getCooldown(stack));
         artifact.useArtifact(player, stack);
         applySoulOverdraft(player, healthCost);
-        // 术式轮转：用一次技能后自动切到下一个可主动释放的技能
+        /// 术式轮转：用一次技能后自动切到下一个可主动释放的技能
         if (isPassiveSoulSkillActive(player, ModSoulSkills.SPELL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
@@ -857,7 +848,7 @@ public final class PlayerUtils {
         }
         SoulStorage storage = SoulStorage.of(player);
         storage.freshMaxSoul();
-        // 灵魂手环：每 3 秒回复 1 点灵魂
+        /// 灵魂手环：每 3 秒回复 1 点灵魂
         if (TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL) && player.level().getGameTime() % 60 == 0 && (player.level().getGameTime() / 60) % 3 == 0) {
             storage.receive(SoulSkillParameters.BAND_OF_SOUL_RECOVERY);
         }
@@ -908,14 +899,14 @@ public final class PlayerUtils {
         syncMana2Client(player, ManaStorage.of(player));
     }
 
-//    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
-//        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
-//        PortPacketDistributor.sendToPlayer(new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
-//    }
-//
-//    public static void syncSoul2Client(ServerPlayer player) {
-//        syncSoul2Client(player, SoulStorage.of(player));
-//    }
+    ///    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
+    ///        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
+    ///        PortPacketDistributor.sendToPlayer(new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+    ///    }
+    ///
+    ///    public static void syncSoul2Client(ServerPlayer player) {
+    ///        syncSoul2Client(player, SoulStorage.of(player));
+    ///    }
 
     public static void regenerateMana(ServerPlayer player) {
         if (isSoulMode(player)) {
@@ -939,7 +930,7 @@ public final class PlayerUtils {
         float starBottleBonusPerTick = hasStarBottle ? 0.25F : 0.0F;
 
         FloatSupplier receive = () -> {
-            // 1.0F / 7.0F = 0.14285715F
+            /// 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
@@ -998,7 +989,7 @@ public final class PlayerUtils {
         syncMana2Client(player);
         VisibilityPacketS2C.sendTheConstantPostEffect(player);
         SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
-//        CompatibilitySyncPacketS2c.sendToClient(player);
+///        CompatibilitySyncPacketS2c.sendToClient(player);
         TeamPacket.sendToClient(player, player);
         DragonChargePlayerConfigPacketS2C.sendToPlayer(player);
     }
@@ -1323,7 +1314,7 @@ public final class PlayerUtils {
     public static boolean couldPerformEmptyTargetSweep(Player player) {
         if (!player.isAutoSpinAttack()) {
             ItemStack stack = player.getMainHandItem();
-//            if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
+///            if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
             return stack.canPerformAction(ToolActions.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.hasSpecialSweep();
         }
         return false;
@@ -1370,7 +1361,8 @@ public final class PlayerUtils {
         if (ConfluenceData.get(overworld).isStopAskForSoftcore()) return;
         PortPacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
     }
-    // ===== 魂师：仪式、栏位、技能书与技能状态 =====
+
+    /// ===== 魂师：仪式、栏位、技能书与技能状态 =====
     private static final String SOUL_RITUAL_MESSAGE = "message.confluence.soul_ritual.activate";
     private static final String SOUL_RITUAL_UNLOCK_MESSAGE = "message.confluence.soul_ritual.unlock";
     private static final String SOUL_RITUAL_SLOT_MESSAGE = "message.confluence.soul_ritual.slot";
@@ -1595,14 +1587,14 @@ public final class PlayerUtils {
         if (player.hasEffect(ModEffects.STAR_CALL.get()) && gameTime % SoulSkillParameters.STAR_CALL_INTERVAL_TICKS == 0) {
             tickStarCall(player, storage);
         }
-        // 附魂激荡：只要身上挂着任意附魂类增益，就定时自动释放一次灵魂激荡
+        /// 附魂激荡：只要身上挂着任意附魂类增益，就定时自动释放一次灵魂激荡
         if (gameTime % (SoulSkillParameters.ACTIVE_COOLDOWN_TICKS * 3) == 0
                 && isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_SURGE.get())
                 && hasAnySoulBuffActive(player)) {
             float damage = getSoulSkillDamage(player, ModSoulSkills.SPIRIT_SURGE.get().getStack());
             player.level().addFreshEntity(new SpiritSurgeEntity(player, damage));
         }
-        // 灵魂枪手：增益期间按间隔把灵魂转成子弹
+        /// 灵魂枪手：增益期间按间隔把灵魂转成子弹
         if (player.hasEffect(ModEffects.SOUL_GUNNER.get()) && gameTime % SoulSkillParameters.SOUL_GUNNER_INTERVAL_TICKS == 0) {
             SoulGunnerSkill.fireBurst(player);
         }

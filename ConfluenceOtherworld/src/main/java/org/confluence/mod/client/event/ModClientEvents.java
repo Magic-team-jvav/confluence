@@ -727,7 +727,6 @@ public final class ModClientEvents {
                         Confluence.asResource("animations/entity/martian_engineer.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.MARTIAN_OFFICER.get(), MartianOfficerRenderer::new);
         event.registerEntityRenderer(MonsterEntities.MARTIAN_WALKER.get(), MartianWalkerRenderer::new);
-        event.registerEntityRenderer(MonsterEntities.WALKER_WEAPON.get(), NoopRenderer::new);
         Map<MonsterLaser.Variant, LaserProjectileRenderer.Style> laserStyles = new EnumMap<>(MonsterLaser.Variant.class);
         for (MonsterLaser.Variant variant : MonsterLaser.Variant.values()) {
             laserStyles.put(variant, new LaserProjectileRenderer.Style(variant.innerColor(), variant.middleColor(), variant.outerColor()));

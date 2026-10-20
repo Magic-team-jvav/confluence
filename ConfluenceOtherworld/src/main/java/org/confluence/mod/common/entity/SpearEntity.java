@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity;
 
-import org.confluence.lib.util.ProjectileHitRules;
-
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.SpearTrapBlock;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -65,7 +64,7 @@ public class SpearEntity extends Entity {
                     SpearTrapBlock block = FunctionalBlocks.SPEAR_TRAP.get();
                     BlockState trapState = level().getBlockState(trapPos);
                     if (!trapState.is(block)) {
-                        // 来源机关已被破坏时不再改写其他方块，也不留下无主实体。
+                        /// 来源机关已被破坏时不再改写其他方块，也不留下无主实体。
                         discard();
                         return;
                     }
@@ -88,7 +87,7 @@ public class SpearEntity extends Entity {
             }
         }
 
-        // 伸缩阶段使用同步实体数据；服务端从存档恢复后，客户端不会从零重新播放。
+        /// 伸缩阶段使用同步实体数据；服务端从存档恢复后，客户端不会从零重新播放。
         setOpened(opened);
         setProgress(progress);
 
@@ -97,13 +96,13 @@ public class SpearEntity extends Entity {
         Vec3 startVec = position().relative(getDirection().getOpposite(), 1);
         Vec3 endVec = position().relative(getDirection(), Mth.ceil(13 * progress));
         AABB boundingBox = getBoundingBox().inflate(0.3F);
-        for (Entity target : ProjectileHitRules.areaTargets(level(), this, boundingBox,
-                entity -> ProjectileHitRules.logicalLivingTarget(entity) != null
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, boundingBox,
+                entity -> LibEntityUtils.logicalLivingTarget(entity) != null
                         && entity.getBoundingBox().inflate(0.3).clip(startVec, endVec).isPresent())) {
             float damage = LibUtils.switchByDifficulty(level(), 24, 48, 72);
-            LivingEntity living = ProjectileHitRules.effectTarget(target);
+            LivingEntity living = LibEntityUtils.effectTarget(target);
             if (living != null) damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
-            ProjectileHitRules.hurt(target, LibDamageTypes.of(level(), DamageTypes.STING), damage);
+            target.hurt(LibDamageTypes.of(level(), DamageTypes.STING), damage);
         }
     }
 

@@ -16,9 +16,7 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.common.attachment.YoyoSession;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
@@ -78,14 +76,14 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
             if (tickCount > 10) spent = true;
             if (!spent) {
                 for (Entity candidate : level().getEntities(this, getBoundingBox().expandTowards(motion).inflate(0.3))) {
-                    if (!TARGETING.canAcquire(owner, candidate) || !ProjectileHitRules.canHit(owner, candidate))
+                    if (!TARGETING.canAcquire(owner, candidate) || !LibEntityUtils.canHit(owner, candidate))
                         continue;
-                    LivingEntity logical = ProjectileHitRules.logicalLivingTarget(candidate);
+                    LivingEntity logical = LibEntityUtils.logicalLivingTarget(candidate);
                     if (logical == null) continue;
                     if (!candidate.getBoundingBox().inflate(0.3).contains(position())
                             && candidate.getBoundingBox().inflate(0.3).clip(position(), position().add(motion)).isEmpty())
                         continue;
-                    Entity recipient = ProjectileHitRules.damageRecipient(candidate);
+                    Entity recipient = candidate;
                     DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, owner);
                     /// 实体类型作为共享无敌帧身份，多发泰拉射弹仍共用四 tick 冷却。
                     if (!Immunity.hurt((Immunity) getType(), recipient, logical, source, damage))

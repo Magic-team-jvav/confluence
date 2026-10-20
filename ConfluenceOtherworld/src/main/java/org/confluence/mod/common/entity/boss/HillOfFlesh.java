@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entity.PartHitTarget;
@@ -37,13 +38,15 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.IncrementalCylinderDestruction;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-import java.util.*;
 import javax.annotation.Nullable;
+
+import java.util.*;
 
 /// 肉丘——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
 /// Phase2 (HP<50%) 时外圈扩大、攻击加速。
@@ -94,9 +97,6 @@ public class HillOfFlesh extends BaseBoss {
         public boolean fireImmune() {return true;}
 
         @Override
-        public Entity damageRecipient() {return this;}
-
-        @Override
         public Entity encounterOwner() {return getParent();}
 
         @Override
@@ -119,7 +119,7 @@ public class HillOfFlesh extends BaseBoss {
     }
 
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
-    // 两圈判定半径单位为方块；三档数值分别是附着区、内圈和外圈的基础伤害。
+    /// 两圈判定半径单位为方块；三档数值分别是附着区、内圈和外圈的基础伤害。
     private static final float INITIAL_CLEARING_RADIUS = 14.0F;
     /// 内圈距本体碰撞箱侧面的间距；两阶段均给空手三格触及距离留出余量。
     private static final float INNER_MELEE_GAP = 1.2F;
@@ -127,7 +127,8 @@ public class HillOfFlesh extends BaseBoss {
     static final float OUTER_RADIUS = 75.0F;
 
     public enum DamageZone {ATTACHED, INNER, OUTER}
-    // 场地高度单位为方块；出场与开始破坏场地的时间单位为 tick。
+
+    /// 场地高度单位为方块；出场与开始破坏场地的时间单位为 tick。
     public static final int ARENA_HEIGHT = 100;
     private static final int INITIALIZATION_TICKS = 150;
     private static final int DESTRUCTION_START_TICK = 75;
@@ -707,7 +708,6 @@ public class HillOfFlesh extends BaseBoss {
         return tag.contains(key)
                 ? Math.max(0, tag.getInt(key)) : fallback;
     }
-
 
     @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {

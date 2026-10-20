@@ -1,6 +1,7 @@
 package org.confluence.mod.util;
 
 import com.mojang.datafixers.util.Pair;
+
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import org.confluence.lib.util.ProjectileHitRules;
+
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -88,7 +89,7 @@ public class TerraStyleExplosion extends Explosion {
                 if (damage < 0) {
                     damage = amount;
                 }
-                ProjectileHitRules.hurt(entity, damageSource, Math.min(port.modifyEntityDamage(this, entity, damage), radius * 10));
+                entity.hurt(damageSource, Math.min(port.modifyEntityDamage(this, entity, damage), radius * 10));
             }
             if (entity instanceof Player player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
                 hitPlayers.put(player, Vec3.ZERO);
@@ -155,7 +156,7 @@ public class TerraStyleExplosion extends Explosion {
                         ? getDestroyType(level, GameRules.RULE_MOB_EXPLOSION_DROP_DECAY)
                         : Explosion.BlockInteraction.KEEP;
                 case TNT -> getDestroyType(level, GameRules.RULE_TNT_EXPLOSION_DROP_DECAY);
-//                case TRIGGER -> Explosion.BlockInteraction.TRIGGER_BLOCK;
+///                case TRIGGER -> Explosion.BlockInteraction.TRIGGER_BLOCK;
             };
             Explosion explosion = new TerraStyleExplosion(level, source, damageSource, damageCalculator, x, y, z, radius, blockInteraction);
             if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(level, explosion))

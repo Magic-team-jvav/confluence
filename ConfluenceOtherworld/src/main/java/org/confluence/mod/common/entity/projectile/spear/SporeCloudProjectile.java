@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.projectile.spear;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -9,8 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.mod.Confluence;
-import org.confluence.lib.util.ProjectileHitRules;
+import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
@@ -19,8 +18,6 @@ import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 /// 绿色孢子云，可穿透多个怪物实体，每隔一定时间造成伤害。
 /// 速度呈反比例函数衰减：v(t) = v0 / (1 + k * t)，接近0时弹射物消失。
 public class SporeCloudProjectile extends SpearProjectile {
-    /// 记录每个实体上次受伤的 tick 时间
-    private final Object2IntMap<Entity> lastHitTicks = new Object2IntOpenHashMap<>();
     /// 速度衰减系数
     public float decayK = 0.12f;
     /// 最小速度阈值
@@ -49,7 +46,7 @@ public class SporeCloudProjectile extends SpearProjectile {
             discard();
             return;
         }
-        // 保存当前方向，避免低速度时 normalize() 产生不稳定方向
+        /// 保存当前方向，避免低速度时 normalize() 产生不稳定方向
         Vec3 direction = velocity.normalize();
         float newSpeed = speed / (1.0f + decayK);
         if (newSpeed <= minSpeed) {
@@ -76,32 +73,7 @@ public class SporeCloudProjectile extends SpearProjectile {
     /// 孢子云按速度和寿命管理，不因单次成功命中消耗穿透。
     @Override
     protected void applyPenetration() {
-        // 无限穿透。
-    }
-
-    /// 检查伤害间隔后调用父类伤害逻辑。
-    @Override
-    protected boolean doHurt(Entity target) {
-        int currentTick = tickCount;
-        Entity identity = ProjectileHitRules.dedupeIdentity(target);
-        int lastTick = lastHitTicks.getOrDefault(identity, -damageInterval);
-        if (currentTick - lastTick < damageInterval) {
-            return false;
-        }
-        boolean hurt = super.doHurt(target);
-        if (hurt) {
-            lastHitTicks.put(identity, currentTick);
-        }
-        return hurt;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide) {
-            // 清理已死亡实体
-            lastHitTicks.keySet().removeIf(e -> !e.isAlive());
-        }
+        /// 无限穿透。
     }
 
     /// 撞墙时不销毁。
@@ -118,4 +90,11 @@ public class SporeCloudProjectile extends SpearProjectile {
     public boolean hurt(DamageSource source, float amount) {
         return false;
     }
+
+    /// 同一弹幕对目标的连续伤害间隔统一交给 Immunity 管理。
+    @Override
+    public int confluence$getImmunityDuration(DamageSource source) {
+        return ImmunityDataMap.getImmunityDuration(this, source, ignored -> damageInterval);
+    }
+
 }

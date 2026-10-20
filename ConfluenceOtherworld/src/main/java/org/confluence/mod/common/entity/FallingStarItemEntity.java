@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity;
 
-import org.confluence.lib.util.ProjectileHitRules;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -17,6 +15,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
@@ -84,8 +83,8 @@ public class FallingStarItemEntity extends ItemEntity {
         } else if (!wasOnGround() && !level().getBlockState(blockPosition().below(6)).isAir()) {
             level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
         } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
-            if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> ProjectileHitRules.canHit(null, entity)) instanceof EntityHitResult entityHitResult) {
-                ProjectileHitRules.hurt(entityHitResult.getEntity(), LibDamageTypes.of(level(), LibDamageTypes.FALLING_STAR), 100);
+            if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
+                entityHitResult.getEntity().hurt(LibDamageTypes.of(level(), LibDamageTypes.FALLING_STAR), 100);
                 onRemove();
                 return;
             }

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.projectile.spear;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -9,8 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.ProjectileHitRules;
+
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.map.ImmunityDataMap;
 
 /// <h1>恶魂弹射物</h1>
 /// 从锁定目标周围圆形区域（半径5）生成，沿水平方向飞向目标。
@@ -19,8 +18,6 @@ public class GhastlyProjectile extends SpearProjectile {
     /// 对同一实体的伤害冷却间隔（tick）
     private static final int DAMAGE_INTERVAL = 4;
 
-    /// 记录每个实体上次受伤的 tick 时间，用于伤害冷却
-    private final Object2IntMap<Entity> lastHitTicks = new Object2IntOpenHashMap<>();
     /// 是否已穿过目标，穿过不再索敌折返
     private boolean hasPassedTarget = false;
 
@@ -50,7 +47,7 @@ public class GhastlyProjectile extends SpearProjectile {
                 Vec3 horizontalDir = new Vec3(toTarget.x, 0.0, toTarget.z).normalize();
                 velocity = horizontalDir.scale(speed);
             }
-            // 接近目标（≤1 格）时标记已穿透，之保持原方向不再索敌
+            /// 接近目标（≤1 格）时标记已穿透，之保持原方向不再索敌
             if (horizontalDistSqr <= 1.0) {
                 hasPassedTarget = true;
             }
@@ -62,55 +59,21 @@ public class GhastlyProjectile extends SpearProjectile {
         return direction.scale(speed);
     }
 
-    // ===== 穿透与穿墙 =====
+    /// ===== 穿透与穿墙 =====
 
     /// 无限穿透 — 不减少穿透次数，不销毁
     @Override
     protected void applyPenetration() {
-        // 空实现：无限穿透
+        /// 空实现：无限穿透
     }
 
     /// 穿墙 — 撞墙时不销毁
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        // 空实现：穿墙
+        /// 空实现：穿墙
     }
 
-    // ===== 伤害与碰撞 =====
-
-    /// 始终可命中存活、可拾取的非主人实体
-    @Override
-    protected boolean canHitEntity(Entity target) {
-        return target.isAlive()
-                && target.isPickable()
-                && super.canHitEntity(target);
-    }
-
-    /// 检查伤害冷却后调用父类伤害逻辑。
-    /// 同一实体每 {@link #DAMAGE_INTERVAL} tick 最多受伤一次。
-    @Override
-    protected boolean doHurt(Entity target) {
-        int currentTick = tickCount;
-        Entity identity = ProjectileHitRules.dedupeIdentity(target);
-        int lastTick = lastHitTicks.getOrDefault(identity, -DAMAGE_INTERVAL);
-        if (currentTick - lastTick < DAMAGE_INTERVAL) {
-            return false;
-        }
-        boolean hurt = super.doHurt(target);
-        if (hurt) {
-            lastHitTicks.put(identity, currentTick);
-        }
-        return hurt;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide) {
-            // 清理已死亡或已移除的实体记录
-            lastHitTicks.keySet().removeIf(e -> !e.isAlive() || e.isRemoved());
-        }
-    }
+    /// ===== 伤害与碰撞 =====
 
     /// 免疫所有外部伤害
     @Override
@@ -118,11 +81,17 @@ public class GhastlyProjectile extends SpearProjectile {
         return false;
     }
 
-    // ===== 渲染元数据 =====
+    /// ===== 渲染元数据 =====
 
     @Override
     public net.minecraft.resources.ResourceLocation getProjTexture() {
         return Confluence.asResource("textures/entity/ghastly_projectile.png");
+    }
+
+    /// 同一弹幕对目标的连续伤害间隔统一交给 Immunity 管理。
+    @Override
+    public int confluence$getImmunityDuration(DamageSource source) {
+        return ImmunityDataMap.getImmunityDuration(this, source, ignored -> DAMAGE_INTERVAL);
     }
 
 }

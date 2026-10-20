@@ -12,11 +12,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -36,7 +32,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-// A reserved spawn slot, followed by a falling carrier. Passengers never accumulate fall damage.
+/// 预留增援名额后投放运输舱，乘客不累计坠落伤害。
 public class MartianReinforcement extends Entity {
     public static final int MONSTERS_PER_PLAYER = 40;
     public static final int WARNING_TICKS = 40;
@@ -134,7 +130,7 @@ public class MartianReinforcement extends Entity {
 
     private void playLandingEffects(ServerLevel server, Mob passenger) {
         float radius = Math.min(3.0F, Math.max(1.25F, passenger.getBbWidth() * 1.5F));
-        // Keep the emitter in world space: the carrier is removed immediately after landing.
+        /// 发射器保留在世界坐标中，运输舱落地后会立即移除。
         EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(
                 Confluence.asResource("martian_reinforcement_landing"),
                 position().add(0, 0.05, 0).toVector3f(), new MolangExp("variable.radius", radius), -1);
@@ -145,14 +141,14 @@ public class MartianReinforcement extends Entity {
         }
     }
 
-    // Return a registered sound once landing audio is available; null leaves the landing silent.
+    /// 落地音效就绪后返回已注册音效，空值表示不播放。
     @Nullable
     protected SoundEvent getLandingSound() {
         return null;
     }
 
     private void spawnPassenger(ServerLevel server) {
-        // The warning already owns one slot. Exclude it while checking the live population again.
+        /// 预警已经占用一个名额，复查存活数量时排除该预警。
         entityData.set(FALLING, true);
         if (!hasCapacity(server)) {
             discard();
@@ -177,7 +173,7 @@ public class MartianReinforcement extends Entity {
             discard();
             return;
         }
-        // Spawn only the chosen monster: a Scutlix must not auto-create an extra gunner beyond the cap.
+        /// 只生成选定敌怪，蝎怪不再额外生成枪手，以免突破数量上限。
         mob.finalizeSpawn(server, server.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWN_EGG, null, null);
         passengerHadNoAi = mob.isNoAi();
         mob.setNoAi(true);
@@ -198,7 +194,7 @@ public class MartianReinforcement extends Entity {
 
     @Override
     public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
-        // Entity's default implementation forwards its own fall damage to every passenger.
+        /// 原版实体会将自身坠落伤害转发给全部乘客，此处阻止该转发。
         return false;
     }
 

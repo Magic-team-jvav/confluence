@@ -5,13 +5,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
@@ -135,11 +132,7 @@ public final class Scutlix extends BaseWarriorMonster {
         return true;
     }
 
-    /**
-     * Ensures this mount has its one initial rider. Event spawning calls this
-     * synchronously before tagging or tracking the riding tree; normal entity
-     * spawning reaches the same path from {@link #tick()}.
-     */
+    /// 确保坐骑只生成一次初始骑手，事件生成和常规生成共用此入口。
     public boolean ensureRider(ServerLevel serverLevel) {
         if (serverLevel == null || serverLevel != level() || !isAlive() || isRemoved()) return false;
 
@@ -155,8 +148,8 @@ public final class Scutlix extends BaseWarriorMonster {
             shareTargetWith(restored);
             return true;
         }
-        // A handled mount has already had a rider. Its death or permanent loss
-        // must not manufacture a replacement.
+        /// 已经生成过骑手的坐骑，在骑手死亡或永久丢失后
+        /// 不会再自动补充骑手。
         if (riderSpawnHandled) return false;
 
         if (!MonsterEntities.RAY_GUNNER.isPresent()) return false;
@@ -170,6 +163,7 @@ public final class Scutlix extends BaseWarriorMonster {
                 MobSpawnType.JOCKEY, null, null);
         rider.setTarget(getTarget());
 
+        MartianEventHelper.inheritEventMembership(this, rider);
         if (!serverLevel.addFreshEntity(rider)) {
             rider.discard();
             return false;

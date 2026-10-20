@@ -17,9 +17,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibStreamCodecUtils;
-import org.confluence.lib.util.ProjectileHitRules;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
@@ -166,12 +164,12 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
 
     @Override
     public boolean attack(@NotNull Entity target, float damageAmount, int invincibleTime) {
-        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
-        if (logicalTarget != null && ProjectileHitRules.canHit(owner, target)) {
+        LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
+        if (logicalTarget != null && LibEntityUtils.allowsAttack(owner, target)) {
             DamageSource damageSource = LibDamageTypes.of(getLevel(), DamageTypes.PLAYER_ATTACK, null, owner);
             immunityDuration = invincibleTime;
             try {
-                return Immunity.hurt(this, ProjectileHitRules.damageRecipient(target), logicalTarget, damageSource, damageAmount);
+                return Immunity.hurt(this, target, logicalTarget, damageSource, damageAmount);
             } finally {
                 immunityDuration = 0;
             }

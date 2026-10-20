@@ -2,7 +2,7 @@ package org.confluence.mod.common.gameevent;
 
 import net.minecraft.world.entity.Entity;
 
-/** 火星入侵事件中所有实体的共同成员判定契约。 */
+/// 火星入侵事件中所有实体的共同成员判定契约。
 public final class MartianEventHelper {
     public static final String ENTITY_TAG = "confluence:martian_madness";
 

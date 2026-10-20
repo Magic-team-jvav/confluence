@@ -6,32 +6,34 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.util.Mth;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.block.state.BlockState;
+
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.entity.projectile.MonsterLaser;
 import org.confluence.mod.common.gameevent.MartianEventHelper;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
+
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -41,9 +43,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-/** Builds Tesla Turrets for the shared, world-wide four-per-engineer allowance. */
+/// 按工程师身份统计当前维度中已加载的存活炮塔，最多维持四座。
 public final class MartianEngineer extends MartianHumanoidMonster {
-    public static final String EVENT_TAG = "confluence:martian_madness";
     private static final int DEPLOY_RANGE = 5;
     private static final int DIAMETER = DEPLOY_RANGE * 2 + 1;
     private static final int POSITIONS = DIAMETER * DIAMETER * DIAMETER;
@@ -95,17 +96,22 @@ public final class MartianEngineer extends MartianHumanoidMonster {
             @Override
             public boolean canStart() {
                 LivingEntity target = getTarget();
-                return target != null && target.isAlive() && canAttack(target);
+                return !isPassenger() && target != null && target.isAlive() && canAttack(target);
             }
 
             @Override
             public BTStatus execute() {
-                return canStart() ? BTStatus.RUNNING : BTStatus.FAILURE;
+                if (!canStart()) return BTStatus.FAILURE;
+                tickEngineering((ServerLevel) level());
+                return BTStatus.RUNNING;
             }
 
             @Override
             public void stop() {
                 getNavigation().stop();
+                abandonFiringSite();
+                firingTarget = null;
+                setSprinting(false);
             }
         }, new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(this, 0.8D)),
                 new VanillaGoalAction(new RandomLookAroundGoal(this)));
@@ -124,9 +130,15 @@ public final class MartianEngineer extends MartianHumanoidMonster {
     @Override
     public void tick() {
         super.tick();
-        if (!(level() instanceof ServerLevel serverLevel) || !isAlive()) {
-            return;
+        if (!level().isClientSide && (isNoAi() || isPassenger() || getTarget() == null)) {
+            abandonFiringSite();
+            firingTarget = null;
+            setSprinting(false);
         }
+    }
+
+    /// 部署、选址与射击作为同一个工程战斗行为执行。
+    private void tickEngineering(ServerLevel serverLevel) {
         if (deployCooldown > 0) {
             deployCooldown--;
         }
@@ -199,7 +211,7 @@ public final class MartianEngineer extends MartianHumanoidMonster {
         turret.moveTo(site.getX() + 0.5D, site.getY(), site.getZ() + 0.5D, getYRot(), 0.0F);
         turret.bindEngineer(this);
         turret.setTarget(target);
-        if (getTags().contains(EVENT_TAG)) turret.addTag(EVENT_TAG);
+        MartianEventHelper.inheritEventMembership(this, turret);
         if (!serverLevel.noCollision(turret) || !serverLevel.addFreshEntity(turret)) {
             turret.discard();
             deployCooldown = 20;
@@ -416,7 +428,7 @@ public final class MartianEngineer extends MartianHumanoidMonster {
         return null;
     }
 
-    /** Requires a sturdy floor, 4 x 2 x 4 clear blocks, and no lava above that footprint. */
+    /// 部署位置需要坚固地面、4×2×4 的空地，且该区域上方不能有岩浆。
     public static boolean canDeployTurretAt(ServerLevel level, BlockPos site) {
         if (level == null || site == null || site.getY() <= level.getMinBuildHeight()
                 || site.getY() + 2 > level.getMaxBuildHeight()) return false;

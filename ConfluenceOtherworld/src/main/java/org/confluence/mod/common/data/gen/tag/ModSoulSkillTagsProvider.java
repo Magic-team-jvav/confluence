@@ -44,17 +44,23 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
                 .add(key(ModSoulSkills.BOILING_BLOOD.get()))
                 .add(key(ModSoulSkills.LIFE_RETURN.get()))
                 .add(key(ModSoulSkills.FIRMAMENT_REVERSED.get()));
-        // 被动：可以装备但不能主动释放，装备后才结算效果；术式轮转用这个标签跳过它们
+        // 强力附魂系列：束魂锁链/魂术轮转联动的那一组限时增益技能
+        tag(ModTags.SoulSkills.ENHANCED_SOUL_SERIES)
+                .add(key(ModSoulSkills.ENHANCED_SOUL.get()))
+                .add(key(ModSoulSkills.STAR_CALL.get()))
+                .add(key(ModSoulSkills.SOUL_ASSAULT.get()))
+                .add(key(ModSoulSkills.SOUL_PLUNDER.get()))
+                .add(key(ModSoulSkills.SOUL_DRAIN.get()));
+        // 被动：可以装备但不能主动释放，装备后才结算效果；魂术轮转用这个标签跳过它们
         tag(ModTags.SoulSkills.PASSIVE)
                 .add(key(ModSoulSkills.LAW_OF_NATURE.get()))
                 .add(key(ModSoulSkills.STAR_REVERSAL.get()))
                 .add(key(ModSoulSkills.STAR_LINK.get()))
-                .add(key(ModSoulSkills.SOUL_SURGE.get()))
                 .add(key(ModSoulSkills.SOUL_HARVEST.get()))
                 .add(key(ModSoulSkills.SOUL_DEVOUR.get()))
-                .add(key(ModSoulSkills.CURSE_RESISTANCE.get()))
-                .add(key(ModSoulSkills.FLOW_CONTROL.get()))
-                .add(key(ModSoulSkills.SPELL_ROTATION.get()));
+                .add(key(ModSoulSkills.BACKLASH_RESISTANCE.get()))
+                .add(key(ModSoulSkills.SOUL_CONTROL.get()))
+                .add(key(ModSoulSkills.SOUL_ROTATION.get()));
         // 引魂：迷魂孢雾、亵渎之魂、自然之惩戒、魂引天星、引魂激荡、强力引魂、引魂
         tag(ModTags.SoulSkills.SOUL_LURE)
                 .add(key(ModSoulSkills.CONFUSE_SPORES.get()))

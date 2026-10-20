@@ -59,8 +59,10 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> LIFE_RETURN = registerEffectWithEnglishName("life_return", "生命归还", "Life Return", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF80A0));
     public static final DeferredHolder<MobEffect, MobEffect> FIRMAMENT_REVERSED = registerEffectWithEnglishName("firmament_reversed", "天穹倒转", "Firmament Reversed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x80D0FF));
     public static final DeferredHolder<MobEffect, MobEffect> BOILING_BLOOD = registerEffectWithEnglishName("boiling_blood", "血液沸腾", "Boiling Blood", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x900000));
-    /// 灵魂枪手：增益期间持续把灵魂转成子弹。
-    public static final DeferredHolder<MobEffect, MobEffect> SOUL_GUNNER = registerEffectWithEnglishName("soul_gunner", "灵魂枪手", "Soul Gunner", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x50C0FF));
+    /// 灵魂突击：增益期间持续把灵魂转成子弹。
+    public static final DeferredHolder<MobEffect, MobEffect> SOUL_ASSAULT = registerEffectWithEnglishName("soul_assault", "灵魂突击", "Soul Assault", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x50C0FF));
+    /// 附魂激荡：增益期间每 3 秒自动释放一次灵魂激荡，且不消耗灵魂。
+    public static final DeferredHolder<MobEffect, MobEffect> SOUL_SURGE = registerEffectWithEnglishName("soul_surge", "附魂激荡", "Soul Surge", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xA060FF));
 
 
     public static final DeferredHolder<MobEffect, MobEffect> EXQUISITELY_STUFFED = registerEffect("exquisitely_stuffed", "酒足饭饱", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)

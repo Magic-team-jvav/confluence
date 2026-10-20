@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "confluence:item/zenith_display",
+    "textures": {
+      "layer0": "confluence:item/summon/zenith"
+    }
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "confluence:item/zenith_gui",
+      "textures": {
+        "layer0": "confluence:item/summon/zenith_inventory"
+      }
+    },
+    "ground": {
+      "parent": "confluence:item/zenith_gui",
+      "textures": {
+        "layer0": "confluence:item/summon/zenith_inventory"
+      }
+    },
+    "gui": {
+      "parent": "confluence:item/zenith_gui",
+      "textures": {
+        "layer0": "confluence:item/summon/zenith_inventory"
+      }
+    },
+    "head": {
+      "parent": "confluence:item/zenith_gui",
+      "textures": {
+        "layer0": "confluence:item/summon/zenith"
+      }
+    }
+  }
+}

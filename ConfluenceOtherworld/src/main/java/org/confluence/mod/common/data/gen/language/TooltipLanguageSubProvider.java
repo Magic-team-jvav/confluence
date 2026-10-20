@@ -211,6 +211,9 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.BAND_OF_MEDIUMSHIP.get(), "Slowly regenerates soul and increases maximum soul by 20", "缓慢回复灵魂，灵魂上限提高20");
         language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "Lets one weapon-granted skill be used without holding its weapon; rerolled after each cast", "无需手持武器即可使用一个由武器提供的技能，每次使用技能后重新随机");
         language.addTooltip(AccessoryItems.SOULCERER_EMBLEM.get(), "12% increased soul damage", "灵魂伤害提高12%");
+        language.addTooltip(AccessoryItems.SOUL_BINDING_CHAIN.get(), "Casting any soul attach skill also casts every other equipped one", "施放任意附魂技能时，同时释放其余所有已装备的附魂技能");
+        language.addTooltip(AccessoryItems.FROSTBITE_SOUL_RING.get(), "20% reduced soul skill cooldown", "灵魂技能冷却缩短20%");
+        language.addTooltip(ModEffects.SOUL_SURGE.get(), "Automatically casts a free Spirit Surge every 3 seconds", "每3秒自动释放一次灵魂激荡，且不消耗灵魂");
         language.addTooltip(ModEffects.BLOOD_RAGE.get(), "7% increased melee and ranged damage", "近战与远程伤害提高7%");
         language.addTooltip(ModEffects.SOUL_PLUNDER.get(), "25% increased melee and ranged damage", "近战与远程伤害提高25%");
         language.addTooltip(ModEffects.SOUL_DRAIN.get(), "Soul costs are ignored", "施放技能不消耗灵魂");
@@ -627,7 +630,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.TEAL_YOYO_STRING.get(), "Increases yoyo range by 25% + 2 blocks and spin duration by 50%", "增加悠悠球射程 25% + 2 格，滞空时间增加 50%");
         language.addTooltip(ToolItems.TEMPLE_KEY.get(), "“Opens the jungle temple door”", "“打开丛林神庙的大门”");
         language.addTooltip(PotionItems.THORNS_POTION.get(), "Attacker also take damage", "攻击者也会受到伤害");
-        language.addTooltip(AccessoryItems.TINSEL.get(), "Minions pick up coins from defeated enemies", "召唤物会拾取被打败敌人的钱币");
+        language.addTooltip(AccessoryItems.STICKY_CRYSTAL_PENDANT.get(), "Minions pick up coins from defeated enemies", "召唤物会拾取被打败敌人的钱币");
         language.addTooltip(PotionItems.TITAN_POTION.get(), "Increases knockback", "提高击退力");
         language.addTooltip(ArmorItems.TITANIUM_HEADGEAR.get(), "Increases maximum mana by 100", "最大魔力增加100");
         language.addTooltip(ModItems.TOKYO_TEDDY_BEAR.get(), "A self - abased girl said like a broken teddy bear:", "一位自卑的少女如破碎的泰迪熊般说到：");

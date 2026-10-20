@@ -2110,6 +2110,8 @@ public final class ModTabs {
                         soulcerer_main_weapons.accept(SoulItems.SENIOR_PATHFINDER_PRO.get());
                         CreativeModeTab.Output soulcerer_secondary_weapons = GroupItem.belongsTo("soulcerer_secondary_weapons", output);
                         soulcerer_secondary_weapons.accept(SoulItems.SPIRITWARD_BLADE.get());
+                        soulcerer_secondary_weapons.accept(BowItems.SOUL_SHORT_BOW.get());
+                        soulcerer_secondary_weapons.accept(BowItems.SOUL_BOW.get());
                         CreativeModeTab.Output soulcerer_artifacts = GroupItem.belongsTo("soulcerer_artifacts", output);
                         CreativeModeTab.Output soulcerer_skill_books = GroupItem.belongsTo("soulcerer_skill_books", output);
                         soulcerer_skill_books.accept(SoulItems.SOUL_SKILL_BOOK.get());

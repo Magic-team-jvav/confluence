@@ -92,8 +92,14 @@ public class ModItemModelProvider extends ItemModelProvider {
         }
         skip.add(SoulItems.SOUL_SKILL_BOOK.get());
 
-        handheldTextureAlias(SwordItems.ZENITH, Confluence.asResource("item/summon/zenith"));
+        /// 天顶剑的物品栏模型由手写 JSON（models/item/zenith.json + zenith_gui.json）持有，
+        /// 物品栏/展示位改用 32x 的 zenith_inventory 贴图，手持继续用 item/summon/zenith。
+        skip.add(SwordItems.ZENITH.get());
         handheldTextureAlias(SwordItems.TRUE_COPPER_SHORTSWORD, Confluence.asResource("item/sword/copper_short_sword"));
+
+        /// 裂天剑：物品栏用 16x 的 sky_fracture_inventory，手持/预览用 24x 的 sky_fracture；
+        /// 整套模型（含毁灭刃同款手持参数）由手写 JSON 持有（models/item/sky_fracture*.json）。
+        skip.add(ManaWeaponItems.SKY_FRACTURE.get());
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");

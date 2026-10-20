@@ -155,9 +155,14 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
     }
 
     private void renderCross(T entity, SwordProjectileAppearance.Cross appearance, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        renderCross(appearance, entity.tickCount + partialTick, poseStack, bufferSource, packedLight);
+    }
+
+    /// 交叉面片外观：两片正交自转的切图，剑气与魂引天星的坠星共用。
+    public static void renderCross(SwordProjectileAppearance.Cross appearance, float age, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.scale(appearance.scale(), appearance.scale(), appearance.scale());
-        poseStack.mulPose(Axis.YP.rotationDegrees((entity.tickCount + partialTick) * appearance.spinSpeed()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(age * appearance.spinSpeed()));
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(appearance.texture()));
         int light = appearance.blockLight() < 0 ? packedLight : LightTexture.pack(appearance.blockLight(), LightTexture.sky(packedLight));
         renderPlane(consumer, poseStack.last(), light, appearance.color());

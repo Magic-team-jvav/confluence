@@ -1456,8 +1456,31 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "b b"
         )), ArmorItems.SEEKER_BOOTS.toStack());
 
-        shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
-        shapeless(recipeOutput, FunctionalBlocks.SHADOW_CANDLE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3, MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT));
+        // 黏晶吊坠：孢根×2 两处 + 黏晶×4 一处（有序）
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, MaterialItems.GELSTONE),
+                'b', AmountIngredient.of(2, MaterialItems.SPORE_ROOT)
+        ), List.of(
+                "b b",
+                " a "
+        )), AccessoryItems.STICKY_CRYSTAL_PENDANT.toStack());
+
+        // 冰冷魂戒：魂瓶三横 + 寒晶×4 居中 + 霜髓×2 作底（有序）
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, MaterialItems.COLD_CRYSTAL),
+                'b', Ingredient.of(FunctionalBlocks.SOUL_BOTTLE),
+                'c', AmountIngredient.of(2, MaterialItems.WINTER_MARROW)
+        ), List.of(
+                "bbb",
+                "bab",
+                "ccc"
+        )), AccessoryItems.FROSTBITE_SOUL_RING.toStack());
+
+        // 束魂锁链：锁链 + 魂瓶 + 堕魂星核，重型工作台无序，不要求灵雾环境
+        shapeless(recipeOutput, AccessoryItems.SOUL_BINDING_CHAIN.toStack(),
+                Ingredient.of(Items.CHAIN), Ingredient.of(FunctionalBlocks.SOUL_BOTTLE), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
+
+        shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));        shapeless(recipeOutput, FunctionalBlocks.SHADOW_CANDLE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3, MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(30),Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, GunItems.SILVER_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_SILVER));
         shapeless(recipeOutput, GunItems.TUNGSTEN_BULLET.toStack(70), AmountIngredient.of(70, GunItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN));

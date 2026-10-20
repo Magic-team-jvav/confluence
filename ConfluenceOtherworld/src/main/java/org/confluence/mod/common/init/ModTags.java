@@ -546,6 +546,8 @@ public final class ModTags {
         public static final TagKey<SoulSkill> SOUL_LURE = register("soul_lure");
         /// 附魂：给自己挂同名增益的技能集合。
         public static final TagKey<SoulSkill> SOUL_ATTACH = register("soul_attach");
+        /// 强力附魂系列：束魂锁链同时使用、魂术轮转连锁释放的那一组限时增益技能。
+        public static final TagKey<SoulSkill> ENHANCED_SOUL_SERIES = register("enhanced_soul_series");
         /// 被动：无法装备、学会即生效。
         public static final TagKey<SoulSkill> PASSIVE = register("passive");
 

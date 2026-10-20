@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.AboveYAddConstantDensityFunction;
 import org.confluence.mod.mixed.IDensityFunctions$Ap2;
@@ -26,6 +27,10 @@ public class DrunkWorld extends SecretSeed {
     }
 
     public static void modifyDepth(ServerLevel level) {
+        /// 配置关闭时保持原版地形高度：醉酒世界只保留其它特性（双邪恶、图鉴等）。
+        if (!CommonConfigs.DRUNK_WORLD_RAISE_SURFACE.get()) {
+            return;
+        }
         if (ModSecretSeeds.DRUNK_WORLD.match(level)) {
             DensityFunction function = level.registryAccess().holderOrThrow(NoiseRouterData.DEPTH).value();
             if (function instanceof IDensityFunctions$Ap2 ap2 && ap2.confluence$getType() == DensityFunctions.TwoArgumentSimpleFunction.Type.ADD) {

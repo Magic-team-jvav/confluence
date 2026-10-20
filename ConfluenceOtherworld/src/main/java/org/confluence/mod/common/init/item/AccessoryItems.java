@@ -62,6 +62,10 @@ public class AccessoryItems {
     public static final ValueType.UnitType BAND$OF$SOUL = ValueType.ofUnit("band_of_soul");
     /// 刻骨的记忆：无需手持主武器即可施放已装备技能。
     public static final ValueType.UnitType MEMORY$OF$BONEBRAND = ValueType.ofUnit("memory_of_bonebrand");
+    /// 束魂锁链：施放任意「附魂」技能时，同时放出其余已装备的「附魂」技能。
+    public static final ValueType.UnitType SOUL$BINDING$CHAIN = ValueType.ofUnit("soul_binding_chain");
+    /// 冰冷魂戒：玩家技能冷却缩短。
+    public static final ValueType.UnitType FROSTBITE$SOUL$RING = ValueType.ofUnit("frostbite_soul_ring");
     public static final ValueType.UnitType CLOTHIER$KILLER = ValueType.ofUnit("clothier_killer");
     public static final ValueType.UnitType $AFK = ValueType.ofUnit("afk"); // todo
     public static int AFK_INDEX = -1;
@@ -147,6 +151,10 @@ public class AccessoryItems {
             BAND_OF_SOUL_REGENERATION = registerDirectly("band_of_soul_regeneration", "灵魂再生手环", name -> new BandOfSoulRegeneration(BaseCurioItem.builder(name).rarity(GREEN).accessories(units(BAND$OF$SOUL)))),
             BAND_OF_MEDIUMSHIP = registerCurio("band_of_mediumship", "通灵手环", builder -> builder.rarity(GREEN).attribute(ConfluenceMagicLib.ADDITIONAL_SOUL, 20.0, ADD_VALUE).accessories(units(BAND$OF$SOUL))),
             MEMORY_OF_BONEBRAND = registerCurio("memory_of_bonebrand", "刻骨的记忆", builder -> builder.rarity(PURPLE).accessories(units(MEMORY$OF$BONEBRAND))),
+            /// 束魂锁链：施放任意「附魂」技能时，其余已装备的「附魂」技能同时放出。
+            SOUL_BINDING_CHAIN = registerCurio("soul_binding_chain", "束魂锁链", builder -> builder.rarity(PINK).accessories(units(SOUL$BINDING$CHAIN))),
+            /// 冰冷魂戒：玩家技能冷却缩短 20%。
+            FROSTBITE_SOUL_RING = registerCurio("frostbite_soul_ring", "冰冷魂戒", builder -> builder.rarity(PINK).accessories(units(FROSTBITE$SOUL$RING))),
             SOULCERER_EMBLEM = registerCurio("soulcerer_emblem", "灵魂徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSoulDamage(), 0.12, ADD_MULTIPLIED_TOTAL)),
             APPRENTICES_SCARF = registerCurioWithEnglishName("apprentices_scarf", "学徒围巾", "Apprentice's Scarf", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 学徒围巾
             SQUIRES_SHIELD = registerCurioWithEnglishName("squires_shield", "侍卫护盾", "Squire's Shield", builder -> builder.noTooltip().rarity(PINK).attribute(ConfluenceMagicLib.SENTRY_CAPACITY, 1.0, ADD_VALUE).attribute(LibAttributes.getSummonDamage(), 0.1, ADD_MULTIPLIED_TOTAL)), // 侍卫护盾
@@ -188,7 +196,7 @@ public class AccessoryItems {
             MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", "魔法悠悠球袋", builder -> builder.noTooltip().rarity(PINK));
 
     public static final DeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", "经验吸管", builder -> builder.noTooltip().rarity(LIME)),//经验吸管
-            TINSEL = registerCurio("tinsel", "金箔", builder -> builder.noTooltip().rarity(LIME)),//金箔
+            STICKY_CRYSTAL_PENDANT = registerCurio("sticky_crystal_pendant", "黏晶吊坠", builder -> builder.noTooltip().rarity(LIME)),//黏晶吊坠
             SHINY_PIPETTE = registerCurio("shiny_pipette", "闪亮吸管", builder -> builder.noTooltip().rarity(YELLOW));//闪亮吸管
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {

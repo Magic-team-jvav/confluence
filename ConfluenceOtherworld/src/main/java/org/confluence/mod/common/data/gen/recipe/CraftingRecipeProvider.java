@@ -1002,7 +1002,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ConsumableItems.HONEY_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(ToolItems.HONEY_BUCKET));
         shapeless(output, ConsumableItems.LAVA_BOMB.toStack(), Ingredient.of(ConsumableItems.DRY_BOMB), Ingredient.of(Items.LAVA_BUCKET));
 
-//        shapeless(output, ConsumableItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
+        // 堕魂星核：坠落之星 + 骨头 + 腐肉（工作台无序）
+        shapeless(output, SoulItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
 
         shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(NatureBlocks.POO));
 

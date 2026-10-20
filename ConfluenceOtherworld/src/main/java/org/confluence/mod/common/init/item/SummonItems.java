@@ -199,7 +199,7 @@ public class SummonItems {
                     },
                     null
             ));
-    public static final DeferredItem<SummonerWeaponItem<RuinRelicMinion>> RUIN_STAFF = registerItemWithEnglishName("ruin_staff", "禁戒法杖", "Forbidden Staff", () -> new SummonerWeaponItem<>(
+    public static final DeferredItem<SummonerWeaponItem<RuinRelicMinion>> RUINOUS_STAFF = registerItemWithEnglishName("ruinous_staff", "毁灭法杖", "Ruinous Staff", () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE),
                     SummonerAttachmentEntityTypes.RUIN_RELIC,
                     MinionSlotType.Minion,

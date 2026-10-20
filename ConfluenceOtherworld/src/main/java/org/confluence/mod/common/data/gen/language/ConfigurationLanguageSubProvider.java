@@ -431,6 +431,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.", "启用后，新生成的猩红洞穴将会生成被包裹的猩红心脏");
         language.add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart", "裸露猩红之心");
         language.add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts", "启用后，新生成的猩红洞穴会出现裸露的猩红之心");
+        language.add("confluence.configuration.drunkWorldRaiseSurface", "Drunk World Raises Surface Height", "醉酒世界抬升地面高度");
+        language.add("confluence.configuration.drunkWorldRaiseSurface.tooltip", "When enabled, the Drunk World seed (5162020) raises terrain above sea level. Turning it off restores vanilla terrain height; only newly generated chunks are affected.", "启用后，醉酒世界种子（5162020）会把海平面以上的地面抬高。关闭则恢复原版地形高度；只影响新生成的区块");
         language.add("confluence.configuration.yoyoUseButton", "Yoyo Action Button", "悠悠球动作按键");
         language.add("confluence.screen.soulcerer_overview.center", "Soul Overview Screen: Center", "灵魂技能总览界面.居中");
     }

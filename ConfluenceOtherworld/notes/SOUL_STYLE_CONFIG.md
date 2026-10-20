@@ -72,9 +72,11 @@ if (PlayerUtils.isSoulMode(minecraft.player)) {
 ## 4. 两版的差异
 
 - 1.21.1：`Soulcerer` 配置分组是无条件注册的，`soulStyle` 直接放在里面；
-- 1.20.1：该分组被 `if (Confluence.SOUL_SKILLS)` 包着（`SOUL_SKILLS = LibUtils.isDev()`），
-  所以 `soulStyle` 也放在里面，并在读取时同样加了 `if (Confluence.SOUL_SKILLS)` 守卫，
-  避免开关关闭时 `EnumValue` 为 null 导致 NPE（此时灵魂模式本来也不会触发，字段保持默认值）。
+- 1.20.1：该分组被 `if (Confluence.SOUL_SKILLS)` 包着，所以 `soulStyle` 也放在里面，
+  并在读取时同样加了 `if (Confluence.SOUL_SKILLS)` 守卫，避免开关关闭时 `EnumValue` 为 null 导致 NPE
+  （此时灵魂模式本来也不会触发，字段保持默认值）。
+  注：`SOUL_SKILLS` 已从 `LibUtils.isDev()` 解锁为常开（见 `SOUL_MASTER_SWITCH_UNLOCK.md`），
+  分组在打包环境同样注册；这两个守卫保留，用于将来重新关掉开关时兜底。
 
 ## 5. 没做的
 

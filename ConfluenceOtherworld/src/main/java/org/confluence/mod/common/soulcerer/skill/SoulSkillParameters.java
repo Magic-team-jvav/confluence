@@ -13,11 +13,15 @@ public class SoulSkillParameters {
     public static final int SOUL_ARTIFACT_QUICK_SLOT_COUNT = 3;
     public static final int MAX_COOLING_SOUL_ARTIFACT_SLOTS = 3;
     public static final float BROKEN_GLIMMER_DAMAGE = 5.0F;
-    /// 附魂系列统一的增益时长与冷却：15 秒。
+    /// 附魂系列通用的增益时长与冷却基准：15 秒。
+    ///
+    /// 强力附魂系列（强力附魂 / 魂引天星 / 灵魂突击 / 掠夺之魂 / 灵魂透支）各自有独立的、翻倍后的时长与冷却常量，
+    /// 不要再用这两个基准值去接它们。
     public static final int SOUL_BUFF_DURATION_TICKS = 15 * SharedConstants.TICKS_PER_SECOND;
     public static final int SOUL_BUFF_COOLDOWN_TICKS = 15 * SharedConstants.TICKS_PER_SECOND;
-    /// 强力附魂：25 秒增益，冷却 15 秒，消耗 3 魂。
-    public static final int ENHANCED_SOUL_DURATION_TICKS = 25 * SharedConstants.TICKS_PER_SECOND;
+    /// 强力附魂：50 秒增益，冷却 30 秒，消耗 3 魂。
+    public static final int ENHANCED_SOUL_DURATION_TICKS = 50 * SharedConstants.TICKS_PER_SECOND;
+    public static final int ENHANCED_SOUL_COOLDOWN_TICKS = 30 * SharedConstants.TICKS_PER_SECOND;
     public static final float ENHANCED_SOUL_SOUL_COST = 3.0F;
     /// 强力附魂：灵魂伤害 +12%。
     public static final float ENHANCED_SOUL_DAMAGE_BONUS = 0.12F;
@@ -30,8 +34,8 @@ public class SoulSkillParameters {
 
     // ===== 引魂 / 强力引魂 / 附魂印记 =====
     /// 引魂弹幕：与法杖弹幕一致的直线飞行，数值集中在此便于调参。
-    /// 基础速度 1.6 格/刻，再降低三分之一（×2/3）→ 约 1.0667 格/刻。
-    public static final float SOUL_LURE_SPEED = 1.6F * 2.0F / 3.0F;
+    /// 基础速度 1.6 格/刻（比原先的 1.6×2/3 提高了 50%）。
+    public static final float SOUL_LURE_SPEED = 1.6F;
     public static final double SOUL_LURE_MAX_DISTANCE = 40.0;
     public static final int SOUL_LURE_MAX_AGE_TICKS = 6 * SharedConstants.TICKS_PER_SECOND;
     /// 强力引魂：弹幕基础威力提升，冷却 0.8 秒。
@@ -82,15 +86,15 @@ public class SoulSkillParameters {
     public static final float BLOOD_RAGE_HEALTH_COST = 10.0F;
     public static final float BLOOD_RAGE_DAMAGE_BONUS = 0.07F;
     public static final float BLOOD_RAGE_KILL_SOUL_BONUS = 1.0F;
-    /// 掠夺之魂：近战与远程伤害增益；持续 35 秒，冷却 25 秒，消耗 5 魂。
+    /// 掠夺之魂：近战与远程伤害增益；持续 70 秒，冷却 50 秒，消耗 5 魂。
     public static final float SOUL_PLUNDER_SOUL_COST = 5.0F;
-    public static final int SOUL_PLUNDER_COOLDOWN_TICKS = 25 * SharedConstants.TICKS_PER_SECOND;
-    public static final int SOUL_PLUNDER_DURATION_TICKS = 35 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_PLUNDER_COOLDOWN_TICKS = 50 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_PLUNDER_DURATION_TICKS = 70 * SharedConstants.TICKS_PER_SECOND;
     public static final double SOUL_PLUNDER_DAMAGE_BONUS = 0.25;
-    /// 灵魂透支：20 秒内不消耗灵魂，结束后 40 秒无法使用主武器；冷却 3 秒。
-    public static final int SOUL_DRAIN_COOLDOWN_TICKS = 3 * SharedConstants.TICKS_PER_SECOND;
-    public static final int SOUL_DRAIN_DURATION_TICKS = 20 * SharedConstants.TICKS_PER_SECOND;
-    public static final int SOUL_DRAIN_LOCKOUT_TICKS = 40 * SharedConstants.TICKS_PER_SECOND;
+    /// 灵魂透支：40 秒内不消耗灵魂，结束后 80 秒无法使用主武器（灵魂枯竭同样翻倍）；冷却 6 秒。
+    public static final int SOUL_DRAIN_COOLDOWN_TICKS = 6 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_DRAIN_DURATION_TICKS = 40 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_DRAIN_LOCKOUT_TICKS = 80 * SharedConstants.TICKS_PER_SECOND;
     /// 天穹倒转：8 秒内摔落伤害转化为回复；冷却 30 秒。
     public static final float FIRMAMENT_REVERSED_SOUL_COST = 2.0F;
     public static final int FIRMAMENT_REVERSED_COOLDOWN_TICKS = 30 * SharedConstants.TICKS_PER_SECOND;
@@ -108,10 +112,10 @@ public class SoulSkillParameters {
     public static final float BOILING_BLOOD_DAMAGE_MULTIPLIER = 4.0F;
 
     // ===== 灵魂 / 自然系列 =====
-    /// 魂引天星：持续 20 秒，期间按间隔消耗灵魂召唤坠星；启动消耗 12 魂。
+    /// 魂引天星：持续 40 秒，期间按间隔消耗灵魂召唤坠星；启动消耗 12 魂，冷却 30 秒。
     public static final float STAR_CALL_SOUL_COST = 12.0F;
-    public static final int STAR_CALL_COOLDOWN_TICKS = SOUL_BUFF_COOLDOWN_TICKS;
-    public static final int STAR_CALL_DURATION_TICKS = 20 * SharedConstants.TICKS_PER_SECOND;
+    public static final int STAR_CALL_COOLDOWN_TICKS = 30 * SharedConstants.TICKS_PER_SECOND;
+    public static final int STAR_CALL_DURATION_TICKS = 40 * SharedConstants.TICKS_PER_SECOND;
     public static final int STAR_CALL_INTERVAL_TICKS = 10;
     public static final float STAR_CALL_DAMAGE = 6.0F;
     public static final float STAR_CALL_SOUL_PER_STAR = 1.0F;
@@ -141,34 +145,42 @@ public class SoulSkillParameters {
     /// 灭却业火：消耗全部灵魂，直接击杀生命值低于消耗数的目标。
     public static final int KARMA_FLAME_COOLDOWN_TICKS = 10 * SharedConstants.TICKS_PER_SECOND;
     public static final double KARMA_FLAME_RADIUS = 6.0;
-    /// 灵魂枪手：改为增益技能——25 秒内每 {@link #SOUL_GUNNER_INTERVAL_TICKS} 刻把灵魂转成子弹；冷却 15 秒，消耗 10 魂。
-    public static final int SOUL_GUNNER_MAX_BULLETS = 10;
-    public static final float SOUL_GUNNER_BULLET_DAMAGE = 4.0F;
-    public static final float SOUL_GUNNER_SOUL_COST = 10.0F;
-    public static final int SOUL_GUNNER_COOLDOWN_TICKS = SOUL_BUFF_COOLDOWN_TICKS;
-    public static final int SOUL_GUNNER_DURATION_TICKS = 25 * SharedConstants.TICKS_PER_SECOND;
-    public static final int SOUL_GUNNER_INTERVAL_TICKS = 10;
-    public static final float SOUL_GUNNER_REFUND_CHANCE = 0.2F;
+    /// 灵魂突击：改为增益技能——50 秒内每 {@link #SOUL_ASSAULT_INTERVAL_TICKS} 刻把灵魂转成子弹；冷却 30 秒，消耗 10 魂。
+    public static final int SOUL_ASSAULT_MAX_BULLETS = 10;
+    public static final float SOUL_ASSAULT_BULLET_DAMAGE = 4.0F;
+    public static final float SOUL_ASSAULT_SOUL_COST = 10.0F;
+    public static final int SOUL_ASSAULT_COOLDOWN_TICKS = 30 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_ASSAULT_DURATION_TICKS = 50 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_ASSAULT_INTERVAL_TICKS = 10;
+    public static final float SOUL_ASSAULT_REFUND_CHANCE = 0.2F;
+    /// 附魂激荡：主动释放的限时增益——消耗 10 魂，冷却 60 秒，增益 120 秒；
+    /// 增益期间每 {@link #SOUL_SURGE_INTERVAL_TICKS} 刻自动释放一次灵魂激荡，且这些自动释放不消耗灵魂。
+    public static final float SOUL_SURGE_SOUL_COST = 10.0F;
+    public static final int SOUL_SURGE_COOLDOWN_TICKS = 60 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_SURGE_DURATION_TICKS = 120 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_SURGE_INTERVAL_TICKS = ACTIVE_COOLDOWN_TICKS * 3;
 
     // ===== 被动 =====
     /// 自然法则：概率不消耗灵魂。
     public static final float LAW_OF_NATURE_FREE_CHANCE = 0.2F;
     /// 星魂联结：灵魂伤害与魔法伤害互相共用的加成比例。
     public static final float STAR_LINK_SHARE_RATIO = 0.5F;
-    /// 代行收割：召唤物命中时概率回魂。
+    /// 灵魂收割：召唤物命中时概率回魂。
     public static final float SOUL_HARVEST_CHANCE = 0.05F;
     public static final float SOUL_HARVEST_SOUL = 1.0F;
-    /// 噬魂提气：召唤物攻击消耗灵魂换取伤害。
+    /// 噬魂借力：召唤物攻击消耗灵魂换取伤害。
     public static final float SOUL_DEVOUR_SOUL_COST = 1.0F;
     public static final float SOUL_DEVOUR_DAMAGE_BONUS = 0.5F;
-    /// 诅咒抵抗：生命代偿伤害减免。
-    public static final float CURSE_RESISTANCE_REDUCTION = 0.6F;
-    /// 分流管控：技能伤害提升与冷却延长。
-    public static final float FLOW_CONTROL_DAMAGE_MULTIPLIER = 2.0F;
-    public static final float FLOW_CONTROL_COOLDOWN_MULTIPLIER = 1.5F;
+    /// 反噬抵抗：生命代偿伤害减免。
+    public static final float BACKLASH_RESISTANCE_REDUCTION = 0.6F;
+    /// 分魂驾驭：技能伤害提升与冷却延长。
+    public static final float SOUL_CONTROL_DAMAGE_MULTIPLIER = 2.0F;
+    public static final float SOUL_CONTROL_COOLDOWN_MULTIPLIER = 1.5F;
 
     // ===== 既有内容 =====
     public static final float SOUL_ENTITY_SIZE = 5.0F / 16.0F;
+    /// 引魂弹幕的碰撞箱：为通用灵魂实体的四倍（5/16 → 20/16），命中判定明显更宽松。
+    public static final float SOUL_LURE_ENTITY_SIZE = 20.0F / 16.0F;
     public static final float SOUL_ENTITY_RENDER_SCALE = 5.0F / 16.0F;
     public static final int SOUL_ENTITY_TRACKING_RANGE = 5;
     public static final int SOUL_ENTITY_UPDATE_INTERVAL = 5;
@@ -221,4 +233,6 @@ public class SoulSkillParameters {
     public static final float BAND_OF_SOUL_RECOVERY = 1.0F;
     /// 灵魂再生手环：额外缓慢回复的生命值（每秒一次，与泰拉瑞亚再生手环同档）。
     public static final float BAND_OF_SOUL_REGENERATION_HEAL_PER_SECOND = 0.2F;
+    /// 冰冷魂戒：玩家技能冷却缩短的比例。
+    public static final float FROSTBITE_SOUL_RING_COOLDOWN_REDUCTION = 0.2F;
 }

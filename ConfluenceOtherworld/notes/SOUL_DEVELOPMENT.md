@@ -14,7 +14,9 @@
 - ClientSoulHandler 是纯静态客户端入口。common 不调用 Minecraft、HUD、renderer 等纯客户端类。
 - SoulSkillStack 不允许 null。空技能使用 SoulSkillStack.Empty；不额外加入 Objects.requireNonNull、空值适配层或未要求的检查。
 - 技能效果写在具体技能类中，不在注册参数中传入效果回调。
-- Confluence.SOUL_SKILLS 当前仍沿用项目的 LibUtils.isDev() 开发开关，继续约束施法、资源切换等机制。魂师 HUD 注册、样式配置、总览/快捷面板输入不再检查开发环境；仍保留手持主武器等原有显示条件。完整机制的正式启用属于独立决策。
+- Confluence.SOUL_SKILLS 是魂师总开关，现已从 `LibUtils.isDev()` 解锁为常开（`true`），
+  打包（production）环境同样启用施法、资源切换、法器与技能同步等全部机制；
+  魂师 HUD 注册、样式配置、总览/快捷面板输入本来就不检查开发环境，仍保留手持主武器等原有显示条件。
 
 ## 2. 文件职责与入口
 
@@ -61,7 +63,7 @@
 
 成功流程：
 
-1. 检查开发开关、灵魂模式、主手主武器和当前非空技能。
+1. 检查魂师总开关、灵魂模式、主手主武器和当前非空技能。
 2. 刷新永久/临时来源与当前可用性；检查按技能 ID 的冷却及 canUse。
 3. 发布 SoulConsumeEvent，扣除已有灵魂，计算不足部分的生命代偿。
 4. 设置共享冷却、同步技能状态，复制这次施法的技能栈。

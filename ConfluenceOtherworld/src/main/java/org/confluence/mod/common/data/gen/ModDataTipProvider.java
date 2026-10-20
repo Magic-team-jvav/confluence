@@ -215,8 +215,8 @@ public final class ModDataTipProvider implements DataProvider {
                 translate("tooltip.item.confluence.tackle_box.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.TEAL_YOYO_STRING.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.teal_string.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
-        add(root, AccessoryItems.TINSEL.get(), entry(vbox(0,
-                translate("tooltip.item.confluence.tinsel.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, AccessoryItems.STICKY_CRYSTAL_PENDANT.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.sticky_crystal_pendant.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.VIOLET_YOYO_STRING.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.violet_string.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.WHITE_YOYO_STRING.get(), entry(vbox(0,

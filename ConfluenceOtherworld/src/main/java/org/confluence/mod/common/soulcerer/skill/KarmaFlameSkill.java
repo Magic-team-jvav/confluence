@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.util.PlayerUtils;
 
 /// 灭却业火：消耗全部灵魂，直接处决附近生命值低于消耗量的目标。
@@ -32,7 +33,8 @@ public class KarmaFlameSkill extends SoulSkill {
         }
         for (LivingEntity target : serverPlayer.level().getEntitiesOfClass(LivingEntity.class,
                 serverPlayer.getBoundingBox().inflate(SoulSkillParameters.KARMA_FLAME_RADIUS),
-                target -> target.isAlive() && !target.isSpectator() && !target.isAlliedTo(serverPlayer))) {
+                target -> target.isAlive() && !target.isSpectator() && !target.isAlliedTo(serverPlayer)
+                        && EnemyDamageRules.isEnemy(target))) {
             if (target.getHealth() < soul) {
                 target.hurt(LibDamageTypes.soul(serverPlayer.level(), serverPlayer, serverPlayer), target.getHealth() + 1.0F);
             }

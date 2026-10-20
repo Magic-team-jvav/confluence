@@ -29,7 +29,6 @@ public final class CommonConfigs {
     public static BooleanValue RIGHT_CLICK_RIDE_MINECART;
     public static IntValue ANNOUNCEMENT_BOX_DISTANCE;
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
-    public static BooleanValue STAR_PHASE;
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
     public static BooleanValue TERRA_STYLE_EXPLOSION;
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
@@ -217,7 +216,6 @@ public final class CommonConfigs {
             RIGHT_CLICK_RIDE_MINECART = builder.define("rightClickRideMinecart", true);
             ANNOUNCEMENT_BOX_DISTANCE = builder.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
             ALERT_PLAYER_IN_DUNGEON = builder.define("alertPlayerDungeon", false);
-            STAR_PHASE = builder.define("starPhase", false);
             AMMO_SLOTS_BLACKLIST = builder.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
                 if (o instanceof String s) {
                     if (s.startsWith("#")) {

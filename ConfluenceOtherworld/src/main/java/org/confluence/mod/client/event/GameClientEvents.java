@@ -418,7 +418,6 @@ public final class GameClientEvents {
         SpelunkerHelper.renderLevel(event, player);
         RenderLevelStageEvent.Stage stage = event.getStage();
         if (stage == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);

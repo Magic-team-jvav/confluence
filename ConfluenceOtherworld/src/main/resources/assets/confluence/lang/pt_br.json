@@ -1337,8 +1337,6 @@
   "confluence.configuration.showMoneyDrops.tooltip": "Ative para mostrar a quantidade de moedas caídas na tela de morte",
   "confluence.configuration.showWindParticles": "Taxa de Partículas de Vento",
   "confluence.configuration.showWindParticles.tooltip": "Ajuste o valor para decidir quantas partículas de vento são visíveis.",
-  "confluence.configuration.starPhase": "Fase Estelar",
-  "confluence.configuration.starPhase.tooltip": "Atualmente sem função. Não recomendado ativar.",
   "confluence.configuration.terraStyleArmor": "Armadura Estilo Terraria",
   "confluence.configuration.terraStyleArmor.tooltip": "Quando ativado, a armadura é exibida no estilo Terra.",
   "confluence.configuration.terraStyleFood": "Saturação de Comida Estilo Terra",

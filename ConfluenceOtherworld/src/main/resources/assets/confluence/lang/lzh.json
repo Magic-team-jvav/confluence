@@ -1713,8 +1713,6 @@
   "confluence.configuration.showMoneyDrops.tooltip": "啟則顯錢落之數於傾葉焉。",
   "confluence.configuration.showWindParticles": "風粒比率",
   "confluence.configuration.showWindParticles.tooltip": "調直以定所見風粒之數焉。",
-  "confluence.configuration.starPhase": "星象",
-  "confluence.configuration.starPhase.tooltip": "時無用而弗薦啟也。",
   "confluence.configuration.terraStyleArmor": "忒喇式之甲胄",
   "confluence.configuration.terraStyleArmor.tooltip": "啟則甲胄顯以忒喇焉。",
   "confluence.configuration.terraStyleExplosion": "忒喇式爆",

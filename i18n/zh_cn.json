@@ -2484,8 +2484,6 @@
   "confluence.configuration.soulStyle.legacy": "灵魂值样式:叠加",
   "confluence.configuration.soulStyle.overlay": "灵魂值样式:叠加",
   "confluence.configuration.soulStyle.tooltip": "Soul Style",
-  "confluence.configuration.starPhase": "星象",
-  "confluence.configuration.starPhase.tooltip": "暂时没有任何用处，不建议开启",
   "confluence.configuration.stopAskForSoftcore": "停止请求软核模式",
   "confluence.configuration.stopAskForSoftcore.tooltip": "开启后，服务器将不会请求软核模式",
   "confluence.configuration.terraStyleArmor": "泰拉样式护甲值",

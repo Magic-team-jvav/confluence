@@ -391,8 +391,6 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.specialSeedBossBehaviors", "Special Seed Boss Behaviors", "特殊种子Boss额外行为");
         language.add("confluence.configuration.specialSeedBossBehaviors.tooltip", "Enable extra boss behaviors in special-seed worlds. Does not change difficulty mapping or attribute scaling.", "启用特殊种子世界中的 Boss 额外行为；不改变难度对应关系和属性缩放。");
         language.add("confluence.configuration.staffUseButton", "Staff Action Button", "法杖动作按键");
-        language.add("confluence.configuration.starPhase", "Stellar Phase", "星象");
-        language.add("confluence.configuration.starPhase.tooltip", "Currently has no function. Not recommended to enable.", "暂时没有任何用处，不建议开启");
         language.add("confluence.configuration.stopAskForSoftcore", "Stop Ask for Softcore", "停止请求软核模式");
         language.add("confluence.configuration.stopAskForSoftcore.tooltip", "When enabled, the server will not ask for the Softcore.", "开启后，服务器将不会请求软核模式");
         language.add("confluence.configuration.terraStyleArmor", "Terra Style Armor", "泰拉样式护甲值");

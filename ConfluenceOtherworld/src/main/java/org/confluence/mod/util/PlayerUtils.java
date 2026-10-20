@@ -1095,9 +1095,6 @@ public final class PlayerUtils {
     public static void syncSavedData(ServerPlayer player) {
         ConfluenceData data = ConfluenceData.get(player.serverLevel());
         WindSpeedPacketS2C.sendToClient(player);
-        if (CommonConfigs.STAR_PHASE.get()) {
-            StarPhasesPacketS2C.sendToClient(player, data.getStarPhases());
-        }
         KillBoardSyncPacketS2C.sendToClient(player);
         GlobalCloakSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);

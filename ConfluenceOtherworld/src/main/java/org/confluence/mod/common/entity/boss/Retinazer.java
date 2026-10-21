@@ -32,41 +32,153 @@ public class Retinazer extends AbstractTwinEye {
     private static final EntityDataAccessor<Vector3f> BEAM_DIRECTION = SynchedEntityData.defineId(Retinazer.class, EntityDataSerializers.VECTOR3);
     private static final EntityDataAccessor<Float> BEAM_LENGTH = SynchedEntityData.defineId(Retinazer.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> BEAM_CHARGING = SynchedEntityData.defineId(Retinazer.class, EntityDataSerializers.BOOLEAN);
+
+    /// 更换悬停站位的基础超时，单位 tick。
     private static final int RELOCATE_TICKS = 40;
-    private static final int HOVER_TICKS = 64;
-    private static final int VOLLEY_SIZE = 5;
-    private static final int VOLLEYS_PER_CYCLE = 3;
-    private static final int PHASE_ONE_SHOT_INTERVAL = 18;
-    private static final int PHASE_TWO_SHOT_INTERVAL = 4;
-    private static final int LEGENDARY_PHASE_ONE_SHOT_INTERVAL = 10;
-    private static final int LEGENDARY_PHASE_TWO_SHOT_INTERVAL = 2;
-    private static final int VOLLEY_RECOVERY_TICKS = 24;
-    private static final int TRACK_CHARGE_TICKS = 24;
-    private static final int TRACK_TICKS = 100;
-    private static final int SWEEP_CHARGE_TICKS = 30;
-    private static final int SWEEP_TICKS = 40;
-    private static final int BLAST_CHARGE_TICKS = 36;
-    private static final int BLAST_TICKS = 6;
-    private static final double CLOSE_RANGE_SQUARED = 64.0;
-    private static final double CLOSE_EXIT_RANGE_SQUARED = 121.0;
-    private static final int CLOSE_ATTACK_COOLDOWN = 80;
-    private static final int BLOCKED_RELOCATE_TICKS = 16;
+    /// 每次选择悬停位置时评估的候选点数。
     private static final int HOVER_CANDIDATES = 10;
+    /// 抵达悬停位置的距离平方，单位格²。
+    private static final double ARRIVAL_RANGE_SQUARED = 2.25;
+    /// 激光眼移动到悬停点的速度上限，单位格/tick。
+    private static final double HOVER_SPEED = 1.25;
+    /// 移动到悬停点时每 tick 保留的旧速度比例。
+    private static final double HOVER_DRAG = 0.8;
+    /// 悬停位置误差转换为速度的系数。
+    private static final double HOVER_ACCELERATION = 0.035;
+    /// 悬停站位预测目标移动的提前时间，单位 tick。
+    private static final int HOVER_PREDICTION_TICKS = 6;
+    /// 悬停站位预测目标移动的最大偏移，单位格。
+    private static final double HOVER_MAX_LEAD = 3;
+    /// 悬停候选点相对当前方位的起始偏角，单位弧度。
+    private static final double HOVER_ANGLE_OFFSET = 0.8;
+    /// 悬停候选点距目标的最小水平距离，单位格。
+    private static final double HOVER_MIN_DISTANCE = 11;
+    /// 悬停水平距离的随机增加范围，单位格。
+    private static final double HOVER_DISTANCE_VARIATION = 5;
+    /// 悬停候选点高于预测目标的最小距离，单位格。
+    private static final double HOVER_MIN_HEIGHT = 6;
+    /// 悬停高度的随机增加范围，单位格。
+    private static final double HOVER_HEIGHT_VARIATION = 4;
+    /// 没有可用悬停候选点时的备用高度，单位格。
+    private static final double HOVER_FALLBACK_HEIGHT = 12;
+    /// 能够直接射击目标的悬停位置评分。
+    private static final double HOVER_LINE_SCORE = 80;
+    /// 移动路径没有遮挡时的站位评分。
+    private static final double HOVER_PATH_SCORE = 20;
+    /// 站位移动距离的评分惩罚系数。
+    private static final double HOVER_TRAVEL_WEIGHT = 0.3;
+    /// 相对上一次站位的距离评分上限，单位格。
+    private static final double HOVER_CHANGE_SCORE_LIMIT = 6;
+    /// 选取悬停站位时避让搭档的距离，单位格。
+    private static final double HOVER_PARTNER_DISTANCE = 8;
+    /// 悬停位置过近搭档时的评分惩罚系数。
+    private static final double HOVER_PARTNER_WEIGHT = 8;
+    /// 施放长光束时每 tick 保留的移动速度比例。
+    private static final double BRAKE_DRAG = 0.7;
+
+    /// 一阶段普通悬停射击持续时间，单位 tick。
+    private static final int HOVER_TICKS = 64;
+    /// 悬停射击允许的目标距离平方，单位格²。
+    private static final double SHOOT_RANGE_SQUARED = 32 * 32;
+    /// 进入射击站位后的首次瞄准等待时间，单位 tick。
     private static final int AIM_SETTLE_TICKS = 8;
+    /// 普通难度一阶段小激光发射间隔，单位 tick。
+    private static final int PHASE_ONE_SHOT_INTERVAL = 18;
+    /// 传奇难度一阶段小激光发射间隔，单位 tick。
+    private static final int LEGENDARY_PHASE_ONE_SHOT_INTERVAL = 10;
+    /// 普通难度二阶段小激光连发间隔，单位 tick。
+    private static final int PHASE_TWO_SHOT_INTERVAL = 4;
+    /// 传奇难度二阶段小激光连发间隔，单位 tick。
+    private static final int LEGENDARY_PHASE_TWO_SHOT_INTERVAL = 2;
+    /// 二阶段每组小激光的连发数量。
+    private static final int VOLLEY_SIZE = 5;
+    /// 进入持续追踪光束前的小激光连发组数。
+    private static final int VOLLEYS_PER_CYCLE = 3;
+    /// 每组小激光连发后的恢复时间，单位 tick。
+    private static final int VOLLEY_RECOVERY_TICKS = 24;
+    /// 小激光飞行初速，单位格/tick。
+    private static final float LASER_SPEED = 3.2F;
+    /// 单枚小激光的寿命，单位 tick。
+    private static final int LASER_LIFETIME = 60;
+    /// 普通难度小激光拦截预测的最大偏移，单位格。
+    private static final double LASER_MAX_LEAD = 3;
+    /// 传奇难度小激光拦截预测的最大偏移，单位格。
+    private static final double LEGENDARY_LASER_MAX_LEAD = 4;
+    /// 小激光发射前的枪口预警提前时间，单位 tick。
+    private static final int SHOT_WARNING_TICKS = 3;
+    /// 射线受阻后再次尝试发射的间隔，单位 tick。
+    private static final int BLOCKED_RETRY_TICKS = 2;
+    /// 射线连续受阻多久后换位，单位 tick。
+    private static final int BLOCKED_RELOCATE_TICKS = 16;
+
+    /// 长光束的最大长度，单位格；实际长度受方块遮挡限制。
+    private static final double BEAM_RANGE = 96.0;
+    /// 长光束伤害检测的扩张半径，单位格。
+    private static final double BEAM_RADIUS = 0.4;
+    /// 持续追踪光束的蓄力时间，单位 tick。
+    private static final int TRACK_CHARGE_TICKS = 24;
+    /// 持续追踪光束的攻击时间，单位 tick。
+    private static final int TRACK_TICKS = 100;
+    /// 追踪光束每 tick 的最大转向角度，单位度。
+    private static final float TRACK_TURN_DEGREES = 1.2F;
+
+    /// 触发近身反制的距离平方，单位格²。
+    private static final double CLOSE_RANGE_SQUARED = 64.0;
+    /// 退出近身状态的距离平方，单位格²；形成距离滞回。
+    private static final double CLOSE_EXIT_RANGE_SQUARED = 121.0;
+    /// 近身反制技能冷却，单位 tick。
+    private static final int CLOSE_ATTACK_COOLDOWN = 80;
+    /// 扇形横扫前的蓄力时间，单位 tick。
+    private static final int SWEEP_CHARGE_TICKS = 30;
+    /// 一阶段横扫扇形的总角度，单位度。
+    private static final float PHASE_ONE_SWEEP_ANGLE = 60.0F;
+    /// 一阶段完成一次 60 度横扫的时间，单位 tick；10 tick 为半秒。
+    private static final int FIRST_PHASE_SWEEP_TICKS = 10;
+    /// 二阶段横扫扇形的总角度，单位度。
+    private static final float PHASE_TWO_SWEEP_ANGLE = 120.0F;
+    /// 二阶段每次横扫的时间，单位 tick。
+    private static final int SWEEP_TICKS = 40;
+    /// 二阶段连续往返横扫次数。
+    private static final int PHASE_TWO_SWEEPS = 2;
+    /// 横扫伤害射线之间允许的最大角度，单位度；避免相邻 tick 漏判。
+    private static final float SWEEP_SAMPLE_DEGREES = 0.5F;
+
+    /// 爆破激光的蓄力时间，单位 tick。
+    private static final int BLAST_CHARGE_TICKS = 36;
+    /// 爆破激光发射状态的持续时间，单位 tick。
+    private static final int BLAST_TICKS = 6;
+    /// 爆破激光的伤害半径，单位格。
+    private static final double BLAST_RADIUS = 3.5;
+    /// 爆破激光相对基础攻击伤害的倍率。
+    private static final float BLAST_DAMAGE_MULTIPLIER = 1.5F;
+
+    /// 等待并瞄准搭档巨焰的最长时间，单位 tick。
     private static final int COMBO_AIM_TIMEOUT_TICKS = 100;
-    private static final int COMBO_FIRE_TICKS = 10;
+    /// 巨焰发射后至少飞行多久才允许引爆，单位 tick。
     private static final int COMBO_MIN_FLIGHT_TICKS = 16;
+    /// 允许引爆巨焰的朝向点积阈值。
+    private static final double COMBO_AIM_DOT = 0.96;
+    /// 用于引爆巨焰的光束状态时长，单位 tick。
+    private static final int COMBO_FIRE_TICKS = 10;
+    /// 光束检测巨焰命中时的碰撞箱扩张，单位格。
+    private static final double COMBO_HIT_PADDING = 0.9;
+    /// 请求巨焰联动时允许的搭档距离平方，单位格²。
+    private static final double COMBO_PARTNER_RANGE_SQUARED = 48 * 48;
+    /// 响应搭档冲刺后的协同攻击窗口，单位 tick。
     private static final int FOLLOWUP_WINDOW_TICKS = 30;
+    /// 协同追击允许的目标距离平方，单位格²。
     private static final double FOLLOWUP_RANGE_SQUARED = 24 * 24;
+    /// 优先选择与搭档形成交叉火力站位的评分权重。
     private static final double CROSS_FIRE_SCORE = 24.0;
+
+    /// 一阶段激光喷口距模型中心的距离，单位格。
+    private static final double PHASE_ONE_MUZZLE_DISTANCE = 23.0 / 16.0;
+    /// 二阶段激光喷口距模型中心的距离，单位格。
+    private static final double PHASE_TWO_MUZZLE_DISTANCE = 28.0 / 16.0;
+    /// 激光眼变形动画时长，单位 tick。
+    private static final int TRANSFORM_TICKS = 31;
     private static final byte MUZZLE_WARNING_EVENT = 66;
     private static final byte MUZZLE_FLASH_EVENT = 67;
-    private static final double BEAM_RANGE = 96.0;
-    private static final double BEAM_RADIUS = 0.4;
-    private static final double BLAST_RADIUS = 3.5;
-    private static final double HOVER_SPEED = 1.25;
-    private static final float LASER_SPEED = 3.2F;
-    private static final float TRACK_TURN_DEGREES = 1.2F;
     private static final DustParticleOptions CHARGE_PARTICLE = new DustParticleOptions(new Vector3f(0.65F, 0.2F, 1.0F), 1.3F);
 
     private State state = State.RELOCATE;
@@ -105,7 +217,7 @@ public class Retinazer extends AbstractTwinEye {
     protected boolean isDashCombatState() {return false;}
 
     @Override
-    protected int transformationDuration() {return 31;}
+    protected int transformationDuration() {return TRANSFORM_TICKS;}
 
     public Vec3 getBeamDirection() {return new Vec3(entityData.get(BEAM_DIRECTION));}
 
@@ -116,7 +228,7 @@ public class Retinazer extends AbstractTwinEye {
     public Vec3 getBeamOrigin() {return getMuzzlePosition(1.0F);}
 
     @Override
-    protected double getMuzzleDistance() {return isTransformed() ? 28.0 / 16.0 : 23.0 / 16.0;}
+    protected double getMuzzleDistance() {return isTransformed() ? PHASE_TWO_MUZZLE_DISTANCE : PHASE_ONE_MUZZLE_DISTANCE;}
 
 
     @Override
@@ -124,7 +236,7 @@ public class Retinazer extends AbstractTwinEye {
         if (state == State.COMBO_AIM && getBeamLength() <= 0 && getPartner() instanceof Spazmatism flame)
             return flame.getMuzzlePosition(1.0F).subtract(getEyePosition());
         return getBeamLength() > 0 ? getBeamDirection()
-                : predictInterceptPosition(target, getBeamOrigin(), LASER_SPEED, 0, legendaryCombat() ? 4 : 3).subtract(getEyePosition());
+                : predictInterceptPosition(target, getBeamOrigin(), LASER_SPEED, 0, legendaryCombat() ? LEGENDARY_LASER_MAX_LEAD : LASER_MAX_LEAD).subtract(getEyePosition());
     }
 
     @Override
@@ -152,7 +264,7 @@ public class Retinazer extends AbstractTwinEye {
                     chooseHoverPosition(target);
                 }
                 steerTo(hoverPosition, HOVER_SPEED);
-                if (position().distanceToSqr(hoverPosition) < 2.25
+                if (position().distanceToSqr(hoverPosition) < ARRIVAL_RANGE_SQUARED
                         || stateTicks >= RELOCATE_TICKS && hasFiringLine(getBeamOrigin(), target)) {
                     volleys = 0;
                     shots = 0;
@@ -163,12 +275,12 @@ public class Retinazer extends AbstractTwinEye {
                 }
             }
             case SHOOT -> {
-                if (distanceToSqr(target) > 32 * 32) {
+                if (distanceToSqr(target) > SHOOT_RANGE_SQUARED) {
                     relocate();
                     break;
                 }
                 steerTo(hoverPosition, HOVER_SPEED);
-                if (shotTimer == 3) muzzleFlash(true);
+                if (shotTimer == SHOT_WARNING_TICKS) muzzleFlash(true);
                 blockedTicks = hasFiringLine(getBeamOrigin(), target) ? 0 : blockedTicks + 1;
                 if (isClose(target)) {
                     beginCloseAttack(target);
@@ -176,7 +288,7 @@ public class Retinazer extends AbstractTwinEye {
                     relocate();
                 } else if (--shotTimer <= 0) {
                     if (blockedTicks > 0) {
-                        shotTimer = 2;
+                        shotTimer = BLOCKED_RETRY_TICKS;
                         break;
                     }
                     fireLaser(target);
@@ -233,9 +345,10 @@ public class Retinazer extends AbstractTwinEye {
             }
             case SWEEP -> {
                 brake();
-                float progress = Math.min(1.0F, (stateTicks - 1.0F) / (SWEEP_TICKS - 1));
-                damageBeam(sweepDirection(isTransformed() && sweeps == 1 ? 1.0F - progress : progress), 1.0F);
-                if (stateTicks >= SWEEP_TICKS) {
+                int duration = isTransformed() ? SWEEP_TICKS : FIRST_PHASE_SWEEP_TICKS;
+                float progress = Math.min(1.0F, (stateTicks - 1.0F) / (duration - 1));
+                damageSweep(progress, Math.max(0.0F, (stateTicks - 2.0F) / (duration - 1)));
+                if (stateTicks >= duration) {
                     if (--sweeps > 0) enter(State.SWEEP);
                     else relocate();
                 }
@@ -253,7 +366,7 @@ public class Retinazer extends AbstractTwinEye {
                 } else {
                     Vec3 direction = giant.position().subtract(getBeamOrigin()).normalize();
                     updateBeam(direction, true);
-                    if (giant.tickCount >= COMBO_MIN_FLIGHT_TICKS && getLookAngle().dot(direction) > 0.96)
+                    if (giant.tickCount >= COMBO_MIN_FLIGHT_TICKS && getLookAngle().dot(direction) > COMBO_AIM_DOT)
                         enter(State.COMBO_FIRE);
                 }
             }
@@ -267,7 +380,7 @@ public class Retinazer extends AbstractTwinEye {
                 Vec3 direction = giant.position().subtract(getBeamOrigin()).normalize();
                 Vec3 end = updateBeam(direction, false);
                 // 必须真的被光束命中；墙壁截断射线时不会隔墙引爆。
-                var box = giant.getBoundingBox().inflate(0.9);
+                var box = giant.getBoundingBox().inflate(COMBO_HIT_PADDING);
                 if ((box.contains(getBeamOrigin()) || box.clip(getBeamOrigin(), end).isPresent()) && giant.detonateFromLaser(this)) {
                     entityData.set(BEAM_LENGTH, (float) getBeamOrigin().distanceTo(giant.position()));
                     relocate();
@@ -315,7 +428,7 @@ public class Retinazer extends AbstractTwinEye {
     // 联动可以跨形态配合，但只能由同组二阶段魔焰眼发起，且不打断正在释放的大招。
     boolean beginFlameCombo(Spazmatism flame) {
         if (!flame.isTransformed() || !flame.isAlive() || getPartner() != flame || !isAlive()
-                || getTarget() == null || isBeamAttack() || distanceToSqr(flame) > 48 * 48)
+                || getTarget() == null || isBeamAttack() || distanceToSqr(flame) > COMBO_PARTNER_RANGE_SQUARED)
             return false;
         followupTicks = 0;
         enter(State.COMBO_AIM);
@@ -335,8 +448,8 @@ public class Retinazer extends AbstractTwinEye {
         if (isTransformed() && random.nextBoolean()) {
             enter(State.BLAST_CHARGE);
         } else {
-            sweepAngle = isTransformed() ? 120.0F : 60.0F;
-            sweeps = isTransformed() ? 2 : 1;
+            sweepAngle = isTransformed() ? PHASE_TWO_SWEEP_ANGLE : PHASE_ONE_SWEEP_ANGLE;
+            sweeps = isTransformed() ? PHASE_TWO_SWEEPS : 1;
             enter(State.SWEEP_CHARGE);
         }
         clearBeam();
@@ -345,6 +458,16 @@ public class Retinazer extends AbstractTwinEye {
     private Vec3 aimAt(LivingEntity target) {
         Vec3 direction = target.getEyePosition().subtract(getBeamOrigin());
         return direction.lengthSqr() > 1.0E-7 ? direction.normalize() : getLookAngle();
+    }
+
+    /// 补齐相邻 tick 之间扫过的扇形，防止快速横扫跳过玩家；最终同步方向仍是本 tick 的末端。
+    private void damageSweep(float progress, float previousProgress) {
+        int samples = Math.max(1, Mth.ceil((progress - previousProgress) * sweepAngle / SWEEP_SAMPLE_DEGREES));
+        boolean reverse = isTransformed() && sweeps == 1;
+        for (int i = 0; i <= samples; i++) {
+            float sample = Mth.lerp((float) i / samples, previousProgress, progress);
+            damageBeam(sweepDirection(reverse ? 1.0F - sample : sample), 1.0F);
+        }
     }
 
     private Vec3 sweepDirection(float progress) {
@@ -356,28 +479,29 @@ public class Retinazer extends AbstractTwinEye {
 
     private void chooseHoverPosition(LivingEntity target) {
         Vec3 away = position().subtract(target.position());
-        Vec3 center = predictTargetPosition(target, 6, 3);
+        Vec3 center = predictTargetPosition(target, HOVER_PREDICTION_TICKS, HOVER_MAX_LEAD);
         Vec3 previous = hoverPosition;
         Vec3 best = null;
         double bestScore = -Double.MAX_VALUE;
         AbstractTwinEye partner = getPartner();
-        double startAngle = Math.atan2(away.z, away.x) + (random.nextBoolean() ? 0.8 : -0.8);
+        double startAngle = Math.atan2(away.z, away.x) + (random.nextBoolean() ? HOVER_ANGLE_OFFSET : -HOVER_ANGLE_OFFSET);
         // 比较射线、实体空间和移动路径；遮挡时从掩体侧面寻找新的射击位置。
         for (int i = 0; i < HOVER_CANDIDATES; i++) {
             double angle = startAngle + i * Math.PI * 2 / HOVER_CANDIDATES;
-            double radius = 11 + random.nextDouble() * 5;
-            Vec3 candidate = center.add(Math.cos(angle) * radius, 6 + random.nextDouble() * 4, Math.sin(angle) * radius);
+            double radius = HOVER_MIN_DISTANCE + random.nextDouble() * HOVER_DISTANCE_VARIATION;
+            Vec3 candidate = center.add(Math.cos(angle) * radius, HOVER_MIN_HEIGHT + random.nextDouble() * HOVER_HEIGHT_VARIATION, Math.sin(angle) * radius);
             if (!level().noCollision(this, getBoundingBox().move(candidate.subtract(position()))))
                 continue;
             Vec3 eye = candidate.add(0, getBbHeight() * 0.5, 0);
-            double score = hasFiringLine(eye, target) ? 80 : 0;
+            double score = hasFiringLine(eye, target) ? HOVER_LINE_SCORE : 0;
             if (level().clip(new ClipContext(getBoundingBox().getCenter(), eye,
                     ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS)
-                score += 20;
-            score -= position().distanceTo(candidate) * 0.3;
-            if (previous != null) score += Math.min(6, previous.distanceTo(candidate));
+                score += HOVER_PATH_SCORE;
+            score -= position().distanceTo(candidate) * HOVER_TRAVEL_WEIGHT;
+            if (previous != null)
+                score += Math.min(HOVER_CHANGE_SCORE_LIMIT, previous.distanceTo(candidate));
             if (partner != null && partner.isAlive()) {
-                score -= Math.max(0, 8 - partner.position().distanceTo(candidate)) * 8;
+                score -= Math.max(0, HOVER_PARTNER_DISTANCE - partner.position().distanceTo(candidate)) * HOVER_PARTNER_WEIGHT;
                 if (sharesFirstPhaseTarget(partner)) {
                     Vec3 partnerSide = partner.position().subtract(target.position()).multiply(1, 0, 1).normalize();
                     Vec3 candidateSide = candidate.subtract(target.position()).multiply(1, 0, 1).normalize();
@@ -389,17 +513,17 @@ public class Retinazer extends AbstractTwinEye {
                 best = candidate;
             }
         }
-        hoverPosition = best != null ? best : center.add(0, 12, 0);
+        hoverPosition = best != null ? best : center.add(0, HOVER_FALLBACK_HEIGHT, 0);
     }
 
     private void steerTo(Vec3 destination, double speed) {
         if (destination == null) return;
         Vec3 correction = destination.subtract(position());
-        Vec3 velocity = getDeltaMovement().scale(0.8).add(correction.scale(0.035));
+        Vec3 velocity = getDeltaMovement().scale(HOVER_DRAG).add(correction.scale(HOVER_ACCELERATION));
         setDeltaMovement(separateFromPartner(velocity, speed));
     }
 
-    private void brake() {setDeltaMovement(getDeltaMovement().scale(0.7));}
+    private void brake() {setDeltaMovement(getDeltaMovement().scale(BRAKE_DRAG));}
 
     private void enter(State next) {
         state = next;
@@ -462,7 +586,7 @@ public class Retinazer extends AbstractTwinEye {
         for (LivingEntity victim : level().getEntitiesOfClass(LivingEntity.class, new AABB(end, end).inflate(BLAST_RADIUS), this::canAttack)) {
             if (victim.getBoundingBox().getCenter().distanceToSqr(end) <= BLAST_RADIUS * BLAST_RADIUS
                     && level().clip(new ClipContext(end, victim.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS) {
-                victim.hurt(damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F);
+                victim.hurt(damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * BLAST_DAMAGE_MULTIPLIER);
             }
         }
     }
@@ -473,8 +597,8 @@ public class Retinazer extends AbstractTwinEye {
         if (laser != null) {
             Vec3 origin = getMuzzlePosition(1.0F);
             Vec3 direction = predictInterceptPosition(target, origin, LASER_SPEED, 0,
-                    legendaryCombat() ? 4 : 3).subtract(origin).normalize();
-            laser.configure(this, origin, direction.scale(LASER_SPEED), (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 60);
+                    legendaryCombat() ? LEGENDARY_LASER_MAX_LEAD : LASER_MAX_LEAD).subtract(origin).normalize();
+            laser.configure(this, origin, direction.scale(LASER_SPEED), (float) getAttributeValue(Attributes.ATTACK_DAMAGE), LASER_LIFETIME);
             serverLevel.addFreshEntity(laser);
             muzzleFlash(false);
             playSound(ModSoundEvents.ITEM_DEATH_LASER.get(), 0.6F, 1.2F);
@@ -535,12 +659,12 @@ public class Retinazer extends AbstractTwinEye {
         stateTicks = Mth.clamp(tag.getInt("AttackTicks"), 0, 120);
         shotTimer = Mth.clamp(tag.getInt("ShotTimer"), 0, 30);
         shots = Mth.clamp(tag.getInt("Shots"), 0, VOLLEY_SIZE);
-        volleys = Mth.clamp(tag.getInt("Volleys"), 0, 3);
-        sweeps = Mth.clamp(tag.getInt("Sweeps"), 0, 2);
+        volleys = Mth.clamp(tag.getInt("Volleys"), 0, VOLLEYS_PER_CYCLE);
+        sweeps = Mth.clamp(tag.getInt("Sweeps"), 0, PHASE_TWO_SWEEPS);
         blastLength = Mth.clamp(tag.getFloat("BlastLength"), 0, (float) BEAM_RANGE);
         closeAttackCooldown = Mth.clamp(tag.getInt("CloseCooldown"), 0, CLOSE_ATTACK_COOLDOWN);
         closeTarget = tag.getBoolean("CloseTarget");
-        sweepAngle = Mth.clamp(tag.getFloat("SweepAngle"), 60, 120);
+        sweepAngle = Mth.clamp(tag.getFloat("SweepAngle"), PHASE_ONE_SWEEP_ANGLE, PHASE_TWO_SWEEP_ANGLE);
         hoverPosition = tag.contains("HoverX") ? loadVector(tag, "Hover") : null;
         lockedDirection = loadVector(tag, "LockedAim").normalize();
         beamDirection = loadVector(tag, "BeamAim").normalize();

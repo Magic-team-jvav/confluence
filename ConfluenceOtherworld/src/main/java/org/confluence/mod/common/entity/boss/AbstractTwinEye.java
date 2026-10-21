@@ -39,29 +39,70 @@ import java.util.UUID;
 
 /// 双眼各自维护技能与脱战，通过遭遇记录共享一阶段目标、血条和胜负。
 public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSource {
-    private static final float MAX_YAW_SPEED = 14.4F;
-    private static final float MAX_PITCH_SPEED = 12.0F;
-    private static final float YAW_ACCELERATION = 2.4F;
-    private static final float PITCH_ACCELERATION = 1.92F;
-    private static final double MOTION_SMOOTHING = 0.35;
-    private static final double MAX_PREDICTION_TICKS = 20;
-    private static final String TRANSFORMED_TAG = "Transformed";
-    private static final String TRANSITION_TICKS_TAG = "TransitionTicks";
-    /// 没有专属时长的模型使用默认变形时长。
-    private static final int TRANSITION_DURATION_TICKS = 30;
-    private static final RawAnimation PHASE_ONE = RawAnimation.begin().thenLoop("type_1");
-    private static final RawAnimation PHASE_ONE_DASH = RawAnimation.begin().thenLoop("type_1_run");
-    private static final RawAnimation TRANSFORM = RawAnimation.begin().thenPlay("switching").thenLoop("type_2");
-    private static final RawAnimation PHASE_TWO = RawAnimation.begin().thenLoop("type_2");
-    private static final RawAnimation PHASE_TWO_DASH = RawAnimation.begin().thenLoop("type_2_run");
-
     private static final EntityDataAccessor<Optional<UUID>> ENCOUNTER_UUID = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> DATA_TRANSFORMED = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_DASHING = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DATA_TRANSITION_TICKS = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_BANK = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.FLOAT);
-
     private static final EntityDataAccessor<Boolean> DATA_PRIMARY = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
+
+    /// 双眼水平转向速度上限，单位度/tick。
+    private static final float MAX_YAW_SPEED = 18.8F;
+    /// 双眼俯仰转向速度上限，单位度/tick。
+    private static final float MAX_PITCH_SPEED = 16.0F;
+    /// 水平角速度每 tick 的最大变化量，单位度/tick²。
+    private static final float YAW_ACCELERATION = 3.0F;
+    /// 俯仰角速度每 tick 的最大变化量，单位度/tick²。
+    private static final float PITCH_ACCELERATION = 2.0F;
+    /// 转向角误差转换为目标角速度的系数。
+    private static final float TURN_RESPONSE = 0.28F;
+    /// 水平转向角转换为模型侧倾的系数。
+    private static final float BANK_RESPONSE = 2.0F;
+    /// 模型最大侧倾角，单位度。
+    private static final float MAX_BANK_DEGREES = 16;
+    /// 客户端侧倾角插值系数，取值 0 到 1。
+    private static final float BANK_SMOOTHING = 0.25F;
+
+    /// 目标移动采样的平滑系数，取值 0 到 1。
+    private static final double MOTION_SMOOTHING = 0.35;
+    /// 拦截预测允许的最大提前时间，单位 tick。
+    private static final double MAX_PREDICTION_TICKS = 20;
+    /// 目标位移超过此距离平方时按瞬移处理，不纳入预判，单位格²。
+    private static final double TELEPORT_SAMPLE_DISTANCE_SQUARED = 16;
+    /// 纳入预判的目标速度上限，单位格/tick。
+    private static final double MAX_SAMPLED_TARGET_SPEED = 1.2;
+    /// 拦截时间与落点的迭代计算次数。
+    private static final int INTERCEPT_ITERATIONS = 3;
+
+    /// 寻找同组搭档的最大范围，单位格。
+    private static final double PARTNER_SEARCH_RANGE = 300;
+    /// 双眼互相避让的距离，单位格。
+    private static final double PARTNER_SEPARATION_DISTANCE = 6;
+    /// 双眼间距不足时转为分离速度的系数。
+    private static final double PARTNER_SEPARATION_STRENGTH = 0.06;
+    /// 白天离场的上升速度，单位格/tick。
+    private static final double LEAVING_SPEED = 0.8;
+    /// 白天离场后移除实体的延迟，单位 tick。
+    private static final int LEAVING_TICKS = 40;
+    /// 无攻击目标时的上升速度，单位格/tick。
+    private static final double IDLE_RISE_SPEED = 0.45D;
+    /// 暂停战斗期间每 tick 保留的速度比例。
+    private static final double SUSPENDED_DRAG = 0.85D;
+
+    /// 普通难度进入二阶段的生命比例。
+    private static final float PHASE_TWO_HEALTH_RATIO = 0.4F;
+    /// 传奇难度进入二阶段的生命比例。
+    private static final float LEGENDARY_PHASE_TWO_HEALTH_RATIO = 0.6F;
+    /// 没有专属时长的模型使用默认变形时长。
+    private static final int TRANSITION_DURATION_TICKS = 30;
+    private static final String TRANSFORMED_TAG = "Transformed";
+    private static final String TRANSITION_TICKS_TAG = "TransitionTicks";
+
+    private static final RawAnimation PHASE_ONE = RawAnimation.begin().thenLoop("type_1");
+    private static final RawAnimation PHASE_ONE_DASH = RawAnimation.begin().thenLoop("type_1_run");
+    private static final RawAnimation TRANSFORM = RawAnimation.begin().thenPlay("switching").thenLoop("type_2");
+    private static final RawAnimation PHASE_TWO = RawAnimation.begin().thenLoop("type_2");
+    private static final RawAnimation PHASE_TWO_DASH = RawAnimation.begin().thenLoop("type_2_run");
     private boolean settlingDeath;
     private ParticleEmitter linkEmitter;
     private int transitionTicks;
@@ -112,7 +153,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
     public final @Nullable AbstractTwinEye getPartner() {
         if (getEncounterUUID() == null) return null;
         if (level() instanceof ServerLevel) return TwinEyeEncounter.state(this).partner(this);
-        return level().getEntitiesOfClass(AbstractTwinEye.class, getBoundingBox().inflate(300),
+        return level().getEntitiesOfClass(AbstractTwinEye.class, getBoundingBox().inflate(PARTNER_SEARCH_RANGE),
                 eye -> eye != this && eye.isRetinazer() != isRetinazer() && eye.isAlive()
                         && getEncounterUUID().equals(eye.getEncounterUUID())).stream().findFirst().orElse(null);
     }
@@ -248,7 +289,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
                 MolangParticleEngine.INSTANCE.addEmitter(linkEmitter);
             }
             previousBank = visualBank;
-            visualBank = Mth.lerp(0.25F, visualBank, entityData.get(DATA_BANK));
+            visualBank = Mth.lerp(BANK_SMOOTHING, visualBank, entityData.get(DATA_BANK));
         }
         if (level().isClientSide || !isAlive()) {
             return;
@@ -256,22 +297,22 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         if (level().isDay() || leavingTicks > 0) {
             leavingTicks++;
             resetCombatCycle();
-            setDeltaMovement(0, 0.8, 0);
+            setDeltaMovement(0, LEAVING_SPEED, 0);
             turnWithInertia(new Vec3(0, 1, 0));
-            if (leavingTicks >= 40) discard();
+            if (leavingTicks >= LEAVING_TICKS) discard();
             return;
         }
         // 变形属性由同步形态恢复，存档重载不重复叠加，也不覆盖注册基础值。
         setSpecialState(Form.TRANSFORMED, isTransformed());
         if (isDisengageRetreating()) {
             resetCombatCycle();
-            setDeltaMovement(0.0D, 0.45D, 0.0D);
+            setDeltaMovement(0.0D, IDLE_RISE_SPEED, 0.0D);
             entityData.set(DATA_DASHING, false);
             entityData.set(DATA_BANK, 0.0F);
             return;
         }
 
-        if (!isTransformed() && getHealth() < getMaxHealth() * (legendaryCombat() ? 0.6F : 0.4F)) {
+        if (!isTransformed() && getHealth() < getMaxHealth() * (legendaryCombat() ? LEGENDARY_PHASE_TWO_HEALTH_RATIO : PHASE_TWO_HEALTH_RATIO)) {
             entityData.set(DATA_TRANSFORMED, true);
             transitionTicks = transformationDuration();
             entityData.set(DATA_TRANSITION_TICKS, transitionTicks);
@@ -288,7 +329,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         if (getTarget() == null || !getTarget().isAlive()) {
             resetCombatCycle();
             suspendCombatVisuals();
-            setDeltaMovement(getDeltaMovement().scale(0.85D));
+            setDeltaMovement(getDeltaMovement().scale(SUSPENDED_DRAG));
             entityData.set(DATA_DASHING, false);
             entityData.set(DATA_BANK, 0.0F);
             return;
@@ -319,8 +360,8 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
             targetMotion = Vec3.ZERO;
         } else {
             Vec3 movement = target.position().subtract(previousTargetPosition);
-            targetMotion = movement.lengthSqr() > 16 ? Vec3.ZERO
-                    : targetMotion.lerp(limitLength(movement, 1.2), MOTION_SMOOTHING);
+            targetMotion = movement.lengthSqr() > TELEPORT_SAMPLE_DISTANCE_SQUARED ? Vec3.ZERO
+                    : targetMotion.lerp(limitLength(movement, MAX_SAMPLED_TARGET_SPEED), MOTION_SMOOTHING);
         }
         sampledTarget = target.getUUID();
         previousTargetPosition = target.position();
@@ -335,7 +376,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
     protected final Vec3 predictInterceptPosition(LivingEntity target, Vec3 origin, double speed, double delay, double maximumLead) {
         double flightTicks = origin.distanceTo(target.getEyePosition()) / speed;
         Vec3 intercept = target.getEyePosition();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < INTERCEPT_ITERATIONS; i++) {
             intercept = predictTargetPosition(target, Math.min(MAX_PREDICTION_TICKS, flightTicks + delay), maximumLead);
             flightTicks = origin.distanceTo(intercept) / speed;
         }
@@ -353,9 +394,9 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         if (partner != null && partner.isAlive() && !partner.isDashCombatState()) {
             Vec3 away = position().subtract(partner.position());
             double distance = away.length();
-            if (distance < 6) {
+            if (distance < PARTNER_SEPARATION_DISTANCE) {
                 if (distance < 1.0E-4) away = new Vec3(isRetinazer() ? 1 : -1, 0, 0);
-                velocity = velocity.add(away.normalize().scale((6 - distance) * 0.06));
+                velocity = velocity.add(away.normalize().scale((PARTNER_SEPARATION_DISTANCE - distance) * PARTNER_SEPARATION_STRENGTH));
             }
         }
         return limitLength(velocity, maximumSpeed);
@@ -385,12 +426,12 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         float pitch = (float) (Mth.atan2(-direction.y, direction.horizontalDistance()) * Mth.RAD_TO_DEG);
         float yawError = Mth.wrapDegrees(yaw - getYRot());
         float pitchError = pitch - getXRot();
-        yawVelocity = Mth.approach(yawVelocity, Math.clamp(yawError * 0.28F, -MAX_YAW_SPEED, MAX_YAW_SPEED), YAW_ACCELERATION);
-        pitchVelocity = Mth.approach(pitchVelocity, Math.clamp(pitchError * 0.28F, -MAX_PITCH_SPEED, MAX_PITCH_SPEED), PITCH_ACCELERATION);
+        yawVelocity = Mth.approach(yawVelocity, Math.clamp(yawError * TURN_RESPONSE, -MAX_YAW_SPEED, MAX_YAW_SPEED), YAW_ACCELERATION);
+        pitchVelocity = Mth.approach(pitchVelocity, Math.clamp(pitchError * TURN_RESPONSE, -MAX_PITCH_SPEED, MAX_PITCH_SPEED), PITCH_ACCELERATION);
         float yawStep = Math.abs(yawError) < Math.abs(yawVelocity) ? yawError : yawVelocity;
         float pitchStep = Math.abs(pitchError) < Math.abs(pitchVelocity) ? pitchError : pitchVelocity;
         faceCombatDirection(Vec3.directionFromRotation(getXRot() + pitchStep, getYRot() + yawStep), 360, 360);
-        entityData.set(DATA_BANK, Mth.clamp(-yawStep * 2.0F, -16, 16));
+        entityData.set(DATA_BANK, Mth.clamp(-yawStep * BANK_RESPONSE, -MAX_BANK_DEGREES, MAX_BANK_DEGREES));
     }
 
     // 常规转向保留惯性；特殊攻击可让身体与发射口共同执行旋转。

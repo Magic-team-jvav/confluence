@@ -27,31 +27,123 @@ import java.util.UUID;
 // 魔焰眼：一阶段同高射击与旋转喷火长冲刺交替，二阶段持续喷焰与快速冲刺交替。
 public class Spazmatism extends AbstractTwinEye {
     private static final EntityDataAccessor<Boolean> COMBO_CHARGING = SynchedEntityData.defineId(Spazmatism.class, EntityDataSerializers.BOOLEAN);
-    private static final int COMBO_CHARGE_TICKS = 40;
-    private static final int COMBO_WAIT_TICKS = 100;
-    private static final int COMBO_COOLDOWN_TICKS = 320;
+
+    /// 靠近阶段至少持续的时间，单位 tick。
     private static final int APPROACH_TICKS = 16;
-    private static final int FIRE_TICKS = 100;
-    private static final int WINDUP_TICKS = 10;
-    private static final int DASH_TICKS = 24;
-    private static final int RECOVER_TICKS = 6;
-    private static final int DASH_COUNT = 3;
-    private static final int PHASE_TWO_DASH_COUNT = 6;
-    private static final int STREAM_TICKS = 140;
-    private static final int MAX_COORDINATION_WAIT_TICKS = 80;
-    private static final int POSITION_REFRESH_TICKS = 12;
-    private static final int STREAM_SOUND_INTERVAL_TICKS = 14;
-    private static final double PHASE_ONE_DASH_SPEED = 1.9;
-    private static final double PHASE_TWO_DASH_SPEED = 2.7;
+    /// 一阶段靠近站位时的速度上限，单位格/tick。
     private static final double PHASE_ONE_MOVE_SPEED = 0.8;
+    /// 二阶段靠近站位时的速度上限，单位格/tick。
     private static final double PHASE_TWO_MOVE_SPEED = 0.69;
+    /// 靠近站位时每 tick 保留的旧速度比例。
+    private static final double APPROACH_DRAG = 0.82;
+    /// 站位位置误差转换为移动速度的系数。
+    private static final double POSITION_ACCELERATION = 0.035;
+    /// 重新选择喷火站位的间隔，单位 tick。
+    private static final int POSITION_REFRESH_TICKS = 12;
+    /// 目标偏离站位后重新选点的距离平方，单位格²。
+    private static final double REPOSITION_RANGE_SQUARED = 20 * 20;
+    /// 允许结束靠近并开始喷火的距离平方，单位格²。
+    private static final double FIRE_START_RANGE_SQUARED = 14 * 14;
+    /// 一阶段喷射站位与目标的水平距离，单位格；不是焰球射程。
     private static final double FIRE_DISTANCE = 11.0;
+    /// 二阶段喷火站位与目标的水平距离，单位格；不是火焰射程。
     private static final double STREAM_DISTANCE = 8.0;
+    /// 每次评估的喷火站位数量。
+    private static final int FIRING_CANDIDATES = 8;
+    /// 站位搜索相对当前方位的起始偏角，单位弧度。
+    private static final double ORBIT_ANGLE_OFFSET = 0.2;
+    /// 选取喷火站位的目标预测时间，单位 tick。
+    private static final int POSITION_PREDICTION_TICKS = 4;
+    /// 选取喷火站位的目标预测最大偏移，单位格。
+    private static final double POSITION_MAX_LEAD = 2;
+    /// 二阶段站位相对目标的基础高度上下限，单位格。
+    private static final double POSITION_HEIGHT_LIMIT = 4;
+    /// 二阶段站位高度的波动幅度，单位格。
+    private static final double POSITION_HEIGHT_WAVE = 2;
+    /// 能直视目标的喷火站位获得的评分。
+    private static final double FIRING_LINE_SCORE = 40;
+    /// 选择站位时避让搭档的距离，单位格。
+    private static final double PARTNER_AVOID_DISTANCE = 7;
+    /// 站位过于靠近搭档时的评分惩罚权重。
+    private static final double PARTNER_AVOID_WEIGHT = 6;
+
+    /// 一阶段持续发射诅咒焰球的时间，单位 tick。
+    private static final int FIRE_TICKS = 100;
+    /// 一阶段诅咒焰球发射间隔，单位 tick。
+    private static final int FLAME_BALL_INTERVAL_TICKS = 18;
+    /// 一阶段诅咒焰球初速，单位格/tick。
     private static final float FLAME_BALL_SPEED = 1.1F;
-    private static final float STREAM_SPEED = 0.9F;
+    /// 普通难度喷火拦截预测的最大偏移，单位格。
+    private static final double FLAME_MAX_LEAD = 2;
+    /// 传奇难度喷火拦截预测的最大偏移，单位格。
+    private static final double LEGENDARY_FLAME_MAX_LEAD = 3;
+    /// 二阶段一轮持续喷火的时间，单位 tick；不控制单枚火焰射程。
+    private static final int STREAM_TICKS = 140;
+    /// 二阶段持续喷火的发射间隔，单位 tick。
+    private static final int STREAM_INTERVAL_TICKS = 2;
+    /// 二阶段持续火焰初速，单位格/tick；与弹体寿命、阻力共同决定射程。
+    private static final float STREAM_SPEED = 1.2F;
+    /// 连续喷火音效的最短播放间隔，单位 tick。
+    private static final int STREAM_SOUND_INTERVAL_TICKS = 14;
+
+    /// 冲刺前的基础蓄力时间，单位 tick。
+    private static final int WINDUP_TICKS = 10;
+    /// 冲刺开始前停止更新预测方向的时间，单位 tick。
+    private static final int DASH_LOCK_TICKS = 3;
+    /// 朝向尚未对准时冲刺蓄力的最长时间，单位 tick。
+    private static final int DASH_MAX_WINDUP_TICKS = 26;
+    /// 允许发动冲刺的朝向点积阈值，越大要求越精确。
+    private static final double DASH_AIM_DOT = 0.92;
+    /// 每次冲刺的持续时间，单位 tick。
+    private static final int DASH_TICKS = 24;
+    /// 两次冲刺之间的恢复时间，单位 tick。
+    private static final int RECOVER_TICKS = 6;
+    /// 冲刺恢复期间每 tick 保留的移动速度比例。
+    private static final double RECOVERY_DRAG = 0.8;
+    /// 一阶段冲刺速度，单位格/tick。
+    private static final double PHASE_ONE_DASH_SPEED = 1.9;
+    /// 二阶段冲刺速度，单位格/tick。
+    private static final double PHASE_TWO_DASH_SPEED = 2.7;
+    /// 一阶段每轮连续冲刺次数。
+    private static final int DASH_COUNT = 3;
+    /// 二阶段每轮连续冲刺次数。
+    private static final int PHASE_TWO_DASH_COUNT = 6;
+    /// 普通难度冲刺预测的最大偏移，单位格。
+    private static final double DASH_MAX_LEAD = 6;
+    /// 传奇难度冲刺预测的最大偏移，单位格。
+    private static final double LEGENDARY_DASH_MAX_LEAD = 8;
+    /// 旋转冲刺时生成魔焰的间隔，单位 tick。
     private static final int DASH_FLAME_INTERVAL_TICKS = 2;
+    /// 冲刺期间每 tick 的水平自转角度，完整冲刺旋转一周。
     private static final float DASH_SPIN_DEGREES = 360.0F / DASH_TICKS;
+    /// 旋转冲刺时每 tick 回正俯仰的最大角度，单位度。
     private static final float DASH_SPIN_PITCH_STEP = 6.0F;
+
+    /// 巨焰联动的蓄力时长，单位 tick（20 tick 为 1 秒）。
+    private static final int COMBO_CHARGE_TICKS = 40;
+    /// 巨焰发射后等待搭档引爆的最长时间，单位 tick。
+    private static final int COMBO_WAIT_TICKS = 100;
+    /// 两次巨焰联动之间的冷却，单位 tick。
+    private static final int COMBO_COOLDOWN_TICKS = 320;
+    /// 等待搭档完成当前攻击的最长时间，单位 tick。
+    private static final int MAX_COORDINATION_WAIT_TICKS = 80;
+    /// 巨焰落点预测提前时间，单位 tick。
+    private static final int COMBO_PREDICTION_TICKS = 12;
+    /// 巨焰落点预测最大偏移距离，单位格。
+    private static final double COMBO_MAX_LEAD = 4;
+    /// 巨焰预定引爆点高于目标的距离，单位格。
+    private static final double COMBO_HEIGHT = 6;
+    /// 蓄力期间每 tick 保留的移动速度比例。
+    private static final double CHARGE_DRAG = 0.7;
+    /// 等待巨焰引爆期间每 tick 保留的移动速度比例。
+    private static final double COMBO_WAIT_DRAG = 0.85;
+
+    /// 一阶段喷口距模型中心的距离，单位格。
+    private static final double PHASE_ONE_MUZZLE_DISTANCE = 23.0 / 16.0;
+    /// 二阶段喷口距模型中心的距离，单位格。
+    private static final double PHASE_TWO_MUZZLE_DISTANCE = 39.0 / 16.0;
+    /// 魔焰眼变形动画时长，单位 tick。
+    private static final int TRANSFORM_TICKS = 49;
 
     private ParticleEmitter comboChargeEmitter;
     private UUID comboFlame;
@@ -103,7 +195,7 @@ public class Spazmatism extends AbstractTwinEye {
     }
 
     @Override
-    protected double getMuzzleDistance() {return isTransformed() ? 39.0 / 16.0 : 23.0 / 16.0;}
+    protected double getMuzzleDistance() {return isTransformed() ? PHASE_TWO_MUZZLE_DISTANCE : PHASE_ONE_MUZZLE_DISTANCE;}
 
     @Override
     protected boolean isRetinazer() {return false;}
@@ -112,7 +204,7 @@ public class Spazmatism extends AbstractTwinEye {
     protected boolean isDashCombatState() {return state == State.DASH;}
 
     @Override
-    protected int transformationDuration() {return 49;}
+    protected int transformationDuration() {return TRANSFORM_TICKS;}
 
     boolean isPreparingOrDashing() {
         return state == State.WINDUP || state == State.DASH || state == State.RECOVER && dashes > 0;
@@ -154,7 +246,7 @@ public class Spazmatism extends AbstractTwinEye {
         switch (state) {
             case APPROACH -> {
                 approach(target);
-                if (distanceToSqr(target) < 14 * 14 && stateTicks >= APPROACH_TICKS) {
+                if (distanceToSqr(target) < FIRE_START_RANGE_SQUARED && stateTicks >= APPROACH_TICKS) {
                     shotTimer = 1;
                     enter(State.FIRE);
                 }
@@ -163,7 +255,7 @@ public class Spazmatism extends AbstractTwinEye {
                 approach(target);
                 if (--shotTimer <= 0 && hasFiringLine(getMuzzlePosition(1.0F), target)) {
                     fireFlame(target);
-                    shotTimer = isTransformed() ? 2 : 18;
+                    shotTimer = isTransformed() ? STREAM_INTERVAL_TICKS : FLAME_BALL_INTERVAL_TICKS;
                 }
                 int fireDuration = isTransformed() ? STREAM_TICKS : FIRE_TICKS;
                 AbstractTwinEye partner = getPartner();
@@ -171,7 +263,7 @@ public class Spazmatism extends AbstractTwinEye {
                 if (stateTicks >= fireDuration && (!partnerBeam || stateTicks >= fireDuration + MAX_COORDINATION_WAIT_TICKS)) {
                     // 魔焰眼二阶段才能发起，激光眼无需变形；无法配合时继续原本的冲刺循环。
                     if (isTransformed() && comboCooldown == 0 && partner instanceof Retinazer laser && laser.beginFlameCombo(this)) {
-                        comboAim = predictTargetPosition(target, 12, 4).add(0, 6, 0);
+                        comboAim = predictTargetPosition(target, COMBO_PREDICTION_TICKS, COMBO_MAX_LEAD).add(0, COMBO_HEIGHT, 0);
                         comboCooldown = COMBO_COOLDOWN_TICKS;
                         enter(State.COMBO_CHARGE);
                         playSound(ModSoundEvents.GUN_FLAMETHROWER.get(), 0.8F, 0.6F);
@@ -179,7 +271,7 @@ public class Spazmatism extends AbstractTwinEye {
                 }
             }
             case COMBO_CHARGE -> {
-                setDeltaMovement(getDeltaMovement().scale(0.7));
+                setDeltaMovement(getDeltaMovement().scale(CHARGE_DRAG));
                 if (!(getPartner() instanceof Retinazer laser) || !laser.isFlameComboActive()) {
                     finishFlameCombo(target);
                 } else if (stateTicks >= COMBO_CHARGE_TICKS) {
@@ -195,17 +287,17 @@ public class Spazmatism extends AbstractTwinEye {
                 }
             }
             case COMBO_WAIT -> {
-                setDeltaMovement(getDeltaMovement().scale(0.85));
+                setDeltaMovement(getDeltaMovement().scale(COMBO_WAIT_DRAG));
                 if (getComboFlame() == null || stateTicks >= COMBO_WAIT_TICKS
                         || !(getPartner() instanceof Retinazer laser) || !laser.isFlameComboActive())
                     finishFlameCombo(target);
             }
             case WINDUP -> {
-                setDeltaMovement(getDeltaMovement().scale(0.7));
-                if (stateTicks <= WINDUP_TICKS - 3) {
+                setDeltaMovement(getDeltaMovement().scale(CHARGE_DRAG));
+                if (stateTicks <= WINDUP_TICKS - DASH_LOCK_TICKS) {
                     dashDirection = predictDashDirection(target);
                 }
-                if (stateTicks >= WINDUP_TICKS && (getLookAngle().dot(dashDirection) > 0.92 || stateTicks >= 26)) {
+                if (stateTicks >= WINDUP_TICKS && (getLookAngle().dot(dashDirection) > DASH_AIM_DOT || stateTicks >= DASH_MAX_WINDUP_TICKS)) {
                     enter(State.DASH);
                     setDeltaMovement(dashDirection.scale(dashSpeed()));
                     playSound(ModSoundEvents.ROAR.get(), 1.0F, isTransformed() ? 1.2F : 1.0F);
@@ -220,7 +312,7 @@ public class Spazmatism extends AbstractTwinEye {
                 }
             }
             case RECOVER -> {
-                setDeltaMovement(getDeltaMovement().scale(0.8));
+                setDeltaMovement(getDeltaMovement().scale(RECOVERY_DRAG));
                 if (stateTicks >= RECOVER_TICKS) {
                     dashDirection = predictDashDirection(target);
                     if (dashes <= 0) orbitDirection = -orbitDirection;
@@ -260,46 +352,46 @@ public class Spazmatism extends AbstractTwinEye {
     private Vec3 predictDashDirection(LivingEntity target) {
         double delay = state == State.WINDUP ? Math.max(0, WINDUP_TICKS - stateTicks) : WINDUP_TICKS;
         Vec3 direction = predictInterceptPosition(target, getEyePosition(), dashSpeed(), delay,
-                legendaryCombat() ? 8 : 6).subtract(getEyePosition());
+                legendaryCombat() ? LEGENDARY_DASH_MAX_LEAD : DASH_MAX_LEAD).subtract(getEyePosition());
         return direction.lengthSqr() < 1.0E-7 ? getLookAngle() : direction.normalize();
     }
 
     private void approach(LivingEntity target) {
         if (firingPosition == null || stateTicks % POSITION_REFRESH_TICKS == 0
-                || firingPosition.distanceToSqr(target.position()) > 20 * 20) {
+                || firingPosition.distanceToSqr(target.position()) > REPOSITION_RANGE_SQUARED) {
             chooseFiringPosition(target);
         }
         Vec3 destination = firingPosition;
         if (!isTransformed()) destination = new Vec3(destination.x, target.getY(), destination.z);
-        Vec3 velocity = getDeltaMovement().scale(0.82).add(destination.subtract(position()).scale(0.035));
+        Vec3 velocity = getDeltaMovement().scale(APPROACH_DRAG).add(destination.subtract(position()).scale(POSITION_ACCELERATION));
         double speed = isTransformed() ? PHASE_TWO_MOVE_SPEED : PHASE_ONE_MOVE_SPEED;
         setDeltaMovement(separateFromPartner(velocity, speed));
     }
 
     private void chooseFiringPosition(LivingEntity target) {
         Vec3 away = position().subtract(target.position());
-        Vec3 center = predictTargetPosition(target, 4, 2).subtract(0, target.getEyeHeight(), 0);
+        Vec3 center = predictTargetPosition(target, POSITION_PREDICTION_TICKS, POSITION_MAX_LEAD).subtract(0, target.getEyeHeight(), 0);
         double baseAngle = Math.atan2(away.z, away.x);
         double radius = isTransformed() ? STREAM_DISTANCE : FIRE_DISTANCE;
         double bestScore = -Double.MAX_VALUE;
         Vec3 best = null;
         AbstractTwinEye partner = getPartner();
-        for (int i = 0; i < 8; i++) {
-            double angle = baseAngle + orbitDirection * (0.2 + i * Math.PI / 4);
-            double height = isTransformed() ? Mth.clamp(away.y, -4, 4) + Math.sin(angle) * 2 : 0;
+        for (int i = 0; i < FIRING_CANDIDATES; i++) {
+            double angle = baseAngle + orbitDirection * (ORBIT_ANGLE_OFFSET + i * Math.PI * 2 / FIRING_CANDIDATES);
+            double height = isTransformed() ? Mth.clamp(away.y, -POSITION_HEIGHT_LIMIT, POSITION_HEIGHT_LIMIT) + Math.sin(angle) * POSITION_HEIGHT_WAVE : 0;
             Vec3 candidate = center.add(Math.cos(angle) * radius, height, Math.sin(angle) * radius);
             if (!level().noCollision(this, getBoundingBox().move(candidate.subtract(position()))))
                 continue;
-            double score = hasFiringLine(candidate.add(0, getBbHeight() * 0.5, 0), target) ? 40 : 0;
+            double score = hasFiringLine(candidate.add(0, getBbHeight() * 0.5, 0), target) ? FIRING_LINE_SCORE : 0;
             score -= position().distanceTo(candidate);
             if (partner != null && partner.isAlive())
-                score -= Math.max(0, 7 - partner.position().distanceTo(candidate)) * 6;
+                score -= Math.max(0, PARTNER_AVOID_DISTANCE - partner.position().distanceTo(candidate)) * PARTNER_AVOID_WEIGHT;
             if (score > bestScore) {
                 bestScore = score;
                 best = candidate;
             }
         }
-        firingPosition = best != null ? best : center.add(Math.cos(baseAngle) * radius, isTransformed() ? 4 : 0, Math.sin(baseAngle) * radius);
+        firingPosition = best != null ? best : center.add(Math.cos(baseAngle) * radius, isTransformed() ? POSITION_HEIGHT_LIMIT : 0, Math.sin(baseAngle) * radius);
     }
 
     // 冲刺魔焰独立使用抛物线，普通诅咒焰球和二阶段直喷不受影响。
@@ -325,7 +417,7 @@ public class Spazmatism extends AbstractTwinEye {
         TwinEyeProjectile flame = ModEntities.SPAZMATISM_FLAME.get().create(serverLevel);
         if (flame == null) return;
         Vec3 aim = predictInterceptPosition(target, getMuzzlePosition(1.0F),
-                isTransformed() ? STREAM_SPEED : FLAME_BALL_SPEED, 0, legendaryCombat() ? 3 : 2);
+                isTransformed() ? STREAM_SPEED : FLAME_BALL_SPEED, 0, legendaryCombat() ? LEGENDARY_FLAME_MAX_LEAD : FLAME_MAX_LEAD);
         flame.configureFlame(this, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE),
                 isTransformed() ? STREAM_SPEED : FLAME_BALL_SPEED, isTransformed(), legendaryCombat());
         serverLevel.addFreshEntity(flame);
@@ -376,7 +468,7 @@ public class Spazmatism extends AbstractTwinEye {
         try {state = State.valueOf(tag.getString("Attack"));} catch (
                 IllegalArgumentException ignored) {return;}
         stateTicks = Mth.clamp(tag.getInt("AttackTicks"), 0, STREAM_TICKS + MAX_COORDINATION_WAIT_TICKS);
-        shotTimer = Mth.clamp(tag.getInt("ShotTimer"), 0, 18);
+        shotTimer = Mth.clamp(tag.getInt("ShotTimer"), 0, FLAME_BALL_INTERVAL_TICKS);
         dashes = Mth.clamp(tag.getInt("Dashes"), 0, PHASE_TWO_DASH_COUNT);
         dashDirection = loadVector(tag, "Dash").normalize();
         orbitDirection = tag.getInt("OrbitDirection") < 0 ? -1 : 1;

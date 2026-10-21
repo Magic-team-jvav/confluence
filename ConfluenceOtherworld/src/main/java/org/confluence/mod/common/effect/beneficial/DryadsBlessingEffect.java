@@ -29,7 +29,8 @@ public final class DryadsBlessingEffect extends PortMobEffect {
     /// 玩家每秒恢复 3 点；普通城镇 NPC 每秒额外恢复 3.33 点，老人不恢复。
     @Override
     public void applyEffectTick(LivingEntity living, int amplifier) {
-        if (living.level().isClientSide || living.getHealth() >= living.getMaxHealth()) return;
+        if (living.level().isClientSide || !living.isAlive() || living.getHealth() >= living.getMaxHealth())
+            return;
         if (living instanceof BaseNPC npc && npc.getCombatProfile().healthRegeneration(npc) <= 0)
             return;
         float regeneration = living instanceof BaseNPC ? 10.0F / 3.0F : 3.0F;

@@ -28,9 +28,11 @@ public class SurgeBlastSkill extends SoulSkill {
         int charge = storage.getSurgeBlastCharge() + 1;
         if (charge >= SoulSkillParameters.SURGE_BLAST_CHARGE_COUNT) {
             storage.setSurgeBlastCharge(0);
+            /// 终结爆炸是一个更强的灵魂激荡：以玩家为中心，带击退（只推别人、不推自己）。
             serverPlayer.level().addFreshEntity(new SpiritSurgeEntity(serverPlayer, SoulSkillParameters.SURGE_BLAST_FINISHER_DAMAGE,
                     SoulSkillParameters.SURGE_BLAST_FINISHER_RADIUS, SoulSkillParameters.SPIRIT_SURGE_VERTICAL_RANGE,
-                    SoulSkillParameters.SPIRIT_SURGE_DURATION_TICKS, 0, 0.0F));
+                    SoulSkillParameters.SPIRIT_SURGE_DURATION_TICKS, 0, 0.0F)
+                    .withKnockback(SoulSkillParameters.SURGE_BLAST_FINISHER_KNOCKBACK));
         } else {
             storage.setSurgeBlastCharge(charge);
         }

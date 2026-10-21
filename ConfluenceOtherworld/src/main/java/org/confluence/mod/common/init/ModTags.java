@@ -545,10 +545,16 @@ public final class ModTags {
         /// 引魂系列：引渡者只对登记在此标签的技能生效。
         public static final TagKey<SoulSkill> SOUL_LURE = register("soul_lure");
         /// 附魂：给自己挂同名增益的技能集合。
+        ///
+        /// **本轮把原来的「强力附魂系列」(`enhanced_soul_series`) 合并进来了**——两者指的是同一类东西：
+        /// 束魂锁链联动、魂术轮转连锁都只认这一个标签，不再维护第二份名单。
         public static final TagKey<SoulSkill> SOUL_ATTACH = register("soul_attach");
-        /// 强力附魂系列：束魂锁链同时使用、魂术轮转连锁释放的那一组限时增益技能。
-        public static final TagKey<SoulSkill> ENHANCED_SOUL_SERIES = register("enhanced_soul_series");
-        /// 被动：无法装备、学会即生效。
+        /// 强主动技能：必须手动施放的技能——**不被束魂锁链联动、不被魂术轮转连锁或自动选中**。
+        ///
+        /// 目前登记灵魂透支、灭却业火、血怒：它们要么有副作用（透支结束锁武器）、要么是处决类/资源类大招，
+        /// 被自动带出来往往不是玩家想要的。
+        public static final TagKey<SoulSkill> MAJOR_ACTIVE = register("major_active");
+        /// 被动：
         public static final TagKey<SoulSkill> PASSIVE = register("passive");
 
         private static TagKey<SoulSkill> register(String id) {

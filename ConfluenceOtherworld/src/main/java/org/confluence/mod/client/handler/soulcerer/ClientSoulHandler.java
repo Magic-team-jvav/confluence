@@ -29,7 +29,7 @@ import org.confluence.mod.network.c2s.SoulSkillRequestPacketC2S;
 import org.confluence.mod.network.c2s.SoulSkillRequestPacketC2S.Action;
 import org.confluence.mod.network.c2s.SoulSkillUsePacketC2S;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /// 客户端类，服务端请勿调用
 public final class ClientSoulHandler {
@@ -165,13 +165,17 @@ public final class ClientSoulHandler {
 
     /// 处理快捷技能面板按下与松开时的状态切换。
     public static void handleSoulSkills() {
-        while (getSoulSkillKeyMapping().consumeClick()) {
+        KeyMapping mapping = getSoulSkillKeyMapping();
+        if (mapping == null) {
+            return;
+        }
+        while (mapping.consumeClick()) {
             if (!wasSpellWheelDown) {
                 openSoulSkillHuds();
             }
         }
 
-        handleSoulSkillWheelRelease();
+        handleSoulSkillWheelRelease(mapping);
     }
 
     /// 在支持滚轮的快捷面板中切换当前技能。
@@ -214,8 +218,8 @@ public final class ClientSoulHandler {
     }
 
     /// 检测快捷选择键松开，关闭已打开的技能面板。
-    private static void handleSoulSkillWheelRelease() {
-        final boolean isDown = getSoulSkillKeyMapping().isDown();
+    private static void handleSoulSkillWheelRelease(KeyMapping mapping) {
+        final boolean isDown = mapping.isDown();
 
         final boolean wasReleased = wasSpellWheelDown && !isDown;
         if (wasReleased) {
@@ -225,9 +229,9 @@ public final class ClientSoulHandler {
         wasSpellWheelDown = isDown;
     }
 
-    /// 读取打开灵魂快捷技能面板使用的按键绑定。
-    private static @NotNull KeyMapping getSoulSkillKeyMapping() {
-        return ModKeyBindings.MAGIC_QUICK_SKILL_SWITCHING.get();
+    /// 读取打开灵魂快捷技能面板使用的按键绑定（「切换灵魂技能」，默认左 Alt）。
+    private static @Nullable KeyMapping getSoulSkillKeyMapping() {
+        return ModKeyBindings.MAGIC_SKILL_SWITCHING == null ? null : ModKeyBindings.MAGIC_SKILL_SWITCHING.get();
     }
 
     /// 标记快捷选择为开启，并通知各样式 HUD 打开。

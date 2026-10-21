@@ -47,14 +47,15 @@ public class SoulAssaultSkill extends SoulSkill {
         if (bullets <= 0 || !PlayerUtils.consumeSoul(player, bullets)) {
             return;
         }
-        float damage = PlayerUtils.getSoulSkillDamage(player, ModSoulSkills.SOUL_ASSAULT.get().getStack())
+        /// 武器部分用施法时的快照：增益期间换手/空手不会削弱已经点亮的子弹。
+        float damage = PlayerUtils.getCastSoulSkillDamage(player, ModSoulSkills.SOUL_ASSAULT.get())
                 + SoulSkillParameters.SOUL_ASSAULT_BULLET_DAMAGE;
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
         RandomSource random = player.getRandom();
         for (int i = 0; i < bullets; i++) {
             Vec3 direction = look.add((random.nextDouble() - 0.5) * 0.12, (random.nextDouble() - 0.5) * 0.12, (random.nextDouble() - 0.5) * 0.12);
-            player.level().addFreshEntity(new SoulLureProjectile(player, eye, direction, damage, SoulLureProjectile.PARTICLE,
+            player.level().addFreshEntity(new SoulLureProjectile(player, eye, direction, damage, SoulLureProjectile.NO_PARTICLE,
                     SoulSkillParameters.SOUL_LURE_SPEED, 0.0, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE,
                     SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, 0.0, 0.0F));
             if (random.nextFloat() < SoulSkillParameters.SOUL_ASSAULT_REFUND_CHANCE) {

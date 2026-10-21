@@ -25,8 +25,8 @@ public class SoulLanternItem extends SoulWeaponItem {
     }
 
     /// 手持该魂灯时临时授予的灵魂技能，沿用通用灵魂武器的授予入口。
-    public SoulLanternItem(Item.Properties properties, ModRarity rarity, float damage, float criticalChance, List<ResourceLocation> grantedSoulSkills) {
-        super(properties, rarity, damage, grantedSoulSkills);
+    public SoulLanternItem(Item.Properties properties, ModRarity rarity, float damage, float criticalChance, List<ResourceLocation> grantedSoulSkills, Trait... traits) {
+        super(properties, rarity, damage, grantedSoulSkills, traits);
         this.criticalChance = criticalChance;
         addAttributeModifiers(builder -> builder.add(
                 LibAttributes.getCriticalChance(),

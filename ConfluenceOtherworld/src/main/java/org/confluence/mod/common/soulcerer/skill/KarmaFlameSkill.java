@@ -31,12 +31,17 @@ public class KarmaFlameSkill extends SoulSkill {
         if (soul < 1.0F || !PlayerUtils.consumeSoul(serverPlayer, soul)) {
             return;
         }
+        float killSoul = SoulSkillParameters.KARMA_FLAME_KILL_SOUL_BONUS;
         for (LivingEntity target : serverPlayer.level().getEntitiesOfClass(LivingEntity.class,
                 serverPlayer.getBoundingBox().inflate(SoulSkillParameters.KARMA_FLAME_RADIUS),
                 target -> target.isAlive() && !target.isSpectator() && !target.isAlliedTo(serverPlayer)
                         && EnemyDamageRules.isEnemy(target))) {
             if (target.getHealth() < soul) {
                 target.hurt(LibDamageTypes.soul(serverPlayer.level(), serverPlayer, serverPlayer), target.getHealth() + 1.0F);
+                /// 被灭却业火击杀的敌怪额外掉 2 魂（常规收魂仍由死亡事件结算）。
+                if (!target.isAlive()) {
+                    PlayerUtils.adjustSoul(serverPlayer, killSoul);
+                }
             }
         }
     }

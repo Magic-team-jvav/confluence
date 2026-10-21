@@ -8,7 +8,7 @@ public class SoulLanguageSubProvider {
     public static void addTranslations(TranslationConsumer language) {
         // 魂师涉及的按键设置
         language.add("key.confluence.soulcerer.overview", "Soulcerer Overview", "魂师技能总览");
-        language.add("key.confluence.soulcerer.quick_skill_switching", "Soul Skill Quick Switch", "灵魂快捷技能切换");
+        language.add("key.confluence.soulcerer.skill_switching", "Switch Soul Skill", "切换灵魂技能");
         language.add("creativetab.confluence.soulcerer", "Confluence | Soul Mage", "汇流来世 | 魂师");
         language.add("itemGroup.confluence.soulcerer_main_weapons", "Primary Weapons", "主武器");
         language.add("itemGroup.confluence.soulcerer_secondary_weapons", "Secondary Weapons", "副武器");
@@ -42,7 +42,7 @@ public class SoulLanguageSubProvider {
         language.add("message.confluence.soulcerer_skill.review", "A familiar read: soul damage increased", "温故知新：灵魂伤害提高");
         language.add("message.confluence.soul_book.harvester", "Soul lure skills have grown mightier!", "引魂系列技能的威力增强了！");
         language.add("tooltip.confluence.soulcerer_skill_book.required", "Requires permanently learning %s first", "需要先永久学会%s");
-        language.add("tooltip.confluence.soulcerer_skill_book.psychopomp", "Soul lure skills deal 1 more damage", "引魂系列技能伤害+1");
+        language.add("tooltip.confluence.soulcerer_skill_book.psychopomp", "Soul lure skills deal 2 more damage and their projectiles bounce once more", "引魂系列技能伤害+2，且引魂弹幕额外弹射一次");
         language.add("tooltip.confluence.soulcerer_skill_book.invalid", "The bound soul skill is unavailable", "绑定的灵魂技能不存在");
         language.add("confluence.soulcerer_skill.state.learned", "Permanently unlocked", "已永久解锁");
         language.add("confluence.soulcerer_skill.state.temporary", "Temporarily available", "临时可用");
@@ -50,6 +50,7 @@ public class SoulLanguageSubProvider {
         language.add("confluence.soulcerer_skill.state.equipped", "Equipped", "已装备");
         language.add("confluence.soulcerer_skill.state.unavailable", "Temporarily unavailable", "暂不可用");
         language.add("confluence.screen.soulcerer_overview", "Soul Skill Overview", "魂师技能总览");
+        language.add("confluence.screen.soulcerer_overview.background_toggle", "Background rendering: on / off (off keeps only the base colour and the skills)", "背景渲染开关：关掉后只保留底色与技能，其余背景层全部停画");
         language.add("confluence.screen.soulcerer_overview.tab.empty", "Empty", "空");
         language.add("confluence.screen.soulcerer_overview.tab.soul", "Soul", "灵魂");
         language.add("confluence.screen.soulcerer_overview.tab.blood_nature", "Blood and Nature", "血与自然");

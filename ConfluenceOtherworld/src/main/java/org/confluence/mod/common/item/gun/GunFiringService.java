@@ -8,6 +8,7 @@ import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.common.item.BaseBullet;
 import org.confluence.mod.common.item.gun.definition.BulletDefinition;
 import org.confluence.mod.common.item.gun.definition.GunDefinition;
+import org.confluence.mod.util.PlayerUtils;
 
 /// 直接合并枪械和弹药定义中的参数，并交给射弹工厂。
 public final class GunFiringService {
@@ -31,6 +32,8 @@ public final class GunFiringService {
         NeoForge.EVENT_BUS.post(event);
 
         float damage = LibMathUtils.criticalDamageTotal(event.getCritical(), event.getDamage(), player.getRandom());
+        /// 灵魂突击：增益期间开枪消耗 1 魂强化这一发（伤害 +5，50% 返还 1 魂）。
+        damage = PlayerUtils.applySoulAssaultGunBonus(player, damage);
         return GunProjectileFactory.spawn(new ShotContext(player, gunStack, ammo, damage, event.getKnockback(), event.getVelocity(), event.getPenetrate(), event.getInaccuracy()), gun.getDefinition().projectilePattern());
     }
 

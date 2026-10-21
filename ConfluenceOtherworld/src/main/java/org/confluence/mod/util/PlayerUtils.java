@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.SharedConstants;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -99,6 +100,7 @@ import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 public final class PlayerUtils {
     private static final ResourceLocation SOULDANCER_CRIT_ID = Confluence.asResource("souldancer_set_crit");
     private static final ResourceLocation SOULDANCER_SPEED_ID = Confluence.asResource("souldancer_set_speed");
+    private static final ResourceLocation SOUL_ROBE_SET_SOUL_DAMAGE_ID = Confluence.asResource("soul_robe_set_soul_damage");
     private static final float HEALTH_PER_SOUL = 4.0F;
     private static final float SOUL_CONSUMPTION_FAILED = -1.0F;
     private static final float ENVIRONMENT_SOUL_RECOVERY_RATIO = 0.05F;
@@ -385,6 +387,27 @@ public final class PlayerUtils {
 
     public static boolean isHoldingSoulWeapon(@Nullable Player player) {
         return player != null && player.getMainHandItem().getItem() instanceof SoulWeaponItem;
+    }
+
+    /// 主手是否拿着带指定「自带效果」的魂师主武器；换手即失效。
+    public static boolean holdsSoulWeaponTrait(@Nullable Player player, SoulWeaponItem.Trait trait) {
+        return player != null && player.getMainHandItem().getItem() instanceof SoulWeaponItem weapon && weapon.hasTrait(trait);
+    }
+
+    /// 用过堕魂星核之后：使用魂师主武器时自动把魔力条切成灵魂条。
+    ///
+    /// 没解锁时保持原样（只能用堕魂星核手动切换），避免开局就把资源模式抢走。
+    public static void ensureResourceModeForSoulWeapon(ServerPlayer player) {
+        if (Confluence.SOUL_SKILLS && SoulStorage.of(player).isMasterSwitchUnlocked() && !isSoulMode(player)) {
+            switchSoulMode(player, true);
+        }
+    }
+
+    /// 用过堕魂星核之后：使用魔法武器时自动把灵魂条切成魔力条。
+    public static void ensureResourceModeForMagicWeapon(ServerPlayer player) {
+        if (Confluence.SOUL_SKILLS && SoulStorage.of(player).isMasterSwitchUnlocked() && isSoulMode(player)) {
+            switchSoulMode(player, false);
+        }
     }
 
     public static boolean isSoulSkillLearned(@Nullable Player player, ResourceLocation skillId) {
@@ -674,10 +697,27 @@ public final class PlayerUtils {
         }
     }
 
-    /// 返回尚未乘灵魂属性倍率的技能与主武器总伤害。
-    public static float getSoulSkillDamage(Player player, SoulSkillStack stack) {
+    /// 当前主手武器的灵魂伤害（武器自身基数，不含属性与增益）。
+    public static float getWeaponSoulDamage(Player player) {
         ItemStack mainHand = player.getMainHandItem();
-        float weaponDamage = mainHand.getItem() instanceof SoulWeaponItem weapon ? weapon.getSoulDamage(mainHand) : 0.0F;
+        return mainHand.getItem() instanceof SoulWeaponItem weapon ? weapon.getSoulDamage(mainHand) : 0.0F;
+    }
+
+    /// 协同类（延时 / 多段）攻击专用的伤害：武器部分取「该技能最近一次施法时」的快照。
+    ///
+    /// 因此放出去之后换手、空手都不会改变已施放技能的伤害；技能基础伤害、引渡者、
+    /// 星魂联结、分魂驾驭以及其它实时增益仍然照常结算。
+    public static float getCastSoulSkillDamage(ServerPlayer player, SoulSkill skill) {
+        return getSoulSkillDamage(player, skill.getStack(), SoulStorage.of(player).getCastWeaponDamage(skill.getId()));
+    }
+
+    /// 返回尚未乘灵魂属性倍率的技能与主武器总伤害（武器部分取当前主手）。
+    public static float getSoulSkillDamage(Player player, SoulSkillStack stack) {
+        return getSoulSkillDamage(player, stack, getWeaponSoulDamage(player));
+    }
+
+    /// 返回尚未乘灵魂属性倍率的技能与主武器总伤害；武器部分由调用方给定。
+    public static float getSoulSkillDamage(Player player, SoulSkillStack stack, float weaponDamage) {
         SoulSkillDamageEvent event = NeoForge.EVENT_BUS.post(new SoulSkillDamageEvent(player, stack, stack.getDamage(), weaponDamage));
         float amount = Math.max(0.0F, event.getAmount());
         /// 引渡者：引魂标签内的技能基础伤害固定 +1，不看技能分类
@@ -694,6 +734,21 @@ public final class PlayerUtils {
             amount *= SoulSkillParameters.SOUL_CONTROL_DAMAGE_MULTIPLIER;
         }
         return amount;
+    }
+
+    /// 灵魂突击：增益期间用枪械开火时消耗 1 魂强化这一发子弹（伤害 +N），并有概率返还 1 魂。
+    ///
+    /// 灵魂不足时**不触发**（也不走生命代偿），普通子弹照常打出。
+    public static float applySoulAssaultGunBonus(ServerPlayer player, float damage) {
+        if (!player.hasEffect(ModEffects.SOUL_ASSAULT)
+                || getSoul(player) < SoulSkillParameters.SOUL_ASSAULT_GUN_SOUL_COST
+                || !consumeSoul(player, SoulSkillParameters.SOUL_ASSAULT_GUN_SOUL_COST)) {
+            return damage;
+        }
+        if (player.getRandom().nextFloat() < SoulSkillParameters.SOUL_ASSAULT_GUN_REFUND_CHANCE) {
+            adjustSoul(player, SoulSkillParameters.SOUL_ASSAULT_GUN_REFUND_SOUL);
+        }
+        return damage + SoulSkillParameters.SOUL_ASSAULT_GUN_DAMAGE_BONUS;
     }
 
     /// 先扣可用灵魂，返回需在效果执行后结算的生命代偿；负值表示取消。
@@ -789,6 +844,12 @@ public final class PlayerUtils {
                 && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.SOULDANCER_ROBE.get());
     }
 
+    /// 判断玩家是否穿戴灵魂长袍两件套（灵魂头套 + 灵魂长袍）。
+    public static boolean isWearingSoulRobeSet(Player player) {
+        return player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.SOUL_HOOD.get())
+                && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.SOUL_ROBE.get());
+    }
+
     /// 收集灵魂时刷新魂舞限时增益。
     public static void onSoulCollected(Player player, long gameTime) {
         if (isWearingSouldancerSet(player)) {
@@ -796,11 +857,13 @@ public final class PlayerUtils {
         }
     }
 
-    /// 每刻同步魂舞增益的临时属性修饰符，到期自行移除。
+    /// 每刻同步魂舞增益与灵魂长袍套装效果的临时属性修饰符，条件失效自行移除。
     public static void tickSoulArmorSets(ServerPlayer player, long gameTime) {
         boolean active = gameTime < SoulStorage.of(player).getSouldancerBuffEnd();
         applyTransientModifier(player, LibAttributes.getCriticalChance(), SOULDANCER_CRIT_ID, SoulSkillParameters.SOULDANCER_CRIT_BONUS, AttributeModifier.Operation.ADD_VALUE, active);
         applyTransientModifier(player, Attributes.MOVEMENT_SPEED, SOULDANCER_SPEED_ID, SoulSkillParameters.SOULDANCER_SPEED_BONUS, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, active);
+        /// 灵魂长袍套（头套 + 长袍）：套装效果，灵魂伤害 +5%（与单件的 +5% 叠加）
+        applyTransientModifier(player, LibAttributes.getSoulDamage(), SOUL_ROBE_SET_SOUL_DAMAGE_ID, SoulSkillParameters.SOUL_ROBE_SET_SOUL_DAMAGE_BONUS, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, isWearingSoulRobeSet(player));
     }
 
     private static void applyTransientModifier(Player player, Holder<Attribute> attribute, ResourceLocation id, double value, AttributeModifier.Operation operation, boolean active) {
@@ -893,6 +956,8 @@ public final class PlayerUtils {
             return false;
         }
         setSoulSkillCooldown(player, skill, skill.getCooldown(skillStack));
+        /// 记录本次施法时的武器灵魂伤害：魂引天星、灵魂突击这类延时/多段攻击之后换手也不掉伤害。
+        SoulStorage.of(player).setCastWeaponDamage(skill.getId(), getWeaponSoulDamage(player));
         SoulSkillStack castStack = skillStack.copy();
         SoulSkillSyncPacketS2C.sendToClient(player);
         skill.use(player, skillStack);
@@ -903,9 +968,13 @@ public final class PlayerUtils {
 
     /// 施放成功后的饰品与被动联动。
     ///
+    /// 「附魂」与「强力附魂系列」已合并为同一个标签 `SOUL_ATTACH`，所以下面两条联动认的是同一份名单：
+    ///
     /// - `束魂锁链`：施放任意「附魂」技能时，把其余已装备的「附魂」技能同时放出。
-    /// - `魂术轮转`：施放「强力附魂系列」技能时，沿技能栏把该系列其余技能依次连锁放出，结束后选择回到起手技能；
-    ///   非该系列技能仍沿用原来的「自动切到下一个可释放技能」，且同样会跳过冷却中的技能。
+    ///   登记在「强主动技能」(`MAJOR_ACTIVE`) 里的技能**不参与**这套联动。
+    /// - `魂术轮转`：施放「附魂」技能时，沿技能栏把其余附魂技能依次连锁放出，结束后选择回到起手技能；
+    ///   非附魂技能仍沿用原来的「自动切到下一个可释放技能」，且同样会跳过冷却中的技能。
+    ///   「强主动技能」既不连锁也不被轮转选中，只能手动放。
     ///
     /// 连锁施放统一走 `castSoulSkill`，不会再回到本方法，因此不存在自递归。
     private static void applySoulSkillSynergy(ServerPlayer player, SoulSkill primary, int castIndex) {
@@ -914,7 +983,8 @@ public final class PlayerUtils {
                 if (stack.isEmpty() || stack.getSoulSkill() == primary) {
                     continue;
                 }
-                if (stack.getSoulSkill().is(ModTags.SoulSkills.SOUL_ATTACH)) {
+                if (stack.getSoulSkill().is(ModTags.SoulSkills.SOUL_ATTACH)
+                        && !stack.getSoulSkill().is(ModTags.SoulSkills.MAJOR_ACTIVE)) {
                     castSoulSkillIfReady(player, stack);
                 }
             }
@@ -922,8 +992,8 @@ public final class PlayerUtils {
         if (!isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_ROTATION.get())) {
             return;
         }
-        if (primary.is(ModTags.SoulSkills.ENHANCED_SOUL_SERIES)) {
-            chainCastEnhancedSoulSeries(player, castIndex);
+        if (primary.is(ModTags.SoulSkills.SOUL_ATTACH)) {
+            chainCastSoulAttachSkills(player, castIndex);
         } else {
             rotateToNextSkill(player);
         }
@@ -939,8 +1009,10 @@ public final class PlayerUtils {
         castSoulSkill(player, stack);
     }
 
-    /// 魂术轮转：沿技能栏把「强力附魂系列」技能逐个连锁放出，结束后落到下一个能施放的槽位。
-    private static void chainCastEnhancedSoulSeries(ServerPlayer player, int startIndex) {
+    /// 魂术轮转：沿技能栏把其余「附魂」技能逐个连锁放出，结束后落到下一个能施放的槽位。
+    ///
+    /// 「强主动技能」跳过：它们只能手动放，不该被连锁带出来。
+    private static void chainCastSoulAttachSkills(ServerPlayer player, int startIndex) {
         List<SoulSkillStack> equipped = new ArrayList<>(getEquippedSoulSkills(player));
         int size = equipped.size();
         if (size <= 0) {
@@ -948,7 +1020,8 @@ public final class PlayerUtils {
         }
         for (int step = 1; step <= size; step++) {
             SoulSkillStack candidate = equipped.get((startIndex + step) % size);
-            if (candidate.isEmpty() || !candidate.getSoulSkill().is(ModTags.SoulSkills.ENHANCED_SOUL_SERIES)) {
+            if (candidate.isEmpty() || !candidate.getSoulSkill().is(ModTags.SoulSkills.SOUL_ATTACH)
+                    || candidate.getSoulSkill().is(ModTags.SoulSkills.MAJOR_ACTIVE)) {
                 continue;
             }
             castSoulSkillIfReady(player, candidate);
@@ -962,6 +1035,7 @@ public final class PlayerUtils {
     /// 从当前槽向后（含回绕）找第一个「非空、非被动、当前可用」的槽位；找不到返回 -1。
     ///
     /// 冷却中的技能**不**跳过：轮到它就停在它上面，避免按一次键把选中位一路甩到别的技能。
+    /// 「强主动技能」跳过：它们只能手动选中，不该被空槽时的按键顺手带出来。
     private static int findNextCastableSoulSkillIndex(ServerPlayer player) {
         List<SoulSkillStack> equipped = getEquippedSoulSkills(player);
         int size = equipped.size();
@@ -972,7 +1046,8 @@ public final class PlayerUtils {
         for (int step = 1; step <= size; step++) {
             int index = (current + step) % size;
             SoulSkillStack candidate = equipped.get(index);
-            if (candidate.isEmpty() || candidate.getSoulSkill().isPassive()) {
+            if (candidate.isEmpty() || candidate.getSoulSkill().isPassive()
+                    || candidate.getSoulSkill().is(ModTags.SoulSkills.MAJOR_ACTIVE)) {
                 continue;
             }
             /// 冷却中的技能不跳过：只按“空槽 / 被动 / 当前不可用”筛选。
@@ -985,14 +1060,15 @@ public final class PlayerUtils {
     }
 
     /// 魂术轮转：从 `start` 之后（含回绕，不含 `start` 本身）找第一个「非空、非被动、当前可用且不在冷却」的槽位；
-    /// 找不到返回 -1，调用方保持当前选中位不变。
+    /// 找不到返回 -1，调用方保持当前选中位不变。「强主动技能」跳过，轮转不会停在它们上面。
     private static int findNextReadySoulSkillIndex(ServerPlayer player, int start) {
         List<SoulSkillStack> equipped = getEquippedSoulSkills(player);
         int size = equipped.size();
         for (int step = 1; step < size; step++) {
             int index = Math.floorMod(start + step, size);
             SoulSkillStack candidate = equipped.get(index);
-            if (candidate.isEmpty() || candidate.getSoulSkill().isPassive()) {
+            if (candidate.isEmpty() || candidate.getSoulSkill().isPassive()
+                    || candidate.getSoulSkill().is(ModTags.SoulSkills.MAJOR_ACTIVE)) {
                 continue;
             }
             ResourceLocation id = candidate.getSoulSkill().getId();
@@ -1067,6 +1143,10 @@ public final class PlayerUtils {
         }
         if (TCUtils.hasType(player, AccessoryItems.FROSTBITE$SOUL$RING)) {
             ticks = Math.round(ticks * (1.0F - SoulSkillParameters.FROSTBITE_SOUL_RING_COOLDOWN_REDUCTION));
+        }
+        /// 松露灯：手持时技能冷却额外缩短
+        if (player.getMainHandItem().is(SoulItems.TRUFFLE_LANTERN.get())) {
+            ticks = Math.round(ticks * (1.0F - SoulSkillParameters.TRUFFLE_LANTERN_COOLDOWN_REDUCTION));
         }
         return ticks;
     }
@@ -1169,6 +1249,8 @@ public final class PlayerUtils {
     }
 
     public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
+        /// 用过堕魂星核之后：使用任何魔法武器都会把灵魂条切成魔力条。
+        ensureResourceModeForMagicWeapon(player);
         if (isSoulMode(player)) {
             return false;
         }
@@ -1723,29 +1805,86 @@ public final class PlayerUtils {
         storage.setLifeReturnActive(returning);
     }
 
-    /// 魂引天星：每颗星消耗固定灵魂，命中前按概率返还。
+    /// 魂引天星：每轮给半径内**敌怪**各落一颗坠星，只只之间错开 {@link SoulSkillParameters#STAR_CALL_STAGGER_TICKS} 刻。
+    ///
+    /// **额外坠星齐射不消耗灵魂**：灵魂只在施放时按 `STAR_CALL_SOUL_COST` 扣一次，
+    /// 之后增益期间的每一轮齐射都是免费的（与附魂激荡的免费自动施放同一口径）。
+    /// 需要恢复「每轮扣魂」时把 `STAR_CALL_VOLLEY_SOUL_COST` 调成非 0，届时才结算概率返还。
+    ///
+    /// **有索敌**：先取半径内的敌怪（按距离由近到远，最多 `STAR_CALL_STARS_PER_VOLLEY` 只），
+    /// 再在每只头顶落一颗；范围内没有敌怪时这一轮**完全不落星**——
+    /// 不会出现「空场还在持续掉星星」的情况，也不会有无意义的实体堆积。
     private static void tickStarCall(ServerPlayer player, SoulStorage storage) {
-        if (storage.getCurrentSoul() < SoulSkillParameters.STAR_CALL_SOUL_PER_STAR) {
+        float volleyCost = SoulSkillParameters.STAR_CALL_VOLLEY_SOUL_COST;
+        /// 只有显式给了轮次成本时才按轮扣魂并结算返还；默认 0，整轮免费。
+        if (volleyCost > 0.0F) {
+            if (storage.getCurrentSoul() < volleyCost || !consumeSoul(player, volleyCost)) {
+                return;
+            }
+            if (player.getRandom().nextFloat() < SoulSkillParameters.STAR_CALL_REFUND_CHANCE) {
+                storage.receive(1.0F);
+            }
+        }
+        List<LivingEntity> targets = starCallTargets(player);
+        if (targets.isEmpty()) {
             return;
         }
-        LivingEntity target = null;
-        for (LivingEntity candidate : player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(16.0),
+        float damage = getCastSoulSkillDamage(player, ModSoulSkills.STAR_CALL.get());
+        int delay = 0;
+        for (LivingEntity target : targets) {
+            Vec3 position = new Vec3(target.getX(), starCallSpawnY(player.level(), target), target.getZ());
+            SoulLureProjectile star = SoulLureProjectile.star(player, position, new Vec3(0.0, -1.0, 0.0), damage, 1.2F, 0.02);
+            star.setSpawnDelay(delay);
+            player.level().addFreshEntity(star);
+            delay += SoulSkillParameters.STAR_CALL_STAGGER_TICKS;
+        }
+    }
+
+    /// 索敌：半径内**最近的敌怪**（只认敌怪阵营，球形距离），没有目标返回 null。
+    ///
+    /// 魂引天星与亵渎之魂共用这一套口径。
+    public static @Nullable LivingEntity findNearestEnemy(ServerPlayer player, double radius) {
+        double limit = radius * radius;
+        double best = limit;
+        LivingEntity nearest = null;
+        for (LivingEntity candidate : player.level().getEntitiesOfClass(LivingEntity.class,
+                player.getBoundingBox().inflate(radius),
+                target -> target.isAlive() && !target.isSpectator() && !target.isAlliedTo(player)
+                        && target.distanceToSqr(player) <= limit
+                        && EnemyDamageRules.isEnemy(target))) {
+            double distance = candidate.distanceToSqr(player);
+            if (distance < best) {
+                best = distance;
+                nearest = candidate;
+            }
+        }
+        return nearest;
+    }
+
+    /// 索敌：半径内的敌怪，按距离由近到远，最多 `STAR_CALL_STARS_PER_VOLLEY` 只。
+    ///
+    /// 用球形距离判定而不是单纯的包围盒，`STAR_CALL_TARGET_RADIUS` 才是真正的「多少格以内」。
+    private static List<LivingEntity> starCallTargets(ServerPlayer player) {
+        double radius = SoulSkillParameters.STAR_CALL_TARGET_RADIUS;
+        double radiusSqr = radius * radius;
+        List<LivingEntity> targets = player.level().getEntitiesOfClass(LivingEntity.class,
+                player.getBoundingBox().inflate(radius),
                 candidate -> candidate.isAlive() && !candidate.isSpectator() && !candidate.isAlliedTo(player)
-                        && EnemyDamageRules.isEnemy(candidate))) {
-            target = candidate;
-            break;
+                        && candidate.distanceToSqr(player) <= radiusSqr
+                        && EnemyDamageRules.isEnemy(candidate));
+        targets.sort(Comparator.comparingDouble(target -> target.distanceToSqr(player)));
+        int cap = Math.max(1, SoulSkillParameters.STAR_CALL_STARS_PER_VOLLEY);
+        return targets.size() > cap ? targets.subList(0, cap) : targets;
+    }
+
+    /// 落点高度：目标上方 `STAR_CALL_SPAWN_HEIGHT` 格；若那里被实心方块占住，向下找第一个空位，
+    /// 避免在洞穴/室内生成的坠星一出场就撞方块。
+    private static double starCallSpawnY(Level level, LivingEntity target) {
+        double y = target.getY() + SoulSkillParameters.STAR_CALL_SPAWN_HEIGHT;
+        double floor = target.getY() + 1.0;
+        while (y > floor && !level.isEmptyBlock(BlockPos.containing(target.getX(), y, target.getZ()))) {
+            y -= 1.0;
         }
-        double x = target != null ? target.getX() : player.getX() + player.getLookAngle().x * 4.0;
-        double z = target != null ? target.getZ() : player.getZ() + player.getLookAngle().z * 4.0;
-        double y = player.getY() + 8.0;
-        float damage = getSoulSkillDamage(player, ModSoulSkills.STAR_CALL.get().getStack());
-        /// 外观改用星怒的坠星弹射物，不再走 `falling_star` 粒子。
-        player.level().addFreshEntity(SoulLureProjectile.star(player, new Vec3(x, y, z), new Vec3(0, -1, 0), damage, 1.2F, 0.02));
-        if (!consumeSoul(player, SoulSkillParameters.STAR_CALL_SOUL_PER_STAR)) {
-            return;
-        }
-        if (player.getRandom().nextFloat() < SoulSkillParameters.STAR_CALL_REFUND_CHANCE) {
-            storage.receive(1.0F);
-        }
+        return Math.max(floor, y);
     }
 }

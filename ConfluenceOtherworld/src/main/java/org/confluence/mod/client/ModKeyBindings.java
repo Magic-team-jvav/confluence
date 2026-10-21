@@ -65,21 +65,15 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
-    /// 灵魂快捷技能切换
-    public static final Lazy<KeyMapping> MAGIC_QUICK_SKILL_SWITCHING = register(() -> new KeyMapping(
-            "key.confluence.soulcerer.quick_skill_switching",
+    /// 切换灵魂技能：默认**左 Alt**，按住时弹出快捷技能面板（小轮盘 / 大轮盘 / 横向卡片），松开确认。
+    ///
+    /// 原来这里有两份绑定（「灵魂快捷技能切换」与「释放灵魂技能」），但只有前者被真正读取，
+    /// 改后者完全没效果；现已合并成这一条，界面里显示为「切换灵魂技能」。
+    public static final Lazy<KeyMapping> MAGIC_SKILL_SWITCHING = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
+            "key.confluence.soulcerer.skill_switching",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_LEFT_SHIFT,
-            KEY_BINDINGS_CATEGORY
-    ));
-
-    /// 魔法技能释放
-    public static final Lazy<KeyMapping> MAGIC_SKILL_RELEASE = Confluence.SOUL_SKILLS ? register(() -> new KeyMapping(
-            "key.confluence.magic.skill_release",
-            KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_LEFT_SHIFT,
+            GLFW.GLFW_KEY_LEFT_ALT,
             KEY_BINDINGS_CATEGORY
     )) : null;
 

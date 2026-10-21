@@ -16,6 +16,14 @@
 				}
 			}
 		},
+		"curves": {
+			"variable.alpha": {
+				"type": "linear",
+				"input": "v.particle_age",
+				"horizontal_range": "v.particle_lifetime",
+				"nodes": [0, 1, 1, 1]
+			}
+		},
 		"components": {
 			"minecraft:emitter_local_space": {
 				"position": true,
@@ -57,7 +65,7 @@
 				}
 			},
 			"minecraft:particle_appearance_tinting": {
-				"color": [1, 1, 1, 0.8]
+				"color": [1, 1, 1, "variable.alpha"]
 			}
 		}
 	}

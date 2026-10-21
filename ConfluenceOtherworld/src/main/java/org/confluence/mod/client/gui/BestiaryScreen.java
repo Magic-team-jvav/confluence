@@ -31,7 +31,6 @@ public class BestiaryScreen extends Screen {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("bestiary/background");
     private static final int FILTER_TEXTURE_SIZE = 256;
     private static final int ENTRY_BACKGROUND_SIZE = 48;
-    private static final String PNG_SUFFIX = ".png";
     private static final ResourceLocation FILTERS = Confluence.asResource("bestiary/filters");
 
     private static final int imageWidth = 220;
@@ -447,11 +446,7 @@ public class BestiaryScreen extends Screen {
             y1 = topPos + 10;
             // 背景图
             ResourceLocation sprite = showedEntry.background;
-            if (sprite.getPath().endsWith(PNG_SUFFIX)) {
-                guiGraphics.blit(sprite, x1, y1, 0, 0, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE);
-            } else {
-                guiGraphics.blitSprite(sprite, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE, 0, 0, x1, y1, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE);
-            }
+            guiGraphics.blitSprite(sprite, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE, 0, 0, x1, y1, ENTRY_BACKGROUND_SIZE, ENTRY_BACKGROUND_SIZE);
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
             if (living != null) {

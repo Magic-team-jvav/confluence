@@ -5,6 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 public class GuiSprite {
+    private static final String GUI_SPRITE_DIRECTORY = "textures/gui/sprites/";
+    private static final String PNG_SUFFIX = ".png";
     protected final ResourceLocation sprite;
     protected final int textureW;
     protected final int textureH;
@@ -22,7 +24,8 @@ public class GuiSprite {
     }
 
     public GuiSprite(ResourceLocation path, int textureW, int textureH, int u, int v, int w, int h) {
-        this.sprite = path;
+        this.sprite = path.getPath().endsWith(PNG_SUFFIX)
+                ? path : path.withPrefix(GUI_SPRITE_DIRECTORY).withSuffix(PNG_SUFFIX);
         this.textureW = textureW;
         this.textureH = textureH;
         this.u = u;

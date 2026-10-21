@@ -43,6 +43,6 @@ public abstract class EnhanceForgeScreen<M extends EnhancedForgeMenu> extends Ab
             guiGraphics.blit(BACKGROUND, leftPos + 56, topPos + 75, 177, 0, l, 3, TEXTURE_SIZE, TEXTURE_SIZE);
         }
         int j1 = Mth.ceil(menu.getBurnProgress() * 24);
-        guiGraphics.blit(BURN_PROGRESS_SPRITE, leftPos + 91, topPos + 34, 176, 14, j1, 16, TEXTURE_SIZE, TEXTURE_SIZE);
+        guiGraphics.blitSprite(BURN_PROGRESS_SPRITE, TEXTURE_SIZE, TEXTURE_SIZE, 176, 14, leftPos + 91, topPos + 34, j1, 16);
     }
 }

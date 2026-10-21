@@ -95,6 +95,7 @@ public final class ModClientSetups {
     public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
     public static final int LEGACY_SIZE = 128;
     public static final ResourceLocation LEGACY_SPRITE = Confluence.asResource("hud/icon");
+    public static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("textures/gui/sprites/hud/icon.png");
     public static final int OVERLAY_SIZE = 128;
     public static final ResourceLocation OVERLAY_SPRITE = Confluence.asResource("hud/overlay");
     // region sun todo dynamic texture

@@ -365,8 +365,7 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
                 BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(entry -> entry.type),
                 PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "order", 1000000).forGetter(entry -> entry.order),
                 PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.intRange(0, 5), "rarity", 1).forGetter(entry -> entry.rarity),
-                PortCodecExtension.lenientOptionalFieldOf(ResourceLocation.CODEC, "background", SURFACE).forGetter(entry -> entry.background.getPath().endsWith(PNG_SUFFIX)
-                        ? entry.background : entry.background.withPrefix(GUI_SPRITE_DIRECTORY).withSuffix(PNG_SUFFIX)),
+                PortCodecExtension.lenientOptionalFieldOf(ResourceLocation.CODEC, "background", SURFACE).forGetter(entry -> entry.background),
                 PortCodecExtension.lenientOptionalFieldOf(PortComponentSerialization.CODEC, "description", UNKNOWN).forGetter(entry -> entry.description),
                 PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.homogenousList(FilterEntry.CODEC, false), "filters", List.of()).forGetter(entry -> entry.filters),
                 PortCodecExtension.lenientOptionalFieldOf(TagParser.LENIENT_CODEC, "entity_nbt").forGetter(entry -> entry.entityNbt)
@@ -385,7 +384,7 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
         public Entry() {
             this.order = 1000000;
             this.rarity = 1;
-            this.background = SURFACE;
+            this.background = SURFACE.withPrefix(GUI_SPRITE_DIRECTORY).withSuffix(PNG_SUFFIX);
             this.description = UNKNOWN;
             this.filters = List.of();
             this.entityNbt = Optional.empty();
@@ -395,8 +394,8 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
             this.type = type;
             this.order = order;
             this.rarity = rarity;
-            this.background = background.getPath().startsWith(GUI_SPRITE_DIRECTORY) && background.getPath().endsWith(PNG_SUFFIX)
-                    ? background.withPath(path -> path.substring(GUI_SPRITE_DIRECTORY.length(), path.length() - PNG_SUFFIX.length())) : background;
+            this.background = background.getPath().endsWith(PNG_SUFFIX)
+                    ? background : background.withPrefix(GUI_SPRITE_DIRECTORY).withSuffix(PNG_SUFFIX);
             this.description = description;
             this.filters = filters;
             this.entityNbt = entityNbt;

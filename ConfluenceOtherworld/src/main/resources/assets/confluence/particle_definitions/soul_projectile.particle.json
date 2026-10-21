@@ -16,13 +16,21 @@
 				}
 			}
 		},
+		"curves": {
+			"variable.alpha": {
+				"type": "linear",
+				"input": "v.particle_age",
+				"horizontal_range": "v.particle_lifetime",
+				"nodes": [0, 1, 1, 1]
+			}
+		},
 		"components": {
 			"minecraft:emitter_local_space": {
 				"position": true,
 				"rotation": false
 			},
 			"minecraft:emitter_rate_steady": {
-				"spawn_rate": 15,
+				"spawn_rate": 45,
 				"max_particles": 100
 			},
 			"minecraft:emitter_lifetime_looping": {
@@ -57,7 +65,7 @@
 				}
 			},
 			"minecraft:particle_appearance_tinting": {
-				"color": [1, 1, 1, 0.8]
+				"color": [1, 1, 1, "variable.alpha"]
 			}
 		}
 	}

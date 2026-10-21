@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
@@ -313,6 +314,16 @@ public class SoulOverviewScreen extends Screen {
         }).bounds(5, this.height - 25, 20, 20).build();
         addRenderableWidget(hueSliderButton);
 
+        /// 背景总开关：和色相 / 明度滑块放在同一组。
+        /// 关掉后 `renderBackground` 只铺静态底色，噪点、树、魔法与滚动全部停掉，界面只留底色和技能。
+        Button backgroundToggle = Button.builder(backgroundToggleLabel(), button -> {
+            ClientConfigs.setSoulcererBackgroundEnabled(!ClientConfigs.isSoulcererBackgroundEnabled());
+            button.setMessage(backgroundToggleLabel());
+        }).bounds(29, this.height - 25, 20, 20)
+                .tooltip(Tooltip.create(Component.translatable("confluence.screen.soulcerer_overview.background_toggle")))
+                .build();
+        addRenderableWidget(backgroundToggle);
+
         int hue = ClientConfigs.soulcererBackgroundHue;
         double hueP = hue / 360.0;
 
@@ -535,8 +546,10 @@ public class SoulOverviewScreen extends Screen {
     // ============ 渲染 ============
 
     /// 绘制动态背景并推进视口滚动动画。
+    ///
+    /// 总开关关掉后仍铺一层静态底色（沿用色相 / 对比度），只是不再画噪点、树、魔法，也不推进滚动，
+    /// 否则界面会直接透出世界。
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-
         Minecraft mc = Minecraft.getInstance();
         ClientLevel level = mc.level;
 
@@ -551,7 +564,12 @@ public class SoulOverviewScreen extends Screen {
         float lit = ClientConfigs.soulcererBackgroundContrast / 255F;
         float lit1 = lit * 0.6F;
 
+        /// 静态底色：开关关掉时也保留，保证界面不透出世界。
         guiGraphics.fill(0, 0, this.width, this.height, (Color.HSBtoRGB(h3, 0.93f + Mth.sqrt(1 - lit * lit) * 0.07f, 0.05f * lit) & 0x00FFFFFF) | 0xFF000000);
+        /// 背景总开关：关掉后只保留上面这层底色，其余背景层与滚动推进全部跳过。
+        if (!ClientConfigs.isSoulcererBackgroundEnabled()) {
+            return;
+        }
 
         float offsetScale = 0.15f;
         float noiseScale = 0.25f;
@@ -1235,6 +1253,11 @@ public class SoulOverviewScreen extends Screen {
         int outA = Mth.clamp((int)(finalA * 255), 0, 255);
 
         return (outA << 24) | (outR << 16) | (outG << 8) | outB;
+    }
+
+    /// 背景开关按钮的文案：☑ = 画完整背景，☐ = 只留底色与技能。
+    private static Component backgroundToggleLabel() {
+        return Component.literal(ClientConfigs.isSoulcererBackgroundEnabled() ? "☑" : "☐");
     }
 
     /// 绘制总览控件及可见的背景调节滑块。

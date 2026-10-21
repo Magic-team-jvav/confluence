@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.soulcerer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -9,6 +8,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,8 +19,13 @@ import net.minecraft.world.phys.Vec3;
 
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -35,15 +40,21 @@ import java.util.UUID;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class SpiritSurgeEntity extends Projectile {
+    /// 激荡的地面光环特效：贴地（XZ 平面）、从施法点扩散到判定框半径。
+    public static final ResourceLocation SURGE_PARTICLE = Confluence.asResource("spirit_surge");
     private static final EntityDataAccessor<Long> START_TIME = SynchedEntityData.defineId(SpiritSurgeEntity.class, EntityDataSerializers.LONG);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(SpiritSurgeEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(SpiritSurgeEntity.class, EntityDataSerializers.INT);
     private static final String HIT_ENTITIES_TAG = "HitEntities";
     private final Set<UUID> hitEntities = new HashSet<>();
+    /// 地面光环只在客户端放一次，避免每刻往粒子引擎里添加发射器。
+    private boolean surgeRingSpawned;
     private float damage;
     private double verticalRange = SoulSkillParameters.SPIRIT_SURGE_VERTICAL_RANGE;
     private int chainCount;
     private float chainDamage;
+    /// 冲击波击退强度：0 表示不击退（普通激荡 / 引魂激荡都不击退，只有灵魂激荡冲击的终结爆炸用）。
+    private double knockback;
 
     public SpiritSurgeEntity(EntityType<? extends SpiritSurgeEntity> type, Level level) {
         super(type, level);
@@ -73,6 +84,12 @@ public class SpiritSurgeEntity extends Projectile {
         entityData.set(START_TIME, owner.level().getGameTime());
     }
 
+    /// 设置冲击波的击退强度；只对**非施法者**生效，玩家自己不会被自己的激荡推走。
+    public SpiritSurgeEntity withKnockback(double strength) {
+        this.knockback = Math.max(0.0, strength);
+        return this;
+    }
+
     @Override
     protected void defineSynchedData() {
         entityData.define(START_TIME, 0L);
@@ -99,10 +116,8 @@ public class SpiritSurgeEntity extends Projectile {
         super.tick();
         double radius = getRadius();
         if (level().isClientSide) {
-            for (int i = 0; i < SoulSkillParameters.SPIRIT_SURGE_PARTICLE_COUNT; i++) {
-                double angle = Math.PI * 2.0 * i / SoulSkillParameters.SPIRIT_SURGE_PARTICLE_COUNT;
-                level().addParticle(ParticleTypes.SOUL, getX() + Math.cos(angle) * radius, getY(), getZ() + Math.sin(angle) * radius, 0, 0, 0);
-            }
+            /// 只用 `confluence:spirit_surge` 那张贴地光环，不再叠原版 `minecraft:soul` 环粒子。
+            spawnSurgeRing();
             return;
         }
         Entity owner = getOwner();
@@ -113,12 +128,44 @@ public class SpiritSurgeEntity extends Projectile {
                 })) {
             if (hitEntities.add(LibEntityUtils.dedupeIdentity(target).getUUID())) {
                 target.hurt(LibDamageTypes.soul(level(), this, owner), damage);
+                applyKnockback(target, owner);
                 spawnChainProjectiles(target);
             }
         }
         if (age >= duration) {
             discard();
         }
+    }
+
+    /// 冲击波击退：以激荡中心为原点把目标水平推开。
+    ///
+    /// 只作用于**非施法者**——玩家不会被自己放出来的激荡推走；`hurtMarked` 让玩家/生物的位移同步到客户端。
+    private void applyKnockback(Entity target, @Nullable Entity owner) {
+        if (knockback <= 0.0 || target == owner) {
+            return;
+        }
+        Vec3 offset = target.position().subtract(position());
+        Vec3 horizontal = new Vec3(offset.x, 0.0, offset.z);
+        if (horizontal.lengthSqr() < 1.0E-4) {
+            return;
+        }
+        Vec3 direction = horizontal.normalize().scale(knockback);
+        target.push(direction.x, 0.35 * Math.min(1.0, knockback), direction.z);
+        target.hurtMarked = true;
+    }
+
+    /// 地面光环：`confluence:spirit_surge` 粒子定义是贴 XZ 平面的一张环，寿命与激荡同为 0.5 秒，
+    /// 尺寸用 `variable.radius` 从 0 长到「直径 = 判定框半径 × 2」，所以刚好在扩散结束时包住整个范围。
+    ///
+    /// 每次激荡只放一次（`surgeRingSpawned`）：粒子引擎用复用迭代器遍历发射器表，
+    /// 在实体 tick 里反复 `addEmitter` 会重演迷魂孢雾那次的崩溃。
+    private void spawnSurgeRing() {
+        if (surgeRingSpawned) {
+            return;
+        }
+        surgeRingSpawned = true;
+        MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level(), position(), SURGE_PARTICLE,
+                new MolangExp("variable.radius", entityData.get(RADIUS))));
     }
 
     /// 灵魂引发：在被命中的目标位置向随机方向射出连锁弹幕。

@@ -2,6 +2,7 @@ package org.confluence.mod.common.attachment;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -15,6 +16,9 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     private static final int INITIAL_SOUL_COUNT = 1;
@@ -31,6 +35,8 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     private static final String RITUAL_COUNT_TAG = "ritualCount";
     private static final String SURGE_BLAST_CHARGE_TAG = "surgeBlastCharge";
     private static final String LIFE_RETURN_LOST_TAG = "lifeReturnLost";
+    private static final String MASTER_SWITCH_UNLOCKED_TAG = "masterSwitchUnlocked";
+    private static final String CAST_WEAPON_DAMAGE_TAG = "castWeaponDamage";
 
     public static final PortAttachmentSyncHandler<SoulStorage> SYNC_HANDLER = new PortAttachmentSyncHandler<>() {
         @Override
@@ -73,6 +79,10 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     private int ritualCount;
     private int surgeBlastCharge;
     private float lifeReturnLost;
+    /// 是否用过堕魂星核：解锁后使用魂师主武器 / 魔法武器会在灵魂条与魔力条之间自动互切。
+    private boolean masterSwitchUnlocked;
+    /// 每个技能最近一次施法时手持武器的灵魂伤害快照，供延时 / 多段攻击保持伤害。
+    private final Map<ResourceLocation, Float> castWeaponDamage = new HashMap<>();
     private boolean soulDrainActive;
     private boolean lifeReturnActive;
 
@@ -97,6 +107,10 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
         nbt.putInt(RITUAL_COUNT_TAG, ritualCount);
         nbt.putInt(SURGE_BLAST_CHARGE_TAG, surgeBlastCharge);
         nbt.putFloat(LIFE_RETURN_LOST_TAG, lifeReturnLost);
+        nbt.putBoolean(MASTER_SWITCH_UNLOCKED_TAG, masterSwitchUnlocked);
+        CompoundTag weaponDamage = new CompoundTag();
+        castWeaponDamage.forEach((id, value) -> weaponDamage.putFloat(id.toString(), value));
+        nbt.put(CAST_WEAPON_DAMAGE_TAG, weaponDamage);
         return nbt;
     }
 
@@ -112,6 +126,35 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
         this.ritualCount = Mth.clamp(nbt.getInt(RITUAL_COUNT_TAG), 0, SoulSkillParameters.MAX_RITUAL_COUNT);
         this.surgeBlastCharge = Math.max(0, nbt.getInt(SURGE_BLAST_CHARGE_TAG));
         this.lifeReturnLost = Math.max(0.0F, nbt.getFloat(LIFE_RETURN_LOST_TAG));
+        this.masterSwitchUnlocked = nbt.getBoolean(MASTER_SWITCH_UNLOCKED_TAG);
+        this.castWeaponDamage.clear();
+        CompoundTag weaponDamage = nbt.getCompound(CAST_WEAPON_DAMAGE_TAG);
+        for (String key : weaponDamage.getAllKeys()) {
+            ResourceLocation skillId = ResourceLocation.tryParse(key);
+            if (skillId != null) {
+                castWeaponDamage.put(skillId, weaponDamage.getFloat(key));
+            }
+        }
+    }
+
+    /// 记录某技能本次施法时的武器灵魂伤害。
+    public void setCastWeaponDamage(ResourceLocation skillId, float weaponDamage) {
+        this.castWeaponDamage.put(skillId, weaponDamage);
+    }
+
+    /// 读取某技能最近一次施法时的武器灵魂伤害；没有记录时返回 0。
+    public float getCastWeaponDamage(ResourceLocation skillId) {
+        return this.castWeaponDamage.getOrDefault(skillId, 0.0F);
+    }
+
+    /// 是否已经用过堕魂星核（解锁灵魂条 / 魔力条随武器自动互切）。
+    public boolean isMasterSwitchUnlocked() {
+        return masterSwitchUnlocked;
+    }
+
+    /// 记录已用过堕魂星核。
+    public void setMasterSwitchUnlocked(boolean masterSwitchUnlocked) {
+        this.masterSwitchUnlocked = masterSwitchUnlocked;
     }
 
     public int getRitualCount() {

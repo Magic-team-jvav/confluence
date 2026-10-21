@@ -32,7 +32,8 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
                 tag(tag).add(ResourceKey.create(ModSoulSkills.REGISTRY_KEY, skill.getId()));
             }
         }
-        // 附魂：所有给自己挂同名增益的技能（含自动触发的附魂激荡与状态类技能）
+        // 附魂：所有给自己挂同名增益的技能（含自动触发的附魂激荡与状态类技能）。
+        // 原「强力附魂系列」已并进来（多出灵魂突击），束魂锁链与魂术轮转共用这一份名单。
         tag(ModTags.SoulSkills.SOUL_ATTACH)
                 .add(key(ModSoulSkills.ENHANCED_SOUL.get()))
                 .add(key(ModSoulSkills.SOUL_MARK.get()))
@@ -41,16 +42,15 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
                 .add(key(ModSoulSkills.SOUL_PLUNDER.get()))
                 .add(key(ModSoulSkills.SOUL_DRAIN.get()))
                 .add(key(ModSoulSkills.STAR_CALL.get()))
+                .add(key(ModSoulSkills.SOUL_ASSAULT.get()))
                 .add(key(ModSoulSkills.BOILING_BLOOD.get()))
                 .add(key(ModSoulSkills.LIFE_RETURN.get()))
                 .add(key(ModSoulSkills.FIRMAMENT_REVERSED.get()));
-        // 强力附魂系列：束魂锁链/魂术轮转联动的那一组限时增益技能
-        tag(ModTags.SoulSkills.ENHANCED_SOUL_SERIES)
-                .add(key(ModSoulSkills.ENHANCED_SOUL.get()))
-                .add(key(ModSoulSkills.STAR_CALL.get()))
-                .add(key(ModSoulSkills.SOUL_ASSAULT.get()))
-                .add(key(ModSoulSkills.SOUL_PLUNDER.get()))
-                .add(key(ModSoulSkills.SOUL_DRAIN.get()));
+        // 强主动技能：必须手动施放，束魂锁链与魂术轮转都不会自动带出来
+        tag(ModTags.SoulSkills.MAJOR_ACTIVE)
+                .add(key(ModSoulSkills.SOUL_DRAIN.get()))
+                .add(key(ModSoulSkills.KARMA_FLAME.get()))
+                .add(key(ModSoulSkills.BLOOD_RAGE.get()));
         // 被动：可以装备但不能主动释放，装备后才结算效果；魂术轮转用这个标签跳过它们
         tag(ModTags.SoulSkills.PASSIVE)
                 .add(key(ModSoulSkills.LAW_OF_NATURE.get()))

@@ -13,6 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
@@ -33,6 +34,7 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.mixed.ILibMobEffectInstance;
@@ -78,6 +80,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.TownPopulation;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
+import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
 import org.confluence.mod.common.entity.yoyo.BaseYoyoProjectile;
 import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
@@ -98,6 +101,7 @@ import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.whip.WhipDamageSource;
@@ -169,6 +173,11 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::boilingBloodHit);
         PortEventHandler.addListener(LivingEntityEvents::soulSkillOnHurt);
         PortEventHandler.addListener(LivingEntityEvents::bloodRageSoul);
+        // 魂师：收魂饰品加成、魂刀/弓命中回魂、主武器自带效果
+        PortEventHandler.addListener(LivingEntityEvents::soulCollectionAccessoryBonus);
+        PortEventHandler.addListener(LivingEntityEvents::soulWeaponHitSoul);
+        PortEventHandler.addListener(LivingEntityEvents::soulWeaponTraitsOnSkillHit);
+        PortEventHandler.addListener(LivingEntityEvents::brokenGlimmerHeal);
     }
 
     private static void death(LivingDeathEvent event) {
@@ -367,6 +376,93 @@ public final class LivingEntityEvents {
         Player player = event.getEntity();
         if (ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem())) {
             event.setAmount(event.getAmount() + SoulSkillParameters.SOUL_BOW_KILL_SOUL_BONUS);
+        }
+    }
+
+    /// 束魂锁链 / 手环系列（灵魂手环、灵魂再生手环、通灵手环共用 `band_of_soul` 标记）/ 刻骨的记忆：
+    /// 每佩戴一种，每次收魂额外 +1 灵魂。
+    ///
+    /// 三种手环共用同一个 `ValueType.UnitType`，因此戴多只也只算一份加成。
+    private static void soulCollectionAccessoryBonus(SoulCollectionEvent event) {
+        Player player = event.getEntity();
+        float bonus = 0.0F;
+        if (TCUtils.hasType(player, AccessoryItems.SOUL$BINDING$CHAIN)) {
+            bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
+        }
+        if (TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL)) {
+            bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
+        }
+        if (TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
+            bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
+        }
+        if (bonus > 0.0F) {
+            event.setAmount(event.getAmount() + bonus);
+        }
+    }
+
+    /// 祈灵之刃 / 灵魂弓 / 灵魂短弓：攻击命中敌怪时有 50% 概率额外获得 1 点灵魂。
+    private static void soulWeaponHitSoul(PortLivingIncomingDamageEvent event) {
+        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player) || event.getEntity() == player) {
+            return;
+        }
+        boolean soulKnife = player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get());
+        boolean soulBow = ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem());
+        if (!soulKnife && !soulBow) {
+            return;
+        }
+        if (!PlayerUtils.isSoulMode(player) || player.getRandom().nextFloat() >= SoulSkillParameters.SOUL_WEAPON_HIT_SOUL_CHANCE) {
+            return;
+        }
+        PlayerUtils.adjustSoul(player, SoulSkillParameters.SOUL_WEAPON_HIT_SOUL);
+    }
+
+    /// 主武器自带效果里「技能命中」的那几条：星魄补一颗坠星、丛林的灯附带中毒、无分昼夜附带暗影焰。
+    ///
+    /// 只认灵魂伤害来源，因此普通近战 / 弓箭不会触发。
+    private static void soulWeaponTraitsOnSkillHit(PortLivingIncomingDamageEvent event) {
+        if (!event.getSource().is(LibDamageTypes.SOUL)) {
+            return;
+        }
+        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)) {
+            return;
+        }
+        LivingEntity victim = event.getEntity();
+        if (victim == player || !victim.isAlive()) {
+            return;
+        }
+        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.STAR_ON_SKILL_HIT)
+                && !isStarProjectile(event)
+                && player.getRandom().nextFloat() < SoulSkillParameters.STAR_SPIRIT_STAR_CHANCE) {
+            Vec3 center = victim.getBoundingBox().getCenter();
+            float damage = PlayerUtils.getSoulSkillDamage(player, ModSoulSkills.STAR_CALL.get().getStack());
+            SoulLureProjectile star = SoulLureProjectile.star(player,
+                    new Vec3(center.x, victim.getY() + SoulSkillParameters.STAR_CALL_SPAWN_HEIGHT, center.z),
+                    new Vec3(0.0, -1.0, 0.0), damage, 1.2F, 0.02);
+            player.level().addFreshEntity(star);
+        }
+        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)) {
+            victim.addEffect(new MobEffectInstance(MobEffects.POISON, SoulSkillParameters.LIFE_SPLENDOR_POISON_TICKS, 0, false, true, true));
+        }
+        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.SHADOWFLAME_ON_SKILL_HIT)) {
+            victim.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME.get(), SoulSkillParameters.DAY_AND_NIGHT_ALIKE_SHADOWFLAME_TICKS, 0, false, true, true));
+        }
+    }
+
+    /// 星魄的坠星本身也是灵魂伤害：它命中时不再触发星魄，避免自我循环。
+    private static boolean isStarProjectile(PortLivingIncomingDamageEvent event) {
+        return event.getSource().getDirectEntity() instanceof SoulLureProjectile lure && lure.isStarAppearance();
+    }
+
+    /// 残破微光：手持时获得灵魂，有 20% 概率回复 4 点生命。
+    ///
+    /// 「获得灵魂」走收魂事件（击杀结算），灵魂再生与灵魂手环的缓慢回复不受它影响。
+    private static void brokenGlimmerHeal(SoulCollectionEvent event) {
+        Player player = event.getEntity();
+        if (!PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.HEAL_ON_SOUL_GAIN)) {
+            return;
+        }
+        if (player.getRandom().nextFloat() < SoulSkillParameters.BROKEN_GLIMMER_HEAL_CHANCE) {
+            player.heal(SoulSkillParameters.BROKEN_GLIMMER_HEAL_AMOUNT);
         }
     }
 

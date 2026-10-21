@@ -1140,6 +1140,21 @@ public final class ModDataTipProvider implements DataProvider {
                 translate("tooltip.item.confluence.bei_dou_boomerang.3", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
                 translate("tooltip.item.confluence.bei_dou_boomerang.4", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320)),
                 translate("tooltip.item.confluence.bei_dou_boomerang.5", textOptions().color(ChatFormatting.GRAY.getName()).italic(true).maxWidth(320))), Map.of(), false, true));
+        // 魂师主武器：自带效果说明（与 SoulWeaponItem.Trait 一一对应）
+        add(root, SoulItems.BROKEN_GLIMMER.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.broken_glimmer.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, SoulItems.STAR_SPIRIT.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.star_spirit.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, SoulItems.SOUL_CHANT_GUIDE.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.soul_chant_guide.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, SoulItems.SENIOR_PATHFINDER_PRO.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.senior_pathfinder_pro.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, SoulItems.LIFE_SPLENDOR.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.life_splendor.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, SoulItems.DAY_AND_NIGHT_ALIKE.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.day_and_night_alike.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, SoulItems.TRUFFLE_LANTERN.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.truffle_lantern.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         return root;
     }
 }

@@ -8,6 +8,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,6 +29,8 @@ public class SoulProjectileSkill extends SoulSkill {
     private final double aoeRadius;
     private final float aoeDamage;
     private final float refundChance;
+    private final int extraBounces;
+    private final double surgeOnHitRadius;
     private final @Nullable Supplier<MobEffect> selfEffect;
     private final int selfEffectTicks;
 
@@ -41,6 +45,8 @@ public class SoulProjectileSkill extends SoulSkill {
         this.aoeRadius = builder.aoeRadius;
         this.aoeDamage = builder.aoeDamage;
         this.refundChance = builder.refundChance;
+        this.extraBounces = Math.max(0, builder.extraBounces);
+        this.surgeOnHitRadius = Math.max(0.0, builder.surgeOnHitRadius);
         this.selfEffect = builder.selfEffect;
         this.selfEffectTicks = builder.selfEffectTicks;
     }
@@ -56,6 +62,10 @@ public class SoulProjectileSkill extends SoulSkill {
             return;
         }
         float damage = PlayerUtils.getSoulSkillDamage(player, skillStack);
+        /// 引渡者：引魂系列弹幕额外弹射一次；技能自己也可以声明额外弹射次数（强力引魂 +1）。
+        int extraBounce = extraBounces + (PlayerUtils.isSoulBookLearned(player, SoulBooks.PSYCHOPOMP)
+                && skillStack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)
+                ? SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_EXTRA_BOUNCE : 0);
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
         RandomSource random = RandomSource.create();
@@ -66,6 +76,10 @@ public class SoulProjectileSkill extends SoulSkill {
                     : eye;
             SoulLureProjectile projectile = new SoulLureProjectile(serverPlayer, origin, direction, damage, particle, speed,
                     gravity, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE, SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, aoeRadius, aoeDamage);
+            projectile.addBounces(extraBounce);
+            if (surgeOnHitRadius > 0.0) {
+                projectile.setSurgeOnHit(surgeOnHitRadius);
+            }
             modifyProjectile(projectile);
             player.level().addFreshEntity(projectile);
         }
@@ -101,6 +115,8 @@ public class SoulProjectileSkill extends SoulSkill {
         private double aoeRadius;
         private float aoeDamage;
         private float refundChance;
+        private int extraBounces;
+        private double surgeOnHitRadius;
         private @Nullable Supplier<MobEffect> selfEffect;
         private int selfEffectTicks;
 
@@ -148,6 +164,18 @@ public class SoulProjectileSkill extends SoulSkill {
 
         public Builder refund(float refundChance) {
             this.refundChance = refundChance;
+            return this;
+        }
+
+        /// 本技能弹幕在「本体自带的 1 次弹射」之上额外再弹几次（引渡者的额外弹射会再叠上去）。
+        public Builder bounces(int extraBounces) {
+            this.extraBounces = extraBounces;
+            return this;
+        }
+
+        /// 命中敌怪时在该位置补一发灵魂激荡（引魂激荡用），半径 0 关闭。
+        public Builder surgeOnHit(double radius) {
+            this.surgeOnHitRadius = radius;
             return this;
         }
 

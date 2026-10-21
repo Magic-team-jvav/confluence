@@ -9,7 +9,7 @@ import org.confluence.mod.util.PlayerUtils;
 
 public class SoulLureSkill extends SoulSkill {
     public SoulLureSkill(ResourceLocation icon, ResourceLocation id) {
-        super(icon, id, SoulSkillParameters.ACTIVE_DAMAGE, SoulSkillParameters.ACTIVE_SOUL_COST, SoulSkillParameters.ACTIVE_COOLDOWN_TICKS);
+        super(icon, id, SoulSkillParameters.ACTIVE_DAMAGE, SoulSkillParameters.ACTIVE_SOUL_COST, SoulSkillParameters.SOUL_LURE_COOLDOWN_TICKS);
     }
 
     /// 服务端生成单体灵魂弹幕，客户端仅表现施法成功。

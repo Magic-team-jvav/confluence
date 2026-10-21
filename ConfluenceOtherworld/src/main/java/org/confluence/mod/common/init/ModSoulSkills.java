@@ -50,13 +50,14 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> SOUL_LURE = register("soul_lure", rl -> new SoulLureSkill(rl, rl), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> ENHANCED_LURE = register("enhanced_lure", rl -> new SoulProjectileSkill(rl, rl, SoulProjectileSkill.builder(SoulLureProjectile.PARTICLE)
             .damage(SoulSkillParameters.ENHANCED_LURE_DAMAGE)
-            .cost(SoulSkillParameters.ENHANCED_LURE_SOUL_COST, SoulSkillParameters.ENHANCED_LURE_COOLDOWN_TICKS)), SkillCategory.STAR_LURE);
+            .cost(SoulSkillParameters.ENHANCED_LURE_SOUL_COST, SoulSkillParameters.ENHANCED_LURE_COOLDOWN_TICKS)
+            .bounces(SoulSkillParameters.ENHANCED_LURE_EXTRA_BOUNCE)), SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> SOUL_MARK = register("soul_mark", rl -> new SoulMarkSkill(rl, rl), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> LURE_SURGE = register("lure_surge", rl -> new SoulProjectileSkill(rl, rl, SoulProjectileSkill.builder(SoulLureProjectile.PARTICLE)
             .damage(SoulSkillParameters.LURE_SURGE_DAMAGE)
             .cost(SoulSkillParameters.LURE_SURGE_SOUL_COST, SoulSkillParameters.LURE_SURGE_COOLDOWN_TICKS)
-            .aoe(SoulSkillParameters.LURE_SURGE_RADIUS, SoulSkillParameters.LURE_SURGE_AOE_DAMAGE)), SkillCategory.STAR_LURE);
-    public static final Supplier<SoulSkill> CONFUSE_SPORES = register("confuse_spores", rl -> new SoulProjectileSkill(rl, rl, SoulProjectileSkill.builder(SoulLureProjectile.SPORE_PARTICLE)
+            .surgeOnHit(SoulSkillParameters.LURE_SURGE_RADIUS)), SkillCategory.STAR_LURE);
+    public static final Supplier<SoulSkill> CONFUSE_SPORES = register("confuse_spores", rl -> new SoulProjectileSkill(rl, rl, SoulProjectileSkill.builder(SoulLureProjectile.CONFUSE_SPORE_PARTICLE)
             .damage(SoulSkillParameters.CONFUSE_SPORES_DAMAGE)
             .cost(SoulSkillParameters.CONFUSE_SPORES_SOUL_COST, SoulSkillParameters.CONFUSE_SPORES_COOLDOWN_TICKS)
             .count(SoulSkillParameters.CONFUSE_SPORES_COUNT, SoulSkillParameters.CONFUSE_SPORES_SPREAD)
@@ -93,7 +94,8 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> SOUL_PLUNDER = register("soul_plunder", rl -> new SoulBuffSkill(rl, rl,
             SoulSkillParameters.SOUL_PLUNDER_SOUL_COST, SoulSkillParameters.SOUL_PLUNDER_COOLDOWN_TICKS,
             () -> ModEffects.SOUL_PLUNDER.get(), SoulSkillParameters.SOUL_PLUNDER_DURATION_TICKS, 0.0F), SkillCategory.SOUL);
-    public static final Supplier<SoulSkill> SOUL_DRAIN = register("soul_drain", rl -> new StatefulSoulSkill(rl, rl, 0.0F,
+    public static final Supplier<SoulSkill> SOUL_DRAIN = register("soul_drain", rl -> new StatefulSoulSkill(rl, rl,
+            SoulSkillParameters.SOUL_DRAIN_SOUL_COST,
             SoulSkillParameters.SOUL_DRAIN_COOLDOWN_TICKS, () -> ModEffects.SOUL_DRAIN.get(),
             SoulSkillParameters.SOUL_DRAIN_DURATION_TICKS, false), SkillCategory.SOUL);
     public static final Supplier<SoulSkill> STAR_CALL = register("star_call", rl -> new StatefulSoulSkill(rl, rl,

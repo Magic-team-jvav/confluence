@@ -43,6 +43,8 @@ public class FallenSoulCoreItem extends CustomRarityItem implements ILeftClickSt
         if (!PlayerUtils.toggleSoulMode(serverPlayer)) {
             return InteractionResultHolder.fail(stack);
         }
+        /// 用过一次就解锁「随武器自动互切」：之后使用魂师主武器 / 魔法武器会自行切换灵魂条与魔力条。
+        storage.setMasterSwitchUnlocked(true);
         player.getCooldowns().addCooldown(this, SoulSkillParameters.FALLEN_SOUL_CORE_COOLDOWN_TICKS);
         stack.consume(1, player);
         serverPlayer.awardStat(Stats.ITEM_USED.get(this));

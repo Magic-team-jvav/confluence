@@ -43,6 +43,24 @@ public final class ClientConfigs {
     public static int soulcererBackgroundContrast = 255;
     public static boolean soulcererBackgroundTree = true;
     public static boolean soulcererBackgroundMagic = true;
+    /// 背景总开关，默认开；关掉后总览界面不画任何背景层。
+    public static boolean soulcererBackgroundEnabled = true;
+
+    /// 背景是否绘制：**优先读实时配置**（界面里刚点完立即生效），配置尚未加载时才回落到缓存字段。
+    ///
+    /// 总览界面里的开关和配置界面的开关都写同一个 `ConfigValue`，这里读它而不是读缓存，
+    /// 就不会出现"改了值但界面还按旧值画"的情况。
+    public static boolean isSoulcererBackgroundEnabled() {
+        return SOULCERER_BACKGROUND_ENABLED == null ? soulcererBackgroundEnabled : SOULCERER_BACKGROUND_ENABLED.get();
+    }
+
+    /// 写入背景总开关：同时更新配置项与缓存字段，界面与配置文件保持一致。
+    public static void setSoulcererBackgroundEnabled(boolean enabled) {
+        soulcererBackgroundEnabled = enabled;
+        if (SOULCERER_BACKGROUND_ENABLED != null) {
+            SOULCERER_BACKGROUND_ENABLED.set(enabled);
+        }
+    }
 
     public static boolean achievementToast = true;
     public static boolean weaponTooltipBaseStats = false;
@@ -89,6 +107,8 @@ public final class ClientConfigs {
     public static IntValue SOULCERER_BACKGROUND_CONTRAST;
     public static BooleanValue SOULCERER_BACKGROUND_TREE;
     public static BooleanValue SOULCERER_BACKGROUND_MAGIC;
+    /// 魂师技能总览界面的背景总开关：关掉后整层背景不画。
+    public static BooleanValue SOULCERER_BACKGROUND_ENABLED;
 
     private static BooleanValue ACHIEVEMENT_TOAST;
     private static BooleanValue WEAPON_TOOLTIP_BASE_STATS;
@@ -140,6 +160,7 @@ public final class ClientConfigs {
         soulcererBackgroundContrast = SOULCERER_BACKGROUND_CONTRAST.get();
         soulcererBackgroundTree = SOULCERER_BACKGROUND_TREE.get();
         soulcererBackgroundMagic = SOULCERER_BACKGROUND_MAGIC.get();
+        soulcererBackgroundEnabled = SOULCERER_BACKGROUND_ENABLED.get();
 
         achievementToast = ACHIEVEMENT_TOAST.get();
         weaponTooltipBaseStats = WEAPON_TOOLTIP_BASE_STATS.get();
@@ -194,6 +215,9 @@ public final class ClientConfigs {
             CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
             {
                 builder.push("Soulcerer");
+                /// 总开关放在同一分组的最前面，与色相 / 对比度 / 树木 / 魔法效果一起。
+                SOULCERER_BACKGROUND_ENABLED = builder.comment("Draw the dynamic background of the Soul Skill Overview screen. Disable to keep only the widgets.")
+                        .define("soulcererBackgroundEnabled", true);
                 SOULCERER_BACKGROUND_HUE = builder.defineInRange("soulcererBackgroundHue", 270, 0, 360);
                 SOULCERER_BACKGROUND_CONTRAST = builder.defineInRange("soulcererBackgroundContrast", 255, 0, 255);
                 SOULCERER_BACKGROUND_TREE = builder.define("soulcererBackgroundTree", true);

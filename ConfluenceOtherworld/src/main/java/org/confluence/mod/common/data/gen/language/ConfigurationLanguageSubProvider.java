@@ -380,6 +380,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.soulStyle.tooltip", "Soul Style", "灵魂值样式");
         language.add("confluence.configuration.soulcererBackgroundContrast", "Background Contrast", "背景对比度");
         language.add("confluence.configuration.soulcererBackgroundContrast.tooltip", "Set the contrast of the interface background.", "设置界面背景的对比度。");
+        language.add("confluence.configuration.soulcererBackgroundEnabled", "Background Enabled", "背景总开关");
+        language.add("confluence.configuration.soulcererBackgroundEnabled.tooltip", "Draw the dynamic background of the Soul Skill Overview screen. Turn off to keep only the widgets.", "绘制魂师技能总览界面的动态背景；关闭后只保留界面控件。");
         language.add("confluence.configuration.soulcererBackgroundHue", "Background Hue", "背景色相");
         language.add("confluence.configuration.soulcererBackgroundHue.tooltip", "Set the hue of the interface background.", "设置界面背景的色相。");
         language.add("confluence.configuration.soulcererBackgroundMagic", "Background Magic Effects", "背景魔法效果");

@@ -45,7 +45,6 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -799,7 +798,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnClothier(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON)) {
+        if (KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())) {
             if (!hasNPCAlive(region, NpcEntities.CLOTHIER.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.CLOTHIER.get());
             }
@@ -808,10 +807,10 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     /// 只检查玩家附近已加载的地牢；初次发现昼夜均可，死亡或召唤后等下一个白天。
-    public void tickDungeonResidents(ServerLevel level) {
+    public void     tickDungeonResidents(ServerLevel level) {
         if (level.getGameTime() % 40 != 0 || !CommonConfigs.DO_NPC_SPAWNING.get()
                 || !level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
-                || KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON)) return;
+                || KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())) return;
         Set<ChunkPos> checked = new HashSet<>();
         for (ServerPlayer player : level.players()) {
             if (player.isSpectator()) continue;
@@ -1053,7 +1052,7 @@ public enum NPCSpawner implements IGlobalData {
         living.setHealth(wasFullHealth ? living.getMaxHealth() : Math.min(oldHealth, living.getMaxHealth()));
     }
 
-    public static void respawnNPC(ServerLevel level, int dayTime) {
+    public static void respawnNPC(ServerLevel level) {
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
                 level.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)

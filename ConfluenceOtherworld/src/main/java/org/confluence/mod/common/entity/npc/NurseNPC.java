@@ -46,7 +46,7 @@ public class NurseNPC extends BaseNPC {
             cost *= 60L;
         } else if (killBoard.isAnyDefeated(BossEntities.SKELETRON.get(), BossEntities.QUEEN_BEE.get())) {
             cost *= 25L;
-        } else if (killBoard.isAnyDefeated(BossEntities.EATER_OF_WORLDS.get(), BossEntities.BRAIN_OF_CTHULHU.get())) {
+        } else if (killBoard.isEvilDefeated()) {
             cost *= 10L;
         } else if (killBoard.isDefeated(BossEntities.EYE_OF_CTHULHU.get())) {
             cost *= 3L;

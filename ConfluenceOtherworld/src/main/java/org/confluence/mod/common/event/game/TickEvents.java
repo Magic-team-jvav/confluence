@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event.game;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -48,15 +49,14 @@ public final class TickEvents {
 
     private static void levelTick$Post(TickEvent.LevelTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-        if (event.level instanceof ServerLevel machineLevel)
-            EnvironmentalMachines.INSTANCE.tick(machineLevel);
-        if (event.level.dimension() == Level.END) {
+        ResourceKey<Level> dimension = event.level.dimension();
+        if (dimension == Level.END) {
             /// 客户端和服务端按各自世界时间更新潮位。
             VoidSeaHelper.tick(event.level);
         }
-        if (!(event.level instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
-            return;
-        }
+        if(!(event.level instanceof ServerLevel level)) return;
+        EnvironmentalMachines.INSTANCE.tick(level);
+        if (dimension != OverworldUtils.dimension()) return;
         GameEventSystem.INSTANCE.tick(); // 最高优先级，其会影响BossDelaySpawner、NPCSpawner等内容
         FallingStarItemEntity.summon(level);
         MeteoriteTracker.INSTANCE.tick(level);
@@ -77,7 +77,7 @@ public final class TickEvents {
         } else if (dayTime == LibDateUtils._00$00) {
             BossDelaySpawner.spawnDeerClops(level);
         }
-        NPCSpawner.respawnNPC(level, dayTime);
+        NPCSpawner.respawnNPC(level);
         NPCSpawner.INSTANCE.tickDungeonResidents(level);
 
         TaskScheduler scheduler = TooEasy.getScheduler(false);

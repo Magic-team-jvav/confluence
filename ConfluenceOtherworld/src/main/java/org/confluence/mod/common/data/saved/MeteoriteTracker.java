@@ -22,7 +22,6 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.worldgen.feature.MeteoriteFeature;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.jetbrains.annotations.NotNull;
@@ -186,7 +185,7 @@ public enum MeteoriteTracker {
     }
 
     public static void spawnMeteor(ServerLevel level) {
-        if (KillBoard.INSTANCE.isAnyDefeated(BossEntities.EATER_OF_WORLDS.get(), BossEntities.BRAIN_OF_CTHULHU.get()) && level.random.nextFloat() < 0.02F) {
+        if (KillBoard.INSTANCE.isEvilDefeated() && level.random.nextInt(50) == 0) {
             INSTANCE.spawnAtNextNight = true;
         }
     }

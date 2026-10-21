@@ -37,12 +37,10 @@ public final class NPCCombatProgression {
         if (board.isDefeated(BossEntities.KING_SLIME.get())) bonuses = bonuses.add(2, 0.05);
         if (board.isDefeated(BossEntities.EYE_OF_CTHULHU.get())) bonuses = bonuses.add(2, 0.05);
         if (board.isDefeated(BossEntities.DEERCLOPS.get())) bonuses = bonuses.add(3, 0.10);
-        if (board.isAnyDefeated(BossEntities.EATER_OF_WORLDS.get(), BossEntities.BRAIN_OF_CTHULHU.get())) {
-            bonuses = bonuses.add(3, 0.10);
-        }
+        if (board.isEvilDefeated()) bonuses = bonuses.add(3, 0.10);
         if (board.isDefeated(BossEntities.QUEEN_BEE.get())) bonuses = bonuses.add(3, 0.10);
         if (board.isDefeated(BossEntities.SKELETRON.get())) bonuses = bonuses.add(3, 0.10);
-        if (board.getGamePhase().isHardmode()) bonuses = bonuses.add(12, 0.40);
+        if (board.isFleshDefeated()) bonuses = bonuses.add(12, 0.40);
         if (board.isTwinsDefeated()) bonuses = bonuses.add(6, 0.15);
         if (board.isDefeated(BossEntities.THE_DESTROYER.get())) bonuses = bonuses.add(6, 0.15);
         if (board.isDefeated(BossEntities.SKELETRON_PRIME.get())) bonuses = bonuses.add(6, 0.15);

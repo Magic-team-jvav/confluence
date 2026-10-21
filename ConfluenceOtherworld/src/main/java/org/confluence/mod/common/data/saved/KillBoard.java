@@ -57,6 +57,14 @@ public enum KillBoard implements IGlobalData {
         return false;
     }
 
+    public boolean isEvilDefeated() {
+        return isAnyDefeated(BossEntities.EATER_OF_WORLDS.get(), BossEntities.BRAIN_OF_CTHULHU.get());
+    }
+
+    public boolean isFleshDefeated() {
+        return isAnyDefeated(BossEntities.WALL_OF_FLESH.get(), BossEntities.HILL_OF_FLESH.get());
+    }
+
     public boolean isTwinsDefeated() {
         return isDefeated(BossEntities.RETINAZER.get()) && isDefeated(BossEntities.SPAZMATISM.get());
     }

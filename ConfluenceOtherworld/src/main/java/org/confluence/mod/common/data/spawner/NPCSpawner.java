@@ -44,7 +44,6 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -59,6 +58,7 @@ import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.PartyGameEvent;
 import org.confluence.mod.common.gameevent.SolarEclipseGameEvent;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -130,6 +130,7 @@ public enum NPCSpawner implements IGlobalData {
                 && record.region.equals(previous.region) && record.location.dimension() == previous.location.dimension());
         getRegionAliveDetails(previous.region).put(previous.type, occupied);
     }
+
     /// 老人按地牢入口独立保存，不能以城镇 region 或全世界的 NPC 类型判重。
     private final Map<GlobalPos, DungeonResident> dungeonResidents = new Object2ObjectOpenHashMap<>();
     /// 生成过的NPC，可用于NPC复活而无需再次满足条件
@@ -525,7 +526,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnCyborg(ServerLevel serverLevel, Region region, BlockPos pos) {
-        return !hasNPCAlive(region, NpcEntities.CYBORG.get()) && KillBoard.INSTANCE.isDefeated(Confluence.asResource("plantera"))
+        return !hasNPCAlive(region, NpcEntities.CYBORG.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.PLANTERA.get())
                 && spawnAtPos(serverLevel, pos, NpcEntities.CYBORG.get());
     }
 
@@ -535,7 +536,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnNerdySlime(ServerLevel serverLevel, Region region, BlockPos pos) {
-        return !hasNPCAlive(region, NpcEntities.NERDY_SLIME.get()) && KillBoard.INSTANCE.isDefeated(Confluence.asResource("king_slime"))
+        return !hasNPCAlive(region, NpcEntities.NERDY_SLIME.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.KING_SLIME.get())
                 && spawnAtPos(serverLevel, pos, NpcEntities.NERDY_SLIME.get());
     }
 
@@ -745,10 +746,10 @@ public enum NPCSpawner implements IGlobalData {
     private boolean trySpawnDryad(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.DRYAD.get())) {
             if (KillBoard.INSTANCE.isAnyDefeated(
-                    Confluence.asResource("eye_of_cthulhu"),
-                    Confluence.asResource("eater_of_worlds"),
-                    Confluence.asResource("brain_of_cthulhu"),
-                    Confluence.asResource("skeletron")
+                    BossEntities.EYE_OF_CTHULHU.get(),
+                    BossEntities.EATER_OF_WORLDS.get(),
+                    BossEntities.BRAIN_OF_CTHULHU.get(),
+                    BossEntities.SKELETRON.get()
             )) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.DRYAD.get());
             }
@@ -758,7 +759,7 @@ public enum NPCSpawner implements IGlobalData {
 
     private boolean trySpawnWitchDoctor(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.WITCH_DOCTOR.get())) {
-            if (KillBoard.INSTANCE.isDefeated(Confluence.asResource("queen_bee"))) {
+            if (KillBoard.INSTANCE.isDefeated(BossEntities.QUEEN_BEE.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.WITCH_DOCTOR.get());
             }
         }
@@ -795,7 +796,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnClothier(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON)) {
+        if (KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())) {
             if (!hasNPCAlive(region, NpcEntities.CLOTHIER.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.CLOTHIER.get());
             }
@@ -807,7 +808,7 @@ public enum NPCSpawner implements IGlobalData {
     public void tickDungeonResidents(ServerLevel level) {
         if (level.getGameTime() % 40 != 0 || !CommonConfigs.DO_NPC_SPAWNING.get()
                 || !level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
-                || KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON)) return;
+                || KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())) return;
         Set<ChunkPos> checked = new HashSet<>();
         for (ServerPlayer player : level.players()) {
             if (player.isSpectator()) continue;
@@ -1048,7 +1049,7 @@ public enum NPCSpawner implements IGlobalData {
         living.setHealth(wasFullHealth ? living.getMaxHealth() : Math.min(oldHealth, living.getMaxHealth()));
     }
 
-    public static void respawnNPC(ServerLevel level, int dayTime) {
+    public static void respawnNPC(ServerLevel level) {
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
                 level.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)

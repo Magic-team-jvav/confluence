@@ -1,10 +1,10 @@
 package org.confluence.mod.common.entity.npc.ai;
 
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.init.entity.BossEntities;
 
 /// 按当前世界难度和已完成进度计算城镇 NPC 的实时战斗成长。
 public final class NPCCombatProgression {
@@ -34,20 +34,18 @@ public final class NPCCombatProgression {
     private static Bonuses bonuses() {
         KillBoard board = KillBoard.INSTANCE;
         Bonuses bonuses = Bonuses.EMPTY;
-        if (board.isDefeated(Confluence.asResource("king_slime"))) bonuses = bonuses.add(2, 0.05);
-        if (board.isDefeated(Confluence.asResource("eye_of_cthulhu"))) bonuses = bonuses.add(2, 0.05);
-        if (board.isDefeated(Confluence.asResource("deerclops"))) bonuses = bonuses.add(3, 0.10);
-        if (board.isAnyDefeated(Confluence.asResource("eater_of_worlds"), Confluence.asResource("brain_of_cthulhu"))) {
-            bonuses = bonuses.add(3, 0.10);
-        }
-        if (board.isDefeated(Confluence.asResource("queen_bee"))) bonuses = bonuses.add(3, 0.10);
-        if (board.isDefeated(Confluence.asResource("skeletron"))) bonuses = bonuses.add(3, 0.10);
-        if (board.getGamePhase().isHardmode()) bonuses = bonuses.add(12, 0.40);
-        if (board.isDefeated(Confluence.asResource("the_twins"))) bonuses = bonuses.add(6, 0.15);
-        if (board.isDefeated(Confluence.asResource("the_destroyer"))) bonuses = bonuses.add(6, 0.15);
-        if (board.isDefeated(Confluence.asResource("skeletron_prime"))) bonuses = bonuses.add(6, 0.15);
-        if (board.isDefeated(Confluence.asResource("plantera"))) bonuses = bonuses.add(8, 0.15);
-        if (board.isDefeated(Confluence.asResource("lunatic_cultist"))) bonuses = bonuses.add(20, 0.15);
+        if (board.isDefeated(BossEntities.KING_SLIME.get())) bonuses = bonuses.add(2, 0.05);
+        if (board.isDefeated(BossEntities.EYE_OF_CTHULHU.get())) bonuses = bonuses.add(2, 0.05);
+        if (board.isDefeated(BossEntities.DEERCLOPS.get())) bonuses = bonuses.add(3, 0.10);
+        if (board.isEvilDefeated()) bonuses = bonuses.add(3, 0.10);
+        if (board.isDefeated(BossEntities.QUEEN_BEE.get())) bonuses = bonuses.add(3, 0.10);
+        if (board.isDefeated(BossEntities.SKELETRON.get())) bonuses = bonuses.add(3, 0.10);
+        if (board.isFleshDefeated()) bonuses = bonuses.add(12, 0.40);
+        if (board.isTwinsDefeated()) bonuses = bonuses.add(6, 0.15);
+        if (board.isDefeated(BossEntities.THE_DESTROYER.get())) bonuses = bonuses.add(6, 0.15);
+        if (board.isDefeated(BossEntities.SKELETRON_PRIME.get())) bonuses = bonuses.add(6, 0.15);
+        if (board.isDefeated(BossEntities.PLANTERA.get())) bonuses = bonuses.add(8, 0.15);
+        if (board.isDefeated(BossEntities.LUNATIC_CULTIST.get())) bonuses = bonuses.add(20, 0.15);
         return bonuses;
     }
 

@@ -12,7 +12,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
@@ -57,17 +56,12 @@ public enum KillBoard implements IGlobalData {
         return false;
     }
 
-    ///
-    public boolean isDefeated(ResourceLocation id) {
-        EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(id);
-        return entityType != null && isDefeated(entityType);
+    public boolean isEvilDefeated() {
+        return isAnyDefeated(BossEntities.EATER_OF_WORLDS.get(), BossEntities.BRAIN_OF_CTHULHU.get());
     }
 
-    public boolean isAnyDefeated(ResourceLocation... ids) {
-        for (ResourceLocation id : ids) {
-            if (isDefeated(id)) return true;
-        }
-        return false;
+    public boolean isFleshDefeated() {
+        return isAnyDefeated(BossEntities.WALL_OF_FLESH.get(), BossEntities.HILL_OF_FLESH.get());
     }
 
     public boolean isTwinsDefeated() {

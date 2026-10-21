@@ -16,10 +16,10 @@ import org.confluence.lib.util.TaskScheduler;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.network.PathService;
-import org.confluence.mod.common.data.saved.BossDelaySpawner;
 import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.data.spawner.BossDelaySpawner;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.mount.MountManager;
@@ -47,45 +47,42 @@ public final class TickEvents {
 
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {
-        Level level = event.getLevel();
-        if (level instanceof ServerLevel machineLevel)
-            EnvironmentalMachines.INSTANCE.tick(machineLevel);
-        ResourceKey<Level> dimensionKey = level.dimension();
-        if (dimensionKey == Level.END) {
-            // 让客户端也自己计算
-            VoidSeaHelper.tick(level);
+        ResourceKey<Level> dimension = event.getLevel().dimension();
+        if (dimension == Level.END) {
+            /// 客户端和服务端按各自世界时间更新潮位。
+            VoidSeaHelper.tick(event.getLevel());
         }
-        if (!(level instanceof ServerLevel serverLevel)
-                || dimensionKey != OverworldUtils.dimension()) {
-            return;
-        }
+        if(!(event.getLevel() instanceof ServerLevel level)) return;
+        EnvironmentalMachines.INSTANCE.tick(level);
+        if (dimension != OverworldUtils.dimension()) return;
         GameEventSystem.INSTANCE.tick(); // 最高优先级，其会影响BossDelaySpawner、NPCSpawner等内容
-        FallingStarItemEntity.summon(serverLevel);
-        MeteoriteTracker.INSTANCE.tick(serverLevel);
-        BossDelaySpawner.INSTANCE.tick(serverLevel);
+        FallingStarItemEntity.summon(level);
+        MeteoriteTracker.INSTANCE.tick(level);
+        BossDelaySpawner.INSTANCE.tick(level);
 
         // 风：风速全局连续演化，方向随位置变化（WindField 按温度噪声梯度求值，只能服务端算）。
         // 不需要 setDirty：WindState 是 IGlobalData，写进 level.dat，而 level.dat 在每次自动保存时
         // 由 saveAllChunks 无条件重写（dirty 门控只属于 SavedData，与它无关）。
-        WindState.INSTANCE.tick(serverLevel);
-        if (serverLevel.getGameTime() % WIND_SYNC_INTERVAL == 0) {
-            WindSpeedPacketS2C.sendToAll(serverLevel); // 局地风向逐玩家下发，约 4 包/秒
+        WindState.INSTANCE.tick(level);
+        if (level.getGameTime() % WIND_SYNC_INTERVAL == 0) {
+            WindSpeedPacketS2C.sendToAll(level); // 局地风向逐玩家下发，约 4 包/秒
         }
 
-        int dayTime = LibDateUtils.getDayTime(serverLevel);
+        int dayTime = LibDateUtils.getDayTime(level);
         if (dayTime == LibDateUtils._19$30) {
-            BossDelaySpawner.spawnEyeOfCthulhu(serverLevel);
-            MeteoriteTracker.spawnMeteor(serverLevel);
+            BossDelaySpawner.spawnEyeOfCthulhu(level);
+            MeteoriteTracker.spawnMeteor(level);
         } else if (dayTime == LibDateUtils._00$00) {
-            BossDelaySpawner.spawnDeerClops(serverLevel);
+            BossDelaySpawner.spawnDeerClops(level);
         }
-        NPCSpawner.respawnNPC(serverLevel, dayTime);
+        NPCSpawner.respawnNPC(level);
+        NPCSpawner.INSTANCE.tickDungeonResidents(level);
 
         TaskScheduler scheduler = TooEasy.getScheduler(false);
         if (scheduler != null) {
             scheduler.tick(1);
         }
-        HardmodeConvertor.INSTANCE.scheduleRefill(serverLevel);
+        HardmodeConvertor.INSTANCE.scheduleRefill(level);
     }
 
     @SubscribeEvent

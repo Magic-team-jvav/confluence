@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data.spawner;
 
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -14,16 +14,16 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.EyeOfCthulhu;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.mod.common.entity.boss.BaseBoss;
-import org.confluence.mod.common.entity.boss.EyeOfCthulhu;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 
 import java.util.ArrayList;
 import java.util.Iterator;

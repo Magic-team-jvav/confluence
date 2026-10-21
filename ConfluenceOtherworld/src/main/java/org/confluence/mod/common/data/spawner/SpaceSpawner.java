@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data.spawner;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.core.BlockPos;

@@ -6,10 +6,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.entity.npc.ai.NPCHealGoal;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -44,11 +44,11 @@ public class NurseNPC extends BaseNPC {
         KillBoard killBoard = KillBoard.INSTANCE;
         if (killBoard.getGamePhase().isHardmode()) {
             cost *= 60L;
-        } else if (killBoard.isAnyDefeated(Confluence.asResource("skeletron"), Confluence.asResource("queen_bee"))) {
+        } else if (killBoard.isAnyDefeated(BossEntities.SKELETRON.get(), BossEntities.QUEEN_BEE.get())) {
             cost *= 25L;
-        } else if (killBoard.isAnyDefeated(Confluence.asResource("eater_of_worlds"), Confluence.asResource("brain_of_cthulhu"))) {
+        } else if (killBoard.isEvilDefeated()) {
             cost *= 10L;
-        } else if (killBoard.isDefeated(Confluence.asResource("eye_of_cthulhu"))) {
+        } else if (killBoard.isDefeated(BossEntities.EYE_OF_CTHULHU.get())) {
             cost *= 3L;
         }
         if (!PlayerUtils.debit(player, cost, true)) {

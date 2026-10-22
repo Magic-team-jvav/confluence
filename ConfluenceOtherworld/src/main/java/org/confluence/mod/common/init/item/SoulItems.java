@@ -29,6 +29,7 @@ import org.confluence.mod.common.item.soulcerer.SoulKnifeItem;
 import org.confluence.mod.common.item.soulcerer.SoulLanternItem;
 import org.confluence.mod.common.item.soulcerer.SoulSkillBookItem;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponProperties;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -39,18 +40,76 @@ public class SoulItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     public static final DeferredItem<FallenSoulCoreItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new FallenSoulCoreItem(new Item.Properties(), ModRarity.BLUE));
     public static final DeferredItem<SoulSkillBookItem> SOUL_SKILL_BOOK = ITEMS.register("soulcerer_skill_book", () -> new SoulSkillBookItem(new Item.Properties(), ModRarity.WHITE));
-    public static final DeferredItem<SoulWeaponItem> BROKEN_GLIMMER = ITEMS.register("broken_glimmer", () -> new SoulWeaponItem(new Item.Properties().stacksTo(1), ModRarity.WHITE, SoulSkillParameters.BROKEN_GLIMMER_DAMAGE, List.of(Confluence.asResource("survival_instinct")), SoulWeaponItem.Trait.HEAL_ON_SOUL_GAIN));
-    public static final DeferredItem<SoulLanternItem> SOUL_CONDUIT = ITEMS.register("soul_conduit", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.WHITE, 5.0F, 0.04F));
-    public static final DeferredItem<SoulLanternItem> PILLAGING_FLAME = ITEMS.register("pillaging_flame", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.BLUE, 7.0F, 0.04F, List.of(ModSoulSkills.SOUL_PLUNDER.get().getId())));
-    public static final DeferredItem<SoulLanternItem> TRUFFLE_LANTERN = ITEMS.register("truffle_lantern", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.GREEN, 8.0F, 0.04F, List.of(ModSoulSkills.CONFUSE_SPORES.get().getId())));
-    public static final DeferredItem<SoulLanternItem> SOUL_CHANT_GUIDE = ITEMS.register("soul_chant_guide", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.GREEN, 9.0F, 0.08F, List.of(), SoulWeaponItem.Trait.LURE_PIERCE));
-    public static final DeferredItem<SoulLanternItem> LIFE_SPLENDOR = ITEMS.register("life_splendor", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.ORANGE, 11.0F, 0.04F, List.of(ModSoulSkills.NATURES_WRATH.get().getId()), SoulWeaponItem.Trait.POISON_ON_SKILL_HIT));
-    public static final DeferredItem<SoulLanternItem> STAR_SPIRIT = ITEMS.register("star_spirit", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.ORANGE, 11.0F, 0.04F, List.of(ModSoulSkills.STAR_CALL.get().getId()), SoulWeaponItem.Trait.STAR_ON_SKILL_HIT));
-    public static final DeferredItem<SoulLanternItem> DAY_AND_NIGHT_ALIKE = ITEMS.register("day_and_night_alike", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.LIGHT_RED, 23.0F, 0.04F, List.of(ModSoulSkills.KARMA_FLAME.get().getId(), ModSoulSkills.PROFANE_SOUL.get().getId()), SoulWeaponItem.Trait.SHADOWFLAME_ON_SKILL_HIT));
-    public static final DeferredItem<SoulLanternItem> SENIOR_PATHFINDER_PRO = ITEMS.register("senior_pathfinder_pro", () -> new SoulLanternItem(new Item.Properties().stacksTo(1), ModRarity.YELLOW, 16.0F, 0.04F, List.of(), SoulWeaponItem.Trait.LURE_HOMING));
+
+    public static final DeferredItem<SoulWeaponItem> BROKEN_GLIMMER = ITEMS.register("broken_glimmer", () -> new SoulWeaponItem(
+            new Item.Properties(), ModRarity.WHITE,
+            SoulWeaponProperties.builder()
+                    .damage(SoulSkillParameters.BROKEN_GLIMMER_DAMAGE)
+                    .soulSkill(Confluence.asResource("survival_instinct"))
+                    .trait(SoulWeaponItem.Trait.HEAL_ON_SOUL_GAIN)
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> SOUL_CONDUIT = ITEMS.register("soul_conduit", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.WHITE,
+            SoulWeaponProperties.builder()
+                    .damage(5.0F)
+                    .criticalChance(0.04F)
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> PILLAGING_FLAME = ITEMS.register("pillaging_flame", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.BLUE,
+            SoulWeaponProperties.builder()
+                    .damage(7.0F)
+                    .criticalChance(0.04F)
+                    .soulSkill(ModSoulSkills.SOUL_PLUNDER.get().getId())
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> TRUFFLE_LANTERN = ITEMS.register("truffle_lantern", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.GREEN,
+            SoulWeaponProperties.builder()
+                    .damage(8.0F)
+                    .criticalChance(0.04F)
+                    .soulSkill(ModSoulSkills.CONFUSE_SPORES.get().getId())
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> SOUL_CHANT_GUIDE = ITEMS.register("soul_chant_guide", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.GREEN,
+            SoulWeaponProperties.builder()
+                    .damage(9.0F)
+                    .criticalChance(0.08F)
+                    .trait(SoulWeaponItem.Trait.LURE_PIERCE)
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> LIFE_SPLENDOR = ITEMS.register("life_splendor", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.ORANGE,
+            SoulWeaponProperties.builder()
+                    .damage(11.0F)
+                    .criticalChance(0.04F)
+                    .soulSkill(ModSoulSkills.NATURES_WRATH.get().getId())
+                    .trait(SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> STAR_SPIRIT = ITEMS.register("star_spirit", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.ORANGE,
+            SoulWeaponProperties.builder()
+                    .damage(11.0F)
+                    .criticalChance(0.04F)
+                    .soulSkill(ModSoulSkills.STAR_CALL.get().getId())
+                    .trait(SoulWeaponItem.Trait.STAR_ON_SKILL_HIT)
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> DAY_AND_NIGHT_ALIKE = ITEMS.register("day_and_night_alike", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.LIGHT_RED,
+            SoulWeaponProperties.builder()
+                    .damage(23.0F)
+                    .criticalChance(0.04F)
+                    .soulSkills(List.of(ModSoulSkills.KARMA_FLAME.get().getId(), ModSoulSkills.PROFANE_SOUL.get().getId()))
+                    .trait(SoulWeaponItem.Trait.SHADOWFLAME_ON_SKILL_HIT)
+                    .build()));
+    public static final DeferredItem<SoulLanternItem> SENIOR_PATHFINDER_PRO = ITEMS.register("senior_pathfinder_pro", () -> new SoulLanternItem(
+            new Item.Properties(), ModRarity.YELLOW,
+            SoulWeaponProperties.builder()
+                    .damage(16.0F)
+                    .criticalChance(0.04F)
+                    .trait(SoulWeaponItem.Trait.LURE_HOMING)
+                    .build()));
+
     /// 副武器：战士侧武器，只吃近战伤害加成（6 点伤害 / 1.6 攻速 / 4% 基础暴击）。
     public static final DeferredItem<SoulKnifeItem> SPIRITWARD_BLADE = ITEMS.register("spiritward_blade", () -> new SoulKnifeItem(
-            new Item.Properties().stacksTo(1).component(DataComponents.ATTRIBUTE_MODIFIERS,
+            new Item.Properties().component(DataComponents.ATTRIBUTE_MODIFIERS,
                     ModItems.createAttributes(ModTiers.UNBREAKABLE, 4.0F, -2.4F, ModItems.attributes(0, 0.4F))),
             ModRarity.BLUE));
 

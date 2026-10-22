@@ -321,7 +321,7 @@
 | --- | --- |
 | `SoulStorage.castWeaponDamage` | `Map<技能 id, 武器灵魂伤害>`，NBT 键 `castWeaponDamage` |
 | `PlayerUtils.castSoulSkill` | 施法成功后 `setCastWeaponDamage(skill.getId(), getWeaponSoulDamage(player))` |
-| `PlayerUtils.getWeaponSoulDamage` | 主手是灵魂武器时取其 `getSoulDamage`，否则 0 |
+| `PlayerUtils.getWeaponSoulDamage` | 主手是灵魂武器时取其 `getBasicSoulDamage`，否则 0 |
 | `PlayerUtils.getCastSoulSkillDamage(player, skill)` | 用快照拼装：`getSoulSkillDamage(player, stack, 快照值)` |
 | `PlayerUtils.getSoulSkillDamage(player, stack, weaponDamage)` | 新增重载，武器部分由调用方给定 |
 | `PlayerUtils.tickStarCall` | 改用 `getCastSoulSkillDamage(player, STAR_CALL)` |

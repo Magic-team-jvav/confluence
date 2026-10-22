@@ -7,24 +7,30 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.util.PlayerUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
+    public static final ResourceLocation BASE_CRITICAL_CHANCE_ID = Confluence.asResource("base_critical_chance");
+    public static final ResourceLocation BASE_SOUL_DAMAGE_ID = Confluence.asResource("base_soul_damage");
+
     /// 主武器自带效果：物品只声明「带哪几条」，具体概率与数值全部写在 `SoulSkillParameters`。
     ///
     /// 判定入口统一是 `PlayerUtils.holdsSoulWeaponTrait`（看主手），因此换手/切换武器会立即失效。
@@ -43,38 +49,57 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
         SHADOWFLAME_ON_SKILL_HIT
     }
 
-    protected final float damage;
-    private final List<ResourceLocation> grantedSoulSkills;
-    private final Set<Trait> traits;
+    private final SoulWeaponProperties soulProperties;
 
-    public SoulWeaponItem(Properties properties, ModRarity rarity, float damage) {
-        this(properties, rarity, damage, List.of());
+    public SoulWeaponItem(Properties properties, ModRarity rarity, SoulWeaponProperties soulProperties) {
+        super(properties.stacksTo(1), rarity);
+        this.soulProperties = soulProperties;
+        addAttributeModifiers(builder -> builder.add(
+                LibAttributes.getCriticalChance(),
+                new AttributeModifier(BASE_CRITICAL_CHANCE_ID, soulProperties.criticalChance(), AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND
+        ));
+        addAttributeModifiers(builder -> builder.add(
+                LibAttributes.getSoulDamage(),
+                new AttributeModifier(BASE_SOUL_DAMAGE_ID, soulProperties.damage(), AttributeModifier.Operation.ADD_VALUE),
+                EquipmentSlotGroup.MAINHAND
+        ));
     }
 
-    public SoulWeaponItem(Properties properties, ModRarity rarity, float damage, List<ResourceLocation> grantedSoulSkills, Trait... traits) {
-        super(properties, rarity);
-        this.damage = damage;
-        this.grantedSoulSkills = List.copyOf(grantedSoulSkills);
-        this.traits = traits.length == 0 ? Set.of() : EnumSet.copyOf(List.of(traits));
+    /// 返回该武器的建造者属性，供子类按需读取暴击率等附加项。
+    public SoulWeaponProperties getSoulWeaponProperties() {
+        return soulProperties;
     }
 
     /// 返回武器自身的基础灵魂伤害，不预乘属性倍率。
-    public float getSoulDamage(ItemStack stack) {
-        return damage;
+    public float getBasicSoulDamage(ItemStack stack) {
+        return soulProperties.damage();
+    }
+
+    /// 返回物品自身的基础暴击率，不含玩家装备与状态加成。
+    public float getBasicCriticalChance() {
+        return soulProperties.criticalChance();
+    }
+
+    public float getSoulDamage(ItemStack stack, LivingEntity livingEntity) {
+        if (livingEntity.getAttributes().hasAttribute(LibAttributes.getSoulDamage())) {
+            return (float) livingEntity.getAttributes().getValue(LibAttributes.getSoulDamage());
+        }
+        return soulProperties.damage();
     }
 
     /// 返回手持时临时提供的技能标识。
     public List<ResourceLocation> getGrantedSoulSkills(ItemStack stack) {
-        return grantedSoulSkills;
+        return soulProperties.grantedSoulSkills();
     }
 
     /// 该武器是否自带指定效果。
     public boolean hasTrait(Trait trait) {
-        return traits.contains(trait);
+        return soulProperties.hasTrait(trait);
     }
 
     public Set<Trait> getTraits() {
-        return traits;
+        return soulProperties.traits();
     }
 
     /// 主手右键通过服务端公共入口使用当前技能。
@@ -102,6 +127,6 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
 
     @Override
     public double getTooltipDamage(ItemStack stack, double attributeValue) {
-        return getSoulDamage(stack) * attributeValue;
+        return getBasicSoulDamage(stack) * attributeValue;
     }
 }

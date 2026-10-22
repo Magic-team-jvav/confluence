@@ -98,22 +98,6 @@ import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 public final class PlayerUtils {
-    private static final ResourceLocation SOULDANCER_CRIT_ID = Confluence.asResource("souldancer_set_crit");
-    private static final ResourceLocation SOULDANCER_SPEED_ID = Confluence.asResource("souldancer_set_speed");
-    private static final ResourceLocation SOUL_ROBE_SET_SOUL_DAMAGE_ID = Confluence.asResource("soul_robe_set_soul_damage");
-    private static final float HEALTH_PER_SOUL = 4.0F;
-    private static final float SOUL_CONSUMPTION_FAILED = -1.0F;
-    private static final float ENVIRONMENT_SOUL_RECOVERY_RATIO = 0.05F;
-    private static final float SOUL_HEALTH_WEIGHT = 0.8F;
-    private static final float SOUL_ATTACK_WEIGHT = 0.1F;
-    private static final float SOUL_ARMOR_WEIGHT = 0.1F;
-    private static final float SOUL_COLLECTION_DIVISOR = 20.0F;
-    private static final float MINIMUM_COLLECTED_SOUL = 1.0F;
-    private static final String FIRST_OBTAIN_SOUL_SKILL_MESSAGE = "message.confluence.soulcerer_skill.first_obtain";
-    private static final String SOUL_RITUAL_MESSAGE = "message.confluence.soul_ritual.activate";
-    private static final String SOUL_RITUAL_UNLOCK_MESSAGE = "message.confluence.soul_ritual.unlock";
-    private static final String SOUL_RITUAL_SLOT_MESSAGE = "message.confluence.soul_ritual.slot";
-
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
         if (coin == ModItems.PLATINUM_COIN.get()) return 0;
         if (coin == ModItems.GOLD_COIN.get()) return 1;
@@ -130,6 +114,45 @@ public final class PlayerUtils {
     public static final CustomPickupRangeEvent.RangeType MANA_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("mana"));
     public static final CustomPickupRangeEvent.RangeType COIN_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("coin"));
     public static final CustomPickupRangeEvent.RangeType HEART_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("heart"));
+    private static final ResourceLocation SOULDANCER_CRIT_ID = Confluence.asResource("souldancer_set_crit");
+    private static final ResourceLocation SOULDANCER_SPEED_ID = Confluence.asResource("souldancer_set_speed");
+    private static final ResourceLocation SOUL_ROBE_SET_SOUL_DAMAGE_ID = Confluence.asResource("soul_robe_set_soul_damage");
+    private static final float HEALTH_PER_SOUL = 4.0F;
+    private static final float SOUL_CONSUMPTION_FAILED = -1.0F;
+    private static final float ENVIRONMENT_SOUL_RECOVERY_RATIO = 0.05F;
+    private static final float SOUL_HEALTH_WEIGHT = 0.8F;
+    private static final float SOUL_ATTACK_WEIGHT = 0.1F;
+    private static final float SOUL_ARMOR_WEIGHT = 0.1F;
+    private static final float SOUL_COLLECTION_DIVISOR = 20.0F;
+    private static final float MINIMUM_COLLECTED_SOUL = 1.0F;
+    private static final String FIRST_OBTAIN_SOUL_SKILL_MESSAGE = "message.confluence.soulcerer_skill.first_obtain";
+    private static final String SOUL_RITUAL_MESSAGE = "message.confluence.soul_ritual.activate";
+    private static final String SOUL_RITUAL_UNLOCK_MESSAGE = "message.confluence.soul_ritual.unlock";
+    private static final String SOUL_RITUAL_SLOT_MESSAGE = "message.confluence.soul_ritual.slot";
+    /// 仪式对技能栏位的解锁进度：第 1 / 3 / 5 次仪式各 +1 个栏位（3 → 4 → 5 → 6）。
+    private static final int[] RITUAL_SLOT_UNLOCKS = {1, 3, 5};
+    private static final List<RitualUnlock> RITUAL_UNLOCKS = List.of(
+            /// 第一次仪式
+            new RitualUnlock(1, List.of(), ModSoulSkills.ENHANCED_LURE),
+            new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_MARK),
+            new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_DRAIN),
+            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.SOUL_SURGE),
+            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.LURE_SURGE),
+            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.EMPOWERED_SURGE),
+            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.SPIRIT_TRIGGER),
+            new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_ROTATION),
+            /// 第二次仪式
+            new RitualUnlock(2, List.of(), ModSoulSkills.STAR_REVERSAL),
+            new RitualUnlock(2, List.of(), ModSoulSkills.STAR_LINK),
+            new RitualUnlock(2, List.of(), ModSoulSkills.SOUL_HARVEST),
+            /// 第三次仪式
+            new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_ASSAULT),
+            new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_DEVOUR),
+            /// 第四次仪式
+            new RitualUnlock(4, List.of(), ModSoulSkills.BACKLASH_RESISTANCE),
+            new RitualUnlock(4, List.of(), ModSoulSkills.SOUL_CONTROL),
+            new RitualUnlock(4, List.of(), ModSoulSkills.LIFE_RETURN)
+    );
 
     /// 根据可装备槽数补齐或裁剪灵魂技能槽位。
     public static void updateSoulSkillSlots(@Nullable Player player) {
@@ -268,6 +291,8 @@ public final class PlayerUtils {
         return false;
     }
 
+    /// ---- 解锁技能 ----
+
     /// 判断指定技能栈实例是否已装备。
     public static boolean isSoulSkillEquipped(@Nullable Player player, SoulSkillStack stack) {
         for (SoulSkillStack equipped : getEquippedSoulSkills(player)) {
@@ -289,8 +314,6 @@ public final class PlayerUtils {
         }
         return false;
     }
-
-    /// ---- 解锁技能 ----
 
     /// 将灵魂技能登记到玩家的已解锁集合。
     public static void addUnlockedSoulSkill(@Nullable Player player, SoulSkill skill) {
@@ -700,7 +723,10 @@ public final class PlayerUtils {
     /// 当前主手武器的灵魂伤害（武器自身基数，不含属性与增益）。
     public static float getWeaponSoulDamage(Player player) {
         ItemStack mainHand = player.getMainHandItem();
-        return mainHand.getItem() instanceof SoulWeaponItem weapon ? weapon.getSoulDamage(mainHand) : 0.0F;
+        if (mainHand.getItem() instanceof SoulWeaponItem weapon) {
+            return weapon.getSoulDamage(mainHand, player);
+        }
+        return 0.0F;
     }
 
     /// 协同类（延时 / 多段）攻击专用的伤害：武器部分取「该技能最近一次施法时」的快照。
@@ -1482,9 +1508,11 @@ public final class PlayerUtils {
 
     /// 从玩家背包的指定槽位卖出物品：槽位内容与卖出时不一致就整笔取消。
     public static boolean creditFromInventory(Player player, int slotIndex, ItemStack expected, long amount, boolean withPiggyBank) {
-        if (expected.isEmpty() || slotIndex < 0 || slotIndex >= player.getInventory().getContainerSize()) return false;
+        if (expected.isEmpty() || slotIndex < 0 || slotIndex >= player.getInventory().getContainerSize())
+            return false;
         ItemStack source = player.getInventory().getItem(slotIndex);
-        if (!ItemStack.isSameItemSameComponents(source, expected) || source.getCount() < expected.getCount()) return false;
+        if (!ItemStack.isSameItemSameComponents(source, expected) || source.getCount() < expected.getCount())
+            return false;
         source.shrink(expected.getCount());
         if (source.isEmpty()) player.getInventory().setItem(slotIndex, ItemStack.EMPTY);
         player.getInventory().setChanged();
@@ -1654,6 +1682,8 @@ public final class PlayerUtils {
         }
     }
 
+    /// ===== 技能持续状态 =====
+
     public static void flushPrimitiveValueData(ServerPlayer player) {
         ManaStorage.of(player).flushAbility(player);
         SoulStorage.of(player).freshMaxSoul();
@@ -1669,8 +1699,6 @@ public final class PlayerUtils {
         if (ConfluenceData.get(overworld).isStopAskForSoftcore()) return;
         PacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
     }
-
-    /// ===== 技能持续状态 =====
 
     /// 仪式次数改变时同步上限，并在提升时播放一次“唤醒古老之魂”的提示。
     public static void setSoulRitualCount(ServerPlayer player, int ritualCount) {
@@ -1727,9 +1755,6 @@ public final class PlayerUtils {
         }
     }
 
-    /// 仪式对技能栏位的解锁进度：第 1 / 3 / 5 次仪式各 +1 个栏位（3 → 4 → 5 → 6）。
-    private static final int[] RITUAL_SLOT_UNLOCKS = {1, 3, 5};
-
     /// 按已完成的仪式次数计算应有的技能栏位数。
     public static int getRitualSlotCount(int ritualCount) {
         int slots = SoulSkillStorage.DEFAULT_EQUIPPED_SOUL_SKILL_COUNT;
@@ -1740,31 +1765,6 @@ public final class PlayerUtils {
         }
         return Math.min(slots, SoulSkillStorage.MAX_EQUIPPED_SOUL_SKILL_COUNT);
     }
-    /// 一次仪式解锁项。
-    public record RitualUnlock(int ritual, List<Supplier<SoulSkill>> required, Supplier<SoulSkill> skill) {}
-
-    private static final List<RitualUnlock> RITUAL_UNLOCKS = List.of(
-            /// 第一次仪式
-            new RitualUnlock(1, List.of(), ModSoulSkills.ENHANCED_LURE),
-            new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_MARK),
-            new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_DRAIN),
-            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.SOUL_SURGE),
-            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.LURE_SURGE),
-            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.EMPOWERED_SURGE),
-            new RitualUnlock(1, List.of(ModSoulSkills.SPIRIT_SURGE), ModSoulSkills.SPIRIT_TRIGGER),
-            new RitualUnlock(1, List.of(), ModSoulSkills.SOUL_ROTATION),
-            /// 第二次仪式
-            new RitualUnlock(2, List.of(), ModSoulSkills.STAR_REVERSAL),
-            new RitualUnlock(2, List.of(), ModSoulSkills.STAR_LINK),
-            new RitualUnlock(2, List.of(), ModSoulSkills.SOUL_HARVEST),
-            /// 第三次仪式
-            new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_ASSAULT),
-            new RitualUnlock(3, List.of(), ModSoulSkills.SOUL_DEVOUR),
-            /// 第四次仪式
-            new RitualUnlock(4, List.of(), ModSoulSkills.BACKLASH_RESISTANCE),
-            new RitualUnlock(4, List.of(), ModSoulSkills.SOUL_CONTROL),
-            new RitualUnlock(4, List.of(), ModSoulSkills.LIFE_RETURN)
-    );
 
     /// 每刻推进依赖“已学会 + 效果是否在身”的技能状态。
     public static void tickSoulSkillStates(ServerPlayer player, long gameTime) {
@@ -1887,4 +1887,8 @@ public final class PlayerUtils {
         }
         return Math.max(floor, y);
     }
+
+    /// 一次仪式解锁项。
+    public record RitualUnlock(int ritual, List<Supplier<SoulSkill>> required,
+                               Supplier<SoulSkill> skill) {}
 }

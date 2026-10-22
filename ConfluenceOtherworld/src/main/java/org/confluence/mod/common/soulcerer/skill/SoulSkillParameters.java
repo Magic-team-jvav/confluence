@@ -40,6 +40,12 @@ public class SoulSkillParameters {
     public static final float SOUL_LURE_SPEED = 1.6F;
     public static final double SOUL_LURE_MAX_DISTANCE = 40.0;
     public static final int SOUL_LURE_MAX_AGE_TICKS = 6 * SharedConstants.TICKS_PER_SECOND;
+    /// 引魂弹幕的弱追踪：索敌半径内、且目标在弹道**前方**时，每刻把速度朝目标插值该比例。
+    ///
+    /// 只做「微调弹道」，不做「拐弯追击」：强度远低于带路的老前辈（0.15 对 0.5），
+    /// 也不会回头追身后的目标，因此改善手感但不改变引魂「大致向前」的打法。
+    public static final double SOUL_LURE_WEAK_HOMING_STRENGTH = 0.15;
+    public static final double SOUL_LURE_WEAK_HOMING_RADIUS = 20.0;
     /// 引魂：冷却 0.8 秒（本轮从通用的 1 秒下调）。
     public static final int SOUL_LURE_COOLDOWN_TICKS = 16;
     /// 引魂弹幕命中敌怪后的额外弹射次数：从被击中的敌怪朝另一个敌怪再射一发；
@@ -52,11 +58,15 @@ public class SoulSkillParameters {
     public static final int ENHANCED_LURE_COOLDOWN_TICKS = 16;
     /// 强力引魂：在本体自带 1 次弹射之上额外增加的弹射次数。
     public static final int ENHANCED_LURE_EXTRA_BOUNCE = 1;
-    /// 附魂印记：命中敌人给 3 秒强力附魂，击杀敌人给 8 秒；冷却 0.8 秒，消耗 2 魂。
+    /// 附魂印记：命中给**敌人**挂 10 秒「附魂印记」debuff；之后所有技能命中它都回 {@link #SOUL_MARK_HIT_SOUL} 魂，
+    /// 击杀带印记的敌人回 {@link #SOUL_MARK_KILL_SOUL} 魂。冷却 0.8 秒，消耗 2 魂。
     public static final float SOUL_MARK_SOUL_COST = 2.0F;
     public static final int SOUL_MARK_COOLDOWN_TICKS = 16;
-    public static final int SOUL_MARK_HIT_BUFF_TICKS = 3 * SharedConstants.TICKS_PER_SECOND;
-    public static final int SOUL_MARK_KILL_BUFF_TICKS = 8 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_MARK_DURATION_TICKS = 10 * SharedConstants.TICKS_PER_SECOND;
+    /// 技能命中带印记敌人的回魂数（见 `LivingEntityEvents#soulWeaponTraitsOnSkillHit`）。
+    public static final float SOUL_MARK_HIT_SOUL = 1.0F;
+    /// 击杀带印记敌人的回魂数（见 `LivingEntityEvents#livingDeathSoul`）。
+    public static final float SOUL_MARK_KILL_SOUL = 2.0F;
 
     // ===== 灵魂激荡系列 =====
     /// 灵魂激荡的判定框：以玩家为中心，0.5 秒内从 0 扩散到 {@link #SPIRIT_SURGE_RADIUS} 格。
@@ -64,6 +74,9 @@ public class SoulSkillParameters {
     public static final double SPIRIT_SURGE_RADIUS = 7.2;
     public static final double SPIRIT_SURGE_VERTICAL_RANGE = 5.0;
     public static final int SPIRIT_SURGE_DURATION_TICKS = SharedConstants.TICKS_PER_SECOND / 2;
+    /// 灵魂回响（技能书）：灵魂激荡每次释放后，有该概率在原地**再触发一次灵魂激荡**，
+    /// 这一发是书籍给的额外触发，**不消耗灵魂**（见 `SpiritSurgeSkill#use`）。
+    public static final float SOUL_ECHO_CHANCE = 0.2F;
     /// 强力激荡：威力 8，冷却 0.8 秒，消耗 3 魂；范围比普通激荡更大（8.0 → 9.6）。
     public static final float EMPOWERED_SURGE_DAMAGE = 8.0F;
     public static final float EMPOWERED_SURGE_SOUL_COST = 3.0F;
@@ -108,11 +121,11 @@ public class SoulSkillParameters {
     public static final int SOUL_DRAIN_COOLDOWN_TICKS = 12 * SharedConstants.TICKS_PER_SECOND;
     public static final int SOUL_DRAIN_DURATION_TICKS = 80 * SharedConstants.TICKS_PER_SECOND;
     public static final int SOUL_DRAIN_LOCKOUT_TICKS = 160 * SharedConstants.TICKS_PER_SECOND;
-    /// 天穹倒转：8 秒内摔落伤害转化为回复；冷却 30 秒。
-    public static final float FIRMAMENT_REVERSED_SOUL_COST = 2.0F;
-    public static final int FIRMAMENT_REVERSED_COOLDOWN_TICKS = 30 * SharedConstants.TICKS_PER_SECOND;
-    public static final int FIRMAMENT_REVERSED_DURATION_TICKS = 8 * SharedConstants.TICKS_PER_SECOND;
-    public static final float FIRMAMENT_REVERSED_CONVERT_RATIO = 1.0F;
+    /// 灵魂缓冲（原「天穹倒转」）：8 秒内摔落伤害转化为回复；冷却 30 秒。
+    public static final float SOUL_BUFFER_SOUL_COST = 2.0F;
+    public static final int SOUL_BUFFER_COOLDOWN_TICKS = 30 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SOUL_BUFFER_DURATION_TICKS = 8 * SharedConstants.TICKS_PER_SECOND;
+    public static final float SOUL_BUFFER_CONVERT_RATIO = 1.0F;
     /// 生命归还：记录期间失去的生命，结束时按比例转为灵魂；冷却 5 秒，消耗 5 魂。
     public static final float LIFE_RETURN_SOUL_COST = 5.0F;
     public static final int LIFE_RETURN_COOLDOWN_TICKS = 5 * SharedConstants.TICKS_PER_SECOND;
@@ -151,14 +164,24 @@ public class SoulSkillParameters {
     public static final int STAR_CALL_STAGGER_TICKS = 1;
     /// 坠星的生成高度：目标位置上方该格数；若那里是实心方块，会向下找第一个空位。
     public static final double STAR_CALL_SPAWN_HEIGHT = 8.0;
-    /// 迷魂孢雾：更小更快更多、从天飘落的孢子弹幕；威力 4，冷却 0.5 秒，消耗 1 魂。
+    /// 迷魂孢雾：一轮 8 枚孢子弹幕，**每轮独立掷骰**决定弹道：
+    /// 50% 斜上方抛射（生成在头顶上方、带重力，从上飘落），50% 直线平射（从眼睛射出、不吃重力）。
+    /// 威力 1.5，冷却 0.5 秒，消耗 1 魂。
     public static final float CONFUSE_SPORES_SOUL_COST = 1.0F;
     public static final int CONFUSE_SPORES_COOLDOWN_TICKS = 10;
     public static final int CONFUSE_SPORES_COUNT = 8;
-    public static final float CONFUSE_SPORES_DAMAGE = 4.0F;
+    public static final float CONFUSE_SPORES_DAMAGE = 1.5F;
     public static final float CONFUSE_SPORES_SPEED = 1.2F;
     public static final double CONFUSE_SPORES_SPREAD = 0.35;
     public static final double CONFUSE_SPORES_SPAWN_HEIGHT = 3.0;
+    /// 一轮齐射走「斜上方抛射」的概率，其余概率改走直线弹道。
+    public static final float CONFUSE_SPORES_UPWARD_CHANCE = 0.5F;
+    /// 斜上方抛射的仰角（弧度，约 20°）：配合重力让孢子从高处斜着飘下来。
+    public static final double CONFUSE_SPORES_UPWARD_PITCH = 0.35;
+    /// 迷魂孢雾的最终伤害公式：(武器伤害 × 20% + 技能自身伤害) × (1 + 灵魂伤害增伤百分比)。
+    ///
+    /// 灵魂增伤那一段由统一伤害流程乘一次，这里只声明“武器伤害只吃 20%”。
+    public static final float CONFUSE_SPORES_WEAPON_SHARE = 0.2F;
     /// 自然之惩戒：毒刺弹幕；威力 5，冷却 1 秒，消耗 2 魂。
     public static final float NATURES_WRATH_SOUL_COST = 2.0F;
     public static final int NATURES_WRATH_COOLDOWN_TICKS = 20;

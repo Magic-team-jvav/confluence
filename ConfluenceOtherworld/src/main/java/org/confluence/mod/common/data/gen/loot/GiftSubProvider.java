@@ -1420,7 +1420,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         //克脑
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_ECHO))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 90)))
                 ))
@@ -1428,7 +1428,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_ECHO))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(80, 110)))
@@ -1443,7 +1443,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(13)))
                 ))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_ECHO))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(110, 135)))
@@ -1796,7 +1796,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
-                .withPool(soulBookLoot(SoulBooks.SOUL_SURGE));
+                .withPool(soulBookLoot(SoulBooks.SOUL_ECHO));
     }
 
     // 提炼机

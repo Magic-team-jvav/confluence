@@ -86,8 +86,8 @@ public class OverviewNode extends SoulSkillBox {
 
     /// 根据选中和装备状态绘制节点，并按 uiScale 以节点中心为锚点缩放。
     ///
-    /// 提示文本留在缩放之外绘制：它在未缩放坐标系里跟随鼠标，
-    /// 若一起缩放会既被放大、又偏离鼠标位置。
+    /// 提示文本不在这里绘制：它由 {@link SoulOverviewScreen#render} 在所有节点画完之后统一补画，
+    /// 这样后面的节点就不会盖住前面节点的说明文字。
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         /// 包围盒是未缩放尺寸，悬停要按缩放后的实际范围重新判定。
@@ -112,8 +112,6 @@ public class OverviewNode extends SoulSkillBox {
                 PlayerUtils.getSoulSkillMaxCooldown(Minecraft.getInstance().player, skillId()),
                 getX() + iconOffset, getY() + iconOffset);
         poseStack.popPose();
-
-        renderTooltip(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     /// 获取节点所表示的技能标识。

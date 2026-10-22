@@ -652,12 +652,12 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                                 PercentageLootEntry.rule(15, LootItem.lootTableItem(BowItems.SCAREBOW.get()))
                         ))
                 )
-                //天穹倒转：独立池子 33% 概率
+                //灵魂缓冲：独立池子 33% 概率
                 .withPool(LootPool.lootPool()
                         .when(LootItemRandomChanceCondition.randomChance(0.33F))
                         .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
-                                .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), SoulBooks.FIRMAMENT_REVERSED))
-                                .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(SoulBooks.FIRMAMENT_REVERSED))))
+                                .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), SoulBooks.SOUL_BUFFER))
+                                .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(SoulBooks.SOUL_BUFFER))))
                 )
                 //先暂时使用空岛村箱子
         );

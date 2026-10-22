@@ -57,7 +57,9 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> SOUL_DRAIN_LOCK = registerEffectWithEnglishName("soul_drain_lock", "灵魂枯竭", "Soul Depleted", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x301050));
     public static final DeferredHolder<MobEffect, MobEffect> STAR_CALL = registerEffectWithEnglishName("star_call", "魂引天星", "Star Call", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFE070));
     public static final DeferredHolder<MobEffect, MobEffect> LIFE_RETURN = registerEffectWithEnglishName("life_return", "生命归还", "Life Return", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF80A0));
-    public static final DeferredHolder<MobEffect, MobEffect> FIRMAMENT_REVERSED = registerEffectWithEnglishName("firmament_reversed", "天穹倒转", "Firmament Reversed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x80D0FF));
+    public static final DeferredHolder<MobEffect, MobEffect> SOUL_BUFFER = registerEffectWithEnglishName("soul_buffer", "灵魂缓冲", "Soul Buffer", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x80D0FF));
+    /// 附魂印记（debuff，挂在**敌人**身上）：技能命中带印记的敌人回 1 魂，击杀它回 2 魂。
+    public static final DeferredHolder<MobEffect, MobEffect> SOUL_MARK = registerEffectWithEnglishName("soul_mark", "附魂印记", "Soul Mark", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x6080FF));
     public static final DeferredHolder<MobEffect, MobEffect> BOILING_BLOOD = registerEffectWithEnglishName("boiling_blood", "血液沸腾", "Boiling Blood", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x900000));
     /// 灵魂突击：增益期间持续把灵魂转成子弹。
     public static final DeferredHolder<MobEffect, MobEffect> SOUL_ASSAULT = registerEffectWithEnglishName("soul_assault", "灵魂突击", "Soul Assault", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x50C0FF));

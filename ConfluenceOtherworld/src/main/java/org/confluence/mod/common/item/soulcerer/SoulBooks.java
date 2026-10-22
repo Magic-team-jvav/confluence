@@ -17,9 +17,11 @@ import java.util.Map;
 public final class SoulBooks {
     public static final ResourceLocation PSYCHOPOMP = Confluence.asResource("psychopomp");
     public static final ResourceLocation RAIDERS_PATH = Confluence.asResource("raiders_path");
-    public static final ResourceLocation SOUL_SURGE = Confluence.asResource("soul_surge");
+    /// 灵魂回响（原「灵魂激荡」书）：不再解锁灵魂激荡，改为给灵魂激荡加 20% 免费复读的被动。
+    public static final ResourceLocation SOUL_ECHO = Confluence.asResource("soul_echo");
     public static final ResourceLocation HARVESTER = Confluence.asResource("harvester");
-    public static final ResourceLocation FIRMAMENT_REVERSED = Confluence.asResource("firmament_reversed");
+    /// 灵魂缓冲（原「天穹倒转」）。
+    public static final ResourceLocation SOUL_BUFFER = Confluence.asResource("soul_buffer");
     public static final ResourceLocation BLOOD_WORLD_WRATH = Confluence.asResource("blood_world_wrath");
 
     private static final Map<ResourceLocation, Definition> ALL = new LinkedHashMap<>();
@@ -35,10 +37,11 @@ public final class SoulBooks {
         // 独立书皮的技能书，登记顺序即模型覆盖序号（从 1 开始）
         styled(PSYCHOPOMP, ModRarity.BLUE, null, null);
         styled(RAIDERS_PATH, ModRarity.BLUE, ModSoulSkills.BOILING_BLOOD.get().getId(), null);
-        styled(SOUL_SURGE, ModRarity.GREEN, ModSoulSkills.SPIRIT_SURGE.get().getId(), null);
-        // 收割者：必须先永久学会灵魂激荡（spirit_surge），才能解锁灵魂激荡冲击（surge_blast）
-        styled(HARVESTER, ModRarity.ORANGE, ModSoulSkills.SURGE_BLAST.get().getId(), ModSoulSkills.SPIRIT_SURGE.get().getId());
-        styled(FIRMAMENT_REVERSED, ModRarity.GREEN, ModSoulSkills.FIRMAMENT_REVERSED.get().getId(), null);
+        // 灵魂回响：只提供被动（灵魂激荡 20% 概率免费复读），因此 skill 为 null
+        styled(SOUL_ECHO, ModRarity.GREEN, null, null);
+        // 收割者：解锁灵魂激荡冲击（surge_blast）。灵魂激荡已是开局技能，因此不再需要前置。
+        styled(HARVESTER, ModRarity.ORANGE, ModSoulSkills.SURGE_BLAST.get().getId(), null);
+        styled(SOUL_BUFFER, ModRarity.GREEN, ModSoulSkills.SOUL_BUFFER.get().getId(), null);
         styled(BLOOD_WORLD_WRATH, ModRarity.ORANGE, ModSoulSkills.BLOOD_RAGE.get().getId(), null);
 
         // 沿用通用书皮的既有技能书
@@ -48,6 +51,18 @@ public final class SoulBooks {
     /// 个别书籍学成时使用的专属文案，未登记时回落到通用文案。
     private static final Map<ResourceLocation, String> USE_MESSAGE_KEYS = Map.of(
             HARVESTER, "message.confluence.soul_book.harvester"
+    );
+
+    /// 只提供被动的技能书的说明键（书里没有绑定技能，无法自动拼出效果说明）。
+    private static final Map<ResourceLocation, String> PASSIVE_TOOLTIP_KEYS = Map.of(
+            PSYCHOPOMP, "tooltip.confluence.soulcerer_skill_book.psychopomp",
+            SOUL_ECHO, "tooltip.confluence.soulcerer_skill_book.soul_echo"
+    );
+
+    /// 旧存档兼容：改过 id 的技能书继续能读（`soul_surge` 就是改名前的「灵魂激荡」书）。
+    private static final Map<ResourceLocation, ResourceLocation> LEGACY_IDS = Map.of(
+            Confluence.asResource("firmament_reversed"), SOUL_BUFFER,
+            Confluence.asResource("soul_surge"), SOUL_ECHO
     );
 
     private static void styled(ResourceLocation id, ModRarity rarity, @Nullable ResourceLocation skill, @Nullable ResourceLocation required) {
@@ -60,10 +75,18 @@ public final class SoulBooks {
         ALL.put(id, new Definition(id, rarity, skill, required));
     }
 
-    /// 按书籍 ID 读取定义，未登记时返回 null。
+    /// 按书籍 ID 读取定义，未登记时返回 null；改过 id 的旧书会回落到新定义。
     @Nullable
     public static Definition get(@Nullable ResourceLocation id) {
-        return id == null ? null : ALL.get(id);
+        if (id == null) {
+            return null;
+        }
+        Definition definition = ALL.get(id);
+        if (definition != null) {
+            return definition;
+        }
+        ResourceLocation legacy = LEGACY_IDS.get(id);
+        return legacy == null ? null : ALL.get(legacy);
     }
 
     /// 返回全部技能书，顺序为登记顺序。
@@ -116,6 +139,12 @@ public final class SoulBooks {
     @Nullable
     public static String useMessageKey(ResourceLocation id) {
         return USE_MESSAGE_KEYS.get(id);
+    }
+
+    /// 读取只提供被动的技能书的说明键，未登记时返回 null。
+    @Nullable
+    public static String passiveTooltipKey(ResourceLocation id) {
+        return PASSIVE_TOOLTIP_KEYS.get(id);
     }
 
     private SoulBooks() {}

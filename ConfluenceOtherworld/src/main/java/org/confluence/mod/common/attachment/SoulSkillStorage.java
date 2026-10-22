@@ -9,6 +9,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
@@ -39,6 +40,21 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     private static final String LEARNED_SOUL_BOOKS_TAG = "learnedSoulBooks";
     /// 刻骨的记忆当前放行的技能；空字符串表示还没有选。
     private static final String MEMORY_OF_BONEBRAND_TAG = "memoryOfBonebrandSkill";
+    /// 开局即永久解锁的技能：引魂、强力附魂、灵魂激荡。
+    ///
+    /// 这三项在新建存档与**读档后**都会被补上（见 {@link #ensureDefaultUnlocked()}），
+    /// 因此把某个技能改成开局解锁时，老存档也能吃到，不需要手动改 NBT。
+    private static final List<Supplier<SoulSkill>> DEFAULT_UNLOCKED_SKILLS = List.of(
+            ModSoulSkills.SOUL_LURE,
+            ModSoulSkills.ENHANCED_SOUL,
+            ModSoulSkills.SPIRIT_SURGE
+    );
+    /// 改过 id 的技能在旧存档里的兼容映射：读档时把旧 id 换成本轮的新 id，避免已学会的技能被丢掉。
+    ///
+    /// 目前只有「天穹倒转 → 灵魂缓冲」一次改名。
+    private static final Map<ResourceLocation, ResourceLocation> LEGACY_SKILL_IDS = Map.of(
+            Confluence.asResource("firmament_reversed"), Confluence.asResource("soul_buffer")
+    );
 
     private int equippedSkillMaxNumber = DEFAULT_EQUIPPED_SOUL_SKILL_COUNT;
     private int currentIndex = 0;
@@ -55,11 +71,22 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
         for (int i = 0; i < equippedSkillMaxNumber; i++) {
             equippedSkills.add(SoulSkillStack.Empty);
         }
-        SoulSkill soulLure = ModSoulSkills.SOUL_LURE.get();
-        SoulSkill enhancedSoul = ModSoulSkills.ENHANCED_SOUL.get();
-        unlockedSkills.put(soulLure.getId(), soulLure);
-        unlockedSkills.put(enhancedSoul.getId(), enhancedSoul);
+        ensureDefaultUnlocked();
         availableSkills.addAll(unlockedSkills.keySet());
+    }
+
+    /// 补齐开局技能；已解锁的技能保持不变。
+    private void ensureDefaultUnlocked() {
+        for (Supplier<SoulSkill> supplier : DEFAULT_UNLOCKED_SKILLS) {
+            SoulSkill skill = supplier.get();
+            unlockedSkills.putIfAbsent(skill.getId(), skill);
+        }
+    }
+
+
+    /// 旧 id → 新 id；没有映射时原样返回（用于读档时兼容改过 id 的技能）。
+    private static ResourceLocation resolveLegacy(@Nullable ResourceLocation id) {
+        return id == null ? null : LEGACY_SKILL_IDS.getOrDefault(id, id);
     }
 
     /// 保存槽位、选中索引、永久学习记录和按技能共享的冷却。
@@ -112,7 +139,7 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
             ListTag equipped = nbt.getList(EQUIPPED_SKILLS_TAG, Tag.TAG_COMPOUND);
             for (int i = 0; i < equipped.size(); i++) {
                 CompoundTag entry = equipped.getCompound(i);
-                ResourceLocation id = ResourceLocation.tryParse(entry.getString(SKILL_ID_TAG));
+                ResourceLocation id = resolveLegacy(ResourceLocation.tryParse(entry.getString(SKILL_ID_TAG)));
                 SoulSkill skill = id == null ? null : findSoulSkill(id);
                 if (skill == null || skill == ModSoulSkills.EMPTY.get()) {
                     equippedSkills.add(SoulSkillStack.Empty);
@@ -131,17 +158,19 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
         unlockedSkills.clear();
         ListTag unlocked = nbt.getList(UNLOCKED_SKILLS_TAG, Tag.TAG_STRING);
         for (int i = 0; i < unlocked.size(); i++) {
-            ResourceLocation id = ResourceLocation.tryParse(unlocked.getString(i));
+            ResourceLocation id = resolveLegacy(ResourceLocation.tryParse(unlocked.getString(i)));
             SoulSkill skill = id == null ? null : findSoulSkill(id);
             if (skill != null) {
                 unlockedSkills.put(skill.getId(), skill);
             }
         }
+        /// 老存档可能没有开局技能（灵魂激荡是后来才改成开局解锁的），读档后统一补齐。
+        ensureDefaultUnlocked();
         skillCooldowns.clear();
         ListTag cooldowns = nbt.getList(SKILL_COOLDOWNS_TAG, Tag.TAG_COMPOUND);
         for (int i = 0; i < cooldowns.size(); i++) {
             CompoundTag entry = cooldowns.getCompound(i);
-            ResourceLocation id = ResourceLocation.tryParse(entry.getString(SKILL_ID_TAG));
+            ResourceLocation id = resolveLegacy(ResourceLocation.tryParse(entry.getString(SKILL_ID_TAG)));
             SoulSkill skill = id == null ? null : findSoulSkill(id);
             if (skill == null || skill == ModSoulSkills.EMPTY.get() || entry.getInt(CD_TAG) <= 0) {
                 continue;

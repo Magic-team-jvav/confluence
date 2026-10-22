@@ -42,8 +42,13 @@ public final class ModSoulSkills {
             .damage(SoulSkillParameters.CONFUSE_SPORES_DAMAGE)
             .cost(SoulSkillParameters.CONFUSE_SPORES_SOUL_COST, SoulSkillParameters.CONFUSE_SPORES_COOLDOWN_TICKS)
             .count(SoulSkillParameters.CONFUSE_SPORES_COUNT, SoulSkillParameters.CONFUSE_SPORES_SPREAD)
+            .upwardVolley(SoulSkillParameters.CONFUSE_SPORES_UPWARD_CHANCE, SoulSkillParameters.CONFUSE_SPORES_UPWARD_PITCH)
             .gravity(0.03)
             .spawnAbove(SoulSkillParameters.CONFUSE_SPORES_SPAWN_HEIGHT)
+            /// 孢子要按锥形散开，弱追踪会把这一轮弹幕又拧成一个点，因此关掉。
+            .weakHoming(false)
+            /// 只吃 20% 武器伤害：(武器伤害 × 20% + 自身伤害) × (1 + 灵魂增伤)。
+            .weaponShare(SoulSkillParameters.CONFUSE_SPORES_WEAPON_SHARE)
             .speed(SoulSkillParameters.CONFUSE_SPORES_SPEED)), SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> NATURES_WRATH = register("natures_wrath", rl -> new NaturesWrathSkill(rl, rl), SkillCategory.BLOOD_NATURE);
     public static final Supplier<SoulSkill> PROFANE_SOUL = register("profane_soul", rl -> new ProfaneSoulSkill(rl, rl), SkillCategory.SOUL);
@@ -86,9 +91,10 @@ public final class ModSoulSkills {
     public static final Supplier<SoulSkill> LIFE_RETURN = register("life_return", rl -> new StatefulSoulSkill(rl, rl,
             SoulSkillParameters.LIFE_RETURN_SOUL_COST, SoulSkillParameters.LIFE_RETURN_COOLDOWN_TICKS,
             () -> ModEffects.LIFE_RETURN, SoulSkillParameters.LIFE_RETURN_DURATION_TICKS, true), SkillCategory.BLOOD_NATURE);
-    public static final Supplier<SoulSkill> FIRMAMENT_REVERSED = register("firmament_reversed", rl -> new SoulBuffSkill(rl, rl,
-            SoulSkillParameters.FIRMAMENT_REVERSED_SOUL_COST, SoulSkillParameters.FIRMAMENT_REVERSED_COOLDOWN_TICKS,
-            () -> ModEffects.FIRMAMENT_REVERSED, SoulSkillParameters.FIRMAMENT_REVERSED_DURATION_TICKS, 0.0F), SkillCategory.STAR_LURE);
+    /// 灵魂缓冲（原「天穹倒转」）。
+    public static final Supplier<SoulSkill> SOUL_BUFFER = register("soul_buffer", rl -> new SoulBuffSkill(rl, rl,
+            SoulSkillParameters.SOUL_BUFFER_SOUL_COST, SoulSkillParameters.SOUL_BUFFER_COOLDOWN_TICKS,
+            () -> ModEffects.SOUL_BUFFER, SoulSkillParameters.SOUL_BUFFER_DURATION_TICKS, 0.0F), SkillCategory.STAR_LURE);
     public static final Supplier<SoulSkill> SURVIVAL_INSTINCT = register("survival_instinct", rl -> new SurvivalInstinctSkill(rl, rl), SkillCategory.SOUL);
 
     // ===== 被动 =====

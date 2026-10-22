@@ -149,7 +149,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
     @Override
     public boolean clickMenuButton(Player player, int id) {
         // 重铸
-        if (id != 0 || !stillValid(player) || player.containerMenu != this || getCooldownTicks() > 0
+        if (id != 0 || !getCarried().isEmpty() || !stillValid(player) || player.containerMenu != this || getCooldownTicks() > 0
                 || !player.level().isClientSide && player.level().getGameTime() < reforgeReadyAt)
             return false;
         if (!player.level().isClientSide) refreshCost();

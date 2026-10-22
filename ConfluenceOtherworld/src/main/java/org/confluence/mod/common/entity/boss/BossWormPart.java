@@ -74,6 +74,15 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     }
 
     public void bindTo(BaseWormBoss owner, int index, boolean tail) {
+        bindTo(owner, index, tail, true);
+    }
+
+    /// 断节后复用存活体节，只同步归属与索引，保留坐标、朝向和客户端插值。
+    void rebindTo(BaseWormBoss owner, int index, boolean tail) {
+        bindTo(owner, index, tail, false);
+    }
+
+    private void bindTo(BaseWormBoss owner, int index, boolean tail, boolean initializePosition) {
         if (index < 1) throw new IllegalArgumentException("Worm body indices start at 1");
         this.owner = owner;
         this.ownerUUID = owner.getUUID();
@@ -83,7 +92,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
         this.entityData.set(SEGMENT_HEALTH, owner.getInitialSegmentHealth(index));
         destroyerDimensions = owner instanceof TheDestroyer;
         refreshDimensions();
-        this.setPos(owner.position());
+        if (initializePosition) this.setPos(owner.position());
     }
 
     public @Nullable BaseWormBoss getOwner() {
@@ -357,7 +366,8 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     }
 
     private void resolveOwner() {
-        if (owner != null && !owner.isRemoved()) return;
+        if (owner != null && !owner.isRemoved() && owner.getId() == entityData.get(OWNER_ID))
+            return;
         owner = null;
 
         Entity byNetworkId = level().getEntity(entityData.get(OWNER_ID));

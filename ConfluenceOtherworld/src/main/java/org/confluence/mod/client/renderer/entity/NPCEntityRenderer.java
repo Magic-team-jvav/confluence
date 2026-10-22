@@ -61,7 +61,7 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
                 poseStack.pushPose();
                 try {
                     RenderUtil.translateToPivotPoint(poseStack, bone);
-                    VanillaHumanoidRenderer.HeldItemLayer.applyHandTransform(poseStack);
+                    VanillaHumanoidRenderer.HeldItemLayer.applyHandTransform(poseStack, false);
                     poseStack.scale(HAMMER_SCALE, HAMMER_SCALE, HAMMER_SCALE);
                     poseStack.translate(0, -HAMMER_GRIP_Y, 0);
                     getRenderer().renderRecursively(poseStack, entity, hammer, hammerType, bufferSource, bufferSource.getBuffer(hammerType), true, partialTick, packedLight, packedOverlay, -1);

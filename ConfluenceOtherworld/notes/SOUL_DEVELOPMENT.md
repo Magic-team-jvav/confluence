@@ -1,307 +1,272 @@
-# 魂师开发与 AI 扩展指南
+# 魂师开发说明
 
-更新日期：2026-10-16。适用模块：ConfluenceOtherworld；Minecraft 1.21.1、NeoForge 21.1.235、Java 21。
+更新日期：2026-10-22。面向程序维护者；玩家操作与测试步骤见 [魂师测试须知](SOUL_TEST_GUIDE.md)。本文以
+1.21.1 NeoForge 当前源码为主，注明 1.20.1 Forge 的接口差异。历史批次的日志不再作为功能已验证的依据。
 
-本文以当前源码为准。数值、模式、施法、技能状态、标签、收集与恢复、已给出技能和物品均已接入；隐匿者盔甲、具体仪式结构与材料、未指定的副武器和法器没有虚构实现。完整机制接入与本次魂师命名、创造栏图标和透支标签调整均已通过两个模块的 IDEA Data 及其编译前置；本次两个 Data 日志均为 BUILD SUCCESSFUL。未做游戏实测。生成记录、日志与范围见第 9 节。
+## 1. 范围与代码组织
 
-## 1. 接手前必须遵守
+魂师职业使用 `soulcerer` 包段与职业 ID；资源、伤害、书籍等具体概念仍使用 `soul`
+。灵魂钓手、噬魂怪、亡魂射弹等名称中含“魂”的旧内容不自动归入此系统。
 
-- 魂师是独特的法师变体。灵魂钓手、噬魂怪、亡魂射弹及其配方、掉落、标签不属于本系统。
-- 魂师职业的包段、界面资源目录与职业 ID 使用 soulcerer；灵魂值、灵魂伤害、灵魂代偿和具体灵魂名称继续使用 soul。
-- 先读取用户开发规范、当前项目规范及相关专项 Skill。通过 IntelliJ IDEA / IntelliJ Index MCP 查询、编辑和诊断，不绕过可用 IDE。
-- 保留现有 CRLF、缩进、排序、用户修改；现有文件局部补丁，新文件新增，不整文件覆盖。没有明确要求时不运行 Data、构建、测试、同步、重载或游戏。
-- 通用魂师操作直接放静态 PlayerUtils，不新建 SoulHandler 或 PlayerUtils 内嵌魂师子类。附件通过 SoulStorage.of / SoulSkillStorage.of 获取，不增加 getSoulStorage 等包装。
-- ClientSoulHandler 是纯静态客户端入口。common 不调用 Minecraft、HUD、renderer 等纯客户端类。
-- SoulSkillStack 不允许 null。空技能使用 SoulSkillStack.Empty；不额外加入 Objects.requireNonNull、空值适配层或未要求的检查。
-- 技能效果写在具体技能类中，不在注册参数中传入效果回调。
-- Confluence.SOUL_SKILLS 是魂师总开关，现已从 `LibUtils.isDev()` 解锁为常开（`true`），
-  打包（production）环境同样启用施法、资源切换、法器与技能同步等全部机制；
-  魂师 HUD 注册、样式配置、总览/快捷面板输入本来就不检查开发环境，仍保留手持主武器等原有显示条件。
+魂师当前复用玩家附件、原版物品交互、统一伤害事件和现有 datagen。通用操作放在 `PlayerUtils`
+；具体技能效果放在技能类，物品只声明基础属性、授予技能及特性。common 不引用客户端
+Minecraft/HUD/renderer。空技能用 `SoulSkillStack.Empty`，不用 null。
 
-## 2. 文件职责与入口
+| 入口（相对 `src/main/java/org/confluence/mod`）                              | 职责                                                                          |
+|------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| `common/attachment/SoulStorage.java`                                         | 当前资源、永久成长、恢复比例、模式、仪式、施法武器快照及持久化/同步           |
+| `common/attachment/SoulSkillStorage.java`                                    | 装备槽、当前索引、永久/临时学习、可用集合、书籍被动、共享冷却、刻骨的记忆候选 |
+| `util/PlayerUtils.java`                                                      | 模式互斥、施法/代价、伤害基数、技能可用性、恢复与收集、套装、持续技能推进     |
+| `common/init/ModSoulSkills.java`                                             | 技能注册、缓存原型、界面分类                                                  |
+| `common/soulcerer/skill/`                                                    | 技能定义、实例栈、各类实现、集中参数 `SoulSkillParameters`                    |
+| `common/init/item/SoulItems.java`                                            | 魂师物品、名称注册、首次获得永久解锁映射、技能书产出、装魂瓶入口              |
+| `common/item/soulcerer/`                                                     | 主/副武器、法器基类、魂灯、书籍定义与使用规则                                 |
+| `common/entity/soulcerer/`                                                   | 引魂弹幕、范围激荡；服务器负责实体及伤害，客户端负责表现                      |
+| `common/event/game/entity/LivingEntityEvents.java`                           | 命中/击杀回魂、武器特性、套装及相关事件接入                                   |
+| `client/handler/soulcerer/`、`client/gui/**/soulcerer/`                      | 输入、快捷面板、总览、技能框与 HUD                                            |
+| `api/item/IWeaponTooltip.java`、`client/renderer/tooltip/WeaponTooltip.java` | 武器数值入口与共用原版属性提示排版                                            |
+| `api/event/*Soul*Event.java`                                                 | 消耗、生命代偿、恢复、收集与技能基数扩展事件                                  |
+| `common/data/gen/tag/ModSoulSkillTagsProvider.java`                          | 技能标签成员                                                                  |
 
-以下源码路径均相对 ConfluenceOtherworld/src/main/java/org/confluence/mod。
+MagicLib 的 `ConfluenceMagicLib` / `LibAttributes` / `LibDamageTypes` / `LibGameEvents`
+维护灵魂伤害属性、额外容量、独立伤害类型及统一伤害倍率。
 
-| 文件 / 包 | 职责 |
-| --- | --- |
-| common/attachment/SoulStorage.java | 基本数值、成长份数、恢复比例、资源模式、NBT 和原生附件同步；上限读取实体额外容量属性。 |
-| common/attachment/SoulSkillStorage.java | 装备槽、当前索引、永久学习、临时授予、当前可用技能、按技能 ID 共享的冷却。 |
-| util/PlayerUtils.java | 资源切换、施法判定和结算、收魂/恢复、技能可用性、法器限制。 |
-| common/soulcerer/skill/SoulSkill.java | 技能定义、消耗/冷却读取、条件与双端执行接口、技能 Tag 查询。 |
-| common/soulcerer/skill/SoulSkillStack.java | 技能实例及冷却显示数据；Empty 是共享空实例。 |
-| common/soulcerer/skill/SoulSkillParameters.java | 已确认内容的集中测试参数。冷却使用 tick。 |
-| common/init/ModSoulSkills.java | 正式技能注册表与现有界面分类；保留缓存原型的安全初始化。 |
-| common/init/ModSoulSkillTags.java | SOUL、BLOOD_NATURE、STAR_LURE 标签键。标签与界面分类用途不同。 |
-| common/item/soulcerer、common/init/item/SoulItems.java | 主武器、副武器、法器、技能书、星核及具体物品注册。 |
-| common/item/soulcerer/SoulSecondaryWeaponItem.java | 副武器类型与构造基类；效果和伤害规则由具体职业定义，灵魂资源复用 PlayerUtils。 |
-| common/entity/soulcerer、common/effect/soulcerer | 引魂弹幕、灵魂激荡冲击波、强力附魂效果。 |
-| client/handler/soulcerer、client/gui/**/soulcerer、client/renderer/entity/soulcerer | 客户端输入、界面、HUD、成功通知表现和实体渲染。 |
-| api/event/*Soul*Event.java | 消耗、独立生命代偿、恢复、收集、技能基础总伤害的扩展事件；AdditionalSoulEvent 不再参与容量计算。 |
-| common/data/gen/tag/ModSoulSkillTagsProvider.java | 技能 Tag 生成源。 |
-| common/data/gen/language/SoulLanguageSubProvider.java | 新增魂师中英文键；原有技能名仍由 InterfaceLanguageSubProvider 生成。 |
+## 2. 属性、伤害和武器提示
 
-独立伤害和属性位于 Confluence-Magic-Lib：ConfluenceMagicLib.SOUL_DAMAGE、ConfluenceMagicLib.ADDITIONAL_SOUL、LibAttributes、LibDamageTypes、LibGameEvents、LibModEvents、LibLanguageProvider。
+### 2.1 三种数值不能混用
 
-## 3. 数值、模式与生命周期
+- **武器基数**：`SoulWeaponProperties.damage()`；1.21 通过 `getBasicSoulDamage(stack)` 读取。1.20 现有
+  `getSoulDamage(stack)` 同样返回未乘属性的武器基数。
+- **技能基数**：`SoulSkillStack.getDamage()` / `SoulSkill.getDamage(stack)`。技能面板的伤害行只显示此值。
+- **灵魂属性**：`LibAttributes.getSoulDamage()` 是倍率，默认 1、上限 10。1 已代表 100%，不是需要再加 1
+  的“额外加成”。装备、效果以既有修饰符改变它。
 
-- 默认魔力模式，当前灵魂为 0；初始永久灵魂上限 20。
-- soulsCount 是成长份数，每份 20，范围 1～20，永久上限因此为 400。
-- 总上限 = 永久成长上限 + 实体 ADDITIONAL_SOUL 属性；额外容量默认 0，范围 0～Integer.MAX_VALUE，小数部分向下取整。400 不限制装备、饰品等额外容量；派生上限实时读取，不缓存。
-- SoulStorage.addSoul(1/-1) 调整成长份数，即上限增加/减少 20。创造星核调的是上限，不直接填满当前灵魂。
-- 切入灵魂模式时魔力归零，切回魔力时灵魂归零。普通切换不补目标资源。
-- PlayerUtils.switchSoulMode(player, mode, targetResource) 可在切换后补指定目标资源，供未来技能使用；这不是魔力与灵魂一比一兑换。
-- convertManaToSoul / convertSoulToMana 仍是未定义比例的预留入口，不实现或推断兑换公式。
-- ManaStorage 底层接收和提取都检查模式；PlayerUtils 的创造免消耗、主动/自然回蓝、自动药水入口同样遵守互斥。
-- 构造与反序列化不互相读取另一种附件，避免加载循环。登录、复活、换维同步入口负责规范非活动资源。
-- 附件保留 copyOnDeath。当前死亡不重置成长、模式、当前灵魂或技能冷却；onDeath / onRespawn 是明确的生命周期入口。
-- 用户已确认系统从未实际启用，本轮没有旧存档迁移规则或迁移版本字段。
-- Iron 与 Ars 仅在既有共享魔力配置启用时受模式限制。进入灵魂模式取消 Iron 尚未完成的读条；已经释放的弹幕和效果不被追溯取消。
+无被动和事件额外修正时：
 
-## 4. 服务端判定与双端执行
+```text
+基础合计 = 武器基础伤害 + 当前技能基础伤害
+实际伤害基数 = 基础合计 × 灵魂属性倍率
+             =（武器伤害 + 技能伤害）×（1 + 灵魂伤害加成）
+```
 
-主武器右键通过原版物品交互包到达服务器，服务端调用 PlayerUtils.tryUseSoulSkill。不要为同一次右键再次发送 SoulSkillUsePacketC2S，否则会重复请求。ClientSoulHandler.requestSoulSkillUse 留给未来独立输入。
+技能事件、引渡者、星魂联结、分魂驾驭等修正在 `PlayerUtils.getSoulSkillDamage`
+中结算；返回值仍未乘全局灵魂倍率。伤害进入统一事件后再乘一次。护甲、暴击、难度和其他通用伤害处理是后续口径，不要求
+tooltip 预测每个目标的最终掉血量。
 
-成功流程：
+### 2.2 110 的根因与本轮修正
 
-1. 检查魂师总开关、灵魂模式、主手主武器和当前非空技能。
-2. 刷新永久/临时来源与当前可用性；检查按技能 ID 的冷却及 canUse。
-3. 发布 SoulConsumeEvent，扣除已有灵魂，计算不足部分的生命代偿。
-4. 设置共享冷却、同步技能状态，复制这次施法的技能栈。
-5. 服务端调用 skill.use(player, stack)。
-6. 发送成功通知给追踪施法者的客户端及本人，使用 sendToPlayersTrackingEntityAndSelf 一次，不另发本人。
-7. 客户端根据包中的施法者实体 ID、实际技能 ID 和栈冷却值重建临时栈，然后调用同一 use。
-8. 以 SOUL_OVERDRAFT 来源进入 NeoForge 伤害流程，由伤害事件和标签处理代偿与死亡。
+1.21 原 `SoulWeaponItem` 构造函数曾将 `soulProperties.damage()` 以 `ADD_VALUE` 写入 `SOUL_DAMAGE`
+。星魄的 11 加到默认倍率 1 后为 12，被属性上限截成 10；原 tooltip 再算 `11 × 10`，所以显示 110，且漏掉当前技能。
 
-canUse(ServerPlayer, SoulSkillStack) 只在服务端判定。isAvailable(Player) 表示解锁来源存在后该技能的持续可用条件。use(Player, SoulSkillStack) 两端分别执行一次；客户端不提前预测、不再次付款或判定。
+修正沿用法杖等武器的结构：武器基数保留在物品属性中，不作为倍率修饰符；保留原暴击修饰符。实际施法取原始武器基数，不能取玩家灵魂属性当“武器伤害”。当前移除错误的
+`base_soul_damage` 修饰符定义，不调整全局属性默认值或上限。
 
-具体技能必须区分逻辑侧：服务端生成实体、造成伤害和施加 Buff；客户端生成本地表现。实体已通过原版跟踪同步时，客户端不可再生成第二个实体，也不可重复播放已由服务端粒子协议发出的同一效果。
+之前文档称“MagicLib 已经乘灵魂倍率”，但本次核对源码时只有 `applyMagicDamage`，没有灵魂分支。本轮新增
+`LibAttributes.applySoulDamage`，在 `LibGameEvents` 与魔法伤害相邻的统一流程调用。只匹配独立
+`LibDamageTypes.SOUL`，不处理 `SOUL_OVERDRAFT`，不把灵魂来源加入魔法/远程标签。保留与魔法分支一致的自定义属性替代判定。
 
-失败时不发成功事件；若本次判定更新了临时可用性，拒绝路径仍发送一次状态校正。成功通知不修改当前索引、装备、永久学习或远端玩家附件。新追踪者通过实体状态看到持续效果，不重放已经结束的瞬时施法。
+### 2.3 保留基础 / 实际数值配置
 
-## 5. 同步协议
+`ClientConfigs.weaponTooltipBaseStats` 仍由共用 `WeaponTooltip.attributeValue` 决定预览属性：
 
-| 通道 | 内容与接收者 |
-| --- | --- |
-| SoulStorage 原生附件同步 | 成长份数、当前灵魂、恢复比例与模式，读取时绑定所属实体；额外容量走原生实体属性同步。常规变化更新仅本人，初次同步沿 NeoForge 框架规则，也可能发给追踪者。 |
-| SoulSkillSyncPacketS2C | 技能数据快照，不包含当前索引；仅本人。临时/可用集合只用于网络，不作为永久学习保存。 |
-| SoulSkillIndexRequestPacketC2S / SoulSkillIndexSyncPacketS2C | 当前技能索引，独立 VAR_INT，不携带技能附件。 |
-| SoulSkillUsePacketC2S | 空请求，服务端读取自己的当前选择。 |
-| SoulSkillUsePacketS2C | 本次成功的 entityId、skillId、cd、maxCd；发施法者及追踪者。 |
-| ManaPacketS2C | 复用原有魔力数值缓存协议。 |
+| 模式            | 魂师主武器口径                                                                    |
+|-----------------|-----------------------------------------------------------------------------------|
+| `true`（基础）  | 当前技能基数 + 悬停武器基数；不计玩家装备、效果和已学习被动的加成                 |
+| `false`（实际） | 悬停武器基数传入 `PlayerUtils.getSoulSkillDamage`，再乘共用属性预览得出的灵魂倍率 |
 
-生命周期初始化依次发送技能数据和索引。普通状态包只还原状态、刷新界面，绝不调用 use。当前技能数据同步按类别与索引分离，不是通用的逐字段增量协议。
+`IWeaponTooltip` 增加带 `Player` 和 `baseStats` 的伤害重载，默认委托原双参数方法，其他武器继续用原实现。调用入口仍在共用
+`WeaponTooltip`，不为魂师另写一套提示渲染或在客户端渲染器中按类特判。
 
-冷却按技能 ID 保存在 skillCooldowns，装备栈 CD 是镜像。卸下、换槽、重复装备不能重置冷却；不同槽的同一技能共享冷却。服务端推进真值，客户端仅本地倒计时显示；开始、结束、可用性变化及生命周期初始化发送校正，不每 tick 发整份快照。
+无玩家或空技能时只计武器基数。预览按悬停物品计算，不能取当前手持武器冒充。共用属性预览剔除当前主手修饰符、应用悬停物品修饰符，不通过临时装备物品修改玩家。原暴击与攻速入口保持不变。
 
-装备、替换请求必须检查服务端可用性，客户端传来的 CD 不能覆盖权威冷却。客户端不能调整服务端槽容量；SET_SLOT_COUNT 请求仅触发认可容量回传。永久学习不通过旧 UNLOCK_ALL 原型请求。
+示例：星魄 11、引魂 5 → 基础 16；25% 灵魂增伤 → 实际 20。没有玩家时星魄显示 11。切换技能会改变合计，技能自身提示仍只显示技能基数。
 
-## 6. 伤害、代价、收集与恢复
+### 2.4 持续攻击快照
 
-灵魂伤害是独立 DamageType，SOUL_DAMAGE 属性默认倍率 1。基础总伤害为技能伤害加主武器伤害，先经过 SoulSkillDamageEvent，再由 MagicLib 的灵魂分支乘一次属性。该来源不进入魔法或远程伤害标签，避免叠乘其他职业属性；通用伤害流程仍可继续处理。
+成功施法将武器基数按技能 ID 存入 `SoulStorage.castWeaponDamage`；持续、多段攻击调用
+`getCastSoulSkillDamage`
+。换手不改变已经施放技能的武器基数；不同技能不覆盖彼此快照，同技能重新施放会更新。属性和被动仍按实时规则结算。弹射、衍生激荡等继承已生成攻击的基数，不再次付款或重复乘全局倍率。
 
-副武器基类为 SoulSecondaryWeaponItem，继承 CustomRarityItem；只提供类型与构造骨架，灵魂资源复用 PlayerUtils，效果和伤害来源、倍率由具体职业定义。技能面板仍按 SoulWeaponItem 判定。
+星魂联结当前通过既有魔法属性值参与额外修正；本轮不重做它的平衡公式。回归时应单独记录开启该被动的结果，不能套用无被动示例断言。
 
-血量代偿默认每缺少 1 点灵魂扣除 4 点生命。先使用剩余灵魂，再对不足部分结算生命代偿；SoulConsumeEvent 可修改消耗和比例或取消整个消耗。效果和成功通知之后，以独立 SOUL_OVERDRAFT 来源调用 hurt，进入 NeoForge 伤害流程；LivingIncomingDamageEvent 根据 confluence_magic_lib:soul_overdraft 标签转发 SoulOverdraftEvent，允许修改或取消本次代偿，取消不回滚已提交的灵魂消耗、技能效果和冷却。分类标签加入 BYPASSES_ARMOR、BYPASSES_SHIELD、BYPASSES_INVULNERABILITY、BYPASSES_COOLDOWN、BYPASSES_EFFECTS、BYPASSES_RESISTANCE、BYPASSES_ENCHANTMENTS 和 NO_KNOCKBACK。吸收生命通过 NeoForge 的 ABSORPTION 减伤回调归零，代偿保留已有受伤无敌时间且不额外增加；闪避、微光与饰品无敌入口遵守 BYPASSES_INVULNERABILITY。生命变化、战斗记录、死亡归因、文本和掉落由游戏伤害流程处理。
+## 3. 资源、学习与生命周期
 
-收魂仅在灵魂模式发生，复用玩家攻击归属：
+- `SoulStorage` 默认 1 份成长，每份 20、最多 20 份；永久成长基础 20～400。额外容量走 `ADDITIONAL_SOUL`
+  ，仪式每次另加 30，最多 6 次。派生上限实时读取，不能缓存为固定 400。
+- 灵魂/魔力互斥；切换清空非活动资源。普通切换不补满资源。星核解锁自动切换后，主武器/魔法武器通过既有入口切模式。
+- 附件构造和反序列化不互相读取另一种资源附件；登录、复活和换维负责规范及同步。
+- 成长、学习、模式、冷却与当前资源的死亡/保存规则由附件和生命周期入口控制，不能在 UI 上另存一份真值。
+- 永久学习、临时授予、当前可用、已装备是不同概念。临时来源失效关闭可用状态，但保留槽位与冷却；不能删除永久记录模拟暂时禁用。
+- 技能被动通过 `isPassiveSoulSkillActive` 判断“可用且装备”；引渡者是书籍被动，使用 `isSoulBookLearned`
+  ，不占技能槽。
+- 初始永久学会引魂与强力附魂，不自动装备。初始 3 槽；第 1/3/5 次仪式各追加 1 槽，最多 6。
+- `FIRST_OBTAIN_SOUL_SKILLS` 使用延迟注册物品作为键；生机灿烂首次获得永久解锁自然法则。不能在不安全的静态期解析未注册物品。
 
-- 普通敌怪收益 = (最大生命 × 0.8 + 攻击属性 × 0.1 + 护甲 × 0.1) / 20，基础收益至少 1。
-- 普通公式可保留正小数；不把百分比恢复的向上取整扩展到所有收魂。
-- SoulCollectionEvent 可以修改普通收益或取消；事件可把收益设为 0。
-- Boss 本体直接回满当前灵魂；Boss 部件不单独收魂。双子管理本体通过眼球死亡前记录的最后击杀玩家归属结算。
-- 使用最大生命，避免在死亡时读取已经为 0 的当前生命。
+## 4. 施法、支付与同步
 
-每秒恢复一次：存储恢复比例 + 基础环境比例，经 SoulRecoveryEvent 修改后，最后计算 ceil(总上限 × 最终比例)。灵雾墓地与灵魂沙峡谷任一满足时提供 5%，同时满足不重复叠加。墓地判定复用服务端 ModBlockCounters，不读取客户端雾效配置。特殊方块、附魔、套装和饰品通过事件接入，不把具体判断塞进附件。
+主武器右键已通过原版交互到服务端，调用 `tryUseSoulSkill`；不要再为同一次右键另发施法包。服务端检查模式、来源、可用性、冷却和
+`canUse`，支付后记录冷却/快照，再执行技能并通知本人及追踪者。
 
-## 7. 学习、临时授予与具体内容
+技能 `use(Player, SoulSkillStack)`
+按既有通知链在两端执行，必须区分逻辑侧：服务端生成实体、伤害和效果；客户端只做本地表现。已随实体追踪同步的攻击不能在客户端再造一份。状态校正包只刷新状态，不重放
+`use`。
 
-永久学习和当前可用性是两个概念。初始永久学会 soul_lure 和 enhanced_soul，不自动装备。书、仪式或被动使用 learnSoulSkill；已有永久记录时返回 false，不消费技能书。
+| 通道                                                             | 内容                                                           |
+|------------------------------------------------------------------|----------------------------------------------------------------|
+| `SoulStorage` 附件同步                                           | 成长、当前灵魂、恢复比例、模式、仪式；额外容量通过实体属性同步 |
+| `SoulSkillSyncPacketS2C`                                         | 本人技能数据快照，不覆盖当前索引                               |
+| `SoulSkillIndexRequestPacketC2S` / `SoulSkillIndexSyncPacketS2C` | 当前技能槽索引                                                 |
+| `SoulSkillUsePacketC2S`                                          | 独立施法输入请求；当前选择以服务端为准                         |
+| `SoulSkillUsePacketS2C`                                          | 本次施法者、实际技能 ID 和栈冷却值；仅重建这次表现             |
 
-主武器 getGrantedSoulSkills 提供临时 ID 集合。永久记录与临时来源合并后，再用 isAvailable 检查持续条件。来源或条件失效时关闭可用状态，保留装备与冷却；恢复条件后重新可用。不要通过删除永久学习记录实现暂时锁定。
+冷却按技能 ID 共享。装备栈中的 CD 是镜像；换槽、卸装、同技能重复装备不能清冷却。服务器推进真值，客户端显示倒计时，在开始/结束/状态变化时校正，不每
+tick 发整份附件。客户端不能通过装备请求写入 CD 或槽容量。
 
-| ID / 类型 | 当前实现与测试值 |
-| --- | --- |
-| soul_lure / 引魂 | 技能伤害5，消耗1，CD20tick；远程单体弹幕，速度5格/tick、最大距离5格、最长100tick。 |
-| enhanced_soul / 强力附魂 | 消耗1，CD20tick；Buff持续100tick，灵魂属性总倍率×5，不是增加5%。 |
-| spirit_surge / 灵魂激荡 | 技能伤害5，消耗1，CD20tick；水平半径5、竖向范围5，扩散100tick，每圈5粒子，每目标一次。 |
-| survival_instinct / 求生欲 | 主动使用条件为血量低于40且已有耐药性；消耗10，CD20tick，成功时耐药剩余时长减半一次，不每tick自动减半。 |
-| broken_glimmer / 残破微光 | 主武器基础灵魂伤害5，白色稀有度、不可堆叠；手持临时授予求生欲。 |
-| fallen_soul_core / 堕魂星核 | 普通使用切模式，成功后同类型1秒CD；非创造消耗，创造保留。创造潜行右键增加上限一份，左键减少一份。 |
-| soul_skill_book / 通用技能书 | SOUL_SKILL ResourceLocation组件绑定具体技能；保留灵魂激荡与求生欲永久学会书。 |
+灵魂不足时，先扣剩余灵魂，缺口默认按 1 魂 = 4 生命代偿。消耗、代偿分别走 `SoulConsumeEvent` /
+`SoulOverdraftEvent`，代偿来源是独立 `SOUL_OVERDRAFT`，不能简单 `setHealth`
+代替，也不能与血怒自己的固定生命成本混淆。代偿可致死；取消后不倒退已提交的技能效果和冷却。
 
-求生欲缺独立图标，当前复用引魂图标而保留自己的技能 ID。强力附魂 mob_effect 图标由现有技能图标原字节复制，不引入新美术。其他既有技能仍为原型，具体效果待规则确认。
+法器复用原版物品冷却；快捷槽数量与“同时冷却最多 3 格”的规则分开维护。背包格数不是堆叠数量；法器不是技能，不参与技能后的刻骨重掷。当前没有成品法器。
 
-创造栏“汇流来世 | 魂师”位于法师武器与召唤师武器之间，图标使用 IconItems.SOULCERER_ICON，堕魂星核置于首位。其后依次为主武器、副武器、法器、技能书四组：残破微光放主武器组；副武器、法器保留空组；技能书组保留未绑定书、灵魂激荡书和求生欲书。关闭 itemGroups 时按相同顺序平铺。星核同时保留在杂项的增益组首位，其他魂师物品已从杂项迁出。分组及内容由 ModTabs.SOUL 与 acceptSoulGroup 管理。
+## 5. 轮转、标签与饰品
 
-法器复用原版 ItemCooldowns，同物品类型共享 CD。物品栏有3格法器正在冷却时不能再用更多法器；格数不是堆叠个数。快捷栏1/2/3通过实际数字键选槽后调用原版 useItem，尊重按键重绑定，不改 Shift。离开物品栏不重置原有计时，但该格不再占用3格限制；原版物品冷却不提供离线持久化。技能冷却与法器原生冷却不要混为一套数据。
+- `soul_lure`：引魂系列，包含引魂、强力引魂、引魂激荡、迷魂孢雾、亵渎之魂、自然之惩戒、魂引天星；引渡者按此标签处理。
+- `soul_attach`：附魂类联动名单，旧 `enhanced_soul_series`
+  已合并删除。当前包括强力附魂、附魂印记、附魂激荡、血怒、掠夺之魂、灵魂透支、魂引天星、灵魂突击、血液沸腾、生命归还、天穹倒转。
+- `major_active`：灵魂透支、灭却业火、血怒，只能手动选择施放。束魂锁链、自动连锁与自动选槽均排除。
+- 自动轮转、附魂连锁结束落点、当前冷却/空槽/被动时按施法键，均沿当前入口查找可释放技能；旧“冷却中仍停留”的结论已作废。
+- 快捷切换与自动施法不是同一规则；小轮盘/横卡跳空槽和被动，大轮盘按鼠标直接点选。全部无候选时按既有 UI
+  回退，不能重置冷却。
+- 刻骨的记忆候选来自当前背包/副手中魂师主武器授予的、未永久学会的技能，去重后随机一个；不是“历史获得过就永远计入”。成功施法后重掷，候选失效或饰品卸下时刷新。
+- 灵魂收集仅在灵魂模式；普通收益按最大生命、攻击和护甲公式，经收集事件修正，Boss
+  本体回满，部件不重复收集。恢复每秒结算，墓地与灵魂沙峡谷的 5% 环境恢复不叠加，百分比恢复最后向上取整。
+- 收魂、自然恢复、手环定时恢复是不同入口；残破微光的回血只挂收集事件，不能由每秒自然恢复触发。
 
-## 8. 扩展操作顺序
+## 6. 技能、弹幕与表现维护
 
-### 新技能
+参数集中在 `SoulSkillParameters`；数值表不要在历史文档中另存一组“当前值”。武器伤害/暴击在 `SoulItems`
+的构造属性；效果类只读参数。重要基准与回归点见测试须知。
 
-1. 在 common/soulcerer/skill 新建类，继承 SoulSkill，构造配置基础伤害、消耗与 tick 冷却。
-2. 持续解锁条件覆写 isAvailable，单次使用条件覆写 canUse，效果覆写 use。
-3. ModSoulSkills 添加稳定英文 ID 与缓存原型注册，沿现有返回供应器方式；不要在静态初始化提前调用尚未完成注册的 DeferredHolder.get。
-4. 为技能分配 Tag；需要数据包调整时修改 Tag 生成源，运行 Data 需另获明确授权。
-5. 用学习 API、主武器临时授予或条件来源接入；新增条件可用性由服务端重算。
-6. 新增图标、活跃语言定义和确有必要的总览节点，不移动原节点布局。
-7. 共享 Buff 可监听 SoulSkillDamageEvent 并查询 event.getSkillStack().getSoulSkill().is(tag)，再修改基础总伤害。不要再次乘全局 SOUL_DAMAGE。
+| 功能                   | 实现要点                                                                                                  |
+|------------------------|-----------------------------------------------------------------------------------------------------------|
+| 引魂 / 强力引魂        | 直线弹幕，基础命中后弹射 1 次；强力额外 1 次，引渡者再额外 1 次；穿透先于弹射，追踪可继承                 |
+| 附魂印记               | `SoulMarkSkill.modifyProjectile` 设置命中标记，命中给 3 秒强力附魂、击杀给 8 秒；不是施法瞬间给旧版长增益 |
+| 引魂激荡               | 弹幕命中点生成免费激荡，沿同一基数，不再次扣魂                                                            |
+| 激荡 / 强力激荡 / 冲击 | 贴地扩散，0.5 秒到半径 7.2 / 9.6 格；冲击第 3 次终结爆炸带击退，不推自己                                  |
+| 魂引天星               | 80 秒，2.5 秒一轮、最近最多 2 敌怪各 1 星、48 格索敌；后续齐射免费，星怒交叉面片外观                      |
+| 星魄特性               | 其他灵魂攻击触发额外坠星；坠星本身被排除，防递归生成                                                      |
+| 灵魂突击               | 自身射弹传 `NO_PARTICLE`；枪械强化在 `GunFiringService` 每枪一次，霰弹多发不重复付款，0 魂不拿生命补款    |
+| 血怒                   | 当前 0 魂、5 生命、3 秒 CD、16 秒持续、近战/远程 +200%；旧“10 生命、7%”调参记录已过期                     |
+| 亵渎之魂               | 最近敌怪脚下生成向上的火球，保留范围命中，不回退到朝准星平射                                              |
+| 天穹倒转               | 已有总览节点与摔落转治疗；节点不等于解锁，前置和技能书仍分别检查                                          |
 
-### 新主武器、副武器与法器
+ParticleStorm：`soul_projectile`、`confuse_spore_projectile`、`spirit_surge` 各管对应效果。粒子 ID
+使用同步字段 `DATA_PARTICLE`，不能只存在服务器普通字段。客户端每个弹幕只登记一次发射器，不能在 tick
+中因已移除而反复创建；迷魂孢雾专用 ID 不与旧原版粒子 `spore_cloud` 混用。序列帧使用定义中的
+UV/帧布局，不把整张条带当一帧。
 
-- 主武器继承 SoulWeaponItem；getSoulDamage 返回未乘属性的基础值，临时技能通过 getGrantedSoulSkills 提供。
-- 新副武器可继承 SoulSecondaryWeaponItem，在具体类中实现所属职业的效果和伤害，只在服务端调用灵魂资源 API。已有职业武器可直接复用资源 API。
-- 法器继承 SoulArtifactItem，配置消耗和 tick 冷却，实现 canUse / useArtifact；不要绕过 tryUseSoulArtifact 的3格校验和支付。
-- SOUL_ARTIFACT_QUICK_SLOT_COUNT 与 MAX_COOLING_SOUL_ARTIFACT_SLOTS 是独立规则，不把快捷槽数量作为冷却上限来源。
+激荡光环由实体同步半径注入 `variable.radius`，在客户端创建一次；不再叠旧 `minecraft:soul` 点环。坠星使用
+`DATA_STAR_APPEARANCE` 与共用剑气面片渲染，禁止重新挂引魂拖尾。
 
-### 容量、恢复、收集与仪式
+## 7. 物品、技能书、配方和 datagen
 
-- 装备额外上限使用 ConfluenceMagicLib.ADDITIONAL_SOUL 的实体属性修饰符，直接增加容量使用 ADD_VALUE；不要每tick调用 addSoul 当作临时容量。
-- 仪式完成且材料/条件验证成功后，再调用 SoulStorage.of(player).addSoul(份数) 改永久成长。
-- 盔甲、饰品、附魔或特殊方块恢复监听 SoulRecoveryEvent；收集增益监听 SoulCollectionEvent。
-- 隐匿者的属性、套装效果、仪式结构、材料、次数及完成条件仍待提供，不自行填写或登记空壳成品。
+### 名称与说明
 
-## 9. 数据生成与获取途径
+- 物品名称随 `SoulItems.registerItem` 注册生成，特殊英文用 `registerItemWithEnglishName`。沿现有
+  `LANGUAGE_PROVIDERS`，不再新增独立魂师语言 Provider。
+- 技能/书名、按键、界面、消息归 `InterfaceLanguageSubProvider`；提示归 `TooltipLanguageSubProvider`
+  ；创造页与分组归 `ItemGroupLanguageSubProvider`。本轮移除 `SoulLanguageSubProvider`，48 条原翻译均保留。
+- 武器特性说明走 `ModDataTipProvider.weaponUsage` 与语言 Provider，不把相同文案再写进物品
+  `appendHoverText`。
+- 技能 tooltip 由 `SoulSkillStack` 提供：名称 → 非零伤害/冷却/Buff 时长/消耗 → 状态 → 描述。Buff
+  可多行，敌人受到的中毒不当作自身 Buff 时长。
 
-- 活跃入口是 ModLanguageProvider。新增魂师键写 SoulLanguageSubProvider；原有技能名沿用 InterfaceLanguageSubProvider，避免重复添加。旧 ModChineseProvider / ModEnglishProvider 不再是入口。
-- 技能 Tag 在 ModSoulSkillTagsProvider，由 ModDataGenerator 挂接。
-- 残破微光加入原版 minecraft:chests/simple_dungeon 的现有宝箱追加生成链，不再新建一套 GLM。
-- 灵魂激荡书加入世吞/克脑现有普通、专家、大师六张奖励表，不加 Boss 部件掉落。
-- 沿已确认测试值：独立池5%概率、命中数量5、条目权重5。权重不是概率。
-- 当前没有提供这些内容的合成配方，因此不虚构材料。后续指定配方后写现有 recipe Provider。
-- 本轮承接用户的数据生成授权，依次通过 IDEA 的 Confluence-Magic-Lib - Data 和 ConfluenceOtherworld - Data 执行，最终均为 BUILD SUCCESSFUL。透支伤害类型 JSON 已生成；三个技能 Tag、中英文提示、技能书模型与奖励输出已读取。
-- Data 的编译前置步骤发现并修正了本轮快捷法器局部玩家类型；语言生成发现并删除了新入口中重复的 22 个原技能名。最终源码诊断无错误，仍有未使用预留接口等警告。
-- Data 按整个模块生成，实际改动 18 个非缓存生成文件及 13 个缓存文件；其中也刷新了工作区已有暗影蜡烛、墓碑标签、城镇小动物标签、饰品数据映射和 DataTip 输出，对应业务源码未由本轮修改。
-- 仍有 EMILoot 的既有战利品警告：minecraft:entities/slime 引用 confluence:gameplay/slime_carry 未通过该 Provider 的校验。本轮未修正此非魂师问题，Data 仍正常结束。
-- 成功日志备份：[Magic Lib Data](../../notes/_tmp_soul_complete_backup_20261016_1792136225642/data-logs/lib-data-success.log)、[主模块 Data](../../notes/_tmp_soul_complete_backup_20261016_1792136225642/data-logs/main-data-success.log)。
-- 魂师创造栏图标、soulcerer 命名对应的物品模型、技能标签和中英文键，以及灵魂透支分类与绕过标签均已通过 IDEA Data 生成。旧魂师技能标签文件和技能书模型已由 Data 清理。
-- 本次两个模块合计 29 项非缓存生成路径变化（含新增、修改、删除）及 10 个缓存文件变化；其中六张世吞/克脑奖励表同步更新技能书物品 ID，未改变奖励规则。
-- 魂师命名与图标 Data 成功日志：[Magic Lib Data](../../notes/_tmp_soulcerer_naming_backup_20261016_212106_9347/generated-before-data/logs/magic-lib-data-success.log)、[主模块 Data](../../notes/_tmp_soulcerer_naming_backup_20261016_212106_9347/generated-before-data/logs/main-data-success.log)。
-- 本次运行前的 10,197 个生成文件已备份：[生成备份](../../notes/_tmp_soulcerer_naming_backup_20261016_212106_9347/generated-before-data)、[差异清单](../../notes/_tmp_soulcerer_naming_backup_20261016_212106_9347/generated-before-data/generated-diff.json)。
-- 后续再次运行 Data、构建或游戏仍需用户明确要求。
+### 技能书
 
-## 10. 后续检查与交接
+`SoulBooks` 的书籍 ID 与技能 ID 不能混为一谈；`SOUL_SKILL` 组件绑定书籍定义。`soul_surge` 书解锁同 ID
+的附魂激荡被动，不能误认为 `spirit_surge` 主动范围技能。`harvester` 前置永久学会 `soul_surge`，解锁
+`surge_blast`。引渡者记录在已学习书籍集合中。
 
-先读源码和对应 IDEA 诊断。以下是需要游戏验证的行为清单，不代表本轮已经执行：
+产出统一通过 `SoulItems.soulBook` / 对应 loot helper，带书籍 ID
+与稀有度。登记顺序影响书皮覆盖序号及创造栏。学习前检查永久前置；首次学习与重复阅读“复习”分开；书不消耗。复习
+10 分钟、灵魂伤害 +5%，沿原效果刷新，不自建叠层。
 
-- 普通/创造切换、死亡/复活/换维后模式和资源保留；非活动资源所有增减入口保持0。
-- 主武器右键只施放一次；无效条件或取消支付不产生成功表现。
-- 本人及旁观者各收到一次表现，切换技能后不播放错误技能。
-- 缺少灵魂时4:1基础代偿、减伤影响、事件取消、致死前完成施法。
-- 多槽同技能、卸下重装、重登后的技能冷却；客户端暂停与服务端校正。
-- 灵雾、魂沙谷、双环境重合、低上限和额外容量时的百分比向上取整。
-- 普通敌怪、Boss本体、部件、双子最终击杀归属与回满。
-- 临时授予失效仍装备、重新满足条件、永久书学会后不丢记录。
-- 法器3格限制、同类型共享CD、前三槽快捷使用及普通物品不误触发。
-- Ars/Iron 未安装、共享配置关闭、创造/零成本技能、切模式取消读条。
-- 新 Data 输出与中英文提示、图标、创造物品栏、Boss奖励及地下宝箱。
+### 配方与获取
 
-修改前源码与原计划、Data 前的 10,191 个生成文件均已备份到仓库根 notes/_tmp_soul_complete_backup_20261016_1792136225642。Git 提交和推送本轮未执行。
+- 魂灯及两把魂师弓用现有 `CraftingRecipeProvider` / `HeavyWorkBenchProvider` / `ModRecipeProvider`
+  ；魂瓶由 `BottleItem.use` 调 `SoulItems.fillSoulBottle`，消耗 20 魂，按既有灵魂消耗规则处理。
+- 束魂锁链现为重型工作台无序：锁链 + 魂瓶 + 星核，无灵雾环境限制；旧 `workshop/soul_binding_chain` 应由
+  datagen 清理。
+- 灵魂长袍、隐匿者、蓝隐匿者在工作台；幻翼在邪恶祭坛；白南瓜、逐灵在重型工作台。紫水晶原料当前是原版紫水晶碎片，不是模组紫晶。逐灵
+  `AmountIngredient` 的 count 是每格消耗，不是整件总数。
+- 残破微光走既有地下地牢箱追加链；松露灯在发光蘑菇小屋金箱。书籍掉落与交易入口分别是
+  `EntitySubProvider`、`GiftSubProvider`、`ChestSubProvider`、`ModVillagers`；不要恢复已删除的绑定
+  `spirit_surge` 旧通用书池。
+- 副武器祈灵之刃和魂师弓继续走所属近战/远程职业，不因“魂”字改成灵魂倍率；命中/击杀回魂是独立联动。
+- 新配方只维护生成源，`src/generated` 是忽略的构建产物；1.21 使用 `recipe`/`loot_table`/`tags/item`
+  等新路径，1.20 为 `recipes`/`loot_tables`/`tags/items` 等旧路径。不要复制路径后不做版本转换。
 
-## 11. 本轮修改文件索引
+## 8. HUD、总览与输入
 
-Java 源码共 68 个文件（新增 25 个）；均保留 CRLF。以下链接供后续 AI 定位本轮实现。
+灵魂条使用独立 `soulStyle`，与 `manaStyle`
+分开配置。精致魂条用底座/骷髅，叠加魂条用对应图标行和淡蓝调色。代偿警示仅实现叠加生命条，使用公共魂色常量并在绘制后还原；不修改吸收生命或中毒等覆盖层。
 
-### Confluence-Magic-Lib
+总览缩放 0.5～2，以鼠标位置为锚点。节点空间平移为 `scroll`，屏幕坐标 `center + (orig + scroll) × zoom`
+；拖动位移除以 zoom，缩放锚点补偿 `scroll += (mouse-center) × (1/newZoom-1/oldZoom)`。连线取节点真实屏幕视觉中心，线宽随
+zoom；提示文字在 popPose 后绘制，点击区域也使用缩放后几何。背景保持独立，不跟节点缩放。
 
-- [common/data/gen/LibLanguageProvider.java](../../Confluence-Magic-Lib/src/main/java/org/confluence/lib/common/data/gen/LibLanguageProvider.java)
-- [common/event/LibGameEvents.java](../../Confluence-Magic-Lib/src/main/java/org/confluence/lib/common/event/LibGameEvents.java)
-- [common/event/LibModEvents.java](../../Confluence-Magic-Lib/src/main/java/org/confluence/lib/common/event/LibModEvents.java)
-- [common/LibAttributes.java](../../Confluence-Magic-Lib/src/main/java/org/confluence/lib/common/LibAttributes.java)
-- [common/LibDamageTypes.java](../../Confluence-Magic-Lib/src/main/java/org/confluence/lib/common/LibDamageTypes.java)
-- [ConfluenceMagicLib.java](../../Confluence-Magic-Lib/src/main/java/org/confluence/lib/ConfluenceMagicLib.java)
+总览背景开关通过配置统一读写，界面按钮和配置页共享实时入口。关闭时仍画静态底色，不透出世界。总览装备栏在底部，技能节点与书籍前置独立维护。
 
-### ConfluenceOtherworld
+快捷切换只保留 `MAGIC_SKILL_SWITCHING` 的实际绑定，默认左 Alt；不要恢复旧 Shift
+死绑定。总览按键与快捷面板开关分别处理。小轮盘/卡片滚轮，大轮盘指针；释放按键、打开面板和改键均读取同一
+KeyMapping。
 
-- [api/event/AdditionalSoulEvent.java](../src/main/java/org/confluence/mod/api/event/AdditionalSoulEvent.java)
-- [api/event/SoulCollectionEvent.java](../src/main/java/org/confluence/mod/api/event/SoulCollectionEvent.java)
-- [api/event/SoulConsumeEvent.java](../src/main/java/org/confluence/mod/api/event/SoulConsumeEvent.java)
-- [api/event/SoulRecoveryEvent.java](../src/main/java/org/confluence/mod/api/event/SoulRecoveryEvent.java)
-- [api/event/SoulSkillDamageEvent.java](../src/main/java/org/confluence/mod/api/event/SoulSkillDamageEvent.java)
-- [client/ClientConfigs.java](../src/main/java/org/confluence/mod/client/ClientConfigs.java)
-- [client/ModKeyBindings.java](../src/main/java/org/confluence/mod/client/ModKeyBindings.java)
-- [client/event/GameClientEvents.java](../src/main/java/org/confluence/mod/client/event/GameClientEvents.java)
-- [client/event/ModClientEvents.java](../src/main/java/org/confluence/mod/client/event/ModClientEvents.java)
-- [client/gui/container/soulcerer/SoulOverviewScreen.java](../src/main/java/org/confluence/mod/client/gui/container/soulcerer/SoulOverviewScreen.java)
-- [client/gui/hud/soulcerer/CurrentSelectedSkillHud.java](../src/main/java/org/confluence/mod/client/gui/hud/soulcerer/CurrentSelectedSkillHud.java)
-- [client/gui/hud/soulcerer/quick_skill/BasicSoulQuickSkillHud.java](../src/main/java/org/confluence/mod/client/gui/hud/soulcerer/quick_skill/BasicSoulQuickSkillHud.java)
-- [client/gui/hud/TerraStyleManaHud.java](../src/main/java/org/confluence/mod/client/gui/hud/TerraStyleManaHud.java)
-- [client/gui/widget/soulcerer/skill/overview/HotbarWidget.java](../src/main/java/org/confluence/mod/client/gui/widget/soulcerer/skill/overview/HotbarWidget.java)
-- [client/gui/widget/soulcerer/skill/overview/OverviewNode.java](../src/main/java/org/confluence/mod/client/gui/widget/soulcerer/skill/overview/OverviewNode.java)
-- [client/gui/widget/soulcerer/skill/SoulSkillBox.java](../src/main/java/org/confluence/mod/client/gui/widget/soulcerer/skill/SoulSkillBox.java)
-- [client/handler/soulcerer/ClientSoulHandler.java](../src/main/java/org/confluence/mod/client/handler/soulcerer/ClientSoulHandler.java)
-- [client/renderer/entity/soulcerer/SoulLureRenderer.java](../src/main/java/org/confluence/mod/client/renderer/entity/soulcerer/SoulLureRenderer.java)
-- [common/attachment/ManaStorage.java](../src/main/java/org/confluence/mod/common/attachment/ManaStorage.java)
-- [common/attachment/SoulSkillStorage.java](../src/main/java/org/confluence/mod/common/attachment/SoulSkillStorage.java)
-- [common/attachment/SoulStorage.java](../src/main/java/org/confluence/mod/common/attachment/SoulStorage.java)
-- [common/data/gen/language/SoulLanguageSubProvider.java](../src/main/java/org/confluence/mod/common/data/gen/language/SoulLanguageSubProvider.java)
-- [common/data/gen/loot/GiftSubProvider.java](../src/main/java/org/confluence/mod/common/data/gen/loot/GiftSubProvider.java)
-- [common/data/gen/loot/modifiers/AddChestLootConfluenceSubProvider.java](../src/main/java/org/confluence/mod/common/data/gen/loot/modifiers/AddChestLootConfluenceSubProvider.java)
-- [common/data/gen/ModDataGenerator.java](../src/main/java/org/confluence/mod/common/data/gen/ModDataGenerator.java)
-- [common/data/gen/ModItemModelProvider.java](../src/main/java/org/confluence/mod/common/data/gen/ModItemModelProvider.java)
-- [common/data/gen/ModLanguageProvider.java](../src/main/java/org/confluence/mod/common/data/gen/ModLanguageProvider.java)
-- [common/data/gen/tag/ModSoulSkillTagsProvider.java](../src/main/java/org/confluence/mod/common/data/gen/tag/ModSoulSkillTagsProvider.java)
-- [common/effect/soulcerer/EnhancedSoulEffect.java](../src/main/java/org/confluence/mod/common/effect/soulcerer/EnhancedSoulEffect.java)
-- [common/entity/boss/AbstractTwinEye.java](../src/main/java/org/confluence/mod/common/entity/boss/AbstractTwinEye.java)
-- [common/entity/soulcerer/SoulLureProjectile.java](../src/main/java/org/confluence/mod/common/entity/soulcerer/SoulLureProjectile.java)
-- [common/entity/soulcerer/SpiritSurgeEntity.java](../src/main/java/org/confluence/mod/common/entity/soulcerer/SpiritSurgeEntity.java)
-- [common/event/game/entity/LivingEntityEvents.java](../src/main/java/org/confluence/mod/common/event/game/entity/LivingEntityEvents.java)
-- [common/event/game/entity/PlayerEvents.java](../src/main/java/org/confluence/mod/common/event/game/entity/PlayerEvents.java)
-- [common/event/game/TickEvents.java](../src/main/java/org/confluence/mod/common/event/game/TickEvents.java)
-- [common/init/entity/ModEntities.java](../src/main/java/org/confluence/mod/common/init/entity/ModEntities.java)
-- [common/init/item/SoulItems.java](../src/main/java/org/confluence/mod/common/init/item/SoulItems.java)
-- [common/init/ModAttachmentTypes.java](../src/main/java/org/confluence/mod/common/init/ModAttachmentTypes.java)
-- [common/init/ModDataComponentTypes.java](../src/main/java/org/confluence/mod/common/init/ModDataComponentTypes.java)
-- [common/init/ModEffects.java](../src/main/java/org/confluence/mod/common/init/ModEffects.java)
-- [common/init/ModSoulSkills.java](../src/main/java/org/confluence/mod/common/init/ModSoulSkills.java)
-- [common/init/ModSoulSkillTags.java](../src/main/java/org/confluence/mod/common/init/ModSoulSkillTags.java)
-- [common/init/ModTabs.java](../src/main/java/org/confluence/mod/common/init/ModTabs.java)
-- [common/item/soulcerer/FallenSoulCoreItem.java](../src/main/java/org/confluence/mod/common/item/soulcerer/FallenSoulCoreItem.java)
-- [common/item/soulcerer/SoulArtifactItem.java](../src/main/java/org/confluence/mod/common/item/soulcerer/SoulArtifactItem.java)
-- [common/item/soulcerer/SoulSkillBookItem.java](../src/main/java/org/confluence/mod/common/item/soulcerer/SoulSkillBookItem.java)
-- [common/item/soulcerer/SoulSecondaryWeaponItem.java](../src/main/java/org/confluence/mod/common/item/soulcerer/SoulSecondaryWeaponItem.java)
-- [common/item/soulcerer/SoulWeaponItem.java](../src/main/java/org/confluence/mod/common/item/soulcerer/SoulWeaponItem.java)
-- [common/soulcerer/skill/EnhancedSoulSkill.java](../src/main/java/org/confluence/mod/common/soulcerer/skill/EnhancedSoulSkill.java)
-- [common/soulcerer/skill/SoulLureSkill.java](../src/main/java/org/confluence/mod/common/soulcerer/skill/SoulLureSkill.java)
-- [common/soulcerer/skill/SoulSkill.java](../src/main/java/org/confluence/mod/common/soulcerer/skill/SoulSkill.java)
-- [common/soulcerer/skill/SoulSkillParameters.java](../src/main/java/org/confluence/mod/common/soulcerer/skill/SoulSkillParameters.java)
-- [common/soulcerer/skill/SpiritSurgeSkill.java](../src/main/java/org/confluence/mod/common/soulcerer/skill/SpiritSurgeSkill.java)
-- [common/soulcerer/skill/SurvivalInstinctSkill.java](../src/main/java/org/confluence/mod/common/soulcerer/skill/SurvivalInstinctSkill.java)
-- [Confluence.java](../src/main/java/org/confluence/mod/Confluence.java)
-- [integration/ars_nouveau/ArsNouveauHelper.java](../src/main/java/org/confluence/mod/integration/ars_nouveau/ArsNouveauHelper.java)
-- [integration/irons_spell/IronSpellHelper.java](../src/main/java/org/confluence/mod/integration/irons_spell/IronSpellHelper.java)
-- [mixin/client/MinecraftMixin.java](../src/main/java/org/confluence/mod/mixin/client/MinecraftMixin.java)
-- [mixin/integration/ars_nouveau/SpellCrossbowMixin.java](../src/main/java/org/confluence/mod/mixin/integration/ars_nouveau/SpellCrossbowMixin.java)
-- [mixin/integration/ars_nouveau/SpellResolverMixin.java](../src/main/java/org/confluence/mod/mixin/integration/ars_nouveau/SpellResolverMixin.java)
-- [network/c2s/SoulSkillRequestPacketC2S.java](../src/main/java/org/confluence/mod/network/c2s/SoulSkillRequestPacketC2S.java)
-- [util/PlayerUtils.java](../src/main/java/org/confluence/mod/util/PlayerUtils.java)
+## 9. 扩展与版本对照
 
-其他源码资源与文档：
+新技能：定义类与参数 → `ModSoulSkills` 注册 → 分类与标签 → 学习/临时来源 → 节点、图标、语言 →
+现有数据生成 → 对照测试清单验证服务端、客户端和重登。
 
-- [Ars Mixin 登记](../src/main/resources/confluence.mixins.json)
-- [强力附魂效果图标](../src/main/resources/assets/confluence/textures/mob_effect/enhanced_soul.png)
-- [已确认内容计划](SOUL_PLAN.md)
-- 本指南 SOUL_DEVELOPMENT.md。
+新主武器：使用当前 `SoulWeaponProperties` builder（1.21），只声明基数/暴击/临时技能/特性；1.20
+按其现有构造参数等价填写。不要把基数写到全局倍率属性中。法器沿 `tryUseSoulArtifact`，不要绕过支付与冷却上限。
 
-Data 实际变化的非缓存文件（含模块内已有内容的重新生成）：
+| 1.21.1 NeoForge                                               | 1.20.1 Forge                               |
+|---------------------------------------------------------------|--------------------------------------------|
+| `DeferredItem` / `DeferredHolder` / Holder 属性               | PortLib 延迟注册包装 / 直接 Attribute 值   |
+| `ItemAttributeModifiers`、`ADD_VALUE`、`ADD_MULTIPLIED_TOTAL` | 版本对应的属性修饰符/PortLib 操作          |
+| `getBasicSoulDamage(stack)`                                   | `getSoulDamage(stack)`，都表示原始武器基数 |
+| SynchedEntityData.Builder                                     | 旧版 defineSynchedData 签名                |
+| Java 21 `Math.clamp` 可用                                     | Java 17 使用版本对应 clamp                 |
 
-- [Confluence-Magic-Lib/assets/confluence_magic_lib/lang/en_us.json](../../Confluence-Magic-Lib/src/generated/resources/assets/confluence_magic_lib/lang/en_us.json)
-- [Confluence-Magic-Lib/assets/confluence_magic_lib/lang/zh_cn.json](../../Confluence-Magic-Lib/src/generated/resources/assets/confluence_magic_lib/lang/zh_cn.json)
-- [Confluence-Magic-Lib/data/confluence_magic_lib/damage_type/soul_overdraft.json](../../Confluence-Magic-Lib/src/generated/resources/data/confluence_magic_lib/damage_type/soul_overdraft.json)（新生成）
-- [ConfluenceOtherworld/assets/confluence/datatip/functional_block_descriptions.json](../src/generated/resources/assets/confluence/datatip/functional_block_descriptions.json)
-- [ConfluenceOtherworld/assets/confluence/lang/en_ud.json](../src/generated/resources/assets/confluence/lang/en_ud.json)
-- [ConfluenceOtherworld/assets/confluence/lang/en_us.json](../src/generated/resources/assets/confluence/lang/en_us.json)
-- [ConfluenceOtherworld/assets/confluence/lang/zh_cn.json](../src/generated/resources/assets/confluence/lang/zh_cn.json)
-- [ConfluenceOtherworld/assets/confluence/models/item/shadow_candle.json](../src/generated/resources/assets/confluence/models/item/shadow_candle.json)（新生成）
-- [ConfluenceOtherworld/assets/confluence/models/item/soulcerer_skill_book.json](../src/generated/resources/assets/confluence/models/item/soulcerer_skill_book.json)
-- [ConfluenceOtherworld/data/c/tags/block/tombstone.json](../src/generated/resources/data/c/tags/block/tombstone.json)
-- [ConfluenceOtherworld/data/confluence/loot_table/blocks/shadow_candle.json](../src/generated/resources/data/confluence/loot_table/blocks/shadow_candle.json)（新生成）
-- [ConfluenceOtherworld/data/confluence/loot_table/treasure_bag/eater_of_worlds/classic.json](../src/generated/resources/data/confluence/loot_table/treasure_bag/eater_of_worlds/classic.json)
-- [ConfluenceOtherworld/data/confluence/loot_table/treasure_bag/eater_of_worlds/expert.json](../src/generated/resources/data/confluence/loot_table/treasure_bag/eater_of_worlds/expert.json)
-- [ConfluenceOtherworld/data/confluence/loot_table/treasure_bag/eater_of_worlds/master.json](../src/generated/resources/data/confluence/loot_table/treasure_bag/eater_of_worlds/master.json)
-- [ConfluenceOtherworld/data/confluence/recipe/heavy_work_bench/shadow_candle.json](../src/generated/resources/data/confluence/recipe/heavy_work_bench/shadow_candle.json)（新生成）
-- [ConfluenceOtherworld/data/confluence/tags/entity_type/town_critters.json](../src/generated/resources/data/confluence/tags/entity_type/town_critters.json)（新生成）
-- [ConfluenceOtherworld/data/confluence/tags/entity_type/town_suppressed_critters.json](../src/generated/resources/data/confluence/tags/entity_type/town_suppressed_critters.json)（新生成）
-- [ConfluenceOtherworld/data/terra_curio/data_maps/item/accessories.json](../src/generated/resources/data/terra_curio/data_maps/item/accessories.json)
+不能把 NeoForge 的事件、注册与 Holder API 原样粘到 Forge。同步的是规则与测试结果，不是强求源码字节一致。新增跨世界管理数据使用项目
+`IGlobalData`，不要引入 `SavedData`。
 
+## 10. 未完成与验证状态
 
+未接入：世界仪式结构、资源双向兑换的正式比例、成品法器、部分获取途径和正式图标。旧“所有技能只有四个原型”“隐匿者还没有任何配方”“1.20
+完全没有魂师”等早期结论不再适用。当前血怒强度很高属于平衡风险，本文没有替用户再次调参。
+
+2026-10-22 本轮状态：
+
+- 1.21 编译通过。专用服务器 + FakePlayer 数值检查已验证星魄基数 11、施法快照取原始基数、无错误倍率修饰符、基础
+  16 / 加成 20、空技能/切技能/无玩家上下文，以及预览不修改玩家属性。
+- 同一专用服务器还实际调用生物受伤流程：16 点灵魂伤害、1.25 倍属性，目标扣血
+  20，证明统一事件链只乘一次。此检查仍不代替游戏内装备/暴击/多人综合验收。
+- 1.20 的整模块编译被本轮未改动的 `SoulSkillBox.java:158` 的 `blitSprite` 参数签名错误阻断，未宣称该侧构建通过。
+- 前一轮语言迁移在 1.21 datagen 前后中英文 JSON 完全一致；本轮伤害改动没有新增语言或资源键。
+- 游戏内截图、装备/前缀综合伤害、两客户端视觉及帧率仍需按测试须知回归。
+
+## 11. 文档合并记录
+
+本目录只保留两份魂师维护文档：本文给程序维护者，`SOUL_TEST_GUIDE.md`
+给测试人员。删除的是重复历史文档，不删除实现代码或其他主题文档。历史版本可从 Git
+查看，旧“本轮已验证”的日志不作为当前版本验证记录。
+
+| 原文档主题                                     | 合并位置                                                          |
+|------------------------------------------------|-------------------------------------------------------------------|
+| 早期计划、变更总表、第三轮同步记录             | 本文职责、资源、技能、datagen、未完成项；测试须知内容表与功能清单 |
+| 魂灯与技能书                                   | 本文物品/书籍/伤害；测试须知获取表                                |
+| 弓与套装配方、束魂锁链配方                     | 本文配方与版本差异；测试须知配方/获取                             |
+| 技能数值批次、血怒、附魂印记                   | 当前参数入口和技能维护表；测试须知攻击与效果                      |
+| 被动装备、轮转、刻骨的记忆、坠星外观           | 本文轮转/标签/弹幕；测试须知对应功能测试                          |
+| 总开关、HUD 样式、透支染色、缩放、天穹倒转节点 | 本文 HUD/输入/生命周期；测试须知 HUD 与打包测试                   |
+| 技能 tooltip                                   | 本文语言与技能说明；新增伤害专项测试                              |

@@ -61,6 +61,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             foods.add(item.get());
         });
 
+        IntrinsicTagAppender<Item> quickBuffFoods = tag(ModTags.Items.QUICK_BUFF_FOODS);
+        FoodItems.ITEMS.getEntries().forEach(entry -> {
+            var food = entry.get().getDefaultInstance().getFoodProperties(null);
+            if (food == null) return;
+            var effects = food.effects();
+            boolean beneficial = effects.stream().anyMatch(effect -> effect.probability() >= 1
+                    && effect.effect().getEffect().value().isBeneficial() && !effect.effect().getEffect().value().isInstantenous());
+            boolean harmful = effects.stream().anyMatch(effect -> effect.probability() > 0 && !effect.effect().getEffect().value().isBeneficial());
+            if (beneficial && !harmful) quickBuffFoods.add(entry.get());
+        });
+
         IntrinsicTagAppender<Item> notFlammableWood = tag(ItemTags.NON_FLAMMABLE_WOOD);
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             if (blockSet.ignitedByLava) continue;

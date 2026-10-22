@@ -129,7 +129,8 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final float PREFIX_STACK_FADE = 0.75F;
 
     // 点击范围随模型位置移动，限制在可见裁剪区域内。
-    private static final float MODEL_HIT_HALF_WIDTH = 18.0F;
+    /// 预览工匠点击区的半宽，单位界面像素；槽位点击始终优先。
+    private static final float MODEL_HIT_HALF_WIDTH = 14.0F;
     private static final float MODEL_HIT_HEIGHT = 1.9F;
     private static final int HINT_MAX_WIDTH = 120;
     private static final int SLOT_SIZE = 16;
@@ -215,6 +216,12 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     }
 
     private boolean isHoveringTinkerer(double mouseX, double mouseY) {
+        /// 槽位周边也属于物品操作区，不能被模型按钮截获；拿着物品时不允许误触重铸。
+        if (!menu.getCarried().isEmpty()) return false;
+        for (var slot : menu.slots) {
+            if (slot.isActive() && isHovering(slot.x, slot.y, SLOT_SIZE, SLOT_SIZE, mouseX, mouseY))
+                return false;
+        }
         return tinkererPreview != null
                 && mouseX >= leftPos + Math.max(MODEL_CLIP_LEFT, MODEL_X - MODEL_HIT_HALF_WIDTH)
                 && mouseX < leftPos + Math.min(MODEL_CLIP_RIGHT, MODEL_X + MODEL_HIT_HALF_WIDTH)
@@ -235,7 +242,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     }
 
     private boolean canReforge() {
-        return PrefixUtils.couldReforge(menu.getReforgeItem()) && menu.getCooldownTicks() == 0
+        return menu.getCarried().isEmpty() && PrefixUtils.couldReforge(menu.getReforgeItem()) && menu.getCooldownTicks() == 0
                 && bestPrefixPauseTicks == 0
                 && menu.getCost() < 0x3F3F3F3F && menu.getAvailableMoney() >= menu.getCost();
     }

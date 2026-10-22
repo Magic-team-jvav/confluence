@@ -3,6 +3,7 @@ package org.confluence.mod.client.renderer.entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -70,17 +71,22 @@ public final class VanillaHumanoidRenderer<T extends Mob & GeoEntity> extends Ge
             poseStack.popPose();
         }
 
-        public static void applyHandTransform(PoseStack poseStack) {
+        /// 左手握持偏移与右手镜像，物品自身的姿态由物品渲染器处理。
+        public static void applyHandTransform(PoseStack poseStack, boolean leftHand) {
             poseStack.translate(0.0F, 0.0F, -0.0625F);
             poseStack.translate(0.0F, -0.0625F, 0.0F);
             poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-            poseStack.translate(0.03F, 0.05F, -0.5F);
+            poseStack.translate(leftHand ? -0.03F : 0.03F, 0.05F, -0.5F);
         }
 
         @Override
         protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, T entity, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
-            applyHandTransform(poseStack);
-            super.renderStackForBone(poseStack, bone, stack, entity, bufferSource, partialTick, packedLight, packedOverlay);
+            boolean leftHand = bone.getName().startsWith(leftArm);
+            applyHandTransform(poseStack, leftHand);
+            /// GeckoLib 默认固定传入右手标志，此处按实际手臂应用物品模型的左手变换。
+            Minecraft.getInstance().getItemRenderer().renderStatic(entity, stack,
+                    getTransformTypeForStack(bone, stack, entity), leftHand, poseStack, bufferSource, entity.level(),
+                    packedLight, packedOverlay, entity.getId());
         }
     }
 }

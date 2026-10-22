@@ -8,7 +8,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +19,7 @@ import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.util.PlayerUtils;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -29,7 +29,6 @@ import java.util.Set;
 @MethodsReturnNonnullByDefault
 public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
     public static final ResourceLocation BASE_CRITICAL_CHANCE_ID = Confluence.asResource("base_critical_chance");
-    public static final ResourceLocation BASE_SOUL_DAMAGE_ID = Confluence.asResource("base_soul_damage");
 
     /// 主武器自带效果：物品只声明「带哪几条」，具体概率与数值全部写在 `SoulSkillParameters`。
     ///
@@ -59,11 +58,6 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
                 new AttributeModifier(BASE_CRITICAL_CHANCE_ID, soulProperties.criticalChance(), AttributeModifier.Operation.ADD_VALUE),
                 EquipmentSlotGroup.MAINHAND
         ));
-        addAttributeModifiers(builder -> builder.add(
-                LibAttributes.getSoulDamage(),
-                new AttributeModifier(BASE_SOUL_DAMAGE_ID, soulProperties.damage(), AttributeModifier.Operation.ADD_VALUE),
-                EquipmentSlotGroup.MAINHAND
-        ));
     }
 
     /// 返回该武器的建造者属性，供子类按需读取暴击率等附加项。
@@ -79,13 +73,6 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
     /// 返回物品自身的基础暴击率，不含玩家装备与状态加成。
     public float getBasicCriticalChance() {
         return soulProperties.criticalChance();
-    }
-
-    public float getSoulDamage(ItemStack stack, LivingEntity livingEntity) {
-        if (livingEntity.getAttributes().hasAttribute(LibAttributes.getSoulDamage())) {
-            return (float) livingEntity.getAttributes().getValue(LibAttributes.getSoulDamage());
-        }
-        return soulProperties.damage();
     }
 
     /// 返回手持时临时提供的技能标识。
@@ -129,4 +116,13 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
     public double getTooltipDamage(ItemStack stack, double attributeValue) {
         return getBasicSoulDamage(stack) * attributeValue;
     }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue, @Nullable Player player, boolean baseStats) {
+        var skill = PlayerUtils.getCurrentSkillStack(player);
+        float weaponDamage = getBasicSoulDamage(stack);
+        double damage = baseStats || player == null ? weaponDamage + skill.getDamage() : PlayerUtils.getSoulSkillDamage(player, skill, weaponDamage);
+        return damage * attributeValue;
+    }
+
 }

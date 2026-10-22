@@ -23,59 +23,56 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.item.soulcerer.FallenSoulCoreItem;
-import org.confluence.mod.common.item.soulcerer.SoulBooks;
-import org.confluence.mod.common.item.soulcerer.SoulKnifeItem;
-import org.confluence.mod.common.item.soulcerer.SoulLanternItem;
-import org.confluence.mod.common.item.soulcerer.SoulSkillBookItem;
-import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
-import org.confluence.mod.common.item.soulcerer.SoulWeaponProperties;
+import org.confluence.mod.common.item.soulcerer.*;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.util.PlayerUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+
+import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class SoulItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
-    public static final DeferredItem<FallenSoulCoreItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new FallenSoulCoreItem(new Item.Properties(), ModRarity.BLUE));
-    public static final DeferredItem<SoulSkillBookItem> SOUL_SKILL_BOOK = ITEMS.register("soulcerer_skill_book", () -> new SoulSkillBookItem(new Item.Properties(), ModRarity.WHITE));
+    public static final DeferredItem<FallenSoulCoreItem> FALLEN_SOUL_CORE = registerItem("fallen_soul_core", "堕魂星核", () -> new FallenSoulCoreItem(new Item.Properties(), ModRarity.BLUE));
+    public static final DeferredItem<SoulSkillBookItem> SOUL_SKILL_BOOK = registerItemWithEnglishName("soulcerer_skill_book", "灵魂技能书", "Soul Skill Book", () -> new SoulSkillBookItem(new Item.Properties(), ModRarity.WHITE));
 
-    public static final DeferredItem<SoulWeaponItem> BROKEN_GLIMMER = ITEMS.register("broken_glimmer", () -> new SoulWeaponItem(
+    public static final DeferredItem<SoulWeaponItem> BROKEN_GLIMMER = registerItem("broken_glimmer", "残破微光", () -> new SoulWeaponItem(
             new Item.Properties(), ModRarity.WHITE,
             SoulWeaponProperties.builder()
                     .damage(SoulSkillParameters.BROKEN_GLIMMER_DAMAGE)
                     .soulSkill(Confluence.asResource("survival_instinct"))
                     .trait(SoulWeaponItem.Trait.HEAL_ON_SOUL_GAIN)
                     .build()));
-    public static final DeferredItem<SoulLanternItem> SOUL_CONDUIT = ITEMS.register("soul_conduit", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> SOUL_CONDUIT = registerItem("soul_conduit", "领魂之灯", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.WHITE,
             SoulWeaponProperties.builder()
                     .damage(5.0F)
                     .criticalChance(0.04F)
                     .build()));
-    public static final DeferredItem<SoulLanternItem> PILLAGING_FLAME = ITEMS.register("pillaging_flame", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> PILLAGING_FLAME = registerItem("pillaging_flame", "劫掠之火", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.BLUE,
             SoulWeaponProperties.builder()
                     .damage(7.0F)
                     .criticalChance(0.04F)
                     .soulSkill(ModSoulSkills.SOUL_PLUNDER.get().getId())
                     .build()));
-    public static final DeferredItem<SoulLanternItem> TRUFFLE_LANTERN = ITEMS.register("truffle_lantern", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> TRUFFLE_LANTERN = registerItem("truffle_lantern", "松露灯", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.GREEN,
             SoulWeaponProperties.builder()
                     .damage(8.0F)
                     .criticalChance(0.04F)
                     .soulSkill(ModSoulSkills.CONFUSE_SPORES.get().getId())
                     .build()));
-    public static final DeferredItem<SoulLanternItem> SOUL_CHANT_GUIDE = ITEMS.register("soul_chant_guide", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> SOUL_CHANT_GUIDE = registerItem("soul_chant_guide", "颂魂指引", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.GREEN,
             SoulWeaponProperties.builder()
                     .damage(9.0F)
                     .criticalChance(0.08F)
                     .trait(SoulWeaponItem.Trait.LURE_PIERCE)
                     .build()));
-    public static final DeferredItem<SoulLanternItem> LIFE_SPLENDOR = ITEMS.register("life_splendor", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> LIFE_SPLENDOR = registerItem("life_splendor", "生机灿烂", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.ORANGE,
             SoulWeaponProperties.builder()
                     .damage(11.0F)
@@ -83,7 +80,7 @@ public class SoulItems {
                     .soulSkill(ModSoulSkills.NATURES_WRATH.get().getId())
                     .trait(SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)
                     .build()));
-    public static final DeferredItem<SoulLanternItem> STAR_SPIRIT = ITEMS.register("star_spirit", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> STAR_SPIRIT = registerItem("star_spirit", "星魄", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.ORANGE,
             SoulWeaponProperties.builder()
                     .damage(11.0F)
@@ -91,7 +88,7 @@ public class SoulItems {
                     .soulSkill(ModSoulSkills.STAR_CALL.get().getId())
                     .trait(SoulWeaponItem.Trait.STAR_ON_SKILL_HIT)
                     .build()));
-    public static final DeferredItem<SoulLanternItem> DAY_AND_NIGHT_ALIKE = ITEMS.register("day_and_night_alike", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> DAY_AND_NIGHT_ALIKE = registerItemWithEnglishName("day_and_night_alike", "无分昼夜", "Day and Night Alike", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.LIGHT_RED,
             SoulWeaponProperties.builder()
                     .damage(23.0F)
@@ -99,7 +96,7 @@ public class SoulItems {
                     .soulSkills(List.of(ModSoulSkills.KARMA_FLAME.get().getId(), ModSoulSkills.PROFANE_SOUL.get().getId()))
                     .trait(SoulWeaponItem.Trait.SHADOWFLAME_ON_SKILL_HIT)
                     .build()));
-    public static final DeferredItem<SoulLanternItem> SENIOR_PATHFINDER_PRO = ITEMS.register("senior_pathfinder_pro", () -> new SoulLanternItem(
+    public static final DeferredItem<SoulLanternItem> SENIOR_PATHFINDER_PRO = registerItem("senior_pathfinder_pro", "带路的老前辈", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.YELLOW,
             SoulWeaponProperties.builder()
                     .damage(16.0F)
@@ -108,7 +105,7 @@ public class SoulItems {
                     .build()));
 
     /// 副武器：战士侧武器，只吃近战伤害加成（6 点伤害 / 1.6 攻速 / 4% 基础暴击）。
-    public static final DeferredItem<SoulKnifeItem> SPIRITWARD_BLADE = ITEMS.register("spiritward_blade", () -> new SoulKnifeItem(
+    public static final DeferredItem<SoulKnifeItem> SPIRITWARD_BLADE = registerItem("spiritward_blade", "祈灵之刃", () -> new SoulKnifeItem(
             new Item.Properties().component(DataComponents.ATTRIBUTE_MODIFIERS,
                     ModItems.createAttributes(ModTiers.UNBREAKABLE, 4.0F, -2.4F, ModItems.attributes(0, 0.4F))),
             ModRarity.BLUE));
@@ -150,5 +147,17 @@ public class SoulItems {
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.FLUID_PICKUP, player.blockPosition());
         player.awardStat(Stats.ITEM_USED.get(PotionItems.BOTTLE.get()));
+    }
+
+    private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
+        DeferredItem<T> entry = ITEMS.register(registryId, factory::get);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        return entry;
+    }
+
+    private static <T extends Item> DeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
+        DeferredItem<T> entry = ITEMS.register(registryId, factory::get);
+        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        return entry;
     }
 }

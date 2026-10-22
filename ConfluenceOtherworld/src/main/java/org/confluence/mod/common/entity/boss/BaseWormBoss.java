@@ -250,7 +250,7 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         if (index == 0) return this;
         if (level().isClientSide) {
             BossWormPart part = clientSegments.get(index);
-            if (part != null && part.isRemoved()) {
+            if (part != null && (part.isRemoved() || part.getOwner() != this || part.getSegmentIndex() != index)) {
                 clientSegments.remove(index);
                 return null;
             }

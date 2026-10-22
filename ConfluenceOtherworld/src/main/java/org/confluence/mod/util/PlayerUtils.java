@@ -724,7 +724,7 @@ public final class PlayerUtils {
     public static float getWeaponSoulDamage(Player player) {
         ItemStack mainHand = player.getMainHandItem();
         if (mainHand.getItem() instanceof SoulWeaponItem weapon) {
-            return weapon.getSoulDamage(mainHand, player);
+            return weapon.getBasicSoulDamage(mainHand);
         }
         return 0.0F;
     }

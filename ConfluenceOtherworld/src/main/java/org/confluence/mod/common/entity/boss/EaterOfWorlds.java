@@ -79,7 +79,6 @@ public class EaterOfWorlds extends BaseWormBoss {
     private static final Map<ServerLevel, Map<UUID, EncounterState>> ENCOUNTERS = new WeakHashMap<>();
 
     private final List<Float> segmentHealths = new ArrayList<>();
-    private @Nullable List<Vec3> pendingSegmentPositions;
     private int activeSegmentCount = INITIAL_SEGMENT_COUNT;
     private boolean restructuring;
     private boolean headDeathRuleHandled;
@@ -158,15 +157,6 @@ public class EaterOfWorlds extends BaseWormBoss {
     @Override
     public boolean sharesHurtAnimation() {return false;}
 
-    @Override
-    public void initSegments() {
-        super.initSegments();
-        if (pendingSegmentPositions != null && segments.size() == activeSegmentCount) {
-            List<Vec3> positions = pendingSegmentPositions;
-            pendingSegmentPositions = null;
-            restoreSegmentPositions(positions);
-        }
-    }
 
     @Override
     protected float getInitialSegmentHealth(int index) {
@@ -290,8 +280,8 @@ public class EaterOfWorlds extends BaseWormBoss {
         restructuring = true;
         try {
             List<Float> frontHealths = new ArrayList<>(segmentHealths.subList(0, destroyedIndex - 1));
-            List<Vec3> frontPositions = segments.subList(0, destroyedIndex - 1).stream()
-                    .map(BossWormPart::position).toList();
+            List<BossWormPart> frontParts = new ArrayList<>(segments.subList(0, destroyedIndex - 1));
+            List<BossWormPart> oldParts = new ArrayList<>(segments);
             EaterOfWorlds rearHead = null;
 
             boolean rearTakesPrimaryRole = isMainBody() && frontHealths.isEmpty();
@@ -299,17 +289,21 @@ public class EaterOfWorlds extends BaseWormBoss {
                 BossWormPart rearHeadPart = segments.get(destroyedIndex);
                 float rearHeadHealth = segmentHealths.get(destroyedIndex);
                 List<Float> rearHealths = new ArrayList<>(segmentHealths.subList(destroyedIndex + 1, segmentHealths.size()));
-                List<Vec3> rearPositions = segments.subList(destroyedIndex + 1, segments.size()).stream()
-                        .map(BossWormPart::position).toList();
+                List<BossWormPart> rearParts = new ArrayList<>(segments.subList(destroyedIndex + 1, segments.size()));
                 rearHead = spawnSplitHead(rearHeadPart.position(), rearHeadPart.getYRot(), rearHeadPart.getXRot(),
-                        rearHeadHealth, rearHealths, rearPositions, rearTakesPrimaryRole, true);
+                        rearHeadHealth, rearHealths, rearParts, rearTakesPrimaryRole, true);
                 if (rearHead == null) {
                     frontHealths.add(rearHeadHealth);
                     frontHealths.addAll(rearHealths);
-                    frontPositions = new ArrayList<>(frontPositions);
-                    frontPositions.add(rearHeadPart.position());
-                    frontPositions.addAll(rearPositions);
+                    frontParts.add(rearHeadPart);
+                    frontParts.addAll(rearParts);
                 }
+            }
+
+            segments.clear();
+            segments.addAll(frontParts);
+            for (BossWormPart part : oldParts) {
+                if (!frontParts.contains(part) && part.getOwner() == this) part.discard();
             }
 
             // 断口前只剩头部时，该孤立节点不再构成一条有效链。后半条已接管主头职责时，
@@ -324,7 +318,7 @@ public class EaterOfWorlds extends BaseWormBoss {
                 return;
             }
 
-            rebuildWithHealths(frontHealths, frontPositions);
+            retainWithHealths(frontHealths, frontParts);
             if (rearHead != null && getTarget() != null) rearHead.setTarget(getTarget());
 
             // 头后方只剩被摧毁的最后一节时，整条链已经没有身体，按头节点死亡结束。
@@ -337,28 +331,22 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
     }
 
-    private void rebuildWithHealths(List<Float> healths, List<Vec3> positions) {
-        discardSegments();
+    /// 前半链保留原实体与位置，仅刷新独立生命、索引和尾节标记。
+    private void retainWithHealths(List<Float> healths, List<BossWormPart> parts) {
         activeSegmentCount = Math.min(INITIAL_SEGMENT_COUNT, healths.size());
         segmentHealths.clear();
         for (int index = 0; index < activeSegmentCount; index++) {
             segmentHealths.add(Mth.clamp(healths.get(index), 0.0F, segmentMaxHealth()));
         }
-        initSegments();
-        restoreSegmentPositions(positions);
-    }
-
-    private void restoreSegmentPositions(List<Vec3> positions) {
-        int count = Math.min(segments.size(), positions.size());
-        for (int index = 0; index < count; index++) {
-            Vec3 position = positions.get(index);
-            segments.get(index).setPos(position.x, position.y, position.z);
+        segments.clear();
+        segments.addAll(parts);
+        for (int index = 0; index < segments.size(); index++) {
+            segments.get(index).rebindTo(this, index + 1, index + 1 == activeSegmentCount);
         }
-        updateSegmentChain();
     }
 
     private @Nullable EaterOfWorlds spawnSplitHead(Vec3 position, float yaw, float pitch, float headHealth,
-                                                   List<Float> bodyHealths, List<Vec3> bodyPositions,
+                                                   List<Float> bodyHealths, List<BossWormPart> bodyParts,
                                                    boolean primary, boolean divergeFromSource) {
         if (!(level() instanceof ServerLevel serverLevel)) return null;
         EaterOfWorlds head = BossEntities.EATER_OF_WORLDS.get().create(level());
@@ -376,7 +364,6 @@ public class EaterOfWorlds extends BaseWormBoss {
         BossMultiplayerEnhancement.copyEncounterScaling(this, head);
         head.setHealth(Mth.clamp(headHealth, 0.1F, (float) head.getMaxHealth()));
         head.inheritEncounterState(this);
-        head.pendingSegmentPositions = bodyPositions;
         // 断节新链先从自己的接近通道对齐，再冲向玩家。直接进入 DASH 会让所有分裂头
         // 同时走目标中心线，长链在玩家附近交叉成看似分叉的巨大结团。
         head.movementPhase = divergeFromSource ? MovementPhase.ALIGN : MovementPhase.DASH;
@@ -396,12 +383,22 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
         head.setDeltaMovement(initialVelocity);
         head.setPersistenceRequired();
+        /// 加入世界前绑定原有身体，避免 onAddedToWorld 创建整条替代链。
+        List<Integer> previousIndices = bodyParts.stream().map(BossWormPart::getSegmentIndex).toList();
+        head.segments.addAll(bodyParts);
+        for (int index = 0; index < bodyParts.size(); index++) {
+            bodyParts.get(index).rebindTo(head, index + 1, index + 1 == bodyParts.size());
+        }
         if (!serverLevel.addFreshEntity(head)) {
+            /// 新头加入失败时归还身体，不能因清理新头而误删原链。
+            head.segments.clear();
+            for (int index = 0; index < bodyParts.size(); index++) {
+                int oldIndex = previousIndices.get(index);
+                bodyParts.get(index).rebindTo(this, oldIndex, oldIndex == activeSegmentCount);
+            }
             head.discard();
             return null;
         }
-        // 加入世界通常会同步触发体节初始化；显式补一次可覆盖不同加载时序，
-        // pending 列表只会在链条完整后消费，因此不会空跑或重复覆盖。
         head.initSegments();
         head.setPrimaryHead(primary);
         if (primary) {
@@ -416,11 +413,11 @@ public class EaterOfWorlds extends BaseWormBoss {
         if (!level().isClientSide && !restructuring && activeSegmentCount > 0 && !segments.isEmpty()) {
             BossWormPart promotedPart = segments.get(0);
             List<Float> remainingBody = new ArrayList<>(segmentHealths.subList(1, segmentHealths.size()));
-            List<Vec3> remainingPositions = segments.subList(1, segments.size()).stream()
-                    .map(BossWormPart::position).toList();
+            List<BossWormPart> remainingParts = new ArrayList<>(segments.subList(1, segments.size()));
             EaterOfWorlds promoted = spawnSplitHead(promotedPart.position(), promotedPart.getYRot(), promotedPart.getXRot(),
-                    segmentHealths.get(0), remainingBody, remainingPositions, isMainBody(), false);
+                    segmentHealths.get(0), remainingBody, remainingParts, isMainBody(), false);
             if (promoted != null) {
+                segments.removeAll(remainingParts);
                 setPrimaryHead(false);
                 discard();
                 return;

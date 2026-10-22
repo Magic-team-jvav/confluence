@@ -24,11 +24,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
-import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.CenterButton;
-import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.NavTab;
-import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.OverviewNavButton;
-import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.HotbarWidget;
-import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.OverviewNode;
+import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.*;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
@@ -49,23 +45,6 @@ import java.util.List;
 public class SoulOverviewScreen extends Screen {
     private static final int SURVIVAL_INSTINCT_NODE_X = -40;
     private static final int SURVIVAL_INSTINCT_NODE_Y = 40;
-
-    private final NormalNoise backgroundNoise;
-    /* 组件 */
-    public final HotbarWidget hotbar;
-    public final List<OverviewNode> nodes;
-    public final Map<ResourceLocation, OverviewNode> nodeById = new HashMap<>();
-    public final List<NavTab> navTabs = new ArrayList<>();
-    private final CenterButton centerButton;
-    private AbstractSliderButton hueSlider;
-    private AbstractSliderButton contrastSlider;
-    private boolean isSliderVisible = false;
-
-    /* 视口状态 */
-    public double scrollX, scrollY;
-    private Float targetScrollX, targetScrollY;
-    private double minScrollX, maxScrollX, minScrollY, maxScrollY;
-
     /* 缩放：以屏幕中心为原点，节点位置与绘制尺寸同时按 zoom 缩放 */
     private static final double MIN_ZOOM = 0.5;
     private static final double MAX_ZOOM = 2.0;
@@ -74,18 +53,30 @@ public class SoulOverviewScreen extends Screen {
     /// 技能节点连线在 1.0× 下的芯线/辉光宽度，随缩放等比放大。
     private static final float CONNECTION_THICKNESS = 2.0F;
     private static final float CONNECTION_LIGHT_THICKNESS = 5.0F;
+    /* 组件 */
+    public final HotbarWidget hotbar;
+    public final List<OverviewNode> nodes;
+    public final Map<ResourceLocation, OverviewNode> nodeById = new HashMap<>();
+    public final List<NavTab> navTabs = new ArrayList<>();
+    private final NormalNoise backgroundNoise;
+    private final CenterButton centerButton;
+    /* 视口状态 */
+    public double scrollX, scrollY;
+    /* 选中状态 */
+    @Nullable
+    public SoulSkill theCurrentlySelectedSkill;
+    public int selectedHotbarSlot = -1;
+    private AbstractSliderButton hueSlider;
+    private AbstractSliderButton contrastSlider;
+    private boolean isSliderVisible = false;
+    private Float targetScrollX, targetScrollY;
+    private double minScrollX, maxScrollX, minScrollY, maxScrollY;
     private double zoom = 1.0;
-
     /* 拖拽 */
     private boolean isDragging;
     private double dragStartMouseX, dragStartMouseY;
     private double dragStartScrollX, dragStartScrollY;
-
-    /* 选中状态 */
-    @Nullable
-    public SoulSkill theCurrentlySelectedSkill;
-
-    public int selectedHotbarSlot = -1;
+    private List<CachedDot> cachedDots;
 
     public SoulOverviewScreen() {
         super(Component.translatable("confluence.screen.soulcerer_overview"));
@@ -97,15 +88,10 @@ public class SoulOverviewScreen extends Screen {
         initSkillsFromRegistry();
     }
 
-    private record CachedDot(
-            float baseX, float baseY,
-            float rotationRad,
-            float halfSize,
-            float r, float g, float b, float a,
-            float offsetFactor) {
+    /// 背景开关按钮的文案：☑ = 画完整背景，☐ = 只留底色与技能。
+    private static Component backgroundToggleLabel() {
+        return Component.literal(ClientConfigs.isSoulcererBackgroundEnabled() ? "☑" : "☐");
     }
-
-    private List<CachedDot> cachedDots;
 
     /// 缓存背景光点的位置、颜色与偏移参数。
     private void buildDotCache(int count, float radius, float minSize, float maxSize, int color, float minOffsetFactor, float maxOffsetFactor) {
@@ -229,7 +215,7 @@ public class SoulOverviewScreen extends Screen {
         // 引魂激荡
         addNode(OverviewNode.Builder.of(ModSoulSkills.LURE_SURGE)
                 .pos(120, 0)
-                .connections(ModSoulSkills.SPIRIT_SURGE,ModSoulSkills.SOUL_LURE));
+                .connections(ModSoulSkills.SPIRIT_SURGE, ModSoulSkills.SOUL_LURE));
         // 强力激荡
         addNode(OverviewNode.Builder.of(ModSoulSkills.EMPOWERED_SURGE)
                 .pos(120, -120)
@@ -317,9 +303,9 @@ public class SoulOverviewScreen extends Screen {
         /// 背景总开关：和色相 / 明度滑块放在同一组。
         /// 关掉后 `renderBackground` 只铺静态底色，噪点、树、魔法与滚动全部停掉，界面只留底色和技能。
         Button backgroundToggle = Button.builder(backgroundToggleLabel(), button -> {
-            ClientConfigs.setSoulcererBackgroundEnabled(!ClientConfigs.isSoulcererBackgroundEnabled());
-            button.setMessage(backgroundToggleLabel());
-        }).bounds(29, this.height - 25, 20, 20)
+                    ClientConfigs.setSoulcererBackgroundEnabled(!ClientConfigs.isSoulcererBackgroundEnabled());
+                    button.setMessage(backgroundToggleLabel());
+                }).bounds(29, this.height - 25, 20, 20)
                 .tooltip(Tooltip.create(Component.translatable("confluence.screen.soulcerer_overview.background_toggle")))
                 .build();
         addRenderableWidget(backgroundToggle);
@@ -567,28 +553,26 @@ public class SoulOverviewScreen extends Screen {
 
         /// 静态底色：开关关掉时也保留，保证界面不透出世界。
         guiGraphics.fill(0, 0, this.width, this.height, (Color.HSBtoRGB(h3, 0.93f + Mth.sqrt(1 - lit * lit) * 0.07f, 0.05f * lit) & 0x00FFFFFF) | 0xFF000000);
-        /// 背景总开关：关掉后只保留上面这层底色，其余背景层与滚动推进全部跳过。
-        if (!ClientConfigs.isSoulcererBackgroundEnabled()) {
-            return;
-        }
 
         float offsetScale = 0.15f;
         float noiseScale = 0.25f;
-        float noiseOffsetX = (float) - this.scrollX * offsetScale;
-        float noiseOffsetY = (float) - this.scrollY * offsetScale;
+        float noiseOffsetX = (float) -this.scrollX * offsetScale;
+        float noiseOffsetY = (float) -this.scrollY * offsetScale;
         float noiseOffsetZ = Mth.sin(time * 0.002f) * 100;
 
+        if (ClientConfigs.isSoulcererBackgroundEnabled()) {
+            renderScreenBlendNoise(guiGraphics, noiseOffsetZ,
+                    (Color.HSBtoRGB(h1, 0.78f + Mth.sqrt(1 - lit * lit) * 0.22f, 0.45f * lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000, noiseOffsetX, noiseOffsetY, noiseScale, 1.0F,
+                    (Color.HSBtoRGB(h2, 0.67f + Mth.sqrt(1 - lit * lit) * 0.33f, 0.5167f * lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000, noiseOffsetX * 2.5F, noiseOffsetY * 2.5F, noiseScale * 0.8f, 1.0F);
 
-        renderScreenBlendNoise(guiGraphics, noiseOffsetZ,
-                (Color.HSBtoRGB(h1, 0.78f + Mth.sqrt(1 - lit * lit) * 0.22f, 0.45f * lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000, noiseOffsetX, noiseOffsetY, noiseScale, 1.0F,
-                (Color.HSBtoRGB(h2, 0.67f + Mth.sqrt(1 - lit * lit) * 0.33f, 0.5167f * lit1 + 0.4f) & 0x00FFFFFF) | 0xFF000000, noiseOffsetX * 2.5F, noiseOffsetY * 2.5F, noiseScale * 0.8f, 1.0F);
+            int centerX = (int) (this.width * 0.5);
+            int centerY = (int) (this.height * 0.5);
 
-        int centerX = (int) (this.width * 0.5);
-        int centerY = (int) (this.height * 0.5);
+            drawLivingTree(guiGraphics, centerX, centerY, time);
+            renderBackgroundDots(guiGraphics, centerX, centerY, 1000, 1500, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.1F, 1.0F, (Color.HSBtoRGB(h2, Mth.sqrt(1 - lit * lit), lit1 + 0.4F) & 0x00FFFFFF) | 0xFF000000);
+            drawMagic(guiGraphics, centerX, centerY, time);
+        }
 
-        drawLivingTree(guiGraphics, centerX, centerY, time);
-        renderBackgroundDots(guiGraphics, centerX, centerY, 1000, 1500, 1, 3, (float) this.scrollX, (float) this.scrollY, 0.1F, 1.0F, (Color.HSBtoRGB(h2, Mth.sqrt(1 - lit * lit), lit1 + 0.4F) & 0x00FFFFFF) | 0xFF000000);
-        drawMagic(guiGraphics, centerX, centerY, time);
         tickScrollAnimation(partialTick);
         renderConnections(guiGraphics, partialTick);
     }
@@ -622,7 +606,7 @@ public class SoulOverviewScreen extends Screen {
         final float rotate2 = (float) Math.toRadians(trueRotate1) - rotate;
         final float rotate3 = (float) Math.toRadians(trueRotate2) - rotate;
         final float r360 = Mth.PI * 2;
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             float trueRotateForLittleRoll = rotate2 + i * (Mth.PI * 2 / 3);
             float pointX = Mth.sin(trueRotateForLittleRoll);
             float pointY = Mth.cos(trueRotateForLittleRoll);
@@ -655,7 +639,7 @@ public class SoulOverviewScreen extends Screen {
         drawGradientLine(guiGraphics, centerX + magicOffsetX - 81, centerY + magicOffsetY, centerX + magicOffsetX - side, centerY + magicOffsetY, 2F, 5F, 20F, lineColor, emptyColor, emptyColor);
         drawGradientLine(guiGraphics, centerX + magicOffsetX - 81, centerY + magicOffsetY, centerX + magicOffsetX - side, centerY + magicOffsetY, 1F, 5F, 30F, lineColor, emptyColor, emptyColor);
 
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             float trueRotateForLittleRoll = rotate2 + i * (Mth.PI * 2 / 3);
             float pointX = Mth.sin(trueRotateForLittleRoll);
             float pointY = Mth.cos(trueRotateForLittleRoll);
@@ -991,9 +975,9 @@ public class SoulOverviewScreen extends Screen {
                 }
 
                 int finalAlpha = (int) (a2 + (a1 - a2) * progress);
-                int finalR     = (int) (r2 + (r1 - r2) * progress);
-                int finalG     = (int) (g2 + (g1 - g2) * progress);
-                int finalB     = (int) (b2 + (b1 - b2) * progress);
+                int finalR = (int) (r2 + (r1 - r2) * progress);
+                int finalG = (int) (g2 + (g1 - g2) * progress);
+                int finalB = (int) (b2 + (b1 - b2) * progress);
                 int finalColor = (finalAlpha << 24) | (finalR << 16) | (finalG << 8) | finalB;
 
                 boolean needsLeftCut = charLeft < 0 && charRight > 0;
@@ -1001,22 +985,22 @@ public class SoulOverviewScreen extends Screen {
 
                 if (needsLeftCut || needsRightCut) {
                     float cutLocalX = needsLeftCut ? 0 : logicTotalWidth;
-                    float screenCutX = x1 + (cutLocalX * scale * (float)Math.cos(angleRad));
+                    float screenCutX = x1 + (cutLocalX * scale * (float) Math.cos(angleRad));
 
                     float screenTopY = y1 - (lineHeight / 2f);
                     float screenBottomY = screenTopY + lineHeight;
 
-                    int scissorY = Math.max(0, (int)screenTopY - 2);
-                    int scissorH = Math.min(safeScreenBottom, (int)(screenBottomY - screenTopY) + 4);
+                    int scissorY = Math.max(0, (int) screenTopY - 2);
+                    int scissorH = Math.min(safeScreenBottom, (int) (screenBottomY - screenTopY) + 4);
 
                     int scissorX, scissorW;
 
                     if (needsLeftCut) {
-                        scissorX = Math.max(0, (int)screenCutX - 1);
+                        scissorX = Math.max(0, (int) screenCutX - 1);
                         scissorW = safeScreenRight - scissorX;
                     } else {
                         scissorX = 0;
-                        scissorW = Math.max(0, (int)screenCutX + 1);
+                        scissorW = Math.max(0, (int) screenCutX + 1);
                     }
 
                     if (scissorW > 0 && scissorH > 0) {
@@ -1248,17 +1232,12 @@ public class SoulOverviewScreen extends Screen {
         float finalB = 1.0f - (1.0f - b1) * (1.0f - b2);
         float finalA = Math.max(a1, a2);
 
-        int outR = Math.clamp((int)(finalR * 255), 0, 255);
-        int outG = Math.clamp((int)(finalG * 255), 0, 255);
-        int outB = Math.clamp((int)(finalB * 255), 0, 255);
-        int outA = Math.clamp((int)(finalA * 255), 0, 255);
+        int outR = Math.clamp((int) (finalR * 255), 0, 255);
+        int outG = Math.clamp((int) (finalG * 255), 0, 255);
+        int outB = Math.clamp((int) (finalB * 255), 0, 255);
+        int outA = Math.clamp((int) (finalA * 255), 0, 255);
 
         return (outA << 24) | (outR << 16) | (outG << 8) | outB;
-    }
-
-    /// 背景开关按钮的文案：☑ = 画完整背景，☐ = 只留底色与技能。
-    private static Component backgroundToggleLabel() {
-        return Component.literal(ClientConfigs.isSoulcererBackgroundEnabled() ? "☑" : "☐");
     }
 
     /// 绘制总览控件及可见的背景调节滑块。
@@ -1316,16 +1295,15 @@ public class SoulOverviewScreen extends Screen {
         RenderSystem.disableBlend();
     }
 
-
-    // ============ 输入处理 ============
-
     /// 处理滑块、控件点击及视口拖拽起点。
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
 
         if (isSliderVisible && button == 0) {
-            if (hueSlider.isMouseOver(mouseX, mouseY)) return hueSlider.mouseClicked(mouseX, mouseY, button);
-            if (contrastSlider.isMouseOver(mouseX, mouseY)) return contrastSlider.mouseClicked(mouseX, mouseY, button);
+            if (hueSlider.isMouseOver(mouseX, mouseY))
+                return hueSlider.mouseClicked(mouseX, mouseY, button);
+            if (contrastSlider.isMouseOver(mouseX, mouseY))
+                return contrastSlider.mouseClicked(mouseX, mouseY, button);
         }
 
         if (super.mouseClicked(mouseX, mouseY, button)) {
@@ -1345,12 +1323,17 @@ public class SoulOverviewScreen extends Screen {
         return false;
     }
 
+
+    // ============ 输入处理 ============
+
     /// 处理滑块拖动或拖拽移动视口。
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dx, double dy) {
         if (isSliderVisible && button == 0) {
-            if (hueSlider.isMouseOver(mouseX, mouseY)) return hueSlider.mouseDragged(mouseX, mouseY, button, dx, dy);
-            if (contrastSlider.isMouseOver(mouseX, mouseY)) return contrastSlider.mouseDragged(mouseX, mouseY, button, dx, dy);
+            if (hueSlider.isMouseOver(mouseX, mouseY))
+                return hueSlider.mouseDragged(mouseX, mouseY, button, dx, dy);
+            if (contrastSlider.isMouseOver(mouseX, mouseY))
+                return contrastSlider.mouseDragged(mouseX, mouseY, button, dx, dy);
         }
         if (isDragging && button == 0) {
             /// scroll 是节点空间量，屏幕位移还要乘 zoom；这里除掉 zoom 让节点始终贴着鼠标走。
@@ -1391,13 +1374,13 @@ public class SoulOverviewScreen extends Screen {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    // ============ 装配逻辑 ============
-
     /// 将当前选中技能装备到指定槽位。
     public boolean equipSelectedToSlot(int slot) {
         if (theCurrentlySelectedSkill == null) return false;
         return ClientSoulHandler.equipSoulSkill(slot, theCurrentlySelectedSkill.getStack());
     }
+
+    // ============ 装配逻辑 ============
 
     /// 用当前装备数据刷新底部快捷栏。
     public void rebuildHotbar() {
@@ -1415,12 +1398,12 @@ public class SoulOverviewScreen extends Screen {
         updateHotbarPos();
     }
 
-    // ============ 通用工具 ============
-
     /// 将快捷栏定位到界面底部中央（略微下移，给技能树留出更多竖向空间）。
     protected void updateHotbarPos() {
         hotbar.setPosition(width / 2 - hotbar.getWidth() / 2, (int) (height * 0.87f));
     }
+
+    // ============ 通用工具 ============
 
     /// 播放总览界面的按钮点击音效。
     public void uiButtonClickSound() {
@@ -1432,5 +1415,13 @@ public class SoulOverviewScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    private record CachedDot(
+            float baseX, float baseY,
+            float rotationRad,
+            float halfSize,
+            float r, float g, float b, float a,
+            float offsetFactor) {
     }
 }

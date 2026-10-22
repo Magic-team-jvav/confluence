@@ -119,6 +119,7 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.soulcerer_skill_book.invalid", "The bound soul skill is unavailable", "绑定的灵魂技能不存在");
         language.add("tooltip.confluence.soulcerer_skill_book.psychopomp", "Soul lure skills deal 2 more damage and their projectiles bounce once more", "引魂系列技能伤害+2，且引魂弹幕额外弹射一次");
         language.add("tooltip.confluence.soulcerer_skill_book.required", "Requires permanently learning %s first", "需要先永久学会%s");
+        language.add("tooltip.confluence.soulcerer_skill_book.soul_echo", "Spirit Surge has a 20% chance to trigger a second time for free", "灵魂激荡有 20% 概率免费再触发一次");
         language.add("tooltip.confluence.soulcerer_skill_book.unbound", "No soul skill is bound to this book", "此书尚未绑定灵魂技能");
         language.add("tooltip.item.confluence.green_solution.0", "Purifies Corruption, Crimson and Hallow", "净化腐化、猩红和神圣环境");
         language.add("tooltip.item.confluence.green_solution.1", "Restores Glowing Mushroom biomes to Jungle", "将发光蘑菇群系恢复为丛林");
@@ -227,10 +228,11 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.BLOOD_RAGE.get(), "200% increased melee and ranged damage", "近战与远程伤害提高200%");
         language.addTooltip(ModEffects.SOUL_PLUNDER.get(), "25% increased melee and ranged damage", "近战与远程伤害提高25%");
         language.addTooltip(ModEffects.SOUL_DRAIN.get(), "Soul costs are ignored", "施放技能不消耗灵魂");
-        language.addTooltip(ModEffects.SOUL_DRAIN_LOCK.get(), "You cannot use your main weapon", "无法使用主武器");
+        language.addTooltip(ModEffects.SOUL_DRAIN_LOCK.get(), "Soul skills cannot be cast", "无法释放灵魂技能");
         language.addTooltip(ModEffects.STAR_CALL.get(), "A falling star drops on every enemy within range", "范围内每只敌怪头顶都会落下坠星");
         language.addTooltip(ModEffects.LIFE_RETURN.get(), "Recorded health loss returns as soul", "记录失去的生命，结束时转化为灵魂");
-        language.addTooltip(ModEffects.FIRMAMENT_REVERSED.get(), "Fall damage heals you instead", "摔落伤害转化为回复");
+        language.addTooltip(ModEffects.SOUL_BUFFER.get(), "Fall damage heals you instead", "摔落伤害转化为回复");
+        language.addTooltip(ModEffects.SOUL_MARK.get(), "Each skill hit on this enemy restores 1 soul; killing it restores 2", "每次被技能命中回复 1 点灵魂；被击杀时回复 2 点灵魂");
         language.addTooltip(ModEffects.BOILING_BLOOD.get(), "Your next melee hit is empowered", "下一次近战攻击造成巨额伤害");
         language.addTooltip(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced", "移动速度提高，怪物生成减少");
         language.addTooltip(ModEffects.HEART_LANTERN.get(), "Life regen is increased ", "生命再生速度提高");

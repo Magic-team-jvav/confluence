@@ -54,6 +54,9 @@ import java.util.UUID;
 public class SoulLureProjectile extends Projectile {
     /// 粒子风暴定义的灵魂弹幕特效，拖尾与消失时的爆散都由该特效负责。
     public static final ResourceLocation PARTICLE = Confluence.asResource("soul_projectile");
+    /// 带路的老前辈（主武器词条）用的满强度追踪插值比例；弱追踪用
+    /// {@link SoulSkillParameters#SOUL_LURE_WEAK_HOMING_STRENGTH}，两者共用同一套转向逻辑。
+    private static final double FULL_HOMING_STRENGTH = 0.5;
     /// 迷魂孢雾使用的孢子特效。
     /// 迷魂孢雾使用的孢子特效（专用粒子风暴定义，7 帧序列帧贴图）。
     ///
@@ -86,12 +89,13 @@ public class SoulLureProjectile extends Projectile {
     private static final String MAX_AGE_TAG = "MaxAge";
     private static final String AOE_RADIUS_TAG = "AoeRadius";
     private static final String AOE_DAMAGE_TAG = "AoeDamage";
-    private static final String ENHANCED_SOUL_ON_HIT_TAG = "EnhancedSoulOnHit";
+    private static final String SOUL_MARK_ON_HIT_TAG = "SoulMarkOnHit";
     private static final String STAR_APPEARANCE_TAG = "StarAppearance";
     private static final String SPAWN_DELAY_TAG = "SpawnDelay";
     private static final String BOUNCES_TAG = "Bounces";
     private static final String PIERCE_TAG = "Pierce";
     private static final String HOMING_TAG = "Homing";
+    private static final String WEAK_HOMING_TAG = "WeakHoming";
     private static final String HIT_ENTITIES_TAG = "HitEntities";
 
     private float damage;
@@ -102,16 +106,18 @@ public class SoulLureProjectile extends Projectile {
     private int maxAge = SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS;
     private double aoeRadius;
     private float aoeDamage;
-    /// 附魂印记专用：命中时给自己挂几 tick 强力附魂；0 表示没有该效果。
-    private int enhancedSoulOnHitTicks;
+    /// 附魂印记专用：命中时给**被打中的敌人**挂几 tick 附魂印记；0 表示没有该效果。
+    private int soulMarkOnHitTicks;
     /// 生成延迟：魂引天星齐射用它与前一颗错开落地时间；延迟期间不移动、不判定。
     private int spawnDelayTicks;
     /// 命中后的剩余弹射次数。
     private int bouncesRemaining = SoulSkillParameters.SOUL_LURE_BOUNCE_COUNT;
     /// 命中后的剩余穿透次数（颂魂指引在生成后补入）。
     private int pierceRemaining;
-    /// 是否追踪最近敌怪（带路的老前辈）。
+    /// 是否追踪最近敌怪（带路的老前辈，转向强度 0.5）。
     private boolean homing;
+    /// 弱追踪开关（引魂系列弹幕默认开启，转向强度只有 0.15，且不追身后的目标）。
+    private boolean weakHoming;
     /// 命中敌怪后在该位置释放一次灵魂激荡（引魂激荡用）；0 表示不释放。
     private double surgeOnHitRadius;
     private boolean weaponTraitsResolved;
@@ -158,9 +164,14 @@ public class SoulLureProjectile extends Projectile {
         return parsed == null ? PARTICLE : parsed;
     }
 
-    /// 附魂印记：设置命中时给自己挂的强力附魂时长（tick），0 表示关闭。
-    public void setEnhancedSoulOnHit(int ticks) {
-        this.enhancedSoulOnHitTicks = Math.max(0, ticks);
+    /// 附魂印记：设置命中时给敌人挂的附魂印记时长（tick），0 表示关闭。
+    public void setSoulMarkOnHit(int ticks) {
+        this.soulMarkOnHitTicks = Math.max(0, ticks);
+    }
+
+    /// 开关弱追踪：引魂系列弹幕默认打开，孢子这类需要散开的弹幕关掉。
+    public void setWeakHoming(boolean value) {
+        this.weakHoming = value;
     }
 
     /// 覆盖本发弹幕的剩余弹射次数（魂引天星的坠星不弹射）。
@@ -202,14 +213,15 @@ public class SoulLureProjectile extends Projectile {
         return entityData.get(DATA_STAR_APPEARANCE);
     }
 
-    /// 附魂印记：命中给短增益，若这一下直接击杀则换成更长的增益。
-    private void grantEnhancedSoul(Entity victim) {
-        if (enhancedSoulOnHitTicks <= 0 || !(getOwner() instanceof ServerPlayer owner)) {
+    /// 附魂印记：给被打中的敌人挂 10 秒印记（时长由技能传入）。
+    ///
+    /// 印记本身不改伤害：之后**所有技能**命中它都回 1 魂、击杀它回 2 魂，
+    /// 结算点在 `LivingEntityEvents#soulWeaponTraitsOnSkillHit` 与 `#deathSoul`。
+    private void applySoulMark(Entity victim) {
+        if (soulMarkOnHitTicks <= 0 || !(victim instanceof LivingEntity living) || living.level().isClientSide) {
             return;
         }
-        boolean killed = victim instanceof LivingEntity living && living.getHealth() <= 0.0F;
-        int ticks = killed ? SoulSkillParameters.SOUL_MARK_KILL_BUFF_TICKS : enhancedSoulOnHitTicks;
-        owner.addEffect(new MobEffectInstance(ModEffects.ENHANCED_SOUL.get(), ticks, 0, false, true, true));
+        living.addEffect(new MobEffectInstance(ModEffects.SOUL_MARK.get(), soulMarkOnHitTicks, 0, false, true, true));
     }
 
     /// 主武器自带的两条弹幕词条：颂魂指引的穿透、带路的老前辈的追踪。
@@ -263,7 +275,10 @@ public class SoulLureProjectile extends Projectile {
             setDeltaMovement(getDeltaMovement().add(0.0, -gravity, 0.0));
         }
         if (homing && !level().isClientSide) {
-            steerTowardsTarget();
+            steerTowardsTarget(FULL_HOMING_STRENGTH, SoulSkillParameters.SOUL_LURE_BOUNCE_RADIUS, true);
+        } else if (weakHoming && !level().isClientSide) {
+            steerTowardsTarget(SoulSkillParameters.SOUL_LURE_WEAK_HOMING_STRENGTH,
+                    SoulSkillParameters.SOUL_LURE_WEAK_HOMING_RADIUS, false);
         }
         Vec3 movement = getDeltaMovement();
         HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
@@ -272,7 +287,7 @@ public class SoulLureProjectile extends Projectile {
             if (hit instanceof EntityHitResult entityHit && entityHit.getEntity() instanceof LivingEntity victim
                     && hitEntities.add(victim.getUUID())) {
                 victim.hurt(LibDamageTypes.soul(level(), this, getOwner()), damage);
-                grantEnhancedSoul(victim);
+                applySoulMark(victim);
                 /// 引魂激荡：命中位置再来一发灵魂激荡，**不消耗灵魂**。
                 spawnSurgeAt(victim);
                 /// 颂魂指引：还有穿透次数就继续沿原方向飞。
@@ -345,29 +360,45 @@ public class SoulLureProjectile extends Projectile {
         SoulLureProjectile bounced = new SoulLureProjectile(owner, from, direction, damage, particle, (float) speed,
                 gravity, maxDistance, maxAge, aoeRadius, aoeDamage);
         bounced.setStarAppearance(isStarAppearance());
-        bounced.setEnhancedSoulOnHit(enhancedSoulOnHitTicks);
+        bounced.setSoulMarkOnHit(soulMarkOnHitTicks);
         bounced.setSurgeOnHit(surgeOnHitRadius);
         bounced.setBounces(bouncesRemaining);
         bounced.pierceRemaining = pierceRemaining;
         bounced.homing = homing;
+        bounced.weakHoming = weakHoming;
         bounced.weaponTraitsResolved = true;
         bounced.hitEntities.addAll(hitEntities);
         level().addFreshEntity(bounced);
     }
 
-    /// 追踪：每刻把速度方向朝最近的敌怪插值一半，速度大小保持不变。
-    private void steerTowardsTarget() {
-        LivingEntity target = findNextTarget(position(), SoulSkillParameters.SOUL_LURE_BOUNCE_RADIUS, null);
+    /// 追踪：每刻把速度方向朝最近的敌怪插值，速度大小保持不变。
+    ///
+    /// @param strength   每刻朝目标方向靠拢的比例：弱追踪 0.15，带路的老前辈 0.5
+    /// @param radius     索敌半径
+    /// @param chaseBack 是否追身后的目标（弱追踪不追，避免弹道被强行掰回去）
+    private void steerTowardsTarget(double strength, double radius, boolean chaseBack) {
+        LivingEntity target = findNextTarget(position(), radius, null);
         if (target == null) {
             return;
         }
         Vec3 movement = getDeltaMovement();
         double speed = movement.length();
-        if (speed <= 0.0) {
+        if (speed <= 1.0E-4) {
             return;
         }
-        Vec3 desired = target.getBoundingBox().getCenter().subtract(position()).normalize().scale(speed);
-        setDeltaMovement(movement.scale(0.5).add(desired.scale(0.5)));
+        Vec3 toTarget = target.getBoundingBox().getCenter().subtract(position());
+        if (toTarget.lengthSqr() <= 1.0E-4) {
+            return;
+        }
+        Vec3 desired = toTarget.normalize().scale(speed);
+        if (!chaseBack && movement.dot(desired) <= 0.0) {
+            return;
+        }
+        Vec3 steered = movement.scale(1.0 - strength).add(desired.scale(strength));
+        if (steered.lengthSqr() <= 1.0E-8) {
+            return;
+        }
+        setDeltaMovement(steered.normalize().scale(speed));
     }
 
     /// 索敌：半径内最近的、尚未被这一发弹幕打过的敌怪。
@@ -425,11 +456,12 @@ public class SoulLureProjectile extends Projectile {
         maxAge = tag.getInt(MAX_AGE_TAG);
         aoeRadius = tag.getDouble(AOE_RADIUS_TAG);
         aoeDamage = tag.getFloat(AOE_DAMAGE_TAG);
-        enhancedSoulOnHitTicks = tag.getInt(ENHANCED_SOUL_ON_HIT_TAG);
+        soulMarkOnHitTicks = tag.getInt(SOUL_MARK_ON_HIT_TAG);
         spawnDelayTicks = tag.getInt(SPAWN_DELAY_TAG);
         bouncesRemaining = tag.getInt(BOUNCES_TAG);
         pierceRemaining = tag.getInt(PIERCE_TAG);
         homing = tag.getBoolean(HOMING_TAG);
+        weakHoming = tag.getBoolean(WEAK_HOMING_TAG);
         hitEntities.clear();
         for (Tag hit : tag.getList(HIT_ENTITIES_TAG, Tag.TAG_INT_ARRAY)) {
             hitEntities.add(NbtUtils.loadUUID(hit));
@@ -448,11 +480,12 @@ public class SoulLureProjectile extends Projectile {
         tag.putInt(MAX_AGE_TAG, maxAge);
         tag.putDouble(AOE_RADIUS_TAG, aoeRadius);
         tag.putFloat(AOE_DAMAGE_TAG, aoeDamage);
-        tag.putInt(ENHANCED_SOUL_ON_HIT_TAG, enhancedSoulOnHitTicks);
+        tag.putInt(SOUL_MARK_ON_HIT_TAG, soulMarkOnHitTicks);
         tag.putInt(SPAWN_DELAY_TAG, spawnDelayTicks);
         tag.putInt(BOUNCES_TAG, bouncesRemaining);
         tag.putInt(PIERCE_TAG, pierceRemaining);
         tag.putBoolean(HOMING_TAG, homing);
+        tag.putBoolean(WEAK_HOMING_TAG, weakHoming);
         ListTag hits = new ListTag();
         for (UUID id : hitEntities) {
             hits.add(NbtUtils.createUUID(id));

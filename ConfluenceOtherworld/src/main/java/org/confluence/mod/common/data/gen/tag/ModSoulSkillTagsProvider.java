@@ -45,7 +45,7 @@ public class ModSoulSkillTagsProvider extends TagsProvider<SoulSkill> {
                 .add(key(ModSoulSkills.SOUL_ASSAULT.get()))
                 .add(key(ModSoulSkills.BOILING_BLOOD.get()))
                 .add(key(ModSoulSkills.LIFE_RETURN.get()))
-                .add(key(ModSoulSkills.FIRMAMENT_REVERSED.get()));
+                .add(key(ModSoulSkills.SOUL_BUFFER.get()));
         // 强主动技能：必须手动施放，束魂锁链与魂术轮转都不会自动带出来
         tag(ModTags.SoulSkills.MAJOR_ACTIVE)
                 .add(key(ModSoulSkills.SOUL_DRAIN.get()))

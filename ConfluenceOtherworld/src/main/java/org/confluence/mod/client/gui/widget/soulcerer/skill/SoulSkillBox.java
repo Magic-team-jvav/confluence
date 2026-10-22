@@ -155,7 +155,7 @@ public class SoulSkillBox extends AbstractWidget {
         if (skillStack.isEmpty()) {
             return;
         }
-        guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE, SKILL_SIZE, SKILL_SIZE);
+        guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE);
         if (!PlayerUtils.isSoulSkillAvailable(Minecraft.getInstance().player, skillStack.getSoulSkill().getId())) {
             guiGraphics.fill(RenderType.guiOverlay(), x, y, x + SKILL_SIZE, y + SKILL_SIZE, UNAVAILABLE_OVERLAY_COLOR);
         }

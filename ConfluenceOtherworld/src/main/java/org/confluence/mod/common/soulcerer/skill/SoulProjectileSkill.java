@@ -31,6 +31,10 @@ public class SoulProjectileSkill extends SoulSkill {
     private final float refundChance;
     private final int extraBounces;
     private final double surgeOnHitRadius;
+    private final float upwardChance;
+    private final double upwardPitch;
+    private final boolean weakHoming;
+    private final float weaponShare;
     private final @Nullable Supplier<MobEffect> selfEffect;
     private final int selfEffectTicks;
 
@@ -47,6 +51,10 @@ public class SoulProjectileSkill extends SoulSkill {
         this.refundChance = builder.refundChance;
         this.extraBounces = Math.max(0, builder.extraBounces);
         this.surgeOnHitRadius = Math.max(0.0, builder.surgeOnHitRadius);
+        this.upwardChance = builder.upwardChance;
+        this.upwardPitch = builder.upwardPitch;
+        this.weakHoming = builder.weakHoming;
+        this.weaponShare = builder.weaponShare;
         this.selfEffect = builder.selfEffect;
         this.selfEffectTicks = builder.selfEffectTicks;
     }
@@ -61,7 +69,9 @@ public class SoulProjectileSkill extends SoulSkill {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack);
+        /// 武器伤害按技能声明的比例计入（迷魂孢雾只吃 20%，其余技能默认全额）。
+        float weaponDamage = PlayerUtils.getWeaponSoulDamage(player) * weaponShare;
+        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack, weaponDamage);
         /// 引渡者：引魂系列弹幕额外弹射一次；技能自己也可以声明额外弹射次数（强力引魂 +1）。
         int extraBounce = extraBounces + (PlayerUtils.isSoulBookLearned(player, SoulBooks.PSYCHOPOMP)
                 && skillStack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)
@@ -69,14 +79,19 @@ public class SoulProjectileSkill extends SoulSkill {
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
         RandomSource random = RandomSource.create();
+        /// 迷魂孢雾一类技能**每轮齐射独立掷骰**：走斜上方抛射还是直线平射。
+        boolean upward = upwardChance > 0.0F && random.nextFloat() < upwardChance;
+        Vec3 axis = upward && upwardPitch != 0.0 ? look.xRot((float) upwardPitch) : look;
         for (int i = 0; i < count; i++) {
-            Vec3 direction = spread <= 0.0 || count == 1 ? look : jitter(look, random);
-            Vec3 origin = spawnAbove > 0.0
+            Vec3 direction = spread <= 0.0 || count == 1 ? axis : jitter(axis, random);
+            Vec3 origin = upward && spawnAbove > 0.0
                     ? eye.add(look.scale(2.0)).add(0.0, spawnAbove, 0.0)
                     : eye;
+            /// 直线弹道按名字就是直线：不吃重力；斜上方抛射才用技能自己的重力。
             SoulLureProjectile projectile = new SoulLureProjectile(serverPlayer, origin, direction, damage, particle, speed,
-                    gravity, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE, SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, aoeRadius, aoeDamage);
+                    upward ? gravity : 0.0, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE, SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, aoeRadius, aoeDamage);
             projectile.addBounces(extraBounce);
+            projectile.setWeakHoming(weakHoming);
             if (surgeOnHitRadius > 0.0) {
                 projectile.setSurgeOnHit(surgeOnHitRadius);
             }
@@ -117,6 +132,10 @@ public class SoulProjectileSkill extends SoulSkill {
         private float refundChance;
         private int extraBounces;
         private double surgeOnHitRadius;
+        private float upwardChance;
+        private double upwardPitch;
+        private boolean weakHoming = true;
+        private float weaponShare = 1.0F;
         private @Nullable Supplier<MobEffect> selfEffect;
         private int selfEffectTicks;
 
@@ -176,6 +195,28 @@ public class SoulProjectileSkill extends SoulSkill {
         /// 命中敌怪时在该位置补一发灵魂激荡（引魂激荡用），半径 0 关闭。
         public Builder surgeOnHit(double radius) {
             this.surgeOnHitRadius = radius;
+            return this;
+        }
+
+        /// 每轮齐射按该概率改走「斜上方抛射」，其余概率走「直线平射」（迷魂孢雾用）。
+        ///
+        /// @param chance 斜上方抛射概率，0 表示永远直线
+        /// @param pitch  仰角（弧度），只对斜上方抛射生效
+        public Builder upwardVolley(float chance, double pitch) {
+            this.upwardChance = Math.max(0.0F, Math.min(1.0F, chance));
+            this.upwardPitch = pitch;
+            return this;
+        }
+
+        /// 关闭本技能弹幕的弱追踪（默认开启）。孢子这类需要保持散开的弹幕会关掉它。
+        public Builder weakHoming(boolean value) {
+            this.weakHoming = value;
+            return this;
+        }
+
+        /// 本技能只计入武器伤害的这一比例（默认 1.0 = 全额）；迷魂孢雾按设计只吃 20%。
+        public Builder weaponShare(double share) {
+            this.weaponShare = Math.max(0.0F, Math.min(1.0F, (float) share));
             return this;
         }
 

@@ -251,6 +251,11 @@ public final class LivingEntityEvents {
             SoulStorage.of(player).onDeath();
         }
         PlayerUtils.collectSoul(victim, event.getSource());
+        /// 附魂印记：击杀带印记的敌人额外回 2 点灵魂（普通收魂照常结算，这是叠加的一份）。
+        if (victim.hasEffect(ModEffects.SOUL_MARK.get())
+                && LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer killer) {
+            PlayerUtils.adjustSoul(killer, SoulSkillParameters.SOUL_MARK_KILL_SOUL);
+        }
     }
 
     private static void dropMoneyOnDeath(LivingDeathEvent event) {
@@ -416,7 +421,8 @@ public final class LivingEntityEvents {
         PlayerUtils.adjustSoul(player, SoulSkillParameters.SOUL_WEAPON_HIT_SOUL);
     }
 
-    /// 主武器自带效果里「技能命中」的那几条：星魄补一颗坠星、丛林的灯附带中毒、无分昼夜附带暗影焰。
+    /// 主武器自带效果里「技能命中」的那几条：星魄补一颗坠星、丛林的灯附带中毒、无分昼夜附带暗影焰；
+    /// 另外统一结算**附魂印记**的回魂：技能命中带印记的敌人回 1 魂。
     ///
     /// 只认灵魂伤害来源，因此普通近战 / 弓箭不会触发。
     private static void soulWeaponTraitsOnSkillHit(PortLivingIncomingDamageEvent event) {
@@ -429,6 +435,10 @@ public final class LivingEntityEvents {
         LivingEntity victim = event.getEntity();
         if (victim == player || !victim.isAlive()) {
             return;
+        }
+        /// 附魂印记：这只敌人身上有印记，任何技能（灵魂伤害）打中它都回 1 魂。
+        if (victim.hasEffect(ModEffects.SOUL_MARK.get())) {
+            PlayerUtils.adjustSoul(player, SoulSkillParameters.SOUL_MARK_HIT_SOUL);
         }
         if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.STAR_ON_SKILL_HIT)
                 && !isStarProjectile(event)
@@ -525,13 +535,13 @@ public final class LivingEntityEvents {
         player.removeEffect(ModEffects.BOILING_BLOOD.get());
     }
 
-    /// 天穹倒转把摔落伤害改成回复；生命归还记录期间失去的生命。
+    /// 灵魂缓冲把摔落伤害改成回复；生命归还记录期间失去的生命。
     private static void soulSkillOnHurt(PortLivingIncomingDamageEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
-        if (event.getSource().is(DamageTypeTags.IS_FALL) && player.hasEffect(ModEffects.FIRMAMENT_REVERSED.get())) {
-            player.heal(event.getAmount() * SoulSkillParameters.FIRMAMENT_REVERSED_CONVERT_RATIO);
+        if (event.getSource().is(DamageTypeTags.IS_FALL) && player.hasEffect(ModEffects.SOUL_BUFFER.get())) {
+            player.heal(event.getAmount() * SoulSkillParameters.SOUL_BUFFER_CONVERT_RATIO);
             event.setCanceled(true);
             return;
         }

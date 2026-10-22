@@ -26,7 +26,6 @@ public class SoulSkillBookItem extends CustomRarityItem {
     private static final String REVIEW_MESSAGE = "message.confluence.soulcerer_skill.review";
     private static final String UNBOUND_TOOLTIP = "tooltip.confluence.soulcerer_skill_book.unbound";
     private static final String REQUIRED_TOOLTIP = "tooltip.confluence.soulcerer_skill_book.required";
-    private static final String PSYCHOPOMP_TOOLTIP = "tooltip.confluence.soulcerer_skill_book.psychopomp";
 
     public SoulSkillBookItem(Properties properties, ModRarity rarity) {
         super(properties, rarity);
@@ -77,7 +76,10 @@ public class SoulSkillBookItem extends CustomRarityItem {
             return;
         }
         if (book.skill() == null) {
-            tooltipComponents.add(Component.translatable(PSYCHOPOMP_TOOLTIP));
+            String passiveKey = SoulBooks.passiveTooltipKey(book.id());
+            if (passiveKey != null) {
+                tooltipComponents.add(Component.translatable(passiveKey));
+            }
         } else {
             SoulSkill skill = SoulSkillStorage.findSoulSkill(book.skill());
             if (skill != null) {

@@ -42,13 +42,12 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * 灵魂技能总览界面 — 类似原版进度界面的技能树视图
  */
 public class SoulOverviewScreen extends Screen {
-    private static final int SURVIVAL_INSTINCT_NODE_X = -40;
-    private static final int SURVIVAL_INSTINCT_NODE_Y = 40;
 
     private final NormalNoise backgroundNoise;
     /* 组件 */
@@ -153,127 +152,62 @@ public class SoulOverviewScreen extends Screen {
 
     // ============ 初始化 ============
 
+    /// 技能树节点：`x, y` 是节点中心相对屏幕中心的像素（一格 40），`next` 是递进关系的连线目标。
+    private record NodeSpec(int x, int y, Supplier<SoulSkill> skill, List<Supplier<SoulSkill>> next) {}
+
+    @SafeVarargs
+    private static NodeSpec n(int x, int y, Supplier<SoulSkill> skill, Supplier<SoulSkill>... next) {
+        return new NodeSpec(x, y, skill, List.of(next));
+    }
+
     /// 建立技能树节点，学习和可用状态由玩家数据提供。
+    ///
+    /// 排布：左臂（负 x）放增益与被动，右臂（正 x）放伤害主动技能，中间 ±40 两列是开局技能，
+    /// 同列竖直排列、间距 40；只有递进关系才连线，方向由内向外。
+    /// 想先看效果再改：仓库根目录的 `soul_tree_layout_editor.html`（拖拽/连线预览），照着改下面这张表即可。
     private void initSkillsFromRegistry() {
-        // 横向布局，中点开始，坐标原点 = 屏幕中心，左边为buff列技能树，右边为攻击列，坐标原点 = 屏幕中心，40为一段  -x为往左，正x往右，-y往上，正y往下
-// 按照时期排序，第一次献祭为boss前，第二次献祭为邪恶boss时
-// 左列 buff技能树
-        // 强力附魂
-        addNode(OverviewNode.Builder.of(ModSoulSkills.ENHANCED_SOUL)
-                .pos(-40, 0));
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SURVIVAL_INSTINCT)
-                .pos(SURVIVAL_INSTINCT_NODE_X, SURVIVAL_INSTINCT_NODE_Y));
-        // 魂引天星
-        addNode(OverviewNode.Builder.of(ModSoulSkills.STAR_CALL)
-                .pos(-80, -40)
-                .connections(ModSoulSkills.ENHANCED_SOUL));
-        // 血液沸腾
-        addNode(OverviewNode.Builder.of(ModSoulSkills.BOILING_BLOOD)
-                .pos(-80, 80)
-                .connections(ModSoulSkills.ENHANCED_SOUL));
-        // 掠夺之魄
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_PLUNDER)
-                .pos(-80, 40)
-                .connections(ModSoulSkills.ENHANCED_SOUL));
-        // 自然法则
-        addNode(OverviewNode.Builder.of(ModSoulSkills.LAW_OF_NATURE)
-                .pos(-80, -80)
-                .connections(ModSoulSkills.ENHANCED_SOUL));
-        // 附魂激荡
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_SURGE)
-                .pos(-120, 0)
-                .connections(ModSoulSkills.ENHANCED_SOUL));
-        // 灵魂透支
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_DRAIN)
-                .pos(-120, -40));
-        // 星魂联结
-        addNode(OverviewNode.Builder.of(ModSoulSkills.STAR_LINK)
-                .pos(-160, -40)
-                .connections(ModSoulSkills.STAR_REVERSAL));
-        // 星魂逆转
-        addNode(OverviewNode.Builder.of(ModSoulSkills.STAR_REVERSAL)
-                .pos(-160, -80)
-                .connections(ModSoulSkills.STAR_LINK));
-        // 血怒
-        addNode(OverviewNode.Builder.of(ModSoulSkills.BLOOD_RAGE).pos(-200, -120));
-        // 右列 攻击技能树
-        // 引魂
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_LURE)
-                .pos(40, 0));
-        // 灵魂激荡
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SPIRIT_SURGE)
-                .pos(80, -120));
-        // 自然之惩戒
-        addNode(OverviewNode.Builder.of(ModSoulSkills.NATURES_WRATH)
-                .pos(80, 40)
-                .connections(ModSoulSkills.SOUL_LURE));
-        // 迷魂孢雾
-        addNode(OverviewNode.Builder.of(ModSoulSkills.CONFUSE_SPORES)
-                .pos(80, 80)
-                .connections(ModSoulSkills.SOUL_LURE));
-        // 亵渎之魂
-        addNode(OverviewNode.Builder.of(ModSoulSkills.PROFANE_SOUL)
-                .pos(80, -80)
-                .connections(ModSoulSkills.SOUL_LURE));
-        // 灭却业火
-        addNode(OverviewNode.Builder.of(ModSoulSkills.KARMA_FLAME)
-                .pos(80, -40));
-        // 附魂印记
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_MARK)
-                .pos(120, 50)
-                .connections(ModSoulSkills.SOUL_LURE));
-        // 强力引魂
-        addNode(OverviewNode.Builder.of(ModSoulSkills.ENHANCED_LURE)
-                .pos(120, -40)
-                .connections(ModSoulSkills.SOUL_LURE));
-        // 引魂激荡
-        addNode(OverviewNode.Builder.of(ModSoulSkills.LURE_SURGE)
-                .pos(120, 0)
-                .connections(ModSoulSkills.SPIRIT_SURGE,ModSoulSkills.SOUL_LURE));
-        // 强力激荡
-        addNode(OverviewNode.Builder.of(ModSoulSkills.EMPOWERED_SURGE)
-                .pos(120, -120)
-                .connections(ModSoulSkills.SPIRIT_SURGE));
-        // 灵魂激荡冲击
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SURGE_BLAST)
-                .pos(160, -120)
-                .connections(ModSoulSkills.SPIRIT_SURGE));
-        // 灵魂引发
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SPIRIT_TRIGGER)
-                .pos(200, -120)
-                .connections(ModSoulSkills.SURGE_BLAST));
-        // 灵魂突击
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_ASSAULT)
-                .pos(120, 80)
-                .connections(ModSoulSkills.SOUL_LURE));
-        // 灵魂收割
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_HARVEST)
-                .pos(-120, 40)
-                .connections(ModSoulSkills.ENHANCED_SOUL));
-        // 噬魂借力
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_DEVOUR)
-                .pos(-160, 40)
-                .connections(ModSoulSkills.SOUL_HARVEST));
-        // 反噬抵抗
-        addNode(OverviewNode.Builder.of(ModSoulSkills.BACKLASH_RESISTANCE)
-                .pos(-200, 40)
-                .connections(ModSoulSkills.SOUL_DEVOUR));
-        // 分魂驾驭
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_CONTROL)
-                .pos(-200, 80)
-                .connections(ModSoulSkills.BACKLASH_RESISTANCE));
-        // 魂术轮转
-        addNode(OverviewNode.Builder.of(ModSoulSkills.SOUL_ROTATION)
-                .pos(-240, 80)
-                .connections(ModSoulSkills.SOUL_CONTROL));
-        // 生命归还
-        addNode(OverviewNode.Builder.of(ModSoulSkills.LIFE_RETURN)
-                .pos(-240, 120)
-                .connections(ModSoulSkills.SOUL_ROTATION));
-        // 天穹倒转
-        addNode(OverviewNode.Builder.of(ModSoulSkills.FIRMAMENT_REVERSED)
-                .pos(-120, -80)
-                .connections(ModSoulSkills.STAR_CALL));
+        List<NodeSpec> tree = List.of(
+                // ===== 左臂 =====
+                n(-200, -80, ModSoulSkills.LIFE_RETURN),
+                n(-200, 0, ModSoulSkills.SOUL_CONTROL),
+                n(-160, -80, ModSoulSkills.BACKLASH_RESISTANCE),
+                n(-160, -40, ModSoulSkills.SOUL_ASSAULT),
+                n(-160, 0, ModSoulSkills.SOUL_DEVOUR),
+                n(-160, 80, ModSoulSkills.BLOOD_RAGE),
+                n(-120, -120, ModSoulSkills.STAR_REVERSAL, ModSoulSkills.STAR_LINK),
+                n(-120, -80, ModSoulSkills.STAR_LINK),
+                n(-120, -40, ModSoulSkills.SOUL_HARVEST),
+                n(-80, -120, ModSoulSkills.SOUL_DRAIN),
+                n(-80, -80, ModSoulSkills.SOUL_SURGE),
+                n(-80, -40, ModSoulSkills.SOUL_ROTATION),
+                n(-80, 40, ModSoulSkills.LAW_OF_NATURE, ModSoulSkills.NATURES_WRATH),
+                n(-80, 80, ModSoulSkills.SURVIVAL_INSTINCT),
+                n(-80, 120, ModSoulSkills.SOUL_PLUNDER),
+                n(-80, 160, ModSoulSkills.BOILING_BLOOD),
+                n(-80, 200, ModSoulSkills.STAR_CALL),
+                n(-80, 240, ModSoulSkills.SOUL_BUFFER),
+                n(-40, -40, ModSoulSkills.ENHANCED_SOUL, ModSoulSkills.SOUL_SURGE, ModSoulSkills.EMPOWERED_SURGE),
+                // ===== 右臂 =====
+                n(40, -160, ModSoulSkills.SPIRIT_SURGE, ModSoulSkills.LURE_SURGE, ModSoulSkills.EMPOWERED_SURGE, ModSoulSkills.SURGE_BLAST, ModSoulSkills.SPIRIT_TRIGGER),
+                n(40, -40, ModSoulSkills.SOUL_LURE, ModSoulSkills.ENHANCED_LURE, ModSoulSkills.SOUL_MARK),
+                n(80, -240, ModSoulSkills.SURGE_BLAST),
+                n(80, -200, ModSoulSkills.LURE_SURGE),
+                n(80, -120, ModSoulSkills.EMPOWERED_SURGE),
+                n(80, -80, ModSoulSkills.SOUL_MARK),
+                n(80, 0, ModSoulSkills.ENHANCED_LURE),
+                n(80, 40, ModSoulSkills.NATURES_WRATH),
+                n(80, 80, ModSoulSkills.CONFUSE_SPORES),
+                n(120, -160, ModSoulSkills.SPIRIT_TRIGGER),
+                n(160, 120, ModSoulSkills.PROFANE_SOUL, ModSoulSkills.KARMA_FLAME),
+                n(160, 160, ModSoulSkills.KARMA_FLAME)
+        );
+        for (NodeSpec spec : tree) {
+            OverviewNode.Builder builder = OverviewNode.Builder.of(spec.skill()).pos(spec.x(), spec.y());
+            for (Supplier<SoulSkill> next : spec.next()) {
+                builder.connections(next);
+            }
+            addNode(builder);
+        }
     }
 
     /// 构建节点并登记其标识。
@@ -1261,6 +1195,9 @@ public class SoulOverviewScreen extends Screen {
     }
 
     /// 绘制总览控件及可见的背景调节滑块。
+    ///
+    /// 技能节点的 tooltip **不在这里画**：它在所有控件（含其它节点）绘制完之后统一补画，
+    /// 否则后绘制的节点会盖住先绘制节点的说明文字（见 {@link #renderDeferredTooltip}）。
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(guiGraphics, mouseX, mouseY, partialTick);
@@ -1270,6 +1207,20 @@ public class SoulOverviewScreen extends Screen {
             hueSlider.render(guiGraphics, mouseX, mouseY, partialTick);
             contrastSlider.setPosition(5, this.height - 75);
             contrastSlider.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
+        renderDeferredTooltip(guiGraphics, mouseX, mouseY, partialTick);
+    }
+
+    /// 把悬停节点的说明文字抬到**最后一层**绘制。
+    ///
+    /// 图标等 GUI 精灵走的是不带深度的 guiOverlay / guiTextured 批次，单纯的 z 平移不会改变
+    /// 谁盖住谁，真正决定层次的是**绘制顺序**：因此 tooltip 必须等到这一帧所有节点都画完再画。
+    private void renderDeferredTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        for (OverviewNode node : nodes) {
+            if (node.isMouseOver(mouseX, mouseY)) {
+                node.renderTooltip(guiGraphics, mouseX, mouseY, partialTick);
+                return;
+            }
         }
     }
 

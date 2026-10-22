@@ -646,11 +646,11 @@ public final class ChestSubProvider implements LootTableSubProvider {
                                         PercentageLootEntry.rule(15, LootItem.lootTableItem(BowItems.SCAREBOW.get()))
                                 ))
                         )
-                        //天穹倒转：独立池子 33% 概率
+                        //灵魂缓冲：独立池子 33% 概率
                         .withPool(LootPool.lootPool()
                                 .when(LootItemRandomChanceCondition.randomChance(0.33F))
                                 .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
-                                        .apply(BindSoulSkillFunction.bind(SoulBooks.FIRMAMENT_REVERSED)))
+                                        .apply(BindSoulSkillFunction.bind(SoulBooks.SOUL_BUFFER)))
                         )
                 //先暂时使用空岛村箱子
         );

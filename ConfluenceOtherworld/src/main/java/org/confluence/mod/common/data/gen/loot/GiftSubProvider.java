@@ -1411,7 +1411,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
         );
         //克脑
 
-        output.accept(Confluence.asResource("treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
+        output.accept(Confluence.asResource("treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_ECHO))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 90)))
                 ))
@@ -1419,7 +1419,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(5)))
                 ))
         );
-        output.accept(Confluence.asResource("treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
+        output.accept(Confluence.asResource("treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_ECHO))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(80, 110)))
@@ -1434,7 +1434,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(13)))
                 ))
         );
-        output.accept(Confluence.asResource("treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_SURGE))
+        output.accept(Confluence.asResource("treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon().withPool(soulBookLoot(SoulBooks.SOUL_ECHO))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(110, 135)))
@@ -1787,7 +1787,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ))
-                .withPool(soulBookLoot(SoulBooks.SOUL_SURGE));
+                .withPool(soulBookLoot(SoulBooks.SOUL_ECHO));
     }
 
     // 毁灭者宝藏袋

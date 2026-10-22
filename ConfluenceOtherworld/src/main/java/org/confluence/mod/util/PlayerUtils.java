@@ -70,6 +70,7 @@ import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.soulcerer.skill.SoulAssaultSkill;
+import org.confluence.mod.common.soulcerer.skill.SpiritSurgeSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
@@ -1760,6 +1761,8 @@ public final class PlayerUtils {
                 && isSoulSkillLearned(player, ModSoulSkills.SOUL_SURGE.get().getId())) {
             float damage = getSoulSkillDamage(player, ModSoulSkills.SPIRIT_SURGE.get().getStack());
             player.level().addFreshEntity(new SpiritSurgeEntity(player, damage));
+            /// 灵魂回响对自动释放的灵魂激荡同样生效（额外那一发不耗魂）。
+            SpiritSurgeSkill.rollSoulEcho(player, damage);
         }
         /// 灵魂突击：增益期间按间隔把灵魂转成子弹
         if (player.hasEffect(ModEffects.SOUL_ASSAULT.get()) && gameTime % SoulSkillParameters.SOUL_ASSAULT_INTERVAL_TICKS == 0) {

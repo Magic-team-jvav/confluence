@@ -18,6 +18,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("creativetab.confluence.misc", "Confluence | Miscellaneous", "汇流来世 | 杂项");
         language.add("creativetab.confluence.natural_blocks", "Confluence | Naturals", "汇流来世 | 自然方块");
         language.add("creativetab.confluence.rangers", "Confluence | Rangers", "汇流来世 | 射手武器");
+        language.add("creativetab.confluence.soulcerer", "Confluence | Soul Mage", "汇流来世 | 魂师");
         language.add("creativetab.confluence.summoners", "Confluence | Summoners", "汇流来世 | 召唤师武器");
         language.add("creativetab.confluence.tools", "Confluence | Tools", "汇流来世 | 工具");
         language.add("creativetab.confluence.warriors", "Confluence | Warriors", "汇流来世 | 战士武器");
@@ -241,6 +242,10 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.snow", "Snow", "雪原");
         language.add("itemGroup.confluence.snow_bricks", "Snow Bricks", "雪砖");
         language.add("itemGroup.confluence.snow_insulated_wear", "Snow Insulated Wear", "防寒套装");
+        language.add("itemGroup.confluence.soulcerer_artifacts", "Artifacts", "法器");
+        language.add("itemGroup.confluence.soulcerer_main_weapons", "Primary Weapons", "主武器");
+        language.add("itemGroup.confluence.soulcerer_secondary_weapons", "Secondary Weapons", "副武器");
+        language.add("itemGroup.confluence.soulcerer_skill_books", "Skill Books", "技能书");
         language.add("itemGroup.confluence.souls", "Soul Bottles", "灵魂瓶");
         language.add("itemGroup.confluence.souls_special", "Souls & Special Materials", "灵魂与特殊材料");
         language.add("itemGroup.confluence.spear", "Spear", "长矛");

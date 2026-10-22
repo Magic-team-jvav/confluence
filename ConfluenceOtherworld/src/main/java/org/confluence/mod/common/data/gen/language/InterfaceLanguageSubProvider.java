@@ -45,6 +45,19 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.difficulty_notice.title", "Difficulty Selection", "难度选择");
         language.add("confluence.game_event", "Game Event", "Game Event");
         language.add("confluence.prefix_separator", " ", " ");
+        language.add("confluence.screen.soulcerer_overview", "Soul Skill Overview", "魂师技能总览");
+        language.add("confluence.screen.soulcerer_overview.background_toggle", "Background rendering: on / off (off keeps only the base colour and the skills)", "背景渲染开关：关掉后只保留底色与技能，其余背景层全部停画");
+        language.add("confluence.screen.soulcerer_overview.tab.blood_nature", "Blood and Nature", "血与自然");
+        language.add("confluence.screen.soulcerer_overview.tab.empty", "Empty", "空");
+        language.add("confluence.screen.soulcerer_overview.tab.soul", "Soul", "灵魂");
+        language.add("confluence.screen.soulcerer_overview.tab.star_lure", "Star Lure", "星魂");
+        language.add("confluence.soul_book.blood_world_wrath.name", "Blood and World's Wrath", "血与世界之怒");
+        language.add("confluence.soul_book.firmament_reversed.name", "Firmament Reversed", "天穹倒转");
+        language.add("confluence.soul_book.harvester.name", "Harvester", "收割者");
+        language.add("confluence.soul_book.psychopomp.name", "Psychopomp", "引渡者");
+        language.add("confluence.soul_book.raiders_path.name", "Raiders' Path", "劫掠之道");
+        language.add("confluence.soul_book.soul_surge.name", "Soul Surge", "灵魂激荡");
+        language.add("confluence.soul_book.survival_instinct.name", "Survival Instinct", "求生欲");
         language.add("confluence.soulcerer_skill.blood_rage.name", "Blood Rage", "血怒");
         language.add("confluence.soulcerer_skill.boiling_blood.name", "Boiling Blood", "血液沸腾");
         language.add("confluence.soulcerer_skill.confuse_spores.name", "Confuse Spores", "迷魂孢雾");
@@ -67,6 +80,11 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.star_call.name", "Star Call", "魂引天星");
         language.add("confluence.soulcerer_skill.star_link.name", "Star Link", "星魂联结");
         language.add("confluence.soulcerer_skill.star_reversal.name", "Star Reversal", "星魂逆转");
+        language.add("confluence.soulcerer_skill.state.equipped", "Equipped", "已装备");
+        language.add("confluence.soulcerer_skill.state.learned", "Permanently unlocked", "已永久解锁");
+        language.add("confluence.soulcerer_skill.state.locked", "Locked", "未解锁");
+        language.add("confluence.soulcerer_skill.state.temporary", "Temporarily available", "临时可用");
+        language.add("confluence.soulcerer_skill.state.unavailable", "Temporarily unavailable", "暂不可用");
         language.add("confluence.soulcerer_skill.surge_blast.name", "Surge Blast", "灵魂激荡冲击");
         language.add("confluence.soulcerer_skill.soul_harvest.name", "Soul Harvest", "灵魂收割");
         language.add("confluence.soulcerer_skill.soul_assault.name", "Soul Assault", "灵魂突击");
@@ -77,6 +95,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.life_return.name", "Life Return", "生命归还");
         // 技能说明：与技能一一对应，C 键总览与技能框都会显示
         // 数值行统一话术：名称之后依次是伤害 / 冷却 / BUFF持续时间 / 所需灵魂数 / 技能描述
+        language.add("confluence.soulcerer_skill.survival_instinct.name", "Survival Instinct", "求生欲");
         language.add("confluence.soulcerer_skill.tooltip.damage", "Damage: %s", "伤害：%s");
         language.add("confluence.soulcerer_skill.tooltip.cooldown", "Cooldown: %ss", "冷却：%s 秒");
         language.add("confluence.soulcerer_skill.tooltip.buff_duration", "Buff duration: %ss (%s)", "BUFF持续时间：%s 秒（%s）");
@@ -113,6 +132,9 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.soul_plunder.desc", "Briefly increases melee and ranged damage.", "短时间提升近战与远程伤害。");
         language.add("confluence.soulcerer_skill.boiling_blood.desc", "Spends 80% of your soul to empower the next melee hit.", "消耗 80% 灵魂，使下一次近战攻击造成 5 倍伤害。");
         language.add("confluence.soulcerer_skill.firmament_reversed.desc", "For 8 seconds, fall damage becomes healing instead.", "8 秒内，摔落伤害完全转化为生命回复。");
+        language.add("message.confluence.soul_book.harvester", "Soul lure skills have grown mightier!", "引魂系列技能的威力增强了！");
+        language.add("message.confluence.soul_mode.magic", "Traverse the astral morning stars", "流转天外晨星");
+        language.add("message.confluence.soul_mode.soul", "Rouse the souls of fallen quietude", "唤起坠寂之魂");
         language.add("message.confluence.soul_ritual.activate", "You have awakened the ancient souls of this world...", "你唤醒了世界上的古老之魂...");
         language.add("message.confluence.soul_ritual.unlock", "The ancient souls teach you %s", "古老之魂授予你%s");
         language.add("message.confluence.soul_ritual.slot", "Ancient power expands your soul slots: %s", "古老之力拓宽了你的灵魂栏位：%s");
@@ -247,8 +269,10 @@ public final class InterfaceLanguageSubProvider {
         language.add("key.confluence.mana", "Quick Use Mana Potion", "快捷喝药（魔力）");
         language.add("key.confluence.mount", "Toggle Mount", "切换坐骑");
         language.add("key.confluence.mount_descend", "Mount Descend", "坐骑下降");
-        language.add("key.confluence.quick_buff", "Quick Buff", "快捷喝增益药水");
+        language.add("key.confluence.quick_buff", "Quick Buff", "快捷使用增益物品");
         language.add("key.confluence.shoot", "Shoot", "射击");
+        language.add("key.confluence.soulcerer.overview", "Soulcerer Overview", "魂师技能总览");
+        language.add("key.confluence.soulcerer.skill_switching", "Switch Soul Skill", "切换灵魂技能");
         language.add("key.confluence.specular_detail", "Detail observation of visual potions", "视觉药水细节观测");
         language.add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!", "书中的知识赋予了城镇居民力量！");
         language.add("message.confluence.altar_tips.0", " put in an item, ", " 存入，");
@@ -300,6 +324,9 @@ public final class InterfaceLanguageSubProvider {
         language.add("message.confluence.scrying_orb.singleplayer", "All you see is your reflection in the orb.", "你在球中只看到自己的倒影。");
         language.add("message.confluence.slime_rain.end", "Slime has stopped falling from the sky.", "史莱姆已停止从天而降。");
         language.add("message.confluence.slime_rain.start", "Slime is falling from the sky!", "史莱姆从天而降!");
+        language.add("message.confluence.soulcerer_skill.first_obtain", "By obtaining %s, you have acquired %s!", "获得%s，你习得了%s！");
+        language.add("message.confluence.soulcerer_skill.learned", "By reading the dust-laden tome, you have acquired %s!", "通过阅读尘封的书籍，你获得了%s！");
+        language.add("message.confluence.soulcerer_skill.review", "A familiar read: soul damage increased", "温故知新：灵魂伤害提高");
         language.add("message.confluence.too_easy.ready", "Too Easy!", "轻而易举呀！");
         language.add("message.confluence.toolmode.current", "Current Mode: ", "当前模式：");
         language.add("message.confluence.toolmode.tip", "Sneak & Right click on the air to switch mode", "对空气潜行右击切换模式");

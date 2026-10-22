@@ -116,6 +116,10 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.boomerang.max_count", "Max Count", "分身数量");
         language.add("tooltip.confluence.boomerang.penetration", "Penetrates Count", "穿透数量");
         language.add("tooltip.confluence.boss_target_selector", "In Creative mode, right-click a BOSS or its parts to toggle its aggro toward you.", "创造模式下，右键指定BOSS或其部件，开启或关闭它对你的仇恨。");
+        language.add("tooltip.confluence.soulcerer_skill_book.invalid", "The bound soul skill is unavailable", "绑定的灵魂技能不存在");
+        language.add("tooltip.confluence.soulcerer_skill_book.psychopomp", "Soul lure skills deal 2 more damage and their projectiles bounce once more", "引魂系列技能伤害+2，且引魂弹幕额外弹射一次");
+        language.add("tooltip.confluence.soulcerer_skill_book.required", "Requires permanently learning %s first", "需要先永久学会%s");
+        language.add("tooltip.confluence.soulcerer_skill_book.unbound", "No soul skill is bound to this book", "此书尚未绑定灵魂技能");
         language.add("tooltip.item.confluence.green_solution.0", "Purifies Corruption, Crimson and Hallow", "净化腐化、猩红和神圣环境");
         language.add("tooltip.item.confluence.green_solution.1", "Restores Glowing Mushroom biomes to Jungle", "将发光蘑菇群系恢复为丛林");
         language.add("tooltip.item.confluence.blue_solution.0", "Converts pure, Corrupt or Crimson environments into Hallow", "将纯净、腐化或猩红环境转化为神圣之地");

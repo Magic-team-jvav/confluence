@@ -61,7 +61,7 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
                 poseStack.pushPose();
                 try {
                     RenderUtils.translateToPivotPoint(poseStack, bone);
-                    VanillaHumanoidRenderer.HeldItemLayer.applyHandTransform(poseStack);
+                    VanillaHumanoidRenderer.HeldItemLayer.applyHandTransform(poseStack, false);
                     // 模型以锤柄底端为原点，将握点对齐手掌，不叠加平面物品的展示旋转。
                     poseStack.scale(HAMMER_SCALE, HAMMER_SCALE, HAMMER_SCALE);
                     poseStack.translate(0, -HAMMER_GRIP_Y, 0);

@@ -15,6 +15,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.util.PlayerUtils;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
@@ -103,4 +104,13 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
     public double getTooltipDamage(ItemStack stack, double attributeValue) {
         return getSoulDamage(stack) * attributeValue;
     }
+
+    @Override
+    public double getTooltipDamage(ItemStack stack, double attributeValue, @Nullable Player player, boolean baseStats) {
+        var skill = PlayerUtils.getCurrentSkillStack(player);
+        float weaponDamage = getSoulDamage(stack);
+        double damage = baseStats || player == null ? weaponDamage + skill.getDamage() : PlayerUtils.getSoulSkillDamage(player, skill, weaponDamage);
+        return damage * attributeValue;
+    }
+
 }

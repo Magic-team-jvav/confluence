@@ -385,6 +385,7 @@ public final class ModTags {
         public static final TagKey<Item> EXTRACT_MOSS = register("extract_moss");
         public static final TagKey<Item> CORALS = register("corals");
         public static final TagKey<Item> EVIL_MATERIAL = register("evil_material");
+        public static final TagKey<Item> QUICK_BUFF_FOODS = register("quick_buff_foods");
         public static final TagKey<Item> SEAFOOD_DINNER_MATERIALS = register("seafood_dinner_materials");// 制作海鲜大餐
         public static final TagKey<Item> GOLD_COOKING = register("gold_cooking");// 制作金美味
 

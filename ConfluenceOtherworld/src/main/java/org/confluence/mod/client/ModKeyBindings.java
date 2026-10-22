@@ -81,7 +81,7 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
-    // 快捷喝增益药水默认不绑定按键。
+    /// 快捷使用增益药水与食物，默认不绑定按键。
     public static final Lazy<KeyMapping> QUICK_BUFF = register(() -> new KeyMapping(
             "key.confluence.quick_buff",
             KeyConflictContext.IN_GAME,

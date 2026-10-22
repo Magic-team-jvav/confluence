@@ -67,7 +67,7 @@ public final class WeaponTooltip {
         Attribute damageAttribute = weapon.getTooltipDamageAttribute();
         Attribute criticalAttribute = LibAttributes.getCriticalChance().value();
         boolean base = ClientConfigs.weaponTooltipBaseStats;
-        double damage = weapon.getTooltipDamage(stack, attributeValue(stack, player, damageAttribute, base));
+        double damage = weapon.getTooltipDamage(stack, attributeValue(stack, player, damageAttribute, base), player, base);
         if (damageAttribute == LibAttributes.getMagicDamage().value() || stack.getItem() instanceof BoomerangItem) {
             damage *= attributeValue(stack, player, LibAttributes.getRangedDamage().value(), base);
         }

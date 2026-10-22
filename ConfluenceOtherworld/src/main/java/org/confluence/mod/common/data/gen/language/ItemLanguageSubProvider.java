@@ -42,6 +42,5 @@ public final class ItemLanguageSubProvider {
         language.add("item.confluence.tooltip.summon_attributes", "When applied to summons:", "作用于召唤物时：");
         language.add("item.confluence.village_exploration", "Origin of Village Exploration", "村庄环游起源");
         language.add("item.confluence.void_bag.disable", "Closed Void Bag", "关闭的虚空袋");
-//        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
     }
 }

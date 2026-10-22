@@ -21,6 +21,11 @@ public interface IWeaponTooltip {
         return attributeValue + EnchantmentHelper.getDamageBonus(stack, MobType.UNDEFINED);
     }
 
+    /// 依赖当前技能的伤害可读取玩家上下文，基础模式排除装备与状态加成。
+    default double getTooltipDamage(ItemStack stack, double attributeValue, @Nullable Player player, boolean baseStats) {
+        return getTooltipDamage(stack, attributeValue);
+    }
+
     /// 合并武器自身额外暴击与属性中的暴击率，不假定不存在的基础暴击。
     default double getTooltipCriticalChance(ItemStack stack, double attributeValue) {
         return attributeValue;

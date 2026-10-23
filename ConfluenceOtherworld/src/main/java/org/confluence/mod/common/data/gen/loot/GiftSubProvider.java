@@ -194,7 +194,10 @@ public record GiftSubProvider() implements LootTableSubProvider {
         );
         output.accept(Confluence.asResource("gameplay/crate/savanna_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BowItems.HUNTING_BOW))
+                        .add(PercentageLootEntry.exclusive(true,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(BowItems.HUNTING_BOW)),
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(AccessoryItems.HUNTING_TOTEM))
+                        ))
                 )
         );
         output.accept(Confluence.asResource("gameplay/crate/sky_crate"), environmentCrateCommon()
@@ -524,7 +527,10 @@ public record GiftSubProvider() implements LootTableSubProvider {
         );
         output.accept(Confluence.asResource("gameplay/crate/wild_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BowItems.HUNTING_BOW))
+                        .add(PercentageLootEntry.exclusive(true,
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(BowItems.HUNTING_BOW)),
+                                PercentageLootEntry.rule(50, LootItem.lootTableItem(AccessoryItems.HUNTING_TOTEM))
+                        ))
                 )
         );
         output.accept(Confluence.asResource("gameplay/crate/azure_crate"), environmentCrateHardModeCommon()

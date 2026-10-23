@@ -175,9 +175,9 @@ public class AccessoryItems {
             MAGIC_STRING = registerCurio("magic_string", "魔法绳", builder -> builder.rarity(PINK)),
             MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", "魔法悠悠球袋", builder -> builder.noTooltip().rarity(PINK));
 
-    public static final PortDeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", "经验吸管", builder -> builder.noTooltip().rarity(LIME)),//经验吸管
+    public static final PortDeferredItem<BaseCurioItem> HUNTING_TOTEM = registerCurio("hunting_totem", "狩猎图腾", builder -> builder.noTooltip().rarity(LIME)),//狩猎图腾
             STICKY_CRYSTAL_PENDANT = registerCurio("sticky_crystal_pendant", "黏晶吊坠", builder -> builder.noTooltip().rarity(LIME)),//黏晶吊坠
-            SHINY_PIPETTE = registerCurio("shiny_pipette", "闪亮吸管", builder -> builder.noTooltip().rarity(YELLOW));//闪亮吸管
+            HARVEST_TOTEM = registerCurio("harvest_totem", "收获图腾", builder -> builder.noTooltip().rarity(YELLOW));//收获图腾
 
     /// 魂师饰品：灵魂手环家族、刻骨的记忆、灵魂徽章。
     public static final PortDeferredItem<BaseCurioItem> BAND_OF_SOUL = registerCurio("band_of_soul", "灵魂手环", builder -> builder.rarity(BLUE).accessories(units(BAND$OF$SOUL)));

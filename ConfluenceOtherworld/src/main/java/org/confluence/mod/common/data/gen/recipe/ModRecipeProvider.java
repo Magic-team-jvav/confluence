@@ -259,7 +259,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(writer, AccessoryItems.GLOWING_FISHING_BOBBER.toStack(), Ingredient.of(AccessoryItems.FISHING_BOBBER), AmountIngredient.of(5, MaterialItems.FALLING_STAR));
         workshop(writer, AccessoryItems.COIN_RING.toStack(), Ingredient.of(AccessoryItems.LUCKY_COIN), Ingredient.of(AccessoryItems.GOLD_RING));
         workshop(writer, AccessoryItems.GREEDY_RING.toStack(), Ingredient.of(AccessoryItems.COIN_RING), Ingredient.of(AccessoryItems.DISCOUNT_CARD));
-        workshop(writer, AccessoryItems.SHINY_PIPETTE.toStack(), Ingredient.of(AccessoryItems.EXPERIENCE_PIPETTE), Ingredient.of(AccessoryItems.STICKY_CRYSTAL_PENDANT)); // 闪亮吸管 = 经验吸管 + 黏晶吊坠
+        workshop(writer, AccessoryItems.HARVEST_TOTEM.toStack(), Ingredient.of(AccessoryItems.HUNTING_TOTEM), Ingredient.of(AccessoryItems.STICKY_CRYSTAL_PENDANT)); // 收获图腾 = 狩猎图腾 + 黏晶吊坠
         workshop(writer, AccessoryItems.CHARM_OF_MYTHS.toStack(), Ingredient.of(TCItems.BAND_OF_REGENERATION), Ingredient.of(AccessoryItems.PHILOSOPHERS_STONE));
         workshop(writer, AccessoryItems.PAPYRUS_SCARAB.toStack(), Ingredient.of(AccessoryItems.NECROMANTIC_SCROLL), Ingredient.of(AccessoryItems.HERCULES_BEETLE));
         workshop(writer, TCItems.AVENGER_EMBLEM.toStack(), Ingredient.of(ModTags.Items.EMBLEM), AmountIngredient.of(5, MaterialItems.SOUL_OF_MIGHT), AmountIngredient.of(5, MaterialItems.SOUL_OF_SIGHT), AmountIngredient.of(5, MaterialItems.SOUL_OF_FRIGHT));

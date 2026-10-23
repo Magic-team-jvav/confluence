@@ -62,6 +62,9 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> BREATHING_REED = register("breathing_reed", "芦苇呼吸管", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, () -> SwordDefinition.builder()
                     .withoutSweep());
     public static final PortDeferredItem<BaseSwordItem> GLADIUS = register("gladius", "罗马短剑", ModTiers.UNBREAKABLE, 6, 3, () -> SwordDefinition.builder().withoutSweep());
+    /// 大马林鱼刺剑：短剑定位的蓄力刺剑，1 段基础伤害 + 最多 8 段蓄力，满段后拆成多段命中。
+    public static final PortDeferredItem<BaseSwordItem> MARLIN_SPIKE_SWORD = register("marlin_spike_sword", "大马林鱼刺剑", () -> new MarlinSpikeSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 14, 2.2F,
+            SwordDefinition.builder().withoutSweep().tooltip().tooltip()));
     public static final PortDeferredItem<BaseSwordItem> UMBRELLA = register("umbrella", "伞", () -> new UmbrellaSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, SwordDefinition.builder()
                     .withoutSweep()
                     .unbreakable()));

@@ -1124,6 +1124,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "a a"
         )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
 
+        // 大马林鱼刺剑：海沫 + 欧泊
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.HEIM),
+                '/', Ingredient.of(MaterialItems.OPAL)
+        ), List.of(
+                "  a",
+                "/  "
+        )), SwordItems.MARLIN_SPIKE_SWORD.toStack());
+
         registerTemporaryRecipes(writer);
 
         writer.accept(new UnitFinishedRecipe(BoomBunnyRecipe.getInstance()));

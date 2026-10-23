@@ -9,6 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.item.common.BaseHammerItem;
+import org.confluence.mod.common.item.common.SeafloorCrackerItem;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -47,6 +48,8 @@ public class HammerItems {
     public static final PortDeferredItem<BaseHammerItem> HAMMUSH = registerItem("hammush", "蘑菇锤", () -> new BaseHammerItem(ModTiers.SHROOMITE, 16, 2.2F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
     public static final PortDeferredItem<BaseHammerItem> CHLOROPHYTE_WARHAMMER = registerItem("chlorophyte_warhammer", "叶绿战锤", () -> new BaseHammerItem(ModTiers.CHLOROPHYTE, 20, 2.4F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
     public static final PortDeferredItem<BaseHammerItem> CHLOROPHYTE_JACKHAMMER = registerItem("chlorophyte_jackhammer", "叶绿手提钻", () -> new BaseHammerItem(ModTiers.CHLOROPHYTE, 24, 4, unbreakable(), attributes(0, 0.52), ModRarity.LIME));
+    /// 海床崩裂者：视作锤的近战武器，满蓄力砸出 5x5x3 范围伤害并掀起水柱。
+    public static final PortDeferredItem<BaseHammerItem> SEAFLOOR_CRACKER = registerItem("seafloor_cracker", "海床崩裂者", () -> new SeafloorCrackerItem(ModTiers.UNBREAKABLE, 20, 1.2F, unbreakable(), attributes(0, 0.55), ModRarity.BLUE));
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);

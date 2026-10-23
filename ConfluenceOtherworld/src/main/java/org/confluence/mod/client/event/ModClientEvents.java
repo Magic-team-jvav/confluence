@@ -337,6 +337,9 @@ public final class ModClientEvents {
     @SuppressWarnings("all")
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
+        // 纯 ParticleStorm 粒子表现的逻辑实体：本体不渲染，但必须登记渲染器（分发器不判空）
+        event.registerEntityRenderer(SEABED_WATER_COLUMN.get(), InvisibleEntityRenderer::new); // 海床崩裂者水柱
+        event.registerEntityRenderer(OPAL_STAFF_PROJECTILE.get(), InvisibleEntityRenderer::new); // 欧泊法杖洪流弹幕
         event.registerEntityRenderer(CHESTER.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/chester.geo.json"), Confluence.asResource("textures/entity/summon/chester.png"), Confluence.asResource("animations/entity/summon/chester.animation.json"))));
         event.registerEntityRenderer(FLYING_PIGGY_BANK.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/piggy_bank.geo.json"), Confluence.asResource("textures/entity/summon/piggy_bank.png"), Confluence.asResource("animations/entity/summon/piggy_bank.animation.json"))));
         event.registerEntityRenderer(RIDEABLE_SLIME.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/rideable/rideable_slime.geo.json"), Confluence.asResource("textures/entity/rideable/rideable_slime.png"), Confluence.asResource("animations/entity/rideable/rideable_slime.animation.json"))).withScale(RideableSlimeMountEntity.RENDER_SCALE).setShadowRadius(0.35F));
@@ -1047,6 +1050,8 @@ public final class ModClientEvents {
         }
         // 祈灵之刃在魂师体系里属于短剑，手持姿态与短剑一致
         event.registerItem(ShortSwordInHandRenderer.INSTANCE, SoulItems.SPIRITWARD_BLADE.get());
+        // 大马林鱼刺剑同样是短剑手持姿态
+        event.registerItem(ShortSwordInHandRenderer.INSTANCE, SwordItems.MARLIN_SPIKE_SWORD.get());
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FRIGHT);

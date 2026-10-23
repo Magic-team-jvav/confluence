@@ -683,6 +683,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         });
         // 祈灵之刃在魂师体系里属于短剑
         short_sword.add(SoulItems.SPIRITWARD_BLADE.get());
+        // 大马林鱼刺剑：命名不带 short_sword 后缀，但定位就是短剑
+        short_sword.add(SwordItems.MARLIN_SPIKE_SWORD.get());
 
         IntrinsicTagAppender<Item> head_armor = tag(PortTags.Items.HEAD_ARMOR);
         IntrinsicTagAppender<Item> chest_armor = tag(PortTags.Items.CHEST_ARMOR);
@@ -1635,6 +1637,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         // 祈灵之刃：魂师副武器，自带自动挥舞
         tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());
+        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SwordItems.MARLIN_SPIKE_SWORD.get());
         // 标签本身即为公开扩展点；本体目前没有额外的普通自动发射弓。
         tag(ModTags.Items.AUTOMATIC_BOW);
         tag(ModTags.Items.MIMIC_SUMMON_KEY).add(

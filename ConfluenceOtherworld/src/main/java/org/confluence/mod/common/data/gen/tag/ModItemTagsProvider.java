@@ -1597,7 +1597,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.ORICHALCUM_SWORD.get(),
                 SwordItems.ADAMANTITE_SWORD.get(),
                 SwordItems.TITANIUM_SWORD.get(),
-                SwordItems.MURAMASA.get()
+                SwordItems.MURAMASA.get(),
+                SwordItems.MARLIN_SPIKE_SWORD.get()
         );
         // 祈灵之刃：魂师副武器，自带自动挥舞
         tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());
@@ -1625,6 +1626,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         }
         // 祈灵之刃在魂师体系里属于短剑
         short_sword.add(SoulItems.SPIRITWARD_BLADE.get());
+        // 大马林鱼刺剑：命名不带 short_sword 后缀，但定位就是短剑
+        short_sword.add(SwordItems.MARLIN_SPIKE_SWORD.get());
 
         PylonBlocks.BLOCKS.getEntries().forEach(holder -> wip.add(holder.get().asItem()));
     }

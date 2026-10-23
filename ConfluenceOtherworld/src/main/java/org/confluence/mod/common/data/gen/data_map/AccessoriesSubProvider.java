@@ -278,13 +278,13 @@ public class AccessoriesSubProvider {
                     helper.of(AccessoryItems.SPECIAL$PRICE, 1);
                     helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.LUCK, helper.asId(), 0.05, AttributeModifier.Operation.ADD_VALUE));
                 }) // 贪婪戒指
-                // 吸管
-                .add(AccessoryItems.EXPERIENCE_PIPETTE, helper -> helper.unit(AccessoryItems.AUTO$GET$EXPERIENCE)) // 经验吸管
+                // 图腾
+                .add(AccessoryItems.HUNTING_TOTEM, helper -> helper.unit(AccessoryItems.AUTO$GET$EXPERIENCE)) // 狩猎图腾
                 .add(AccessoryItems.STICKY_CRYSTAL_PENDANT, helper -> helper.unit(AccessoryItems.AUTO$GET$COIN)) // 黏晶吊坠
-                .add(AccessoryItems.SHINY_PIPETTE, helper -> {
+                .add(AccessoryItems.HARVEST_TOTEM, helper -> {
                     helper.unit(AccessoryItems.AUTO$GET$EXPERIENCE);
                     helper.unit(AccessoryItems.AUTO$GET$COIN);
-                }) // 闪亮吸管
+                }) // 收获图腾
                 .add(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE, helper -> helper.unit(AccessoryItems.VINE$ROPE)) // 植物纤维绳索宝典
                 .add(AccessoryItems.SPECTRE_GOGGLES, helper -> helper.unit(AccessoryItems.SPECTRE$GOGGLES)) // 幽灵护目镜
                 .add(AccessoryItems.CHROMATIC_CLOAK, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER))) // 炫彩斗篷

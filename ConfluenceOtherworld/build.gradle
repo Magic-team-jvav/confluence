@@ -341,7 +341,7 @@ dependencies {
 //    runtimeOnly "maven.modrinth:biolith:byVGeYWw"
 //    runtimeOnly "curse.maven:citadel-331936:7476597"
 //    runtimeOnly "curse.maven:lithium-360438:6290413"
-    if (true) {
+    if (false) {
         runtimeOnly "curse.maven:terralith-513688:8222737"
         runtimeOnly "curse.maven:lithostitched-936015:8944659"
     }

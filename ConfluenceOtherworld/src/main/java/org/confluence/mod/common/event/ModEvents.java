@@ -281,7 +281,7 @@ public final class ModEvents {
                     AccessoryItems.LUCKY_COIN, AccessoryItems.GOLD_RING, AccessoryItems.COIN_RING,
                     AccessoryItems.DISCOUNT_CARD, AccessoryItems.GREEDY_RING, AccessoryItems.RADIO_THING,
                     AccessoryItems.STRESS_BALL, AccessoryItems.CLOTHIER_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL,
-                    AccessoryItems.EXPERIENCE_PIPETTE, AccessoryItems.STICKY_CRYSTAL_PENDANT, AccessoryItems.SHINY_PIPETTE);
+                    AccessoryItems.HUNTING_TOTEM, AccessoryItems.STICKY_CRYSTAL_PENDANT, AccessoryItems.HARVEST_TOTEM);
         }
     }
 

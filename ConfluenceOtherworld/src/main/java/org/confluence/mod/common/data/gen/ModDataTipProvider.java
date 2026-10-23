@@ -108,8 +108,8 @@ public final class ModDataTipProvider implements DataProvider {
                 translate("tooltip.item.confluence.cyan_string.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.DISCOUNT_CARD.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.discount_card.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
-        add(root, AccessoryItems.EXPERIENCE_PIPETTE.get(), entry(vbox(0,
-                translate("tooltip.item.confluence.experience_pipette.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, AccessoryItems.HUNTING_TOTEM.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.hunting_totem.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.FISHING_BOBBER.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.fishing_bobber.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.GLOWING_FISHING_BOBBER.get(), entry(vbox(0,
@@ -202,8 +202,8 @@ public final class ModDataTipProvider implements DataProvider {
                 translate("tooltip.item.confluence.red_string.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.REFLECTIVE_SHADES.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.reflective_shades.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
-        add(root, AccessoryItems.SHINY_PIPETTE.get(), entry(vbox(0,
-                translate("tooltip.item.confluence.shiny_pipette.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, AccessoryItems.HARVEST_TOTEM.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.harvest_totem.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.SKY_BLUE_YOYO_STRING.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.sky_blue_string.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, AccessoryItems.SPECTRE_GOGGLES.get(), entry(vbox(0,

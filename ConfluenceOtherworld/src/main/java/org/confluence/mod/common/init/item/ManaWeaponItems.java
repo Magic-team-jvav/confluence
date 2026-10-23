@@ -58,6 +58,8 @@ public class ManaWeaponItems {
     public static final DeferredItem<SkyFractureItem> SKY_FRACTURE = registerItem("sky_fracture", "裂天剑", SkyFractureItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = registerItem("crystal_serpent", "水晶蛇", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04)
             .withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
+    /// 欧泊法杖：洪流弹幕落地后贴地奔涌，折返时伤害翻倍，并额外吃 50% 近战攻击力。
+    public static final DeferredItem<OpalStaffItem> OPAL_STAFF = registerItem("opal_staff", "欧泊法杖", () -> new OpalStaffItem(ModRarity.GREEN, OpalStaffProjectile::new, 20.0F, 8, 12, 12, 0.04));
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);

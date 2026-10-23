@@ -1128,6 +1128,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "a a"
         )), ArmorItems.BLUE_HERMIT_BOOTS.toStack());
 
+        // 大马林鱼刺剑：海沫 + 欧泊
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.HEIM),
+                '/', Ingredient.of(MaterialItems.OPAL)
+        ), List.of(
+                "  a",
+                "/  "
+        )), SwordItems.MARLIN_SPIKE_SWORD.toStack());
+
         output.accept(Confluence.asResource("boom_bunny"), BoomBunnyRecipe.getInstance(), null);
         output.accept(Confluence.asResource("dragon_pepper_extracting"), DragonPepperExtractingRecipe.getInstance(), null);
     }

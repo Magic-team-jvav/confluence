@@ -126,6 +126,28 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_SAPPHIRE), AmountIngredient.of(2, ModTags.Items.INGOTS_SILVER), ManaWeaponItems.SAPPHIRE_STAFF.toStack());
         baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMETHYST), AmountIngredient.of(2, Tags.Items.INGOTS_COPPER), ManaWeaponItems.AMETHYST_STAFF.toStack());
 
+        // 海床崩裂者：欧泊×2 + 海沫×2
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.OPAL),
+                'b', AmountIngredient.of(2, MaterialItems.HEIM)
+        ), List.of(
+                "aaa",
+                "aba",
+                " b ",
+                " b "
+        )), HammerItems.SEAFLOOR_CRACKER.toStack());
+
+        // 欧泊法杖：欧泊×2 + 海沫
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, MaterialItems.OPAL),
+                'b', Ingredient.of(MaterialItems.HEIM)
+        ), List.of(
+                "  ba",
+                "  bb",
+                " b  ",
+                "b   "
+        )), ManaWeaponItems.OPAL_STAFF.toStack());
+
         // 基础光剑
         basePhaseblade(recipeOutput, AmountIngredient.of(5, Tags.Items.GEMS_DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_PHASEBLADE.toStack());
         basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_RUBY), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.RED_PHASEBLADE.toStack());

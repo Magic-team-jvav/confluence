@@ -405,7 +405,11 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.terraStyleHealth", "Terra Style Health", "泰拉样式生命值");
         language.add("confluence.configuration.terraStyleHealth.tooltip", "When enabled, health is displayed in Terra style.", "开启后，生命值显示为泰拉样式");
         language.add("confluence.configuration.terraStyleLightningBolt", "Terraria-Style Lightning Bolt", "泰拉闪电束");
+        language.add("confluence.configuration.terraStyleLightningBolt.tooltip", "When enabled, natural lightning bolts are replaced by Terra-style strikes.", "开启后，自然闪电束将替换为泰拉样式闪电");
         language.add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier", "Lightning Bolt Frequency Multiplier", "闪电束频率提升倍率");
+        language.add("confluence.configuration.terraStyleLightningBoltFrequencyMultiplier.tooltip", "Higher values make natural lightning bolts strike more often.", "数值越高，自然闪电束出现得越频繁");
+        language.add("confluence.configuration.terraStyleLightningBoltNoFire", "Terraria Lightning: No Fire", "泰拉闪电：不生成火");
+        language.add("confluence.configuration.terraStyleLightningBoltNoFire.tooltip", "When enabled together with Terraria-Style Lightning Bolt, lightning strikes no longer set blocks on fire.", "与泰拉闪电束同时开启时，闪电落地不再点燃方块");
         language.add("confluence.configuration.terraformerRangeChunks", "Terraformer Range (Chunks)", "世界改造器范围（区块）");
         language.add("confluence.configuration.terraformerRangeChunks.tooltip", "Side length of the maintained square: 1-20 chunks. Default: 5 (5x5). Independent of the Clentaminator.", "维持范围的正方形边长，允许1至20区块，默认5（5×5），与环境改造器分别设置。");
         language.add("confluence.configuration.title", "Configuration Screen", "配置界面");

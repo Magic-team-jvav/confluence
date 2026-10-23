@@ -403,11 +403,23 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(15, 25)))))
         ));
         entries.add(new AddedChestLoot(
+                BuiltInLootTables.BURIED_TREASURE,
+                LootTable.lootTable()
+                        // 海床崩裂者：海底宝藏箱 100% 额外一个池子
+                        .withPool(LootPool.lootPool()
+                                .add(LootItem.lootTableItem(HammerItems.SEAFLOOR_CRACKER)))
+        ));
+        entries.add(new AddedChestLoot(
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/village/village_savanna_house")),
                 LootTable.lootTable().withPool(
                         LootPool.lootPool()
-                                .add(LootItem.lootTableItem(BowItems.HUNTING_BOW)
-                                        .when(LootItemRandomChanceCondition.randomChance(0.6f)))
+                                .add(PercentageLootEntry.independent(false,
+                                        // 60% 概率出现，出现时在猎手弓与狩猎图腾之间二选一
+                                        PercentageLootEntry.rule(60, PercentageLootEntry.exclusive(true,
+                                                PercentageLootEntry.rule(50, LootItem.lootTableItem(BowItems.HUNTING_BOW)),
+                                                PercentageLootEntry.rule(50, LootItem.lootTableItem(AccessoryItems.HUNTING_TOTEM))
+                                        ))
+                                ))
                 )
         ));
         return entries;

@@ -1895,6 +1895,7 @@ public final class ModTabs {
                         short_swords.accept(SwordItems.GOLDEN_SHORT_SWORD.get());
                         short_swords.accept(SwordItems.PLATINUM_SHORT_SWORD.get());
                         short_swords.accept(SwordItems.GLADIUS.get());
+                        short_swords.accept(SwordItems.MARLIN_SPIKE_SWORD.get());
 
                         CreativeModeTab.Output pre_hardmode_broadswords = GroupItem.belongsTo("pre_hardmode_broadswords", output);
                         pre_hardmode_broadswords.accept(SwordItems.CACTUS_SWORD.get());
@@ -1969,6 +1970,7 @@ public final class ModTabs {
 
                         output.accept(SwordItems.DEVELOPER_SWORD.get());
                         output.accept(SwordItems.CROWBAR.get());
+                        output.accept(HammerItems.SEAFLOOR_CRACKER.get());
 
                         CreativeModeTab.Output yoyo = GroupItem.belongsTo("yoyo", output);
                         yoyo.accept(YoyoItems.WOODEN_YOYO.get());

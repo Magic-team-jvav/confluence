@@ -400,7 +400,7 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.encumbering_stone.2", "'You are over-encumbered'", "背包内右键点击可开关");
         language.addTooltip(PotionItems.ENDURANCE_POTION.get(), "10% reduced damage", "所受伤害降低10%");
         language.add("tooltip.item.confluence.enemy_banner.0", "Nearby players get a bonus against: %s", "附近的玩家获得针对以下怪的加成：%s");
-        language.addTooltip(AccessoryItems.EXPERIENCE_PIPETTE.get(), "Minions pick up experience from defeated enemies", "召唤物会拾取被打败敌人的经验");
+        language.addTooltip(AccessoryItems.HUNTING_TOTEM.get(), "Minions pick up experience from defeated enemies", "召唤物会拾取被打败敌人的经验");
         language.add("tooltip.item.confluence.extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful", "将泥沙/雪泥/化石/沙砾/海洋沙砾堆放到提炼机中可将其变成更有用的东西");
         language.add("tooltip.item.confluence.failed_skull.0", "A creeper had its body forcibly transformed by piglins and can explode multiple times. The piglins wanted to use it as a biological weapon to invade the Overworld, but it escaped unexpectedly.", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
         language.addTooltip(PotionItems.FEATHERFALL_POTION.get(), "Slows falling speed", "减缓坠落速度");
@@ -605,7 +605,7 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.sharpening_station.0", "Increases armor penetration for melee weapons", "提高近战武器的盔甲穿透力");
         language.addTooltip(PotionItems.SHIMMER_POTION.get(), "Grants the Shimmer effect", "赋予微光效果");
         language.addTooltip(PotionItems.SHINE_POTION.get(), "Emitting light", "发出光芒");
-        language.addTooltip(AccessoryItems.SHINY_PIPETTE.get(), "Minions pick up experience and coins from defeated enemies", "召唤物会拾取被打败敌人的经验和钱币");
+        language.addTooltip(AccessoryItems.HARVEST_TOTEM.get(), "Minions pick up experience and coins from defeated enemies", "召唤物会拾取被打败敌人的经验和钱币");
         language.addTooltip(AccessoryItems.SKY_BLUE_YOYO_STRING.get(), "Increases yoyo range by 25% + 2 blocks and spin duration by 50%", "增加悠悠球射程 25% + 2 格，滞空时间增加 50%");
         language.add("tooltip.item.confluence.sky_mill.0", "Used for special crafting", "用于特殊制作");
         language.addTooltip(ConsumableItems.SLIME_CROWN.get(), "Right - click to summon the King Slime", "右键使用以召唤史莱姆王");
@@ -682,6 +682,13 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.YOYO_GLOVE.get(), "Spawns a second yoyo on hit; the duplicate consumes spin duration faster", "命中后生成副悠悠球；副球使有限滞空时间消耗加快");
         language.addTooltip(SwordItems.ZENITH.get(), "When ten scattered pieces are found again and ten powers converge, this blazing weapon will descend from the zenith of the sky, bestowed upon the hero who liberated Confluence: Otherworld.", "当十块散碎的拼图被重新找回，十股力量汇流之际，这把炽热的神兵将从天穹之顶降下，赐予解放汇合交流来世之英雄");
         language.add("tooltip.item.confluence.zenith.1", "“Why not try throwing it into Shimmer?”", "“为什么不丢进微光里试试呢？”");
+        language.add("tooltip.item.confluence.marlin_spike_sword.0", "Double jumping or raising a movement speed tier stores 1 segment (+3 damage each), up to 8 segments for +24", "二段跳或提升一次移动速度档位会积攒 1 段额外伤害（每段 +3），最多 8 段共 +24");
+        language.add("tooltip.item.confluence.marlin_spike_sword.1", "At 8 segments every segment is released as a separate hit", "积满 8 段时，所有段数会拆成多次独立命中");
+        language.add("tooltip.item.confluence.seafloor_cracker.0", "A full charge slams a 5x5x3 area in front, raising a water column under the enemies", "蓄力条满时砸出前方 5x5x3 的范围伤害，并在范围内掀起水柱");
+        language.add("tooltip.item.confluence.seafloor_cracker.1", "Jump attacks hit 1.5x harder and raise a taller, longer-lasting column", "跳劈时伤害提升至 1.5 倍，水柱更高、更持久");
+        language.add("tooltip.item.confluence.seafloor_cracker.2", "The jump attack column deals half the hammer's damage every second for 5 seconds", "跳劈水柱持续 5 秒，每秒对柱内敌怪造成一半的武器伤害");
+        language.add("tooltip.item.confluence.opal_staff.0", "Fires a wide torrent that falls, surges along the ground and then returns to the caster", "射出一道大范围洪流，落地后贴地奔涌，随后折返施法者");
+        language.add("tooltip.item.confluence.opal_staff.1", "The torrent deals double damage on its way back, and gains 50% of your melee damage", "洪流折返途中伤害翻倍，并额外获得 50% 的近战伤害加成");
         language.add("tooltip.item.terra_curio.arcane_flower.1", "Automatically uses mana potions when needed", "需要时自动使用魔力药水");
         language.add("tooltip.item.terra_curio.arcane_flower.2", "Enemies are less likely to target you", "敌人不太可能以你为目标");
         language.add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "           ", "           ");

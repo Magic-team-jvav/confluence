@@ -195,9 +195,9 @@ public class AccessoryItems {
             MAGIC_STRING = registerCurio("magic_string", "魔法绳", builder -> builder.rarity(PINK)),
             MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", "魔法悠悠球袋", builder -> builder.noTooltip().rarity(PINK));
 
-    public static final DeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", "经验吸管", builder -> builder.noTooltip().rarity(LIME)),//经验吸管
+    public static final DeferredItem<BaseCurioItem> HUNTING_TOTEM = registerCurio("hunting_totem", "狩猎图腾", builder -> builder.noTooltip().rarity(LIME)),//狩猎图腾
             STICKY_CRYSTAL_PENDANT = registerCurio("sticky_crystal_pendant", "黏晶吊坠", builder -> builder.noTooltip().rarity(LIME)),//黏晶吊坠
-            SHINY_PIPETTE = registerCurio("shiny_pipette", "闪亮吸管", builder -> builder.noTooltip().rarity(YELLOW));//闪亮吸管
+            HARVEST_TOTEM = registerCurio("harvest_totem", "收获图腾", builder -> builder.noTooltip().rarity(YELLOW));//收获图腾
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {
         if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return;

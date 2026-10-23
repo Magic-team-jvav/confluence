@@ -49,6 +49,8 @@ public final class CommonConfigs {
     public static BooleanValue STOP_ASK_FOR_SOFTCORE;
     public static BooleanValue TERRA_STYLE_LIGHTNING_BOLT;
     public static IntValue TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER;
+    /// 泰拉闪电束开启时生效：闪电落地不再点燃方块。
+    public static BooleanValue TERRA_STYLE_LIGHTNING_BOLT_NO_FIRE;
     public static BooleanValue AUTO_SWING_ALL_SWORDS;
     public static BooleanValue AUTO_RELEASE_ALL_BOWS;
     public static BooleanValue AUTO_FIRE_ALL_GUNS;
@@ -345,6 +347,7 @@ public final class CommonConfigs {
                 builder.push("LightningBolt");
                 TERRA_STYLE_LIGHTNING_BOLT = builder.define("terraStyleLightningBolt", true);
                 TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER = builder.defineInRange("terraStyleLightningBoltFrequencyMultiplier", 10, 1, 1000);
+                TERRA_STYLE_LIGHTNING_BOLT_NO_FIRE = builder.define("terraStyleLightningBoltNoFire", true);
                 builder.pop();
             }
             DO_WIND = builder.define("doWind", true);

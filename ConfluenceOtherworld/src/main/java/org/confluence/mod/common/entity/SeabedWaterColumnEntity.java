@@ -34,11 +34,20 @@ public class SeabedWaterColumnEntity extends EmptyEntity {
     public static final ResourceLocation PARTICLE_TALL = Confluence.asResource("seabed_water_column_tall");
 
     private static final double RADIUS = 2.5;
+    /// 跳劈水柱扩大的横向半径。
+    private static final double CRITICAL_RADIUS = 4.0;
+    /// 跳劈水柱向下延伸的深度：在空中跳劈也能覆盖到下方的敌怪。
+    private static final double CRITICAL_DOWNWARD = 3.0;
+    /// 普通水柱向下延伸的深度。
+    private static final double NORMAL_DOWNWARD = 0.5;
+
     private UUID ownerUuid;
     private float damage;
     private int duration;
     private double columnHeight;
     private double liftSpeed;
+    private double radius = RADIUS;
+    private double downward = NORMAL_DOWNWARD;
     private boolean damageOverTime;
     private int lastDamageTick = -20;
     private boolean emitterSent;
@@ -58,10 +67,14 @@ public class SeabedWaterColumnEntity extends EmptyEntity {
             column.duration = 100;
             column.liftSpeed = 1.6;
             column.damageOverTime = true;
+            column.radius = CRITICAL_RADIUS;
+            column.downward = CRITICAL_DOWNWARD;
         } else {
             column.columnHeight = 3.0;
             column.duration = 15;
             column.liftSpeed = 1.0;
+            column.radius = RADIUS;
+            column.downward = NORMAL_DOWNWARD;
         }
         return column;
     }
@@ -84,8 +97,8 @@ public class SeabedWaterColumnEntity extends EmptyEntity {
             return;
         }
         AABB area = new AABB(
-                getX() - RADIUS, getY() - 0.5, getZ() - RADIUS,
-                getX() + RADIUS, getY() + columnHeight, getZ() + RADIUS
+                getX() - radius, getY() - downward, getZ() - radius,
+                getX() + radius, getY() + columnHeight, getZ() + radius
         );
         for (Entity entity : level().getEntities(this, area)) {
             if (!(entity instanceof LivingEntity living) || living.isSpectator()) continue;
@@ -136,6 +149,8 @@ public class SeabedWaterColumnEntity extends EmptyEntity {
         this.columnHeight = compound.getDouble("ColumnHeight");
         this.liftSpeed = compound.getDouble("LiftSpeed");
         this.damageOverTime = compound.getBoolean("DamageOverTime");
+        if (compound.contains("Radius")) this.radius = compound.getDouble("Radius");
+        if (compound.contains("Downward")) this.downward = compound.getDouble("Downward");
         if (compound.hasUUID("Owner")) {
             this.ownerUuid = compound.getUUID("Owner");
         }
@@ -147,6 +162,8 @@ public class SeabedWaterColumnEntity extends EmptyEntity {
         compound.putInt("Duration", duration);
         compound.putDouble("ColumnHeight", columnHeight);
         compound.putDouble("LiftSpeed", liftSpeed);
+        compound.putDouble("Radius", radius);
+        compound.putDouble("Downward", downward);
         compound.putBoolean("DamageOverTime", damageOverTime);
         if (ownerUuid != null) {
             compound.putUUID("Owner", ownerUuid);

@@ -356,6 +356,8 @@ public final class ModTags {
         public static final TagKey<Item> SHORT_SWORD = register("short_sword");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> WHIP = register("whip");
+        /// 尚未定稿的内容：本轮新增/改动的武器统一打上此标签，方便后续筛选与测试。
+        public static final TagKey<Item> WIP = register("wip");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon"); // 有鞭子
         public static final TagKey<Item> YOYO = register("yoyo");
 

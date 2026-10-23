@@ -498,6 +498,11 @@ public final class ValueSubProvider {
                 .add(BowItems.TUNGSTEN_BOW, 1050)
                 .add(BowItems.TUNGSTEN_SHORT_BOW, 1030)
                 .add(Items.BOW, 40)
+                .add(BowItems.WIND_STRING, gold1)
+                .add(BowItems.ENCHANTED_BOW, gold1 + silver50)
+                .add(BowItems.STAR_WEEP, gold1 + silver50)
+                .add(BowItems.POLAR_DAY, gold2)
+                .add(BowItems.WAR_BOW, gold2 + gold1)
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
                 .add(BowItems.HELLWING_BOW, gold2 + silver50)
@@ -684,6 +689,10 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.DIAMOND_STAFF, 2800)
                 .add(ManaWeaponItems.AMBER_STAFF, 2800)
                 .add(ManaWeaponItems.VILETHRON, gold1 + silver50)
+                .add(ManaWeaponItems.DUSK_DAWN, gold1 + gold2)
+                .add(ManaWeaponItems.WIND_PAGE, gold2)
+                .add(ManaWeaponItems.WIND_EYE, gold1 + gold2)
+                .add(ManaWeaponItems.STAR_MUSIC, gold2)
                 .add(ManaWeaponItems.CRIMSON_ROD, gold1 + silver50)
                 .add(ManaWeaponItems.NIMBUS_ROD, gold2 + gold1 + silver50)
                 .add(ManaWeaponItems.WEATHER_PAIN, gold1 + silver50)
@@ -737,7 +746,9 @@ public final class ValueSubProvider {
                 .add(WhipItems.SWAMP_WHIP, gold2 + silver50 + silver50)
                 .add(WhipItems.SNAPTHORN, gold1)
                 .add(WhipItems.SPINAL_TAP, gold1 + silver50)
-                .add(WhipItems.FIRECRACKER, gold1 + gold2);
+                .add(WhipItems.FIRECRACKER, gold1 + gold2)
+                .add(WhipItems.WIND_WHIP, gold1 + silver50)
+                .add(WhipItems.STAR_FEAR, gold2);
         builder
                 .add(TCItems.AGLET, 25000)
                 .add(TCItems.AMBER_HORSESHOE_BALLOON, 30000)
@@ -989,7 +1000,9 @@ public final class ValueSubProvider {
                 .add(ArrowItems.FROSTBURN_ARROW, 3)
                 .add(ArrowItems.BONE_ARROW, 3)
                 .add(ArrowItems.SHIMMER_ARROW, 3)
-                .add(ArrowItems.FLY_FISH_ARROW, 2);
+                .add(ArrowItems.FLY_FISH_ARROW, 2)
+                .add(ArrowItems.WIND_ARROW, 20)
+                .add(ArrowItems.FALLEN_STAR_ARROW, 20);
         builder // 其它
                 .add(ConsumableItems.DRY_BOMB, silver5)
                 .add(ConsumableItems.WET_BOMB, silver5)

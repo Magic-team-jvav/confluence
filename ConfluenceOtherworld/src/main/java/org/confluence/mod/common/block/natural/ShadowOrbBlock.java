@@ -93,7 +93,8 @@ public class ShadowOrbBlock extends Block {
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
             }
 
-            if (data.updateEvilBrokenCount()) {
+            /// 世界吞噬怪已经存在时不再重复召唤，避免同屏出现两只。
+            if (data.updateEvilBrokenCount() && !ModUtils.hasBossPresent(serverLevel, BossEntities.EATER_OF_WORLDS.get())) {
                 ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level), false);
             }
         }

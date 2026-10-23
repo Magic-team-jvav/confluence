@@ -350,6 +350,19 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         fletchingTable(writer, ArrowItems.FROSTBURN_ARROW.toStack(64), Ingredient.of(), AmountIngredient.of(64, Items.ARROW), Ingredient.of(MaterialItems.WINTER_MARROW));
         fletchingTable(writer, ArrowItems.STAR_ARROW.toStack(10), Ingredient.of(), AmountIngredient.of(10, Items.ARROW), Ingredient.of(MaterialItems.FALLING_STAR));
         fletchingTable(writer, ArrowItems.UNHOLY_ARROW.toStack(5), Ingredient.of(), AmountIngredient.of(5, Items.ARROW), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
+        // 风系（1.20.1 没有旋风棒 / 沉重核心 / 风弹，分别用幻翼膜、铁块、火药代替）
+        fletchingTable(writer, ArrowItems.WIND_ARROW.toStack(25), Ingredient.of(), AmountIngredient.of(25, Items.ARROW), Ingredient.of(Items.PHANTOM_MEMBRANE));
+        crystalBlock(writer, ManaWeaponItems.WIND_PAGE.toStack(),
+                Ingredient.of(Items.IRON_BLOCK), Ingredient.of(Items.GUNPOWDER),
+                Ingredient.of(MaterialItems.SPELL_TOME), Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
+        crystalBlock(writer, ManaWeaponItems.WIND_EYE.toStack(),
+                Ingredient.of(ManaWeaponItems.WIND_PAGE), AmountIngredient.of(4, Items.PHANTOM_MEMBRANE),
+                AmountIngredient.of(4, MaterialItems.FALLING_STAR));        // 恶魔祭坛：永夜刃 + 极昼 -> 昏晓
+        altar(writer, ManaWeaponItems.DUSK_DAWN.toStack(), Ingredient.of(SwordItems.NIGHTS_EDGE), Ingredient.of(BowItems.POLAR_DAY));
+        // 水晶球：星乐
+        crystalBlock(writer, ManaWeaponItems.STAR_MUSIC.toStack(),
+                AmountIngredient.of(8, MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.SPELL_TOME),
+                Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
 
         altar(writer, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
         altar(writer, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_CHUNK));

@@ -403,6 +403,9 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         float multiplier = Math.max(whip.minimumDamageMultiplier(), (float) Math.pow(whip.damageFalloff(), successfulHits));
         float damage = baseDamage * multiplier
                 * (1.0F + sweepLevel() * 0.2F);
+        if (owner instanceof Player player) {
+            damage *= whip.damageMultiplierForTarget(player, logicalTarget);
+        }
         if (!Immunity.hurt(this, damageRecipient, logicalTarget,
                 LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, this, owner), damage)) {
             return;

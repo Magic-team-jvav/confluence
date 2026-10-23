@@ -72,6 +72,18 @@ public class BowItems {
     public static final PortDeferredItem<SoulShortBowItem> SOUL_SHORT_BOW = registerItem("soul_short_bow", "灵魂短弓", () -> new SoulShortBowItem(5.5F, 1024));
     public static final PortDeferredItem<SoulBowItem> SOUL_BOW = registerItem("soul_bow", "灵魂弓", () -> new SoulBowItem(4.0F, 1024));
 
+    // 风与星系列弓
+    /// 风弦：把木箭替换为风矢，并对具有击退抗性的敌怪额外增伤。
+    public static final PortDeferredItem<WindStringBowItem> WIND_STRING = registerItem("wind_string", "风弦", () -> new WindStringBowItem(4.6F, 1200));
+    /// 附魔弓：把木箭替换为坠落之星箭。
+    public static final PortDeferredItem<EnchantedBowItem> ENCHANTED_BOW = registerItem("enchanted_bow", "附魔弓", () -> new EnchantedBowItem(4.5F, 1536));
+    /// 星泣：未命中的箭累积成坠星，下一次命中时释放。
+    public static final PortDeferredItem<StarWeepBowItem> STAR_WEEP = registerItem("star_weep", "星泣", () -> new StarWeepBowItem(4.8F, 1200));
+    /// 战弓：左键横扫、右键射箭。
+    public static final PortDeferredItem<WarBowItem> WAR_BOW = registerItem("war_bow", "战弓", () -> new WarBowItem(6.0F, 1536));
+    /// 极昼：箭矢途经范围伤害，命中的敌人持续受创。
+    public static final PortDeferredItem<PolarDayBowItem> POLAR_DAY = registerItem("polar_day", "极昼", () -> new PolarDayBowItem(5.0F, 1536));
+
     public static PortDeferredItem<BaseTerraBowItem> register(String name, Supplier<BaseTerraBowItem> supplier) {
         return ITEMS.register(name, supplier);
     }

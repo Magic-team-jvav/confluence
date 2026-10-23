@@ -132,6 +132,16 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<WaterStreamProjectile>> WATER_STREAM = register("water_stream", "水流射弹", id -> EntityType.Builder.<WaterStreamProjectile>of(WaterStreamProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<WaterBoltProjectile>> WATER_BOLT = register("water_bolt", "水弹射弹", id -> EntityType.Builder.<WaterBoltProjectile>of(WaterBoltProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<OpalStaffProjectile>> OPAL_STAFF_PROJECTILE = register("opal_staff_projectile", "欧泊洪流弹幕", id -> EntityType.Builder.<OpalStaffProjectile>of(OpalStaffProjectile::new, MobCategory.MISC).sized(0.9F, 0.9F).clientTrackingRange(10).build(id.toString()));
+    /// 昏晓的弹幕。
+    public static final RegistryObject<EntityType<DuskDawnProjectile>> DUSK_DAWN = registerWithEnglishName("dusk_dawn", "昏晓弹幕", "Dusk and Dawn Projectile", id -> EntityType.Builder.<DuskDawnProjectile>of(DuskDawnProjectile::new, MobCategory.MISC).sized(0.8F, 0.8F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 风页的风弹。
+    public static final RegistryObject<EntityType<WindBulletProjectile>> WIND_BULLET = registerWithEnglishName("wind_bullet", "风弹", "Wind Bullet", id -> EntityType.Builder.<WindBulletProjectile>of(WindBulletProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 通用的追踪坠星。
+    public static final RegistryObject<EntityType<HomingFallingStarProjectile>> HOMING_FALLING_STAR = registerWithEnglishName("homing_falling_star", "追踪坠星", "Homing Falling Star", id -> EntityType.Builder.<HomingFallingStarProjectile>of(HomingFallingStarProjectile::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 星惧逃出的坠星。
+    public static final RegistryObject<EntityType<StarFearStarEntity>> STAR_FEAR_STAR = registerWithEnglishName("star_fear_star", "星惧坠星", "Star Fear Star", id -> EntityType.Builder.<StarFearStarEntity>of(StarFearStarEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 风眼的旋风。
+    public static final RegistryObject<EntityType<WindEyeTornadoEntity>> WIND_EYE_TORNADO = registerWithEnglishName("wind_eye_tornado", "风眼旋风", "Wind Eye Tornado", id -> EntityType.Builder.<WindEyeTornadoEntity>of(WindEyeTornadoEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(16).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<SeabedWaterColumnEntity>> SEABED_WATER_COLUMN = register("seabed_water_column", "海床水柱", id -> EntityType.Builder.<SeabedWaterColumnEntity>of(SeabedWaterColumnEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(16).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<BallOfFireProjectile>> BALL_OF_FIRE = register("ball_of_fire", "火球弹", id -> EntityType.Builder.<BallOfFireProjectile>of(BallOfFireProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<EffectThrownPotion>> EFFECT_THROWN_POTION = register("effect_thrown_potion", "效果投掷药水", id -> EntityType.Builder.<EffectThrownPotion>of(EffectThrownPotion::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build(id.toString()));
@@ -179,6 +189,10 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<FossilArrowEntity>> FOSSIL_ARROW = register("fossil_arrow", "化石箭", id -> EntityType.Builder.<FossilArrowEntity>of(FossilArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<FlyFishArrowEntity>> FLY_FISH_ARROW = register("fly_fish_arrow", "飞鱼箭", id -> EntityType.Builder.<FlyFishArrowEntity>of(FlyFishArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<DeveloperArrowEntity>> DEVELOPER_ARROW = register("developer_arrow", "开发者箭", id -> EntityType.Builder.<DeveloperArrowEntity>of(DeveloperArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 风矢。
+    public static final RegistryObject<EntityType<WindArrowEntity>> WIND_ARROW = registerWithEnglishName("wind_arrow", "风矢", "Wind Arrow", id -> EntityType.Builder.<WindArrowEntity>of(WindArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 坠落之星箭。
+    public static final RegistryObject<EntityType<FallenStarArrowEntity>> FALLEN_STAR_ARROW = registerWithEnglishName("fallen_star_arrow", "坠落之星箭", "Fallen Star Arrow", id -> EntityType.Builder.<FallenStarArrowEntity>of(FallenStarArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
 
     // 其它
     public static final RegistryObject<EntityType<BoulderEntity>> BOULDER = register("boulder", "巨石", id -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));

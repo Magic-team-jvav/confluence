@@ -83,8 +83,11 @@ public enum BossDelaySpawner {
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
         if (!CommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
-        if (GameEventSystem.INSTANCE.getStartedEventAmount(true, false) > 0) return;
+        /// 必须用实时状态判定：事件系统里的计数是「上一 tick 的快照」，
+        /// 会漏掉本 tick 内刚启动的事件，从而在血月/灯笼夜的同一夜里把 EoC 也排进队列。
+        if (GameEventSystem.INSTANCE.getStartedEventAmount(true, true) > 0) return;
         if (LanternNightGameEvent.INSTANCE.started()) return;
+        if (BloodMoonGameEvent.INSTANCE.started()) return;
         EntityType<EyeOfCthulhu> type = BossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
             return;

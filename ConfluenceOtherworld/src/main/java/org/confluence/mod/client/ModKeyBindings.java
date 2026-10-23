@@ -59,7 +59,8 @@ public final class ModKeyBindings {
 
     //endregion
 
-    public static final Lazy<KeyMapping> HOOK = register(() -> new KeyMapping("key.confluence.hook", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_E, KEY_BINDINGS_CATEGORY));
+    /// 快捷钩爪默认键：与 1.21.1 对齐为 R。
+    public static final Lazy<KeyMapping> HOOK = register(() -> new KeyMapping("key.confluence.hook", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, KEY_BINDINGS_CATEGORY));
 
     /// 快捷坐骑只发送切换请求，实际槽位物品和实体类型由服务端重新读取。
     public static final Lazy<KeyMapping> MOUNT = register(() -> new KeyMapping("key.confluence.mount", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, KEY_BINDINGS_CATEGORY));

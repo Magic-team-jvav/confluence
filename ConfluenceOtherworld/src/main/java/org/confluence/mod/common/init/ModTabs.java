@@ -2018,6 +2018,11 @@ public final class ModTabs {
                         bow.accept(BowItems.SCAREBOW.get());
                         bow.accept(BowItems.DAEDALUS_STORM_BOW.get());
                         bow.accept(BowItems.DEVELOPER_BOW.get());
+                        bow.accept(BowItems.WIND_STRING.get());
+                        bow.accept(BowItems.ENCHANTED_BOW.get());
+                        bow.accept(BowItems.STAR_WEEP.get());
+                        bow.accept(BowItems.POLAR_DAY.get());
+                        bow.accept(BowItems.WAR_BOW.get());
 
                         acceptAll(CrossbowItems.ITEMS, output, "crossbow");
                         acceptAll(ArrowItems.ITEMS, output, "arrow");

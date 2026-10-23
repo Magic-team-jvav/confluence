@@ -55,6 +55,13 @@ public final class TickEvents {
         if(!(event.getLevel() instanceof ServerLevel level)) return;
         EnvironmentalMachines.INSTANCE.tick(level);
         if (dimension != OverworldUtils.dimension()) return;
+        int dayTime = LibDateUtils.getDayTime(level);
+        /// 19:30 先把克苏鲁之眼的自然生成排队结算掉，再跑事件系统。
+        /// 否则同一 tick 里血月先判定（此时 EoC 队列还是空的），随后 EoC 才入队，
+        /// 而事件系统的计数又漏掉「本 tick 刚启动的事件」，导致同一夜既血月又刷 EoC。
+        if (dayTime == LibDateUtils._19$30) {
+            BossDelaySpawner.spawnEyeOfCthulhu(level);
+        }
         GameEventSystem.INSTANCE.tick(); // 最高优先级，其会影响BossDelaySpawner、NPCSpawner等内容
         FallingStarItemEntity.summon(level);
         MeteoriteTracker.INSTANCE.tick(level);
@@ -68,9 +75,7 @@ public final class TickEvents {
             WindSpeedPacketS2C.sendToAll(level); // 局地风向逐玩家下发，约 4 包/秒
         }
 
-        int dayTime = LibDateUtils.getDayTime(level);
         if (dayTime == LibDateUtils._19$30) {
-            BossDelaySpawner.spawnEyeOfCthulhu(level);
             MeteoriteTracker.spawnMeteor(level);
         } else if (dayTime == LibDateUtils._00$00) {
             BossDelaySpawner.spawnDeerClops(level);

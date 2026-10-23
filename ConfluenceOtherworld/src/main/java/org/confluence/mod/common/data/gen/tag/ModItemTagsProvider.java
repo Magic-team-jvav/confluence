@@ -696,7 +696,30 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.FLAIL_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
 
-        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
+        // 本轮新增/改动、尚未定稿的武器（不含大马林鱼刺剑与海床崩裂者）
+        tag(ModTags.Items.WIP).add(
+                SoulItems.SPIRITWARD_BLADE.get(),
+                BowItems.SOUL_BOW.get(),
+                BowItems.SOUL_SHORT_BOW.get(),
+                ManaWeaponItems.OPAL_STAFF.get(),
+                ManaWeaponItems.MAGIC_DAGGER.get(),
+                ManaWeaponItems.FLOWER_OF_FROST.get(),
+                ManaWeaponItems.CURSED_FLAMES.get(),
+                ManaWeaponItems.CRYSTAL_STORM.get(),
+                ManaWeaponItems.DUSK_DAWN.get(),
+                ManaWeaponItems.WIND_PAGE.get(),
+                ManaWeaponItems.WIND_EYE.get(),
+                ManaWeaponItems.STAR_MUSIC.get(),
+                BowItems.WIND_STRING.get(),
+                BowItems.ENCHANTED_BOW.get(),
+                BowItems.STAR_WEEP.get(),
+                BowItems.POLAR_DAY.get(),
+                BowItems.WAR_BOW.get(),
+                WhipItems.WIND_WHIP.get(),
+                WhipItems.STAR_FEAR.get(),
+                ArrowItems.WIND_ARROW.get(),
+                ArrowItems.FALLEN_STAR_ARROW.get()
+        );        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
         WhipItems.ITEMS.getEntries().forEach(item -> whip.add(item.get()));
 
         IntrinsicTagAppender<Item> boomerang = tag(ModTags.Items.BOOMERANG);
@@ -1602,6 +1625,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         // 祈灵之刃：魂师副武器，自带自动挥舞
         tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());
+        // 祈灵之刃不参与 SwordItems 的注册循环，需要单独登记近战词缀与剑类附魔可用性
+        tag(ModTags.Items.PREFIX_MELEE_ONLY).add(SoulItems.SPIRITWARD_BLADE.get());
+        weapon_enchantable.add(SoulItems.SPIRITWARD_BLADE.get());
+        sharp_weapon_enchantable.add(SoulItems.SPIRITWARD_BLADE.get());
+        // 灵魂弓 / 灵魂短弓：显式挂到远程词缀，避免只依赖 c:tools/ranged_weapon 的间接登记
+        tag(ModTags.Items.PREFIX_RANGED_ONLY).add(
+                BowItems.SOUL_BOW.get(),
+                BowItems.SOUL_SHORT_BOW.get()
+        );
         tag(ModTags.Items.MIMIC_SUMMON_KEY).add(
                 ToolItems.KEY_OF_LIGHT.get(),
                 ToolItems.KEY_OF_NIGHT.get()

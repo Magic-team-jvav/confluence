@@ -1532,6 +1532,30 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
 
         shapeless(recipeOutput, ConsumableItems.ABEEMINATION.toStack(), AmountIngredient.of(5, NatureBlocks.JUNGLE_HIVE_BLOCK), AmountIngredient.of(5, Items.HONEY_BLOCK), Ingredient.of(Items.HONEY_BOTTLE), Ingredient.of(MaterialItems.STINGER));
+
+        // 风鞭：把手是沉重核心、鞭身是风棒（旋风棒），有序
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(Items.HEAVY_CORE),
+                'b', AmountIngredient.of(2, Items.BREEZE_ROD)
+        ), List.of(
+                " b ",
+                " b ",
+                " a "
+        )), WhipItems.WIND_WHIP.toStack());
+        // 星惧：星怒 + 脊柱骨鞭，无序
+        shapeless(recipeOutput, WhipItems.STAR_FEAR.toStack(), Ingredient.of(SwordItems.STARFURY), Ingredient.of(WhipItems.SPINAL_TAP));
+        // 战弓：附魔弓 + 风弦，无序
+        shapeless(recipeOutput, BowItems.WAR_BOW.toStack(), Ingredient.of(BowItems.ENCHANTED_BOW), Ingredient.of(BowItems.WIND_STRING));
+        // 极昼：金/铂金弓 + 8 坠落之星 + 日耀碎片，有序
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW),
+                'b', AmountIngredient.of(8, MaterialItems.FALLING_STAR),
+                'c', Ingredient.of(MaterialItems.SOLAR_FRAGMENT)
+        ), List.of(
+                " b ",
+                "bab",
+                " c "
+        )), BowItems.POLAR_DAY.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

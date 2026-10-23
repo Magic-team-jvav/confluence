@@ -163,6 +163,11 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> SHADOWFLAME = registerEffect("shadowflame", "暗影焰", ShadowflameEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = registerEffect("summoning", "召唤", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9cf257)
             .addAttributeModifier(ConfluenceMagicLib.MINION_CAPACITY, id, 1, AttributeModifier.Operation.ADD_VALUE));
+    /// 星惧：鞭子打出的坠星被施法者接住后获得的增益，仆从数量 +1。
+    public static final DeferredHolder<MobEffect, MobEffect> STAR_HARVEST = registerEffectWithEnglishName("star_harvest", "摘星", "Star Harvest", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFE070)
+            .addAttributeModifier(ConfluenceMagicLib.MINION_CAPACITY, id, 1.0, AttributeModifier.Operation.ADD_VALUE));
+    /// 极昼：被极昼箭矢命中的敌人持续受到额外伤害。
+    public static final DeferredHolder<MobEffect, PolarMarkEffect> POLAR_MARK = registerEffectWithEnglishName("polar_mark", "极昼灼烧", "Polar Mark", PolarMarkEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = registerEffect("water_candle", "水蜡烛", WaterCandleEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SHADOW_CANDLE = registerEffect("shadow_candle", "暗影蜡烛", () -> new PublicMobEffect(MobEffectCategory.NEUTRAL, 0x9FEFFF));
     public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = registerEffect("peace_candle", "和平蜡烛", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xda9ae0)

@@ -33,6 +33,10 @@ public final class WhipItems {
         public float minimumDamageMultiplier() {return 0.0F;}
     });
     public static final DeferredItem<FirecrackerItem> FIRECRACKER = registerItem("firecracker", "鞭炮", () -> new FirecrackerItem(SummonerSummonMarks.FIRECRACKER));
+    /// 风鞭：与目标高度差越大伤害越高。
+    public static final DeferredItem<WindWhipItem> WIND_WHIP = registerItem("wind_whip", "风鞭", () -> new WindWhipItem(SummonerSummonMarks.WIND_WHIP));
+    /// 星惧：命中后冒出可追逐的坠星，接住获得「摘星」。
+    public static final DeferredItem<StarFearWhipItem> STAR_FEAR = registerItem("star_fear", "星惧", () -> new StarFearWhipItem(SummonerSummonMarks.STAR_FEAR));
 
     private WhipItems() {}
 

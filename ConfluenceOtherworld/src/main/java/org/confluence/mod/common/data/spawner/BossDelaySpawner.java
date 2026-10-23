@@ -78,8 +78,11 @@ public enum BossDelaySpawner {
 
     public static void spawnEyeOfCthulhu(ServerLevel level) {
         if (!CommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
-        if (GameEventSystem.INSTANCE.getStartedEventAmount(true, false) > 0) return;
+        /// 必须用实时状态判定：事件系统里的计数是「上一 tick 的快照」，
+        /// 会漏掉本 tick 内刚启动的事件，从而在血月/灯笼夜的同一夜里把 EoC 也排进队列。
+        if (GameEventSystem.INSTANCE.getStartedEventAmount(true, true) > 0) return;
         if (LanternNightGameEvent.INSTANCE.started()) return;
+        if (BloodMoonGameEvent.INSTANCE.started()) return;
         EntityType<EyeOfCthulhu> type = BossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
             return;
@@ -88,11 +91,14 @@ public enum BossDelaySpawner {
             if (!BossDelaySpawner.eyeOfCthulhuChecker(player) || level.random.nextFloat() >= 0.3333F) {
                 continue;
             }
-            BossDelaySpawner.INSTANCE.pushBoss(1350, BossEntities.EYE_OF_CTHULHU.get(), player1 ->
-                    player1.getY() > OverworldUtils.getSurfaceY() && LibDateUtils.isNight(player1.level()) && BossDelaySpawner.eyeOfCthulhuChecker(player1)
-                            ? BossDelaySpawner.SUCCESS
-                            : 20
-            );
+            BossDelaySpawner.INSTANCE.pushBoss(1350, BossEntities.EYE_OF_CTHULHU.get(), player1 -> {
+                // 天亮了说明这一夜已经过去，本次自然生成作废，避免残留队列一直压着后续夜晚的血月
+                if (!LibDateUtils.isNight(player1.level())) return BossDelaySpawner.CANCEL;
+                if (player1.getY() <= OverworldUtils.getSurfaceY() || !BossDelaySpawner.eyeOfCthulhuChecker(player1)) {
+                    return 20;
+                }
+                return BossDelaySpawner.SUCCESS;
+            });
             level.getServer().getPlayerList().broadcastSystemMessage(
                     Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()),
                     false

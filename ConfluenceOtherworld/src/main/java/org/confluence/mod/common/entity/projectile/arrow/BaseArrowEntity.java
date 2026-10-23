@@ -53,6 +53,8 @@ public class BaseArrowEntity extends AbstractArrow {
     private int penetrate;
     private final Set<UUID> havenBeen = new HashSet<>();
     private final List<ArrowHitEffect> weaponHitEffects = new ArrayList<>();
+    private final List<ArrowDamageModifier> damageModifiers = new ArrayList<>();
+    private final List<Runnable> missCallbacks = new ArrayList<>();
     public boolean fullPull;
 
     private int autoDiscardTick;
@@ -141,6 +143,11 @@ public class BaseArrowEntity extends AbstractArrow {
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
+        if (!level().isClientSide && !missCallbacks.isEmpty()) {
+            for (Runnable callback : missCallbacks) {
+                callback.run();
+            }
+        }
         super.onHitBlock(result);
         discard();
     }
@@ -177,7 +184,8 @@ public class BaseArrowEntity extends AbstractArrow {
         }
         if (!havenBeen.add(LibEntityUtils.dedupeIdentity(entity).getUUID())) return;
         DamageSource damageSource = getDamageSource();
-        if (entity.hurt(damageSource, getCalculatedDamage())) {
+        float calculatedDamage = modifyDamage(living, getCalculatedDamage());
+        if (entity.hurt(damageSource, calculatedDamage)) {
             playSound(getSound(), 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
             Entity owner = getOwner();
             boolean reflectedByMimic = owner instanceof BaseMimic;
@@ -242,6 +250,28 @@ public class BaseArrowEntity extends AbstractArrow {
     @FunctionalInterface
     public interface ArrowHitEffect {
         void apply(LivingEntity owner, LivingEntity target, boolean fullPull);
+    }
+
+    /// 命中结算前的伤害修正：弓/箭可以在真正造成伤害之前按目标调整数值。
+    public final void addDamageModifier(ArrowDamageModifier modifier) {
+        damageModifiers.add(modifier);
+    }
+
+    @FunctionalInterface
+    public interface ArrowDamageModifier {
+        float apply(LivingEntity target, float damage);
+    }
+
+    protected float modifyDamage(LivingEntity target, float damage) {
+        for (ArrowDamageModifier modifier : damageModifiers) {
+            damage = modifier.apply(target, damage);
+        }
+        return damage;
+    }
+
+    /// 未命中（打在方块上）时回调，供「落空转坠星」类弓累积资源。
+    public final void addMissCallback(Runnable callback) {
+        missCallbacks.add(callback);
     }
 
     protected SoundEvent getSound() {
@@ -352,6 +382,8 @@ public class BaseArrowEntity extends AbstractArrow {
         this.penetrate = 0;
         this.havenBeen.clear();
         this.weaponHitEffects.clear();
+        this.damageModifiers.clear();
+        this.missCallbacks.clear();
         this.invalidRuntimeState = false;
     }
 

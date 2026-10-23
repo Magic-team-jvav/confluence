@@ -728,6 +728,12 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.price.sell", "Sell: ", "卖出：");
         language.add("tooltip.price.silver", "Silver ", "银 ");
         language.add("tooltip.trade.cost", "Cost: %s × %s", "花费：%s × %s");
+        language.add("tooltip.item.confluence.dusk_dawn.0", "The bolt hunts down a foe and clings to it, spreading rings of light that weaken with each pulse", "弹幕会追踪并吸附敌人，不断扩散逐圈衰减的光波");
+        language.add("tooltip.item.confluence.dusk_dawn.1", "After the last wave it explodes and releases a powerful horizontal slash", "光波结束后爆炸，并向四周释放一道强力横向斩击");
+        language.add("tooltip.item.confluence.wind_string.0", "Wooden arrows become Wind Arrows; deals 10%-20% more damage to foes with 0.1-1 knockback resistance", "木箭会被替换为风矢；对击退抗性 0.1-1 的敌怪额外造成 10%-20% 伤害");
+        language.add("tooltip.item.confluence.wind_page.0", "Releases three wind bolts that rise, then home in on the nearest enemy", "一次释放三发风弹，先向上飞再追踪最近的敌人");
+        language.add("tooltip.item.confluence.wind_eye.0", "Creates a tornado that pulls in enemies; projectiles fired into its core are absorbed to empower it", "制造持续吸附敌人的旋风；打进旋风中心的弹幕会被吸收并转化为旋风的威力");
+        language.add("tooltip.item.confluence.star_music.0", "Hold to gather a star; release to burst into homing falling stars", "长按凝聚坠星，松手爆开成追踪坠星");
         //        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
     }
 }

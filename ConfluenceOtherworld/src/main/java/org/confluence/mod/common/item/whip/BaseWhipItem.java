@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -89,6 +90,11 @@ public class BaseWhipItem extends Item implements IWeaponTooltip {
     public WhipCurve curve() {return WhipCurves.DEFAULT;}
 
     public void onDirectHit(WhipDirectHitContext context) {}
+
+    /// 针对单个目标的额外伤害倍率，默认 1。风鞭按与目标的高度差加成。
+    public float damageMultiplierForTarget(Player owner, LivingEntity target) {
+        return 1.0F;
+    }
 
     public boolean canHitFriendlySummons() {return false;}
 

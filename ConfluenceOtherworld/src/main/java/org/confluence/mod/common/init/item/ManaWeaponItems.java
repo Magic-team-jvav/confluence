@@ -48,10 +48,10 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = registerItemWithEnglishName("flower_of_fire", "火之花", "Flower of Fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 29F, 9, 7.5F, 7, 0.04));
     public static final DeferredItem<FlamelashItem> FLAMELASH = registerItem("flamelash", "烈焰火鞭", FlamelashItem::new);
     public static final DeferredItem<CloudRodItem> NIMBUS_ROD = registerItem("nimbus_rod", "雨云魔杖", () -> new CloudRodItem(ModRarity.LIGHT_PURPLE, player -> new CloudProjectile(ModEntities.RAIN_CLOUD.get(), ModEntities.RAIN.get(), player, 2, 5), 15, 30, 16, 3, 0.04).setMaxCloud(2));
-    public static final DeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = registerItemWithEnglishName("flower_of_frost", "寒霜之花", "Flower of Frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 35, 11, 9, 4, 0.04));
+    public static final DeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = registerItemWithEnglishName("flower_of_frost", "寒霜之花", "Flower of Frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 35, 11, 12, 4, 0.04));
     public static final DeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = registerItem("magic_dagger", "魔法飞刀", MagicDaggerItem::new);
-    public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = registerItem("crystal_storm", "水晶风暴", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 23, 5, 16, 3, 0.04));
-    public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = registerItem("cursed_flames", "诅咒焰", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 10, 5, 0.04));
+    public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = registerItem("crystal_storm", "水晶风暴", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 23, 5, 22, 3, 0.04));
+    public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = registerItem("cursed_flames", "诅咒焰", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 13, 5, 0.04));
     public static final DeferredItem<GoldenShowerItem> GOLDEN_SHOWER = registerItem("golden_shower", "黄金雨", GoldenShowerItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = registerItem("crystal_vile_shard", "魔晶碎块", CrystalVileShardItem::new);
     public static final DeferredItem<RainbowRodItem> RAINBOW_ROD = registerItem("rainbow_rod", "彩虹魔杖", RainbowRodItem::new);
@@ -60,6 +60,14 @@ public class ManaWeaponItems {
             .withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
     /// 欧泊法杖：洪流弹幕落地后贴地奔涌，折返时伤害翻倍，并额外吃 50% 近战攻击力。
     public static final DeferredItem<OpalStaffItem> OPAL_STAFF = registerItem("opal_staff", "欧泊法杖", () -> new OpalStaffItem(ModRarity.GREEN, OpalStaffProjectile::new, 20.0F, 8, 12, 12, 0.04));
+    /// 昏晓：恶魔祭坛：永夜 + 极昼。
+    public static final DeferredItem<DuskDawnItem> DUSK_DAWN = registerItem("dusk_dawn", "昏晓", () -> new DuskDawnItem(ModRarity.PURPLE));
+    /// 风页：一次释放三发上飞后追踪的风弹。
+    public static final DeferredItem<WindPageItem> WIND_PAGE = registerItem("wind_page", "风页", () -> new WindPageItem(ModRarity.PURPLE));
+    /// 风眼：制造持续吸附敌人的大范围旋风。
+    public static final DeferredItem<WindEyeItem> WIND_EYE = registerItem("wind_eye", "风眼", () -> new WindEyeItem(ModRarity.YELLOW));
+    /// 星乐：长按聚星，松开爆出追踪坠星。
+    public static final DeferredItem<StarMusicItem> STAR_MUSIC = registerItem("star_music", "星乐", () -> new StarMusicItem(ModRarity.YELLOW));
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);

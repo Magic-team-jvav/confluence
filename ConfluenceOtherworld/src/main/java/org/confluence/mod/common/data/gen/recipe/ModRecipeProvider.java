@@ -400,6 +400,20 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         fletchingTable(recipeOutput, ArrowItems.HELLFIRE_ARROW.toStack(64), Ingredient.of(), AmountIngredient.of(64, Items.ARROW), Ingredient.of(MaterialItems.HELLSTONE_INGOT));
         fletchingTable(recipeOutput, ArrowItems.FROSTBURN_ARROW.toStack(64), Ingredient.of(), AmountIngredient.of(64, Items.ARROW), Ingredient.of(MaterialItems.WINTER_MARROW));
         fletchingTable(recipeOutput, ArrowItems.STAR_ARROW.toStack(10), Ingredient.of(), AmountIngredient.of(10, Items.ARROW), Ingredient.of(MaterialItems.FALLING_STAR));
+        // 制箭台：1 风棒（旋风棒）+ 25 箭 -> 25 风矢（沉重风箭）
+        fletchingTable(recipeOutput, ArrowItems.WIND_ARROW.toStack(25), Ingredient.of(), AmountIngredient.of(25, Items.ARROW), Ingredient.of(Items.BREEZE_ROD));
+        // 恶魔祭坛：永夜刃 + 极昼 -> 昏晓
+        altar(recipeOutput, ManaWeaponItems.DUSK_DAWN.toStack(), Ingredient.of(SwordItems.NIGHTS_EDGE), Ingredient.of(BowItems.POLAR_DAY));
+        // 水晶球：风页 / 风眼 / 星乐
+        crystalBlock(recipeOutput, ManaWeaponItems.WIND_PAGE.toStack(),
+                Ingredient.of(Items.HEAVY_CORE), Ingredient.of(Items.WIND_CHARGE),
+                Ingredient.of(MaterialItems.SPELL_TOME), Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
+        crystalBlock(recipeOutput, ManaWeaponItems.WIND_EYE.toStack(),
+                Ingredient.of(ManaWeaponItems.WIND_PAGE), AmountIngredient.of(4, Items.BREEZE_ROD),
+                AmountIngredient.of(4, MaterialItems.FALLING_STAR));
+        crystalBlock(recipeOutput, ManaWeaponItems.STAR_MUSIC.toStack(),
+                AmountIngredient.of(8, MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.SPELL_TOME),
+                Ingredient.of(MaterialItems.SOUL_OF_FLIGHT));
         fletchingTable(recipeOutput, ArrowItems.UNHOLY_ARROW.toStack(5), Ingredient.of(), AmountIngredient.of(5, Items.ARROW), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
 
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));

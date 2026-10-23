@@ -1045,6 +1045,17 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "b"
         )), BowItems.SOUL_BOW.toStack());
 
+        // 风弦：沉重核心 + 铁/铅弓 + 风棒（旋风棒），无序
+        shapeless(output, BowItems.WIND_STRING.toStack(),
+                Ingredient.of(Items.HEAVY_CORE), Ingredient.of(BowItems.IRON_BOW, BowItems.LEAD_BOW),
+                Ingredient.of(Items.BREEZE_ROD));
+        // 附魔弓：附魔剑 + 铂金/金弓，无序
+        shapeless(output, BowItems.ENCHANTED_BOW.toStack(),
+                Ingredient.of(SwordItems.ENCHANTED_SWORD), Ingredient.of(BowItems.PLATINUM_BOW, BowItems.GOLDEN_BOW));
+        // 星泣：星怒 + 金/铂金弓，无序
+        shapeless(output, BowItems.STAR_WEEP.toStack(),
+                Ingredient.of(SwordItems.STARFURY), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
+
         // 灵魂头套 / 灵魂长袍：皮革帽子、长袍 + 魂瓶
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(Items.LEATHER_HELMET),

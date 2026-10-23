@@ -141,6 +141,16 @@ public final class ModUtils {
         summonBoss(level, pos, boss, true);
     }
 
+    /// 该维度里是否已经存在这种 Boss。用于避免暗影珠 / 猩红之心重复召唤同一个 Boss。
+    public static boolean hasBossPresent(ServerLevel level, EntityType<?> type) {
+        for (Entity entity : level.getAllEntities()) {
+            if (entity.isAlive() && entity.getType() == type) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {
         Block block = state.getBlock();
         if (block == FunctionalBlocks.LEAD_ANVIL.get()) {

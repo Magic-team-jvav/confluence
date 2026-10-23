@@ -410,6 +410,14 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FOSSIL_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(FLY_FISH_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(DEVELOPER_ARROW.get(), TerraArrowRenderer::new);
+        // 风与星系列
+        event.registerEntityRenderer(WIND_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(FALLEN_STAR_ARROW.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(DUSK_DAWN.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WIND_BULLET.get(), NoopRenderer::new);
+        event.registerEntityRenderer(HOMING_FALLING_STAR.get(), NoopRenderer::new);
+        event.registerEntityRenderer(STAR_FEAR_STAR.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WIND_EYE_TORNADO.get(), NoopRenderer::new);
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);

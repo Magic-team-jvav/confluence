@@ -21,6 +21,8 @@ public final class SummonerSummonMarks {
     public static final DeferredHolder<SummonMarkType, SummonMarkType> SWAMP_WHIP = TYPES.register("swamp_whip", location -> new SummonMarkType(location, 2.0F, 0, 0, null, null, null, null));
     public static final DeferredHolder<SummonMarkType, SummonMarkType> SNAPTHORN = TYPES.register("snapthorn", location -> new SummonMarkType(location, 3.0F, 0, 0, null, null, null, null));
     public static final DeferredHolder<SummonMarkType, SummonMarkType> SPINAL_TAP = TYPES.register("spinal_tap", location -> new SummonMarkType(location, 4.0F, 0, 0, null, null, null, null));
+    public static final DeferredHolder<SummonMarkType, SummonMarkType> WIND_WHIP = TYPES.register("wind_whip", location -> new SummonMarkType(location, 2.0F, 0, 0, null, null, null, null));
+    public static final DeferredHolder<SummonMarkType, SummonMarkType> STAR_FEAR = TYPES.register("star_fear", location -> new SummonMarkType(location, 3.0F, 0, 0, null, null, null, null));
     public static final DeferredHolder<SummonMarkType, SummonMarkType> FIRECRACKER = TYPES.register("firecracker", location -> new SummonMarkType(location,
             0,
             0,

@@ -9,7 +9,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 
 public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     public MagicDaggerItem() {
-        super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 20, 6, 12, 2, 0.04);
+        super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 20, 6, 16, 2, 0.04);
     }
 
     @Override

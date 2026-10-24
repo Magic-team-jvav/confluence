@@ -44,6 +44,15 @@ public final class ClientSoulHandler {
 
     private ClientSoulHandler() {}
 
+    /// 释放静态 HUD 实例对旧 LocalPlayer 的引用。
+    public static void clearHudPlayers() {
+        ROULETTE_WHEEL_BIG_HUD_INSTANCE.clearPlayer();
+        ROULETTE_WHEEL_SMALL_HUD_INSTANCE.clearPlayer();
+        CARD_HORIZONTAL_L_HUD_INSTANCE.clearPlayer();
+        CARD_HORIZONTAL_R_HUD_INSTANCE.clearPlayer();
+        CURRENT_SELECTED_SKILL_HUD_INSTANCE.clearPlayer();
+    }
+
     /// 处理魂师快捷技能输入和技能总览打开请求。
     public static void handleSoulSkills(Minecraft minecraft) {
         Player player = minecraft.player;

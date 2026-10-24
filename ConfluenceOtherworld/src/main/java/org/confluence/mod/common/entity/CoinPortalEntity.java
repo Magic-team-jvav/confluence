@@ -47,7 +47,7 @@ public class CoinPortalEntity extends Entity {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("coin_portal"), expression);
             emitter.attachEntity(this);
             emitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE.addEmitter(emitter);
+            MolangParticleEngine.INSTANCE._addEmitter(emitter);
         }
         setDeltaMovement(getDeltaMovement().scale(0.96));
         move(MoverType.SELF, getDeltaMovement());

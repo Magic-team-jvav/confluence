@@ -64,7 +64,7 @@ public final class Confluence {
     ///
     /// 原先跟随 `LibUtils.isDev()`，打包（production）环境里整个魂师玩法不可用；
     /// 现已解锁为常开，打包环境同样启用。需要临时关掉时把这里改回 `LibUtils.isDev()`。
-    public static final boolean SOUL_SKILLS = true;
+    public static final boolean SOUL_SKILLS = LibUtils.isDev();
     public static final boolean THE_END_BIOMES = LibUtils.isDev();
     public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
     public static final boolean UNRELEASED_EVENTS = LibUtils.isDev();

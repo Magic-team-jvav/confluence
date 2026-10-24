@@ -232,7 +232,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
 
     private ParticleEmitter createEmitter(Vec3 position, ResourceLocation particle, double end) {
         ParticleEmitter emitter = new BladeTrailEmitter(this, position, particle, end);
-        MolangParticleEngine.INSTANCE.addEmitter(emitter);
+        MolangParticleEngine.INSTANCE._addEmitter(emitter);
         return emitter;
     }
 

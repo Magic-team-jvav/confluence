@@ -301,7 +301,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
                 this.emitter = new ParticleEmitter(level(), position(), location);
                 emitter.attachEntity(this);
                 emitter.hideOutline = true;
-                MolangParticleEngine.INSTANCE.addEmitter(emitter);
+                MolangParticleEngine.INSTANCE._addEmitter(emitter);
             }
         }
     }

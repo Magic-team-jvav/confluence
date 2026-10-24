@@ -149,7 +149,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
                 emitter.attachEntity(this);
                 emitter.hideOutline = true;
                 afterCreate.run();
-                MolangParticleEngine.INSTANCE.addEmitter(emitter);
+                MolangParticleEngine.INSTANCE._addEmitter(emitter);
             }
         };
     }

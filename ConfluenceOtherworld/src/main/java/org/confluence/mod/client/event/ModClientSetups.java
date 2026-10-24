@@ -188,7 +188,9 @@ public final class ModClientSetups {
             return true;
         }
     };
-    static final IClientItemExtensions ENTITY_DISPLAY = new IClientItemExtensions() {
+    static final EntityDisplayExtensions ENTITY_DISPLAY = new EntityDisplayExtensions();
+
+    static final class EntityDisplayExtensions implements IClientItemExtensions {
         private EntityDisplayItemRenderer renderer;
 
         @Override
@@ -198,7 +200,18 @@ public final class ModClientSetups {
             }
             return renderer;
         }
-    };
+
+        void clear() {
+            if (renderer != null) {
+                renderer.clear();
+            }
+        }
+    }
+
+    /// 世界卸载时清理生物显示物品渲染器中缓存的实体和假玩家。
+    public static void clearEntityDisplayRenderer() {
+        ENTITY_DISPLAY.clear();
+    }
     static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {

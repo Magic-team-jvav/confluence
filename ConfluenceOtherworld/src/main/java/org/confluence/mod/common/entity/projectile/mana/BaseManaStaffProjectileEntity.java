@@ -92,7 +92,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
             this.emitter = new ParticleEmitter(level(), position(), particleId, expression);
             emitter.attachEntity(this);
             emitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE.addEmitter(emitter);
+            MolangParticleEngine.INSTANCE._addEmitter(emitter);
         }
 
         doAgeCheck(200);

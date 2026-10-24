@@ -49,6 +49,12 @@ public final class VirtualEntityRenderer {
     private VirtualEntityRenderer() {
     }
 
+    /// 世界卸载时清空幽灵实体，避免未再次渲染的 EntityType 一直持有旧 ClientLevel。
+    public static void clear() {
+        GHOSTS.clear();
+        CUSTOMIZED.clear();
+    }
+
     /** 通过原版实体注册 id 渲染，可用于运行时引用其它模组实体而无需编译期依赖。 */
     public static boolean render(ResourceLocation entityTypeId, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick) {
         EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(entityTypeId);

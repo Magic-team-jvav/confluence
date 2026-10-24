@@ -223,6 +223,15 @@ public final class ClientBestiary extends PortContextAwareReloadListener {
         sortEntries();
     }
 
+    /// 维度切换时只释放预览实体和旧 level，不重置图鉴进度。
+    public void clearLevel() {
+        if (currentLevel == null) return;
+        for (ClientBestiary.Entry entry : entries.values()) {
+            entry.resetRenderedEntity();
+        }
+        this.currentLevel = null;
+    }
+
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
     public void handle(Level level, Either<Map<String, Bestiary.Entry>, String> either) {

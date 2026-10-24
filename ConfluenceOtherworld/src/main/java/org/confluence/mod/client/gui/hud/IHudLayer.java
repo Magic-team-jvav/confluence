@@ -69,6 +69,11 @@ public abstract class IHudLayer implements PortGuiLayer {
         this.player = newPlayer;
     }
 
+    /// 退出世界时释放最后一个 LocalPlayer，避免静态 HUD 实例继续持有旧 ClientLevel。
+    public void clearPlayer() {
+        this.player = null;
+    }
+
     public LocalPlayer getPlayerThrow() {
         return this.player;
     }

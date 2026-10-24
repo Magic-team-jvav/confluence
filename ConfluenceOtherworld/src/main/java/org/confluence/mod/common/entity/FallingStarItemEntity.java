@@ -64,7 +64,7 @@ public class FallingStarItemEntity extends ItemEntity {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
                 emitter.attachEntity(this);
                 emitter.hideOutline = true;
-                MolangParticleEngine.INSTANCE.addEmitter(emitter);
+                MolangParticleEngine.INSTANCE._addEmitter(emitter);
             }
             float y = Mth.sin(getAge() / 10.0F + bobOffs) * 0.1F;
             emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, 0.35F + y, 0));

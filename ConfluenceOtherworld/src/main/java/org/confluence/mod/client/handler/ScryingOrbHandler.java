@@ -14,6 +14,10 @@ public final class ScryingOrbHandler {
     public static Player spectatingPlayer;
 
     public static void handle(Minecraft minecraft, LocalPlayer player) {
+        // 维度切换后观察目标仍属于旧 ClientLevel，必须立即释放，不能等下一次切目标。
+        if (spectatingPlayer != null && spectatingPlayer.level() != minecraft.level) {
+            stopSpectating();
+        }
         if (spectatingPlayer != null && !spectatingPlayer.isAlive()) {
             changeTarget(minecraft.level, player);
         }
@@ -50,5 +54,10 @@ public final class ScryingOrbHandler {
         Minecraft mc = Minecraft.getInstance();
         spectatingPlayer = null;
         mc.setCameraEntity(mc.player);
+    }
+
+    /// 世界卸载时只清引用；相机由原版 handleRespawn/退出流程重置。
+    public static void clear() {
+        spectatingPlayer = null;
     }
 }

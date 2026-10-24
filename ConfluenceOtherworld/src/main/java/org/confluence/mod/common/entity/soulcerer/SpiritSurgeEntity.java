@@ -164,7 +164,7 @@ public class SpiritSurgeEntity extends Projectile {
             return;
         }
         surgeRingSpawned = true;
-        MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level(), position(), SURGE_PARTICLE,
+        MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), position(), SURGE_PARTICLE,
                 new MolangExp("variable.radius", entityData.get(RADIUS))));
     }
 

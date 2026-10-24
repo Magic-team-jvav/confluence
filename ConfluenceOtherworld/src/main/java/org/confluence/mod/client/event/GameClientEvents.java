@@ -31,9 +31,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.LevelEvent;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.confluence.lib.api.event.OnGatherEffectScreenTooltipsEvent;
 import org.confluence.lib.client.color.ExpertColorAnimation;
 import org.confluence.lib.util.LibClientUtils;
@@ -69,6 +72,7 @@ import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
+import org.confluence.mod.client.summoner.model.virtual.VirtualEntityRenderer;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -140,6 +144,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::viewport$RenderFog);
         PortEventHandler.addListener(GameClientEvents::viewport$ComputeFogColor);
         PortEventHandler.addListener(GameClientEvents::viewport$VoidSeaRenderFog);
+        PortEventHandler.addListener(GameClientEvents::level$Unload);
     }
 
     private static void customizeGuiOverlay$BossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event) {
@@ -227,7 +232,23 @@ public final class GameClientEvents {
         AfterimageHelper.tick(event.player);
     }
 
+    private static void level$Unload(LevelEvent.Unload event) {
+        if (!event.getLevel().isClientSide()) return;
+        clearClientWorldReferences();
+    }
+
+    /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
+    private static void clearClientWorldReferences() {
+        ClientBestiary.getInstance().clearLevel();
+        ScryingOrbHandler.clear();
+        VirtualEntityRenderer.clear();
+        ModClientSetups.clearEntityDisplayRenderer();
+        ClientSoulHandler.clearHudPlayers();
+        MolangParticleEngine.INSTANCE.removeAll();
+    }
+
     private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        clearClientWorldReferences();
         DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();

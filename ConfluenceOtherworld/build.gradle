@@ -213,6 +213,9 @@ repositories {
             includeGroup("dev.ryanhcode.sable-companion")
         }
     }
+    maven {
+        url = 'https://nikdo53.github.io'
+    }
 }
 
 dependencies {
@@ -265,6 +268,13 @@ dependencies {
 //
 //    modRuntimeOnly("curse.maven:lendercataclysm-551586:8246047")
 //    modRuntimeOnly("curse.maven:lionfish-api-1001614:8095554")
+//    modImplementation("net.nikdo53:NeoBackports:1.4.2")
+    if (false) {
+        modRuntimeOnly("curse.maven:starcatcher-1357603:9169177")
+        modRuntimeOnly("curse.maven:fancy-tab-sections-1537163:8976588")
+        modRuntimeOnly("curse.maven:libtooltips-1370245:8808488")
+        modRuntimeOnly("curse.maven:wds-selling-bin-1483881:8215905")
+    }
 }
 
 mixin {

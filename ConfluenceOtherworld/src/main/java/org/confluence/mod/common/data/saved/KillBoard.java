@@ -166,28 +166,15 @@ public enum KillBoard implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        CompoundTag bosses = tag.getCompound("defeated_bosses").copy();
-        if (bosses.contains("confluence:the_twins")) {
-            boolean defeated = bosses.getBoolean("confluence:the_twins");
-            bosses.remove("confluence:the_twins");
-            if (defeated) {
-                bosses.putBoolean("confluence:retinazer", true);
-                bosses.putBoolean("confluence:spazmatism", true);
-            }
-        }
-        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, bosses),
-                result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
-        PortDataResultExtension.ifSuccess(DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events")),
-                result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));
+        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("defeated_bosses")), result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
+        PortDataResultExtension.ifSuccess(DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events")), result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));
         this.gamePhase = GamePhase.getByOrder(tag.getInt("game_phase"));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses),
-                nbt -> tag.put("defeated_bosses", nbt));
-        PortDataResultExtension.ifSuccess(DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents),
-                nbt -> tag.put("defeated_events", nbt));
+        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses), nbt -> tag.put("defeated_bosses", nbt));
+        PortDataResultExtension.ifSuccess(DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents), nbt -> tag.put("defeated_events", nbt));
         tag.putInt("game_phase", gamePhase.getOrder());
     }
 

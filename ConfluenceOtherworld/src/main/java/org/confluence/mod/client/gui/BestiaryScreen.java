@@ -1,13 +1,13 @@
 package org.confluence.mod.client.gui;
 
 import com.google.common.collect.Iterables;
-import net.minecraft.resources.ResourceLocation;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -340,11 +340,11 @@ public class BestiaryScreen extends Screen {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+        renderBackground(guiGraphics, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
-    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 0, 0, leftPos, topPos, imageWidth, imageHeight);
 
         int x1 = leftPos + renderedEntryX;

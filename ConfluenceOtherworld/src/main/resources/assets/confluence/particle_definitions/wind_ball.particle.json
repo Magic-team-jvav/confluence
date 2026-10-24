@@ -1,0 +1,50 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "confluence:wind_ball",
+      "basic_render_parameters": {
+        "material": "particles_add",
+        "texture": "confluence:spark_projectile"
+      }
+    },
+    "components": {
+      "minecraft:emitter_local_space": {
+        "position": true,
+        "rotation": false
+      },
+      "minecraft:emitter_rate_steady": {
+        "spawn_rate": 55,
+        "max_particles": 90
+      },
+      "minecraft:emitter_lifetime_looping": {
+        "active_time": 1
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "math.random(0.3, 0.5)"
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_motion_parametric": {
+        "relative_position": [
+          "math.cos(v.particle_age * 1260 + v.particle_random_1 * 360) * 0.34",
+          "math.sin(v.particle_age * 900 + v.particle_random_2 * 360) * 0.28",
+          "math.sin(v.particle_age * 1260 + v.particle_random_1 * 360) * 0.34"
+        ]
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [0.16, 0.16],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 8,
+          "texture_height": 8,
+          "uv": [0, 0],
+          "uv_size": [8, 8]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [0.55, 0.9, 1.0, "math.clamp(1.0 - v.particle_age / v.particle_lifetime, 0.0, 1.0)"]
+      }
+    }
+  }
+}

@@ -96,6 +96,22 @@
             ],
             "light_level": 10
         },
+        "confluence:homing_falling_star": {
+            "color": [
+                1.0,
+                0.60784314,
+                0.80784314
+            ],
+            "light_level": 10
+        },
+        "confluence:star_fear_star": {
+            "color": [
+                1.0,
+                0.60784314,
+                0.80784314
+            ],
+            "light_level": 10
+        },
         "confluence:star_cannon_bullet": {
             "color": [
                 1.0,

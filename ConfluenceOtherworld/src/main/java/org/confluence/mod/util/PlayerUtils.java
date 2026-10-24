@@ -2021,7 +2021,7 @@ public final class PlayerUtils {
         int delay = 0;
         for (LivingEntity target : targets) {
             Vec3 position = new Vec3(target.getX(), starCallSpawnY(player.level(), target), target.getZ());
-            SoulLureProjectile star = SoulLureProjectile.star(player, position, new Vec3(0.0, -1.0, 0.0), damage, 1.2F, 0.02);
+            SoulLureProjectile star = SoulLureProjectile.star(player, position, new Vec3(0.0, -1.0, 0.0), damage, 2.0F, 0.0);
             star.setSpawnDelay(delay);
             player.level().addFreshEntity(star);
             delay += SoulSkillParameters.STAR_CALL_STAGGER_TICKS;
@@ -2067,7 +2067,7 @@ public final class PlayerUtils {
 
     /// 落点高度：目标上方 `STAR_CALL_SPAWN_HEIGHT` 格；若那里被实心方块占住，向下找第一个空位，
     /// 避免在洞穴/室内生成的坠星一出场就撞方块。
-    private static double starCallSpawnY(Level level, LivingEntity target) {
+    public static double starCallSpawnY(Level level, LivingEntity target) {
         double y = target.getY() + SoulSkillParameters.STAR_CALL_SPAWN_HEIGHT;
         double floor = target.getY() + 1.0;
         while (y > floor && !level.isEmptyBlock(BlockPos.containing(target.getX(), y, target.getZ()))) {

@@ -102,6 +102,8 @@ public final class ModDynamicLights {
         DynamicLightRegister.register(ModEntities.CURSED_FLAMES.get(), DynamicLightProvider.entity(15));
         DynamicLightRegister.register(ModEntities.CLINGER_FLAME.get(), DynamicLightProvider.entity(15));
         DynamicLightRegister.register(ModEntities.STAR_FURY.get(), DynamicLightProvider.entity(10));
+        DynamicLightRegister.register(ModEntities.HOMING_FALLING_STAR.get(), DynamicLightProvider.entity(10));
+        DynamicLightRegister.register(ModEntities.STAR_FEAR_STAR.get(), DynamicLightProvider.entity(10));
         DynamicLightRegister.register(ModEntities.STAR_CANNON_BULLET.get(), DynamicLightProvider.entity(10));
         DynamicLightRegister.register(TCEntities.STAR_CLOAK.get(), DynamicLightProvider.entity(8));
         DynamicLightRegister.register(ModEntities.RAINBOW.get(), DynamicLightProvider.entity(10));

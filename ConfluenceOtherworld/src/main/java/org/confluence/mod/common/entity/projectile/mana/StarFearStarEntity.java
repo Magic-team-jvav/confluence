@@ -12,14 +12,14 @@ import org.confluence.mod.common.init.entity.ModEntities;
 ///
 /// 它会快速逃离施法者；只要施法者成功碰到它，就会获得「摘星」增益。
 public class StarFearStarEntity extends AbstractManaProjectile {
-    /// 逃离速度。
-    private static final double FLEE_SPEED = 0.95;
+    /// 逃离速度（原 0.95 的 1/4）。
+    private static final double FLEE_SPEED = 0.2375;
     /// 施法者触碰判定距离。
     private static final double CATCH_DISTANCE = 1.6;
     /// 未追上时的存在时间（tick）。
     private static final int MAX_AGE = 120;
-    /// 摘星增益时长（tick）。
-    public static final int BUFF_DURATION = 400;
+    /// 摘星增益时长（tick）：5 分钟。
+    public static final int BUFF_DURATION = 5 * 60 * 20;
 
     public StarFearStarEntity(EntityType<StarFearStarEntity> entityType, Level level) {
         super(entityType, level);

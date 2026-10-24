@@ -8,8 +8,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.UUID;
 
@@ -17,7 +20,7 @@ import java.util.UUID;
 ///
 /// 出手后自动追踪并吸附到最近的敌人身上，吸附期间按固定间隔向外扩散一圈光波，
 /// 每一圈光波的伤害都比上一圈更低。光波扩散结束后弹幕爆炸，并向四周释放一道
-/// 强力的横向斩击。
+/// 强力的横向斩击；光波与斩击的外观由粒子风暴拟合。
 public class DuskDawnProjectile extends AbstractManaProjectile {
     /// 光波扩散间隔（tick）。
     private static final int WAVE_INTERVAL = 8;
@@ -100,7 +103,24 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
             slash();
             discardInTicks(1);
         }
+        /// 客户端只负责视觉：每 8 tick 一圈光波，最后一刻补一道横向斩击。
+        if (level().isClientSide) {
+            if (tickCount > 0 && tickCount % WAVE_INTERVAL == 0 && tickCount <= WAVE_INTERVAL * WAVES) {
+                spawnParticle("dusk_dawn_wave");
+            }
+            if (tickCount == LIFETIME) {
+                spawnParticle("dusk_dawn_slash");
+            }
+        }
         doAgeCheck(LIFETIME + 40);
+    }
+
+    /// 在当前位置生成一次性的粒子风暴发射器。
+    private void spawnParticle(String path) {
+        if (!level().isClientSide) return;
+        ParticleEmitter emitter = new ParticleEmitter(level(), position(), Confluence.asResource(path));
+        emitter.hideOutline = true;
+        MolangParticleEngine.INSTANCE._addEmitter(emitter);
     }
 
     private @Nullable LivingEntity resolveTarget() {

@@ -395,8 +395,8 @@ public final class LivingEntityEvents {
             Vec3 center = victim.getBoundingBox().getCenter();
             float damage = PlayerUtils.getSoulSkillDamage(player, ModSoulSkills.STAR_CALL.get().getStack());
             SoulLureProjectile star = SoulLureProjectile.star(player,
-                    new Vec3(center.x, victim.getY() + SoulSkillParameters.STAR_CALL_SPAWN_HEIGHT, center.z),
-                    new Vec3(0.0, -1.0, 0.0), damage, 1.2F, 0.02);
+                    new Vec3(center.x, PlayerUtils.starCallSpawnY(player.level(), victim), center.z),
+                    new Vec3(0.0, -1.0, 0.0), damage, 2.0F, 0.0);
             player.level().addFreshEntity(star);
         }
         if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)) {

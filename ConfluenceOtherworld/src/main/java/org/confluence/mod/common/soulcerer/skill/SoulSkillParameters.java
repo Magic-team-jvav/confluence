@@ -162,8 +162,8 @@ public class SoulSkillParameters {
     public static final int STAR_CALL_STARS_PER_VOLLEY = 2;
     /// 同一轮内相邻两只敌怪的坠星生成时间差（刻）：让坠星错开落地，而不是同一刻齐落。
     public static final int STAR_CALL_STAGGER_TICKS = 1;
-    /// 坠星的生成高度：目标位置上方该格数；若那里是实心方块，会向下找第一个空位。
-    public static final double STAR_CALL_SPAWN_HEIGHT = 8.0;
+    /// 坠星的生成高度：目标位置上方该格数（取星怒的 20 格）；若那里是实心方块，会向下找第一个空位。
+    public static final double STAR_CALL_SPAWN_HEIGHT = 20.0;
     /// 迷魂孢雾：一轮 8 枚孢子弹幕，**每轮独立掷骰**决定弹道：
     /// 50% 斜上方抛射（生成在头顶上方、带重力，从上飘落），50% 直线平射（从眼睛射出、不吃重力）。
     /// 威力 1.5，冷却 0.5 秒，消耗 1 魂。

@@ -147,9 +147,9 @@ public class AccessoryItems {
             STRESS_BALL = registerCurio("stress_ball", "解压球", builder -> builder.rarity(BLUE).accessories(units($AFK)).tooltips(1));
 
     public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", "召唤师徽章", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(LibAttributes.getSummonDamage(), 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
-            BAND_OF_SOUL = registerCurio("band_of_soul", "灵魂手环", builder -> builder.rarity(BLUE).accessories(units(BAND$OF$SOUL))),
-            BAND_OF_SOUL_REGENERATION = registerDirectly("band_of_soul_regeneration", "灵魂再生手环", name -> new BandOfSoulRegeneration(BaseCurioItem.builder(name).rarity(GREEN).accessories(units(BAND$OF$SOUL)))),
-            BAND_OF_MEDIUMSHIP = registerCurio("band_of_mediumship", "通灵手环", builder -> builder.rarity(GREEN).attribute(ConfluenceMagicLib.ADDITIONAL_SOUL, 20.0, ADD_VALUE).accessories(units(BAND$OF$SOUL))),
+            BAND_OF_SOUL = registerCurio("band_of_soul", "灵魂手环", builder -> builder.rarity(BLUE).accessories(units(BAND$OF$SOUL)).tooltips(1)),
+            BAND_OF_SOUL_REGENERATION = registerDirectly("band_of_soul_regeneration", "灵魂再生手环", name -> new BandOfSoulRegeneration(BaseCurioItem.builder(name).rarity(GREEN).accessories(units(BAND$OF$SOUL)).tooltips(1))),
+            BAND_OF_MEDIUMSHIP = registerCurio("band_of_mediumship", "通灵手环", builder -> builder.rarity(GREEN).attribute(ConfluenceMagicLib.ADDITIONAL_SOUL, 20.0, ADD_VALUE).accessories(units(BAND$OF$SOUL)).tooltips(1)),
             MEMORY_OF_BONEBRAND = registerCurio("memory_of_bonebrand", "刻骨的记忆", builder -> builder.rarity(PURPLE).accessories(units(MEMORY$OF$BONEBRAND))),
             /// 束魂锁链：施放任意「附魂」技能时，其余已装备的「附魂」技能同时放出。
             SOUL_BINDING_CHAIN = registerCurio("soul_binding_chain", "束魂锁链", builder -> builder.rarity(PINK).accessories(units(SOUL$BINDING$CHAIN))),

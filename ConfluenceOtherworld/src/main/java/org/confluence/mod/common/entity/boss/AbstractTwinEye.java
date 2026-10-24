@@ -286,7 +286,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         if (level().isClientSide) {
             if (isRetinazer() && getEncounterUUID() != null && (linkEmitter == null || linkEmitter.isRemoved())) {
                 linkEmitter = new TwinEyeLinkEmitter(this);
-                MolangParticleEngine.INSTANCE.addEmitter(linkEmitter);
+                MolangParticleEngine.INSTANCE._addEmitter(linkEmitter);
             }
             previousBank = visualBank;
             visualBank = Mth.lerp(BANK_SMOOTHING, visualBank, entityData.get(DATA_BANK));

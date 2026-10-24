@@ -45,6 +45,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.api.animation.third_person.PlayerAttackingStatePacket;
 import org.confluence.lib.api.event.OnGatherEffectScreenTooltipsEvent;
@@ -84,6 +85,7 @@ import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
+import org.confluence.mod.client.summoner.model.virtual.VirtualEntityRenderer;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -112,6 +114,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.lwjgl.glfw.GLFW;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.io.IOException;
@@ -233,7 +236,25 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
+    public static void level$Unload(LevelEvent.Unload event) {
+        if (!event.getLevel().isClientSide()) return;
+        clearClientWorldReferences();
+    }
+
+    /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
+    private static void clearClientWorldReferences() {
+        ClientBestiary.getInstance().clearLevel();
+        ParticleHandler.clear();
+        ScryingOrbHandler.clear();
+        VirtualEntityRenderer.clear();
+        ModClientSetups.clearEntityDisplayRenderer();
+        ClientSoulHandler.clearHudPlayers();
+        MolangParticleEngine.INSTANCE.removeAll();
+    }
+
+    @SubscribeEvent
     public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        clearClientWorldReferences();
         DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();

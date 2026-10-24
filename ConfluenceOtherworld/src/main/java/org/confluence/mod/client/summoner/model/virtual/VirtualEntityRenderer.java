@@ -1,8 +1,6 @@
 package org.confluence.mod.client.summoner.model.virtual;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.confluence.mod.client.summoner.ColorBufferSource;
-import org.confluence.mod.client.summoner.model.virtual.WalkAnimationStateAccess;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -13,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.client.summoner.ColorBufferSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +46,12 @@ public final class VirtualEntityRenderer {
     private static final Set<EntityType<?>> CUSTOMIZED = new HashSet<>();
 
     private VirtualEntityRenderer() {
+    }
+
+    /// 世界卸载时清空幽灵实体，避免未再次渲染的 EntityType 一直持有旧 ClientLevel。
+    public static void clear() {
+        GHOSTS.clear();
+        CUSTOMIZED.clear();
     }
 
     /** 通过原版实体注册 id 渲染，可用于运行时引用其它模组实体而无需编译期依赖。 */

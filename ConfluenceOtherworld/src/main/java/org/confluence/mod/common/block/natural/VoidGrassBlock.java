@@ -25,7 +25,7 @@ public class VoidGrassBlock extends EndGrassBlock {
             Vec3 vec3 = player.getDeltaMovement();
             if (vec3.lengthSqr() > 1e-6 && level.getGameTime() % 7 == 0) {
                 RandomSource random = level.getRandom();
-                MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level, player.position().add(random.nextFloat() - 0.5 + vec3.x, 0, random.nextFloat() - 0.5 + vec3.z), Confluence.asResource("void_step")));
+                MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level, player.position().add(random.nextFloat() - 0.5 + vec3.x, 0, random.nextFloat() - 0.5 + vec3.z), Confluence.asResource("void_step")));
             }
         }
     }

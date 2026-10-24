@@ -41,12 +41,10 @@ import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixin.world.entity.EntityAccessor;
 import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -220,6 +218,15 @@ public class ClientBestiary extends ContextAwareReloadListener {
         }
         this.entries = map;
         sortEntries();
+    }
+
+    /// 维度切换时只释放预览实体和旧 level，不重置图鉴进度。
+    public void clearLevel() {
+        if (currentLevel == null) return;
+        for (ClientBestiary.Entry entry : entries.values()) {
+            entry.resetRenderedEntity();
+        }
+        this.currentLevel = null;
     }
 
     // 玩家进入存档统一同步

@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -110,7 +109,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
                 waterEmitter.attachEntity(this);
                 waterEmitter.hideOutline = true;
                 waterEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
-                MolangParticleEngine.INSTANCE.addEmitter(waterEmitter);
+                MolangParticleEngine.INSTANCE._addEmitter(waterEmitter);
             }
             return;
         }

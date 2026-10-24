@@ -41,7 +41,7 @@ public class FlowerPetalProjectile extends Projectile {
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal"));
             emitter.attachEntity(this);
-            MolangParticleEngine.INSTANCE.addEmitter(emitter);
+            MolangParticleEngine.INSTANCE._addEmitter(emitter);
         }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();

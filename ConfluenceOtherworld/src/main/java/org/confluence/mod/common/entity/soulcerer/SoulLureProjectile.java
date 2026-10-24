@@ -264,7 +264,7 @@ public class SoulLureProjectile extends Projectile {
             this.emitter = new ParticleEmitter(level(), position(), syncedParticle());
             emitter.attachEntity(this);
             emitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE.addEmitter(emitter);
+            MolangParticleEngine.INSTANCE._addEmitter(emitter);
         }
         if (!level().isClientSide) {
             resolveWeaponTraits();

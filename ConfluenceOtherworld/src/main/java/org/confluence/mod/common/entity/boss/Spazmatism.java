@@ -184,7 +184,7 @@ public class Spazmatism extends AbstractTwinEye {
             comboChargeEmitter.attachEntity(this);
             comboChargeEmitter.hideOutline = true;
             comboChargeEmitter.setLocalSpace(new Matrix4x3f());
-            MolangParticleEngine.INSTANCE.addEmitter(comboChargeEmitter);
+            MolangParticleEngine.INSTANCE._addEmitter(comboChargeEmitter);
         }
         if (comboChargeEmitter != null) {
             Vec3 offset = getMuzzlePosition(1).subtract(position());

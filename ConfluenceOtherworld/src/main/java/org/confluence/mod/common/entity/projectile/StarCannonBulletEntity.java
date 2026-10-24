@@ -29,7 +29,7 @@ public class StarCannonBulletEntity extends CustomBulletEntity implements Immuni
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
             emitter.attachEntity(this);
             emitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE.addEmitter(emitter);
+            MolangParticleEngine.INSTANCE._addEmitter(emitter);
         }
     }
 

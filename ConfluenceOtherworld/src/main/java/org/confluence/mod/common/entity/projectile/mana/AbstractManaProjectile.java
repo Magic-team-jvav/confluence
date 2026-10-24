@@ -14,7 +14,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
@@ -153,7 +152,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
                 emitter.attachEntity(this);
                 emitter.hideOutline = true;
                 afterCreate.run();
-                MolangParticleEngine.INSTANCE.addEmitter(emitter);
+                MolangParticleEngine.INSTANCE._addEmitter(emitter);
             }
         };
     }

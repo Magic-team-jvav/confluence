@@ -22,7 +22,6 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.particle.BladeTrailEmitter;
@@ -234,7 +233,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
 
     private ParticleEmitter createEmitter(Vec3 position, ResourceLocation particle, double end) {
         ParticleEmitter emitter = new BladeTrailEmitter(this, position, particle, end);
-        MolangParticleEngine.INSTANCE.addEmitter(emitter);
+        MolangParticleEngine.INSTANCE._addEmitter(emitter);
         return emitter;
     }
 

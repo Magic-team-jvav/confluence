@@ -16,7 +16,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
@@ -28,7 +27,6 @@ import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -164,7 +162,7 @@ public class SpiritSurgeEntity extends Projectile {
             return;
         }
         surgeRingSpawned = true;
-        MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level(), position(), SURGE_PARTICLE,
+        MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), position(), SURGE_PARTICLE,
                 new MolangExp("variable.radius", entityData.get(RADIUS))));
     }
 

@@ -13,11 +13,11 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.gui.container.soulcerer.SoulOverviewScreen;
 import org.confluence.mod.client.gui.hud.soulcerer.CurrentSelectedSkillHud;
-import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.BasicSoulQuickSkillHud;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.CardHorizontalHud;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.RouletteWheelBigHud;
 import org.confluence.mod.client.gui.hud.soulcerer.quick_skill.RouletteWheelSmallHud;
+import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
@@ -43,6 +43,15 @@ public final class ClientSoulHandler {
     private static boolean wasSpellWheelDown = false;
 
     private ClientSoulHandler() {}
+
+    /// 释放静态 HUD 实例对旧 LocalPlayer 的引用。
+    public static void clearHudPlayers() {
+        ROULETTE_WHEEL_BIG_HUD_INSTANCE.clearPlayer();
+        ROULETTE_WHEEL_SMALL_HUD_INSTANCE.clearPlayer();
+        CARD_HORIZONTAL_L_HUD_INSTANCE.clearPlayer();
+        CARD_HORIZONTAL_R_HUD_INSTANCE.clearPlayer();
+        CURRENT_SELECTED_SKILL_HUD_INSTANCE.clearPlayer();
+    }
 
     /// 处理魂师快捷技能输入和技能总览打开请求。
     public static void handleSoulSkills(Minecraft minecraft) {

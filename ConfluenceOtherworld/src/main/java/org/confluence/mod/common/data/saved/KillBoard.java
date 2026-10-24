@@ -41,16 +41,16 @@ public enum KillBoard implements IGlobalData {
     private Object2BooleanMap<ResourceKey<? extends GameEvent>> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
 
-    public boolean isDefeated(EntityType<?> entityType) {
-        return defeatedBosses.getBoolean(entityType);
+    public boolean isDefeated(EntityType<?> type) {
+        return defeatedBosses.getBoolean(type);
     }
 
-    public boolean isDefeated(ResourceKey<? extends GameEvent> moment) {
-        return defeatedEvents.getBoolean(moment);
+    public boolean isDefeated(ResourceKey<? extends GameEvent> key) {
+        return defeatedEvents.getBoolean(key);
     }
 
-    public boolean isAnyDefeated(EntityType<?>... entityTypes) {
-        for (EntityType<?> entityType : entityTypes) {
+    public boolean isAnyDefeated(EntityType<?>... types) {
+        for (EntityType<?> entityType : types) {
             if (isDefeated(entityType)) return true;
         }
         return false;
@@ -74,9 +74,9 @@ public enum KillBoard implements IGlobalData {
                 isDefeated(BossEntities.SKELETRON_PRIME.get());
     }
 
-    public int countDefeated(EntityType<?>... entityTypes) {
+    public int countDefeated(EntityType<?>... types) {
         int count = 0;
-        for (EntityType<?> entityType : entityTypes) {
+        for (EntityType<?> entityType : types) {
             if (isDefeated(entityType)) count++;
         }
         return count;
@@ -99,14 +99,14 @@ public enum KillBoard implements IGlobalData {
         return defeatedEvents.keySet();
     }
 
-    public void defeat(EntityType<?> entityType) {
-        boolean defeated = defeatedBosses.put(entityType, true);
+    public void defeat(EntityType<?> type) {
+        boolean defeated = defeatedBosses.put(type, true);
         if (!defeated) {
             LanternNightGameEvent.INSTANCE.schedule();
         }
-        if (entityType == BossEntities.SKELETRON.get()) {
+        if (type == BossEntities.SKELETRON.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
-        } else if (entityType == BossEntities.WALL_OF_FLESH.get() || entityType == BossEntities.HILL_OF_FLESH.get()) {
+        } else if (type == BossEntities.WALL_OF_FLESH.get() || type == BossEntities.HILL_OF_FLESH.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         } else {
             KillBoardSyncPacketS2C.sendToAll();
@@ -159,28 +159,15 @@ public enum KillBoard implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        CompoundTag bosses = tag.getCompound("defeated_bosses").copy();
-        if (bosses.contains("confluence:the_twins")) {
-            boolean defeated = bosses.getBoolean("confluence:the_twins");
-            bosses.remove("confluence:the_twins");
-            if (defeated) {
-                bosses.putBoolean("confluence:retinazer", true);
-                bosses.putBoolean("confluence:spazmatism", true);
-            }
-        }
-        DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, bosses)
-                .ifSuccess(result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
-        DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events"))
-                .ifSuccess(result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));
+        DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.getCompound("defeated_bosses")).ifSuccess(result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
+        DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events")).ifSuccess(result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));
         this.gamePhase = GamePhase.getByOrder(tag.getInt("game_phase"));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses)
-                .ifSuccess(nbt -> tag.put("defeated_bosses", nbt));
-        DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents)
-                .ifSuccess(nbt -> tag.put("defeated_events", nbt));
+        DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses).ifSuccess(nbt -> tag.put("defeated_bosses", nbt));
+        DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents).ifSuccess(nbt -> tag.put("defeated_events", nbt));
         tag.putInt("game_phase", gamePhase.getOrder());
     }
 

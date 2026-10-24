@@ -234,6 +234,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.SOUL_DRAIN.get(), "Soul costs are ignored", "施放技能不消耗灵魂");
         language.addTooltip(ModEffects.SOUL_DRAIN_LOCK.get(), "Soul skills cannot be cast", "无法释放灵魂技能");
         language.addTooltip(ModEffects.STAR_CALL.get(), "A falling star drops on the nearest up to 2 enemies within range", "范围内最近的至多 2 只敌怪头顶都会落下坠星");
+        language.addTooltip(ModEffects.STAR_HARVEST.get(), "Increased your max number of minions by 1", "仆从数量上限增加1");
         language.addTooltip(ModEffects.STAR_LINK.get(), "Inherits half the value and half the duration of an expired soul damage buff as magic damage", "灵魂伤害增益结束后，继承其一半数值与一半时长的魔法增伤");
         language.addTooltip(ModEffects.LIFE_RETURN.get(), "Recorded health loss returns as soul", "记录失去的生命，结束时转化为灵魂");
         language.addTooltip(ModEffects.SOUL_BUFFER.get(), "Fall damage heals you instead", "摔落伤害转化为回复");
@@ -737,8 +738,9 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.dusk_dawn.1", "After the last wave it explodes and releases a powerful horizontal slash", "光波结束后爆炸，并向四周释放一道强力横向斩击");
         language.add("tooltip.item.confluence.wind_string.0", "Wooden arrows become Wind Arrows; deals 10%-20% more damage to foes with 0.1-1 knockback resistance", "木箭会被替换为风矢；对击退抗性 0.1-1 的敌怪额外造成 10%-20% 伤害");
         language.add("tooltip.item.confluence.wind_page.0", "Releases three wind bolts that rise, then home in on the nearest enemy", "一次释放三发风弹，先向上飞再追踪最近的敌人");
-        language.add("tooltip.item.confluence.wind_eye.0", "Creates a tornado that pulls in enemies; projectiles fired into its core are absorbed to empower it", "制造持续吸附敌人的旋风；打进旋风中心的弹幕会被吸收并转化为旋风的威力");
-        language.add("tooltip.item.confluence.star_music.0", "Hold to gather a star; release to burst into homing falling stars", "长按凝聚坠星，松手爆开成追踪坠星");
+        language.add("tooltip.item.confluence.wind_eye.0", "Creates a tornado that pulls in enemies; recasting removes the previous one, and only the first projectile fired into its core is absorbed", "制造持续吸附敌人的旋风；再次使用会移除上一道，只吸收第一枚打入中心的弹幕");
+        language.add("tooltip.item.confluence.star_weep.0", "Arrows that miss an enemy are stored as falling-star charges (max 3); the next hit on an enemy drops that many non-homing falling stars, one every 0.5 seconds", "未命中敌怪的箭矢会累积为坠星协同（最多 3 层）；下一次命中敌怪时从敌人头上释放等量坠星，每 0.5 秒落下一颗且不会追踪");
+        language.add("tooltip.item.confluence.star_music.0", "Hold to gather a star; release to burst into homing falling stars. More uses mean more stars, and the 20th use triggers a critical starfall", "长按凝聚坠星，松手爆开成追踪坠星；使用次数越多星数越多，第 20 次触发临界星雨");
         //        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
     }
 }

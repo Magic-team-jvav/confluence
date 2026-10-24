@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "confluence:dusk_dawn_slash",
+      "basic_render_parameters": {
+        "material": "particles_add",
+        "texture": "confluence:nights_edge_light"
+      }
+    },
+    "components": {
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 110
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.05
+      },
+      "minecraft:emitter_shape_box": {
+        "half_dimensions": [4.5, 0.15, 2.5],
+        "direction": [0, 1, 0],
+        "surface_only": false
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "math.random(0.18, 0.3)"
+      },
+      "minecraft:particle_initial_speed": 0,
+      "minecraft:particle_appearance_billboard": {
+        "size": [0.9, 0.24],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 64,
+          "texture_height": 64,
+          "uv": [0, 0],
+          "uv_size": [64, 64]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [1.0, 0.95, 0.72, "math.clamp(1.0 - v.particle_age / v.particle_lifetime, 0.0, 1.0)"]
+      }
+    }
+  }
+}

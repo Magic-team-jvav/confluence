@@ -414,8 +414,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FALLEN_STAR_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(DUSK_DAWN.get(), NoopRenderer::new);
         event.registerEntityRenderer(WIND_BULLET.get(), NoopRenderer::new);
-        event.registerEntityRenderer(HOMING_FALLING_STAR.get(), NoopRenderer::new);
-        event.registerEntityRenderer(STAR_FEAR_STAR.get(), NoopRenderer::new);
+        event.registerEntityRenderer(HOMING_FALLING_STAR.get(), FallingStarCrossRenderer::new);
+        event.registerEntityRenderer(STAR_MUSIC_CHARGE.get(), StarMusicChargeRenderer::new);
+        event.registerEntityRenderer(STAR_FEAR_STAR.get(), FallingStarCrossRenderer::new);
         event.registerEntityRenderer(WIND_EYE_TORNADO.get(), NoopRenderer::new);
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);

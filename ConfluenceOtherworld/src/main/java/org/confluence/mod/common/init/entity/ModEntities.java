@@ -138,6 +138,8 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<WindBulletProjectile>> WIND_BULLET = registerWithEnglishName("wind_bullet", "风弹", "Wind Bullet", id -> EntityType.Builder.<WindBulletProjectile>of(WindBulletProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     /// 通用的追踪坠星。
     public static final RegistryObject<EntityType<HomingFallingStarProjectile>> HOMING_FALLING_STAR = registerWithEnglishName("homing_falling_star", "追踪坠星", "Homing Falling Star", id -> EntityType.Builder.<HomingFallingStarProjectile>of(HomingFallingStarProjectile::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 星乐长按蓄力时悬浮在玩家头顶的聚星（纯视觉）。
+    public static final RegistryObject<EntityType<StarMusicChargeEntity>> STAR_MUSIC_CHARGE = registerWithEnglishName("star_music_charge", "星乐聚星", "Star Music Charge", id -> EntityType.Builder.<StarMusicChargeEntity>of(StarMusicChargeEntity::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     /// 星惧逃出的坠星。
     public static final RegistryObject<EntityType<StarFearStarEntity>> STAR_FEAR_STAR = registerWithEnglishName("star_fear_star", "星惧坠星", "Star Fear Star", id -> EntityType.Builder.<StarFearStarEntity>of(StarFearStarEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     /// 风眼的旋风。

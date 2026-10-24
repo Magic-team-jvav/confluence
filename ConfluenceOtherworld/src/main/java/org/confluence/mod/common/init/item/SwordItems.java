@@ -46,6 +46,10 @@ import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 public class SwordItems {
     public static void init() {}
 
+    /// 星怒弹幕的交叉面片外观；星泣 / 星乐 / 星惧的坠星复用同一份外观。
+    public static final SwordProjectileAppearance.Cross STAR_FURY_APPEARANCE = new SwordProjectileAppearance.Cross(
+            Confluence.asResource("textures/entity/star_fury_projectile.png"), 0xFFFFFFFF, 2.0F, 18.0F, 10);
+
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
     // 铂金以上剑参考数值为 泰拉wiki中的伤害÷2后 + 2为基础值
@@ -167,8 +171,7 @@ public class SwordItems {
                     .projectile(new Projectile(1.5F, 2.0F, 0.9F, 100, 0.0F, 15,
                             ModSoundEvents.STAR.getId(), ModEntities.STAR_FURY.getId(), Optional.empty(),
                             new AboveFallenGeneration(30.0F, 30.0F, 10.0F, 1.0F, 20.0F, 5.0F),
-                            new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/star_fury_projectile.png"),
-                                    0xFFFF9696, 2.0F, 18.0F, 10)))
+                            STAR_FURY_APPEARANCE))
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", "附魔剑", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE, () -> SwordDefinition.builder()
                     .projectile(new Projectile(1.0F, 0.8F, 0.9F, 40, 0.0F, 10,

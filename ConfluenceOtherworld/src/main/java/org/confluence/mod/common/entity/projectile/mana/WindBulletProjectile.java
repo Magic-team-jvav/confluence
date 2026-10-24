@@ -10,6 +10,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,12 +18,12 @@ import java.util.UUID;
 
 /// 风页（法书）释放的风弹。
 ///
-/// 出手后先向上飞一段距离，随后自动锁定最近的敌人追踪过去。
+/// 出手后先向上飞一段距离，随后自动锁定最近的敌人追踪过去；外观用粒子风暴拟合风球。
 public class WindBulletProjectile extends AbstractManaProjectile {
     /// 向上飞行的时长（tick）。
     private static final int RISE_TICKS = 10;
-    /// 上升时的垂直加速度。
-    private static final double RISE_ACCELERATION = 0.32;
+    /// 上升时的垂直加速度；额外抬升约 3 格，落在需求的两~四格区间。
+    private static final double RISE_ACCELERATION = 0.06;
     /// 追踪速度。
     private static final double HOMING_SPEED = 0.95;
     /// 追踪范围。
@@ -33,6 +34,7 @@ public class WindBulletProjectile extends AbstractManaProjectile {
 
     public WindBulletProjectile(EntityType<WindBulletProjectile> entityType, Level level) {
         super(entityType, level);
+        withParticle(Confluence.asResource("wind_ball"));
     }
 
     public WindBulletProjectile(LivingEntity living) {

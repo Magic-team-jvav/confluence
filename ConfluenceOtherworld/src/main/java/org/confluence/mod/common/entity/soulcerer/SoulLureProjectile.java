@@ -72,7 +72,7 @@ public class SoulLureProjectile extends Projectile {
     /// 参数与 `SwordItems#STARFURY` 的 `SwordProjectileAppearance.Cross` 完全一致，
     /// 换成这里只是为了让魂师技能不必依赖一把武器。
     public static final SwordProjectileAppearance.Cross STAR_APPEARANCE = new SwordProjectileAppearance.Cross(
-            Confluence.asResource("textures/entity/star_fury_projectile.png"), 0xFFFF9696, 2.0F, 18.0F, 10);
+            Confluence.asResource("textures/entity/star_fury_projectile.png"), 0xFFFFFFFF, 2.0F, 18.0F, 10);
 
     private static final EntityDataAccessor<Boolean> DATA_STAR_APPEARANCE = SynchedEntityData.defineId(SoulLureProjectile.class, EntityDataSerializers.BOOLEAN);
     /// 粒子特效 id 的同步通道。

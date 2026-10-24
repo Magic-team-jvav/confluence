@@ -152,8 +152,19 @@ public class BaseArmorItem extends ArmorItem {
             return attribute(LibAttributes.getSummonDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
+        public Builder soulDamage(double value) {
+            return attribute(LibAttributes.getSoulDamage(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        }
+
+        /// 五职业增伤：近战 / 远程 / 魔法 / 召唤 / 灵魂。
+        public Builder fiveClassesDamage(double value) {
+            return meleeDamage(value).rangedDamage(value).magicDamage(value).summonDamage(value).soulDamage(value);
+        }
+
+        /// 旧入口保留为同义方法，避免外部调用失效；实际结算与 {@link #fiveClassesDamage(double)} 一致。
+        @Deprecated
         public Builder fourClassesDamage(double value) {
-            return meleeDamage(value).rangedDamage(value).magicDamage(value).summonDamage(value);
+            return fiveClassesDamage(value);
         }
 
         public Builder criticalChance(double value) {

@@ -37,6 +37,7 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     private static final String LIFE_RETURN_LOST_TAG = "lifeReturnLost";
     private static final String MASTER_SWITCH_UNLOCKED_TAG = "masterSwitchUnlocked";
     private static final String CAST_WEAPON_DAMAGE_TAG = "castWeaponDamage";
+    private static final String STAR_LINK_MAGIC_BONUS_TAG = "starLinkMagicBonus";
 
     public static final AttachmentSyncHandler<SoulStorage> SYNC_HANDLER = new AttachmentSyncHandler<>() {
         @Override
@@ -61,7 +62,8 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
             storage.recoveryRatio = buf.readFloat();
             storage.soulMode = buf.readBoolean();
             storage.ritualCount = buf.readVarInt();
-            storage.currentSoul = storage.soulMode ? currentSoul : MIN_CURRENT_SOUL;
+            /// 灵魂值不再随模式清零：切到魔力条时保留原值，方便灵魂手环系列来回切换。
+            storage.currentSoul = currentSoul;
             return storage;
         }
     };
@@ -85,6 +87,14 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     private boolean masterSwitchUnlocked;
     /// 每个技能最近一次施法时手持武器的灵魂伤害快照，供延时 / 多段攻击保持伤害。
     private final Map<ResourceLocation, Float> castWeaponDamage = new HashMap<>();
+    /// 星魂连结：从灵魂增伤增益继承到「魔法增伤」增益上的数值（百分比，0.06 = +6%）。
+    private float starLinkMagicBonus;
+    /// 星魂连结：来源增益的完整时长记录，结束瞬间按一半写进魔法增伤增益（仅内存）。
+    private int enhancedSoulFullDuration;
+    private int goOverFullDuration;
+    /// 上一刻是否持有对应灵魂增伤增益（仅内存，用于检测结束）。
+    private boolean enhancedSoulActive;
+    private boolean goOverActive;
     /// 上一刻是否处于灵魂透支（仅内存，用于检测效果结束）。
     private boolean soulDrainActive;
     /// 上一刻是否处于生命归还（仅内存，用于检测效果结束）。
@@ -112,6 +122,7 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         nbt.putInt(SURGE_BLAST_CHARGE_TAG, surgeBlastCharge);
         nbt.putFloat(LIFE_RETURN_LOST_TAG, lifeReturnLost);
         nbt.putBoolean(MASTER_SWITCH_UNLOCKED_TAG, masterSwitchUnlocked);
+        nbt.putFloat(STAR_LINK_MAGIC_BONUS_TAG, starLinkMagicBonus);
         CompoundTag weaponDamage = new CompoundTag();
         castWeaponDamage.forEach((id, value) -> weaponDamage.putFloat(id.toString(), value));
         nbt.put(CAST_WEAPON_DAMAGE_TAG, weaponDamage);
@@ -123,7 +134,8 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         this.soulsCount = nbt.getInt(SOULS_COUNT_TAG);
         this.soulMode = nbt.getBoolean(SOUL_MODE_TAG);
-        this.currentSoul = soulMode ? nbt.getFloat(CURRENT_SOUL_TAG) : MIN_CURRENT_SOUL;
+        /// 灵魂值不再随模式清零：切到魔力条时保留原值，方便灵魂手环系列来回切换。
+        this.currentSoul = nbt.getFloat(CURRENT_SOUL_TAG);
         this.recoveryRatio = nbt.getFloat(RECOVERY_RATIO_TAG);
         this.consumedSoul = nbt.getFloat(CONSUMED_SOUL_TAG);
         this.souldancerBuffEnd = nbt.getLong(SOULDANCER_BUFF_END_TAG);
@@ -131,6 +143,7 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         this.surgeBlastCharge = Math.max(0, nbt.getInt(SURGE_BLAST_CHARGE_TAG));
         this.lifeReturnLost = Math.max(0.0F, nbt.getFloat(LIFE_RETURN_LOST_TAG));
         this.masterSwitchUnlocked = nbt.getBoolean(MASTER_SWITCH_UNLOCKED_TAG);
+        this.starLinkMagicBonus = Math.max(0.0F, nbt.getFloat(STAR_LINK_MAGIC_BONUS_TAG));
         this.castWeaponDamage.clear();
         CompoundTag weaponDamage = nbt.getCompound(CAST_WEAPON_DAMAGE_TAG);
         for (String key : weaponDamage.getAllKeys()) {
@@ -217,6 +230,50 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         this.lifeReturnActive = lifeReturnActive;
     }
 
+    /// 星魂连结继承的魔法增伤数值。
+    public float getStarLinkMagicBonus() {
+        return starLinkMagicBonus;
+    }
+
+    /// 设置星魂连结继承的魔法增伤数值。
+    public void setStarLinkMagicBonus(float starLinkMagicBonus) {
+        this.starLinkMagicBonus = Math.max(0.0F, starLinkMagicBonus);
+    }
+
+    /// 读取 / 记录强力附魂增益的完整时长与上一刻状态。
+    public int getEnhancedSoulFullDuration() {
+        return enhancedSoulFullDuration;
+    }
+
+    public void setEnhancedSoulFullDuration(int ticks) {
+        this.enhancedSoulFullDuration = Math.max(0, ticks);
+    }
+
+    public boolean isEnhancedSoulActive() {
+        return enhancedSoulActive;
+    }
+
+    public void setEnhancedSoulActive(boolean active) {
+        this.enhancedSoulActive = active;
+    }
+
+    /// 读取 / 记录复习增益的完整时长与上一刻状态。
+    public int getGoOverFullDuration() {
+        return goOverFullDuration;
+    }
+
+    public void setGoOverFullDuration(int ticks) {
+        this.goOverFullDuration = Math.max(0, ticks);
+    }
+
+    public boolean isGoOverActive() {
+        return goOverActive;
+    }
+
+    public void setGoOverActive(boolean active) {
+        this.goOverActive = active;
+    }
+
     /// 读取魂舞增益的结束时间（游戏刻）。
     public long getSouldancerBuffEnd() {
         return souldancerBuffEnd;
@@ -247,7 +304,7 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     /// 按当前属性上限规范灵魂值，不单独发送同步。
     private boolean updateMaxSoul() {
         float previousSoul = currentSoul;
-        this.currentSoul = soulMode ? Mth.clamp(currentSoul, MIN_CURRENT_SOUL, getMaxSoul()) : MIN_CURRENT_SOUL;
+        this.currentSoul = Mth.clamp(currentSoul, MIN_CURRENT_SOUL, getMaxSoul());
         return Float.compare(previousSoul, currentSoul) != 0;
     }
 
@@ -258,15 +315,15 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         return Mth.floor(soulsCount * SOUL_PER_COUNT + additionalSoul + ritualCount * SoulSkillParameters.SOUL_PER_RITUAL);
     }
 
-    /// 读取当前灵魂值，魔力模式固定为零。
+    /// 读取当前灵魂值；数值在两种资源模式之间保留，是否显示由 UI 判断。
     public float getCurrentSoul() {
-        return soulMode ? currentSoul : MIN_CURRENT_SOUL;
+        return currentSoul;
     }
 
-    /// 设置当前灵魂值；非灵魂模式只能保持为零。
+    /// 设置当前灵魂值并夹在 0..上限之间；非灵魂模式下也保留该值，供切回灵魂条时使用。
     public void setCurrentSoul(float currentSoul) {
         float previousSoul = this.currentSoul;
-        this.currentSoul = soulMode ? Mth.clamp(currentSoul, MIN_CURRENT_SOUL, getMaxSoul()) : MIN_CURRENT_SOUL;
+        this.currentSoul = Mth.clamp(currentSoul, MIN_CURRENT_SOUL, getMaxSoul());
         if (Float.compare(previousSoul, this.currentSoul) != 0) {
             sync();
         }
@@ -276,16 +333,13 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
         return soulMode;
     }
 
-    /// 切换资源模式，关闭灵魂模式时清空当前灵魂。
+    /// 切换资源模式；灵魂值保留，由切换入口决定是否清空（灵魂手环系列不清空）。
     public void setSoulMode(boolean soulMode) {
         if (this.soulMode == soulMode) {
             return;
         }
 
         this.soulMode = soulMode;
-        if (!soulMode) {
-            this.currentSoul = MIN_CURRENT_SOUL;
-        }
         sync();
     }
 

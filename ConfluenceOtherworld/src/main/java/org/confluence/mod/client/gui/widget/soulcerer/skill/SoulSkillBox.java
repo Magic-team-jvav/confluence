@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -113,7 +114,7 @@ public class SoulSkillBox extends AbstractWidget {
         if (skillStack.isEmpty()) {
             return;
         }
-        List<Component> components = new ArrayList<>(skillStack.getSkillHeaderLines());
+        List<Component> components = new ArrayList<>(skillStack.getSkillHeaderLines(Minecraft.getInstance().player, ClientConfigs.weaponTooltipBaseStats));
         components.addAll(getSkillStateComponents(skillStack));
         Component description = skillStack.getSkillDescriptionLine();
         if (description != null) {

@@ -238,7 +238,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> BLACK_SPOT_HELMET = register("black_spot_helmet", "黑斑头盔", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/black_spot_armor")
             .rarity(ModRarity.ORANGE)
-            .fourClassesDamage(0.05));
+            .fiveClassesDamage(0.05));
     public static final DeferredItem<BaseArmorItem> BLACK_SPOT_CHESTPLATE = register("black_spot_chestplate", "黑斑胸甲", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/black_spot_armor")
             .rarity(ModRarity.ORANGE)
@@ -253,7 +253,7 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> ENTERTAINERS_GARB_HAT = register("entertainers_garb_hat", "演艺家帽", ModArmorMaterials.ENTERTAINERS_GARB_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/entertainers_garb_armor")
-            .fourClassesDamage(0.08)
+            .fiveClassesDamage(0.08)
             .rarity(ModRarity.GREEN));
     public static final DeferredItem<BaseArmorItem> ENTERTAINERS_GARB_SHIRT = register("entertainers_garb_shirt", "演艺家上衣", ModArmorMaterials.ENTERTAINERS_GARB_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/entertainers_garb_armor")
@@ -270,7 +270,7 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> TROADOUR_HAT = register("troubadour_hat", "吟游诗人帽", ModArmorMaterials.TROADOUR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/troubadour_armor")
-            .fourClassesDamage(0.14)
+            .fiveClassesDamage(0.14)
             .rarity(ModRarity.LIGHT_RED));
     public static final DeferredItem<BaseArmorItem> TROADOUR_SHIRT = register("troubadour_shirt", "吟游诗人上衣", ModArmorMaterials.TROADOUR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/troubadour_armor")
@@ -345,7 +345,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> HIGHLAND_CHESTPLATE = register("highland_chestplate", "高地胸甲", ModArmorMaterials.HIGHLAND_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/highland_armor")
             .rarity(ModRarity.BLUE)
-            .fourClassesDamage(0.07));
+            .fiveClassesDamage(0.07));
     public static final DeferredItem<BaseArmorItem> HIGHLAND_LEGGINGS = register("highland_leggings", "高地护腿", ModArmorMaterials.HIGHLAND_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/highland_armor")
             .rarity(ModRarity.BLUE)
@@ -566,7 +566,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_HELMET = register("blue_hermit_helmet", "蓝隐匿者头盔", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
-            .fourClassesDamage(0.04));
+            .fiveClassesDamage(0.04));
     public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_CHESTPLATE = register("blue_hermit_chestplate", "蓝隐匿者胸甲", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
@@ -574,7 +574,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_LEGGINGS = register("blue_hermit_leggings", "蓝隐匿者护腿", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
-            .fourClassesDamage(0.04));
+            .fiveClassesDamage(0.04));
     public static final DeferredItem<BaseArmorItem> BLUE_HERMIT_BOOTS = register("blue_hermit_boots", "蓝隐匿者靴子", ModArmorMaterials.HERMIT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/blue_hermit_armor")
             .rarity(ModRarity.GREEN)
@@ -889,19 +889,19 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> CRIMSON_HELMET = register("crimson_helmet", "猩红头盔", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
-            .fourClassesDamage(0.03));
+            .fiveClassesDamage(0.03));
     public static final DeferredItem<BaseArmorItem> CRIMSON_CHESTPLATE = register("crimson_chestplate", "猩红胸甲", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
-            .fourClassesDamage(0.03));
+            .fiveClassesDamage(0.03));
     public static final DeferredItem<BaseArmorItem> CRIMSON_LEGGINGS = register("crimson_leggings", "猩红护腿", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
-            .fourClassesDamage(0.015));
+            .fiveClassesDamage(0.015));
     public static final DeferredItem<BaseArmorItem> CRIMSON_BOOTS = register("crimson_boots", "猩红靴", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/crimson_armor")
             .rarity(ModRarity.BLUE)
-            .fourClassesDamage(0.015));
+            .fiveClassesDamage(0.015));
 
     public static final DeferredItem<BaseArmorItem> MOLTEN_HELMET = register("molten_helmet", "熔岩头盔", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/molten_armor")
@@ -979,7 +979,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> COBALT_BOOTS = register("cobalt_boots", "钴靴子", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/cobalt_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .fourClassesDamage(0.03));
+            .fiveClassesDamage(0.03));
 
     public static final DeferredItem<BaseArmorItem> PALLADIUM_MASK = register("palladium_mask", "钯金面具", ModArmorMaterials.PALLADIUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/palladium_armor", true)
@@ -1000,12 +1000,12 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> PALLADIUM_CHESTPLATE = register("palladium_chestplate", "钯金胸甲", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
-            .fourClassesDamage(0.03)
+            .fiveClassesDamage(0.03)
             .criticalChance(0.02));
     public static final DeferredItem<BaseArmorItem> PALLADIUM_LEGGINGS = register("palladium_leggings", "钯金护腿", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
-            .fourClassesDamage(0.02));
+            .fiveClassesDamage(0.02));
     public static final DeferredItem<BaseArmorItem> PALLADIUM_BOOTS = register("palladium_boots", "钯金靴子", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/palladium_armor", true)
             .rarity(ModRarity.PINK)
@@ -1029,7 +1029,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> MYTHRIL_CHESTPLATE = register("mythril_chestplate", "秘银胸甲", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .fourClassesDamage(0.07));
+            .fiveClassesDamage(0.07));
     public static final DeferredItem<BaseArmorItem> MYTHRIL_LEGGINGS = register("mythril_leggings", "秘银护腿", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/mythril_armor", true)
             .rarity(ModRarity.LIGHT_RED)
@@ -1062,7 +1062,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> ORICHALCUM_LEGGINGS = register("orichalcum_leggings", "山铜护腿", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .fourClassesDamage(0.08));
+            .fiveClassesDamage(0.08));
     public static final DeferredItem<BaseArmorItem> ORICHALCUM_BOOTS = register("orichalcum_boots", "山铜靴子", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/orichalcum_armor", true)
             .rarity(ModRarity.LIGHT_RED)
@@ -1087,7 +1087,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> ADAMANTITE_CHESTPLATE = register("adamantite_chestplate", "精金胸甲", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .fourClassesDamage(0.08));
+            .fiveClassesDamage(0.08));
     public static final DeferredItem<BaseArmorItem> ADAMANTITE_LEGGINGS = register("adamantite_leggings", "精金护腿", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
@@ -1117,12 +1117,12 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> TITANIUM_CHESTPLATE = register("titanium_chestplate", "钛金胸甲", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .fourClassesDamage(0.04)
+            .fiveClassesDamage(0.04)
             .criticalChance(0.03));
     public static final DeferredItem<BaseArmorItem> TITANIUM_LEGGINGS = register("titanium_leggings", "钛金护腿", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
-            .fourClassesDamage(0.03)
+            .fiveClassesDamage(0.03)
             .criticalChance(0.03));
     public static final DeferredItem<BaseArmorItem> TITANIUM_BOOTS = register("titanium_boots", "钛金靴子", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/titanium_armor", true)

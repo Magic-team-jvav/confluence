@@ -214,6 +214,10 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.BAND_OF_SOUL.get(), "Slowly regenerates soul, 1 soul every 3 seconds; +1 soul from every soul collection", "缓慢回复灵魂，每3秒回复1点；每次收魂额外获得1点灵魂");
         language.addTooltip(AccessoryItems.BAND_OF_SOUL_REGENERATION.get(), "Slowly regenerates soul and life; +1 soul from every soul collection", "缓慢回复灵魂和生命；每次收魂额外获得1点灵魂");
         language.addTooltip(AccessoryItems.BAND_OF_MEDIUMSHIP.get(), "Slowly regenerates soul and increases maximum soul by 20; +1 soul from every soul collection", "缓慢回复灵魂，灵魂上限提高20；每次收魂额外获得1点灵魂");
+        /// 灵魂手环系列新增：切换资源条时同时保留灵魂值与魔力值。
+        language.add("tooltip.item.confluence.band_of_soul.1", "Switching between the soul and mana bars keeps both the soul value and the mana value", "切换灵魂/魔力条时，保留灵魂值和魔力值");
+        language.add("tooltip.item.confluence.band_of_soul_regeneration.1", "Switching between the soul and mana bars keeps both the soul value and the mana value", "切换灵魂/魔力条时，保留灵魂值和魔力值");
+        language.add("tooltip.item.confluence.band_of_mediumship.1", "Switching between the soul and mana bars keeps both the soul value and the mana value", "切换灵魂/魔力条时，保留灵魂值和魔力值");
         language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "Lets one weapon-granted skill be used without holding its weapon; rerolled after each cast; +1 soul from every soul collection", "无需手持武器即可使用一个由武器提供的技能，每次使用技能后重新随机；每次收魂额外获得1点灵魂");
         language.addTooltip(AccessoryItems.SOULCERER_EMBLEM.get(), "12% increased soul damage", "灵魂伤害提高12%");
         language.addTooltip(AccessoryItems.SOUL_BINDING_CHAIN.get(), "Casting any soul attach skill also casts every other equipped one; +1 soul from every soul collection", "施放任意附魂技能时，同时释放其余所有已装备的附魂技能；每次收魂额外获得1点灵魂");
@@ -230,7 +234,8 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.SOUL_PLUNDER.get(), "25% increased melee and ranged damage", "近战与远程伤害提高25%");
         language.addTooltip(ModEffects.SOUL_DRAIN.get(), "Soul costs are ignored", "施放技能不消耗灵魂");
         language.addTooltip(ModEffects.SOUL_DRAIN_LOCK.get(), "Soul skills cannot be cast", "无法释放灵魂技能");
-        language.addTooltip(ModEffects.STAR_CALL.get(), "A falling star drops on every enemy within range", "范围内每只敌怪头顶都会落下坠星");
+        language.addTooltip(ModEffects.STAR_CALL.get(), "A falling star drops on the nearest up to 2 enemies within range", "范围内最近的至多 2 只敌怪头顶都会落下坠星");
+        language.addTooltip(ModEffects.STAR_LINK.get(), "Inherits half the value and half the duration of an expired soul damage buff as magic damage", "灵魂伤害增益结束后，继承其一半数值与一半时长的魔法增伤");
         language.addTooltip(ModEffects.LIFE_RETURN.get(), "Recorded health loss returns as soul", "记录失去的生命，结束时转化为灵魂");
         language.addTooltip(ModEffects.SOUL_BUFFER.get(), "Fall damage heals you instead", "摔落伤害转化为回复");
         language.addTooltip(ModEffects.SOUL_MARK.get(), "Each skill hit on this enemy restores 1 soul; killing it restores 2", "每次被技能命中回复 1 点灵魂；被击杀时回复 2 点灵魂");

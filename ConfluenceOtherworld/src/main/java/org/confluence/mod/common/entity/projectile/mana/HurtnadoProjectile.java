@@ -77,10 +77,10 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
         EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
         if (hitResult == null) return;
         Entity entity = hitResult.getEntity();
+        /// 飓风是持续存在的伤害区域，不能写入 penetrateSet：父类的穿透集合会让同一敌人
+        /// 被记录后再也无法命中，表现就是「一只怪整场只吃一次伤害」。
+        /// 重复命中的间隔交给 `Immunity` 的静态无敌帧（8 tick）控制。
         doHurtAndKnockback(entity, 0.5, 0.2);
-        if (doPenetrateCheck(entity)) {
-            doDiscardInMaxPenetrate(14);
-        }
     }
 
     private @Nullable Entity getNearestEnemy() {

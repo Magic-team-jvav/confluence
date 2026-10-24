@@ -22,10 +22,15 @@ public record SoulSkillIndexRequestPacketC2S(int index) implements IPacketC2S {
     }
 
     /// 在服务端设置索引，并回传实际选中值。
+    ///
+    /// 若切到的槽位是未解锁技能，服务端会把它回退到手持武器提供的同标签技能（或同标签已装备槽位），
+    /// 因此回传的是修正后的索引。
     @Override
     public void work(ServerPlayer player) {
         if (Confluence.SOUL_SKILLS) {
             PlayerUtils.setCurrentSoulSkillIndex(player, index);
+            PlayerUtils.refreshSoulSkills(player);
+            PlayerUtils.ensureHeldWeaponSkill(player);
         }
         SoulSkillIndexSyncPacketS2C.sendToClient(player);
     }

@@ -56,6 +56,8 @@ public final class ModEffects {
     /// 灵魂透支结束后的代价：期间无法使用主武器。
     public static final DeferredHolder<MobEffect, MobEffect> SOUL_DRAIN_LOCK = registerEffectWithEnglishName("soul_drain_lock", "灵魂枯竭", "Soul Depleted", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x301050));
     public static final DeferredHolder<MobEffect, MobEffect> STAR_CALL = registerEffectWithEnglishName("star_call", "魂引天星", "Star Call", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFE070));
+    /// 星魂连结：灵魂增伤增益结束后继承的魔法增伤，数值与时长在 `PlayerUtils` 里按来源折半写入。
+    public static final DeferredHolder<MobEffect, MobEffect> STAR_LINK = registerEffectWithEnglishName("star_link", "星魂连结", "Star Link", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8060FF));
     public static final DeferredHolder<MobEffect, MobEffect> LIFE_RETURN = registerEffectWithEnglishName("life_return", "生命归还", "Life Return", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF80A0));
     public static final DeferredHolder<MobEffect, MobEffect> SOUL_BUFFER = registerEffectWithEnglishName("soul_buffer", "灵魂缓冲", "Soul Buffer", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x80D0FF));
     /// 附魂印记（debuff，挂在**敌人**身上）：技能命中带印记的敌人回 1 魂，击杀它回 2 魂。

@@ -95,7 +95,7 @@ public final class PrefixLanguageSubProvider {
         language.add("prefix.confluence.tooltip.add", "+%s %s", "+%s %s");
         language.add("prefix.confluence.tooltip.additional_mana", "Additional Mana", "额外魔力");
         language.add("prefix.confluence.tooltip.armor_penetration", "Armor Penetration", "盔甲穿透");
-        language.add("prefix.confluence.tooltip.four_classes_damage", "Four Classes Damage", "四职业伤害");
+        language.add("prefix.confluence.tooltip.five_classes_damage", "Five Classes Damage", "五职业伤害");
         language.add("prefix.confluence.tooltip.mana_cost", "Mana Cost", "魔力消耗");
         language.add("prefix.confluence.tooltip.plus", "+%s%% %s", "+%s%% %s");
         language.add("prefix.confluence.tooltip.summon_tag_damage", "Summon Tag Damage", "召唤标记伤害");

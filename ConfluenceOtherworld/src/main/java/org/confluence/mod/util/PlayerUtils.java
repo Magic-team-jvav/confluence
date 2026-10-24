@@ -118,6 +118,7 @@ public final class PlayerUtils {
     private static final ResourceLocation SOULDANCER_CRIT_ID = Confluence.asResource("souldancer_set_crit");
     private static final ResourceLocation SOULDANCER_SPEED_ID = Confluence.asResource("souldancer_set_speed");
     private static final ResourceLocation SOUL_ROBE_SET_SOUL_DAMAGE_ID = Confluence.asResource("soul_robe_set_soul_damage");
+    private static final ResourceLocation STAR_LINK_MAGIC_ID = Confluence.asResource("star_link_magic");
     private static final float HEALTH_PER_SOUL = 4.0F;
     private static final float SOUL_CONSUMPTION_FAILED = -1.0F;
     private static final float ENVIRONMENT_SOUL_RECOVERY_RATIO = 0.05F;
@@ -130,7 +131,7 @@ public final class PlayerUtils {
     private static final String SOUL_RITUAL_MESSAGE = "message.confluence.soul_ritual.activate";
     private static final String SOUL_RITUAL_UNLOCK_MESSAGE = "message.confluence.soul_ritual.unlock";
     private static final String SOUL_RITUAL_SLOT_MESSAGE = "message.confluence.soul_ritual.slot";
-    /// 仪式对技能栏位的解锁进度：第 1 / 3 / 5 次仪式各 +1 个栏位（3 → 4 → 5 → 6）。
+    /// 仪式对技能栏位的解锁进度：初始 4 个，第 1 / 3 / 5 次仪式各 +1 个栏位（4 → 5 → 6 → 7）。
     private static final int[] RITUAL_SLOT_UNLOCKS = {1, 3, 5};
     private static final List<RitualUnlock> RITUAL_UNLOCKS = List.of(
             /// 第一次仪式
@@ -370,6 +371,10 @@ public final class PlayerUtils {
     }
 
     public static void adjustSoul(Player player, float amount) {
+        /// 只有灵魂条生效时才累积灵魂；魔力模式下保留的旧值不应被技能/收魂事件改写。
+        if (!isSoulMode(player)) {
+            return;
+        }
         setSoul(player, getSoul(player) + amount);
     }
 
@@ -383,6 +388,9 @@ public final class PlayerUtils {
     }
 
     /// 提供切换后立即补充目标资源的扩展入口，不表示一比一兑换。
+    ///
+    /// 佩戴灵魂手环系列时，切换只改变当前生效的资源条，**不清空另一条的数值**；
+    /// 未佩戴时沿用旧行为（把另一条清零），避免普通玩家靠来回切换白嫖资源。
     public static boolean switchSoulMode(ServerPlayer player, boolean soulMode, float targetResource) {
         if (!Confluence.SOUL_SKILLS || isSoulMode(player) == soulMode) {
             return false;
@@ -393,10 +401,26 @@ public final class PlayerUtils {
         if (soulMode) {
             IronSpellHelper.cancelCasting(player);
         }
-        storage.setCurrentSoul(soulMode ? targetResource : 0.0F);
-        ManaStorage.of(player).setCurrentMana(soulMode ? 0.0F : targetResource);
+        ManaStorage manaStorage = ManaStorage.of(player);
+        if (hasBandOfSoul(player)) {
+            if (targetResource > 0.0F) {
+                if (soulMode) {
+                    storage.setCurrentSoul(Math.max(storage.getCurrentSoul(), targetResource));
+                } else {
+                    manaStorage.setCurrentMana(Math.max(manaStorage.getCurrentMana(), targetResource));
+                }
+            }
+        } else {
+            storage.setCurrentSoul(soulMode ? targetResource : 0.0F);
+            manaStorage.setCurrentMana(soulMode ? 0.0F : targetResource);
+        }
         syncMana2Client(player);
         return true;
+    }
+
+    /// 是否佩戴灵魂手环系列（灵魂手环 / 灵魂再生手环 / 通灵手环共用同一标记）。
+    public static boolean hasBandOfSoul(@Nullable Player player) {
+        return player != null && TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL);
     }
 
     /// 兑换比例尚未定义，保留入口供后续机制实现。
@@ -497,6 +521,79 @@ public final class PlayerUtils {
         storage.getAvailableSkills().addAll(available);
         mirrorSoulSkillCooldowns(player);
         return changed;
+    }
+
+    /// 当前选中槽是「未解锁且当前武器不提供」的技能时，回退到手持武器的专属技能。
+    ///
+    /// 判定顺序：
+    /// 1. 已永久解锁 / 当前可用（含手持武器临时授予、刻骨的记忆放行）→ 保持不动；
+    /// 2. 手持武器提供了同标签（引魂 / 附魂）的技能 → 优先同标签；
+    /// 3. 没有同标签技能时，退回该武器授予的第一个可释放技能。
+    ///
+    /// 若目标技能已装在其它槽位，直接把选中位切过去；否则用目标技能替换当前槽内容。
+    ///
+    /// @return 是否发生了替换 / 切换（调用方据此补发同步包）
+    public static boolean ensureHeldWeaponSkill(ServerPlayer player) {
+        SoulSkillStack current = getCurrentSkillStack(player);
+        if (current.isEmpty() || current.getSoulSkill().isPassive()) {
+            return false;
+        }
+        SoulSkill locked = current.getSoulSkill();
+        /// available 已包含永久解锁、手持武器临时授予与刻骨的记忆放行。
+        if (isSoulSkillAvailable(player, locked.getId())) {
+            return false;
+        }
+        ItemStack mainHand = player.getMainHandItem();
+        if (!(mainHand.getItem() instanceof SoulWeaponItem weapon)) {
+            return false;
+        }
+        ResourceLocation fallbackId = pickHeldWeaponFallbackSkill(player, locked, weapon.getGrantedSoulSkills(mainHand));
+        if (fallbackId == null) {
+            return false;
+        }
+        SoulSkill fallback = SoulSkillStorage.findSoulSkill(fallbackId);
+        if (fallback == null || fallback.isPassive() || !isSoulSkillAvailable(player, fallbackId)) {
+            return false;
+        }
+        List<Integer> equippedIndexes = getSoulSkillIndexes(player, fallback);
+        if (!equippedIndexes.isEmpty()) {
+            int index = equippedIndexes.get(0);
+            if (index == getCurrentSoulSkillIndex(player)) {
+                return false;
+            }
+            setCurrentSoulSkillIndex(player, index);
+        } else if (!setSoulSkillStack(player, getCurrentSoulSkillIndex(player), fallback.getStack())) {
+            return false;
+        }
+        SoulSkillSyncPacketS2C.sendToClient(player);
+        SoulSkillIndexSyncPacketS2C.sendToClient(player);
+        return true;
+    }
+
+    /// 在手持武器授予的技能里选一个与锁定技能同标签的；没有同标签时取第一个可释放技能。
+    ///
+    /// 引魂标签只会换成引魂技能，附魂标签只会换成附魂技能；两者都不匹配时才退化到武器首个技能。
+    @Nullable
+    private static ResourceLocation pickHeldWeaponFallbackSkill(Player player, SoulSkill locked, List<ResourceLocation> granted) {
+        boolean lure = locked.is(ModTags.SoulSkills.SOUL_LURE);
+        boolean attach = locked.is(ModTags.SoulSkills.SOUL_ATTACH);
+        ResourceLocation first = null;
+        for (ResourceLocation id : granted) {
+            SoulSkill candidate = SoulSkillStorage.findSoulSkill(id);
+            if (candidate == null || candidate.isPassive() || !isSoulSkillAvailable(player, id)) {
+                continue;
+            }
+            if (first == null) {
+                first = id;
+            }
+            if (lure && candidate.is(ModTags.SoulSkills.SOUL_LURE)) {
+                return id;
+            }
+            if (attach && candidate.is(ModTags.SoulSkills.SOUL_ATTACH)) {
+                return id;
+            }
+        }
+        return first;
     }
 
     /// 佩戴刻骨的记忆时，保证「武器临时技能」里有一个被放行；没佩戴则清空选择。
@@ -706,6 +803,10 @@ public final class PlayerUtils {
         }
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         boolean changed = refreshSoulSkills(player);
+        /// 换武器后当前选中的技能可能已经失效：立即回退到手持武器的专属技能。
+        if (changed) {
+            ensureHeldWeaponSkill(player);
+        }
         var iterator = storage.getSkillCooldowns().values().iterator();
         while (iterator.hasNext()) {
             SoulSkillStack stack = iterator.next();
@@ -733,7 +834,7 @@ public final class PlayerUtils {
     /// 协同类（延时 / 多段）攻击专用的伤害：武器部分取「该技能最近一次施法时」的快照。
     ///
     /// 因此放出去之后换手、空手都不会改变已施放技能的伤害；技能基础伤害、引渡者、
-    /// 星魂联结、分魂驾驭以及其它实时增益仍然照常结算。
+    /// 分魂驾驭以及其它实时增益仍然照常结算。
     public static float getCastSoulSkillDamage(ServerPlayer player, SoulSkill skill) {
         return getSoulSkillDamage(player, skill.getStack(), SoulStorage.of(player).getCastWeaponDamage(skill.getId()));
     }
@@ -751,16 +852,20 @@ public final class PlayerUtils {
         if (isSoulBookLearned(player, SoulBooks.PSYCHOPOMP) && stack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)) {
             amount += SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_DAMAGE_BONUS;
         }
-        /// 星魂联结：灵魂伤害共用一半的魔法伤害加成
-        if (isPassiveSoulSkillActive(player, ModSoulSkills.STAR_LINK.get())) {
-            double magicBonus = player.getAttributeValue(LibAttributes.getMagicDamage());
-            amount *= (float) (1.0 + magicBonus * SoulSkillParameters.STAR_LINK_SHARE_RATIO);
-        }
         /// 分魂驾驭：技能伤害翻倍（冷却同时延长）
         if (isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_CONTROL.get())) {
             amount *= SoulSkillParameters.SOUL_CONTROL_DAMAGE_MULTIPLIER;
         }
         return amount;
+    }
+
+    /// 技能说明里的实时单次伤害：包含武器份额、被动与灵魂伤害属性倍率。
+    ///
+    /// 与释放时 `getSoulSkillDamage(...)` 再乘一次灵魂属性的口径一致，因此描述里的数字就是这一发的期望伤害。
+    public static float getSoulSkillDisplayDamage(Player player, SoulSkillStack stack) {
+        SoulSkill skill = stack.getSoulSkill();
+        float raw = getSoulSkillDamage(player, stack, getWeaponSoulDamage(player) * skill.getWeaponShare());
+        return raw * (float) player.getAttributeValue(LibAttributes.getSoulDamage());
     }
 
     /// 灵魂突击：增益期间用枪械开火时消耗 1 魂强化这一发子弹（伤害 +N），并有概率返还 1 魂。
@@ -809,9 +914,17 @@ public final class PlayerUtils {
     }
 
     /// 蓝隐匿者全套：每累计消耗 10 点灵魂，削减 3 秒耐药性剩余时长。
+    ///
+    /// 另外结算星魂逆转：实际消耗掉的灵魂等量补充魔力。
     public static void onSoulSpent(ServerPlayer player, float paidSoul) {
         if (paidSoul <= 0.0F) {
             return;
+        }
+        /// 星魂逆转：消耗的灵魂等量补充魔力（保留在魔力条里，切回魔力条即可使用）。
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.STAR_REVERSAL.get())) {
+            ManaStorage manaStorage = ManaStorage.of(player);
+            manaStorage.setCurrentMana(manaStorage.getCurrentMana() + paidSoul);
+            syncMana2Client(player);
         }
         SoulStorage storage = SoulStorage.of(player);
         float unit = SoulSkillParameters.BLUE_HERMIT_SOUL_PER_REDUCTION;
@@ -932,6 +1045,8 @@ public final class PlayerUtils {
             return false;
         }
         boolean availabilityChanged = refreshSoulSkills(player);
+        /// 当前槽若已变成未解锁技能，先回退到手持武器的专属技能再继续判定。
+        ensureHeldWeaponSkill(player);
         SoulSkillStack skillStack = getCurrentSkillStack(player);
         /// 当前槽是空槽或被动时，同一次按键直接跳到下一个可释放的技能，避免按键毫无反应。
         if (skillStack.isEmpty() || skillStack.getSoulSkill().isPassive()) {
@@ -1160,8 +1275,8 @@ public final class PlayerUtils {
         return true;
     }
 
-    /// 统一结算「分魂驾驭延长」与「冰冷魂戒缩短」后的灵魂技能冷却。
-    private static int getSoulCooldownTicks(Player player, int ticks) {
+    /// 统一结算「分魂驾驭延长」与「冰冷魂戒 / 松露灯缩短」后的灵魂技能冷却。
+    public static int getSoulCooldownTicks(Player player, int ticks) {
         if (ticks <= 0) {
             return ticks;
         }
@@ -1333,10 +1448,21 @@ public final class PlayerUtils {
     public static void syncPlayerData(ServerPlayer player) {
         SoulStorage soulStorage = SoulStorage.of(player);
         soulStorage.freshMaxSoul();
-        if (soulStorage.isSoulMode()) {
-            ManaStorage.of(player).setCurrentMana(0.0F);
-        } else {
-            soulStorage.setCurrentSoul(0.0F);
+        /// 老存档的栏位按旧公式（初始 3 + 仪式）保存；本轮改为初始 4 + 第 1/3/5 次仪式，
+        /// 读档时按仪式次数补齐到新公式的栏位数（只升不降，避免覆盖调试/命令设置的更高栏位）。
+        SoulSkillStorage skillStorage = SoulSkillStorage.of(player);
+        int expectedSlots = getRitualSlotCount(soulStorage.getRitualCount());
+        if (skillStorage.getEquippedSoulSkillMaxNumber() < expectedSlots) {
+            skillStorage.setEquippedSoulSkillMaxNumber(expectedSlots);
+        }
+        updateSoulSkillSlots(player);
+        /// 灵魂手环系列保留另一条资源；未佩戴时登录仍按旧口径清空未生效的那一条。
+        if (!hasBandOfSoul(player)) {
+            if (soulStorage.isSoulMode()) {
+                ManaStorage.of(player).setCurrentMana(0.0F);
+            } else {
+                soulStorage.setCurrentSoul(0.0F);
+            }
         }
         refreshSoulSkills(player);
         syncMana2Client(player);
@@ -1806,6 +1932,65 @@ public final class PlayerUtils {
             storage.setLifeReturnLost(0.0F);
         }
         storage.setLifeReturnActive(returning);
+        /// 星魂连结：灵魂增伤增益结束时继承一半数值、一半时长的魔法增伤
+        tickStarLink(player, storage);
+    }
+
+    /// 星魂连结：检测「强力附魂 / 复习」这两个带灵魂伤害加成的增益是否结束。
+    ///
+    /// 结束时按记录到的完整时长与数值各折半，挂上 `STAR_LINK` 并写入临时魔法伤害修饰符；
+    /// 增益不在身时移除修饰符。被动未装备时不生成新的继承增益。
+    private static void tickStarLink(ServerPlayer player, SoulStorage storage) {
+        boolean passive = isPassiveSoulSkillActive(player, ModSoulSkills.STAR_LINK.get());
+        MobEffectInstance enhanced = player.getEffect(ModEffects.ENHANCED_SOUL);
+        boolean enhancedNow = enhanced != null;
+        if (enhancedNow) {
+            int duration = enhanced.getDuration();
+            storage.setEnhancedSoulFullDuration(storage.isEnhancedSoulActive()
+                    ? Math.max(storage.getEnhancedSoulFullDuration(), duration) : duration);
+        } else if (storage.isEnhancedSoulActive()) {
+            grantStarLink(player, storage, storage.getEnhancedSoulFullDuration(), SoulSkillParameters.ENHANCED_SOUL_DAMAGE_BONUS, passive);
+        }
+        storage.setEnhancedSoulActive(enhancedNow);
+
+        MobEffectInstance goOver = player.getEffect(ModEffects.GO_OVER);
+        boolean goOverNow = goOver != null;
+        if (goOverNow) {
+            int duration = goOver.getDuration();
+            storage.setGoOverFullDuration(storage.isGoOverActive()
+                    ? Math.max(storage.getGoOverFullDuration(), duration) : duration);
+        } else if (storage.isGoOverActive()) {
+            grantStarLink(player, storage, storage.getGoOverFullDuration(), SoulSkillParameters.GO_OVER_SOUL_DAMAGE_BONUS, passive);
+        }
+        storage.setGoOverActive(goOverNow);
+
+        boolean active = player.hasEffect(ModEffects.STAR_LINK);
+        if (!active && storage.getStarLinkMagicBonus() > 0.0F) {
+            storage.setStarLinkMagicBonus(0.0F);
+        }
+        applyTransientModifier(player, LibAttributes.getMagicDamage(), STAR_LINK_MAGIC_ID,
+                storage.getStarLinkMagicBonus(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL,
+                active && storage.getStarLinkMagicBonus() > 0.0F);
+    }
+
+    /// 给玩家挂上继承用的魔法增伤增益；数值与时长为来源增益的一半。
+    ///
+    /// 若继承增益尚未结束又触发了另一次继承，保留更高的数值，并取较长的剩余时长，避免被较弱来源覆盖。
+    private static void grantStarLink(ServerPlayer player, SoulStorage storage, int sourceDuration, float sourceBonus, boolean passive) {
+        if (!passive || sourceDuration <= 0) {
+            return;
+        }
+        int duration = Math.max(1, Math.round(sourceDuration * SoulSkillParameters.STAR_LINK_MAGIC_DURATION_RATIO));
+        float bonus = sourceBonus * SoulSkillParameters.STAR_LINK_MAGIC_BONUS_RATIO;
+        MobEffectInstance active = player.getEffect(ModEffects.STAR_LINK);
+        if (active != null && storage.getStarLinkMagicBonus() > bonus) {
+            bonus = storage.getStarLinkMagicBonus();
+            duration = Math.max(duration, active.getDuration());
+        }
+        storage.setStarLinkMagicBonus(bonus);
+        player.addEffect(new MobEffectInstance(ModEffects.STAR_LINK, duration, 0, false, true, true));
+        applyTransientModifier(player, LibAttributes.getMagicDamage(), STAR_LINK_MAGIC_ID,
+                storage.getStarLinkMagicBonus(), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, true);
     }
 
     /// 魂引天星：每轮给半径内**敌怪**各落一颗坠星，只只之间错开 {@link SoulSkillParameters#STAR_CALL_STAGGER_TICKS} 刻。

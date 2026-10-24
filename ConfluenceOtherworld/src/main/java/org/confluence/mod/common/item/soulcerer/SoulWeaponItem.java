@@ -121,7 +121,10 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
     public double getTooltipDamage(ItemStack stack, double attributeValue, @Nullable Player player, boolean baseStats) {
         var skill = PlayerUtils.getCurrentSkillStack(player);
         float weaponDamage = getBasicSoulDamage(stack);
-        double damage = baseStats || player == null ? weaponDamage + skill.getDamage() : PlayerUtils.getSoulSkillDamage(player, skill, weaponDamage);
+        /// 与弹幕实际结算一致：只把技能声明的武器份额算进伤害（迷魂孢雾为 20%）。
+        double damage = baseStats || player == null
+                ? weaponDamage + skill.getDamage()
+                : PlayerUtils.getSoulSkillDamage(player, skill, weaponDamage * skill.getSoulSkill().getWeaponShare());
         return damage * attributeValue;
     }
 

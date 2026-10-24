@@ -64,6 +64,12 @@ public class SoulProjectileSkill extends SoulSkill {
         return new Builder(particle);
     }
 
+    /// 弹幕只按声明比例计入武器伤害（默认全额，迷魂孢雾为 20%）。
+    @Override
+    public float getWeaponShare() {
+        return weaponShare;
+    }
+
     /// 服务端生成弹幕（多枚时按扇形散布），并按需给自身附加增益。
     @Override
     public void use(Player player, SoulSkillStack skillStack) {

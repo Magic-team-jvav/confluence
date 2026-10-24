@@ -24,9 +24,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
-    public static final int DEFAULT_EQUIPPED_SOUL_SKILL_COUNT = 3;
-    /// 技能栏位上限：第 1 / 3 / 5 次仪式各解锁一个，最多 6 个。
-    public static final int MAX_EQUIPPED_SOUL_SKILL_COUNT = 6;
+    public static final int DEFAULT_EQUIPPED_SOUL_SKILL_COUNT = 4;
+    /// 技能栏位上限：初始 4 个，第 1 / 3 / 5 次仪式各解锁一个，最多 7 个。
+    public static final int MAX_EQUIPPED_SOUL_SKILL_COUNT = 7;
     private static final String EQUIPPED_SKILL_MAX_NUMBER_TAG = "equippedSkillMaxNumber";
     private static final String CURRENT_INDEX_TAG = "currentIndex";
     private static final String EQUIPPED_SKILLS_TAG = "equippedSkills";

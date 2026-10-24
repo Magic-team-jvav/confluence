@@ -107,6 +107,13 @@ public class SoulSkill {
         return getBasicDamage();
     }
 
+    /// 本技能计入武器灵魂伤害的比例（默认全额）。
+    ///
+    /// 迷魂孢雾一类只吃部分武器伤害的技能会覆盖这里；技能说明的实时伤害也按同一比例计算。
+    public float getWeaponShare() {
+        return 1.0F;
+    }
+
     public float getBasicSoulCost() {
         return basicSoulCost;
     }

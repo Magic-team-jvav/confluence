@@ -60,7 +60,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         this.stars = nbt.getInt("stars");
         this.additionalMana = nbt.getInt("additionalMana");
-        this.currentMana = nbt.getInt("currentMana");
+        this.currentMana = nbt.getFloat("currentMana");
         this.fastManaRegeneration = nbt.getBoolean("fastManaRegeneration");
         this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
     }
@@ -90,13 +90,14 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         return true;
     }
 
+    /// 读取当前魔力；数值在两种资源模式之间保留，是否显示由 UI 判断。
     public float getCurrentMana() {
-        return isSoulMode() ? 0.0F : currentMana;
+        return currentMana;
     }
 
-    /// 设置当前魔力，灵魂模式始终保持为零。
+    /// 设置当前魔力并夹在 0..上限之间；灵魂模式下也保留该值，供切回魔力条时使用。
     public void setCurrentMana(float currentMana) {
-        this.currentMana = isSoulMode() ? 0.0F : Mth.clamp(currentMana, 0.0F, getMaxMana());
+        this.currentMana = Mth.clamp(currentMana, 0.0F, getMaxMana());
     }
 
     public int getRegenerateDelay() {
@@ -120,9 +121,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     public void freshMaxMana() {
         this.maxMana = stars * 20 + additionalMana;
-        if (isSoulMode()) {
-            this.currentMana = 0.0F;
-        } else if (currentMana > maxMana) {
+        if (currentMana > maxMana) {
             this.currentMana = maxMana;
         }
     }

@@ -48,7 +48,7 @@ public class AccessoriesSubProvider {
         )));
         Consumer<Helper> celestial = helper -> {
             ResourceLocation id = helper.asId();
-            helper.entry(TCItems.ATTRIBUTES, fourClassesAttribute(id, 0.1)
+            helper.entry(TCItems.ATTRIBUTES, fiveClassesAttribute(id, 0.1)
                     .add(Attributes.ATTACK_SPEED, id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(LibAttributes.getCriticalChance(), id, 0.02, PortAttributeModifier.Operation.ADD_VALUE)
                     .add(Attributes.ARMOR, id, 4, PortAttributeModifier.Operation.ADD_VALUE)
@@ -165,16 +165,16 @@ public class AccessoriesSubProvider {
                     helper.of(TCItems.EFFECT$IMMUNITIES, ankh);
                 })
                 .add(TCItems.EVERLASTING, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, ankh))
-                .add(TCItems.AVENGER_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, fourClassesAttribute(helper.asId(), 0.12).build()))
+                .add(TCItems.AVENGER_EMBLEM, helper -> helper.entry(TCItems.ATTRIBUTES, fiveClassesAttribute(helper.asId(), 0.12).build()))
                 .add(TCItems.DESTROYER_EMBLEM, helper -> {
                     ResourceLocation id = helper.asId();
-                    helper.entry(TCItems.ATTRIBUTES, fourClassesAttribute(id, 0.1)
+                    helper.entry(TCItems.ATTRIBUTES, fiveClassesAttribute(id, 0.1)
                             .add(LibAttributes.getCriticalChance(), id, 0.08, PortAttributeModifier.Operation.ADD_VALUE)
                             .build());
                 })
                 .add(TCItems.PUTRID_SCENT, helper -> {
                     ResourceLocation id = helper.asId();
-                    helper.entry(TCItems.ATTRIBUTES, fourClassesAttribute(id, 0.05)
+                    helper.entry(TCItems.ATTRIBUTES, fiveClassesAttribute(id, 0.05)
                             .add(ConfluenceMagicLib.AGGRO, id, -400, PortAttributeModifier.Operation.ADD_VALUE)
                             .build());
                 })
@@ -331,12 +331,14 @@ public class AccessoriesSubProvider {
     }
 
 
-    private static AttributeModifiersValue.Builder fourClassesAttribute(ResourceLocation id, double amount) {
+    /// 五职业增伤：近战 / 远程 / 魔法 / 召唤 / 灵魂。
+    private static AttributeModifiersValue.Builder fiveClassesAttribute(ResourceLocation id, double amount) {
         return AttributeModifiersValue.builder()
                 .add(LibAttributes.getAttackDamage(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                 .add(LibAttributes.getRangedDamage(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                 .add(LibAttributes.getMagicDamage(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                .add(LibAttributes.getSummonDamage(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+                .add(LibAttributes.getSummonDamage(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                .add(LibAttributes.getSoulDamage(), id, amount, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     }
 
     public static class Builder extends PortDataMapProvider.Builder<PrimitiveValueComponent, Item> {

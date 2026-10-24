@@ -78,7 +78,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.spirit_surge.name", "Spirit Surge", "灵魂激荡");
         language.add("confluence.soulcerer_skill.spirit_trigger.name", "Spirit Trigger", "灵魂引发");
         language.add("confluence.soulcerer_skill.star_call.name", "Star Call", "魂引天星");
-        language.add("confluence.soulcerer_skill.star_link.name", "Star Link", "星魂联结");
+        language.add("confluence.soulcerer_skill.star_link.name", "Star Link", "星魂连结");
         language.add("confluence.soulcerer_skill.star_reversal.name", "Star Reversal", "星魂逆转");
         language.add("confluence.soulcerer_skill.state.equipped", "Equipped", "已装备");
         language.add("confluence.soulcerer_skill.state.learned", "Permanently unlocked", "已永久解锁");
@@ -100,11 +100,10 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.tooltip.cooldown", "Cooldown: %ss", "冷却：%s 秒");
         language.add("confluence.soulcerer_skill.tooltip.buff_duration", "Buff duration: %ss (%s)", "BUFF持续时间：%s 秒（%s）");
         language.add("confluence.soulcerer_skill.tooltip.soul_cost", "Soul cost: %s", "所需消耗的灵魂数：%s");
-        language.add("confluence.soulcerer_skill.tooltip.description", "Description: %s", "技能描述：%s");
         language.add("confluence.soulcerer_skill.soul_lure.desc", "Fires a soul projectile that slightly homes in on enemies ahead and bounces to another enemy on hit.", "释放一道会略微追踪前方敌怪的单体灵魂弹幕，命中后朝附近另一只敌怪弹射一次。");
         language.add("confluence.soulcerer_skill.enhanced_soul.desc", "Increases soul damage by 12%.", "灵魂伤害提高 12%。");
         language.add("confluence.soulcerer_skill.spirit_surge.desc", "Unlocked from the start. Releases an expanding shockwave that damages nearby enemies.", "开局即解锁。以自身为中心释放一圈扩散的冲击波，造成群体灵魂伤害。");
-        language.add("confluence.soulcerer_skill.surge_blast.desc", "Every third surge detonates a much larger finishing blast.", "连续三次激荡后追加更大范围、更强威力的终极爆炸。");
+        language.add("confluence.soulcerer_skill.surge_blast.desc", "Every cast unleashes a surge and builds a charge; every third cast detonates an extra, much larger finishing blast.", "每次施放都会引发一圈激荡并累计层数；每第 3 次施放额外引爆一次范围更大、威力更高的终结爆炸。");
         language.add("confluence.soulcerer_skill.blood_rage.desc", "Spends 5 health for 200% melee and ranged damage; kills grant 1 extra soul.", "消耗 5 点生命，近战与远程伤害提高 200%；期间击杀额外获得 1 点灵魂。");
         language.add("confluence.soulcerer_skill.enhanced_lure.desc", "A stronger Soul Lure projectile that bounces one more time.", "强化版引魂，弹幕基础威力大幅提升，且额外弹射一次。");
         language.add("confluence.soulcerer_skill.soul_mark.desc", "Marks the enemy hit for 10 seconds: every skill that hits it restores 1 soul, and killing it restores 2 more.", "为命中的敌人挂上 10 秒附魂印记：所有技能命中它都回复 1 点灵魂，击杀它再回复 2 点灵魂。");
@@ -113,8 +112,8 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.empowered_surge.desc", "A much larger and stronger surge.", "范围与威力都远超普通激荡的强化版。");
         language.add("confluence.soulcerer_skill.spirit_trigger.desc", "Surge hits spray chain projectiles from the target.", "激荡命中后从敌人位置向随机方向射出多道弹幕。");
         language.add("confluence.soulcerer_skill.soul_drain.desc", "For 80 seconds soul costs are ignored; afterwards soul skills are locked for 160 seconds.", "80 秒内施放技能不消耗灵魂；结束后 160 秒内无法释放灵魂技能。");
-        language.add("confluence.soulcerer_skill.star_reversal.desc", "Passive (reserved): converting between mana and soul would no longer empty the other pool; the conversion itself is not implemented yet.", "被动（预留）：魔力与灵魂互相转化时不再清空另一方数值。转化机制尚未实装。");
-        language.add("confluence.soulcerer_skill.star_link.desc", "Soul damage shares half of your magic damage bonus.", "被动：灵魂伤害与魔法伤害互相共用其 50% 加成。");
+        language.add("confluence.soulcerer_skill.star_reversal.desc", "Passive: soul you spend restores the same amount of mana.", "被动：你消耗的灵魂会等量补充魔力。");
+        language.add("confluence.soulcerer_skill.star_link.desc", "Passive: when a buff that increases soul damage ends, gain a magic damage buff with half its value and half its duration.", "被动：带有灵魂伤害加成的增益结束后，获得一次数值与时长都减半的魔法伤害加成增益。");
         language.add("confluence.soulcerer_skill.soul_harvest.desc", "Minion and projectile hits have a 5% chance to restore 1 soul.", "被动：召唤物与弹幕命中敌人时有 5% 概率回复 1 点灵魂。");
 
         language.add("confluence.soulcerer_skill.soul_assault.desc", "While active, converts up to 10 current soul into that many bullets every 0.5 seconds (+4 damage each, each bullet has a 20% chance to refund 1 soul); firing a gun spends 1 soul to empower that shot (+5 damage, 50% chance to refund).", "增益期间每 0.5 秒把至多 10 点当前灵魂换成等量灵魂子弹（每发伤害 +4，每发 20% 概率返还 1 魂）；期间用枪械开火会消耗 1 点灵魂强化这一发（伤害 +5，50% 概率返还 1 魂）。");
@@ -122,10 +121,10 @@ public final class InterfaceLanguageSubProvider {
 
         language.add("confluence.soulcerer_skill.backlash_resistance.desc", "Overdraft damage is reduced by 60%.", "被动：耗尽灵魂扣血施法时，扣除伤害减少 60%。");
         language.add("confluence.soulcerer_skill.soul_control.desc", "Skill damage doubled, cooldowns lengthened by 50%.", "被动：技能伤害提高 100%，冷却延长 50%。");
-        language.add("confluence.soulcerer_skill.soul_rotation.desc", "Chains the whole Enhanced Soul series in rotation after casting; other skills simply advance the selection.", "被动：施放强力附魂系列技能后，一次按键即可把该系列其余技能依次连锁释放；其他技能只自动切换到下一个。");
+        language.add("confluence.soulcerer_skill.soul_rotation.desc", "Passive: after casting a soul attach skill, one key press chains the rest of your equipped attach skills; other skills simply advance the selection.", "被动：施放附魂技能后，一次按键即可把其余已装备的附魂技能依次连锁释放（强主动技能除外）；其他技能只自动切换到下一个。");
         language.add("confluence.soulcerer_skill.life_return.desc", "Lost health is recorded and returned as soul.", "开启后记录失去的生命，结束时按 70% 转化为灵魂值。");
         language.add("confluence.soulcerer_skill.survival_instinct.desc", "Below 40 health, spend soul to halve potion sickness.", "血量低于 40 时，消耗 10 灵魂使耐药性 debuff 时长减半。");
-        language.add("confluence.soulcerer_skill.star_call.desc", "Drops a falling star on every enemy within range; no enemy means no star, and the extra volleys cost no soul.", "范围内每只敌怪头顶都会落下坠星；没有敌怪就不落，且施放之后的每轮齐射都不消耗灵魂。");
+        language.add("confluence.soulcerer_skill.star_call.desc", "Drops a falling star on the nearest up to 2 enemies within range; no enemy means no star, and the extra volleys cost no soul.", "范围内最近的至多 2 只敌怪头顶会落下坠星；没有敌怪就不落，且施放之后的每轮齐射都不消耗灵魂。");
         language.add("confluence.soulcerer_skill.confuse_spores.desc", "Fires one volley of spores; each volley has a 50% chance to arc in from above and a 50% chance to fire in a straight line.", "发射一轮孢子弹幕：每轮有 50% 概率从斜上方抛射（随重力飘落），50% 概率改为直线射击。");
         language.add("confluence.soulcerer_skill.law_of_nature.desc", "20% chance to spend no soul.", "被动：有 20% 概率不消耗灵魂。");
         language.add("confluence.soulcerer_skill.natures_wrath.desc", "Fires a fan of stingers that poison on hit.", "释放扇形毒刺弹幕，命中时附加中毒。");

@@ -84,7 +84,8 @@ public interface ModPrefix {
                 builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
                         .put(LibAttributes.getRangedDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
                         .put(LibAttributes.getMagicDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
-                        .put(LibAttributes.getSummonDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                        .put(LibAttributes.getSummonDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                        .put(LibAttributes.getSoulDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0.0F) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));

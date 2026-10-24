@@ -206,7 +206,7 @@ public final class ClientConfigs {
             builder.push("GUI");
             {
                 builder.push("ItemTooltips");
-                WEAPON_TOOLTIP_BASE_STATS = builder.comment("Show weapon damage and critical strike chance with modifiers, excluding player equipment and effects. Disabled by default to show the final values with player bonuses.")
+                WEAPON_TOOLTIP_BASE_STATS = builder.comment("Show weapon / soul skill damage and cooldown with base stats, excluding player equipment and effects. Disabled by default to show the final values with player bonuses and cooldown reductions.")
                         .define("weaponTooltipBaseStats", false);
                 SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
                 builder.pop();

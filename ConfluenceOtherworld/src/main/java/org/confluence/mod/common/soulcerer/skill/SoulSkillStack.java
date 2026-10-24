@@ -4,7 +4,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.init.ModSoulSkills;
+import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -50,18 +52,32 @@ public class SoulSkillStack {
     /// 名称与数值行：名称，其后依次是伤害、冷却、各条 BUFF 持续时间、所需灵魂数。
     ///
     /// 数值为 0（无伤害 / 无冷却 / 不耗魂）的项不出现；顺序固定，便于横向对比不同技能。
+    ///
+    /// 不带玩家上下文时显示白板数值；带玩家时按 `baseStats` 决定显示白板还是实时数值。
     public List<Component> getSkillHeaderLines() {
+        return getSkillHeaderLines(null, true);
+    }
+
+    /// 带玩家上下文的名称与数值行。
+    ///
+    /// @param player    用于读取实时伤害 / 冷却的玩家；null 时等同白板
+    /// @param baseStats true 显示技能定义里的白板数值，false 显示含装备与增益的实时数值
+    public List<Component> getSkillHeaderLines(@Nullable Player player, boolean baseStats) {
         List<Component> list = new ArrayList<>();
         list.add(getNameComponent());
         if (isEmpty()) {
             return list;
         }
         SoulSkill skill = getSoulSkill();
-        float damage = skill.getDamage(this);
-        if (damage > 0.0F) {
+        boolean live = player != null && !baseStats;
+        /// 只有本身带伤害的技能才显示伤害行；增益 / 被动不把自己当成一次攻击。
+        float baseDamage = skill.getDamage(this);
+        if (baseDamage > 0.0F) {
+            float damage = live ? PlayerUtils.getSoulSkillDisplayDamage(player, this) : baseDamage;
             list.add(statLine("damage", formatNumber(damage)));
         }
-        int cooldown = skill.getCooldown(this);
+        int baseCooldown = skill.getCooldown(this);
+        int cooldown = live ? PlayerUtils.getSoulCooldownTicks(player, baseCooldown) : baseCooldown;
         if (cooldown > 0) {
             list.add(statLine("cooldown", formatNumber(cooldown / (float) SharedConstants.TICKS_PER_SECOND)));
         }
@@ -77,14 +93,10 @@ public class SoulSkillStack {
         return list;
     }
 
-    /// 统一话术的技能说明行：「技能描述：…」；空技能返回 null。
+    /// 技能说明行：直接显示描述正文，不再追加「技能描述：」前缀；空技能返回 null。
     @Nullable
     public Component getSkillDescriptionLine() {
-        Component description = getNarrationComponent();
-        if (description == null) {
-            return null;
-        }
-        return Component.translatable(TOOLTIP_KEY_PREFIX + "description", description).withStyle(ChatFormatting.GRAY);
+        return getNarrationComponent();
     }
 
     /// 组合技能名称、数值与可选说明。

@@ -227,8 +227,9 @@ public class SoulSkillParameters {
     // ===== 被动 =====
     /// 自然法则：概率不消耗灵魂。
     public static final float LAW_OF_NATURE_FREE_CHANCE = 0.2F;
-    /// 星魂联结：灵魂伤害与魔法伤害互相共用的加成比例。
-    public static final float STAR_LINK_SHARE_RATIO = 0.5F;
+    /// 星魂连结：灵魂增伤增益结束后，继承的魔法增伤增益按来源的该比例折半。
+    public static final float STAR_LINK_MAGIC_BONUS_RATIO = 0.5F;
+    public static final float STAR_LINK_MAGIC_DURATION_RATIO = 0.5F;
     /// 灵魂收割：召唤物命中时概率回魂。
     public static final float SOUL_HARVEST_CHANCE = 0.05F;
     public static final float SOUL_HARVEST_SOUL = 1.0F;

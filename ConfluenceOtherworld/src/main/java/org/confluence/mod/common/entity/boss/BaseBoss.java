@@ -67,6 +67,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     protected static final int DISENGAGE_TICKS = 200;
     /// 定期补发自定义样式元数据，覆盖换档、重连及部件主身份交接造成的客户端时序差。
     private static final int BOSS_BAR_RESYNC_INTERVAL = 40;
+    /// 失去有效战斗目标后继续等待的时间，单位 tick；到期进入脱战处理。
     private static final int RETREAT_TICKS = 40;
     private static final byte PHASE_PARTICLE_EVENT = 60;
     private static final byte DEATH_PARTICLE_EVENT = 61;

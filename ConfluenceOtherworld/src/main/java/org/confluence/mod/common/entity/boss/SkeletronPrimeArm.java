@@ -34,11 +34,47 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
     public static final int VICE = 2;
     public static final int CANNON = 3;
 
+    /// 机械臂接触命中后再次造成伤害的间隔，单位 tick。
+    private static final int CONTACT_COOLDOWN_TICKS = 20;
+    /// 非旋转阶段锯臂与钳臂的攻击循环长度，单位 tick。
+    private static final int HOVER_MELEE_CYCLE_TICKS = 120;
+    /// 本体旋转时锯臂的攻击循环长度，单位 tick。
+    private static final int SPIN_SAW_CYCLE_TICKS = 65;
+    /// 本体旋转时钳臂的攻击循环长度，单位 tick。
+    private static final int SPIN_VICE_CYCLE_TICKS = 85;
+    /// 悬停攻击第一轮瞄准结束时刻，单位循环 tick。
+    private static final int HOVER_FIRST_AIM_END = 30;
+    /// 悬停攻击第一轮突进准备结束时刻，单位循环 tick。
+    private static final int HOVER_FIRST_WINDUP_END = 35;
+    /// 悬停攻击第一轮突进结束时刻，单位循环 tick。
+    private static final int HOVER_FIRST_DASH_END = 45;
+    /// 悬停攻击第二轮瞄准结束时刻，单位循环 tick。
+    private static final int HOVER_SECOND_AIM_END = 75;
+    /// 悬停攻击第二轮突进准备结束时刻，单位循环 tick。
+    private static final int HOVER_SECOND_WINDUP_END = 80;
+    /// 悬停攻击第二轮突进结束时刻，单位循环 tick。
+    private static final int HOVER_SECOND_DASH_END = 90;
+    /// 本体旋转时机械臂每次突进的周期，单位 tick。
+    private static final int SPIN_ATTACK_PERIOD = 25;
+    /// 旋转突进周期内的瞄准准备时长，单位 tick。
+    private static final int SPIN_AIM_TICKS = 5;
+    /// 旋转突进周期内的突进结束时刻，单位 tick。
+    private static final int SPIN_DASH_END_TICKS = 15;
+
+    /// 悬停阶段锯臂冲刺速度，单位格/tick。
+    private static final float HOVER_SAW_DASH_SPEED = 1.0F;
+    /// 悬停阶段钳臂冲刺速度，单位格/tick。
+    private static final float HOVER_VICE_DASH_SPEED = 2.0F;
+    /// 本体旋转时锯臂冲刺速度，单位格/tick。
+    private static final float SPIN_SAW_DASH_SPEED = 1.5F;
+    /// 本体旋转时钳臂冲刺速度，单位格/tick。
+    private static final float SPIN_VICE_DASH_SPEED = 2.5F;
+
     private static final String ARM_TYPE_TAG = "ArmType";
     private static final EntityDataAccessor<Integer> ARM_TYPE = SynchedEntityData.defineId(SkeletronPrimeArm.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private int contactCooldown = 20;
+    private int contactCooldown = CONTACT_COOLDOWN_TICKS;
     private int rangedBehaviorTick;
     private int meleeBehaviorTick;
     private boolean previousOwnerSpinning;
@@ -192,8 +228,8 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
             return;
         }
         int cycleLength = spinning
-                ? (vice ? 85 : 65)
-                : 120;
+                ? (vice ? SPIN_VICE_CYCLE_TICKS : SPIN_SAW_CYCLE_TICKS)
+                : HOVER_MELEE_CYCLE_TICKS;
         if (spinning) {
             tickSpinningMeleeTimeline(master, target, vice);
         } else {
@@ -207,23 +243,23 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
 
     private void tickHoveringMeleeTimeline(SkeletronPrime master, LivingEntity target, boolean vice) {
         int tick = meleeBehaviorTick;
-        if (tick < 30) {
+        if (tick < HOVER_FIRST_AIM_END) {
             face(target.getEyePosition());
             followPinnedSlot(master, 5.0F, 0.4F);
-        } else if (tick < 35) {
+        } else if (tick < HOVER_FIRST_WINDUP_END) {
             face(target.getEyePosition());
             moveToNextPosition();
-        } else if (tick < 45) {
+        } else if (tick < HOVER_FIRST_DASH_END) {
             dashTowardLockedTarget(master, target,
-                    tick == 35, vice ? 2.0F : 1.0F);
-        } else if (tick < 75) {
+                    tick == HOVER_FIRST_WINDUP_END, vice ? HOVER_VICE_DASH_SPEED : HOVER_SAW_DASH_SPEED);
+        } else if (tick < HOVER_SECOND_AIM_END) {
             followPinnedSlot(master, 2.0F, vice ? 1.0F : 0.3F);
-        } else if (tick < 80) {
+        } else if (tick < HOVER_SECOND_WINDUP_END) {
             face(target.getEyePosition());
             moveToNextPosition();
-        } else if (tick < 90) {
+        } else if (tick < HOVER_SECOND_DASH_END) {
             dashTowardLockedTarget(master, target,
-                    tick == 80, vice ? 2.0F : 1.0F);
+                    tick == HOVER_SECOND_WINDUP_END, vice ? HOVER_VICE_DASH_SPEED : HOVER_SAW_DASH_SPEED);
         } else {
             followPinnedSlot(master, 2.0F, vice ? 1.0F : 0.3F);
         }
@@ -239,16 +275,16 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
             followPinnedSlot(master, 5.0F, 0.4F);
             return;
         }
-        int repeatIndex = sequenceTick / 25;
+        int repeatIndex = sequenceTick / SPIN_ATTACK_PERIOD;
         if (repeatIndex >= repeats) {
             return;
         }
-        int localTick = sequenceTick % 25;
-        if (localTick < 5) {
+        int localTick = sequenceTick % SPIN_ATTACK_PERIOD;
+        if (localTick < SPIN_AIM_TICKS) {
             face(target.getEyePosition());
             moveToNextPosition();
-        } else if (localTick < 15) {
-            dashTowardLockedTarget(master, target, localTick == 5, vice ? 2.5F : 1.5F);
+        } else if (localTick < SPIN_DASH_END_TICKS) {
+            dashTowardLockedTarget(master, target, localTick == SPIN_AIM_TICKS, vice ? SPIN_VICE_DASH_SPEED : SPIN_SAW_DASH_SPEED);
         } else {
             followPinnedSlot(master, 2.0F, vice ? 1.5F : 0.5F);
         }
@@ -284,7 +320,7 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
                 entity -> entity instanceof LivingEntity living && living.canBeSeenAsEnemy()
                         && !(living instanceof Enemy) && master.canAttack(living))) {
             if (target.hurt(damageSources().mobAttack(master), (float) getAttributeValue(Attributes.ATTACK_DAMAGE))) {
-                contactCooldown = 20;
+                contactCooldown = CONTACT_COOLDOWN_TICKS;
                 return;
             }
         }

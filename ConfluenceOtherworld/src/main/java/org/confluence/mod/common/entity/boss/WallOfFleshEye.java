@@ -10,9 +10,22 @@ import org.jetbrains.annotations.Nullable;
 
 /// 血肉墙的眼睛；每只眼睛独立锁定目标并维持自己的射击节奏。
 public final class WallOfFleshEye extends WallOfFleshPart {
+    /// 进入射击状态到首发激光的延迟，单位 tick。
     private static final int FIRST_SHOT_DELAY = 10;
+
+    /// 肉墙眼睛射击目标的最远距离，单位格。
+    private static final double MAX_TARGET_DISTANCE = 120.0;
+    /// 肉墙眼睛激光弹体的飞行速度，单位格/tick。
+    private static final double LASER_SPEED = 1.5;
+    /// 激光发射时对目标移动位置的最大预判时长，单位 tick。
+    private static final double MAX_TARGET_LEAD_TICKS = 12.0;
+    /// 两轮激光射击间额外随机等待的范围，单位 tick。
+    private static final int SHOT_INTERVAL_VARIATION = 20;
+    /// 普通阶段两发激光之间的间隔，单位 tick。
     private static final int NORMAL_SHOT_INTERVAL = 20;
+    /// 二阶段两发激光之间的间隔，单位 tick。
     private static final int PHASE_TWO_SHOT_INTERVAL = 14;
+    /// 连发激光之间的短间隔，单位 tick。
     private static final int BURST_INTERVAL = 10;
 
     private int shootTimer = FIRST_SHOT_DELAY;
@@ -27,7 +40,7 @@ public final class WallOfFleshEye extends WallOfFleshPart {
         if (target == null || !master.isValidFrontTarget(target)) {
             return;
         }
-        if (distanceToSqr(target) > 120.0 * 120.0 * 1.2) {
+        if (distanceToSqr(target) > MAX_TARGET_DISTANCE * MAX_TARGET_DISTANCE * 1.2) {
             return;
         }
         if (--shootTimer > 0) {
@@ -41,7 +54,7 @@ public final class WallOfFleshEye extends WallOfFleshPart {
             burstRemaining = master.isPhaseTwo() ? 3 : 1;
             float health = master.getHealth() / master.getMaxHealth();
             shootTimer = Math.max(2, Math.round(((master.isPhaseTwo() ? PHASE_TWO_SHOT_INTERVAL : NORMAL_SHOT_INTERVAL)
-                    + random.nextInt(20)) * (0.4F + 0.6F * health)));
+                    + random.nextInt(SHOT_INTERVAL_VARIATION)) * (0.4F + 0.6F * health)));
         }
     }
 
@@ -56,13 +69,13 @@ public final class WallOfFleshEye extends WallOfFleshPart {
 
         Vec3 origin = position().add(0.0, getBbHeight() * 0.5, 0.0);
         Vec3 targetCenter = target.position().add(0.0, target.getBbHeight() * 0.5, 0.0);
-        double flightTicks = origin.distanceTo(targetCenter) / 1.5;
-        Vec3 predictedTarget = targetCenter.add(target.getDeltaMovement().scale(Math.min(flightTicks, 12.0)));
+        double flightTicks = origin.distanceTo(targetCenter) / LASER_SPEED;
+        Vec3 predictedTarget = targetCenter.add(target.getDeltaMovement().scale(Math.min(flightTicks, MAX_TARGET_LEAD_TICKS)));
         Vec3 direction = predictedTarget.subtract(origin);
         if (direction.lengthSqr() < 1.0E-6) {
             return;
         }
-        projectile.configure(master, origin, direction.normalize().scale(1.5), (float) master.getAttributeValue(Attributes.ATTACK_DAMAGE), 100);
+        projectile.configure(master, origin, direction.normalize().scale(LASER_SPEED), (float) master.getAttributeValue(Attributes.ATTACK_DAMAGE), 100);
         serverLevel.addFreshEntity(projectile);
     }
 }

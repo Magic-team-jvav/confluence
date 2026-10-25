@@ -36,7 +36,11 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
     private static final String HOOK_INDEX_TAG = "HookIndex";
     private static final String ANCHOR_TAG = "Anchor";
     private static final String STATE_TAG = "State";
+    /// 藤钩向目标位置移动的基础速度，单位格/tick。
     private static final double HOOK_SPEED = 2.0;
+
+    /// 钩索回到锚点时每 tick 保留的位置修正比例。
+    private static final double FOLLOW_MOMENTUM = 0.9;
 
     private static final EntityDataAccessor<Integer> HOOK_INDEX = SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Optional<BlockPos>> ANCHOR = SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
@@ -118,7 +122,7 @@ public class PlanteraHook extends BaseLivingBossPart<Plantera> implements GeoEnt
                 setState(STATE_GRABBED);
                 spawnThorns(master, anchor);
             }
-            Vec3 movement = offset.scale(0.9);
+            Vec3 movement = offset.scale(FOLLOW_MOMENTUM);
             setDeltaMovement(movement);
             move(MoverType.SELF, movement);
             updateRotation(movement);

@@ -33,24 +33,52 @@ public class Plantera extends BaseBoss {
     static final int BODY_TENTACLE_COUNT = 8;
     static final int TENTACLES_PER_HOOK = 3;
     static final int TENTACLE_COUNT = 14 + HOOK_COUNT * 6;
-    // 钩爪搜索与系绳最大长度均为 48 方块；移动速度和加速度单位为方块/tick。
+    /// 钩爪搜索与系绳最大长度均为 48 方块；移动速度和加速度单位为方块/tick。
     private static final double HOOK_SEARCH_RANGE = 48.0;
+    /// 藤钩与本体之间允许的最大牵引长度，单位格。
     private static final double HOOK_TETHER_LENGTH = 48.0;
+    /// 一阶段移动速度上限，单位格/tick。
     private static final double PHASE_ONE_MOVE_SPEED = 0.1;
+    /// 二阶段移动速度上限，单位格/tick。
     private static final double PHASE_TWO_MOVE_SPEED = 0.2;
+    /// 激怒状态的移动速度上限，单位格/tick。
     private static final double ENRAGED_MOVE_SPEED = 0.2;
+    /// 追踪目标时每 tick 的速度调整幅度。
     private static final double MOVE_ACCELERATION = 0.1;
+    /// 种子弹幕初速度，单位格/tick。
     private static final float SEED_SPEED = 2.5F;
+    /// 荆棘弹幕初速度，单位格/tick。
     private static final float THORN_SPEED = 0.85F;
+    /// 孢子弹幕初速度，单位格/tick。
     private static final float SPORE_SPEED = 2.5F;
+    /// 进入战斗到允许首次攻击的准备时间，单位 tick。
     private static final int ATTACK_WARMUP_TICKS = 100;
+    /// 满血附近种子攻击的发射间隔，单位 tick。
     private static final int SEED_INTERVAL_FULL_HEALTH = 27;
+    /// 低血量时种子攻击间隔的下限，单位 tick。
     private static final int SEED_INTERVAL_LIMIT = 13;
+    /// 满血附近荆棘攻击的发射间隔，单位 tick。
     private static final int THORN_INTERVAL_FULL_HEALTH = 22;
+    /// 低血量时荆棘攻击间隔的下限，单位 tick。
     private static final int THORN_INTERVAL_LIMIT = 14;
+    /// 半血附近孢子攻击的发射间隔，单位 tick。
     private static final int SPORE_INTERVAL_HALF_HEALTH = 27;
+    /// 低血量时孢子攻击间隔的下限，单位 tick。
     private static final int SPORE_INTERVAL_LIMIT = 13;
+    /// 被击毁的触手开始重建前的基础等待时间，单位 tick。
     private static final int TENTACLE_REBUILD_BASE_COOLDOWN = 100;
+
+    /// 每次寻找可用钩索锚点的随机尝试次数。
+    private static final int HOOK_SEARCH_ATTEMPTS = 18;
+    /// 钩索从距离本体多少格处开始搜索。
+    private static final double HOOK_SEARCH_START = 4.0;
+    /// 钩索沿搜索方向逐次前进的距离，单位格。
+    private static final double HOOK_SEARCH_STEP = 2.0;
+    /// 二阶段移动加速度倍率。
+    private static final double PHASE_TWO_ACCELERATION_MULTIPLIER = 1.15;
+
+    /// 钩索拉扯移动时每 tick 保留的旧速度比例。
+    private static final double HOOKED_MOVE_MOMENTUM = 0.85D;
     private static final String PHASE_TAG = "Phase";
     private static final String ATTACK_TICKS_TAG = "AttackTicks";
     private static final String TENTACLE_TIMER_TAG = "TentacleTimer";
@@ -277,11 +305,11 @@ public class Plantera extends BaseBoss {
 
     BlockPos findHookAnchor(int hookIndex) {
         double baseAngle = hookIndex * Mth.TWO_PI / HOOK_COUNT + tickCount * 0.0125;
-        for (int attempt = 0; attempt < 18; attempt++) {
+        for (int attempt = 0; attempt < HOOK_SEARCH_ATTEMPTS; attempt++) {
             double angle = baseAngle + attempt * 2.399963229728653;
             double vertical = ((attempt % 7) - 3) * 0.14;
             Vec3 direction = new Vec3(Math.cos(angle), vertical, Math.sin(angle)).normalize();
-            for (double distance = 4.0; distance <= HOOK_SEARCH_RANGE; distance += 2.0) {
+            for (double distance = HOOK_SEARCH_START; distance <= HOOK_SEARCH_RANGE; distance += HOOK_SEARCH_STEP) {
                 BlockPos candidate = BlockPos.containing(position().add(direction.scale(distance)));
                 if (isValidHookAnchor(candidate)) return candidate;
             }
@@ -294,7 +322,7 @@ public class Plantera extends BaseBoss {
     private void updateMovement() {
         LivingEntity target = getTarget();
         if (target == null) {
-            setDeltaMovement(getDeltaMovement().scale(0.85D));
+            setDeltaMovement(getDeltaMovement().scale(HOOKED_MOVE_MOMENTUM));
             return;
         }
 
@@ -320,7 +348,7 @@ public class Plantera extends BaseBoss {
         if (getPhase() >= 1 && getHealth() < getMaxHealth() * 0.25F) maximumSpeed *= 1.4;
         if (isFtw()) {
             maximumSpeed *= 1.15;
-            acceleration = acceleration.scale(1.15);
+            acceleration = acceleration.scale(PHASE_TWO_ACCELERATION_MULTIPLIER);
         }
         Vec3 velocity = getDeltaMovement().add(acceleration);
         if (velocity.lengthSqr() > maximumSpeed * maximumSpeed) {

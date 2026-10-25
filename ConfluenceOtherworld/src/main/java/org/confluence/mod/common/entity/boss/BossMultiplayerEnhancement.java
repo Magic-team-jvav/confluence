@@ -13,6 +13,7 @@ import java.util.UUID;
 
 /// 仅负责遭遇人数与生命配置，难度全部交给 CreatureDifficultyScaling。
 public final class BossMultiplayerEnhancement {
+    /// 参与多人 Boss 属性缩放计算的玩家数量上限。
     private static final int MAX_PLAYER_COUNT = 8;
     private static final UUID LEGACY_HEALTH_ID = PortAttributeModifier.rl2uuid(Confluence.asResource("boss_difficulty_player_count_max_health"));
     private static final UUID LEGACY_DAMAGE_ID = PortAttributeModifier.rl2uuid(Confluence.asResource("boss_difficulty_attack_damage"));

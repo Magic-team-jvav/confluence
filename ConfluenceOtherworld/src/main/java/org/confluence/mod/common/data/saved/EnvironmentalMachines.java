@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -11,22 +12,27 @@ import net.minecraft.network.protocol.game.ClientboundChunksBiomesPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.PalettedContainer;
+import net.minecraft.world.level.levelgen.Heightmap;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.terraform.EnvironmentalMachineBlock;
 import org.confluence.mod.common.block.functional.terraform.Solution;
+import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
 import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.*;
 
-// 机器坐标、库存与已付费工作时间通过 IGlobalData 持久化；环境维持由自然蔓延的随机刻触发。
+// 机器坐标、库存与已付费工作时间通过 IGlobalData 持久化；随机刻阻断蔓延，运行中的机器限量主动转换。
 public enum EnvironmentalMachines implements IGlobalData {
     INSTANCE;
     public static final int SLOT_COUNT = 3;
@@ -36,6 +42,9 @@ public enum EnvironmentalMachines implements IGlobalData {
     public static final int CLENTAMINATOR_DAILY_COST = 3;
     public static final int TERRAFORMER_DAILY_COST = 1;
     private static final int STATUS_SYNC_INTERVAL = 20;
+    private static final int ACTIVE_SAMPLES_PER_TICK = 24;
+    private static final int TREE_BLOCK_LIMIT = 128;
+    private static final int VINE_LENGTH_LIMIT = 25;
     public static final int MIN_RANGE_CHUNKS = 1;
     public static final int MAX_RANGE_CHUNKS = 20;
     public static final int DEFAULT_CLENTAMINATOR_RANGE_CHUNKS = 3;
@@ -70,9 +79,9 @@ public enum EnvironmentalMachines implements IGlobalData {
             return count;
         }
 
-        // 已注入且未耗尽的溶液也参与判断，避免更换库存后绕过混合反应。
+        // 只有槽位里同时存在不同溶液才算混装；已经消耗的工作余量不是库存。
         public boolean hasMixedSolutions() {
-            Solution selected = paidUntil > lastTime ? solution : null;
+            Solution selected = null;
             for (int slot = 0; slot < SLOT_COUNT; slot++) {
                 if (slots[slot] <= 0 || slotSolutions[slot] == null) continue;
                 if (selected != null && selected != slotSolutions[slot]) return true;
@@ -86,6 +95,23 @@ public enum EnvironmentalMachines implements IGlobalData {
             for (int slot = 0; slot < SLOT_COUNT; slot++)
                 if (slots[slot] == 0) slotSolutions[slot] = null;
             long clock = enabled ? now : lastTime;
+            if (solution != null && paidUntil > clock && stored() > 0) {
+                boolean sameSolutionStored = false;
+                for (int slot = 0; slot < SLOT_COUNT; slot++) {
+                    if (slots[slot] > 0 && slotSolutions[slot] == solution) {
+                        sameSolutionStored = true;
+                        break;
+                    }
+                }
+                if (!sameSolutionStored) {
+                    enabled = false;
+                    paidUntil = Long.MIN_VALUE;
+                    activeSlot = -1;
+                    solution = null;
+                    lastTime = now;
+                    clock = now;
+                }
+            }
             if (paidUntil <= clock) {
                 solution = null;
                 activeSlot = -1;
@@ -216,7 +242,7 @@ public enum EnvironmentalMachines implements IGlobalData {
             State state = machines.get(key);
             if (state == null || !state.enabled) continue;
             if (level.hasChunkAt(key.pos) && !(level.getBlockState(key.pos).getBlock() instanceof EnvironmentalMachineBlock)) {
-                remove(level, key.pos);
+                // tick() 会清理失效机器；查询期间不修改正在遍历的机器集合。
                 continue;
             }
             if (!power(level, key, state)) continue;
@@ -235,13 +261,94 @@ public enum EnvironmentalMachines implements IGlobalData {
         if (level.isOutsideBuildHeight(pos) || !level.isLoaded(pos)) return false;
         Solution solution = solutionAt(level, pos);
         if (solution == null) return false;
-        var source = level.getBlockState(pos);
+        convertAt(level, pos, solution);
+        return true;
+    }
+
+    private void convertAt(ServerLevel level, BlockPos pos, Solution solution) {
+        BlockState source = level.getBlockState(pos);
         if (!source.isAir() && !source.hasBlockEntity()) {
             var target = solution.convert(level, pos, source);
-            if (target != source) level.setBlock(pos, target, 2);
+            if (target != source) {
+                if (source.getBlock() instanceof BaseDroopingPlantsHeadBlock) {
+                    convertVineColumn(level, pos, solution);
+                } else {
+                    if (source.is(BlockTags.LOGS) || source.is(BlockTags.LEAVES)
+                            || level.getBlockState(pos.above()).is(BlockTags.LOGS))
+                        convertTree(level, pos, solution);
+                    level.setBlock(pos, target, 2);
+                }
+            }
             convertBiome(level, pos, solution);
         }
-        return true;
+    }
+
+    // 与自然蔓延共用树木连通规则，且只改造已加载、受同种溶液覆盖的树体。
+    // 沿用自然蔓延的连通树思路：普通树按六面相邻，棕榈树还检查对角邻接。
+    // 只读取已加载位置，限制单次转换量，避免大树或贴合树冠拖慢世界刻。
+    private void convertTree(ServerLevel level, BlockPos origin, Solution solution) {
+        ArrayDeque<BlockPos> pending = new ArrayDeque<>();
+        Set<BlockPos> visited = new HashSet<>();
+        pending.add(origin);
+        pending.add(origin.above());
+        while (!pending.isEmpty() && visited.size() < TREE_BLOCK_LIMIT) {
+            BlockPos pos = pending.removeFirst();
+            if (!visited.add(pos) || level.isOutsideBuildHeight(pos) || !level.isLoaded(pos)
+                    || solutionAt(level, pos) != solution) continue;
+            BlockState source = level.getBlockState(pos);
+            if (!source.is(BlockTags.LOGS) && !source.is(BlockTags.LEAVES)) continue;
+            boolean palm = source.is(NatureBlocks.PALM_LOG_BLOCKS.LOG.get())
+                    || source.is(NatureBlocks.PALM_LOG_BLOCKS.WOOD.get())
+                    || source.is(NatureBlocks.PALM_LOG_BLOCKS.STRIPPED_LOG.get())
+                    || source.is(NatureBlocks.PALM_LOG_BLOCKS.STRIPPED_WOOD.get())
+                    || source.is(NatureBlocks.PALM_LOG_BLOCKS.LEAVES.get());
+            BlockState target = solution.convert(level, pos, source);
+            if (target != source) level.setBlock(pos, target, 2);
+            if (source.is(BlockTags.LEAVES)) convertVineColumn(level, pos.below(), solution);
+            if (palm) {
+                for (BlockPos neighbor : BlockPos.betweenClosed(pos.offset(-1, -1, -1), pos.offset(1, 1, 1)))
+                    if (!neighbor.equals(pos)) pending.add(neighbor.immutable());
+            } else {
+                for (Direction direction : Direction.values()) pending.add(pos.relative(direction));
+            }
+        }
+    }
+
+    // 随机刻仍阻止自然蔓延；机器另作限量采样，使普通刻速下也能持续净化。
+    // 命中树冠或任一段垂藤时转换整串，保留年龄、水浸与头/身/尾属性。
+    private void convertVineColumn(ServerLevel level, BlockPos hit, Solution solution) {
+        BlockPos top = hit;
+        for (int i = 0; i < VINE_LENGTH_LIMIT && level.isLoaded(top.above())
+                && level.getBlockState(top.above()).getBlock() instanceof BaseDroopingPlantsHeadBlock; i++)
+            top = top.above();
+        for (int i = 0; i < VINE_LENGTH_LIMIT && level.isLoaded(top) && !level.isOutsideBuildHeight(top); i++, top = top.below()) {
+            BlockState source = level.getBlockState(top);
+            if (!(source.getBlock() instanceof BaseDroopingPlantsHeadBlock) || solutionAt(level, top) != solution)
+                break;
+            BlockState target = solution.convert(level, top, source);
+            if (target != source) level.setBlock(top, target, 2);
+        }
+    }
+
+    private void activeConvert(ServerLevel level, Key key, State state) {
+        int range = rangeChunks(state.world);
+        int startX = (key.pos.getX() >> 4) - range / 2;
+        int startZ = (key.pos.getZ() >> 4) - range / 2;
+        for (int i = 0; i < ACTIVE_SAMPLES_PER_TICK; i++) {
+            int chunkX = startX + level.random.nextInt(range);
+            int chunkZ = startZ + level.random.nextInt(range);
+            LevelChunk chunk = level.getChunkSource().getChunkNow(chunkX, chunkZ);
+            if (chunk == null) continue;
+            int localX = level.random.nextInt(CHUNK_WIDTH);
+            int localZ = level.random.nextInt(CHUNK_WIDTH);
+            int surface = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, localX, localZ) - 1;
+            int y = i < ACTIVE_SAMPLES_PER_TICK * 2 / 3
+                    ? surface - level.random.nextInt(4)
+                    : Mth.nextInt(level.random, level.getMinBuildHeight(), Math.max(level.getMinBuildHeight(), surface));
+            BlockPos sample = new BlockPos(chunkX * CHUNK_WIDTH + localX, y, chunkZ * CHUNK_WIDTH + localZ);
+            if (solutionAt(level, sample) == state.solution)
+                convertAt(level, sample, state.solution);
+        }
     }
 
     // 计费独立于随机刻；查询和世界刻共用入口，避免在到期边界继续免费维持。
@@ -255,7 +362,7 @@ public enum EnvironmentalMachines implements IGlobalData {
         return powered;
     }
 
-    // 世界刻只计费、同步状态并清除失效记录，不扫描或改造地形，也不强制加载机器区块。
+    // 世界刻计费、同步状态并限量转换已加载地形；不强制加载覆盖范围内的区块。
     public void tick(ServerLevel level) {
         Iterator<Map.Entry<Key, State>> iterator = machines.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -274,7 +381,7 @@ public enum EnvironmentalMachines implements IGlobalData {
                     coverage.remove(level.dimension());
                 }
             }
-            power(level, key, state);
+            if (power(level, key, state)) activeConvert(level, key, state);
             if (level.hasChunkAt(key.pos) && level.getGameTime() >= state.nextStatusSync) {
                 state.nextStatusSync = level.getGameTime() + STATUS_SYNC_INTERVAL;
                 sync(level, key.pos);

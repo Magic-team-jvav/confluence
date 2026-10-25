@@ -52,6 +52,7 @@ public class BrainOfCthulhu extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    /// 第一阶段初始召唤的飞眼怪数量。
     private static final int NEURON_COUNT = 20;
     private final Map<UUID, NeuronHealth> neuronHealth = new HashMap<>();
     private float estimatedNeuronMaximum;
@@ -60,16 +61,45 @@ public class BrainOfCthulhu extends BaseBoss {
     private record NeuronHealth(float current, float maximum) {}
 
     private static final EntityDataAccessor<Boolean> DATA_OPAQUE_ILLUSIONS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.BOOLEAN);
+    /// 开场动画开始后首次召唤飞眼怪的时间点，单位 tick。
     private static final int SUMMON_START_TICK = 21;
+    /// 开场连续召唤飞眼怪的间隔，单位 tick。
     private static final int SUMMON_INTERVAL_TICKS = 2;
+
+    /// 二阶段后撤时与玩家保持的目标距离，单位格。
+    private static final double PHASE_TWO_RETREAT_DISTANCE = 10.0;
+    /// 二阶段后撤时的移动速度，单位格/tick。
+    private static final double PHASE_TWO_RETREAT_SPEED = 0.3;
+    /// 二阶段曲线冲刺终点相对玩家的水平距离，单位格。
+    private static final double PHASE_TWO_CURVE_DISTANCE = 10.0;
+    /// 同步或追踪战斗玩家时的最大搜索距离，单位格。
+    private static final double NEARBY_PLAYER_SEARCH_RANGE = 250.0;
+
+    /// 每次更新神经元编队时随机旋转其位置的概率。
+    private static final float NEURON_HOME_ROTATION_CHANCE = 0.5F;
+    /// 二阶段重新定位时的移动速度，单位格/tick。
+    private static final double PHASE_TWO_REPOSITION_SPEED = 0.25;
+    /// 区块恢复后重新认领脑神经仆从的搜索半径，单位格。
+    private static final double NEURON_RECOVERY_RANGE = 96.0;
+    /// 受到击退后每 tick 保留的击退速度比例。
+    private static final double KNOCKBACK_MOMENTUM = 0.6;
+    /// 第一阶段靠近目标的状态持续时间，单位 tick。
     private static final int PHASE1_APPROACH_TICKS = 200;
+    /// 第一阶段隐身离场动画的持续时间，单位 tick。
     private static final int PHASE1_FADE_OUT_TICKS = 40;
+    /// 第一阶段重新显形动画的持续时间，单位 tick。
     private static final int PHASE1_FADE_IN_TICKS = 40;
+    /// 进入第二阶段时变形状态的持续时间，单位 tick。
     private static final int PHASE2_TRANSFORM_TICKS = 15;
+    /// 第二阶段追踪目标、准备突进的持续时间，单位 tick。
     private static final int PHASE2_STALK_TICKS = 40;
+    /// 第二阶段单次冲刺的最长持续时间，单位 tick。
     private static final int PHASE2_DASH_TICKS = 30;
+    /// 第二阶段冲刺开始前的蓄力时间，单位 tick。
     private static final int PHASE2_DASH_WINDUP_TICKS = 10;
+    /// 第二阶段隐身离场动画的持续时间，单位 tick。
     private static final int PHASE2_FADE_OUT_TICKS = 30;
+    /// 第二阶段重新显形动画的持续时间，单位 tick。
     private static final int PHASE2_FADE_IN_TICKS = 100;
     private static final String PHASE_TWO_TAG = "PhaseTwo";
     private static final String PHASE_TWO_STATE_TAG = "PhaseTwoState";
@@ -272,7 +302,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 neuron.setHomeOffset(baseOffset);
             }
             Vec3 currentOffset = baseOffset;
-            if (random.nextFloat() < 0.5F) {
+            if (random.nextFloat() < NEURON_HOME_ROTATION_CHANCE) {
                 double angle = random.nextDouble() * 20.0;
                 double cosine = Math.cos(angle);
                 double sine = Math.sin(angle);
@@ -290,7 +320,7 @@ public class BrainOfCthulhu extends BaseBoss {
         if (away.lengthSqr() < 1.0E-6) {
             away = new Vec3(1.0, 0.0, 0.0);
         }
-        Vec3 destination = target.position().add(away.normalize().scale(10.0)).add(0.0, verticalOffset, 0.0);
+        Vec3 destination = target.position().add(away.normalize().scale(PHASE_TWO_RETREAT_DISTANCE)).add(0.0, verticalOffset, 0.0);
         Vec3 offset = destination.subtract(position());
         if (offset.lengthSqr() > 2.0) {
             setDeltaMovement(offset.normalize().scale(isFtw() ? 0.45 : 0.15));
@@ -341,7 +371,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 if (phaseTwoStateTicks < PHASE2_DASH_WINDUP_TICKS) {
                     Vec3 away = position().subtract(target.position());
                     setDeltaMovement(away.lengthSqr() > 1.0E-6
-                            ? away.normalize().scale(0.3)
+                            ? away.normalize().scale(PHASE_TWO_RETREAT_SPEED)
                             : Vec3.ZERO);
                 } else {
                     if (phaseTwoCurveStart == null) initializeDashCurve(target);
@@ -362,7 +392,7 @@ public class BrainOfCthulhu extends BaseBoss {
             case FADING_OUT -> {
                 Vec3 away = position().subtract(target.position());
                 setDeltaMovement(away.lengthSqr() > 1.0E-6
-                        ? away.normalize().scale(0.3)
+                        ? away.normalize().scale(PHASE_TWO_RETREAT_SPEED)
                         : Vec3.ZERO);
                 if (++phaseTwoStateTicks >= PHASE2_FADE_OUT_TICKS) {
                     enterPhaseTwoState(PhaseTwoState.FADING_IN);
@@ -372,7 +402,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 Vec3 destination = target.position().add(0.0, 1.0, 0.0);
                 Vec3 offset = destination.subtract(position());
                 if (offset.lengthSqr() > 2.0 && hurtTime == 0) {
-                    setDeltaMovement(offset.normalize().scale(0.25));
+                    setDeltaMovement(offset.normalize().scale(PHASE_TWO_REPOSITION_SPEED));
                 }
                 lookAtTarget(target);
                 if (++phaseTwoStateTicks >= PHASE2_FADE_IN_TICKS) {
@@ -413,7 +443,7 @@ public class BrainOfCthulhu extends BaseBoss {
         if (horizontal.lengthSqr() < 1.0E-6) horizontal = new Vec3(1.0, 0.0, 0.0);
         phaseTwoCurveStart = position();
         phaseTwoCurveControl = target.position().add(random.nextDouble() - 0.5, -2.0, random.nextDouble() - 0.5);
-        phaseTwoCurveEnd = target.position().add(horizontal.normalize().scale(10.0)).add(0.0, 2.0, 0.0);
+        phaseTwoCurveEnd = target.position().add(horizontal.normalize().scale(PHASE_TWO_CURVE_DISTANCE)).add(0.0, 2.0, 0.0);
         setDeltaMovement(Vec3.ZERO);
     }
 
@@ -543,7 +573,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 found.add(neuron);
             }
         }
-        found.addAll(level().getEntitiesOfClass(VisualNeuron.class, getBoundingBox().inflate(96.0), neuron -> neuron.isAlive() && neuron.isOwnedBy(this)));
+        found.addAll(level().getEntitiesOfClass(VisualNeuron.class, getBoundingBox().inflate(NEURON_RECOVERY_RANGE), neuron -> neuron.isAlive() && neuron.isOwnedBy(this)));
         return List.copyOf(found);
     }
 
@@ -706,7 +736,7 @@ public class BrainOfCthulhu extends BaseBoss {
         if (phaseTwoCurveControl != null)
             phaseTwoCurveControl = phaseTwoCurveControl.add(knockbackVelocity);
         if (phaseTwoCurveEnd != null) phaseTwoCurveEnd = phaseTwoCurveEnd.add(knockbackVelocity);
-        knockbackVelocity = knockbackVelocity.scale(0.6);
+        knockbackVelocity = knockbackVelocity.scale(KNOCKBACK_MOMENTUM);
     }
 
     /// 短时强制效果持续刷新，离开战斗范围或 Boss 撤离后自动恢复，保留被覆盖的药水效果。
@@ -714,7 +744,7 @@ public class BrainOfCthulhu extends BaseBoss {
         if (!isFtw() || !isAlive() || isDisengageRetreating() || !(level() instanceof ServerLevel serverLevel))
             return;
         for (Player player : serverLevel.players()) {
-            if (player.isAlive() && !player.isCreative() && !player.isSpectator() && distanceToSqr(player) < 250.0 * 250.0) {
+            if (player.isAlive() && !player.isCreative() && !player.isSpectator() && distanceToSqr(player) < NEARBY_PLAYER_SEARCH_RANGE * NEARBY_PLAYER_SEARCH_RANGE) {
                 player.addEffect(new MobEffectInstance(LibEffects.GRAVITATION.get(), 3, 2, false, false, false));
             }
         }

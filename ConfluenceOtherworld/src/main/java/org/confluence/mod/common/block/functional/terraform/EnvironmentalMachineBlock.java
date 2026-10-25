@@ -44,6 +44,7 @@ import org.confluence.mod.client.renderer.block.EnvironmentalMachineRenderer;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -171,6 +172,8 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
                 }
                 if (data.setEnabled(!data.enabled, level.getDayTime())) {
                     entity.setChanged();
+                    if (data.enabled && data.solution == Solution.GREEN && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer)
+                        AchievementUtils.awardAchievement(serverPlayer, "and_good_riddance");
                     level.playSound(null, entity.basePos(), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS,
                             SWITCH_VOLUME, data.enabled ? SWITCH_ON_PITCH : SWITCH_OFF_PITCH);
                     player.displayClientMessage(Component.translatable(data.enabled
@@ -216,8 +219,6 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         if (!(level.getBlockEntity(origin) instanceof BEntity entity)) return;
         var data = entity.data();
         EnumSet<Solution> solutions = EnumSet.noneOf(Solution.class);
-        // 已付费但未耗尽的溶液同样参与反应，保持与混装判定一致。
-        if (data.paidUntil > data.lastTime && data.solution != null) solutions.add(data.solution);
         for (int slot = 0; slot < SLOT_COUNT; slot++) {
             if (data.slots[slot] > 0 && data.slotSolutions[slot] != null)
                 solutions.add(data.slotSolutions[slot]);

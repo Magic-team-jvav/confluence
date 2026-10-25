@@ -14,6 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.entity.animal.Bunny;
 import org.confluence.mod.common.entity.animal.Goldfish;
+import org.confluence.mod.common.entity.animal.MysticFrog;
 import org.confluence.mod.common.entity.animal.Penguin;
 import org.confluence.mod.common.init.entity.ModEntities;
 
@@ -96,7 +97,7 @@ public class ThrownPowderEntity extends Entity {
             setDeltaMovement(motion.scale(0.96));
             if (!level().isClientSide) {
                 if (type == ISpreadable.Type.PURE) {
-                    for (org.confluence.mod.common.entity.animal.MysticFrog frog : level().getEntitiesOfClass(org.confluence.mod.common.entity.animal.MysticFrog.class, getBoundingBox().inflate(1.0)))
+                    for (MysticFrog frog : level().getEntitiesOfClass(MysticFrog.class, getBoundingBox().inflate(1.0)))
                         frog.purify();
                 }
                 if (type == ISpreadable.Type.CORRUPT || type == ISpreadable.Type.CRIMSON) {

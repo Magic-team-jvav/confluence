@@ -17,6 +17,17 @@ import org.jetbrains.annotations.Nullable;
 public class PureMachineConversionTable extends ConversionTable {
     @Override
     protected @Nullable Block getTarget(BlockState source, boolean hardmode) {
+        if (source.is(NatureBlocks.GLOWING_MUSHROOM_VINE.get())) {
+            return NatureBlocks.JUNGLE_DROOPING_VINE.get();
+        }
+        if (source.is(NatureBlocks.CORRUPT_DROOPING_VINE.get())
+                || source.is(NatureBlocks.CRIMSON_DROOPING_VINE.get())
+                || source.is(NatureBlocks.HALLOW_DROOPING_VINE.get())
+                || source.is(NatureBlocks.PINE_DROOPING_VINE.get())
+                || source.is(NatureBlocks.SILENT_DROOPING_VINE.get())
+                || source.is(NatureBlocks.MOONGLOW_WILLOW_DROOPING_VINE.get())) {
+            return NatureBlocks.FOREST_DROOPING_VINE.get();
+        }
         if (source.is(NatureBlocks.CORRUPTION_THORN.get()) || source.is(NatureBlocks.CRIMSON_THORN.get())) {
             return Blocks.AIR;
         }

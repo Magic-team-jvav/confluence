@@ -14,6 +14,11 @@ import org.confluence.mod.common.entity.ai.SweptContactAttack;
 
 /// 幻影龙仍存活时由错误仪式召出的远古幻象，反复沿锁定的水平航向穿越目标。
 public final class AncientVision extends BaseLivingBossPart<LunaticCultist> {
+    /// 远古幻视重新锁定冲刺方向的间隔，单位 tick。
+    private static final int DASH_REFRESH_TICKS = 40;
+    /// 远古幻视冲刺的移动速度，单位格/tick。
+    private static final double DASH_SPEED = 0.8;
+
     private Vec3 dash = Vec3.ZERO;
     private int contactCooldown;
 
@@ -34,12 +39,12 @@ public final class AncientVision extends BaseLivingBossPart<LunaticCultist> {
         }
         LivingEntity target = master.getTarget();
         if (target == null || !target.isAlive()) return;
-        if (dash.lengthSqr() < 1.0E-7 || tickCount % 40 == 0) {
+        if (dash.lengthSqr() < 1.0E-7 || tickCount % DASH_REFRESH_TICKS == 0) {
             Vec3 direction = target.getEyePosition().subtract(getBoundingBox().getCenter()).multiply(1.0, 0.0, 1.0);
             dash = direction.lengthSqr() < 1.0E-7 ? Vec3.directionFromRotation(0.0F, getYRot()) : direction.normalize();
         }
         double vertical = Mth.clamp((target.getEyeY() - getY()) * 0.04, -0.2, 0.2);
-        Vec3 movement = dash.scale(0.8).add(0.0, vertical, 0.0);
+        Vec3 movement = dash.scale(DASH_SPEED).add(0.0, vertical, 0.0);
         setDeltaMovement(movement);
         setPos(position().add(movement));
         LibEntityUtils.turnEntityTowards(this, dash, 180.0F, 0.0F);

@@ -35,13 +35,30 @@ import org.confluence.mod.common.init.entity.ModEntities;
 /// 手部实体是可重建的临时部件。这里只保存每个槽位是否已摧毁及剩余生命，
 /// 避免区块重载复活已摧毁的手，或复制仍然存活的手。
 public class Skeletron extends BaseBoss {
-    // 非旋转阶段相对目标眼睛的悬浮偏移，单位均为方块。
+    /// 非旋转阶段相对目标眼睛的悬浮偏移，单位均为方块。
     private static final double FLOAT_HEIGHT_ABOVE_TARGET = 7.0D;
+    /// 头部悬停目标与玩家的水平距离，单位格。
     private static final double FLOAT_HORIZONTAL_DISTANCE = 6.0D;
-    // 两个低位分别代表左、右手；两位均置一表示双手都已被摧毁。
+    /// 两个低位分别代表左、右手；两位均置一表示双手都已被摧毁。
     private static final int ALL_HANDS_DESTROYED = 0b11;
-    // 骷髅弹的基础发射间隔（tick）和单发基础伤害；难度修正另行计算。
+    /// 骷髅弹的基础发射间隔（tick）和单发基础伤害；难度修正另行计算。
     private static final int BASE_SKULL_COOLDOWN = 20;
+
+    /// 追击阶段每 tick 保留的旧速度比例。
+    private static final double CHASE_MOMENTUM = 0.85D;
+    /// 追击瞄准时目标当前速度的放大系数，单位 tick。
+    private static final double TARGET_VELOCITY_LEAD = 10.0;
+    /// 悬停靠近目标时按位置差计算加速度的系数。
+    private static final double HOVER_ACCELERATION = 0.01;
+    /// 悬停修正的基础移动速度，单位格/tick。
+    private static final double HOVER_BASE_SPEED = 0.16;
+    /// 悬停修正的最低速度，单位格/tick。
+    private static final double HOVER_MIN_SPEED = 0.22;
+    /// 悬停修正的最高速度，单位格/tick。
+    private static final double HOVER_MAX_SPEED = 0.48;
+
+    /// 骷髅王进入不规则悬浮移动的概率。
+    private static final float ERRATIC_FLOAT_CHANCE = 0.3F;
     private static final String DESTROYED_HANDS_TAG = "DestroyedHands";
     private static final String PHASE_TWO_TAG = "PhaseTwo";
     private static final String HAND_HEALTH_TAG = "HandHealth";
@@ -128,7 +145,7 @@ public class Skeletron extends BaseBoss {
             floatingActive = false;
             setSpinning(false);
             updateStateAttributes(CombatState.FLOATING);
-            setDeltaMovement(getDeltaMovement().scale(0.85D));
+            setDeltaMovement(getDeltaMovement().scale(CHASE_MOMENTUM));
             LivingEntity observer = findVisualObserver();
             if (observer != null) faceTarget(observer);
             advanceCombatCycle();
@@ -147,7 +164,7 @@ public class Skeletron extends BaseBoss {
         } else {
             if (!floatingActive) {
                 floatingActive = true;
-                floatingCrazy = random.nextFloat() < 0.3F;
+                floatingCrazy = random.nextFloat() < ERRATIC_FLOAT_CHANCE;
             }
             if (getY() < target.getY()) {
                 setDeltaMovement(getDeltaMovement().add(0.0, 0.02, 0.0));
@@ -223,7 +240,7 @@ public class Skeletron extends BaseBoss {
         Vec3 targetPosition = target.position()
                 .add(horizontalAway.normalize().scale(FLOAT_HORIZONTAL_DISTANCE))
                 .add(0.0D, FLOAT_HEIGHT_ABOVE_TARGET, 0.0D);
-        Vec3 dampedVelocity = getDeltaMovement().scale(10.0);
+        Vec3 dampedVelocity = getDeltaMovement().scale(TARGET_VELOCITY_LEAD);
         double targetDistance = target.position().subtract(position()).length();
         Vec3 correction = targetPosition.subtract(position()).subtract(dampedVelocity);
         if (correction.lengthSqr() <= 1.0E-7) {
@@ -238,7 +255,7 @@ public class Skeletron extends BaseBoss {
         if (floatingCrazy) {
             // 疯狂悬浮只增加水平压迫，不能用玩家脚底的 Y 坐标持续把头部往地面拉。
             Vec3 horizontalPressure = target.position().subtract(position()).multiply(1.0D, 0.0D, 1.0D);
-            result = result.add(horizontalPressure.scale(0.01));
+            result = result.add(horizontalPressure.scale(HOVER_ACCELERATION));
             if (result.length() > maximumSpeed) {
                 result = result.normalize().scale(maximumSpeed);
             }
@@ -263,7 +280,7 @@ public class Skeletron extends BaseBoss {
             speed = 1.0;
             maximumSpeed = 1.0;
         } else if (isExpert()) {
-            speed = Mth.clamp(0.01 * direction.length() + 0.16, 0.22, 0.48);
+            speed = Mth.clamp(HOVER_ACCELERATION * direction.length() + HOVER_BASE_SPEED, HOVER_MIN_SPEED, HOVER_MAX_SPEED);
             if (isFtw()) {
                 speed *= 1.3;
             }

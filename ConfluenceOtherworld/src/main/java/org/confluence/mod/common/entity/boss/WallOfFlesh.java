@@ -60,6 +60,15 @@ import java.util.*;
 /// 各自维护射击或吐出水蛭的节奏。墙面布局由一个持久化种子生成，因此仍保留
 /// 墙面外观使用持久随机布局，保证区块重载后不会换成另一套眼、嘴和饿鬼位置。
 public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData {
+    /// FTW 模式每 tick 尝试召唤火焰小鬼的概率分母。
+    private static final int FTW_IMP_SPAWN_CHANCE = 60;
+    /// 同一肉墙附近最多同时存在的火焰小鬼数量。
+    private static final int FTW_IMP_LIMIT = 4;
+    /// 统计已存在火焰小鬼的搜索半径，单位格。
+    private static final double FTW_IMP_SEARCH_RANGE = 64.0;
+    /// 每次召唤小鬼寻找可站立落点的最大尝试次数。
+    private static final int FTW_IMP_SPAWN_ATTEMPTS = 16;
+
     private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(WallOfFlesh.class, EntityDataSerializers.BOOLEAN);
 
     private static final String PHASE_TWO_TAG = "PhaseTwo";
@@ -70,22 +79,52 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     private static final String HUNGRY_TIMER_TAG = "HungryTimer";
     private static final String HUNGRY_INITIALIZED_TAG = "HungryInitialized";
 
+    /// 肉墙沿前进方向距初始位置的终点距离，单位格；到达后击杀仍受恐惧束缚的玩家并移除。
     private static final double FINISH_LINE_DISTANCE = 2000.0;
+    /// 地形处理网格的水平采样数量。
     private static final int GRID_SIZE_X = 40;
     private final Map<UUID, Long> contactHits = new HashMap<>();
+    /// 地形处理网格的竖直采样数量。
     private static final int GRID_SIZE_Y = 30;
+    /// 相邻地形采样点之间的距离，单位格。
     private static final double GRID_SPACING = 15.0;
+    /// 肉墙眼睛与嘴等部位的布局间距，单位格。
     private static final double PART_LAYOUT_SPACING = 20.0;
+    /// 追击场地由网格数量与间距计算出的宽度，单位格。
     private static final double PURSUIT_WIDTH = GRID_SIZE_X * GRID_SPACING;
+    /// 追击场地由网格数量与间距计算出的高度，单位格。
     private static final double PURSUIT_HEIGHT = GRID_SIZE_Y * GRID_SPACING;
+    /// 追击区域允许的前后纵深，单位格。
     private static final double PURSUIT_DEPTH = 150.0;
+    /// 下界肉墙特殊地形处理所用的参考高度，单位格；实际阈值取其三分之二。
     private static final double NETHER_GENERATION_HEIGHT = 128.0;
+    /// 刷新肉墙周围区块保持加载状态的间隔，单位 tick。
     private static final int CHUNK_REFRESH_INTERVAL = 5;
+    /// 区块票据在未刷新时保留的时间，单位 tick。
     private static final int CHUNK_RETENTION_TICKS = 30 * 20;
 
+    /// 饿鬼重新生成的基础间隔，单位 tick。
     private static final int HUNGRY_RESPAWN_INTERVAL = 1200;
+    /// 同一玩家同时分配到的嘴部攻击实体上限。
     private static final int MAX_ASSIGNED_MOUTHS = 2;
+    /// 同一玩家同时分配到的眼部攻击实体上限。
     private static final int MAX_ASSIGNED_EYES = 4;
+
+    /// 火焰小鬼随机落点的水平坐标取值宽度，单位格。
+    private static final int FTW_IMP_HORIZONTAL_SPAWN_WIDTH = 25;
+    /// 火焰小鬼随机落点的水平坐标中心偏移，单位格。
+    private static final int FTW_IMP_HORIZONTAL_SPAWN_OFFSET = 12;
+    /// 火焰小鬼随机落点的竖直坐标取值高度，单位格。
+    private static final int FTW_IMP_VERTICAL_SPAWN_HEIGHT = 9;
+    /// 火焰小鬼随机落点的竖直坐标中心偏移，单位格。
+    private static final int FTW_IMP_VERTICAL_SPAWN_OFFSET = 4;
+
+    /// 肉墙追击时每 tick 保留的旧移动速度比例。
+    private static final double PURSUIT_MOMENTUM = 0.91D;
+    /// 肉墙属性移动速度转为前进加速度的系数。
+    private static final double PURSUIT_ACCELERATION_FACTOR = 0.125D;
+    /// 空闲饿鬼锚点每次检查时重新生成饿鬼的概率。
+    private static final float HUNGRY_RESPAWN_CHANCE = 0.4F;
 
     private Vec3 initialPosition = Vec3.ZERO;
     private long layoutSeed;
@@ -428,7 +467,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     @Override
     protected Vec3 getDisengageMovement() {
         /// 撤离期间基类会屏蔽普通速度写入，包括 travel 的阻力更新，因此在此保留水平阻力。
-        return getDeltaMovement().scale(0.91D).add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125D));
+        return getDeltaMovement().scale(PURSUIT_MOMENTUM).add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * PURSUIT_ACCELERATION_FACTOR));
     }
 
     @Override
@@ -534,7 +573,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
         double acceleration = 1.0 + (health < 0.5 ? (0.5 - health) * 2.0 : 0.0);
         if (isExpert()) acceleration += Math.pow(1.0 - health, 3.0);
         if (isFtw()) acceleration = acceleration * 1.1 + 0.2;
-        setDeltaMovement(getDeltaMovement().add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125D * acceleration)));
+        setDeltaMovement(getDeltaMovement().add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * PURSUIT_ACCELERATION_FACTOR * acceleration)));
     }
 
     /// 根据持久化种子建立墙面布局，并补回不参与存档的眼睛与嘴部实体。
@@ -713,12 +752,12 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
 
     /// FTW 以独立随机节拍补充火焰小鬼；落点只从已加载且可站立的位置中选择。
     private void tickFireImps() {
-        if (!isFtw() || getTarget() == null || random.nextInt(60) != 0 || !(level() instanceof ServerLevel serverLevel))
+        if (!isFtw() || getTarget() == null || random.nextInt(FTW_IMP_SPAWN_CHANCE) != 0 || !(level() instanceof ServerLevel serverLevel))
             return;
-        if (level().getEntitiesOfClass(FireImp.class, getBoundingBox().inflate(64.0), LivingEntity::isAlive).size() >= 4)
+        if (level().getEntitiesOfClass(FireImp.class, getBoundingBox().inflate(FTW_IMP_SEARCH_RANGE), LivingEntity::isAlive).size() >= FTW_IMP_LIMIT)
             return;
-        for (int attempt = 0; attempt < 16; attempt++) {
-            BlockPos pos = getTarget().blockPosition().offset(random.nextInt(25) - 12, random.nextInt(9) - 4, random.nextInt(25) - 12);
+        for (int attempt = 0; attempt < FTW_IMP_SPAWN_ATTEMPTS; attempt++) {
+            BlockPos pos = getTarget().blockPosition().offset(random.nextInt(FTW_IMP_HORIZONTAL_SPAWN_WIDTH) - FTW_IMP_HORIZONTAL_SPAWN_OFFSET, random.nextInt(FTW_IMP_VERTICAL_SPAWN_HEIGHT) - FTW_IMP_VERTICAL_SPAWN_OFFSET, random.nextInt(FTW_IMP_HORIZONTAL_SPAWN_WIDTH) - FTW_IMP_HORIZONTAL_SPAWN_OFFSET);
             if (!level().hasChunkAt(pos) || !level().hasChunkAt(pos.below())
                     || !level().getBlockState(pos.below()).isFaceSturdy(level(), pos.below(), Direction.UP))
                 continue;
@@ -746,7 +785,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
         if (!isExpert()) return;
         hungryTimer = HUNGRY_RESPAWN_INTERVAL;
         for (Vec3 anchor : hungryAnchors) {
-            if (!hasLivingHungryAt(anchor) && random.nextFloat() < 0.4F) {
+            if (!hasLivingHungryAt(anchor) && random.nextFloat() < HUNGRY_RESPAWN_CHANCE) {
                 spawnHungry(anchor, true);
             }
         }
@@ -898,6 +937,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     /// Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never
     /// read or written, and overlapping walls retain independent UUID-keyed leases.
     private static final class WallChunkRetention {
+        /// 肉墙区块票据覆盖的区块距离。
         private static final int TICKET_DISTANCE = 2;
         private static final TicketType<UUID> TYPE = TicketType.create("confluence:wall_of_flesh", UUID::compareTo, CHUNK_RETENTION_TICKS);
         private static final Map<ServerLevel, Map<UUID, OwnerLease>> LEVELS = new WeakHashMap<>();

@@ -13,20 +13,24 @@ import org.jetbrains.annotations.Nullable;
 
 /// 命中时按固定概率点燃目标的链锤。
 public class IgnitingFlailItem extends BaseFlailItem {
-    private static final int FIRE_TICKS = 60;
     private final float igniteChance;
+    private final int fireTicks;
     private final boolean extinguishesInWater;
 
-    public IgnitingFlailItem(Parameters parameters, ModRarity rarity, float igniteChance) {
-        this(parameters, rarity, igniteChance, false);
+    public IgnitingFlailItem(Parameters parameters, ModRarity rarity, float igniteChance, int fireTicks) {
+        this(parameters, rarity, igniteChance, fireTicks, false);
     }
 
-    public IgnitingFlailItem(Parameters parameters, ModRarity rarity, float igniteChance, boolean extinguishesInWater) {
+    public IgnitingFlailItem(Parameters parameters, ModRarity rarity, float igniteChance, int fireTicks, boolean extinguishesInWater) {
         super(parameters, rarity);
         if (igniteChance < 0.0F || igniteChance > 1.0F) {
             throw new IllegalArgumentException("Flail ignite chance must be between zero and one");
         }
+        if (fireTicks <= 0) {
+            throw new IllegalArgumentException("Flail fire duration must be positive");
+        }
         this.igniteChance = igniteChance;
+        this.fireTicks = fireTicks;
         this.extinguishesInWater = extinguishesInWater;
     }
 
@@ -53,7 +57,7 @@ public class IgnitingFlailItem extends BaseFlailItem {
     @Override
     public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
         if (target.getRandom1211().nextFloat() < igniteChance) {
-            target.setRemainingFireTicks(FIRE_TICKS);
+            target.igniteForTicks(fireTicks);
         }
     }
 }

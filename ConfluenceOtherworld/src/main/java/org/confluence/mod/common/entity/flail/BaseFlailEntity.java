@@ -24,18 +24,27 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.PacketDistributor;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.enchantment.TurbineEnchantment;
+import org.confluence.mod.common.init.item.FlailItems;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.flail.BaseFlailItem.Parameters;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.HandPositionUtils;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4x3f;
 import org.joml.Vector3f;
+import org.mesdag.particlestorm.ParticleStorm;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -55,6 +64,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     public static final int PHASE_STAY = 2;
     public static final int PHASE_RETRACT = 3;
 
+    private static final float SUNFURY_EXPLOSION_RADIUS = 2.5F;
+
     /// ── 同步数据 ──
     private static final EntityDataAccessor<Integer> DATA_PHASE =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.INT);
@@ -71,6 +82,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private int windBurstCooldown = 0;
     private int stayDuration = 0;
     private int bounceCount = 0;
+    private int lastSunfuryImpactTick = -3;
     private boolean playerDropped = false;
     /// SPIN 阶段持续 tick 计数，供 {@link TurbineEnchantment} 等外部附魔效果查询
     private int spinTickCounter = 0;
@@ -85,6 +97,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     @Nullable
     public Vec3 smoothedChainDir;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+    @Nullable
+    private ParticleEmitter flameEmitter;
 
     /// 获取当前 SPIN 持续 tick 数
     public int getSpinTickCounter() {
@@ -131,6 +145,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     /// 每个实体独立保存命中效果开关，新创建的链锤默认开启。
     public boolean isHitEffectEnabled() {
         return entityData.get(DATA_HIT_EFFECT_ENABLED);
+    }
+
+    /// 火焰粒子和链条受热颜色共用同步后的熄灭状态。
+    public boolean isBurningFlail() {
+        Parameters parameters = parameters();
+        return isHitEffectEnabled() && parameters != null
+                && (parameters.equals(FlailItems.FLAMING_MACE.get().parameters())
+                || parameters.equals(FlailItems.SUNFURY.get().parameters()));
     }
 
     public void setHitEffectEnabled(boolean enabled) {
@@ -205,6 +227,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     protected void onHitBlock(BlockHitResult result) {
         /// THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
         if (!level().isClientSide() && getPhase() == PHASE_RETRACT) {
+            triggerSunfuryExplosion(result.getLocation());
             if (isLaunchMode()) {
                 discard();
             } else {
@@ -256,6 +279,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
         tickSpecialBehavior(player, parameters, phase);
         tickItemBehavior(player);
+        if (level().isClientSide()) {
+            tickBurningParticles();
+        }
 
         if (!level().isClientSide()) {
             /// 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
@@ -270,6 +296,73 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
 
         entityData.set(DATA_SPIN_ANGLE, spinAngle);
+    }
+
+    private void tickBurningParticles() {
+        if (!isBurningFlail()) {
+            removeBurningParticles();
+            return;
+        }
+        if (flameEmitter == null || flameEmitter.isRemoved()) {
+            float radius = Math.max(getBbWidth(), getBbHeight()) * 0.55F;
+            flameEmitter = new ParticleEmitter(level(), getBoundingBox().getCenter(), Confluence.asResource("ball_of_fire_trail"),
+                    new MolangExp("variable.flail_head_radius", radius));
+            flameEmitter.attachEntity(this);
+            flameEmitter.hideOutline = true;
+            flameEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
+            MolangParticleEngine.INSTANCE._addEmitter(flameEmitter);
+        }
+    }
+
+    private void removeBurningParticles() {
+        if (flameEmitter != null) {
+            flameEmitter.remove();
+            flameEmitter = null;
+        }
+    }
+
+    /// 同步爆炸视听效果，并独立结算面板三分之一伤害，避免与链球直击共用无敌帧。
+    private void triggerSunfuryExplosion(Vec3 position) {
+        if (!(level() instanceof ServerLevel server) || !isHitEffectEnabled()
+                || !(getOwner() instanceof Player player)
+                || !FlailItems.SUNFURY.get().parameters().equals(parameters())
+                || tickCount - lastSunfuryImpactTick < 3) return;
+        lastSunfuryImpactTick = tickCount;
+        EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(
+                Confluence.asResource("bomb_spark"), position.toVector3f(),
+                new MolangExp("variable.radius", SUNFURY_EXPLOSION_RADIUS), -1);
+        ParticleStorm.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> server.getChunkAt(blockPosition())), packet);
+        server.playSound(null, position.x, position.y, position.z,
+                SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 0.6F, 1.2F);
+
+        float damage = (float) (FlailItems.SUNFURY.get().getTooltipDamage(player.getMainHandItem(),
+                player.getAttributeValue(LibAttributes.getAttackDamage())) / 3.0);
+        DamageSource source = LibDamageTypes.of(server, LibDamageTypes.SWORD_PROJECTILE, this, player);
+        Immunity explosionHit = new Immunity() {
+            @Override
+            public Type confluence$getImmunityType() {return Type.LOCAL;}
+
+            @Override
+            public int confluence$getImmunityDuration(DamageSource source) {return 0;}
+        };
+        AABB area = new AABB(position, position).inflate(SUNFURY_EXPLOSION_RADIUS);
+        for (Entity target : LibEntityUtils.areaTargets(server, this, area,
+                entity -> LibEntityUtils.canHit(player, entity)
+                        && entity.getBoundingBox().distanceToSqr(position) <= SUNFURY_EXPLOSION_RADIUS * SUNFURY_EXPLOSION_RADIUS)) {
+            LivingEntity living = LibEntityUtils.logicalLivingTarget(target);
+            if (living != null) {
+                // 只结算爆炸伤害，不再次调用链球命中回调。
+                Immunity.hurt(explosionHit, target, living, source, damage);
+            }
+        }
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        if (level().isClientSide()) {
+            removeBurningParticles();
+        }
+        super.remove(reason);
     }
 
     private void tickSpin(Player player, Parameters parameters) {
@@ -328,6 +421,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (blockHit != null) {
             Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
             setPos(blockHit.getLocation().add(normal.scale(0.1)));
+            triggerSunfuryExplosion(position());
 
             if (startsLaunched()) {
                 if (!level().isClientSide()) {
@@ -362,6 +456,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
+        if (horizontalCollision || verticalCollision) {
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
+        }
         if (isLaunchMode() && (horizontalCollision || verticalCollision)) {
             if (!level().isClientSide()) {
                 onLaunchedBlockImpact(player, parameters, BlockHitResult.miss(position(), net.minecraft.core.Direction.UP, blockPosition()));
@@ -381,7 +478,12 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             setPhase(PHASE_RETRACT);
             return;
         }
+        boolean wasHorizontalCollision = horizontalCollision;
+        boolean wasVerticalCollision = verticalCollision;
         move(MoverType.SELF, motion);
+        if ((horizontalCollision && !wasHorizontalCollision) || (verticalCollision && !wasVerticalCollision)) {
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
+        }
 
         /// 着地时清零垂直速度 + 施加水平摩擦，防止重力累积导致永不收回
         if (onGround()) {
@@ -411,6 +513,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
         /// 卡墙时瞬移绕过方块，同时避免高速回收跨过玩家后往返振荡。
         if (horizontalCollision || verticalCollision) {
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
             setPos(position().add(dir.scale(Math.min(parameters.retractSpeed() * 2.0, distance))));
         }
     }
@@ -462,6 +565,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
 
         if (anyHit) {
+            triggerSunfuryExplosion(getBoundingBox().getCenter());
             /// 风爆附魔：命中实体后击飞命中点周围生物，独立 3 秒冷却
             if (player instanceof ServerPlayer serverPlayer && windBurstCooldown <= 0 && firstHit != null) {
                 EnchantmentUtils.processFlailWindBurst(serverPlayer, firstHit,

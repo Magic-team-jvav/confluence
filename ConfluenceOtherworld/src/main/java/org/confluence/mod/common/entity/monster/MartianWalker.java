@@ -47,6 +47,11 @@ public final class MartianWalker extends BaseMonster {
     private static final EntityDataAccessor<Long> PHASE_STARTED = SynchedEntityData.defineId(MartianWalker.class, EntityDataSerializers.LONG);
     private static final int LAUNCH_TICKS = 105;
     private static final float MAX_TURN_PER_TICK = 10.0F;
+    private static final double COMBAT_CRUISE_RADIUS = 20.0;
+    private static final double IDLE_CRUISE_RADIUS = 12.0;
+    private static final double CRUISE_SPEED = 0.5;
+    private static final double FLIGHT_LOOKAHEAD_TICKS = 6.0;
+    private static final float FLIGHT_TURN_PER_TICK = 4.0F;
     private final Gait gait = new Gait();
     private static final float WEAPON_HEALTH_RATIO = 0.25F;
     private static final EntityDataAccessor<Float> LEFT_WEAPON_HEALTH = SynchedEntityData.defineId(MartianWalker.class, EntityDataSerializers.FLOAT);
@@ -55,6 +60,10 @@ public final class MartianWalker extends BaseMonster {
     private int attackCooldown;
     private int contactCooldown;
     private int meleePauseTicks;
+    private final int cruiseDirection = random.nextBoolean() ? 1 : -1;
+    private Vec3 idleCruiseCenter;
+    private Vec3 flightAvoidance = Vec3.ZERO;
+    private int flightAvoidanceTicks;
     private int nextWeapon;
     private List<WalkerGeometry.Box> collisionBoxes = List.of();
     private final LegHitbox[] legHitboxes;
@@ -231,6 +240,7 @@ public final class MartianWalker extends BaseMonster {
         setNoGravity(true);
         fallDistance = 0;
         retreating = false;
+        resetCruise();
     }
 
     private void tickFlightMotion() {
@@ -241,23 +251,86 @@ public final class MartianWalker extends BaseMonster {
             return;
         }
         LivingEntity target = getTarget();
-        if (target == null || !target.isAlive() || !canAttack(target)) {
-            setDeltaMovement(getDeltaMovement().scale(0.85));
-            return;
+        Vec3 bodyCenter = bodyHitbox.getBoundingBox().getCenter();
+        Vec3 horizontal;
+        double desiredY;
+        if (target != null && target.isAlive() && canAttack(target)) {
+            idleCruiseCenter = null;
+            if (weaponsDestroyed()) {
+                horizontal = target.position().subtract(bodyCenter).multiply(1, 0, 1).normalize().scale(0.65);
+                desiredY = target.getY() + target.getBbHeight() * 0.5;
+            } else {
+                horizontal = cruiseMotion(bodyCenter, target.position(), COMBAT_CRUISE_RADIUS);
+                desiredY = target.getY() + 8;
+            }
+        } else {
+            if (idleCruiseCenter == null) idleCruiseCenter = bodyCenter;
+            horizontal = cruiseMotion(bodyCenter, idleCruiseCenter, IDLE_CRUISE_RADIUS).scale(0.7);
+            desiredY = idleCruiseCenter.y;
         }
-        getLookControl().setLookAt(target, 30, 30);
-        Vec3 offset = target.position().subtract(position()).multiply(1, 0, 1);
+        double halfHeight = bodyHitbox.getBoundingBox().getYsize() * 0.5;
+        desiredY = Mth.clamp(desiredY, level().getMinBuildHeight() + halfHeight + 1,
+                level().getMaxBuildHeight() - halfHeight - 1);
+        Vec3 desired = horizontal.add(0, Mth.clamp((desiredY - bodyCenter.y) * 0.12, -0.35, 0.35), 0);
+        Vec3 velocity = getDeltaMovement().lerp(avoidFlightObstacles(desired), 0.15);
+        setDeltaMovement(velocity);
+        if (velocity.horizontalDistanceSqr() > 1.0E-4) {
+            float yaw = (float) (Mth.atan2(velocity.z, velocity.x) * Mth.RAD_TO_DEG) - 90.0F;
+            setYRot(Mth.approachDegrees(getYRot(), yaw, FLIGHT_TURN_PER_TICK));
+            setYHeadRot(getYRot());
+        }
+    }
+
+    // 切向速度维持巡航，径向修正让飞船逐渐回到目标附近的轨道。
+    private Vec3 cruiseMotion(Vec3 bodyCenter, Vec3 center, double radius) {
+        Vec3 offset = bodyCenter.subtract(center).multiply(1, 0, 1);
         double distance = offset.horizontalDistance();
-        double speed = 0;
-        if (weaponsDestroyed()) speed = 0.65;
-        else if (distance < 14) speed = -0.4;
-        else if (distance > 24) speed = 0.5;
-        Vec3 horizontal = distance > 1.0E-6 ? offset.scale(speed / distance) : Vec3.ZERO;
-        double desiredY = target.getY() + (weaponsDestroyed() ? target.getBbHeight() * 0.5 : 8);
-        double bodyY = bodyHitbox.getBoundingBox().getCenter().y;
-        Vec3 desired = horizontal.add(0, Mth.clamp((desiredY - bodyY) * 0.12, -0.35, 0.35), 0);
-        if (horizontalCollision) desired = desired.add(0, 0.2, 0);
-        setDeltaMovement(getDeltaMovement().lerp(desired, 0.15));
+        Vec3 radial = distance > 1.0E-6 ? offset.scale(1 / distance)
+                : Vec3.directionFromRotation(0, getYRot());
+        Vec3 tangent = new Vec3(-radial.z, 0, radial.x).scale(cruiseDirection);
+        double radialSpeed = Mth.clamp((radius - distance) * 0.06, -CRUISE_SPEED, CRUISE_SPEED * 0.8);
+        double tangentSpeed = CRUISE_SPEED * Mth.clamp(1 - Math.abs(distance - radius) / radius, 0.2, 1);
+        Vec3 velocity = radial.scale(radialSpeed).add(tangent.scale(tangentSpeed));
+        return velocity.lengthSqr() > CRUISE_SPEED * CRUISE_SPEED
+                ? velocity.normalize().scale(CRUISE_SPEED) : velocity;
+    }
+
+    private Vec3 avoidFlightObstacles(Vec3 desired) {
+        AABB hull = collisionBounds();
+        if (hull == null) hull = getBoundingBox();
+        if (flightAvoidanceTicks > 0) {
+            flightAvoidanceTicks--;
+            if (flightPathClear(hull, flightAvoidance)) return flightAvoidance;
+            flightAvoidanceTicks = 0;
+        }
+        if (flightPathClear(hull, desired)) return desired;
+
+        // 有限方向探测并保持绕行一秒，避免撞墙时每刻左右换向。
+        Vec3 forward = desired.multiply(1, 0, 1);
+        if (forward.lengthSqr() < 1.0E-6) forward = Vec3.directionFromRotation(0, getYRot()).scale(CRUISE_SPEED);
+        Vec3 side = new Vec3(-forward.z, 0, forward.x).normalize().scale(CRUISE_SPEED * cruiseDirection);
+        for (Vec3 candidate : new Vec3[]{new Vec3(0, 0.35, 0), side.add(0, 0.15, 0),
+                side.scale(-1).add(0, 0.15, 0), forward.scale(-0.7).add(0, 0.15, 0)}) {
+            if (!flightPathClear(hull, candidate)) continue;
+            flightAvoidance = candidate;
+            flightAvoidanceTicks = 20;
+            return candidate;
+        }
+        return Vec3.ZERO;
+    }
+
+    private boolean flightPathClear(AABB hull, Vec3 velocity) {
+        AABB swept = hull.expandTowards(velocity.scale(FLIGHT_LOOKAHEAD_TICKS)).inflate(0.15);
+        return swept.minY >= level().getMinBuildHeight() && swept.maxY < level().getMaxBuildHeight()
+                && level().hasChunksAt(BlockPos.containing(swept.minX, swept.minY, swept.minZ),
+                        BlockPos.containing(swept.maxX, swept.maxY, swept.maxZ))
+                && !level().getBlockCollisions(this, swept).iterator().hasNext();
+    }
+
+    private void resetCruise() {
+        idleCruiseCenter = null;
+        flightAvoidance = Vec3.ZERO;
+        flightAvoidanceTicks = 0;
     }
 
     @Override
@@ -562,6 +635,7 @@ public final class MartianWalker extends BaseMonster {
         attackCooldown = tag.contains("AttackCooldown") ? Mth.clamp(tag.getInt("AttackCooldown"), 0, 200) : 0;
         contactCooldown = tag.contains("ContactCooldown") ? Mth.clamp(tag.getInt("ContactCooldown"), 0, 20) : 0;
         meleePauseTicks = 0;
+        resetCruise();
         nextWeapon = tag.contains("NextWeapon") ? Mth.clamp(tag.getInt("NextWeapon"), 0, 1) : 0;
         retreating = false;
         for (int i = 0; i < weapons.length; i++) {

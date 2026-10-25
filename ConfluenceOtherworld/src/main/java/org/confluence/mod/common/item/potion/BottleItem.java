@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.potion;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -37,11 +36,8 @@ public class BottleItem extends Item {
                 return InteractionResultHolder.sidedSuccess(ItemUtils.createFilledResult(itemstack, player, PotionItems.BOTTLED_WATER.toStack()), level.isClientSide);
             }
         }
-        /// 魂瓶：没有可接的水源时，灵魂条状态下用玻璃瓶装魂。
-        if (SoulItems.canFillSoulBottle(player)) {
-            if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
-                SoulItems.fillSoulBottle(serverPlayer, hand);
-            }
+        /// 魂瓶：没有可接的水源时用玻璃瓶装魂（灵魂不足会给出动作栏提示）。
+        if (SoulItems.tryFillSoulBottle(player, hand)) {
             return InteractionResultHolder.sidedSuccess(player.getItemInHand(hand), level.isClientSide);
         }
         return InteractionResultHolder.pass(itemstack);

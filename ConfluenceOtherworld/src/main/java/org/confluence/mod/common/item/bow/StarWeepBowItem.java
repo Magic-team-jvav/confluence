@@ -31,8 +31,9 @@ public class StarWeepBowItem extends BaseTerraBowItem {
     /// 累积表：施法者 -> 已累积的坠星数。
     private static final Map<UUID, Integer> CHARGES = new ConcurrentHashMap<>();
 
-    public StarWeepBowItem(float baseDamage, int durability) {
-        super(baseDamage, new Item.Properties().durability(durability));
+    /// 无耐久：不掉耐久，也不需要修复。
+    public StarWeepBowItem(float baseDamage) {
+        super(baseDamage, new Item.Properties());
     }
 
     /// 普通箭（原版箭 / 药箭等）必须换成泰拉箭实体，才能挂上落空与命中回调。

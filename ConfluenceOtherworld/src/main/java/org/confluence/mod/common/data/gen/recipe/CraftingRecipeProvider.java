@@ -1007,7 +1007,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(NatureBlocks.POO));
 
-        shapeless(output, Items.BLAZE_ROD.getDefaultInstance(),  AmountIngredient.of(2,Items.BLAZE_POWDER));
+        shapeless(output, Items.BLAZE_ROD.getDefaultInstance(),  Ingredient.of(Items.BLAZE_POWDER),Ingredient.of(Items.BLAZE_POWDER));
 
         // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
         // 钱币
@@ -1071,19 +1071,19 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "bcb"
         )), ArmorItems.SOUL_ROBE.toStack());
 
-        // 隐匿者套装：黑橡木原木 + 紫水晶碎片 + 绿宝石
+        // 隐匿者套装：黑橡木原木 + 紫水晶碎片（或紫晶） + 绿宝石（或翡翠）
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(Items.DARK_OAK_LOG),
-                'b', Ingredient.of(Items.AMETHYST_SHARD),
-                'c', Ingredient.of(Items.EMERALD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
         ), List.of(
                 "aba",
                 "c c"
         )), ArmorItems.HERMIT_HELMET.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(Items.DARK_OAK_LOG),
-                'b', Ingredient.of(Items.AMETHYST_SHARD),
-                'c', Ingredient.of(Items.EMERALD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
         ), List.of(
                 "a a",
                 "aba",
@@ -1091,7 +1091,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), ArmorItems.HERMIT_CHESTPLATE.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(Items.DARK_OAK_LOG),
-                'b', Ingredient.of(Items.AMETHYST_SHARD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
         ), List.of(
                 "aaa",
                 "b b",
@@ -1099,25 +1099,25 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), ArmorItems.HERMIT_LEGGINGS.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(Items.DARK_OAK_LOG),
-                'b', Ingredient.of(Items.AMETHYST_SHARD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
         ), List.of(
                 "b b",
                 "a a"
         )), ArmorItems.HERMIT_BOOTS.toStack());
 
-        // 蓝隐匿者套装：发光蘑菇 + 紫水晶碎片 + 绿宝石
+        // 蓝隐匿者套装：发光蘑菇 + 紫水晶碎片（或紫晶） + 绿宝石（或翡翠）
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
-                'b', Ingredient.of(Items.AMETHYST_SHARD),
-                'c', Ingredient.of(Items.EMERALD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
         ), List.of(
                 "aba",
                 "c c"
         )), ArmorItems.BLUE_HERMIT_HELMET.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
-                'b', Ingredient.of(Items.AMETHYST_SHARD),
-                'c', Ingredient.of(Items.EMERALD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST),
+                'c', Ingredient.of(Items.EMERALD, MaterialItems.JADE)
         ), List.of(
                 "a a",
                 "aba",
@@ -1125,7 +1125,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), ArmorItems.BLUE_HERMIT_CHESTPLATE.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
-                'b', Ingredient.of(Items.AMETHYST_SHARD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
         ), List.of(
                 "aaa",
                 "b b",
@@ -1133,7 +1133,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), ArmorItems.BLUE_HERMIT_LEGGINGS.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.GLOWING_MUSHROOM),
-                'b', Ingredient.of(Items.AMETHYST_SHARD)
+                'b', Ingredient.of(Items.AMETHYST_SHARD, MaterialItems.AMETHYST)
         ), List.of(
                 "b b",
                 "a a"

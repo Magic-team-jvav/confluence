@@ -182,11 +182,11 @@ public class SoulSkillParameters {
     ///
     /// 灵魂增伤那一段由统一伤害流程乘一次，这里只声明“武器伤害只吃 20%”。
     public static final float CONFUSE_SPORES_WEAPON_SHARE = 0.2F;
-    /// 自然之惩戒：毒刺弹幕；威力 5，冷却 1 秒，消耗 2 魂。
+    /// 自然之惩戒：毒刺弹幕；威力 8，冷却 1 秒，消耗 2 魂。
     public static final float NATURES_WRATH_SOUL_COST = 2.0F;
     public static final int NATURES_WRATH_COOLDOWN_TICKS = 20;
     public static final int NATURES_WRATH_COUNT = 5;
-    public static final float NATURES_WRATH_DAMAGE = 5.0F;
+    public static final float NATURES_WRATH_DAMAGE = 8.0F;
     public static final float NATURES_WRATH_SPEED = 2.0F;
     public static final int NATURES_WRATH_POISON_DURATION_TICKS = 5 * SharedConstants.TICKS_PER_SECOND;
     /// 亵渎之魂：地面钻出的火球弹幕，命中小范围爆炸；威力 7，冷却 0.8 秒，消耗 4 魂。
@@ -227,6 +227,8 @@ public class SoulSkillParameters {
     // ===== 被动 =====
     /// 自然法则：概率不消耗灵魂。
     public static final float LAW_OF_NATURE_FREE_CHANCE = 0.2F;
+    /// 星魂逆转：每消耗 1 点灵魂补给多少点魔力（1 : 4）。
+    public static final float STAR_REVERSAL_MANA_PER_SOUL = 4.0F;
     /// 星魂连结：灵魂增伤增益结束后，继承的魔法增伤增益按来源的该比例折半。
     public static final float STAR_LINK_MAGIC_BONUS_RATIO = 0.5F;
     public static final float STAR_LINK_MAGIC_DURATION_RATIO = 0.5F;

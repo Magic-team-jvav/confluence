@@ -915,15 +915,15 @@ public final class PlayerUtils {
 
     /// 蓝隐匿者全套：每累计消耗 10 点灵魂，削减 3 秒耐药性剩余时长。
     ///
-    /// 另外结算星魂逆转：实际消耗掉的灵魂等量补充魔力。
+    /// 另外结算星魂逆转：实际消耗掉的灵魂按 1 : 4 补充魔力（每 1 点灵魂补充 4 点魔力）。
     public static void onSoulSpent(ServerPlayer player, float paidSoul) {
         if (paidSoul <= 0.0F) {
             return;
         }
-        /// 星魂逆转：消耗的灵魂等量补充魔力（保留在魔力条里，切回魔力条即可使用）。
+        /// 星魂逆转：消耗的灵魂按 1 : 4 补充魔力（保留在魔力条里，切回魔力条即可使用）。
         if (isPassiveSoulSkillActive(player, ModSoulSkills.STAR_REVERSAL.get())) {
             ManaStorage manaStorage = ManaStorage.of(player);
-            manaStorage.setCurrentMana(manaStorage.getCurrentMana() + paidSoul);
+            manaStorage.setCurrentMana(manaStorage.getCurrentMana() + paidSoul * SoulSkillParameters.STAR_REVERSAL_MANA_PER_SOUL);
             syncMana2Client(player);
         }
         SoulStorage storage = SoulStorage.of(player);
@@ -1036,6 +1036,21 @@ public final class PlayerUtils {
             return false;
         }
         applySoulOverdraft(player, healthCost);
+        return true;
+    }
+
+    /// 直接从已存的灵魂值里扣除，不做资源条模式校验、不走技能与透支结算。
+    ///
+    /// 用于「把灵魂固化进物品」这类合成式消耗（玻璃瓶 → 魂瓶）：灵魂值本身在灵魂条/魔力条之间共享保留，
+    /// 所以魔力条状态下也应该能把已存的灵魂装进瓶子；数量不够时返回 false。
+    public static boolean consumeStoredSoul(Player player, float amount) {
+        if (player == null || amount <= 0.0F) return true;
+        SoulStorage storage = SoulStorage.of(player);
+        if (storage.getCurrentSoul() < amount) return false;
+        storage.setCurrentSoul(storage.getCurrentSoul() - amount);
+        if (player instanceof ServerPlayer serverPlayer) {
+            onSoulSpent(serverPlayer, amount);
+        }
         return true;
     }
 

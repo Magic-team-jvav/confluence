@@ -31,7 +31,8 @@ public class SoulSkillBookItem extends CustomRarityItem {
         super(properties, rarity);
     }
 
-    /// 首次使用永久解锁技能或被动，之后每次使用改为给予复习；书籍不消耗，可反复阅读。
+    /// 首次使用永久解锁技能或被动，之后每次使用改为给予复习；**无论第几次使用都会消耗一本**，
+    /// 只有创造模式（`hasInfiniteMaterials`）不消耗。
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
@@ -58,6 +59,10 @@ public class SoulSkillBookItem extends CustomRarityItem {
             return InteractionResultHolder.fail(stack);
         }
         serverPlayer.awardStat(Stats.ITEM_USED.get(this));
+        /// 学习与复习都扣书；创造模式不消耗。
+        if (!player.hasInfiniteMaterials()) {
+            stack.consume(1, player);
+        }
         return InteractionResultHolder.sidedSuccess(stack, false);
     }
 

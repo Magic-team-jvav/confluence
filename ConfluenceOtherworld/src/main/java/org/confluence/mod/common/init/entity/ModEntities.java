@@ -168,8 +168,6 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<DeveloperArrowEntity>> DEVELOPER_ARROW = registerEntityType("developer_arrow", "开发者箭", id -> EntityType.Builder.<DeveloperArrowEntity>of(DeveloperArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     /// 风矢。
     public static final DeferredHolder<EntityType<?>, EntityType<WindArrowEntity>> WIND_ARROW = registerEntityTypeWithEnglishName("wind_arrow", "风矢", "Wind Arrow", id -> EntityType.Builder.<WindArrowEntity>of(WindArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
-    /// 坠落之星箭。
-    public static final DeferredHolder<EntityType<?>, EntityType<FallenStarArrowEntity>> FALLEN_STAR_ARROW = registerEntityTypeWithEnglishName("fallen_star_arrow", "坠落之星箭", "Fallen Star Arrow", id -> EntityType.Builder.<FallenStarArrowEntity>of(FallenStarArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
 
     /// 其它
     public static final DeferredHolder<EntityType<?>, EntityType<BoulderEntity>> BOULDER = registerEntityType("boulder", "巨石", id -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -61,7 +62,7 @@ public class SoulItems {
     public static final DeferredItem<SoulLanternItem> TRUFFLE_LANTERN = registerItem("truffle_lantern", "松露灯", () -> new SoulLanternItem(
             new Item.Properties(), ModRarity.GREEN,
             SoulWeaponProperties.builder()
-                    .damage(8.0F)
+                    .damage(7.0F)
                     .criticalChance(0.04F)
                     .soulSkill(ModSoulSkills.CONFUSE_SPORES.get().getId())
                     .build()));
@@ -128,21 +129,56 @@ public class SoulItems {
         return stack;
     }
 
-    /// 玻璃瓶装魂：灵魂条状态下右键玻璃瓶，消耗 {@link SoulSkillParameters#SOUL_BOTTLE_SOUL_COST} 点灵魂得到魂瓶。
+    /// 玻璃瓶装魂：右键玻璃瓶，消耗 {@link SoulSkillParameters#SOUL_BOTTLE_SOUL_COST} 点灵魂得到魂瓶。
     ///
+    /// 只要**身上有足够灵魂**就能装（灵魂值本身在两种资源条之间共享保留，不再要求先切到灵魂条），
+    /// 创造模式不扣灵魂，方便取用与测试。只有模组的 `confluence:bottle` 能装魂，原版玻璃瓶不参与。
     /// 客户端只做可用性判断并回成功，实际扣除与替换只在服务端执行，避免两端状态分叉。
     public static boolean canFillSoulBottle(Player player) {
-        return player != null
-                && PlayerUtils.isSoulMode(player)
-                && PlayerUtils.getSoul(player) >= SoulSkillParameters.SOUL_BOTTLE_SOUL_COST;
+        if (player == null) return false;
+        if (player.hasInfiniteMaterials()) return true;
+        return PlayerUtils.getSoul(player) >= SoulSkillParameters.SOUL_BOTTLE_SOUL_COST;
+    }
+
+    /// 手上的物品能不能当装魂的玻璃瓶用。
+    public static boolean isSoulBottleItem(ItemStack stack) {
+        return stack.is(PotionItems.BOTTLE);
+    }
+
+    /// 尝试把手中的玻璃瓶装成魂瓶；条件不满足返回 false 并（在服务端）用动作栏提示原因。
+    ///
+    /// 调用方（[BottleItem]）已经先处理过接水，这里就不再重复判断水源。
+    /// 客户端与服务端返回同一结果，只有服务端真正扣魂与替换物品。
+    public static boolean tryFillSoulBottle(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (!isSoulBottleItem(stack)) return false;
+        if (!canFillSoulBottle(player)) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.displayClientMessage(Component.translatable(
+                        "message.confluence.soul_bottle.not_enough_soul",
+                        String.format("%.0f", SoulSkillParameters.SOUL_BOTTLE_SOUL_COST),
+                        String.format("%.0f", PlayerUtils.getSoul(player))
+                ), true);
+            }
+            return false;
+        }
+        if (player instanceof ServerPlayer serverPlayer) {
+            fillSoulBottle(serverPlayer, hand);
+        }
+        return true;
     }
 
     public static void fillSoulBottle(ServerPlayer player, InteractionHand hand) {
-        if (!canFillSoulBottle(player) || !PlayerUtils.consumeSoul(player, SoulSkillParameters.SOUL_BOTTLE_SOUL_COST)) {
+        if (!canFillSoulBottle(player)) {
+            return;
+        }
+        ItemStack inHand = player.getItemInHand(hand);
+        if (!isSoulBottleItem(inHand)) return;
+        /// 创造模式不扣灵魂；生存模式直接扣当前灵魂值，不走技能与透支结算。
+        if (!player.hasInfiniteMaterials() && !PlayerUtils.consumeStoredSoul(player, SoulSkillParameters.SOUL_BOTTLE_SOUL_COST)) {
             return;
         }
         Level level = player.level();
-        ItemStack inHand = player.getItemInHand(hand);
         player.setItemInHand(hand, ItemUtils.createFilledResult(inHand, player, FunctionalBlocks.SOUL_BOTTLE.toStack()));
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
         level.gameEvent(player, GameEvent.FLUID_PICKUP, player.blockPosition());

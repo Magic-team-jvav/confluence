@@ -42,6 +42,7 @@ import org.mesdag.opallight.light.data.LightConditions;
 import org.mesdag.opallight.light.data.LightDataLoader;
 import org.mesdag.opallight.light.data.LightProfile;
 import org.mesdag.opallight.light.engine.DynamicLights;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 
 import java.util.*;
 
@@ -125,6 +126,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
         });
         // 附件、光束和闪光没有普通 EntityType，单独采集位置；色彩仍从 JSON 读取。
         DynamicLights.registerCollector(Confluence.asResource("effects"), INSTANCE::collect);
+        DynamicLights.registerCollector(Confluence.asResource("particle_emitters"), INSTANCE::collectParticleEmitters);
     }
 
     public static boolean handlesEffect(ResourceLocation type) {
@@ -238,6 +240,19 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
             if (source == null) continue;
             int brightness = Math.round(source.brightness() * (flash.expires() - now) / (float) (flash.expires() - flash.started()));
             sink.point(flash.id(), flash.position(), source.profile(), brightness);
+        }
+    }
+
+    /// 按粒子效果 ID 匹配发光名单；每个发射器只提交一个光源，避免密集粒子重复叠光。
+    private void collectParticleEmitters(ClientLevel level, DynamicLights.Sink sink) {
+        var emitters = MolangParticleEngine.INSTANCE.getEmitters();
+        while (emitters.hasNext()) {
+            var entry = emitters.next();
+            var emitter = entry.getValue();
+            if (emitter.level != level || emitter.isRemoved() || !emitter.active) continue;
+            Source source = sources.get(emitter.particleId);
+            if (source == null || source.brightness() <= 0) continue;
+            sink.point(entry.getIntKey(), emitter.getPosition(), source.profile(), source.brightness());
         }
     }
 

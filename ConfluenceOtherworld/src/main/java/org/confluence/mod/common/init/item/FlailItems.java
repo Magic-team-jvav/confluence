@@ -22,7 +22,7 @@ public class FlailItems {
     public static final DeferredItem<BaseFlailItem> MACE = registerItem("mace", "链锤", () -> new BaseFlailItem(Parameters.MACE.get(), ModRarity.WHITE));
 
     /// 火焰链锤。
-    public static final DeferredItem<IgnitingFlailItem> FLAMING_MACE = registerItem("flaming_mace", "烈焰链锤", () -> new IgnitingFlailItem(Parameters.FLAMING_MACE.get(), ModRarity.BLUE, 1.0F / 6.0F, true));
+    public static final DeferredItem<IgnitingFlailItem> FLAMING_MACE = registerItem("flaming_mace", "烈焰链锤", () -> new IgnitingFlailItem(Parameters.FLAMING_MACE.get(), ModRarity.BLUE, 1.0F, 2 * 20, true));
 
     /// 风锚。
     public static final DeferredItem<WindAnchorItem> WIND_ANCHOR = registerItem("wind_anchor", "风锚", () -> new WindAnchorItem(Parameters.WIND_ANCHOR.get(), ModRarity.BLUE));
@@ -43,7 +43,7 @@ public class FlailItems {
     public static final DeferredItem<BaseFlailItem> BLUE_MOON = registerItem("blue_moon", "蓝月", () -> new BaseFlailItem(Parameters.BLUE_MOON.get(), ModRarity.GREEN));
 
     /// 阳炎之怒。
-    public static final DeferredItem<IgnitingFlailItem> SUNFURY = registerItem("sunfury", "阳炎之怒", () -> new IgnitingFlailItem(Parameters.SUNFURY.get(), ModRarity.ORANGE, 0.25F));
+    public static final DeferredItem<IgnitingFlailItem> SUNFURY = registerItem("sunfury", "阳炎之怒", () -> new IgnitingFlailItem(Parameters.SUNFURY.get(), ModRarity.ORANGE, 1.0F, 4 * 20));
 
     /// 太极连枷。
     public static final DeferredItem<DaoOfPowItem> DAO_OF_POW = registerItemWithEnglishName("dao_of_pow", "太极连枷", "Dao of Pow", () -> new DaoOfPowItem(Parameters.DAO_OF_POW.get(), ModRarity.PINK));

@@ -168,11 +168,11 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> implem
         poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI - (float) Math.atan2(direction.z, direction.x)));
         poseStack.mulPose(Axis.XP.rotation((float) Math.acos(Mth.clamp(direction.y, -1.0, 1.0))));
 
-        renderChainSegments(poseStack, buffers, chainTexture, chainLight, distance);
+        renderChainSegments(poseStack, buffers, chainTexture, chainLight, distance, entity.isBurningFlail());
         poseStack.popPose();
     }
 
-    private static void renderChainSegments(PoseStack poseStack, MultiBufferSource buffers, ResourceLocation texture, int packedLight, double distance) {
+    private static void renderChainSegments(PoseStack poseStack, MultiBufferSource buffers, ResourceLocation texture, int packedLight, double distance, boolean heated) {
         float segmentLength = 1.0F;
         int fullSegments = (int) distance;
         float remainder = (float) (distance - fullSegments);
@@ -186,7 +186,7 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> implem
             poseStack.pushPose();
             poseStack.translate(0.0, position, 0.0);
             poseStack.scale(1.0F, actualLength / segmentLength, 1.0F);
-            renderChainSegment(poseStack, buffers, texture, packedLight);
+            renderChainSegment(poseStack, buffers, texture, packedLight, position, position + actualLength, distance, heated);
             poseStack.popPose();
             geometricLength *= 0.5F;
         }
@@ -194,50 +194,114 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> implem
 
         int middleSegments = fullSegments >= 2 ? fullSegments - 2 : 0;
         for (int i = 0; i < middleSegments; i++) {
-            renderChainSegment(poseStack, buffers, texture, packedLight);
+            float start = handEndLength + i * segmentLength;
+            renderChainSegment(poseStack, buffers, texture, packedLight, start, start + segmentLength, distance, heated);
             poseStack.translate(0.0, segmentLength, 0.0);
         }
 
         if (remainder > 0.001F && fullSegments >= 2) {
             poseStack.pushPose();
             poseStack.scale(1.0F, remainder / segmentLength, 1.0F);
-            renderChainSegment(poseStack, buffers, texture, packedLight);
+            renderChainSegment(poseStack, buffers, texture, packedLight, handEndLength + middleSegments, (float) distance, distance, heated);
             poseStack.popPose();
         }
     }
 
     /// 渲染一段 X 形交叉平面链条；正反面通过背面剔除保证每侧只绘制一次。
-    private static void renderChainSegment(PoseStack poseStack, MultiBufferSource buffer, ResourceLocation texture, int packedLight) {
-        VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutout(texture));
+    private static void renderChainSegment(PoseStack poseStack, MultiBufferSource buffer, ResourceLocation texture, int packedLight, float start, float end, double distance, boolean heated) {
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
-
         float halfWidth = 1.5F / 16.0F;
         float u0 = 3.0F / 16.0F;
         float u1 = 6.0F / 16.0F;
 
-        for (int plane = 0; plane < 2; plane++) {
-            float angle = (float) (Math.PI / 4.0 + plane * Math.PI / 2.0);
-            float x = (float) Math.cos(angle) * halfWidth;
-            float z = (float) Math.sin(angle) * halfWidth;
-            float normalX = -(float) Math.sin(angle);
-            float normalZ = (float) Math.cos(angle);
+        for (int pass = 0; pass < (heated ? 2 : 1); pass++) {
+            boolean glow = pass == 1;
+            // 加法混合的自发光层只覆盖受热部分，保留手柄端原有的环境光和铁色。
+            VertexConsumer consumer = buffer.getBuffer(glow ? RenderType.eyes(texture) : RenderType.entityCutout(texture));
+            for (int plane = 0; plane < 2; plane++) {
+                float angle = (float) (Math.PI / 4.0 + plane * Math.PI / 2.0);
+                float x = (float) Math.cos(angle) * halfWidth;
+                float z = (float) Math.sin(angle) * halfWidth;
+                float normalX = -(float) Math.sin(angle);
+                float normalZ = (float) Math.cos(angle);
 
-            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u0, 0, normalX, normalZ);
-            vertex(consumer, matrix, pose, packedLight, x, 0, z, u1, 0, normalX, normalZ);
-            vertex(consumer, matrix, pose, packedLight, x, 1, z, u1, 1, normalX, normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u0, 1, normalX, normalZ);
+                // 细分受热链条，短距离挥舞时也能完整显示各个温度色阶；UV 保持连续。
+                int slices = heated ? Math.max(1, Mth.ceil((end - start) / 0.2F)) : 1;
+                for (int slice = 0; slice < slices; slice++) {
+                    float bottom = (float) slice / slices;
+                    float top = (float) (slice + 1) / slices;
+                    float startHeat = heated ? chainHeat(Mth.lerp(bottom, start, end), distance) : 0.0F;
+                    float endHeat = heated ? chainHeat(Mth.lerp(top, start, end), distance) : 0.0F;
+                    int startColor = chainVertexColor(startHeat, glow);
+                    int endColor = chainVertexColor(endHeat, glow);
+                    int startLight = glow ? LightTexture.FULL_BRIGHT : heatedChainLight(packedLight, startHeat);
+                    int endLight = glow ? LightTexture.FULL_BRIGHT : heatedChainLight(packedLight, endHeat);
 
-            vertex(consumer, matrix, pose, packedLight, x, 0, z, u1, 0, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u0, 0, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u0, 1, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, x, 1, z, u1, 1, -normalX, -normalZ);
+                    vertex(consumer, matrix, pose, startLight, startColor, -x, bottom, -z, u0, bottom, normalX, normalZ);
+                    vertex(consumer, matrix, pose, startLight, startColor, x, bottom, z, u1, bottom, normalX, normalZ);
+                    vertex(consumer, matrix, pose, endLight, endColor, x, top, z, u1, top, normalX, normalZ);
+                    vertex(consumer, matrix, pose, endLight, endColor, -x, top, -z, u0, top, normalX, normalZ);
+
+                    vertex(consumer, matrix, pose, startLight, startColor, x, bottom, z, u1, bottom, -normalX, -normalZ);
+                    vertex(consumer, matrix, pose, startLight, startColor, -x, bottom, -z, u0, bottom, -normalX, -normalZ);
+                    vertex(consumer, matrix, pose, endLight, endColor, -x, top, -z, u0, top, -normalX, -normalZ);
+                    vertex(consumer, matrix, pose, endLight, endColor, x, top, z, u1, top, -normalX, -normalZ);
+                }
+            }
         }
     }
 
-    private static void vertex(VertexConsumer consumer, Matrix4f matrix, PoseStack.Pose normal, int packedLight, float x, float y, float z, float u, float v, float normalX, float normalZ) {
+    /// 手柄端保留铁色，沿链条向球头依次过渡到饱和橙红、熔橙和金橙。
+    private static float chainHeat(float position, double distance) {
+        float heat = Mth.clamp((float) (position / distance), 0.0F, 1.0F);
+        return heat * heat * (3.0F - 2.0F * heat);
+    }
+
+    private static int chainColor(float heat) {
+        if (heat < 0.35F) {
+            return lerpChainColor(heat / 0.35F, 0xFFFFFF, 0xFF4A10);
+        }
+        if (heat < 0.7F) {
+            return lerpChainColor((heat - 0.35F) / 0.35F, 0xFF4A10, 0xFF8612);
+        }
+        return lerpChainColor((heat - 0.7F) / 0.3F, 0xFF8612, 0xFFC13D);
+    }
+
+    private static int chainGlowAlpha(float heat) {
+        float glow = Mth.clamp((heat - 0.12F) / 0.88F, 0.0F, 1.0F);
+        // 限制加法叠亮，保留金橙色高光，避免高温端被冲成黄白。
+        return Math.round(112.0F * glow * glow * (3.0F - 2.0F * glow));
+    }
+
+    private static int chainVertexColor(float heat, boolean glow) {
+        int color = chainColor(heat);
+        if (!glow) return color | 0xFF000000;
+        int alpha = chainGlowAlpha(heat);
+        // eyes 使用 ONE/ONE 混合，须把亮度乘进 RGB，才能平滑淡出发光层。
+        int red = ((color >> 16) & 255) * alpha / 255;
+        int green = ((color >> 8) & 255) * alpha / 255;
+        int blue = (color & 255) * alpha / 255;
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
+    }
+
+    private static int lerpChainColor(float amount, int from, int to) {
+        int red = Math.round(Mth.lerp(amount, (from >> 16) & 255, (to >> 16) & 255));
+        int green = Math.round(Mth.lerp(amount, (from >> 8) & 255, (to >> 8) & 255));
+        int blue = Math.round(Mth.lerp(amount, from & 255, to & 255));
+        return (red << 16) | (green << 8) | blue;
+    }
+
+    private static int heatedChainLight(int packedLight, float heat) {
+        if (heat <= 0.0F) return packedLight;
+        int blockLight = Math.round(Mth.lerp(heat, LightTexture.block(packedLight), 15));
+        int skyLight = Math.round(Mth.lerp(heat, LightTexture.sky(packedLight), 15));
+        return LightTexture.pack(blockLight, skyLight);
+    }
+
+    private static void vertex(VertexConsumer consumer, Matrix4f matrix, PoseStack.Pose normal, int packedLight, int color, float x, float y, float z, float u, float v, float normalX, float normalZ) {
         consumer.addVertex(matrix, x, y, z)
-                .setColor(255, 255, 255, 255)
+                .setColor((color >> 16) & 255, (color >> 8) & 255, color & 255, (color >>> 24) & 255)
                 .setUv(u, v)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setLight(packedLight)

@@ -58,20 +58,50 @@ public final class PrimeEnderDragon extends BaseBoss {
     private static final String TARGET_Z_TAG = "FlightTargetZ";
     private static final String HAS_TARGET_TAG = "HasFlightTarget";
 
+    /// 飞行时允许的最高速度，单位格/tick。
     private static final double MAXIMUM_FLIGHT_SPEED = 0.9;
+
+    /// 游走与喷火阶段的最短持续时间，单位 tick。
+    private static final int WANDER_MIN_TICKS = 100;
+    /// 游走与喷火阶段额外随机持续时间的范围，单位 tick。
+    private static final int WANDER_RANDOM_TICKS = 101;
+    /// 飞行追逐时每 tick 保留的旧速度比例。
+    private static final double FLIGHT_MOMENTUM = 0.94;
+    /// 每 tick 调整飞行速度的加速度。
     private static final double FLIGHT_ACCELERATION = 0.08;
+    /// 激光攻击可命中的最大距离，单位格。
     private static final double LASER_MAXIMUM_RANGE = 20.0;
+    /// 龙首激光伤害判定的半径，单位格。
     public static final float LASER_RADIUS = 1.5F;
+    /// 开场后进入常规行动前的等待时间，单位 tick。
     private static final int OPENING_WAIT_TICKS = 20;
+    /// 重新计算玩家目标的间隔，单位 tick。
     private static final int TARGET_REFRESH_TICKS = 20;
+    /// 冲刺或转向后保留惯性运动的时间，单位 tick。
     private static final int INERTIA_TICKS = 20;
+    /// 一次冲刺后自由飞行的持续时间，单位 tick。
     private static final int POST_DASH_WANDER_TICKS = 20;
+    /// 尝试接近降落点的最长时间，单位 tick。
     private static final int LAND_APPROACH_TIMEOUT = 100;
+    /// 着陆状态持续时间，单位 tick。
     private static final int LAND_TICKS = 50;
+    /// 跳过着陆后重新进入攻击循环的等待时间，单位 tick。
     private static final int SKIPPED_LANDING_WAIT_TICKS = 20;
+    /// 重复施加接触伤害的间隔，单位 tick。
     private static final int CONTACT_INTERVAL = 20;
+    /// 接近目标时容许的朝向夹角，单位弧度。
     private static final double APPROACH_ANGLE = Math.PI / 4.0;
+    /// 激光攻击判定使用的扇形夹角，单位弧度。
     private static final double LASER_ANGLE = Math.PI / 6.0;
+
+    /// 进入攻击锥后激活激光的随机判定分母。
+    private static final int LASER_ACTIVATION_ROLL = 6;
+    /// 激光随机判定中可激活的结果数量。
+    private static final int LASER_ACTIVATION_SUCCESSES = 5;
+    /// 冲刺后选择降落追击的随机判定分母。
+    private static final int LANDING_ROLL = 11;
+    /// 冲刺后随机判定中转入降落追击的结果数量。
+    private static final int LANDING_SUCCESSES = 10;
 
     private final EnumMap<PartSlot, PrimeEnderDragonPart> parts = new EnumMap<>(PartSlot.class);
     private CombatState combatState = CombatState.OPENING_WAIT;
@@ -179,7 +209,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             case APPROACH -> {
                 if (combatStateTicks % TARGET_REFRESH_TICKS == 0) {
                     flightTarget = target.position();
-                    if (isWithinAttackCone(target, LASER_ANGLE, 20.0) && random.nextInt(6) < 5) {
+                    if (isWithinAttackCone(target, LASER_ANGLE, 20.0) && random.nextInt(LASER_ACTIVATION_ROLL) < LASER_ACTIVATION_SUCCESSES) {
                         setLaserActive(true);
                     }
                 }
@@ -196,7 +226,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             case POST_DASH_WANDER -> {
                 if (combatStateTicks >= POST_DASH_WANDER_TICKS) {
                     setLaserActive(false);
-                    if (random.nextInt(11) < 10) {
+                    if (random.nextInt(LANDING_ROLL) < LANDING_SUCCESSES) {
                         enterState(CombatState.LAND_APPROACH);
                     } else {
                         enterState(CombatState.SKIPPED_LANDING_WAIT);
@@ -258,7 +288,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     private void startWanderFire() {
         setLanding(false);
         chooseWanderTarget();
-        wanderFireDuration = 100 + random.nextInt(101);
+        wanderFireDuration = WANDER_MIN_TICKS + random.nextInt(WANDER_RANDOM_TICKS);
         enterState(CombatState.WANDER_FIRE);
     }
 
@@ -271,7 +301,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         if (flightTarget == null || isNearFlightTarget(10.0) || idleWanderTicks >= idleWanderDuration) {
             chooseWanderTarget();
             idleWanderTicks = 0;
-            idleWanderDuration = 100 + random.nextInt(101);
+            idleWanderDuration = WANDER_MIN_TICKS + random.nextInt(WANDER_RANDOM_TICKS);
         }
     }
 
@@ -301,7 +331,7 @@ public final class PrimeEnderDragon extends BaseBoss {
 
         Vec3 offset = flightTarget.subtract(getBoundingBox().getCenter());
         if (offset.lengthSqr() > 1.0E-6) {
-            Vec3 velocity = getDeltaMovement().scale(0.94).add(offset.normalize().scale(FLIGHT_ACCELERATION));
+            Vec3 velocity = getDeltaMovement().scale(FLIGHT_MOMENTUM).add(offset.normalize().scale(FLIGHT_ACCELERATION));
             if (velocity.lengthSqr() > MAXIMUM_FLIGHT_SPEED * MAXIMUM_FLIGHT_SPEED) {
                 velocity = velocity.normalize().scale(MAXIMUM_FLIGHT_SPEED);
             }

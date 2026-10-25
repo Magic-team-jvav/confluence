@@ -30,7 +30,17 @@ import java.util.UUID;
 /// 幻影参与目标判断与受击反馈，但其生命周期和战斗归属始终由主体 Boss 管理。
 public final class LunaticCultistClone extends BaseFlyingMonster implements BossOwnedEntity {
     private static final String AGE_TAG = "IllusionAge";
+    /// 分身存在的最长时间，单位 tick。
     private static final int LIFETIME = 240;
+
+    /// 仪式期间幻影每轮等待的时间，单位 tick。
+    private static final int RITUAL_WAIT_TICKS = 20;
+    /// 幻影环绕目标的移动速度，单位格/tick。
+    private static final double ORBIT_SPEED = 0.45;
+    /// 幻影环绕目标的水平半径，单位格。
+    private static final double ORBIT_RADIUS = 8.0;
+    /// 完成一次环绕动作后的等待时间，单位 tick。
+    private static final int ORBIT_RECOVERY_TICKS = 24;
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(LunaticCultistClone.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> CLONE_INDEX = SynchedEntityData.defineId(LunaticCultistClone.class, EntityDataSerializers.INT);
 
@@ -80,8 +90,8 @@ public final class LunaticCultistClone extends BaseFlyingMonster implements Boss
             @Override
             protected BTNode createTree() {
                 return new ConditionalSwitchNode(() -> getMaster() != null && getMaster().isPerformingRitual(),
-                        new WaitAction(20),
-                        SequenceNode.of(new HasTargetCondition(LunaticCultistClone.this), new CircleAroundTargetAction(LunaticCultistClone.this, 0.45, 8.0), new WaitAction(24)));
+                        new WaitAction(RITUAL_WAIT_TICKS),
+                        SequenceNode.of(new HasTargetCondition(LunaticCultistClone.this), new CircleAroundTargetAction(LunaticCultistClone.this, ORBIT_SPEED, ORBIT_RADIUS), new WaitAction(ORBIT_RECOVERY_TICKS)));
             }
         };
     }

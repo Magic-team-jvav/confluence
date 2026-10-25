@@ -30,9 +30,17 @@ public class LunaticCultist extends BaseBoss {
     static final int CLONE_COUNT = 2;
     static final int MAX_CLONE_COUNT = 6;
     private int ritualCloneCount;
+    /// 两次瞬移之间的基础间隔，单位 tick。
     private static final int TELEPORT_TICKS = 60;
+    /// 常规法术攻击的基础冷却，单位 tick。
     private static final int SPELL_COOLDOWN = 50;
+    /// 召唤远古光明弹的基础冷却，单位 tick。
     private static final int ANCIENT_LIGHT_COOLDOWN = 180;
+
+    /// 远古光束技能冷却的额外随机等待范围，单位 tick。
+    private static final int ANCIENT_LIGHT_COOLDOWN_VARIATION = 60;
+    /// 法术连发序列相邻弹幕的间隔，单位 tick。
+    private static final int SPELL_SEQUENCE_STEP_TICKS = 5;
     static final int ANCIENT_LIGHT_COUNT = 5;
     private static final String TELEPORT_TIMER_TAG = "TeleportTimer";
     private static final String SPELL_TIMER_TAG = "SpellTimer";
@@ -94,7 +102,7 @@ public class LunaticCultist extends BaseBoss {
             if (combatState != CombatState.CASTING) {
                 setDeltaMovement(Vec3.ZERO);
                 if (combatState == CombatState.RITUAL && level() instanceof ServerLevel server) {
-                    if (stateTicks % 5 == 0)
+                    if (stateTicks % SPELL_SEQUENCE_STEP_TICKS == 0)
                         server.sendParticles(ParticleTypes.ENCHANT, getX(), getY() + 1, getZ(), 12, 3, 0.2, 3, 0.1);
                 }
                 if (++stateTicks >= stateParameters(combatState).duration()) {
@@ -134,7 +142,7 @@ public class LunaticCultist extends BaseBoss {
 
                 if (getHealth() < getMaxHealth() * 0.5F) ancientLightTimer--;
                 if (ancientLightTimer <= 0) {
-                    ancientLightTimer = ANCIENT_LIGHT_COOLDOWN + random.nextInt(60);
+                    ancientLightTimer = ANCIENT_LIGHT_COOLDOWN + random.nextInt(ANCIENT_LIGHT_COOLDOWN_VARIATION);
                     spawnAncientLights();
                 }
             }

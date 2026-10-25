@@ -51,7 +51,24 @@ import java.util.*;
 /// 体节被摧毁后，剩余链条会重新选举头尾并继续战斗；Boss 栏则由主头部统一汇总。
 public class EaterOfWorlds extends BaseWormBoss {
     // 一条完整世界吞噬者的初始体节数，以及难度/多人倍率前的头部与单体节生命。
+    /// 邪恶唾液弹体初速，单位格/tick。
+    private static final float VILE_SPIT_SPEED = 0.3F;
+    /// 失去目标后每 tick 保留的移动速度比例。
+    private static final double IDLE_MOMENTUM = 0.8;
+    /// 对齐目标阶段每 tick 允许的最大转向角度，单位度。
+    private static final float ALIGN_TURN_DEGREES = 6.5F;
+    /// 直冲阶段每 tick 允许的最大转向角度，单位度。
+    private static final float DASH_TURN_DEGREES = 5.5F;
+    /// 直冲阶段沿锁定方向设置的前方目标距离，单位格。
+    private static final double DASH_AIM_DISTANCE = 32.0;
+    /// 游走曲线终点相对目标的水平半径，单位格。
+    private static final double WANDER_RADIUS = 10.0;
+    /// 游走曲线控制点沿当前朝向的延伸距离，单位格。
+    private static final double WANDER_CONTROL_DISTANCE = 8.0D;
+
+    /// 初始生成的世吞体节数量。
     public static final int INITIAL_SEGMENT_COUNT = 60;
+    /// 世吞头部初始生命值；分裂后独立头部沿用该值。
     public static final float HEAD_MAX_HEALTH = 54.0F;
     private static final String ENCOUNTER_TAG = "Encounter";
     private static final String PRIMARY_TAG = "PrimaryHead";
@@ -65,12 +82,15 @@ public class EaterOfWorlds extends BaseWormBoss {
     private static final String NEXT_WANDER_BELOW_TAG = "NextWanderBelow";
     // 三段移动状态的持续时间，单位为 tick。1.21 的游走曲线以 80 tick 为基准，但其目标
     // 缺失时才真正运行；这里在战斗中也持续绘制曲线，因此压缩到 60 tick，避免有效追击
-    // 时间被低速游走吞掉。分裂出来的新头先 ALIGN，再进入 DASH。
+    /// 时间被低速游走吞掉。分裂出来的新头先 ALIGN，再进入 DASH。
     private static final int WANDER_TICKS = 60;
+    /// 冲刺前朝目标调整方向的最长时间，单位 tick。
     private static final int ALIGN_TICKS = 100;
+    /// 一次冲刺状态持续时间，单位 tick。
     private static final int DASH_TICKS = 120;
-    // 常态追击的速度上限（方块/tick）及跨开阔场地重新索敌的半径（方块）。
+    /// 常态追击的速度上限（方块/tick）及跨开阔场地重新索敌的半径（方块）。
     private static final double PURSUIT_SPEED = 0.62;
+    /// 重新搜索玩家目标的最大距离，单位格。
     private static final double TARGET_SEARCH_RANGE = 300.0D;
 
     private static final EntityDataAccessor<Optional<UUID>> ENCOUNTER_UUID = SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -850,14 +870,14 @@ public class EaterOfWorlds extends BaseWormBoss {
         projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         projectile.setPos(origin);
         Vec3 aim = target.getEyePosition().subtract(origin);
-        projectile.shoot(aim.x, aim.y, aim.z, 0.3F, 3.0F);
+        projectile.shoot(aim.x, aim.y, aim.z, VILE_SPIT_SPEED, 3.0F);
         if (!level().addFreshEntity(projectile)) projectile.discard();
     }
 
     private void tickWormMovement() {
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive()) {
-            setDeltaMovement(getDeltaMovement().scale(0.8));
+            setDeltaMovement(getDeltaMovement().scale(IDLE_MOMENTUM));
             return;
         }
 
@@ -883,15 +903,15 @@ public class EaterOfWorlds extends BaseWormBoss {
                 Vec3 attackPoint = getEncounterApproachPoint(target);
                 Vec3 toTarget = attackPoint.subtract(position());
                 double angle = angleBetween(getLookAngle(), toTarget);
-                steerAndAdvance(attackPoint, isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED, 6.5F);
+                steerAndAdvance(attackPoint, isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED, ALIGN_TURN_DEGREES);
                 if (movementTicks >= ALIGN_TICKS || angle < Math.PI / 8.0 && toTarget.lengthSqr() < 20.0) {
                     beginPhase(MovementPhase.DASH);
                 }
             }
             case DASH -> {
                 if (dashDirection.lengthSqr() < 1.0E-7) dashDirection = getLookAngle();
-                steerAndAdvance(position().add(dashDirection.scale(32.0)),
-                        isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED, 5.5F);
+                steerAndAdvance(position().add(dashDirection.scale(DASH_AIM_DISTANCE)),
+                        isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED, DASH_TURN_DEGREES);
                 if (movementTicks >= DASH_TICKS) {
                     beginPhase(MovementPhase.WANDER);
                     chooseWanderTarget(target);
@@ -944,7 +964,7 @@ public class EaterOfWorlds extends BaseWormBoss {
 
     private void chooseWanderTarget(LivingEntity target) {
         double angle = random.nextDouble() * Mth.TWO_PI;
-        double radius = 10.0;
+        double radius = WANDER_RADIUS;
         double verticalOffset = nextWanderBelow
                 ? -10.0 - random.nextDouble() * 4.0
                 : 5.0 + random.nextDouble() * 2.0;
@@ -963,7 +983,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         tangent = tangent.normalize();
         // 先沿当前头向延伸，再向目标高度的反方向轻微拱起，保留蠕虫钻出/钻入的弧线感。
         double counterArc = wanderTarget.y < wanderCurveStart.y ? 6.0D : -6.0D;
-        wanderCurveControl = wanderCurveStart.add(tangent.scale(8.0D)).add(0.0D, counterArc, 0.0D);
+        wanderCurveControl = wanderCurveStart.add(tangent.scale(WANDER_CONTROL_DISTANCE)).add(0.0D, counterArc, 0.0D);
     }
 
     private void ensureWanderCurve(LivingEntity target) {
@@ -979,7 +999,7 @@ public class EaterOfWorlds extends BaseWormBoss {
             if (direction.lengthSqr() <= 1.0E-7) direction = getLookAngle();
             if (direction.lengthSqr() <= 1.0E-7) direction = new Vec3(0.0, 0.0, 1.0);
             double counterArc = wanderTarget.y < wanderCurveStart.y ? 6.0D : -6.0D;
-            wanderCurveControl = wanderCurveStart.add(direction.normalize().scale(8.0D))
+            wanderCurveControl = wanderCurveStart.add(direction.normalize().scale(WANDER_CONTROL_DISTANCE))
                     .add(0.0D, counterArc, 0.0D);
             movementTicks = 1;
         }

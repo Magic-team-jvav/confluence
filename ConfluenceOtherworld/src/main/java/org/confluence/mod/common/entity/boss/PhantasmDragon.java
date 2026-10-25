@@ -28,6 +28,17 @@ import java.util.UUID;
 
 /// 幻影龙——拜月教邪教徒召唤的飞龙仆从。
 public class PhantasmDragon extends BaseFlyingMonster implements BossOwnedEntity {
+    /// 幻影龙冲刺移动速度，单位格/tick。
+    private static final double DASH_SPEED = 1.0;
+    /// 幻影龙每次冲刺持续时间，单位 tick。
+    private static final int DASH_TICKS = 25;
+    /// 幻影龙两次游走之间的等待时间，单位 tick。
+    private static final int WANDER_WAIT_TICKS = 15;
+    /// 幻影龙游走速度，单位格/tick。
+    private static final double WANDER_SPEED = 0.4;
+    /// 幻影龙每轮游走的持续时间，单位 tick。
+    private static final int WANDER_TICKS = 12;
+
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(PhantasmDragon.class, EntityDataSerializers.OPTIONAL_UUID);
     private final BossOwnerTracker<LunaticCultist> ownerTracker = new BossOwnerTracker<>(LunaticCultist.class);
 
@@ -74,9 +85,9 @@ public class PhantasmDragon extends BaseFlyingMonster implements BossOwnedEntity
             protected BTNode createTree() {
                 return SelectorNode.of(
                         SequenceNode.of(new HasTargetCondition(PhantasmDragon.this),
-                                new DashAction(PhantasmDragon.this, 1.0, 25)),
-                        SequenceNode.of(new WaitAction(15),
-                                new FlyWanderAction(PhantasmDragon.this, 0.4, 12))
+                                new DashAction(PhantasmDragon.this, DASH_SPEED, DASH_TICKS)),
+                        SequenceNode.of(new WaitAction(WANDER_WAIT_TICKS),
+                                new FlyWanderAction(PhantasmDragon.this, WANDER_SPEED, WANDER_TICKS))
                 );
             }
         };

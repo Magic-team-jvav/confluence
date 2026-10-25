@@ -34,18 +34,30 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 /// 并按难度额外生成尖刺史莱姆。
 public class KingSlime extends BaseBoss {
     private static final String RUNTIME_TAG = "ConfluenceKingSlimeRuntime";
-    // 自定义运行时 NBT 的结构版本；只在字段布局发生不兼容变化时递增。
+    /// 自定义运行时 NBT 的结构版本；只在字段布局发生不兼容变化时递增。
     private static final int RUNTIME_VERSION = 2;
-    // 缩小和恢复各持续 20 tick；85 tick 是常态跳跃阶段的循环边界。
+    /// 缩小和恢复各持续 20 tick；85 tick 是常态跳跃阶段的循环边界。
     private static final int TRANSFORM_TICKS = 20;
+    /// 普通跳跃攻击循环的结束时间点，单位 tick。
     private static final int NORMAL_CYCLE_END = 85;
-    // 生命比例映射到逻辑尺寸 [6, 16]，最大身体碰撞高度限制为 6 方块。
+    /// 生命比例映射到逻辑尺寸 [6, 16]，最大身体碰撞高度限制为 6 方块。
     private static final int MIN_SIZE = 6;
+    /// 按血量变化最多增加的体型档位数。
     private static final int MAX_HEALTH_SIZE_BONUS = 10;
+    /// 最大逻辑体型对应的身体高度基准，单位格；用于尺寸与渲染比例换算。
     private static final float MAX_BODY_HEIGHT = 6.0F;
-    // 碰撞箱使用半径/半高，渲染模型使用完整直径，因此渲染倍率是尺寸换算值的两倍。
+    /// 碰撞箱使用半径/半高，渲染模型使用完整直径，因此渲染倍率是尺寸换算值的两倍。
     private static final float BASE_DIMENSION_PER_SIZE = MAX_BODY_HEIGHT / (MIN_SIZE + MAX_HEALTH_SIZE_BONUS);
+    /// 每个体型档位对应的渲染缩放系数。
     private static final float RENDER_SCALE_PER_SIZE = BASE_DIMENSION_PER_SIZE * 2.0F;
+
+    /// 选择传送落点时距离目标的水平偏移，单位格。
+    private static final double TELEPORT_OFFSET = 5.0;
+    /// 普通体型一次召唤额外随从数量的随机范围。
+    private static final int NORMAL_MINION_VARIATION = 3;
+
+    /// 专家模式召唤特殊随从的概率分母。
+    private static final int EXPERT_MINION_VARIANT_CHANCE = 4;
 
     private static final EntityDataAccessor<Byte> DATA_PHASE = SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> DATA_PHASE_TICKS = SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.INT);
@@ -236,7 +248,7 @@ public class KingSlime extends BaseBoss {
         Vec3 destination;
         if (!isExpert()) {
             Vec3 direction = anchorPlayer.getLookAngle().multiply(-1.0, 0.0, -1.0).normalize();
-            destination = targetPosition.add(direction.scale(5.0));
+            destination = targetPosition.add(direction.scale(TELEPORT_OFFSET));
         } else {
             float angle = random.nextFloat() * Mth.TWO_PI;
             destination = targetPosition.add(Mth.cos(angle) * 10.0, 0.0, Mth.sin(angle) * 10.0);
@@ -393,9 +405,9 @@ public class KingSlime extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        int count = CommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? 1 : 1 + random.nextInt(3);
+        int count = CommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? 1 : 1 + random.nextInt(NORMAL_MINION_VARIATION);
         for (int index = 0; index < count; index++) {
-            spawnSlime(serverLevel, isExpert() && random.nextInt(4) == 0
+            spawnSlime(serverLevel, isExpert() && random.nextInt(EXPERT_MINION_VARIANT_CHANCE) == 0
                     ? MonsterEntities.SPIKED_SLIME.get() : MonsterEntities.BLUE_SLIME.get());
         }
     }

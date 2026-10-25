@@ -10,6 +10,9 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 可以提前摧毁的蓄力球；存活七秒后向四个水平方向释放预言之末。
 public final class AncientDoom extends BaseLivingBossPart<LunaticCultist> {
+    /// 生成后释放四向弹幕的等待时间，单位 tick。
+    private static final int ACTIVATION_DELAY_TICKS = 140;
+
     public AncientDoom(EntityType<? extends Monster> type, Level level) {super(type, level);}
 
     public void setMaster(LunaticCultist master) {bindTo(master);}
@@ -29,7 +32,7 @@ public final class AncientDoom extends BaseLivingBossPart<LunaticCultist> {
             }
             return;
         }
-        if (tickCount < 140) return;
+        if (tickCount < ACTIVATION_DELAY_TICKS) return;
         for (int i = 0; i < 4; i++) {
             CultistProjectile bolt = ModEntities.PROPHECYS_END.get().create(level());
             if (bolt == null) continue;

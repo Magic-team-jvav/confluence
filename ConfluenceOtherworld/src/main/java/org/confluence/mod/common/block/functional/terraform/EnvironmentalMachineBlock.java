@@ -11,6 +11,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -44,6 +45,7 @@ import org.confluence.mod.client.renderer.block.EnvironmentalMachineRenderer;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.util.AchievementUtils;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -176,6 +178,8 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
                 }
                 if (data.setEnabled(!data.enabled, level.getDayTime())) {
                     entity.setChanged();
+                    if (data.enabled && data.solution == Solution.GREEN && player instanceof ServerPlayer serverPlayer)
+                        AchievementUtils.awardAchievement(serverPlayer, "and_good_riddance");
                     level.playSound(null, entity.basePos(), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, SWITCH_VOLUME, data.enabled ? SWITCH_ON_PITCH : SWITCH_OFF_PITCH);
                     player.displayClientMessage(Component.translatable(data.enabled ? "message.confluence.environmental_machine.enabled" : "message.confluence.environmental_machine.disabled"), true);
                 }
@@ -219,8 +223,6 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         if (!(level.getBlockEntity(origin) instanceof BEntity entity)) return;
         var data = entity.data();
         EnumSet<Solution> solutions = EnumSet.noneOf(Solution.class);
-        // 已付费但未耗尽的溶液同样参与反应，保持与混装判定一致。
-        if (data.paidUntil > data.lastTime && data.solution != null) solutions.add(data.solution);
         for (int slot = 0; slot < SLOT_COUNT; slot++) {
             if (data.slots[slot] > 0 && data.slotSolutions[slot] != null)
                 solutions.add(data.slotSolutions[slot]);
@@ -253,8 +255,7 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
                     @Override
                     public boolean shouldBlockExplode(Explosion explosion, BlockGetter world, BlockPos pos, BlockState state, float power) {
-                        return !(state.getBlock() instanceof EnvironmentalMachineBlock)
-                                && super.shouldBlockExplode(explosion, world, pos, state, power);
+                        return !(state.getBlock() instanceof EnvironmentalMachineBlock) && super.shouldBlockExplode(explosion, world, pos, state, power);
                     }
                 }, origin.getX() + 0.5, origin.getY() + 0.5, origin.getZ() + 0.5,
                 FAILURE_EXPLOSION_POWER, false, Level.ExplosionInteraction.BLOCK);

@@ -177,6 +177,9 @@ public class Retinazer extends AbstractTwinEye {
     private static final double PHASE_TWO_MUZZLE_DISTANCE = 28.0 / 16.0;
     /// 激光眼变形动画时长，单位 tick。
     private static final int TRANSFORM_TICKS = 31;
+
+    /// 选择悬停射击站位时允许与目标相距的最大距离平方，单位格²。
+    private static final double HOVER_TARGET_MAX_DISTANCE_SQUARED = 32 * 32;
     private static final byte MUZZLE_WARNING_EVENT = 66;
     private static final byte MUZZLE_FLASH_EVENT = 67;
     private static final DustParticleOptions CHARGE_PARTICLE = new DustParticleOptions(new Vector3f(0.65F, 0.2F, 1.0F), 1.3F);
@@ -259,7 +262,7 @@ public class Retinazer extends AbstractTwinEye {
         switch (state) {
             case RELOCATE -> {
                 if (hoverPosition == null) chooseHoverPosition(target);
-                if (hoverPosition.distanceToSqr(target.position()) > 32 * 32
+                if (hoverPosition.distanceToSqr(target.position()) > HOVER_TARGET_MAX_DISTANCE_SQUARED
                         || stateTicks % 10 == 0 && !level().noCollision(this, getBoundingBox().move(hoverPosition.subtract(position())))) {
                     chooseHoverPosition(target);
                 }

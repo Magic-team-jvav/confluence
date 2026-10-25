@@ -122,6 +122,7 @@ public class HillOfFlesh extends BaseBoss {
     private static final float INITIAL_CLEARING_RADIUS = 14.0F;
     /// 内圈距本体碰撞箱侧面的间距；两阶段均给空手三格触及距离留出余量。
     private static final float INNER_MELEE_GAP = 1.2F;
+    /// 第二阶段近战判定与目标碰撞箱之间允许的额外间距，单位格。
     private static final float PHASE_TWO_MELEE_GAP = 1.75F;
     static final float OUTER_RADIUS = 75.0F;
 
@@ -129,15 +130,39 @@ public class HillOfFlesh extends BaseBoss {
 
     /// 场地高度单位为方块；出场与开始破坏场地的时间单位为 tick。
     public static final int ARENA_HEIGHT = 100;
+    /// 生成后的初始化阶段时长，单位 tick。
     private static final int INITIALIZATION_TICKS = 150;
+    /// 初始化后开始处理前方地形的时间点，单位 tick。
     private static final int DESTRUCTION_START_TICK = 75;
+    /// 内部活动区域扩张持续时间，单位 tick。
     private static final int INNER_EXPANSION_TICKS = 600;
+    /// 周期性接触伤害的判定间隔，单位 tick。
     private static final int DAMAGE_INTERVAL = 32;
+    /// 重新跟踪目标与战场位置的间隔，单位 tick。
     private static final int TRACK_INTERVAL = 64;
+    /// 肉墙布置的主体部位数量。
     private static final int PART_COUNT = 10;
+    /// 生成血肉史莱姆的间隔，单位 tick。
     private static final int FLESH_SLIME_INTERVAL = 300;
+    /// 生成水蛭的基础间隔，单位 tick；实际间隔仍受难度修正。
     private static final int LEECH_INTERVAL = 300;
+    /// 触发熔岩柱攻击的间隔，单位 tick。
     private static final int LAVA_PILLAR_INTERVAL = 100;
+
+    /// 失去目标后再次搜索战斗参与者的间隔，单位 tick。
+    private static final int FALLBACK_TARGET_INTERVAL = 30;
+    /// 触发贴身伤害时，距内圈边界保留的缓冲宽度，单位格。
+    private static final float INNER_DAMAGE_MARGIN = 5.0F;
+    /// 风暴牵引每 tick 允许施加的最大速度增量。
+    private static final double STORM_PULL_MAX_STRENGTH = 0.03;
+    /// 风暴牵引随目标距离衰减的强度系数。
+    private static final double STORM_PULL_DISTANCE_FACTOR = 0.5;
+    /// 二阶段血肉史莱姆和水蛭召唤间隔相对一阶段的倍率。
+    private static final float PHASE_TWO_SUMMON_INTERVAL_MULTIPLIER = 0.3F;
+    /// 熔岩柱选择目标时允许的最大高度差，单位格。
+    private static final double LAVA_PILLAR_TARGET_HEIGHT = 3.0;
+    /// 一轮熔岩柱在基础数量外的随机数量范围。
+    private static final int LAVA_PILLAR_EXTRA_COUNT = 4;
 
     private static final String ENCOUNTER_TICKS_TAG = "EncounterTicks";
     private static final String PHASE_TWO_TAG = "PhaseTwo";
@@ -388,7 +413,7 @@ public class HillOfFlesh extends BaseBoss {
     }
 
     private void acquireFallbackTarget() {
-        if (getTarget() != null || tickCount % 30 != 0) {
+        if (getTarget() != null || tickCount % FALLBACK_TARGET_INTERVAL != 0) {
             return;
         }
         Player nearest = level().getNearestPlayer(this, getOuterRadius());
@@ -459,8 +484,8 @@ public class HillOfFlesh extends BaseBoss {
             if (distanceSquared > outerRadius * outerRadius) {
                 damage = specialAttackDamage(DamageZone.OUTER);
             } else if (distanceSquared
-                    < (innerRadius - 5.0F)
-                    * (innerRadius - 5.0F)) {
+                    < (innerRadius - INNER_DAMAGE_MARGIN)
+                    * (innerRadius - INNER_DAMAGE_MARGIN)) {
                 damage = specialAttackDamage(DamageZone.ATTACHED);
             } else if (distanceSquared
                     < innerRadius * innerRadius) {
@@ -502,7 +527,7 @@ public class HillOfFlesh extends BaseBoss {
             if (distance < 1.0E-6) {
                 continue;
             }
-            double strength = Math.min(0.03, 0.5 / distance);
+            double strength = Math.min(STORM_PULL_MAX_STRENGTH, STORM_PULL_DISTANCE_FACTOR / distance);
             entity.addDeltaMovement(direction.scale(strength / distance));
             entity.hasImpulse = true;
         }
@@ -537,7 +562,7 @@ public class HillOfFlesh extends BaseBoss {
 
     private int getSummonInterval(int baseInterval) {
         return phase2
-                ? Math.max(1, Mth.floor(baseInterval * 0.3F))
+                ? Math.max(1, Mth.floor(baseInterval * PHASE_TWO_SUMMON_INTERVAL_MULTIPLIER))
                 : baseInterval;
     }
 
@@ -601,7 +626,7 @@ public class HillOfFlesh extends BaseBoss {
             return 0;
         }
         List<LivingEntity> candidates = new ArrayList<>(nearbyLivingEntities);
-        candidates.removeIf(entity -> Math.abs(entity.getY() - getY()) >= 3.0);
+        candidates.removeIf(entity -> Math.abs(entity.getY() - getY()) >= LAVA_PILLAR_TARGET_HEIGHT);
         if (candidates.isEmpty()) {
             return 0;
         }
@@ -611,7 +636,7 @@ public class HillOfFlesh extends BaseBoss {
             candidates.set(index, candidates.get(swapIndex));
             candidates.set(swapIndex, value);
         }
-        int count = Math.min(candidates.size(), Math.min(getSummonLimit(), 1 + random.nextInt(4)));
+        int count = Math.min(candidates.size(), Math.min(getSummonLimit(), 1 + random.nextInt(LAVA_PILLAR_EXTRA_COUNT)));
         int spawned = 0;
         for (int index = 0; index < count; index++) {
             LivingEntity target = candidates.get(index);

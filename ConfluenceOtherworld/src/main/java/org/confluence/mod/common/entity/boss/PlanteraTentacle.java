@@ -24,11 +24,20 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 /// 世纪之花触手——从方块表面伸出攻击玩家，短时间后消失。
 public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements GeoEntity {
     private static final String SLOT_TAG = "Slot";
+    /// 触手默认环绕锚点的距离，单位格。
     private static final double DISTANCE_FROM_ANCHOR = 6.0;
+
+    /// FTW 模式触手径向移动和目标吸引的倍率。
+    private static final double FTW_TENTACLE_SPEED_MULTIPLIER = 9.0;
+    /// 触手每 tick 向目标环绕半径收缩或扩张的最大距离，单位格；随 Boss 缩放。
     private static final double RADIAL_STEP = 0.15;
+    /// 玩家可吸引触手偏离环绕轨道的距离，单位格。
     private static final double TARGET_ATTRACTION_RADIUS = 24.0;
+    /// 触手朝目标偏移时使用的吸引强度。
     private static final double TARGET_ATTRACTION = 0.25;
+    /// 触手彼此靠近时的分离强度。
     private static final double TENTACLE_REPULSION = 2.5;
+    /// 同一触手连续造成接触伤害的最短间隔，单位 tick。
     private static final int CONTACT_COOLDOWN = 20;
 
     private static final EntityDataAccessor<Integer> SLOT = SynchedEntityData.defineId(PlanteraTentacle.class, EntityDataSerializers.INT);
@@ -70,7 +79,7 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
         if (distance < 1.0E-6) {
             offset = master.getTentacleBaseDirection(getSlot()).scale(desiredDistance);
         } else {
-            double radialStep = RADIAL_STEP * master.getScale() * (master.isFtw() ? 9.0 : 1.0);
+            double radialStep = RADIAL_STEP * master.getScale() * (master.isFtw() ? FTW_TENTACLE_SPEED_MULTIPLIER : 1.0);
             double radialChange = Mth.clamp(desiredDistance - distance, -radialStep, radialStep);
             offset = offset.scale(Math.min(distance + radialChange, desiredDistance) / distance);
         }
@@ -79,7 +88,7 @@ public class PlanteraTentacle extends BaseLivingBossPart<Plantera> implements Ge
         if (target != null) {
             Vec3 targetOffset = target.getEyePosition().subtract(anchor);
             double attraction = Math.max(TARGET_ATTRACTION_RADIUS - targetOffset.length(), 0.0) * TARGET_ATTRACTION
-                    * (master.isFtw() ? 9.0 : 1.0);
+                    * (master.isFtw() ? FTW_TENTACLE_SPEED_MULTIPLIER : 1.0);
             offset = rotateToward(offset, targetOffset, attraction);
         }
 

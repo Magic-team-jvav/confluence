@@ -15,12 +15,23 @@ import java.util.UUID;
 /// 已保存的饿鬼。只有上一只确实死亡或被移除后才进入再次生成计时，
 /// 避免每个周期无上限堆积从属。
 public class HillOfFleshMouth extends HillOfFlesh.Part {
+    /// 肉丘之嘴首次召唤饿鬼的基础等待时间，单位 tick。
+    private static final int INITIAL_SUMMON_BASE_TICKS = 100;
+    /// 首次召唤额外随机等待的范围，单位 tick。
+    private static final int INITIAL_SUMMON_VARIATION_TICKS = 150;
+    /// 一阶段再次召唤饿鬼的基础间隔，单位 tick。
+    private static final int PHASE_ONE_SUMMON_BASE_TICKS = 250;
+    /// 二阶段再次召唤饿鬼的基础间隔，单位 tick。
+    private static final int PHASE_TWO_SUMMON_BASE_TICKS = 150;
+    /// 再次召唤饿鬼额外随机等待的范围，单位 tick。
+    private static final int SUMMON_VARIATION_TICKS = 80;
+
     private int summonTimer;
     private @Nullable UUID hungryUUID;
 
     public HillOfFleshMouth(HillOfFlesh master) {
         super(master, "entity.confluence.hill_of_flesh_mouth", 4.0F);
-        this.summonTimer = 100 + random.nextInt(150);
+        this.summonTimer = INITIAL_SUMMON_BASE_TICKS + random.nextInt(INITIAL_SUMMON_VARIATION_TICKS);
     }
 
     @Override
@@ -33,7 +44,7 @@ public class HillOfFleshMouth extends HillOfFlesh.Part {
         }
         summonTimer--;
         if (summonTimer <= 0) {
-            summonTimer = (master.isPhase2() ? 150 : 250) + random.nextInt(80);
+            summonTimer = (master.isPhase2() ? PHASE_TWO_SUMMON_BASE_TICKS : PHASE_ONE_SUMMON_BASE_TICKS) + random.nextInt(SUMMON_VARIATION_TICKS);
             spawnHungryIfAbsent(master);
         }
     }

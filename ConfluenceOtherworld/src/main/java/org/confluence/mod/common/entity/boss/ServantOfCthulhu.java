@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.boss;
 
-import java.util.Optional;
-import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,12 +20,32 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+import java.util.UUID;
+
 
 /// 克苏鲁之眼生成的短命仆从。
 ///
 /// 仆从拥有独立实体类型，以便追踪所有权并在区块恢复后重新绑定。具有主人身份时只继承
 /// 主人的权威目标；完全没有主人身份的独立实体才会自行寻找玩家。
 public class ServantOfCthulhu extends BaseFlyingMonster implements BossOwnedEntity {
+
+    /// 仆从失去目标后每 tick 保留的速度比例。
+    private static final double IDLE_MOMENTUM = 0.9D;
+    /// 仆从与主人协同俯冲的周期，单位 tick。
+    private static final int DIVE_WINDOW_PERIOD = 52;
+    /// 协同俯冲周期内允许发动攻击的时间，单位 tick。
+    private static final int DIVE_WINDOW_TICKS = 25;
+    /// 仆从追击目标的基础速度，单位格/tick。
+    private static final double CHASE_BASE_SPEED = 0.28D;
+    /// 仆从追击目标的速度上限，单位格/tick。
+    private static final double CHASE_MAX_SPEED = 0.62D;
+    /// 每格目标距离额外增加的仆从追击速度。
+    private static final double CHASE_DISTANCE_ACCELERATION = 0.018D;
+    /// 追击时每 tick 保留的旧速度比例。
+    private static final double CHASE_MOMENTUM = 0.72D;
+    /// 朝目标方向追加速度的权重。
+    private static final double CHASE_STEERING_WEIGHT = 0.28D;
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(ServantOfCthulhu.class, EntityDataSerializers.OPTIONAL_UUID);
     private final BossOwnerTracker<EyeOfCthulhu> ownerTracker = new BossOwnerTracker<>(EyeOfCthulhu.class);
 
@@ -102,19 +120,19 @@ public class ServantOfCthulhu extends BaseFlyingMonster implements BossOwnedEnti
         }
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive()) {
-            setDeltaMovement(getDeltaMovement().scale(0.9D));
+            setDeltaMovement(getDeltaMovement().scale(IDLE_MOMENTUM));
             return;
         }
 
-        boolean coordinatedDive = masterForCoordination() != null && BossMinionCoordinator.isAttackWindow(this, 52, 25);
+        boolean coordinatedDive = masterForCoordination() != null && BossMinionCoordinator.isAttackWindow(this, DIVE_WINDOW_PERIOD, DIVE_WINDOW_TICKS);
         Vec3 destination = coordinatedDive
                 ? BossMinionCoordinator.predict(target, 5.0D, 4.0D)
                 : BossMinionCoordinator.orbitPoint(this, target, 6.0D, 1.8D, 0.035D, 8);
         Vec3 desired = destination.subtract(getEyePosition());
         Vec3 direction = turnDirectionToward(getDeltaMovement(), desired, 10.0F);
         double distance = Math.sqrt(desired.lengthSqr());
-        double speed = Mth.clamp(0.28D + distance * 0.018D, 0.28D, 0.62D);
-        Vec3 velocity = getDeltaMovement().scale(0.72D).add(direction.scale(speed * 0.28D));
+        double speed = Mth.clamp(CHASE_BASE_SPEED + distance * CHASE_DISTANCE_ACCELERATION, CHASE_BASE_SPEED, CHASE_MAX_SPEED);
+        Vec3 velocity = getDeltaMovement().scale(CHASE_MOMENTUM).add(direction.scale(speed * CHASE_STEERING_WEIGHT));
         if (velocity.lengthSqr() > speed * speed) velocity = velocity.normalize().scale(speed);
         setDeltaMovement(velocity);
         faceCombatMovement(30.0F, 30.0F);

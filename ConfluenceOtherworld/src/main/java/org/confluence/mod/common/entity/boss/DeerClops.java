@@ -16,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -50,27 +51,80 @@ public class DeerClops extends BaseBoss {
     private static final RawAnimation ROAR = RawAnimation.begin().thenPlay("Roar");
     private static final RawAnimation ROARING = RawAnimation.begin().thenLoop("Roaring");
 
+    /// 首次锁定目标后的咆哮预备与正式咆哮各持续的时间，单位 tick。
     private static final int INTRO_STAGE_TICKS = 10;
+    /// 进入冰击动作到生成冰刺、抛冰或暗影之手的等待时间，单位 tick。
     private static final int ATTACK_WINDUP_TICKS = 12;
+    /// 一次冰击动作的最短总时间，单位 tick；必须不小于蓄力时间。
     private static final int ATTACK_TOTAL_TICKS = 15;
+    /// 一次冰击结束到允许再次开始攻击的基础间隔，单位 tick。
     private static final int ATTACK_COOLDOWN_TICKS = 30;
+    /// 目标在抛冰距离外时，一次攻击生成的抛冰实体数量。
     private static final int THROWN_ICE_COUNT = 20;
-    private static final int ICE_WAVE_STEPS = 10;
+    /// 冰刺波逐 tick 扩张的轮数；最后一轮向前延伸约 27 格。
+    private static final int ICE_WAVE_STEPS = 16;
+    /// 追击时水平位移持续不足阈值多少 tick 后尝试越障跳跃。
     private static final int STUCK_TICKS_BEFORE_JUMP = 8;
+    /// 一次越障跳跃后再次允许跳跃的间隔，单位 tick。
     private static final int TRAVERSAL_JUMP_COOLDOWN = 12;
+    /// 停止向目标靠近、转为原地面向目标的距离，单位格，按三维距离计算。
     private static final double PREFERRED_RANGE = 7.0;
-    private static final double PHASE_START_RANGE = 8.0;
-    private static final double PHASE_END_RANGE = 6.5;
-    private static final double MAXIMUM_ATTACK_RANGE = 20.0;
-    private static final double THROWN_ICE_RANGE = 10.0;
+    /// 寻路受阻且离目标超过此距离时可开始穿墙追击，单位格，按三维距离计算。
+    private static final double PHASE_START_RANGE = 18.0;
+    /// 穿墙追击接近目标后尝试回到实体碰撞状态的距离，单位格；须小于开始阈值。
+    private static final double PHASE_END_RANGE = 7.0;
+    /// 正常攻击与远距无敌的边界，单位格；超过时停止攻击并进入无敌状态。
+    private static final double MAXIMUM_ATTACK_RANGE = 30.0;
+    /// 近身冰刺与远程抛冰的水平距离分界，单位格。
+    private static final double THROWN_ICE_RANGE = 14.0;
+    /// 穿墙追击要求的连续水平停滞时间，单位 tick；同时要求视线受阻或目标明显高于巨鹿。
+    private static final int PHASE_STUCK_TICKS = 20;
+    /// 近身目标高于巨鹿多少格时改用暗影之手，单位格。
     private static final double SHADOW_HAND_HEIGHT = 5.0;
+    /// 越障跳跃设置的最低竖直初速度，单位格/tick。
     private static final double TRAVERSAL_JUMP_SPEED = 0.85;
+    /// 越障跳跃补足的水平前进速度，单位格/tick。
     private static final double TRAVERSAL_FORWARD_SPEED = 0.28;
+
+    /// 咆哮结束到下次咆哮的间隔，单位 tick。
+    private static final int ROAR_INTERVAL_TICKS = 240;
+    /// 咆哮可施加缓慢的玩家搜索半径，单位格。
+    private static final double ROAR_SLOW_RANGE = 50.0;
+    /// 咆哮施加的缓慢持续时间，单位 tick。
+    private static final int ROAR_SLOW_TICKS = 240;
+    /// 持续咆哮开始后施加缓慢的时刻，单位 tick。
+    private static final int ROAR_SLOW_APPLY_TICK = 10;
+    /// 持续咆哮动作的时长，单位 tick。
+    private static final int ROAR_DURATION_TICKS = 20;
+    /// 专家模式被动暗影手的基础间隔，单位 tick；额外间隔随当前生命比例增加。
+    private static final float PASSIVE_HAND_BASE_INTERVAL = 13.333F;
+    /// 专家模式被动暗影手搜索玩家的距离，单位格。
+    private static final double PASSIVE_HAND_TARGET_RANGE = 75.0;
+    /// 被动暗影手按玩家当前速度预测位置的时间，单位 tick。
+    private static final double PASSIVE_HAND_LEAD_TICKS = 10.0;
+    /// 一次主动暗影手攻击生成的实体数量。
+    private static final int SHADOW_HAND_COUNT = 5;
+    /// 主动暗影手第一轮出生点与目标的水平距离，单位格。
+    private static final double SHADOW_HAND_FORMATION_RADIUS = 4.5;
+    /// 穿墙追击的移动速度，单位格/tick。
+    private static final double PHASE_CHASE_SPEED = 0.3;
+    /// 追击与穿墙时每 tick 允许的最大水平转角，单位度。
+    private static final float COMBAT_TURN_DEGREES = 30.0F;
+    /// 视线受阻判据之外，目标高于巨鹿多少格也允许穿墙追击。
+    private static final double PHASE_TARGET_HEIGHT = 3.0;
+    /// 冰刺近身冲击向水平两侧扩张的碰撞范围，单位格。
+    private static final double FEET_HIT_PADDING = 0.75;
+    /// 冰刺近身冲击的碰撞高度，单位格。
+    private static final double FEET_HIT_HEIGHT = 2.2;
+
+    /// 被动暗影手随机使用的外观或攻击变体数量。
+    private static final int PASSIVE_HAND_VARIANTS = 3;
 
     private int stateTicks;
     private int attackCooldown;
     private boolean introComplete;
     private int iceWaveStep = -1;
+    private int iceAttackCount;
     private Vec3 iceWaveOrigin = Vec3.ZERO;
     private Vec3 iceWaveDirection = Vec3.ZERO;
     private Vec3 attackFacingDirection = new Vec3(0.0, 0.0, 1.0);
@@ -83,7 +137,7 @@ public class DeerClops extends BaseBoss {
     private boolean hasLastChasePosition;
     private int passiveHandTicks;
     private int passiveHandWave;
-    private int roarCooldown = 240;
+    private int roarCooldown = ROAR_INTERVAL_TICKS;
 
     public DeerClops(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -146,20 +200,20 @@ public class DeerClops extends BaseBoss {
             passiveHandTicks = 0;
             return;
         }
-        int interval = Math.round(13.333F + 13.333F * getHealth() / getMaxHealth());
+        int interval = Math.round(PASSIVE_HAND_BASE_INTERVAL + PASSIVE_HAND_BASE_INTERVAL * getHealth() / getMaxHealth());
         if (++passiveHandTicks < interval) return;
         passiveHandTicks = 0;
         passiveHandWave = (passiveHandWave + 1) % 3;
         for (Player player : serverLevel.players()) {
-            if (!isValidCurrentCombatPlayer(player) || distanceToSqr(player) > 75.0 * 75.0
+            if (!isValidCurrentCombatPlayer(player) || distanceToSqr(player) > PASSIVE_HAND_TARGET_RANGE * PASSIVE_HAND_TARGET_RANGE
                     || Math.floorMod(player.getId(), 3) != passiveHandWave) continue;
             DeerclopsShadowHandProjectile hand = ModEntities.SHADOW_HAND.get().create(level());
             if (hand == null) continue;
             Vec3 center = player.getBoundingBox().getCenter();
             Vec3 origin = findShadowHandOrigin(center, 0, random.nextDouble() * Math.PI * 2.0, hand);
-            Vec3 predicted = center.add(player.getDeltaMovement().scale(10.0));
+            Vec3 predicted = center.add(player.getDeltaMovement().scale(PASSIVE_HAND_LEAD_TICKS));
             hand.configurePassive(this, origin, predicted.subtract(origin),
-                    (float) getAttributeValue(Attributes.ATTACK_DAMAGE), random.nextInt(3) + 1);
+                    (float) getAttributeValue(Attributes.ATTACK_DAMAGE), random.nextInt(PASSIVE_HAND_VARIANTS) + 1);
             if (!serverLevel.addFreshEntity(hand)) hand.discard();
         }
     }
@@ -187,9 +241,9 @@ public class DeerClops extends BaseBoss {
     }
 
     private void applyRoarSlow() {
-        for (Player player : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(50.0), this::canAttack)) {
+        for (Player player : level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(ROAR_SLOW_RANGE), this::canAttack)) {
             if (!player.hasEffect(MobEffects.MOVEMENT_SLOWDOWN)) {
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 240));
+                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, ROAR_SLOW_TICKS));
             }
         }
     }
@@ -197,12 +251,12 @@ public class DeerClops extends BaseBoss {
     private void tickCombat(LivingEntity target) {
         if (getCombatState() == CombatState.ROARING) {
             navigation.stop();
-            if (++stateTicks == 10) applyRoarSlow();
-            if (stateTicks >= 20) setCombatState(CombatState.CHASE);
+            if (++stateTicks == ROAR_SLOW_APPLY_TICK) applyRoarSlow();
+            if (stateTicks >= ROAR_DURATION_TICKS) setCombatState(CombatState.CHASE);
             return;
         }
         if (--roarCooldown <= 0 && getCombatState() == CombatState.CHASE) {
-            roarCooldown = 240;
+            roarCooldown = ROAR_INTERVAL_TICKS;
             setCombatState(CombatState.ROARING);
             playSound(ModSoundEvents.ROAR.get());
             return;
@@ -210,7 +264,9 @@ public class DeerClops extends BaseBoss {
         double distanceSqr = distanceToSqr(target);
         boolean outsideAttackRange = distanceSqr > MAXIMUM_ATTACK_RANGE * MAXIMUM_ATTACK_RANGE;
         setFarInvulnerable(outsideAttackRange);
-        if (noPhysics || distanceSqr > PHASE_START_RANGE * PHASE_START_RANGE) {
+        boolean blockedPursuit = stuckTicks >= PHASE_STUCK_TICKS
+                && (!getSensing().hasLineOfSight(target) || target.getY() - getY() > PHASE_TARGET_HEIGHT);
+        if (noPhysics || distanceSqr > PHASE_START_RANGE * PHASE_START_RANGE && blockedPursuit) {
             if (!noPhysics && level().noCollision(this)) lastSolidPosition = position();
             if (distanceSqr <= PHASE_END_RANGE * PHASE_END_RANGE && level().noCollision(this)) {
                 finishPhasing();
@@ -221,8 +277,8 @@ public class DeerClops extends BaseBoss {
                 setNoGravity(true);
                 setCombatState(CombatState.CHASE);
                 Vec3 direction = target.position().subtract(position()).normalize();
-                setDeltaMovement(direction.scale(0.3));
-                faceCombatDirection(direction.multiply(1.0, 0.0, 1.0), 30.0F, 0.0F);
+                setDeltaMovement(direction.scale(PHASE_CHASE_SPEED));
+                faceCombatDirection(direction.multiply(1.0, 0.0, 1.0), COMBAT_TURN_DEGREES, 0.0F);
                 return;
             }
         }
@@ -251,7 +307,7 @@ public class DeerClops extends BaseBoss {
         } else {
             navigation.stop();
             resetTraversalTracking();
-            faceCombatDirection(target.position().subtract(position()).multiply(1.0, 0.0, 1.0), 30.0F, 0.0F);
+            faceCombatDirection(target.position().subtract(position()).multiply(1.0, 0.0, 1.0), COMBAT_TURN_DEGREES, 0.0F);
         }
         if (outsideAttackRange) {
             return;
@@ -318,7 +374,7 @@ public class DeerClops extends BaseBoss {
         Vec3 center = target.position();
         double formationRotation = random.nextDouble() * Math.PI * 2.0;
         int spawned = 0;
-        for (int index = 0; index < 5; index++) {
+        for (int index = 0; index < SHADOW_HAND_COUNT; index++) {
             DeerclopsShadowHandProjectile projectile = ModEntities.SHADOW_HAND.get().create(level());
             if (projectile == null) {
                 continue;
@@ -340,7 +396,7 @@ public class DeerClops extends BaseBoss {
     /// 五向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。
     private Vec3 findShadowHandOrigin(Vec3 center, int handIndex, double formationRotation, DeerclopsShadowHandProjectile projectile) {
         double formationAngle = formationRotation + handIndex * Math.PI * 0.5;
-        Vec3 formationOrigin = center.add(Math.cos(formationAngle) * 4.5, handIndex % 2 == 0 ? 2.0 : -2.0, Math.sin(formationAngle) * 4.5);
+        Vec3 formationOrigin = center.add(Math.cos(formationAngle) * SHADOW_HAND_FORMATION_RADIUS, handIndex % 2 == 0 ? 2.0 : -2.0, Math.sin(formationAngle) * SHADOW_HAND_FORMATION_RADIUS);
         projectile.setPos(formationOrigin);
         if (isUsableShadowHandOrigin(projectile, formationOrigin)) {
             return formationOrigin;
@@ -384,6 +440,7 @@ public class DeerClops extends BaseBoss {
     }
 
     private void beginIcePillarWave(Vec3 horizontalOffset) {
+        iceAttackCount++;
         Vec3 direction = horizontalOffset.normalize();
         if (direction.lengthSqr() < 1.0E-4) {
             direction = getLookAngle().multiply(1.0, 0.0, 1.0).normalize();
@@ -406,6 +463,14 @@ public class DeerClops extends BaseBoss {
     private void tickIceWave() {
         if (iceWaveStep < 0) {
             return;
+        }
+        // 原作每第三次冰刺向两侧展开，近身玩家此时也会受到足下冲击。
+        if (iceWaveStep == 0 && iceAttackCount % 3 == 0) {
+            AABB body = getBoundingBox();
+            AABB feet = new AABB(body.minX - FEET_HIT_PADDING, body.minY - 0.1, body.minZ - FEET_HIT_PADDING,
+                    body.maxX + FEET_HIT_PADDING, body.minY + FEET_HIT_HEIGHT, body.maxZ + FEET_HIT_PADDING);
+            for (Player player : level().getEntitiesOfClass(Player.class, feet, this::canAttack))
+                player.hurt(damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         }
         int rowWidth = iceWaveStep * 2 + 1;
         for (int column = 0; column < rowWidth; column++) {

@@ -39,12 +39,61 @@ public class TheDestroyer extends BaseWormBoss {
     private static final String GROUND_ATTACK_STATE_TAG = "GroundAttackState";
     private static final String SKY_ATTACK_STATE_TAG = "SkyAttackState";
 
+    /// 毁灭者生成的体节数量。
     public static final int SEGMENT_COUNT = 80;
+    /// 相邻毁灭者体节的间距，单位格。
     public static final float SEGMENT_SPACING = 3.2F;
+    /// 玩家低于此 Y 坐标时进入地下攻击阶段，单位格。
     private static final int DEEP_Y = 60;
+    /// 玩家高于此 Y 坐标时进入空中攻击阶段，单位格。
     private static final int SKY_Y = 100;
+    /// 蠕虫本体基础移动速度，单位格/tick。
     private static final double BASE_MOVE_SPEED = 1.0;
+    /// 蠕虫本体基础转向速度，单位度/tick。
     private static final float BASE_TURN_SPEED = 9.0F;
+
+    /// 地下阶段完成巡航后开始蓄势的时长，单位 tick。
+    private static final int UNDERGROUND_CRUISE_TICKS = 100;
+    /// 地下阶段加速冲刺前的蓄势时长，单位 tick。
+    private static final int UNDERGROUND_WINDUP_TICKS = 20;
+    /// 地下阶段保持高速直冲的时长，单位 tick。
+    private static final int UNDERGROUND_DASH_TICKS = 30;
+    /// 地下冲刺后的减速恢复时长，单位 tick。
+    private static final int UNDERGROUND_RECOVERY_TICKS = 20;
+    /// 地表阶段开始下潜的时刻，单位 tick。
+    private static final int GROUND_DIVE_START_TICKS = 45;
+    /// 地表阶段下潜后返回首个状态的时刻，单位 tick。
+    private static final int GROUND_DIVE_END_TICKS = 80;
+    /// 高空阶段每 tick 开始桶滚的概率分母。
+    private static final int SKY_ROLL_CHANCE = 300;
+    /// 高空阶段在目标上方选择悬停点的高度，单位格。
+    private static final double SKY_HOVER_HEIGHT = 25.0;
+    /// 高空阶段等待抵达悬停点的最长时间，单位 tick。
+    private static final int SKY_HOVER_TICKS = 60;
+    /// 高空阶段绕目标飞行的持续时间，单位 tick。
+    private static final int SKY_CIRCLE_TICKS = 60;
+    /// 高空阶段向目标俯冲的持续时间，单位 tick。
+    private static final int SKY_CHARGE_TICKS = 40;
+    /// 高空绕行的水平半径，单位格。
+    private static final double SKY_CIRCLE_RADIUS = 15.0;
+    /// 高空绕行相对目标的高度，单位格。
+    private static final double SKY_CIRCLE_HEIGHT = 10.0;
+    /// 高空体节激光齐射的基础间隔，单位 tick。
+    private static final int SKY_VOLLEY_BASE_COOLDOWN = 80;
+    /// 高空体节激光齐射额外随机等待的范围，单位 tick。
+    private static final int SKY_VOLLEY_RANDOM_COOLDOWN = 40;
+
+    /// 地表阶段每 tick 启动一次体节依序射击的概率分母。
+    private static final int GROUND_LASER_SEQUENCE_CHANCE = 150;
+
+    /// 地表阶段抵达玩家下方目标点的距离平方，单位格²。
+    private static final double GROUND_APPROACH_RANGE_SQUARED = 16.0;
+    /// 地表阶段接近玩家并开始下潜的距离平方，单位格²。
+    private static final double GROUND_CHARGE_RANGE_SQUARED = 36.0;
+    /// 高空阶段认为抵达悬停点的距离平方，单位格²。
+    private static final double SKY_HOVER_RANGE_SQUARED = 256.0;
+    /// 非地下阶段探测器舱被命中后释放探测器的概率。
+    private static final float PROBE_RELEASE_CHANCE = 0.2F;
     private static final EntityDataAccessor<Integer> DATA_PHASE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_BODY_ROLL = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.FLOAT);
 
@@ -182,7 +231,7 @@ public class TheDestroyer extends BaseWormBoss {
         float rollSpeed = 15.0F;
         switch (caveAttackState) {
             case 0 -> {
-                if (phaseTimer > 100) {
+                if (phaseTimer > UNDERGROUND_CRUISE_TICKS) {
                     caveAttackState = 1;
                     phaseTimer = 0;
                 }
@@ -191,7 +240,7 @@ public class TheDestroyer extends BaseWormBoss {
                 double progress = phaseTimer / 20.0;
                 rollSpeed = (float) (15.0 * (1.0 + 1.5 * progress));
                 speed = BASE_MOVE_SPEED * (1.0 - 0.4 * progress);
-                if (phaseTimer > 20) {
+                if (phaseTimer > UNDERGROUND_WINDUP_TICKS) {
                     caveAttackState = 2;
                     phaseTimer = 0;
                     Vec3 direction = target.getEyePosition().subtract(getEyePosition());
@@ -204,7 +253,7 @@ public class TheDestroyer extends BaseWormBoss {
                 rollSpeed = 37.5F;
                 speed = BASE_MOVE_SPEED * 1.5;
                 turn = BASE_TURN_SPEED * 0.05F;
-                if (phaseTimer > 30) {
+                if (phaseTimer > UNDERGROUND_DASH_TICKS) {
                     caveAttackState = 3;
                     phaseTimer = 0;
                 }
@@ -214,7 +263,7 @@ public class TheDestroyer extends BaseWormBoss {
                 rollSpeed = (float) (15.0 * (2.5 - 1.5 * progress));
                 speed = BASE_MOVE_SPEED * (1.5 - 0.5 * progress);
                 turn = (float) (BASE_TURN_SPEED * (0.05 + 0.95 * progress));
-                if (phaseTimer > 20) {
+                if (phaseTimer > UNDERGROUND_RECOVERY_TICKS) {
                     caveAttackState = 0;
                     phaseTimer = 0;
                 }
@@ -240,7 +289,7 @@ public class TheDestroyer extends BaseWormBoss {
                 targetPosition = new Vec3(targetPosition.x, surfaceY - 20.0, targetPosition.z);
                 moveDirectlyToward(targetPosition, BASE_MOVE_SPEED * 1.35);
                 setBodyRoll(getBodyRoll() + 20.0F);
-                if (distanceToSqr(targetPosition) < 16.0) {
+                if (distanceToSqr(targetPosition) < GROUND_APPROACH_RANGE_SQUARED) {
                     groundAttackState = 1;
                     phaseTimer = 0;
                 }
@@ -249,7 +298,7 @@ public class TheDestroyer extends BaseWormBoss {
                 Vec3 targetPosition = target.getEyePosition();
                 moveDirectlyToward(targetPosition, BASE_MOVE_SPEED * 1.5);
                 setBodyRoll(getBodyRoll() + 12.5F);
-                if (targetPosition.distanceToSqr(getEyePosition()) < 36.0) {
+                if (targetPosition.distanceToSqr(getEyePosition()) < GROUND_CHARGE_RANGE_SQUARED) {
                     groundAttackState = 2;
                     phaseTimer = 0;
                 }
@@ -257,13 +306,13 @@ public class TheDestroyer extends BaseWormBoss {
             case 2 -> {
                 // 此状态额外推进一次计时，以保持下坠起点与恢复节奏。
                 phaseTimer++;
-                if (phaseTimer > 45) {
+                if (phaseTimer > GROUND_DIVE_START_TICKS) {
                     setDeltaMovement(getDeltaMovement().subtract(0.0, 0.05, 0.0));
                     setBodyRoll(getBodyRoll() + 5.0F);
                 } else {
                     smoothResetRoll();
                 }
-                if (phaseTimer > 80) {
+                if (phaseTimer > GROUND_DIVE_END_TICKS) {
                     groundAttackState = 0;
                     phaseTimer = 0;
                 }
@@ -273,7 +322,7 @@ public class TheDestroyer extends BaseWormBoss {
     }
 
     private void tickSkyMovement(LivingEntity target) {
-        if (!performingBarrelRoll && random.nextInt(300) == 0) {
+        if (!performingBarrelRoll && random.nextInt(SKY_ROLL_CHANCE) == 0) {
             performingBarrelRoll = true;
         }
         if (performingBarrelRoll) {
@@ -288,9 +337,9 @@ public class TheDestroyer extends BaseWormBoss {
         }
         switch (skyAttackState) {
             case 0 -> {
-                Vec3 hoverTarget = target.position().add(0.0, 25.0, 0.0);
+                Vec3 hoverTarget = target.position().add(0.0, SKY_HOVER_HEIGHT, 0.0);
                 moveDirectlyToward(hoverTarget, BASE_MOVE_SPEED * 1.5);
-                if (distanceToSqr(hoverTarget) < 256.0 || phaseTimer > 60) {
+                if (distanceToSqr(hoverTarget) < SKY_HOVER_RANGE_SQUARED || phaseTimer > SKY_HOVER_TICKS) {
                     skyAttackState = 1;
                     phaseTimer = 0;
                     volleyCooldown = 20;
@@ -298,16 +347,16 @@ public class TheDestroyer extends BaseWormBoss {
             }
             case 1 -> {
                 float angle = tickCount * 6.0F * Mth.DEG_TO_RAD;
-                Vec3 attackPosition = target.position().add(Mth.sin(angle) * 15.0, 10.0, Mth.cos(angle) * 15.0);
+                Vec3 attackPosition = target.position().add(Mth.sin(angle) * SKY_CIRCLE_RADIUS, SKY_CIRCLE_HEIGHT, Mth.cos(angle) * SKY_CIRCLE_RADIUS);
                 moveDirectlyToward(attackPosition, BASE_MOVE_SPEED * 2.25);
-                if (phaseTimer > 60) {
+                if (phaseTimer > SKY_CIRCLE_TICKS) {
                     skyAttackState = 2;
                     phaseTimer = 0;
                 }
             }
             case 2 -> {
                 moveDirectlyToward(target.getEyePosition(), BASE_MOVE_SPEED * 1.6);
-                if (phaseTimer > 40) {
+                if (phaseTimer > SKY_CHARGE_TICKS) {
                     skyAttackState = 0;
                     phaseTimer = 0;
                 }
@@ -379,7 +428,7 @@ public class TheDestroyer extends BaseWormBoss {
         segment.indicateHurt();
         segment.playSound(net.minecraft.sounds.SoundEvents.GENERIC_HURT,
                 0.8F, 0.9F + random.nextFloat() * 0.2F);
-        if (getPhase() != Phase.UNDERGROUND && segment.isDestroyerProbeSegment() && !hasReleasedProbe(segment.getSegmentIndex()) && random.nextFloat() < 0.2F) {
+        if (getPhase() != Phase.UNDERGROUND && segment.isDestroyerProbeSegment() && !hasReleasedProbe(segment.getSegmentIndex()) && random.nextFloat() < PROBE_RELEASE_CHANCE) {
             releaseProbe(segment);
         }
         return true;
@@ -395,7 +444,7 @@ public class TheDestroyer extends BaseWormBoss {
             for (BossWormPart segment : getSegments()) {
                 shootFromSegment(segment, target);
             }
-            volleyCooldown = 80 + random.nextInt(40);
+            volleyCooldown = SKY_VOLLEY_BASE_COOLDOWN + random.nextInt(SKY_VOLLEY_RANDOM_COOLDOWN);
             return;
         }
         if (laserSequenceIndex >= 0) {
@@ -405,7 +454,7 @@ public class TheDestroyer extends BaseWormBoss {
             } else {
                 laserSequenceIndex = -1;
             }
-        } else if (random.nextInt(150) == 0) {
+        } else if (random.nextInt(GROUND_LASER_SEQUENCE_CHANCE) == 0) {
             laserSequenceIndex = 0;
         }
     }

@@ -34,13 +34,32 @@ import org.confluence.mod.common.init.entity.BossEntities;
 /// 机械臂实体是可重建的临时部件。本体只保存各槽位的摧毁状态和剩余生命，
 /// 因而区块重载不会复制仍存活的部件，也不会复活已经摧毁的部件。
 public class SkeletronPrime extends BaseBoss {
-    // 四个低位分别对应四条机械臂；掩码全置一表示所有机械臂均已摧毁。
+    /// 四个低位分别对应四条机械臂；掩码全置一表示所有机械臂均已摧毁。
     private static final int ARM_COUNT = 4;
+    /// 全部机械臂损毁时的位掩码。
     private static final int ALL_ARMS_DESTROYED = (1 << ARM_COUNT) - 1;
-    // 一个 260 tick 循环中前 200 tick 悬停，随后旋转，到 250 tick 结束主动旋转。
+    /// 一个 260 tick 循环中前 200 tick 悬停，随后旋转，到 250 tick 结束主动旋转。
     private static final int NORMAL_HOVER_TICKS = 200;
+    /// 一轮战斗中旋转追击阶段的结束时间点，单位 tick。
     private static final int NORMAL_SPIN_END_TICKS = 250;
+    /// 完整战斗循环的总时长，单位 tick。
     private static final int COMBAT_CYCLE_TICKS = 260;
+
+    /// 旋转阶段每 tick 保留的移动速度比例。
+    private static final double SPIN_MOMENTUM = 0.95;
+    /// 旋转追击初始化速度，单位格/tick。
+    private static final double SPIN_APPROACH_SPEED = 0.3;
+    /// 旋转追击每 tick 额外增加的朝向目标速度，单位格/tick。
+    private static final double SPIN_ACCELERATION = 0.12;
+    /// 旋转追击速度上限，单位格/tick。
+    private static final double SPIN_MAX_SPEED = 2.5;
+    /// 旋转追击非零速度下限，单位格/tick。
+    private static final double SPIN_MIN_SPEED = 0.3;
+
+    /// 失去目标后每 tick 保留的旧移动速度比例。
+    private static final double IDLE_MOMENTUM = 0.85D;
+    /// 旋转追击过程中保留旧速度的放大倍率。
+    private static final double SPIN_MOMENTUM_MULTIPLIER = 1.1;
     private static final String DESTROYED_ARMS_TAG = "DestroyedArms";
     private static final String ARM_HEALTH_TAG = "ArmHealth";
     private static final String COMBAT_CYCLE_TAG = "CombatCycle";
@@ -102,7 +121,7 @@ public class SkeletronPrime extends BaseBoss {
         if (target == null || !target.isAlive()) {
             setSpinning(false);
             updateStateAttributes(CombatState.HOVERING);
-            setDeltaMovement(getDeltaMovement().scale(0.85D));
+            setDeltaMovement(getDeltaMovement().scale(IDLE_MOMENTUM));
             return;
         }
 
@@ -133,7 +152,7 @@ public class SkeletronPrime extends BaseBoss {
     /// 旧速度就会稳定卡在最大值，无法重新转向并最终飞出有效高度。旋转阶段同样需要经过该阻力，
     /// 因而必须统一放在本轮运动计算之后，而不能只修正悬浮分支。
     private void applyAirResistance() {
-        setDeltaMovement(getDeltaMovement().scale(0.95));
+        setDeltaMovement(getDeltaMovement().scale(SPIN_MOMENTUM));
     }
 
     /// 使用平滑追踪的速度合成参数。
@@ -148,17 +167,17 @@ public class SkeletronPrime extends BaseBoss {
         if (current.lengthSqr() <= 1.0E-9) {
             result = targetDirection.lengthSqr() <= 1.0E-9
                     ? Vec3.ZERO
-                    : targetDirection.normalize().scale(0.3);
+                    : targetDirection.normalize().scale(SPIN_APPROACH_SPEED);
         } else if (targetDirection.lengthSqr() <= 1.0E-9) {
             result = current;
         } else {
-            result = current.scale(1.1).add(targetDirection.normalize().scale(0.12));
+            result = current.scale(SPIN_MOMENTUM_MULTIPLIER).add(targetDirection.normalize().scale(SPIN_ACCELERATION));
         }
         double speed = result.length();
-        if (speed > 2.5) {
-            result = result.scale(2.5 / speed);
-        } else if (speed > 1.0E-9 && speed < 0.3) {
-            result = result.scale(0.3 / speed);
+        if (speed > SPIN_MAX_SPEED) {
+            result = result.scale(SPIN_MAX_SPEED / speed);
+        } else if (speed > 1.0E-9 && speed < SPIN_MIN_SPEED) {
+            result = result.scale(SPIN_MIN_SPEED / speed);
         }
         setDeltaMovement(result);
     }

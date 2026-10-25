@@ -24,21 +24,31 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 骷髅王之手。绕头部轨道运行，周期性挥击玩家。
 public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoEntity {
-    // 两次拍击之间的基础间隔，单位为 tick；专家模式缩短准备时间。
+    /// 两次拍击之间的基础间隔，单位为 tick；专家模式缩短准备时间。
     private static final int CLASSIC_SLAP_INTERVAL = 45;
+
+    /// 手臂回到目标姿态时按位置差计算速度的系数。
+    private static final double RETURN_ACCELERATION = 0.18D;
+    /// 手臂回位时保留的旧速度比例。
+    private static final double RETURN_MOMENTUM = 0.62D;
+    /// 手臂回位时目标速度的混合权重。
+    private static final double RETURN_TARGET_WEIGHT = 0.38D;
+    /// 专家难度两次拍击之间的间隔，单位 tick。
     private static final int EXPERT_SLAP_INTERVAL = 30;
-    // 给双手加入最多 5 tick 的确定性错峰，避免同一 tick 完全重叠出手。
+    /// 给双手加入最多 5 tick 的确定性错峰，避免同一 tick 完全重叠出手。
     private static final int RANDOM_INTERVAL = 6;
-    // 拍击阶段的每 tick 速度（方块/tick）。
+    /// 拍击阶段的每 tick 速度（方块/tick）。
     private static final double CLASSIC_SLAP_SPEED = 1.0;
+    /// 专家难度拍击移动速度，单位格/tick。
     private static final double EXPERT_SLAP_SPEED = 1.2;
-    // PREPARE 是手掌退到目标外侧的距离，PASS 是挥击越过目标后的距离，单位为方块。
+    /// PREPARE 是手掌退到目标外侧的距离，PASS 是挥击越过目标后的距离，单位为方块。
     private static final double PREPARE_DISTANCE = 6.0;
+    /// 拍击后手臂越过目标的预期距离，单位格。
     private static final double PASS_DISTANCE = 4.0;
-    // 到达判定直接与距离平方比较，避免每 tick 开平方。
+    /// 到达判定直接与距离平方比较，避免每 tick 开平方。
     private static final double ARRIVAL_DISTANCE_SQUARED = 1.5;
     // 实际最大生命和接触伤害由本体统一应用难度及多人倍率。
-    // 整条手臂的选取/受击半径；动态包围盒包含肩、肘、掌，接触伤害沿两段骨骼检测。
+    /// 整条手臂的选取/受击半径；动态包围盒包含肩、肘、掌，接触伤害沿两段骨骼检测。
     private static final double ARM_HITBOX_RADIUS = 0.85D;
     private static final String HAND_INDEX_TAG = "HandIndex";
     private static final EntityDataAccessor<Integer> HAND_INDEX = SynchedEntityData.defineId(SkeletronHand.class, EntityDataSerializers.INT);
@@ -273,11 +283,11 @@ public class SkeletronHand extends BaseLivingBossPart<Skeletron> implements GeoE
             return;
         }
 
-        Vec3 desiredVelocity = difference.scale(0.18D);
+        Vec3 desiredVelocity = difference.scale(RETURN_ACCELERATION);
         if (desiredVelocity.length() > maximumSpeed) {
             desiredVelocity = desiredVelocity.normalize().scale(maximumSpeed);
         }
-        Vec3 velocity = getDeltaMovement().scale(0.62D).add(desiredVelocity.scale(0.38D));
+        Vec3 velocity = getDeltaMovement().scale(RETURN_MOMENTUM).add(desiredVelocity.scale(RETURN_TARGET_WEIGHT));
         if (velocity.length() > maximumSpeed) {
             velocity = velocity.normalize().scale(maximumSpeed);
         }

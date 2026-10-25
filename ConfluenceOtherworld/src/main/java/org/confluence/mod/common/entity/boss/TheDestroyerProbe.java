@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.boss;
 
-import java.util.Optional;
-import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,6 +18,9 @@ import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+import java.util.UUID;
+
 
 /// 毁灭者体节释放的远程附属探测器。
 ///
@@ -27,7 +28,13 @@ import org.jetbrains.annotations.Nullable;
 /// 卸载时探测器停止攻击并等待恢复，不会转化成永久游荡的独立怪物。
 public final class TheDestroyerProbe extends BaseFlyingMonster implements BossOwnedEntity {
     private static final String SHOT_TIMER_TAG = "ShotTimer";
+    /// 探测器两次射击之间的间隔，单位 tick。
     private static final int SHOT_INTERVAL = 60;
+
+    /// 探测器返回母体时保留的旧速度比例。
+    private static final double RETURN_MOMENTUM = 0.4;
+    /// 探测器朝母体追加的速度，单位格/tick。
+    private static final double RETURN_ACCELERATION = 0.45;
 
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(TheDestroyerProbe.class, EntityDataSerializers.OPTIONAL_UUID);
 
@@ -97,7 +104,7 @@ public final class TheDestroyerProbe extends BaseFlyingMonster implements BossOw
         }
         if (distanceToSqr(master) > 4096.0) {
             Vec3 towardMaster = master.position().add(0.0, 2.0, 0.0).subtract(position());
-            setDeltaMovement(getDeltaMovement().scale(0.4).add(towardMaster.normalize().scale(0.45)));
+            setDeltaMovement(getDeltaMovement().scale(RETURN_MOMENTUM).add(towardMaster.normalize().scale(RETURN_ACCELERATION)));
             faceCombatMovement(30.0F, 30.0F);
             hasImpulse = true;
             return;

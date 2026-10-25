@@ -52,18 +52,35 @@ public class QueenBee extends BaseBoss {
     private static final RawAnimation DASH = RawAnimation.begin().thenLoop("dash");
     private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
 
-    // 各战斗状态时长及召唤间隔，单位均为 tick。
+    /// 各战斗状态时长及召唤间隔，单位均为 tick。
     private static final int INITIALIZATION_TICKS = 1;
+    /// 单次冲刺至少持续的时间，单位 tick。
     private static final int DASH_MIN_TICKS = 20;
-    // 普通模式固定三轮冲刺；专家模式可随生命降低增加，但最多六轮。
+    /// 普通模式固定三轮冲刺；专家模式可随生命降低增加，但最多六轮。
     private static final int EXPERT_MAX_DASH_CYCLES = 6;
-    // 只统计并限制当前蜂王拥有的随从，不影响自然生成的黄蜂。
+    /// 只统计并限制当前蜂王拥有的随从，不影响自然生成的黄蜂。
     private static final int MAX_OWNED_HORNETS = 10;
 
-    // 状态移动速度单位为方块/tick；愤怒专家模式只对最终冲刺速度应用倍率。
+    /// 状态移动速度单位为方块/tick；愤怒专家模式只对最终冲刺速度应用倍率。
     private static final double IDLE_SPEED = 1.0;
-    // 冲刺越过目标且距离重新超过 15 方块后允许结束；保存平方值避免反复开方。
+    /// 冲刺越过目标且距离重新超过 15 方块后允许结束；保存平方值避免反复开方。
     private static final double DASH_END_RANGE_SQR = 15.0 * 15.0;
+
+    /// 冲刺开始后至少经过多少 tick 才允许按距离提前结束。
+    private static final int DASH_MIN_END_TICKS = 10;
+    /// 冲刺前要求重新对齐目标的距离平方，单位格²。
+    private static final double DASH_ALIGN_RANGE_SQUARED = 100.0;
+    /// 冲刺前允许的最大俯仰误差，单位度。
+    private static final float DASH_ALIGN_PITCH_DEGREES = 10.0F;
+    /// 毒刺发射时按目标当前速度预测的提前量，单位 tick。
+    private static final double STINGER_LEAD_TICKS = 10.0;
+
+    /// 未进入冲刺时每 tick 保留的旧移动速度比例。
+    private static final double IDLE_MOMENTUM = 0.75;
+    /// 冲刺贴近目标时每 tick 保留的旧速度比例。
+    private static final double DASH_RECOVERY_MOMENTUM = 0.95;
+    /// 冲刺中认为已贴近目标的距离平方，单位格²。
+    private static final double DASH_CLOSE_RANGE_SQUARED = 2.0;
 
     private int stateTicks;
     private int completedDashCycles;
@@ -135,7 +152,7 @@ public class QueenBee extends BaseBoss {
     }
 
     private void tickInitialization() {
-        setDeltaMovement(getDeltaMovement().scale(0.75));
+        setDeltaMovement(getDeltaMovement().scale(IDLE_MOMENTUM));
         if (++stateTicks >= INITIALIZATION_TICKS) {
             completedDashCycles = 0;
             enterState(CombatState.PRE_DASH_IDLE);
@@ -152,7 +169,7 @@ public class QueenBee extends BaseBoss {
         stateTicks++;
         setDeltaMovement(idleDirection.scale(IDLE_SPEED));
         faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
-        if (stateTicks >= stateParameters(CombatState.IDLE).duration() || stateTicks > 10 && distanceToSqr(target) > DASH_END_RANGE_SQR) {
+        if (stateTicks >= stateParameters(CombatState.IDLE).duration() || stateTicks > DASH_MIN_END_TICKS && distanceToSqr(target) > DASH_END_RANGE_SQR) {
             enterState(CombatState.SUMMONING_BEES);
         }
     }
@@ -185,9 +202,9 @@ public class QueenBee extends BaseBoss {
 
     private void tickPreDashIdle(LivingEntity target) {
         hangOnTarget(target, 5.0, 0.0);
-        boolean needsAlignment = distanceToSqr(target) > 100.0
+        boolean needsAlignment = distanceToSqr(target) > DASH_ALIGN_RANGE_SQUARED
                 || Math.abs(target.getY() - getY()) > 2.0
-                || Math.abs(getXRot()) > 10.0F;
+                || Math.abs(getXRot()) > DASH_ALIGN_PITCH_DEGREES;
         if (!needsAlignment || !isExpert() || !random.nextBoolean()) {
             stateTicks++;
         }
@@ -246,15 +263,15 @@ public class QueenBee extends BaseBoss {
         Vec3 destination = target.position().add(horizontal.normalize().scale(horizontalDistance)).add(0.0, height, 0.0);
         Vec3 offset = destination.subtract(position());
         setDeltaMovement(getDeltaMovement().add(offset.scale(speed * 0.01)));
-        if (distanceToSqr(target) < 2.0) {
-            setDeltaMovement(getDeltaMovement().scale(0.95));
+        if (distanceToSqr(target) < DASH_CLOSE_RANGE_SQUARED) {
+            setDeltaMovement(getDeltaMovement().scale(DASH_RECOVERY_MOMENTUM));
         }
         faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
     }
 
     /// 根据目标当前速度预判十刻后的位置，并丢弃垂直分量，保证整段冲刺保持水平。
     private Vec3 createHorizontalDashDirection(LivingEntity target) {
-        Vec3 predictedPosition = target.position().add(target.getDeltaMovement().scale(10.0));
+        Vec3 predictedPosition = target.position().add(target.getDeltaMovement().scale(STINGER_LEAD_TICKS));
         Vec3 direction = predictedPosition.subtract(position()).multiply(1.0, 0.0, 1.0);
         if (direction.lengthSqr() < 1.0E-6) {
             direction = getLookAngle().multiply(1.0, 0.0, 1.0);
@@ -341,7 +358,7 @@ public class QueenBee extends BaseBoss {
         if (getCombatState() != CombatState.INITIALIZING) {
             setCombatState(CombatState.IDLE);
         }
-        setDeltaMovement(getDeltaMovement().scale(0.75));
+        setDeltaMovement(getDeltaMovement().scale(IDLE_MOMENTUM));
     }
 
     private void enterState(CombatState state) {

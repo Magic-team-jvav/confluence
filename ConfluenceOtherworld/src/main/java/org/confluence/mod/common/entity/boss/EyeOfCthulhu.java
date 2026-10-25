@@ -52,26 +52,55 @@ public class EyeOfCthulhu extends BaseBoss {
     private static final RawAnimation PHASE_TWO_IDLE = RawAnimation.begin().thenLoop("type_2");
     private static final RawAnimation PHASE_TWO_DASH = RawAnimation.begin().thenLoop("type_2_run");
 
+    /// 一阶段悬停注视状态持续时间，单位 tick。
     private static final int PHASE_ONE_STARE_TICKS = 100;
+    /// 二阶段悬停注视状态持续时间，单位 tick。
     private static final int PHASE_TWO_STARE_TICKS = 60;
     /// switching 动画资源长度为 1.5 秒，即 30 tick；状态时长必须覆盖完整单次播放。
     private static final int TRANSFORM_TICKS = 30;
+    /// 一阶段冲刺前的蓄力时间，单位 tick。
     private static final int PHASE_ONE_WINDUP_TICKS = 20;
+    /// 一阶段单次冲刺持续时间，单位 tick。
     private static final int PHASE_ONE_DASH_TICKS = 10;
+    /// 二阶段冲刺前的蓄力时间，单位 tick。
     private static final int PHASE_TWO_WINDUP_TICKS = 10;
+    /// 二阶段单次冲刺持续时间，单位 tick。
     private static final int PHASE_TWO_DASH_TICKS = 20;
+    /// 一阶段每轮连续冲刺次数。
     private static final int PHASE_ONE_DASH_COUNT = 3;
+    /// 脱离战斗后等待移除实体的时间，单位 tick。
     private static final int LEAVE_DISCARD_TICKS = 100;
+    /// 一阶段召唤仆从的基础间隔，单位 tick。
     private static final int PHASE_ONE_SERVANT_COOLDOWN = 20;
+    /// 变形期间召唤仆从的间隔，单位 tick。
     private static final int TRANSFORM_SERVANT_COOLDOWN = 7;
 
     /// 非冲刺阶段以目标眼睛上方 5 方块为悬停中心；其余速度单位均为方块/tick。
     private static final double HOVER_HEIGHT_ABOVE_TARGET = 5.0;
+    /// 一阶段悬停调整位置的速度上限，单位格/tick。
     private static final double PHASE_ONE_HOVER_SPEED = 0.50;
+    /// 二阶段悬停调整位置的速度上限，单位格/tick。
     private static final double PHASE_TWO_HOVER_SPEED = 0.75;
+    /// 一阶段冲刺速度，单位格/tick。
     private static final double PHASE_ONE_DASH_SPEED = 1.00;
+    /// 二阶段冲刺速度，单位格/tick。
     private static final double PHASE_TWO_DASH_SPEED = 1.50;
+    /// 强化冲刺时使用的速度，单位格/tick。
     private static final double ENHANCED_DASH_SPEED = 2.25;
+
+    /// 准备下一轮攻击时每 tick 保留的水平速度比例。
+    private static final double HOVER_MOMENTUM = 0.85;
+    /// 变身期间每 tick 保留的旧速度比例。
+    private static final double TRANSFORM_MOMENTUM = 0.72;
+    /// 冲刺结束后的速度衰减比例。
+    private static final double DASH_RECOVERY_MOMENTUM = 0.65;
+    /// 冲刺转向时每 tick 保留的旧速度比例。
+    private static final double DASH_STEER_MOMENTUM = 0.90;
+
+    /// 二阶段强化冲刺至少持续的时间，单位 tick。
+    private static final int ERRATIC_DASH_MIN_TICKS = 13;
+    /// 超过最短冲刺时间后每 tick 提前结束强化冲刺的概率。
+    private static final float ERRATIC_DASH_END_CHANCE = 0.2F;
 
     private int stateTicks;
     private CombatState appliedAttributeState;
@@ -79,8 +108,17 @@ public class EyeOfCthulhu extends BaseBoss {
     private int servantTimer = PHASE_ONE_SERVANT_COOLDOWN;
     private int leavingTicks;
     private Vec3 lockedDashDirection = Vec3.ZERO;
+    /// 冲刺残影在客户端保留的时间，单位 tick。
     public static final int AFTERIMAGE_LIFETIME_TICKS = 16;
+    /// 移动残影生成间隔，单位 tick。
     private static final int AFTERIMAGE_INTERVAL_TICKS = 2;
+
+    /// 二阶段强化冲刺蓄力每 tick 额外推进一次计时的概率。
+    private static final float ENHANCED_WINDUP_ACCELERATION_CHANCE = 0.3F;
+    /// 二阶段强化冲刺判定目标接近的距离平方，单位格²。
+    private static final double ENHANCED_DASH_CLOSE_RANGE_SQUARED = 20.0;
+    /// 暂不追击时每 tick 保留的旧移动速度比例。
+    private static final double CHASE_IDLE_MOMENTUM = 0.80;
     private final Deque<AfterimageSnapshot> afterimages = new ArrayDeque<>();
 
     public EyeOfCthulhu(EntityType<? extends Monster> type, Level level) {
@@ -144,7 +182,7 @@ public class EyeOfCthulhu extends BaseBoss {
         LivingEntity target = getTarget();
         if (target == null) {
             setCombatState(CombatState.IDLE);
-            setDeltaMovement(getDeltaMovement().scale(0.85));
+            setDeltaMovement(getDeltaMovement().scale(HOVER_MOMENTUM));
             faceAlongMovement(20.0F, 20.0F);
             return;
         }
@@ -206,12 +244,12 @@ public class EyeOfCthulhu extends BaseBoss {
 
     private void tickDashWindup(LivingEntity target) {
         stateTicks++;
-        if (getCombatStage() == 2 && isEnhancedDash() && random.nextFloat() < 0.3F) {
+        if (getCombatStage() == 2 && isEnhancedDash() && random.nextFloat() < ENHANCED_WINDUP_ACCELERATION_CHANCE) {
             stateTicks++;
         }
         faceTowards(target.getEyePosition(), 360.0F, 360.0F);
-        setDeltaMovement(getDeltaMovement().scale(0.72).add(0.0, 0.02, 0.0));
-        if (getCombatStage() == 2 && distanceToSqr(target) < 20.0) {
+        setDeltaMovement(getDeltaMovement().scale(TRANSFORM_MOMENTUM).add(0.0, 0.02, 0.0));
+        if (getCombatStage() == 2 && distanceToSqr(target) < ENHANCED_DASH_CLOSE_RANGE_SQUARED) {
             Vec3 retreatDirection = position().subtract(target.position());
             if (retreatDirection.lengthSqr() > 1.0E-6) {
                 setDeltaMovement(retreatDirection.normalize());
@@ -247,8 +285,8 @@ public class EyeOfCthulhu extends BaseBoss {
                 ? PHASE_ONE_DASH_TICKS : PHASE_TWO_DASH_TICKS;
         boolean erraticEarlyEnd = getCombatStage() == 2
                 && isEnhancedDash()
-                && stateTicks > 13
-                && random.nextFloat() < 0.2F;
+                && stateTicks > ERRATIC_DASH_MIN_TICKS
+                && random.nextFloat() < ERRATIC_DASH_END_CHANCE;
         if (stateTicks < duration && !erraticEarlyEnd) {
             return;
         }
@@ -273,7 +311,7 @@ public class EyeOfCthulhu extends BaseBoss {
     private void tickTransformation(LivingEntity target) {
         stateTicks++;
         faceTowards(target.getEyePosition(), 360.0F, 360.0F);
-        setDeltaMovement(getDeltaMovement().scale(0.65));
+        setDeltaMovement(getDeltaMovement().scale(DASH_RECOVERY_MOMENTUM));
         tickServantSummoning(TRANSFORM_SERVANT_COOLDOWN);
         if (stateTicks >= TRANSFORM_TICKS) {
             beginStaring();
@@ -315,9 +353,9 @@ public class EyeOfCthulhu extends BaseBoss {
                 ? PHASE_ONE_HOVER_SPEED : PHASE_TWO_HOVER_SPEED;
         if (offset.lengthSqr() > 1.0) {
             Vec3 acceleration = offset.normalize().scale(speed * 0.10);
-            setDeltaMovement(getDeltaMovement().add(acceleration).scale(0.90));
+            setDeltaMovement(getDeltaMovement().add(acceleration).scale(DASH_STEER_MOMENTUM));
         } else {
-            setDeltaMovement(getDeltaMovement().scale(0.80));
+            setDeltaMovement(getDeltaMovement().scale(CHASE_IDLE_MOMENTUM));
         }
         faceTowards(target.getEyePosition(), 30.0F, 30.0F);
     }

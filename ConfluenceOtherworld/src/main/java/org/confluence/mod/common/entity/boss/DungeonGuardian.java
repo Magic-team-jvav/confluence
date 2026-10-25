@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -12,7 +13,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -29,8 +29,14 @@ import org.confluence.mod.common.init.ModSoundEvents;
 /// 接触伤害使用独立伤害类型并绕过护甲，不能用普通生物攻击再依赖夸张攻击数值间接模拟；
 /// 溺水伤害被明确忽略。行为树只保留永久等待节点，防止通用冲锋动作改写追击速度。
 public class DungeonGuardian extends BaseBoss {
-    // 出生后允许 50 tick 找到玩家；追击速度单位为方块/tick。
+    /// 失去目标后每 tick 保留的移动速度比例。
+    private static final double LOST_TARGET_MOMENTUM = 0.75;
+    /// 出生后的首次玩家检查半径，单位格。
+    private static final double PLAYER_CHECK_RANGE = 100.0;
+
+    /// 出生后允许 50 tick 找到玩家；追击速度单位为方块/tick。
     private static final int INITIAL_PLAYER_CHECK_TICKS = 50;
+    /// 追向玩家时的基础移动速度，单位格/tick。
     private static final double PURSUIT_SPEED = 0.80;
 
     private int playerCheckTicks = INITIAL_PLAYER_CHECK_TICKS;
@@ -80,12 +86,12 @@ public class DungeonGuardian extends BaseBoss {
                 break;
             }
         } else {
-            setDeltaMovement(getDeltaMovement().scale(0.75));
+            setDeltaMovement(getDeltaMovement().scale(LOST_TARGET_MOMENTUM));
         }
 
         /// 成功命中会重新开始一次检查；计数越过零后不会反复扫描或因稍后失去目标而直接撤销。
         if (--playerCheckTicks == 0) {
-            Player nearbyPlayer = level().getNearestPlayer(this, 100.0);
+            Player nearbyPlayer = level().getNearestPlayer(this, PLAYER_CHECK_RANGE);
             if (nearbyPlayer == null || !nearbyPlayer.isAlive()) {
                 discard();
             }

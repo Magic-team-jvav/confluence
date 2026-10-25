@@ -30,6 +30,8 @@ public final class SummonerAttachmentEntityTypes {
 
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<ImpFireball>> IMP_FIREBALL = register("imp_fireball", ImpFireball::new);
 
+    public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<VexTotemMinion>> VEX_TOTEM = register("vex_totem", VexTotemMinion::new);
+
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<DeadlySphereMinion>> DEADLY_SPHERE = register("deadly_sphere", DeadlySphereMinion::new);
 
     public static final DeferredHolder<AttachmentEntityType<? extends AttachmentEntity>, AttachmentEntityType<SanguineBatMinion>> SANGUINE_BAT = register("sanguine_bat", SanguineBatMinion::new);

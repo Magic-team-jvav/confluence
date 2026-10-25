@@ -80,6 +80,7 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IRON_GOLEM.get(), new IronGolemRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SCULK_WISP.get(), new SculkWispRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IMP.get(), new ImpRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.VEX_TOTEM.get(), new VexTotemRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IMP_FIREBALL.get(), new ImpFireballRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.DEADLY_SPHERE.get(), new DeadlySphereRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SANGUINE_BAT.get(), new SanguineBatRenderer());

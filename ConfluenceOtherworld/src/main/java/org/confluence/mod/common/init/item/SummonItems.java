@@ -229,6 +229,17 @@ public class SummonItems {
                     },
                     null
             ));
+    public static final DeferredItem<SummonerWeaponItem<VexTotemMinion>> VEX_TOTEM = registerItemWithEnglishName("vex_totem", "恼鬼图腾", "Vex Totem", () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.VEX_TOTEM,
+                    MinionSlotType.Minion,
+                    10.0F,
+                    0.5F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);

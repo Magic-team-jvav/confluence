@@ -116,5 +116,6 @@ public final class EntityLanguageSubProvider {
         language.add("summon.confluence.terraprisma", "Terraprisma", "泰拉棱镜");
         language.add("summon.confluence.vampire_bat", "Sanguine Bat", "血蝙蝠");
         language.add("summon.confluence.vampire_frog", "Vampire Frog", "吸血鬼青蛙");
+        language.add("summon.confluence.vex_totem", "Vex", "恼鬼");
     }
 }

@@ -8,7 +8,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 import org.confluence.lib.common.item.GroupItem;
 import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
@@ -2100,7 +2099,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MAGES.getId())
                     .build());
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SOUL = TABS.register("soulcerer",
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SOUL = Confluence.SOUL_SKILLS ? TABS.register("soulcerer",
             () -> CreativeModeTab.builder().icon(IconItems.SOULCERER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.soulcerer"))
                     .displayItems((parameters, output) -> {
@@ -2128,7 +2127,7 @@ public final class ModTabs {
                     })
                     .withTabsBefore(MAGES.getId())
                     .withTabsAfter(SUMMONERS.getId())
-                    .build());
+                    .build()) : null;
     /* 生物 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ENTITY = TABS.register("entity",
             () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)

@@ -24,8 +24,9 @@ public class PolarDayBowItem extends BaseTerraBowItem {
     /// 命中附加的极昼灼烧时长（tick）。
     private static final int MARK_DURATION = 120;
 
-    public PolarDayBowItem(float baseDamage, int durability) {
-        super(baseDamage, new Item.Properties().durability(durability));
+    /// 无耐久：不掉耐久，也不需要修复。
+    public PolarDayBowItem(float baseDamage) {
+        super(baseDamage, new Item.Properties());
     }
 
     @Override

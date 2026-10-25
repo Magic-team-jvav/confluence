@@ -213,10 +213,10 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.BAND_OF_SOUL.get(), "Slowly regenerates soul, 1 soul every 3 seconds; +1 soul from every soul collection", "缓慢回复灵魂，每3秒回复1点；每次收魂额外获得1点灵魂");
         language.addTooltip(AccessoryItems.BAND_OF_SOUL_REGENERATION.get(), "Slowly regenerates soul and life; +1 soul from every soul collection", "缓慢回复灵魂和生命；每次收魂额外获得1点灵魂");
         language.addTooltip(AccessoryItems.BAND_OF_MEDIUMSHIP.get(), "Slowly regenerates soul and increases maximum soul by 20; +1 soul from every soul collection", "缓慢回复灵魂，灵魂上限提高20；每次收魂额外获得1点灵魂");
-        /// 灵魂手环系列新增：切换资源条时同时保留灵魂值与魔力值。
-        language.add("tooltip.item.confluence.band_of_soul.1", "Switching between the soul and mana bars keeps both the soul value and the mana value", "切换灵魂/魔力条时，保留灵魂值和魔力值");
-        language.add("tooltip.item.confluence.band_of_soul_regeneration.1", "Switching between the soul and mana bars keeps both the soul value and the mana value", "切换灵魂/魔力条时，保留灵魂值和魔力值");
-        language.add("tooltip.item.confluence.band_of_mediumship.1", "Switching between the soul and mana bars keeps both the soul value and the mana value", "切换灵魂/魔力条时，保留灵魂值和魔力值");
+        /// 灵魂手环系列：切换资源条时不再清空另一种资源的值（键的命名空间与 AccessoryItems 里的 tooltips(Confluence.MODID, 1) 对应）。
+        language.add("tooltip.item.confluence.band_of_soul.1", "Switching between the soul and mana bars no longer clears the corresponding soul/mana value", "切换灵魂/魔力条不再清空对应的灵魂/魔力值");
+        language.add("tooltip.item.confluence.band_of_soul_regeneration.1", "Switching between the soul and mana bars no longer clears the corresponding soul/mana value", "切换灵魂/魔力条不再清空对应的灵魂/魔力值");
+        language.add("tooltip.item.confluence.band_of_mediumship.1", "Switching between the soul and mana bars no longer clears the corresponding soul/mana value", "切换灵魂/魔力条不再清空对应的灵魂/魔力值");
         language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "Lets one weapon-granted skill be used without holding its weapon; rerolled after each cast; +1 soul from every soul collection", "无需手持武器即可使用一个由武器提供的技能，每次使用技能后重新随机；每次收魂额外获得1点灵魂");
         language.addTooltip(AccessoryItems.SOULCERER_EMBLEM.get(), "12% increased soul damage", "灵魂伤害提高12%");
         language.addTooltip(AccessoryItems.SOUL_BINDING_CHAIN.get(), "Casting any soul attach skill also casts every other equipped one; +1 soul from every soul collection", "施放任意附魂技能时，同时释放其余所有已装备的附魂技能；每次收魂额外获得1点灵魂");

@@ -1001,8 +1001,7 @@ public final class ValueSubProvider {
                 .add(ArrowItems.BONE_ARROW, 3)
                 .add(ArrowItems.SHIMMER_ARROW, 3)
                 .add(ArrowItems.FLY_FISH_ARROW, 2)
-                .add(ArrowItems.WIND_ARROW, 20)
-                .add(ArrowItems.FALLEN_STAR_ARROW, 20);
+                .add(ArrowItems.WIND_ARROW, 20);
         builder // 其它
                 .add(ConsumableItems.DRY_BOMB, silver5)
                 .add(ConsumableItems.WET_BOMB, silver5)

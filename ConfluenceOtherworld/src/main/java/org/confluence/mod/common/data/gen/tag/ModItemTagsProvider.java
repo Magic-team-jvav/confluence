@@ -573,8 +573,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BowItems.WAR_BOW.get(),
                 WhipItems.WIND_WHIP.get(),
                 WhipItems.STAR_FEAR.get(),
-                ArrowItems.WIND_ARROW.get(),
-                ArrowItems.FALLEN_STAR_ARROW.get()
+                ArrowItems.WIND_ARROW.get()
         );        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
         WhipItems.ITEMS.getEntries().forEach(item -> {
             whip.add(item.get());

@@ -25,9 +25,9 @@ public class WarBowItem extends BaseTerraBowItem {
     /// 自动补箭的箭速。
     private static final float AUTO_ARROW_VELOCITY = 2.8F;
 
-    public WarBowItem(float baseDamage, int durability) {
+    /// 无耐久：不掉耐久，也不需要修复。
+    public WarBowItem(float baseDamage) {
         super(baseDamage, new Item.Properties()
-                .durability(durability)
                 .attributes(ModItems.createAttributes(ModTiers.IRON, 4.0F, -2.4F, ModItems.attributes(0.0, 0.0))));
     }
 

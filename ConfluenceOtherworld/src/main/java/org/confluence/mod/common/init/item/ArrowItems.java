@@ -28,8 +28,6 @@ public class ArrowItems {
     public static final PortDeferredItem<FlyFishArrowItem> FLY_FISH_ARROW = registerItem("fly_fish_arrow", "飞鱼箭", FlyFishArrowItem::new);
     /// 风矢：更慢、更痛、能穿过一个敌怪并减速的箭矢。
     public static final PortDeferredItem<WindArrowItem> WIND_ARROW = registerItem("wind_arrow", "风矢", WindArrowItem::new);
-    /// 坠落之星箭：附魔弓替换木箭时使用的箭矢。
-    public static final PortDeferredItem<FallenStarArrowItem> FALLEN_STAR_ARROW = registerItem("fallen_star_arrow", "坠落之星箭", FallenStarArrowItem::new);
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);

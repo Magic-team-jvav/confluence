@@ -112,7 +112,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.soulcerer_skill.empowered_surge.desc", "A much larger and stronger surge.", "范围与威力都远超普通激荡的强化版。");
         language.add("confluence.soulcerer_skill.spirit_trigger.desc", "Surge hits spray chain projectiles from the target.", "激荡命中后从敌人位置向随机方向射出多道弹幕。");
         language.add("confluence.soulcerer_skill.soul_drain.desc", "For 80 seconds soul costs are ignored; afterwards soul skills are locked for 160 seconds.", "80 秒内施放技能不消耗灵魂；结束后 160 秒内无法释放灵魂技能。");
-        language.add("confluence.soulcerer_skill.star_reversal.desc", "Passive: soul you spend restores the same amount of mana.", "被动：你消耗的灵魂会等量补充魔力。");
+        language.add("confluence.soulcerer_skill.star_reversal.desc", "Passive: each point of soul you spend restores 4 mana.", "被动：你消耗的灵魂按 1 : 4 补充魔力（每 1 点灵魂补充 4 点魔力）。");
         language.add("confluence.soulcerer_skill.star_link.desc", "Passive: when a buff that increases soul damage ends, gain a magic damage buff with half its value and half its duration.", "被动：带有灵魂伤害加成的增益结束后，获得一次数值与时长都减半的魔法伤害加成增益。");
         language.add("confluence.soulcerer_skill.soul_harvest.desc", "Minion and projectile hits have a 5% chance to restore 1 soul.", "被动：召唤物与弹幕命中敌人时有 5% 概率回复 1 点灵魂。");
 
@@ -136,6 +136,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("message.confluence.soul_book.harvester", "The power of chained surges is yours!", "连续激荡的力量已归你所有！");
         language.add("message.confluence.soul_mode.magic", "Traverse the astral morning stars", "流转天外晨星");
         language.add("message.confluence.soul_mode.soul", "Rouse the souls of fallen quietude", "唤起坠寂之魂");
+        language.add("message.confluence.soul_bottle.not_enough_soul", "Not enough soul: needs %s (current %s)", "灵魂不足：需要 %s 点（当前 %s 点）");
         language.add("message.confluence.soul_ritual.activate", "You have awakened the ancient souls of this world...", "你唤醒了世界上的古老之魂...");
         language.add("message.confluence.soul_ritual.unlock", "The ancient souls teach you %s", "古老之魂授予你%s");
         language.add("message.confluence.soul_ritual.slot", "Ancient power expands your soul slots: %s", "古老之力拓宽了你的灵魂栏位：%s");

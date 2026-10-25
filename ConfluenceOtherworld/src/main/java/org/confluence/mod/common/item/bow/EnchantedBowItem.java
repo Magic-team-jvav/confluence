@@ -5,23 +5,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
-import org.confluence.mod.common.entity.projectile.arrow.FallenStarArrowEntity;
-import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.item.ArrowItems;
 import org.jetbrains.annotations.Nullable;
 
-/// 附魔弓：把普通木箭替换为坠落之星箭。
+/// 附魔弓：把普通木箭替换为已有的耀星之箭。无耐久。
 public class EnchantedBowItem extends BaseTerraBowItem {
-    public EnchantedBowItem(float baseDamage, int durability) {
-        super(baseDamage, new Item.Properties().durability(durability));
+    public EnchantedBowItem(float baseDamage) {
+        super(baseDamage, new Item.Properties());
     }
 
     @Override
     public @Nullable BaseArrowEntity createCustomArrow(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
         // 只替换普通木箭，其它箭矢保持原样。
         if (!ammo.is(Items.ARROW)) return null;
-        FallenStarArrowEntity arrow = new FallenStarArrowEntity(ModEntities.FALLEN_STAR_ARROW.get(), shooter, ammo.copyWithCount(1), weapon);
-        arrow.setPos(shooter.getX(), shooter.getEyeY() - 0.1, shooter.getZ());
-        arrow.setOwner(shooter);
-        return arrow;
+        // 直接复用耀星之箭自己的实体创建流程，转化结果与真正的耀星之箭完全一致。
+        return ArrowItems.STAR_ARROW.get().createArrowEntity(shooter, ArrowItems.STAR_ARROW.get().getDefaultInstance(), weapon);
     }
 }

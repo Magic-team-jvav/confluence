@@ -3,9 +3,7 @@ package org.confluence.mod.common.entity.npc.ai;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.NPCProjectileEffects;
 import org.confluence.mod.common.entity.projectile.NPCWeaponProjectile;
@@ -17,12 +15,15 @@ import java.util.List;
 /// 护士按照自身优先级与严格生命阈值，向附近 NPC 投掷治疗药水。
 public class NPCHealGoal extends Goal {
     private static final int SEARCH_INTERVAL_TICKS = 20;
+    /// 治疗目标移动时每隔十 tick 才更新路径，避免每 tick 随机换点。
+    private static final int REPATH_INTERVAL_TICKS = 10;
     private final BaseNPC npc;
     private final double attackRange;
     private final double searchRange;
     private int cooldown;
     private int searchDelay;
     private int prepareTicks;
+    private int repathDelay;
     private BaseNPC healTarget;
 
     /// 创建指定治疗射程的护士目标；搜索范围固定为治疗射程的两倍。
@@ -36,6 +37,7 @@ public class NPCHealGoal extends Goal {
     /// 按自身危急、盟友危急、自身受伤的顺序选择治疗目标。
     @Override
     public boolean canUse() {
+        if (npc.getInteractingPlayer() != null) return false;
         if (cooldown > 0) {
             cooldown--;
             return false;
@@ -71,7 +73,8 @@ public class NPCHealGoal extends Goal {
     /// 目标仍满足原始生命阈值、距离和视线条件时继续准备治疗。
     @Override
     public boolean canContinueToUse() {
-        if (healTarget == null || !healTarget.isAlive()) return false;
+        if (npc.getInteractingPlayer() != null || healTarget == null || !healTarget.isAlive())
+            return false;
         if (healTarget == npc) return healTarget.getHealth() <= healTarget.getMaxHealth() * 0.9F;
         return healTarget.getHealth() < healTarget.getMaxHealth() * 0.5F
                 && npc.distanceToSqr(healTarget) <= searchRange * searchRange && npc.getSensing().hasLineOfSight(healTarget);
@@ -80,6 +83,7 @@ public class NPCHealGoal extends Goal {
     /// 每次治疗随机准备 10 到 19 tick，与 Wiki 的治疗攻击准备范围一致。
     @Override
     public void start() {
+        repathDelay = 0;
         prepareTicks = 10 + npc.getRandom1211().nextInt(10);
     }
 
@@ -94,14 +98,16 @@ public class NPCHealGoal extends Goal {
             npc.getLookControl().setLookAt(healTarget, 10.0F, 10.0F);
             npc.lookAt(healTarget, 10.0F, 10.0F);
         }
-        if (healTarget != npc) {
-            Vec3 destination = LandRandomPos.getPosTowards(npc, 3, 1, healTarget.position());
-            if (destination != null)
-                npc.getNavigation().moveTo(destination.x, destination.y, destination.z, 1.0);
+        boolean inRange = npc.distanceToSqr(healTarget) <= attackRange * attackRange;
+        if (healTarget != npc && !inRange) {
+            if (--repathDelay <= 0) {
+                repathDelay = REPATH_INTERVAL_TICKS;
+                npc.getNavigation().moveTo(healTarget, 1.0);
+            }
         } else {
             npc.getNavigation().stop();
         }
-        if (healTarget != npc && npc.distanceToSqr(healTarget) > attackRange * attackRange) {
+        if (!inRange) {
             prepareTicks = 10 + npc.getRandom1211().nextInt(10);
             return;
         }

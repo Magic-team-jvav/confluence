@@ -48,13 +48,13 @@ public class NpcEntities {
             () -> CreatureAttributeBuilder.npc().build());
 
     // 常驻城镇：染料商与油漆工
-    public static final RegistryObject<EntityType<SimpleNPC>> DYE_TRADER = withAttributes(register("dye_trader", "染料商", SwordItems.EXOTIC_SCIMITAR, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(3).attackRange(3).retreatRange(3).attackInterval(25)),
+    public static final RegistryObject<EntityType<SimpleNPC>> DYE_TRADER = withAttributes(register("dye_trader", "染料商", SwordItems.EXOTIC_SCIMITAR, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(3).attackRange(3).retreatRange(1.5).attackInterval(25)),
             () -> CreatureAttributeBuilder.npc().build());
     public static final RegistryObject<EntityType<SimpleNPC>> PAINTER = withAttributes(register("painter", "油漆工", PaintItems.PAINTBRUSH, NPCCombatActions.thrown(PaintItems.PAINT::toStack, NPCProjectileEffects.NONE), builder -> builder.maxHealth(65).damage(3).attackInterval(20).projectileSpeed(1.5)),
             () -> CreatureAttributeBuilder.npc().build());
 
     // 常驻城镇：动物学家与树妖
-    public static final RegistryObject<EntityType<SimpleNPC>> ZOOLOGIST = withAttributes(register("zoologist", "动物学家", () -> Items.AIR, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(4).attackRange(3).retreatRange(3).attackInterval(20)),
+    public static final RegistryObject<EntityType<SimpleNPC>> ZOOLOGIST = withAttributes(register("zoologist", "动物学家", () -> Items.AIR, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(4).attackRange(3).retreatRange(1.5).attackInterval(20)),
             () -> CreatureAttributeBuilder.npc().build());
     public static final RegistryObject<EntityType<DryadNPC>> DRYAD = withAttributes(register("dryad", "树妖", DryadNPC::new, () -> Items.AIR, NPCCombatActions.DRYAD_WARD, builder -> builder.maxHealth(65).damage(2).attackRange(18.75).retreatRange(4).attackInterval(200), 0.6F, 1.85F),
             () -> CreatureAttributeBuilder.npc().build());
@@ -77,7 +77,7 @@ public class NpcEntities {
             () -> CreatureAttributeBuilder.npc().build());
 
     // 蜘蛛洞救援：发型师
-    public static final RegistryObject<EntityType<SimpleNPC>> STYLIST = withAttributes(register("stylist", "发型师", SwordItems.STYLISH_SCISSORS, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(4).attackRange(3).retreatRange(3).retreatRange(3).attackInterval(20)),
+    public static final RegistryObject<EntityType<SimpleNPC>> STYLIST = withAttributes(register("stylist", "发型师", SwordItems.STYLISH_SCISSORS, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(4).attackRange(3).retreatRange(1.5).attackInterval(20)),
             () -> CreatureAttributeBuilder.npc().build());
 
     // 地下救援：哥布林工匠
@@ -97,7 +97,7 @@ public class NpcEntities {
             () -> CreatureAttributeBuilder.npc().build());
 
     // 地狱转化：税收官
-    public static final RegistryObject<EntityType<SimpleNPC>> TAX_COLLECTOR = withAttributes(register("tax_collector", "税收官", () -> Items.AIR, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(4).attackRange(3).retreatRange(3)),
+    public static final RegistryObject<EntityType<SimpleNPC>> TAX_COLLECTOR = withAttributes(register("tax_collector", "税收官", () -> Items.AIR, NPCCombatActions.MELEE, builder -> builder.maxHealth(65).damage(4).attackRange(3).retreatRange(1.5)),
             () -> CreatureAttributeBuilder.npc().build());
 
     // 发光蘑菇城镇：松露人

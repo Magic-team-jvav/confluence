@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.config.ModConfig;
@@ -24,6 +25,7 @@ import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
+import java.util.List;
 import java.util.Locale;
 
 public final class ClientConfigs {
@@ -83,6 +85,19 @@ public final class ClientConfigs {
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
+    public static boolean crosshairAnimation = true;
+    public static List<? extends String> crosshairAnimationBlacklist = List.of();
+    public static boolean bowCrosshairAnimation = true;
+    public static boolean crossbowCrosshairAnimation = true;
+    public static boolean gunCrosshairAnimation = true;
+    public static boolean repeaterCrosshairAnimation = true;
+    public static boolean hitMarker = true;
+    public static List<? extends String> hitMarkerBlacklist = List.of();
+    public static boolean hitMarkerMelee = true;
+    public static boolean hitMarkerRanged = true;
+    public static boolean hitMarkerMagic = true;
+    public static boolean hitMarkerSummon = true;
+    public static boolean hitMarkerOther = true;
     public static int extraInventoryButtonOffsetX = 0;
     public static int extraInventoryButtonOffsetY = 0;
 
@@ -131,6 +146,19 @@ public final class ClientConfigs {
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
+    private static BooleanValue CROSSHAIR_ANIMATION;
+    private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
+    private static BooleanValue BOW_CROSSHAIR_ANIMATION;
+    private static BooleanValue CROSSBOW_CROSSHAIR_ANIMATION;
+    private static BooleanValue GUN_CROSSHAIR_ANIMATION;
+    private static BooleanValue REPEATER_CROSSHAIR_ANIMATION;
+    private static BooleanValue HIT_MARKER;
+    private static ConfigValue<List<? extends String>> HIT_MARKER_BLACKLIST;
+    private static BooleanValue HIT_MARKER_MELEE;
+    private static BooleanValue HIT_MARKER_RANGED;
+    private static BooleanValue HIT_MARKER_MAGIC;
+    private static BooleanValue HIT_MARKER_SUMMON;
+    private static BooleanValue HIT_MARKER_OTHER;
     private static IntValue EXTRA_INVENTORY_BUTTON_OFFSET_X;
     private static IntValue EXTRA_INVENTORY_BUTTON_OFFSET_Y;
 
@@ -185,6 +213,23 @@ public final class ClientConfigs {
         armorStyle = ARMOR_STYLE.get();
         terraStyleFood = TERRA_STYLE_FOOD.get();
         leftEffectIcon = LEFT_EFFECT_ICON.get();
+        crosshairAnimation = CROSSHAIR_ANIMATION.get();
+        crosshairAnimationBlacklist = CROSSHAIR_ANIMATION_BLACKLIST.get();
+        bowCrosshairAnimation = BOW_CROSSHAIR_ANIMATION.get();
+        crossbowCrosshairAnimation = CROSSBOW_CROSSHAIR_ANIMATION.get();
+        gunCrosshairAnimation = GUN_CROSSHAIR_ANIMATION.get();
+        repeaterCrosshairAnimation = REPEATER_CROSSHAIR_ANIMATION.get();
+        CrosshairHud.clear();
+        hitMarker = HIT_MARKER.get();
+        hitMarkerBlacklist = HIT_MARKER_BLACKLIST.get();
+        hitMarkerMelee = HIT_MARKER_MELEE.get();
+        hitMarkerRanged = HIT_MARKER_RANGED.get();
+        hitMarkerMagic = HIT_MARKER_MAGIC.get();
+        hitMarkerSummon = HIT_MARKER_SUMMON.get();
+        hitMarkerOther = HIT_MARKER_OTHER.get();
+        if (!hitMarker) {
+            HitMarkerHud.clear();
+        }
         extraInventoryButtonOffsetX = EXTRA_INVENTORY_BUTTON_OFFSET_X.get();
         extraInventoryButtonOffsetY = EXTRA_INVENTORY_BUTTON_OFFSET_Y.get();
 
@@ -266,6 +311,29 @@ public final class ClientConfigs {
                 builder.push("Armor");
                 TERRA_STYLE_ARMOR = builder.define("terraStyleArmor", true);
                 ARMOR_STYLE = builder.defineEnum("armorStyle", TerraStyleArmorHud.Armor.OVERLAY);
+                builder.pop();
+            }
+            {
+                builder.push("Crosshair");
+                CROSSHAIR_ANIMATION = builder.define("crosshairAnimation", true);
+                CROSSHAIR_ANIMATION_BLACKLIST = builder.defineListAllowEmpty("crosshairAnimationBlacklist", List.of(),
+                        value -> value instanceof String id && ResourceLocation.tryParse(id) != null);
+                BOW_CROSSHAIR_ANIMATION = builder.define("bowCrosshairAnimation", true);
+                CROSSBOW_CROSSHAIR_ANIMATION = builder.define("crossbowCrosshairAnimation", true);
+                GUN_CROSSHAIR_ANIMATION = builder.define("gunCrosshairAnimation", true);
+                REPEATER_CROSSHAIR_ANIMATION = builder.define("repeaterCrosshairAnimation", true);
+                builder.pop();
+            }
+            {
+                builder.push("HitMarker");
+                HIT_MARKER = builder.define("hitMarker", true);
+                HIT_MARKER_BLACKLIST = builder.defineListAllowEmpty("hitMarkerBlacklist", List.of(),
+                        value -> value instanceof String id && ResourceLocation.tryParse(id) != null);
+                HIT_MARKER_MELEE = builder.define("hitMarkerMelee", true);
+                HIT_MARKER_RANGED = builder.define("hitMarkerRanged", true);
+                HIT_MARKER_MAGIC = builder.define("hitMarkerMagic", true);
+                HIT_MARKER_SUMMON = builder.define("hitMarkerSummon", true);
+                HIT_MARKER_OTHER = builder.define("hitMarkerOther", true);
                 builder.pop();
             }
             LEFT_EFFECT_ICON = builder.define("leftEffectIcon", true);

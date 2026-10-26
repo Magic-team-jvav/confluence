@@ -94,6 +94,7 @@ public final class TickEvents {
 
     private static void playerTick$Post(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
+        LeftClickCooldowns.of(event.player).tick();
         long gameTime = event.player.level().getGameTime();
         if (event.player instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();

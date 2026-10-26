@@ -50,6 +50,7 @@ public final class NetworkEvents {
         handler.registerInGameC2S(WhipControlPacketC2S.class, WhipControlPacketC2S.ID, WhipControlPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(WhipPlaybackCompletePacketC2S.class, WhipPlaybackCompletePacketC2S.ID, WhipPlaybackCompletePacketC2S.STREAM_CODEC);
         // S2C
+        handler.registerInGameS2C(LeftClickCooldownPacketS2C.class, LeftClickCooldownPacketS2C.ID, LeftClickCooldownPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SoulSkillIndexSyncPacketS2C.class, SoulSkillIndexSyncPacketS2C.ID, SoulSkillIndexSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SoulSkillSyncPacketS2C.class, SoulSkillSyncPacketS2C.ID, SoulSkillSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SoulSkillUsePacketS2C.class, SoulSkillUsePacketS2C.ID, SoulSkillUsePacketS2C.STREAM_CODEC);

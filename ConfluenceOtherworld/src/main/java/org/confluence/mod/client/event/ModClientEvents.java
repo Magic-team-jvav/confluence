@@ -237,6 +237,7 @@ public final class ModClientEvents {
         event.registerBelow(VanillaGuiOverlay.VIGNETTE.id(), Confluence.asResource("void_sea_filter"), VoidSeaFilterRenderer::renderFilter);
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
         event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), repeaterHud, new RepeaterHud());
+        event.registerAbove(repeaterHud, Confluence.asResource("hit_marker"), new HitMarkerHud());
         ResourceLocation healthHud = Confluence.asResource("health_hud");
         event.registerBelow(VanillaGuiOverlay.ARMOR_LEVEL.id(), healthHud, new TerraStyleHealthHud());
         ResourceLocation armorHud = Confluence.asResource("armor_hud");
@@ -1212,6 +1213,7 @@ public final class ModClientEvents {
             Item item = entry.get();
             if (item instanceof BaseTerraRepeaterItem) {
                 event.register(item, ModClientSetups.REPEATER_AMMO);
+                event.register(item, ModClientSetups.LEFT_CLICK_COOLDOWN);
             }
         }
         if (LibStartupConfig.itemGroups()) {

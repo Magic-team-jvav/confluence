@@ -33,6 +33,7 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
@@ -59,6 +60,8 @@ import org.confluence.mod.client.effect.voidsea.VoidSeaSwimEffects;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
+import org.confluence.mod.client.gui.hud.CrosshairHud;
+import org.confluence.mod.client.gui.hud.HitMarkerHud;
 import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
@@ -112,6 +115,7 @@ import java.util.Optional;
 public final class GameClientEvents {
     public static void init() {
         ClientWeaponInputManager.init();
+        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::crosshairBowRelease);
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
         PortEventHandler.addListener(GameClientEvents::clientTick$Post);
         PortEventHandler.addListener(GameClientEvents::playerTick$Post);
@@ -220,9 +224,17 @@ public final class GameClientEvents {
             }
         }
         GunHandler.handle(player, attackHeld);
+        CrosshairHud.tick(player);
         DeathEffectManager.tick(minecraft.level);
         BackgroundLayer.tickLayers();
         WeatherHandler.handle();
+    }
+
+    private static void crosshairBowRelease(LivingEntityUseItemEvent.Stop event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && event.getEntity() == player) {
+            CrosshairHud.onBowRelease(player, event.getItem(), event.getDuration());
+        }
     }
 
     private static void clientPlayerNetwork$LoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
@@ -241,6 +253,8 @@ public final class GameClientEvents {
 
     /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
     private static void clearClientWorldReferences() {
+        HitMarkerHud.clear();
+        CrosshairHud.clear();
         ClientBestiary.getInstance().clearLevel();
         ScryingOrbHandler.clear();
         VirtualEntityRenderer.clear();

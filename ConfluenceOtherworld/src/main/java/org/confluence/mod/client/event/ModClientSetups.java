@@ -62,6 +62,7 @@ import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
 import org.confluence.mod.client.security.SecurityFace;
+import org.confluence.mod.common.attachment.LeftClickCooldowns;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -226,6 +227,32 @@ public final class ModClientSetups {
                 guiGraphics.renderItem(stack, 0, 0);
                 pose.popPose();
             }
+        }
+        return false;
+    };
+    static final IItemDecorator LEFT_CLICK_COOLDOWN = (guiGraphics, font, stack, x, y) -> {
+        Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
+        if (player == null) {
+            return false;
+        }
+
+        float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(true);
+        float leftClick = LeftClickCooldowns.of(player).getCooldownPercent(stack.getItem(), partialTick);
+        if (leftClick <= 0f) {
+            return false;
+        }
+
+        float vanilla = player.getCooldowns().getCooldownPercent(stack.getItem(), partialTick);
+        if (leftClick <= vanilla) {
+            return false;
+        }
+
+        // 原版已绘制自己的遮罩，只补齐左键冷却多出的部分，避免重叠加深。
+        int top = y + Mth.floor(16.0F * (1.0F - leftClick));
+        int bottom = y + Mth.floor(16.0F * (1.0F - vanilla));
+        if (top < bottom) {
+            guiGraphics.fill(RenderType.guiOverlay(), x, top, x + 16, bottom, Integer.MAX_VALUE);
         }
         return false;
     };

@@ -1239,6 +1239,7 @@ public final class ModClientEvents {
             Item item = entry.get();
             if (item instanceof BaseTerraRepeaterItem) {
                 event.register(item, ModClientSetups.REPEATER_AMMO);
+                event.register(item, ModClientSetups.LEFT_CLICK_COOLDOWN);
             }
         }
     }

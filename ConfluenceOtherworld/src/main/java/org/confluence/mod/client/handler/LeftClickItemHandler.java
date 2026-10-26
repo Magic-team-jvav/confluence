@@ -12,7 +12,6 @@ import org.confluence.mod.network.c2s.LeftClickItemActionPacketC2S;
 public final class LeftClickItemHandler {
     private static ItemStack activeStack = ItemStack.EMPTY;
     private static boolean mouseHeld;
-    private static boolean repeaterClickHandled;
     private static int activeSlot = -1;
 
     private LeftClickItemHandler() {}
@@ -31,17 +30,9 @@ public final class LeftClickItemHandler {
         } else if (sameRepeater) {
             activeStack = stack;
         }
-        if (!attackHeld && !mouseHeld) {
-            repeaterClickHandled = false;
-        }
         if (active && activeStack.isEmpty()) {
-            if (stack.getItem() instanceof BaseTerraRepeaterItem) {
-                if (repeaterClickHandled) {
-                    return;
-                }
-                repeaterClickHandled = true;
-            }
-            if (LeftClickCooldowns.of(player).isOnCooldown(stack.getItem())) {
+            if (!(stack.getItem() instanceof BaseTerraRepeaterItem)
+                    && LeftClickCooldowns.of(player).isOnCooldown(stack.getItem())) {
                 return;
             }
 
@@ -54,9 +45,6 @@ public final class LeftClickItemHandler {
     /// 鼠标事件捕获短于一个客户端 tick 的点击，tick 仍负责换物品、开界面和改键后的状态。
     public static void mouseButton(LocalPlayer player, boolean pressed) {
         mouseHeld = pressed;
-        if (!pressed) {
-            repeaterClickHandled = false;
-        }
         if (pressed) {
             tick(player, true);
         } else if (!activeStack.isEmpty()) {
@@ -82,7 +70,6 @@ public final class LeftClickItemHandler {
     public static void reset() {
         activeStack = ItemStack.EMPTY;
         mouseHeld = false;
-        repeaterClickHandled = false;
         activeSlot = -1;
     }
 }

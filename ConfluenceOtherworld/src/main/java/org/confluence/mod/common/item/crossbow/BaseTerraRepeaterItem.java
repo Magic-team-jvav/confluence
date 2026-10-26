@@ -43,6 +43,7 @@ import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.attachment.LeftClickCooldowns;
+import org.confluence.mod.common.attachment.LeftClickState;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -295,12 +296,23 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         if (delayTaskHolder.containsTask(hand, REPEATER_CONTINUOUS_SHOOTING)) {
             return false;
         }
+        int[] remainingShots = {countCount - 1};
         delayTaskHolder.addTask(hand, REPEATER_CONTINUOUS_SHOOTING, DelayTaskHolder.createTaskBilder()
                 .repeatCount(countCount - 1)
                 .removedTick(1)
                 .resultRun((tick, maxTick, task) -> {
-                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
+                    if (!LeftClickState.of(player).isPressed(itemStack)
+                            || !player.isAlive() || player.isSpectator() || player.isUsingItem()
+                            || player.getItemInHand(hand) != itemStack
+                            || player.containerMenu != player.inventoryMenu
+                            || !shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
                         task.remove();
+                        delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
+                        return 0;
+                    }
+                    if (--remainingShots[0] <= 0) {
+                        task.remove();
+                        delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
                     }
                     return 0;
                 }).build());
@@ -382,14 +394,49 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
 
     @Override
     public void onLeftClick(Player player, ItemStack itemStack) {
-        if (player.level().isClientSide) return;
+        if (player.level().isClientSide || !player.isAlive() || player.isSpectator()) {
+            return;
+        }
+
+        InteractionHand hand = getHand(player, itemStack);
+        DelayTaskHolder holder = DelayTaskHolder.of(player);
+        if (holder.containsTask(hand, REPEATER_SHOOTING)) {
+            return;
+        }
+
+        holder.addTask(hand, REPEATER_SHOOTING, DelayTaskHolder.createTaskBilder()
+                .repeatCount(-1)
+                .removedTick(0)
+                .resultRun((tick, maxTick, task) -> {
+                    if (!LeftClickState.of(player).isPressed(itemStack)
+                            || !player.isAlive() || player.isSpectator()
+                            || player.getItemInHand(hand) != itemStack
+                            || player.containerMenu != player.inventoryMenu) {
+                        task.remove();
+                        onLeftRelease(player, itemStack);
+                        return 0;
+                    }
+
+                    shootOnLeftClick(player, itemStack, false);
+                    return 0;
+                }).build());
+        shootOnLeftClick(player, itemStack, true);
+    }
+
+    private void shootOnLeftClick(Player player, ItemStack itemStack, boolean playEmptySound) {
+        if (player.isUsingItem()) {
+            return;
+        }
+
         LeftClickCooldowns cooldowns = LeftClickCooldowns.of(player);
         if (cooldowns.isOnCooldown(itemStack.getItem())) {
             return;
         }
 
         if (getContents(itemStack).isEmpty()) {
-            playAerialShootingSound(player);
+            if (playEmptySound) {
+                playAerialShootingSound(player);
+            }
             return;
         }
 

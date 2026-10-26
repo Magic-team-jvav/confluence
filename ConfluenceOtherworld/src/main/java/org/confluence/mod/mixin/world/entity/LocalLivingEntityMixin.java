@@ -18,7 +18,6 @@ public class LocalLivingEntityMixin implements IClientLivingEntity {
     @Unique
     private Vec3 confluence$deathMotion;
 
-    // TODO 等牢西决定命中提示是否改为 NeoForge 伤害事件触发并同步客户端。
     @Inject(method = "handleDamageEvent", at = @At("TAIL"))
     private void confluence$hitMarker(DamageSource source, CallbackInfo ci) {
         HitMarkerHud.onDamage((LivingEntity) (Object) this, source);

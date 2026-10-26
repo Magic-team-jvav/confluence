@@ -263,7 +263,6 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.PEACE_CANDLE.get(), "Decreased monster spawn rate", "怪物生成速度降低");
         language.addTooltip(ModEffects.POTION_SICKNESS.get(), "Cannot consume anymore healing items", "不能再使用治疗物品");
         language.addTooltip(ModEffects.RAGE.get(), "10% increased critical chance", "暴击率提高10%");
-        language.addTooltip(ModEffects.SCARED.get(), "Like a bird startled by the sound of a bow, fleeing in all directions", "如惊弓之鸟，四处逃串");
         language.addTooltip(ModEffects.SHADOW_CANDLE.get(), "Disables town protection and town critter spawning", "取消城镇保护与城镇小动物生成");
         language.addTooltip(ModEffects.SHADOWFLAME.get(), "Losing life", "持续损失生命值");
         language.addTooltip(ModEffects.SHARPENED.get(), "Melee weapons have armor penetration", "近战武器具有盔甲穿透力");
@@ -696,6 +695,16 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.seafloor_cracker.2", "The jump attack column deals half the hammer's damage every second for 5 seconds", "跳劈水柱持续 5 秒，每秒对柱内怪物的伤害为武器伤害的一半");
         language.add("tooltip.item.confluence.opal_staff.0", "Fires a wide torrent that falls, surges along the ground and then returns to the caster", "射出一道大范围洪流，落地后贴地奔涌，随后折返施法者");
         language.add("tooltip.item.confluence.opal_staff.1", "The torrent deals double damage on its way back, and gains 50% of your melee damage", "洪流折返途中伤害翻倍，并额外获得 50% 的近战伤害加成");
+        language.add("tooltip.item.confluence.lost_enchanted_page.0", "A brittle page torn out of some astronomical compendium", "从某本天文汇编中撕下的一页脆纸");
+        language.add("tooltip.item.confluence.lost_enchanted_page.1", "Hold it on the cursor and left-click a Stellar Studies Compilation to bind it in", "在物品栏中左键拾起后，再左键点击星体研究汇编即可装订");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.missing_page", "(It is missing a crucial page)", "（它缺少了关键的一页）");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.remaining", "(%s more pages until it is complete!)", "（它还剩下%s页才完整！）");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.complete", "(Complete!)", "（已完整！）");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.levitation", "(15% chance to fire a projectile that grants Levitation)", "（15%发射漂浮效果的弹幕）");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.poison", "(15% chance to fire a projectile that grants Poison)", "（15%发射中毒效果的弹幕）");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.fire", "(15% chance to fire a projectile that sets the target on fire)", "（15%发射着火效果的弹幕）");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.wither", "(15% chance to fire a projectile that grants Wither)", "（15%发射凋零效果的弹幕）");
+        language.add("tooltip.item.confluence.stellar_studies_compilation.slow", "(15% chance to fire a projectile that grants Slowness)", "（15%发射减速效果的弹幕）");
         language.add("tooltip.item.terra_curio.arcane_flower.1", "Automatically uses mana potions when needed", "需要时自动使用魔力药水");
         language.add("tooltip.item.terra_curio.arcane_flower.2", "Enemies are less likely to target you", "敌人不太可能以你为目标");
         language.add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "           ", "           ");
@@ -737,6 +746,13 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.trade.cost", "Cost: %s × %s", "花费：%s × %s");        language.add("tooltip.item.confluence.dusk_dawn.0", "The bolt hunts down a foe and clings to it, spreading rings of light that weaken with each pulse", "弹幕会追踪并吸附敌人，不断扩散逐圈衰减的光波");
         language.add("tooltip.item.confluence.dusk_dawn.1", "After the last wave it explodes and releases a powerful horizontal slash", "光波结束后爆炸，并向四周释放一道强力横向斩击");
         language.add("tooltip.item.confluence.wind_string.0", "Wooden arrows become Wind Arrows; deals 10%-20% more damage to foes with 0.1-1 knockback resistance", "木箭会被替换为风矢；对击退抗性 0.1-1 的敌怪额外造成 10%-20% 伤害");
+        language.add("tooltip.item.confluence.hunting_bow.0", "Arrows apply the Hunt effect to struck enemies for %s seconds", "箭矢命中敌人会附加 %s 秒的狩猎效果");
+        language.add("tooltip.item.confluence.hunting_bow.1", "Summons prioritise hunted enemies and deal 50%% more damage to them", "召唤物会优先攻击被狩猎标记的敌人，并对其额外造成 50%% 伤害");
+        language.add("tooltip.item.confluence.scarebow.0", "Holding it drives Harpies within %s blocks away", "手持时，%s 格内的鸟妖会停止攻击并远离你");
+        language.add("tooltip.item.confluence.scarebow.1", "Its arrows deal %s extra damage to Harpies", "射出的箭矢对鸟妖额外造成 %s 点伤害");
+        language.add("tooltip.item.confluence.war_bow.0", "Left-click to strike in melee, right-click to draw and fire", "左键近战攻击，右键拉弓射箭");
+        language.add("tooltip.item.confluence.war_bow.1", "A fully charged melee hit sweeps nearby enemies, just like a sword", "攻击条蓄满时左键可打出与原版剑相同的横扫");
+        language.add("tooltip.item.confluence.war_bow.2", "Melee hits have a %s%% chance to loose an extra arrow at the nearest enemy", "近战命中时有 %s%% 概率自动朝最近的敌人补上一箭");
         language.add("tooltip.item.confluence.wind_page.0", "Releases three wind bolts that rise, then home in on the nearest enemy", "一次释放三发风弹，先向上飞再追踪最近的敌人");
         language.add("tooltip.item.confluence.wind_eye.0", "Creates a tornado that pulls in enemies; recasting removes the previous one, and only the first projectile fired into its core is absorbed", "制造持续吸附敌人的旋风；再次使用会移除上一道，只吸收第一枚打入中心的弹幕");
         language.add("tooltip.item.confluence.star_weep.0", "Arrows that miss an enemy are stored as falling-star charges (max 3); the next hit on an enemy drops that many non-homing falling stars, one every 0.5 seconds", "未命中敌怪的箭矢会累积为坠星协同（最多 3 层）；下一次命中敌怪时从敌人头上释放等量坠星，每 0.5 秒落下一颗且不会追踪");

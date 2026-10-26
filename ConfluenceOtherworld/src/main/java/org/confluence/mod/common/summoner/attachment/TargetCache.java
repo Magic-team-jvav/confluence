@@ -23,6 +23,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -37,6 +38,8 @@ import java.util.function.Predicate;
 public class TargetCache {
     /// 召唤物沿用接触攻击的目标资格，不额外要求目标可被射弹命中。
     private static final WeaponTargeting TARGETING = new WeaponTargeting(TargetPolicy.ATTACKABLE, false);
+    /// 狩猎标记的目标优先级加成，远大于任何距离/护主/保持目标带来的分数差。
+    private static final double HUNTING_PRIORITY = 20000.0;
 
     private final Int2BooleanOpenHashMap visibilityCache = new Int2BooleanOpenHashMap();
     private final Int2IntOpenHashMap hurterHistory = new Int2IntOpenHashMap();
@@ -181,6 +184,10 @@ public class TargetCache {
                 return entity;
             }
             double score = selfCenter ? getDistance(minion, entity) : getDistance(owner, entity);
+            /// 猎手弓的狩猎标记：优先级仅次于鞭子印记，压过“护主”“保持当前目标”等其他加分。
+            if (entity.hasEffect(ModEffects.HUNTER.get())) {
+                score -= HUNTING_PRIORITY;
+            }
             if (ownerWarningDistance > 0 && getDistance(owner, entity) < ownerWarningDistance) {
                 score -= 10000.0;
             }

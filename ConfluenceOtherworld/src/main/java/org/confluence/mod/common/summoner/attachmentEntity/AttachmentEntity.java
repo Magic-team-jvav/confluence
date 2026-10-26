@@ -12,6 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
@@ -33,6 +34,8 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
 
+    /// 狩猎标记（猎手弓）为召唤物提供的额外伤害倍率。
+    public static final float HUNTING_DAMAGE_MULTIPLIER = 1.5F;
     protected final RegistryObject<? extends AttachmentEntityType<?>> type;
     protected final ArrayList<PathNode> historyNodes = new ArrayList<>();
     protected final AttachmentEntityGoalSelector goalSelector = new AttachmentEntityGoalSelector();
@@ -113,6 +116,10 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
             WhipMarkTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
             if (tracker.isSummonMarkTarget(logicalTarget)) {
                 damageAmount = tracker.getDamageModifier(damageSource, damageAmount);
+            }
+            /// 猎手弓留下的狩猎标记：召唤物对被标记的敌人额外多打出 50% 伤害。
+            if (logicalTarget.hasEffect(ModEffects.HUNTER.get())) {
+                damageAmount *= HUNTING_DAMAGE_MULTIPLIER;
             }
             damageAmount = (float) (damageAmount * owner.getAttributeValue(LibAttributes.getSummonDamage()));
             immunityDuration = invincibleTime;

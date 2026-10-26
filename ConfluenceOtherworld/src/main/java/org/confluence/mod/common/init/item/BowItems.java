@@ -59,7 +59,7 @@ public class BowItems {
     public static final PortDeferredItem<TheBeesKnees> THE_BEES_KNEES = registerItemWithEnglishName("the_bees_knees", "蜂膝弓", "The Bee's Knees", TheBeesKnees::new);
     public static final PortDeferredItem<HellwingBow> HELLWING_BOW = registerItem("hellwing_bow", "地狱之翼弓", HellwingBow::new);
 
-    // 稻草人弓 - 驱离鸟妖，对飞行单位造成1.5倍伤害
+    // 稻草人弓 - 手持时驱离 32 格内的鸟妖，箭矢对鸟妖额外造成 30 点伤害
     public static final PortDeferredItem<Scarebow> SCAREBOW = registerItem("scarebow", "稻草人弓", Scarebow::new);
 
     // 代达罗斯风暴弓

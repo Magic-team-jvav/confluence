@@ -14,7 +14,6 @@ import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.data.spawner.BossDelaySpawner;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
-import org.confluence.mod.common.effect.harmful.DriveAwayController;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -137,9 +136,6 @@ public final class TickEvents {
         Immunity.tick(event.getEntity());
         // 平时（含大风天）第一行就返回：风不影响实体，只有沙尘暴/暴风雪激活时才会走到下面
         GameEventSystem.INSTANCE.pushEventWind(event.getEntity());
-        if (!event.getEntity().level().isClientSide && event.getEntity() instanceof net.minecraft.world.entity.Mob mob) {
-            DriveAwayController.tick(mob);
-        }
     }
 
     private static void serverTick$Post(TickEvent.ServerTickEvent event) {

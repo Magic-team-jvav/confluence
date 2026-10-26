@@ -17,6 +17,7 @@ import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyingVolleyCombatAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.ScarecrowFleeAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.SteeringDashAction;
 import org.confluence.mod.common.entity.projectile.HarpyFeatherProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -59,6 +60,8 @@ public class Harpy extends ReboundingFlyingMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
+                        /// 玩家手持稻草人弓时最优先：停止攻击并主动飞离。
+                        new ScarecrowFleeAction(Harpy.this),
                         SequenceNode.of(new HasTargetCondition(Harpy.this), combat),
                         new LookForwardWanderFlyAction(Harpy.this, 0.2, 0.0F));
             }

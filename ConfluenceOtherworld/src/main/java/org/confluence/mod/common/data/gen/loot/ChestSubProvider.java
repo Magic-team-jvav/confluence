@@ -215,6 +215,12 @@ public final class ChestSubProvider implements LootTableSubProvider {
                                 PercentageLootEntry.rule(100.0 / 40, LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
                         ))
                 )
+                //蕴魔书页：独立池子 5%
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(MaterialItems.LOST_ENCHANTED_PAGE))
+                        ))
+                )
         );
 
         output.accept(Confluence.asResource("chests/heaven_islands_chests_1"), LootTable.lootTable()
@@ -235,6 +241,12 @@ public final class ChestSubProvider implements LootTableSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,
                                 PercentageLootEntry.rule(100.0 / 3, LootItem.lootTableItem(FunctionalBlocks.SKY_MILL))
+                        ))
+                )
+                //蕴魔书页：独立池子 5%
+                .withPool(LootPool.lootPool()
+                        .add(PercentageLootEntry.independent(false,
+                                PercentageLootEntry.rule(5, LootItem.lootTableItem(MaterialItems.LOST_ENCHANTED_PAGE))
                         ))
                 )
         );
@@ -644,6 +656,18 @@ public final class ChestSubProvider implements LootTableSubProvider {
                         .withPool(LootPool.lootPool()
                                 .add(PercentageLootEntry.independent(false,
                                         PercentageLootEntry.rule(15, LootItem.lootTableItem(BowItems.SCAREBOW.get()))
+                                ))
+                        )
+                        //星体研究汇编：与星钢剑、稻草人弓同一个宝箱
+                        .withPool(LootPool.lootPool()
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(20, LootItem.lootTableItem(ManaWeaponItems.STELLAR_STUDIES_COMPILATION))
+                                ))
+                        )
+                        //蕴魔书页：独立池子 5%
+                        .withPool(LootPool.lootPool()
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(5, LootItem.lootTableItem(MaterialItems.LOST_ENCHANTED_PAGE))
                                 ))
                         )
                         //灵魂缓冲：独立池子 33% 概率

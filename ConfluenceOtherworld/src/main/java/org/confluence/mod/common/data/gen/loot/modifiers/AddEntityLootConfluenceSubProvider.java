@@ -72,6 +72,15 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                                 ))
                 )
         ));
+        /// 唤魔者：33% 概率掉落恼鬼图腾
+        entries.add(new AddedEntityLoot(EntityType.EVOKER,
+                LootTable.lootTable().withPool(
+                        LootPool.lootPool()
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(33, LootItem.lootTableItem(SummonItems.VEX_TOTEM))
+                                ))
+                )
+        ));
         LootItemCondition.Builder playerHasSmeltsLootEnchantment = LootItemEntityPropertyCondition.hasProperties(
                 LootContext.EntityTarget.KILLER_PLAYER,
                 EntityPredicate.Builder.entity().equipment(EntityEquipmentPredicate.Builder.equipment().mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FIRE_ASPECT, MinMaxBounds.Ints.atLeast(1))).build()).build())

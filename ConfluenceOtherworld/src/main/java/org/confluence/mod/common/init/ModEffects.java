@@ -195,7 +195,6 @@ public final class ModEffects {
     public static final RegistryObject<TheTongueEffect> THE_TONGUE = registerEffect("the_tongue", "狂卷之舌", TheTongueEffect::new);
     public static final RegistryObject<HorrifiedEffect> HORRIFIED = registerEffect("horrified", "惊恐", HorrifiedEffect::new);
     public static final RegistryObject<CrimsonStormEffect> CRIMSON_STORM = registerEffect("crimson_storm", "猩红风暴", CrimsonStormEffect::new);
-    public static final RegistryObject<DriveAwayEffect> SCARED = registerEffect("scared", "惊慌", () -> new DriveAwayEffect(0.3, 200.0, 0.8, 1.2, 1.5, 0.0));
 
     // 药剂
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_FIRE = registerEffectWithEnglishName("weapon_imbue_fire", "武器灌注：火焰", "Weapon Imbue: Fire", FlaskOfFireEffect::new);

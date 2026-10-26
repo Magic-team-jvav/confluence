@@ -399,7 +399,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BASE_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjectileRenderer<>(context, new BeeProjectileModel<>(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/bee_projectile.png")));
         event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, MonsterEntities.HELL_BAT.getId()));
-        event.registerEntityRenderer(DRIVE_AWAY_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(FLAMING_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(UNHOLY_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(STAR_ARROW.get(), TerraArrowRenderer::new);
@@ -414,6 +413,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WIND_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(DUSK_DAWN.get(), NoopRenderer::new);
         event.registerEntityRenderer(WIND_BULLET.get(), NoopRenderer::new);
+        event.registerEntityRenderer(STELLAR_STUDIES_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(HOMING_FALLING_STAR.get(), FallingStarCrossRenderer::new);
         event.registerEntityRenderer(STAR_MUSIC_CHARGE.get(), StarMusicChargeRenderer::new);
         event.registerEntityRenderer(STAR_FEAR_STAR.get(), FallingStarCrossRenderer::new);

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 
 import org.confluence.mod.Confluence;
@@ -9,6 +10,7 @@ import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.mesdag.portlib.component.PortDataComponentType;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.registries.PortDataComponentRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
@@ -25,5 +27,7 @@ public final class ModDataComponentTypes {
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.builder("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.builder("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
     public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<ResourceLocation>> SOUL_SKILL = TYPES.builder("soulcerer_skill", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(IPortResourceLocationExtension.STREAM_CODEC));
+    /// 星体研究汇编已装订的书页数量。
+    public static final PortRegistryEntry<PortDataComponentType<?>, PortDataComponentType<Integer>> STELLAR_STUDIES_PAGES = TYPES.builder("stellar_studies_pages", builder -> builder.persistent(Codec.INT).networkSynchronized(PortByteBufCodecs.VAR_INT));
 
 }

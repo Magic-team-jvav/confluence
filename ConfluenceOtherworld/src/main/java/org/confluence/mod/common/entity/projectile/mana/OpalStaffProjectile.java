@@ -78,6 +78,8 @@ public class OpalStaffProjectile extends AbstractManaProjectile {
                 setDeltaMovement(surgeDirection.scale(SURGE_SPEED));
                 if (surgeTicks > SURGE_TICKS) {
                     this.phase = Phase.RETURNING;
+                    // 洪流折返时是新一轮伤害，必须清掉去重记录，否则打过的怪在折返路上再也吃不到伤害。
+                    clearPenetrateSet();
                 }
             }
             case RETURNING -> {

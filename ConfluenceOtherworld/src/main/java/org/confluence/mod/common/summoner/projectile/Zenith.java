@@ -18,6 +18,7 @@ import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
 import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.particle.ParticleHelper;
 import org.confluence.mod.common.summoner.particle.ZenithParticleOptions;
@@ -167,6 +168,10 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
         LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(target);
         if (logicalTarget != null && LibEntityUtils.allowsAttack(owner, target)) {
             DamageSource damageSource = LibDamageTypes.of(getLevel(), DamageTypes.PLAYER_ATTACK, null, owner);
+            /// 狩猎标记：本类不走父类的伤害管线，需要在这里单独结算 +50%。
+            if (logicalTarget.hasEffect(ModEffects.HUNTER.get())) {
+                damageAmount *= HUNTING_DAMAGE_MULTIPLIER;
+            }
             immunityDuration = invincibleTime;
             try {
                 return Immunity.hurt(this, target, logicalTarget, damageSource, damageAmount);

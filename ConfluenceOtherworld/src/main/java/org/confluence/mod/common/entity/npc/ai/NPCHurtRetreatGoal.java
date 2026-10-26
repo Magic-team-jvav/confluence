@@ -9,7 +9,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 
 import java.util.EnumSet;
 
-/// NPC 受到敌怪伤害后短暂撤离攻击者，结束后再交回公共自卫目标处理反击。
+/// 无法反击的 NPC 受到敌怪伤害后逃离；能反击的 NPC 由自卫目标同时处理后撤和攻击。
 public final class NPCHurtRetreatGoal extends Goal {
     private static final int MAX_RETREAT_TICKS = 60;
     private final BaseNPC npc;
@@ -32,6 +32,8 @@ public final class NPCHurtRetreatGoal extends Goal {
         if (timestamp == handledHurtTimestamp || npc.getInteractingPlayer() != null || !isValid(source))
             return false;
         handledHurtTimestamp = timestamp;
+        if (npc.canDefendSelf() && npc.getCombatProfile().values(npc).attackRange() > 0 && npc.canAttack(source))
+            return false;
         attacker = source;
         return true;
     }

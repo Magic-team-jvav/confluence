@@ -34,7 +34,10 @@ public class SkeletonMerchantNPC extends BaseNPC {
         }
         super.customServerAiStep();
         if (throwDelay > 0 && --throwDelay == 0) {
-            if (throwTarget != null && throwTarget.isAlive() && canAttack(throwTarget) && getSensing().hasLineOfSight(throwTarget)) {
+            if (isAlive() && !isNoAi() && getInteractingPlayer() == null && throwTarget != null
+                    && throwTarget.isAlive() && getTarget() == throwTarget && canAttack(throwTarget)
+                    && distanceToSqr(throwTarget) <= throwValues.attackRange() * throwValues.attackRange()
+                    && getSensing().hasLineOfSight(throwTarget)) {
                 NPCCombatActions.thrown(() -> new ItemStack(Items.BONE), NPCProjectileEffects.NONE).perform(this, throwTarget, throwValues);
             }
             throwTarget = null;

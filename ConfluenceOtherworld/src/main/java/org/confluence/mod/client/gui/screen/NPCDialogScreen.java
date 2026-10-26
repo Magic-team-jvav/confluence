@@ -32,8 +32,7 @@ public class NPCDialogScreen extends Screen {
     public void tick() {
         super.tick();
         if (minecraft == null || minecraft.level == null || minecraft.player == null) return;
-        if (!(minecraft.level.getEntity(entityId) instanceof BaseNPC npc) || !npc.isAlive()
-                || minecraft.player.distanceToSqr(npc) > 64.0D) {
+        if (!(minecraft.level.getEntity(entityId) instanceof BaseNPC npc) || !npc.isAlive() || npc.hurtTime > 0 || minecraft.player.distanceToSqr(npc) > 64.0D) {
             onClose();
             return;
         }

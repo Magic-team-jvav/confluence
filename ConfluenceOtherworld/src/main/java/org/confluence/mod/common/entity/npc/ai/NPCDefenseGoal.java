@@ -16,11 +16,18 @@ import java.util.EnumSet;
 
 /// 城镇 NPC 只在附近存在敌人时自卫，并在敌人贴身时后撤；不会主动追击目标。
 public final class NPCDefenseGoal extends Goal {
+    /// 敌人短暂被遮挡时保留目标的时间，单位 tick；遮挡期间不发动攻击。
+    private static final int LOST_SIGHT_TICKS = 20;
+    /// 最近五秒内的攻击者在自卫范围内且可见时优先成为目标。
+    private static final int RECENT_ATTACKER_TICKS = 100;
+    /// 后撤路径最短重算间隔，单位 tick。
+    private static final int RETREAT_REPATH_TICKS = 10;
     private final BaseNPC npc;
     private LivingEntity target;
-    private int attackCooldown;
+    private int nextAttackTick;
     private int attackPreparation;
     private int retreatRepath;
+    private int lostSightTicks;
 
     /// 创建同时占用移动和视线控制的自卫目标，防止闲逛目标覆盖后撤路径。
     public NPCDefenseGoal(BaseNPC npc) {
@@ -37,10 +44,11 @@ public final class NPCDefenseGoal extends Goal {
         return target != null;
     }
 
-    /// 目标仍可见且 NPC 没有开始交易时持续执行。
+    /// 目标仍有效、未长期失去视线且 NPC 没有开始交易时持续执行。
     @Override
     public boolean canContinueToUse() {
-        if (npc.getInteractingPlayer() != null || !npc.canDefendSelf() || !isValid(target))
+        if (npc.getInteractingPlayer() != null || !npc.canDefendSelf() || !isValid(target)
+                || lostSightTicks >= LOST_SIGHT_TICKS)
             return false;
         NPCCombatProfile.Values values = npc.getCombatProfile().values(npc);
         double range = detectionRange(values);
@@ -51,8 +59,8 @@ public final class NPCDefenseGoal extends Goal {
     @Override
     public void start() {
         npc.setTarget(target);
-        attackCooldown = 0;
         attackPreparation = npc.getCombatProfile().values(npc).prepareTime();
+        lostSightTicks = 0;
     }
 
     /// 清理本目标拥有的路径和战斗目标，不影响其他系统后来设置的新目标。
@@ -62,9 +70,9 @@ public final class NPCDefenseGoal extends Goal {
         npc.stopUsingItem();
         if (npc.getTarget() == target) npc.setTarget(null);
         target = null;
-        attackCooldown = 0;
         attackPreparation = 0;
         retreatRepath = 0;
+        lostSightTicks = 0;
     }
 
     /// 后撤、朝向和攻击冷却均需要逐 tick 更新。
@@ -82,19 +90,23 @@ public final class NPCDefenseGoal extends Goal {
         npc.getLookControl().setLookAt(target, 30, 30);
 
         double distanceSqr = npc.distanceToSqr(target);
-        if (distanceSqr < values.retreatRange() * values.retreatRange()) {
+        boolean visible = npc.getSensing().hasLineOfSight(target);
+        lostSightTicks = visible ? 0 : lostSightTicks + 1;
+        boolean coolingDown = npc.tickCount < nextAttackTick;
+        /// 近战挥击准备期间站稳；出手后的冷却阶段才拉开距离。
+        boolean melee = profile.attack() == NPCCombatActions.MELEE;
+        if (distanceSqr < values.retreatRange() * values.retreatRange() && (!melee || coolingDown)) {
             retreatFromTarget();
         } else {
             npc.getNavigation().stop();
         }
 
-        if (attackCooldown > 0) {
+        if (coolingDown) {
             npc.stopUsingItem();
-            attackCooldown--;
             return;
         }
         if (distanceSqr > values.attackRange() * values.attackRange()
-                || !npc.getSensing().hasLineOfSight(target)) {
+                || !visible) {
             npc.stopUsingItem();
             attackPreparation = values.prepareTime();
             return;
@@ -107,7 +119,7 @@ public final class NPCDefenseGoal extends Goal {
         } else {
             npc.stopUsingItem();
             profile.attack().perform(npc, target, values);
-            attackCooldown = values.attackInterval();
+            nextAttackTick = npc.tickCount + values.attackInterval();
             attackPreparation = values.prepareTime();
         }
     }
@@ -116,25 +128,33 @@ public final class NPCDefenseGoal extends Goal {
     private LivingEntity findTarget() {
         NPCCombatProfile.Values values = npc.getCombatProfile().values(npc);
         double range = detectionRange(values);
+        LivingEntity attacker = npc.getLastHurtByMob();
+        if (npc.tickCount - npc.getLastHurtByMobTimestamp() < RECENT_ATTACKER_TICKS
+                && isValid(attacker) && npc.distanceToSqr(attacker) <= range * range
+                && npc.getSensing().hasLineOfSight(attacker)) return attacker;
         AABB area = npc.getBoundingBox().inflate(range, range * 0.5, range);
-        return npc.level().getEntitiesOfClass(LivingEntity.class, area, this::isValid).stream()
+        return npc.level().getEntitiesOfClass(LivingEntity.class, area, candidate -> isValid(candidate)
+                        && npc.distanceToSqr(candidate) <= range * range
+                        && npc.getSensing().hasLineOfSight(candidate)).stream()
                 .min(Comparator.comparingDouble(npc::distanceToSqr)).orElse(null);
     }
 
     /// NPC 只把仍存活的敌对生物作为自卫目标，不攻击玩家或其他城镇 NPC。
     private boolean isValid(LivingEntity candidate) {
-        return candidate != null && candidate.isAlive() && candidate instanceof Enemy && npc.canAttack(candidate) && npc.getSensing().hasLineOfSight(candidate);
+        return candidate != null && candidate.isAlive() && candidate instanceof Enemy && npc.canAttack(candidate);
     }
 
     /// 取属性索敌上限和实际战斗距离的较小值，作为目标的启动与持续范围。
     private double detectionRange(NPCCombatProfile.Values values) {
-        return Math.min(npc.getAttributeValue(Attributes.FOLLOW_RANGE), Math.max(values.attackRange(), values.retreatRange()) + 2);
+        return Math.min(npc.getAttributeValue(Attributes.FOLLOW_RANGE),
+                Math.max(values.attackRange(), values.retreatRange()) + 2);
     }
 
     /// 每十 tick 重新寻找一次远离目标的可达位置，不主动计算接近敌人的路径。
     private void retreatFromTarget() {
         if (--retreatRepath > 0 || target == null) return;
-        retreatRepath = 10;
+        retreatRepath = RETREAT_REPATH_TICKS;
+        if (!npc.getNavigation().isDone()) return;
         Vec3 destination = DefaultRandomPos.getPosAway(npc, 8, 4, target.position());
         if (destination != null)
             npc.getNavigation().moveTo(destination.x, destination.y, destination.z, 1.1);

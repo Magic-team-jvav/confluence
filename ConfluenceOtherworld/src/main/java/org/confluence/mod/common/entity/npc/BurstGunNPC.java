@@ -28,7 +28,8 @@ public final class BurstGunNPC extends BaseNPC {
     public void tick() {
         super.tick();
         if (level().isClientSide || shots == 0) return;
-        if (!isAlive() || isNoAi() || burstTarget == null || !burstTarget.isAlive() || getTarget() != burstTarget
+        if (!isAlive() || isNoAi() || getInteractingPlayer() != null || burstTarget == null
+                || !burstTarget.isAlive() || !canAttack(burstTarget) || getTarget() != burstTarget
                 || !getSensing().hasLineOfSight(burstTarget) || distanceToSqr(burstTarget) > burstValues.attackRange() * burstValues.attackRange()) {
             shots = 0;
             burstTarget = null;

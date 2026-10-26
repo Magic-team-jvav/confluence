@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -367,8 +368,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         /// 新实体的客户端也使用剩余展示时间，不能因重新跟踪而把旧气泡重新播放完整一轮。
         if (source.currentChat != null) chatState.putInt("DisplayTicks", chatDisplayTicks);
         entityData.set(DATA_CHAT, chatState);
-        currentChat = source.currentChat == null ? null : new NPCChat(source.currentChat.text(),
-                source.currentChat.emoji(), source.currentChat.item().map(ItemStack::copy));
+        currentChat = source.currentChat == null ? null : new NPCChat(source.currentChat.text(), source.currentChat.emoji(), source.currentChat.item().map(ItemStack::copy));
         CompoundTag moodState = source.mood.toTag();
         mood.loadTag(moodState);
         entityData.set(DATA_MOOD, moodState);
@@ -500,7 +500,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     /// 同一 NPC 的所有服务共用占用者，不能抢占其他玩家正在进行的交互。
     public boolean canStartInteraction(ServerPlayer player) {
         Player current = getInteractingPlayer();
-        return isInteractionValid(player) && player.containerMenu == player.inventoryMenu
+        return hurtTime == 0 && isInteractionValid(player) && player.containerMenu == player.inventoryMenu
                 && (current == null || current == player);
     }
 
@@ -571,6 +571,21 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         } else {
             dialogExpiresAt = tickCount + 60;
         }
+    }
+
+    /// 有效受击立即结束交互，让撤退和自卫目标接管；菜单按正常关闭流程归还物品。
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        boolean hurt = super.hurt(source, amount);
+        if (hurt && !level().isClientSide) {
+            Player player = interactingPlayer;
+            interactingPlayer = null;
+            dialogExpiresAt = 0;
+            if (player instanceof ServerPlayer serverPlayer && ownsServiceMenu(player)) {
+                serverPlayer.closeContainer();
+            }
+        }
+        return hurt;
     }
 
     public void stopForInteraction() {
@@ -664,6 +679,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     public void tick() {
+        if (level().isClientSide && deathTime > 0 && isAlive()) deathTime = 0;
         super.tick();
         if (!level().isClientSide) {
             LivingEntity target = getTarget();

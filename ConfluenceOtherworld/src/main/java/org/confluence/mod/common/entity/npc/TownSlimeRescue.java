@@ -30,6 +30,12 @@ public class TownSlimeRescue extends PathfinderMob implements GeoEntity {
     protected void registerGoals() {}
 
     @Override
+    public void tick() {
+        if (level().isClientSide && deathTime > 0 && isAlive()) deathTime = 0;
+        super.tick();
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
         if (level().isClientSide) return;

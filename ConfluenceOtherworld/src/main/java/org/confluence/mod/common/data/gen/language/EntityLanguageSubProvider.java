@@ -106,7 +106,7 @@ public final class EntityLanguageSubProvider {
         language.add("summon.confluence.eye_laser_turret", "Eye Laser Turret", "眼球激光塔");
         language.add("summon.confluence.finch", "Finch", "小鸟");
         language.add("summon.confluence.hornet", "Hornet", "黄蜂");
-        language.add("summon.confluence.i_32_iron_golem", "I-32 Iron Golem", "i-32型铁傀儡");
+        language.add("summon.confluence.iron_golem", "I-32 Iron Golem", "i-32型铁傀儡");
         language.add("summon.confluence.imp", "Imp Minion", "小鬼");
         language.add("summon.confluence.ruin_relic", "Ruin Relic", "禁戒遗迹");
         language.add("summon.confluence.sculk_wisp", "Sculk Wisp", "幽匿游灵");
@@ -114,7 +114,7 @@ public final class EntityLanguageSubProvider {
         language.add("summon.confluence.snow_flinx", "Snow Flinx Minion", "小雪怪");
         language.add("summon.confluence.spider", "Spider", "蜘蛛");
         language.add("summon.confluence.terraprisma", "Terraprisma", "泰拉棱镜");
-        language.add("summon.confluence.vampire_bat", "Sanguine Bat", "血蝙蝠");
+        language.add("summon.confluence.sanguine_bat", "Sanguine Bat", "血蝙蝠");
         language.add("summon.confluence.vampire_frog", "Vampire Frog", "吸血鬼青蛙");
         language.add("summon.confluence.vex_totem", "Vex", "恼鬼");
     }

@@ -68,6 +68,8 @@ public class ManaWeaponItems {
     public static final DeferredItem<WindEyeItem> WIND_EYE = registerItem("wind_eye", "风眼", () -> new WindEyeItem(ModRarity.YELLOW));
     /// 星乐：长按聚星，松开爆出追踪坠星。
     public static final DeferredItem<StarMusicItem> STAR_MUSIC = registerItem("star_music", "星乐", () -> new StarMusicItem(ModRarity.YELLOW));
+    /// 星体研究汇编：初始无法攻击，需要装订蕴魔书页才能逐步解锁附加弹幕。
+    public static final DeferredItem<StellarStudiesCompilationItem> STELLAR_STUDIES_COMPILATION = registerItem("stellar_studies_compilation", "星体研究汇编", () -> new StellarStudiesCompilationItem(ModRarity.BLUE));
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);

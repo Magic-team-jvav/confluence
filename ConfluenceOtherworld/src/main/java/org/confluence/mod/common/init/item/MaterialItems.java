@@ -12,6 +12,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.CursedFlameItem;
 import org.confluence.mod.common.item.common.GelItem;
+import org.confluence.mod.common.item.common.LostEnchantedPageItem;
 import org.confluence.mod.common.item.common.MushroomItem;
 import org.confluence.mod.common.item.common.VoidCrystalItem;
 
@@ -128,6 +129,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> AETHERIUM_GOLD = register("aetherium_gold", "嬗金", ModRarity.ORANGE);
     public static final DeferredItem<Item> LUNARTEAR = register("lunartear", "月泣石", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> DRAGONSAL = register("dragonsal", "龙涎石", ModRarity.PINK);
+    /// 蕴魔书页：空岛村与天堂岛宝箱里的独立掉落，用来给星体研究汇编装订书页。
+    public static final DeferredItem<LostEnchantedPageItem> LOST_ENCHANTED_PAGE = registerItem("lost_enchanted_page", "蕴魔书页", () -> new LostEnchantedPageItem(ModRarity.BLUE));
 
     public static final DeferredItem<Item> PEARL = register("pearl", "珍珠", ModRarity.BLUE);
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl", "黑珍珠", ModRarity.BLUE);

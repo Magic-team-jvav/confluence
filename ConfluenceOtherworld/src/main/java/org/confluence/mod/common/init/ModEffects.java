@@ -216,7 +216,6 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> THE_TONGUE = registerEffect("the_tongue", "狂卷之舌", TheTongueEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> HORRIFIED = registerEffect("horrified", "惊恐", HorrifiedEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> CRIMSON_STORM = registerEffect("crimson_storm", "猩红风暴", CrimsonStormEffect::new);
-    public static final DeferredHolder<MobEffect, DriveAwayEffect> SCARED = registerEffect("scared", "惊慌", () -> new DriveAwayEffect(0.3, 200.0, 0.8, 1.2, 1.5, 0.0));
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {
         if (v == 1) return v1;

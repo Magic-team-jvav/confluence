@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.bow;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -7,14 +9,22 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.common.ItemAbilities;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.ModItems;
 
+import java.util.List;
+
 /// 战弓：左键横扫近战、右键拉弓远程都能用。
+///
+/// 横扫沿用原版剑的判定：只有攻击条蓄满、站在地面且不在疾跑时才会触发（由 `Player#attack` 结算）。
+/// Neo 把「能不能横扫」交给 `SWORD_SWEEP` 能力位，弓默认不具备，所以这里显式放开。
 ///
 /// 近战命中时有 50% 概率自动朝最近的敌人补上一箭。
 public class WarBowItem extends BaseTerraBowItem {
@@ -29,6 +39,19 @@ public class WarBowItem extends BaseTerraBowItem {
     public WarBowItem(float baseDamage) {
         super(baseDamage, new Item.Properties()
                 .attributes(ModItems.createAttributes(ModTiers.IRON, 4.0F, -2.4F, ModItems.attributes(0.0, 0.0))));
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
+        return itemAbility == ItemAbilities.SWORD_SWEEP || super.canPerformAction(stack, itemAbility);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.0").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.1").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.2", Math.round(AUTO_ARROW_CHANCE * 100.0F)).withStyle(ChatFormatting.GRAY));
     }
 
     @Override

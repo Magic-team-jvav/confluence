@@ -224,6 +224,15 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                                 ))
                 )
         ));
+        /// 唤魔者：33% 概率掉落恼鬼图腾
+        entries.add(new AddedEntityLoot(EntityType.EVOKER,
+                LootTable.lootTable().withPool(
+                        LootPool.lootPool()
+                                .add(PercentageLootEntry.independent(false,
+                                        PercentageLootEntry.rule(33, LootItem.lootTableItem(SummonItems.VEX_TOTEM))
+                                ))
+                )
+        ));
         return entries;
     }
 

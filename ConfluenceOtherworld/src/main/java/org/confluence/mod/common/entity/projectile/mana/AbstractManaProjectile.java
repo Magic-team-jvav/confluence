@@ -108,6 +108,18 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         return penetrateSet;
     }
 
+    /// 清空已命中记录，让存活的弹幕能再次命中同一批目标。
+    ///
+    /// 供分段改变攻击方向的弹幕（如欧泊法杖洪流折返）使用。
+    ///
+    /// server side only
+    protected void clearPenetrateSet() {
+        if (level().isClientSide) return;
+        if (penetrateSet != null) {
+            penetrateSet.clear();
+        }
+    }
+
     /// common
     protected Vec3 doSimpleMove() {
         Vec3 vec3 = getDeltaMovement();

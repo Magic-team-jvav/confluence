@@ -1,7 +1,9 @@
 package org.confluence.mod.common.init;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -22,4 +24,6 @@ public final class ModDataComponentTypes {
     public static final Supplier<DataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.registerComponentType("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<RepeaterContents>> REPEATER_CONTENTS = TYPES.registerComponentType("repeater_contents", builder -> builder.persistent(RepeaterContents.CODEC).networkSynchronized(RepeaterContents.STREAM_CODEC));
     public static final Supplier<DataComponentType<ResourceLocation>> SOUL_SKILL = TYPES.registerComponentType("soulcerer_skill", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
+    /// 星体研究汇编已装订的书页数量。
+    public static final Supplier<DataComponentType<Integer>> STELLAR_STUDIES_PAGES = TYPES.registerComponentType("stellar_studies_pages", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 }

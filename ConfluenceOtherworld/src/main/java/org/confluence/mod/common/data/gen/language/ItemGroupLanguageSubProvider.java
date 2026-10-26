@@ -18,7 +18,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("creativetab.confluence.misc", "Confluence | Miscellaneous", "汇流来世 | 杂项");
         language.add("creativetab.confluence.natural_blocks", "Confluence | Naturals", "汇流来世 | 自然方块");
         language.add("creativetab.confluence.rangers", "Confluence | Rangers", "汇流来世 | 射手武器");
-        language.add("creativetab.confluence.soulcerer", "Confluence | Soul Mage", "汇流来世 | 魂师");
+        language.add("creativetab.confluence.soulcerer", "Confluence | Soulcerer", "汇流来世 | 魂师");
         language.add("creativetab.confluence.summoners", "Confluence | Summoners", "汇流来世 | 召唤师武器");
         language.add("creativetab.confluence.tools", "Confluence | Tools", "汇流来世 | 工具");
         language.add("creativetab.confluence.warriors", "Confluence | Warriors", "汇流来世 | 战士武器");

@@ -233,7 +233,7 @@ public class SummonItems {
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
                     SummonerAttachmentEntityTypes.VEX_TOTEM,
                     MinionSlotType.Minion,
-                    10.0F,
+                    23.5F,
                     0.5F,
                     0.0F,
                     SummonerSoundEvents.USE_MINION_WEAPON,

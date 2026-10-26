@@ -1232,11 +1232,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).when(difficultyLootChance(registries, 1.0F, 1.99F)))
                 )
         );
-        /// 鬼魂：1% 概率掉落引渡者
+        /// 鬼魂：44% 概率掉落引渡者
         add(MonsterEntities.GHOST.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SoulItems.SOUL_SKILL_BOOK)
-                                .when(LootItemRandomChanceCondition.randomChance(0.01F))
+                                .when(LootItemRandomChanceCondition.randomChance(0.44F))
                                 .apply(SetComponentsFunction.setComponent(ModDataComponentTypes.SOUL_SKILL.get(), SoulBooks.PSYCHOPOMP))
                                 .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.MOD_RARITY.get(), SoulBooks.rarity(SoulBooks.PSYCHOPOMP))))
                 )

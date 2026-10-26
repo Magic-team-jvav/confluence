@@ -1019,6 +1019,7 @@ public final class ModTabs {
                         crafting_materials.accept(MaterialItems.BROWN_SOLUTION.get());
 
                         crafting_materials.accept(MaterialItems.SPELL_TOME.get());
+                        crafting_materials.accept(MaterialItems.LOST_ENCHANTED_PAGE.get());
                         crafting_materials.accept(MaterialItems.CHINA_PLATE.get());
                         crafting_materials.accept(MaterialItems.CHINA_BOWL.get());
                         crafting_materials.accept(MaterialItems.EMPTY_BULLET.get());

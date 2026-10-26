@@ -38,6 +38,14 @@ import java.util.function.BiConsumer;
 public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, SyntheticLootTableProvider {
     public AddChestLootConfluenceSubProvider(HolderLookup.Provider provider) {}
 
+    /// 试炼宝库（普通/不祥）共用的额外池：沉重核心与 6 根风棒各一半概率。
+    private static LootPool.Builder trialVaultHeavyCoreOrBreezeRodPool() {
+        return LootPool.lootPool()
+                .add(LootItem.lootTableItem(Items.HEAVY_CORE))
+                .add(LootItem.lootTableItem(Items.BREEZE_ROD)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(6))));
+    }
+
     public List<AddedChestLoot> getAddedEntitiesLoot() {
         List<AddedChestLoot> entries = new ArrayList<>();
         entries.add(new AddedChestLoot(BuiltInLootTables.SIMPLE_DUNGEON,
@@ -336,7 +344,9 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                         .add(LootItem.lootTableItem(MaterialItems.SPORE_ROOT)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
                         .add(LootItem.lootTableItem(MaterialItems.HEIM)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))));
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))))
+                // 沉重核心 / 风棒（旋风棒）：试炼宝库额外池，二选一，各 50%
+                .withPool(trialVaultHeavyCoreOrBreezeRodPool());
 
         entries.add(new AddedChestLoot(
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/reward")),
@@ -387,6 +397,8 @@ public class AddChestLootConfluenceSubProvider implements LootTableSubProvider, 
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
                                 .add(LootItem.lootTableItem(MaterialItems.AMBER)
                                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3)))))
+                        // 沉重核心 / 风棒（旋风棒）：试炼宝库额外池，二选一，各 50%
+                        .withPool(trialVaultHeavyCoreOrBreezeRodPool())
         ));
         entries.add(new AddedChestLoot(
                 ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.withDefaultNamespace("chests/trial_chambers/supply")),

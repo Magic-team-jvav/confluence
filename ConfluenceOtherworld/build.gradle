@@ -185,7 +185,6 @@ repositories {
 }
 
 boolean sodium = false // 钠
-boolean entityCulling = true // 实体渲染机制优化
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列
@@ -201,6 +200,7 @@ boolean kubejs = false
 boolean quark = false
 boolean cobblemon = false
 boolean bettercombat = false
+boolean entityCulling = false // 实体渲染机制优化
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }

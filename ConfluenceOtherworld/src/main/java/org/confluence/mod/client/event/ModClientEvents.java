@@ -37,13 +37,10 @@ import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.api.animation.third_person.AddPlayerGeoModelEvent;
 import org.confluence.lib.api.animation.third_person.PlayerGeoAnimatable;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
@@ -1243,21 +1240,6 @@ public final class ModClientEvents {
             if (item instanceof BaseTerraRepeaterItem) {
                 event.register(item, ModClientSetups.REPEATER_AMMO);
             }
-        }
-        if (LibStartupConfig.itemGroups()) {
-            ResourceLocation plus = Confluence.asResource("plus");
-            ResourceLocation minus = Confluence.asResource("minus");
-            event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {
-                GroupItem.Stacks stacks = stack.get(ConfluenceMagicLib.GROUP_STACKS);
-                if (stacks != null) {
-                    PoseStack pose = guiGraphics.pose();
-                    pose.pushPose();
-                    pose.translate(xOffset + 9, yOffset + 9, 200);
-                    guiGraphics.blitSprite(stacks.isVisible() ? minus : plus, 0, 0, 7, 7);
-                    pose.popPose();
-                }
-                return false;
-            });
         }
     }
 

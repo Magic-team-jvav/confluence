@@ -73,6 +73,8 @@ import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
 import org.confluence.mod.client.summoner.model.virtual.VirtualEntityRenderer;
+import org.confluence.mod.client.summoner.AfterimageManager;
+import org.confluence.mod.client.summoner.WholeModelTransparency;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -242,6 +244,8 @@ public final class GameClientEvents {
         ClientBestiary.getInstance().clearLevel();
         ScryingOrbHandler.clear();
         VirtualEntityRenderer.clear();
+        AfterimageManager.close();
+        WholeModelTransparency.close();
         ModClientSetups.clearEntityDisplayRenderer();
         ClientSoulHandler.clearHudPlayers();
         MolangParticleEngine.INSTANCE.removeAll();

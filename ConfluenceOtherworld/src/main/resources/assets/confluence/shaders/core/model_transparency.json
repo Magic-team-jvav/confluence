@@ -1,0 +1,8 @@
+{
+  "blend": {"func": "add", "srcrgb": "srcalpha", "dstrgb": "1-srcalpha", "srcalpha": "1", "dstalpha": "1-srcalpha"},
+  "vertex": "confluence:model_transparency",
+  "fragment": "confluence:model_transparency",
+  "attributes": ["Position", "UV0", "Color", "UV2"],
+  "samplers": [{"name": "ModelColor"}, {"name": "ModelDepth"}],
+  "uniforms": []
+}

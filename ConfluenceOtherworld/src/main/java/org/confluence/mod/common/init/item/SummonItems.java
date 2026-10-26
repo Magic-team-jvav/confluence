@@ -232,6 +232,18 @@ public class SummonItems {
                     null
             ));
 
+    public static final PortDeferredItem<SummonerWeaponItem<VexTotemMinion>> VEX_TOTEM = registerItemWithEnglishName("vex_totem", "恼鬼图腾", "Vex Totem", () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.VEX_TOTEM,
+                    MinionSlotType.Minion,
+                    10.0F,
+                    0.5F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
+
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
         LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));

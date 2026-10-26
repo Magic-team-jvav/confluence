@@ -12,9 +12,10 @@ import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
+import org.confluence.mod.client.summoner.AttachmentEntityRenderDispatcher;
 import org.confluence.mod.client.summoner.ModelContext;
 import org.confluence.mod.client.summoner.RenderContext;
-import org.confluence.mod.client.summoner.trail.RibbonTrailContext;
+import org.confluence.mod.client.summoner.trail.TerraprismaTrailContext;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
 import org.confluence.mod.integration.opallight.OpalLightIntegration;
@@ -25,19 +26,15 @@ import org.confluence.mod.integration.opallight.OpalLightIntegration;
 public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<TerraprismaMinion> {
 
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/model/terraprisma_gray.png");
+    private final TerraprismaTrailContext trail = new TerraprismaTrailContext();
     private TerraprismaModel model;
 
     @Override
     protected RenderContext<TerraprismaMinion> createContext(TerraprismaMinion prism, PathNode visualNode, float partialTick, int packedLight) {
         int color = prism.getColor(partialTick);
         return new RenderContext<>(prism, visualNode, partialTick, packedLight)
-                .color(color)
-                .trail(new RibbonTrailContext<TerraprismaMinion>()
-                        .upOffset(1.015F)
-                        .timer(prism.trailTimer)
-                        .colorRGB(color)
-                        .segmentsPerNode(4)
-                        .historyLength(6))
+                .color(color | 0xFF000000)
+                .trail(trail.timer(prism.trailTimer))
                 .model(new ModelContext()
                         .scale(1.5F)
                         .translateOffset(0, 0, 0.3F)
@@ -47,7 +44,7 @@ public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<Terrap
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        if (!OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+        if (!AttachmentEntityRenderDispatcher.isShadowPass() && !OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
             DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5f);
         }
         if (model == null) {

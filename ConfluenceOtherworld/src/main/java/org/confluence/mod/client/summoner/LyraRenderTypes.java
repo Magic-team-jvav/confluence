@@ -2,11 +2,11 @@ package org.confluence.mod.client.summoner;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import org.confluence.mod.Confluence;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import org.confluence.mod.Confluence;
 
 import java.util.function.Function;
 
@@ -33,6 +33,22 @@ public class LyraRenderTypes extends RenderType {
     public static final RenderType TRAIL = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/trail.png"));
 
     public static final RenderType MODEL = RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS);
+
+    public static final RenderType TERRAPRISMA_TRAIL = terraprismaTrail(false);
+    public static final RenderType TERRAPRISMA_HIGHLIGHT = terraprismaTrail(true);
+
+    private static RenderType terraprismaTrail(boolean highlight) {
+        return create(highlight ? "terraprisma_highlight" : "terraprisma_trail", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, true,
+                CompositeState.builder()
+                        .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                        .setTextureState(new TextureStateShard(Confluence.asResource("textures/terraprisma_trail.png"), true, false))
+                        .setTransparencyState(highlight ? LIGHTNING_TRANSPARENCY : TRANSLUCENT_TRANSPARENCY)
+                        .setCullState(NO_CULL)
+                        .setDepthTestState(LEQUAL_DEPTH_TEST)
+                        .setWriteMaskState(COLOR_WRITE)
+                        .setOverlayState(OVERLAY)
+                        .createCompositeState(false));
+    }
 
     public static RenderType getTrail() {
         return TRAIL;

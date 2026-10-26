@@ -32,6 +32,8 @@ public final class SummonerAttachmentEntityTypes {
 
     public static final RegistryObject<AttachmentEntityType<ImpMinion>> IMP = register("imp", ImpMinion::new);
 
+    public static final RegistryObject<AttachmentEntityType<VexTotemMinion>> VEX_TOTEM = register("vex_totem", VexTotemMinion::new);
+
     public static final RegistryObject<AttachmentEntityType<ImpFireball>> IMP_FIREBALL = register("imp_fireball", ImpFireball::new);
 
     public static final RegistryObject<AttachmentEntityType<DeadlySphereMinion>> DEADLY_SPHERE = register("deadly_sphere", DeadlySphereMinion::new);

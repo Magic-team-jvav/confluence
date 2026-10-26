@@ -52,7 +52,7 @@ public abstract class MomentumMinion extends Minion implements IMomentumAttachme
         if (physics) {
             velocity = velocity.add(0, gravity, 0).scale(drag);
             Vec3 newPos = getPos().add(velocity);
-            setPath(new PlannedPath("physics", Collections.singletonList(new PathNode(newPos, getYaw(), getPitch(), getRoll()))));
+            setCurrentPathNode(new PathNode(newPos, getYaw(), getPitch(), getRoll()));
         }
     }
 

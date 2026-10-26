@@ -41,6 +41,15 @@ public class AttachmentEntityRenderDispatcher {
      * 渲染器映射表，按实体类型存储对应的渲染器
      */
     private static final Map<AttachmentEntityType<?>, IAttachmentEntityRenderer<?>> renderers = new HashMap<>();
+    private static boolean shadowPass;
+
+    public static boolean isShadowPass() {
+        return shadowPass;
+    }
+
+    public static void setShadowPass(boolean shadowPass) {
+        AttachmentEntityRenderDispatcher.shadowPass = shadowPass;
+    }
 
     /**
      * 渲染当前世界的所有附件实体。
@@ -52,11 +61,18 @@ public class AttachmentEntityRenderDispatcher {
      * @param partialTick  部分 tick 插值进度
      */
     public static void render(ClientLevel level, Camera camera, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick) {
+        render(level, camera.getPosition(), poseStack, bufferSource, partialTick, true);
+    }
+
+    public static void renderShadows(ClientLevel level, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, double cameraX, double cameraY, double cameraZ) {
+        render(level, new Vec3(cameraX, cameraY, cameraZ), poseStack, new ShadowBufferSource(bufferSource, 1f), partialTick, false);
+    }
+
+    private static void render(ClientLevel level, Vec3 cameraPos, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, boolean debug) {
         List<AbstractClientPlayer> players = level.players();
         for (AbstractClientPlayer player : players) {
             List<AttachmentEntity> entities = player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache();
-            Vec3 cameraPos = camera.getPosition();
-            boolean showHitboxes = Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes();
+            boolean showHitboxes = debug && Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes();
             int playerLight = getLightCoords(level, player.getLightProbePosition(partialTick));
             for (AttachmentEntity entity : entities) {
                 poseStack.pushPose();
@@ -69,7 +85,9 @@ public class AttachmentEntityRenderDispatcher {
                     int lightCoords = Math.max(playerLight, getLightCoords(level, pos));
                     renderer.render(entity, poseStack, bufferSource, partialTick, lightCoords, renderNode);
                 }
-                debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource);
+                if (debug) {
+                    debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource);
+                }
                 poseStack.popPose();
             }
         }

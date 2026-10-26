@@ -1,6 +1,8 @@
 package org.confluence.mod.client.summoner;
 
 import net.minecraft.client.Minecraft;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.confluence.mod.Confluence;
@@ -33,9 +36,14 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
 public final class SummonerClientEvents {
 
     public static void init() {
+        PortEventHandler.addListener(SummonerClientEvents::shaders);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, SummonerClientEvents::renderAttachments);
         PortEventHandler.addListener((RegisterParticleProvidersEvent event) -> {
             event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticle.GenericParticleProvider::new);
             event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticle.ZenithParticleProvider::new);
@@ -63,7 +71,6 @@ public final class SummonerClientEvents {
             }
             if (level != null && event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
                 MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-                AttachmentEntityRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, event.getPartialTick());
                 InfoRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, event.getPartialTick());
             }
         });
@@ -74,6 +81,7 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IRON_GOLEM.get(), new IronGolemRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SCULK_WISP.get(), new SculkWispRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IMP.get(), new ImpRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.VEX_TOTEM.get(), new VexTotemRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IMP_FIREBALL.get(), new ImpFireballRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.DEADLY_SPHERE.get(), new DeadlySphereRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SANGUINE_BAT.get(), new SanguineBatRenderer());
@@ -96,5 +104,29 @@ public final class SummonerClientEvents {
                 }
             }
         });
+    }
+
+    private static void shaders(RegisterShadersEvent event) {
+        AfterimageManager.close();
+        WholeModelTransparency.close();
+        try {
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("model_transparency"), DefaultVertexFormat.PARTICLE), WholeModelTransparency::setShader);
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
+        }
+    }
+
+    private static void renderAttachments(RenderLevelStageEvent event) {
+        if (!AttachmentEntityRenderDispatcher.isShadowPass()) {
+            Minecraft minecraft = Minecraft.getInstance();
+            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES && minecraft.level != null) {
+                MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
+                AfterimageManager.render(minecraft.level, event.getCamera(), event.getPoseStack(), event.getPartialTick());
+                AttachmentEntityRenderDispatcher.render(minecraft.level, event.getCamera(), event.getPoseStack(), buffers, event.getPartialTick());
+                buffers.endBatch();
+            } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
+                WholeModelTransparency.finishFrame();
+            }
+        }
     }
 }

@@ -43,13 +43,18 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
     }
 
     @Override
-    protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
+    protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
         Zenith zenith = context.entity;
-        PathNode visualNode = context.visualNode;
         LyraModelRenderer.json(ZenithSwordModels.modelId(zenith.renderType))
                 .color(context.color.argbInt())
                 .light(RenderUtil.FULL_LIGHT)
                 .render(poseStack, bufferSource);
+    }
+
+    @Override
+    protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
+        Zenith zenith = context.entity;
+        PathNode visualNode = context.visualNode;
         float light = zenith.alpha * 0.5f;
         if (zenith.getTickCount() < 2) {
             light *= context.partialTick;

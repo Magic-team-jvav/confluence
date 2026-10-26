@@ -3,12 +3,10 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.eye_laser_turret.EyeLaserTurretAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.eye_laser_turret.EyeLaserTurretIdleGoal;
 import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
@@ -23,16 +21,9 @@ import org.jetbrains.annotations.NotNull;
 public class EyeLaserTurretMinion extends MomentumMinion implements IBlockCollision<EyeLaserTurretMinion> {
 
     private int cooldown;
-    private boolean isOnCarry = false;
 
     public EyeLaserTurretMinion() {
         super(SummonerAttachmentEntityTypes.EYE_LASER_TURRET);
-    }
-
-    @Override
-    protected void registerSyncFields(SyncFieldDispatcher fields) {
-        super.registerSyncFields(fields);
-        fields.field(LyraStreamCodecs.BOOL, () -> isOnCarry, value -> isOnCarry = value);
     }
 
     @Override

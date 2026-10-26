@@ -51,6 +51,9 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
     protected float armorPierce = 0;
     protected boolean clientInit = false;
     protected PathNode currentPathNode = null;
+    private List<RenderKeyframe> renderKeyframes = List.of();
+    private int lastRenderTick = -1;
+    private boolean renderKeyframesActive;
 
     protected void registerSyncFields(SyncFieldDispatcher fields) {
         fields.field(LyraStreamCodecs.FLOAT, this::getDamage, this::setDamage);
@@ -58,6 +61,7 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
         fields.field(LyraStreamCodecs.FLOAT, this::getArmorPierce, this::setArmorPierce);
         fields.field(LyraStreamCodecs.INT, this::getTickCount, this::setTickCount);
         fields.field(LyraStreamCodecs.PATH_NODE, this::getCurrentPathNode, this::setCurrentPathNode);
+        fields.field(LyraStreamCodecs.RENDER_KEYFRAMES, this::getRenderKeyframes, this::setRenderKeyframes);
     }
 
     public AttachmentEntity(RegistryObject<? extends AttachmentEntityType<?>> type) {
@@ -169,13 +173,28 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
             if (this instanceof IEntityCollision<?> iEntityCollision) {
                 iEntityCollision.entityCollision();
             }
+            renderKeyframes = List.of();
+            renderKeyframesActive = false;
+        } else {
+            renderKeyframesActive = tickCount != lastRenderTick;
+            lastRenderTick = tickCount;
         }
         historyNodes.add(0, currentPathNode);
         if (historyNodes.size() > 16) {
             historyNodes.remove(historyNodes.size() - 1);
         }
         if (!level.isClientSide() && currentPlannedPath != null && !currentPlannedPath.isFinished()) {
+            List<RenderKeyframe> frames = currentPlannedPath.getRenderKeyframes(currentPlannedPath.getCurrentIndex());
+            PathNode from = currentPathNode;
             currentPathNode = currentPlannedPath.advance();
+            if (!frames.isEmpty()) {
+                List<RenderKeyframe> segment = new ArrayList<>(frames.size() + 2);
+                segment.add(new RenderKeyframe(0f, from));
+                segment.addAll(frames);
+                segment.add(new RenderKeyframe(1f, currentPathNode));
+                renderKeyframes = List.copyOf(segment);
+                renderKeyframesActive = true;
+            }
         }
     }
 
@@ -187,6 +206,7 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
 
     public void setPlannedPath(PlannedPath path) {
         currentPlannedPath = path;
+        renderKeyframes = List.of();
     }
 
     public PlannedPath getCurrentPath() {
@@ -202,13 +222,11 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
     }
 
     public void setPath(List<PathNode> nodes) {
-        this.currentPlannedPath = new PlannedPath(nodes);
-        if (!nodes.isEmpty()) {
-            this.currentPathNode = nodes.get(0);
-        }
+        setPath(new PlannedPath(nodes));
     }
 
     public void setPath(PlannedPath plannedPath) {
+        setPlannedPath(plannedPath);
         List<PathNode> nodes = plannedPath.getNodes();
         if (!nodes.isEmpty()) {
             this.currentPathNode = nodes.get(0);
@@ -228,6 +246,9 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
         this.currentPathNode = node;
         this.historyNodes.clear();
         this.historyNodes.add(node);
+        this.renderKeyframes = List.of();
+        this.lastRenderTick = -1;
+        this.renderKeyframesActive = false;
     }
 
     public ArrayList<PathNode> getHistoryNodes() {
@@ -235,10 +256,21 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
     }
 
     public PathNode getRenderNode(float partialTick) {
+        if (renderKeyframesActive && !renderKeyframes.isEmpty()) {
+            return RenderKeyframe.interpolate(renderKeyframes, partialTick);
+        }
         if (historyNodes.size() > 1) {
             return historyNodes.get(1).lerp(currentPathNode, partialTick);
         }
         return currentPathNode;
+    }
+
+    public List<RenderKeyframe> getRenderKeyframes() {
+        return renderKeyframes;
+    }
+
+    public void setRenderKeyframes(List<RenderKeyframe> frames) {
+        renderKeyframes = frames;
     }
 
     public void setCurrentPathNode(PathNode currentPathNode) {

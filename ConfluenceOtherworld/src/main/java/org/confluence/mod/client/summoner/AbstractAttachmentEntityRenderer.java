@@ -11,6 +11,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.joml.Quaternionf;
 import software.bernie.geckolib.core.object.Color;
 
+/// 附件实体的统一模型变换、拖尾提交与第一人称淡出。
 public abstract class AbstractAttachmentEntityRenderer<T extends AttachmentEntity> implements IAttachmentEntityRenderer<T> {
 
     protected RenderContext<T> context;
@@ -23,9 +24,9 @@ public abstract class AbstractAttachmentEntityRenderer<T extends AttachmentEntit
     public void render(T entity, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick, int packedLight, PathNode visualNode) {
         context = createContext(entity, visualNode, partialTick, packedLight);
         if (context != null) {
-            float alpha = getAlphaModify();
+            float alpha = AttachmentEntityRenderDispatcher.isShadowPass() ? 1.0F : getAlphaModify();
             Color color = context.color;
-            context.color(Color.ofRGBA(color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat(), alpha));
+            context.color(Color.ofRGBA(color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat(), alpha * color.getAlphaFloat()));
             poseStack.pushPose();
             modelModify(poseStack, bufferSource);
             poseStack.popPose();
@@ -33,6 +34,7 @@ public abstract class AbstractAttachmentEntityRenderer<T extends AttachmentEntit
     }
 
     protected void modelModify(PoseStack poseStack, MultiBufferSource bufferSource) {
+        RenderContext<?> previous = AfterimageManager.setContext(context);
         PathNode visualNode = context.visualNode;
         ModelContext model = context.model;
         Quaternionf rotation = new Quaternionf()
@@ -43,15 +45,21 @@ public abstract class AbstractAttachmentEntityRenderer<T extends AttachmentEntit
                 .mul(Axis.XP.rotationDegrees(model.pitchOffset))
                 .mul(Axis.ZP.rotationDegrees(model.rollOffset));
         poseStack.pushPose();
-        if (context.hasTrail()) {
+        if (!AttachmentEntityRenderDispatcher.isShadowPass() && context.hasTrail()) {
             context.trail.render(poseStack, bufferSource, context);
         }
         poseStack.mulPose(rotation);
         poseStack.scale(model.scaleX, model.scaleY, model.scaleZ);
         poseStack.translate(model.translateX, model.translateY, model.translateZ);
-        renderModel(poseStack, bufferSource);
-        render(poseStack, bufferSource);
+        Color color = context.color;
+        context.color(Color.ofRGBA(color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat(), 1.0F));
+        AfterimageManager.renderModel(poseStack, bufferSource, color.getAlphaFloat(), source -> renderModel(poseStack, source));
+        context.color(color);
+        if (!AttachmentEntityRenderDispatcher.isShadowPass()) {
+            render(poseStack, bufferSource);
+        }
         poseStack.popPose();
+        AfterimageManager.setContext(previous);
     }
 
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {

@@ -4,9 +4,11 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
+import org.confluence.mod.common.summoner.attachmentEntity.RenderKeyframe;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,5 +20,7 @@ public interface LyraStreamCodecs extends PortByteBufCodecs {
             PortByteBufCodecs.FLOAT, PathNode::roll,
             PathNode::new
     );
+    PortStreamCodec<ByteBuf, RenderKeyframe> RENDER_KEYFRAME = PortStreamCodec.composite(PortByteBufCodecs.FLOAT, RenderKeyframe::partialTick, PATH_NODE, RenderKeyframe::node, RenderKeyframe::new);
+    PortStreamCodec<ByteBuf, List<RenderKeyframe>> RENDER_KEYFRAMES = RENDER_KEYFRAME.apply(PortByteBufCodecs.list());
     PortStreamCodec<FriendlyByteBuf, Optional<UUID>> OPTIONAL_UUID = PortByteBufCodecs.optional(PortByteBufCodecs.UUID);
 }

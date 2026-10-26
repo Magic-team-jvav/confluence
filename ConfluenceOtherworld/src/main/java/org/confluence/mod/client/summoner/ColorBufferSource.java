@@ -1,6 +1,7 @@
 package org.confluence.mod.client.summoner;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.FastColor;
@@ -81,6 +82,12 @@ public class ColorBufferSource implements MultiBufferSource {
         @Override
         public @NotNull VertexConsumer setNormal(float x, float y, float z) {
             inner.setNormal(x, y, z);
+            return this;
+        }
+
+        @Override
+        public @NotNull VertexConsumer misc(@NotNull VertexFormatElement element, int @NotNull ... rawData) {
+            inner.misc(element, rawData);
             return this;
         }
     }

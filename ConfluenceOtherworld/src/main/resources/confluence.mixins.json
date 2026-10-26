@@ -163,6 +163,7 @@
         "integration.sodium.ChunkBuilderMeshingTaskMixin",
         "integration.sodium.MutableQuadViewImplMixin",
         "integration.sodium.iris.IdMapMixin",
+        "integration.sodium.iris.ShadowRendererMixin",
         "integration.terracurio.InformationHandlerMixin",
         "integration.terracurio.ScopeFovHandlerMixin",
         "integration.terracurio.TCClientPacketHandlerMixin",

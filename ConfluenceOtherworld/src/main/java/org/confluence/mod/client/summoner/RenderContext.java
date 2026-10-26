@@ -15,6 +15,7 @@ public class RenderContext<T extends AttachmentEntity> {
     public int packedLight;
     public Color color = Color.WHITE;
     public TrailContext<T> trail;
+    public AfterimageContext afterimage;
     public ModelContext model = new ModelContext();
 
     public RenderContext(T entity, PathNode visualNode, float partialTick, int packedLight) {
@@ -51,6 +52,11 @@ public class RenderContext<T extends AttachmentEntity> {
 
     public RenderContext<T> model(ModelContext model) {
         this.model = model;
+        return this;
+    }
+
+    public RenderContext<T> afterimage(AfterimageContext afterimage) {
+        this.afterimage = afterimage;
         return this;
     }
 

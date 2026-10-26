@@ -12,6 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.client.summoner.ColorBufferSource;
+import org.confluence.mod.client.summoner.AfterimageManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,13 +95,6 @@ public final class VirtualEntityRenderer {
 
         applyPose(ghost, pose);
 
-        MultiBufferSource source = bufferSource;
-        if (pose.color() != -1 || pose.alpha() < 1) {
-            source = new ColorBufferSource(bufferSource)
-                    .setColor(pose.color())
-                    .setAlpha(pose.alpha());
-        }
-
         @SuppressWarnings({"unchecked"})
         EntityRenderer<Entity> renderer = (EntityRenderer<Entity>) dispatcherRenderer;
 
@@ -108,7 +102,12 @@ public final class VirtualEntityRenderer {
         if (pose.scale() != 1) {
             poseStack.scale(pose.scale(), pose.scale(), pose.scale());
         }
-        renderer.render(ghost, pose.bodyYawDegrees(), partialTick, poseStack, source, pose.packedLight());
+        VirtualEntityPose resolvedPose = pose;
+        float opacity = pose.alpha() * (pose.color() == -1 ? 1f : ((pose.color() >>> 24) & 255) / 255f);
+        AfterimageManager.renderModel(poseStack, bufferSource, opacity, source -> {
+            MultiBufferSource tinted = resolvedPose.color() == -1 ? source : new ColorBufferSource(source).setColor(resolvedPose.color() | 0xFF000000);
+            renderer.render(ghost, resolvedPose.bodyYawDegrees(), partialTick, poseStack, tinted, resolvedPose.packedLight());
+        });
         poseStack.popPose();
         return true;
     }

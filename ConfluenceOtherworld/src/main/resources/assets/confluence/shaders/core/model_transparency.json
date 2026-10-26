@@ -1,0 +1,7 @@
+{
+  "vertex": "confluence:model_transparency",
+  "fragment": "confluence:model_transparency",
+  "attributes": ["Position", "UV0", "Color", "UV2"],
+  "samplers": [{"name": "ModelColor"}, {"name": "ModelDepth"}],
+  "uniforms": []
+}

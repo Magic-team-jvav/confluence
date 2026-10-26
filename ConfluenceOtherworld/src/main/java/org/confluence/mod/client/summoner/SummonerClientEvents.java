@@ -1,9 +1,11 @@
 package org.confluence.mod.client.summoner;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.util.FastColor;
@@ -13,9 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -35,12 +39,16 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
 
+import java.io.IOException;
+
 public final class SummonerClientEvents {
 
     /// `FMLClientSetupEvent` / `EntityRenderersEvent.AddLayers` 是**模组总线**（从 `@Mod` 构造器
     /// 拿到的 `IEventBus`），`ItemTooltipEvent` / `RenderLevelStageEvent` 是**游戏总线**
     /// （`NeoForge.EVENT_BUS`）。写错能编译但静默不触发。
     public static void init(IEventBus modBus) {
+        modBus.register(SummonerClientEvents.class);
+        NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, SummonerClientEvents::renderAttachments);
         modBus.addListener((RegisterParticleProvidersEvent event) -> {
             event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticle.GenericParticleProvider::new);
             event.registerSpriteSet(SummonerParticleTypes.ZENITH.get(), ZenithParticle.ZenithParticleProvider::new);
@@ -69,7 +77,6 @@ public final class SummonerClientEvents {
             }
             if (level != null && event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
                 MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-                AttachmentEntityRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, partialTick);
                 InfoRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, partialTick);
             }
         });
@@ -103,5 +110,27 @@ public final class SummonerClientEvents {
                 }
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void shaders(RegisterShadersEvent event) throws IOException {
+        AfterimageManager.close();
+        WholeModelTransparency.close();
+        event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("model_transparency"), DefaultVertexFormat.PARTICLE), WholeModelTransparency::setShader);
+    }
+
+    private static void renderAttachments(RenderLevelStageEvent event) {
+        if (!AttachmentEntityRenderDispatcher.isShadowPass()) {
+            Minecraft minecraft = Minecraft.getInstance();
+            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES && minecraft.level != null) {
+                MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
+                float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+                AfterimageManager.render(minecraft.level, event.getCamera(), event.getPoseStack(), partialTick);
+                AttachmentEntityRenderDispatcher.render(minecraft.level, event.getCamera(), event.getPoseStack(), buffers, partialTick);
+                buffers.endBatch();
+            } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
+                WholeModelTransparency.finishFrame();
+            }
+        }
     }
 }

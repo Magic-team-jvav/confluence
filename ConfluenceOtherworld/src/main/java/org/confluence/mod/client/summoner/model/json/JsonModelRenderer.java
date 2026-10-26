@@ -11,6 +11,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.summoner.ColorBufferSource;
+import org.confluence.mod.client.summoner.AfterimageManager;
 import org.confluence.mod.client.summoner.LyraRenderTypes;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,10 +35,11 @@ public final class JsonModelRenderer {
         ModelManager modelManager = Minecraft.getInstance().getModelManager();
         BakedModel model = resolve(modelManager, modelLocation);
         if (model != null) {
-            ColorBufferSource colorBufferSource = new ColorBufferSource(bufferSource);
-            colorBufferSource.setColor(color == -1 ? 0xFFFFFFFF : color);
-            VertexConsumer consumer = colorBufferSource.getBuffer(LyraRenderTypes.getModel());
-            Minecraft.getInstance().getItemRenderer().renderModelLists(model, ItemStack.EMPTY, packedLight, OverlayTexture.NO_OVERLAY, poseStack, consumer);
+            AfterimageManager.renderModel(poseStack, bufferSource, ((color >>> 24) & 255) / 255f, source -> {
+                ColorBufferSource tinted = new ColorBufferSource(source).setColor(color | 0xFF000000);
+                VertexConsumer consumer = tinted.getBuffer(LyraRenderTypes.getModel());
+                Minecraft.getInstance().getItemRenderer().renderModelLists(model, ItemStack.EMPTY, packedLight, OverlayTexture.NO_OVERLAY, poseStack, consumer);
+            });
             return true;
         }
         return false;

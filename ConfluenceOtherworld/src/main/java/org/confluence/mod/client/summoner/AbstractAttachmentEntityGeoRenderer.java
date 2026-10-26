@@ -20,7 +20,6 @@ import java.util.function.Function;
 public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEntity> extends AbstractAttachmentEntityRenderer<T> implements GeoRenderer<T> {
 
     protected final GeoObjectRenderer<T> delegate;
-    protected float currentAlpha = 1.0F;
 
     protected AbstractAttachmentEntityGeoRenderer(AttachmentEntityGeoModel<T> model) {
         this.delegate = new GeoObjectRenderer<>(model) {
@@ -55,13 +54,6 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
         };
     }
 
-    /// 将第一人称距离淡出同步给 Geo 模型颜色与透明材质。
-    @Override
-    protected float getAlphaModify() {
-        currentAlpha = super.getAlphaModify();
-        return currentAlpha;
-    }
-
     /// 直接在公共框架已完成变换的姿态下提交 Geo 模型，避免重复变换。
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
@@ -73,12 +65,12 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
 
     @Override
     public Color getRenderColor(T animatable, float partialTick, int packedLight) {
-        return Color.ofRGBA(1.0F, 1.0F, 1.0F, currentAlpha);
+        return context.color;
     }
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
-        return currentAlpha < 1.0F ? RenderType.entityTranslucent(texture) : GeoRenderer.super.getRenderType(animatable, texture, bufferSource, partialTick);
+        return RenderType.entityTranslucentCull(texture);
     }
 
     @Override

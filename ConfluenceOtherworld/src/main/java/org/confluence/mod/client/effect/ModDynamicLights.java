@@ -59,7 +59,7 @@ public final class ModDynamicLights {
                         }
                     }
                 }, AttachmentEntity::getType);
-        attachments.suppressWhen(entity -> OpalLightIntegration.handlesEffect(entity.getType().location()));
+        attachments.suppressWhen(entity -> OpalLightIntegration.handlesAttachment(entity.getType().location()));
         attachments.register(SummonerAttachmentEntityTypes.IMP_FIREBALL.get(), (entity, partialTick) ->
                 new DynamicLightDispatcher.LightSource(entity.getRenderNode(partialTick).pos(), 170));
         attachments.register(SummonerAttachmentEntityTypes.EYE_FIREBALL.get(), (entity, partialTick) ->

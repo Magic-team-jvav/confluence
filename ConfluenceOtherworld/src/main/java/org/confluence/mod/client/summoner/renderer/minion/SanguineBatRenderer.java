@@ -33,7 +33,7 @@ public class SanguineBatRenderer extends AbstractAttachmentEntityGeoRenderer<San
     /// 模型提交之后再注册动态光源，与旧实现的调用顺序一致
     @Override
     protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
-        if (!OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+        if (!OpalLightIntegration.handlesAttachment(context.entity.getType().location())) {
             DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5F);
         }
     }

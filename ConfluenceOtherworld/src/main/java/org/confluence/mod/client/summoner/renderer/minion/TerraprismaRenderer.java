@@ -42,7 +42,7 @@ public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<Terrap
 
     @Override
     protected void renderModel(PoseStack poseStack, MultiBufferSource bufferSource) {
-        if (!AttachmentEntityRenderDispatcher.isShadowPass() && !OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+        if (!AttachmentEntityRenderDispatcher.isShadowPass() && !OpalLightIntegration.handlesAttachment(context.entity.getType().location())) {
             DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5F);
         }
         if (model == null) {

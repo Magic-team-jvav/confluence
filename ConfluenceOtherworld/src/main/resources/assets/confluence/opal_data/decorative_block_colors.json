@@ -1,114 +1,116 @@
 {
-    "confluence:johnny_o_lantern": {
-        "color": [
-            1.0,
-            0.66666667,
-            0.33333333
-        ],
-        "light_level": 7
-    },
-    "confluence:white_paper_pane_lamp": {
-        "color": [
-            1.0,
-            0.94117647,
-            0.8
-        ],
-        "light_level": 7
-    },
-    "confluence:malachite_paper_pane_lamp": {
-        "color": [
-            0.52549,
-            1.0,
-            0.909804
-        ],
-        "light_level": 7
-    },
-    "confluence:king_slime_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:eye_of_cthulhu_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:brain_of_cthulhu_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:eater_of_worlds_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:queen_bee_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:deerclops_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:skeletron_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:wall_of_flesh_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:hill_of_flesh_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:the_twins_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
-    },
-    "confluence:skeletron_prime_relic": {
-        "color": [
-            1.0,
-            0.85098039,
-            0.4
-        ],
-        "light_level": 5
+    "blocks": {
+        "confluence:johnny_o_lantern": {
+            "color": [
+                1.0,
+                0.66666667,
+                0.33333333
+            ],
+            "light_level": 7
+        },
+        "confluence:white_paper_pane_lamp": {
+            "color": [
+                1.0,
+                0.94117647,
+                0.8
+            ],
+            "light_level": 7
+        },
+        "confluence:malachite_paper_pane_lamp": {
+            "color": [
+                0.52549,
+                1.0,
+                0.909804
+            ],
+            "light_level": 7
+        },
+        "confluence:king_slime_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:eye_of_cthulhu_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:brain_of_cthulhu_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:eater_of_worlds_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:queen_bee_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:deerclops_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:skeletron_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:wall_of_flesh_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:hill_of_flesh_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:the_twins_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        },
+        "confluence:skeletron_prime_relic": {
+            "color": [
+                1.0,
+                0.85098039,
+                0.4
+            ],
+            "light_level": 5
+        }
     }
 }

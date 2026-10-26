@@ -93,6 +93,7 @@ public final class TickEvents {
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
         Player entity = event.getEntity();
+        LeftClickCooldowns.of(entity).tick();
         long gameTime = entity.level().getGameTime();
         if (entity instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();

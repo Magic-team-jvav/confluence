@@ -185,6 +185,7 @@ repositories {
 }
 
 boolean sodium = false // 钠
+boolean entityCulling = true // 实体渲染机制优化
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列
@@ -248,6 +249,10 @@ dependencies {
         runtimeOnly "curse.maven:ftb-quests-forge-289412:7133722"
         runtimeOnly "curse.maven:ftb-filter-system-943925:6899527"
         runtimeOnly "curse.maven:ftb-xmod-compat-889915:6979171"
+    }
+
+    if (entityCulling) {
+        runtimeOnly "maven.modrinth:entityculling:eieYbWYb"
     }
 
     compileOnly "curse.maven:sodium-394468:6382651"

@@ -4,13 +4,17 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.LeftClickCooldowns;
 import org.confluence.mod.common.init.ModTags;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,6 +35,13 @@ public abstract class GuiGraphicsMixin implements SelfGetter<GuiGraphics> {
     @Shadow
     @Final
     private PoseStack pose;
+
+    @WrapOperation(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemCooldowns;getCooldownPercent(Lnet/minecraft/world/item/Item;F)F"))
+    private float confluence$leftClickCooldown(ItemCooldowns cooldowns, Item item, float partialTick, Operation<Float> original) {
+        float vanilla = original.call(cooldowns, item, partialTick);
+        var player = Minecraft.getInstance().player;
+        return player == null ? vanilla : Math.max(vanilla, LeftClickCooldowns.of(player).getCooldownPercent(item, partialTick));
+    }
 
     @WrapOperation(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"))
     private int transform(GuiGraphics instance, Font font, String text, int x, int y, int color, boolean dropShadow, Operation<Integer> original, @Local(argsOnly = true, ordinal = 0) int ox, @Local(argsOnly = true, ordinal = 1) int oy) {

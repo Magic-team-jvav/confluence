@@ -1,9 +1,11 @@
 package org.confluence.mod.common.item.crossbow;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -40,6 +42,7 @@ import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.api.item.IWeaponTooltip;
+import org.confluence.mod.common.attachment.LeftClickCooldowns;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -59,6 +62,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickStateItem, IWeaponTooltip {
@@ -74,6 +78,9 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
 
     public static final String REPEATER_CONTINUOUS_SHOOTING = "repeater.continuous_shooting";
     public static final String REPEATER_SHOOTING = "repeater.shooting";
+
+    private static final Supplier<List<Item>> SHARED_COOLDOWN_ITEMS = Suppliers.memoize(() ->
+            BuiltInRegistries.ITEM.stream().filter(BaseTerraRepeaterItem.class::isInstance).toList());
 
     private boolean startSoundPlayed;
     private boolean midLoadSoundPlayed;
@@ -376,37 +383,28 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     @Override
     public void onLeftClick(Player player, ItemStack itemStack) {
         if (player.level().isClientSide) return;
+        LeftClickCooldowns cooldowns = LeftClickCooldowns.of(player);
+        if (cooldowns.isOnCooldown(itemStack.getItem())) {
+            return;
+        }
+
         if (getContents(itemStack).isEmpty()) {
             playAerialShootingSound(player);
             return;
         }
+
         InteractionHand hand = getHand(player, itemStack);
-        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
-        if (delayTaskHolder.containsTask(hand, REPEATER_SHOOTING)) {
-            return;
-        }
         Level level = player.level();
         int burstCount = getBurstCount(player, hand);
         float shootingPower = getArrowSpeed(player, hand);
-        if (burstCount > 1) {
-            shootingPerformContinuousShooting(player, itemStack, burstCount, delayTaskHolder, hand, level, shootingPower);
+        if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
+            return;
         }
-        delayTaskHolder.addTask(hand, REPEATER_SHOOTING, DelayTaskHolder.createTaskBilder()
-                .repeatCount(-1)
-                .removedTick(getShootInterval(player, hand))
-                .resultRun((tick, maxTick, task) -> {
-                    if (getContents(itemStack).isEmpty()) {
-                        task.remove();
-                        return 0;
-                    }
-                    if (burstCount > 1) {
-                        shootingPerformContinuousShooting(player, itemStack, burstCount, delayTaskHolder, hand, level, shootingPower);
-                    }
-                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
-                        task.remove();
-                    }
-                    return 0;
-                }).build());
+
+        cooldowns.addSharedCooldown(SHARED_COOLDOWN_ITEMS.get(), Math.max(1, getShootInterval(player, itemStack)));
+        if (burstCount > 1) {
+            shootingPerformContinuousShooting(player, itemStack, burstCount, DelayTaskHolder.of(player), hand, level, shootingPower);
+        }
     }
 
     @Override

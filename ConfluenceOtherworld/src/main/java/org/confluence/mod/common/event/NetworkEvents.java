@@ -35,6 +35,7 @@ public final class NetworkEvents {
                 .playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle)
                 .playToClient(AchievementOffsetSyncPacketS2C.TYPE, AchievementOffsetSyncPacketS2C.STREAM_CODEC, AchievementOffsetSyncPacketS2C::handle)
                 .playToClient(RepeaterShootingPayloadS2C.TYPE, RepeaterShootingPayloadS2C.STREAM_CODEC, RepeaterShootingPayloadS2C::handle)
+                .playToClient(LeftClickCooldownPacketS2C.TYPE, LeftClickCooldownPacketS2C.STREAM_CODEC, LeftClickCooldownPacketS2C::handle)
                 .playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle)
                 .playToClient(PiggyBankTotalMoneyPacket.TYPE, PiggyBankTotalMoneyPacket.STREAM_CODEC, PiggyBankTotalMoneyPacket::handle)
                 .playToClient(VoidVaultSyncPacketS2C.TYPE, VoidVaultSyncPacketS2C.STREAM_CODEC, VoidVaultSyncPacketS2C::handle)

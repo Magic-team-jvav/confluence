@@ -2,12 +2,14 @@ package org.confluence.mod.client.handler;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.api.animation.first_person.CameraAnimation;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.client.ModKeyBindings;
+import org.confluence.mod.client.gui.hud.CrosshairHud;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.network.c2s.InspectPacketC2S;
@@ -50,6 +52,7 @@ public final class GunHandler {
         if (use.isCanceled()) return;
 
         ShootPacketC2S.sendToServer();
+        CrosshairHud.onShot(player, InteractionHand.MAIN_HAND, mainHandItem);
         cooldowns.addCooldown(baseGun, Math.max(0, use.getCooldowns()));
     }
 

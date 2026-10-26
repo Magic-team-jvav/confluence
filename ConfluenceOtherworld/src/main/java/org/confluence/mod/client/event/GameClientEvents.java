@@ -43,6 +43,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.util.TriState;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -70,8 +71,10 @@ import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
+import org.confluence.mod.client.gui.hud.CrosshairHud;
 import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
+import org.confluence.mod.client.gui.hud.HitMarkerHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
@@ -226,9 +229,18 @@ public final class GameClientEvents {
             }
         }
         GunHandler.handle(player, attackHeld);
+        CrosshairHud.tick(player);
         DeathEffectManager.tick(minecraft.level);
         BackgroundLayer.tickLayers();
         WeatherHandler.handle();
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void crosshairBowRelease(LivingEntityUseItemEvent.Stop event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && event.getEntity() == player) {
+            CrosshairHud.onBowRelease(player, event.getItem(), event.getDuration());
+        }
     }
 
     @SubscribeEvent
@@ -245,6 +257,8 @@ public final class GameClientEvents {
 
     /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
     private static void clearClientWorldReferences() {
+        HitMarkerHud.clear();
+        CrosshairHud.clear();
         ClientBestiary.getInstance().clearLevel();
         ParticleHandler.clear();
         ScryingOrbHandler.clear();

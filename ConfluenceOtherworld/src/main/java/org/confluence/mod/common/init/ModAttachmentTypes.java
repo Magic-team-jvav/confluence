@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -26,4 +27,5 @@ public final class ModAttachmentTypes {
 
     public static final Supplier<AttachmentType<YoyoSession>> YOYO_SESSION = TYPES.register("yoyo_session", () -> AttachmentType.builder(YoyoSession::new).build());
     public static final Supplier<AttachmentType<LeftClickState>> LEFT_CLICK_STATE = TYPES.register("left_click_state", () -> AttachmentType.builder(LeftClickState::new).build());
+    public static final Supplier<AttachmentType<LeftClickCooldowns>> LEFT_CLICK_COOLDOWNS = TYPES.register("left_click_cooldowns", () -> AttachmentType.builder(holder -> new LeftClickCooldowns((Player) holder)).build());
 }

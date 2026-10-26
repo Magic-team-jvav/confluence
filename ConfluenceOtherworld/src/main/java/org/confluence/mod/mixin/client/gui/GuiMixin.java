@@ -1,12 +1,21 @@
 package org.confluence.mod.mixin.client.gui;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.gui.hud.CrosshairHud;
 import org.confluence.mod.mixed.IGui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin implements IGui {
@@ -30,20 +39,19 @@ public abstract class GuiMixin implements IGui {
         return ClientConfigs.leftEffectIcon ? -i : i;
     }
 
-    // 标注：因实体渲染机制优化导致问题，现在注释
-//    @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 0))
-//    private void confluence$repeaterRenderCrosshair(
-//            GuiGraphics instance,
-//            ResourceLocation sprite,
-//            int x,
-//            int y,
-//            int width,
-//            int height,
-//            Operation<Void> original,
-//            @Local(argsOnly = true) DeltaTracker deltaTracker
-//    ) {
-//        RepeaterHud.renderCrosshair(confluence$self(), instance, sprite, x, y, width, height, original, deltaTracker);
-//    }
+    @WrapOperation(method = "renderCrosshair", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blitSprite(Lnet/minecraft/resources/ResourceLocation;IIII)V", ordinal = 0))
+    private void confluence$renderCrosshair(
+            GuiGraphics instance,
+            ResourceLocation sprite,
+            int x,
+            int y,
+            int width,
+            int height,
+            Operation<Void> original,
+            @Local(argsOnly = true) DeltaTracker deltaTracker
+    ) {
+        CrosshairHud.renderCrosshair(instance, sprite, x, y, width, height, original, deltaTracker);
+    }
 
     @Override
     public void confluence$setShooting() {

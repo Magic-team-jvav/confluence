@@ -216,6 +216,7 @@ public final class ModClientEvents {
         event.registerBelow(VanillaGuiLayers.CAMERA_OVERLAYS, Confluence.asResource("void_sea_filter"), VoidSeaFilterRenderer::renderFilter);
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
         event.registerAbove(VanillaGuiLayers.CROSSHAIR, repeaterHud, new RepeaterHud());
+        event.registerAbove(repeaterHud, Confluence.asResource("hit_marker"), new HitMarkerHud());
         ResourceLocation healthHud = Confluence.asResource("health_hud");
         event.registerBelow(VanillaGuiLayers.ARMOR_LEVEL, healthHud, new TerraStyleHealthHud());
         ResourceLocation armorHud = Confluence.asResource("armor_hud");

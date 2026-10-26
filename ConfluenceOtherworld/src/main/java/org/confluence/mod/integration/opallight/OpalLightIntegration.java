@@ -61,7 +61,9 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     public static final ResourceLocation RETINAZER_BEAM = Confluence.asResource("retinazer_beam");
     private static final Codec<Map<ResourceLocation, DynamicLightDefinition>> CODEC = Codec.unboundedMap(ResourceLocation.CODEC, DynamicLightDefinition.CODEC);
 
-    private Map<ResourceLocation, Source> sources = Map.of();
+    private Map<ResourceLocation, Source> attachments = Map.of();
+    private Map<ResourceLocation, Source> effects = Map.of();
+    private Map<ResourceLocation, Source> particles = Map.of();
     private final Map<ClientLevel, WorldSources> worlds = new WeakHashMap<>();
 
     private static final class WorldSources {
@@ -79,7 +81,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
     private long nextId = Long.MIN_VALUE;
 
     private OpalLightIntegration() {
-        super(new Gson(), "opal_effects");
+        super(new Gson(), "opal_data");
     }
 
     public static void register() {
@@ -131,7 +133,13 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
 
     public static boolean handlesEffect(ResourceLocation type) {
         if (!OpalLightConfig.isEnabled()) return false;
-        Source source = INSTANCE.sources.get(type);
+        Source source = INSTANCE.effects.get(type);
+        return source != null && source.brightness() > 0;
+    }
+
+    public static boolean handlesAttachment(ResourceLocation type) {
+        if (!OpalLightConfig.isEnabled()) return false;
+        Source source = INSTANCE.attachments.get(type);
         return source != null && source.brightness() > 0;
     }
 
@@ -195,14 +203,36 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> files, ResourceManager manager, ProfilerFiller profiler) {
-        Map<ResourceLocation, Source> updated = new HashMap<>();
+        Map<ResourceLocation, Source> updatedAttachments = new HashMap<>();
+        Map<ResourceLocation, Source> updatedEffects = new HashMap<>();
+        Map<ResourceLocation, Source> updatedParticles = new HashMap<>();
         new TreeMap<>(files).forEach((file, json) -> {
-            var result = CODEC.parse(JsonOps.INSTANCE, json);
-            result.error().ifPresent(error -> Confluence.LOGGER.error("Invalid colored effects {}: {}", file, error.message()));
-            result.result().ifPresent(definitions -> definitions.forEach((id, definition) ->
-                    updated.put(id, new Source(new LightProfile(definition.color(), definition.cycle().orElse(null)), definition.lightLevel()))));
+            if (!json.isJsonObject()) return;
+            var sections = json.getAsJsonObject();
+            readSources(file, "attachments", sections.get("attachments"), updatedAttachments);
+            readSources(file, "effects", sections.get("effects"), updatedEffects);
+            readSources(file, "particles", sections.get("particles"), updatedParticles);
         });
-        sources = Map.copyOf(updated);
+        attachments = Map.copyOf(updatedAttachments);
+        effects = Map.copyOf(updatedEffects);
+        particles = Map.copyOf(updatedParticles);
+    }
+
+    /// 普通方块、物品和实体交给 OpalLight；这里只读取需要自行采集位置的光源分类。
+    private static void readSources(ResourceLocation file, String section, JsonElement json,
+                                    Map<ResourceLocation, Source> target) {
+        if (json == null) return;
+        var result = CODEC.parse(JsonOps.INSTANCE, json);
+        result.error().ifPresent(error -> Confluence.LOGGER.error(
+                "Invalid colored lights {}/{}: {}", file, section, error.message()));
+        result.result().ifPresent(definitions -> definitions.forEach((id, definition) -> {
+            /// 特殊光源的启停由采集代码决定，拒绝不能执行的物品或实体条件，避免静默忽略。
+            if (definition.burning().isPresent() || definition.itemState().isPresent() || definition.entityState().isPresent()) {
+                Confluence.LOGGER.error("Unsupported state conditions in colored lights {}/{}/{}", file, section, id);
+                return;
+            }
+            target.put(id, new Source(new LightProfile(definition.color(), definition.cycle().orElse(null)), definition.lightLevel()));
+        }));
     }
 
     public static boolean flash(ResourceLocation type, Vec3 position, int duration) {
@@ -219,7 +249,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
         for (Player player : level.players()) {
             if (player.isRemoved() || player.isSpectator()) continue;
             for (var attachment : player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache()) {
-                Source source = sources.get(attachment.getType().location());
+                Source source = attachments.get(attachment.getType().location());
                 if (source == null || attachment.isRemove()) continue;
                 UUID uuid = attachment.getUuid();
                 world.activeAttachments.add(uuid);
@@ -236,7 +266,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
         long now = level.getGameTime();
         world.flashes.removeIf(flash -> now < flash.started() || now >= flash.expires());
         for (Flash flash : world.flashes) {
-            Source source = sources.get(flash.type());
+            Source source = effects.get(flash.type());
             if (source == null) continue;
             int brightness = Math.round(source.brightness() * (flash.expires() - now) / (float) (flash.expires() - flash.started()));
             sink.point(flash.id(), flash.position(), source.profile(), brightness);
@@ -250,7 +280,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
             var entry = emitters.next();
             var emitter = entry.getValue();
             if (emitter.level != level || emitter.isRemoved() || !emitter.active) continue;
-            Source source = sources.get(emitter.particleId);
+            Source source = particles.get(emitter.particleId);
             if (source == null || source.brightness() <= 0) continue;
             sink.point(entry.getIntKey(), emitter.getPosition(), source.profile(), source.brightness());
         }
@@ -260,13 +290,13 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
         if (entity.isRemoved() || entity.isSpectator()) return;
         long id = (long) entity.getId() << 32;
         if (entity instanceof LivingEntity living) {
-            Source source = living.hasEffect(ModEffects.SHINE.get()) ? sources.get(SHINE) : living.hasEffect(MobEffects.GLOWING) ? sources.get(GLOWING) : null;
+            Source source = living.hasEffect(ModEffects.SHINE.get()) ? effects.get(SHINE) : living.hasEffect(MobEffects.GLOWING) ? effects.get(GLOWING) : null;
             if (source != null) {
                 sink.point(id, new Vec3(entity.getX(), entity.getEyeY() - 0.3, entity.getZ()), source.profile(), source.brightness());
             }
         }
         if (entity instanceof PrimeEnderDragon dragon && dragon.getLaserRange() > 0) {
-            Source source = sources.get(DRAGON_LASER);
+            Source source = effects.get(DRAGON_LASER);
             if (source != null) {
                 Vec3 start = dragon.getLaserOrigin(1.0F);
                 Vec3 end = start.add(dragon.getViewVector(1.0F).scale(dragon.getLaserRange()));
@@ -274,7 +304,7 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
             }
         }
         if (entity instanceof Retinazer eye && eye.isAlive() && eye.getBeamLength() > 0) {
-            Source source = sources.get(RETINAZER_BEAM);
+            Source source = effects.get(RETINAZER_BEAM);
             if (source != null) {
                 Vec3 start = eye.getBeamOrigin();
                 Vec3 end = start.add(eye.getBeamDirection().scale(eye.getBeamLength()));

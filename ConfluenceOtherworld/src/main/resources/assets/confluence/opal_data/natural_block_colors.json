@@ -1,122 +1,124 @@
 {
-    "confluence:aetherium_block": {
-        "color": [
-            0.76078431,
-            0.54117647,
-            1.0
-        ],
-        "light_level": 1
-    },
-    "confluence:life_crystal_block": {
-        "color": [
-            1.0,
-            0.36078431,
-            0.47058824
-        ],
-        "light_level": 2
-    },
-    "confluence:crystal_shards": {
-        "color": [
-            0.93333333,
-            0.6,
-            1.0
-        ],
-        "light_level": 2
-    },
-    "confluence:gelatin_crystal": {
-        "color": [
-            0.93333333,
-            0.6,
-            1.0
-        ],
-        "light_level": 2
-    },
-    "confluence:glow_coralite": {
-        "color": [
-            0.50196078,
-            0.90196078,
-            1.0
-        ],
-        "light_level": 2
-    },
-    "confluence:jungle_spore": {
-        "color": [
-            0.66666667,
-            1.0,
-            0.4
-        ],
-        "light_level": 2
-    },
-    "confluence:shimmer_rice": {
-        "color": [
-            0.76078431,
-            0.54117647,
-            1.0
-        ],
-        "light_level": 2
-    },
-    "confluence:shimmer_coral_tube": {
-        "color": [
-            0.76078431,
-            0.54117647,
-            1.0
-        ],
-        "light_level": 2
-    },
-    "confluence:lava_moss": {
-        "color": [
-            1.0,
-            0.50196078,
-            0.2
-        ],
-        "light_level": 2
-    },
-    "confluence:krypton_moss": {
-        "color": [
-            0.53333333,
-            1.0,
-            0.4
-        ],
-        "light_level": 2
-    },
-    "confluence:xenon_moss": {
-        "color": [
-            0.4,
-            0.86666667,
-            1.0
-        ],
-        "light_level": 2
-    },
-    "confluence:argon_moss": {
-        "color": [
-            1.0,
-            0.50196078,
-            0.8
-        ],
-        "light_level": 2
-    },
-    "confluence:neon_moss": {
-        "color": [
-            0.8,
-            0.53333333,
-            1.0
-        ],
-        "light_level": 2
-    },
-    "confluence:helium_moss": {
-        "color": [
-            1.0,
-            0.90196078,
-            0.66666667
-        ],
-        "light_level": 2
-    },
-    "confluence:cursed_flame": {
-        "color": [
-            0.66666667,
-            1.0,
-            0.4
-        ],
-        "light_level": 2
+    "blocks": {
+        "confluence:aetherium_block": {
+            "color": [
+                0.76078431,
+                0.54117647,
+                1.0
+            ],
+            "light_level": 1
+        },
+        "confluence:life_crystal_block": {
+            "color": [
+                1.0,
+                0.36078431,
+                0.47058824
+            ],
+            "light_level": 2
+        },
+        "confluence:crystal_shards": {
+            "color": [
+                0.93333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 2
+        },
+        "confluence:gelatin_crystal": {
+            "color": [
+                0.93333333,
+                0.6,
+                1.0
+            ],
+            "light_level": 2
+        },
+        "confluence:glow_coralite": {
+            "color": [
+                0.50196078,
+                0.90196078,
+                1.0
+            ],
+            "light_level": 2
+        },
+        "confluence:jungle_spore": {
+            "color": [
+                0.66666667,
+                1.0,
+                0.4
+            ],
+            "light_level": 2
+        },
+        "confluence:shimmer_rice": {
+            "color": [
+                0.76078431,
+                0.54117647,
+                1.0
+            ],
+            "light_level": 2
+        },
+        "confluence:shimmer_coral_tube": {
+            "color": [
+                0.76078431,
+                0.54117647,
+                1.0
+            ],
+            "light_level": 2
+        },
+        "confluence:lava_moss": {
+            "color": [
+                1.0,
+                0.50196078,
+                0.2
+            ],
+            "light_level": 2
+        },
+        "confluence:krypton_moss": {
+            "color": [
+                0.53333333,
+                1.0,
+                0.4
+            ],
+            "light_level": 2
+        },
+        "confluence:xenon_moss": {
+            "color": [
+                0.4,
+                0.86666667,
+                1.0
+            ],
+            "light_level": 2
+        },
+        "confluence:argon_moss": {
+            "color": [
+                1.0,
+                0.50196078,
+                0.8
+            ],
+            "light_level": 2
+        },
+        "confluence:neon_moss": {
+            "color": [
+                0.8,
+                0.53333333,
+                1.0
+            ],
+            "light_level": 2
+        },
+        "confluence:helium_moss": {
+            "color": [
+                1.0,
+                0.90196078,
+                0.66666667
+            ],
+            "light_level": 2
+        },
+        "confluence:cursed_flame": {
+            "color": [
+                0.66666667,
+                1.0,
+                0.4
+            ],
+            "light_level": 2
+        }
     }
 }

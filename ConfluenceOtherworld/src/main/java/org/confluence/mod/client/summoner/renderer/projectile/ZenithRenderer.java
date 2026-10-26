@@ -59,7 +59,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
         if (zenith.getTickCount() < 2) {
             light *= context.partialTick;
         }
-        if (!OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+        if (!OpalLightIntegration.handlesAttachment(context.entity.getType().location())) {
             DynamicLightDispatcher.INSTANCE.addLightSource(visualNode.pos(), light);
         }
         if (context.trail != null && zenith.alpha > 0.75) {

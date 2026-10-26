@@ -30,7 +30,7 @@ public class SanguineBatRenderer extends AbstractAttachmentEntityGeoRenderer<San
     }
     @Override
     protected void render(PoseStack poseStack, MultiBufferSource bufferSource) {
-        if (!OpalLightIntegration.handlesEffect(context.entity.getType().location())) {
+        if (!OpalLightIntegration.handlesAttachment(context.entity.getType().location())) {
             DynamicLightDispatcher.INSTANCE.addLightSource(context.visualNode.pos(), 0.5f);
         }
     }

@@ -768,7 +768,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.EYE_OF_CTHULHU.get(), EyeOfCthulhuRenderer::new);
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), BossWormPartRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), MissingModelRenderer::new); // todo 专用身体、尾部和受损资源已导出，待适配体节连接与侧翼展开状态
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), DestroyerRenderer::new);
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds"), true, 2.2F, 0.0F));
         event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), QueenBeeRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhuRenderer::new);
@@ -776,8 +776,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SKELETRON.get(), SkeletronBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_HAND.get(), SkeletronBossHandRenderer::new);
         event.registerEntityRenderer(BossEntities.DUNGEON_GUARDIAN.get(), DungeonGuardianRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), MissingModelRenderer::new); // todo 专用头部资源已导出，待与体节一起适配
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new BossGeoRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/boss/the_destroyer_probe.geo.json"), Confluence.asResource("textures/entity/boss/the_destroyer_probe.png"), null)));
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron"), true, 1.0F, 0.0F));
         event.registerEntityRenderer(BossEntities.RETINAZER.get(), TwinEyeDissolveRenderer::retinazer);
         event.registerEntityRenderer(BossEntities.SPAZMATISM.get(), TwinEyeDissolveRenderer::spazmatism);
         // 双子魔眼控制实体只负责生命周期，两只眼睛实体仍各自独立渲染。

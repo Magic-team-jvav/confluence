@@ -1,170 +1,121 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
-import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
-import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.BaseMonster;
+import org.confluence.mod.common.entity.projectile.DestroyerLaserProjectile;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-import java.util.UUID;
+/// 独立实现泰拉鸟妖式水平追踪、垂直悬停与碰壁反向；以更高速度执行探针激光攻击。
+public final class TheDestroyerProbe extends BaseMonster {
+    /// 探针最大水平/竖直速度，单位格/tick。
+    private static final double HORIZONTAL_SPEED = 0.75, VERTICAL_SPEED = 0.45;
+    /// 逐轴追踪加速度，单位格/tick²。
+    private static final double ACCELERATION = 0.045;
+    /// 探针优先在目标上方保持的高度，单位格。
+    private static final double HOVER_HEIGHT = 6.0;
+    /// 每轮三发激光的间隔、轮间冷却和最大射程，单位 tick/格。
+    private static final int SHOT_INTERVAL = 12, VOLLEY_COOLDOWN = 60, VOLLEY_SIZE = 3;
+    private static final double ATTACK_RANGE = 64.0;
+    private static final float LASER_SPEED = 2.2F;
+    private @Nullable TheDestroyer owner;
+    private Vec3 flight = Vec3.ZERO;
+    private int cooldown = VOLLEY_COOLDOWN, shots;
 
-/// 毁灭者体节释放的远程附属探测器。
-///
-/// 探测器独立保持射击距离，但目标和生命周期归属于精确的毁灭者 UUID。主人暂时
-/// 卸载时探测器停止攻击并等待恢复，不会转化成永久游荡的独立怪物。
-public final class TheDestroyerProbe extends BaseFlyingMonster implements BossOwnedEntity {
-    private static final String SHOT_TIMER_TAG = "ShotTimer";
-    /// 探测器两次射击之间的间隔，单位 tick。
-    private static final int SHOT_INTERVAL = 60;
-
-    /// 探测器返回母体时保留的旧速度比例。
-    private static final double RETURN_MOMENTUM = 0.4;
-    /// 探测器朝母体追加的速度，单位格/tick。
-    private static final double RETURN_ACCELERATION = 0.45;
-
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(TheDestroyerProbe.class, EntityDataSerializers.OPTIONAL_UUID);
-
-    private final BossOwnerTracker<TheDestroyer> ownerTracker = new BossOwnerTracker<>(TheDestroyer.class);
-    private int shotTimer = SHOT_INTERVAL;
-
-    public TheDestroyerProbe(EntityType<? extends TheDestroyerProbe> type, Level level) {
+    public TheDestroyerProbe(EntityType<? extends Monster> type, Level level) {
         super(type, level);
-        xpReward = 5;
+        setNoGravity(true);
+    }
+
+    public void attach(TheDestroyer owner, Vec3 position) {
+        this.owner = owner;
+        setPos(position);
+        setTarget(owner.getTarget());
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(OWNER_UUID, Optional.empty());
-    }
-
-    public void setMaster(TheDestroyer master) {
-        ownerTracker.bind(this, master);
-        entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
-        shotTimer = 1 + BossMinionCoordinator.phaseOffset(this, SHOT_INTERVAL);
-        setTarget(master.getTarget());
-        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
-    }
-
-    public @Nullable TheDestroyer getMaster() {
-        return ownerTracker.resolve(this);
-    }
+    protected boolean usesSharedTargeting() {return false;}
 
     @Override
-    public @Nullable BaseBoss getBossOwner() {
-        return getMaster();
-    }
-
-    public @Nullable UUID getMasterUUID() {
-        return entityData.get(OWNER_UUID).orElse(null);
-    }
+    protected boolean hasEntityContactAttack() {return true;}
 
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return new WaitAction(Integer.MAX_VALUE);
+                return new BTNode() {
+                    @Override
+                    public BTStatus execute() {
+                        tickFlight();
+                        return BTStatus.RUNNING;
+                    }
+                };
             }
         };
     }
 
-    @Override
-    public void tick() {
-        LivingEntity inheritedTarget = null;
-        TheDestroyer master = null;
-        if (!level().isClientSide && ownerTracker.getOwnerUUID() != null) {
-            master = ownerTracker.tickDependent(this, true, 100);
-            inheritedTarget = getTarget();
-            if (isRemoved()) return;
-        }
-        super.tick();
-        if (level().isClientSide || !isAlive()) {
+    private void tickFlight() {
+        if (owner == null || owner.isRemoved() || !owner.isAlive() || owner.level() != level()) {
+            discard();
             return;
         }
-        if (master != null && getTarget() != inheritedTarget) {
-            setTarget(inheritedTarget);
-        }
-        if (master == null) {
+        LivingEntity target = owner.getTarget();
+        setTarget(target);
+        if (target == null || !target.isAlive() || target.isRemoved() || target.level() != level() || !canAttack(target)) {
+            flight = Vec3.ZERO;
+            setDeltaMovement(Vec3.ZERO);
             return;
         }
-        if (distanceToSqr(master) > 4096.0) {
-            Vec3 towardMaster = master.position().add(0.0, 2.0, 0.0).subtract(position());
-            setDeltaMovement(getDeltaMovement().scale(RETURN_MOMENTUM).add(towardMaster.normalize().scale(RETURN_ACCELERATION)));
-            faceCombatMovement(30.0F, 30.0F);
-            hasImpulse = true;
+        Vec3 offset = target.position().add(0, HOVER_HEIGHT, 0).subtract(position());
+        Vec3 horizontal = new Vec3(offset.x, 0, offset.z);
+        Vec3 desired = horizontal.lengthSqr() < 1 ? Vec3.ZERO : horizontal.normalize().scale(HORIZONTAL_SPEED);
+        double vertical = Mth.clamp(offset.y * 0.1, -VERTICAL_SPEED, VERTICAL_SPEED);
+        if (horizontalCollision)
+            flight = new Vec3(-flight.x * 0.5, Math.max(flight.y, 0.2), -flight.z * 0.5);
+        if (verticalCollision) flight = new Vec3(flight.x, -flight.y * 0.5, flight.z);
+        flight = new Vec3(approach(flight.x, desired.x), approach(flight.y, vertical), approach(flight.z, desired.z));
+        setDeltaMovement(flight);
+        faceCombatDirection(target.getEyePosition().subtract(getEyePosition()), 12, 12);
+        if (--cooldown > 0 || distanceToSqr(target) > ATTACK_RANGE * ATTACK_RANGE || !getSensing().hasLineOfSight(target))
             return;
-        }
-        LivingEntity target = getTarget();
-        if (target != null && target.isAlive()) {
-            Vec3 orbit = BossMinionCoordinator.orbitPoint(this, target, 13.0D, 3.0D, 0.022D, 12);
-            setDeltaMovement(BossMinionCoordinator.steer(getDeltaMovement(), position(), orbit, 0.11D, 0.7D));
-            faceCombatPosition(BossMinionCoordinator.predict(target, 3.0D, 2.5D), 30.0F, 30.0F);
-            hasImpulse = true;
-        }
-        if (target != null && --shotTimer <= 0) {
-            shotTimer = SHOT_INTERVAL;
-            TheDestroyer.fireLaser(this, getEyePosition(), target, (float) getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE));
-        }
+        DestroyerLaserProjectile.fire(this, getEyePosition(), target.getBoundingBox().getCenter(), LASER_SPEED);
+        cooldown = ++shots >= VOLLEY_SIZE ? VOLLEY_COOLDOWN : SHOT_INTERVAL;
+        if (shots >= VOLLEY_SIZE) shots = 0;
     }
+
+    private static double approach(double value, double target) {
+        return value + Mth.clamp(target - value, -ACCELERATION, ACCELERATION);
+    }
+
+    @Override
+    public void travel(Vec3 input) {
+        if (!level().isClientSide) move(MoverType.SELF, getDeltaMovement());
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {return false;}
+
+    /// 探针属于本次战斗的临时子实体，由本体生命周期统一清理。
+    @Override
+    public boolean shouldBeSaved() {return false;}
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return !(target instanceof TheDestroyer)
-                && !(target instanceof TheDestroyerProbe)
-                && super.canAttack(target);
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        TheDestroyer master = getMaster();
-        if (master != null && source.getEntity() == master) {
-            return false;
-        }
-        return super.hurt(source, amount);
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSoundEvents.VISUAL_NEURON_HURT.get();
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return ModSoundEvents.VISUAL_NEURON_DEATH.get();
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        ownerTracker.save(tag);
-        tag.putInt(SHOT_TIMER_TAG, shotTimer);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        ownerTracker.load(tag);
-        entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
-        shotTimer = Math.max(1, tag.getInt(SHOT_TIMER_TAG));
+        return owner != null && owner.isAlive() && !owner.isRemoved() && owner.canAttack(target);
     }
 
     @Override
     public void remove(RemovalReason reason) {
-        ownerTracker.unbind(this);
         super.remove(reason);
+        if (owner != null) owner.removeSubEntity(this);
     }
 }

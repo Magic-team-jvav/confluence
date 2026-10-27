@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.WormSteering;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
@@ -16,7 +17,10 @@ public final class WormMovementAction extends BTNode {
     private static final int WANDER_RESELECT_TICKS = 60;
     private static final double AIR_GRAVITY = 0.08;
     private static final double MAX_FALL_SPEED = 0.8;
+    /// 每 tick 主动转向角上限，单位弧度。
     private static final double TURN_ANGLE = 0.10;
+    /// 最小转弯半径相对头部宽度的倍率。
+    private static final double TURN_RADIUS_WIDTH = 4.0;
     private final PathfinderMob worm;
     private final Profile profile;
     private Vec3 wanderTarget;
@@ -99,32 +103,15 @@ public final class WormMovementAction extends BTNode {
             Vec3 inward = findNearbyTarget();
             if (inward != null) desired = inward.subtract(position).normalize();
         }
-        heading = turnTowards(heading, desired);
+        heading = WormSteering.turn(heading, desired, Math.min(TURN_ANGLE, speed / Math.max(1.0, worm.getBbWidth() * TURN_RADIUS_WIDTH)));
         Vec3 movement = heading.scale(speed);
         /// 世界边缘是物理保护，不参与群系边界的判断。
         if (!insideWorld(position.add(movement))) {
-            if (position.y + movement.y < minimumY() && movement.y < 0)
-                movement = new Vec3(movement.x, -movement.y, movement.z);
-            else if (position.y + movement.y + worm.getBbHeight() >= worm.level().getMaxBuildHeight() && movement.y > 0)
-                movement = new Vec3(movement.x, -movement.y, movement.z);
-            if (!loaded(position.add(movement))) movement = movement.scale(-1);
-            heading = movement.normalize();
-            if (!loaded(position.add(movement))) movement = Vec3.ZERO;
+            /// 边界外不提交位移，也不反射速度；保留逐步转向，方向转回合法区域后继续移动。
+            movement = Vec3.ZERO;
         }
         worm.setDeltaMovement(movement);
         return BTStatus.RUNNING;
-    }
-
-    /// 只控制连续转向，不处理活动区或裁剪位移。
-    private static Vec3 turnTowards(Vec3 current, Vec3 desired) {
-        double dot = current.dot(desired);
-        if (dot >= Math.cos(TURN_ANGLE)) return desired;
-        Vec3 tangent = desired.subtract(current.scale(dot));
-        if (tangent.lengthSqr() < 1.0E-10) {
-            Vec3 axis = Math.abs(current.y) < 0.9 ? new Vec3(0, 1, 0) : new Vec3(1, 0, 0);
-            tangent = current.cross(axis);
-        }
-        return current.scale(Math.cos(TURN_ANGLE)).add(tangent.normalize().scale(Math.sin(TURN_ANGLE))).normalize();
     }
 
     private double minimumY() {

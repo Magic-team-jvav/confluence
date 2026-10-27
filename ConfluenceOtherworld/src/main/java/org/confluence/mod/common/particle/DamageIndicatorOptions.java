@@ -9,10 +9,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.ScheduledForMove;
+import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
@@ -61,7 +63,11 @@ public final class DamageIndicatorOptions extends PortParticleOptions {
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos;
         double y;
-        if (victim instanceof WallOfFlesh) {
+        if (victim instanceof BaseBoss boss && boss.getDamageFeedbackTarget() != victim) {
+            Entity hitPart = boss.getDamageFeedbackTarget();
+            pos = hitPart.position();
+            y = hitPart.getBoundingBox().maxY;
+        } else if (victim instanceof WallOfFlesh) {
             Vec3 sourcePosition = Objects.requireNonNullElseGet(damageSource.getSourcePosition(), victim::position);
             if (damageSource.getEntity() == null) {
                 pos = sourcePosition;

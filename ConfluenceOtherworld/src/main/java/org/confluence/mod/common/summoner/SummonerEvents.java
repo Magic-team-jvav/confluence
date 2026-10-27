@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.mixed.ILibDamageSource;
+import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.summoner.attachment.InfoData;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
@@ -82,7 +83,10 @@ public final class SummonerEvents {
                         }
                     }
                 }
-                Vec3 pos = target.getBoundingBox().getCenter();
+                /// 虚拟伤害数字与粒子模式一样定位实际命中的体节，在伤害转发结束前保存坐标。
+                Vec3 pos = target instanceof BaseBoss boss
+                        ? boss.getDamageFeedbackTarget().getBoundingBox().getCenter()
+                        : target.getBoundingBox().getCenter();
                 Vec3 velocity = new Vec3(0, 2, 0).offsetRandom(level.getRandom(), 0.5F).subtract(Vec3.ZERO).scale(0.4);
                 ILibDamageSource libSource = ILibDamageSource.of(source);
                 InfoData.record(level, event.getNewDamage(), pos, velocity, libSource.confluence$isCritical() ? InfoData.Type.CRITICAL : InfoData.Type.DAMAGE);

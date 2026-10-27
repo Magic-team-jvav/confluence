@@ -111,12 +111,12 @@ public final class BossEntities {
                     .build());
 
     // 机械 Boss：毁灭者、体节与探测怪
-    public static final RegistryObject<EntityType<TheDestroyer>> THE_DESTROYER = withAttributes(registerEntity("the_destroyer", "毁灭者", EntityType.Builder.of(TheDestroyer::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(32).updateInterval(1)),
+    public static final RegistryObject<EntityType<TheDestroyer>> THE_DESTROYER = withAttributes(registerEntity("the_destroyer", "毁灭者", EntityType.Builder.of(TheDestroyer::new, MobCategory.MONSTER).sized(TheDestroyer.BODY_WIDTH, TheDestroyer.BODY_HEIGHT).clientTrackingRange(32).updateInterval(1)),
             () -> CreatureAttributeBuilder.boss().maxHealth(31200).armor(0).attackDamage(72.8).followRange(300)
                     .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.damage(18))
                     .build());
-    public static final RegistryObject<EntityType<BossWormPart>> THE_DESTROYER_PART = withAttributes(registerEntity("the_destroyer_part", "毁灭者体节", EntityType.Builder.of(BossWormPart::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(32).updateInterval(1).noSave()),
-            () -> CreatureAttributeBuilder.boss().maxHealth(31200).armor(1).attackDamage(66).followRange(96).build());
+    public static final RegistryObject<EntityType<DestroyerPart>> THE_DESTROYER_PART = registerEntity("the_destroyer_part", "毁灭者体节", EntityType.Builder.of(DestroyerPart::new, MobCategory.MISC)
+            .sized(TheDestroyer.BODY_WIDTH, TheDestroyer.BODY_HEIGHT).clientTrackingRange(32).updateInterval(1).noSave());
     public static final RegistryObject<EntityType<TheDestroyerProbe>> THE_DESTROYER_PROBE = withAttributes(registerEntity("the_destroyer_probe", "毁灭者探测器", EntityType.Builder.of(TheDestroyerProbe::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(100).armor(5).attackDamage(12).followRange(64).armorToughness(2)
                     .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.attackDamage(1))

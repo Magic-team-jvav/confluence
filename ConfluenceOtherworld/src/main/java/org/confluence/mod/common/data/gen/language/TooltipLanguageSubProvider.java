@@ -210,16 +210,16 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(ModEffects.GARDEN_GNOME_LUCK.get(), "A nearby garden gnome brings good luck", "附近的花园侏儒带来了好运");
         language.addTooltip(ModEffects.GO_OVER.get(), "5% increased soul damage", "灵魂伤害提高5%");
         language.addTooltip(ModEffects.ENHANCED_SOUL.get(), "12% increased soul damage", "灵魂伤害提高12%");
-        language.addTooltip(AccessoryItems.BAND_OF_SOUL.get(), "Slowly regenerates soul, 1 soul every 3 seconds; +1 soul from every soul collection", "缓慢回复灵魂，每3秒回复1点；每次收魂额外获得1点灵魂");
-        language.addTooltip(AccessoryItems.BAND_OF_SOUL_REGENERATION.get(), "Slowly regenerates soul and life; +1 soul from every soul collection", "缓慢回复灵魂和生命；每次收魂额外获得1点灵魂");
-        language.addTooltip(AccessoryItems.BAND_OF_MEDIUMSHIP.get(), "Slowly regenerates soul and increases maximum soul by 20; +1 soul from every soul collection", "缓慢回复灵魂，灵魂上限提高20；每次收魂额外获得1点灵魂");
+        language.addTooltip(AccessoryItems.BAND_OF_SOUL.get(), "Slowly regenerates soul, 1 soul every 3 seconds; gain 1 extra soul", "缓慢回复灵魂，每3秒回复1点；额外获得1点灵魂");
+        language.addTooltip(AccessoryItems.BAND_OF_SOUL_REGENERATION.get(), "Slowly regenerates soul and life; gain 1 extra soul", "缓慢回复灵魂和生命；额外获得1点灵魂");
+        language.addTooltip(AccessoryItems.BAND_OF_MEDIUMSHIP.get(), "Slowly regenerates soul and increases maximum soul by 20; gain 1 extra soul", "缓慢回复灵魂，灵魂上限提高20；额外获得1点灵魂");
         /// 灵魂手环系列：切换资源条时不再清空另一种资源的值（键的命名空间与 AccessoryItems 里的 tooltips(Confluence.MODID, 1) 对应）。
         language.add("tooltip.item.confluence.band_of_soul.1", "Switching between the soul and mana bars no longer clears the corresponding soul/mana value", "切换灵魂/魔力条不再清空对应的灵魂/魔力值");
         language.add("tooltip.item.confluence.band_of_soul_regeneration.1", "Switching between the soul and mana bars no longer clears the corresponding soul/mana value", "切换灵魂/魔力条不再清空对应的灵魂/魔力值");
         language.add("tooltip.item.confluence.band_of_mediumship.1", "Switching between the soul and mana bars no longer clears the corresponding soul/mana value", "切换灵魂/魔力条不再清空对应的灵魂/魔力值");
-        language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "Lets one weapon-granted skill be used without holding its weapon; rerolled after each cast; +1 soul from every soul collection", "无需手持武器即可使用一个由武器提供的技能，每次使用技能后重新随机；每次收魂额外获得1点灵魂");
+        language.addTooltip(AccessoryItems.MEMORY_OF_BONEBRAND.get(), "Keeps one weapon-granted skill usable without holding its weapon and stops other weapon skills from replacing it; gain 1 extra soul", "无需手持武器即可保留一个武器专属技能，其他武器的专属技能不会把它替换掉；额外获得1点灵魂");
         language.addTooltip(AccessoryItems.SOULCERER_EMBLEM.get(), "12% increased soul damage", "灵魂伤害提高12%");
-        language.addTooltip(AccessoryItems.SOUL_BINDING_CHAIN.get(), "Casting any soul attach skill also casts every other equipped one; +1 soul from every soul collection", "施放任意附魂技能时，同时释放其余所有已装备的附魂技能；每次收魂额外获得1点灵魂");
+        language.addTooltip(AccessoryItems.SOUL_BINDING_CHAIN.get(), "Casting any soul attach skill also casts every other equipped one; gain 1 extra soul", "施放任意附魂技能时，同时释放其余所有已装备的附魂技能；额外获得1点灵魂");
         language.addTooltip(AccessoryItems.FROSTBITE_SOUL_RING.get(), "20% reduced soul skill cooldown", "灵魂技能冷却缩短20%");
         language.add("tooltip.item.confluence.broken_glimmer.0", "While held, collecting soul has a 20% chance to restore 4 health", "手持时，每次获得灵魂有 20% 概率回复 4 点生命");
         language.add("tooltip.item.confluence.star_spirit.0", "Soul skill hits have a 30% chance to call down an extra falling star on that enemy", "灵魂技能命中敌人时，有 30% 概率额外召唤一颗坠星砸向该敌人");
@@ -228,6 +228,17 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.life_splendor.0", "Soul skill hits also poison the target for 5 seconds", "灵魂技能命中敌人时，额外附加 5 秒中毒");
         language.add("tooltip.item.confluence.day_and_night_alike.0", "Soul skill hits also apply shadowflame for 5 seconds", "灵魂技能命中敌人时，额外附加 5 秒暗影焰");
         language.add("tooltip.item.confluence.truffle_lantern.0", "While held, soul skill cooldowns are 30% shorter", "手持时，灵魂技能冷却缩短 30%");
+        // 魂师弓 / 祈灵之刃：效果数值与 SoulSkillParameters 里的同名常量对应
+        language.add("tooltip.item.confluence.soul_bow.0", "Arrows deal 3 more damage while you have more than 10 soul", "灵魂高于 10 点时，箭矢伤害 +3");
+        language.add("tooltip.item.confluence.soul_bow.1", "Killing an enemy grants 2 extra soul", "击杀敌怪时额外获得 2 点灵魂");
+        language.add("tooltip.item.confluence.soul_bow.2", "Dealing damage has a 50% chance to grant 1 extra soul", "造成伤害时有 50% 概率额外获得 1 点灵魂");
+        language.add("tooltip.item.confluence.soul_short_bow.0", "Arrows deal 3 more damage while you have more than 10 soul", "灵魂高于 10 点时，箭矢伤害 +3");
+        language.add("tooltip.item.confluence.soul_short_bow.1", "Killing an enemy grants 2 extra soul", "击杀敌怪时额外获得 2 点灵魂");
+        language.add("tooltip.item.confluence.soul_short_bow.2", "Dealing damage has a 50% chance to grant 1 extra soul", "造成伤害时有 50% 概率额外获得 1 点灵魂");
+        language.add("tooltip.item.confluence.spiritward_blade.0", "A fully charged swing pierces forward and also hits other enemies in its path", "满蓄力挥砍时向前贯穿，额外命中路径上的其他敌怪");
+        language.add("tooltip.item.confluence.spiritward_blade.1", "Melee damage +3 while you have more than 10 soul", "灵魂高于 10 点时，近战伤害 +3");
+        language.add("tooltip.item.confluence.spiritward_blade.2", "Killing an enemy grants 2 extra soul", "击杀敌怪时额外获得 2 点灵魂");
+        language.add("tooltip.item.confluence.spiritward_blade.3", "Dealing damage has a 50% chance to grant 1 extra soul", "造成伤害时有 50% 概率额外获得 1 点灵魂");
         language.addTooltip(ModEffects.SOUL_SURGE.get(), "Automatically casts a free Spirit Surge every 3 seconds", "每3秒自动释放一次灵魂激荡，且不消耗灵魂");
         language.addTooltip(ModEffects.BLOOD_RAGE.get(), "200% increased melee and ranged damage", "近战与远程伤害提高200%");
         language.addTooltip(ModEffects.SOUL_PLUNDER.get(), "25% increased melee and ranged damage", "近战与远程伤害提高25%");

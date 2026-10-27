@@ -17,6 +17,7 @@ import org.confluence.lib.color.IntegerARGB;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
+import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
@@ -33,6 +34,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     private static final float TWO_PI = (float) (2 * Math.PI);      // 2π
     private static final float OUTER_RADIUS = 80.0f;                // 轮盘外半径
     private static final float INNER_RADIUS = 20.0f;                // 轮盘内半径
+    private static final float SELECTED_NAME_MARGIN = 16.0f;        // 选中技能名与外环之间的间距
 
     // 颜色配置
     private static final IntegerARGB DEFAULT_COLOR_DATA = new IntegerARGB(127, 10, 8, 3);
@@ -190,18 +192,36 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         renderCurrentSelectedSkillBox(guiGraphics, poseStack);
 
         poseStack.popPose();
+        drawSelectedSkillName(guiGraphics, font, screenCenter, outerRadius);
         drawTooltip(guiGraphics, font);
+    }
+
+    /**
+     * 在轮盘上方居中绘制鼠标当前选中的技能名；鼠标停在内圈（未选中任何技能）时不绘制。
+     */
+    private void drawSelectedSkillName(GuiGraphics guiGraphics, Font font, Vec2 screenCenter, float outerRadius) {
+        if (wheelSelection < 0 || wheelSelection >= boxList.size()) {
+            return;
+        }
+        SoulSkillStack stack = boxList.get(wheelSelection).getSkillStack();
+        if (stack == null || stack.isEmpty()) {
+            return;
+        }
+        int x = (int) screenCenter.x;
+        int y = (int) (screenCenter.y - outerRadius - SELECTED_NAME_MARGIN - font.lineHeight);
+        guiGraphics.drawCenteredString(font, stack.getNameComponent(), x, y, 0xFFFFFFFF);
     }
 
     /**
      * 计算轮盘角度参数
      */
     private WheelAngleParams calculateWheelAngles(int skillTotalNumber) {
-        // 调整边数以匹配技能数量
-        int sidesNumber = Math.max(DEFAULT_SIDES_NUMBER, skillTotalNumber);
-
-        // 每个技能分配到的片数
-        int skillSidesNumber = Math.max(1, sidesNumber / skillTotalNumber);
+        /// 每条扇形都由 `skillSidesNumber` 条小边拼成，所以总边数必须是技能数的整数倍，
+        /// 否则分组会把一圈摊成比技能数更多的扇区：5 个技能时 `24 / 5 = 4` 条边一组，
+        /// 24 条边正好被分成 6 份（7 个技能时 3 条边一组 → 8 份），
+        /// 与技能框按 `radiansPerSkill` 的分布对不上。这里按技能数向上取整补齐边数。
+        int skillSidesNumber = Math.max(1, (DEFAULT_SIDES_NUMBER + skillTotalNumber - 1) / skillTotalNumber);
+        int sidesNumber = skillTotalNumber * skillSidesNumber;
 
         float radiansPerSide = (float) Math.toRadians(360f / sidesNumber);
         float radiansPerSkill = (float) Math.toRadians(360f / skillTotalNumber);

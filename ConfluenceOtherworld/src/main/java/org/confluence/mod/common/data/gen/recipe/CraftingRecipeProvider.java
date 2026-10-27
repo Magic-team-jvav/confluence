@@ -1050,6 +1050,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(writer, BowItems.STAR_WEEP.toStack(),
                 Ingredient.of(SwordItems.STARFURY), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
 
+        // 星乐：星怒 + 钻石/红玉法杖，无序
+        shapeless(writer, ManaWeaponItems.STAR_MUSIC.toStack(),
+                Ingredient.of(SwordItems.STARFURY), Ingredient.of(ManaWeaponItems.DIAMOND_STAFF, ManaWeaponItems.RUBY_STAFF));
+        // 星惧：星怒 + 钻石/红玉鞭，无序
+        shapeless(writer, WhipItems.STAR_FEAR.toStack(),
+                Ingredient.of(SwordItems.STARFURY), Ingredient.of(WhipItems.DIAMOND_WHIP, WhipItems.RUBY_WHIP));
+
         // 灵魂头套 / 灵魂长袍：皮革帽子、长袍 + 魂瓶
         shaped(writer, PortShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(Items.LEATHER_HELMET),

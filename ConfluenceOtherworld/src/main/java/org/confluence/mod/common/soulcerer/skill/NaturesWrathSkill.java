@@ -14,12 +14,19 @@ public class NaturesWrathSkill extends SoulSkill {
                 SoulSkillParameters.NATURES_WRATH_SOUL_COST, SoulSkillParameters.NATURES_WRATH_COOLDOWN_TICKS);
     }
 
+    /// 与迷魂孢雾同一套口径：武器伤害只按 60% 计入，技能说明的实时伤害也走同一比例。
+    @Override
+    public float getWeaponShare() {
+        return SoulSkillParameters.NATURES_WRATH_WEAPON_SHARE;
+    }
+
     @Override
     public void use(Player player, SoulSkillStack skillStack) {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack);
+        float weaponDamage = PlayerUtils.getWeaponSoulDamage(player) * getWeaponShare();
+        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack, weaponDamage);
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
         int count = SoulSkillParameters.NATURES_WRATH_COUNT;

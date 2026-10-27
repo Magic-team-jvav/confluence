@@ -9,6 +9,11 @@ public class ShortBowItem extends BaseTerraBowItem {
         super(baseDamage, new Properties().durability(durability));
     }
 
+    /// 直接给定物品属性（例如不带耐久 = 不可破坏）的短弓。
+    public ShortBowItem(float baseDamage, Properties properties) {
+        super(baseDamage, properties);
+    }
+
     public float getShortPowerForTime(int pCharge) {
         float f = (float) pCharge / MAX_DRAW_DURATION;
         f = (f * f + f * 2.0F) / 3.0F;

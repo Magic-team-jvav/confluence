@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonReader;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.FileUtil;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.CriterionProgress;
@@ -116,6 +117,15 @@ public final class AchievementUtils {
         if (map == null) return;
         UUID id = player.getGameProfile().getId();
         PlayerAdvancements.Data data = map.get(id);
+        if (data == null) {
+            // Auth mods (e.g. DirectAuth) can swap the server-side UUID (offline -> online) after the client replied
+            // with the offline UUID derived from the name, so fall back to that one.
+            data = map.get(UUIDUtil.createOfflinePlayerUUID(player.getGameProfile().getName()));
+        }
+        if (data == null && map.size() == 1) {
+            // The map is bound to this player's own connection, so a single entry can only be theirs.
+            data = map.values().iterator().next();
+        }
         if (data == null) return;
         IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
     }

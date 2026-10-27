@@ -18,6 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -25,6 +26,9 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 /// 机械骷髅王本体及四条可破坏机械臂的权威控制器。
 ///
@@ -75,6 +79,12 @@ public class SkeletronPrime extends BaseBoss {
     private int destroyedArms;
     private int combatCycle;
     private int contactCooldown = 20;
+
+    /// 有效受击时通知客户端生成机械火花的实体事件编号。
+    private static final byte HURT_SPARK_EVENT = 72;
+    /// 同一部位两次火花之间的最短间隔，单位 tick。
+    private static final int HURT_SPARK_INTERVAL = 3;
+    private int lastSparkTick = -HURT_SPARK_INTERVAL;
 
     public SkeletronPrime(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -334,12 +344,30 @@ public class SkeletronPrime extends BaseBoss {
                 && super.canAttack(entity);
     }
 
+    private void emitHurtSparks() {
+        if (!level().isClientSide && tickCount - lastSparkTick >= HURT_SPARK_INTERVAL) {
+            lastSparkTick = tickCount;
+            level().broadcastEntityEvent(this, HURT_SPARK_EVENT);
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte event) {
+        if (level().isClientSide && event == HURT_SPARK_EVENT) {
+            MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
+                    Confluence.asResource("mechanical_boss_hurt_spark"),
+                    new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
+        } else super.handleEntityEvent(event);
+    }
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.is(DamageTypeTags.IS_DROWNING)) {
             return false;
         }
-        return super.hurt(source, amount);
+        boolean damaged = super.hurt(source, amount);
+        if (damaged && getDamageFeedbackTarget() == this) emitHurtSparks();
+        return damaged;
     }
 
     @Override

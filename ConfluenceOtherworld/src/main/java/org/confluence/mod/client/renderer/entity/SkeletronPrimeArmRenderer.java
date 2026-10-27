@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
@@ -29,6 +30,12 @@ public class SkeletronPrimeArmRenderer extends BossGeoRenderer<SkeletronPrimeArm
     public SkeletronPrimeArmRenderer(EntityRendererProvider.Context context) {
         super(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/boss/skeletron_prime.geo.json"), Confluence.asResource("textures/entity/boss/skeletron_prime.png"), null));
         this.shadowRadius = 0.5F;
+    }
+
+    /// 机械表面受击使用火花反馈，不叠加生物受伤红色。
+    @Override
+    public int getPackedOverlay(SkeletronPrimeArm entity, float u, float partialTick) {
+        return OverlayTexture.NO_OVERLAY;
     }
 
     @Override

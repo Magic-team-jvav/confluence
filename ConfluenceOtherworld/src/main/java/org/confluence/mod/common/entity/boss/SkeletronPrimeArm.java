@@ -16,12 +16,16 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.projectile.PrimeCannonballProjectile;
 import org.confluence.mod.common.entity.projectile.PrimeLaserProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -79,6 +83,12 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
     private int meleeBehaviorTick;
     private boolean previousOwnerSpinning;
     private Vec3 dashDirection = Vec3.ZERO;
+
+    /// 有效受击时通知客户端生成机械火花的实体事件编号。
+    private static final byte HURT_SPARK_EVENT = 72;
+    /// 同一部位两次火花之间的最短间隔，单位 tick。
+    private static final int HURT_SPARK_INTERVAL = 3;
+    private int lastSparkTick = -HURT_SPARK_INTERVAL;
 
     public SkeletronPrimeArm(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -328,6 +338,22 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
     private void moveToNextPosition() {
         Vec3 movement = getDeltaMovement();
         setPos(getX() + movement.x, getY() + movement.y, getZ() + movement.z);
+    }
+
+    private void emitHurtSparks() {
+        if (!level().isClientSide && tickCount - lastSparkTick >= HURT_SPARK_INTERVAL) {
+            lastSparkTick = tickCount;
+            level().broadcastEntityEvent(this, HURT_SPARK_EVENT);
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte event) {
+        if (level().isClientSide && event == HURT_SPARK_EVENT) {
+            MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
+                    Confluence.asResource("mechanical_boss_hurt_spark"),
+                    new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
+        } else super.handleEntityEvent(event);
     }
 
     @Override

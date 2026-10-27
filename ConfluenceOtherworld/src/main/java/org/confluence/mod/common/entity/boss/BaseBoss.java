@@ -57,6 +57,8 @@ import java.util.*;
 /// {@value #DISENGAGE_TICKS} tick 的脱战，随后无死亡奖励、无击杀消息地消失。
 public abstract class BaseBoss extends BaseMonster implements Boss {
     protected final ServerBossEvent bossEvent;
+    /// 仅在体节转交伤害的同步调用期间有效，用于将受击显示定位到实际命中的部位。
+    private @Nullable Entity damageFeedbackTarget;
     private final List<Entity> subEntities = new ArrayList<>();
     /// 只在成员变化时重建，供渲染和其他 Boss 逻辑安全遍历，避免回调中解绑实体修改迭代器。
     private List<Entity> subEntitiesSnapshot = List.of();
@@ -320,6 +322,21 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     }
 
     // === Damage ===
+
+    public final Entity getDamageFeedbackTarget() {
+        return damageFeedbackTarget == null ? this : damageFeedbackTarget;
+    }
+
+    public final boolean hurtFromPart(BaseBossPart<?> part, DamageSource source, float amount) {
+        if (part.isRemoved() || part.getOwner() != this) return false;
+        Entity previous = damageFeedbackTarget;
+        damageFeedbackTarget = part;
+        try {
+            return hurt(source, amount);
+        } finally {
+            damageFeedbackTarget = previous;
+        }
+    }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {

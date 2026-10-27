@@ -49,15 +49,11 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     private static final EntityDataAccessor<Boolean> TAIL = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> SEGMENT_HEALTH = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> HURT_FLASH_TICKS = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DESTROYER_FLAPS_OPEN = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Float> DESTROYER_SEGMENT_ROLL = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.FLOAT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private @Nullable BaseWormBoss owner;
     private @Nullable UUID ownerUUID;
     private int hurtCooldown;
-    private boolean destroyerDimensions;
-    private float previousSegmentRoll;
     private @Nullable Vec3 contactSweepStart;
     private int clientLerpSteps;
     private double clientLerpX;
@@ -90,7 +86,6 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
         this.entityData.set(INDEX, index);
         this.entityData.set(TAIL, tail);
         this.entityData.set(SEGMENT_HEALTH, owner.getInitialSegmentHealth(index));
-        destroyerDimensions = owner instanceof TheDestroyer;
         refreshDimensions();
         if (initializePosition) this.setPos(owner.position());
     }
@@ -180,7 +175,6 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     @Override
     public void tick() {
-        previousSegmentRoll = getSegmentRoll();
         super.tick();
         if (level().isClientSide) {
             tickClientInterpolation();
@@ -200,50 +194,10 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
             return;
         }
 
-        boolean shouldUseDestroyerDimensions = head instanceof TheDestroyer;
-        if (destroyerDimensions != shouldUseDestroyerDimensions) {
-            destroyerDimensions = shouldUseDestroyerDimensions;
-            refreshDimensions();
-        }
-
         if (!level().isClientSide) {
             tickCollisionAttack(head);
             tickEaterRangedAttack(head);
-            if (head instanceof TheDestroyer destroyer) {
-                updateDestroyerPresentation(destroyer);
-            }
         }
-    }
-
-    /// 同步毁灭者体节侧翼状态。体节是可随区块重建的临时实体，因此它只保存渲染所需
-    /// 的镜像；阶段和探测器释放记录始终以头部为准。
-    void updateDestroyerPresentation(TheDestroyer destroyer) {
-        boolean insideSolid = level().getBlockState(blockPosition()).isSolid();
-        boolean open = destroyer.getPhase() == TheDestroyer.Phase.SKY
-                || destroyer.getPhase() == TheDestroyer.Phase.GROUND
-                && !insideSolid;
-        entityData.set(DESTROYER_FLAPS_OPEN, open);
-    }
-
-    public boolean isDestroyerProbeSegment() {
-        return getSegmentIndex() > 0
-                && (getSegmentIndex() - 1) % 2 == 0;
-    }
-
-    public boolean areDestroyerFlapsOpen() {
-        return entityData.get(DESTROYER_FLAPS_OPEN);
-    }
-
-    public float getSegmentRoll() {
-        return entityData.get(DESTROYER_SEGMENT_ROLL);
-    }
-
-    public float getPreviousSegmentRoll() {
-        return previousSegmentRoll;
-    }
-
-    void setSegmentRoll(float roll) {
-        entityData.set(DESTROYER_SEGMENT_ROLL, roll);
     }
 
     private void tickCollisionAttack(BaseWormBoss head) {
@@ -342,8 +296,6 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
         builder.define(TAIL, false);
         builder.define(SEGMENT_HEALTH, 0.0F);
         builder.define(HURT_FLASH_TICKS, 0);
-        builder.define(DESTROYER_FLAPS_OPEN, false);
-        builder.define(DESTROYER_SEGMENT_ROLL, 0.0F);
     }
 
     @Override
@@ -431,9 +383,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
-        EntityDimensions base = destroyerDimensions
-                ? EntityDimensions.fixed(3.0F, 3.0F)
-                : getType().getDimensions();
+        EntityDimensions base = getType().getDimensions();
         BaseWormBoss head = getOwner();
         float ownerScale = head == null ? 1.0F : head.getScale();
         float ownScale = getScale();

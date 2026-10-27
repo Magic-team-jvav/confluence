@@ -14,6 +14,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.mixed.ILibDamageSource;
+import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.summoner.attachment.InfoData;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
@@ -81,7 +82,7 @@ public final class SummonerEvents {
                         }
                     }
                 }
-                Vec3 pos = target.getBoundingBox().getCenter();
+                Vec3 pos = target instanceof BaseBoss boss ? boss.getDamageFeedbackTarget().getBoundingBox().getCenter() : target.getBoundingBox().getCenter();
                 Vec3 velocity = new Vec3(0, 2, 0).offsetRandom(level.getRandom(), 0.5F).subtract(Vec3.ZERO).scale(0.4);
                 ILibDamageSource libSource = ILibDamageSource.of(source);
                 InfoData.record(level, event.getNewDamage(), pos, velocity, libSource.confluence$isCritical() ? InfoData.Type.CRITICAL : InfoData.Type.DAMAGE);

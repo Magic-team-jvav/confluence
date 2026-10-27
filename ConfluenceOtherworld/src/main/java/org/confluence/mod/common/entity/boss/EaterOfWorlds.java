@@ -1,8 +1,10 @@
 package org.confluence.mod.common.entity.boss;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
+import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,13 +28,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.mod.client.particle.DestroyerDebrisParticle;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
+import org.confluence.mod.common.entity.ai.WormSteering;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -90,11 +96,19 @@ public class EaterOfWorlds extends BaseWormBoss {
     private static final int DASH_TICKS = 120;
     /// 常态追击的速度上限（方块/tick）及跨开阔场地重新索敌的半径（方块）。
     private static final double PURSUIT_SPEED = 0.62;
+    /// 头部最小转弯半径，以实际体节间距为单位。
+    private static final double TURN_RADIUS_SEGMENTS = 4.0;
     /// 重新搜索玩家目标的最大距离，单位格。
     private static final double TARGET_SEARCH_RANGE = 300.0D;
 
     private static final EntityDataAccessor<Optional<UUID>> ENCOUNTER_UUID = SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean> PRIMARY_HEAD = SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockState> DEBRIS_STATE = SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<BlockPos> DEBRIS_ORIGIN = SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.BLOCK_POS);
+    /// 头部出土时通知客户端生成完整方块飞溅的事件编号。
+    private static final byte DEBRIS_EVENT = 73;
+    /// 同一头部两次出土飞溅的最短间隔，单位 tick。
+    private static final int DEBRIS_INTERVAL = 10;
     // 仅保存当前服务端世界内同一场世界吞噬者的多个分裂头；弱键避免卸载世界被静态表持有。
     private static final Map<ServerLevel, Map<UUID, EncounterState>> ENCOUNTERS = new WeakHashMap<>();
 
@@ -109,6 +123,7 @@ public class EaterOfWorlds extends BaseWormBoss {
     private Vec3 wanderCurveStart = Vec3.ZERO;
     private Vec3 wanderCurveControl = Vec3.ZERO;
     private boolean nextWanderBelow = true;
+    private int lastDebrisTick = -DEBRIS_INTERVAL;
     private int clientLerpSteps;
     private double clientLerpX;
     private double clientLerpY;
@@ -140,6 +155,8 @@ public class EaterOfWorlds extends BaseWormBoss {
         super.defineSynchedData(builder);
         builder.define(ENCOUNTER_UUID, Optional.empty());
         builder.define(PRIMARY_HEAD, true);
+        builder.define(DEBRIS_STATE, Blocks.AIR.defaultBlockState());
+        builder.define(DEBRIS_ORIGIN, BlockPos.ZERO);
     }
 
     @Override
@@ -720,6 +737,8 @@ public class EaterOfWorlds extends BaseWormBoss {
 
     @Override
     public void tick() {
+        BlockPos previousPos = blockPosition();
+        BlockState previousState = !level().isClientSide && level().hasChunkAt(previousPos) ? level().getBlockState(previousPos) : Blocks.AIR.defaultBlockState();
         if (isAlive() && !level().isClientSide) {
             acquireTargetFromHeadRange();
             restoreEncounterTargetBeforeLifecycle();
@@ -732,9 +751,31 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
         synchronizeEncounterTarget();
         tickWormMovement();
+        tickEmergenceDebris(previousPos, previousState);
         tickHeadSpit();
         refreshSegmentsAfterHeadMovement();
         tickEntityContactAttack();
+    }
+
+    /// 仅头部从有碰撞的方块进入空气时触发；分裂后的头部各自检测，不改动地形。
+    private void tickEmergenceDebris(BlockPos previousPos, BlockState previousState) {
+        if (!(level() instanceof ServerLevel server) || tickCount - lastDebrisTick < DEBRIS_INTERVAL
+                || previousState.getCollisionShape(level(), previousPos).isEmpty()
+                || !level().hasChunkAt(blockPosition()) || !level().getBlockState(blockPosition()).isAir())
+            return;
+        lastDebrisTick = tickCount;
+        entityData.set(DEBRIS_STATE, previousState);
+        entityData.set(DEBRIS_ORIGIN, previousPos);
+        server.getChunkSource().broadcastAndSend(this,
+                new ClientboundSetEntityDataPacket(getId(), entityData.getNonDefaultValues()));
+        level().broadcastEntityEvent(this, DEBRIS_EVENT);
+    }
+
+    @Override
+    public void handleEntityEvent(byte event) {
+        if (level().isClientSide && event == DEBRIS_EVENT) {
+            DestroyerDebrisParticle.spawn(entityData.get(DEBRIS_ORIGIN), entityData.get(DEBRIS_STATE));
+        } else super.handleEntityEvent(event);
     }
 
     /// 按 TerraEntity 的实际索敌语义，从每条已加载头部周围 300 格直接选择玩家。
@@ -935,7 +976,9 @@ public class EaterOfWorlds extends BaseWormBoss {
     /// 世吞的移动由专用状态机在服务端直接提交，不能把速度留给下一刻的通用生物移动。
     /// 否则原版控制器会在真正位移前衰减或覆盖速度，表现为有目标却停在原地。
     private void steerAndAdvance(Vec3 destination, double speed, float maximumTurnDegrees) {
-        steerInThreeDimensions(destination, speed, maximumTurnDegrees);
+        float turn = (float) Math.min(maximumTurnDegrees,
+                Math.toDegrees(speed / (getEffectiveSegmentSpacing() * TURN_RADIUS_SEGMENTS)));
+        steerInThreeDimensions(destination, speed, turn);
         Vec3 movement = getDeltaMovement();
         if (movement.lengthSqr() > 1.0E-7) {
             setPos(position().add(movement));
@@ -1006,11 +1049,14 @@ public class EaterOfWorlds extends BaseWormBoss {
     }
 
     private void moveDirectlyAlongCurve(Vec3 nextPosition) {
-        Vec3 movement = nextPosition.subtract(position());
+        Vec3 desired = nextPosition.subtract(position());
+        double speed = isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED;
+        if (desired.lengthSqr() > speed * speed) desired = desired.normalize().scale(speed);
+        Vec3 movement = WormSteering.limit(getLookAngle(), desired, getEffectiveSegmentSpacing() * TURN_RADIUS_SEGMENTS, Math.toRadians(ALIGN_TURN_DEGREES));
         if (movement.lengthSqr() > 1.0E-7) {
-            setPos(nextPosition);
+            setPos(position().add(movement));
             hasImpulse = true;
-            faceCombatDirection(movement, 12.0F, 12.0F);
+            faceCombatDirection(movement, 180.0F, 180.0F);
         }
         setDeltaMovement(Vec3.ZERO);
     }

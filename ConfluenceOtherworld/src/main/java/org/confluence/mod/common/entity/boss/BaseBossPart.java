@@ -190,7 +190,7 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
             return false;
         }
 
-        boolean ownerHurt = resolvedOwner.hurt(source, amount * ownerMultiplier);
+        boolean ownerHurt = resolvedOwner.hurtFromPart(this, source, amount * ownerMultiplier);
         if (!isDestructible() || isInvulnerableTo(source)) {
             return ownerHurt;
         }

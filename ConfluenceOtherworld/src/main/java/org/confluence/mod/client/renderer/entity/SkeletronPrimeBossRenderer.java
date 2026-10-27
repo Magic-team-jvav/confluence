@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;
@@ -20,6 +21,12 @@ import software.bernie.geckolib.cache.object.GeoBone;
 public class SkeletronPrimeBossRenderer extends BossGeoRenderer<SkeletronPrime> {
     public SkeletronPrimeBossRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/skeletron_prime"));
+    }
+
+    /// 机械表面受击使用火花反馈，不叠加生物受伤红色。
+    @Override
+    public int getPackedOverlay(SkeletronPrime entity, float u, float partialTick) {
+        return OverlayTexture.NO_OVERLAY;
     }
 
     @Override

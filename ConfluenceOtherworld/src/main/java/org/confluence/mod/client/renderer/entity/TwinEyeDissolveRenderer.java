@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
@@ -49,6 +50,12 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoR
         this.edgeRed = ((edgeColor >> 16) & 0xFF) / 255.0F;
         this.edgeGreen = ((edgeColor >> 8) & 0xFF) / 255.0F;
         this.edgeBlue = (edgeColor & 0xFF) / 255.0F;
+    }
+
+    /// 机械表面受击使用火花反馈，不叠加生物受伤红色。
+    @Override
+    public int getPackedOverlay(T entity, float u, float partialTick) {
+        return OverlayTexture.NO_OVERLAY;
     }
 
     @Override

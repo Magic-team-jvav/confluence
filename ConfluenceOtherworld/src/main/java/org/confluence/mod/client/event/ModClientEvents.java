@@ -36,11 +36,8 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.lib.common.item.GroupItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
@@ -128,6 +125,7 @@ import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.util.ClientUtils;
+import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
@@ -144,10 +142,6 @@ import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.entity.ModEntities.*;
 
 public final class ModClientEvents {
-    private static final int GROUP_ICON_SIZE = 7;
-    private static final ResourceLocation PLUS_SPRITE = Confluence.asResource("plus");
-    private static final ResourceLocation MINUS_SPRITE = Confluence.asResource("minus");
-
     public static void init() {
         PortEventHandler.addListener(ModClientEvents::fmlClientSetup);
         PortEventHandler.addListener(ModClientEvents::modConfig$Loading);
@@ -172,6 +166,7 @@ public final class ModClientEvents {
         PortEventHandler.addListener(ModClientEvents::registerShaders);
         PortEventHandler.addListener(ModClientEvents::registerCustomBestiaryEntryModel);
         PortEventHandler.addListener(ModClientEvents::registerItemDecorations);
+        PortEventHandler.addListener(ModClientEvents::registerLocatorPreTransformer);
     }
 
     private static void fmlClientSetup(FMLClientSetupEvent event) {
@@ -1216,20 +1211,6 @@ public final class ModClientEvents {
                 event.register(item, ModClientSetups.LEFT_CLICK_COOLDOWN);
             }
         }
-        if (LibStartupConfig.itemGroups()) {
-            // 这两张图本身为 7×7，不能填入控件或预期显示尺寸。
-            event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {
-                GroupItem.Stacks stacks = stack.get(ConfluenceMagicLib.GROUP_STACKS);
-                if (stacks != null) {
-                    PoseStack pose = guiGraphics.pose();
-                    pose.pushPose();
-                    pose.translate(xOffset + 9, yOffset + 9, 200);
-                    guiGraphics.blitSprite(stacks.isVisible() ? MINUS_SPRITE : PLUS_SPRITE, 0, 0, GROUP_ICON_SIZE, GROUP_ICON_SIZE);
-                    pose.popPose();
-                }
-                return false;
-            });
-        }
     }
 
     private static void registerShaders(RegisterShadersEvent event) {
@@ -1244,5 +1225,9 @@ public final class ModClientEvents {
 
     private static void registerClientCommands(RegisterClientCommandsEvent event) {
         VoidSeaRenderSettings.registerCommand(event.getDispatcher());
+    }
+
+    private static void registerLocatorPreTransformer(RegisterLocatorPreTransformerEvent event) {
+        event.register(BossEntities.THE_DESTROYER_PART.get(), DestroyerRenderer.TRANSFORMER);
     }
 }

@@ -16,6 +16,9 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 毁灭者专用临时体节；共享本体生命，不参与世吞断节及其移动逻辑。
@@ -134,5 +137,12 @@ public final class DestroyerPart extends BaseBossPart<TheDestroyer> implements G
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         /// TODO 侧翼开合动画补齐后由 OPEN 控制切换，滚动单独应用于身体纵轴。
+        RawAnimation fire = RawAnimation.begin().thenLoop("fire");
+        controllers.add(new AnimationController<>(this, state -> {
+            if (!isTail() && getIndex() % 2 == 1 && getIndex() < 10) {
+                return state.setAndContinue(fire);
+            }
+            return PlayState.STOP;
+        }));
     }
 }

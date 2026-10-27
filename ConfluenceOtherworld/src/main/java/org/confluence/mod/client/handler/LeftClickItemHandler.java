@@ -16,8 +16,7 @@ public final class LeftClickItemHandler {
 
     private LeftClickItemHandler() {}
 
-    public static void tick(LocalPlayer player, boolean attackHeld) {
-        Minecraft minecraft = Minecraft.getInstance();
+    public static void tick(Minecraft minecraft, LocalPlayer player, boolean attackHeld) {
         ItemStack stack = player.getMainHandItem();
         boolean active = (attackHeld || mouseHeld) && !player.isSpectator() && minecraft.screen == null && !minecraft.isPaused()
                 && stack.getItem() instanceof ILeftClickStateItem;
@@ -46,7 +45,7 @@ public final class LeftClickItemHandler {
     public static void mouseButton(LocalPlayer player, boolean pressed) {
         mouseHeld = pressed;
         if (pressed) {
-            tick(player, true);
+            tick(Minecraft.getInstance(), player, true);
         } else if (!activeStack.isEmpty()) {
             LeftClickItemActionPacketC2S.sendReleased();
             activeStack = ItemStack.EMPTY;

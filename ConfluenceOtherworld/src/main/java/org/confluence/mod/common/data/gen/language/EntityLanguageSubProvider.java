@@ -7,7 +7,6 @@ public final class EntityLanguageSubProvider {
     private EntityLanguageSubProvider() {}
 
     public static void addTranslations(TranslationConsumer language) {
-        language.add("summon.confluence.vex_totem", "Vex", "恼鬼");
         language.add("entity.confluence.brown_cluckshroom", "Brown Cluckshroom", "棕色咯菇");
         language.add("entity.confluence.butterfly.gold", "Gold Butterfly", "金蝴蝶");
         language.add("entity.confluence.butterfly.julia", "Julia Butterfly", "珠袖蝶");

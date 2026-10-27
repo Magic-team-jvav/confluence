@@ -229,6 +229,7 @@ dependencies {
 
     modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     modCompileOnly("com.eliotlash.mclib:mclib:20")
+    modImplementation("top.theillusivec4.curios:curios-forge:${curios_version}")
 
     modImplementation(jarJar("org.mesdag:ParticleStorm-forge-${minecraft_version}:${particlestorm_version}"))
     modImplementation(jarJar("org.mesdag:ThreeDimensionParticle-forge-${minecraft_version}:${thr_dim_particle_version}"))
@@ -238,25 +239,20 @@ dependencies {
         changing = true
     }
 
-    modImplementation("top.theillusivec4.curios:curios-forge:${curios_version}")
-
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-    modRuntimeOnly("maven.modrinth:spark:1.10.53-forge")
-
-//    implementation jarJar(files('libs/LanguageFixer.jar'))
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.3"))
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
 
     if (false) {
         modRuntimeOnly("curse.maven:terramity-1084134:6054971")
         modRuntimeOnly("curse.maven:caelus-308989:5281700")
         modRuntimeOnly("curse.maven:patchouli-306770:7731017")
     }
+    modRuntimeOnly("maven.modrinth:spark:1.10.53-forge")
 //    modRuntimeOnly("curse.maven:bigger-stacks-564896:8263248")
 //    modRuntimeOnly('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-3.0.1.10')
 //    modRuntimeOnly("curse.maven:lithostitched-936015:6742615")
@@ -269,7 +265,7 @@ dependencies {
 //    modRuntimeOnly("curse.maven:lendercataclysm-551586:8246047")
 //    modRuntimeOnly("curse.maven:lionfish-api-1001614:8095554")
 //    modImplementation("net.nikdo53:NeoBackports:1.4.2")
-    if (false) {
+    if (true) {
         modRuntimeOnly("curse.maven:starcatcher-1357603:9169177")
         modRuntimeOnly("curse.maven:fancy-tab-sections-1537163:8976588")
         modRuntimeOnly("curse.maven:libtooltips-1370245:8808488")

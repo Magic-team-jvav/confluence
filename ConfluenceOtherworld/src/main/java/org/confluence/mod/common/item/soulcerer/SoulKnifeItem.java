@@ -1,12 +1,16 @@
 package org.confluence.mod.common.item.soulcerer;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.item.IWeaponTooltip;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
 /// 祈灵之刃：战士侧副武器，基础伤害走近战属性，灵魂只作为附条件增伤与额外收魂的来源。
 ///
@@ -27,5 +31,15 @@ public class SoulKnifeItem extends SoulSecondaryWeaponItem implements IWeaponToo
     @Override
     public int getEnchantmentValue() {
         return 15;
+    }
+
+    /// 说明行：贯穿挥砍、灵魂阈值增伤、击杀收魂与命中概率收魂（数值见 `SoulSkillParameters`）。
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        String key = "tooltip." + getDescriptionId();
+        for (int index = 0; index < 4; index++) {
+            tooltip.add(Component.translatable(key + "." + index).withStyle(ChatFormatting.GRAY));
+        }
     }
 }

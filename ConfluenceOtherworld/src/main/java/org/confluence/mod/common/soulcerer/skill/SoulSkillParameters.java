@@ -189,6 +189,10 @@ public class SoulSkillParameters {
     public static final float NATURES_WRATH_DAMAGE = 8.0F;
     public static final float NATURES_WRATH_SPEED = 2.0F;
     public static final int NATURES_WRATH_POISON_DURATION_TICKS = 5 * SharedConstants.TICKS_PER_SECOND;
+    /// 自然之惩戒的最终伤害公式：(武器伤害 × 60% + 技能自身伤害) × (1 + 灵魂伤害增伤百分比)。
+    ///
+    /// 与迷魂孢雾同一套口径：灵魂增伤那一段由统一伤害流程乘一次，这里只声明“武器伤害只吃 60%”。
+    public static final float NATURES_WRATH_WEAPON_SHARE = 0.6F;
     /// 亵渎之魂：地面钻出的火球弹幕，命中小范围爆炸；威力 7，冷却 0.8 秒，消耗 4 魂。
     public static final float PROFANE_SOUL_SOUL_COST = 4.0F;
     public static final int PROFANE_SOUL_COOLDOWN_TICKS = 16;

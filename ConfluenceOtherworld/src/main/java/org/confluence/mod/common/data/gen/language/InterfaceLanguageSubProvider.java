@@ -121,7 +121,7 @@ public final class InterfaceLanguageSubProvider {
 
         language.add("confluence.soulcerer_skill.backlash_resistance.desc", "Overdraft damage is reduced by 60%.", "被动：耗尽灵魂扣血施法时，扣除伤害减少 60%。");
         language.add("confluence.soulcerer_skill.soul_control.desc", "Skill damage doubled, cooldowns lengthened by 50%.", "被动：技能伤害提高 100%，冷却延长 50%。");
-        language.add("confluence.soulcerer_skill.soul_rotation.desc", "Passive: after casting a soul attach skill, one key press chains the rest of your equipped attach skills; other skills simply advance the selection.", "被动：施放附魂技能后，一次按键即可把其余已装备的附魂技能依次连锁释放（强主动技能除外）；其他技能只自动切换到下一个。");
+        language.add("confluence.soulcerer_skill.soul_rotation.desc", "Passive: casting any skill advances the selection to the next castable skill; if the selected skill is on cooldown, one key press jumps straight to the next castable one.", "被动：施放任意技能后自动切换到下一个可释放的技能；当前技能还在冷却时，一次按键会直接跳到下一个可释放的技能。");
         language.add("confluence.soulcerer_skill.life_return.desc", "Lost health is recorded and returned as soul.", "开启后记录失去的生命，结束时按 70% 转化为灵魂值。");
         language.add("confluence.soulcerer_skill.survival_instinct.desc", "Below 40 health, spend soul to halve potion sickness.", "血量低于 40 时，消耗 10 灵魂使耐药性 debuff 时长减半。");
         language.add("confluence.soulcerer_skill.star_call.desc", "Drops a falling star on the nearest up to 2 enemies within range; no enemy means no star, and the extra volleys cost no soul.", "范围内最近的至多 2 只敌怪头顶会落下坠星；没有敌怪就不落，且施放之后的每轮齐射都不消耗灵魂。");

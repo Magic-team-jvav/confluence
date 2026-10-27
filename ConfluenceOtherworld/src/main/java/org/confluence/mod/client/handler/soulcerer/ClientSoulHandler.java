@@ -188,14 +188,21 @@ public final class ClientSoulHandler {
     }
 
     /// 在支持滚轮的快捷面板中切换当前技能。
+    ///
+    /// 方向约定：滚轮向下（scrollDeltaY < 0）= 下一个技能，向上 = 上一个技能；
+    /// 卡牌样式的槽位索引方向与滚轮符号相反，所以卡牌样式下要先取反。
     public static boolean scrollSoulSkills(double scrollDeltaY) {
-        if (ClientConfigs.soulQuickSkillStyle == ClientSoulHandler.Type.ROULETTE_WHEEL_BIG) {
+        ClientSoulHandler.Type style = ClientConfigs.soulQuickSkillStyle;
+        if (style == ClientSoulHandler.Type.ROULETTE_WHEEL_BIG) {
             return false;
         }
         if (!active) {
             return false;
         }
-        adjustSoulSkillTarget((int) scrollDeltaY);
+        int steps = (int) scrollDeltaY;
+        boolean cardStyle = style == ClientSoulHandler.Type.CARD_HORIZONTAL_L
+                || style == ClientSoulHandler.Type.CARD_HORIZONTAL_R;
+        adjustSoulSkillTarget(cardStyle ? -steps : steps);
         return true;
     }
 

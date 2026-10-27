@@ -258,16 +258,11 @@ public final class PlayerUtils {
     }
 
     /// 替换指定槽位内容并保留传入的技能栈实例；空槽使用 Empty。
+    ///
+    /// 玩家**手动**装备一个「武器专属技能」时，佩戴的刻骨的记忆会把锁定切到它（对应「最近的一个」）。
+    /// 内部自动替换（跟随手持武器）走 {@link #applySoulSkillStack}，不会改写锁定。
     public static boolean setSoulSkillStack(@Nullable Player player, int index, SoulSkillStack skillStack) {
         if (player == null) {
-            return false;
-        }
-        SoulSkillStorage storage = SoulSkillStorage.of(player);
-        List<SoulSkillStack> equippedSkills = storage.getEquippedSoulSkills();
-        if (index < 0 || index >= storage.getEquippedSoulSkillMaxNumber()) {
-            return false;
-        }
-        if (index >= equippedSkills.size()) {
             return false;
         }
         if (player instanceof ServerPlayer serverPlayer) {
@@ -277,9 +272,37 @@ public final class PlayerUtils {
         if (!skillStack.isEmpty() && !isSoulSkillAvailable(player, skillStack.getSoulSkill().getId())) {
             return false;
         }
-        equippedSkills.set(index, skillStack);
+        if (!applySoulSkillStack(player, index, skillStack)) {
+            return false;
+        }
+        if (player instanceof ServerPlayer serverPlayer) {
+            rememberManuallyEquippedSkill(serverPlayer, skillStack);
+        }
         mirrorSoulSkillCooldowns(player);
         return true;
+    }
+
+    /// 只写入槽位内容，不做可用性校验、不改写刻骨的记忆的锁定；供内部自动替换使用。
+    private static boolean applySoulSkillStack(Player player, int index, SoulSkillStack skillStack) {
+        SoulSkillStorage storage = SoulSkillStorage.of(player);
+        List<SoulSkillStack> equippedSkills = storage.getEquippedSoulSkills();
+        if (index < 0 || index >= storage.getEquippedSoulSkillMaxNumber() || index >= equippedSkills.size()) {
+            return false;
+        }
+        equippedSkills.set(index, skillStack);
+        return true;
+    }
+
+    /// 手动装备「武器专属技能」时把刻骨的记忆的锁定切到它；已学会的技能不作为锁定目标。
+    private static void rememberManuallyEquippedSkill(ServerPlayer player, SoulSkillStack skillStack) {
+        if (skillStack.isEmpty() || !TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
+            return;
+        }
+        ResourceLocation id = skillStack.getSoulSkill().getId();
+        if (isSoulSkillLearned(player, id)) {
+            return;
+        }
+        SoulSkillStorage.of(player).setMemoryOfBonebrandSkill(id);
     }
 
     /// 按技能 ID 判断是否已装备。
@@ -470,7 +493,11 @@ public final class PlayerUtils {
     /// 被动技能是否正在生效：既已学会（可用），又装备在灵魂技能槽里。
     ///
     /// 被动技能的效果一律走这里判定，不再用“已学会”直接放行；卸下即失效。
+    /// 灵魂枯竭（灵魂透支结束后的代价）期间被动技能同样失效：效果保留在槽位上，只是不再结算。
     public static boolean isPassiveSoulSkillActive(@Nullable Player player, ResourceLocation skillId) {
+        if (player == null || player.hasEffect(ModEffects.SOUL_DRAIN_LOCK)) {
+            return false;
+        }
         return isSoulSkillAvailable(player, skillId) && isSoulSkillEquipped(player, skillId);
     }
 
@@ -496,6 +523,11 @@ public final class PlayerUtils {
     }
 
     /// 重算武器临时授予和技能条件；调用方合并本次技能数据同步。
+    ///
+    /// 顺序很关键：
+    /// 1. 先维护刻骨的记忆锁定的技能（稳定、不随机）；
+    /// 2. 再让「非锁定」的武器专属技能槽跟随手持武器；
+    /// 3. 最后按 `已学会 ∪ 手持武器授予 ∪ 锁定技能` 重算可用性。
     public static boolean refreshSoulSkills(ServerPlayer player) {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
         Set<ResourceLocation> temporary = new HashSet<>();
@@ -503,10 +535,11 @@ public final class PlayerUtils {
         if (mainHand.getItem() instanceof SoulWeaponItem weapon) {
             temporary.addAll(weapon.getGrantedSoulSkills(mainHand));
         }
+        resolveMemoryOfBonebrandSkill(player);
+        boolean slotsChanged = syncWeaponExclusiveSlots(player);
         Set<ResourceLocation> available = new HashSet<>(storage.getUnlockedSoulSkills().keySet());
         available.addAll(temporary);
-        /// 刻骨的记忆：每次刷新时维护它当前放行的那一个技能。
-        ResourceLocation memorySkill = resolveMemoryOfBonebrandSkill(player);
+        ResourceLocation memorySkill = storage.getMemoryOfBonebrandSkill();
         if (memorySkill != null) {
             available.add(memorySkill);
         }
@@ -514,13 +547,114 @@ public final class PlayerUtils {
             SoulSkill skill = SoulSkillStorage.findSoulSkill(id);
             return skill == null || skill == ModSoulSkills.EMPTY.get() || !skill.isAvailable(player);
         });
-        boolean changed = !temporary.equals(storage.getTemporarySkills()) || !available.equals(storage.getAvailableSkills());
+        boolean changed = slotsChanged || !temporary.equals(storage.getTemporarySkills()) || !available.equals(storage.getAvailableSkills());
         storage.getTemporarySkills().clear();
         storage.getTemporarySkills().addAll(temporary);
         storage.getAvailableSkills().clear();
         storage.getAvailableSkills().addAll(available);
         mirrorSoulSkillCooldowns(player);
         return changed;
+    }
+
+    /// 武器专属技能槽跟随手持武器；刻骨的记忆锁定一个技能，它所在的槽不参与跟随。
+    ///
+    /// 规则：
+    /// 1. 「专属槽」= 未永久学会的技能槽；已学会技能永远不会被替换。
+    /// 2. 手持武器授予的技能按授予顺序填入非锁定专属槽，每个技能最多占一个槽（不重复入槽）；
+    ///    没有空闲技能可填时保留原样。
+    /// 3. 手持武器没有专属技能时，非锁定专属槽保留原样（变灰，不可释放）。
+    /// 4. 佩戴刻骨的记忆时锁定一个专属技能并由它的槽保护；但整个技能栏只有这一个专属槽时，
+    ///    它也跟着手持武器走，锁定随后转移到替换后的技能上。
+    /// 5. 未佩戴刻骨的记忆时没有锁定，所有专属槽都跟随手持武器。
+    ///
+    /// @return 槽位内容或锁定技能是否发生变化
+    private static boolean syncWeaponExclusiveSlots(ServerPlayer player) {
+        SoulSkillStorage storage = SoulSkillStorage.of(player);
+        List<SoulSkillStack> slots = storage.getEquippedSoulSkills();
+        if (slots.isEmpty()) {
+            return false;
+        }
+        boolean memoryWorn = TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND);
+        ResourceLocation locked = storage.getMemoryOfBonebrandSkill();
+        int exclusiveCount = countExclusiveSkillSlots(player, slots);
+        /// 只有一个专属槽时它必须跟随手持武器，此时不保护锁定技能。
+        ResourceLocation protectedSkill = memoryWorn && exclusiveCount > 1 ? locked : null;
+
+        boolean changed = false;
+        boolean lockDisplaced = false;
+        List<ResourceLocation> candidates = getHeldWeaponSkillCandidates(player);
+        if (!candidates.isEmpty()) {
+            Set<ResourceLocation> present = new HashSet<>();
+            for (SoulSkillStack slot : slots) {
+                if (!slot.isEmpty()) {
+                    present.add(slot.getSoulSkill().getId());
+                }
+            }
+            for (int i = 0; i < slots.size(); i++) {
+                SoulSkillStack slot = slots.get(i);
+                if (slot.isEmpty()) {
+                    continue;
+                }
+                ResourceLocation id = slot.getSoulSkill().getId();
+                if (isSoulSkillLearned(player, id) || id.equals(protectedSkill) || candidates.contains(id)) {
+                    continue;
+                }
+                ResourceLocation next = null;
+                for (ResourceLocation candidate : candidates) {
+                    if (!present.contains(candidate)) {
+                        next = candidate;
+                        break;
+                    }
+                }
+                if (next == null) {
+                    continue;
+                }
+                SoulSkill soulSkill = SoulSkillStorage.findSoulSkill(next);
+                if (soulSkill == null) {
+                    continue;
+                }
+                slots.set(i, soulSkill.getStack());
+                present.add(next);
+                changed = true;
+                if (id.equals(locked)) {
+                    /// 唯一专属槽被跟随替换：锁定跟着槽走到新技能上，避免记忆指向一个不在技能栏里的旧技能。
+                    lockDisplaced = true;
+                    locked = next;
+                }
+            }
+        }
+        if (memoryWorn && lockDisplaced) {
+            storage.setMemoryOfBonebrandSkill(locked);
+        }
+        return changed;
+    }
+
+    /// 统计未永久学会的技能槽数量（即「武器专属技能槽」）。
+    private static int countExclusiveSkillSlots(Player player, List<SoulSkillStack> slots) {
+        int count = 0;
+        for (SoulSkillStack slot : slots) {
+            if (!slot.isEmpty() && !isSoulSkillLearned(player, slot.getSoulSkill().getId())) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /// 手持武器授予、且尚未永久学会的技能（按授予顺序去重）；没有手持魂师武器时为空。
+    private static List<ResourceLocation> getHeldWeaponSkillCandidates(Player player) {
+        ItemStack mainHand = player.getMainHandItem();
+        if (!(mainHand.getItem() instanceof SoulWeaponItem weapon)) {
+            return List.of();
+        }
+        List<ResourceLocation> candidates = new ArrayList<>();
+        for (ResourceLocation id : weapon.getGrantedSoulSkills(mainHand)) {
+            SoulSkill skill = SoulSkillStorage.findSoulSkill(id);
+            if (skill == null || skill.isPassive() || isSoulSkillLearned(player, id) || candidates.contains(id)) {
+                continue;
+            }
+            candidates.add(id);
+        }
+        return candidates;
     }
 
     /// 当前选中槽是「未解锁且当前武器不提供」的技能时，回退到手持武器的专属技能。
@@ -562,7 +696,7 @@ public final class PlayerUtils {
                 return false;
             }
             setCurrentSoulSkillIndex(player, index);
-        } else if (!setSoulSkillStack(player, getCurrentSoulSkillIndex(player), fallback.getStack())) {
+        } else if (!applySoulSkillStack(player, getCurrentSoulSkillIndex(player), fallback.getStack())) {
             return false;
         }
         SoulSkillSyncPacketS2C.sendToClient(player);
@@ -596,10 +730,11 @@ public final class PlayerUtils {
         return first;
     }
 
-    /// 佩戴刻骨的记忆时，保证「武器临时技能」里有一个被放行；没佩戴则清空选择。
+    /// 佩戴刻骨的记忆时维护它锁定的那一个技能；没佩戴则清空。
     ///
-    /// 候选是背包里所有 {@link SoulWeaponItem} 提供的技能中**尚未永久学会**的那些；
-    /// 每次刷新只在选择失效时重掷，真正使用技能后由 {@link #rerollMemoryOfBonebrandSkill} 重掷。
+    /// 锁定是**稳定**的：只要技能仍由背包里的某把武器提供就保持不变（不会因为换武器或施放随机改写）。
+    /// 只有锁定失效（对应武器离开背包 / 已被永久学会）时才确定性重选：先取手持武器授予的技能，
+    /// 再按背包（含副手）扫描顺序取第一个候选。
     @Nullable
     private static ResourceLocation resolveMemoryOfBonebrandSkill(ServerPlayer player) {
         SoulSkillStorage storage = SoulSkillStorage.of(player);
@@ -619,17 +754,7 @@ public final class PlayerUtils {
         return picked;
     }
 
-    /// 使用技能后重掷刻骨的记忆放行的技能（未佩戴时清空）。
-    public static void rerollMemoryOfBonebrandSkill(ServerPlayer player) {
-        SoulSkillStorage storage = SoulSkillStorage.of(player);
-        if (!TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
-            storage.setMemoryOfBonebrandSkill(null);
-            return;
-        }
-        storage.setMemoryOfBonebrandSkill(pickMemoryOfBonebrandSkill(player, collectMemoryOfBonebrandCandidates(player)));
-    }
-
-    /// 该技能是否是刻骨的记忆当前放行的技能。
+    /// 该技能是否是刻骨的记忆当前锁定的技能。
     public static boolean isMemoryOfBonebrandSkill(Player player, @Nullable SoulSkill skill) {
         if (skill == null || !TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
             return false;
@@ -661,13 +786,24 @@ public final class PlayerUtils {
         }
     }
 
-    /// 从候选里均匀随机取一个；没有候选时返回 null。
+    /// 确定性挑选锁定技能：当前选中槽的专属技能 → 手持武器授予的第一个候选 → 背包扫描顺序的第一个候选。
+    ///
+    /// 旧实现是「从候选里均匀随机取一个」，会让刻骨的记忆锁定的技能在换武器/施放后乱跳，因此改为确定性。
     @Nullable
     private static ResourceLocation pickMemoryOfBonebrandSkill(Player player, List<ResourceLocation> candidates) {
         if (candidates.isEmpty()) {
             return null;
         }
-        return candidates.get(player.getRandom().nextInt(candidates.size()));
+        SoulSkillStack current = getCurrentSkillStack(player);
+        if (!current.isEmpty() && candidates.contains(current.getSoulSkill().getId())) {
+            return current.getSoulSkill().getId();
+        }
+        for (ResourceLocation granted : getHeldWeaponSkillCandidates(player)) {
+            if (candidates.contains(granted)) {
+                return granted;
+            }
+        }
+        return candidates.get(0);
     }
 
     /// 永久学习成功才消耗技能书，已有记录时不重复学习。
@@ -1094,14 +1230,11 @@ public final class PlayerUtils {
         if (!isSoulSkillAvailable(player, skill.getId()) || getSoulSkillCooldown(player, skill.getId()) > 0 || !skill.canUse(player, skillStack)) {
             return rejectSoulSkillUse(player, availabilityChanged);
         }
-        int castIndex = getCurrentSoulSkillIndex(player);
         if (!castSoulSkill(player, skillStack)) {
             return rejectSoulSkillUse(player, availabilityChanged);
         }
-        /// 刻骨的记忆：用掉一次技能后重掷它放行的那个技能。
-        rerollMemoryOfBonebrandSkill(player);
-        /// 束魂锁链 / 魂术轮转：整套附魂技能的联动
-        applySoulSkillSynergy(player, skill, castIndex);
+        /// 束魂锁链 / 魂术轮转：饰品与被动各自的联动
+        applySoulSkillSynergy(player, skill);
         return true;
     }
 
@@ -1129,12 +1262,12 @@ public final class PlayerUtils {
     ///
     /// - `束魂锁链`：施放任意「附魂」技能时，把其余已装备的「附魂」技能同时放出。
     ///   登记在「强主动技能」(`MAJOR_ACTIVE`) 里的技能**不参与**这套联动。
-    /// - `魂术轮转`：施放「附魂」技能时，沿技能栏把其余附魂技能依次连锁放出，结束后选择回到起手技能；
-    ///   非附魂技能仍沿用原来的「自动切到下一个可释放技能」，且同样会跳过冷却中的技能。
-    ///   「强主动技能」既不连锁也不被轮转选中，只能手动放。
+    /// - `魂术轮转`：施放任意技能后都自动切到下一个可释放的技能，不再区分是不是「附魂」技能。
+    ///   连锁施放附魂技能是束魂锁链的专属效果，轮转不再复制。
+    ///   「强主动技能」不会被轮转选中，只能手动放。
     ///
     /// 连锁施放统一走 `castSoulSkill`，不会再回到本方法，因此不存在自递归。
-    private static void applySoulSkillSynergy(ServerPlayer player, SoulSkill primary, int castIndex) {
+    private static void applySoulSkillSynergy(ServerPlayer player, SoulSkill primary) {
         if (TCUtils.hasType(player, AccessoryItems.SOUL$BINDING$CHAIN) && primary.is(ModTags.SoulSkills.SOUL_ATTACH)) {
             for (SoulSkillStack stack : new ArrayList<>(getEquippedSoulSkills(player))) {
                 if (stack.isEmpty() || stack.getSoulSkill() == primary) {
@@ -1146,12 +1279,7 @@ public final class PlayerUtils {
                 }
             }
         }
-        if (!isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_ROTATION.get())) {
-            return;
-        }
-        if (primary.is(ModTags.SoulSkills.SOUL_ATTACH)) {
-            chainCastSoulAttachSkills(player, castIndex);
-        } else {
+        if (isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_ROTATION.get())) {
             rotateToNextSkill(player);
         }
     }
@@ -1164,29 +1292,6 @@ public final class PlayerUtils {
             return;
         }
         castSoulSkill(player, stack);
-    }
-
-    /// 魂术轮转：沿技能栏把其余「附魂」技能逐个连锁放出，结束后落到下一个能施放的槽位。
-    ///
-    /// 「强主动技能」跳过：它们只能手动放，不该被连锁带出来。
-    private static void chainCastSoulAttachSkills(ServerPlayer player, int startIndex) {
-        List<SoulSkillStack> equipped = new ArrayList<>(getEquippedSoulSkills(player));
-        int size = equipped.size();
-        if (size <= 0) {
-            return;
-        }
-        for (int step = 1; step <= size; step++) {
-            SoulSkillStack candidate = equipped.get((startIndex + step) % size);
-            if (candidate.isEmpty() || !candidate.getSoulSkill().is(ModTags.SoulSkills.SOUL_ATTACH)
-                    || candidate.getSoulSkill().is(ModTags.SoulSkills.MAJOR_ACTIVE)) {
-                continue;
-            }
-            castSoulSkillIfReady(player, candidate);
-        }
-        /// 连锁过后起手技能本身也在冷却中，所以优先挑一个不在冷却的槽位；全都在冷却才留在起手技能。
-        int next = findNextReadySoulSkillIndex(player, startIndex);
-        setCurrentSoulSkillIndex(player, next >= 0 ? next : startIndex);
-        SoulSkillIndexSyncPacketS2C.sendToClient(player);
     }
 
     /// 从当前槽向后（含回绕）找第一个「非空、非被动、当前可用」的槽位；找不到返回 -1。

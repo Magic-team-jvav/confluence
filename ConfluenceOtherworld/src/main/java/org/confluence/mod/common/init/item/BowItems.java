@@ -68,9 +68,9 @@ public class BowItems {
     // 开发者弓
     public static final DeferredItem<DeveloperBow> DEVELOPER_BOW = registerItem("developer_bow", "开发者弓", DeveloperBow::new);
 
-    // 魂师弓：击杀额外收魂，灵魂高于阈值时箭矢增伤（见 LivingEntityEvents）
-    public static final DeferredItem<SoulShortBowItem> SOUL_SHORT_BOW = registerItem("soul_short_bow", "灵魂短弓", () -> new SoulShortBowItem(5.5F, 1024));
-    public static final DeferredItem<SoulBowItem> SOUL_BOW = registerItem("soul_bow", "灵魂弓", () -> new SoulBowItem(4.0F, 1024));
+    // 魂师弓：击杀额外收魂，灵魂高于阈值时箭矢增伤（见 LivingEntityEvents）；两把都不可破坏
+    public static final DeferredItem<SoulShortBowItem> SOUL_SHORT_BOW = registerItem("soul_short_bow", "灵魂短弓", () -> new SoulShortBowItem(5.5F));
+    public static final DeferredItem<SoulBowItem> SOUL_BOW = registerItem("soul_bow", "灵魂弓", () -> new SoulBowItem(4.0F));
 
     // 风与星系列弓
     /// 风弦：把木箭替换为风矢，并对具有击退抗性的敌怪额外增伤。

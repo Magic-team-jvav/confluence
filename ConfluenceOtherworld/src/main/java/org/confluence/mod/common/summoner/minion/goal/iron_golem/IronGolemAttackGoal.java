@@ -4,6 +4,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.IronGolemMinion;
@@ -24,7 +25,7 @@ public class IronGolemAttackGoal extends AttachmentEntityGoal<IronGolemMinion> {
     @Override
     public void tick() {
         LivingEntity target = minion.getTarget();
-        Vec3 targetPos = target.getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(target, minion.getPos());
         minion.lookAtPos(targetPos);
         cooldown--;
         if (minion.getPos().distanceTo(targetPos) < 2) {

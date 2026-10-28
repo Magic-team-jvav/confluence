@@ -5,6 +5,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.SpiderMinion;
@@ -74,7 +75,7 @@ public class SpiderAttackGoal extends AttachmentEntityGoal<SpiderMinion> {
             }
         } else {
             minion.setPhysics(true);
-            Vec3 targetPos = target.getBoundingBox().getCenter();
+            Vec3 targetPos = LibEntityUtils.aimPoint(target, minion.getPos());
             minion.lookAtPos(targetPos);
             minion.moveTo(targetPos, 0.3F);
             if (minion.getBlockCollisionBox().move(minion.getPos()).inflate(0.15).intersects(target.getBoundingBox())) {

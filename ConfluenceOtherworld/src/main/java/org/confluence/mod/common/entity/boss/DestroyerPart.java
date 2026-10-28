@@ -1,16 +1,23 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.PartEntity;
+import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.mesdag.particlestorm.api.ParticleEmitterAttachable;
+import org.mesdag.particlestorm.data.component.EmitterRate;
 import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.mixed.IPSAnimatableInstanceCache;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -21,128 +28,190 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/// 毁灭者专用临时体节；共享本体生命，不参与世吞断节及其移动逻辑。
-public final class DestroyerPart extends BaseBossPart<TheDestroyer> implements GeoEntity {
-    private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(DestroyerPart.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(DestroyerPart.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> OPEN = SynchedEntityData.defineId(DestroyerPart.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> METAL = SynchedEntityData.defineId(DestroyerPart.class, EntityDataSerializers.BOOLEAN);
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private float previousRoll, displayedRoll;
-    private long rollUpdateTick;
-    /// 有效受击时通知客户端生成机械火花的实体事件编号。
-    private static final byte HURT_SPARK_EVENT = 72;
+/// 由头部持有、定位和同步的碰撞部件，不加入世界实体列表，不独立 tick 或存档。
+public final class DestroyerPart extends PartEntity<TheDestroyer> implements Boss.BossPart, PartHitTarget, GeoEntity {
     /// 同一部位两次火花之间的最短间隔，单位 tick。
     private static final int HURT_SPARK_INTERVAL = 3;
+    /// 加速喷流所需的最低体节速度，单位格/tick；天空模式仍持续喷出完整四种粒子。
+    private static final double EXHAUST_MIN_SPEED = 0.08;
+    /// 连续两次更新的速度增量达到此值时喷火，单位格/tick²。
+    private static final double EXHAUST_ACCELERATION = 0.015;
+    /// 体节每 tick 转向超过此角度时喷火，单位度，不包含绕轴滚动。
+    private static final double EXHAUST_TURN_DEGREES = 1.0;
+    /// 加速或转向结束后保留喷火的时间，单位 tick，避免临界值处闪烁。
+    private static final int EXHAUST_HOLD_TICKS = 3;
+    /// 地面模式逐节出土、展开侧翼时的排气持续时间，单位 tick。
+    private static final int VENT_OPEN_TICKS = 6;
+    /// 巡航喷流相对加速、转向喷流的粒子数量比例；四种效果始终一起工作。
+    private static final float CRUISE_EXHAUST_STRENGTH = 0.25F;
+    private Vec3 previousMotion = Vec3.ZERO;
+    private int lastPoseTick = Integer.MIN_VALUE;
+    private int exhaustUntilTick = Integer.MIN_VALUE;
+    private final int index;
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private Vec3 contactSweepStart = Vec3.ZERO;
+    private boolean open;
+    private boolean exhaustInitialized;
+    private float roll;
     private int lastSparkTick = -HURT_SPARK_INTERVAL;
 
-    public DestroyerPart(EntityType<?> type, Level level) {super(type, level);}
+    public DestroyerPart(TheDestroyer parent, int index) {
+        super(parent);
+        this.index = index;
+        noPhysics = true;
+        setNoGravity(true);
+        refreshDimensions();
+    }
 
-    public void attach(TheDestroyer owner, int index, Vec3 position) {
+    public void updatePose(Vec3 position, Vec3 forward, float roll, boolean open) {
+        int elapsed = getParent().tickCount - lastPoseTick;
+        Vec3 motion = elapsed > 0 && elapsed <= EXHAUST_HOLD_TICKS ? position.subtract(position()).scale(1.0 / elapsed) : Vec3.ZERO;
+        double speed = motion.length();
+        boolean accelerating = speed - previousMotion.length() >= EXHAUST_ACCELERATION * Math.max(1, elapsed);
+        boolean turning = previousMotion.lengthSqr() > EXHAUST_MIN_SPEED * EXHAUST_MIN_SPEED
+                && getLookAngle().dot(forward.normalize()) < Math.cos(EXHAUST_TURN_DEGREES * Mth.DEG_TO_RAD * Math.max(1, elapsed));
+        if (open && speed >= EXHAUST_MIN_SPEED && (accelerating || turning))
+            exhaustUntilTick = getParent().tickCount + EXHAUST_HOLD_TICKS;
+        if (!open || speed < EXHAUST_MIN_SPEED) exhaustUntilTick = Integer.MIN_VALUE;
+        if (open && !this.open && getParent().getMode() == TheDestroyer.Mode.GROUND)
+            exhaustUntilTick = getParent().tickCount + VENT_OPEN_TICKS;
+        previousMotion = motion;
+        lastPoseTick = getParent().tickCount;
+        contactSweepStart = position();
+        xo = xOld = getX();
+        yo = yOld = getY();
+        zo = zOld = getZ();
+        yRotO = getYRot();
+        xRotO = getXRot();
         setPos(position);
-        entityData.set(INDEX, index);
-        bindTo(owner);
-    }
-
-    public void updatePose(Vec3 position, Vec3 forward, float roll, boolean open, boolean metal) {
-        setPos(position);
-        setYRot((float) (Mth.atan2(-forward.x, forward.z) * Mth.RAD_TO_DEG));
-        setXRot((float) (-Mth.atan2(forward.y, forward.horizontalDistance()) * Mth.RAD_TO_DEG));
-        entityData.set(ROLL, roll);
-        entityData.set(OPEN, open);
-        entityData.set(METAL, metal);
-    }
-
-    /// 网络角度可能使用不同的整周表示；俯仰也沿最短角差插值，避免局部体节绕远路翻转。
-    @Override
-    public void lerpTo(double x, double y, double z, float yaw, float pitch, int steps, boolean teleport) {
-        super.lerpTo(x, y, z, yaw, getXRot() + Mth.wrapDegrees(pitch - getXRot()), steps, teleport);
-    }
-
-    /// 被追踪的客户端体节必须持续消费位置插值，否则进入未加载区块后无法移回加载区。
-    /// 只影响客户端实体 tick，不申请区块票据，也不改变服务端的加载范围。
-    @Override
-    public boolean isAlwaysTicking() {
-        return level().isClientSide;
-    }
-
-    public int getIndex() {return entityData.get(INDEX);}
-
-    public boolean isTail() {return getIndex() == TheDestroyer.SEGMENT_COUNT - 1;}
-
-    public boolean isOpen() {return entityData.get(OPEN);}
-
-    public boolean isMetal() {return entityData.get(METAL);}
-
-    public float getRoll(float partialTick) {
-        float progress = Mth.clamp(level().getGameTime() - rollUpdateTick + partialTick, 0, 1);
-        return previousRoll + Mth.wrapDegrees(displayedRoll - previousRoll) * progress;
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        super.onSyncedDataUpdated(key);
-        if (ROLL.equals(key)) {
-            previousRoll = displayedRoll;
-            displayedRoll = entityData.get(ROLL);
-            rollUpdateTick = level().getGameTime();
+        if (forward.lengthSqr() > 1.0E-10) {
+            if (forward.horizontalDistanceSqr() > 1.0E-10) {
+                setYRot((float) (Mth.atan2(-forward.x, forward.z) * Mth.RAD_TO_DEG));
+            }
+            setXRot((float) (-Mth.atan2(forward.y, forward.horizontalDistance()) * Mth.RAD_TO_DEG));
         }
+        this.open = open;
+        this.roll = roll;
+        tickCount = getParent().tickCount;
     }
 
-    /// 在 Forge/NeoForge 的离开世界回调中处理，覆盖客户端直接 setRemoved 的卸载路径。
+    public Vec3 getContactSweepStart() {return contactSweepStart;}
+
+    public int getIndex() {return index;}
+
+    public boolean isTail() {return index == TheDestroyer.SEGMENT_COUNT - 1;}
+
+    public boolean isOpen() {return open;}
+
+    public float getRoll() {return roll;}
+
+    public boolean isMetal() {return getParent().isMetal();}
+
     @Override
-    public void onRemovedFromWorld() {
-        TheDestroyer owner = getOwner();
-        if (owner != null) owner.removeSubEntity(this);
-        super.onRemovedFromWorld();
+    public Vec3 getLightProbePosition(float partialTick) {
+        return getParent().getBody().getRenderPosition(index, partialTick).add(0, TheDestroyer.BODY_HEIGHT / 2.0, 0);
     }
 
     @Override
-    protected Class<TheDestroyer> getOwnerType() {return TheDestroyer.class;}
+    public EntityDimensions getDimensions(Pose pose) {
+        return EntityDimensions.scalable(TheDestroyer.BODY_WIDTH * TheDestroyer.HITBOX_SCALE,
+                TheDestroyer.BODY_HEIGHT * TheDestroyer.HITBOX_SCALE);
+    }
 
+    /// 扩大受击箱时保持身体中心，避免只向上扩张造成模型与碰撞箱偏移。
     @Override
-    protected void tickPart(TheDestroyer owner) {}
-
-    @Override
-    protected void definePartSynchedData() {
-        entityData.define(INDEX, 1);
-        entityData.define(ROLL, 0.0F);
-        entityData.define(OPEN, false);
-        entityData.define(METAL, false);
+    protected AABB makeBoundingBox() {
+        float scale = 1.0F;
+        return super.makeBoundingBox().move(0, (TheDestroyer.BODY_HEIGHT * scale - getBbHeight()) / 2.0, 0);
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        boolean result = hurtOwnerAndPart(source, amount, 1.0F);
-        if (result && tickCount - lastSparkTick >= HURT_SPARK_INTERVAL) {
-            lastSparkTick = tickCount;
+        if (level().isClientSide || !isAttackable() || amount <= 0 || isInvulnerableTo(source)
+                || EnemyDamageRules.blocks(this, source)) return false;
+        boolean result = getParent().hurtFromPart(this, source, amount);
+        int age = getParent().tickCount;
+        if (result && age - lastSparkTick >= HURT_SPARK_INTERVAL) {
+            lastSparkTick = age;
             playSound(ModSoundEvents.METAL_HURT.get(), 1.0F, 1.0F);
-            level().broadcastEntityEvent(this, HURT_SPARK_EVENT);
+            /// 负事件编号表示实际受击体节；事件仍通过已追踪的头部发送。
+            level().broadcastEntityEvent(getParent(), (byte) -index);
         }
         return result;
     }
 
-    @Override
-    public void handleEntityEvent(byte event) {
-        if (level().isClientSide && event == HURT_SPARK_EVENT) {
-            MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
-                    Confluence.asResource("mechanical_boss_hurt_spark"),
-                    new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
-        } else super.handleEntityEvent(event);
+    public void emitHurtSparks() {
+        MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
+                Confluence.asResource("mechanical_boss_hurt_spark"),
+                new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
     }
+
+    @Override
+    public boolean isAttackable() {return !isRemoved() && !getParent().isRemoved() && getParent().isAlive();}
+
+    @Override
+    public boolean isPickable() {return isAttackable();}
+
+    @Override
+    public boolean canBeHitByProjectile() {return isAttackable();}
+
+    @Override
+    public boolean is(Entity entity) {return this == entity || entity == getParent();}
+
+    @Override
+    public boolean fireImmune() {return true;}
+
+    @Override
+    public Entity encounterOwner() {return getParent();}
+
+    @Override
+    public Entity dedupeIdentity() {return getParent();}
+
+    @Override
+    public boolean acceptsDirectHit() {return isAttackable();}
+
+    @Override
+    public boolean shouldBeSaved() {return false;}
+
+    @Override
+    protected void defineSynchedData() {}
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {}
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {}
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {return cache;}
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        /// TODO 侧翼开合动画补齐后由 OPEN 控制切换，滚动单独应用于身体纵轴。
+        /// TODO 侧翼开合动画补齐后由 open 控制切换，滚动单独应用于身体纵轴。
+        ((ParticleEmitterAttachable) (Object) this).getVariableTable().setValue("variable.destroyer_exhaust",
+                instance -> open && getParent().isAlive() && getParent().tickCount <= exhaustUntilTick ? 1.0F : 0.0F);
+        ((ParticleEmitterAttachable) (Object) this).getVariableTable().setValue("variable.destroyer_exhaust_strength",
+                instance -> getParent().tickCount <= exhaustUntilTick ? 1.0F : CRUISE_EXHAUST_STRENGTH);
         RawAnimation fire = RawAnimation.begin().thenLoop("fire");
         controllers.add(new AnimationController<>(this, state -> {
-            if (!isTail() && getIndex() % 2 == 1 && getIndex() < 10) {
-                return state.setAndContinue(fire);
+            if (isTail() || index % 2 == 0) return PlayState.STOP;
+            boolean boost = open && getParent().isAlive() && getParent().tickCount <= exhaustUntilTick;
+            boolean emitting = open && getParent().isAlive()
+                    && (getParent().getMode() == TheDestroyer.Mode.SKY || boost);
+            /// 1.5.1 不会更新 inactive 发射器的寿命表达式；在动画回调中显式开关已绑定的发射器。
+            for (var ids : IPSAnimatableInstanceCache.of(cache).particlestorm$getCachedId().values()) {
+                for (int id : ids) {
+                    ParticleEmitter emitter = MolangParticleEngine.getEmitter(id);
+                    if (emitter != null && !emitter.isRemoved()) {
+                        emitter.active = emitting && !getParent().isSolid(emitter.getPosition());
+                        /// 1.5.1 的 steady 速率只在初始化时计算；重新应用现有组件以更新当前体节的喷流强度。
+                        for (var component : emitter.getPreset().components)
+                            if (component instanceof EmitterRate.Steady rate) rate.apply(emitter);
+                    }
+                }
             }
-            return PlayState.STOP;
+            exhaustInitialized |= emitting;
+            return exhaustInitialized ? state.setAndContinue(fire) : PlayState.STOP;
         }));
     }
 }

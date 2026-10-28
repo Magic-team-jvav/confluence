@@ -10,11 +10,11 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -22,7 +22,6 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.DemonEye;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
-
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -445,7 +444,7 @@ public class EyeOfCthulhu extends BaseBoss {
 
     /// 专家难度下，克苏鲁之眼会在极低生命值时进入负防御区间。原版护甲属性
     /// 不能表达负数，因此把泰拉瑞亚的负防御换算成每次命中的等效额外伤害。
-    /// 低于 12% 和 4% 分别补偿 7 和 15 点伤害，不叠加两档。
+    /// 低于 12% 和 4% 的补偿分别从注册状态读取，已经过伤害单位换算。
     @Override
     public boolean hurt(DamageSource source, float amount) {
         amount += getLowHealthDamageBonus(isExpert(), getHealth() / getMaxHealth());
@@ -458,11 +457,11 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     /// 计算负防御对应的额外受伤数值。该换算只在专家及大师难度生效。
-    static float getLowHealthDamageBonus(boolean expert, float healthRatio) {
+    private float getLowHealthDamageBonus(boolean expert, float healthRatio) {
         if (!expert) {
             return 0.0F;
         }
-        return healthRatio < 0.04F ? 15.0F : healthRatio < 0.12F ? 7.0F : 0.0F;
+        return healthRatio < 0.12F ? (float) stateAttributeValue(healthRatio < 0.04F ? DefenseState.CRITICAL : DefenseState.WOUNDED, Attributes.ATTACK_DAMAGE, 0) : 0.0F;
     }
 
     private void updateCombatAttributes() {
@@ -574,6 +573,8 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     /// 客户端动画、存档和测试共同使用的稳定战斗状态。
+    public enum DefenseState {WOUNDED, CRITICAL}
+
     public enum CombatState {
         IDLE,
         STARING,

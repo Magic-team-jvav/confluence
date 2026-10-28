@@ -93,7 +93,7 @@ public class TargetCache {
     public List<Entity> getHitTargets(AABB bounds, Predicate<Entity> filter) {
         if (serverLevel == null) return List.of();
         /// 普通生命实体沿用接触资格；多部件本体和部件仍检查实际受击范围。
-        return serverLevel.getEntities(owner, bounds, target -> canKeep(target)
+        return LibEntityUtils.queryHitCandidates(serverLevel, owner, bounds, target -> canKeep(target)
                 && (target instanceof LivingEntity && !target.isMultipartEntity() || LibEntityUtils.canHit(owner, target))
                 && filter.test(target));
     }
@@ -165,6 +165,15 @@ public class TargetCache {
                 }
             }
         }
+        /// 缓存只索引普通生命实体；补充当前范围内的体节，返回仍为共享生命主体。
+        AABB partBounds = AABB.ofSize(pos, radius * 2, radius * 2, radius * 2);
+        for (Entity part : LibEntityUtils.queryHitCandidates(serverLevel, owner, partBounds,
+                candidate -> candidate != LibEntityUtils.encounterOwner(candidate) && LibEntityUtils.acceptsDirectHit(candidate))) {
+            LivingEntity living = LibEntityUtils.logicalLivingTarget(part);
+            if (living != null && !result.contains(living)
+                    && part.getBoundingBox().getCenter().distanceToSqr(pos) <= radiusSq
+                    && (filter == null || filter.test(living))) result.add(living);
+        }
         return result;
     }
 
@@ -205,25 +214,25 @@ public class TargetCache {
 
     public float getDistance(Minion minion, LivingEntity living) {
         int key = minion.getUuid().hashCode() + living.getUUID().hashCode();
-        return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) minion.getPos().distanceTo(living.getBoundingBox().getCenter())));
+        return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) minion.getPos().distanceTo(LibEntityUtils.aimPoint(living, minion.getPos()))));
     }
 
     public float getDistance(LivingEntity living1, LivingEntity living2) {
         int key = living1.getUUID().hashCode() + living2.getUUID().hashCode();
-        return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) living1.getEyePosition().distanceTo(living2.getBoundingBox().getCenter())));
+        return distanceCache.computeIfAbsent(key, (IntToDoubleFunction) (k -> (float) living1.getEyePosition().distanceTo(LibEntityUtils.aimPoint(living2, living1.getEyePosition()))));
     }
 
     /// 此缓存不能被共享，极易卡顿，不建议使用
     @Deprecated
     public boolean isVisibility(AttachmentEntity attachmentEntity, LivingEntity living) {
         Integer key = attachmentEntity.getUuid().hashCode() + living.getUUID().hashCode();
-        return visibilityCache.computeIfAbsent(key, k -> hasLineOfSight(attachmentEntity.getPos(), living.getBoundingBox().getCenter()));
+        return visibilityCache.computeIfAbsent(key, k -> hasLineOfSight(attachmentEntity.getPos(), LibEntityUtils.aimPoint(living, attachmentEntity.getPos())));
     }
 
     public boolean isVisibility(@Nullable LivingEntity living1, @Nullable LivingEntity living2) {
         if (living1 != null && living2 != null) {
             Integer key = living1.getUUID().hashCode() + living2.getUUID().hashCode();
-            return visibilityCache.computeIfAbsent(key, k -> hasLineOfSight(living1.getEyePosition(), living2.getEyePosition()));
+            return visibilityCache.computeIfAbsent(key, k -> hasLineOfSight(living1.getEyePosition(), LibEntityUtils.aimPoint(living2, living1.getEyePosition())));
         }
         return false;
     }

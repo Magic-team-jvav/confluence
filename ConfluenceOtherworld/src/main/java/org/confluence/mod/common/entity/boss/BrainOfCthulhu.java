@@ -15,6 +15,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +29,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.VisualNeuron;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -630,7 +632,8 @@ public class BrainOfCthulhu extends BaseBoss {
                 sample.setPos(position());
                 CreatureDifficultyScaling.apply(sample, true);
                 estimatedNeuronMaximum = sample.getMaxHealth();
-            } else estimatedNeuronMaximum = (float) VisualNeuron.BASE_MAX_HEALTH;
+            } else
+                estimatedNeuronMaximum = (float) ModEntities.creatureAttributes(MonsterEntities.VISUAL_NEURON.get()).attributes().getBaseValue(Attributes.MAX_HEALTH);
         }
         for (VisualNeuron neuron : findOwnedLoadedNeurons()) {
             neuronHealth.put(neuron.getUUID(), new NeuronHealth(neuron.getHealth(), neuron.getMaxHealth()));

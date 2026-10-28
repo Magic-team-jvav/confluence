@@ -91,23 +91,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     }
 
     protected final double stateAttributeValue(Enum<?> state, Attribute attribute, double base) {
-        var values = creatureDefinition().state(state).attributes();
-        double override = attribute == Attributes.MOVEMENT_SPEED ? values.movementSpeed()
-                : attribute == Attributes.ATTACK_DAMAGE ? values.attackDamage()
-                : attribute == Attributes.ARMOR ? values.armor()
-                : attribute == Attributes.MAX_HEALTH ? values.maxHealth()
-                : attribute == Attributes.KNOCKBACK_RESISTANCE ? values.knockbackResistance()
-                : attribute == Attributes.FOLLOW_RANGE ? values.followRange()
-                : attribute == Attributes.SCALE.value() ? values.scale() : -1;
-        double multiplier = values.multipliers().getOrDefault(BuiltInRegistries.ATTRIBUTE.getKey(attribute), 1.0);
-        if (override >= 0) return override * multiplier;
-        var definition = ModEntities.creatureAttributes(getType());
-        var declared = definition == null ? null : definition.states().get(state);
-        var value = declared == null ? null : declared.attributes().get(attribute);
-        if (value == null) return base * multiplier;
-        double amount = value.amount().applyAsDouble(this);
-        if (value.absolute()) return amount * multiplier;
-        return (value.operation() == AttributeModifier.Operation.ADDITION ? base + amount : base * (1 + amount)) * multiplier;
+        return CreatureDefinition.stateAttributeValue(this, state, attribute, base);
     }
 
     /// 无实体射弹的范围攻击也从登记状态取专家伤害，不在行为代码硬编码数值。

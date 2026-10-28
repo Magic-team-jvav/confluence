@@ -3,6 +3,7 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
@@ -47,7 +48,7 @@ public class RuinRelicMinion extends MomentumMinion {
     /** 向目标发射禁戒弹，并按同类数量提高伤害和返还后坐力。 */
     public void shootForbiddenOrb(LivingEntity target) {
         Vec3 start = getPos();
-        Vec3 direction = target.getBoundingBox().getCenter().subtract(start).normalize();
+        Vec3 direction = LibEntityUtils.aimPoint(target, start).subtract(start).normalize();
         ForbiddenOrb orb = new ForbiddenOrb();
         orb.setOwner(getOwner());
         orb.init(new PathNode(start, direction));
@@ -151,7 +152,7 @@ public class RuinRelicMinion extends MomentumMinion {
             double distance = playerPos.distanceTo(targetPos);
             if (distance <= 8.0) {
                 PathNode idleNode = getIdleRingNode(partialTick);
-                node = new PathNode(idleNode.pos(), target.getBoundingBox().getCenter().subtract(idleNode.pos()));
+                node = new PathNode(idleNode.pos(), LibEntityUtils.aimPoint(target, idleNode.pos()).subtract(idleNode.pos()));
             } else {
                 Vec3 axis = targetPos.subtract(playerPos).normalize();
                 Vec3 side = axis.cross(new Vec3(0.0, 1.0, 0.0));
@@ -164,7 +165,7 @@ public class RuinRelicMinion extends MomentumMinion {
                 float angle = (getOwner().tickCount + partialTick) * 0.06F + order * Mth.TWO_PI / total;
                 float radius = total > 1 ? 1.6F : 0.0F;
                 Vec3 pos = center.add(up.scale(Math.cos(angle) * radius)).add(side.scale(Math.sin(angle) * radius));
-                node = new PathNode(pos, target.getBoundingBox().getCenter().subtract(pos));
+                node = new PathNode(pos, LibEntityUtils.aimPoint(target, pos).subtract(pos));
             }
         }
         return node;

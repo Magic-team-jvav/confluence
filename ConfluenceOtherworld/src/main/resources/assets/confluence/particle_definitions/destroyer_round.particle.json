@@ -14,7 +14,7 @@
                 "rotation": true
             },
 			"minecraft:emitter_rate_steady": {
-				"spawn_rate": 50,
+                "spawn_rate": "50 * variable.destroyer_exhaust_strength",
 				"max_particles": 100
 			},
 			"minecraft:emitter_lifetime_expression": {},
@@ -33,7 +33,10 @@
 				"relative_position": ["math.random(-0.05,0.05)", "-(v.a / 1.5 + 0.5 + math.random(-0.05,0.05))", "math.random(-0.05,0.05)"]
 			},
 			"minecraft:particle_appearance_billboard": {
-				"size": ["v.size", "v.size"],
+                "size": [
+                    "(v.size) * (0.6 + 0.4 * variable.destroyer_exhaust)",
+                    "(v.size) * (0.6 + 0.4 * variable.destroyer_exhaust)"
+                ],
 				"facing_camera_mode": "emitter_transform_xz",
 				"uv": {
 					"texture_width": 16,

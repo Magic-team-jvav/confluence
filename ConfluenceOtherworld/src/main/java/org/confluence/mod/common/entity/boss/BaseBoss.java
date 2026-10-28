@@ -31,6 +31,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
@@ -325,8 +326,9 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return damageFeedbackTarget == null ? this : damageFeedbackTarget;
     }
 
-    public final boolean hurtFromPart(BaseBossPart<?> part, DamageSource source, float amount) {
-        if (part.isRemoved() || part.getOwner() != this) return false;
+    public final boolean hurtFromPart(Entity part, DamageSource source, float amount) {
+        if (part.isRemoved() || !(part instanceof PartHitTarget hitPart) || hitPart.encounterOwner() != this)
+            return false;
         Entity previous = damageFeedbackTarget;
         damageFeedbackTarget = part;
         try {

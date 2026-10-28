@@ -1,11 +1,12 @@
 package org.confluence.mod.common.summoner.minion.goal.terraprisma;
 
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Function;
 
@@ -63,7 +64,7 @@ public class TerraprismAttackGoal extends AttachmentEntityGoal<TerraprismaMinion
         frame = 0;
         resetHits = true;
         start = minion.getPos();
-        lastTargetPos = minion.getTarget().getBoundingBox().getCenter();
+        lastTargetPos = LibEntityUtils.aimPoint(minion.getTarget(), minion.getPos());
         lastOwnerPos = minion.getOwner().getBoundingBox().getCenter();
         Vec3 axis = lastTargetPos.subtract(start);
         if (axis.lengthSqr() < 1.0E-6) {
@@ -81,7 +82,7 @@ public class TerraprismAttackGoal extends AttachmentEntityGoal<TerraprismaMinion
         int startFrame = frame;
         Vec3 previousTarget = lastTargetPos;
         Vec3 previousOwner = lastOwnerPos;
-        Vec3 target = minion.getTarget().getBoundingBox().getCenter();
+        Vec3 target = LibEntityUtils.aimPoint(minion.getTarget(), minion.getPos());
         Vec3 owner = minion.getOwner().getBoundingBox().getCenter();
         PathNode from = minion.getCurrentPathNode();
         Function<Float, PathNode> curve = partialTick -> {

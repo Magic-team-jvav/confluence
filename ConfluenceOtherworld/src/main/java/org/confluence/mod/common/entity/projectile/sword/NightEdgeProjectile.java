@@ -12,6 +12,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.particle.CrossDustParticleOptions;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
@@ -116,7 +117,7 @@ public class NightEdgeProjectile extends SwordProjectile {
         Vec3 axisX = axisZ.cross(axisY).normalize();
         Vec3 center = position().add(axisZ.scale(HIT_BOX_FORWARD_OFFSET));
         AABB searchBox = getBoundingBox().inflate(BROAD_PHASE_INFLATION);
-        for (Entity target : level().getEntities(this, searchBox, target -> !(target instanceof Player) && canHitEntity(target))) {
+        for (Entity target : LibEntityUtils.queryHitCandidates(level(), this, searchBox, target -> !(target instanceof Player) && canHitEntity(target))) {
             if (intersects(center, axisX, axisY, axisZ, target.getBoundingBox(), getDeltaMovement(), target.getDeltaMovement())) {
                 hurtTarget(target);
             }

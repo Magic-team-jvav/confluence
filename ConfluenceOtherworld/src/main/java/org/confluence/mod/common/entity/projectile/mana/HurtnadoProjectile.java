@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
-import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,8 +11,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibEntityUtils.TargetPolicy;
+import org.confluence.lib.util.LibEntityUtils.WeaponTargeting;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.common.entity.*;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
@@ -83,7 +82,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
     }
 
     private @Nullable Entity getNearestEnemy() {
-        return LibEntityUtils.nearest(level().getEntities(this, new AABB(blockPosition()).inflate(15.5)),
+        return LibEntityUtils.nearest(LibEntityUtils.queryHitCandidates(level(), this, new AABB(blockPosition()).inflate(15.5), e -> true),
                 candidate -> TARGETING.canAcquire(getOwner(), candidate),
                 java.util.Comparator.comparingDouble(candidate -> candidate.distanceToSqr(getX(), getY(), getZ())));
     }

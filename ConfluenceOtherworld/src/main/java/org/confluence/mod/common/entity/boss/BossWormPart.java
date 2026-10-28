@@ -11,18 +11,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.entity.PartHitTarget;
+import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
-
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -97,6 +97,15 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     public boolean isTail() {
         return entityData.get(TAIL);
+    }
+
+    @Override
+    public double getAttributeValue(Attribute attribute) {
+        if ((attribute == Attributes.ATTACK_DAMAGE || attribute == Attributes.ARMOR || attribute == Attributes.ARMOR_TOUGHNESS)
+                && owner instanceof EaterOfWorlds eater) {
+            return eater.segmentCombatAttribute(isTail(), attribute, CreatureDefinition.attributeValue(this, attribute, getAttributeBaseValue(attribute)));
+        }
+        return super.getAttributeValue(attribute);
     }
 
     public float getPartHealth() {

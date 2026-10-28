@@ -763,7 +763,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.EYE_OF_CTHULHU.get(), EyeOfCthulhuRenderer::new);
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), BossWormPartRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), DestroyerRenderer::new);
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds"), true, 2.2F, 0.0F));
         event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), QueenBeeRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhuRenderer::new);
@@ -1228,6 +1227,6 @@ public final class ModClientEvents {
     }
 
     private static void registerLocatorPreTransformer(RegisterLocatorPreTransformerEvent event) {
-        event.register(BossEntities.THE_DESTROYER_PART.get(), DestroyerRenderer.TRANSFORMER);
+        event.register(BossEntities.THE_DESTROYER.get(), DestroyerRenderer.locatorTransformer());
     }
 }

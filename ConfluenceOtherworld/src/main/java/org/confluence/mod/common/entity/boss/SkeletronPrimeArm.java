@@ -98,12 +98,25 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
         if (type < LASER || type > CANNON) {
             throw new IllegalArgumentException("Arm type must be between 0 and 3");
         }
+        entityData.set(ARM_TYPE, type);
         if (!bindTo(master)) {
             return;
         }
-        entityData.set(ARM_TYPE, type);
         Vec3 initialPosition = getPinnedSlotPosition(master, 6.0F);
         setPos(initialPosition.x, initialPosition.y, initialPosition.z);
+    }
+
+    /// 与 ARM_TYPE 顺序一致，各机械臂独立登记生命、攻击和防御。
+    public enum ArmRole {LASER, SAW, VICE, CANNON}
+
+    @Override
+    protected Enum<?> attributeState() {
+        return switch (getArmType()) {
+            case LASER -> ArmRole.LASER;
+            case SAW -> ArmRole.SAW;
+            case VICE -> ArmRole.VICE;
+            default -> ArmRole.CANNON;
+        };
     }
 
     public int getArmType() {

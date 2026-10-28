@@ -103,7 +103,7 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
                 return;
             }
         }
-        for (Entity candidate : level().getEntities(this, new AABB(from, end).inflate(getBbWidth() * 0.5), this::canHitEntity)) {
+        for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, new AABB(from, end).inflate(getBbWidth() * 0.5), this::canHitEntity)) {
             AABB box = candidate.getBoundingBox().inflate(getBbWidth() * 0.5);
             if (!box.contains(from) && box.clip(from, end).isEmpty()) continue;
             hurtTarget(candidate);
@@ -122,7 +122,7 @@ public class BeeKeeperProjectile extends Projectile implements Immunity {
     private void trackTarget() {
         /// 保留三维曼哈顿距离、严格小于 50 的阈值和同分时的遍历顺序。
         Entity target = LibEntityUtils.nearest(
-                level().getEntities(this, getBoundingBox().inflate(50), this::canHitEntity),
+                LibEntityUtils.queryHitCandidates(level(), this, getBoundingBox().inflate(50), this::canHitEntity),
                 candidate -> TARGETING.canAcquire(getOwner(), candidate)
                         && LibEntityUtils.manhattanDistance(position(), candidate) < 50,
                 java.util.Comparator.comparingDouble(candidate -> LibEntityUtils.manhattanDistance(position(), candidate)));

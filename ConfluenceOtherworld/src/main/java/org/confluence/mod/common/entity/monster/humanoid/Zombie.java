@@ -16,11 +16,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.VariantHolder;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -32,8 +30,6 @@ import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
-import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
-import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.Variant> {
     public static final String VARIANT_KEY = "Variant";
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Zombie.class, EntityDataSerializers.INT);
-    private static final java.util.EnumMap<Variant, VariantStats> VARIANT_STATS = new java.util.EnumMap<>(Variant.class);
+    private Variant appliedVariant;
 
 
     public Zombie(EntityType<? extends Zombie> type, Level level) {
@@ -61,21 +57,20 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         setVariant(variant);
     }
 
-    protected void applyVariantStats(Variant v) {
-        VariantStats stats = VARIANT_STATS.get(v);
-        if (stats == null) return;
-        getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.ceil(stats.health));
-        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(Math.ceil(stats.damage));
-        getAttribute(LibAttributes.getArmorPenetration().value()).setBaseValue(CreatureDifficultyRules.penetration(Math.ceil(stats.damage)));
-        getAttribute(Attributes.ARMOR).setBaseValue(stats.armor);
-        CreatureDifficultyScaling.apply(this, false);
-        if (getHealth() > getMaxHealth()) {
-            setHealth(getMaxHealth());
-        }
+    private void applyVariantStats(Variant variant) {
+        if (level().isClientSide) return;
+        boolean full = getHealth() > 0 && getHealth() >= getMaxHealth();
+        if (appliedVariant != null && appliedVariant != variant)
+            setSpecialState(appliedVariant, false);
+        appliedVariant = variant;
+        setSpecialState(variant, true);
+        if (tickCount == 0 && full) setHealth(getMaxHealth());
     }
 
-    public static void registerVariantStats(Variant variant, double health, double damage, int armor) {
-        VARIANT_STATS.put(variant, new VariantStats(health, damage, armor));
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide && tickCount % 20 == 0) applyVariantStats(getVariant());
     }
 
     @Override
@@ -189,7 +184,6 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         return BloodMoonGameEvent.INSTANCE.started() && getVariant() != Variant.ARMED;
     }
 
-    private record VariantStats(double health, double damage, int armor) {}
 
     public enum Variant implements StringRepresentable {
         NORMAL("normal", 0xB7C7A5, 1.0F),

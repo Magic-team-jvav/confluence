@@ -3,6 +3,7 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
@@ -53,7 +54,7 @@ public class EyeLaserTurretMinion extends MomentumMinion implements IBlockCollis
     /** 从塔顶向目标发射一枚火球。 */
     public void shootFireball(LivingEntity target) {
         Vec3 start = getPos();
-        Vec3 direction = target.getBoundingBox().getCenter().subtract(start).normalize();
+        Vec3 direction = LibEntityUtils.aimPoint(target, start).subtract(start).normalize();
         EyeFireball fireball = new EyeFireball();
         fireball.setOwner(getOwner());
         fireball.init(new PathNode(start, direction));

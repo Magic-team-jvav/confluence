@@ -4,12 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,6 +18,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +36,8 @@ import org.confluence.mod.common.entity.ai.WormSteering;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.entity.projectile.DestroyerLaserProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -41,12 +45,11 @@ import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
-/// 毁灭者的生命、地形模式和身体轨迹由本体统一推进；各体节只同步自身姿态与碰撞。
+/// 毁灭者的战斗主体：负责 AI、生命及目标，身体轨迹与碰撞部件交给 DestroyerBody。
 public class TheDestroyer extends BaseBoss {
     private static final EntityDataAccessor<BlockState> DEBRIS_STATE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BLOCK_STATE);
     private static final EntityDataAccessor<BlockPos> DEBRIS_ORIGIN = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BLOCK_POS);
@@ -54,6 +57,7 @@ public class TheDestroyer extends BaseBoss {
     private static final EntityDataAccessor<Boolean> METAL = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> SHELL_OPEN = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<CompoundTag> BODY_POSE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.COMPOUND_TAG);
     /// Wiki 标准长度：头部、80 节身体和尾部，共 82 节。
     public static final int SEGMENT_COUNT = 82;
     /// 身体中轴的总长度，单位格；按 Wiki 的 239 格长度配置。
@@ -69,6 +73,8 @@ public class TheDestroyer extends BaseBoss {
     /// 模型主体截面的宽高，单位格；侧翼不扩大实体碰撞。
     public static final float BODY_WIDTH = 28.0F / 16.0F * MODEL_SCALE;
     public static final float BODY_HEIGHT = 25.0F / 16.0F * MODEL_SCALE;
+    /// 可受击碰撞箱相对身体尺寸的倍率，保留原有接触伤害范围。
+    public static final float HITBOX_SCALE = 1.5F;
     /// 简单、普通、困难的剩余生命比例阈值；进入二阶段后不回退。
     private static final float EASY_THRESHOLD = 0.4F, NORMAL_THRESHOLD = 0.5F, HARD_THRESHOLD = 0.6F;
     /// 玩家低于当地地表多少格时进入地下模式。
@@ -90,10 +96,6 @@ public class TheDestroyer extends BaseBoss {
     private static final int BREACH_TIMEOUT = 60;
     /// 地下头部轴向滚动速度，单位度/tick。
     private static final float ROLL_SPEED = 14.0F;
-    /// 体节与前节的最大滚转角差，单位度；达到阈值时强制跟随至阈值以内。
-    private static final float MAX_ROLL_GAP = 20.0F;
-    /// 小于角差阈值时，每 tick 消除剩余角差的比例，范围 0～1。
-    private static final float ROLL_FOLLOW = 0.18F;
     /// 天空偶发滚动的周期与持续时间，单位 tick。
     private static final int SKY_ROLL_INTERVAL = 180, SKY_ROLL_TICKS = 36;
     /// 每隔多少 tick 发起一轮激光，以及顺序发射的体节间隔。
@@ -118,19 +120,16 @@ public class TheDestroyer extends BaseBoss {
     private static final byte DEBRIS_EVENT = 73;
     /// 出土方块飞散的最短触发间隔，单位 tick，防止贴着地表反复穿越时堆积。
     private static final int DEBRIS_INTERVAL = 10;
+    /// 地下移动时从头部中心向上检查的最大距离，单位格；只掀起此范围内表层的视觉方块。
+    private static final int SURFACE_DEBRIS_DEPTH = 4;
+    /// 地下掀起方块所需的最小头部位移平方，单位格²/tick²。
+    private static final double SURFACE_DEBRIS_MIN_MOVEMENT_SQUARED = 0.01;
     /// 天空接触成功命中后的燃烧时间，单位秒。
     private static final int SKY_BURN_SECONDS = 5;
-    /// 有界轨迹历史长度，避免停留或长期战斗导致无限增长。
-    private static final int MAX_TRAIL_SAMPLES = 2048;
-    /// 两次记录头部轨迹的最小位移，单位格。
-    private static final double MIN_TRAIL_DISTANCE = 0.15;
     /// 地下环绕玩家时的角速度，单位弧度/tick。
     private static final double BURROW_ANGULAR_SPEED = 0.035;
     /// 脱战时向地下撤离的速度，单位格/tick。
     private static final double RETREAT_SPEED = 0.6;
-    /// 排气粒子的侧向偏移及发送间隔，单位格/tick；仅带侧翼的身体节发送。
-    private static final double EXHAUST_OFFSET = 1.6;
-    private static final int EXHAUST_INTERVAL = 4;
     /// 特殊攻击之间的巡航时间，单位 tick；直线冲刺与盘绕交替执行。
     private static final int SPECIAL_COOLDOWN = 200;
     /// 冲刺前减速瞄准及直线飞行时间，单位 tick。
@@ -147,12 +146,7 @@ public class TheDestroyer extends BaseBoss {
     private static final double COIL_SPEED = 2.4;
     /// 到达围圈入口的判定距离，单位格。
     private static final double COIL_ARRIVAL_RANGE = 2.5;
-    private final ArrayDeque<Vec3> trail = new ArrayDeque<>();
-    private final DestroyerPart[] parts = new DestroyerPart[SEGMENT_COUNT - 1];
-    private final Vec3[] poses = new Vec3[SEGMENT_COUNT];
-    private final float[] rolls = new float[SEGMENT_COUNT];
-    private final boolean[] exposed = new boolean[SEGMENT_COUNT];
-    private final boolean[] ascending = new boolean[SEGMENT_COUNT];
+    private final DestroyerBody body;
     private final BitSet releasedProbes = new BitSet(SEGMENT_COUNT);
     private final List<TheDestroyerProbe> probes = new ArrayList<>();
     private Mode candidateMode = Mode.GROUND;
@@ -177,10 +171,14 @@ public class TheDestroyer extends BaseBoss {
     private Vec3 dashDirection = Vec3.ZERO;
     private int coilTicksRemaining;
     private int lastDebrisTick = -DEBRIS_INTERVAL;
+    private DestroyerPart attackingPart;
     private int lastLaserSoundTick = -LASER_SOUND_INTERVAL;
     private double coilAngle;
 
     public enum Mode {UNDERGROUND, GROUND, SKY}
+
+    /// 部位基础值统一在 BossEntities 的状态参数中声明，共用头部的生命。
+    public enum BodySection {BODY, TAIL}
 
     public TheDestroyer(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -193,6 +191,9 @@ public class TheDestroyer extends BaseBoss {
         };
         noPhysics = true;
         setNoGravity(true);
+        body = new DestroyerBody(this);
+        /// 加入世界前为头部及部件保留连续 ID，客户端沿用头部生成包中的 ID。
+        setId(ENTITY_COUNTER.getAndAdd(SEGMENT_COUNT) + 1);
     }
 
     @Override
@@ -204,6 +205,107 @@ public class TheDestroyer extends BaseBoss {
         entityData.define(METAL, false);
         entityData.define(ROLL, 0.0F);
         entityData.define(SHELL_OPEN, false);
+        entityData.define(BODY_POSE, new CompoundTag());
+    }
+
+    public DestroyerBody getBody() {return body;}
+
+    @Override
+    public boolean isMultipartEntity() {return true;}
+
+    @Override
+    public DestroyerPart[] getParts() {return body.getParts();}
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        if (body != null) body.assignIds(id);
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        super.setPos(x, y, z);
+        if (body != null) body.initializePosition();
+    }
+
+    @Override
+    public void refreshDimensions() {
+        super.refreshDimensions();
+        if (body != null) {
+            for (DestroyerPart part : body.getParts()) part.refreshDimensions();
+        }
+    }
+
+    /// 受击箱扩大后仍以原身体中心为中心，接触伤害继续使用原身体尺寸。
+    @Override
+    protected AABB makeBoundingBox() {
+        return super.makeBoundingBox().move(0, (getBbHeight() / HITBOX_SCALE - getBbHeight()) / 2.0, 0);
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+        if (isRemoved()) body.remove();
+        super.onRemovedFromWorld();
+    }
+
+    /// 身体任意位置进入玩家视距即可追踪头部，配对与解除追踪仍由原版负责。
+    public boolean isWithinTrackingRange(ServerPlayer player, double range) {
+        return body.distanceToSqr(player.position(), true) <= range * range;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide && !isRemoved()) entityData.set(BODY_POSE, body.createSnapshot());
+    }
+
+    @Override
+    public Vec3 getLightProbePosition(float partialTick) {
+        return body.getRenderPosition(0, partialTick).add(0, BODY_HEIGHT / 2.0, 0);
+    }
+
+    /// 全链共用快照插值，避免原版再单独插值头部造成头身位置不一致。
+    @Override
+    public void lerpTo(double x, double y, double z, float yaw, float pitch, int steps, boolean teleport) {
+        if (!body.hasClientSnapshot()) super.lerpTo(x, y, z, yaw, pitch, steps, teleport);
+    }
+
+    @Override
+    public double getAttributeValue(Attribute attribute) {
+        double value = super.getAttributeValue(attribute);
+        if (attackingPart != null && attribute == Attributes.ATTACK_DAMAGE) {
+            double headBase = getAttributeBaseValue(attribute);
+            double partBase = stateAttributeValue(sectionOf(attackingPart), attribute, headBase);
+            return headBase > 0 ? value * partBase / headBase : partBase * CreatureDifficultyScaling.attackMultiplier(this);
+        }
+        if ((attribute == Attributes.ARMOR || attribute == Attributes.ARMOR_TOUGHNESS)
+                && getDamageFeedbackTarget() instanceof DestroyerPart part) {
+            double headBase = getAttributeBaseValue(attribute);
+            if (attribute == Attributes.ARMOR)
+                return Math.max(0, stateAttributeValue(sectionOf(part), attribute, headBase) + value - headBase);
+            if (attribute == Attributes.ARMOR_TOUGHNESS) {
+                var rule = CreatureDifficultyScaling.difficulty(this);
+                double partBase = stateAttributeValue(sectionOf(part), attribute, headBase);
+                return Math.max(0, Math.min(CreatureDifficultyRules.MAX_TOUGHNESS,
+                        rule.toughness(partBase) + value - rule.toughness(headBase)));
+            }
+        }
+        return value;
+    }
+
+    private static BodySection sectionOf(DestroyerPart part) {
+        return part.isTail() ? BodySection.TAIL : BodySection.BODY;
+    }
+
+    /// 临时标记实际接触部位，继续走原有接触伤害、附魔和穿甲流程，不改写头部属性表。
+    private boolean hurtByContact(Entity section, Player player) {
+        DestroyerPart previous = attackingPart;
+        attackingPart = section instanceof DestroyerPart part ? part : null;
+        try {
+            return doContactHurtTarget(player);
+        } finally {
+            attackingPart = previous;
+        }
     }
 
     @Override
@@ -243,7 +345,9 @@ public class TheDestroyer extends BaseBoss {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if (ROLL.equals(key)) {
+        if (BODY_POSE.equals(key) && level().isClientSide && body != null) {
+            body.readSnapshot(entityData.get(BODY_POSE));
+        } else if (ROLL.equals(key)) {
             previousRoll = displayedRoll;
             displayedRoll = entityData.get(ROLL);
             rollUpdateTick = level().getGameTime();
@@ -271,8 +375,14 @@ public class TheDestroyer extends BaseBoss {
     public void travel(Vec3 input) {
         if (!level().isClientSide && isDisengageRetreating()) {
             setPos(position().add(getDeltaMovement()));
-            updateChain();
+            body.update();
         }
+    }
+
+    /// 索敌与脱战都按整条身体计算距离，共用头部的唯一战斗目标。
+    @Override
+    protected double combatAnchorDistanceSqr(LivingEntity target) {
+        return body.distanceToSqr(target.position(), false);
     }
 
     @Override
@@ -285,12 +395,12 @@ public class TheDestroyer extends BaseBoss {
         if (!isAlive() || isDisengageRetreating()) return;
         LivingEntity target = getTarget();
         updateStage();
-        initializeTrail();
+        body.initializeTrail();
         if (target == null || !target.isAlive() || target.isRemoved() || target.level() != level()) {
             finishSpecialAttack();
             velocity = Vec3.ZERO;
             setDeltaMovement(Vec3.ZERO);
-            updateChain();
+            body.update();
             return;
         }
         updateMode(target);
@@ -301,13 +411,13 @@ public class TheDestroyer extends BaseBoss {
         if (!specialMovement) switch (getMode()) {
             case UNDERGROUND -> {
                 velocity = steer(velocity, target.getBoundingBox().getCenter().subtract(position()), BURROW_SPEED);
-                entityData.set(ROLL, wrapRoll(entityData.get(ROLL) + ROLL_SPEED));
+                entityData.set(ROLL, DestroyerBody.wrapRoll(entityData.get(ROLL) + ROLL_SPEED));
             }
             case SKY -> {
                 velocity = steer(velocity, target.getBoundingBox().getCenter().subtract(position()), SKY_SPEED);
                 float roll = entityData.get(ROLL);
                 entityData.set(ROLL, tickCount % SKY_ROLL_INTERVAL < SKY_ROLL_TICKS
-                        ? wrapRoll(roll + ROLL_SPEED) : followRoll(0, roll));
+                        ? DestroyerBody.wrapRoll(roll + ROLL_SPEED) : DestroyerBody.followRoll(0, roll));
             }
             case GROUND -> tickGround(target, solidBefore);
         }
@@ -334,7 +444,7 @@ public class TheDestroyer extends BaseBoss {
         }
         entityData.set(SHELL_OPEN, getMode() == Mode.SKY || getMode() == Mode.GROUND && airborne || specialMovement);
         tickHeadTerrain(previous, solidNow);
-        updateChain();
+        body.update();
         attackContact(previous);
         tickLasers(target);
         tickProbes();
@@ -398,7 +508,7 @@ public class TheDestroyer extends BaseBoss {
         }
         if ((specialAttack == SpecialAttack.COIL_APPROACH || specialAttack == SpecialAttack.COIL)
                 && --coilTicksRemaining <= 0) finishSpecialAttack();
-        entityData.set(ROLL, followRoll(0, entityData.get(ROLL)));
+        entityData.set(ROLL, DestroyerBody.followRoll(0, entityData.get(ROLL)));
         return true;
     }
 
@@ -449,10 +559,10 @@ public class TheDestroyer extends BaseBoss {
             float spin = ROLL_SPEED * apexTicks * (progress - progress * progress * 0.5F);
             float end = launchRoll + ROLL_SPEED * apexTicks * 0.5F;
             float correction = -Mth.wrapDegrees(end) * progress * progress;
-            entityData.set(ROLL, progress >= 1 ? 0 : wrapRoll(launchRoll + spin + correction));
+            entityData.set(ROLL, progress >= 1 ? 0 : DestroyerBody.wrapRoll(launchRoll + spin + correction));
             return;
         }
-        entityData.set(ROLL, wrapRoll(entityData.get(ROLL) + ROLL_SPEED));
+        entityData.set(ROLL, DestroyerBody.wrapRoll(entityData.get(ROLL) + ROLL_SPEED));
         if (launching) {
             if (++launchTicks > BREACH_TIMEOUT) {
                 launching = false;
@@ -486,95 +596,8 @@ public class TheDestroyer extends BaseBoss {
                 SEGMENT_SPACING * TURN_RADIUS_SEGMENTS, MAX_TURN_RADIANS);
     }
 
-    static float wrapRoll(float roll) {return Mth.wrapDegrees(roll);}
-
-    /// 沿最短圆周方向跟随，超过角差阈值时强制收拢，其余时间缓慢对齐。
-    public static float followRoll(float previous, float current) {
-        float gap = Mth.wrapDegrees(previous - current);
-        float step = Math.abs(gap) >= MAX_ROLL_GAP
-                ? gap - Math.copySign(MAX_ROLL_GAP - 0.01F, gap) : gap * ROLL_FOLLOW;
-        return wrapRoll(current + step);
-    }
-
-    private void initializeTrail() {
-        if (!trail.isEmpty()) return;
-        Vec3 backward = getLookAngle().normalize().scale(-SEGMENT_SPACING);
-        for (int i = 0; i < SEGMENT_COUNT; i++) trail.addLast(position().add(backward.scale(i)));
-    }
-
-    private void updateChain() {
-        initializeTrail();
-        Vec3 latest = trail.getFirst();
-        if (latest.distanceToSqr(position()) >= MIN_TRAIL_DISTANCE * MIN_TRAIL_DISTANCE)
-            trail.addFirst(position());
-        while (trail.size() > MAX_TRAIL_SAMPLES) trail.removeLast();
-        List<Vec3> path = new ArrayList<>(trail);
-        int cursor = 0;
-        double traversed = 0;
-        poses[0] = position();
-        rolls[0] = entityData.get(ROLL);
-        for (int i = 1; i < SEGMENT_COUNT; i++) {
-            double distance = i * SEGMENT_SPACING;
-            while (cursor + 1 < path.size() && traversed + path.get(cursor).distanceTo(path.get(cursor + 1)) < distance) {
-                traversed += path.get(cursor).distanceTo(path.get(cursor + 1));
-                cursor++;
-            }
-            Vec3 from = path.get(cursor), to = path.get(Math.min(cursor + 1, path.size() - 1));
-            double length = from.distanceTo(to);
-            Vec3 next = length < 0.0001 ? from : from.lerp(to, Mth.clamp((distance - traversed) / length, 0, 1));
-            Vec3 old = poses[i];
-            boolean outside = !isSolid(next);
-            if (!exposed[i] && outside) ascending[i] = true;
-            boolean apex = getMode() == Mode.GROUND && outside && ascending[i] && old != null && next.y <= old.y;
-            if (apex) ascending[i] = false;
-            /// 越过最高点后平滑归正，避免直接清零导致体节瞬间翻转。
-            float targetRoll = getMode() == Mode.GROUND && outside && !ascending[i] ? 0 : rolls[i - 1];
-            rolls[i] = getMode() == Mode.GROUND && outside && !ascending[i]
-                    ? wrapRoll(rolls[i] + Mth.wrapDegrees(-rolls[i]) * ROLL_FOLLOW)
-                    : followRoll(targetRoll, rolls[i]);
-            poses[i] = next;
-            boolean open = getMode() == Mode.SKY || getMode() == Mode.GROUND && outside;
-            if (level().hasChunkAt(BlockPos.containing(next))) {
-                DestroyerPart part = parts[i - 1];
-                if (part == null || part.isRemoved()) {
-                    part = new DestroyerPart(BossEntities.THE_DESTROYER_PART.get(), level());
-                    part.attach(this, i, next);
-                    if (!level().addFreshEntity(part)) {
-                        part.discard();
-                        continue;
-                    }
-                    parts[i - 1] = part;
-                }
-                Vec3 forward = poses[i - 1].subtract(next);
-                part.updatePose(next, forward, rolls[i], open, isMetal());
-                if (i % 2 != 0 && i < SEGMENT_COUNT - 1) emitExhaust(i, next, forward, open);
-            } else if (parts[i - 1] != null && !parts[i - 1].isRemoved()) parts[i - 1].discard();
-            exposed[i] = outside;
-        }
-        /// 保留覆盖整条身体的轨迹与一个插值节点，历史不会随战斗时间增长。
-        while (trail.size() > cursor + 3) trail.removeLast();
-    }
-
-    private void emitExhaust(int index, Vec3 position, Vec3 forward, boolean open) {
-        if (!(level() instanceof ServerLevel server)) return;
-        boolean opening = open && !exposed[index];
-        boolean flying = getMode() == Mode.SKY && tickCount % EXHAUST_INTERVAL == index % EXHAUST_INTERVAL;
-        if (!opening && !flying) return;
-        Vec3 direction = forward.normalize();
-        Vec3 side = direction.cross(new Vec3(0, 1, 0));
-        if (side.lengthSqr() < 0.0001) side = new Vec3(1, 0, 0);
-        else side = side.normalize();
-        Vec3 up = side.cross(direction).normalize();
-        double angle = rolls[index] * Mth.DEG_TO_RAD;
-        Vec3 offset = side.scale(Math.cos(angle)).add(up.scale(Math.sin(angle))).scale(EXHAUST_OFFSET);
-        Vec3 center = position.add(0, getBbHeight() / 2.0, 0);
-        for (int sign = -1; sign <= 1; sign += 2) {
-            Vec3 outlet = center.add(offset.scale(sign));
-            server.sendParticles(flying ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.CLOUD,
-                    outlet.x, outlet.y, outlet.z, flying ? 1 : 4, 0.15, 0.15, 0.15, 0.04);
-        }
-        if (opening)
-            level().playSound(null, BlockPos.containing(position), SoundEvents.FIRE_EXTINGUISH, SoundSource.HOSTILE, 0.15F, 1.4F);
+    void playVentOpeningSound(Vec3 position) {
+        level().playSound(null, BlockPos.containing(position), SoundEvents.FIRE_EXTINGUISH, SoundSource.HOSTILE, 0.15F, 1.4F);
     }
 
     public boolean isSolid(Vec3 point) {
@@ -604,8 +627,8 @@ public class TheDestroyer extends BaseBoss {
     }
 
     private void fireSegment(int index, LivingEntity target) {
-        Vec3 pos = poses[index];
-        if (pos == null || isSolid(pos) || pos.distanceToSqr(target.position()) > LASER_RANGE * LASER_RANGE)
+        Vec3 pos = body.getPosition(index);
+        if (isSolid(pos) || pos.distanceToSqr(target.position()) > LASER_RANGE * LASER_RANGE)
             return;
         DestroyerLaserProjectile.fire(this, pos, target.getBoundingBox().getCenter(), LASER_SPEED);
         if (tickCount - lastLaserSoundTick >= LASER_SOUND_INTERVAL) {
@@ -626,9 +649,9 @@ public class TheDestroyer extends BaseBoss {
         int start = 1 + random.nextInt(SEGMENT_COUNT - 2);
         for (int n = 0; n < SEGMENT_COUNT - 2; n++) {
             int i = 1 + (start - 1 + n) % (SEGMENT_COUNT - 2);
-            if (releasedProbes.get(i) || poses[i] == null || isSolid(poses[i])) continue;
+            if (releasedProbes.get(i) || isSolid(body.getPosition(i))) continue;
             TheDestroyerProbe probe = new TheDestroyerProbe(BossEntities.THE_DESTROYER_PROBE.get(), level());
-            probe.attach(this, poses[i]);
+            probe.attach(this, body.getPosition(i));
             if (level().addFreshEntity(probe)) {
                 probes.add(probe);
                 addSubEntity(probe);
@@ -649,21 +672,37 @@ public class TheDestroyer extends BaseBoss {
             if (level().hasChunkAt(materialPos)) {
                 BlockState state = level().getBlockState(materialPos);
                 level().playSound(null, blockPosition(), state.getSoundType().getBreakSound(), SoundSource.HOSTILE, 0.25F, 0.8F);
-                if (crossing && !solid && !state.isAir() && tickCount - lastDebrisTick >= DEBRIS_INTERVAL) {
-                    lastDebrisTick = tickCount;
-                    entityData.set(DEBRIS_STATE, state);
-                    entityData.set(DEBRIS_ORIGIN, materialPos);
-                    /// 先同步来源状态和位置，再发事件，避免客户端使用上一次出土的材质。
-                    ((ServerLevel) level()).getChunkSource().broadcastAndSend(this,
-                            new ClientboundSetEntityDataPacket(getId(), entityData.getNonDefaultValues()));
-                    level().broadcastEntityEvent(this, DEBRIS_EVENT);
-                }
+                if (crossing && !solid && !state.isAir()) emitDebris(materialPos, state);
                 if (crossing)
-                    ((ServerLevel) level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), getX(), getY() + getBbHeight() / 2, getZ(), 32, 2, 1.5, 2, 0.15);
+                    ((ServerLevel) level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), getX(), getY() + BODY_HEIGHT / 2, getZ(), 32, 2, 1.5, 2, 0.15);
             }
             level().broadcastEntityEvent(this, crossing ? CROSS_EVENT : DIG_EVENT);
         }
+        if (solid && previous.distanceToSqr(position()) >= SURFACE_DEBRIS_MIN_MOVEMENT_SQUARED
+                && tickCount - lastDebrisTick >= DEBRIS_INTERVAL) {
+            BlockPos surface = blockPosition();
+            for (int depth = 0; depth <= Mth.ceil(BODY_HEIGHT / 2.0) + SURFACE_DEBRIS_DEPTH; depth++, surface = surface.above()) {
+                if (!level().hasChunkAt(surface) || !level().hasChunkAt(surface.above())) break;
+                BlockState state = level().getBlockState(surface);
+                if (!state.getCollisionShape(level(), surface).isEmpty() && level().getBlockState(surface.above()).isAir()) {
+                    emitDebris(surface, state);
+                    break;
+                }
+            }
+        }
         wasSolid = solid;
+    }
+
+    /// 仅发送表层方块的视觉副本，不破坏方块，也不请求加载区块。
+    private void emitDebris(BlockPos position, BlockState state) {
+        if (tickCount - lastDebrisTick < DEBRIS_INTERVAL) return;
+        lastDebrisTick = tickCount;
+        entityData.set(DEBRIS_STATE, state);
+        entityData.set(DEBRIS_ORIGIN, position);
+        /// 先同步来源状态和位置，再发事件，避免客户端沿用上一次的材质。
+        ((ServerLevel) level()).getChunkSource().broadcastAndSend(this,
+                new ClientboundSetEntityDataPacket(getId(), entityData.getNonDefaultValues()));
+        level().broadcastEntityEvent(this, DEBRIS_EVENT);
     }
 
     /// 全链只遍历现场玩家；连续碰撞与原版受伤无敌帧共同避免高速穿过漏判及体节叠伤。
@@ -671,14 +710,16 @@ public class TheDestroyer extends BaseBoss {
         for (Player player : level().players()) {
             if (!canAttack(player)) continue;
             for (int i = 0; i < SEGMENT_COUNT; i++) {
-                Entity section = i == 0 ? this : parts[i - 1];
+                Entity section = body.getSection(i);
                 if (section == null || section.isRemoved()) continue;
                 Vec3 before = i == 0 ? previousHead : ((DestroyerPart) section).getContactSweepStart();
-                AABB target = player.getBoundingBox().inflate(section.getBbWidth() / 2.0, section.getBbHeight() / 2.0, section.getBbWidth() / 2.0);
-                Vec3 center = section.getBoundingBox().getCenter();
-                Vec3 start = before.add(0, section.getBbHeight() / 2.0, 0);
+                double halfWidth = section.getBbWidth() / HITBOX_SCALE / 2.0;
+                double halfHeight = section.getBbHeight() / HITBOX_SCALE / 2.0;
+                AABB target = player.getBoundingBox().inflate(halfWidth, halfHeight, halfWidth);
+                Vec3 center = section.position().add(0, halfHeight, 0);
+                Vec3 start = before.add(0, halfHeight, 0);
                 if (target.contains(center) || start.distanceToSqr(center) <= 256 && target.clip(start, center).isPresent()) {
-                    if (doContactHurtTarget(player) && getMode() == Mode.SKY)
+                    if (hurtByContact(section, player) && getMode() == Mode.SKY)
                         player.setSecondsOnFire(SKY_BURN_SECONDS);
                     break;
                 }
@@ -688,7 +729,9 @@ public class TheDestroyer extends BaseBoss {
 
     @Override
     public void handleEntityEvent(byte event) {
-        if (level().isClientSide && event == DEBRIS_EVENT) {
+        if (level().isClientSide && event < 0 && -event < SEGMENT_COUNT) {
+            body.getParts()[-event - 1].emitHurtSparks();
+        } else if (level().isClientSide && event == DEBRIS_EVENT) {
             DestroyerDebrisParticle.spawn(entityData.get(DEBRIS_ORIGIN), entityData.get(DEBRIS_STATE));
         } else if (level().isClientSide && event == HURT_SPARK_EVENT) {
             MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
@@ -717,15 +760,7 @@ public class TheDestroyer extends BaseBoss {
         tag.putDouble("DestroyerVX", velocity.x);
         tag.putDouble("DestroyerVY", velocity.y);
         tag.putDouble("DestroyerVZ", velocity.z);
-        ListTag history = new ListTag();
-        for (Vec3 point : trail) {
-            CompoundTag entry = new CompoundTag();
-            entry.putDouble("X", point.x);
-            entry.putDouble("Y", point.y);
-            entry.putDouble("Z", point.z);
-            history.add(entry);
-        }
-        tag.put("DestroyerTrail", history);
+        body.save(tag);
     }
 
     @Override
@@ -743,11 +778,7 @@ public class TheDestroyer extends BaseBoss {
         apexTicks = Math.max(1, tag.getInt("DestroyerApexTicks"));
         launchRoll = tag.getFloat("DestroyerLaunchRoll");
         velocity = new Vec3(tag.getDouble("DestroyerVX"), tag.getDouble("DestroyerVY"), tag.getDouble("DestroyerVZ"));
-        trail.clear();
-        ListTag history = tag.getList("DestroyerTrail", 10);
-        for (int i = 0; i < Math.min(history.size(), MAX_TRAIL_SAMPLES); i++) {
-            CompoundTag point = history.getCompound(i);
-            trail.addLast(new Vec3(point.getDouble("X"), point.getDouble("Y"), point.getDouble("Z")));
-        }
+        body.load(tag);
+        entityData.set(BODY_POSE, body.createSnapshot());
     }
 }

@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -24,6 +23,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.init.ModEffects;
@@ -285,7 +285,7 @@ public class SoulLureProjectile extends Projectile {
         if (!level().isClientSide && hit.getType() != HitResult.Type.MISS) {
             setPos(hit.getLocation());
             if (hit instanceof EntityHitResult entityHit && entityHit.getEntity() instanceof LivingEntity victim
-                    && hitEntities.add(victim.getUUID())) {
+                    && hitEntities.add(LibEntityUtils.dedupeIdentity(victim).getUUID())) {
                 victim.hurt(LibDamageTypes.soul(level(), this, getOwner()), damage);
                 applySoulMark(victim);
                 /// 引魂激荡：命中位置再来一发灵魂激荡，**不消耗灵魂**。
@@ -349,7 +349,7 @@ public class SoulLureProjectile extends Projectile {
         LivingEntity next = findNextTarget(from, SoulSkillParameters.SOUL_LURE_BOUNCE_RADIUS, victim);
         Vec3 direction;
         if (next != null) {
-            direction = next.getBoundingBox().getCenter().subtract(from);
+            direction = LibEntityUtils.aimPoint(next, from).subtract(from);
         } else {
             RandomSource random = RandomSource.create();
             double yaw = random.nextDouble() * Math.PI * 2.0;
@@ -386,7 +386,7 @@ public class SoulLureProjectile extends Projectile {
         if (speed <= 1.0E-4) {
             return;
         }
-        Vec3 toTarget = target.getBoundingBox().getCenter().subtract(position());
+        Vec3 toTarget = LibEntityUtils.aimPoint(target, position()).subtract(position());
         if (toTarget.lengthSqr() <= 1.0E-4) {
             return;
         }
@@ -406,14 +406,13 @@ public class SoulLureProjectile extends Projectile {
         AABB box = new AABB(from, from).inflate(radius);
         LivingEntity best = null;
         double bestDistance = Double.MAX_VALUE;
-        for (LivingEntity candidate : level().getEntitiesOfClass(LivingEntity.class, box, this::canHitEntity)) {
-            if (candidate == exclude || !EnemyDamageRules.isEnemy(candidate)) {
-                continue;
-            }
-            double distance = candidate.distanceToSqr(from);
+        for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, box, this::canHitEntity)) {
+            LivingEntity living = LibEntityUtils.logicalLivingTarget(candidate);
+            if (living == null || living == exclude || !EnemyDamageRules.isEnemy(living)) continue;
+            double distance = candidate.getBoundingBox().getCenter().distanceToSqr(from);
             if (distance < bestDistance) {
                 bestDistance = distance;
-                best = candidate;
+                best = living;
             }
         }
         return best;
@@ -422,7 +421,7 @@ public class SoulLureProjectile extends Projectile {
     /// 已经打过的敌怪不再命中，穿透弹幕因此不会对同一目标连续结算。
     @Override
     protected boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && !hitEntities.contains(target.getUUID());
+        return super.canHitEntity(target) && !hitEntities.contains(LibEntityUtils.dedupeIdentity(target).getUUID());
     }
 
     /// 命中或消散时对周围目标补一次范围伤害，半径为零时不做任何事。
@@ -431,11 +430,11 @@ public class SoulLureProjectile extends Projectile {
             return;
         }
         Vec3 center = position();
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(aoeRadius),
-                target -> target.isAlive() && !target.isSpectator() && target != getOwner() && canHitEntity(target))) {
-            if (target.position().distanceToSqr(center) <= aoeRadius * aoeRadius) {
+        for (Entity target : LibEntityUtils.areaTargets(level(), this, getBoundingBox().inflate(aoeRadius),
+                candidate -> candidate != getOwner() && canHitEntity(candidate)
+                        && LibEntityUtils.logicalLivingTarget(candidate) != null)) {
+            if (target.getBoundingBox().getCenter().distanceToSqr(center) <= aoeRadius * aoeRadius)
                 target.hurt(LibDamageTypes.soul(level(), this, getOwner()), aoeDamage);
-            }
         }
     }
 

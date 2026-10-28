@@ -1,0 +1,23 @@
+{
+    "frame": "confluence:textures/entity/boss_bar/destroyer_bar.png",
+    "fill": "confluence:textures/entity/boss_bar/destroyer_bar.png",
+    "texture_width": 256,
+    "texture_height": 64,
+    "frame_width": 256,
+    "frame_height": 46,
+    "fill_source_y": 48,
+    "fill_target_y": 17,
+    "fill_height": 4,
+    "vertical_increment": 52,
+    "sections": [
+        {
+            "left": 37,
+            "width": 182,
+            "reverse": false,
+            "number_center": 128,
+            "number_y": 39,
+            "number_color": 16758436,
+            "number_end_color": 8319993
+        }
+    ]
+}

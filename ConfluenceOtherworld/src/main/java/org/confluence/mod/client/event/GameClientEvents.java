@@ -65,6 +65,7 @@ import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
+import org.confluence.mod.client.renderer.entity.DestroyerRenderer;
 import org.confluence.mod.client.renderer.entity.MartianOfficerRenderer;
 import org.confluence.mod.client.renderer.entity.TongueRenderer;
 import org.confluence.mod.client.renderer.entity.WallOfFleshRenderer;
@@ -420,6 +421,7 @@ public final class GameClientEvents {
             ClientBiomeEffectSystem.renderSky(player, event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
             WallOfFleshRenderer.renderWalls(event);
+            DestroyerRenderer.renderDestroyers(event);
             TongueRenderer.renderFirstPerson(event, minecraft, player);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             SpelunkerHelper.renderLevel(event, player);

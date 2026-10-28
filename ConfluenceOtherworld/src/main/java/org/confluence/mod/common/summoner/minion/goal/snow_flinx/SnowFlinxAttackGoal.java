@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.minion.goal.snow_flinx;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.SnowFlinxMinion;
 
@@ -19,7 +20,7 @@ public class SnowFlinxAttackGoal extends AttachmentEntityGoal<SnowFlinxMinion> {
     @Override
     public void tick() {
         LivingEntity target = minion.getTarget();
-        Vec3 targetPos = target.getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(target, minion.getPos());
         minion.lookAtPos(targetPos);
         if (target.position().subtract(minion.getPos()).horizontalDistance() < target.getBbWidth()) {
             Vec3 vec3 = targetPos.offsetRandom(minion.getRandom(), 0.25f).add(0, target.getBbHeight() - 0.5, 0);

@@ -66,7 +66,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
             if (living == marked) {
                 return living;
             }
-            double distance = living.getBoundingBox().getCenter().distanceToSqr(center);
+            double distance = LibEntityUtils.aimPoint(living, center).distanceToSqr(center);
             if (distance < nearestDistance) {
                 nearest = living;
                 nearestDistance = distance;

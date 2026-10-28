@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.minion.goal.finch;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.FinchMinion;
 
@@ -20,7 +21,7 @@ public class FinchAttackGoal extends AttachmentEntityGoal<FinchMinion> {
 
     @Override
     public void start() {
-        Vec3 targetCenter = minion.getTarget().getBoundingBox().getCenter();
+        Vec3 targetCenter = LibEntityUtils.aimPoint(minion.getTarget(), minion.getPos());
         Vec3 direction = targetCenter.subtract(minion.getPos()).normalize();
         offset = targetCenter.add(direction.scale(2F)).offsetRandom(minion.getRandom(), (float) minion.getTarget().getBoundingBox().getSize()).subtract(targetCenter);
     }
@@ -28,7 +29,7 @@ public class FinchAttackGoal extends AttachmentEntityGoal<FinchMinion> {
     @Override
     public void tick() {
         LivingEntity target = minion.getTarget();
-        Vec3 targetPos = target.getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(target, minion.getPos());
         Vec3 minionPos = minion.getPos();
         minion.lookAtPos(targetPos);
         Vec3 wanderPos = targetPos.add(offset);

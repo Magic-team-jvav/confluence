@@ -377,6 +377,7 @@ public final class ValueSubProvider {
                 .add(SwordItems.TRAGIC_UMBRELLA, gold2)
                 .add(TCItems.MAGIC_MIRROR, gold1)
                 .add(ToolItems.ICE_MIRROR, gold1)
+                .add(ToolItems.HOMING_BEE, gold1)
                 .add(ToolItems.BINOCULARS, gold1 + gold2)
 
                 .add(SwordItems.BREATHING_REED, silver20)

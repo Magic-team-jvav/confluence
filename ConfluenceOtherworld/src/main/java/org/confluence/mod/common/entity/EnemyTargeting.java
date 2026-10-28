@@ -88,6 +88,8 @@ public final class EnemyTargeting {
             return false;
         if (EnemyDamageRules.isProtectedEnemy(mob) && EnemyDamageRules.isEnemy(target))
             return false;
+        if (EnemyDamageRules.isProtectedPassiveCreature(target) && EnemyDamageRules.isEnemy(mob))
+            return false;
         Entity source = mob instanceof BossOwnedEntity dependent && dependent.getBossOwner() != null
                 ? dependent.getBossOwner() : LibEntityUtils.encounterOwner(mob);
         Entity destination = target instanceof BossOwnedEntity dependent && dependent.getBossOwner() != null

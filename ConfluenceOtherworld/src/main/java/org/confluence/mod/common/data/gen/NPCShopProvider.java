@@ -123,6 +123,7 @@ public final class NPCShopProvider implements DataProvider {
         ));
         shops.put(Confluence.asResource("dryad"), List.of(
                 offer(ConsumableItems.PURIFICATION_POWDER.toStack()),
+                offer(ToolItems.HOMING_BEE.toStack()),
                 offer(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.toStack()),
                 offer(new ItemStack(Items.OAK_SAPLING)),
                 offer(new ItemStack(Items.SUNFLOWER)),

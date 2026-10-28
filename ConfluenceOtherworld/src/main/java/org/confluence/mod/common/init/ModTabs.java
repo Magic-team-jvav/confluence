@@ -1274,6 +1274,7 @@ public final class ModTabs {
                         utility_tools.accept(ToolItems.DEMON_CONCH.get());
                         utility_tools.accept(ToolItems.METEOR_COMPASS.get());
                         utility_tools.accept(ToolItems.DUNGEON_COMPASS.get());
+                        utility_tools.accept(ToolItems.HOMING_BEE.get());
                         utility_tools.accept(ToolItems.BINOCULARS.get());
                         utility_tools.accept(ToolItems.ENCUMBERING_STONE.get());
                         utility_tools.accept(ToolItems.NPC_INVITATION.get());

@@ -15,6 +15,7 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -33,14 +34,28 @@ import java.util.List;
 
 public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
     private final float baseDamage;
+    /// 铁砧修复材料；null 表示不能用材料修复（同物品互修仍由原版处理）。
+    private final @Nullable Ingredient repairIngredient;
 
     public BaseTerraBowItem(float baseDamage) {
         this(baseDamage, new Properties());
     }
 
     public BaseTerraBowItem(float baseDamage, Properties properties) {
+        this(baseDamage, properties, null);
+    }
+
+    public BaseTerraBowItem(float baseDamage, Properties properties, @Nullable Ingredient repairIngredient) {
         super(properties.stacksTo(1));
         this.baseDamage = baseDamage;
+        this.repairIngredient = repairIngredient;
+    }
+
+    /// 铁砧修复：允许用对应材质的锭修复（原版「两把同物品互修」照旧可用）。
+    @Override
+    public boolean isValidRepairItem(ItemStack stack, ItemStack repairCandidate) {
+        return repairIngredient != null && repairIngredient.test(repairCandidate)
+                || super.isValidRepairItem(stack, repairCandidate);
     }
 
     // region overridable configuration methods

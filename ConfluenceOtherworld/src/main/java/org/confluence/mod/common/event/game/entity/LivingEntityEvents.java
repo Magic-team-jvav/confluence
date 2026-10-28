@@ -96,6 +96,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
+import org.confluence.mod.common.item.common.HomingBeeItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
@@ -682,6 +683,10 @@ public final class LivingEntityEvents {
             VisibilityPacketS2C.sendSignal(player, event.getTo().is(ModTags.Items.SHOW_SIGNAL));
         } else if (event.getSlot() == EquipmentSlot.HEAD) {
             VisibilityPacketS2C.sendSunglasses(player, event.getTo().is(VanityArmorItems.SUNGLASSES) ? TriState.TRUE : TriState.FALSE, TriState.DEFAULT);
+            /// 归巢蜜蜂：第一次戴到头上时一次性绑定最近的蜂巢（与地牢指南针一样，坐标只绑定一次、之后不再搜索）
+            if (event.getTo().getItem() instanceof HomingBeeItem) {
+                HomingBeeItem.bindHiveTarget(player, player.getItemBySlot(EquipmentSlot.HEAD));
+            }
         }
     }
 

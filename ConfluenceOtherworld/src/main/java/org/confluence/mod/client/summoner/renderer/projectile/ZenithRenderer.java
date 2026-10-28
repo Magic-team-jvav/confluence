@@ -35,7 +35,7 @@ public class ZenithRenderer extends AbstractAttachmentEntityRenderer<Zenith> {
                         .colorRGB(zenith.renderType.getColor()));
             }
             return context.model(new ModelContext()
-                    .scale(2)
+                    .scale(2, 2, 1)
                     .translateOffset(-1f, -1f, -0.5f)
                     .rotationOffset(0, 90, 45));
         } else {

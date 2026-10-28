@@ -13,7 +13,6 @@ import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +25,6 @@ import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
-import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModDataMaps;
@@ -40,22 +38,14 @@ import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.integration.jei.category.*;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
-    public static @Nullable IJeiRuntime jeiRuntime;
-
-    public static List<ToastComponent.ToastInstance<?>> filterAchievements(List<ToastComponent.ToastInstance<?>> original) {
-        List<ToastComponent.ToastInstance<?>> list = new ArrayList<>(original);
-        list.removeIf(toastInstance -> toastInstance.getToast() instanceof AchievementToast);
-        return list;
-    }
+    private static @Nullable IJeiRuntime jeiRuntime;
 
     @Override
     public ResourceLocation getPluginUid() {

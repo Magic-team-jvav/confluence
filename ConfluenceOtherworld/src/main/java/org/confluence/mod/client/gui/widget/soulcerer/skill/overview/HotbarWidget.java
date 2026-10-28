@@ -121,6 +121,24 @@ public class HotbarWidget extends AbstractWidget {
         return Collections.unmodifiableList(slots);
     }
 
+    /// 把悬停槽位的技能说明抬到**最后一层**绘制。
+    ///
+    /// 快捷栏贴着界面下缘，默认 tooltip 的纵向位置会被夹到 `屏幕高度 - 高度 - 3`
+    /// （见 `DefaultTooltipPositioner`），正好压在快捷栏这一排上；而槽位是逐个独立绘制的控件，
+    /// 后面绘制的槽位图标会盖住先绘制槽位的说明文字。所以槽位自身不画 tooltip，
+    /// 由 {@link SoulOverviewScreen#render} 在所有控件（含全部槽位）之后调用这里补画。
+    ///
+    /// @return 是否画了说明文字：槽位压在节点之上，总览界面据此不再画节点那一份
+    public boolean renderDeferredTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        for (HotbarSlot slot : slots) {
+            if (!slot.getSkillStack().isEmpty() && slot.isMouseOver(mouseX, mouseY)) {
+                SoulSkillBox.renderTooltip(screen.getFont(), guiGraphics, slot.getSkillStack(), mouseX, mouseY, partialTick);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /// 沿用快捷栏基类的点击处理。
     @Override
     public void onClick(double mouseX, double mouseY, int button) {
@@ -160,9 +178,9 @@ public class HotbarWidget extends AbstractWidget {
             }
 
             SoulSkillBox.renderSkillIcon(guiGraphics, skillStack, getX(), getY());
-            if (isHovered) {
-                SoulSkillBox.renderTooltip(screen.getFont(), guiGraphics, skillStack, mouseX, mouseY, partialTick);
-            }
+            /// 说明文字**不在这里画**：每个槽位都是单独绘制的控件，后面绘制的槽位图标会盖住
+            /// 先绘制槽位的说明文字。改由总览界面在所有控件画完之后统一补画，
+            /// 见 {@link HotbarWidget#renderDeferredTooltip}。
         }
 
         /// 沿用槽位基类的点击命中处理。

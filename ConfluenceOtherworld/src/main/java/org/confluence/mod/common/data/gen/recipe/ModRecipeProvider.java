@@ -404,6 +404,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         fletchingTable(recipeOutput, ArrowItems.WIND_ARROW.toStack(25), Ingredient.of(), AmountIngredient.of(25, Items.ARROW), Ingredient.of(Items.BREEZE_ROD));
         // 恶魔祭坛：永夜刃 + 极昼 -> 昏晓
         altar(recipeOutput, ManaWeaponItems.DUSK_DAWN.toStack(), Ingredient.of(SwordItems.NIGHTS_EDGE), Ingredient.of(BowItems.POLAR_DAY));
+        // 恶魔祭坛：熔火之怒 + 星泣 + 恶魔弓/肌腱弓 + 附魔弓 -> 极昼
+        altar(recipeOutput, BowItems.POLAR_DAY.toStack(),
+                Ingredient.of(BowItems.MOLTEN_FURY),
+                Ingredient.of(BowItems.STAR_WEEP),
+                Ingredient.of(BowItems.DEMON_BOW, BowItems.TENDON_BOW),
+                Ingredient.of(BowItems.ENCHANTED_BOW));
         // 水晶球：风页 / 风眼 / 星乐
         crystalBlock(recipeOutput, ManaWeaponItems.WIND_PAGE.toStack(),
                 Ingredient.of(Items.HEAVY_CORE), Ingredient.of(Items.WIND_CHARGE),

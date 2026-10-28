@@ -192,7 +192,9 @@ public abstract class AbstractFishingPole extends FishingRodItem {
                 consume = true;
             }
         }
-        if (!consume && player.addItem(bait)) {
+        /// 没被消耗掉就还回背包；只有背包放不下时才丢到地上。
+        /// 以前的条件写反了（`addItem` 成功也照样 drop），等于每次收线都白送一份鱼饵实体。
+        if (!consume && !player.addItem(bait)) {
             player.drop(bait, true);
         }
         setBait(player.registryAccess(), fishingPole, ItemStack.EMPTY);

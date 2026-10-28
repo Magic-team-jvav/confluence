@@ -359,6 +359,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(ManaWeaponItems.WIND_PAGE), AmountIngredient.of(4, Items.PHANTOM_MEMBRANE),
                 AmountIngredient.of(4, MaterialItems.FALLING_STAR));        // 恶魔祭坛：永夜刃 + 极昼 -> 昏晓
         altar(writer, ManaWeaponItems.DUSK_DAWN.toStack(), Ingredient.of(SwordItems.NIGHTS_EDGE), Ingredient.of(BowItems.POLAR_DAY));
+        // 恶魔祭坛：熔火之怒 + 星泣 + 恶魔弓/肌腱弓 + 附魔弓 -> 极昼
+        altar(writer, BowItems.POLAR_DAY.toStack(),
+                Ingredient.of(BowItems.MOLTEN_FURY),
+                Ingredient.of(BowItems.STAR_WEEP),
+                Ingredient.of(BowItems.DEMON_BOW, BowItems.TENDON_BOW),
+                Ingredient.of(BowItems.ENCHANTED_BOW));
         // 水晶球：星乐
         crystalBlock(writer, ManaWeaponItems.STAR_MUSIC.toStack(),
                 AmountIngredient.of(8, MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.SPELL_TOME),

@@ -136,6 +136,7 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.*;
 
 import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
@@ -166,7 +167,6 @@ public final class ModClientEvents {
         PortEventHandler.addListener(ModClientEvents::registerShaders);
         PortEventHandler.addListener(ModClientEvents::registerCustomBestiaryEntryModel);
         PortEventHandler.addListener(ModClientEvents::registerItemDecorations);
-        PortEventHandler.addListener(ModClientEvents::registerLocatorPreTransformer);
     }
 
     private static void fmlClientSetup(FMLClientSetupEvent event) {
@@ -184,6 +184,8 @@ public final class ModClientEvents {
             ClientBestiary.getInstance().registerCustomFilter();
 
             ClientBiomeEffectSystem.registerEffects();
+
+            registerDestroyerLocatorTransformer();
         });
     }
 
@@ -1226,7 +1228,20 @@ public final class ModClientEvents {
         VoidSeaRenderSettings.registerCommand(event.getDispatcher());
     }
 
-    private static void registerLocatorPreTransformer(RegisterLocatorPreTransformerEvent event) {
-        event.register(BossEntities.THE_DESTROYER.get(), DestroyerRenderer.locatorTransformer());
+    /**
+     * ParticleStorm 的 {@link RegisterLocatorPreTransformerEvent} 只有包内可见的构造函数，
+     * 而 Forge 的事件总线在创建监听者列表时必须通过公开无参构造函数实例化事件类，
+     * 因此任何 mod 都无法用 {@code addListener} 订阅它（抛 NoSuchMethodException 导致注册失败）。
+     * 这里改为直接构造事件实例并调用其注册方法：注册写入的是事件类的静态映射，
+     * 与原回调中执行的效果完全一致，也不依赖 ParticleStorm 何时发布该事件。
+     */
+    private static void registerDestroyerLocatorTransformer() {
+        try {
+            Constructor<RegisterLocatorPreTransformerEvent> constructor = RegisterLocatorPreTransformerEvent.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            constructor.newInstance().register(BossEntities.THE_DESTROYER.get(), DestroyerRenderer.locatorTransformer());
+        } catch (ReflectiveOperationException e) {
+            Confluence.LOGGER.error("Failed to register locator pre transformer for The Destroyer", e);
+        }
     }
 }

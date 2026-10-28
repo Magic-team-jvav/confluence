@@ -1196,8 +1196,8 @@ public class SoulOverviewScreen extends Screen {
 
     /// 绘制总览控件及可见的背景调节滑块。
     ///
-    /// 技能节点的 tooltip **不在这里画**：它在所有控件（含其它节点）绘制完之后统一补画，
-    /// 否则后绘制的节点会盖住先绘制节点的说明文字（见 {@link #renderDeferredTooltip}）。
+    /// 技能节点与快捷栏槽位的 tooltip **都不在这里画**：它们在所有控件（含其它节点、全部槽位）
+    /// 绘制完之后统一补画，否则后绘制的控件会盖住先绘制控件的说明文字（见 {@link #renderDeferredTooltip}）。
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         renderBackground(guiGraphics, mouseX, mouseY, partialTick);
@@ -1211,11 +1211,18 @@ public class SoulOverviewScreen extends Screen {
         renderDeferredTooltip(guiGraphics, mouseX, mouseY, partialTick);
     }
 
-    /// 把悬停节点的说明文字抬到**最后一层**绘制。
+    /// 把悬停节点 / 悬停快捷栏槽位的说明文字抬到**最后一层**绘制。
     ///
     /// 图标等 GUI 精灵走的是不带深度的 guiOverlay / guiTextured 批次，单纯的 z 平移不会改变
-    /// 谁盖住谁，真正决定层次的是**绘制顺序**：因此 tooltip 必须等到这一帧所有节点都画完再画。
+    /// 谁盖住谁，真正决定层次的是**绘制顺序**：因此 tooltip 必须等到这一帧所有控件都画完再画。
+    ///
+    /// 快捷栏同样属于这一类：它贴着界面下缘，默认 tooltip 的纵向位置会被夹到正好压住快捷栏那一排，
+    /// 而槽位又是一个个独立控件、绘制在节点之后，于是已装备技能的图标会盖住自己槽位的说明文字。
+    /// 这里把两者都补画到这一层，并让槽位优先（槽位绘制在节点之上，重叠时只留槽位那一份说明）。
     private void renderDeferredTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        if (hotbar.renderDeferredTooltip(guiGraphics, mouseX, mouseY, partialTick)) {
+            return;
+        }
         for (OverviewNode node : nodes) {
             if (node.isMouseOver(mouseX, mouseY)) {
                 node.renderTooltip(guiGraphics, mouseX, mouseY, partialTick);

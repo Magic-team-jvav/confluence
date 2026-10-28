@@ -1543,16 +1543,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shapeless(writer, WhipItems.STAR_FEAR.toStack(), Ingredient.of(SwordItems.STARFURY), Ingredient.of(WhipItems.SPINAL_TAP));
         // 战弓：附魔弓 + 风弦，无序
         shapeless(writer, BowItems.WAR_BOW.toStack(), Ingredient.of(BowItems.ENCHANTED_BOW), Ingredient.of(BowItems.WIND_STRING));
-        // 极昼：金/铂金弓 + 8 坠落之星 + 日耀碎片，有序
-        shaped(writer, PortShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW),
-                'b', AmountIngredient.of(8, MaterialItems.FALLING_STAR),
-                'c', Ingredient.of(MaterialItems.SOLAR_FRAGMENT)
-        ), List.of(
-                " b ",
-                "bab",
-                " c "
-        )), BowItems.POLAR_DAY.toStack());
+        // 极昼不在工作台合成，改由恶魔祭坛合成（见 ModRecipeProvider#altar）
     }
 
     private void buildBaseStatues(Consumer<FinishedRecipe> writer) {

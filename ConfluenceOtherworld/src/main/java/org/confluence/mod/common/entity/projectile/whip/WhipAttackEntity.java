@@ -339,7 +339,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             bounds = bounds.minmax(curveBounds(previousCurve));
         }
 
-        List<Entity> candidates = level().getEntities(this, bounds.inflate(radius), rawTarget -> {
+        List<Entity> candidates = LibEntityUtils.queryHitCandidates(level(), this, bounds.inflate(radius), rawTarget -> {
             Entity identity = LibEntityUtils.dedupeIdentity(rawTarget);
             LivingEntity logicalTarget = LibEntityUtils.logicalLivingTarget(rawTarget);
             return logicalTarget != null

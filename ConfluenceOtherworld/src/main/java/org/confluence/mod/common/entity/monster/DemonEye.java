@@ -12,11 +12,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -25,22 +23,18 @@ import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeLeaveAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeSurroundAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeWanderAction;
-import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
-import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.util.DateUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
-import java.util.EnumMap;
-
 
 public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<DemonEye.Variant> {
     public static final String VARIANT_KEY = "Variant";
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(DemonEye.class, EntityDataSerializers.INT);
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
-    private static final EnumMap<Variant, VariantStats> VARIANT_STATS = new EnumMap<>(Variant.class);
+    private Variant appliedVariant;
 
 
 
@@ -57,23 +51,17 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         setVariant(variant);
     }
 
-    private void applyVariantStats(Variant v) {
-        VariantStats stats = VARIANT_STATS.get(v);
-        if (stats == null) return;
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.ceil(stats.health));
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(Math.ceil(stats.damage));
-        this.getAttribute(LibAttributes.getArmorPenetration()).setBaseValue(CreatureDifficultyRules.penetration(Math.ceil(stats.damage)));
-        this.getAttribute(Attributes.ARMOR).setBaseValue(stats.armor);
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(stats.movementSpeed);
-        CreatureDifficultyScaling.apply(this, false);
-        if (getHealth() > getMaxHealth()) {
-            setHealth(getMaxHealth());
-        }
+    private void applyVariantStats(Variant variant) {
+        if (level().isClientSide) return;
+        boolean full = getHealth() > 0 && getHealth() >= getMaxHealth();
+        if (appliedVariant != null && appliedVariant != variant)
+            setSpecialState(appliedVariant, false);
+        appliedVariant = variant;
+        setSpecialState(variant, true);
+        if (tickCount == 0 && full) setHealth(getMaxHealth());
     }
 
-    public static void registerVariantStats(Variant variant, double health, double damage, int armor, double movementSpeed) {
-        VARIANT_STATS.put(variant, new VariantStats(health, damage, armor, movementSpeed));
-    }
+
 
     /// 恶魔眼体型决定受击后的位移幅度。
     ///
@@ -184,6 +172,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         rebounded = false;
         if (!level().isClientSide && level().isDay()) setTarget(null);
         super.tick();
+        if (!level().isClientSide && tickCount % 20 == 0) applyVariantStats(getVariant());
         if (level().isClientSide) return;
         if (level().isDay()) setTarget(null);
         if (isAlive() && (surroundAction == null || !surroundAction.isHovering())) {
@@ -191,7 +180,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         }
     }
 
-    private record VariantStats(double health, double damage, int armor, double movementSpeed) {}
 
     public enum Variant implements IVariant {
         NORMAL("normal", false, 1.0F),

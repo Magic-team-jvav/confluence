@@ -305,7 +305,7 @@ public class BaseBulletEntity extends Projectile {
         double closestDistance = Double.POSITIVE_INFINITY;
         double horizontalExtent = getBbWidth() * 0.5D;
         double verticalExtent = getBbHeight() * 0.5D;
-        for (Entity candidate : level().getEntities(this, searchBox, this::canHitEntity)) {
+        for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, searchBox, this::canHitEntity)) {
             AABB collisionBox = candidate.getBoundingBox().inflate(horizontalExtent, verticalExtent, horizontalExtent);
             Optional<Vec3> hitPosition = collisionBox.clip(start, end);
             if (hitPosition.isEmpty()) continue;

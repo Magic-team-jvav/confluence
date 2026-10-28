@@ -35,8 +35,6 @@ import java.util.UUID;
 /// 所有权使用 Boss UUID 持久化。区块卸载只会清除当前实例缓存，不会猜测附近的同类 Boss；
 /// Boss 重新加载后，神经元会通过精确 UUID 恢复双向关系，从而避免多人同时挑战时串场。
 public class VisualNeuron extends BaseFlyingMonster implements BossOwnedEntity {
-    /// 视神经元在当前版本属性注册中使用的基础最大生命。
-    public static final double BASE_MAX_HEALTH = 44.0;
     private static final String STATE_TAG = "CombatState";
     private static final String ATTACK_TICKS_TAG = "AttackTicks";
     private static final String HOME_X_TAG = "HomeX";

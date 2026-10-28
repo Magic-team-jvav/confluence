@@ -18,7 +18,7 @@
             "minecraft:particle_lifetime_expression": {
                 "max_lifetime": "math.random(0.1, 0.25)"
             },
-            "minecraft:particle_initial_speed": "math.random(6,14)",
+            "minecraft:particle_initial_speed": "4 + 14 * v.particle_random_1",
             "minecraft:particle_motion_dynamic": {
                 "linear_acceleration": [
                     0,
@@ -29,8 +29,8 @@
             },
             "minecraft:particle_appearance_billboard": {
                 "size": [
-                    "0.1 * 12.0",
-                    "0.01 * 12.0"
+                    "1.2 * (0.6 + 0.8 * v.particle_random_2)",
+                    "0.12 * (0.6 + 0.8 * v.particle_random_2)"
                 ],
                 "facing_camera_mode": "lookat_direction",
                 "uv": {

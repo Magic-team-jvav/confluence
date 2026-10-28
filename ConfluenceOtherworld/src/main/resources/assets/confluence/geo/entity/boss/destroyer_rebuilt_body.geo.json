@@ -1573,6 +1573,27 @@
                     ]
                 },
                 {
+                    "name": "locator",
+                    "parent": "left_2",
+                    "pivot": [
+                        19,
+                        14,
+                        47
+                    ],
+                    "rotation": [
+                        90,
+                        -20,
+                        0
+                    ],
+                    "locators": {
+                        "locator": [
+                            19,
+                            14,
+                            47
+                        ]
+                    }
+                },
+                {
                     "name": "right_1",
                     "parent": "group",
                     "pivot": [
@@ -2118,6 +2139,27 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "locator2",
+                    "parent": "right_2",
+                    "pivot": [
+                        -19,
+                        14,
+                        47
+                    ],
+                    "rotation": [
+                        90,
+                        20,
+                        0
+                    ],
+                    "locators": {
+                        "locator2": [
+                            -19,
+                            14,
+                            47
+                        ]
+                    }
                 }
             ]
         }

@@ -195,7 +195,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         if (!targeting().canKeep(getOwner(), trackingTarget) || projectileDefinition.trackType().isEmpty())
             return;
         Vec3 motion = getDeltaMovement();
-        Vec3 targetDirection = trackingTarget.getBoundingBox().getCenter().subtract(position()).normalize().scale(motion.length());
+        Vec3 targetDirection = LibEntityUtils.aimPoint(trackingTarget, position()).subtract(position()).normalize().scale(motion.length());
         double angle = LibMathUtils.angleBetween(motion, targetDirection);
         setDeltaMovement(projectileDefinition.trackType().get().calDeltaMovement(motion, targetDirection, angle));
     }

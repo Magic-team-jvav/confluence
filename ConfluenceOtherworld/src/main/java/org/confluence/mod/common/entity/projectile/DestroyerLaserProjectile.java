@@ -28,9 +28,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 public final class DestroyerLaserProjectile extends Projectile {
     /// 激光最长寿命，单位 tick。
     private static final int LIFETIME = 60;
-    /// 体节/探针激光基础伤害；由本体与探针的实体配置分别覆盖时可在此接入。
-    private static final float BODY_DAMAGE = 18, PROBE_DAMAGE = 12;
-    private float damage = BODY_DAMAGE;
+    private float damage;
 
     public DestroyerLaserProjectile(EntityType<? extends DestroyerLaserProjectile> type, Level level) {super(type, level);}
 
@@ -39,12 +37,12 @@ public final class DestroyerLaserProjectile extends Projectile {
         DestroyerLaserProjectile laser = new DestroyerLaserProjectile(ModEntities.DESTROYER_LASER.get(), owner.level());
         laser.setOwner(owner);
         laser.setPos(origin);
-        laser.damage = owner instanceof TheDestroyerProbe ? PROBE_DAMAGE : BODY_DAMAGE;
         if (owner instanceof Mob mob) {
             ProjectileOverrides overrides = ProjectileOverrides.get(mob, laser.getType());
-            laser.damage = overrides.damageOr(laser.damage);
+            laser.damage = overrides.damageOr(0);
             speed = overrides.speedOr(speed);
         }
+        if (laser.damage <= 0) return;
         Vec3 direction = aim.subtract(origin);
         laser.shoot(direction.x, direction.y, direction.z, speed, 0);
         if (owner.level().addFreshEntity(laser) && owner instanceof TheDestroyerProbe) {

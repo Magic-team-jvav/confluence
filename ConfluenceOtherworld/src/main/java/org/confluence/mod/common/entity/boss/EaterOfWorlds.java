@@ -36,6 +36,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.client.particle.DestroyerDebrisParticle;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.WormSteering;
@@ -43,6 +44,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.WormSegment;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -74,8 +76,6 @@ public class EaterOfWorlds extends BaseWormBoss {
 
     /// 初始生成的世吞体节数量。
     public static final int INITIAL_SEGMENT_COUNT = 60;
-    /// 世吞头部初始生命值；分裂后独立头部沿用该值。
-    public static final float HEAD_MAX_HEALTH = 54.0F;
     private static final String ENCOUNTER_TAG = "Encounter";
     private static final String PRIMARY_TAG = "PrimaryHead";
     private static final String SEGMENT_COUNT_TAG = "ActiveSegmentCount";
@@ -178,8 +178,19 @@ public class EaterOfWorlds extends BaseWormBoss {
         return BossEntities.EATER_OF_WORLDS_SEGMENT.get();
     }
 
-    private static float segmentMaxHealth() {
-        return segmentAttribute(Attributes.MAX_HEALTH);
+    public enum BodySection {TAIL}
+
+    double segmentCombatAttribute(boolean tail, Holder<Attribute> attribute, double base) {
+        double expert = tail ? stateAttributeValue(BodySection.TAIL, attribute, base) : base;
+        if (attribute == Attributes.ATTACK_DAMAGE)
+            return expert * CreatureDifficultyScaling.attackMultiplier(this);
+        if (attribute == Attributes.ARMOR_TOUGHNESS)
+            return CreatureDifficultyScaling.difficulty(this).toughness(expert);
+        return expert;
+    }
+
+    private float segmentMaxHealth() {
+        return (float) (segmentAttribute(Attributes.MAX_HEALTH) * CreatureDifficultyScaling.healthMultiplier(this));
     }
 
     private static float segmentAttribute(Holder<Attribute> attribute) {
@@ -187,8 +198,8 @@ public class EaterOfWorlds extends BaseWormBoss {
                 .getBaseValue(attribute);
     }
 
-    private static float encounterMaxHealth() {
-        return HEAD_MAX_HEALTH + segmentMaxHealth() * INITIAL_SEGMENT_COUNT;
+    private float encounterMaxHealth() {
+        return getMaxHealth() + segmentMaxHealth() * INITIAL_SEGMENT_COUNT;
     }
 
     @Override
@@ -244,7 +255,7 @@ public class EaterOfWorlds extends BaseWormBoss {
 
         amount = reduceResistedDamage(source, amount);
         float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount
-                : CombatRules.getDamageAfterAbsorb(segment, amount, source, (float) segment.getAttributeValue(Attributes.ARMOR), 0.0F);
+                : CombatRules.getDamageAfterAbsorb(segment, amount, source, LibAttributes.applyArmorPenetration(segment, source, (float) segment.getAttributeValue(Attributes.ARMOR)), (float) segment.getAttributeValue(Attributes.ARMOR_TOUGHNESS));
         if (appliedDamage <= 0.0F) return false;
         float remaining = Math.max(0.0F, segmentHealths.get(index - 1) - appliedDamage);
         segmentHealths.set(index - 1, remaining);

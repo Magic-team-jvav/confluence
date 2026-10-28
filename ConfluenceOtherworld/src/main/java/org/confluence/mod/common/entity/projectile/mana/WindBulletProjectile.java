@@ -48,7 +48,7 @@ public class WindBulletProjectile extends AbstractManaProjectile {
         if (tickCount < RISE_TICKS) {
             setDeltaMovement(motion.x * 0.96, motion.y + RISE_ACCELERATION, motion.z * 0.96);
         } else {
-            LivingEntity target = resolveTarget();
+            Entity target = resolveTarget();
             if (target != null) {
                 Vec3 direction = target.position().add(0.0, target.getBbHeight() * 0.5, 0.0).subtract(position());
                 if (direction.lengthSqr() > 1.0E-4) {
@@ -62,19 +62,19 @@ public class WindBulletProjectile extends AbstractManaProjectile {
         doAgeCheck(MAX_AGE);
     }
 
-    private @Nullable LivingEntity resolveTarget() {
+    private @Nullable Entity resolveTarget() {
         if (targetUuid != null) {
             if (level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                 Entity entity = serverLevel.getEntity(targetUuid);
                 if (entity instanceof LivingEntity living && living.isAlive() && LibEntityUtils.canHit(getOwner(), living)) {
-                    return living;
+                    return LibEntityUtils.aimTarget(living, position());
                 }
             }
             this.targetUuid = null;
         }
-        LivingEntity nearest = null;
+        Entity nearest = null;
         double best = HOMING_RANGE * HOMING_RANGE;
-        for (LivingEntity candidate : level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(HOMING_RANGE))) {
+        for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, new AABB(blockPosition()).inflate(HOMING_RANGE), e -> LibEntityUtils.effectTarget(e) != null)) {
             if (candidate == getOwner() || !candidate.isAlive() || candidate.isSpectator()) continue;
             if (!LibEntityUtils.canHit(getOwner(), candidate)) continue;
             double distance = candidate.distanceToSqr(this);
@@ -83,7 +83,7 @@ public class WindBulletProjectile extends AbstractManaProjectile {
                 nearest = candidate;
             }
         }
-        if (nearest != null) this.targetUuid = nearest.getUUID();
+        if (nearest != null) this.targetUuid = LibEntityUtils.encounterOwner(nearest).getUUID();
         return nearest;
     }
 

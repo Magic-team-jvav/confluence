@@ -105,6 +105,19 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
         setPos(initialPosition.x, initialPosition.y, initialPosition.z);
     }
 
+    /// 与 ARM_TYPE 顺序一致，各机械臂独立登记生命、攻击和防御。
+    public enum ArmRole {LASER, SAW, VICE, CANNON}
+
+    @Override
+    protected Enum<?> attributeState() {
+        return switch (getArmType()) {
+            case LASER -> ArmRole.LASER;
+            case SAW -> ArmRole.SAW;
+            case VICE -> ArmRole.VICE;
+            default -> ArmRole.CANNON;
+        };
+    }
+
     public int getArmType() {
         return entityData.get(ARM_TYPE);
     }

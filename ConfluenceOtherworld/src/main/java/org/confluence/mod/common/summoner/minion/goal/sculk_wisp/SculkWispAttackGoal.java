@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.SculkWispMinion;
@@ -29,7 +30,7 @@ public class SculkWispAttackGoal extends AttachmentEntityGoal<SculkWispMinion> {
 
     @Override
     public void start() {
-        Vec3 direction = minion.getPos().offsetRandom(minion.getRandom(), 1.0F).subtract(minion.getTarget().getBoundingBox().getCenter());
+        Vec3 direction = minion.getPos().offsetRandom(minion.getRandom(), 1.0F).subtract(LibEntityUtils.aimPoint(minion.getTarget(), minion.getPos()));
         offset = direction.normalize().scale(4.0);
     }
 
@@ -42,7 +43,7 @@ public class SculkWispAttackGoal extends AttachmentEntityGoal<SculkWispMinion> {
     @Override
     public void tick() {
         LivingEntity target = minion.getTarget();
-        Vec3 targetPos = target.getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(target, minion.getPos());
         minion.lookAtPos(targetPos);
         Vec3 toDestination = targetPos.add(offset).subtract(minion.getPos());
         if (toDestination.lengthSqr() > 0.25) {
@@ -57,7 +58,7 @@ public class SculkWispAttackGoal extends AttachmentEntityGoal<SculkWispMinion> {
             if (--castTicks == 0) {
                 if (castTarget == target) {
                     Vec3 origin = minion.getPos().add(0.0, 0.5, 0.0);
-                    Vec3 toTarget = target.getBoundingBox().getCenter().subtract(origin);
+                    Vec3 toTarget = LibEntityUtils.aimPoint(target, minion.getPos()).subtract(origin);
                     if (toTarget.lengthSqr() > 1.0E-6) {
                         Vec3 direction = toTarget.normalize();
                         if (minion.getLevel() instanceof ServerLevel level) {

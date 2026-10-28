@@ -393,7 +393,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
 
             if (!level().isClientSide) {
                 AABB damageArea = getBoundingBox().inflate(0.1D);
-                for (Entity target : level().getEntities(this, damageArea, this::canHitEntity)) {
+                for (Entity target : LibEntityUtils.queryHitCandidates(level(), this, damageArea, this::canHitEntity)) {
                     onHitEntity(new EntityHitResult(target));
                 }
             }

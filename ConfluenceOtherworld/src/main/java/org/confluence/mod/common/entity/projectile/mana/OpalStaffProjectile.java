@@ -7,11 +7,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 
@@ -122,7 +119,7 @@ public class OpalStaffProjectile extends AbstractManaProjectile {
             onHitBlock((BlockHitResult) hitResult);
         }
         if (level().isClientSide) return;
-        for (Entity entity : level().getEntities(this, searchBox(), this::canHitEntity)) {
+        for (Entity entity : LibEntityUtils.queryHitCandidates(level(), this, searchBox(), this::canHitEntity)) {
             if (hitsOrientedBox(entity)) {
                 onHitEntity(new EntityHitResult(entity));
             }

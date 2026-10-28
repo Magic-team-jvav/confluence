@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.minion.goal.vex_totem;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.VexTotemMinion;
@@ -37,7 +38,7 @@ public class VexTotemAttackGoal extends AttachmentEntityGoal<VexTotemMinion> {
         LivingEntity target = minion.getTarget();
         if (target != null) {
             Vec3 pos = minion.getPos();
-            Vec3 center = target.getBoundingBox().getCenter();
+            Vec3 center = LibEntityUtils.aimPoint(target, minion.getPos());
             boolean charging = minion.chargeTime >= 0;
             Vec3 destination = center;
             if (!charging) {

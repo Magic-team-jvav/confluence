@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.minion.goal.desert_tiger;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.DesertTigerMinion;
 
@@ -75,7 +76,7 @@ public class DesertTigerAttackGoal extends AttachmentEntityGoal<DesertTigerMinio
             minion.pouncing = false;
             minion.setPhysics(true);
             Vec3 targetPos = minion.getTarget().position();
-            minion.lookAtPos(minion.getTarget().getBoundingBox().getCenter());
+            minion.lookAtPos(LibEntityUtils.aimPoint(minion.getTarget(), minion.getPos()));
             minion.moveTo(targetPos, 0.22F + Math.min(0.08F, (minion.getSlotCost() - 1) * 0.01F));
         }
     }

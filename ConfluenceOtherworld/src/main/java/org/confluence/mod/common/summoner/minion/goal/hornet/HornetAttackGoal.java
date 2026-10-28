@@ -4,6 +4,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
@@ -30,7 +31,7 @@ public class HornetAttackGoal extends AttachmentEntityGoal<HornetMinion> {
     public void start() {
         LivingEntity target = minion.getTarget();
         RandomSource random = minion.getRandom();
-        Vec3 targetCenter = target.getBoundingBox().getCenter();
+        Vec3 targetCenter = LibEntityUtils.aimPoint(target, minion.getPos());
         Vec3 pos = targetCenter
                 .add(random.nextIntBetweenInclusive(-100, 100) * 0.02F, target.getBbHeight() + 2, random.nextIntBetweenInclusive(-100, 100) * 0.02F)
                 .add(Vec3.ZERO.offsetRandom(random, 0.25F));
@@ -41,7 +42,7 @@ public class HornetAttackGoal extends AttachmentEntityGoal<HornetMinion> {
     public void tick() {
         LivingEntity target = minion.getTarget();
         Vec3 minionPos = minion.getPos();
-        Vec3 targetPos = target.getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(target, minion.getPos());
         Vec3 wanderPos = targetPos.add(offset);
         if (minionPos.distanceTo(wanderPos) > 1) {
             minion.addVelocity(wanderPos.subtract(minionPos).normalize().scale(0.02 * (1 + Math.min(wanderPos.distanceTo(minionPos) * 0.2, 4))));

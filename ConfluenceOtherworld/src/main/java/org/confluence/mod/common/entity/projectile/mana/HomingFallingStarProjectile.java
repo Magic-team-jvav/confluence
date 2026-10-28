@@ -167,7 +167,7 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
         /// 第一颗（延迟 0）也要在真正开始下落前对准一次。
         aimAtTarget();
         if (homing) {
-            LivingEntity target = findNearest();
+            Entity target = findNearest();
             if (target != null) {
                 Vec3 direction = target.position().add(0.0, target.getBbHeight() * 0.5, 0.0).subtract(position());
                 if (direction.lengthSqr() > 1.0E-4) {
@@ -207,10 +207,10 @@ public class HomingFallingStarProjectile extends AbstractManaProjectile {
                 : direction.normalize().scale(STAR_FURY_FALL_SPEED));
     }
 
-    private @Nullable LivingEntity findNearest() {
-        LivingEntity nearest = null;
+    private @Nullable Entity findNearest() {
+        Entity nearest = null;
         double best = HOMING_RANGE * HOMING_RANGE;
-        for (LivingEntity candidate : level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(HOMING_RANGE))) {
+        for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, new AABB(blockPosition()).inflate(HOMING_RANGE), e -> LibEntityUtils.effectTarget(e) != null)) {
             if (candidate == getOwner() || !candidate.isAlive() || candidate.isSpectator()) continue;
             if (!LibEntityUtils.canHit(getOwner(), candidate)) continue;
             double distance = candidate.distanceToSqr(this);

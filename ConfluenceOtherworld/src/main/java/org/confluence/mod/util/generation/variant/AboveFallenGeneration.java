@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -52,7 +53,7 @@ public record AboveFallenGeneration(
         var projectile = proj.get();
         if (projectile == null) return 0;
         Vec3 eye = owner.getEyePosition();
-        LivingEntity target = TARGETING.angleTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, owner, range, maxAngle, e -> true);
+        Entity target = TARGETING.angleHitTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, owner, range, maxAngle, e -> true);
         float actualInaccuracy;
         Vec3 firePos, projVel;
         Vec3 fireLocOffset = new Vec3(
@@ -63,7 +64,7 @@ public record AboveFallenGeneration(
 
         if (target != null) {
             // 周围有目标 预判
-            firePos = target.getEyePosition().add(fireLocOffset);
+            firePos = target.getBoundingBox().getCenter().add(fireLocOffset);
             // 不准确性已在AimUtils中处理
             actualInaccuracy = 0;
             AimUtils.AimHelperOptions aimHelperOptions = new AimUtils.AimHelperOptions(projectile)

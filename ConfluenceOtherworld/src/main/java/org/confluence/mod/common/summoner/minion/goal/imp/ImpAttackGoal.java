@@ -3,6 +3,7 @@ package org.confluence.mod.common.summoner.minion.goal.imp;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
@@ -25,7 +26,7 @@ public class ImpAttackGoal extends AttachmentEntityGoal<ImpMinion> {
 
     @Override
     public void start() {
-        Vec3 targetPos = minion.getTarget().getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(minion.getTarget(), minion.getPos());
         Vec3 direction = minion.getPos().offsetRandom(minion.getRandom(), 1.0F).subtract(targetPos);
         offset = direction.lengthSqr() < 1.0E-6 ? Vec3.ZERO : direction.normalize().scale(4);
     }
@@ -33,7 +34,7 @@ public class ImpAttackGoal extends AttachmentEntityGoal<ImpMinion> {
     @Override
     public void tick() {
         LivingEntity target = minion.getTarget();
-        Vec3 targetPos = target.getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(target, minion.getPos());
         Vec3 toHover = targetPos.add(offset).subtract(minion.getPos());
         if (toHover.lengthSqr() > 0.25) {
             minion.addVelocity(toHover.normalize().scale(0.04));

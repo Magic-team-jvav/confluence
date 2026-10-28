@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
@@ -61,6 +62,42 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
 
     public StateOverrides state(Enum<?> state) {
         return specialStates.getOrDefault(state.name().toLowerCase(java.util.Locale.ROOT), StateOverrides.EMPTY);
+    }
+
+    /// 从登记模板读取专家基础值，再应用数据包覆盖；不读取已缩放的实体值。
+    public static double attributeValue(Mob mob, Holder<Attribute> attribute, double fallback) {
+        var registered = ModEntities.creatureAttributes(mob.getType());
+        double base = registered != null && registered.attributes().hasAttribute(attribute) ? registered.attributes().getBaseValue(attribute) : fallback;
+        var values = get(mob.getType()).attributes();
+        double override = attributeOverride(values, attribute);
+        return (override >= 0 ? override : base) * values.multipliers().getOrDefault(BuiltInRegistries.ATTRIBUTE.getKey(attribute.value()), 1.0);
+    }
+
+    /// 普通实体和独立 Boss 部件共用状态默认值、绝对覆盖与倍率解析。
+    public static double stateAttributeValue(Mob mob, Enum<?> state, Holder<Attribute> attribute, double base) {
+        var values = get(mob.getType()).state(state).attributes();
+        double override = attributeOverride(values, attribute);
+        double multiplier = values.multipliers().getOrDefault(BuiltInRegistries.ATTRIBUTE.getKey(attribute.value()), 1.0);
+        if (override >= 0) return override * multiplier;
+        var definition = ModEntities.creatureAttributes(mob.getType());
+        var declared = definition == null ? null : definition.states().get(state);
+        var value = declared == null ? null : declared.attributes().get(attribute);
+        if (value == null) return base * multiplier;
+        double amount = value.amount().applyAsDouble(mob);
+        if (value.absolute()) return amount * multiplier;
+        return (value.operation() == AttributeModifier.Operation.ADD_VALUE ? base + amount : base * (1 + amount)) * multiplier;
+    }
+
+    private static double attributeOverride(AttributeOverrides values, Holder<Attribute> attribute) {
+        return attribute == Attributes.MOVEMENT_SPEED ? values.movementSpeed()
+                : attribute == Attributes.ATTACK_DAMAGE ? values.attackDamage()
+                : attribute == Attributes.ARMOR ? values.armor()
+                : attribute == LibAttributes.getArmorPenetration() ? values.armorPenetration()
+                : attribute == Attributes.ARMOR_TOUGHNESS ? values.armorToughness()
+                : attribute == Attributes.MAX_HEALTH ? values.maxHealth()
+                : attribute == Attributes.KNOCKBACK_RESISTANCE ? values.knockbackResistance()
+                : attribute == Attributes.FOLLOW_RANGE ? values.followRange()
+                : attribute == Attributes.SCALE ? values.scale() : -1;
     }
 
     /// 将当前实体类型 Data Map 中的属性基础值覆盖应用到生物实例。

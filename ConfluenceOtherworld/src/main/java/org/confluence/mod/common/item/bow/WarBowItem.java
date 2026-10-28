@@ -3,18 +3,15 @@ package org.confluence.mod.common.item.bow;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.ModItems;
@@ -66,12 +63,12 @@ public class WarBowItem extends BaseTerraBowItem {
     /// 自动朝最近的敌人发射一支普通箭。
     private void shootAtNearest(ServerPlayer player, ItemStack weapon) {
         Level level = player.level();
-        LivingEntity nearest = null;
+        Entity nearest = null;
         double best = AUTO_AIM_RANGE * AUTO_AIM_RANGE;
-        for (LivingEntity candidate : level.getEntitiesOfClass(LivingEntity.class, new AABB(player.blockPosition()).inflate(AUTO_AIM_RANGE))) {
+        for (Entity candidate : LibEntityUtils.queryHitCandidates(level, player, new AABB(player.blockPosition()).inflate(AUTO_AIM_RANGE), e -> LibEntityUtils.effectTarget(e) != null)) {
             if (candidate == player || !candidate.isAlive() || candidate.isSpectator()) continue;
             if (!LibEntityUtils.canHit(player, candidate)) continue;
-            double distance = candidate.distanceToSqr(player);
+            double distance = candidate.getBoundingBox().getCenter().distanceToSqr(player.getEyePosition());
             if (distance < best) {
                 best = distance;
                 nearest = candidate;
@@ -82,7 +79,7 @@ public class WarBowItem extends BaseTerraBowItem {
         AbstractArrow arrow = arrowItem.createArrow(level, Items.ARROW.getDefaultInstance(), player, weapon);
         arrow.setBaseDamage(getFullDrawDamage() * 0.5F);
         arrow.setCritArrow(true);
-        Vec3 direction = nearest.getEyePosition().subtract(player.getEyePosition()).normalize();
+        Vec3 direction = nearest.getBoundingBox().getCenter().subtract(player.getEyePosition()).normalize();
         arrow.shoot(direction.x, direction.y, direction.z, AUTO_ARROW_VELOCITY, 0.6F);
         level.addFreshEntity(arrow);
     }

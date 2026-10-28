@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.minion.goal.sanguine_bat;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
 import org.confluence.mod.common.summoner.minion.SanguineBatMinion;
@@ -22,7 +23,7 @@ public class SanguineBatAttackGoal extends AttachmentEntityGoal<SanguineBatMinio
         minion.progress = 0;
         minion.hasDamaged = false;
         minion.hitTargets.clear();
-        Vec3 targetPos = minion.getTarget().getBoundingBox().getCenter();
+        Vec3 targetPos = LibEntityUtils.aimPoint(minion.getTarget(), minion.getPos());
         minion.normal = Ellipse.randomPlaneNormal(minion.getRandom(), targetPos, minion.getInterpolatedIdleState(1).pos());
     }
 
@@ -43,7 +44,7 @@ public class SanguineBatAttackGoal extends AttachmentEntityGoal<SanguineBatMinio
             if (minion.progress >= 1) {
                 minion.prep = false;
             } else {
-                minion.setCurrentPathNode(minion.getEllipseNode(minion.progress, minion.getInterpolatedIdleState(1).pos(), target.getBoundingBox().getCenter()));
+                minion.setCurrentPathNode(minion.getEllipseNode(minion.progress, minion.getInterpolatedIdleState(1).pos(), LibEntityUtils.aimPoint(target, minion.getPos())));
             }
         }
     }

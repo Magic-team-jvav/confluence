@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +23,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 
 /// 只需配置体节数量的通用蠕虫实体。
@@ -73,16 +74,6 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     @Override
     public EntityDimensions segmentDimensions(boolean tail) {
         return anatomy == null ? super.segmentDimensions(tail) : tail ? anatomy.tailDimensions() : anatomy.bodyDimensions();
-    }
-
-    @Override
-    protected double segmentDamageMultiplier(boolean tail) {
-        return anatomy == null ? super.segmentDamageMultiplier(tail) : tail ? anatomy.tailDamage() : anatomy.bodyDamage();
-    }
-
-    @Override
-    protected double segmentArmorMultiplier(boolean tail) {
-        return anatomy == null ? super.segmentArmorMultiplier(tail) : tail ? anatomy.tailArmor() : anatomy.bodyArmor();
     }
 
     @Override
@@ -222,21 +213,18 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     }
 
     public record Anatomy(int minSegments, int maxSegments, float spacing,
-                          EntityDimensions bodyDimensions, EntityDimensions tailDimensions,
-                          double bodyDamage, double tailDamage, double bodyArmor,
-                          double tailArmor) {
+                          EntityDimensions bodyDimensions, EntityDimensions tailDimensions) {
         public static final Anatomy GIANT_WORM = simple(5, 7, 2.0F);
-        public static final Anatomy DIGGER = new Anatomy(7, 12, 0.8F, EntityDimensions.scalable(1.05F, 0.7F), EntityDimensions.scalable(1.05F, 0.7F), 28.0 / 45.0, 26.0 / 45.0, 2.0, 3.0);
+        public static final Anatomy DIGGER = new Anatomy(7, 12, 0.8F, EntityDimensions.scalable(1.05F, 0.7F), EntityDimensions.scalable(1.05F, 0.7F));
         public static final Anatomy TOMB_CRAWLER = simple(6, 9, 1.5F);
         public static final Anatomy DEVOURER = simple(9, 13, 1.6F);
-        public static final Anatomy WORLD_FEEDER = new Anatomy(21, 26, 0.9F, EntityDimensions.scalable(1.25F, 0.95F), EntityDimensions.scalable(1.65F, 0.6F), 55.0 / 70.0, 40.0 / 70.0, 40.0 / 36.0, 44.0 / 36.0);
+        public static final Anatomy WORLD_FEEDER = new Anatomy(21, 26, 0.9F, EntityDimensions.scalable(1.25F, 0.95F), EntityDimensions.scalable(1.65F, 0.6F));
         public static final Anatomy BONE_SERPENT = simple(13, 19, 2.5F);
         public static final Anatomy LEECH = simple(9, 13, 1.6F);
 
         private static Anatomy simple(int minSegments, int maxSegments, float spacing) {
             EntityDimensions dimensions = EntityDimensions.scalable(1.5F, 1.5F);
-            return new Anatomy(minSegments, maxSegments, spacing, dimensions, dimensions,
-                    1.0, 1.0, 1.0, 1.0);
+            return new Anatomy(minSegments, maxSegments, spacing, dimensions, dimensions);
         }
     }
 

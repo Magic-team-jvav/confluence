@@ -132,6 +132,7 @@ import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
@@ -620,7 +621,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
 
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), BossWormPartRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), DestroyerRenderer::new);
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds"), true, 2.2F, 0.0F));
         event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
 
@@ -1279,5 +1279,10 @@ public final class ModClientEvents {
 
     private static ExplicitGeoModel<JellyFish> jellyfishModel(String color) {
         return new ExplicitGeoModel<>(Confluence.asResource("geo/entity/jellyfish.geo.json"), Confluence.asResource("textures/entity/" + color + "_jellyfish.png"), Confluence.asResource("animations/entity/jellyfish.animation.json"));
+    }
+
+    @SubscribeEvent
+    public static void registerLocatorPreTransformer(RegisterLocatorPreTransformerEvent event) {
+        event.register(BossEntities.THE_DESTROYER.get(), DestroyerRenderer.locatorTransformer());
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.network.IPacketC2S;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
@@ -41,18 +43,19 @@ public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
             if (event.isCanceled()) return;
             float attackDamage = event.getAttackDamage();
             DamageSource source = player.damageSources().playerAttack(player);
-            for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, BaseSwordItem.getSpecialSweepArea(player))) {
-                double entityReachSq = Mth.square(player.entityInteractionRange());
-                if (target != player &&
-                        !player.isAlliedTo(target) &&
-                        (!(target instanceof ArmorStand) || !((ArmorStand) target).isMarker()) &&
-                        player.distanceToSqr(target) < entityReachSq
-                ) {
-                    target.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
-                    float amount = ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source);
-                    target.hurt(source, amount);
-                    EnchantmentHelper.doPostAttackEffects(player.serverLevel(), target, source);
-                }
+            double entityReachSq = Mth.square(player.entityInteractionRange());
+            for (Entity target : LibEntityUtils.areaTargets(player.level(), player, BaseSwordItem.getSpecialSweepArea(player), candidate -> {
+                LivingEntity living = LibEntityUtils.effectTarget(candidate);
+                return living != null && LibEntityUtils.allowsAttack(player, candidate)
+                        && (!(living instanceof ArmorStand stand) || !stand.isMarker())
+                        && player.distanceToSqr(candidate) < entityReachSq;
+            })) {
+                LivingEntity living = LibEntityUtils.effectTarget(target);
+                if (living != null)
+                    living.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
+                float amount = ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source);
+                target.hurt(source, amount);
+                EnchantmentHelper.doPostAttackEffects(player.serverLevel(), target, source);
             }
 
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);

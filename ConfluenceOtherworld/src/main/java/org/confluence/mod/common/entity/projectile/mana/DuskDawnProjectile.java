@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
@@ -79,7 +80,7 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
-        LivingEntity target = resolveTarget();
+        Entity target = resolveTarget();
         if (target != null) {
             Vec3 center = target.position().add(0.0, target.getBbHeight() * 0.5, 0.0);
             Vec3 offset = center.subtract(position());
@@ -123,19 +124,19 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
         MolangParticleEngine.INSTANCE._addEmitter(emitter);
     }
 
-    private @Nullable LivingEntity resolveTarget() {
+    private @Nullable Entity resolveTarget() {
         if (targetUuid != null) {
             if (level() instanceof net.minecraft.server.level.ServerLevel serverLevel) {
                 Entity entity = serverLevel.getEntity(targetUuid);
                 if (entity instanceof LivingEntity living && living.isAlive() && canHurt(living)) {
-                    return living;
+                    return LibEntityUtils.aimTarget(living, position());
                 }
             }
             this.targetUuid = null;
         }
-        LivingEntity nearest = null;
+        Entity nearest = null;
         double best = HOMING_RANGE * HOMING_RANGE;
-        for (LivingEntity candidate : level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(HOMING_RANGE))) {
+        for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, new AABB(blockPosition()).inflate(HOMING_RANGE), e -> LibEntityUtils.effectTarget(e) != null)) {
             if (!canHurt(candidate)) continue;
             double distance = candidate.distanceToSqr(this);
             if (distance < best) {
@@ -143,13 +144,13 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
                 nearest = candidate;
             }
         }
-        if (nearest != null) this.targetUuid = nearest.getUUID();
+        if (nearest != null) this.targetUuid = LibEntityUtils.encounterOwner(nearest).getUUID();
         return nearest;
     }
 
-    private boolean canHurt(LivingEntity entity) {
+    private boolean canHurt(Entity entity) {
         return entity != getOwner() && entity.isAlive() && !entity.isSpectator()
-                && org.confluence.lib.util.LibEntityUtils.canHit(getOwner(), entity);
+                && LibEntityUtils.canHit(getOwner(), entity);
     }
 
     /// 向外扩散一圈光波，伤害逐圈递减。
@@ -158,7 +159,7 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
         float factor = Math.max(WAVE_MIN_FACTOR, 1.0F - waves * WAVE_DECAY);
         for (LivingEntity victim : level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(radius))) {
             if (victim == getOwner() || !victim.isAlive() || victim.isSpectator()) continue;
-            if (!org.confluence.lib.util.LibEntityUtils.canHit(getOwner(), victim)) continue;
+            if (!LibEntityUtils.canHit(getOwner(), victim)) continue;
             victim.invulnerableTime = 0;
             victim.hurt(getDamageSource(), getCalculatedDamage() * factor);
         }
@@ -168,7 +169,7 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
     private void explode() {
         for (LivingEntity victim : level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(EXPLODE_RADIUS))) {
             if (victim == getOwner() || !victim.isAlive() || victim.isSpectator()) continue;
-            if (!org.confluence.lib.util.LibEntityUtils.canHit(getOwner(), victim)) continue;
+            if (!LibEntityUtils.canHit(getOwner(), victim)) continue;
             victim.invulnerableTime = 0;
             victim.hurt(getDamageSource(), getCalculatedDamage() * EXPLODE_FACTOR);
         }
@@ -182,7 +183,7 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
         );
         for (LivingEntity victim : level().getEntitiesOfClass(LivingEntity.class, area)) {
             if (victim == getOwner() || !victim.isAlive() || victim.isSpectator()) continue;
-            if (!org.confluence.lib.util.LibEntityUtils.canHit(getOwner(), victim)) continue;
+            if (!LibEntityUtils.canHit(getOwner(), victim)) continue;
             victim.invulnerableTime = 0;
             victim.hurt(getDamageSource(), getCalculatedDamage() * SLASH_FACTOR);
         }

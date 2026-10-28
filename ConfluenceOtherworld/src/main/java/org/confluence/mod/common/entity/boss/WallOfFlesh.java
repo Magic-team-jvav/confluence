@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,6 +21,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -41,6 +43,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.FireImp;
 import org.confluence.mod.common.entity.monster.SimpleWormMonster;
 import org.confluence.mod.common.entity.monster.TheHungry;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.entity.MonsterEntities;
@@ -138,14 +141,19 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
     private final Map<WallOfFleshEye, Player> eyeAssignments = new HashMap<>();
     private final Map<WallOfFleshMouth, Player> mouthAssignments = new HashMap<>();
     private Vec3 struckPartPosition;
+    private WallOfFleshPart struckPart;
     private Vec3 rewardPosition;
 
     public boolean hurtFromPart(WallOfFleshPart part, DamageSource source, float amount) {
+        WallOfFleshPart previous = struckPart;
+        Vec3 previousPosition = struckPartPosition;
+        struckPart = part;
         struckPartPosition = part.getBoundingBox().getCenter();
         try {
             return hurt(source, amount);
         } finally {
-            struckPartPosition = null;
+            struckPart = previous;
+            struckPartPosition = previousPosition;
         }
     }
 
@@ -925,6 +933,23 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         eyeAssignments.clear();
         mouthAssignments.clear();
         ensureWallLayout();
+    }
+
+    /// 嘴部沿用本体属性，眼部使用注册表中的独立防御。
+    public enum BodySection {EYE}
+
+    @Override
+    public double getAttributeValue(Holder<Attribute> attribute) {
+        double value = super.getAttributeValue(attribute);
+        if (!(struckPart instanceof WallOfFleshEye)) return value;
+        double base = getAttributeBaseValue(attribute);
+        double part = stateAttributeValue(BodySection.EYE, attribute, base);
+        if (attribute == Attributes.ARMOR) return Math.max(0, value + part - base);
+        if (attribute == Attributes.ARMOR_TOUGHNESS) {
+            var rule = CreatureDifficultyScaling.difficulty(this);
+            return Math.clamp(value + rule.toughness(part) - rule.toughness(base), 0, 8);
+        }
+        return value;
     }
 
     public enum CombatState {WOUNDED}

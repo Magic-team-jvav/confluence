@@ -12,11 +12,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.MartianReinforcement;
@@ -24,18 +24,15 @@ import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.entity.ModEntities;
-
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 
 /// 由可再生护盾保护的战士
 public final class MartianOfficer extends MartianHumanoidMonster {
-    /// 护盾没有专家生命加成：1000 × 26%；防御 20 分别换算为护甲 9、韧性 4。
-    public static final float MAX_SHIELD = 260.0F;
-    public static final float SHIELD_ARMOR = 9.0F;
-    public static final float SHIELD_TOUGHNESS = 4.0F;
+    public enum ShieldState {BARRIER}
     public static final int RECOVERY_TICKS = 60;
     private static final EntityDataAccessor<Float> SHIELD = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> IMPACT_SEQUENCE = SynchedEntityData.defineId(MartianOfficer.class, EntityDataSerializers.INT);
@@ -48,7 +45,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
     private int visualShieldTicks = 20;
     private int visualBrokenTicks = 20;
     private int visualImpactTicks = 20;
-    private float previousShieldHealth = MAX_SHIELD;
+    private float previousShieldHealth;
     private static final RawAnimation STAND = RawAnimation.begin().thenLoop("Stand");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("Walk");
     private static final RawAnimation DASH = RawAnimation.begin().thenLoop("Dash");
@@ -59,12 +56,14 @@ public final class MartianOfficer extends MartianHumanoidMonster {
 
     public MartianOfficer(EntityType<? extends MartianOfficer> type, Level level) {
         super(type, level, 0.05D);
+        previousShieldHealth = getMaxShieldHealth();
+        entityData.set(SHIELD, previousShieldHealth);
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(SHIELD, MAX_SHIELD);
+        builder.define(SHIELD, 0.0F);
         builder.define(IMPACT_SEQUENCE, 0);
         builder.define(CALLING, false);
     }
@@ -164,6 +163,10 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         setDeltaMovement(0, getDeltaMovement().y, 0);
     }
 
+    public float getMaxShieldHealth() {
+        return (float) (stateAttributeValue(ShieldState.BARRIER, Attributes.MAX_HEALTH, 0) * CreatureDifficultyScaling.healthMultiplier(this));
+    }
+
     public float getShieldHealth() {
         return entityData.get(SHIELD);
     }
@@ -225,7 +228,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
             shieldHitTicks--;
         }
         if (!hasShield() && ++recoveryTicks >= RECOVERY_TICKS) {
-            entityData.set(SHIELD, MAX_SHIELD);
+            entityData.set(SHIELD, getMaxShieldHealth());
             recoveryTicks = 0;
             shieldHitTicks = 0;
         }
@@ -297,7 +300,7 @@ public final class MartianOfficer extends MartianHumanoidMonster {
         }
         float damage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount
                 : CombatRules.getDamageAfterAbsorb(this, amount, source,
-                LibAttributes.applyArmorPenetration(this, source, SHIELD_ARMOR), SHIELD_TOUGHNESS);
+                LibAttributes.applyArmorPenetration(this, source, (float) stateAttributeValue(ShieldState.BARRIER, Attributes.ARMOR, 0)), (float) CreatureDifficultyScaling.difficulty(this).toughness(stateAttributeValue(ShieldState.BARRIER, Attributes.ARMOR_TOUGHNESS, 0)));
         if (shieldHitTicks > 10) {
             if (damage <= lastShieldDamage) {
                 return false;
@@ -359,11 +362,11 @@ public final class MartianOfficer extends MartianHumanoidMonster {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        float shield = tag.contains("Shield") ? tag.getFloat("Shield") : MAX_SHIELD;
-        entityData.set(SHIELD, Float.isFinite(shield) ? Math.max(0, Math.min(MAX_SHIELD, shield)) : MAX_SHIELD);
-        recoveryTicks = hasShield() ? 0 : Math.max(0, Math.min(RECOVERY_TICKS - 1, tag.getInt("ShieldRecoveryTicks")));
+        float shield = tag.contains("Shield") ? tag.getFloat("Shield") : getMaxShieldHealth();
+        entityData.set(SHIELD, Float.isFinite(shield) ? Math.max(0, Math.min(getMaxShieldHealth(), shield)) : getMaxShieldHealth());
+        recoveryTicks = hasShield() ? 0 : Math.clamp(tag.getInt("ShieldRecoveryTicks"), 0, RECOVERY_TICKS - 1);
         shieldHitTicks = 0;
-        assistanceCooldown = Math.max(0, Math.min(100, tag.getInt("AssistanceCooldown")));
+        assistanceCooldown = Math.clamp(tag.getInt("AssistanceCooldown"), 0, 100);
         callingTicks = 0;
         prefersAssistance = false;
         populationCheckCooldown = 0;

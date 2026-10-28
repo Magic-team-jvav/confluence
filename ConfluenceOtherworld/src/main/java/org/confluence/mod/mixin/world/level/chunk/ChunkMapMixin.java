@@ -5,6 +5,7 @@ import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.worldgen.secret_seed.DrunkWorld;
 import org.spongepowered.asm.mixin.Final;
@@ -28,9 +29,11 @@ public class ChunkMapMixin {
         @Final
         Entity entity;
 
-        /// 只调整肉墙的距离判定，配对、解除追踪和数据发送仍使用原版同一个追踪集合。
+        /// 大型 Boss 按身体覆盖范围追踪；配对、解除追踪和数据发送仍使用原版追踪集合。
         @ModifyVariable(method = "updatePlayer", at = @At("STORE"))
-        private boolean confluence$wallTrackingRange(boolean flag, ServerPlayer player, @Local(ordinal = 0) double d0) {
+        private boolean confluence$bossTrackingRange(boolean flag, ServerPlayer player, @Local(ordinal = 0) double d0) {
+            if (entity instanceof TheDestroyer destroyer)
+                return destroyer.isWithinTrackingRange(player, d0) && destroyer.broadcastToPlayer(player);
             if (!(entity instanceof WallOfFlesh wall)) return flag;
             /// 保留原视距余量，沿墙面展开追踪范围；不把中心距离误当作离墙距离。
             return wall.isWithinTrackingRange(player, (int) d0) && wall.broadcastToPlayer(player);

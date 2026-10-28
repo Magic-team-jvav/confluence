@@ -18,6 +18,7 @@ import org.confluence.mod.common.entity.ai.WormChainTrail;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
+import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -67,13 +68,8 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         return segmentType.getDimensions();
     }
 
-    protected double segmentDamageMultiplier(boolean tail) {
-        return 1.0;
-    }
-
-    protected double segmentArmorMultiplier(boolean tail) {
-        return 1.0;
-    }
+    /// 各部位的专家基础属性由 MonsterEntities 统一登记。
+    public enum BodySection {HEAD, BODY, TAIL}
 
     public boolean attackFromSegment(BaseWormPart part, Entity target) {
         BaseWormPart previous = attackingPart;
@@ -98,10 +94,18 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     @Override
     public double getAttributeValue(Holder<Attribute> attribute) {
         double value = super.getAttributeValue(attribute);
-        if (attribute == Attributes.ATTACK_DAMAGE && attackingPart != null)
-            return value * segmentDamageMultiplier(attackingPart.isTail());
-        if (attribute == Attributes.ARMOR && hurtPart != null)
-            return value * segmentArmorMultiplier(hurtPart.isTail());
+        BaseWormPart part = attribute == Attributes.ATTACK_DAMAGE ? attackingPart : hurtPart;
+        if (part == null) return value;
+        BodySection section = part.isTail() ? BodySection.TAIL : BodySection.BODY;
+        double headBase = stateAttributeValue(BodySection.HEAD, attribute, getAttributeBaseValue(attribute));
+        double partBase = stateAttributeValue(section, attribute, headBase);
+        if (attribute == Attributes.ATTACK_DAMAGE)
+            return headBase > 0 ? value * partBase / headBase : partBase * CreatureDifficultyScaling.attackMultiplier(this);
+        if (attribute == Attributes.ARMOR) return Math.max(0, value + partBase - headBase);
+        if (attribute == Attributes.ARMOR_TOUGHNESS) {
+            var rule = CreatureDifficultyScaling.difficulty(this);
+            return Math.clamp(value + rule.toughness(partBase) - rule.toughness(headBase), 0, 8);
+        }
         return value;
     }
 

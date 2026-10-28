@@ -78,7 +78,7 @@ public final class MartianOfficerRenderer extends GeoNormalRenderer<MartianOffic
         float visibility = entity.hasShield() ? formation : 1 - dissolve;
         if (visibility <= 0) return;
         float time = (entity.tickCount + partialTick) * 0.05F;
-        float health = Mth.clamp(entity.getShieldHealth() / MartianOfficer.MAX_SHIELD, 0, 1);
+        float health = Mth.clamp(entity.getShieldHealth() / entity.getMaxShieldHealth(), 0, 1);
         float impactAge = entity.shieldImpactAge(partialTick);
         /// 恰好两次不透明度下降（第 3 与第 9 tick），并在第 12 tick 恢复正常。
         float hitFlicker = impactAge < 12 ? 0.5F + 0.5F * Mth.cos(impactAge * Mth.PI / 3) : 1;

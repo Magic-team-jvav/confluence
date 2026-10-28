@@ -71,6 +71,7 @@ import org.confluence.mod.client.renderer.entity.TongueRenderer;
 import org.confluence.mod.client.renderer.entity.WallOfFleshRenderer;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
+import org.confluence.mod.client.renderer.item.HomingBeeRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.renderer.tooltip.WeaponTooltip;
@@ -429,6 +430,7 @@ public final class GameClientEvents {
             MartianOfficerRenderer.renderShields(event);
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
+            HomingBeeRenderer.renderInWorld(poseStack, player, minecraft, event.getPartialTick());
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
             HouseSelectHud.renderRegionInWorld(minecraft);
             VoidSeaRenderer.render(event, minecraft, player);

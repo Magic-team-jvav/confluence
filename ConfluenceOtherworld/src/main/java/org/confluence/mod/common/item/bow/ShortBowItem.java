@@ -1,12 +1,19 @@
 package org.confluence.mod.common.item.bow;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.Nullable;
 
 public class ShortBowItem extends BaseTerraBowItem {
     public static final int MAX_DRAW_DURATION = 8; // 满蓄力时间为8 tick
 
     public ShortBowItem(float baseDamage, int durability) {
         super(baseDamage, new Properties().durability(durability));
+    }
+
+    /// 有耐久、并在铁砧里可用对应材质修复的短弓。
+    public ShortBowItem(float baseDamage, int durability, @Nullable Ingredient repairIngredient) {
+        super(baseDamage, new Properties().durability(durability), repairIngredient);
     }
 
     /// 直接给定物品属性（例如不带耐久 = 不可破坏）的短弓。

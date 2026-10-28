@@ -22,6 +22,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.common.HomingBeeItem;
 import org.confluence.mod.common.menu.NPCServiceMenu;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
@@ -379,6 +380,8 @@ public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMen
         long price = costs.isEmpty() ? getBuyPrice(result) : 0;
         boolean completed = costs.isEmpty() ? price > 0 && PlayerUtils.debit(player, price, true) : consumeCosts(player, costs, 1, ItemStack.EMPTY);
         if (!completed) return;
+        /// 归巢蜜蜂：成交时一次性绑定最近的蜂巢（与地牢指南针一样，只有「获取」时才有定位）
+        HomingBeeItem.bindHiveTarget(player, result);
         if (costs.isEmpty()) refundablePurchases.add(new Buyback(result.copy(), price));
         if (cursor.isEmpty()) setCarried(result);
         else cursor.grow(result.getCount());
@@ -398,6 +401,8 @@ public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMen
             ItemStack totalResult = result.copy();
             totalResult.setCount(Math.multiplyExact(result.getCount(), trades));
             long totalPrice = Math.multiplyExact(price, trades);
+            /// 归巢蜜蜂：成交时一次性绑定最近的蜂巢
+            HomingBeeItem.bindHiveTarget(player, totalResult);
             ItemStack receipt = totalResult.copy();
             if (PlayerUtils.purchase(player, totalPrice, true, totalResult))
                 refundablePurchases.add(new Buyback(receipt, totalPrice));
@@ -407,6 +412,8 @@ public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMen
         if (trades <= 0) return;
         ItemStack totalResult = result.copy();
         totalResult.setCount(Math.multiplyExact(result.getCount(), trades));
+        /// 归巢蜜蜂：成交时一次性绑定最近的蜂巢（先绑定再入包，insertIntoInventory 复制整份栈）
+        HomingBeeItem.bindHiveTarget(player, totalResult);
         consumeCosts(player, costs, trades, totalResult);
     }
 

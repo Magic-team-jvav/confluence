@@ -364,6 +364,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.playerDropsMoney.tooltip", "When enabled, players will drop coins upon death.", "启用时，玩家死亡后会掉落钱币");
         language.add("confluence.configuration.preventEnemyFriendlyFire", "Prevent Enemy Friendly Fire", "禁止怪物互伤");
         language.add("confluence.configuration.preventEnemyFriendlyFire.tooltip", "Enable the existing enemy faction friendly-fire protection. Does not change targeting or block player, summon or environmental damage.", "控制现有敌怪阵营不互伤规则，不改变索敌，不阻止玩家、召唤物及环境伤害。");
+        language.add("confluence.configuration.preventEnemyHurtingPassiveMobs", "Prevent Enemies Hurting Passive Mobs", "禁止敌怪伤害被动生物");
+        language.add("confluence.configuration.preventEnemyHurtingPassiveMobs.tooltip", "Prevent enemies from hurting passive creatures (animals, water animals and ambient creatures). Players, villagers, NPCs, summons and environmental damage are unaffected.", "禁止敌怪伤害动物、水生生物与环境生物；不阻止玩家、村民、城镇 NPC、召唤物及环境伤害。");
         language.add("confluence.configuration.rainbowCount", "Rainbow Count", "彩虹数量");
         language.add("confluence.configuration.rainbowGradient", "Rainbow Gradient", "彩虹光环");
         language.add("confluence.configuration.returnPotionGlassBottle", "Return Glass Bottles for Potions", "返还药水瓶");

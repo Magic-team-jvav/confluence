@@ -288,6 +288,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("message.confluence.disable_pvp", "%s has disabled PvP!", "%s已禁用PvP！");
         language.add("message.confluence.disable_pvp.button", "Disable PvP", "禁用玩家对决");
         language.add("message.confluence.dungeon_not_found", "Failed to find the Dungeon", "未成功找到地牢");
+        language.add("message.confluence.hive_not_found", "Failed to find a Bee Hive nearby", "附近未找到蜂巢");
         language.add("message.confluence.enable_pvp", "%s has enabled PvP!", "%s已启用PvP！");
         language.add("message.confluence.enable_pvp.button", "Enable PvP", "启用玩家对决");
         language.add("message.confluence.frost_moon.end", "The Frost Moon has ended.", "霜月已经结束。");

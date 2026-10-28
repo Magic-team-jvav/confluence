@@ -94,6 +94,7 @@ public class ToolItems {
     public static final PortDeferredItem<BinocularsItem> BINOCULARS = registerItem("binoculars", "双筒望远镜", BinocularsItem::new);
     public static final PortDeferredItem<NPCInvitationItem> NPC_INVITATION = registerItem("npc_invitation", "NPC请柬", NPCInvitationItem::new);
     public static final PortDeferredItem<DungeonCompass> DUNGEON_COMPASS = registerItem("dungeon_compass", "地牢指南针", DungeonCompass::new);
+    public static final PortDeferredItem<HomingBeeItem> HOMING_BEE = registerItem("homing_bee", "归巢蜜蜂", HomingBeeItem::new);
 
     public static final PortDeferredItem<MagicDropperItem> EMPTY_DROPPER = registerItem("empty_dropper", "空滴管", () -> new MagicDropperItem(null) {
         @Override

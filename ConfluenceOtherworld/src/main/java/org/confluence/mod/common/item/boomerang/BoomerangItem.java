@@ -21,6 +21,7 @@ import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponT
         }
         BoomerangProjectile projectile = new BoomerangProjectile(ModEntities.BOOMERANG_PROJECTILE.get(), player.level());
         projectile.configure(player, stack, settings);
+        onThrown(projectile, player, stack);
         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, settings.flySpeed(), 0.0F);
         player.level().addFreshEntity(projectile);
         player.playSound(SoundEvents.TRIDENT_THROW, 0.6F, 1.35F);
@@ -100,11 +102,20 @@ public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponT
         return Math.max(0, count);
     }
 
+    /// 投掷物刚生成、还没加入世界时调用一次，用来定下这一发的一次性数据（例如携带的符文）。
+    public void onThrown(BoomerangProjectile projectile, ServerPlayer player, ItemStack stack) {}
+
     /// 射弹成功命中后在服务端结算武器专属效果。
     public void onProjectileHit(BoomerangProjectile projectile, LivingEntity owner, LivingEntity target) {}
 
     /// 由客户端实体 tick 生成拖尾，不依赖渲染帧率。
     public void emitFlightParticles(BoomerangProjectile projectile, Vec3 movement) {}
+
+    /// 由客户端实体按需创建一枚跟随投掷物的粒子风暴发射器，返回 null 表示该武器不需要。
+    /// 挂载与注册由 {@link BoomerangProjectile} 统一完成，这里只负责按符文挑贴图与颜色。
+    public @Nullable ParticleEmitter createRuneEmitter(BoomerangProjectile projectile, int rune) {
+        return null;
+    }
 
     public record Settings(float damage, float flySpeed, float backSpeed, int forwardTicks,
                            int cooldown, int maxCount, int penetration, boolean fire,

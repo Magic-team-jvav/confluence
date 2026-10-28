@@ -35,6 +35,7 @@ public final class CommonConfigs {
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue VILLAGER_INVULNERABLE_TO_PLAYER;
     public static BooleanValue PREVENT_ENEMY_FRIENDLY_FIRE;
+    public static BooleanValue PREVENT_ENEMY_HURTING_PASSIVE_MOBS;
     public static BooleanValue ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES;
     public static BooleanValue ENHANCE_ALL_MONSTER;
     public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH;
@@ -260,6 +261,8 @@ public final class CommonConfigs {
             builder.push("Enemies");
             PREVENT_ENEMY_FRIENDLY_FIRE = builder.comment("Enable the existing enemy faction friendly-fire protection. Does not change enemy targeting.")
                     .define("preventEnemyFriendlyFire", true);
+            PREVENT_ENEMY_HURTING_PASSIVE_MOBS = builder.comment("Prevent enemies from hurting passive creatures (animals, water animals and ambient creatures). Players, villagers, NPCs, summons and environmental damage are unaffected.")
+                    .define("preventEnemyHurtingPassiveMobs", false);
             {
                 builder.push("Attributes");
                 ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);

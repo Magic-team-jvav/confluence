@@ -23,6 +23,10 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4x3f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 
 import java.util.HashSet;
@@ -33,10 +37,14 @@ public class BoomerangProjectile extends Projectile {
     private static final EntityDataAccessor<ItemStack> DATA_WEAPON = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Boolean> DATA_RETURNING = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DATA_DAMAGE = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.FLOAT);
+    /// 本颗投掷物携带的符文序号，-1 表示该武器不用符文。同步给客户端是为了让粒子挑对贴图。
+    private static final EntityDataAccessor<Integer> DATA_RUNE = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.INT);
 
     private final Set<UUID> hitEntities = new HashSet<>();
     /// 仅用于错开不同回旋镖的视觉摆动相位，不参与服务端运动计算。
     private final int visualRotationOffset = random.nextInt(114514);
+    /// 跟随本颗投掷物的符文粒子发射器，只在客户端持有。
+    private @Nullable ParticleEmitter runeEmitter;
     private float backSpeed = 1.5F;
     private int forwardTicks = 15;
     private int penetration = 1;
@@ -52,6 +60,7 @@ public class BoomerangProjectile extends Projectile {
         entityData.define(DATA_WEAPON, ItemStack.EMPTY);
         entityData.define(DATA_RETURNING, false);
         entityData.define(DATA_DAMAGE, 1.0F);
+        entityData.define(DATA_RUNE, -1);
     }
 
     public void configure(LivingEntity owner, ItemStack weapon, BoomerangItem.Settings settings) {
@@ -70,11 +79,21 @@ public class BoomerangProjectile extends Projectile {
         this.forwardTicks = Math.max(1, forwardTicks);
         this.penetration = Math.max(1, penetration);
         this.fire = false;
+        entityData.set(DATA_RUNE, -1);
         setNoGravity(true);
     }
 
     public ItemStack getWeapon() {
         return entityData.get(DATA_WEAPON);
+    }
+
+    /// 由武器在发射瞬间调用一次；-1 表示这把回旋镖不带符文。
+    public void setRune(int rune) {
+        entityData.set(DATA_RUNE, rune);
+    }
+
+    public int getRune() {
+        return entityData.get(DATA_RUNE);
     }
 
     public boolean belongsTo(Player player) {
@@ -151,10 +170,27 @@ public class BoomerangProjectile extends Projectile {
             noPhysics = true;
         }
         Vec3 motion = getDeltaMovement();
-        if (level().isClientSide && getWeapon().getItem() instanceof BoomerangItem boomerang)
-            boomerang.emitFlightParticles(this, motion);
+        if (level().isClientSide) {
+            initRuneEmitter();
+            if (getWeapon().getItem() instanceof BoomerangItem boomerang)
+                boomerang.emitFlightParticles(this, motion);
+        }
         setPos(getX() + motion.x, getY() + motion.y, getZ() + motion.z);
         updateRotation();
+    }
+
+    /// 客户端每刻只在这里补建一次发射器：按 `isRemoved()` 反复重建会让短命弹幕把引擎的表踩崩
+    /// （见 `SoulLureProjectile#tick` 上的注释），所以建好之后一律交给引擎和实体生命周期处理。
+    private void initRuneEmitter() {
+        if (runeEmitter != null || getRune() < 0) return;
+        if (!(getWeapon().getItem() instanceof BoomerangItem boomerang)) return;
+        ParticleEmitter emitter = boomerang.createRuneEmitter(this, getRune());
+        if (emitter == null) return;
+        emitter.attachEntity(this);
+        emitter.hideOutline = true;
+        emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
+        MolangParticleEngine.INSTANCE._addEmitter(emitter);
+        this.runeEmitter = emitter;
     }
 
     private void startReturning() {
@@ -181,6 +217,7 @@ public class BoomerangProjectile extends Projectile {
         tag.putInt("ForwardTicks", forwardTicks);
         tag.putInt("Penetration", penetration);
         tag.putBoolean("Fire", fire);
+        tag.putInt("Rune", getRune());
     }
 
     @Override
@@ -193,6 +230,7 @@ public class BoomerangProjectile extends Projectile {
         forwardTicks = Math.max(1, tag.getInt("ForwardTicks"));
         penetration = Math.max(1, tag.getInt("Penetration"));
         fire = tag.getBoolean("Fire");
+        entityData.set(DATA_RUNE, tag.contains("Rune") ? tag.getInt("Rune") : -1);
         setNoGravity(true);
         noPhysics = isReturning();
     }

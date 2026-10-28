@@ -340,12 +340,12 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(PotionItems.BATTLE_POTION.get(), "Increases enemy spawn rate", "提高敌人生成速度");
         language.addTooltip(SwordItems.BEE_KEEPER.get(), "A small part of the divine weapon's power is possessed by the swarm of bees in the jungle, becoming a buzzing hive.", "神兵的一小部分力量为丛林中的蜂群所占有，沦为嗡嗡作响的蜂群");
         language.add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"", "“口蜜腹剑”");
-        language.addTooltip(BoomerangItems.BEIDOU_BOOMERANG.get(), "On hit, randomly applies one of the following effects:", "命中时随机施加以下一种效果：");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.1", "Frostburn IV (10 seconds)", "霜冻 IV（10秒）");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.2", "Hellfire IV (10 seconds)", "狱炎 IV（10秒）");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.3", "Wither IV (10 seconds)", "凋零 IV（10秒）");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.4", "Poison IV (10 seconds)", "中毒 IV（10秒）");
-        language.add("tooltip.item.confluence.bei_dou_boomerang.5", "Instant Damage VII", "瞬间伤害 VII");
+        language.addTooltip(BoomerangItems.BEIDOU_BOOMERANG.get(), "Carries a random rune; on hit, applies the matching effect for 10 seconds:", "随机携带一枚符文，命中时依符文颜色施加 10 秒效果：");
+        language.add("tooltip.item.confluence.bei_dou_boomerang.1", "Red: Hellfire IV", "红：狱炎 IV");
+        language.add("tooltip.item.confluence.bei_dou_boomerang.2", "Light Blue: Frozen IV", "淡蓝：冰冻 IV");
+        language.add("tooltip.item.confluence.bei_dou_boomerang.3", "Light Gray: Stoned IV", "淡灰：石化 IV");
+        language.add("tooltip.item.confluence.bei_dou_boomerang.4", "Dark Green: Poison IV / Gray Purple: Wither IV", "深绿：中毒 IV／灰紫：凋零 IV");
+        language.add("tooltip.item.confluence.bei_dou_boomerang.5", "Dark Brownish Red: Instant Damage VII", "深红棕：瞬间伤害 VII");
         language.add("tooltip.item.confluence.bewitching_table.0", "Right click to have more minions", "右键点击可拥有更多仆从");
         language.addTooltip(ToolItems.BINOCULARS.get(), "Expand the FOV when in use, and adjust the zoom with the mouse wheel", "使用时扩大视野，鼠标滚轮可调整缩放");
         language.addTooltip(AccessoryItems.BLACK_COUNTERWEIGHT.get(), "Throws a counterweight on yoyo hits; counterweights do not stack", "悠悠球命中后掷出平衡锤；不与其他平衡锤重复叠加");
@@ -405,6 +405,7 @@ public final class TooltipLanguageSubProvider {
         language.addTooltip(AccessoryItems.DISCOUNT_CARD.get(), "Reduces shop prices by 20%", "商店价格降低20%");
         language.addTooltip(FoodItems.DONGDONGS_FLATBREAD.get(), "Freshly baked flatbread on the Netherrack. Come and have a taste!", "刚在下界岩上烤好的饼，快来尝尝吧！");
         language.addTooltip(ToolItems.DUNGEON_COMPASS.get(), "--“The eerie skull will guide your way”", "--“诡异的头骨会为你指引方向”");
+        language.addTooltip(ToolItems.HOMING_BEE.get(), "While worn on the head, a bee hovers in your view and points to the nearest Bee Hive", "装备在头盔处时，视角里会出现一只蜜蜂，为你指向最近的蜂巢");
         language.add("tooltip.item.confluence.dye_vat.0", "Used to Craft Dyes", "用于制作染料");
         language.add("tooltip.item.confluence.echo_block.0", "Only visible with Echo Sight", "只在回声视觉下才能看到");
         language.addTooltip(PotionItems.EGGNOG.get(), "Restores 16 health", "恢复16生命");

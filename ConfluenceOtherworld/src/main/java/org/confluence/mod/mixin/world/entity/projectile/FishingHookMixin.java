@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.world.entity.projectile;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -11,17 +10,23 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.storage.loot.LootParams;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.lib.network.s2c.SetEntityDataPacketS2C;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IFishingHook;
-import org.spongepowered.asm.mixin.Final;
+import org.confluence.mod.common.entity.fishing.FishingSession;
+import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
+import org.confluence.mod.util.PlayerUtils;
+import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -29,6 +34,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
@@ -38,12 +44,64 @@ public abstract class FishingHookMixin implements IFishingHook {
     private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
 
     @Shadow
-    @Final
-    public int luck;
-
-    @Shadow
     @Nullable
     public abstract Player getPlayerOwner();
+
+    @Shadow
+    private int timeUntilLured;
+    @Shadow
+    private int timeUntilHooked;
+    @Shadow
+    protected int nibble;
+    @Unique
+    private boolean confluence$startingWait;
+
+    /// 只缩放新一轮等待，不改变咬钩窗口，也不逐 tick 重复缩短计时。
+    @Inject(method = "catchingFish", at = @At("HEAD"))
+    private void beginBiteWait(CallbackInfo ci) {
+        confluence$startingWait = nibble <= 0 && timeUntilHooked <= 0 && timeUntilLured <= 0;
+    }
+
+    @Inject(method = "catchingFish", at = @At("TAIL"))
+    private void adjustBiteWait(CallbackInfo ci) {
+        if (confluence$startingWait)
+            timeUntilLured = IFishingHook.adjustBiteWait(confluence$self(), timeUntilLured);
+    }
+
+    @Unique
+    private FishingSession confluence$session;
+
+    @Override
+    public FishingSession confluence$getFishingSession() {return confluence$session;}
+
+    @Override
+    public void confluence$setFishingSession(FishingSession session) {confluence$session = session;}
+
+    /// 换竿或移走绑定鱼饵即终止本次垂钓；活动期间按变化同步渔力仪表。
+    @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
+    private void validateCast(CallbackInfo ci) {
+        FishingHook hook = confluence$self();
+        if (hook.getPlayerOwner() instanceof ServerPlayer player) {
+            if (confluence$session != null && !confluence$session.isValid(player)) {
+                hook.discard();
+                ci.cancel();
+            } else if (confluence$session != null && hook.tickCount % 20 == 0
+                    && confluence$session.updateDisplayedPower(PlayerUtils.getFishingPower(player))) {
+                FishingPowerInfoPacketS2C.sendToClient(player);
+            }
+        }
+    }
+
+    /// 收线前校验原来的手与鱼饵；禁止另一根钓竿代收，避免扣错耐久或使用错附魔。
+    @Inject(method = "retrieve", at = @At("HEAD"), cancellable = true)
+    private void validateRetrieve(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
+        FishingHook hook = confluence$self();
+        if (hook.getPlayerOwner() instanceof ServerPlayer player && confluence$session != null
+                && (stack != confluence$session.rod() || !confluence$session.isValid(player))) {
+            hook.discard();
+            cir.setReturnValue(0);
+        }
+    }
 
     @Unique
     private boolean confluence$achievement = false;
@@ -140,18 +198,21 @@ public abstract class FishingHookMixin implements IFishingHook {
         return IFishingHook.getSplashParticle(confluence$self(), type);
     }
 
-    @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
-    private LootParams modifyLuck(LootParams params) {
-        return IFishingHook.modifyLuck(confluence$self(), params);
-    }
-
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootDataManager;getLootTable(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/world/level/storage/loot/LootTable;"))
     private ResourceLocation redirectLootTable(ResourceLocation lootTable) {
         return IFishingHook.redirectLootTable(confluence$self(), lootTable);
     }
 
-    @ModifyExpressionValue(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
-    private ObjectArrayList<ItemStack> addCrate(ObjectArrayList<ItemStack> original) {
-        return IFishingHook.modifyLoot(confluence$self(), original);
+    @WrapOperation(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
+    private ObjectArrayList<ItemStack> resolveCatch(LootTable table, LootParams params, Operation<ObjectArrayList<ItemStack>> original) {
+        FishingHook hook = confluence$self();
+        if (!(hook.getPlayerOwner() instanceof ServerPlayer player))
+            return original.call(table, params);
+        float power = IFishingHook.catchPower(hook, player);
+        // 只对汇流水中六档表使用渔力权重；原版钓鱼及岩浆、蜂蜜表保留各自上下文。
+        LootParams context = hook.getType() != EntityType.FISHING_BOBBER && hook.getInBlockState().getFluidState().is(FluidTags.WATER)
+                ? IFishingHook.catchParams(hook, power) : params;
+        return IFishingHook.modifyLoot(hook, original.call(table, context), power);
     }
+
 }

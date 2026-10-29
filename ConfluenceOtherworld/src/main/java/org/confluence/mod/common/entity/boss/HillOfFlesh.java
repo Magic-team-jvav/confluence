@@ -127,7 +127,14 @@ public class HillOfFlesh extends BaseBoss {
     private static final float PHASE_TWO_MELEE_GAP = 1.75F;
     static final float OUTER_RADIUS = 75.0F;
 
-    public enum DamageZone {ATTACHED, INNER, OUTER}
+    public enum DamageZone {
+        /// 贴附肉山时的接触伤害区域。
+        ATTACHED,
+        /// 肉山内部活动区域的伤害档位。
+        INNER,
+        /// 肉山外部区域的伤害档位。
+        OUTER
+    }
 
     /// 场地高度单位为方块；出场与开始破坏场地的时间单位为 tick。
     public static final int ARENA_HEIGHT = 100;

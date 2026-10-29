@@ -21,19 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Player.class)
 public abstract class PlayerMixin implements IPlayer {
     @Unique
-    private ItemStack confluence$currentBait = ItemStack.EMPTY;
-    @Unique
     private boolean confluence$voidSeaSwimming;
-
-    @Override
-    public void confluence$setCurrentBait(ItemStack bait) {
-        this.confluence$currentBait = bait;
-    }
-
-    @Override
-    public ItemStack confluence$getCurrentBait() {
-        return confluence$currentBait;
-    }
 
     @Override
     public boolean confluence$isVoidSeaSwimming() {

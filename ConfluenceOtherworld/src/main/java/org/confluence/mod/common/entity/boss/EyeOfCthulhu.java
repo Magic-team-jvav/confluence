@@ -573,14 +573,25 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     /// 客户端动画、存档和测试共同使用的稳定战斗状态。
-    public enum DefenseState {WOUNDED, CRITICAL}
+    public enum DefenseState {
+        /// 生命值低于 12% 时的伤害加成档位。
+        WOUNDED,
+        /// 生命值低于 4% 时的伤害加成档位。
+        CRITICAL
+    }
 
     public enum CombatState {
+        /// 等待下一次攻击。
         IDLE,
+        /// 盯住目标并准备下一轮攻击。
         STARING,
+        /// 冲刺前蓄力并锁定本次方向。
         DASH_WINDUP,
+        /// 执行冲刺攻击。
         DASHING,
+        /// 切换至下一形态的过渡阶段。
         TRANSFORMING,
+        /// 结束战斗并离场。
         LEAVING
     }
 

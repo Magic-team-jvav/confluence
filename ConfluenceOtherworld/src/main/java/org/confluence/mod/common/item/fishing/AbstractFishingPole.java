@@ -29,11 +29,10 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.BaitItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
-import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
@@ -66,7 +65,6 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         if (player.fishing != null) {
             if (!level.isClientSide) {
                 int i = player.fishing.retrieve(stack);
-                consumeBait(player, stack);
                 ItemStack original = stack.copy();
                 stack.hurtAndBreak(i, player, IPortLivingEntityExtension.getSlotForHand(hand));
                 if (stack.isEmpty()) {
@@ -82,15 +80,16 @@ public abstract class AbstractFishingPole extends FishingRodItem {
                 int speedBonus = EnchantmentHelper.getFishingSpeedBonus(stack);
                 FishingHook hook;
                 FishingBobber curio = CuriosUtils.findCurio(player, FishingBobber.class);
-                if (curio == null) {
+                // 开发竿保留自己的特殊鱼钩，避免被饰品浮标替换。
+                if (this instanceof DevFishingRod || curio == null) {
                     hook = getHook(stack, player, level, luckBonus, speedBonus);
                 } else {
                     hook = new CurioFishingHook(player, level, luckBonus, speedBonus, curio.variant);
                 }
 
-                ItemStack bait = IBait.getFirstBait(player.getInventory()).split(1);
-                setBait(stack, bait);
-                IPlayer.of(player).confluence$setCurrentBait(bait);
+                FishingSession session = new FishingSession(player, stack, hand);
+                IFishingHook.of(hook).confluence$setFishingSession(session);
+                ItemStack bait = session.bait();
 
                 if (this == FishingPoleItems.HOTLINE_FISHING_HOOK.get() ||
                         (!bait.isEmpty() && bait.is(ModTags.Items.LAVA_PROOF_BAIT)) ||
@@ -106,21 +105,14 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 
+    /// 迁移旧存档中预扣在钓竿里的鱼饵；清空旧数据后再返还，保证只返还一次。
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof Player player) {
-            IPlayer iPlayer = IPlayer.of(player);
-            ItemStack bait = iPlayer.confluence$getCurrentBait();
-            if (isSelected) {
-                if (level.getGameTime() % 4 == 0) {
-                    iPlayer.confluence$setCurrentBait(getBait(stack));
-                }
-            } else if (!bait.isEmpty() && !(player.getMainHandItem().getItem() instanceof AbstractFishingPole)) {
-                if (!player.addItem(bait)) {
-                    player.drop(bait, true);
-                }
+        if (!level.isClientSide && entity instanceof Player player) {
+            ItemStack legacyBait = getBait(stack);
+            if (!legacyBait.isEmpty()) {
                 setBait(stack, ItemStack.EMPTY);
-                iPlayer.confluence$setCurrentBait(ItemStack.EMPTY);
+                if (!player.addItem(legacyBait)) player.drop(legacyBait, false);
             }
         }
     }
@@ -134,6 +126,14 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     }
 
     public abstract FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus);
+
+    /// 读取钓竿独立渔力属性的固定加成，数值单位为渔力点。
+    public float getFishingPower() {
+        if (modifiers == null) return 0;
+        return (float) modifiers.getAttributeModifiers(EquipmentSlot.MAINHAND).get(ConfluenceMagicLib.FISHING_POWER.value()).stream()
+                .filter(modifier -> modifier.getOperation() == AttributeModifier.Operation.ADDITION)
+                .mapToDouble(AttributeModifier::getAmount).sum();
+    }
 
     protected void addAttributeModifiers(Consumer<PortItemAttributeModifiers.Builder> consumer) {
         PortItemAttributeModifiers.Builder builder = PortItemAttributeModifiers.builder();
@@ -158,7 +158,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
 
     public static ItemStack getBait(ItemStack fishingPole) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(fishingPole);
-        if (tag == null || !tag.getBoolean(HAS_BAIT_KEY)) return ItemStack.EMPTY;
+        if (tag == null || !tag.getBoolean(HAS_BAIT_KEY) || !tag.contains(BAIT_KEY)) return ItemStack.EMPTY;
         return ItemStack.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, tag.get(BAIT_KEY)).result().orElse(ItemStack.EMPTY);
     }
 
@@ -170,38 +170,4 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         });
     }
 
-    public static void consumeBait(Player player, ItemStack fishingPole) {
-        ItemStack bait = getBait(fishingPole);
-        if (bait.isEmpty()) return;
-        boolean consume = false;
-        if (bait.is(BaitItems.TRUFFLE_WORM)) {
-            consume = true;
-        } else if (bait.is(BaitItems.GOLD_WORM)) {
-            if (player.getRandom1211().nextInt(20) == 0) {
-                consume = true;
-            }
-        } else {
-            float factor = TCUtils.hasType(player, AccessoryItems.TACKLE$BOX) ? 2.0F : 1.0F;
-            IBait iBait = IBait.of(bait);
-            float bonus = iBait == null ? 0 : iBait.getBaitBonus() * 100;
-            if (player.getRandom1211().nextFloat() < 1.0F / (factor + bonus / 6.0F)) {
-                consume = true;
-            }
-        }
-        if (!consume && player.addItem(bait)) {
-            player.drop(bait, true);
-        }
-        setBait(fishingPole, ItemStack.EMPTY);
-        IPlayer.of(player).confluence$setCurrentBait(ItemStack.EMPTY);
-    }
-
-    public static void resetCurrentBait(Player player) {
-        IPlayer iPlayer = IPlayer.of(player);
-        if (!iPlayer.confluence$getCurrentBait().isEmpty()) {
-            ItemStack itemStack = player.getMainHandItem();
-            if (itemStack.isEmpty() || !(itemStack.getItem() instanceof AbstractFishingPole)) {
-                iPlayer.confluence$setCurrentBait(ItemStack.EMPTY);
-            }
-        }
-    }
 }

@@ -127,7 +127,6 @@ public final class TickEvents {
             PlayerVoidVaultContainer.of(player).sync(player, false);
 
         if (gameTime % 60 == 3) {
-            AbstractFishingPole.resetCurrentBait(event.player);
             PlayerSpecialData.resetSomeData(event.player);
         }
     }

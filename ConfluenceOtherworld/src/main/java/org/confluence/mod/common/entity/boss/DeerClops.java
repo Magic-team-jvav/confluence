@@ -621,17 +621,25 @@ public class DeerClops extends BaseBoss {
 
     /// 客户端动画和测试共同使用的少量稳定战斗状态。
     public enum CombatState {
+        /// 等待下一次攻击。
         IDLE,
+        /// 进入吼叫的起手阶段。
         ROAR,
+        /// 持续播放吼叫并推进登场阶段。
         ROARING,
+        /// 追赶玩家，按距离选择攻击。
         CHASE,
+        /// 执行本轮冰击或暗影手攻击。
         ATTACK
     }
 
     /// 冰击的位置分支。该类型只描述本次已经选中的攻击方式，不承担状态机推进。
     enum AttackPattern {
+        /// 向远处目标抛射冰块。
         THROWN_ICE,
+        /// 生成暗影手攻击目标。
         SHADOW_HAND,
+        /// 沿地面生成冰柱波。
         ICE_PILLAR
     }
 

@@ -439,6 +439,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
             updatePartAssignments();
         }
         for (WallOfFleshPart part : wallParts) part.tickPart();
+        checkPartContacts();
         updateMovement();
         updateHungrySlots();
         tickFireImps();
@@ -682,10 +683,28 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
         }
     }
 
+    /// 整面墙每 tick 只查询一次活体候选，再逐部件精确检测，避免数百次重复空间查询。
+    private void checkPartContacts() {
+        if (getTarget() == null || wallParts.length == 0) return;
+        AABB bounds = wallParts[0].getContactBounds();
+        for (int index = 1; index < wallParts.length; index++)
+            bounds = bounds.minmax(wallParts[index].getContactBounds());
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, bounds, target -> target != this && canAttack(target))) {
+            for (WallOfFleshPart part : wallParts) {
+                if (part.intersectsContact(target)) {
+                    hurtOnContact(target);
+                    break;
+                }
+            }
+        }
+    }
+
     private void updatePartAssignments() {
         eyeAssignments.clear();
         mouthAssignments.clear();
-        List<Player> players = level().getEntitiesOfClass(Player.class, getPursuitBox(), player -> isValidFrontTarget(player) && (!player.isCreative() || isDeveloperTarget(player)) && !player.isSpectator());
+        List<Player> players = level().players().stream()
+                .filter(player -> isValidFrontTarget(player) && (!player.isCreative() || isDeveloperTarget(player)) && !player.isSpectator())
+                .map(player -> (Player) player).toList();
         assignNearestParts(players, livingParts(eyes), MAX_ASSIGNED_EYES, eyeAssignments);
         assignNearestParts(players, livingParts(mouths), MAX_ASSIGNED_MOUTHS, mouthAssignments);
         CompoundTag targets = new CompoundTag();
@@ -940,7 +959,10 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     }
 
     /// 嘴部沿用本体属性，眼部使用注册表中的独立防御。
-    public enum BodySection {EYE}
+    public enum BodySection {
+        /// 眼球部位，使用眼球独立参数。
+        EYE
+    }
 
     @Override
     public double getAttributeValue(Attribute attribute) {
@@ -956,7 +978,10 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
         return value;
     }
 
-    public enum CombatState {WOUNDED}
+    public enum CombatState {
+        /// 低生命值时启用的数值状态。
+        WOUNDED
+    }
 
     /// Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never
     /// read or written, and overlapping walls retain independent UUID-keyed leases.

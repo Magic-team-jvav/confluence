@@ -1,5 +1,17 @@
 package org.confluence.mod.common.event.game.entity;
 
+import org.confluence.mod.common.init.ModSoundEvents;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.MobSpawnType;
+import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
+import net.minecraftforge.event.entity.player.ItemFishedEvent;
+import org.confluence.mod.mixed.IFishingHook;
+import org.confluence.mod.common.init.item.FishingPoleItems;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
+import org.confluence.mod.common.entity.fishing.FishingSession;
+import org.confluence.mod.common.data.saved.AnglerData;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -10,14 +22,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -61,15 +71,12 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.entity.npc.BaseNPC;
-import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
@@ -101,6 +108,7 @@ import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBl
 
 public final class PlayerEvents {
     public static void init() {
+        PortEventHandler.addListener(PlayerEvents::itemFished);
         PortEventHandler.addListener(PlayerEvents::loggedIn);
         PortEventHandler.addListener(PlayerEvents::loggedOut);
         PortEventHandler.addListener(PlayerEvents::interact$LeftClickBlock);
@@ -108,7 +116,6 @@ public final class PlayerEvents {
         PortEventHandler.addListener(PlayerEvents::interact$EntityInteract);
         PortEventHandler.addListener(PlayerEvents::itemEntityPickup$Pre);
         PortEventHandler.addListener(PlayerEvents::itemEntityPickup$Post);
-        PortEventHandler.addListener(PlayerEvents::itemFished);
         PortEventHandler.addListener(PlayerEvents::interact$RightClickItem);
         PortEventHandler.addListener(PlayerEvents::useItemOnBlock);
         PortEventHandler.addListener(PlayerEvents::attackEntity);
@@ -313,36 +320,56 @@ public final class PlayerEvents {
         LucyTheAxe.onPickup(player, itemStack);
     }
 
-    private static void itemFished(ItemFishedEvent event) {
-        Player player = event.getEntity();
 
-        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom1211().nextFloat() < 0.1429F) {
-            player.level().playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
+
+    private static void itemFished(ItemFishedEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        FishingHook hook = event.getHookEntity();
+        FishingSession session = IFishingHook.of(hook).confluence$getFishingSession();
+        if (session != null && !session.isValid(player)) {
             event.setCanceled(true);
             return;
         }
-        if (!(player instanceof ServerPlayer serverPlayer) || !BloodMoonGameEvent.INSTANCE.started())
+        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextInt(7) == 0) {
+            player.level().playSound(null, hook.blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
+            event.setCanceled(true);
             return;
-        var hook = event.getHookEntity();
-        if (!hook.getInBlockState().getFluidState().is(FluidTags.WATER)) return;
-        if (player.getRandom().nextInt(10) == 0) {
-            TownSlimeNPC slime = TownSlimeNPC.unlock(serverPlayer.serverLevel(), NpcEntities.SURLY_SLIME.get(), hook.position());
+        }
+        // 任务鱼已在收竿流程中优先选出，血月生物不得再清空它。
+        boolean questCatch = AnglerData.INSTANCE.hasValidQuest() && event.getDrops().stream()
+                .anyMatch(stack -> stack.is(AnglerData.INSTANCE.getQuestFish()));
+        boolean caughtMob = !questCatch && tryCatchBloodMoonMob(player, hook, session);
+        if (caughtMob) event.getDrops().clear();
+        if (session != null && (caughtMob || !event.getDrops().isEmpty())) session.consumeBait(player);
+    }
+
+    /// 血月夜晚的水中捕获可替换为生物；仅成功生成时返回 true，失败则保留原鱼获。
+    private static boolean tryCatchBloodMoonMob(ServerPlayer player, FishingHook hook, FishingSession session) {
+        if (!BloodMoonGameEvent.INSTANCE.started() || player.serverLevel().isDay()
+                || !hook.getInBlockState().getFluidState().is(FluidTags.WATER)) return false;
+        boolean chumCaster = session != null && session.rod().is(FishingPoleItems.CHUM_CASTER.get());
+        if (player.getRandom().nextInt(chumCaster ? 3 : 6) != 0) return false;
+        // 尚未解锁的暴躁史莱姆占生物捕获的 1/5；已解锁时继续选择敌怪。
+        if (player.getRandom().nextInt(5) == 0) {
+            TownSlimeNPC slime = TownSlimeNPC.unlock(player.serverLevel(), NpcEntities.SURLY_SLIME.get(), hook.position());
             if (slime != null) {
                 slime.setDeltaMovement(player.position().subtract(slime.position()).normalize().scale(0.4));
-                event.getDrops().clear();
-                return;
+                return true;
             }
         }
-        int chance = hook.getType() == ModEntities.BLOODY_FISHING_HOOK.get() ? 6 : 12;
-        if (player.getRandom1211().nextInt(chance) != 0) return;
-        var type = player.getRandom1211().nextBoolean() ? MonsterEntities.WANDERING_EYE_FISH.get() : MonsterEntities.ZOMBIE_MERMAN.get();
-        if (!org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy.allowsAutomaticSpawn(type))
-            return;
-        var enemy = type.spawn(serverPlayer.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
-        if (enemy == null) return;
-        enemy.setTarget(serverPlayer);
-        enemy.setDeltaMovement(serverPlayer.position().subtract(enemy.position()).normalize().scale(0.35));
-        event.getDrops().clear();
+        var eyeFish = MonsterEntities.WANDERING_EYE_FISH.get();
+        var merman = MonsterEntities.ZOMBIE_MERMAN.get();
+        boolean allowEyeFish = DevelopmentSpawnPolicy.allowsAutomaticSpawn(eyeFish);
+        boolean allowMerman = DevelopmentSpawnPolicy.allowsAutomaticSpawn(merman);
+        if (!allowEyeFish && !allowMerman) return false;
+        // TODO 僵尸人鱼完成后取消注册处的 developmentOnly；两种可生成时各占一半。
+        // TODO 困难模式补齐血浆哥布林鲨鱼、血鳗鱼、恐惧鹦鹉螺：前四种各 22.5%，鹦鹉螺 10%。
+        var type = allowEyeFish && (!allowMerman || player.getRandom().nextBoolean()) ? eyeFish : merman;
+        var enemy = type.spawn(player.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
+        if (enemy == null) return false;
+        enemy.setTarget(player);
+        enemy.setDeltaMovement(player.position().subtract(enemy.position()).normalize().scale(0.35));
+        return true;
     }
 
     private static void interact$RightClickItem(PlayerInteractEvent.RightClickItem event) {

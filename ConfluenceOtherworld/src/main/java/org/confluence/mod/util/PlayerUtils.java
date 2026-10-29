@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import org.confluence.lib.ConfluenceMagicLib;
 import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -45,6 +46,10 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.mixed.IFishingHook;
+import org.confluence.mod.common.item.fishing.IBait;
+import org.confluence.mod.common.entity.fishing.FishingSession;
+import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.api.event.SoulCollectionEvent;
 import org.confluence.mod.api.event.SoulConsumeEvent;
 import org.confluence.mod.api.event.SoulRecoveryEvent;
@@ -1434,10 +1439,27 @@ public final class PlayerUtils {
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = player.getLuck() + TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
-        if (player.fishing != null) {
-            base += player.fishing.luck;
+        float base = (float) player.getAttributeValue(ConfluenceMagicLib.FISHING_POWER.value());
+        FishingSession session = player.fishing == null ? null : IFishingHook.of(player.fishing).confluence$getFishingSession();
+        ItemStack rod = session == null ? FishingSession.heldRod(player) : session.rod();
+        // 副手抛竿只在临时属性副本中替换钓竿修饰器，保留加算、乘算及属性上限的顺序。
+        ItemStack mainHand = player.getMainHandItem();
+        if (rod != mainHand) {
+            AttributeInstance attribute = player.getAttribute(ConfluenceMagicLib.FISHING_POWER.value());
+            if (attribute != null) {
+                AttributeInstance evaluated = new AttributeInstance(ConfluenceMagicLib.FISHING_POWER.value(), ignored -> {});
+                evaluated.replaceFrom(attribute);
+                for (AttributeModifier modifier : mainHand.getAttributeModifiers(EquipmentSlot.MAINHAND).get(ConfluenceMagicLib.FISHING_POWER.value()))
+                    evaluated.removeModifier(modifier.getId());
+                for (AttributeModifier modifier : rod.getAttributeModifiers(EquipmentSlot.MAINHAND).get(ConfluenceMagicLib.FISHING_POWER.value())) {
+                    evaluated.removeModifier(modifier.getId());
+                    evaluated.addTransientModifier(modifier);
+                }
+                base = (float) evaluated.getValue();
+            }
         }
+        IBait bait = IBait.of(session == null ? IBait.getFirstBait(player.getInventory()) : session.bait());
+        if (bait != null) base += bait.getBaitBonus() * 100;
         if (EverBeneficial.of(player).isGummyWormUsed()) {
             base += 3.0F;
         }
@@ -1448,10 +1470,10 @@ public final class PlayerUtils {
             base += 5.0F;
         }
         Level level = player.level();
-        if (level.isRaining()) {
-            base *= 1.1F;
-        } else if (level.isThundering()) {
+        if (level.isThundering()) {
             base *= 1.2F;
+        } else if (level.isRaining()) {
+            base *= 1.1F;
         }
         int dayTime = LibDateUtils.getDayTime(level);
         if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime)) {

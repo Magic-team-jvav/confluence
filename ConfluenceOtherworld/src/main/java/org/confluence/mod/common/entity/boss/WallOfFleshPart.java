@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.entity.PartEntity;
 
 import org.confluence.lib.api.entity.Boss;
@@ -22,6 +23,7 @@ public abstract class WallOfFleshPart extends PartEntity<WallOfFlesh> implements
     private final float height;
     private final int index;
     private final float visualRoll;
+    private float dimensionsScale = Float.NaN;
     private Vec3 sweepStart = Vec3.ZERO;
 
     protected WallOfFleshPart(WallOfFlesh parent, int index, float width, float height) {
@@ -50,7 +52,11 @@ public abstract class WallOfFleshPart extends PartEntity<WallOfFlesh> implements
         xo = xOld = getX();
         yo = yOld = getY();
         zo = zOld = getZ();
-        refreshDimensions();
+        float scale = getParent().getScale();
+        if (Float.compare(dimensionsScale, scale) != 0) {
+            refreshDimensions();
+            dimensionsScale = scale;
+        }
         setPos(position);
         setYRot(getParent().getYRot());
     }
@@ -59,12 +65,27 @@ public abstract class WallOfFleshPart extends PartEntity<WallOfFlesh> implements
         WallOfFlesh master = getParent();
         if (level().isClientSide || !master.isAlive()) return;
         tickAttack(master, master.getAssignedTarget(this));
-        if (master.getTarget() == null) return;
-        for (Entity entity : SweptContactAttack.findTargets(this, sweepStart, 0.0D,
-                SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
-                candidate -> candidate instanceof LivingEntity living && living != master && master.canAttack(living))) {
-            master.hurtOnContact((LivingEntity) entity);
-        }
+    }
+
+    /// 供本体合并查询范围；传送时只检测落点，避免跨越整段路径造成误伤。
+    final AABB getContactBounds() {
+        AABB box = getBoundingBox();
+        Vec3 previousOffset = sweepStart.subtract(position());
+        return previousOffset.lengthSqr() > SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE * SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE
+                ? box : box.expandTowards(previousOffset);
+    }
+
+    /// 对本体一次查询出的候选目标执行原有连续碰撞判定。
+    final boolean intersectsContact(LivingEntity target) {
+        if (!getContactBounds().intersects(target.getBoundingBox())) return false;
+        AABB box = getBoundingBox();
+        Vec3 previousOffset = sweepStart.subtract(position());
+        if (previousOffset.lengthSqr() > SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE * SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE)
+            return box.intersects(target.getBoundingBox());
+        AABB expanded = target.getBoundingBox().inflate(box.getXsize() * 0.5, box.getYsize() * 0.5, box.getZsize() * 0.5);
+        Vec3 end = box.getCenter();
+        Vec3 start = end.add(previousOffset);
+        return expanded.contains(start) || expanded.contains(end) || expanded.clip(start, end).isPresent();
     }
 
     protected abstract void tickAttack(WallOfFlesh master, @Nullable LivingEntity target);

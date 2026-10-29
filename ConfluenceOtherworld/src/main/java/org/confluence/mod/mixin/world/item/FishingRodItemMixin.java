@@ -1,6 +1,9 @@
 package org.confluence.mod.mixin.world.item;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import com.llamalad7.mixinextras.sugar.Local;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
@@ -19,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(FishingRodItem.class)
 public abstract class FishingRodItemMixin {
     @ModifyArg(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"))
-    private Entity replaceHook(Entity entity) {
+    private Entity replaceHook(Entity entity, @Local(argsOnly = true) InteractionHand hand) {
         if (!(entity instanceof FishingHook hook)) return entity;
         Player player = hook.getPlayerOwner();
         if (player == null) return entity;
@@ -30,6 +33,7 @@ public abstract class FishingRodItemMixin {
         if (TCUtils.hasType(player, AccessoryItems.LAVAPROOF$FISHING$HOOK)) {
             IFishingHook.of(hook).confluence$setIsLavaHook();
         }
+        IFishingHook.of(hook).confluence$setFishingSession(new FishingSession(player, player.getItemInHand(hand), hand));
         FishingPowerInfoPacketS2C.sendToClient((ServerPlayer) player);
         return hook;
     }

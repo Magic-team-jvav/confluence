@@ -50,6 +50,7 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
@@ -217,8 +218,8 @@ public final class ModClientSetups {
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null && player.getMainHandItem() == itemStack) {
-            ItemStack stack = IPlayer.of(player).confluence$getCurrentBait();
+        if (player != null && (player.getMainHandItem() == itemStack || player.getOffhandItem() == itemStack)) {
+            ItemStack stack = IBait.getFirstBait(player.getInventory());
             if (!stack.isEmpty()) {
                 PoseStack pose = guiGraphics.pose();
                 pose.pushPose();

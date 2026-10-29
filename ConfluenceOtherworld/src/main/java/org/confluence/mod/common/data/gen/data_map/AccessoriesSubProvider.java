@@ -153,10 +153,6 @@ public class AccessoriesSubProvider {
                     helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.FROZEN.get()));
                 })
                 .add(TCItems.ICE_SKATES, helper -> helper.unit(TCItems.ICE$SAFE))
-                .add(TCItems.ANGLER_EARRING, helper -> {
-                    helper.of(AccessoryItems.FISHING$POWER, 10.0F);
-                    helper.of(TCItems.ATTRIBUTES, ImmutableListMultimap.of());
-                }, true)
                 .add(TCItems.BASE_POINT, helper -> helper.unit(TCItems.ICE$SAFE))
                 .add(TCItems.ANKH_CHARM, helper -> helper.of(TCItems.EFFECT$IMMUNITIES, ankh))
                 .add(TCItems.ANKH_SHIELD, helper -> {
@@ -244,14 +240,12 @@ public class AccessoriesSubProvider {
                 .add(AccessoryItems.ANGLER_TACKLE_BAG, helper -> {
                     helper.unit(AccessoryItems.HIGH$TEST$FISHING$LINE);
                     helper.unit(AccessoryItems.TACKLE$BOX);
-                    helper.of(AccessoryItems.FISHING$POWER, 10.0F);
                 }) // 渔夫渔具袋
                 .add(AccessoryItems.LAVAPROOF_FISHING_HOOK, helper -> helper.unit(AccessoryItems.LAVAPROOF$FISHING$HOOK)) // 防熔岩钓钩
                 .add(AccessoryItems.LAVAPROOF_TACKLE_BAG, helper -> {
                     helper.unit(AccessoryItems.HIGH$TEST$FISHING$LINE);
                     helper.unit(AccessoryItems.TACKLE$BOX);
                     helper.unit(AccessoryItems.LAVAPROOF$FISHING$HOOK);
-                    helper.of(AccessoryItems.FISHING$POWER, 10.0F);
                 }) // 防熔岩渔具袋
                 // 信息
                 .add(AccessoryItems.MECHANICAL_LENS, helper -> helper.of(TCItems.INFORMATION, List.of(TCItems.MECHANICAL$LENS))) // 机械晶状体

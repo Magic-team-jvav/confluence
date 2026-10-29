@@ -87,27 +87,29 @@ public class Spazmatism extends AbstractTwinEye {
     private static final int STREAM_SOUND_INTERVAL_TICKS = 14;
 
     /// 冲刺前的基础蓄力时间，单位 tick。
-    private static final int WINDUP_TICKS = 10;
+    private static final int WINDUP_TICKS = 6;
     /// 冲刺开始前停止更新预测方向的时间，单位 tick。
     private static final int DASH_LOCK_TICKS = 3;
     /// 朝向尚未对准时冲刺蓄力的最长时间，单位 tick。
-    private static final int DASH_MAX_WINDUP_TICKS = 26;
+    private static final int DASH_MAX_WINDUP_TICKS = 14;
     /// 允许发动冲刺的朝向点积阈值，越大要求越精确。
     private static final double DASH_AIM_DOT = 0.92;
     /// 每次冲刺的持续时间，单位 tick。
-    private static final int DASH_TICKS = 24;
+    private static final int DASH_TICKS = 12;
     /// 两次冲刺之间的恢复时间，单位 tick。
-    private static final int RECOVER_TICKS = 6;
+    private static final int RECOVER_TICKS = 3;
     /// 冲刺恢复期间每 tick 保留的移动速度比例。
     private static final double RECOVERY_DRAG = 0.8;
     /// 一阶段冲刺速度，单位格/tick。
-    private static final double PHASE_ONE_DASH_SPEED = 1.9;
+    private static final double PHASE_ONE_DASH_SPEED = 2.4;
     /// 二阶段冲刺速度，单位格/tick。
-    private static final double PHASE_TWO_DASH_SPEED = 2.7;
+    private static final double PHASE_TWO_DASH_SPEED = 3.4;
     /// 一阶段每轮连续冲刺次数。
-    private static final int DASH_COUNT = 3;
-    /// 二阶段每轮连续冲刺次数。
+    private static final int DASH_COUNT = 4;
+    /// 二阶段每轮连续冲刺的最少次数。
     private static final int PHASE_TWO_DASH_COUNT = 6;
+    /// 二阶段每轮连续冲刺的最多次数。
+    private static final int PHASE_TWO_DASH_MAX_COUNT = 8;
     /// 普通难度冲刺预测的最大偏移，单位格。
     private static final double DASH_MAX_LEAD = 6;
     /// 传奇难度冲刺预测的最大偏移，单位格。
@@ -324,7 +326,7 @@ public class Spazmatism extends AbstractTwinEye {
 
     // 联动只暂时占用攻击状态，结束或中断后回到正常冲刺链。
     private void beginDashChain(LivingEntity target) {
-        dashes = isTransformed() ? PHASE_TWO_DASH_COUNT : DASH_COUNT;
+        dashes = isTransformed() ? PHASE_TWO_DASH_COUNT + random.nextInt(PHASE_TWO_DASH_MAX_COUNT - PHASE_TWO_DASH_COUNT + 1) : DASH_COUNT;
         dashDirection = predictDashDirection(target);
         enter(State.WINDUP);
     }
@@ -469,7 +471,7 @@ public class Spazmatism extends AbstractTwinEye {
                 IllegalArgumentException ignored) {return;}
         stateTicks = Mth.clamp(tag.getInt("AttackTicks"), 0, STREAM_TICKS + MAX_COORDINATION_WAIT_TICKS);
         shotTimer = Mth.clamp(tag.getInt("ShotTimer"), 0, FLAME_BALL_INTERVAL_TICKS);
-        dashes = Mth.clamp(tag.getInt("Dashes"), 0, PHASE_TWO_DASH_COUNT);
+        dashes = Mth.clamp(tag.getInt("Dashes"), 0, PHASE_TWO_DASH_MAX_COUNT);
         dashDirection = loadVector(tag, "Dash").normalize();
         orbitDirection = tag.getInt("OrbitDirection") < 0 ? -1 : 1;
         comboCooldown = Mth.clamp(tag.getInt("ComboCooldown"), 0, COMBO_COOLDOWN_TICKS);
@@ -484,5 +486,20 @@ public class Spazmatism extends AbstractTwinEye {
     @Override
     protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}
 
-    private enum State {APPROACH, FIRE, WINDUP, DASH, RECOVER, COMBO_CHARGE, COMBO_WAIT}
+    private enum State {
+        /// 接近目标并调整攻击位置。
+        APPROACH,
+        /// 一阶段发射焰球，二阶段持续喷射魔焰流。
+        FIRE,
+        /// 冲刺前预测目标位置并蓄力。
+        WINDUP,
+        /// 沿锁定方向直线冲刺。
+        DASH,
+        /// 单次冲刺后的短暂减速，随后继续连冲或回到喷火循环。
+        RECOVER,
+        /// 蓄力并等待发射组合技巨焰。
+        COMBO_CHARGE,
+        /// 巨焰发射后等待激光眼引爆。
+        COMBO_WAIT
+    }
 }

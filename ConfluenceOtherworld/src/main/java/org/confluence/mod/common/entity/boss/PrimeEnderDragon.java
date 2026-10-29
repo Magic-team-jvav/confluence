@@ -381,7 +381,10 @@ public final class PrimeEnderDragon extends BaseBoss {
         return clamped * clamped / (float) LASER_MAXIMUM_RANGE;
     }
 
-    public enum AttackType {LASER}
+    public enum AttackType {
+        /// 使用激光攻击。
+        LASER
+    }
 
     int performLaserAttack(double range) {
         Vec3 start = getLaserOrigin(1.0F);
@@ -574,14 +577,23 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     enum CombatState {
+        /// 出场后等待首轮进攻。
         OPENING_WAIT,
+        /// 向本轮冲刺目标接近。
         APPROACH,
+        /// 冲过目标后沿惯性方向继续飞行。
         INERTIA,
+        /// 冲刺后游走，衔接下一轮攻击。
         POST_DASH_WANDER,
+        /// 飞往落地位置。
         LAND_APPROACH,
+        /// 执行落地阶段。
         LAND,
+        /// 跳过落地时等待下一轮行动。
         SKIPPED_LANDING_WAIT,
+        /// 游走飞行并持续射击。
         WANDER_FIRE;
+
 
         static CombatState fromOrdinal(int ordinal) {
             CombatState[] values = values();
@@ -591,13 +603,21 @@ public final class PrimeEnderDragon extends BaseBoss {
 
     /// 七个固定碰撞槽位及其尺寸。
     public enum PartSlot {
+        /// 头部碰撞部件。
         HEAD(2.0F, 2.0F),
+        /// 躯干碰撞部件。
         BODY(6.0F, 3.0F),
+        /// 紧接躯干的第一节尾部。
         TAIL_ONE(2.0F, 2.0F),
+        /// 尾部中段的第二节。
         TAIL_TWO(2.0F, 2.0F),
+        /// 尾端的第三节。
         TAIL_THREE(2.0F, 2.0F),
+        /// 左翼碰撞部件。
         LEFT_WING(7.0F, 2.0F),
+        /// 右翼碰撞部件。
         RIGHT_WING(7.0F, 2.0F);
+
 
         private final float width;
         private final float height;

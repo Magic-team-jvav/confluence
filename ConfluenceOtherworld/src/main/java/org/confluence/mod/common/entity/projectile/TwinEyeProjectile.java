@@ -28,8 +28,6 @@ import org.joml.Vector3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /// 双子的直线激光、诅咒焰球和短程魔焰；传奇魔焰落地后保留伤害区域。
 public final class TwinEyeProjectile extends StraightMonsterProjectile {
@@ -79,39 +77,28 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
 
     /// 等待引爆的巨焰寿命，单位 tick。
     private static final int GIANT_LIFETIME = 120;
-    /// 等待引爆的巨焰飞行速度，单位格/tick。
-    private static final double GIANT_SPEED = 0.6;
+    /// 巨焰追踪飞行速度，单位格/tick。
+    private static final double GIANT_SPEED = 1.2;
+    /// 巨焰每 tick 向目标方向修正的比例，范围 0–1。
+    private static final double GIANT_TRACKING = 0.12;
+    /// 巨焰接触伤害相对普通魔焰的倍率。
+    private static final float GIANT_DAMAGE_MULTIPLIER = 3.0F;
     /// 巨焰撞墙后离开表面的距离，单位格。
     private static final double GIANT_WALL_PADDING = 0.7;
-    /// 巨焰引爆后生成的魔焰雨实体总数。
-    private static final int SPLIT_FLAME_COUNT = 30;
-    /// 魔焰雨中覆盖玩家附近的弹体数量，其余铺开整个范围。
-    private static final int TARGETED_RAIN_COUNT = 10;
-    /// 联动魔焰活动和选取目标的范围半径，单位格。
-    private static final double SPLIT_RANGE = 30.0;
-    /// 魔焰雨落点相对引爆点的最大水平半径，单位格。
-    private static final double RAIN_RADIUS = 27.0;
-    /// 针对玩家的魔焰雨落点分散半径，单位格。
-    private static final double TARGETED_RAIN_RADIUS = 6.0;
-    /// 魔焰雨落至预定高度的最短飞行时间，单位 tick。
-    private static final int RAIN_MIN_FLIGHT_TICKS = 32;
-    /// 魔焰雨飞行时间的随机取值数量，单位 tick，最大附加值为此值减一。
-    private static final int RAIN_FLIGHT_VARIATION = 17;
-    /// 非针对玩家的魔焰雨落点低于引爆点的高度，单位格。
-    private static final double RAIN_FALL_HEIGHT = 6;
-    /// 魔焰雨落点使用的黄金角，单位弧度，使落点均匀铺开。
-    private static final double RAIN_GOLDEN_ANGLE = Math.PI * (3.0 - Math.sqrt(5.0));
-    /// 联动分裂魔焰的寿命，单位 tick。
-    private static final int RAIN_LIFETIME = 80;
-    /// 联动魔焰雨的重力加速度，单位格/tick²。
-    private static final double RAIN_GRAVITY = 0.025;
-
+    /// 巨焰引爆后生成的追踪魔焰数量。
+    private static final int SPLIT_FLAME_COUNT = 15;
+    /// 分裂魔焰的寿命，单位 tick。
+    private static final int RAIN_LIFETIME = 200;
+    /// 分裂魔焰持续追踪的时间，单位 tick；结束后保持最后的飞行方向。
+    private static final int RAIN_TRACKING_TICKS = 160;
+    /// 分裂魔焰飞行速度，单位格/tick。
+    private static final double RAIN_SPEED = 1.1;
+    /// 分裂魔焰每 tick 向目标方向修正的比例，范围 0–1。
+    private static final double RAIN_TRACKING = 0.24;
 
     private static final DustParticleOptions CURSED_FLAME = new DustParticleOptions(new Vector3f(0.35F, 1.0F, 0.05F), 1.2F);
     private static final byte FLAME_BURST_EVENT = 64;
     private final Variant variant;
-    private Vec3 flameDestination = Vec3.ZERO;
-    private Vec3 splitOrigin = Vec3.ZERO;
     private ParticleEmitter flameEmitter;
     private int groundTicks;
 
@@ -150,55 +137,32 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         entityData.set(LINGERING, lingering);
     }
 
-    /// 巨焰先飞往预告位置，抵达后等待同组激光眼引爆，不能被其他组的激光触发。
+    /// 巨焰从预告方向出发并持续追踪目标，只能被同组激光眼引爆。
     public void configureGiantFlame(Spazmatism owner, Vec3 destination, float damage, boolean lingering) {
         Vec3 origin = owner.getMuzzlePosition(1.0F);
         configure(owner, origin, destination.subtract(origin).normalize().scale(GIANT_SPEED), damage, GIANT_LIFETIME);
-        flameDestination = destination;
         entityData.set(GIANT, true);
         entityData.set(LINGERING, lingering);
     }
 
     public boolean isGiantFlame() {return entityData.get(GIANT);}
 
-    /// 同组激光实际命中后抛出三十枚魔焰雨；部分覆盖目标周围，其余铺开引爆点附近区域。
+    /// 同组激光实际命中后生成十五枚分散出射的追踪魔焰。
     public boolean detonateFromLaser(Retinazer laser) {
         if (!isGiantFlame() || isRemoved() || !(level() instanceof ServerLevel server)
                 || !(getOwner() instanceof Spazmatism owner) || !owner.isAlive() || owner.getPartner() != laser)
             return false;
-        List<LivingEntity> targets = new ArrayList<>();
-        LivingEntity primary = owner.getTarget();
-        if (primary != null && primary.isAlive() && primary.distanceToSqr(this) <= SPLIT_RANGE * SPLIT_RANGE)
-            targets.add(primary);
-        for (var player : server.players()) {
-            if (player != primary && player.distanceToSqr(this) <= SPLIT_RANGE * SPLIT_RANGE && owner.canAttack(player))
-                targets.add(player);
-        }
         Vec3 center = position();
         server.broadcastEntityEvent(this, FLAME_BURST_EVENT);
         discard();
         playSound(SoundEvents.GENERIC_EXPLODE, 0.9F, 1.3F);
-        int targetedCount = targets.isEmpty() ? 0 : TARGETED_RAIN_COUNT;
         double startAngle = random.nextDouble() * Math.PI * 2;
         for (int i = 0; i < SPLIT_FLAME_COUNT; i++) {
             TwinEyeProjectile child = ModEntities.SPAZMATISM_FLAME.get().create(server);
             if (child == null) continue;
-            double angle = startAngle + i * RAIN_GOLDEN_ANGLE;
-            boolean targeted = i < targetedCount;
-            LivingEntity target = targeted ? targets.get(i % targets.size()) : null;
-            Vec3 destination = targeted ? target.position() : center.add(0, -RAIN_FALL_HEIGHT, 0);
-            double radius = targeted ? TARGETED_RAIN_RADIUS * Math.sqrt((i + 0.5) / TARGETED_RAIN_COUNT)
-                    : RAIN_RADIUS * Math.sqrt((i - targetedCount + 0.5) / (SPLIT_FLAME_COUNT - targetedCount));
-            destination = destination.add(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-            /// 落点限制在原引爆范围内；固定抛物线让玩家可以观察并躲避，不把三十枚弹体全部追踪到同一点。
-            Vec3 horizontal = new Vec3(destination.x - center.x, 0, destination.z - center.z);
-            if (horizontal.lengthSqr() > RAIN_RADIUS * RAIN_RADIUS)
-                horizontal = horizontal.normalize().scale(RAIN_RADIUS);
-            int flightTicks = RAIN_MIN_FLIGHT_TICKS + random.nextInt(RAIN_FLIGHT_VARIATION);
-            Vec3 velocity = horizontal.scale(1.0 / flightTicks).add(0,
-                    (destination.y - center.y) / flightTicks + RAIN_GRAVITY * (flightTicks + 1) / 2.0, 0);
+            double angle = startAngle + i * Math.PI * 2 / SPLIT_FLAME_COUNT;
+            Vec3 velocity = new Vec3(Math.cos(angle), 0.25, Math.sin(angle)).normalize().scale(RAIN_SPEED);
             child.configure(owner, center, velocity, getDamage(), RAIN_LIFETIME);
-            child.splitOrigin = center;
             child.entityData.set(RAIN, true);
             child.entityData.set(STREAM, true);
             child.entityData.set(LINGERING, entityData.get(LINGERING));
@@ -209,10 +173,9 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
 
     @Override
     public void tick() {
-        /// 活动边界以引爆位置为圆心，不随目标移动；超界、超时或发射者死亡都会清理。
+        /// 联动弹体在发射者死亡或寿命耗尽时清理，追踪范围不会固定在旧引爆位置。
         if (!level().isClientSide && (isGiantFlame() || entityData.get(RAIN))) {
-            if (!(getOwner() instanceof Spazmatism owner) || !owner.isAlive()
-                    || entityData.get(RAIN) && position().distanceToSqr(splitOrigin) > SPLIT_RANGE * SPLIT_RANGE) {
+            if (!(getOwner() instanceof Spazmatism owner) || !owner.isAlive()) {
                 discard();
                 return;
             }
@@ -268,13 +231,35 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
 
     @Override
     protected Vec3 modifyVelocity(Vec3 velocity) {
-        if (isGiantFlame()) {
+        if (isGiantFlame() || entityData.get(RAIN)) {
             if (level().isClientSide) return velocity;
-            Vec3 remaining = flameDestination.subtract(position());
-            return remaining.lengthSqr() <= velocity.lengthSqr() ? remaining : velocity;
-        }
-        if (entityData.get(RAIN)) {
-            return velocity.add(0, -RAIN_GRAVITY, 0);
+            double speed = isGiantFlame() ? GIANT_SPEED : RAIN_SPEED;
+            double tracking = isGiantFlame() ? GIANT_TRACKING : RAIN_TRACKING;
+            if (getOwner() instanceof Spazmatism owner) {
+                LivingEntity target = owner.getTarget();
+                if (target != null && target.isAlive() && (isGiantFlame() || tickCount <= RAIN_TRACKING_TICKS)) {
+                    Vec3 aim = target.getEyePosition().subtract(position());
+                    Vec3 forward = velocity.normalize();
+                    Vec3 desired = aim.normalize();
+                    if (forward.dot(desired) < -0.95) {
+                        Vec3 axis = Math.abs(forward.y) < 0.9 ? new Vec3(0, 1, 0) : new Vec3(1, 0, 0);
+                        forward = forward.add(forward.cross(axis).normalize().scale(tracking)).normalize();
+                    }
+                    Vec3 direction = forward.lerp(desired, tracking);
+                    if (direction.lengthSqr() > 1.0E-8)
+                        velocity = direction.normalize().scale(speed);
+                }
+                if (isGiantFlame()) {
+                    for (Entity victim : LibEntityUtils.areaTargets(level(), this,
+                            getBoundingBox().expandTowards(velocity), candidate -> LibEntityUtils.canMobHit(owner, candidate))) {
+                        if (victim.hurt(damageSources().mobProjectile(this, owner), getDamage() * GIANT_DAMAGE_MULTIPLIER)) {
+                            LivingEntity living = LibEntityUtils.effectTarget(victim);
+                            if (living != null) onSuccessfulHit(owner, living);
+                        }
+                    }
+                }
+            }
+            return velocity;
         }
         /// 抛物线在所有难度下都下落，传奇只决定落地后是否滞留。
         if (entityData.get(ARCING)) return velocity.add(0, -ARC_GRAVITY, 0);
@@ -285,8 +270,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         if (isGiantFlame()) {
-            flameDestination = result.getLocation().add(Vec3.atLowerCornerOf(result.getDirection().getNormal()).scale(GIANT_WALL_PADDING));
-            setPos(flameDestination);
+            setPos(result.getLocation().add(Vec3.atLowerCornerOf(result.getDirection().getNormal()).scale(GIANT_WALL_PADDING)));
             setDeltaMovement(Vec3.ZERO);
         } else if (variant == Variant.CURSED_FLAME && entityData.get(LINGERING) && result.getDirection() == Direction.UP) {
             setPos(result.getLocation().add(0, GROUND_SURFACE_OFFSET, 0));
@@ -299,7 +283,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     @Override
     protected boolean ownsBlockImpactMovement(BlockHitResult result) {return isGiantFlame() || entityData.get(GROUNDED);}
 
-    /// 巨焰是等待激光触发的联动载体，不在碰到玩家时提前消失。
+    /// 巨焰的接触伤害单独检测，不因撞到玩家而在激光引爆前消失。
     @Override
     public boolean canHitEntity(Entity target) {
         return !isGiantFlame() && super.canHitEntity(target);
@@ -316,8 +300,6 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Giant", isGiantFlame());
         tag.putBoolean("Rain", entityData.get(RAIN));
-        writeVector(tag, "Destination", flameDestination);
-        writeVector(tag, "SplitOrigin", splitOrigin);
         tag.putBoolean("Arcing", entityData.get(ARCING));
         tag.putBoolean("Stream", entityData.get(STREAM));
         tag.putBoolean("Grounded", entityData.get(GROUNDED));
@@ -330,24 +312,11 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
         super.readAdditionalSaveData(tag);
         entityData.set(GIANT, tag.getBoolean("Giant"));
         entityData.set(RAIN, tag.getBoolean("Rain"));
-        flameDestination = readVector(tag, "Destination");
-        splitOrigin = readVector(tag, "SplitOrigin");
         entityData.set(ARCING, tag.getBoolean("Arcing"));
         entityData.set(STREAM, tag.getBoolean("Stream"));
         entityData.set(GROUNDED, tag.getBoolean("Grounded"));
         entityData.set(LINGERING, tag.getBoolean("Lingering"));
         groundTicks = Math.max(0, tag.getInt("GroundTicks"));
-    }
-
-    /// 运动目标与范围中心保留小数精度，重载后不会偏移到方块角落。
-    private static void writeVector(CompoundTag tag, String name, Vec3 vector) {
-        tag.putDouble(name + "X", vector.x);
-        tag.putDouble(name + "Y", vector.y);
-        tag.putDouble(name + "Z", vector.z);
-    }
-
-    private static Vec3 readVector(CompoundTag tag, String name) {
-        return new Vec3(tag.getDouble(name + "X"), tag.getDouble(name + "Y"), tag.getDouble(name + "Z"));
     }
 
     public enum Variant {LASER, CURSED_FLAME}

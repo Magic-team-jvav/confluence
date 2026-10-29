@@ -131,8 +131,11 @@ public class EaterOfWorlds extends BaseWormBoss {
     private float clientLerpPitch;
 
     private enum MovementPhase {
+        /// 在目标附近游走，准备冲刺路线。
         WANDER,
+        /// 对准目标并调整冲刺方向。
         ALIGN,
+        /// 沿锁定方向直线冲刺。
         DASH
     }
 
@@ -177,7 +180,10 @@ public class EaterOfWorlds extends BaseWormBoss {
         return BossEntities.EATER_OF_WORLDS_SEGMENT.get();
     }
 
-    public enum BodySection {TAIL}
+    public enum BodySection {
+        /// 尾部体节，使用尾部参数。
+        TAIL
+    }
 
     /// 体节独立结算时读取实际部位，生命仍由原有断节逻辑管理。
     double segmentCombatAttribute(boolean tail, Attribute attribute, double base) {

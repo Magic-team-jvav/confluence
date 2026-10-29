@@ -403,7 +403,14 @@ public class SkeletronPrime extends BaseBoss {
         return false;
     }
 
-    public enum CombatState {HOVERING, SPINNING, ENRAGED}
+    public enum CombatState {
+        /// 悬浮追击，由机械臂执行各自攻击。
+        HOVERING,
+        /// 旋转头部并追击玩家。
+        SPINNING,
+        /// 激怒状态，使用激怒后的战斗参数。
+        ENRAGED
+    }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {

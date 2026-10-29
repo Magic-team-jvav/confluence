@@ -110,6 +110,8 @@ public final class WallOfFleshRenderer extends GeoEntityRenderer<WallOfFlesh> {
         int overlay = getPackedOverlay(wall, 0, partialTick);
         double halfCell = GRID_SPACING * scale * 0.5;
         long layoutSeed = wall.getLayoutSeed();
+        // 前后墙面只提交朝向摄像机的一面，减少一半墙面顶点变换和写入。
+        double cameraDepth = -camera.subtract(origin).dot(forward) / scale;
         for (int x = 0; x < GRID_WIDTH; x++) {
             float left = x * GRID_SPACING - halfWidth;
             float right = left + GRID_SPACING;
@@ -131,8 +133,10 @@ public final class WallOfFleshRenderer extends GeoEntityRenderer<WallOfFlesh> {
                 long variation = Mth.getSeed(x, (int) layoutSeed, y) ^ (layoutSeed >>> 32);
                 /// 普通墙面与脓包纹理权重为 6:1，按布局种子固定每格的选择。
                 int variant = (variation >>> 16) % 7 == 0 ? 1 : 0;
-                backgroundFace(poses, background, left, bottom, right, top, 0, 0, false, variant, light, overlay);
-                backgroundFace(poses, background, left, bottom, right, top, 0, WALL_THICKNESS, true, variant, light, overlay);
+                if (cameraDepth <= 0)
+                    backgroundFace(poses, background, left, bottom, right, top, 0, 0, false, variant, light, overlay);
+                if (cameraDepth >= WALL_THICKNESS)
+                    backgroundFace(poses, background, left, bottom, right, top, 0, WALL_THICKNESS, true, variant, light, overlay);
                 /// 仅封整个墙体的外边缘，不生成网格之间不可见的内部面。
                 if (x == 0)
                     backgroundFace(poses, background, 0, bottom, WALL_THICKNESS, top, 1, left, true, variant, light, overlay);

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import org.confluence.lib.ConfluenceMagicLib;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -73,7 +74,6 @@ public class AccessoryItems {
 
     public static final ValueType.FloatType MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
     public static final ValueType.FloatType REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
-    public static final ValueType.FloatType FISHING$POWER = ValueType.ofFloat("fishing_power", FloatValue.ADDITION, 0.0F);
     public static final ValueType.IntegerType ADDITIONAL$MANA = ValueType.ofInteger("additional_mana", IntegerValue.ADDITION, 0);
     public static final ValueType.IntegerType SPECIAL$PRICE = ValueType.ofInteger("special_price", IntegerValue.GET_MAX, 0);
     public static final ValueType<Tuple<Float, Integer>, PickupRangeAbilityValue> MANA$PICKUP$RANGE = ValueType.create("mana_pickup_range", PickupRangeAbilityValue.COMBINE_RULE, PickupRangeAbilityValue.CODEC, new Tuple<>(1.75F, 0), PickupRangeAbilityValue::new);
@@ -105,9 +105,9 @@ public class AccessoryItems {
 
     public static final PortDeferredItem<BaseCurioItem> HIGH_TEST_FISHING_LINE = registerCurio("high_test_fishing_line", "优质钓鱼线", builder -> builder.noTooltip()), // 优质钓鱼线
             TACKLE_BOX = registerCurio("tackle_box", "钓具箱", builder -> builder.noTooltip()), // 钓具箱
-            ANGLER_TACKLE_BAG = registerCurio("angler_tackle_bag", "渔夫渔具袋", builder -> builder.noTooltip().rarity(ORANGE)), // 渔夫渔具袋
+            ANGLER_TACKLE_BAG = registerCurio("angler_tackle_bag", "渔夫渔具袋", builder -> builder.noTooltip().rarity(ORANGE).attribute(ConfluenceMagicLib.FISHING_POWER, 10, ADD_VALUE)), // 渔夫渔具袋
             LAVAPROOF_FISHING_HOOK = registerCurio("lavaproof_fishing_hook", "防熔岩钓钩", builder -> builder.noTooltip().rarity(LIME)), // 防熔岩钓钩
-            LAVAPROOF_TACKLE_BAG = registerCurio("lavaproof_tackle_bag", "防熔岩渔具袋", builder -> builder.noTooltip().rarity(YELLOW)), // 防熔岩渔具袋
+            LAVAPROOF_TACKLE_BAG = registerCurio("lavaproof_tackle_bag", "防熔岩渔具袋", builder -> builder.noTooltip().rarity(YELLOW).attribute(ConfluenceMagicLib.FISHING_POWER, 10, ADD_VALUE)), // 防熔岩渔具袋
             FISHING_BOBBER = registerItem("fishing_bobber", "钓鱼浮标", () -> new FishingBobber(CurioFishingHook.Variant.COMMON)), // 钓鱼浮标
             GLOWING_FISHING_BOBBER = registerItem("glowing_fishing_bobber", "发光钓鱼浮标", () -> new FishingBobber(CurioFishingHook.Variant.GLOWING)), // 发光钓鱼浮标
             LAVA_MOSS_FISHING_BOBBER = registerItem("lava_moss_fishing_bobber", "熔岩苔藓钓鱼浮标", () -> new FishingBobber(CurioFishingHook.Variant.LAVA)), // 熔岩苔藓钓鱼浮标

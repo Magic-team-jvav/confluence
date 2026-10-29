@@ -464,15 +464,27 @@ public class QueenBee extends BaseBoss {
         lockedDashDirection = new Vec3(tag.getDouble("QueenDashX"), tag.getDouble("QueenDashY"), tag.getDouble("QueenDashZ"));
     }
 
-    public enum Temperament {CALM, ENRAGED}
+    public enum Temperament {
+        /// 未激怒的常态，使用普通战斗参数。
+        CALM,
+        /// 激怒状态，使用激怒后的战斗参数。
+        ENRAGED
+    }
 
     public enum CombatState {
+        /// 初始化战斗并准备首轮攻击。
         INITIALIZING,
+        /// 等待下一次攻击。
         IDLE,
+        /// 停留并召唤蜜蜂。
         SUMMONING_BEES,
+        /// 发射毒刺弹幕。
         SUMMONING_STINGERS,
+        /// 冲刺轮次开始前的短暂停顿。
         PRE_DASH_IDLE,
+        /// 调整位置并准备本次冲刺。
         PRE_DASH,
+        /// 执行冲刺攻击。
         DASHING
     }
 

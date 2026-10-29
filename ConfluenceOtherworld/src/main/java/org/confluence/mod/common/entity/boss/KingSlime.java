@@ -545,9 +545,13 @@ public class KingSlime extends BaseBoss {
     }
 
     public enum CombatPhase {
+        /// 正常跳跃、追击和召唤阶段。
         NORMAL(0),
+        /// 传送前缩小身体。
         SHRINKING(1),
+        /// 传送后恢复体型。
         ENLARGING(2);
+
 
         private final byte id;
 

@@ -1,7 +1,7 @@
 package org.confluence.mod.common.item.fishing;
 
+import org.confluence.lib.ConfluenceMagicLib;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +17,7 @@ public class GoldenFishingRod extends AbstractFishingPole {
 
     public GoldenFishingRod() {
         super(new Properties().unbreakable(), ModRarity.ORANGE);
-        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.5, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(ConfluenceMagicLib.FISHING_POWER.value(), new PortAttributeModifier(ID, 50, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND));
     }
 
     @Override

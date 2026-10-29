@@ -107,7 +107,16 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
     }
 
     /// 与 ARM_TYPE 顺序一致，各机械臂独立登记生命、攻击和防御。
-    public enum ArmRole {LASER, SAW, VICE, CANNON}
+    public enum ArmRole {
+        /// 激光臂，执行远程激光攻击。
+        LASER,
+        /// 锯臂，执行近距离切割攻击。
+        SAW,
+        /// 钳臂，执行夹击和突进。
+        VICE,
+        /// 炮臂，发射爆炸弹。
+        CANNON
+    }
 
     @Override
     protected Enum<?> attributeState() {

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/phantom_base_station"
+        }
+    }
+}

@@ -1535,18 +1535,15 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 风鞭：把手是沉重核心、鞭身是风棒（旋风棒），有序
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(Items.HEAVY_CORE),
-                'b', AmountIngredient.of(2, Items.BREEZE_ROD)
+                '#', Ingredient.of(Items.HEAVY_CORE),
+                'a', Ingredient.of(Items.BREEZE_ROD),
+                'b', AmountIngredient.of(4,Items.WIND_CHARGE)
         ), List.of(
-                " b ",
-                " b ",
-                " a "
+                "  a ",
+                " a a",
+                " b a",
+                "#   "
         )), WhipItems.WIND_WHIP.toStack());
-        // 星惧：星怒 + 脊柱骨鞭，无序
-        shapeless(recipeOutput, WhipItems.STAR_FEAR.toStack(), Ingredient.of(SwordItems.STARFURY), Ingredient.of(WhipItems.SPINAL_TAP));
-        // 战弓：附魔弓 + 风弦，无序
-        shapeless(recipeOutput, BowItems.WAR_BOW.toStack(), Ingredient.of(BowItems.ENCHANTED_BOW), Ingredient.of(BowItems.WIND_STRING));
-        // 极昼不在工作台合成，改由恶魔祭坛合成（见 ModRecipeProvider#altar）
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

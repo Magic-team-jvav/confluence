@@ -1099,6 +1099,9 @@ public final class ModTabs {
                         boss_event_summons.accept(ConsumableItems.BLOOD_TEAR.get());
                         boss_event_summons.accept(ConsumableItems.GOBLIN_BATTLE_STANDARD.get());
                         boss_event_summons.accept(ConsumableItems.PIRATE_MAP.get());
+                        boss_event_summons.accept(FunctionalBlocks.EARTHSHAKER_DEVICE.get());
+                        boss_event_summons.accept(FunctionalBlocks.DUAL_FLASH_LIGHTHOUSE.get());
+                        boss_event_summons.accept(FunctionalBlocks.PHANTOM_BASE_STATION.get());
 
                         CreativeModeTab.Output environment_items = GroupItem.belongsTo("environment_items", output);
                         environment_items.accept(ConsumableItems.HOLY_WATER.get());

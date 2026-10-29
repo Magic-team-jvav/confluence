@@ -40,9 +40,13 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
     /// 体节每 tick 转向超过此角度时喷火，单位度，不包含绕轴滚动。
     private static final double EXHAUST_TURN_DEGREES = 1.0;
     /// 加速或转向结束后保留喷火的时间，单位 tick，避免临界值处闪烁。
-    private static final int EXHAUST_HOLD_TICKS = 3;
+    private static final int EXHAUST_HOLD_TICKS = 8;
     /// 地面模式逐节出土、展开侧翼时的排气持续时间，单位 tick。
-    private static final int VENT_OPEN_TICKS = 6;
+    private static final int VENT_OPEN_TICKS = 8;
+    /// 交替喷射的体节组数，降低同时工作的粒子发射器数量。
+    private static final int EXHAUST_GROUP_COUNT = 4;
+    /// 每组喷射持续的时间，单位 tick。
+    private static final int EXHAUST_GROUP_TICKS = 2;
     /// 巡航喷流相对加速、转向喷流的粒子数量比例；四种效果始终一起工作。
     private static final float CRUISE_EXHAUST_STRENGTH = 0.25F;
     private Vec3 previousMotion = Vec3.ZERO;
@@ -199,12 +203,14 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
             boolean boost = open && getParent().isAlive() && getParent().tickCount <= exhaustUntilTick;
             boolean emitting = open && getParent().isAlive()
                     && (getParent().getMode() == TheDestroyer.Mode.SKY || boost);
+            int activeGroup = (getParent().tickCount / EXHAUST_GROUP_TICKS) % EXHAUST_GROUP_COUNT;
+            boolean firing = emitting && (index / 2) % EXHAUST_GROUP_COUNT == activeGroup;
             /// 1.5.1 不会更新 inactive 发射器的寿命表达式；在动画回调中显式开关已绑定的发射器。
             for (var ids : IPSAnimatableInstanceCache.of(cache).particlestorm$getCachedId().values()) {
                 for (int id : ids) {
                     ParticleEmitter emitter = MolangParticleEngine.getEmitter(id);
                     if (emitter != null && !emitter.isRemoved()) {
-                        emitter.active = emitting && !getParent().isSolid(emitter.getPosition());
+                        emitter.active = firing && !getParent().isSolid(emitter.getPosition());
                         /// 1.5.1 的 steady 速率只在初始化时计算；重新应用现有组件以更新当前体节的喷流强度。
                         for (var component : emitter.getPreset().components)
                             if (component instanceof EmitterRate.Steady rate) rate.apply(emitter);

@@ -22,7 +22,7 @@
                 ],
                 "direction": [
                     "math.random(-0.05,0.05)",
-                    0,
+                    -1,
                     "math.random(-0.05,0.05)"
                 ]
             },

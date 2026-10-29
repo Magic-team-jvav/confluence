@@ -134,6 +134,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(HEAVY_WORK_BENCH.get());
         dropSelf(HELLFORGE.get());
         dropSelf(WEATHER_VANE.get());
+        dropSelf(EARTHSHAKER_DEVICE.get());
+        dropSelf(DUAL_FLASH_LIGHTHOUSE.get());
+        dropSelf(PHANTOM_BASE_STATION.get());
         dropSelf(ALCHEMY_TABLE.get());
         dropSelf(LEAD_ANVIL.get());
         dropSelf(CHIPPED_LEAD_ANVIL.get());

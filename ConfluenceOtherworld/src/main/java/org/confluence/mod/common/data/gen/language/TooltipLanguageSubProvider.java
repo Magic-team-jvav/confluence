@@ -63,6 +63,10 @@ public final class TooltipLanguageSubProvider {
         language.add("lore.confluence.research_on_cloud_blocks_2", "The pages feel very soft, just like silk. Judging from the title, it seems there is another volume?", "书页摸起来非常柔软，就好像丝绸一样。看标题的样子好像还有另一本？");
         language.add("lore.confluence.research_on_wheat_mutation", "There are some powders mixed in the pages, but it doesn't seem to be the powder from the aging of the pages...", "书页中混杂着一些粉末，但是好像并不是书页老化出来的粉末......");
         language.add("lore.confluence.village_exploration", "It's hard to tell the exact age, but it seems to be very well - packaged...", "看不出详细的年代，但是感觉包装很精良的样子......");
+        language.add("message.confluence.boss_conjuring.activated", "The device has started. It will finish summoning in %s seconds", "装置已启动，%s 秒后将完成召唤");
+        language.add("message.confluence.boss_conjuring.counting", "%s seconds until the summon", "距离召唤还有 %s 秒");
+        language.add("message.confluence.boss_conjuring.night_only", "This device can only be started at night", "该装置只能在夜间启动");
+        language.add("message.confluence.boss_conjuring.summoned", "Something has answered the call…", "有什么东西回应了呼唤……");
         language.add("message.confluence.boss_target_selector.cleared", "Disabled Creative mode aggro for %s", "已关闭 %s 对你的创造模式仇恨");
         language.add("message.confluence.boss_target_selector.locked", "Enabled Creative mode aggro for %s", "已开启 %s 对你的创造模式仇恨");
         language.add("message.confluence.environmental_machine.disabled", "Machine disabled", "机器已关闭");
@@ -141,6 +145,15 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.cooldown", "Cooldown: %s", "冷却：%s");
         language.add("tooltip.confluence.critical_chance", "Critical Strike Chance: %s%%", "暴击率：%s%%");
         language.add("tooltip.confluence.disabled", "Disabled", "已禁用");
+        language.add("tooltip.confluence.dual_flash_lighthouse.line1", "Use to summon the Twins; they only appear at night", "右键使用以召唤双子魔眼，它只在夜间出没");
+        language.add("tooltip.confluence.dual_flash_lighthouse.line2", "It can be placed on the ground during the day. When night falls, the infrared signal it emits will draw in two mechanical eyeballs that peer at all things", "在白天时可放置在地上，夜晚来临时其发出的特定波长的红外光信号会引来两只窥视万物的机械眼球");
+        language.add("tooltip.confluence.dual_flash_lighthouse.quote", "\"Though this lighthouse is neither bright nor warm, the poor moths are still drawn to it\"", "“尽管这座灯塔并不明亮，并不温暖，但可怜的飞蛾们还是会被它所吸引”");
+        language.add("tooltip.confluence.earthshaker_device.line1", "Use to summon the Destroyer; it only appears at night", "右键使用以召唤毁灭者，它只在夜间出没");
+        language.add("tooltip.confluence.earthshaker_device.line2", "It can be placed on the ground during the day. When night falls, the oscillation waves it produces will lure in a mechanical worm capable of destroying the world", "在白天时可放置在地上，夜晚来临时其产生的特定频率的震荡波会引来一条足以摧毁世界的机械蠕虫");
+        language.add("tooltip.confluence.earthshaker_device.quote", "\"Once it is placed, be sure to get away from it as soon as possible\"", "“放下后务必尽快远离它”");
+        language.add("tooltip.confluence.phantom_base_station.line1", "Use to summon Skeletron Prime; it only appears at night", "右键使用以召唤机械骷髅王，它只在夜间出没");
+        language.add("tooltip.confluence.phantom_base_station.line2", "It can be placed on the ground during the day. When night falls, the electromagnetic signal it broadcasts will draw in a bloodthirsty metal skull", "在白天时可放置在地上，夜晚来临时其传出的电磁波信号会引来一颗嗜血成性的金属骷髅头");
+        language.add("tooltip.confluence.phantom_base_station.quote", "\"Advisory: make absolutely sure your radio cannot receive this frequency, otherwise the consequences are yours to bear\"", "“忠告：请务必确保您的收音机不会接收到这个频段的信号，否则后果自负”");
         language.add("tooltip.confluence.effect_duration", "%s minutes duration", "%s分钟持续时间");
         language.add("tooltip.confluence.hammer_power", "Hammer Power: %s%%", "锤力：%s%%");
         language.add("tooltip.confluence.house_detect.mode.add.success", "Add House success!", "添加房屋成功！");

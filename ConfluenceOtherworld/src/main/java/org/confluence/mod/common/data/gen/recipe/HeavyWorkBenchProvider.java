@@ -1531,19 +1531,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
 
         shapeless(writer, ConsumableItems.ABEEMINATION.toStack(), AmountIngredient.of(5, NatureBlocks.JUNGLE_HIVE_BLOCK), AmountIngredient.of(5, Items.HONEY_BLOCK), Ingredient.of(Items.HONEY_BOTTLE), Ingredient.of(MaterialItems.STINGER));
-        // 风鞭：铁块把手 + 幻翼膜鞭身，有序（1.20.1 以幻翼膜代替风棒）
-        shaped(writer, PortShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(Items.IRON_BLOCK),
-                'b', AmountIngredient.of(2, Items.PHANTOM_MEMBRANE)
-        ), List.of(
-                " b ",
-                " b ",
-                " a "
-        )), WhipItems.WIND_WHIP.toStack());        // 星惧：星怒 + 脊柱骨鞭，无序
-        shapeless(writer, WhipItems.STAR_FEAR.toStack(), Ingredient.of(SwordItems.STARFURY), Ingredient.of(WhipItems.SPINAL_TAP));
-        // 战弓：附魔弓 + 风弦，无序
-        shapeless(writer, BowItems.WAR_BOW.toStack(), Ingredient.of(BowItems.ENCHANTED_BOW), Ingredient.of(BowItems.WIND_STRING));
-        // 极昼不在工作台合成，改由恶魔祭坛合成（见 ModRecipeProvider#altar）
     }
 
     private void buildBaseStatues(Consumer<FinishedRecipe> writer) {

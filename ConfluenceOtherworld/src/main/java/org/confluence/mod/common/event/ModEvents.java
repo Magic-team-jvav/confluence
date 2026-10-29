@@ -98,6 +98,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            LibAttributes.getAttackDamage().value().setSyncable(true);
             TargetingIntegration.init();
             ModGunProperties.init();
             GunSounds.init();

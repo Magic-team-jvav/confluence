@@ -160,7 +160,18 @@ public class TheDestroyer extends BaseBoss {
 
     /// TODO 新资源仅提供部分开合动画，待补齐头甲与侧翼的 opening/open/closing/closed 动画。
     /// TODO 补齐白漆贴图；METAL 已独立同步且持久化，后续按此状态选择双形态材质。
-    private enum SpecialAttack {NONE, DASH_WINDUP, DASH, COIL_APPROACH, COIL}
+    private enum SpecialAttack {
+        /// 未执行特殊攻击，按当前移动模式行动。
+        NONE,
+        /// 冲刺前蓄力并锁定本次方向。
+        DASH_WINDUP,
+        /// 沿锁定方向直线冲刺。
+        DASH,
+        /// 接近玩家，为环绕收紧建立位置。
+        COIL_APPROACH,
+        /// 倒计时内追踪玩家位置并环绕收紧。
+        COIL
+    }
 
     private SpecialAttack specialAttack = SpecialAttack.NONE;
     /// 有效受击时通知客户端生成机械火花的实体事件编号。
@@ -176,10 +187,22 @@ public class TheDestroyer extends BaseBoss {
     private int lastLaserSoundTick = -LASER_SOUND_INTERVAL;
     private double coilAngle;
 
-    public enum Mode {UNDERGROUND, GROUND, SKY}
+    public enum Mode {
+        /// 地下游走和绕轴滚动，以冲撞为主。
+        UNDERGROUND,
+        /// 在地面下接近玩家，出土后按抛物线运动。
+        GROUND,
+        /// 空中追击并使用体节激光攻击。
+        SKY
+    }
 
     /// 部位基础值统一在 BossEntities 的状态参数中声明，共用头部的生命。
-    public enum BodySection {BODY, TAIL}
+    public enum BodySection {
+        /// 身体体节，使用身体部位参数。
+        BODY,
+        /// 尾部体节，使用尾部参数。
+        TAIL
+    }
 
     public TheDestroyer(EntityType<? extends Monster> type, Level level) {
         super(type, level);

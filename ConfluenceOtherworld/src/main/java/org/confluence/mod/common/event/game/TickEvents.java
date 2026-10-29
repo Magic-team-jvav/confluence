@@ -26,7 +26,6 @@ import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
-import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.item.whip.WhipSession;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.common.wind.WindState;
@@ -124,7 +123,6 @@ public final class TickEvents {
             PlayerVoidVaultContainer.of(player).sync(player, false);
 
         if (gameTime % 60 == 3) {
-            AbstractFishingPole.resetCurrentBait(entity);
             PlayerSpecialData.resetSomeData(entity);
         }
     }

@@ -856,9 +856,13 @@ public class BrainOfCthulhu extends BaseBoss {
     }
 
     enum PhaseOneState {
+        /// 生成飞眼怪，准备一阶段战斗。
         SUMMONING(0),
+        /// 接近玩家，等待下一次传送。
         APPROACHING(1),
+        /// 传送前逐渐隐去。
         FADING_OUT(2),
+        /// 传送到新位置后逐渐显现。
         FADING_IN(3);
 
         private final int id;
@@ -878,10 +882,15 @@ public class BrainOfCthulhu extends BaseBoss {
     }
 
     enum PhaseTwoState {
+        /// 切换至下一形态的过渡阶段。
         TRANSFORMING(0),
+        /// 二阶段追踪玩家，准备冲刺或传送。
         STALKING(1),
+        /// 执行冲刺攻击。
         DASHING(2),
+        /// 传送前逐渐隐去。
         FADING_OUT(3),
+        /// 传送到新位置后逐渐显现。
         FADING_IN(4);
 
         private final int id;

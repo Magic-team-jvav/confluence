@@ -74,10 +74,10 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -217,8 +217,8 @@ public final class ModClientSetups {
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null && player.getMainHandItem() == itemStack) {
-            ItemStack stack = IPlayer.of(player).confluence$getCurrentBait();
+        if (player != null && (player.getMainHandItem() == itemStack || player.getOffhandItem() == itemStack)) {
+            ItemStack stack = IBait.getFirstBait(player.getInventory());
             if (!stack.isEmpty()) {
                 PoseStack pose = guiGraphics.pose();
                 pose.pushPose();

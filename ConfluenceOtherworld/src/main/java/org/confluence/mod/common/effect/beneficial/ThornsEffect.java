@@ -13,8 +13,8 @@ public class ThornsEffect extends MobEffect {   //荆棘 给予伤害来源反�
         super(MobEffectCategory.BENEFICIAL, 0x00FF00);
     }
 
-    @Override
-    public void onMobHurt(LivingEntity self, int amplifier, DamageSource damageSource, float amount) {
+    /// 从伤害事件调用，避免在原版效果遍历中反伤，触发套装奖励后修改被遍历的效果集合。
+    public static void onMobHurt(LivingEntity self, DamageSource damageSource, float amount) {
         Entity attacker = damageSource.getEntity();
         if (attacker != null && self != attacker && self.hasEffect(ModEffects.THORNS) && !damageSource.is(DamageTypes.THORNS)) {
             attacker.hurt(attacker.damageSources().thorns(self), amount);

@@ -90,8 +90,8 @@ public class Retinazer extends AbstractTwinEye {
     private static final int PHASE_TWO_SHOT_INTERVAL = 4;
     /// 传奇难度二阶段小激光连发间隔，单位 tick。
     private static final int LEGENDARY_PHASE_TWO_SHOT_INTERVAL = 2;
-    /// 二阶段每组小激光的连发数量。
-    private static final int VOLLEY_SIZE = 5;
+    /// 二阶段每组小激光的连发数量，连冲结束后同样使用此数量。
+    private static final int VOLLEY_SIZE = 10;
     /// 进入持续追踪光束前的小激光连发组数。
     private static final int VOLLEYS_PER_CYCLE = 3;
     /// 每组小激光连发后的恢复时间，单位 tick。
@@ -184,8 +184,32 @@ public class Retinazer extends AbstractTwinEye {
     private static final byte MUZZLE_FLASH_EVENT = 67;
     private static final DustParticleOptions CHARGE_PARTICLE = new DustParticleOptions(new Vector3f(0.65F, 0.2F, 1.0F), 1.3F);
 
+    /// 一阶段两轮冲刺之间的间隔，单位 tick。
+    private static final int PHASE_ONE_DASH_INTERVAL = 160;
+    /// 二阶段两轮连冲之间的间隔，单位 tick。
+    private static final int PHASE_TWO_DASH_INTERVAL = 120;
+    /// 冲刺前锁定目标并蓄力的时间，单位 tick。
+    private static final int DASH_WINDUP_TICKS = 12;
+    /// 每次直线冲刺的持续时间，单位 tick。
+    private static final int DASH_TICKS = 12;
+    /// 两次连续冲刺之间的恢复时间，单位 tick。
+    private static final int DASH_RECOVER_TICKS = 6;
+    /// 一阶段冲刺速度，单位格/tick。
+    private static final double PHASE_ONE_DASH_SPEED = 1.8;
+    /// 二阶段冲刺速度，单位格/tick。
+    private static final double PHASE_TWO_DASH_SPEED = 2.4;
+    /// 二阶段每轮连续冲刺的最少次数。
+    private static final int PHASE_TWO_DASH_MIN = 3;
+    /// 二阶段每轮连续冲刺的最多次数。
+    private static final int PHASE_TWO_DASH_MAX = 4;
+
     private State state = State.RELOCATE;
     private int stateTicks;
+    private int dashCooldown = PHASE_ONE_DASH_INTERVAL;
+    private int dashes;
+    /// 连冲后的首组十连发优先完成，随后恢复近距离攻击与组合技判断。
+    private boolean postDashVolley;
+    private Vec3 dashDirection = new Vec3(0, 0, 1);
     private int shotTimer;
     private int shots;
     private int volleys;
@@ -217,7 +241,7 @@ public class Retinazer extends AbstractTwinEye {
     protected boolean isRetinazer() {return true;}
 
     @Override
-    protected boolean isDashCombatState() {return false;}
+    protected boolean isDashCombatState() {return state == State.DASH;}
 
     @Override
     protected int transformationDuration() {return TRANSFORM_TICKS;}
@@ -236,6 +260,7 @@ public class Retinazer extends AbstractTwinEye {
 
     @Override
     protected Vec3 getCombatLookDirection(LivingEntity target) {
+        if (isDashCycle()) return dashDirection;
         if (state == State.COMBO_AIM && getBeamLength() <= 0 && getPartner() instanceof Spazmatism flame)
             return flame.getMuzzlePosition(1.0F).subtract(getEyePosition());
         return getBeamLength() > 0 ? getBeamDirection()
@@ -253,8 +278,15 @@ public class Retinazer extends AbstractTwinEye {
         if (targetDistance < CLOSE_RANGE_SQUARED) closeTarget = true;
         else if (targetDistance > CLOSE_EXIT_RANGE_SQUARED) closeTarget = false;
         stateTicks++;
+        if (dashCooldown > 0) dashCooldown--;
+        if (dashCooldown == 0 && !isBeamAttack() && !isDashCycle()) {
+            dashes = isTransformed() ? PHASE_TWO_DASH_MIN + random.nextInt(PHASE_TWO_DASH_MAX - PHASE_TWO_DASH_MIN + 1) : 1;
+            dashDirection = aimAt(target);
+            followupTicks = 0;
+            enter(State.DASH_WINDUP);
+        }
         // 冲刺链结束后的短窗口接光束；保留蓄力、冷却与遮挡检查，不在冲刺中叠加横扫。
-        if (followupTicks > 0 && !isBeamAttack() && closeAttackCooldown == 0
+        if (followupTicks > 0 && !postDashVolley && !isDashCycle() && !isBeamAttack() && closeAttackCooldown == 0
                 && targetDistance < FOLLOWUP_RANGE_SQUARED && hasFiringLine(getBeamOrigin(), target)) {
             followupTicks = 0;
             beginCloseAttack(target);
@@ -285,7 +317,7 @@ public class Retinazer extends AbstractTwinEye {
                 steerTo(hoverPosition, HOVER_SPEED);
                 if (shotTimer == SHOT_WARNING_TICKS) muzzleFlash(true);
                 blockedTicks = hasFiringLine(getBeamOrigin(), target) ? 0 : blockedTicks + 1;
-                if (isClose(target)) {
+                if (!postDashVolley && isClose(target)) {
                     beginCloseAttack(target);
                 } else if (blockedTicks >= BLOCKED_RELOCATE_TICKS) {
                     relocate();
@@ -300,6 +332,7 @@ public class Retinazer extends AbstractTwinEye {
                             ? legendaryCombat() ? LEGENDARY_PHASE_TWO_SHOT_INTERVAL : PHASE_TWO_SHOT_INTERVAL
                             : legendaryCombat() ? LEGENDARY_PHASE_ONE_SHOT_INTERVAL : PHASE_ONE_SHOT_INTERVAL;
                     if (isTransformed() && shots >= VOLLEY_SIZE) {
+                        postDashVolley = false;
                         volleys++;
                         enter(State.RECOVER);
                     } else if (!isTransformed() && !partnerDashCycle && stateTicks >= HOVER_TICKS) {
@@ -320,6 +353,39 @@ public class Retinazer extends AbstractTwinEye {
                         shots = 0;
                         shotTimer = 1;
                         enter(State.SHOOT);
+                    }
+                }
+            }
+            case DASH_WINDUP -> {
+                brake();
+                if (stateTicks >= DASH_WINDUP_TICKS) {
+                    enter(State.DASH);
+                    playSound(ModSoundEvents.ROAR.get(), 0.8F, 1.2F);
+                }
+            }
+            case DASH -> {
+                setDeltaMovement(dashDirection.scale(isTransformed() ? PHASE_TWO_DASH_SPEED : PHASE_ONE_DASH_SPEED));
+                if (stateTicks >= DASH_TICKS) {
+                    dashes--;
+                    enter(State.DASH_RECOVER);
+                }
+            }
+            case DASH_RECOVER -> {
+                brake();
+                if (stateTicks >= DASH_RECOVER_TICKS) {
+                    if (dashes > 0) {
+                        dashDirection = aimAt(target);
+                        enter(State.DASH_WINDUP);
+                    } else {
+                        dashCooldown = isTransformed() ? PHASE_TWO_DASH_INTERVAL : PHASE_ONE_DASH_INTERVAL;
+                        if (isTransformed()) {
+                            postDashVolley = true;
+                            hoverPosition = position();
+                            volleys = 0;
+                            shots = 0;
+                            shotTimer = AIM_SETTLE_TICKS;
+                            enter(State.SHOOT);
+                        } else relocate();
                     }
                 }
             }
@@ -431,7 +497,7 @@ public class Retinazer extends AbstractTwinEye {
     // 联动可以跨形态配合，但只能由同组二阶段魔焰眼发起，且不打断正在释放的大招。
     boolean beginFlameCombo(Spazmatism flame) {
         if (!flame.isTransformed() || !flame.isAlive() || getPartner() != flame || !isAlive()
-                || getTarget() == null || isBeamAttack() || distanceToSqr(flame) > COMBO_PARTNER_RANGE_SQUARED)
+                || getTarget() == null || isBeamAttack() || isDashCycle() || postDashVolley || distanceToSqr(flame) > COMBO_PARTNER_RANGE_SQUARED)
             return false;
         followupTicks = 0;
         enter(State.COMBO_AIM);
@@ -439,6 +505,11 @@ public class Retinazer extends AbstractTwinEye {
     }
 
     boolean isFlameComboActive() {return state == State.COMBO_AIM || state == State.COMBO_FIRE;}
+
+    /// 冲刺蓄力、位移和恢复共同组成一轮，期间不被协同攻击打断。
+    private boolean isDashCycle() {
+        return state == State.DASH_WINDUP || state == State.DASH || state == State.DASH_RECOVER;
+    }
 
     boolean isBeamAttack() {
         return isFlameComboActive() || state == State.TRACK_CHARGE || state == State.TRACK || state == State.SWEEP_CHARGE
@@ -536,6 +607,7 @@ public class Retinazer extends AbstractTwinEye {
     }
 
     private void relocate() {
+        postDashVolley = false;
         hoverPosition = null;
         blockedTicks = 0;
         enter(State.RELOCATE);
@@ -630,6 +702,8 @@ public class Retinazer extends AbstractTwinEye {
         shots = 0;
         volleys = 0;
         sweeps = 0;
+        dashes = 0;
+        dashCooldown = isTransformed() ? PHASE_TWO_DASH_INTERVAL : PHASE_ONE_DASH_INTERVAL;
         partnerDashCycle = false;
         followupTicks = 0;
         clearBeam();
@@ -643,6 +717,10 @@ public class Retinazer extends AbstractTwinEye {
         tag.putInt("AttackTicks", stateTicks);
         tag.putInt("ShotTimer", shotTimer);
         tag.putInt("Shots", shots);
+        tag.putInt("Dashes", dashes);
+        tag.putBoolean("PostDashVolley", postDashVolley);
+        tag.putInt("DashCooldown", dashCooldown);
+        saveVector(tag, "DashDirection", dashDirection);
         tag.putInt("Volleys", volleys);
         tag.putInt("Sweeps", sweeps);
         tag.putFloat("SweepAngle", sweepAngle);
@@ -662,6 +740,11 @@ public class Retinazer extends AbstractTwinEye {
         stateTicks = Mth.clamp(tag.getInt("AttackTicks"), 0, 120);
         shotTimer = Mth.clamp(tag.getInt("ShotTimer"), 0, 30);
         shots = Mth.clamp(tag.getInt("Shots"), 0, VOLLEY_SIZE);
+        dashes = Mth.clamp(tag.getInt("Dashes"), 0, PHASE_TWO_DASH_MAX);
+        postDashVolley = state == State.SHOOT && tag.getBoolean("PostDashVolley");
+        dashCooldown = tag.contains("DashCooldown") ? Mth.clamp(tag.getInt("DashCooldown"), 0, PHASE_ONE_DASH_INTERVAL) : PHASE_ONE_DASH_INTERVAL;
+        dashDirection = loadVector(tag, "DashDirection").normalize();
+        if (dashDirection.lengthSqr() < 1.0E-8) dashDirection = getLookAngle();
         volleys = Mth.clamp(tag.getInt("Volleys"), 0, VOLLEYS_PER_CYCLE);
         sweeps = Mth.clamp(tag.getInt("Sweeps"), 0, PHASE_TWO_SWEEPS);
         blastLength = Mth.clamp(tag.getFloat("BlastLength"), 0, (float) BEAM_RANGE);
@@ -679,5 +762,34 @@ public class Retinazer extends AbstractTwinEye {
     @Override
     protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}
 
-    private enum State {RELOCATE, SHOOT, RECOVER, TRACK_CHARGE, TRACK, SWEEP_CHARGE, SWEEP, BLAST_CHARGE, BLAST, COMBO_AIM, COMBO_FIRE}
+    private enum State {
+        /// 冲刺前蓄力并锁定本次方向。
+        DASH_WINDUP,
+        /// 沿锁定方向直线冲刺。
+        DASH,
+        /// 冲刺后的减速恢复，结束后继续连冲或进入射击。
+        DASH_RECOVER,
+        /// 选择并移动到新的悬停射击位置。
+        RELOCATE,
+        /// 朝目标发射普通激光；二阶段按十连发计数。
+        SHOOT,
+        /// 激光连发后的后摇，结束后继续射击或蓄力追踪光束。
+        RECOVER,
+        /// 持续追踪光束的蓄力预警。
+        TRACK_CHARGE,
+        /// 持续发射并缓慢转向追踪目标的长光束。
+        TRACK,
+        /// 扇形横扫前的蓄力预警。
+        SWEEP_CHARGE,
+        /// 按锁定扇形执行长光束横扫。
+        SWEEP,
+        /// 锁定方向并蓄力爆破激光。
+        BLAST_CHARGE,
+        /// 释放爆破激光并保留短暂光束画面。
+        BLAST,
+        /// 等待搭档发射巨焰，并将光束对准巨焰。
+        COMBO_AIM,
+        /// 发射光束，实际命中同组巨焰后将其引爆。
+        COMBO_FIRE
+    }
 }

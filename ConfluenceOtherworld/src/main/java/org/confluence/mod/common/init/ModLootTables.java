@@ -57,6 +57,12 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
     public static final ResourceKey<LootTable> FISHING_HONEY = register("gameplay/fishing/honey");
     public static final ResourceKey<LootTable> FISHING = register("gameplay/fishing");
+    public static final ResourceKey<LootTable> FISH_PLENTIFUL = register("gameplay/fishing/plentiful");
+    public static final ResourceKey<LootTable> FISH_COMMON = register("gameplay/fishing/common");
+    public static final ResourceKey<LootTable> FISH_UNCOMMON = register("gameplay/fishing/uncommon");
+    public static final ResourceKey<LootTable> FISH_RARE = register("gameplay/fishing/rare");
+    public static final ResourceKey<LootTable> FISH_VERY_RARE = register("gameplay/fishing/very_rare");
+    public static final ResourceKey<LootTable> FISH_LEGENDARY = register("gameplay/fishing/legendary");
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing/fish");
     public static final ResourceKey<LootTable> JUNK = register("gameplay/fishing/junk");
     public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");

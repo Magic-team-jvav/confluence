@@ -346,7 +346,16 @@ public class LunaticCultist extends BaseBoss {
 
     @Override public boolean isPushable() { return false; }
 
-    public enum CombatState {CASTING, RELOCATING, RITUAL, WOUNDED}
+    public enum CombatState {
+        /// 停留并施放当前攻击法术。
+        CASTING,
+        /// 移动至下一施法位置。
+        RELOCATING,
+        /// 执行分身仪式。
+        RITUAL,
+        /// 生命值低于一半时启用的强化状态。
+        WOUNDED
+    }
 
     @Override
     protected SoundEvent getAmbientSound() {

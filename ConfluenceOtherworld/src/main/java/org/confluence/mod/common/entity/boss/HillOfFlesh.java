@@ -47,7 +47,7 @@ import software.bernie.geckolib.animation.RawAnimation;
 
 import java.util.*;
 
-/// 肉丘——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
+/// 肉山——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
 /// Phase2 (HP<50%) 时外圈扩大、攻击加速。
 public class HillOfFlesh extends BaseBoss {
     /// 固定眼嘴只承担受击与攻击逻辑，模型由本体绘制，不独立存档、追踪或同步。
@@ -126,7 +126,14 @@ public class HillOfFlesh extends BaseBoss {
     private static final float PHASE_TWO_MELEE_GAP = 1.75F;
     static final float OUTER_RADIUS = 75.0F;
 
-    public enum DamageZone {ATTACHED, INNER, OUTER}
+    public enum DamageZone {
+        /// 贴附肉山时的接触伤害区域。
+        ATTACHED,
+        /// 肉山内部活动区域的伤害档位。
+        INNER,
+        /// 肉山外部区域的伤害档位。
+        OUTER
+    }
 
     /// 场地高度单位为方块；出场与开始破坏场地的时间单位为 tick。
     public static final int ARENA_HEIGHT = 100;

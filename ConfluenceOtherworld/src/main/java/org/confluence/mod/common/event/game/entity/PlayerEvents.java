@@ -23,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.*;
@@ -56,9 +57,11 @@ import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
+import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.entity.mount.MountManager;
@@ -71,7 +74,6 @@ import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
@@ -86,10 +88,7 @@ import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
-import org.confluence.mod.mixed.IAbstractMinecart;
-import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
@@ -283,36 +282,57 @@ public final class PlayerEvents {
         LucyTheAxe.onPickup(player, itemStack);
     }
 
+
     @SubscribeEvent
     public static void itemFished(ItemFishedEvent event) {
-        Player player = event.getEntity();
-
-        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
-            player.level().playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        FishingHook hook = event.getHookEntity();
+        FishingSession session = IFishingHook.of(hook).confluence$getFishingSession();
+        if (session != null && !session.isValid(player)) {
             event.setCanceled(true);
             return;
         }
-        if (!(player instanceof ServerPlayer serverPlayer) || !BloodMoonGameEvent.INSTANCE.started())
+        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextInt(7) == 0) {
+            player.level().playSound(null, hook.blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
+            event.setCanceled(true);
             return;
-        var hook = event.getHookEntity();
-        if (!hook.getInBlockState().getFluidState().is(FluidTags.WATER)) return;
-        if (player.getRandom().nextInt(10) == 0) {
-            TownSlimeNPC slime = TownSlimeNPC.unlock(serverPlayer.serverLevel(), NpcEntities.SURLY_SLIME.get(), hook.position());
+        }
+        // 任务鱼已在收竿流程中优先选出，血月生物不得再清空它。
+        boolean questCatch = AnglerData.INSTANCE.hasValidQuest() && event.getDrops().stream()
+                .anyMatch(stack -> stack.is(AnglerData.INSTANCE.getQuestFish()));
+        boolean caughtMob = !questCatch && tryCatchBloodMoonMob(player, hook, session);
+        if (caughtMob) event.getDrops().clear();
+        if (session != null && (caughtMob || !event.getDrops().isEmpty()))
+            session.consumeBait(player);
+    }
+
+    /// 血月夜晚的水中捕获可替换为生物；仅成功生成时返回 true，失败则保留原鱼获。
+    private static boolean tryCatchBloodMoonMob(ServerPlayer player, FishingHook hook, FishingSession session) {
+        if (!BloodMoonGameEvent.INSTANCE.started() || player.serverLevel().isDay() || !hook.getInBlockState().getFluidState().is(FluidTags.WATER))
+            return false;
+        boolean chumCaster = session != null && session.rod().is(FishingPoleItems.CHUM_CASTER.get());
+        if (player.getRandom().nextInt(chumCaster ? 3 : 6) != 0) return false;
+        // 尚未解锁的暴躁史莱姆占生物捕获的 1/5；已解锁时继续选择敌怪。
+        if (player.getRandom().nextInt(5) == 0) {
+            TownSlimeNPC slime = TownSlimeNPC.unlock(player.serverLevel(), NpcEntities.SURLY_SLIME.get(), hook.position());
             if (slime != null) {
                 slime.setDeltaMovement(player.position().subtract(slime.position()).normalize().scale(0.4));
-                event.getDrops().clear();
-                return;
+                return true;
             }
         }
-        int chance = hook.getType() == ModEntities.BLOODY_FISHING_HOOK.get() ? 6 : 12;
-        if (player.getRandom().nextInt(chance) != 0) return;
-        var type = player.getRandom().nextBoolean() ? MonsterEntities.WANDERING_EYE_FISH.get() : MonsterEntities.ZOMBIE_MERMAN.get();
-        if (!DevelopmentSpawnPolicy.allowsAutomaticSpawn(type)) return;
-        var enemy = type.spawn(serverPlayer.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
-        if (enemy == null) return;
-        enemy.setTarget(serverPlayer);
-        enemy.setDeltaMovement(serverPlayer.position().subtract(enemy.position()).normalize().scale(0.35));
-        event.getDrops().clear();
+        var eyeFish = MonsterEntities.WANDERING_EYE_FISH.get();
+        var merman = MonsterEntities.ZOMBIE_MERMAN.get();
+        boolean allowEyeFish = DevelopmentSpawnPolicy.allowsAutomaticSpawn(eyeFish);
+        boolean allowMerman = DevelopmentSpawnPolicy.allowsAutomaticSpawn(merman);
+        if (!allowEyeFish && !allowMerman) return false;
+        // TODO 僵尸人鱼完成后取消注册处的 developmentOnly；两种可生成时各占一半。
+        // TODO 困难模式补齐血浆哥布林鲨鱼、血鳗鱼、恐惧鹦鹉螺：前四种各 22.5%，鹦鹉螺 10%。
+        var type = allowEyeFish && (!allowMerman || player.getRandom().nextBoolean()) ? eyeFish : merman;
+        var enemy = type.spawn(player.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
+        if (enemy == null) return false;
+        enemy.setTarget(player);
+        enemy.setDeltaMovement(player.position().subtract(enemy.position()).normalize().scale(0.35));
+        return true;
     }
 
     @SubscribeEvent

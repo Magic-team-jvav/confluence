@@ -1,7 +1,5 @@
 package org.confluence.mod.common.data.gen.loot;
 
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.FishingHookPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
@@ -14,7 +12,6 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -24,17 +21,18 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemDamageFunction;
 import net.minecraft.world.level.storage.loot.functions.SetPotionFunction;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
-import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 
@@ -73,80 +71,52 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         MinMaxBounds.Doubles caveThroughSurface = MinMaxBounds.Doubles.between(OverworldUtils.getCaveY(), OverworldUtils.getSurfaceY());
         MinMaxBounds.Doubles surfaceThroughSpace = MinMaxBounds.Doubles.between(OverworldUtils.getSurfaceY(), OverworldUtils.getSpaceY());
         HolderSet<Structure> isDungeon = HolderSet.direct(registrystrcturelookup.getOrThrow(ModStructures.Keys.DUNGEON));
-        // 基础鱼
-        output.accept(ModLootTables.FISH, LootTable.lootTable()
+        // 丰富（兜底）
+        output.accept(ModLootTables.FISH_PLENTIFUL, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        // 地表通用鱼
                         .add(LootItem.lootTableItem(Items.COD).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(surfaceThroughSpace)
                         )).setWeight(10))
+                        .add(LootItem.lootTableItem(FoodItems.SEA_BASS).setWeight(10))
+                        .add(LootItem.lootTableItem(FoodItems.PARTIAL_MOUTH_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
+                        )).setWeight(60))
+                        .add(LootItem.lootTableItem(FoodItems.ROCK_LOBSTER).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
+                        )).setWeight(30))
+                        .add(LootItem.lootTableItem(FoodItems.TROUT).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
+                        )).setWeight(20))
+                        .add(LootItem.lootTableItem(Items.COD).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
+                        )).setWeight(5))
+                )
+        );
+        // 普通
+        output.accept(ModLootTables.FISH_COMMON, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.SALMON).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(surfaceThroughSpace)
                         )).setWeight(5))
                         .add(LootItem.lootTableItem(FoodItems.SALMON).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(surfaceThroughSpace)
                         )).setWeight(5))
-                        .add(LootItem.lootTableItem(FoodItems.SEA_BASS).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(surfaceThroughSpace)
-                        )).setWeight(10))
                         .add(LootItem.lootTableItem(Items.PUFFERFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(surfaceThroughSpace)
                         )).setWeight(2))
                         .add(LootItem.lootTableItem(Items.TROPICAL_FISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(surfaceThroughSpace)
                         )).setWeight(2))
-                        // 地下鱼
-                        .add(LootItem.lootTableItem(BaitItems.GREEN_JELLYFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(caveThroughSurface)
-                        )).setWeight(100))
-                        .add(LootItem.lootTableItem(BaitItems.BLUE_JELLYFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(caveThroughSurface)
-                        )).setWeight(100))
                         .add(LootItem.lootTableItem(FoodItems.ARMORED_CAVE_FISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(caveThroughSurface)
-                        )).setWeight(2100))
-                        .add(LootItem.lootTableItem(FoodItems.STINKY_FISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(caveThroughSurface)
-                        )).setWeight(2100))
+                        )).setWeight(100))
                         .add(LootItem.lootTableItem(FoodItems.MIRROR_FISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(caveThroughSurface)
-                        )).setWeight(2100))
-                        // 空岛的鱼
-                        .add(LootItem.lootTableItem(FoodItems.DAMSEL_FISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(spaceThroughUltra)
-                        )).setWeight(2100))
-                        // 丛林鱼
-                        .add(LootItem.lootTableItem(FoodItems.PISCES_FIN_COD).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace)
-                        )).setWeight(60))
+                        )).setWeight(300))
                         .add(LootItem.lootTableItem(FoodItems.NEON_GREASE_CARP).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace)
                         )).setWeight(60))
-                        // 地下丛林鱼
-                        .add(LootItem.lootTableItem(FoodItems.MOTTLED_OILFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface)
-                        )).setWeight(2100))
-                        // 沙漠鱼
-                        .add(LootItem.lootTableItem(FoodItems.PARTIAL_MOUTH_FISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
-                        )).setWeight(60))
-                        .add(LootItem.lootTableItem(FoodItems.ROCK_LOBSTER).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
-                        )).setWeight(60))
-                        .add(LootItem.lootTableItem(ConsumableItems.CLAM).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
-                        )).setWeight(33))
-                        // 海洋
-                        .add(LootItem.lootTableItem(BaitItems.PINK_JELLYFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
-                        )).setWeight(5))
                         .add(LootItem.lootTableItem(FoodItems.TUNA).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
-                        )).setWeight(20))
-                        .add(LootItem.lootTableItem(FoodItems.TROUT).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
-                        )).setWeight(20))
-                        .add(LootItem.lootTableItem(FoodItems.SHRIMP).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
                         )).setWeight(20))
                         .add(LootItem.lootTableItem(FoodItems.RED_SNAPPER).when(LocationCheck.checkLocation(
@@ -155,49 +125,21 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(Items.PUFFERFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
                         )).setWeight(5))
-                        // 雪原
                         .add(LootItem.lootTableItem(FoodItems.ATLANTIC_COD).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
                         )).setWeight(60))
-                        .add(LootItem.lootTableItem(FoodItems.FROSTY_MINNOW).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
-                        )).setWeight(60))
-                        .add(LootItem.lootTableItem(Items.COD).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
-                        )).setWeight(5))
                         .add(LootItem.lootTableItem(ConsumableItems.FROST_DAGGERFISH).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 64))).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
-                        )).setWeight(33))
-                        // 热带草原
+                        )).setWeight(5))
                         .add(LootItem.lootTableItem(FoodItems.YELLOW_EEL).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isSavana).setY(caveThroughSpace)
                         )).setWeight(60))
                         .add(LootItem.lootTableItem(FoodItems.TILAPIA).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isSavana).setY(caveThroughSpace)
                         )).setWeight(60))
-                        // 腐化之地
-                        .add(LootItem.lootTableItem(FoodItems.EBONY_KOI).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSpace)
-                        )).setWeight(2400))
-                        // 猩红之地
-                        .add(LootItem.lootTableItem(FoodItems.BLOODY_PIRANHAS).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSpace)
-                        )).setWeight(1200))
                         .add(LootItem.lootTableItem(FoodItems.SCARLET_TIGER_FISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSpace)
                         )).setWeight(1200))
-                        // 神圣之地
-                        .add(LootItem.lootTableItem(FoodItems.COLORFUL_MINERAL_FISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSpace)
-                        )).setWeight(1200))
-                        .add(LootItem.lootTableItem(FoodItems.PRINCESS_FISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSpace)
-                        )).setWeight(1200))
-                        // 神圣之地地下
-                        .add(LootItem.lootTableItem(FoodItems.CHAOS_FISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
-                        )).setWeight(2100))
-                        // 蘑菇岛
                         .add(LootItem.lootTableItem(FoodItems.RED_PLEATFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isMushroom).setY(caveThroughSpace)
                         )).setWeight(60))
@@ -206,7 +148,110 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )).setWeight(60))
                 )
         );
-
+        // 不常见
+        output.accept(ModLootTables.FISH_UNCOMMON, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.ARMORED_CAVE_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(caveThroughSurface)
+                        )).setWeight(1300))
+                        .add(LootItem.lootTableItem(FoodItems.MIRROR_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(caveThroughSurface)
+                        )).setWeight(300))
+                        .add(LootItem.lootTableItem(FoodItems.DAMSEL_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(spaceThroughUltra)
+                        )).setWeight(2100))
+                        .add(LootItem.lootTableItem(FoodItems.PISCES_FIN_COD).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace)
+                        )).setWeight(60))
+                        .add(LootItem.lootTableItem(FoodItems.MOTTLED_OILFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface)
+                        )).setWeight(2100))
+                        .add(LootItem.lootTableItem(ConsumableItems.CLAM).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
+                        )).setWeight(33))
+                        .add(LootItem.lootTableItem(FoodItems.SHRIMP).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
+                        )).setWeight(20))
+                        .add(LootItem.lootTableItem(FoodItems.FROSTY_MINNOW).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
+                        )).setWeight(60))
+                        .add(LootItem.lootTableItem(ConsumableItems.FROST_DAGGERFISH).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 64))).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
+                        )).setWeight(10))
+                        .add(LootItem.lootTableItem(FoodItems.EBONY_KOI).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSpace)
+                        )).setWeight(2400))
+                        .add(LootItem.lootTableItem(FoodItems.BLOODY_PIRANHAS).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSpace)
+                        )).setWeight(1200))
+                        .add(LootItem.lootTableItem(FoodItems.PRINCESS_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSpace)
+                        )).setWeight(1200))
+                        .add(LootItem.lootTableItem(ConsumableItems.BOMB_FISH).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))).setWeight(33))
+                )
+        );
+        // 稀有
+        output.accept(ModLootTables.FISH_RARE, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.GREEN_JELLYFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(caveThroughSurface)
+                        )).setWeight(100).when(GamePhaseLootItemCondition.builder().from(GamePhase.WALL_OF_FLESH)))
+                        .add(LootItem.lootTableItem(BaitItems.BLUE_JELLYFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(caveThroughSurface)
+                        )).setWeight(100))
+                        .add(LootItem.lootTableItem(FoodItems.STINKY_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(caveThroughSurface)
+                        )).setWeight(2100))
+                        .add(LootItem.lootTableItem(BaitItems.PINK_JELLYFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
+                        )).setWeight(5))
+                        .add(LootItem.lootTableItem(FoodItems.COLORFUL_MINERAL_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSpace)
+                        )).setWeight(1200))
+                        .add(LootItem.lootTableItem(AccessoryItems.NATURES_GIFT).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
+                        ).setWeight(25))
+                        .add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 6))).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
+                        ).setWeight(25))
+                        .add(LootItem.lootTableItem(SwordItems.PURPLE_CLUBBERFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSurface)
+                        )).setWeight(25))
+                )
+        );
+        // 非常稀有
+        output.accept(ModLootTables.FISH_VERY_RARE, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.CHAOS_FISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
+                        )).setWeight(2100))
+                        .add(LootItem.lootTableItem(PickaxeItems.REAVER_SHARK_PICKAXE).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSurface)
+                        )).setWeight(7))
+                        .add(LootItem.lootTableItem(HammerItems.ROCKFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(caveThroughSurface)
+                        )).setWeight(7))
+                        .add(LootItem.lootTableItem(FunctionalBlocks.ALCHEMY_TABLE).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSurface)
+                        )).setWeight(7))
+                )
+        );
+        // 极其稀有
+        output.accept(ModLootTables.FISH_LEGENDARY, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.FROG_LEG).setWeight(7))
+                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).apply(
+                                EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(30.0F))
+                        ))
+                        .add(LootItem.lootTableItem(TCItems.BALLOON_PUFFERFISH).setWeight(7))
+                        .add(LootItem.lootTableItem(FoodItems.GOLDEN_CARP).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setY(caveThroughSurface))
+                        ).setWeight(7))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_SERPENT).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
+                        )).setWeight(7).when(GamePhaseLootItemCondition.builder().from(GamePhase.WALL_OF_FLESH)))
+                )
+        );
         // 钓鱼垃圾池
         output.accept(ModLootTables.JUNK, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -233,56 +278,24 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )).setWeight(10))
                 )
         );
-        // 宝藏池
-        output.accept(ModLootTables.TREASURE, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.FROG_LEG).setWeight(7))
-                        .add(LootItem.lootTableItem(Items.BOOK).setWeight(4).apply(
-                                EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(30.0F))
-                        ))
-                        .add(LootItem.lootTableItem(TCItems.BALLOON_PUFFERFISH).setWeight(7))
-                        .add(LootItem.lootTableItem(ConsumableItems.BOMB_FISH).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))).setWeight(33))
-                        .add(LootItem.lootTableItem(FoodItems.GOLDEN_CARP).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(caveThroughSurface))
-                        ).setWeight(7))
-                        .add(LootItem.lootTableItem(AccessoryItems.NATURES_GIFT).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
-                        ).setWeight(25))
-                        .add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 6))).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
-                        ).setWeight(25))
-                        .add(LootItem.lootTableItem(SwordItems.PURPLE_CLUBBERFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSurface)
-                        )).setWeight(25))
-                        .add(LootItem.lootTableItem(PickaxeItems.REAVER_SHARK_PICKAXE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSurface)
-                        )).setWeight(7))
-                        .add(LootItem.lootTableItem(HammerItems.ROCKFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(caveThroughSurface)
-                        )).setWeight(7))
-                        .add(LootItem.lootTableItem(FunctionalBlocks.ALCHEMY_TABLE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSurface)
-                        )).setWeight(7))
-                        .add(LootItem.lootTableItem(ManaWeaponItems.CRYSTAL_SERPENT).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
-                        )).setWeight(7))
-                )
-        );
-        // 钓鱼总战利品表
-        output.accept(ModLootTables.FISHING, LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1.0F))
-                        .add(NestedLootTable.lootTableReference(ModLootTables.JUNK).setWeight(5).setQuality(-1))
-                        .add(NestedLootTable.lootTableReference(ModLootTables.TREASURE)
-                                .setWeight(10)
-                                .setQuality(1)
-                                .when(LootItemEntityPropertyCondition.hasProperties(
-                                        LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().subPredicate(FishingHookPredicate.inOpenWater(true))
-                                ))
-                        )
-                        .add(NestedLootTable.lootTableReference(ModLootTables.FISH).setWeight(85).setQuality(-1))
-                )
-        );
+        // 旧入口保留为引用，兼容数据包；普通钓鱼入口不再单独抽宝藏池。
+        output.accept(ModLootTables.TREASURE, LootTable.lootTable().withPool(LootPool.lootPool()
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH_LEGENDARY))));
+        // 渔力直接作为本表的 luck 参数；以下整数参数拟合泰拉 10～900 渔力的六档选择概率。
+        // 仅抽一次。兜底档保留正截距，其占比逐渐降低，避免归零后其余档位比例固定。
+        output.accept(ModLootTables.FISH, LootTable.lootTable().withPool(LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1))
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH_PLENTIFUL).setWeight(4500).setQuality(11))
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH_COMMON).setWeight(0).setQuality(34))
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH_UNCOMMON).setWeight(0).setQuality(30))
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH_RARE).setWeight(0).setQuality(16))
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH_VERY_RARE).setWeight(0).setQuality(10))
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH_LEGENDARY).setWeight(0).setQuality(6))));
+        // 垃圾单独处理；达到 50 渔力后入口权重归零。
+        output.accept(ModLootTables.FISHING, LootTable.lootTable().withPool(LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1))
+                .add(NestedLootTable.lootTableReference(ModLootTables.JUNK).setWeight(50).setQuality(-1))
+                .add(NestedLootTable.lootTableReference(ModLootTables.FISH).setWeight(450))));
         // 匣子
         output.accept(ModLootTables.CRATE, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -338,7 +351,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         // 世界通用匣
                         .add(LootItem.lootTableItem(CrateBlocks.PEARLWOOD_CRATE).setWeight(100))
                         .add(LootItem.lootTableItem(CrateBlocks.MYTHRIL_CRATE).setWeight(95).setQuality(1))
-                        .add(LootItem.lootTableItem(CrateBlocks.TITANIUM_CRATE).setWeight(12).setQuality(2))
+                        .add(LootItem.lootTableItem(CrateBlocks.TITANIUM_CRATE).setWeight(19).setQuality(2))
                         // 天空匣
                         .add(LootItem.lootTableItem(CrateBlocks.AZURE_CRATE).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(spaceThroughUltra)
@@ -384,12 +397,15 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         // 岩浆
         output.accept(ModLootTables.FISHING_LAVA, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FoodItems.OBSIDIFISH).setWeight(630))
-                                .add(LootItem.lootTableItem(FoodItems.FLASHFIN_KOI).setWeight(315))
-                                .add(LootItem.lootTableItem(ToolItems.DEMON_CONCH).setWeight(3).setQuality(1))
-                                .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_LAVA_BUCKET).setWeight(3).setQuality(1))
-                                .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_LAVA_BUCKET).setWeight(3).setQuality(1))
-                                .add(LootItem.lootTableItem(CrateBlocks.OBSIDIAN_CRATE).setWeight(100))
+                        .add(LootItem.lootTableItem(FoodItems.OBSIDIFISH).setWeight(630))
+                        .add(LootItem.lootTableItem(FoodItems.FLASHFIN_KOI).setWeight(315))
+                        .add(LootItem.lootTableItem(ToolItems.DEMON_CONCH).setWeight(3).setQuality(1))
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_LAVA_BUCKET).setWeight(3).setQuality(1))
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_LAVA_BUCKET).setWeight(3).setQuality(1))
+                        .add(LootItem.lootTableItem(CrateBlocks.OBSIDIAN_CRATE).setWeight(100)
+                                .when(GamePhaseLootItemCondition.builder().to(GamePhase.WALL_OF_FLESH, false)))
+                        .add(LootItem.lootTableItem(CrateBlocks.HELLSTONE_CRATE).setWeight(100)
+                                .when(GamePhaseLootItemCondition.builder().from(GamePhase.WALL_OF_FLESH)))
                 )
         );
         // 蜂蜜

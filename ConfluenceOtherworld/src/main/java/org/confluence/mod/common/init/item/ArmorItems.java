@@ -121,15 +121,15 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> ANGLER_HAT = register("angler_hat", "渔夫帽", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/angler_armor")
             .rarity(ModRarity.BLUE)
-            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F)));
+            .attribute(ConfluenceMagicLib.FISHING_POWER, 5, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> ANGLER_VEST = register("angler_vest", "渔夫背心", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/angler_armor")
             .rarity(ModRarity.BLUE)
-            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F)));
+            .attribute(ConfluenceMagicLib.FISHING_POWER, 5, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> ANGLER_PANTS = register("angler_pants", "渔夫裤", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/angler_armor")
             .rarity(ModRarity.BLUE)
-            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F)));
+            .attribute(ConfluenceMagicLib.FISHING_POWER, 5, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> CACTUS_HELMET = register("cactus_helmet", "仙人掌头盔", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cactus_armor")

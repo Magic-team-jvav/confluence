@@ -130,21 +130,23 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             int packedLight,
             int packedOverlay,
             int colour) {
-        float effectiveScale = getEffectiveModelScale(animatable) * getEncounterScale(animatable);
-        poseStack.scale(effectiveScale, effectiveScale, effectiveScale);
-        poseStack.translate(0.0F, modelOffsetY, 0.0F);
-        if (shouldRotateAlongPitch(animatable) && getWormModelCenter(animatable) == null) {
-            /// 实体渲染原点位于碰撞箱脚底。直接在此处俯仰会把长模型绕脚底甩出链条，
-            /// 接近 90° 时尤其明显；先移到实际碰撞箱中心，旋转后再移回。
-            float pivotY = animatable.getBbHeight() * 0.5F / effectiveScale - modelOffsetY;
-            poseStack.translate(0.0F, pivotY, 0.0F);
-            double yaw = getRenderYaw(animatable, partialTick) * Mth.DEG_TO_RAD;
-            Vector3f axis = new Vector3f((float) Math.cos(yaw), 0.0F, (float) Math.sin(yaw));
-            poseStack.mulPose(Axis.of(axis).rotationDegrees(getRenderPitch(animatable, partialTick)));
-            poseStack.translate(0.0F, -pivotY, 0.0F);
-        }
+        if (!isReRender) {
+            float effectiveScale = getEffectiveModelScale(animatable) * getEncounterScale(animatable);
+            poseStack.scale(effectiveScale, effectiveScale, effectiveScale);
+            poseStack.translate(0.0F, modelOffsetY, 0.0F);
+            if (shouldRotateAlongPitch(animatable) && getWormModelCenter(animatable) == null) {
+                /// 实体渲染原点位于碰撞箱脚底。直接在此处俯仰会把长模型绕脚底甩出链条，
+                /// 接近 90° 时尤其明显；先移到实际碰撞箱中心，旋转后再移回。
+                float pivotY = animatable.getBbHeight() * 0.5F / effectiveScale - modelOffsetY;
+                poseStack.translate(0.0F, pivotY, 0.0F);
+                double yaw = getRenderYaw(animatable, partialTick) * Mth.DEG_TO_RAD;
+                Vector3f axis = new Vector3f((float) Math.cos(yaw), 0.0F, (float) Math.sin(yaw));
+                poseStack.mulPose(Axis.of(axis).rotationDegrees(getRenderPitch(animatable, partialTick)));
+                poseStack.translate(0.0F, -pivotY, 0.0F);
+            }
 
-        adjustPose(poseStack, animatable, model, partialTick);
+            adjustPose(poseStack, animatable, model, partialTick);
+        }
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
     }
 

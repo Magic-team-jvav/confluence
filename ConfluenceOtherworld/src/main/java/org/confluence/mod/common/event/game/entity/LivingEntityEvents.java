@@ -65,6 +65,7 @@ import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
+import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.entity.EnemyDamageRules;
@@ -593,6 +594,8 @@ public final class LivingEntityEvents {
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
             return;
         }
+        // 在效果集合开始遍历之前反伤；套装命中奖励可安全增删玩家效果。
+        ThornsEffect.onMobHurt(victim, damageSource, amount);
         @Nullable Entity attacker = damageSource.getEntity();
 
         if (attacker instanceof Decayeder decayeder) decayeder.onDamageDealt(level, victim, damageSource);

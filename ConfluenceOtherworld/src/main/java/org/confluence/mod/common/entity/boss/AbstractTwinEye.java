@@ -581,5 +581,8 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         return false;
     }
 
-    public enum Form {TRANSFORMED}
+    public enum Form {
+        /// 完成变形后的二阶段形态。
+        TRANSFORMED
+    }
 }

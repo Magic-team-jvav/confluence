@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.mixed.IFishingHook;
 
 public class DevFishingRod extends AbstractFishingPole {
     public DevFishingRod() {
@@ -17,18 +18,16 @@ public class DevFishingRod extends AbstractFishingPole {
     @Override
     public FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus) {
         return new BaseFishingHook(player, level, luckBonus, speedBonus, BaseFishingHook.Variant.GOLDEN) {
-            /// 开发竿要的是“无视等待时间，收线即上钩”。以前是覆盖 `catchingFish`，把 `nibble` 钉成
-            /// `0x3F3F3F3F` 让钩子永远停在 BITING —— 等于把原版状态机整段拆掉：`nibble` 的递减
-            /// 没人做了、`DATA_BITING` 永不复位、连挂在旱地上的钩子右键也会走
-            /// `FishingHook#retrieve` 的 `nibble > 0` 分支刷战利品（每件物品再刷一个经验球）。
-            /// 现在 tick 状态机完全交回原版，只在“玩家收线”的那一瞬间把咬钩状态补齐：
-            /// 落水就能立刻收线拿货（手感、功能和以前一致），而钩子平时与原版完全相同，不留常驻脏状态。
+            /// 有效液体中收线即可捕获；平时保留原版计时，离开液体后不保留强制咬钩状态。
             @Override
             public int retrieve(ItemStack stack) {
-                if (this.nibble <= 0) this.nibble = 20;
+                if (!level().isClientSide && !isRemoved() && getHookedIn() == null) {
+                    this.nibble = getInBlockState().getFluidState().is(IFishingHook.isValidFluid(this)) ? 20 : 0;
+                }
                 return super.retrieve(stack);
             }
 
+            /// 开发竿用于测试鱼获，不受开阔水域限制。
             @Override
             public boolean isOpenWaterFishing() {
                 return true;

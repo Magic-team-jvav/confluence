@@ -47,7 +47,6 @@ import java.util.*;
 public class PlayerSpecialData extends PrimitiveValueHolder {
     private @NotNull ArmorSetBonusKey armorSetBonusKey = ArmorSetBonusKey.NONE;
 
-    private ItemStack currentQuestedFish;
 
     private long completedAnglerQuestDay = -1;
     private int anglerQuestCount;
@@ -65,7 +64,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         super.setToDefaultValue();
         this.armorSetBonusKey = ArmorSetBonusKey.NONE;
 
-        this.currentQuestedFish = ItemStack.EMPTY;
 
         this.completedAnglerQuestDay = -1;
         this.anglerQuestCount = 0;
@@ -91,18 +89,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
     public int getAnglerQuestCount() {
         return anglerQuestCount;
-    }
-
-    public void setCurrentQuestedFish(ItemStack cost) {
-        this.currentQuestedFish = cost;
-    }
-
-    public void removeCurrentQuestedFish() {
-        setCurrentQuestedFish(ItemStack.EMPTY);
-    }
-
-    public ItemStack getCurrentQuestedFish(Player player) {
-        return currentQuestedFish;
     }
 
     public void setCouldHurtCritters(boolean couldHurtCritters) {
@@ -275,7 +261,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         CompoundTag tag = super.serializeNBT(provider);
 
         ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey).ifSuccess(nbt -> tag.put("ArmorBonusKey", nbt));
-        ItemStack.OPTIONAL_CODEC.encodeStart(ops, currentQuestedFish).ifSuccess(nbt -> tag.put("CurrentQuestedFish", nbt));
         tag.putLong("CompletedAnglerQuestDay", completedAnglerQuestDay);
         tag.putInt("AnglerQuestCount", anglerQuestCount);
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
@@ -293,7 +278,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         if (nbt.contains("ArmorBonusKey")) {
             this.armorSetBonusKey = ArmorSetBonusKey.CODEC.parse(ops, nbt.get("ArmorBonusKey")).result().orElse(ArmorSetBonusKey.NONE);
         }
-        this.currentQuestedFish = ItemStack.OPTIONAL_CODEC.parse(ops, nbt.get("CurrentQuestedFish")).result().orElse(ItemStack.EMPTY);
         if (nbt.contains("CompletedAnglerQuestDay")) {
             this.completedAnglerQuestDay = Math.max(-1L, nbt.getLong("CompletedAnglerQuestDay"));
         }

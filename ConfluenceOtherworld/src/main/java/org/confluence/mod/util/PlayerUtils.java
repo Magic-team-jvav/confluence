@@ -35,6 +35,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.common.LibAttributes;
@@ -59,6 +60,7 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
 import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
@@ -67,17 +69,15 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.soulcerer.SoulArtifactItem;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.soulcerer.skill.SoulAssaultSkill;
-import org.confluence.mod.common.soulcerer.skill.SpiritSurgeSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSkill;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
+import org.confluence.mod.common.soulcerer.skill.*;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.AskForSoftcorePacket;
@@ -1598,10 +1598,31 @@ public final class PlayerUtils {
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = player.getLuck() + TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
-        if (player.fishing != null) {
-            base += player.fishing.luck;
+        float base = (float) player.getAttributeValue(ConfluenceMagicLib.FISHING_POWER);
+        FishingSession session = player.fishing == null ? null : IFishingHook.of(player.fishing).confluence$getFishingSession();
+        ItemStack rod = session == null ? FishingSession.heldRod(player) : session.rod();
+        // 副手抛竿只在临时属性副本中替换钓竿修饰器，保留加算、乘算及属性上限的顺序。
+        ItemStack mainHand = player.getMainHandItem();
+        if (rod != mainHand) {
+            AttributeInstance attribute = player.getAttribute(ConfluenceMagicLib.FISHING_POWER);
+            if (attribute != null) {
+                AttributeInstance evaluated = new AttributeInstance(ConfluenceMagicLib.FISHING_POWER, ignored -> {});
+                evaluated.replaceFrom(attribute);
+                mainHand.forEachModifier(EquipmentSlot.MAINHAND, (type, modifier) -> {
+                    if (type.is(ConfluenceMagicLib.FISHING_POWER.getKey()))
+                        evaluated.removeModifier(modifier.id());
+                });
+                rod.forEachModifier(EquipmentSlot.MAINHAND, (type, modifier) -> {
+                    if (type.is(ConfluenceMagicLib.FISHING_POWER.getKey())) {
+                        evaluated.removeModifier(modifier.id());
+                        evaluated.addTransientModifier(modifier);
+                    }
+                });
+                base = (float) evaluated.getValue();
+            }
         }
+        IBait bait = IBait.of(session == null ? IBait.getFirstBait(player.getInventory()) : session.bait());
+        if (bait != null) base += bait.getBaitBonus() * 100;
         if (EverBeneficial.of(player).isGummyWormUsed()) {
             base += 3.0F;
         }
@@ -1612,10 +1633,10 @@ public final class PlayerUtils {
             base += 5.0F;
         }
         Level level = player.level();
-        if (level.isRaining()) {
-            base *= 1.1F;
-        } else if (level.isThundering()) {
+        if (level.isThundering()) {
             base *= 1.2F;
+        } else if (level.isRaining()) {
+            base *= 1.1F;
         }
         int dayTime = LibDateUtils.getDayTime(level);
         if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime)) {

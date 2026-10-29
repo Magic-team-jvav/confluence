@@ -29,6 +29,7 @@ import java.util.function.Consumer;
 /// 由世界渲染事件绘制同一份整链快照，头部所在区段未加载时也能绘制可见体节。
 public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNormalRenderer<T> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/boss/destroyer.png");
+    private static final ResourceLocation GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_glow.png");
     private static final ResourceLocation ANIMATION = Confluence.asResource("animations/entity/boss/destroyer.animation.json");
     private static final ResourceLocation HEAD = model("head"), BODY = model("body"), CONNECTOR = model("connector"), TAIL = model("tail");
 
@@ -68,6 +69,12 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
                 return ANIMATION;
             }
         }, false, TheDestroyer.MODEL_SCALE, 0);
+        addRenderLayer(new EntityGlowingGeoLayer<>(this) {
+            @Override
+            protected ResourceLocation getTextureResource(T entity) {
+                return GLOW_TEXTURE;
+            }
+        });
     }
 
     private static ResourceLocation model(String section) {

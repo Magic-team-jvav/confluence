@@ -101,7 +101,8 @@ public final class ModEffects {
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, id, 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> BUILDER = registerEffect("builder", "建筑工", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8B6914)
             .addAttributeModifier(Attributes.BLOCK_INTERACTION_RANGE, id, 3, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredHolder<MobEffect, MobEffect> FISHING = registerEffect("fishing", "钓鱼", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x00BFFF));
+    public static final DeferredHolder<MobEffect, MobEffect> FISHING = registerEffect("fishing", "钓鱼", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x00BFFF)
+            .addAttributeModifier(ConfluenceMagicLib.FISHING_POWER, id, 15, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> MAGIC_POWER = registerEffect("magic_power", "魔能", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xCC00CC)
             .addAttributeModifier(LibAttributes.getMagicDamage(), id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> OBSIDIAN_SKIN = registerEffect("obsidian_skin", "黑曜石皮", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x660066));

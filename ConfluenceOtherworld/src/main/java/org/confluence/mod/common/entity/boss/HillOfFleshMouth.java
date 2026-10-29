@@ -9,13 +9,13 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
-/// 肉丘之嘴——定位在肉丘周围，并维持一只与当前嘴部锚点绑定的饿鬼。
+/// 肉山之嘴——定位在肉山周围，并维持一只与当前嘴部锚点绑定的饿鬼。
 ///
 /// 嘴部本身不进入区块存档，因此重建后先按 Boss 身份和相对锚点认领
 /// 已保存的饿鬼。只有上一只确实死亡或被移除后才进入再次生成计时，
 /// 避免每个周期无上限堆积从属。
 public class HillOfFleshMouth extends HillOfFlesh.Part {
-    /// 肉丘之嘴首次召唤饿鬼的基础等待时间，单位 tick。
+    /// 肉山之嘴首次召唤饿鬼的基础等待时间，单位 tick。
     private static final int INITIAL_SUMMON_BASE_TICKS = 100;
     /// 首次召唤额外随机等待的范围，单位 tick。
     private static final int INITIAL_SUMMON_VARIATION_TICKS = 150;

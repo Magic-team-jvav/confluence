@@ -6,7 +6,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.LibEntityUtils;
@@ -27,8 +26,6 @@ public abstract class PlayerMixin implements IPlayer {
     @Unique
     private BaseFlailEntity confluence$flailEntity;
     @Unique
-    private ItemStack confluence$currentBait = ItemStack.EMPTY;
-    @Unique
     private boolean confluence$voidSeaSwimming;
 
     @Override
@@ -41,16 +38,6 @@ public abstract class PlayerMixin implements IPlayer {
     @Deprecated
     public BaseFlailEntity confluence$getFlailBall() {
         return confluence$flailEntity;
-    }
-
-    @Override
-    public void confluence$setCurrentBait(ItemStack bait) {
-        this.confluence$currentBait = bait;
-    }
-
-    @Override
-    public ItemStack confluence$getCurrentBait() {
-        return confluence$currentBait;
     }
 
     @Override

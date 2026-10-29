@@ -570,5 +570,10 @@ public class Plantera extends BaseBoss {
         return new Vec3(movement.x * 0.25D, -0.4D, movement.z * 0.25D);
     }
 
-    public enum Temperament {CALM, ENRAGED}
+    public enum Temperament {
+        /// 未激怒的常态，使用普通战斗参数。
+        CALM,
+        /// 激怒状态，使用激怒后的战斗参数。
+        ENRAGED
+    }
 }

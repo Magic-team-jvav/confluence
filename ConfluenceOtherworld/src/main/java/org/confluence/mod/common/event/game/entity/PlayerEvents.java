@@ -369,9 +369,11 @@ public final class PlayerEvents {
                 BlockPos pos = hitResult.getBlockPos();
                 if (level.mayInteract(player, pos) && level.getFluidState(pos).is(ModFluids.HONEY.fluid().get())) {
                     level.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.BOTTLE_FILL, SoundSource.NEUTRAL, 1.0F, 1.0F);
-                    level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
-                    player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-                    ItemUtils.createFilledResult(stack, player, Items.HONEY_BOTTLE.getDefaultInstance());
+                    if (!level.isClientSide) {
+                        level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
+                        player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+                        player.setItemInHand(event.getHand(), ItemUtils.createFilledResult(stack, player, Items.HONEY_BOTTLE.getDefaultInstance()));
+                    }
                     player.swing(event.getHand());
                     event.cancelWithResult(PortItemInteractionResult.sidedSuccess(level.isClientSide));
                 }

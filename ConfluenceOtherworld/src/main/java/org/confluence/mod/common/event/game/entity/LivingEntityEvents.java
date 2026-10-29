@@ -747,16 +747,6 @@ public final class LivingEntityEvents {
         double y = living.getY();
         double z = living.getZ();
 
-        if (living instanceof Player player) { // 掉落玩家的钱币
-            ExtraInventory data = ExtraInventory.of(player);
-            for (int i = 0; i < ExtraInventory.SIZE_COINS; i++) {
-                ItemStack itemStack = data.getCoins(i);
-                if (!itemStack.isEmpty()) {
-                    data.setItem(i, ItemStack.EMPTY);
-                }
-                drops.add(new ItemEntity(level, x, y, z, itemStack));
-            }
-        }
         if (LibMathUtils.checkChance(0.011F, living.getRandom1211())) dropsHolidayGift:{ // 掉落节日礼物
             Item holidayGift = DateUtils.getHolidayGift(living.getRandom1211());
             if (holidayGift == Items.AIR) break dropsHolidayGift;

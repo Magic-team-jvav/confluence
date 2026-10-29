@@ -1663,7 +1663,11 @@ public final class PlayerUtils {
 
     /// @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
     public static void dropMoney(Player player) {
-        if (!CommonConfigs.PLAYER_DROPS_MONEY.get()) return;
+        if (!CommonConfigs.PLAYER_DROPS_MONEY.get()) {
+            // 不掉落钱币时把钱币统一收进钱币栏，避免背包里的钱币随死亡掉落
+            tryCostMoney(player, 0, false);
+            return;
+        }
         long money = getMoney(player, false);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {

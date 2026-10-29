@@ -152,7 +152,6 @@
         "integration.geckolib.KeyFramesAdapterMixin",
         "integration.jade.HarvestToolProviderMixin",
         "integration.jei.FurnaceFuelCategoryMixin",
-        "integration.jei.ScreenHelperMixin",
         "integration.jei.TypedItemStackMixin",
         "integration.jei.TypedItemStackMixin$S1Mixin",
         "integration.journeymap.EffectMixin",

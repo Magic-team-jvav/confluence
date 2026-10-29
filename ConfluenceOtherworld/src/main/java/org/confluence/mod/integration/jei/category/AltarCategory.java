@@ -57,7 +57,7 @@ public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>>
     @Override
     public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<AltarRecipe> recipe, IFocusGroup focuses) {
         IRecipeCategory.super.createRecipeExtras(builder, recipe, focuses);
-        builder.addRecipeArrow().setPosition(50 + 5, 6 + 2);
+        builder.addRecipeArrowWidget().setPosition(50 + 5, 6 + 2);
     }
 
     @Override

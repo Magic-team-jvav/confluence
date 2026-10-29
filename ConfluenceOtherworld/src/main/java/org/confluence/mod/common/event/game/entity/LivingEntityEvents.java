@@ -169,6 +169,7 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::soulBowExtraSoul);
         PortEventHandler.addListener(LivingEntityEvents::seekerSetDamage);
         PortEventHandler.addListener(LivingEntityEvents::soulDropBonus);
+        PortEventHandler.addListener(LivingEntityEvents::enduranceDamageReduction);
         PortEventHandler.addListener(LivingEntityEvents::souldancerDamageReduction);
         PortEventHandler.addListener(LivingEntityEvents::soulSkillSummonDamage);
         PortEventHandler.addListener(LivingEntityEvents::boilingBloodHit);
@@ -498,6 +499,13 @@ public final class LivingEntityEvents {
             event.setAmount(event.getAmount() + bonus);
         }
         PlayerUtils.onSoulCollected(player, player.level().getGameTime());
+    }
+
+    /// 耐力效果：所受伤害降低 10%。
+    private static void enduranceDamageReduction(PortLivingIncomingDamageEvent event) {
+        if (event.getEntity().hasEffect(ModEffects.ENDURANCE.get())) {
+            event.setAmount(event.getAmount() * 0.9F);
+        }
     }
 
     /// 魂舞全套：收集灵魂后的限时减伤。

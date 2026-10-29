@@ -75,8 +75,7 @@ public final class ModEffects {
             .addAttributeModifier(ConfluenceMagicLib.SUMMON_KNOCKBACK, id, ADD_MULTIPLIED_TOTAL, v -> exquisitelyStuffed(v, 0.05, 0.075, 0.10)));
     public static final RegistryObject<MobEffect> IRON_SKIN = registerWithEnglishName("iron_skin", "铁皮", "Ironskin", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x184F5)
             .addAttributeModifier(Attributes.ARMOR, id, 4, ADD_VALUE));
-    public static final RegistryObject<MobEffect> ENDURANCE = register("endurance", "耐力", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x708090)
-            .addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, id, 1, ADD_VALUE));
+    public static final RegistryObject<MobEffect> ENDURANCE = register("endurance", "耐力", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x708090));
     public static final RegistryObject<MobEffect> INFERNO = register("inferno", "狱火", InfernoEffect::new);
     public static final RegistryObject<MobEffect> LIFE_FORCE = registerWithEnglishName("life_force", "生命力", "Lifeforce", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFC0CB)
             .addAttributeModifier(Attributes.MAX_HEALTH, id, 0.2, ADD_MULTIPLIED_TOTAL));

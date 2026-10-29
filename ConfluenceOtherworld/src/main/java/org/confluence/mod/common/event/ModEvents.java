@@ -79,6 +79,8 @@ public final class ModEvents {
 
     private static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            // 原版攻击伤害默认不向客户端同步，武器面板需要读取服务端的装备和状态加成。
+            LibAttributes.getAttackDamage().value().setSyncable(true);
             TargetingIntegration.init();
             ModGunProperties.init();
             Confluence.registerGameRules();

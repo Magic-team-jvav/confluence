@@ -24,15 +24,19 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.DestroyerCameraShake;
 import org.confluence.mod.client.particle.DestroyerDebrisParticle;
+import org.confluence.mod.client.renderer.entity.DestroyerRenderer;
 import org.confluence.mod.common.entity.ai.WormSteering;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -52,6 +56,7 @@ import java.util.List;
 
 /// 毁灭者的战斗主体：负责 AI、生命及目标，身体轨迹与碰撞部件交给 DestroyerBody。
 public class TheDestroyer extends BaseBoss {
+    private static final EntityDataAccessor<Integer> BEAM_TICK = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<BlockState> DEBRIS_STATE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BLOCK_STATE);
     private static final EntityDataAccessor<BlockPos> DEBRIS_ORIGIN = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Integer> MODE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
@@ -103,7 +108,7 @@ public class TheDestroyer extends BaseBoss {
     private static final int LASER_CYCLE = 180, LASER_STEP = 2;
     /// 激光初速和最大射程，单位格/tick、格。
     private static final float LASER_SPEED = 2.2F;
-    private static final double LASER_RANGE = 96.0;
+    public static final double LASER_RANGE = 96.0;
     /// 体节激光声音的最短间隔，单位 tick；齐射时共用一次声音。
     private static final int LASER_SOUND_INTERVAL = 4;
     /// 激光射击声音的音量与音调。
@@ -187,6 +192,13 @@ public class TheDestroyer extends BaseBoss {
     private int lastLaserSoundTick = -LASER_SOUND_INTERVAL;
     private double coilAngle;
 
+    private int beamCooldown = 200, beamCount;
+    private Vec3 beamAim = Vec3.ZERO;
+
+    public int getBeamTick() {return entityData.get(BEAM_TICK);}
+
+    public Vec3 beamOrigin() {return getBoundingBox().getCenter().add(getLookAngle().scale(10));}
+
     public enum Mode {
         /// 地下游走和绕轴滚动，以冲撞为主。
         UNDERGROUND,
@@ -222,6 +234,7 @@ public class TheDestroyer extends BaseBoss {
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
+        builder.define(BEAM_TICK, -1);
         builder.define(MODE, Mode.GROUND.ordinal());
         builder.define(DEBRIS_STATE, Blocks.AIR.defaultBlockState());
         builder.define(DEBRIS_ORIGIN, BlockPos.ZERO);
@@ -277,6 +290,7 @@ public class TheDestroyer extends BaseBoss {
     @Override
     public void tick() {
         super.tick();
+        if (level().isClientSide) DestroyerRenderer.tickBeamEffects(this);
         if (!level().isClientSide && !isRemoved()) entityData.set(BODY_POSE, body.createSnapshot());
     }
 
@@ -416,16 +430,19 @@ public class TheDestroyer extends BaseBoss {
         body.initializeTrail();
         if (target == null || !target.isAlive() || target.isRemoved() || target.level() != level()) {
             finishSpecialAttack();
+            entityData.set(BEAM_TICK, -1);
             velocity = Vec3.ZERO;
             setDeltaMovement(Vec3.ZERO);
             body.update();
             return;
         }
-        updateMode(target);
+        tickBeam(target);
+        if (getBeamTick() < 0) updateMode(target);
         boolean solidBefore = isSolid(position());
         Vec3 previousVelocity = velocity;
         boolean ballistic = getMode() == Mode.GROUND && airborne;
-        boolean specialMovement = tickSpecialAttack(target);
+        if (getBeamTick() == 100) finishSpecialAttack();
+        boolean specialMovement = getBeamTick() >= 100 && getBeamTick() < 460 ? false : tickSpecialAttack(target);
         if (!specialMovement) switch (getMode()) {
             case UNDERGROUND -> {
                 velocity = steer(velocity, target.getBoundingBox().getCenter().subtract(position()), BURROW_SPEED);
@@ -439,14 +456,26 @@ public class TheDestroyer extends BaseBoss {
             }
             case GROUND -> tickGround(target, solidBefore);
         }
+        if (getBeamTick() >= 100 && getBeamTick() < 220) {
+            float slowdown = Mth.clamp((getBeamTick() - 100) / 120.0F, 0, 1);
+            velocity = velocity.scale(1.0F - slowdown);
+        } else if (getBeamTick() >= 220 && getBeamTick() < 460) {
+            velocity = Vec3.ZERO;
+        }
         if (!ballistic)
             velocity = WormSteering.limit(previousVelocity.lengthSqr() > 1.0E-7 ? previousVelocity : getLookAngle(),
                     velocity, SEGMENT_SPACING * TURN_RADIUS_SEGMENTS, MAX_TURN_RADIANS);
         Vec3 previous = position();
         setPos(previous.add(velocity));
         setDeltaMovement(velocity);
-        faceCombatDirection(specialAttack == SpecialAttack.DASH_WINDUP
+        if (getBeamTick() >= 100 && getBeamTick() < 420) {
+            Vec3 desired = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()).normalize();
+            beamAim = WormSteering.turn(getLookAngle(), desired, Math.toRadians(2));
+            faceCombatDirection(beamAim, 2, 2);
+        } else if (getBeamTick() < 100)
+            faceCombatDirection(specialAttack == SpecialAttack.DASH_WINDUP
                 ? target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()) : velocity, 180, 180);
+
         boolean solidNow = isSolid(position());
         if (!specialMovement && getMode() == Mode.GROUND) {
             if (launching && !solidNow) {
@@ -472,7 +501,7 @@ public class TheDestroyer extends BaseBoss {
     private boolean tickSpecialAttack(LivingEntity target) {
         Vec3 coilCenter = target.position();
         if (specialAttack == SpecialAttack.NONE) {
-            if (airborne || launching || --specialCooldown > 0) return false;
+            if (getBeamTick() >= 0 || airborne || launching || --specialCooldown > 0) return false;
             specialTicks = 0;
             if (nextCoil && getMode() != Mode.UNDERGROUND) {
                 coilTicksRemaining = COIL_DURATION;
@@ -623,6 +652,63 @@ public class TheDestroyer extends BaseBoss {
         return !level().getBlockState(pos).getCollisionShape(level(), pos).isEmpty();
     }
 
+    private boolean canStartBeam(LivingEntity target) {
+        double distance = getBoundingBox().getCenter().distanceToSqr(target.getBoundingBox().getCenter());
+        return isAlive() && target.isAlive() && target.level() == level() && isMetal() && beamCount < 2
+                && specialAttack == SpecialAttack.NONE && getMode() == Mode.SKY && isBeamAboveGround() && getBeamTick() < 0 && beamCooldown <= 0 && distance >= 12 * 12 && distance <= 20 * 20;
+    }
+
+    /// 激光必须从地表上方的空气中发射，不加载未就绪的区块。
+    private boolean isBeamAboveGround() {
+        BlockPos pos = blockPosition();
+        return level().hasChunkAt(pos) && !isSolid(position()) && getY() >= level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ());
+    }
+
+    private void startBeam() {
+        entityData.set(BEAM_TICK, 0);
+        beamAim = getLookAngle();
+        beamCount++;
+    }
+
+    private void tickBeam(LivingEntity target) {
+        int tick = getBeamTick();
+        if (tick < 0) {
+            if (beamCount < 2 && beamCooldown > 0) beamCooldown--;
+            if (canStartBeam(target) && random.nextInt(200) == 0) startBeam();
+            return;
+        }
+        if (tick >= 460) {
+            entityData.set(BEAM_TICK, -1);
+            beamCooldown = 300;
+            return;
+        }
+        if (tick >= 219 && tick < 420 && (getMode() != Mode.SKY || !isBeamAboveGround())) {
+            entityData.set(BEAM_TICK, -1);
+            beamCooldown = 300;
+            return;
+        }
+        entityData.set(BEAM_TICK, tick + 1);
+        if (tick < 220 || tick >= 420) return;
+        Vec3 start = beamOrigin(), end = start.add(getLookAngle().scale(LASER_RANGE));
+        BlockHitResult hit = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+        end = hit.getLocation();
+        if (tick % 10 == 0) {
+            for (Player player : level().getEntitiesOfClass(Player.class, new AABB(start, end).inflate(1.5))) {
+                if (canAttack(player) && (player.getBoundingBox().inflate(1.0).contains(start)
+                        || player.getBoundingBox().inflate(1.0).clip(start, end).isPresent()))
+                    player.hurt(damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+            }
+            if (hit.getType() == HitResult.Type.BLOCK) {
+                BlockPos pos = hit.getBlockPos();
+                if (level().hasChunkAt(pos)) {
+                    BlockState state = level().getBlockState(pos);
+                    ((ServerLevel) level()).sendParticles(ParticleTypes.LARGE_SMOKE, end.x, end.y, end.z, 12, 1, 0.4, 1, 0.05);
+                    emitDebris(pos, state);
+                }
+            }
+        }
+    }
+
     private void tickLasers(LivingEntity target) {
         if (getMode() == Mode.UNDERGROUND) {
             laserCursor = -1;
@@ -763,6 +849,8 @@ public class TheDestroyer extends BaseBoss {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putInt("DestroyerBeamCount", beamCount);
+        tag.putInt("DestroyerBeamCooldown", beamCooldown);
         tag.putBoolean("DestroyerMetal", isMetal());
         tag.putInt("DestroyerMode", getMode().ordinal());
         tag.putLongArray("DestroyerProbes", releasedProbes.toLongArray());
@@ -782,6 +870,8 @@ public class TheDestroyer extends BaseBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        beamCount = tag.getInt("DestroyerBeamCount");
+        beamCooldown = tag.contains("DestroyerBeamCooldown") ? tag.getInt("DestroyerBeamCooldown") : 200;
         entityData.set(METAL, tag.getBoolean("DestroyerMetal"));
         entityData.set(MODE, Mth.clamp(tag.getInt("DestroyerMode"), 0, Mode.values().length - 1));
         entityData.set(ROLL, tag.getFloat("DestroyerRoll"));

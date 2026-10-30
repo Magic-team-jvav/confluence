@@ -1,9 +1,11 @@
 package org.confluence.mod.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.floats.FloatConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -19,16 +21,25 @@ import org.confluence.mod.common.entity.boss.DestroyerPart;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.joml.Matrix4x3f;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 /// 由世界渲染事件绘制同一份整链快照，头部所在区段未加载时也能绘制可见体节。
 public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNormalRenderer<T> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/boss/destroyer.png");
+    private static final ResourceLocation BLUE_GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_glow_blue.png");
     private static final ResourceLocation GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_glow.png");
     private static final ResourceLocation ANIMATION = Confluence.asResource("animations/entity/boss/destroyer.animation.json");
     private static final ResourceLocation HEAD = model("head"), BODY = model("body"), CONNECTOR = model("connector"), TAIL = model("tail");
@@ -75,6 +86,82 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
                 return GLOW_TEXTURE;
             }
         });
+        addRenderLayer(new EntityGlowingGeoLayer<>(this) {
+            @Override
+            protected ResourceLocation getTextureResource(T entity) {return BLUE_GLOW_TEXTURE;}
+
+            @Override
+            public void render(PoseStack poses, T entity, BakedGeoModel model, RenderType type, MultiBufferSource buffers, VertexConsumer buffer, float partialTick, int light, int overlay) {
+                TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
+                int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
+                int tick = head.getBeamTick();
+                float elapsed = tick + partialTick - (81 - index) * 100.0F / 82.0F;
+                float alpha = tick < 0 ? 0 : Math.max(0, 1.0F - elapsed / 30.0F);
+                if (elapsed < 0 || alpha <= 0) return;
+                RenderType glow = getRenderType(entity);
+                getRenderer().reRender(model, poses, buffers, entity, glow, buffers.getBuffer(glow), partialTick, LightTexture.FULL_BRIGHT, overlay, ((int) (alpha * 255) << 24) | 0xFFFFFF);
+            }
+        });
+    }
+
+    private static final Map<TheDestroyer, Integer> BEAM_LAST_TICK = new WeakHashMap<>();
+    private static final Map<TheDestroyer, List<ParticleEmitter>> BEAM_EMITTERS = new WeakHashMap<>();
+
+    public static void tickBeamEffects(TheDestroyer boss) {
+        int tick = boss.getBeamTick();
+        if (tick < 0 || boss.isRemoved()) {
+            List<ParticleEmitter> old = BEAM_EMITTERS.remove(boss);
+            if (old != null) old.forEach(ParticleEmitter::remove);
+            BEAM_LAST_TICK.remove(boss);
+            return;
+        }
+        int last = BEAM_LAST_TICK.getOrDefault(boss, -1);
+        if (tick < last) {
+            List<ParticleEmitter> old = BEAM_EMITTERS.remove(boss);
+            if (old != null) old.forEach(ParticleEmitter::remove);
+            last = -1;
+        }
+        List<ParticleEmitter> emitters = BEAM_EMITTERS.computeIfAbsent(boss, ignored -> new ArrayList<>());
+        if (tick < 100 && tick != last) {
+            int index = Math.clamp(81 - tick * 82 / 100, 0, 81);
+            if (index != Math.clamp(81 - last * 82 / 100, 0, 81)) {
+                Vec3 pos = boss.getBody().getPosition(index);
+                MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(boss.level(), pos, Confluence.asResource("destroyer_attack_lightning")));
+            }
+        }
+        if (last < 100 && tick >= 100) {
+            addBeamEmitter(boss, emitters, "ball");
+            addBeamEmitter(boss, emitters, "inner2");
+            addBeamEmitter(boss, emitters, "inner");
+        }
+        if (last < 143 && tick >= 143) addBeamEmitter(boss, emitters, "inner_round");
+        if (last < 220 && tick >= 220) {
+            addBeamEmitter(boss, emitters, "out");
+            addBeamEmitter(boss, emitters, "ball1");
+            addBeamEmitter(boss, emitters, "round");
+        }
+        if (last < 221 && tick >= 221) addBeamEmitter(boss, emitters, "laser");
+        if (last < 420 && tick >= 420) {
+            emitters.forEach(ParticleEmitter::remove);
+            emitters.clear();
+        }
+        /// 发射点使用与头部模型相同的插值姿态，始终位于头部中心前方十格。
+        Vector3f forward = boss.getBody().getRenderRotation(0, 1.0F).transform(new Vector3f(0, 0, -1));
+        Vec3 direction = new Vec3(forward.x(), forward.y(), forward.z()).normalize();
+        Vec3 origin = boss.getBody().getRenderPosition(0, 1.0F).add(0, TheDestroyer.BODY_HEIGHT / 2.0, 0).add(direction.scale(10));
+        Quaternionf rotation = new Quaternionf().rotationTo(new Vector3f(0, 1, 0), new Vector3f((float) direction.x, (float) direction.y, (float) direction.z));
+        Matrix4x3f space = new Matrix4x3f().translation((float) origin.x, (float) origin.y, (float) origin.z).rotate(rotation);
+        for (ParticleEmitter emitter : emitters) {
+            emitter.setLocalSpace(space, false);
+            emitter.setPos(origin);
+        }
+        BEAM_LAST_TICK.put(boss, tick);
+    }
+
+    private static void addBeamEmitter(TheDestroyer boss, List<ParticleEmitter> emitters, String name) {
+        ParticleEmitter emitter = new ParticleEmitter(boss.level(), boss.beamOrigin(), Confluence.asResource("destroyer_attack_" + name));
+        emitters.add(emitter);
+        MolangParticleEngine.INSTANCE._addEmitter(emitter);
     }
 
     private static ResourceLocation model(String section) {

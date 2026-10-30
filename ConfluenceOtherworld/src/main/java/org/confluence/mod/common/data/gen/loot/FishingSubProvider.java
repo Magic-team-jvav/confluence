@@ -74,9 +74,8 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         // 丰富（兜底）
         output.accept(ModLootTables.FISH_PLENTIFUL, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.COD).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(surfaceThroughSpace)
-                        )).setWeight(10))
+                        .add(LootItem.lootTableItem(Items.COD).setWeight(10))
+                        .add(LootItem.lootTableItem(Items.SALMON).setWeight(10))
                         .add(LootItem.lootTableItem(FoodItems.SEA_BASS).setWeight(10))
                         .add(LootItem.lootTableItem(FoodItems.PARTIAL_MOUTH_FISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
@@ -87,20 +86,13 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(FoodItems.TROUT).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
                         )).setWeight(20))
-                        .add(LootItem.lootTableItem(Items.COD).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
-                        )).setWeight(5))
+
                 )
         );
         // 普通
         output.accept(ModLootTables.FISH_COMMON, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.SALMON).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(surfaceThroughSpace)
-                        )).setWeight(5))
-                        .add(LootItem.lootTableItem(FoodItems.SALMON).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(surfaceThroughSpace)
-                        )).setWeight(5))
+
                         .add(LootItem.lootTableItem(Items.PUFFERFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(surfaceThroughSpace)
                         )).setWeight(2))
@@ -116,6 +108,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(FoodItems.NEON_GREASE_CARP).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace)
                         )).setWeight(60))
+                        .add(LootItem.lootTableItem(FoodItems.SALMON).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
+                        )).setWeight(20))
                         .add(LootItem.lootTableItem(FoodItems.TUNA).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
                         )).setWeight(20))

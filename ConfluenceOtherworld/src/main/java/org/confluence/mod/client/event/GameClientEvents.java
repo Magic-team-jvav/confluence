@@ -260,8 +260,10 @@ public final class GameClientEvents {
         VirtualEntityRenderer.clear();
         AfterimageManager.close();
         WholeModelTransparency.close();
-        ModClientSetups.clearEntityDisplayRenderer();
+        /// 世界卸载时清理生物显示物品渲染器中缓存的实体和假玩家。
+        ModClientSetups.ENTITY_DISPLAY.clear();
         ClientSoulHandler.clearHudPlayers();
+        OpalLightIntegration.clearWorld();
     }
 
     private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
@@ -269,7 +271,6 @@ public final class GameClientEvents {
         DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
-        OpalLightIntegration.clearWorld();
         ClientNPCDialogs.clear();
         ClientWeaponInputManager.reset();
         GunHandler.reset();

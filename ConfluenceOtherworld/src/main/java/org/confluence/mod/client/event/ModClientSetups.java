@@ -50,7 +50,6 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
@@ -70,10 +69,10 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
@@ -210,10 +209,6 @@ public final class ModClientSetups {
         }
     }
 
-    /// 世界卸载时清理生物显示物品渲染器中缓存的实体和假玩家。
-    public static void clearEntityDisplayRenderer() {
-        ENTITY_DISPLAY.clear();
-    }
     static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {

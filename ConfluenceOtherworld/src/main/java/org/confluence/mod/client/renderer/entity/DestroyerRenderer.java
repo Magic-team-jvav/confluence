@@ -55,7 +55,8 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             public void transform(GeoBone bone, E entity, Matrix4x3f matrix, float partialTick) {
                 matrix.scale(TheDestroyer.MODEL_SCALE);
-                applyRotations(entity, y -> matrix.translate(0, y, 0), matrix::rotate, z -> matrix.translate(0, -MODEL_CENTER_Y, z), partialTick);
+                matrix.translate(0, TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE), 0);
+                applyRotations(entity, matrix::rotate, z -> matrix.translate(0, -MODEL_CENTER_Y, z), partialTick);
                 RegisterLocatorPreTransformerEvent.Transformer.defaultTransformer(bone, entity, matrix, partialTick);
             }
         };
@@ -182,11 +183,11 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
 
     @Override
     protected void applyRotations(T entity, PoseStack pose, float age, float yaw, float partialTick) {
-        applyRotations(entity, y -> pose.translate(0, y, 0), pose::mulPose, z -> pose.translate(0, -MODEL_CENTER_Y, z), partialTick);
+        pose.translate(0, TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE), 0);
+        applyRotations(entity, pose::mulPose, z -> pose.translate(0, -MODEL_CENTER_Y, z), partialTick);
     }
 
-    public static void applyRotations(Entity entity, FloatConsumer y, Consumer<Quaternionf> rotate, FloatConsumer z, float partialTick) {
-        y.accept(TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE));
+    private static void applyRotations(Entity entity, Consumer<Quaternionf> rotate, FloatConsumer z, float partialTick) {
         TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
         int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
         rotate.accept(head.getBody().getRenderRotation(index, partialTick));

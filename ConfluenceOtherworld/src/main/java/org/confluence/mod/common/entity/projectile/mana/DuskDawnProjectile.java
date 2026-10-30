@@ -121,7 +121,7 @@ public class DuskDawnProjectile extends AbstractManaProjectile {
         if (!level().isClientSide) return;
         ParticleEmitter emitter = new ParticleEmitter(level(), position(), Confluence.asResource(path));
         emitter.hideOutline = true;
-        MolangParticleEngine.INSTANCE._addEmitter(emitter);
+        MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 
     private @Nullable Entity resolveTarget() {

@@ -310,7 +310,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             flameEmitter.attachEntity(this);
             flameEmitter.hideOutline = true;
             flameEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
-            MolangParticleEngine.INSTANCE._addEmitter(flameEmitter);
+            MolangParticleEngine.INSTANCE.addEmitter(flameEmitter);
         }
     }
 

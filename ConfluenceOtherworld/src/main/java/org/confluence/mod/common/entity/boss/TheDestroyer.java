@@ -836,7 +836,7 @@ public class TheDestroyer extends BaseBoss {
         } else if (level().isClientSide && event == DEBRIS_EVENT) {
             DestroyerDebrisParticle.spawn(entityData.get(DEBRIS_ORIGIN), entityData.get(DEBRIS_STATE));
         } else if (level().isClientSide && event == HURT_SPARK_EVENT) {
-            MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
+            MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
                     Confluence.asResource("mechanical_boss_hurt_spark"),
                     new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
         } else if (level().isClientSide && (event == DIG_EVENT || event == CROSS_EVENT)) {

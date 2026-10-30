@@ -296,7 +296,7 @@ public class BaseArrowEntity extends AbstractArrow {
                 this.emitter = new ParticleEmitter(level(), position(), location);
                 emitter.attachEntity(this);
                 emitter.hideOutline = true;
-                MolangParticleEngine.INSTANCE._addEmitter(emitter);
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
         }
     }

@@ -167,7 +167,7 @@ final class LanternNightSprite {
             };
             emitter.attachEntity(player);
             emitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE._addEmitter(emitter);
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         } else if (emitter != null) {
             emitter.remove();
             emitter = null;

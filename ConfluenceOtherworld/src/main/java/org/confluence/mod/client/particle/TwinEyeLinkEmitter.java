@@ -48,7 +48,7 @@ public final class TwinEyeLinkEmitter extends ParticleEmitter {
         if (!spawned) nextParticle = 0;
         super.tick();
         setPos(owner.getBoundingBox().getCenter());
-        var particles = MolangParticleEngine.INSTANCE._getParticlesForEmitter(this);
+        var particles = MolangParticleEngine.INSTANCE.getParticlesForEmitter(this);
         if (active && particles != null) {
             // 复用同一批粒子，连接失效时由资源中的存活条件统一清理。
             for (var particle : particles) particle.self().setLifetime(particle.getAge() + 20);

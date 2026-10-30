@@ -206,10 +206,6 @@ public final class ModClientSetups {
         }
     }
 
-    /// 世界卸载时清理生物显示物品渲染器中缓存的实体和假玩家。
-    public static void clearEntityDisplayRenderer() {
-        ENTITY_DISPLAY.clear();
-    }
     static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED::getValue);
     static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR::getValue);
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);

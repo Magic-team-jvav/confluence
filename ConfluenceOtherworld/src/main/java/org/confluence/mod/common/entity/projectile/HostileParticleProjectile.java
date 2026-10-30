@@ -109,7 +109,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
                 waterEmitter.attachEntity(this);
                 waterEmitter.hideOutline = true;
                 waterEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
-                MolangParticleEngine.INSTANCE._addEmitter(waterEmitter);
+                MolangParticleEngine.INSTANCE.addEmitter(waterEmitter);
             }
             return;
         }

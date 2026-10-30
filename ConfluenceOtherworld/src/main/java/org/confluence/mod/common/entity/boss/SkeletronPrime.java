@@ -354,7 +354,7 @@ public class SkeletronPrime extends BaseBoss {
     @Override
     public void handleEntityEvent(byte event) {
         if (level().isClientSide && event == HURT_SPARK_EVENT) {
-            MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
+            MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
                     Confluence.asResource("mechanical_boss_hurt_spark"),
                     new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
         } else super.handleEntityEvent(event);

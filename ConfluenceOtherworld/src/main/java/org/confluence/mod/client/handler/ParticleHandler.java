@@ -45,7 +45,7 @@ public final class ParticleHandler {
     public static void addEmitter(Vec3 pos, String path) {
         ParticleEmitter emitter = new ParticleEmitter(level, pos, Confluence.asResource(path));
         emitter.hideOutline = true;
-        MolangParticleEngine.INSTANCE._addEmitter(emitter);
+        MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 
     public static int getHeight(BlockPos.MutableBlockPos mutable, int bx, int bz) {

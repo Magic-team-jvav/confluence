@@ -55,7 +55,8 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             public void transform(GeoBone bone, E entity, Matrix4x3f matrix, float partialTick) {
                 matrix.scale(TheDestroyer.MODEL_SCALE);
-                applyRotations(entity, y -> matrix.translate(0, y, 0), matrix::rotate, z -> matrix.translate(0, -MODEL_CENTER_Y, z), partialTick);
+                matrix.translate(0, TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE), 0);
+                applyRotations(entity, matrix::rotate, z -> matrix.translate(0, -MODEL_CENTER_Y, z), partialTick);
                 RegisterLocatorPreTransformerEvent.Transformer.defaultTransformer(bone, entity, matrix, partialTick);
             }
         };
@@ -124,9 +125,9 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         List<ParticleEmitter> emitters = BEAM_EMITTERS.computeIfAbsent(boss, ignored -> new ArrayList<>());
         if (tick < 100 && tick != last) {
             int index = Math.clamp(81 - tick * 82 / 100, 0, 81);
-            if (index != Math.clamp(81 - last * 82 / 100, 0, 81)) {
+            if (index != Math.clamp(81 - last * 82L / 100, 0, 81)) {
                 Vec3 pos = boss.getBody().getPosition(index);
-                MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(boss.level(), pos, Confluence.asResource("destroyer_attack_lightning")));
+                MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(boss.level(), pos, Confluence.asResource("destroyer_attack_lightning")));
             }
         }
         if (last < 100 && tick >= 100) {
@@ -161,7 +162,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
     private static void addBeamEmitter(TheDestroyer boss, List<ParticleEmitter> emitters, String name) {
         ParticleEmitter emitter = new ParticleEmitter(boss.level(), boss.beamOrigin(), Confluence.asResource("destroyer_attack_" + name));
         emitters.add(emitter);
-        MolangParticleEngine.INSTANCE._addEmitter(emitter);
+        MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 
     private static ResourceLocation model(String section) {
@@ -181,11 +182,11 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
 
     @Override
     protected void applyRotations(T entity, PoseStack pose, float age, float yaw, float partialTick, float scale) {
-        applyRotations(entity, y -> pose.translate(0, y, 0), pose::mulPose, z -> pose.translate(0, -MODEL_CENTER_Y, z), partialTick);
+        pose.translate(0, TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE), 0);
+        applyRotations(entity, pose::mulPose, z -> pose.translate(0, -MODEL_CENTER_Y, z), partialTick);
     }
 
-    public static void applyRotations(Entity entity, FloatConsumer y, Consumer<Quaternionf> rotate, FloatConsumer z, float partialTick) {
-        y.accept(TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE));
+    private static void applyRotations(Entity entity, Consumer<Quaternionf> rotate, FloatConsumer z, float partialTick) {
         TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
         int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
         rotate.accept(head.getBody().getRenderRotation(index, partialTick));

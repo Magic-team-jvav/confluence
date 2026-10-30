@@ -121,7 +121,6 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.lwjgl.glfw.GLFW;
-import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.io.IOException;
@@ -207,7 +206,7 @@ public final class GameClientEvents {
             LucyTheAxeHandler.handle(player.getId());
             ParticleHandler.handle(player);
             SwordProjectileInputHandler.handle(player, attackHeld);
-            LeftClickItemHandler.tick(player, attackHeld);
+            LeftClickItemHandler.tick(minecraft, player, attackHeld);
             FlailHandler.handle(player, attackHeld);
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientBiomeEffectSystem.tick(player);
@@ -267,9 +266,10 @@ public final class GameClientEvents {
         VirtualEntityRenderer.clear();
         AfterimageManager.close();
         WholeModelTransparency.close();
-        ModClientSetups.clearEntityDisplayRenderer();
+        /// 世界卸载时清理生物显示物品渲染器中缓存的实体和假玩家。
+        ModClientSetups.ENTITY_DISPLAY.clear();
         ClientSoulHandler.clearHudPlayers();
-        MolangParticleEngine.INSTANCE.removeAll();
+        OpalLightIntegration.clearWorld();
     }
 
     @SubscribeEvent
@@ -278,7 +278,6 @@ public final class GameClientEvents {
         DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
-        OpalLightIntegration.clearWorld();
         ClientNPCDialogs.clear();
         ClientWeaponInputManager.reset();
         GunHandler.reset();

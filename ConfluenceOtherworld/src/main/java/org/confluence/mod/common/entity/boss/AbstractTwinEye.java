@@ -293,7 +293,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         if (level().isClientSide) {
             if (isRetinazer() && getEncounterUUID() != null && (linkEmitter == null || linkEmitter.isRemoved())) {
                 linkEmitter = new TwinEyeLinkEmitter(this);
-                MolangParticleEngine.INSTANCE._addEmitter(linkEmitter);
+                MolangParticleEngine.INSTANCE.addEmitter(linkEmitter);
             }
             previousBank = visualBank;
             visualBank = Mth.lerp(BANK_SMOOTHING, visualBank, entityData.get(DATA_BANK));
@@ -484,7 +484,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
     @Override
     public void handleEntityEvent(byte event) {
         if (level().isClientSide && event == HURT_SPARK_EVENT) {
-            MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
+            MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
                     Confluence.asResource("mechanical_boss_hurt_spark"),
                     new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
         } else super.handleEntityEvent(event);

@@ -1,0 +1,68 @@
+{
+    "format_version": "1.10.0",
+    "particle_effect": {
+        "description": {
+            "identifier": "confluence:destroyer_attack_lightning",
+            "basic_render_parameters": {
+                "material": "particles_add",
+                "texture": "confluence:destroyer_attack/lightning"
+            }
+        },
+        "components": {
+            "minecraft:emitter_rate_instant": {
+                "num_particles": "math.random(1,50)"
+            },
+            "minecraft:emitter_lifetime_once": {
+                "active_time": 1
+            },
+            "minecraft:emitter_shape_entity_aabb": {},
+            "minecraft:particle_initialization": {
+                "per_render_expression": "v.size = 0.2 + (v.particle_age / v.particle_lifetime) * (v.particle_random_2 + 1) / 2;"
+            },
+            "minecraft:particle_lifetime_expression": {
+                "max_lifetime": "math.random(0.2, 1)"
+            },
+            "minecraft:particle_initial_spin": {
+                "rotation": "math.random(-180, 180)"
+            },
+            "minecraft:particle_initial_speed": "math.random(3,10)",
+            "minecraft:particle_motion_dynamic": {
+                "linear_drag_coefficient": 2
+            },
+            "minecraft:particle_appearance_billboard": {
+                "size": [
+                    "v.size",
+                    "v.size"
+                ],
+                "facing_camera_mode": "rotate_xyz",
+                "uv": {
+                    "texture_width": 16,
+                    "texture_height": 128,
+                    "flipbook": {
+                        "size_UV": [
+                            16,
+                            16
+                        ],
+                        "step_UV": [
+                            0,
+                            16
+                        ],
+                        "frames_per_second": 10,
+                        "max_frame": 8,
+                        "stretch_to_lifetime": true
+                    }
+                }
+            },
+            "minecraft:particle_appearance_tinting": {
+                "color": {
+                    "interpolant": "v.particle_age / v.particle_lifetime",
+                    "gradient": {
+                        "0.0": "#ffffffff",
+                        "0.5": "#FF5FF8FF",
+                        "1.0": "#002F00FF"
+                    }
+                }
+            }
+        }
+    }
+}

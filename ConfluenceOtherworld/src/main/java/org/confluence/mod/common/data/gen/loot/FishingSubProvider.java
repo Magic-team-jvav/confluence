@@ -1,7 +1,5 @@
 package org.confluence.mod.common.data.gen.loot;
 
-import java.util.List;
-import java.util.function.BiConsumer;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.loot.LootTableSubProvider;
@@ -35,6 +33,9 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
+
+import java.util.List;
+import java.util.function.BiConsumer;
 
 public record FishingSubProvider() implements LootTableSubProvider {
     @Override
@@ -78,25 +79,17 @@ public record FishingSubProvider() implements LootTableSubProvider {
         // 丰富（兜底）
         output.accept(ModLootTables.FISH_PLENTIFUL, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.COD).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(surfaceThroughSpace)
-                        )).setWeight(10))
+                        .add(LootItem.lootTableItem(Items.COD).setWeight(10))
+                        .add(LootItem.lootTableItem(Items.SALMON).setWeight(10))
                         .add(LootItem.lootTableItem(FoodItems.SEA_BASS).setWeight(10))
                         .add(LootItem.lootTableItem(FoodItems.PARTIAL_MOUTH_FISH).when(biomeAt(caveThroughSpace, isDesertOrBadlands)).setWeight(60))
                         .add(LootItem.lootTableItem(FoodItems.ROCK_LOBSTER).when(biomeAt(caveThroughSpace, isDesertOrBadlands)).setWeight(30))
                         .add(LootItem.lootTableItem(FoodItems.TROUT).when(biomeAt(caveThroughSpace, isOceanOrBeach)).setWeight(20))
-                        .add(LootItem.lootTableItem(Items.COD).when(biomeAt(caveThroughSpace, isSnowyOrIcy)).setWeight(5))
                 )
         );
         // 普通
         output.accept(ModLootTables.FISH_COMMON, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.SALMON).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(surfaceThroughSpace)
-                        )).setWeight(5))
-                        .add(LootItem.lootTableItem(FoodItems.SALMON).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setY(surfaceThroughSpace)
-                        )).setWeight(5))
                         .add(LootItem.lootTableItem(Items.PUFFERFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(surfaceThroughSpace)
                         )).setWeight(2))
@@ -110,6 +103,7 @@ public record FishingSubProvider() implements LootTableSubProvider {
                                 LocationPredicate.Builder.location().setY(caveThroughSurface)
                         )).setWeight(300))
                         .add(LootItem.lootTableItem(FoodItems.NEON_GREASE_CARP).when(biomeAt(caveThroughSpace, isJungleOrLush)).setWeight(60))
+                        .add(LootItem.lootTableItem(FoodItems.SALMON).when(biomeAt(caveThroughSpace, isOceanOrBeach)).setWeight(20))
                         .add(LootItem.lootTableItem(FoodItems.TUNA).when(biomeAt(caveThroughSpace, isOceanOrBeach)).setWeight(20))
                         .add(LootItem.lootTableItem(FoodItems.RED_SNAPPER).when(biomeAt(caveThroughSpace, isOceanOrBeach)).setWeight(20))
                         .add(LootItem.lootTableItem(Items.PUFFERFISH).when(biomeAt(caveThroughSpace, isOceanOrBeach)).setWeight(5))

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.functional;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -34,7 +35,6 @@ import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
@@ -49,6 +49,8 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -153,10 +155,12 @@ public class BossConjuringBlock extends Block implements EntityBlock {
         switch (variant) {
             case TWINS -> entity.ensureBeacon(level, origin.add(LAMP_HEAD));
             case SKELETON_PRIME -> {
-                if (age % ANTENNA_INTERVAL == ANTENNA_PEAK_TICK) spawnEmitter(level, origin.add(ANTENNA_TIP), variant.particle());
+                if (age % ANTENNA_INTERVAL == ANTENNA_PEAK_TICK)
+                    spawnEmitter(level, origin.add(ANTENNA_TIP), variant.particle());
             }
             case DESTROYER -> {
-                if (age % EARTHSHAKER_INTERVAL == 0) spawnEmitter(level, origin.add(GROUND_CENTER), variant.particle());
+                if (age % EARTHSHAKER_INTERVAL == 0)
+                    spawnEmitter(level, origin.add(GROUND_CENTER), variant.particle());
             }
         }
     }
@@ -217,8 +221,10 @@ public class BossConjuringBlock extends Block implements EntityBlock {
         public boolean summon(ServerLevel level, Vec3 pos, @Nullable Player summoner) {
             return switch (this) {
                 case TWINS -> TwinEyeEncounter.summon(level, pos, summoner);
-                case DESTROYER -> summonSingle(level, BossEntities.THE_DESTROYER.get(), pos.add(0, 2.0, 0), summoner);
-                case SKELETON_PRIME -> summonSingle(level, BossEntities.SKELETRON_PRIME.get(), pos.add(0, 3.0, 0), summoner);
+                case DESTROYER ->
+                        summonSingle(level, BossEntities.THE_DESTROYER.get(), pos.add(0, 2.0, 0), summoner);
+                case SKELETON_PRIME ->
+                        summonSingle(level, BossEntities.SKELETRON_PRIME.get(), pos.add(0, 3.0, 0), summoner);
             };
         }
 
@@ -234,7 +240,8 @@ public class BossConjuringBlock extends Block implements EntityBlock {
             }
             BossMultiplayerEnhancement.apply(boss, true);
             boss.setHealth(boss.getMaxHealth());
-            if (summoner != null && boss instanceof BaseBoss baseBoss) baseBoss.initializeSummonedCombat(summoner);
+            if (summoner != null && boss instanceof BaseBoss baseBoss)
+                baseBoss.initializeSummonedCombat(summoner);
             if (!level.addFreshEntity(boss)) {
                 boss.discard();
                 return false;
@@ -370,7 +377,32 @@ public class BossConjuringBlock extends Block implements EntityBlock {
 
         @Override
         public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-            consumer.accept(new SimpleGeoItemRenderer<BItem>(variant.geoModel(), variant.geoTexture(), variant.geoAnimation()));
+            consumer.accept(new IClientItemExtensions() {
+                private BlockEntityWithoutLevelRenderer renderer;
+
+                @Override
+                public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                    if (renderer == null) {
+                        renderer = new GeoItemRenderer<>(new GeoModel<BItem>() {
+                            @Override
+                            public ResourceLocation getModelResource(BItem item) {
+                                return item.variant.geoModel();
+                            }
+
+                            @Override
+                            public ResourceLocation getTextureResource(BItem item) {
+                                return item.variant.geoTexture();
+                            }
+
+                            @Override
+                            public ResourceLocation getAnimationResource(BItem item) {
+                                return item.variant.geoAnimation();
+                            }
+                        });
+                    }
+                    return renderer;
+                }
+            });
         }
 
         @Override

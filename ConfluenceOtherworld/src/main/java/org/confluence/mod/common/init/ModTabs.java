@@ -443,6 +443,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.building_blocks"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
+
                         LogBlockSet.acceptBuilding(output);
                         DecoBlockSet.acceptBuilding(output);
 
@@ -1150,6 +1151,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.food_and_potions"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
+
                         // 不要改成group，已经够清晰了
                         acceptAll(PotionItems.ITEMS, output);
                         acceptAll(FoodItems.ITEMS, output);
@@ -1161,6 +1163,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.tools"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
+
                         acceptAll(AxeItems.ITEMS, output, "axe");
                         acceptAll(PickaxeItems.ITEMS, output, "pickaxe");
                         acceptAll(PickaxeAxeItems.ITEMS, output, "pickaxe_axe");
@@ -1269,6 +1272,7 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.armors"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
+
                         CreativeModeTab.Output cactus_armor = GroupItem.belongsTo("cactus_armor", output);
                         cactus_armor.accept(ArmorItems.CACTUS_HELMET.get());
                         cactus_armor.accept(ArmorItems.CACTUS_CHESTPLATE.get());
@@ -2079,6 +2083,8 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(IconItems.SOULCERER_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.soulcerer"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
+
                         output.accept(SoulItems.FALLEN_SOUL_CORE);
                         CreativeModeTab.Output soulcerer_main_weapons = GroupItem.belongsTo("soulcerer_main_weapons", output);
                         soulcerer_main_weapons.accept(SoulItems.BROKEN_GLIMMER.get());
@@ -2108,6 +2114,8 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.entity"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
+
                         CreativeModeTab.Output crimson = GroupItem.belongsTo("crimson_entity", output);
                         crimson.accept(SpawnEggItems.CRIMSLIME_SPAWN_EGG.get());
                         crimson.accept(SpawnEggItems.BLOOD_CRAWLER_SPAWN_EGG.get());

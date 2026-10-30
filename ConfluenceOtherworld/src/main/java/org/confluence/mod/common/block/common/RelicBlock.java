@@ -19,7 +19,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.client.model.block.RelicBlockModel;
-import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -28,6 +27,8 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
@@ -99,7 +100,22 @@ public class RelicBlock extends HorizontalDirectionalBlock implements EntityBloc
                 public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                     if (renderer == null) {
                         ResourceLocation[] locations = RelicBlockModel.CACHE.get(getBlock());
-                        renderer = new SimpleGeoItemRenderer<BItem>(locations[0], locations[1], locations[2]).getCustomRenderer();
+                        renderer = new GeoItemRenderer<>(new GeoModel<BItem>() {
+                            @Override
+                            public ResourceLocation getModelResource(BItem bItem) {
+                                return locations[0];
+                            }
+
+                            @Override
+                            public ResourceLocation getTextureResource(BItem bItem) {
+                                return locations[1];
+                            }
+
+                            @Override
+                            public ResourceLocation getAnimationResource(BItem bItem) {
+                                return locations[2];
+                            }
+                        });
                     }
                     return renderer;
                 }

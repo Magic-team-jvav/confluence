@@ -348,6 +348,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.monsterAttributesMultiplierKnockbackResistance.tooltip", "Multiplies knockback resistance, respecting its attribute limits. Zero remains zero.", "调整击退抗性，结果仍受属性自身上限约束；原本为 0 时仍为 0。");
         language.add("confluence.configuration.monsterAttributesMultiplierMovementSpeed", "Enemy Movement Speed Multiplier", "敌怪移动速度倍率");
         language.add("confluence.configuration.monsterAttributesMultiplierMovementSpeed.tooltip", "Multiplies movement speed. Does not alter fixed-velocity AI movement.", "调整移动速度属性，不改变 AI 中独立指定的固定运动速度。");
+        language.add("confluence.configuration.muteWardenSound", "Mute Warden Sounds", "关闭监守者声音");
+        language.add("confluence.configuration.muteWardenSound.tooltip", "Mute every Warden sound: footsteps, heartbeat, roars, sonic boom and so on. Client-side only, disabled by default.", "开启后不再播放监守者的所有音效（脚步、心跳、咆哮、音波等）。仅客户端生效，默认关闭。");
         language.add("confluence.configuration.npcAttackBlacklist", "NPC Attack Blacklist", "NPC主动攻击黑名单");
         language.add("confluence.configuration.npcAttackBlacklist.tooltip", "Enter a mod ID, an entity ID such as minecraft:zombie, a tag such as #forge:bosses, or regex: followed by a full-ID pattern", "填写模组 ID、实体 ID（如 minecraft:zombie）、实体标签（如 #forge:bosses），或以 regex: 开头的完整 ID 正则表达式");
         language.add("confluence.configuration.npcAutoRespawn", "NPC Automatic Respawning", "NPC自动重生");

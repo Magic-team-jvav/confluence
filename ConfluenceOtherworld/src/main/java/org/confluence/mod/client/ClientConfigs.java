@@ -38,6 +38,13 @@ public final class ClientConfigs {
     public static boolean windSlantsRainClouds = true;
     /// 暴风雪是否播放环境风声（露天与室内为两种音效）。
     public static boolean blizzardAmbience = true;
+    /// 关闭监守者的全部音效（脚步、心跳、咆哮、音波等）。默认关闭。
+    public static boolean muteWardenSound = false;
+
+    /// 是否屏蔽监守者音效：**优先读实时配置**（配置界面刚点完立即生效），配置尚未加载时才回落到缓存字段。
+    public static boolean isWardenSoundDisabled() {
+        return MUTE_WARDEN_SOUND == null ? muteWardenSound : MUTE_WARDEN_SOUND.get();
+    }
 
     public static int rainbowCount = 3;
     public static boolean rainbowGradient = false;
@@ -175,12 +182,14 @@ public final class ClientConfigs {
 
     private static BooleanValue WIND_SLANTS_RAIN_CLOUDS;
     private static BooleanValue BLIZZARD_AMBIENCE;
+    private static BooleanValue MUTE_WARDEN_SOUND;
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
         windSlantsRainClouds = WIND_SLANTS_RAIN_CLOUDS.get();
         blizzardAmbience = BLIZZARD_AMBIENCE.get();
+        muteWardenSound = MUTE_WARDEN_SOUND.get();
 
         rainbowCount = RAINBOW_COUNT.get();
         rainbowGradient = RAINBOW_GRADIENT.get();
@@ -346,6 +355,8 @@ public final class ClientConfigs {
             builder.push("Entity");
             ENABLE_NON_SPIDER_MODEL = builder.comment("Replace spiders and sand poachers with non-spider models. Requires a game restart.")
                     .define("enableNonSpiderModel", false);
+            MUTE_WARDEN_SOUND = builder.comment("Mute every Warden sound: footsteps, heartbeat, roars, sonic boom and so on. Client-side only, disabled by default.")
+                    .define("muteWardenSound", false);
             BLOODY_EFFECT = builder.define("bloodyEffect", true);
             GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
             DAMAGE_INDICATOR = builder.defineEnum("damageIndicator", IndicatorMode.VIRTUAL);

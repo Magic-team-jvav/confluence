@@ -1164,8 +1164,10 @@ public class ModDataProvider {
             register(context, NATURES_GIFT, configured.getOrThrow(ConfiguredFeatures.NATURES_GIFT), count3, inSquare, bottomThroughSurface, biome);
             register(context, NO_TRAPS_GRAVITATION_TRAP, configured.getOrThrow(ConfiguredFeatures.GRAVITATION_TRAP), noTraps, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12), biome);
             register(context, NO_TRAPS_PNEUMATIC_TRAP, configured.getOrThrow(ConfiguredFeatures.PNEUMATIC_TRAP), noTraps, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12), biome);
+            // 幽匿陷阱：平均 10 → 12.5 区块一次（生成率降至 80%）。原版 rarity 只能表达 1/整数，
+            // 所以用 rarity 25 + 每次 2 个来表达 2/25 = 0.08 个/区块。
             register(context, NO_TRAPS_SCULK_TRAP, configured.getOrThrow(ConfiguredFeatures.SCULK_TRAP),
-                    noTraps, RarityFilter.onAverageOnceEvery(10), inSquare, bottomThroughUnderground,
+                    noTraps, RarityFilter.onAverageOnceEvery(25), CountPlacement.of(2), inSquare, bottomThroughUnderground,
                     EnvironmentScanPlacement.scanningFor(
                             Direction.DOWN,
                             BlockPredicate.solid(),

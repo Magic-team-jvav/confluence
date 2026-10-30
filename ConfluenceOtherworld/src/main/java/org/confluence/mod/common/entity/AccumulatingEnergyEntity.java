@@ -125,7 +125,7 @@ public class AccumulatingEnergyEntity extends Entity {
             emitter.attachEntity(this);
             emitter.hideOutline = true;
             emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, 0.5F, 0));
-            MolangParticleEngine.INSTANCE._addEmitter(emitter);
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }
 

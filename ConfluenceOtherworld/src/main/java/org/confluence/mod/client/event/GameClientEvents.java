@@ -102,7 +102,6 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.lwjgl.glfw.GLFW;
-import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
@@ -263,7 +262,6 @@ public final class GameClientEvents {
         WholeModelTransparency.close();
         ModClientSetups.clearEntityDisplayRenderer();
         ClientSoulHandler.clearHudPlayers();
-        MolangParticleEngine.INSTANCE.removeAll();
     }
 
     private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {

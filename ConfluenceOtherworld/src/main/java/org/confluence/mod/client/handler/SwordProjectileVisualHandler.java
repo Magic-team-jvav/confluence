@@ -40,7 +40,7 @@ public final class SwordProjectileVisualHandler implements SwordProjectileVisual
                 ParticleEmitter emitter = new ParticleEmitter(projectile.level(), projectile.position(), effect.emitter());
                 emitter.attachEntity(projectile);
                 emitter.hideOutline = true;
-                MolangParticleEngine.INSTANCE._addEmitter(emitter);
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
         }
     }

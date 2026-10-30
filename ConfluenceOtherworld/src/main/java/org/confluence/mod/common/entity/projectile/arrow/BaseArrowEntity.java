@@ -25,7 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
@@ -301,7 +300,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
                 this.emitter = new ParticleEmitter(level(), position(), location);
                 emitter.attachEntity(this);
                 emitter.hideOutline = true;
-                MolangParticleEngine.INSTANCE._addEmitter(emitter);
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
         }
     }

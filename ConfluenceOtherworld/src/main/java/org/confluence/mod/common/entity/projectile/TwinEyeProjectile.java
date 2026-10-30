@@ -16,7 +16,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
@@ -208,7 +207,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
             flameEmitter = new ParticleEmitter(level(), position(), Confluence.asResource(effect));
             flameEmitter.attachEntity(this);
             flameEmitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE._addEmitter(flameEmitter);
+            MolangParticleEngine.INSTANCE.addEmitter(flameEmitter);
         }
         /// 新联动特效全部由粒子风暴定义维护，不再叠加逐刻生成的原版粒子。
         if (isGiantFlame() || entityData.get(RAIN)) return;
@@ -225,7 +224,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
             ParticleEmitter burst = new ParticleEmitter(level(), position(), Confluence.asResource("twins_flame_burst"));
             /// 一次性发射数量和寿命由粒子定义控制，Java 只负责触发。
             burst.hideOutline = true;
-            MolangParticleEngine.INSTANCE._addEmitter(burst);
+            MolangParticleEngine.INSTANCE.addEmitter(burst);
         } else super.handleEntityEvent(event);
     }
 

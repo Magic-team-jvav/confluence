@@ -20,7 +20,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.particle.BladeTrailEmitter;
@@ -232,7 +231,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
 
     private ParticleEmitter createEmitter(Vec3 position, ResourceLocation particle, double end) {
         ParticleEmitter emitter = new BladeTrailEmitter(this, position, particle, end);
-        MolangParticleEngine.INSTANCE._addEmitter(emitter);
+        MolangParticleEngine.INSTANCE.addEmitter(emitter);
         return emitter;
     }
 

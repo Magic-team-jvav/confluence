@@ -693,7 +693,7 @@ public class Retinazer extends AbstractTwinEye {
             ParticleEmitter flash = new ParticleEmitter(level(), getBeamOrigin(), Confluence.asResource("twins_laser_flash"));
             flash.hideOutline = true;
             flash.getVars().setValue("variable.flash_scale", instance -> event == MUZZLE_WARNING_EVENT ? 0.6F : 1.0F);
-            MolangParticleEngine.INSTANCE._addEmitter(flash);
+            MolangParticleEngine.INSTANCE.addEmitter(flash);
         } else super.handleEntityEvent(event);
     }
 

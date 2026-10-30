@@ -123,10 +123,10 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         }
         List<ParticleEmitter> emitters = BEAM_EMITTERS.computeIfAbsent(boss, ignored -> new ArrayList<>());
         if (tick < 100 && tick != last) {
-            int index = Math.max(0, Math.min(81, 81 - tick * 82 / 100));
+            int index = Math.min(81, 81 - tick * 82 / 100);
             if (index != Math.max(0, Math.min(81, 81 - last * 82 / 100))) {
                 Vec3 pos = boss.getBody().getPosition(index);
-                MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(boss.level(), pos, Confluence.asResource("destroyer_attack_lightning")));
+                MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(boss.level(), pos, Confluence.asResource("destroyer_attack_lightning")));
             }
         }
         if (last < 100 && tick >= 100) {
@@ -162,7 +162,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
     private static void addBeamEmitter(TheDestroyer boss, List<ParticleEmitter> emitters, String name) {
         ParticleEmitter emitter = new ParticleEmitter(boss.level(), boss.beamOrigin(), Confluence.asResource("destroyer_attack_" + name));
         emitters.add(emitter);
-        MolangParticleEngine.INSTANCE._addEmitter(emitter);
+        MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 
     private static ResourceLocation model(String section) {

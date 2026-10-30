@@ -19,7 +19,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
@@ -189,7 +188,7 @@ public class BoomerangProjectile extends Projectile {
         emitter.attachEntity(this);
         emitter.hideOutline = true;
         emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
-        MolangParticleEngine.INSTANCE._addEmitter(emitter);
+        MolangParticleEngine.INSTANCE.addEmitter(emitter);
         this.runeEmitter = emitter;
     }
 

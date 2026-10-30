@@ -14,10 +14,10 @@ import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.mesdag.particlestorm.api.ParticleEmitterAttachable;
 import org.mesdag.particlestorm.data.component.EmitterRate;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.mixed.IPSAnimatableInstanceCache;
+import org.mesdag.particlestorm.mixed.IPSEntity;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -145,7 +145,7 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
     }
 
     public void emitHurtSparks() {
-        MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
+        MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level(), getBoundingBox().getCenter(),
                 Confluence.asResource("mechanical_boss_hurt_spark"),
                 new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
     }
@@ -192,27 +192,25 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         /// TODO 侧翼开合动画补齐后由 open 控制切换，滚动单独应用于身体纵轴。
-        ((ParticleEmitterAttachable) (Object) this).getVariableTable().setValue("variable.destroyer_exhaust",
-                instance -> open && getParent().isAlive() && getParent().tickCount <= exhaustUntilTick ? 1.0F : 0.0F);
-        ((ParticleEmitterAttachable) (Object) this).getVariableTable().setValue("variable.destroyer_exhaust_strength",
-                instance -> getParent().tickCount <= exhaustUntilTick ? 1.0F : CRUISE_EXHAUST_STRENGTH);
+        IPSEntity.of(this).getVariableTable().setValue("variable.destroyer_exhaust", instance -> open && getParent().isAlive() && getParent().tickCount <= exhaustUntilTick ? 1.0F : 0.0F);
+        IPSEntity.of(this).getVariableTable().setValue("variable.destroyer_exhaust_strength", instance -> getParent().tickCount <= exhaustUntilTick ? 1.0F : CRUISE_EXHAUST_STRENGTH);
         RawAnimation fire = RawAnimation.begin().thenLoop("fire");
         controllers.add(new AnimationController<>(this, state -> {
             if (isTail() || index % 2 == 0) return PlayState.STOP;
             boolean boost = open && getParent().isAlive() && getParent().tickCount <= exhaustUntilTick;
-            boolean emitting = open && getParent().isAlive()
-                    && (getParent().getMode() == TheDestroyer.Mode.SKY || boost);
+            boolean emitting = open && getParent().isAlive() && (getParent().getMode() == TheDestroyer.Mode.SKY || boost);
             int activeGroup = (getParent().tickCount / EXHAUST_GROUP_TICKS) % EXHAUST_GROUP_COUNT;
             boolean firing = emitting && (index / 2) % EXHAUST_GROUP_COUNT == activeGroup;
             /// 1.5.1 不会更新 inactive 发射器的寿命表达式；在动画回调中显式开关已绑定的发射器。
             for (var ids : IPSAnimatableInstanceCache.of(cache).particlestorm$getCachedId().values()) {
                 for (int id : ids) {
-                    ParticleEmitter emitter = MolangParticleEngine.getEmitter(id);
+                    ParticleEmitter emitter = MolangParticleEngine.INSTANCE.getEmitter(id);
                     if (emitter != null && !emitter.isRemoved()) {
                         emitter.active = firing && !getParent().isSolid(emitter.getPosition());
                         /// 1.5.1 的 steady 速率只在初始化时计算；重新应用现有组件以更新当前体节的喷流强度。
-                        for (var component : emitter.getPreset().components)
+                        for (var component : emitter.getPreset().components) {
                             if (component instanceof EmitterRate.Steady rate) rate.apply(emitter);
+                        }
                     }
                 }
             }

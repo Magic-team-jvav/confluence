@@ -15,7 +15,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
@@ -64,7 +63,7 @@ public class FallingStarItemEntity extends ItemEntity {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
                 emitter.attachEntity(this);
                 emitter.hideOutline = true;
-                MolangParticleEngine.INSTANCE._addEmitter(emitter);
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
             float y = Mth.sin(getAge() / 10.0F + bobOffs) * 0.1F;
             emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, 0.35F + y, 0));

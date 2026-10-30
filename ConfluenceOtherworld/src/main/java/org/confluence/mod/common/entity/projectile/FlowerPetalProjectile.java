@@ -11,7 +11,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -42,7 +41,7 @@ public class FlowerPetalProjectile extends Projectile {
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal"));
             emitter.attachEntity(this);
-            MolangParticleEngine.INSTANCE._addEmitter(emitter);
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();

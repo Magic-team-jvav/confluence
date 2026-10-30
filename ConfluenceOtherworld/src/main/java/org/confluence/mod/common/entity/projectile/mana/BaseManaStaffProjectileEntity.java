@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import com.mojang.serialization.Codec;
-
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -15,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
@@ -92,7 +90,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
             this.emitter = new ParticleEmitter(level(), position(), particleId, expression);
             emitter.attachEntity(this);
             emitter.hideOutline = true;
-            MolangParticleEngine.INSTANCE._addEmitter(emitter);
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
 
         doAgeCheck(200);

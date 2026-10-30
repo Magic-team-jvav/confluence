@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import com.mojang.datafixers.util.Pair;
-
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +24,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -134,7 +132,7 @@ public class TerraStyleExplosion extends Explosion {
 
     public static void handleClientExplode(Level level, double x, double y, double z, float radius) {
         level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
-        MolangParticleEngine.INSTANCE._addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)));
+        MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)));
     }
 
     public static Explosion terraExplode(

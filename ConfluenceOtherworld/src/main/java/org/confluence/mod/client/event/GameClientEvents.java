@@ -47,6 +47,7 @@ import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.AfterimageHelper;
+import org.confluence.mod.client.effect.RedGloveVfx;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.SpelunkerHelper;
@@ -117,6 +118,7 @@ public final class GameClientEvents {
         ClientWeaponInputManager.init();
         PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::crosshairBowRelease);
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
+        PortEventHandler.addListener((org.confluence.mod.api.event.RedGloveVisualEvent event) -> RedGloveVfx.receive(event.packet));
         PortEventHandler.addListener(GameClientEvents::clientTick$Post);
         PortEventHandler.addListener(GameClientEvents::playerTick$Post);
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingIn);
@@ -190,6 +192,7 @@ public final class GameClientEvents {
     private static void clientTick$Post(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         Minecraft minecraft = Minecraft.getInstance();
+        RedGloveVfx.tick(minecraft);
         WormDigSoundHandler.tick(minecraft);
         LocalPlayer player = minecraft.player;
 
@@ -253,6 +256,7 @@ public final class GameClientEvents {
 
     /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
     private static void clearClientWorldReferences() {
+        RedGloveVfx.clear();
         HitMarkerHud.clear();
         CrosshairHud.clear();
         ClientBestiary.getInstance().clearLevel();
@@ -412,6 +416,7 @@ public final class GameClientEvents {
 
     private static void renderLevelStage(RenderLevelStageEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
+        RedGloveVfx.render(event);
         BulletVfxManager.render(event);
         LocalPlayer player = minecraft.player;
         if (player == null) return;

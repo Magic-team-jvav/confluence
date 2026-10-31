@@ -34,5 +34,8 @@ run-data/
 generated/
 build/
 
+# local development tests
+/ConfluenceOtherworld/src/test/
+
 # submodules to ignore
 /TerraEntity/

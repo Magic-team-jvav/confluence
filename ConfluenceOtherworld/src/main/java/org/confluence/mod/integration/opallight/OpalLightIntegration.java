@@ -129,6 +129,8 @@ public final class OpalLightIntegration extends SimpleJsonResourceReloadListener
         // 附件、光束和闪光没有普通 EntityType，单独采集位置；色彩仍从 JSON 读取。
         DynamicLights.registerCollector(Confluence.asResource("effects"), INSTANCE::collect);
         DynamicLights.registerCollector(Confluence.asResource("particle_emitters"), INSTANCE::collectParticleEmitters);
+        DynamicLights.registerCollector(Confluence.asResource("red_glove"),
+                org.confluence.mod.client.effect.RedGloveVfx::collectLights);
     }
 
     public static boolean handlesEffect(ResourceLocation type) {

@@ -25,6 +25,12 @@ public class ManaWeaponItems {
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
+    public static final PortDeferredItem<RedGloveItem> RED_GLOVE = registerItemWithEnglishName("red_glove", "红手套", "Red Glove", RedGloveItem::new);
+    static {
+        LANGUAGE_PROVIDERS.add(language -> language.add("tooltip.item.confluence.red_glove.0",
+                "Hold attack: 5–8 lightning trunks, up to 32 blocks; every branch deals magic damage.",
+                "按住攻击：释放5–8道闪电主干，射程32格；所有支干均造成魔法伤害。"));
+    }
 
     // 魔法武器数值参考为 原数值÷2 +5 为基础值
     public static final PortDeferredItem<ManaStaffItem<WandOfSparkingProjectile>> WAND_OF_SPARKING = registerItemWithEnglishName("wand_of_sparking", "火花魔棒", "Wand of Sparking", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfSparkingProjectile::new, 5.6F, 2, 7.0F, 13, 0.14));

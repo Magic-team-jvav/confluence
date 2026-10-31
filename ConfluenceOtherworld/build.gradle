@@ -37,6 +37,17 @@ legacyForge {
         client {
             client()
             systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+            if (project.hasProperty('arcSurgeGpuProbe')) {
+                systemProperty 'confluence.arcSurge.gpuProbe', 'true'
+                gameDirectory = layout.projectDirectory.dir('run/arc-surge-skill-probe')
+            }
+            if (project.hasProperty('redGloveProbe')) {
+                systemProperty 'confluence.redGlove.probe', 'true'
+                gameDirectory = layout.projectDirectory.dir('run/red-glove-probe')
+            }
+            if (project.hasProperty('arcSurgePreview')) {
+                gameDirectory = layout.projectDirectory.dir('run/arc-surge-preview')
+            }
         }
         server {
             server()
@@ -75,11 +86,16 @@ legacyForge {
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
+            if (project.hasProperty('arcSurgeGpuProbe') || project.hasProperty('redGloveProbe') || project.hasProperty('arcSurgePreview')) {
+                sourceSet(sourceSets.test)
+            }
         }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+apply from: 'gradle/client-runtime-snapshot.gradle'
 
 configurations.configureEach {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
@@ -219,6 +235,12 @@ repositories {
 }
 
 dependencies {
+    testImplementation 'org.slf4j:slf4j-api:2.0.0'
+    testImplementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+    def lightningCheckOs = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+    def lightningCheckNatives = lightningCheckOs.contains('win') ? 'natives-windows' : lightningCheckOs.contains('mac') ? 'natives-macos' : 'natives-linux'
+    if (System.getProperty('os.arch') in ['aarch64', 'arm64']) lightningCheckNatives += '-arm64'
+    testImplementation "org.lwjgl:lwjgl:3.3.1:${lightningCheckNatives}"
     projectName.forEach { name ->
         modImplementation(project(":" + name))
         if ("PortLib" != name) {
@@ -387,6 +409,34 @@ jar {
 }
 
 java.withSourcesJar()
+
+// Legacy ModDev adds mapped Minecraft to main only; numerical test sources also use Vec3.
+sourceSets.test.compileClasspath += sourceSets.main.compileClasspath
+
+tasks.register('checkArcSurgePath', JavaExec) {
+    group = 'verification'
+    description = 'Checks conductor field-line geometry and bounded arc waves without launching Minecraft.'
+    dependsOn tasks.named('testClasses')
+    // Pure geometry needs compile dependencies, not the optional client-only runtime mod pack.
+    classpath = sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath
+    mainClass = 'org.confluence.mod.util.ConductorArcPathCheck'
+}
+
+tasks.register('checkArcSurgeLightning', JavaExec) {
+    group = 'verification'
+    description = 'Runs the migrated minecraft-lightning skill contracts and host geometry checks.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath
+    mainClass = 'org.confluence.mod.client.effect.lightning.ArcSurgeLightningCheck'
+}
+
+tasks.register('checkRedGlovePattern', JavaExec) {
+    group = 'verification'
+    description = 'Checks authoritative red glove fan, target coverage, branch roots and collision geometry.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath
+    mainClass = 'org.confluence.mod.common.item.mana.RedGlovePatternCheck'
+}
 
 ext {
     releasesUrl = "https://maven.confluence.ink/releases"

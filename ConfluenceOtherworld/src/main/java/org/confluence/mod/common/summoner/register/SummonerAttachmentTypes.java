@@ -23,6 +23,7 @@ public final class SummonerAttachmentTypes {
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<InfoData>> INFO = TYPES.registerSimple("summoner_info", () -> PortAttachmentType.builder(InfoData::new));
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ZenithData>> ZENITH_DATA = TYPES.registerSimple("zenith_data", () -> PortAttachmentType.builder(ZenithData::new));
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<RedGloveData>> RED_GLOVE_DATA = TYPES.registerSimple("red_glove_data", () -> PortAttachmentType.builder(RedGloveData::new));
 
     public static void init() {
     }

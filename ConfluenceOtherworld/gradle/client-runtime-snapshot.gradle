@@ -1,0 +1,75 @@
+// A running dev client must not lazily load classes from javac's mutable output directories.
+// IDE launches retain their live class directories for deliberate hot replacement.
+if (System.getProperty('idea.active') != 'true') {
+    tasks.named('runClient') {
+        notCompatibleWithConfigurationCache('Copies resolved mod folders into a unique runtime snapshot before launching.')
+        def runtimeDir = new File(rootProject.projectDir, '.gradle/client-runtime/' + UUID.randomUUID())
+        def replacements = [:]
+        def runtimeOutputs = sourceSets.main.output.files.toList()
+        if (project.hasProperty('arcSurgeGpuProbe') || project.hasProperty('redGloveProbe') || project.hasProperty('arcSurgePreview')) {
+            runtimeOutputs.addAll(sourceSets.test.output.files)
+        }
+        runtimeOutputs.each { source ->
+            replacements[source.absolutePath] = new File(runtimeDir, 'folder-' + replacements.size()).absolutePath
+        }
+        def originalClasspath = project.files(classpathProvider.from.toList())
+        dependsOn originalClasspath.buildDependencies
+        // Explicit Callable avoids Groovy coercing this lazy file list into Iterable.iterator().
+        classpathProvider.setFrom((java.util.concurrent.Callable) {
+            originalClasspath.files.collect { entry -> replacements[entry.absolutePath] ?: entry }
+        })
+        // Forge 1.20's development mod locator reads MOD_CLASSES (unlike newer loaders
+        // using fml.modFolders). The transform layer must use the same roots as JavaExec.
+        environmentProperty.put('MOD_CLASSES', replacements.values().collect {
+            project.mod_id + '%%' + it
+        }.join(File.pathSeparator))
+        doFirst {
+            replacements.values().each { new File(it).mkdirs() }
+            def prefix = '-Dfml.modFolders='
+            def modProviders = jvmArgumentProviders.findAll { provider ->
+                provider.asArguments().any { it.startsWith(prefix) }
+            }
+            if (modProviders.size() != 1) {
+                throw new GradleException('Cannot isolate client: expected one Forge mod-folder argument provider.')
+            }
+            def originalArgs = modProviders[0].asArguments().toList()
+            def modArg = originalArgs.find { it.startsWith(prefix) }
+            def copied = new HashSet<String>()
+            def entries = modArg.substring(prefix.length()).split(java.util.regex.Pattern.quote(File.pathSeparator))
+            def isolated = entries.collect { entry ->
+                def parts = entry.split('%%', 2)
+                if (parts.length != 2) throw new GradleException("Invalid Forge mod folder: ${entry}")
+                def source = new File(parts[1]).absoluteFile
+                def target = replacements[source.path]
+                // A source set without resources has no processResources output directory.
+                // Keep its registered root as an empty snapshot; required classes are checked below.
+                if (!source.isDirectory() && (source.exists() || target == null)) {
+                    throw new GradleException("Missing compiled mod folder: ${source}")
+                }
+                if (target == null) {
+                    target = new File(runtimeDir, 'folder-' + replacements.size()).absolutePath
+                    replacements[source.path] = target
+                }
+                if (copied.add(source.path)) {
+                    new File(target).mkdirs()
+                    if (source.isDirectory()) project.copy { from source; into target }
+                }
+                parts[0] + '%%' + target
+            }.join(File.pathSeparator)
+            def action = 'org/confluence/mod/network/c2s/LeftClickItemActionPacketC2S$Action.class'
+            def packet = 'org/confluence/mod/network/c2s/LeftClickItemActionPacketC2S.class'
+            if (!replacements.values().any { new File(it, packet).isFile() && new File(it, action).isFile() }) {
+                throw new GradleException('Incomplete client classes: left-click packet or Action enum is missing. Recompile before launching.')
+            }
+            // Replace the generated argument, preserving any other arguments from its provider.
+            jvmArgumentProviders.removeAll(modProviders)
+            jvmArgs(originalArgs.collect { it.startsWith(prefix) ? prefix + isolated : it })
+            if ((classpathProvider.files + classpath.files).any { replacements.containsKey(it.absolutePath) }) {
+                throw new GradleException('Mutable mod output remains on the client bootstrap classpath.')
+            }
+            runtimeDir.mkdirs()
+            new File(runtimeDir, 'mod-folders.txt').text = isolated
+            logger.lifecycle('Client runtime snapshot: ' + runtimeDir)
+        }
+    }
+}

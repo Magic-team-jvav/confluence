@@ -1,0 +1,143 @@
+{
+  "vertex": "confluence:arc_surge_bolt_halo",
+  "fragment": "confluence:arc_surge_bolt_halo",
+  "attributes": [
+    "Position",
+    "Color",
+    "UV0"
+  ],
+  "samplers": [
+    {
+      "name": "DepthSnapshot"
+    }
+  ],
+  "uniforms": [
+    {"name":"Core","type":"float","count":1,"values":[0]},
+    {"name":"Vivid","type":"float","count":1,"values":[0]},
+    {
+      "name": "ModelViewMat",
+      "type": "matrix4x4",
+      "count": 16,
+      "values": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "ProjMat",
+      "type": "matrix4x4",
+      "count": 16,
+      "values": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "Gain",
+      "type": "float",
+      "count": 1,
+      "values": [
+        3.8
+      ]
+    },
+    {
+      "name": "RoundJoint",
+      "type": "float",
+      "count": 1,
+      "values": [
+        0
+      ]
+    },
+    {
+      "name": "LateDepthEnabled",
+      "count": 1,
+      "type": "float",
+      "values": [
+        0
+      ]
+    },
+    {
+      "name": "OutputSize",
+      "count": 2,
+      "type": "float",
+      "values": [
+        1,
+        1
+      ]
+    },
+    {
+      "name": "WorldProjection",
+      "count": 16,
+      "type": "matrix4x4",
+      "values": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "name": "WorldModelView",
+      "count": 16,
+      "type": "matrix4x4",
+      "values": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  ]
+}

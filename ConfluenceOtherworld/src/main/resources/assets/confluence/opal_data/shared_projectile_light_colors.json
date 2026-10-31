@@ -42,19 +42,6 @@
             },
             {
                 "color": [
-                    1.0,
-                    0.84313725,
-                    0.37254902
-                ],
-                "light_level": 8,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:projectile_item": "confluence:ichor_bullet"
-                    }
-                }
-            },
-            {
-                "color": [
                     0.93333333,
                     0.6,
                     1.0
@@ -290,19 +277,6 @@
                 "entity_state": {
                     "conditions": {
                         "confluence:projectile_item": "confluence:cursed_bullet"
-                    }
-                }
-            },
-            {
-                "color": [
-                    1.0,
-                    0.84313725,
-                    0.37254902
-                ],
-                "light_level": 8,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:projectile_item": "confluence:ichor_bullet"
                     }
                 }
             },

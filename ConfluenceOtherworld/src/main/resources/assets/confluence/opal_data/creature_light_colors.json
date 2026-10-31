@@ -8,14 +8,6 @@
             ],
             "light_level": 6
         },
-        "confluence:pixie": {
-            "color": [
-                1.0,
-                0.913725,
-                0.431373
-            ],
-            "light_level": 6
-        },
         "confluence:illuminant_bat": {
             "color": [
                 0.980392,

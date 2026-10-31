@@ -26,7 +26,6 @@ public final class ModOpalDataProvider extends OpalDataProvider {
         // 宝石火把
         addTorch(TorchBlocks.RED_TORCH, 0xFF1A1A);
         addTorch(TorchBlocks.ORANGE_TORCH, 0xFF8000);
-        addTorch(TorchBlocks.YELLOW_TORCH, 0xFFFF00);
         addTorch(TorchBlocks.GREEN_TORCH, 0x00FF1A);
         addTorch(TorchBlocks.BLUE_TORCH, 0x0014FF);
         addTorch(TorchBlocks.WHITE_TORCH, 0xFFFFFF);

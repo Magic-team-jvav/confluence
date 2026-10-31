@@ -255,19 +255,6 @@
             },
             {
                 "color": [
-                    1.0,
-                    0.90980392,
-                    0.42745098
-                ],
-                "light_level": 12,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:projectile_item": "confluence:yellow_phaseblade"
-                    }
-                }
-            },
-            {
-                "color": [
                     0.44705882,
                     1.0,
                     0.55294118
@@ -354,19 +341,6 @@
                 "entity_state": {
                     "conditions": {
                         "confluence:projectile_item": "confluence:orange_phasesaber"
-                    }
-                }
-            },
-            {
-                "color": [
-                    1.0,
-                    0.90980392,
-                    0.42745098
-                ],
-                "light_level": 12,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:projectile_item": "confluence:yellow_phasesaber"
                     }
                 }
             },
@@ -465,19 +439,6 @@
             },
             {
                 "color": [
-                    1.0,
-                    0.90980392,
-                    0.42745098
-                ],
-                "light_level": 12,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:projectile_item": "confluence:yellow_phaseblade"
-                    }
-                }
-            },
-            {
-                "color": [
                     0.44705882,
                     1.0,
                     0.55294118
@@ -564,19 +525,6 @@
                 "entity_state": {
                     "conditions": {
                         "confluence:projectile_item": "confluence:orange_phasesaber"
-                    }
-                }
-            },
-            {
-                "color": [
-                    1.0,
-                    0.90980392,
-                    0.42745098
-                ],
-                "light_level": 12,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:projectile_item": "confluence:yellow_phasesaber"
                     }
                 }
             },

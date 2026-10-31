@@ -338,6 +338,8 @@ public final class ModClientEvents {
         // 纯 ParticleStorm 粒子表现的逻辑实体：本体不渲染，但必须登记渲染器（分发器不判空）
         event.registerEntityRenderer(SEABED_WATER_COLUMN.get(), InvisibleEntityRenderer::new); // 海床崩裂者水柱
         event.registerEntityRenderer(OPAL_STAFF_PROJECTILE.get(), InvisibleEntityRenderer::new); // 欧泊法杖洪流弹幕
+        event.registerEntityRenderer(ICHOR_STREAM.get(), InvisibleEntityRenderer::new); // 舌锋剑灵液流
+        event.registerEntityRenderer(MURAMASA_SLASH.get(), InvisibleEntityRenderer::new); // 村正刀光
         event.registerEntityRenderer(CHESTER.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/chester.geo.json"), Confluence.asResource("textures/entity/summon/chester.png"), Confluence.asResource("animations/entity/summon/chester.animation.json"))));
         event.registerEntityRenderer(FLYING_PIGGY_BANK.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/piggy_bank.geo.json"), Confluence.asResource("textures/entity/summon/piggy_bank.png"), Confluence.asResource("animations/entity/summon/piggy_bank.animation.json"))));
         event.registerEntityRenderer(RIDEABLE_SLIME.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/rideable/rideable_slime.geo.json"), Confluence.asResource("textures/entity/rideable/rideable_slime.png"), Confluence.asResource("animations/entity/rideable/rideable_slime.animation.json"))).withScale(RideableSlimeMountEntity.RENDER_SCALE).setShadowRadius(0.35F));

@@ -32,14 +32,6 @@
             ],
             "light_level": 5
         },
-        "confluence:star_in_a_bottle": {
-            "color": [
-                1.0,
-                0.862745,
-                0.294118
-            ],
-            "light_level": 5
-        },
         "confluence:water_candle": {
             "color": [
                 0.4,
@@ -101,14 +93,6 @@
                 0.70196078,
                 1.0,
                 0.4
-            ],
-            "light_level": 4
-        },
-        "confluence:soul_of_bright_in_a_bottle": {
-            "color": [
-                1.0,
-                0.90196078,
-                0.50196078
             ],
             "light_level": 4
         },

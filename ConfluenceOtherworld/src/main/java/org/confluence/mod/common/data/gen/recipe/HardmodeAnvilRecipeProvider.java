@@ -686,6 +686,41 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "ac",
                 "db"
         )));
+        // 机械三王召唤装置
+        // 灯塔装置：晶状体 x3、铁锭/铅锭 x5、光明之魂 x6
+        hardmodeAnvil(writer, FunctionalBlocks.DUAL_FLASH_LIGHTHOUSE.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.LENS),
+                'b', AmountIngredient.of(1, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+                'c', AmountIngredient.of(6, MaterialItems.SOUL_OF_LIGHT)
+        ), List.of(
+                " a ",
+                "bcb",
+                " b ",
+                "b b"
+        )));
+        // 基站：地牢魔骨 x30、铁锭/铅锭 x5、光明之魂 x3、暗影之魂 x3
+        hardmodeAnvil(writer, FunctionalBlocks.PHANTOM_BASE_STATION.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, ConsumableItems.DUNGEON_DEMON_BONE),
+                'b', AmountIngredient.of(5, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+                'c', AmountIngredient.of(3, MaterialItems.SOUL_OF_LIGHT),
+                'd', AmountIngredient.of(3, MaterialItems.SOUL_OF_NIGHT)
+        ), List.of(
+                "   b",
+                "aaaa",
+                "acda",
+                "aaaa"
+        )));
+        // 震地锤：腐肉/椎骨 x6、铁锭/铅锭 x5、暗影之魂 x6
+        hardmodeAnvil(writer, FunctionalBlocks.EARTHSHAKER_DEVICE.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.ROTTEN_CHUNK, MaterialItems.VERTEBRA),
+                'b', AmountIngredient.of(1, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+                'c', AmountIngredient.of(6, MaterialItems.SOUL_OF_NIGHT)
+        ), List.of(
+                "bcb",
+                "aba",
+                " b ",
+                " b "
+        )));
     }
 
     protected void hardmodeAnvil(Consumer<FinishedRecipe> writer, ItemStack result, PortShapedRecipePattern pattern) {

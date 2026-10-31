@@ -1937,6 +1937,7 @@ public final class ModTabs {
                         hardmode_broadswords.accept(SwordItems.ORICHALCUM_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.ADAMANTITE_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.TITANIUM_SWORD.get());
+                        hardmode_broadswords.accept(SwordItems.BLADETONGUE.get());
                         hardmode_broadswords.accept(SwordItems.BREAKER_BLADE.get());
                         hardmode_broadswords.accept(SwordItems.WAFFLES_IRON.get());
                         hardmode_broadswords.accept(SwordItems.ZENITH.get());

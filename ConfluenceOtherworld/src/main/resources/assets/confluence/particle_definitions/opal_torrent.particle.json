@@ -5,7 +5,7 @@
 			"identifier": "confluence:opal_torrent",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:water_stream"
+				"texture": "confluence:opal_splash"
 			}
 		},
 		"components": {

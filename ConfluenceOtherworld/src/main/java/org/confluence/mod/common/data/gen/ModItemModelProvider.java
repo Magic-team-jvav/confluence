@@ -100,6 +100,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         /// 裂天剑：物品栏用 16x 的 sky_fracture_inventory，手持/预览用 24x 的 sky_fracture；
         /// 整套模型（含毁灭刃同款手持参数）由手写 JSON 持有（models/item/sky_fracture*.json）。
         skip.add(ManaWeaponItems.SKY_FRACTURE.get());
+        skip.add(ManaWeaponItems.RED_GLOVE.get()); // Weapon logic first; no model/texture is authored yet.
 
         separateModel(SwordItems.BEE_KEEPER, templateReverse24x, "sword/");
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");

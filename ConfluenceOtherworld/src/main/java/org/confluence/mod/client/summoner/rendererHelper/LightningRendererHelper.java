@@ -12,6 +12,8 @@ import org.confluence.mod.client.summoner.LyraRenderTypes;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import java.util.List;
+
 /**
  * 雷电/闪电链渲染器（链式 MinionWeaponItemBuilder）。
  * <p>
@@ -59,6 +61,7 @@ public class LightningRendererHelper {
     private Vec3 start = Vec3.ZERO;
     private Vec3 end = Vec3.ZERO;
     private Vec3 renderOrigin = Vec3.ZERO;
+    private List<Vec3> path;
     private int layers = 4;
     private int segments = 16;
     private int branches = 0;
@@ -86,6 +89,7 @@ public class LightningRendererHelper {
      * 闪电起点（绝对世界坐标）。
      */
     public LightningRendererHelper from(Vec3 start) {
+        this.path = null;
         this.start = start;
         return this;
     }
@@ -94,7 +98,22 @@ public class LightningRendererHelper {
      * 闪电终点（绝对世界坐标）。
      */
     public LightningRendererHelper to(Vec3 end) {
+        this.path = null;
         this.end = end;
+        return this;
+    }
+
+    /** Use an already sampled world-space path, without adding straight-axis jitter. */
+    public LightningRendererHelper path(List<Vec3> points) {
+        if (points.size() < 2) throw new IllegalArgumentException("A lightning path needs two points");
+        for (Vec3 point : points) {
+            if (!Double.isFinite(point.x) || !Double.isFinite(point.y) || !Double.isFinite(point.z)) {
+                throw new IllegalArgumentException("Lightning path coordinates must be finite");
+            }
+        }
+        this.path = List.copyOf(points);
+        this.start = path.get(0);
+        this.end = path.get(path.size() - 1);
         return this;
     }
 
@@ -222,7 +241,8 @@ public class LightningRendererHelper {
         } else {
             perpB.normalize();
         }
-        Vector3f[] points = sampleBoltPoints(sLocal, dir, length, perpA, perpB, random);
+        Vector3f[] points = path == null ? sampleBoltPoints(sLocal, dir, length, perpA, perpB, random)
+                : path.stream().map(point -> worldToLocal(point, renderOrigin)).toArray(Vector3f[]::new);
 
         // 2) 渲染主链多层壳
         for (int layer = 0; layer < layers; layer++) {
@@ -235,7 +255,7 @@ public class LightningRendererHelper {
         }
 
         // 3) 渲染分支（消费后续随机序列），起点复用主链采样点
-        for (int b = 0; b < branches; b++) {
+        for (int b = 0; b < branches && points.length > 2; b++) {
             int idx = 1 + random.nextInt(points.length - 2); // 避开首尾端点
             Vector3f branchStart = points[idx];
             // 分支方向：以主链段方向为基底，叠加随机垂直偏转
@@ -314,7 +334,26 @@ public class LightningRendererHelper {
             ring[k][1] = (float) Math.sin(ang);
         }
 
-        for (int i = 0; i < segments; i++) {
+        Vector3f[] frameA = null;
+        Vector3f[] frameB = null;
+        if (path != null) {
+            frameA = new Vector3f[points.length];
+            frameB = new Vector3f[points.length];
+            for (int i = 0; i < points.length; i++) {
+                Vector3f tangent = new Vector3f(points[Math.min(i + 1, points.length - 1)])
+                        .sub(points[Math.max(i - 1, 0)]);
+                if (tangent.lengthSquared() < 1.0E-8f) tangent.set(0, 1, 0);
+                tangent.normalize();
+                Vector3f a = new Vector3f(perpA).sub(new Vector3f(tangent).mul(perpA.dot(tangent)));
+                if (a.lengthSquared() < 1.0E-8f) {
+                    tangent.cross(Math.abs(tangent.x) < 0.9f ? new Vector3f(1, 0, 0) : new Vector3f(0, 1, 0), a);
+                }
+                frameA[i] = a.normalize();
+                frameB[i] = tangent.cross(a, new Vector3f()).normalize();
+            }
+        }
+
+        for (int i = 0; i < points.length - 1; i++) {
             Vector3f p0 = points[i];
             Vector3f p1 = points[i + 1];
             Vector3f segDir = new Vector3f(p1).sub(p0);
@@ -330,13 +369,17 @@ public class LightningRendererHelper {
                 float ca2 = ring[k2][0], sa2 = ring[k2][1];
 
                 float u = ((float) k + 0.5f) / radial;
-                float v0 = (float) i / segments;
-                float v1 = (float) (i + 1) / segments;
+                float v0 = (float) i / (points.length - 1);
+                float v1 = (float) (i + 1) / (points.length - 1);
 
-                Vector3f v00 = ringOffset(p0, perpA, perpB, ca1, sa1, radius);
-                Vector3f v01 = ringOffset(p0, perpA, perpB, ca2, sa2, radius);
-                Vector3f v11 = ringOffset(p1, perpA, perpB, ca2, sa2, radius);
-                Vector3f v10 = ringOffset(p1, perpA, perpB, ca1, sa1, radius);
+                Vector3f a0 = frameA == null ? perpA : frameA[i];
+                Vector3f b0 = frameB == null ? perpB : frameB[i];
+                Vector3f a1 = frameA == null ? perpA : frameA[i + 1];
+                Vector3f b1 = frameB == null ? perpB : frameB[i + 1];
+                Vector3f v00 = ringOffset(p0, a0, b0, ca1, sa1, radius);
+                Vector3f v01 = ringOffset(p0, a0, b0, ca2, sa2, radius);
+                Vector3f v11 = ringOffset(p1, a1, b1, ca2, sa2, radius);
+                Vector3f v10 = ringOffset(p1, a1, b1, ca1, sa1, radius);
 
                 emitVertex(consumer, pose, v00, vertexColor, u, v0, segDir);
                 emitVertex(consumer, pose, v01, vertexColor, u, v0, segDir);

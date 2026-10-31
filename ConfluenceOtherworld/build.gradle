@@ -32,6 +32,17 @@ neoForge {
             loggingConfigFile = file('tools/extraConfig.xml')
             client()
             programArguments.addAll '--username', 'Confluence'
+            if (project.hasProperty('arcSurgeGpuProbe')) {
+                systemProperty 'confluence.arcSurge.gpuProbe', 'true'
+                gameDirectory = layout.projectDirectory.dir('run/arc-surge-skill-probe')
+            }
+            if (project.hasProperty('arcSurgePreview')) {
+                gameDirectory = layout.projectDirectory.dir('run/arc-surge-preview')
+            }
+            if (project.hasProperty('redGloveProbe')) {
+                systemProperty 'confluence.redGlove.probe', 'true'
+                gameDirectory = layout.projectDirectory.dir('run/red-glove-probe')
+            }
         }
 
         client1 {
@@ -75,6 +86,9 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
+            if (project.hasProperty('arcSurgeGpuProbe') || project.hasProperty('redGloveProbe') || project.hasProperty('arcSurgePreview')) {
+                sourceSet(sourceSets.test)
+            }
         }
     }
 }
@@ -547,5 +561,31 @@ publishing {
                 password = System.getenv("MAGIC_TEAM_TOKEN")
             }
         }
+    }
+}
+
+// Geometry contracts use Minecraft math but do not launch a client or load the optional mod pack.
+sourceSets.test.compileClasspath += sourceSets.main.compileClasspath
+configurations { lightningCheckRuntime }
+
+dependencies {
+    testImplementation 'org.slf4j:slf4j-api:2.0.9'
+    lightningCheckRuntime 'org.apache.logging.log4j:log4j-core:2.22.1'
+    def arcCheckOs = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+    def arcCheckNatives = arcCheckOs.contains('win') ? 'natives-windows' : arcCheckOs.contains('mac') ? 'natives-macos' : 'natives-linux'
+    if (System.getProperty('os.arch') in ['aarch64', 'arm64']) arcCheckNatives += '-arm64'
+    lightningCheckRuntime "org.lwjgl:lwjgl:3.3.3:${arcCheckNatives}"
+}
+
+[
+    checkArcSurgePath: 'org.confluence.mod.util.ConductorArcPathCheck',
+    checkArcSurgeLightning: 'org.confluence.mod.client.effect.lightning.ArcSurgeLightningCheck',
+    checkRedGlovePattern: 'org.confluence.mod.common.item.mana.RedGlovePatternCheck'
+].each { checkName, checkMain ->
+    tasks.register(checkName, JavaExec) {
+        group = 'verification'
+        dependsOn tasks.named('testClasses')
+        classpath = sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath + configurations.lightningCheckRuntime
+        mainClass = checkMain
     }
 }

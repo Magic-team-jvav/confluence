@@ -14,6 +14,7 @@ import org.confluence.mod.common.item.sword.ZenithItem;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.projectile.Zenith;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.util.ZenithTargeting;
 import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
 
 import java.util.List;
@@ -58,18 +59,11 @@ public class ZenithData {
             if (!targetList.isEmpty()) {
                 int searchRange = 32;
                 double fovAngle = 30;
-                double distanceWeight = 0.2;
                 double bestScore = Double.MAX_VALUE;
                 for (Entity living : targetList) {
                     Vec3 targetPoint = living.getBoundingBox().getCenter();
-                    Vec3 toEntity = targetPoint.subtract(center);
-                    double angle = Math.toDegrees(Math.acos(toEntity.dot(lookAngle) / toEntity.length()));
-                    if (angle <= fovAngle) {
-                        /// 角度、距离分别归一化到 [0,1]
-                        double normalizedAngle = angle / fovAngle;
-                        double normalizedDistance = toEntity.length() / searchRange;
-                        /// 综合分数：按权重合成角度与距离，越小越优先
-                        double score = (1.0 - distanceWeight) * normalizedAngle + distanceWeight * normalizedDistance;
+                    double score = ZenithTargeting.score(center, lookAngle, targetPoint, searchRange, fovAngle);
+                    if (Double.isFinite(score)) {
                         if (score < bestScore) {
                             bestScore = score;
                             best = living;

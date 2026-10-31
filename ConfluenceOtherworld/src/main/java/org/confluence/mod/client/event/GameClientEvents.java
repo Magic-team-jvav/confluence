@@ -60,6 +60,7 @@ import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.AfterimageHelper;
+import org.confluence.mod.client.effect.RedGloveVfx;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
@@ -131,6 +132,10 @@ import java.util.Optional;
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
     @SubscribeEvent
+    public static void redGloveVisual(org.confluence.mod.api.event.RedGloveVisualEvent event) {
+        RedGloveVfx.receive(event.packet);
+    }
+    @SubscribeEvent
     public static void registerShaders(RegisterShadersEvent event) {
         try {
             ModRenderer.register(event.getResourceProvider(), event::registerShader);
@@ -197,6 +202,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void clientTick$Post(ClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
+        RedGloveVfx.tick(minecraft);
         WormDigSoundHandler.tick(minecraft);
         LocalPlayer player = minecraft.player;
 
@@ -258,6 +264,7 @@ public final class GameClientEvents {
 
     /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
     private static void clearClientWorldReferences() {
+        RedGloveVfx.clear();
         HitMarkerHud.clear();
         CrosshairHud.clear();
         ClientBestiary.getInstance().clearLevel();
@@ -452,6 +459,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
+        RedGloveVfx.render(event);
         BulletVfxManager.render(event);
         LocalPlayer player = minecraft.player;
         if (player == null) return;

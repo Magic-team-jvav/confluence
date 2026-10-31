@@ -41,3 +41,5 @@ __pycache__/
 *.*~
 notes/_tmp_**/*
 notes/codex-backups
+# Local lightning development checks and probes
+/ConfluenceOtherworld/src/test/

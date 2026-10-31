@@ -60,6 +60,7 @@ public final class NetworkEvents {
                 .playToClient(OpenAnglerDialogPacketS2C.TYPE, OpenAnglerDialogPacketS2C.STREAM_CODEC, OpenAnglerDialogPacketS2C::handle)
                 .playToClient(GunMuzzleFlashPacketS2C.TYPE, GunMuzzleFlashPacketS2C.STREAM_CODEC, GunMuzzleFlashPacketS2C::handle)
                 .playToClient(BulletImpactPacketS2C.TYPE, BulletImpactPacketS2C.STREAM_CODEC, BulletImpactPacketS2C::handle)
+                .playToClient(RedGloveArcPacketS2C.TYPE, RedGloveArcPacketS2C.STREAM_CODEC, RedGloveArcPacketS2C::handle)
                 .playToClient(ShotFeedbackPacketS2C.TYPE, ShotFeedbackPacketS2C.STREAM_CODEC, ShotFeedbackPacketS2C::handle)
 
                 .playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle)

@@ -680,6 +680,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new ZombieGeoModel(c)));
+        // 原版僵尸/骷髅转换来的独立类型：沿用原版模型与装备渲染
+        event.registerEntityRenderer(MonsterEntities.RAINCOAT_ZOMBIE.get(), net.minecraft.client.renderer.entity.ZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.FROZEN_ZOMBIE.get(), net.minecraft.client.renderer.entity.ZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.PINK_FROZEN_ZOMBIE.get(), net.minecraft.client.renderer.entity.ZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.SLIME_ZOMBIE.get(), SlimeZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.UNDEAD_MINER.get(), net.minecraft.client.renderer.entity.SkeletonRenderer::new);
         event.registerEntityRenderer(MonsterEntities.DOCTOR_BONES.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DOCTOR_BONES.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.THE_GROOM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.THE_GROOM.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.THE_BRIDE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.THE_BRIDE.getId(), false, 1.0F, 0.0F));
@@ -1230,7 +1236,6 @@ public final class ModClientEvents {
         event.registerBaseWorm(MonsterEntities.LEECH);
         event.registerBoneSerpent(MonsterEntities.BONE_SERPENT);
         event.registerBoneSerpent(MonsterEntities.WITHER_BONE_SERPENT);
-        event.register("entity.minecraft.zombie.slime", new SlimeZombieRenderer(context));
     }
 
     @SubscribeEvent

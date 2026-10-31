@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
@@ -333,6 +334,25 @@ public final class MonsterEntities {
                             .attribute(Attributes.ARMOR_TOUGHNESS, byWorldPhase(1, 2, 3))
                             .attribute(LibAttributes.getArmorPenetration(), byWorldPhase(1, 3, 6)))
                     .build());
+
+    /// 雨衣僵尸 / 冰冻僵尸 / 粉红冰冻僵尸 / 史莱姆僵尸：由原版僵尸转换来的独立类型。
+    /// 外观沿用原版僵尸 + 对应装备/头顶史莱姆，行为与数值保持原版。
+    public static final DeferredHolder<EntityType<?>, EntityType<net.minecraft.world.entity.monster.Zombie>> RAINCOAT_ZOMBIE = withAttributes(
+            registerEntity("raincoat_zombie", EntityType.Builder.<net.minecraft.world.entity.monster.Zombie>of(net.minecraft.world.entity.monster.Zombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(10)),
+            MonsterEntities::vanillaZombieAttributes);
+    public static final DeferredHolder<EntityType<?>, EntityType<net.minecraft.world.entity.monster.Zombie>> SLIME_ZOMBIE = withAttributes(
+            registerEntity("slime_zombie", EntityType.Builder.<net.minecraft.world.entity.monster.Zombie>of(net.minecraft.world.entity.monster.Zombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(10)),
+            MonsterEntities::vanillaZombieAttributes);
+    public static final DeferredHolder<EntityType<?>, EntityType<net.minecraft.world.entity.monster.Zombie>> FROZEN_ZOMBIE = withAttributes(
+            registerEntity("frozen_zombie", EntityType.Builder.<net.minecraft.world.entity.monster.Zombie>of(net.minecraft.world.entity.monster.Zombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(10)),
+            MonsterEntities::vanillaZombieAttributes);
+    public static final DeferredHolder<EntityType<?>, EntityType<net.minecraft.world.entity.monster.Zombie>> PINK_FROZEN_ZOMBIE = withAttributes(
+            registerEntity("pink_frozen_zombie", EntityType.Builder.<net.minecraft.world.entity.monster.Zombie>of(net.minecraft.world.entity.monster.Zombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(10)),
+            MonsterEntities::vanillaZombieAttributes);
+    /// 不死矿工：洞穴里由原版骷髅转换来的独立类型。
+    public static final DeferredHolder<EntityType<?>, EntityType<net.minecraft.world.entity.monster.Skeleton>> UNDEAD_MINER = withAttributes(
+            registerEntity("undead_miner", EntityType.Builder.<net.minecraft.world.entity.monster.Skeleton>of(net.minecraft.world.entity.monster.Skeleton::new, MobCategory.MONSTER).sized(0.6F, 1.99F).clientTrackingRange(8)),
+            MonsterEntities::vanillaSkeletonAttributes);
 
     /// ------------------------------------------------------------------
     /// ------------------------------------------------------------------
@@ -1429,6 +1449,26 @@ public final class MonsterEntities {
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerEntity(String name, EntityType.Builder<T> builder) {
         return ENTITIES.register(name, id -> builder.build(id.toString()));
+    }
+
+    /// 原版僵尸的基础属性（20 生命、3 攻击、2 护甲、0.23 移速、35 跟随）。
+    private static CreatureAttributeBuilder.Definition vanillaZombieAttributes() {
+        return CreatureAttributeBuilder.from(Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.ATTACK_DAMAGE, 3.0D)
+                .add(Attributes.ARMOR, 2.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.23D)
+                .add(Attributes.FOLLOW_RANGE, 35.0D)
+                .add(Attributes.SPAWN_REINFORCEMENTS_CHANCE, 0.0D)).build();
+    }
+
+    /// 原版骷髅的基础属性（20 生命、2 攻击、0.25 移速、16 跟随）。
+    private static CreatureAttributeBuilder.Definition vanillaSkeletonAttributes() {
+        return CreatureAttributeBuilder.from(Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.ATTACK_DAMAGE, 2.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.25D)
+                .add(Attributes.FOLLOW_RANGE, 16.0D)).build();
     }
 
     /// 属性声明汇入 {@link ModEntities#withAttributes}（同一个 `ATTRIBUTES` 表）。

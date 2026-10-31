@@ -241,9 +241,8 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .demonEyeVariant(DemonEye.Variant.OWL, builder -> builder.order(14412).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 /// 游荡眼球怪
                 /// 僵尸 （女性）
-                .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "slime", builder -> builder.order(14800).rarity(1).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.SLIMED.getSerializedName())))
+                .add(MonsterEntities.SLIME_ZOMBIE, builder -> builder.order(14700).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "bald", builder -> builder.order(14900).rarity(1).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.BALD.getSerializedName())))
-                .add(EntityType.ZOMBIE, "slime", builder -> builder.order(14700).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 /// 僵尸 （光头）
                 .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "twiggy", builder -> builder.order(15100).rarity(1).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.TWIGGY.getSerializedName())))
                 .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "swamp", builder -> builder.order(15300).rarity(1).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.SWAMP.getSerializedName())))
@@ -253,8 +252,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 /// 僵尸 （火把）
                 /// 僵尸 （沼泽）
                 /// 僵尸 （中箭）
-                .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "raincoat", builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.RAIN, FilterEntry.NIGHTTIME).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.RAINCOAT.getSerializedName())))
-                .mobArmorItems(EntityType.ZOMBIE, "raincoat", List.of(ItemStack.EMPTY, ItemStack.EMPTY, ArmorItems.RAINCOAT.toStack(), ArmorItems.RAIN_CAP.toStack()), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
+                .add(MonsterEntities.RAINCOAT_ZOMBIE, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
                 .add(MonsterEntities.WEREWOLF, builder -> builder.order(15700).rarity(2).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME))
                 .add(MonsterEntities.POSSESS_ARMOR, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 /// 狼人
@@ -306,7 +304,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 /// 骷髅 （头痛）
                 /// 骷髅 （无裤）
                 .add(MonsterEntities.CRAWDAD, builder -> builder.order(19500).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
-                .mobArmorItems(EntityType.SKELETON, "entity.confluence.undead_miner", "", List.of(ArmorItems.MINING_BOOTS.toStack(), ArmorItems.MINING_LEGGINGS.toStack(), ArmorItems.MINING_CHESTPLATE.toStack(), ArmorItems.MINING_HELMET.toStack()), provider, builder -> builder.order(19600).rarity(3).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
+                .add(MonsterEntities.UNDEAD_MINER, builder -> builder.order(19600).rarity(3).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
                 /// 骷髅弓箭手
                 .add(MonsterEntities.ARMORED_SKELETON, builder -> builder.order(20200).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
                 .add(MonsterEntities.ROCK_GOLEM, builder -> builder.order(20300).rarity(2).background(CAVE).filters(FilterEntry.CAVE))
@@ -340,10 +338,9 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 /// 爬墙蜘蛛
                 /// 黑隐士
                 .add(MonsterEntities.ICE_SLIME, builder -> builder.order(21800).rarity(1).background(SNOW).filters(FilterEntry.SNOW, FilterEntry.DAYTIME))
-                .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "frozen", builder -> builder.order(22200).rarity(2).background(SNOW_MOON).filters(FilterEntry.NIGHTTIME, FilterEntry.SNOW).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.ESKIMO.getSerializedName())))
+                .add(MonsterEntities.FROZEN_ZOMBIE, builder -> builder.order(21900).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
+                .add(MonsterEntities.PINK_FROZEN_ZOMBIE, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
                 .add(MonsterEntities.ICE_GOLEM, builder -> builder.order(22300).rarity(5).background(SNOW).filters(FilterEntry.RARE_CREATURE, FilterEntry.RAIN, FilterEntry.SNOW))
-                .mobArmorItems(EntityType.ZOMBIE, "frozen", List.of(ArmorItems.INSULATED_SHOES.toStack(), ArmorItems.INSULATED_PANTS.toStack(), ArmorItems.SNOW_SUITS.toStack(), ArmorItems.SNOW_CAPS.toStack()), provider, builder -> builder.order(21900).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
-                .mobArmorItems(EntityType.ZOMBIE,  "frozen.pink", List.of(ArmorItems.PINK_INSULATED_SHOES.toStack(), ArmorItems.PINK_INSULATED_PANTS.toStack(), ArmorItems.PINK_SNOW_SUITS.toStack(), ArmorItems.PINK_SNOW_CAPS.toStack()), provider, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
                 /// 冰雪巨人
                 /// 狼
                 .add(MonsterEntities.SPIKED_ICE_SLIME, builder -> builder.order(22200).rarity(2).background(UNDERGROUND_SNOW).filters(FilterEntry.ICE))

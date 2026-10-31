@@ -46,6 +46,7 @@ public final class EntityLanguageSubProvider {
         language.add("entity.confluence.fairy.green", "Green Fairy", "绿仙灵");
         language.add("entity.confluence.fairy.pink", "Pink Fairy", "粉仙灵");
         language.add("entity.confluence.frozen_zombie", "Frozen Zombie", "冰冻僵尸");
+        language.add("entity.confluence.pink_frozen_zombie", "Pink Frozen Zombie", "粉红冰冻僵尸");
         language.add("entity.confluence.fungi_bulb_segment", "Fungi Bulb Segment", "真菌球怪体节");
         language.add("entity.confluence.giant_fungi_bulb_segment", "Giant Fungi Bulb Segment", "巨型真菌球怪体节");
         language.add("entity.confluence.grasshopper.gold", "Gold Grasshopper", "金蚱蜢");
@@ -76,6 +77,7 @@ public final class EntityLanguageSubProvider {
         language.add("entity.confluence.martian_walker_weapon.right", "Martian Walker Right Laser Cannon", "火星走妖右激光炮");
         language.add("entity.confluence.model_pending", "%s (model pending)", "%s（模型待补）");
         language.add("entity.confluence.raincoat_zombie", "Raincoat Zombie", "雨衣僵尸");
+        language.add("entity.confluence.slime_zombie", "Slime Zombie", "史莱姆僵尸");
         language.add("entity.confluence.scorpion.black", "Black Scorpion", "黑蝎子");
         language.add("entity.confluence.scorpion.normal", "Scorpion", "蝎子");
         language.add("entity.confluence.snatcher_segment", "Snatcher Segment", "抓人草体节");

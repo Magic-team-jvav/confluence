@@ -353,24 +353,6 @@ public final class ModEvents {
             String key = type.getDescriptionId() + '.';
             return key + eye.getVariant().getSerializedName();
         });
-        event.register(EntityType.ZOMBIE, ((type, zombie) -> {
-            String key = type.getDescriptionId();
-            Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
-            if (chest == ArmorItems.RAINCOAT.get()) {
-                return key + ".raincoat";
-            } else if (chest == ArmorItems.SNOW_SUITS.get()) {
-                return key + ".frozen";
-            } else if (chest == ArmorItems.PINK_SNOW_SUITS.get()) {
-                return key + ".frozen.pink";
-            }
-            return key;
-        }));
-        event.register(EntityType.SKELETON, (type, skeleton) -> {
-            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE)) {
-                return "entity.confluence.undead_miner";
-            }
-            return type.getDescriptionId();
-        });
     }
 
     @SubscribeEvent

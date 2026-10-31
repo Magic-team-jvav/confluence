@@ -132,6 +132,9 @@ import java.util.List;
 import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
 public final class LivingEntityEvents {
+    // 原版僵尸变为史莱姆僵尸的概率。
+    private static final float SLIME_ZOMBIE_CHANCE = 0.01F;
+
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.HIGHEST, LivingEntityEvents::blockEnemyFriendlyFire);
         PortEventHandler.addListener(LivingEntityEvents::death);
@@ -821,31 +824,49 @@ public final class LivingEntityEvents {
             DifficultyInstance difficulty = event.getDifficulty();
             if (biome.is(PortTags.Biomes.IS_ICY) || biome.is(PortTags.Biomes.IS_SNOWY)) {
                 boolean pink = mob.getRandom1211().nextFloat() < 0.01F;
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
-                mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
-                mob.addTag("frozen_zombie");
+                Mob replacement = replaceSpawn(level, mob, (pink ? MonsterEntities.PINK_FROZEN_ZOMBIE : MonsterEntities.FROZEN_ZOMBIE).get());
+                Mob equipped = replacement == null ? mob : replacement;
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
                 event.setCanceled(true);
+                if (replacement != null && level.addFreshEntity(replacement)) {
+                    event.setSpawnCancelled(true);
+                    return;
+                }
             } else if (ModUtils.isRainingAt(level, blockPos)) {
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
-                mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
-                mob.addTag("raincoat_zombie");
+                Mob replacement = replaceSpawn(level, mob, MonsterEntities.RAINCOAT_ZOMBIE.get());
+                Mob equipped = replacement == null ? mob : replacement;
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
                 event.setCanceled(true);
+                if (replacement != null && level.addFreshEntity(replacement)) {
+                    event.setSpawnCancelled(true);
+                    return;
+                }
+            } else if (mob.getRandom1211().nextFloat() < SLIME_ZOMBIE_CHANCE) {
+                Mob replacement = replaceSpawn(level, mob, MonsterEntities.SLIME_ZOMBIE.get());
+                if (replacement != null && level.addFreshEntity(replacement)) {
+                    event.setSpawnCancelled(true);
+                    return;
+                }
             }
         } else if (type == EntityType.SKELETON) {
             DifficultyInstance difficulty = event.getDifficulty();
             if (!level.canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom1211().nextFloat() < 0.01F) {
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
-                LibEntityUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
-                mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
-                mob.addTag("undead_miner");
+                Mob replacement = replaceSpawn(level, mob, MonsterEntities.UNDEAD_MINER.get());
+                Mob equipped = replacement == null ? mob : replacement;
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
+                LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
                 event.setCanceled(true);
+                if (replacement != null && level.addFreshEntity(replacement)) {
+                    event.setSpawnCancelled(true);
+                    return;
+                }
             }
         } else if (event.getSpawnType() == MobSpawnType.NATURAL && mob.getType().is(ModTags.EntityTypes.GOLDEN_SLIME_REPLACEABLE)) {
             if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom1211().nextInt(180) == 0) {
@@ -870,6 +891,19 @@ public final class LivingEntityEvents {
                 BossMultiplayerEnhancement.apply(mob, true);
             }
         }
+    }
+
+    // 把即将生成的生物替换成独立类型；位置、朝向与速度保持一致。
+    //
+    // 返回 null 表示创建失败，调用方需要退回到直接修改原生物的做法。
+    private static <T extends Mob> @Nullable T replaceSpawn(ServerLevel level, Mob original, EntityType<T> replacementType) {
+        T replacement = replacementType.create(level);
+        if (replacement == null) return null;
+        replacement.moveTo(original.getX(), original.getY(), original.getZ(), original.getYRot(), original.getXRot());
+        replacement.setYHeadRot(original.getYHeadRot());
+        replacement.yBodyRot = original.yBodyRot;
+        replacement.setDeltaMovement(original.getDeltaMovement());
+        return replacement;
     }
 
     private static void useItem$Start(LivingEntityUseItemEvent.Start event) {

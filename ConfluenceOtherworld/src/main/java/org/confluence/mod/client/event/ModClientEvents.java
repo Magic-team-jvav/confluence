@@ -936,6 +936,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ANGER_GOBLIN.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, Confluence.asResource("goblin/anger_goblin"))));
         // 陆行怪
         event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new ZombieGeoModel(c)));
+        // 原版僵尸/骷髅转换来的独立类型：沿用原版模型与装备渲染
+        event.registerEntityRenderer(MonsterEntities.RAINCOAT_ZOMBIE.get(), net.minecraft.client.renderer.entity.ZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.FROZEN_ZOMBIE.get(), net.minecraft.client.renderer.entity.ZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.PINK_FROZEN_ZOMBIE.get(), net.minecraft.client.renderer.entity.ZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.SLIME_ZOMBIE.get(), SlimeZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.UNDEAD_MINER.get(), net.minecraft.client.renderer.entity.SkeletonRenderer::new);
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
         // Client config is loaded after this registration event; read it in the providers.
         event.registerEntityRenderer(EntityType.SPIDER, c -> ClientConfigs.ENABLE_NON_SPIDER_MODEL.get()
@@ -1201,7 +1207,6 @@ public final class ModClientEvents {
         event.registerBaseWorm(MonsterEntities.LEECH);
         event.registerBoneSerpent(MonsterEntities.BONE_SERPENT);
         event.registerBoneSerpent(MonsterEntities.WITHER_BONE_SERPENT);
-        event.register("entity.minecraft.zombie.slime", new SlimeZombieRenderer(context));
     }
 
     private static void registerItemDecorations(RegisterItemDecorationsEvent event) {

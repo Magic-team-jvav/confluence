@@ -310,6 +310,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(SwordItems.TENTACLE_MACE).when(LootingScaledChanceLootItemCondition.lootingScaledChance(0.0019F)).setQuality(1))
                 )
         );
+        // 从原版僵尸/骷髅转换来的独立类型：沿用原版基础掉落（腐肉 / 骨头+箭）。
+        add(MonsterEntities.RAINCOAT_ZOMBIE.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0.0F, 2.0F)).add(LootItem.lootTableItem(Items.ROTTEN_FLESH))));
+        add(MonsterEntities.FROZEN_ZOMBIE.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0.0F, 2.0F)).add(LootItem.lootTableItem(Items.ROTTEN_FLESH))));
+        add(MonsterEntities.PINK_FROZEN_ZOMBIE.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0.0F, 2.0F)).add(LootItem.lootTableItem(Items.ROTTEN_FLESH))));
+        add(MonsterEntities.SLIME_ZOMBIE.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0.0F, 2.0F)).add(LootItem.lootTableItem(Items.ROTTEN_FLESH))));
+        add(MonsterEntities.UNDEAD_MINER.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0.0F, 2.0F)).add(LootItem.lootTableItem(Items.BONE)))
+                .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(0.0F, 2.0F)).add(LootItem.lootTableItem(Items.ARROW))));
         add(MonsterEntities.BLOOD_ZOMBIE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).when(difficultyLootChance(100F / 150, 100F / 75)).setQuality(1))

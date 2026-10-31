@@ -279,21 +279,6 @@ public final class ModEvents {
     private static void registerBestiaryKeys(RegisterBestiaryKeyEvent event) {
         event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + bunny.getBunnyVariant().getSerializedName());
         event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> type.getDescriptionId() + '.' + eye.getVariant().getSerializedName());
-        /// 原版僵尸通过实际穿戴的防寒服或雨衣识别已有图鉴条目。
-        event.register(EntityType.ZOMBIE, (type, zombie) -> {
-            String key = type.getDescriptionId();
-            Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
-            if (chest == ArmorItems.RAINCOAT.get()) return key + ".raincoat";
-            if (chest == ArmorItems.SNOW_SUITS.get()) return key + ".frozen";
-            if (chest == ArmorItems.PINK_SNOW_SUITS.get()) return key + ".frozen.pink";
-            return key;
-        });
-        event.register(EntityType.SKELETON, (type, skeleton) -> {
-            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE.get())) {
-                return "entity.confluence.undead_miner";
-            }
-            return type.getDescriptionId();
-        });
     }
 
     private static void registerEvilMaterialReplaces(RegisterEvilMaterialReplacesEvent event) {

@@ -753,6 +753,7 @@ public final class SpawnPlacementChecks {
     private static boolean isGraveyard(ServerLevelAccessor level, BlockPos pos) {
         return ModBlockCounters.isGraveyard(level, pos);
     }
+
     private static boolean hasConnectedSand(ServerLevelAccessor level, BlockPos pos) {
         ArrayDeque<BlockPos> pending = new ArrayDeque<>();
         Set<BlockPos> visited = new HashSet<>();
@@ -768,6 +769,7 @@ public final class SpawnPlacementChecks {
         }
         return false;
     }
+
     private static boolean hasClearColumn(Level level, BlockPos pos) {
         // 附身盔甲需要无遮挡的纵向空间；遇到第一个完整碰撞方块即可提前失败。
         BlockPos.MutableBlockPos cursor = pos.mutable();
@@ -782,13 +784,16 @@ public final class SpawnPlacementChecks {
     private static boolean canSpawnTownSlimeRescue(EntityType<? extends Mob> type, ServerLevelAccessor level, BlockPos pos, EntityType<?> rescued) {
         ServerLevel world = level.getLevel();
         if (NPCSpawner.INSTANCE.isNPCUnlocked(rescued)
-                || !world.dimension().equals(Level.OVERWORLD) || !level.getFluidState(pos).isEmpty())
-            return false;
+                || world.dimension() != OverworldUtils.dimension()
+                || !level.getFluidState(pos).isEmpty()
+        ) return false;
         NPCSpawner.Region region = new NPCSpawner.Region(pos);
         if (NPCSpawner.INSTANCE.hasNPCAlive(region, rescued)) return false;
         for (Entity entity : world.getAllEntities()) {
-            if (entity.getType() == type && entity.isAlive() && region.isOnRegion(entity.chunkPosition()))
-                return false;
+            if (entity.getType() == type &&
+                    entity.isAlive() &&
+                    region.isOnRegion(entity.chunkPosition())
+            ) return false;
         }
         return true;
     }
@@ -796,14 +801,19 @@ public final class SpawnPlacementChecks {
     /// 神秘青蛙只在神秘史莱姆首次解锁前的主世界地表丛林生成，且同一区域不重复出现。
     public static boolean checkMysticFrogSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
         if (NPCSpawner.INSTANCE.isNPCUnlocked(NpcEntities.MYSTIC_SLIME.get())
-                || !level.getLevel().dimension().equals(Level.OVERWORLD) || !level.getBiome(pos).is(BiomeTags.IS_JUNGLE)
-                || pos.getY() < OverworldUtils.getSurfaceY() || random.nextInt(30) != 0
-                || !Mob.checkMobSpawnRules(type, level, reason, pos, random)) return false;
+                || level.getLevel().dimension() != OverworldUtils.dimension()
+                || !level.getBiome(pos).is(BiomeTags.IS_JUNGLE)
+                || pos.getY() < OverworldUtils.getSurfaceY()
+                || random.nextInt(30) != 0
+                || !Mob.checkMobSpawnRules(type, level, reason, pos, random)
+        ) return false;
         NPCSpawner.Region region = new NPCSpawner.Region(pos);
         if (NPCSpawner.INSTANCE.hasNPCAlive(region, NpcEntities.MYSTIC_SLIME.get())) return false;
         for (Entity entity : level.getLevel().getAllEntities()) {
-            if (entity.getType() == CritterEntities.MYSTIC_FROG.get() && entity.isAlive()
-                    && region.isOnRegion(entity.chunkPosition())) return false;
+            if (entity.getType() == CritterEntities.MYSTIC_FROG.get() &&
+                    entity.isAlive() &&
+                    region.isOnRegion(entity.chunkPosition())
+            ) return false;
         }
         return true;
     }

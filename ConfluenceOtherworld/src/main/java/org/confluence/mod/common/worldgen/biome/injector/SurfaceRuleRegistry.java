@@ -121,17 +121,17 @@ public final class SurfaceRuleRegistry {
     /// 生成器算好规则；返回 `null` 表示该维度不在本框架覆盖范围内，规则源保持原样。
     @Nullable
     public static Category categoryOf(Holder<DimensionType> dimensionType) {
-        if (dimensionType.is(BuiltinDimensionTypes.OVERWORLD)) return Category.OVERWORLD;
-        if (dimensionType.is(BuiltinDimensionTypes.NETHER)) return Category.NETHER;
+        if (dimensionType.is(OverworldUtils.dimensionType())) return Category.OVERWORLD;
+        if (dimensionType.is(OverworldUtils.underworldType())) return Category.NETHER;
         if (dimensionType.is(BuiltinDimensionTypes.END)) return Category.END;
         return null;
     }
 
     @Nullable
     public static Category categoryOf(ResourceKey<Level> dimension) {
-        if (OverworldUtils.dimension().equals(dimension)) return Category.OVERWORLD;
-        if (OverworldUtils.underworld().equals(dimension)) return Category.NETHER;
-        if (Level.END.equals(dimension)) return Category.END;
+        if (OverworldUtils.dimension() == dimension) return Category.OVERWORLD;
+        if (OverworldUtils.underworld() == dimension) return Category.NETHER;
+        if (Level.END == dimension) return Category.END;
         return null;
     }
 }

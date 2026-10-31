@@ -183,7 +183,7 @@ public class ModDataProvider {
             HolderGetter<NoiseGeneratorSettings> noiseGeneratorSettings = context.lookup(Registries.NOISE_SETTINGS);
             Holder<NoiseGeneratorSettings> overworldNoiseGeneratorSettings = noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
             MultiNoiseBiomeSource overworldMultiNoiseBiomeSource = MultiNoiseBiomeSource.createFromPreset(multiNoiseBiomeSourceParameterList.getOrThrow(MultiNoiseBiomeSourceParameterLists.OVERWORLD));
-            LevelStem nether = new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.NETHER), new NoiseBasedChunkGenerator(
+            LevelStem nether = new LevelStem(dimensionType.getOrThrow(OverworldUtils.underworldType()), new NoiseBasedChunkGenerator(
                     MultiNoiseBiomeSource.createFromPreset(multiNoiseBiomeSourceParameterList.getOrThrow(MultiNoiseBiomeSourceParameterLists.NETHER)),
                     noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.NETHER)
             ));
@@ -193,7 +193,7 @@ public class ModDataProvider {
             ));
 
             context.register(THE_CORRUPTION, new WorldPreset(Map.of(
-                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
+                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(OverworldUtils.dimensionType()), new BannedBiomeNoiseBasedChunkGenerator(
                             overworldMultiNoiseBiomeSource,
                             overworldNoiseGeneratorSettings,
                             ModBiomes.THE_CRIMSON,
@@ -203,7 +203,7 @@ public class ModDataProvider {
                     LevelStem.END, end
             )));
             context.register(THE_CRIMSON, new WorldPreset(Map.of(
-                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
+                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(OverworldUtils.dimensionType()), new BannedBiomeNoiseBasedChunkGenerator(
                             overworldMultiNoiseBiomeSource,
                             overworldNoiseGeneratorSettings,
                             ModBiomes.THE_CORRUPTION,

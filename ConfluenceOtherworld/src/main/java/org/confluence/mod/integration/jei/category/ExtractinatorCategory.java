@@ -17,7 +17,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -31,6 +30,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -56,12 +56,15 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
             RenderSystem.disableBlend();
         }
 
+        @SuppressWarnings("removal")
         @Override
         public List<Component> getTooltip(ItemStack ingredient, TooltipFlag tooltipFlag) {
+            return List.of();
+        }
+
+        @Override
+        public List<Component> getTooltip(ItemStack ingredient, Item.TooltipContext tooltipContext, @Nullable Player player, TooltipFlag tooltipFlag) {
             if (ingredient instanceof DataItemStack data) {
-                Minecraft minecraft = Minecraft.getInstance();
-                Player player = minecraft.player;
-                Item.TooltipContext tooltipContext = Item.TooltipContext.of(minecraft.level);
                 List<Component> lines = Lists.newArrayList(ingredient.getTooltipLines(tooltipContext, player, tooltipFlag));
                 lines.add(1, data.min == data.max
                         ? Component.translatable("tooltip.jei.count_exact", data.min)

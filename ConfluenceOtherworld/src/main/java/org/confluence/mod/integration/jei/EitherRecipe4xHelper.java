@@ -16,10 +16,7 @@ import mezz.jei.api.ingredients.ITypedIngredient;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.transfer.IRecipeTransferError;
-import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
-import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
-import mezz.jei.api.recipe.transfer.IUniversalRecipeTransferHandler;
+import mezz.jei.api.recipe.transfer.*;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.gui.GuiGraphics;
@@ -46,13 +43,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class EitherRecipe4xHelper {
-    private final IIngredientManager ingredientManager;
-
-    public EitherRecipe4xHelper(IIngredientManager ingredientManager) {
-        this.ingredientManager = ingredientManager;
-    }
-
+public record EitherRecipe4xHelper(IIngredientManager ingredientManager) {
     public static <
             I extends MenuRecipeInput,
             R extends EitherAmountRecipe4x<I>,
@@ -149,21 +140,11 @@ public class EitherRecipe4xHelper {
         return pairMap.values().stream().sorted(comparator.reversed()).toList();
     }
 
-    public static class TransferHandler<I extends MenuRecipeInput, R extends EitherAmountRecipe4x<I>, S extends ToggleAmountResultSlot<R>, A extends ContainerLevelAccess, C extends EitherAmountContainerMenu4x<I, R, S, A>> implements IRecipeTransferHandler<C, RecipeHolder<R>> {
-        private final IJeiHelpers jeiHelpers;
-        private final IRecipeTransferHandlerHelper transferHelper;
-        private final Class<C> containerClazz;
-        private final @Nullable MenuType<C> menuType;
-        private final RecipeType<RecipeHolder<R>> recipeType;
-
-        public TransferHandler(IJeiHelpers jeiHelpers, IRecipeTransferHandlerHelper transferHelper, Class<C> containerClazz, @Nullable MenuType<C> menuType, RecipeType<RecipeHolder<R>> recipeType) {
-            this.jeiHelpers = jeiHelpers;
-            this.transferHelper = transferHelper;
-            this.containerClazz = containerClazz;
-            this.menuType = menuType;
-            this.recipeType = recipeType;
-        }
-
+    public record TransferHandler<I extends MenuRecipeInput, R extends EitherAmountRecipe4x<I>, S extends ToggleAmountResultSlot<R>, A extends ContainerLevelAccess, C extends EitherAmountContainerMenu4x<I, R, S, A>>(
+            IJeiHelpers jeiHelpers, IRecipeTransferHandlerHelper transferHelper,
+            Class<C> containerClazz, @Nullable MenuType<C> menuType,
+            RecipeType<RecipeHolder<R>> recipeType
+    ) implements IRecipeTransferHandler<C, RecipeHolder<R>> {
         @Override
         public Class<C> getContainerClass() {
             return containerClazz;
@@ -179,10 +160,16 @@ public class EitherRecipe4xHelper {
             return recipeType;
         }
 
+        @SuppressWarnings("removal")
         @Override
         public @Nullable IRecipeTransferError transferRecipe(C container, RecipeHolder<R> recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
+            return null;
+        }
+
+        @Override
+        public @Nullable IRecipeTransferError transferRecipe(IRecipeTransferContext<RecipeHolder<R>, C> context, boolean doTransfer) {
             IStackHelper stackHelper = jeiHelpers.getStackHelper();
-            List<IRecipeSlotView> slotViews = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT).stream().filter(view -> !view.isEmpty()).toList();
+            List<IRecipeSlotView> slotViews = context.getRecipeSlots().getSlotViews(RecipeIngredientRole.INPUT).stream().filter(view -> !view.isEmpty()).toList();
 
             Map<IRecipeSlotView, IntObjectPair<Set<Object>>> slotUidCache = new Reference2ObjectOpenHashMap<>();
             Set<Object> uids = new HashSet<>();
@@ -197,7 +184,7 @@ public class EitherRecipe4xHelper {
             }
 
             Object2IntOpenHashMap<Object> total = new Object2IntOpenHashMap<>();
-            for (Slot slot : container.slots) {
+            for (Slot slot : context.getContainer().slots) {
                 if (slot.isFake()) continue;
                 ItemStack itemStack = slot.getItem();
                 if (itemStack.isEmpty()) continue;
@@ -231,7 +218,7 @@ public class EitherRecipe4xHelper {
             }
 
             if (doTransfer) {
-                PacketDistributor.sendToServer(new RecipeTransferPacketC2S(recipe.id(), maxTransfer, false));
+                PacketDistributor.sendToServer(new RecipeTransferPacketC2S(context.getRecipe().id(), context.isMaxTransfer(), false));
             }
             return null;
         }
@@ -250,21 +237,11 @@ public class EitherRecipe4xHelper {
         }
     }
 
-    public static class CraftingRecipeTransferHandler<I extends MenuRecipeInput, R extends EitherAmountRecipe4x<I>, S extends ToggleAmountResultSlot<R>, A extends ContainerLevelAccess, C extends EitherAmountContainerMenu4x<I, R, S, A>> implements IUniversalRecipeTransferHandler<C> {
-        private final TransferHandler<I, R, S, A, C> transferHandler;
-        private final Class<R> recipeClazz;
-        private final FakeRecipeFactory<I, R> factory;
-        private final Class<C> containerClazz;
-        private final @Nullable MenuType<C> menuType;
-
-        public CraftingRecipeTransferHandler(TransferHandler<I, R, S, A, C> heavyRecipeTransferHandler, Class<R> recipeClazz, FakeRecipeFactory<I, R> factory, Class<C> containerClazz, @Nullable MenuType<C> menuType) {
-            this.transferHandler = heavyRecipeTransferHandler;
-            this.recipeClazz = recipeClazz;
-            this.factory = factory;
-            this.containerClazz = containerClazz;
-            this.menuType = menuType;
-        }
-
+    public record CraftingRecipeTransferHandler<I extends MenuRecipeInput, R extends EitherAmountRecipe4x<I>, S extends ToggleAmountResultSlot<R>, A extends ContainerLevelAccess, C extends EitherAmountContainerMenu4x<I, R, S, A>>(
+            TransferHandler<I, R, S, A, C> transferHandler, Class<R> recipeClazz,
+            FakeRecipeFactory<I, R> factory, Class<C> containerClazz,
+            @Nullable MenuType<C> menuType
+    ) implements IUniversalRecipeTransferHandler<C> {
         @Override
         public Class<C> getContainerClass() {
             return containerClazz;

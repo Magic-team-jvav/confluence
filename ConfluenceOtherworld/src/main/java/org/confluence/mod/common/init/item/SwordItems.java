@@ -88,11 +88,7 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> TUNGSTEN_BROADSWORD = register("tungsten_broadsword", "钨宽剑", ModTiers.TUNGSTEN, 6, 1.6F, SwordDefinition::builder);
     public static final DeferredItem<BaseSwordItem> GOLDEN_BROADSWORD = register("golden_broadsword", "金阔剑", ModTiers.GOLD, 7, 1.6F, SwordDefinition::builder);
     public static final DeferredItem<BaseSwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", "铂金宽剑", ModTiers.PLATINUM, 8, 1.6F, SwordDefinition::builder);
-    public static final DeferredItem<BaseSwordItem> MURAMASA = register("muramasa", "村正", ModTiers.UNBREAKABLE, 15, 3, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 1.5F, AttributeModifier.Operation.ADD_VALUE)
-                    .attribute(Attributes.ATTACK_KNOCKBACK, 0.2F, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage());
+    public static final DeferredItem<BaseSwordItem> MURAMASA = register("muramasa", "村正", MuramasaItem::new);
     public static final DeferredItem<BaseSwordItem> COBALT_SWORD = register("cobalt_sword", "钴剑", ModTiers.UNBREAKABLE, 25, 2.4F, ModRarity.LIGHT_RED, () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
                     .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
@@ -117,6 +113,8 @@ public class SwordItems {
                     .specialSweep(0.8F)
                     .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
+    /// 舌锋剑：困难模式阔剑，命中敌怪后向前方随机角度射出灵液流。
+    public static final DeferredItem<BaseSwordItem> BLADETONGUE = registerWithEnglishName("bladetongue", "舌锋剑", "Bladetongue", BladetongueItem::new);
 
     public static final DeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", "假剑", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, SwordDefinition::builder);
     public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", "糖棒剑", ModTiers.CANDY_CANE, 5, 1.8F, () -> SwordDefinition.builder()

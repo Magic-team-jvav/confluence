@@ -57,19 +57,6 @@
             },
             {
                 "color": [
-                    1.0,
-                    0.81569,
-                    0.0
-                ],
-                "light_level": 8,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:staff_variant": "topaz"
-                    }
-                }
-            },
-            {
-                "color": [
                     0.30196,
                     0.65098,
                     1.0
@@ -104,19 +91,6 @@
                 "entity_state": {
                     "conditions": {
                         "confluence:staff_variant": "ruby"
-                    }
-                }
-            },
-            {
-                "color": [
-                    0.98824,
-                    0.75686,
-                    0.17647
-                ],
-                "light_level": 8,
-                "entity_state": {
-                    "conditions": {
-                        "confluence:staff_variant": "amber"
                     }
                 }
             },

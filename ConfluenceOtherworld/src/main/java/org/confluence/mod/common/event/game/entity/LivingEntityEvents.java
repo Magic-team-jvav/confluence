@@ -989,6 +989,8 @@ public final class LivingEntityEvents {
             event.setPenetration(event.getPenetration() + 20.0F);
         } else if (direct instanceof org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile) {
             event.setPenetration(event.getPenetration() + 5.0F);
+        } else if (direct instanceof org.confluence.mod.common.entity.projectile.sword.MuramasaSlashProjectile) {
+            event.setPenetration(event.getPenetration() + 5.0F);
         }
 
         if (damageSource.getEntity() instanceof LivingEntity living &&

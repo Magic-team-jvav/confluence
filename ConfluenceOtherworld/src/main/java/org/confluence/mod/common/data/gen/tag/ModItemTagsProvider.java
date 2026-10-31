@@ -1621,7 +1621,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.ADAMANTITE_SWORD.get(),
                 SwordItems.TITANIUM_SWORD.get(),
                 SwordItems.MURAMASA.get(),
-                SwordItems.MARLIN_SPIKE_SWORD.get()
+                SwordItems.MARLIN_SPIKE_SWORD.get(),
+                SwordItems.BLADETONGUE.get()
         );
         // 祈灵之刃：魂师副武器，自带自动挥舞
         tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());

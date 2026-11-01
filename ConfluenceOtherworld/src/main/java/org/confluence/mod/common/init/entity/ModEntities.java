@@ -171,6 +171,8 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<DeveloperArrowEntity>> DEVELOPER_ARROW = registerEntityType("developer_arrow", "开发者箭", id -> EntityType.Builder.<DeveloperArrowEntity>of(DeveloperArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     /// 风矢。
     public static final DeferredHolder<EntityType<?>, EntityType<WindArrowEntity>> WIND_ARROW = registerEntityTypeWithEnglishName("wind_arrow", "风矢", "Wind Arrow", id -> EntityType.Builder.<WindArrowEntity>of(WindArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    /// 血雨。血雨弓把任意箭矢转化成它，从高空砸向目标；外观沿用既有的雨滴模型。
+    public static final DeferredHolder<EntityType<?>, EntityType<BloodRainArrowEntity>> BLOOD_RAIN_ARROW = registerEntityTypeWithEnglishName("blood_rain_arrow", "血雨", "Blood Rain", id -> EntityType.Builder.<BloodRainArrowEntity>of(BloodRainArrowEntity::new, MobCategory.MISC).sized(0.25F, 1.5F).build(id.toString()));
 
     /// 其它
     public static final DeferredHolder<EntityType<?>, EntityType<BoulderEntity>> BOULDER = registerEntityType("boulder", "巨石", id -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));

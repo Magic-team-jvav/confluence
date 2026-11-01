@@ -54,7 +54,7 @@ public final class ModTiers {
     public static final Tier GRAVE_DIGGERS_TIER = new PoweredTier(
             40, // 镐力 12
             ModTags.Blocks.NEEDS_2_LEVEL, // 挖掘等级：铁
-            -1, // 耐久
+            10000, // 耐久；实际不可破坏由物品的 UNBREAKABLE 组件接管，这里只给一个合法值
             5.0F, // 挖掘速度
             2.0F, // 攻击伤害加成
             14, // 附魔能力

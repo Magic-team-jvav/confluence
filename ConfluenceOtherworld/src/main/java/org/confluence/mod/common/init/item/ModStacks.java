@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.item;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -78,6 +79,52 @@ public final class ModStacks {
 
     public static ItemStack dungeonCrimsonMural() {
         return createMural(DUNGEON_CRIMSON_MURAL_DATA, "mural.dungeon.crimson_mural");
+    }
+
+    // 小藍圖與機械主題壁畫：貼圖比地牢壁畫小得多，所以按像素尺寸算佔格（16 像素 = 1 格）
+
+    public static ItemStack blueprintNetherPortal() {
+        return createScaledMural("blueprint_nether_portal", 15, 18, "mural.blueprint.nether_portal");
+    }
+
+    public static ItemStack blueprintSlime() {
+        return createScaledMural("blueprint_slime", 15, 18, "mural.blueprint.slime");
+    }
+
+    public static ItemStack blueprintEndPortal() {
+        return createScaledMural("blueprint_end_portal", 15, 18, "mural.blueprint.end_portal");
+    }
+
+    public static ItemStack blueprintTerraTree() {
+        return createScaledMural("blueprint_terra_tree", 15, 18, "mural.blueprint.terra_tree");
+    }
+
+    public static ItemStack blueprintCorruptedSpike() {
+        return createScaledMural("blueprint_corrupted_spike", 15, 18, "mural.blueprint.corrupted_spike");
+    }
+
+    public static ItemStack engineeringPlate() {
+        return createScaledMural("engineering_plate", 37, 30, "mural.mech.engineering_plate");
+    }
+
+    public static ItemStack retinazerMural() {
+        return createScaledMural("retinazer", 37, 30, "mural.mech.retinazer");
+    }
+
+    public static ItemStack retinazerActiveMural() {
+        return createScaledMural("retinazer_active", 37, 30, "mural.mech.retinazer_active");
+    }
+
+    public static ItemStack spazmatismMural() {
+        return createScaledMural("spazmatism", 37, 30, "mural.mech.spazmatism");
+    }
+
+    public static ItemStack skeletronPrimeMural() {
+        return createScaledMural("skeletron_prime", 37, 30, "mural.mech.skeletron_prime");
+    }
+
+    public static ItemStack theDestroyerMural() {
+        return createScaledMural("the_destroyer", 37, 30, "mural.mech.the_destroyer");
     }
 
     // 紙條
@@ -203,6 +250,47 @@ public final class ModStacks {
                         .withStyle(style -> style.withItalic(false))
         )));
         return stack;
+    }
+
+    /// 依貼圖像素尺寸建立壁畫資料。
+    ///
+    /// 像素密度與上面的地牢壁畫一致（`scale` 固定 1/16，即 16 像素 = 1 格），
+    /// 佔格向上取整到整數格，再讓貼圖在佔格內居中：貼圖從佔格右上角向左、向下延伸，
+    /// 所以 x 取負值往另一端推、y 從「貼滿」的高度往下減半個餘量。
+    private static ItemStack createScaledMural(String name, int textureWidth, int textureHeight, String translationKey) {
+        float scale = 0.0625F;
+        int muralWidth = (textureWidth + 15) / 16;
+        int muralHeight = (textureHeight + 15) / 16;
+        float x = -(muralWidth - textureWidth * scale) * 0.5F;
+        float y = (muralHeight - 1) - (muralHeight - textureHeight * scale) * 0.5F;
+
+        CompoundTag icon = new CompoundTag();
+        icon.putString("atlasLocation", "confluence:textures/murals/" + name + ".png");
+        icon.putInt("textureWidth", textureWidth);
+        icon.putInt("textureHeight", textureHeight);
+        icon.putInt("uWidth", textureWidth);
+        icon.putInt("vHeight", textureHeight);
+
+        CompoundTag datum = new CompoundTag();
+        datum.put("icon", icon);
+        datum.putFloat("x", x);
+        datum.putFloat("y", y);
+        datum.putFloat("z", -0.001F);
+        datum.putFloat("scale", scale);
+
+        ListTag front = new ListTag();
+        front.add(datum);
+
+        CompoundTag data = new CompoundTag();
+        data.put("back", new ListTag());
+        data.put("left", new ListTag());
+        data.put("right", new ListTag());
+        data.put("front", front);
+        data.putInt("muralWidth", muralWidth);
+        data.putInt("muralHeight", muralHeight);
+        data.putLong("headPos", 0L);
+        data.putString("id", "confluence:mural_entity_block");
+        return createMural(data, translationKey);
     }
 
     private static CompoundTag parseSnbt(String snbt) {

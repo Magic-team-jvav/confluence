@@ -519,23 +519,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.BLACK_LENS).when(lootingScaledChance(registries, 0.01F)))
                 )
         );
-        /// 僵尸鱼人 缺少未加入物品：血雨弓(Blood Rain Bow, 12.5%)、钱币槽(Money Trough, 6.67%)、鱼饵桶(Chum Bucket, 50%)
+        /// 僵尸鱼人 缺少未加入物品：鱼饵桶(Chum Bucket, 50%)
         add(MonsterEntities.ZOMBIE_MERMAN.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(PercentageLootEntry.independent(false,
-                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
-                        )))
-                .withPool(LootPool.lootPool()
-                        .add(PercentageLootEntry.independent(false,
-                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(FishingPoleItems.CHUM_CASTER).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
-                        )))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).when(lootingScaledChance(registries, 0.04F)))));
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).when(lootingScaledChance(registries, 0.125F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FishingPoleItems.CHUM_CASTER).when(lootingScaledChance(registries, 0.125F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).when(lootingScaledChance(registries, 0.04F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PetItems.MONEY_TROUGH).when(lootingScaledChance(registries, 0.0667F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(BowItems.BLOOD_RAIN_BOW).when(lootingScaledChance(registries, 0.125F)))));
         add(MonsterEntities.WANDERING_EYE_FISH.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(PercentageLootEntry.independent(false,
-                                PercentageLootEntry.rule(100.0 / 8, LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
-                        )))
-        );
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF).when(lootingScaledChance(registries, 0.125F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FishingPoleItems.CHUM_CASTER).when(lootingScaledChance(registries, 0.125F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR).when(lootingScaledChance(registries, 0.04F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PetItems.MONEY_TROUGH).when(lootingScaledChance(registries, 0.0667F))))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(BowItems.BLOOD_RAIN_BOW).when(lootingScaledChance(registries, 0.125F)))));
         add(MonsterEntities.DEVOURER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(PercentageLootEntry.independent(false,

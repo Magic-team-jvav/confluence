@@ -61,12 +61,15 @@ public class BowItems {
     public static final DeferredItem<MoltenFury> MOLTEN_FURY = registerItem("molten_fury", "熔火之怒", MoltenFury::new);
     public static final DeferredItem<TheBeesKnees> THE_BEES_KNEES = registerItemWithEnglishName("the_bees_knees", "蜂膝弓", "The Bee's Knees", TheBeesKnees::new);
     public static final DeferredItem<HellwingBow> HELLWING_BOW = registerItem("hellwing_bow", "地狱之翼弓", HellwingBow::new);
+    // 血雨弓：发射方式同代达罗斯风暴弓，一根箭转化为 1–3 束血雨
+    public static final DeferredItem<BloodRainBow> BLOOD_RAIN_BOW = registerItemWithEnglishName("blood_rain_bow", "血雨弓", "Blood Rain Bow", () -> new BloodRainBow(2.4F, ModRarity.ORANGE));
 
     // 稻草人弓 - 手持时驱离 32 格内的鸟妖，箭矢对鸟妖额外造成 30 点伤害
     public static final DeferredItem<Scarebow> SCAREBOW = registerItem("scarebow", "稻草人弓", Scarebow::new);
 
     // 代达罗斯风暴弓
     public static final DeferredItem<DaedalusStormbow> DAEDALUS_STORM_BOW = registerItemWithEnglishName("daedalus_storm_bow", "代达罗斯风暴弓", "Daedalus Stormbow", () -> new DaedalusStormbow(12f, ModRarity.PURPLE));
+
 
     // 开发者弓
     public static final DeferredItem<DeveloperBow> DEVELOPER_BOW = registerItem("developer_bow", "开发者弓", DeveloperBow::new);

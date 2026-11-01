@@ -28,7 +28,7 @@ import org.confluence.mod.network.c2s.SoulSkillIndexRequestPacketC2S;
 import org.confluence.mod.network.c2s.SoulSkillRequestPacketC2S;
 import org.confluence.mod.network.c2s.SoulSkillRequestPacketC2S.Action;
 import org.confluence.mod.network.c2s.SoulSkillUsePacketC2S;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 
 /// 客户端类，服务端请勿调用
@@ -62,14 +62,14 @@ public final class ClientSoulHandler {
                     stack.setCd(stack.getCd() - 1);
                 }
             }
-            for (SoulSkillStack stack : PlayerUtils.getEquippedSoulSkills(player)) {
+            for (SoulSkillStack stack : SoulcererUtils.getEquippedSoulSkills(player)) {
                 if (!stack.isEmpty()) {
-                    stack.setCd(PlayerUtils.getSoulSkillCooldown(player, stack.getSoulSkill().getId()));
-                    stack.setMaxCd(PlayerUtils.getSoulSkillMaxCooldown(player, stack.getSoulSkill().getId()));
+                    stack.setCd(SoulcererUtils.getSoulSkillCooldown(player, stack.getSoulSkill().getId()));
+                    stack.setMaxCd(SoulcererUtils.getSoulSkillMaxCooldown(player, stack.getSoulSkill().getId()));
                 }
             }
         }
-        if (!PlayerUtils.isHoldingSoulWeapon(player)) {
+        if (!SoulcererUtils.isHoldingSoulWeapon(player)) {
             closeSoulSkillHuds();
         }
         handleSoulSkills();
@@ -91,7 +91,7 @@ public final class ClientSoulHandler {
             return;
         }
 
-        PlayerUtils.updateSoulSkillSlots(player);
+        SoulcererUtils.updateSoulSkillSlots(player);
     }
 
     /// 刷新各类快捷技能 HUD 和当前选中技能的显示。
@@ -105,7 +105,7 @@ public final class ClientSoulHandler {
         ROULETTE_WHEEL_SMALL_HUD_INSTANCE.update();
         CARD_HORIZONTAL_L_HUD_INSTANCE.update();
         CARD_HORIZONTAL_R_HUD_INSTANCE.update();
-        CURRENT_SELECTED_SKILL_HUD_INSTANCE.updateSkill(PlayerUtils.getCurrentSkillStack(player));
+        CURRENT_SELECTED_SKILL_HUD_INSTANCE.updateSkill(SoulcererUtils.getCurrentSkillStack(player));
     }
 
     /// 收到技能快照后刷新 HUD 和已打开的技能总览。
@@ -216,11 +216,11 @@ public final class ClientSoulHandler {
         if (player == null) {
             return;
         }
-        int maxNumber = PlayerUtils.getEquippedSoulSkillMaxNumber(player);
-        int currentIndex = PlayerUtils.getCurrentSoulSkillIndex(player);
+        int maxNumber = SoulcererUtils.getEquippedSoulSkillMaxNumber(player);
+        int currentIndex = SoulcererUtils.getCurrentSoulSkillIndex(player);
         int effectiveOffset = SoulQuickSkillHudUtils.calculateSkippingOffset(offset, currentIndex, maxNumber,
                 index -> {
-                    SoulSkillStack stack = PlayerUtils.getSkillStack(player, index);
+                    SoulSkillStack stack = SoulcererUtils.getSkillStack(player, index);
                     return stack.isEmpty() || stack.getSoulSkill().isPassive();
                 });
         if (effectiveOffset == 0) {
@@ -252,7 +252,7 @@ public final class ClientSoulHandler {
 
     /// 标记快捷选择为开启，并通知各样式 HUD 打开。
     private static void openSoulSkillHuds() {
-        if (!PlayerUtils.isHoldingSoulWeapon(Minecraft.getInstance().player)) {
+        if (!SoulcererUtils.isHoldingSoulWeapon(Minecraft.getInstance().player)) {
             return;
         }
         active = true;
@@ -291,10 +291,10 @@ public final class ClientSoulHandler {
             return;
         }
 
-        PlayerUtils.setEquippedSoulSkillMaxNumber(player, equippedSkillMaxNumber);
-        PlayerUtils.updateSoulSkillSlots(player);
+        SoulcererUtils.setEquippedSoulSkillMaxNumber(player, equippedSkillMaxNumber);
+        SoulcererUtils.updateSoulSkillSlots(player);
         updateSoulSkillHuds();
-        sendSoulSkillRequest(Action.SET_SLOT_COUNT, PlayerUtils.getEquippedSoulSkillMaxNumber(player), SoulSkillStack.Empty);
+        sendSoulSkillRequest(Action.SET_SLOT_COUNT, SoulcererUtils.getEquippedSoulSkillMaxNumber(player), SoulSkillStack.Empty);
     }
 
     /// 先更新本地选择与 HUD，再发送服务端选择请求。
@@ -304,20 +304,20 @@ public final class ClientSoulHandler {
             return;
         }
 
-        PlayerUtils.setCurrentSoulSkillIndex(player, currentIndex);
+        SoulcererUtils.setCurrentSoulSkillIndex(player, currentIndex);
         updateSoulSkillHuds();
-        PacketDistributor.sendToServer(new SoulSkillIndexRequestPacketC2S(PlayerUtils.getCurrentSoulSkillIndex(player)));
+        PacketDistributor.sendToServer(new SoulSkillIndexRequestPacketC2S(SoulcererUtils.getCurrentSoulSkillIndex(player)));
     }
 
     /// 本地装备成功后刷新 HUD，并发送服务端装备请求。
     public static boolean equipSoulSkill(int index, SoulSkillStack skillStack) {
         Player player = Minecraft.getInstance().player;
-        if (player == null || (!skillStack.isEmpty() && !PlayerUtils.isSoulSkillAvailable(player, skillStack.getSoulSkill().getId()))
-                || !PlayerUtils.equipSoulSkill(player, index, skillStack)) {
+        if (player == null || (!skillStack.isEmpty() && !SoulcererUtils.isSoulSkillAvailable(player, skillStack.getSoulSkill().getId()))
+                || !SoulcererUtils.equipSoulSkill(player, index, skillStack)) {
             return false;
         }
 
-        PlayerUtils.updateSoulSkillSlots(player);
+        SoulcererUtils.updateSoulSkillSlots(player);
         updateSoulSkillHuds();
         sendSoulSkillRequest(Action.EQUIP, index, skillStack);
         return true;
@@ -326,11 +326,11 @@ public final class ClientSoulHandler {
     /// 本地卸下成功后刷新 HUD，并发送服务端卸下请求。
     public static boolean unequipSoulSkill(int index) {
         Player player = Minecraft.getInstance().player;
-        if (player == null || !PlayerUtils.unequipSoulSkill(player, index)) {
+        if (player == null || !SoulcererUtils.unequipSoulSkill(player, index)) {
             return false;
         }
 
-        PlayerUtils.updateSoulSkillSlots(player);
+        SoulcererUtils.updateSoulSkillSlots(player);
         updateSoulSkillHuds();
         sendSoulSkillRequest(Action.UNEQUIP, index, SoulSkillStack.Empty);
         return true;
@@ -339,12 +339,12 @@ public final class ClientSoulHandler {
     /// 本地替换槽位成功后刷新 HUD，并发送服务端替换请求。
     public static boolean setSoulSkillStack(int index, SoulSkillStack skillStack) {
         Player player = Minecraft.getInstance().player;
-        if (player == null || (!skillStack.isEmpty() && !PlayerUtils.isSoulSkillAvailable(player, skillStack.getSoulSkill().getId()))
-                || !PlayerUtils.setSoulSkillStack(player, index, skillStack)) {
+        if (player == null || (!skillStack.isEmpty() && !SoulcererUtils.isSoulSkillAvailable(player, skillStack.getSoulSkill().getId()))
+                || !SoulcererUtils.setSoulSkillStack(player, index, skillStack)) {
             return false;
         }
 
-        PlayerUtils.updateSoulSkillSlots(player);
+        SoulcererUtils.updateSoulSkillSlots(player);
         updateSoulSkillHuds();
         sendSoulSkillRequest(Action.SET_STACK, index, skillStack);
         return true;

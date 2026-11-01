@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 /// 灵魂激荡冲击：每次施放都放一圈激荡，并累计层数；每满 {@link SoulSkillParameters#SURGE_BLAST_CHARGE_COUNT} 次
 /// 额外在脚下引爆一次范围更大的终极爆炸，然后清空层数。
@@ -20,7 +20,7 @@ public class SurgeBlastSkill extends SoulSkill {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack);
+        float damage = SoulcererUtils.getSoulSkillDamage(player, skillStack);
         serverPlayer.level().addFreshEntity(new SpiritSurgeEntity(serverPlayer, damage,
                 SoulSkillParameters.SPIRIT_SURGE_RADIUS, SoulSkillParameters.SPIRIT_SURGE_VERTICAL_RANGE,
                 SoulSkillParameters.SPIRIT_SURGE_DURATION_TICKS, 0, 0.0F));

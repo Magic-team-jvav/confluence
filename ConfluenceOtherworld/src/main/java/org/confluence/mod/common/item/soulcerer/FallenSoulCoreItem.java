@@ -14,7 +14,7 @@ import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.common.attachment.SoulStorage;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -40,7 +40,7 @@ public class FallenSoulCoreItem extends CustomRarityItem implements ILeftClickSt
             storage.addSoul(1);
             return InteractionResultHolder.sidedSuccess(stack, false);
         }
-        if (!PlayerUtils.toggleSoulMode(serverPlayer)) {
+        if (!SoulcererUtils.toggleSoulMode(serverPlayer)) {
             return InteractionResultHolder.fail(stack);
         }
         /// 用过一次就解锁「随武器自动互切」：之后使用魂师主武器 / 魔法武器会自行切换灵魂条与魔力条。

@@ -7,11 +7,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
+import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -110,8 +110,8 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     protected void renderDrawLayer(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!isType()) return;
 
-        int currentIdx = PlayerUtils.getCurrentSoulSkillIndex(player);
-        int totalSkills = PlayerUtils.getEquippedSoulSkillMaxNumber(player);
+        int currentIdx = SoulcererUtils.getCurrentSoulSkillIndex(player);
+        int totalSkills = SoulcererUtils.getEquippedSoulSkillMaxNumber(player);
         if (totalSkills <= 0) return;
 
         float totalSlide = renderRotation;
@@ -138,7 +138,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
 
             int effectiveOffset = Math.round(virtualPos);
             int skillIdx = SoulQuickSkillHudUtils.calculateSkillIndex(effectiveOffset, currentIdx, totalSkills);
-            SoulSkillStack stack = PlayerUtils.getSkillStack(player, skillIdx);
+            SoulSkillStack stack = SoulcererUtils.getSkillStack(player, skillIdx);
             boolean selected = Math.abs(virtualPos) < 0.5f;
 
             // 弧形坐标

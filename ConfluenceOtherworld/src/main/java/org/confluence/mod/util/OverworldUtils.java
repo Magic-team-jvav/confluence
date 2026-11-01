@@ -185,6 +185,11 @@ public final class OverworldUtils {
         return -64;
     }
 
+    // default 128
+    public static int getUnderworldGenerationHeight() {
+        return 128;
+    }
+
     /// default 63
     public static int getSeaLevel() {
         return 63;

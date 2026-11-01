@@ -5,3 +5,15 @@
 服务端游戏事件用GameEventSystem，客户端游戏事件用ClientGameEventSystem
 少用forge事件判断模组内实体，改用实体的类中判断
 困难模式用ModUtils.isHardmode判断
+游戏难度用LibUtils
+
+# 对于相同事件，在一个逻辑端内不要有重复的事件订阅
+- 已经有一个death(LivingDeathEvent event)了，就不许出现deathSoul(LivingDeathEvent event)
+
+# 不要有单独的事件注册总线，全部集中到一个类里订阅，且方法名必须满足：fooBar$Post(FooBarEvent.Post event)
+- 如果类名里有Living，就不用写livingDeath可以写death
+
+事件订阅类里不要写非事件订阅方法，如各类工具方法
+事件的订阅位置要看该事件继承自什么类，如果是PlayerEvent，就必须在PlayerEvents订阅
+
+套装奖励见ModArmorBonus，判断玩家有没有套装奖励见PlayerSpecialData.of(player).getArmorSetBonusKey()

@@ -5,9 +5,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 /// 亵渎之魂：从地面钻出火球弹幕，命中小范围爆炸。
 ///
@@ -25,8 +24,8 @@ public class ProfaneSoulSkill extends SoulSkill {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack);
-        LivingEntity target = PlayerUtils.findNearestEnemy(serverPlayer, SoulSkillParameters.STAR_CALL_TARGET_RADIUS);
+        float damage = SoulcererUtils.getSoulSkillDamage(player, skillStack);
+        LivingEntity target = SoulcererUtils.findNearestEnemy(serverPlayer, SoulSkillParameters.STAR_CALL_TARGET_RADIUS);
         Vec3 origin;
         Vec3 direction;
         if (target != null) {

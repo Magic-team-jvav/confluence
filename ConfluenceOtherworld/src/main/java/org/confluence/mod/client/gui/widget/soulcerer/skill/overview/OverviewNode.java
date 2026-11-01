@@ -11,7 +11,7 @@ import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,7 +93,7 @@ public class OverviewNode extends SoulSkillBox {
         /// 包围盒是未缩放尺寸，悬停要按缩放后的实际范围重新判定。
         this.isHovered = isMouseOverScaled(mouseX, mouseY);
         boolean isSelected = screen.theCurrentlySelectedSkill == getSkill();
-        boolean isEquipped = PlayerUtils.isSoulSkillEquipped(Minecraft.getInstance().player, getSkill());
+        boolean isEquipped = SoulcererUtils.isSoulSkillEquipped(Minecraft.getInstance().player, getSkill());
         isSelect = isSelected || this.isHovered;
         isActivate = isEquipped;
         isFlame = isEquipped;
@@ -108,8 +108,8 @@ public class OverviewNode extends SoulSkillBox {
         super.renderWidget(guiGraphics, getX(), getY());
         int iconOffset = (BOX_SIZE - SKILL_SIZE) / 2;
         SoulSkillBox.renderSkillCooldown(guiGraphics,
-                PlayerUtils.getSoulSkillCooldown(Minecraft.getInstance().player, skillId()),
-                PlayerUtils.getSoulSkillMaxCooldown(Minecraft.getInstance().player, skillId()),
+                SoulcererUtils.getSoulSkillCooldown(Minecraft.getInstance().player, skillId()),
+                SoulcererUtils.getSoulSkillMaxCooldown(Minecraft.getInstance().player, skillId()),
                 getX() + iconOffset, getY() + iconOffset);
         poseStack.popPose();
     }
@@ -153,7 +153,7 @@ public class OverviewNode extends SoulSkillBox {
             boolean alreadySelected = screen.theCurrentlySelectedSkill == getSkill();
             screen.theCurrentlySelectedSkill = alreadySelected ? null : getSkill();
         } else {
-            for (int skillIndex : PlayerUtils.getSoulSkillIndexes(Minecraft.getInstance().player, getSkill())) {
+            for (int skillIndex : SoulcererUtils.getSoulSkillIndexes(Minecraft.getInstance().player, getSkill())) {
                 ClientSoulHandler.unequipSoulSkill(skillIndex);
             }
         }

@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -45,7 +45,7 @@ public abstract class SoulArtifactItem extends CustomRarityItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            if (!PlayerUtils.tryUseSoulArtifact(serverPlayer, stack)) {
+            if (!SoulcererUtils.tryUseSoulArtifact(serverPlayer, stack)) {
                 return InteractionResultHolder.fail(stack);
             }
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));

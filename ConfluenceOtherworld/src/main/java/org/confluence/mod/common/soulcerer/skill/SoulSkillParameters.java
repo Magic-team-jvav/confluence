@@ -65,7 +65,7 @@ public class SoulSkillParameters {
     public static final int SOUL_MARK_DURATION_TICKS = 10 * SharedConstants.TICKS_PER_SECOND;
     /// 技能命中带印记敌人的回魂数（见 `LivingEntityEvents#soulWeaponTraitsOnSkillHit`）。
     public static final float SOUL_MARK_HIT_SOUL = 1.0F;
-    /// 击杀带印记敌人的回魂数（见 `LivingEntityEvents#livingDeathSoul`）。
+    /// 击杀带印记敌人的回魂数（见 `LivingEntityEvents#death$Lowest`）。
     public static final float SOUL_MARK_KILL_SOUL = 2.0F;
 
     // ===== 灵魂激荡系列 =====

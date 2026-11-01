@@ -17,7 +17,6 @@ import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 
 public class ManaStorage implements INBTSerializable<CompoundTag> {
     private final IAttachmentHolder owner;

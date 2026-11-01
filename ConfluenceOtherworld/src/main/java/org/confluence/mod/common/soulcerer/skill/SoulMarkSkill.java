@@ -10,7 +10,7 @@ import java.util.List;
 ///
 /// 印记不加任何伤害：之后**所有技能**命中这只敌人，玩家各回 1 点灵魂；击杀它再回 2 点灵魂。
 /// 命中时的挂印记在 `SoulLureProjectile#applySoulMark`，回魂结算在
-/// `LivingEntityEvents#soulWeaponTraitsOnSkillHit` 与 `#livingDeathSoul`。
+/// `LivingEntityEvents#soulWeaponTraitsOnSkillHit` 与 `#death$Lowest`。
 public class SoulMarkSkill extends SoulProjectileSkill {
     public SoulMarkSkill(ResourceLocation icon, ResourceLocation id) {
         super(icon, id, builder(SoulLureProjectile.PARTICLE)

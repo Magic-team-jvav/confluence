@@ -98,8 +98,6 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
     private static final double PURSUIT_HEIGHT = GRID_SIZE_Y * GRID_SPACING;
     /// 追击区域允许的前后纵深，单位格。
     private static final double PURSUIT_DEPTH = 150.0;
-    /// 下界肉墙特殊地形处理所用的参考高度，单位格；实际阈值取其三分之二。
-    private static final double NETHER_GENERATION_HEIGHT = 128.0;
     /// 刷新肉墙周围区块保持加载状态的间隔，单位 tick。
     private static final int CHUNK_REFRESH_INTERVAL = 5;
     /// 区块票据在未刷新时保留的时间，单位 tick。
@@ -538,8 +536,9 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         for (Entity entity : wallParts) {
             if (!(entity instanceof WallOfFleshMouth mouth) || !mouth.isAlive() || mouth.getY() <= level().getMinBuildHeight())
                 continue;
-            if (OverworldUtils.inUnderworld(level().dimension(), mouth.getY()) && mouth.getY() >= NETHER_GENERATION_HEIGHT * 2.0 / 3.0)
-                continue;
+            if (OverworldUtils.inUnderworld(level().dimension(), living.getY()) &&
+                    mouth.getY() >= OverworldUtils.getUnderworldGenerationHeight() * 2.0 / 3.0
+            ) continue;
             double distance = mouth.distanceToSqr(living);
             if (distance < nearestDistance) {
                 nearest = mouth;

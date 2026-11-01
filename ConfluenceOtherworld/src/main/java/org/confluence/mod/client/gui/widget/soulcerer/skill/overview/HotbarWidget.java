@@ -12,7 +12,7 @@ import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +34,7 @@ public class HotbarWidget extends AbstractWidget {
         super(x, y, 0, 32, Component.empty());
         this.screen = screen;
 
-        for (int i = 0; i < PlayerUtils.getEquippedSoulSkillMaxNumber(Minecraft.getInstance().player); i++) {
+        for (int i = 0; i < SoulcererUtils.getEquippedSoulSkillMaxNumber(Minecraft.getInstance().player); i++) {
             slots.add(new HotbarSlot(x, y, i));
         }
         updateSize();
@@ -92,7 +92,7 @@ public class HotbarWidget extends AbstractWidget {
 
     /// 用当前装备数据刷新槽位显示。
     public void rebuildFromHolder() {
-        int slotCount = PlayerUtils.getEquippedSoulSkillMaxNumber(Minecraft.getInstance().player);
+        int slotCount = SoulcererUtils.getEquippedSoulSkillMaxNumber(Minecraft.getInstance().player);
         if (slots.size() != slotCount) {
             slots.clear();
             for (int i = 0; i < slotCount; i++) {
@@ -101,7 +101,7 @@ public class HotbarWidget extends AbstractWidget {
             updateSize();
             updateBoxPos();
         }
-        var equipped = PlayerUtils.getEquippedSoulSkills(Minecraft.getInstance().player);
+        var equipped = SoulcererUtils.getEquippedSoulSkills(Minecraft.getInstance().player);
         int equippedSize = equipped.size();
         for (int i = 0; i < slots.size(); i++) {
             slots.get(i).setSkillStack(i < equippedSize ? equipped.get(i) : SoulSkillStack.Empty);
@@ -207,7 +207,7 @@ public class HotbarWidget extends AbstractWidget {
                 if (!ClientSoulHandler.equipSoulSkill(slotIndex, stack)) {
                     return;
                 }
-                skillStack = PlayerUtils.getSkillStack(Minecraft.getInstance().player, slotIndex);
+                skillStack = SoulcererUtils.getSkillStack(Minecraft.getInstance().player, slotIndex);
             } else {
                 // 如果没有选中的技能
                 // 选择了相同的槽位则取消选择 否则 选择该槽位

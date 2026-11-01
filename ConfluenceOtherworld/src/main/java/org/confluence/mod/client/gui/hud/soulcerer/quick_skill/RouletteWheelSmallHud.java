@@ -13,11 +13,11 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.soulcerer.CurrentSelectedSkillHud;
-import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
+import org.confluence.mod.client.util.soulcerer.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     // 资源与常量定义
@@ -133,8 +133,8 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     private void renderSkillBoxes(GuiGraphics guiGraphics, PoseStack poseStack, float realtimeDeltaTicks) {
         poseStack.pushPose();
         float startAngleOffset = RouletteWheelBigHud.START_ANGLE_OFFSET;
-        int totalSkills = PlayerUtils.getEquippedSoulSkillMaxNumber(player);
-        int currentIdx = PlayerUtils.getCurrentSoulSkillIndex(player);
+        int totalSkills = SoulcererUtils.getEquippedSoulSkillMaxNumber(player);
+        int currentIdx = SoulcererUtils.getCurrentSoulSkillIndex(player);
 
         // 计算当前轮盘旋转对应的槽位偏移量
         int rotationOffset = SoulQuickSkillHudUtils.calculateRotationOffset(targetAngle, INTERVAL, DISPLAY_COUNT);
@@ -142,7 +142,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
         for (int slotIdx = 0; slotIdx < DISPLAY_COUNT; slotIdx++) {
             int skillIdx = SoulQuickSkillHudUtils.getSkillIndex(slotIdx, rotationOffset, currentIdx, totalSkills, DISPLAY_COUNT, HALF_DISPLAY);
 
-            SoulSkillStack stack = PlayerUtils.getSkillStack(player, skillIdx);
+            SoulSkillStack stack = SoulcererUtils.getSkillStack(player, skillIdx);
             if (stack.isEmpty()) {
                 continue;
             }
@@ -171,7 +171,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
      * 调整目标索引
      */
     public void adjustTarget(int offset) {
-        int totalSkills = PlayerUtils.getEquippedSoulSkillMaxNumber(player);
+        int totalSkills = SoulcererUtils.getEquippedSoulSkillMaxNumber(player);
 
         if (totalSkills <= 0) {
             targetAngle = 0;
@@ -225,7 +225,7 @@ public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
 
     /// 居中绘制当前槽位技能名称，空槽不显示。
     protected void drawSkillStackName(GuiGraphics guiGraphics, Font font, int x, int y) {
-        SoulSkillStack stack = PlayerUtils.getCurrentSkillStack(player);
+        SoulSkillStack stack = SoulcererUtils.getCurrentSkillStack(player);
         if (stack.isEmpty()) {
             return;
         }

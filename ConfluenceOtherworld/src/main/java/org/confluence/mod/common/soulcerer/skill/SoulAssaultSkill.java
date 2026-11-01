@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.List;
 
@@ -43,12 +43,12 @@ public class SoulAssaultSkill extends SoulSkill {
 
     /// 增益期间的一次自动开火：至少要 1 点灵魂才能把灵魂转成子弹。
     public static void fireBurst(ServerPlayer player) {
-        int bullets = (int) Math.min(SoulSkillParameters.SOUL_ASSAULT_MAX_BULLETS, Math.floor(PlayerUtils.getSoul(player)));
-        if (bullets <= 0 || !PlayerUtils.consumeSoul(player, bullets)) {
+        int bullets = (int) Math.min(SoulSkillParameters.SOUL_ASSAULT_MAX_BULLETS, Math.floor(SoulcererUtils.getSoul(player)));
+        if (bullets <= 0 || !SoulcererUtils.consumeSoul(player, bullets)) {
             return;
         }
         /// 武器部分用施法时的快照：增益期间换手/空手不会削弱已经点亮的子弹。
-        float damage = PlayerUtils.getCastSoulSkillDamage(player, ModSoulSkills.SOUL_ASSAULT.get())
+        float damage = SoulcererUtils.getCastSoulSkillDamage(player, ModSoulSkills.SOUL_ASSAULT.get())
                 + SoulSkillParameters.SOUL_ASSAULT_BULLET_DAMAGE;
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
@@ -59,7 +59,7 @@ public class SoulAssaultSkill extends SoulSkill {
                     SoulSkillParameters.SOUL_LURE_SPEED, 0.0, SoulSkillParameters.SOUL_LURE_MAX_DISTANCE,
                     SoulSkillParameters.SOUL_LURE_MAX_AGE_TICKS, 0.0, 0.0F));
             if (random.nextFloat() < SoulSkillParameters.SOUL_ASSAULT_REFUND_CHANCE) {
-                PlayerUtils.adjustSoul(player, 1.0F);
+                SoulcererUtils.adjustSoul(player, 1.0F);
             }
         }
     }

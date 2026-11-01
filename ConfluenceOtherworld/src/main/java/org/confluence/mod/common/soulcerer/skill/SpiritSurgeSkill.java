@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 /// 灵魂激荡：默认参数的冲击波技能，**开局即解锁**（见 `SoulSkillStorage` 的默认解锁表）。
 ///
@@ -23,7 +23,7 @@ public class SpiritSurgeSkill extends SoulSurgeSkill {
     public void use(Player player, SoulSkillStack skillStack) {
         super.use(player, skillStack);
         if (player instanceof ServerPlayer serverPlayer) {
-            rollSoulEcho(serverPlayer, PlayerUtils.getSoulSkillDamage(player, skillStack));
+            rollSoulEcho(serverPlayer, SoulcererUtils.getSoulSkillDamage(player, skillStack));
         }
     }
 
@@ -32,7 +32,7 @@ public class SpiritSurgeSkill extends SoulSurgeSkill {
     /// 只由「灵魂激荡」系列的释放点调用（主动施放与附魂激荡的自动释放），
     /// 额外那一发不会再次掷骰，避免无限连锁。
     public static void rollSoulEcho(ServerPlayer player, float damage) {
-        if (!PlayerUtils.isSoulBookLearned(player, SoulBooks.SOUL_ECHO)
+        if (!SoulcererUtils.isSoulBookLearned(player, SoulBooks.SOUL_ECHO)
                 || player.getRandom().nextFloat() >= SoulSkillParameters.SOUL_ECHO_CHANCE) {
             return;
         }

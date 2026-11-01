@@ -38,6 +38,7 @@ import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class TickEvents {
@@ -98,11 +99,11 @@ public final class TickEvents {
             ServerLevel level = player.serverLevel();
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
-            PlayerUtils.learnSoulSkillsOnFirstObtain(player);
-            PlayerUtils.tickSoulSkills(player);
-            PlayerUtils.regenerateSoul(player);
-            PlayerUtils.tickSoulArmorSets(player, gameTime);
-            PlayerUtils.tickSoulSkillStates(player, gameTime);
+            SoulcererUtils.learnSoulSkillsOnFirstObtain(player);
+            SoulcererUtils.tickSoulSkills(player);
+            SoulcererUtils.regenerateSoul(player);
+            SoulcererUtils.tickSoulArmorSets(player, gameTime);
+            SoulcererUtils.tickSoulSkillStates(player, gameTime);
             ExtraInventory.of(player).sync(player);
             MountManager.validate(player);
             YoyoSession.of(player).tick(player);

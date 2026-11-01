@@ -10,7 +10,7 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 public record SoulSkillIndexSyncPacketS2C(int index) implements IPacketS2C {
     public static final Type<SoulSkillIndexSyncPacketS2C> TYPE = Confluence.createType("soulcerer_skill_index_sync");
@@ -33,6 +33,6 @@ public record SoulSkillIndexSyncPacketS2C(int index) implements IPacketS2C {
 
     /// 仅向指定玩家发送当前选中索引。
     public static void sendToClient(ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, new SoulSkillIndexSyncPacketS2C(PlayerUtils.getCurrentSoulSkillIndex(player)));
+        PacketDistributor.sendToPlayer(player, new SoulSkillIndexSyncPacketS2C(SoulcererUtils.getCurrentSoulSkillIndex(player)));
     }
 }

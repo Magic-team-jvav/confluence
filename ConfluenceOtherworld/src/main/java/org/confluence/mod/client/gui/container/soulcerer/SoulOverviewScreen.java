@@ -28,7 +28,7 @@ import org.confluence.mod.client.gui.widget.soulcerer.skill.overview.*;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
@@ -1322,7 +1322,7 @@ public class SoulOverviewScreen extends Screen {
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         int slot = keyCode - GLFW.GLFW_KEY_1;
-        if (slot >= 0 && slot < PlayerUtils.getEquippedSoulSkillMaxNumber(Minecraft.getInstance().player)) {
+        if (slot >= 0 && slot < SoulcererUtils.getEquippedSoulSkillMaxNumber(Minecraft.getInstance().player)) {
             if (theCurrentlySelectedSkill != null) {
                 ClientSoulHandler.equipSoulSkill(slot, theCurrentlySelectedSkill.getStack());
                 hotbar.rebuildFromHolder();

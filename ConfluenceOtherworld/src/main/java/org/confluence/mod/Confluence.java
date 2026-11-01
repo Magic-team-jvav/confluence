@@ -50,10 +50,6 @@ public final class Confluence {
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
     // todo 1.3.0
-    /// 魂师总开关：控制施法、灵魂/魔力模式切换、法器与技能同步等全部魂师机制。
-    ///
-    /// 原先跟随 `LibUtils.isDev()`，打包（production）环境里整个魂师玩法不可用；
-    /// 现已解封为常开（含打包环境）。需要临时关掉时把这里改回 `LibUtils.isDev()`。
     public static final boolean SOUL_SKILLS = true ;
     public static final boolean THE_END_BIOMES = LibUtils.isDev();
     public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();

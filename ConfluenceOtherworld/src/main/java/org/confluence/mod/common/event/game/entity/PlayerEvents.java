@@ -95,6 +95,7 @@ import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.Objects;
@@ -382,6 +383,7 @@ public final class PlayerEvents {
         if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL) || stack.is(ModTags.Items.YOYO)) {
             event.setCanceled(true);
         }
+        SoulcererUtils.soulKnifeReach(event);
     }
 
     @SubscribeEvent
@@ -660,5 +662,15 @@ public final class PlayerEvents {
         event.addRange(PlayerUtils.MANA_RANGE, TCUtils.getValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.PROVIDE_MANA));
         event.addRange(PlayerUtils.COIN_RANGE, TCUtils.getValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.COINS));
         event.addRange(PlayerUtils.HEART_RANGE, ModEffects.getHeartReachRange(player), stack -> stack.is(ModTags.Items.PROVIDE_LIFE));
+    }
+
+    @SubscribeEvent
+    public static void soulCollection(SoulCollectionEvent event) {
+        SoulcererUtils.soulBowExtraSoul(event);
+        SoulcererUtils.soulKnifeExtraSoul(event);
+        SoulcererUtils.soulCollectionAccessoryBonus(event);
+        SoulcererUtils.brokenGlimmerHeal(event);
+        SoulcererUtils.soulDropBonus(event);
+        SoulcererUtils.bloodRageSoul(event);
     }
 }

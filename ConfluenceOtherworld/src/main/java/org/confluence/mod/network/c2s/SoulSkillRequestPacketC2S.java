@@ -12,7 +12,7 @@ import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
 import org.confluence.mod.network.s2c.SoulSkillSyncPacketS2C;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 public record SoulSkillRequestPacketC2S(Action action, int index, ResourceLocation skillId, int cd, int maxCd) implements IPacketC2S {
     public static final Type<SoulSkillRequestPacketC2S> TYPE = Confluence.createType("soulcerer_skill_request");
@@ -38,7 +38,7 @@ public record SoulSkillRequestPacketC2S(Action action, int index, ResourceLocati
             return;
         }
 
-        PlayerUtils.refreshSoulSkills(player);
+        SoulcererUtils.refreshSoulSkills(player);
         switch (action) {
             case SET_SLOT_COUNT -> {
             }
@@ -52,17 +52,17 @@ public record SoulSkillRequestPacketC2S(Action action, int index, ResourceLocati
                     }
 
                     if (action == Action.EQUIP) {
-                        PlayerUtils.equipSoulSkill(player, index, stack);
+                        SoulcererUtils.equipSoulSkill(player, index, stack);
                     } else {
-                        PlayerUtils.setSoulSkillStack(player, index, stack);
+                        SoulcererUtils.setSoulSkillStack(player, index, stack);
                     }
                 }
             }
-            case UNEQUIP -> PlayerUtils.unequipSoulSkill(player, index);
+            case UNEQUIP -> SoulcererUtils.unequipSoulSkill(player, index);
         }
 
-        PlayerUtils.updateSoulSkillSlots(player);
-        PlayerUtils.refreshSoulSkills(player);
+        SoulcererUtils.updateSoulSkillSlots(player);
+        SoulcererUtils.refreshSoulSkills(player);
         SoulSkillSyncPacketS2C.sendToClient(player);
     }
 

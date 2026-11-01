@@ -17,7 +17,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.common.PermanentUpgrade;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.Locale;
 
@@ -178,7 +178,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
                 /// 灵魂不足以支付下一次施法时，生命条染成灵魂条的淡蓝色，提示这一下会扣血。
-                boolean soulOverdraft = PlayerUtils.isSoulOverdraftPending(player);
+                boolean soulOverdraft = SoulcererUtils.isSoulOverdraftPending(player);
                 if (soulOverdraft) {
                     guiGraphics.setColor(SOUL_TINT_RED, SOUL_TINT_GREEN, SOUL_TINT_BLUE, 1.0F);
                 }

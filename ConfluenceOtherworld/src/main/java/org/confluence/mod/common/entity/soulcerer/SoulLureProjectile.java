@@ -31,7 +31,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.SwordProjectileAppearance;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -215,7 +215,7 @@ public class SoulLureProjectile extends Projectile {
     /// 附魂印记：给被打中的敌人挂 10 秒印记（时长由技能传入）。
     ///
     /// 印记本身不改伤害：之后**所有技能**命中它都回 1 魂、击杀它回 2 魂，
-    /// 结算点在 `LivingEntityEvents#soulWeaponTraitsOnSkillHit` 与 `#livingDeathSoul`。
+    /// 结算点在 `LivingEntityEvents#soulWeaponTraitsOnSkillHit` 与 `#death$Lowest`。
     private void applySoulMark(Entity victim) {
         if (soulMarkOnHitTicks <= 0 || !(victim instanceof LivingEntity living) || living.level().isClientSide) {
             return;
@@ -234,10 +234,10 @@ public class SoulLureProjectile extends Projectile {
         if (!(getOwner() instanceof Player player)) {
             return;
         }
-        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_PIERCE)) {
+        if (SoulcererUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_PIERCE)) {
             pierceRemaining += SoulSkillParameters.SOUL_CHANT_GUIDE_EXTRA_PIERCE;
         }
-        homing = PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_HOMING);
+        homing = SoulcererUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_HOMING);
     }
 
     @Override

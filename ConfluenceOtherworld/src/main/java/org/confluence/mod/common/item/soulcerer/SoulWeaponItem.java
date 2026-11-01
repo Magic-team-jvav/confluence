@@ -18,7 +18,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.IWeaponTooltip;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -98,8 +98,8 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
         }
         if (player instanceof ServerPlayer serverPlayer) {
             /// 总开关解锁后，使用魂师主武器会把魔力条切成灵魂条。
-            PlayerUtils.ensureResourceModeForSoulWeapon(serverPlayer);
-            if (!PlayerUtils.tryUseSoulSkill(serverPlayer)) {
+            SoulcererUtils.ensureResourceModeForSoulWeapon(serverPlayer);
+            if (!SoulcererUtils.tryUseSoulSkill(serverPlayer)) {
                 return InteractionResultHolder.fail(stack);
             }
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
@@ -119,12 +119,12 @@ public class SoulWeaponItem extends CustomRarityItem implements IWeaponTooltip {
 
     @Override
     public double getTooltipDamage(ItemStack stack, double attributeValue, @Nullable Player player, boolean baseStats) {
-        var skill = PlayerUtils.getCurrentSkillStack(player);
+        var skill = SoulcererUtils.getCurrentSkillStack(player);
         float weaponDamage = getBasicSoulDamage(stack);
         /// 与弹幕实际结算一致：只把技能声明的武器份额算进伤害（迷魂孢雾为 20%）。
         double damage = baseStats || player == null
                 ? weaponDamage + skill.getDamage()
-                : PlayerUtils.getSoulSkillDamage(player, skill, weaponDamage * skill.getSoulSkill().getWeaponShare());
+                : SoulcererUtils.getSoulSkillDamage(player, skill, weaponDamage * skill.getSoulSkill().getWeaponShare());
         return damage * attributeValue;
     }
 

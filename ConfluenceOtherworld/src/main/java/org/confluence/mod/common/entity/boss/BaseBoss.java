@@ -318,8 +318,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     ///
     /// 直接读取世界的特殊种子标志，避免为单次查询引入额外桥接层。
     protected boolean isFtw() {
-        return CommonConfigs.SPECIAL_SEED_BOSS_BEHAVIORS.get() && level() instanceof ServerLevel serverLevel
-                && ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel);
+        return CommonConfigs.SPECIAL_SEED_BOSS_BEHAVIORS.get() && ModSecretSeeds.FOR_THE_WORTHY.match();
     }
 
     // === Damage ===

@@ -8,7 +8,7 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.SoulSkillIndexSyncPacketS2C;
 import org.confluence.mod.network.s2c.SoulSkillSyncPacketS2C;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 public record SoulSkillIndexRequestPacketC2S(int index) implements IPacketC2S {
     public static final Type<SoulSkillIndexRequestPacketC2S> TYPE = Confluence.createType("soulcerer_skill_index_request");
@@ -30,9 +30,9 @@ public record SoulSkillIndexRequestPacketC2S(int index) implements IPacketC2S {
     @Override
     public void work(ServerPlayer player) {
         if (Confluence.SOUL_SKILLS) {
-            PlayerUtils.setCurrentSoulSkillIndex(player, index);
-            boolean changed = PlayerUtils.refreshSoulSkills(player);
-            changed |= PlayerUtils.ensureHeldWeaponSkill(player);
+            SoulcererUtils.setCurrentSoulSkillIndex(player, index);
+            boolean changed = SoulcererUtils.refreshSoulSkills(player);
+            changed |= SoulcererUtils.ensureHeldWeaponSkill(player);
             if (changed) {
                 SoulSkillSyncPacketS2C.sendToClient(player);
             }

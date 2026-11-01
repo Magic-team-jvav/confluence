@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -746,7 +747,7 @@ public final class SpawnPlacementChecks {
                     || !visited.add(next) || !level.getBlockState(next).is(BlockTags.SAND))
                 continue;
             if (++count >= 40) return true;
-            for (Direction direction : Direction.values()) pending.add(next.relative(direction));
+            for (Direction direction : LibUtils.DIRECTIONS) pending.add(next.relative(direction));
         }
         return false;
     }

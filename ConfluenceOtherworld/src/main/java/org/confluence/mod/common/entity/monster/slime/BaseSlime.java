@@ -158,7 +158,6 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
         }
     }
 
-    ///
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pose) {
         float logicalSize = 0.52F * getSlimeSize();

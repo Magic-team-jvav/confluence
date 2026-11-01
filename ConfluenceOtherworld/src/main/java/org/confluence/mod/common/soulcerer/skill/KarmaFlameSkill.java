@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.EnemyDamageRules;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 /// 灭却业火：消耗全部灵魂，直接处决附近生命值低于消耗量的目标。
 ///
@@ -19,7 +19,7 @@ public class KarmaFlameSkill extends SoulSkill {
     /// 至少要有 1 点灵魂才有意义。
     @Override
     public boolean canUse(ServerPlayer player, SoulSkillStack skillStack) {
-        return player.isCreative() || PlayerUtils.getSoul(player) >= 1.0F;
+        return player.isCreative() || SoulcererUtils.getSoul(player) >= 1.0F;
     }
 
     @Override
@@ -27,8 +27,8 @@ public class KarmaFlameSkill extends SoulSkill {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        float soul = PlayerUtils.getSoul(serverPlayer);
-        if (soul < 1.0F || !PlayerUtils.consumeSoul(serverPlayer, soul)) {
+        float soul = SoulcererUtils.getSoul(serverPlayer);
+        if (soul < 1.0F || !SoulcererUtils.consumeSoul(serverPlayer, soul)) {
             return;
         }
         float killSoul = SoulSkillParameters.KARMA_FLAME_KILL_SOUL_BONUS;
@@ -40,7 +40,7 @@ public class KarmaFlameSkill extends SoulSkill {
                 target.hurt(LibDamageTypes.soul(serverPlayer.level(), serverPlayer, serverPlayer), target.getHealth() + 1.0F);
                 /// 被灭却业火击杀的敌怪额外掉 2 魂（常规收魂仍由死亡事件结算）。
                 if (!target.isAlive()) {
-                    PlayerUtils.adjustSoul(serverPlayer, killSoul);
+                    SoulcererUtils.adjustSoul(serverPlayer, killSoul);
                 }
             }
         }

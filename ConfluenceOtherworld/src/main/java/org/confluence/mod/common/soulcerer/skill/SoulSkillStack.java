@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,11 +73,11 @@ public class SoulSkillStack {
         /// 只有本身带伤害的技能才显示伤害行；增益 / 被动不把自己当成一次攻击。
         float baseDamage = skill.getDamage(this);
         if (baseDamage > 0.0F) {
-            float damage = live ? PlayerUtils.getSoulSkillDisplayDamage(player, this) : baseDamage;
+            float damage = live ? SoulcererUtils.getSoulSkillDisplayDamage(player, this) : baseDamage;
             list.add(statLine("damage", formatNumber(damage)));
         }
         int baseCooldown = skill.getCooldown(this);
-        int cooldown = live ? PlayerUtils.getSoulCooldownTicks(player, baseCooldown) : baseCooldown;
+        int cooldown = live ? SoulcererUtils.getSoulCooldownTicks(player, baseCooldown) : baseCooldown;
         if (cooldown > 0) {
             list.add(statLine("cooldown", formatNumber(cooldown / (float) SharedConstants.TICKS_PER_SECOND)));
         }

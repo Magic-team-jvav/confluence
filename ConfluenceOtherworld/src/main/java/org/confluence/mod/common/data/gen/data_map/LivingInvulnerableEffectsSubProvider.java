@@ -153,7 +153,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.CHAOS_ELEMENTAL, MobEffects.POISON)
                 .add(MonsterEntities.GASTROPOD, LibEffects.CONFUSED, MobEffects.POISON, ModEffects.BLEEDING)
                 .add(MonsterEntities.LUMINOUS_SLIME, MobEffects.POISON)
-                .add(MonsterEntities.POSSESS_ARMOR, MobEffects.POISON, LibEffects.CONFUSED, ModEffects.HELLFIRE)
+                .add(MonsterEntities.POSSESSED_ARMOR, MobEffects.POISON, LibEffects.CONFUSED, ModEffects.HELLFIRE)
                 .add(MonsterEntities.SLIMELING, MobEffects.POISON)
                 .add(MonsterEntities.SLIMER, MobEffects.POISON)
                 .add(MonsterEntities.WINGLESS_SLIMER, MobEffects.POISON)

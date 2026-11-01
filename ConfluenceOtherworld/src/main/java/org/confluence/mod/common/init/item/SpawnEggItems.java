@@ -7,7 +7,6 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
@@ -109,7 +108,7 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> PINK_SLIME_SPAWN_EGG = register(MonsterEntities.PINK_SLIME, "粉色史莱姆刷怪蛋", 0xFF87B3, 0xf89fe3);
     public static final DeferredItem<DeferredSpawnEggItem> GOLDEN_SLIME_SPAWN_EGG = register(MonsterEntities.GOLDEN_SLIME, "金史莱姆刷怪蛋", 0xfcf8bd, 0xf8e234);
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = register(MonsterEntities.DEMON_EYE, "恶魔眼刷怪蛋");
-    public static final DeferredItem<DeferredSpawnEggItem> POSSESS_ARMOR_SPAWN_EGG = register(MonsterEntities.POSSESS_ARMOR, "装甲幻影魔刷怪蛋");
+    public static final DeferredItem<DeferredSpawnEggItem> POSSESS_ARMOR_SPAWN_EGG = register(MonsterEntities.POSSESSED_ARMOR, "装甲幻影魔刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> WEREWOLF_SPAWN_EGG = register(MonsterEntities.WEREWOLF, "狼人刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> CORRUPT_PENGUIN_SPAWN_EGG = register(MonsterEntities.CORRUPT_PENGUIN, "腐化企鹅刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> VICIOUS_PENGUIN_SPAWN_EGG = register(MonsterEntities.VICIOUS_PENGUIN, "猩红企鹅刷怪蛋");

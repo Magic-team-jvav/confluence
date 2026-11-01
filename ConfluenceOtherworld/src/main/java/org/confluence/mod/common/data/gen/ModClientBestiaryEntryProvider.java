@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
-
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -12,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.extensions.IHolderExtension;
-
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
@@ -26,7 +24,6 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
-import org.confluence.mod.common.init.item.ArmorItems;
 
 import java.util.List;
 import java.util.Map;
@@ -254,7 +251,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 /// 僵尸 （中箭）
                 .add(MonsterEntities.RAINCOAT_ZOMBIE, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
                 .add(MonsterEntities.WEREWOLF, builder -> builder.order(15700).rarity(2).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME))
-                .add(MonsterEntities.POSSESS_ARMOR, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .add(MonsterEntities.POSSESSED_ARMOR, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 /// 狼人
                 .add(CritterEntities.HOSTILE_BUNNY, "entity.confluence.corrupt_bunny", "corrupt", builder -> builder.order(15900).rarity(3).background(BLOOD_MOON).filters(FilterEntry.BLOOD_MOON).entityNbt(tag -> tag.putString("Variant", "corrupt")))
                 .add(MonsterEntities.CORRUPT_PENGUIN, builder -> builder.order(16000).rarity(3).background(BLOOD_MOON).filters(FilterEntry.BLOOD_MOON))

@@ -246,7 +246,7 @@ public final class CreatureSpawnPlacements {
         group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.atLeast(GamePhase.PLANTERA, SpawnPlacementChecks::checkDungeonMonsterSpawn),
                 MonsterEntities.PALADIN, MonsterEntities.BONE_LEE, MonsterEntities.NECROMANCER, MonsterEntities.DIABOLIST, MonsterEntities.RAGGED_CASTER);
         group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkPossessedArmorSpawn),
-                MonsterEntities.POSSESS_ARMOR);
+                MonsterEntities.POSSESSED_ARMOR);
         group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkWraithSpawn),
                 MonsterEntities.WRAITH);
         group(event, SpawnPlacementTypes.IN_WATER, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkCrimsonWaterMonsterSpawn),

@@ -247,7 +247,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(EntityTypeTags.CAN_BREATHE_UNDER_WATER).add(MonsterEntities.PIRANHA.get(), MonsterEntities.ARAPAIMA.get(), MonsterEntities.CRAWDAD.get()).addTag(ModTags.EntityTypes.JELLY_FISH);
         tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
                 MonsterEntities.GIANT_SHELLY.get(),
-                MonsterEntities.POSSESS_ARMOR.get(),
+                MonsterEntities.POSSESSED_ARMOR.get(),
                 MonsterEntities.DERPLING.get(),
                 MonsterEntities.SAND_POACHER.get(),
                 MonsterEntities.HERPLING.get(),

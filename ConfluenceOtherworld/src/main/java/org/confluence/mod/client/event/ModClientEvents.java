@@ -881,7 +881,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.PIRATE_DECKHAND.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/pirate_corsair.geo.json"), Confluence.asResource("textures/entity/pirate_deckhand.png"), Confluence.asResource("animations/entity/pirate_corsair.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.PIRATE_PARROT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRATE_PARROT.getId()));
         event.registerEntityRenderer(MonsterEntities.PIXIE.get(), c -> new FullbrightGeoRenderer<>(c, MonsterEntities.PIXIE.getId()).setBoneToGlow(List.of("Outline", "Outline2", "Outline3"), List.of("bone", "bone2", "bone3")));
-        event.registerEntityRenderer(MonsterEntities.POSSESS_ARMOR.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.standalone(c, Confluence.asResource("geo/entity/possessed_armor.geo.json"), Confluence.asResource("textures/entity/possessed_armor.png"))));
+        event.registerEntityRenderer(MonsterEntities.POSSESSED_ARMOR.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.standalone(c, Confluence.asResource("geo/entity/possessed_armor.geo.json"), Confluence.asResource("textures/entity/possessed_armor.png"))));
         event.registerEntityRenderer(MonsterEntities.RAGGED_CASTER.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(MonsterEntities.RED_DEVIL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.RED_DEVIL.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ROCK_GOLEM.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.ROCK_GOLEM.getId(), false), false, 1.3F, -0.05F));

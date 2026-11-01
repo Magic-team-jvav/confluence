@@ -895,7 +895,7 @@ public final class MonsterEntities {
                             .attribute(Attributes.MOVEMENT_SPEED, 0.2))
                     .build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> POSSESS_ARMOR = withAttributes(registerHumanoidLand("possessed_armor", "装甲幻影魔", 1F, 2F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE),
+    public static final DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> POSSESSED_ARMOR = withAttributes(registerHumanoidLand("possessed_armor", "装甲幻影魔", 1F, 2F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE),
             () -> CreatureAttributeBuilder.creature().maxHealth(136).armor(13).armorToughness(5).attackDamage(29).followRange(32).attackKnockback(1).knockbackResistance(0.64).build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<Wraith>> WRAITH = withAttributes(registerEntity("wraith", "幻灵", EntityType.Builder.of(Wraith::new, MobCategory.MONSTER).sized(1F, 2F).clientTrackingRange(10)),

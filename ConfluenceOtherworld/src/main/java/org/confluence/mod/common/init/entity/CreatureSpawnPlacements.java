@@ -227,7 +227,7 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.PALADIN, MonsterEntities.BONE_LEE,
                 MonsterEntities.NECROMANCER, MonsterEntities.DIABOLIST,
                 MonsterEntities.RAGGED_CASTER);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkPossessedArmorSpawn), MonsterEntities.POSSESS_ARMOR);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkPossessedArmorSpawn), MonsterEntities.POSSESSED_ARMOR);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkWraithSpawn), MonsterEntities.WRAITH);
         group(event, PortSpawnPlacementTypes.ON_GROUND,
                 SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkBelowSurfaceMonsterSpawn),

@@ -130,7 +130,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.DERPLING, LibEffects.CONFUSED)
                 .add(MonsterEntities.SAND_POACHER, MobEffects.POISON)
                 .add(MonsterEntities.LUMINOUS_SLIME, MobEffects.POISON)
-                .add(MonsterEntities.POSSESS_ARMOR, poison_confused_hellfire)
+                .add(MonsterEntities.POSSESSED_ARMOR, poison_confused_hellfire)
                 .add(MonsterEntities.SLIMELING, MobEffects.POISON)
                 .add(MonsterEntities.SLIMER, MobEffects.POISON)
                 .add(MonsterEntities.WINGLESS_SLIMER, MobEffects.POISON)

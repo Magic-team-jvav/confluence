@@ -23,7 +23,6 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
-import org.confluence.mod.common.init.item.ArmorItems;
 
 import java.util.List;
 import java.util.Map;
@@ -236,7 +235,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 僵尸 （中箭）
                 .add(MonsterEntities.ZOMBIE, "entity.minecraft.zombie", "pincushion", builder -> builder.order(15400).rarity(1).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME).entityNbt(tag -> tag.putString("Variant", Zombie.Variant.PINCUSHION.getSerializedName())))
                 .add(MonsterEntities.RAINCOAT_ZOMBIE, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.RAIN, FilterEntry.NIGHTTIME))
-                .add(MonsterEntities.POSSESS_ARMOR, builder -> builder.order(15600).rarity(2).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME))
+                .add(MonsterEntities.POSSESSED_ARMOR, builder -> builder.order(15600).rarity(2).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME))
                 .add(MonsterEntities.WEREWOLF, builder -> builder.order(15700).rarity(2).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME))
                 .add(MonsterEntities.WRAITH, builder -> builder.order(15800).rarity(2).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME))
                 .add(CritterEntities.HOSTILE_BUNNY, "entity.confluence.corrupt_bunny", "corrupt", builder -> builder.order(15900).rarity(3).background(BLOOD_MOON).filters(FilterEntry.BLOOD_MOON).entityNbt(tag -> tag.putString("Variant", "corrupt")))

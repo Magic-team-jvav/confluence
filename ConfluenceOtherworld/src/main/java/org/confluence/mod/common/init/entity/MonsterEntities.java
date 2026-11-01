@@ -242,7 +242,7 @@ public class MonsterEntities {
                             .attribute(LibAttributes.getArmorPenetration().value(), byWorldPhase(2, 5, 5))
                             .attribute(Attributes.MOVEMENT_SPEED, 0.2))
                     .build());
-    public static final RegistryObject<EntityType<HumanoidWarriorMonster>> POSSESS_ARMOR = withAttributes(registerHumanoidLand("possess_armor", "装甲幻影魔", 1F, 2F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE),
+    public static final RegistryObject<EntityType<HumanoidWarriorMonster>> POSSESSED_ARMOR = withAttributes(registerHumanoidLand("possessed_armor", "装甲幻影魔", 1F, 2F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE),
             () -> CreatureAttributeBuilder.creature().maxHealth(136).armor(13).armorToughness(5).attackDamage(29).followRange(32).attackKnockback(1).knockbackResistance(0.64).build());
     public static final RegistryObject<EntityType<Wraith>> WRAITH = withAttributes(registerEntity("wraith", "幻灵", EntityType.Builder.of(Wraith::new, MobCategory.MONSTER).sized(1F, 2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(84).armor(8).armorToughness(3).attackDamage(34).followRange(32).attackKnockback(1).knockbackResistance(0.37).gravity(0).build());

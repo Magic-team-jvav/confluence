@@ -1601,7 +1601,7 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(MonsterEntities.RED_SLIME.get(), 45, 1, 2),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.YELLOW_SLIME.get(), 45, 1, 2),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.DEMON_EYE.get(), 65, 1, 2),
-                            new MobSpawnSettings.SpawnerData(MonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(MonsterEntities.POSSESSED_ARMOR.get(), 65, 1, 2),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.WRAITH.get(), 65, 1, 2),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.FLYING_FISH.get(), 60, 1, 2),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),

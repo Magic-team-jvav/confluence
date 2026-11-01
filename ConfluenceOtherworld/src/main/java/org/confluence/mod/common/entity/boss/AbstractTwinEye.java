@@ -302,7 +302,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
         if (level().isClientSide || !isAlive()) {
             return;
         }
-        if (level().isDay() || leavingTicks > 0) {
+        if (LibDateUtils.isDay(level()) || leavingTicks > 0) {
             leavingTicks++;
             resetCombatCycle();
             setDeltaMovement(0, LEAVING_SPEED, 0);

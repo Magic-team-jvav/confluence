@@ -30,7 +30,6 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
@@ -62,7 +61,6 @@ import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
@@ -137,8 +135,8 @@ public final class LivingEntityEvents {
             if (victim instanceof Enemy && !(victim instanceof OwnedSummon)
                     && !(victim instanceof TheHungry hungry && hungry.isLootSuppressed())
                     && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
-                    && KillBoard.INSTANCE.getGamePhase().isHardmode()
-                    && level.getBiome(victim.blockPosition()).is(Tags.Biomes.IS_OCEAN)
+                    && ModUtils.isHardmode()
+                    && OverworldUtils.isOcean(level.getBiome(victim.blockPosition()))
                     && victim.getRandom().nextInt(100) == 0) {
                 victim.spawnAtLocation(ConsumableItems.PIRATE_MAP.get());
             }
@@ -175,7 +173,8 @@ public final class LivingEntityEvents {
                     ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
 
-                if (npc.getType() == NpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
+                // todo 改到Guide类内
+                if (npc.getType() == NpcEntities.GUIDE.get() && OverworldUtils.inUnderworld(level.dimension(), npc.getY()) && damageSource.is(DamageTypes.LAVA)) {
                     GuideVooDooDollItem.summon(npc, level, npc.getRandom().nextBoolean(), () -> null);
                 }
             }
@@ -442,7 +441,7 @@ public final class LivingEntityEvents {
     public static void soulDropBonus(SoulCollectionEvent event) {
         Player player = event.getEntity();
         float bonus = ModArmorBonus.getValue(player, ModArmorBonus.SOUL$DROP);
-        if (PlayerUtils.isWearingPhantomSet(player) && player.level().isNight()) {
+        if (PlayerUtils.isWearingPhantomSet(player) && LibDateUtils.isNight(player.level())) {
             bonus += SoulSkillParameters.PHANTOM_NIGHT_SOUL_DROP_BONUS;
         }
         if (bonus > 0.0F) {
@@ -718,25 +717,25 @@ public final class LivingEntityEvents {
             drops.add(entity);
         }
         boolean isEnemy = living instanceof Enemy;
-        if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
+        if (ModUtils.isHardmode() &&
                 isEnemy &&
                 !(living instanceof OwnedSummon) &&
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
-                (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
+                (OverworldUtils.inCave(living.getY()) || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom().nextFloat() < (LibUtils.isAtLeastExpert(level) ? 0.36F : 0.2F)
         ) { // 掉落光明或暗影之魂
             Holder<Biome> biome = level.getBiome(living.blockPosition());
             ItemStack soul = ItemStack.EMPTY;
-            if (biome.is(ModTags.Biomes.THE_HALLOW)) {
+            if (OverworldUtils.isHallow(biome)) {
                 soul = MaterialItems.SOUL_OF_LIGHT.toStack();
-            } else if (biome.is(ModTags.Biomes.THE_CORRUPTION) || biome.is(ModTags.Biomes.THE_CRIMSON)) {
+            } else if (OverworldUtils.isEvil(biome)) {
                 soul = MaterialItems.SOUL_OF_NIGHT.toStack();
             }
             if (soul != ItemStack.EMPTY) {
                 drops.add(new ItemEntity(level, x, y, z, soul, 0, 0.02, 0));
             }
         }
-        if (isEnemy && level.dimension() == OverworldUtils.underworld() && living.getRandom().nextInt(400) == 0) { // 掉落喷流球
+        if (isEnemy && OverworldUtils.inUnderworld(level.dimension(), living.getY()) && living.getRandom().nextInt(400) == 0) { // 掉落喷流球
             drops.add(new ItemEntity(level, x, y, z, YoyoItems.CASCADE.toStack()));
         }
 
@@ -782,11 +781,10 @@ public final class LivingEntityEvents {
         ServerLevel level = event.getLevel().getLevel();
         Mob mob = event.getEntity();
         EntityType<?> type = mob.getType();
-        if (type == EntityType.ZOMBIE) {
+        if (type == EntityType.ZOMBIE) { // todo 改成独立entity type
             BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
-            Holder<Biome> biome = level.getBiome(blockPos);
             DifficultyInstance difficulty = event.getDifficulty();
-            if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
+            if (OverworldUtils.isSnowy(level.getBiome(blockPos))) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
                 Mob replacement = replaceSpawn(level, mob, (pink ? MonsterEntities.PINK_FROZEN_ZOMBIE : MonsterEntities.FROZEN_ZOMBIE).get());
                 Mob equipped = replacement == null ? mob : replacement;
@@ -816,7 +814,7 @@ public final class LivingEntityEvents {
                     return;
                 }
             }
-        } else if (type == EntityType.SKELETON) {
+        } else if (type == EntityType.SKELETON) { // todo 改成独立entity type
             DifficultyInstance difficulty = event.getDifficulty();
             if (!level.canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom().nextFloat() < 0.01F) {
                 Mob replacement = replaceSpawn(level, mob, MonsterEntities.UNDEAD_MINER.get());
@@ -965,8 +963,8 @@ public final class LivingEntityEvents {
     public static void spawnClusterSize(SpawnClusterSizeEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             Mob mob = event.getEntity();
-            if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
-                event.setSize(LibMathUtils.multiplyInt(event.getSize(), 2, mob.getRandom()));
+            if (mob instanceof Enemy && OverworldUtils.inSurface(mob.getY())) {
+                event.setSize(event.getSize() * 2);
             }
         }
     }

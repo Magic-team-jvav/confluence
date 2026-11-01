@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
+import org.confluence.mod.util.OverworldUtils;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class CrimsonCaveStructure extends Structure {
                 }
             } else {
                 Pair<Holder<Biome>, Holder<Biome>> pair = IMultiNoiseBiomeSource.of(multi).confluence$getBiomePair();
-                if (pair != null && pair.getFirst() != null && pair.getFirst().is(ModBiomes.THE_CRIMSON)) {
+                if (pair != null && pair.getFirst() != null && OverworldUtils.isCrimson(pair.getFirst())) {
                     return Optional.empty();
                 }
             }

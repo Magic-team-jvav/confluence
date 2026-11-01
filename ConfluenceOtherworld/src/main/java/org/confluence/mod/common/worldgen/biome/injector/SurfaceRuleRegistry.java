@@ -1,8 +1,6 @@
 package org.confluence.mod.common.worldgen.biome.injector;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.SurfaceRules;
@@ -124,14 +122,6 @@ public final class SurfaceRuleRegistry {
         if (dimensionType.is(OverworldUtils.dimensionType())) return Category.OVERWORLD;
         if (dimensionType.is(OverworldUtils.underworldType())) return Category.NETHER;
         if (dimensionType.is(BuiltinDimensionTypes.END)) return Category.END;
-        return null;
-    }
-
-    @Nullable
-    public static Category categoryOf(ResourceKey<Level> dimension) {
-        if (OverworldUtils.dimension() == dimension) return Category.OVERWORLD;
-        if (OverworldUtils.underworld() == dimension) return Category.NETHER;
-        if (Level.END == dimension) return Category.END;
         return null;
     }
 }

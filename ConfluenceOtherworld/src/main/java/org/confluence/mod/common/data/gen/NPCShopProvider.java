@@ -50,12 +50,12 @@ public final class NPCShopProvider implements DataProvider {
         Map<ResourceLocation, List<NPCTradeOffer>> shops = new LinkedHashMap<>();
         TradeCondition bloodMoon = new GameEventCondition(BloodMoonGameEvent.KEY);
         TradeCondition graveyard = GraveyardCondition.INSTANCE;
-        TradeCondition corruptionWorld = new WorldFlagCondition(IWorldOptions.THE_CORRUPTION);
-        TradeCondition crimsonWorld = new WorldFlagCondition(IWorldOptions.THE_CRIMSON);
-        TradeCondition solutionSales = new WorldFlagCondition(IWorldOptions.DDU_MASK).not().and(new WorldFlagCondition(IWorldOptions.GFB_MASK).not());
+        TradeCondition corruptionWorld = new SecretFlagCondition(IWorldOptions.THE_CORRUPTION);
+        TradeCondition crimsonWorld = new SecretFlagCondition(IWorldOptions.THE_CRIMSON);
+        TradeCondition solutionSales = new SecretFlagCondition(IWorldOptions.DDU_MASK).not().and(new SecretFlagCondition(IWorldOptions.GFB_MASK).not());
         TradeCondition solutionEvent = bloodMoon.or(new GameEventCondition(SolarEclipseGameEvent.KEY));
         TradeCondition hallow = new BiomeCondition(List.of(ModBiomes.THE_HALLOW, ModBiomes.THE_HALLOW_DESERT, ModBiomes.THE_HALLOW_TUNDRA), List.of());
-        TradeCondition moonLord = new WorldFlagCondition(IWorldOptions.GRADUATED);
+        TradeCondition moonLord = new SecretFlagCondition(IWorldOptions.GRADUATED);
 
         shops.put(Confluence.asResource("merchant"), List.of(
                 offer(ToolItems.BUG_NET.toStack()),

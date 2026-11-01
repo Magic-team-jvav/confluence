@@ -73,7 +73,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         return blocks != null && blocks.contains(groundState.getBlock());
     }
 
-    public boolean canBloom(ServerLevel world, BlockState state) {
+    public boolean canBloom(ServerLevel world, BlockState state, BlockPos pos) {
         return false;
     }
 
@@ -137,7 +137,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
             if (level1.getGameTime() % 20 == 2) { // 每秒判断能不能开花
                 int age = getAge(state1);
                 if (age < MAX_AGE - 1) return;
-                if (canBloom((ServerLevel) level1, state1)) {
+                if (canBloom((ServerLevel) level1, state1, pos)) {
                     if (age != MAX_AGE) {
                         level1.setBlockAndUpdate(pos, state1.setValue(AGE, MAX_AGE));
                     }

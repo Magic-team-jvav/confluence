@@ -12,7 +12,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -167,12 +166,12 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     @Override
     public boolean isInsideActivityRegion(BlockPos pos) {
         return switch (role) {
-            case UNDERGROUND -> pos.getY() < OverworldUtils.getSurfaceY();
+            case UNDERGROUND -> OverworldUtils.belowSurface(pos.getY());
             case UNDERGROUND_DESERT ->
-                    level().getBiome(pos).is(Tags.Biomes.IS_DESERT) && (pos.getY() < OverworldUtils.getSurfaceY() || SandstormGameEvent.INSTANCE.started());
+                    OverworldUtils.isDesert(level().getBiome(pos)) && (OverworldUtils.belowSurface(pos.getY()) || SandstormGameEvent.INSTANCE.started());
             case CORRUPTION -> isNearCorruption(pos);
-            case UNDERWORLD, BONE_SERPENT -> level().dimension() == OverworldUtils.underworld();
-            case FLYING -> pos.getY() >= OverworldUtils.getSurfaceY();
+            case UNDERWORLD, BONE_SERPENT -> OverworldUtils.inUnderworld(level().dimension(), pos.getY());
+            case FLYING -> OverworldUtils.aboveSurface(pos.getY());
         };
     }
 

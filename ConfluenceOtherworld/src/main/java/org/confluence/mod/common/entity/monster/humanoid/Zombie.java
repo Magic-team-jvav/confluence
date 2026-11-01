@@ -18,6 +18,7 @@ import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -177,7 +178,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
             }
         }
         if (!level().isClientSide && !isPersistenceRequired()
-                && level().isDay() && level().canSeeSky(blockPosition())
+                && LibDateUtils.isDay(level()) && level().canSeeSky(blockPosition())
         ) {
             discard();
         }

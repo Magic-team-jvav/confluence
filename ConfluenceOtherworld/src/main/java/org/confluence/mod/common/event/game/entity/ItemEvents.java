@@ -171,11 +171,11 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
         if (event.getTargets() == null) return;
-        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-        if (currentServer == null) return;
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) return;
 
-        boolean corrupt = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
-        boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
+        boolean corrupt = IMinecraftServer.of(server).matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
+        boolean crimson = IMinecraftServer.of(server).matchesSecretFlag(IWorldOptions.THE_CRIMSON);
         if (corrupt == crimson) return;
 
         event.setTargets(RegisterEvilMaterialReplacesEvent.replaceTargets(event.getTargets(), corrupt, crimson));

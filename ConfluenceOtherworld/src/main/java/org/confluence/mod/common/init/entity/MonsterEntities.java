@@ -1,11 +1,7 @@
 package org.confluence.mod.common.init.entity;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -899,7 +895,7 @@ public final class MonsterEntities {
                             .attribute(Attributes.MOVEMENT_SPEED, 0.2))
                     .build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> POSSESS_ARMOR = withAttributes(registerHumanoidLand("possess_armor", "装甲幻影魔", 1F, 2F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE),
+    public static final DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> POSSESS_ARMOR = withAttributes(registerHumanoidLand("possessed_armor", "装甲幻影魔", 1F, 2F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE),
             () -> CreatureAttributeBuilder.creature().maxHealth(136).armor(13).armorToughness(5).attackDamage(29).followRange(32).attackKnockback(1).knockbackResistance(0.64).build());
 
     public static final DeferredHolder<EntityType<?>, EntityType<Wraith>> WRAITH = withAttributes(registerEntity("wraith", "幻灵", EntityType.Builder.of(Wraith::new, MobCategory.MONSTER).sized(1F, 2F).clientTrackingRange(10)),

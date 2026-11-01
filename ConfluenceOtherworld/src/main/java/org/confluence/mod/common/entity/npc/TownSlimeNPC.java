@@ -17,6 +17,7 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.jetbrains.annotations.Nullable;
 
 public class TownSlimeNPC extends BaseNPC {
     public TownSlimeNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile profile) {
@@ -34,7 +35,7 @@ public class TownSlimeNPC extends BaseNPC {
         return true;
     }
 
-    public static TownSlimeNPC unlock(ServerLevel level, EntityType<TownSlimeNPC> type, Vec3 position) {
+    public static @Nullable TownSlimeNPC unlock(ServerLevel level, EntityType<TownSlimeNPC> type, Vec3 position) {
         if (!Confluence.UNRELEASED_SPAWNS) return null;
         // 解锁记录是全局进度，不表示其他区域已经拥有这一种 NPC。
         NPCSpawner.Region region = new NPCSpawner.Region(net.minecraft.core.BlockPos.containing(position));

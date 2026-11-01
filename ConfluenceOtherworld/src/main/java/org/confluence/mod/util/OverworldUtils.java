@@ -98,7 +98,7 @@ public final class OverworldUtils {
                 result = NotTheBees.replaceBiome(x, y, z, result, jungle);
             }
         }
-        if (result.is(ModBiomes.THE_CORRUPTION) || result.is(ModBiomes.THE_CRIMSON)) {
+        if (OverworldUtils.isEvil(result)) {
             BlockPos spawnPos = server.getWorldData().overworldData().getSpawnPos();
             if (Mth.lengthSquared(spawnPos.getX() - QuartPos.toBlock(x), spawnPos.getZ() - QuartPos.toBlock(z)) <= 128 * 128) {
                 result = plains;
@@ -182,7 +182,7 @@ public final class OverworldUtils {
 
     /// default -64
     public static int getCaveY() {
-        return -60;
+        return -64;
     }
 
     /// default 63
@@ -190,8 +190,12 @@ public final class OverworldUtils {
         return 63;
     }
 
+    public static boolean isForest(Holder<Biome> holder) {
+        return holder.is(ModTags.Biomes.IS_FOREST);
+    }
+
     public static boolean isDesert(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_DESERT);
+        return holder.is(Tags.Biomes.IS_DESERT) || holder.is(Tags.Biomes.IS_BADLANDS);
     }
 
     /// 对应泰拉的地表雪原和地下雪原，由于MC的这两个群系不以高度为判据，所以使用的时候请先用该方法判断是否是雪原,再以y轴高度判断
@@ -204,7 +208,7 @@ public final class OverworldUtils {
     }
 
     public static boolean isJungle(Holder<Biome> holder) {
-        return holder.is(Tags.Biomes.IS_JUNGLE);
+        return holder.is(Tags.Biomes.IS_JUNGLE) || holder.is(Tags.Biomes.IS_LUSH);
     }
 
     public static boolean isMushroom(Holder<Biome> holder) {
@@ -219,7 +223,44 @@ public final class OverworldUtils {
         return holder.is(ModTags.Biomes.THE_CRIMSON);
     }
 
+    public static boolean isEvil(Holder<Biome> holder) {
+        return isCorruption(holder) || isCrimson(holder);
+    }
+
     public static boolean isHallow(Holder<Biome> holder) {
         return holder.is(ModTags.Biomes.THE_HALLOW);
+    }
+
+    public static boolean inSpace(double y) {
+        return y >= getSpaceY() && y < getUltraY();
+    }
+
+    public static boolean inSurface(double y) {
+        return y >= getSurfaceY() && y < getSpaceY();
+    }
+
+    public static boolean inUnderground(double y) {
+        return y >= getUndergroundY() && y < getSurfaceY();
+    }
+
+    public static boolean inCave(double y) {
+        return y >= getCaveY() && y < getUndergroundY();
+    }
+
+    public static boolean inUnderworld(ResourceKey<Level> dimension, double y) {
+        return dimension == underworld();
+    }
+
+    public static boolean belowSpace(double y) {
+        return y >= getCaveY() && y < getSpaceY();
+    }
+
+    public static boolean aboveSurface(double y) {
+        return y >= getSurfaceY() && y < getUltraY();
+    }
+
+    /// OverworldUtils.inUnderground(y) || OverworldUtils.inCave(y)
+    public static boolean belowSurface(double y) {
+        return y >= getCaveY() && y < getSurfaceY();
     }
 }

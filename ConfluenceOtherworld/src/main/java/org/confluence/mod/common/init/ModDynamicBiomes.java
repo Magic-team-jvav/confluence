@@ -9,6 +9,7 @@ import net.minecraft.world.level.biome.Biomes;
 import org.confluence.lib.common.worldgen.biome.BlockCounts;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.common.worldgen.biome.SectionContext;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 /// Confluence 的动态群系规则与优先级。
@@ -88,10 +89,10 @@ public final class ModDynamicBiomes {
 
         int mushroom = ModBlockCounters.GLOWING_MUSHROOM.get(counts);
         Holder<Biome> current = context.currentBiome();
-        Family previous = current.is(ModTags.Biomes.THE_CORRUPTION) ? Family.CORRUPTION
-                : current.is(ModTags.Biomes.THE_CRIMSON) ? Family.CRIMSON
-                : current.is(ModTags.Biomes.THE_HALLOW) ? Family.HALLOW
-                : current.is(ModBiomes.GLOWING_MUSHROOM) ? Family.MUSHROOM : Family.NONE;
+        Family previous = OverworldUtils.isCorruption(current) ? Family.CORRUPTION
+                : OverworldUtils.isCrimson(current) ? Family.CRIMSON
+                : OverworldUtils.isHallow(current) ? Family.HALLOW
+                : OverworldUtils.isMushroom(current) ? Family.MUSHROOM : Family.NONE;
         Family winner = Family.NONE;
         int strongest = BIOME_THRESHOLD - 1;
         /// 相同强度使用固定次序；已有覆盖在退出阈值以上时享有替换差值。

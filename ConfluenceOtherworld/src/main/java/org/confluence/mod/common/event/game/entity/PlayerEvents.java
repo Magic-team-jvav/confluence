@@ -49,6 +49,7 @@ import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
@@ -308,7 +309,7 @@ public final class PlayerEvents {
 
     /// 血月夜晚的水中捕获可替换为生物；仅成功生成时返回 true，失败则保留原鱼获。
     private static boolean tryCatchBloodMoonMob(ServerPlayer player, FishingHook hook, FishingSession session) {
-        if (!BloodMoonGameEvent.INSTANCE.started() || player.serverLevel().isDay() || !hook.getInBlockState().getFluidState().is(FluidTags.WATER))
+        if (!BloodMoonGameEvent.INSTANCE.started() || LibDateUtils.isDay(player.level()) || !hook.getInBlockState().getFluidState().is(FluidTags.WATER))
             return false;
         boolean chumCaster = session != null && session.rod().is(FishingPoleItems.CHUM_CASTER.get());
         if (player.getRandom().nextInt(chumCaster ? 3 : 6) != 0) return false;
@@ -460,7 +461,7 @@ public final class PlayerEvents {
     public static void container$Close(PlayerContainerEvent.Close event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
-        if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
+        if (!server.matchesSecretFlag(IWorldOptions.HARDMODE)) return;
         Level level = player.level();
         if (level.getDifficulty() == Difficulty.PEACEFUL) return;
         if (event.getContainer() instanceof ChestMenu menu &&
@@ -485,8 +486,8 @@ public final class PlayerEvents {
                 }
             } else if (key.is(ToolItems.KEY_OF_NIGHT)) {
                 boolean summonCorruption;
-                if (server.confluence$matchesSecretFlag(IWorldOptions.DOUBLE_EVIL) && !server.confluence$equalsSecretFlag(IWorldOptions.DOUBLE_EVIL)) {
-                    summonCorruption = server.confluence$matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
+                if (server.matchesSecretFlag(IWorldOptions.DOUBLE_EVIL) && !server.equalsSecretFlag(IWorldOptions.DOUBLE_EVIL)) {
+                    summonCorruption = server.matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
                 } else {
                     summonCorruption = (level.getGameTime() / 24000L) % 2 == 0;
                 }

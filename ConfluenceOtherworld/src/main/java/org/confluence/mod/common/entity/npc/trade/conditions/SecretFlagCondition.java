@@ -9,12 +9,12 @@ import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.init.ModTradeConditions;
 import org.confluence.mod.mixed.IMinecraftServer;
 
-public record WorldFlagCondition(long flag) implements TradeCondition {
-    public static final MapCodec<WorldFlagCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Codec.LONG.fieldOf("flag").forGetter(WorldFlagCondition::flag)).apply(instance, WorldFlagCondition::new));
+public record SecretFlagCondition(long flag) implements TradeCondition {
+    public static final MapCodec<SecretFlagCondition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(Codec.LONG.fieldOf("flag").forGetter(SecretFlagCondition::flag)).apply(instance, SecretFlagCondition::new));
 
     @Override
     public boolean test(ServerPlayer player, BaseNPC npc) {
-        return IMinecraftServer.matchesSecretFlag(player.server, flag);
+        return IMinecraftServer.of(player.server).matchesSecretFlag(flag);
     }
 
     @Override

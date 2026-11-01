@@ -1,14 +1,15 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.common.init.ModSoundEvents;
 
 public class Gnome extends BaseWarriorMonster {
     public Gnome(EntityType<? extends Gnome> type, Level level) {
@@ -18,7 +19,7 @@ public class Gnome extends BaseWarriorMonster {
     @Override
     public void tick() {
         super.tick();
-        if (!(level() instanceof ServerLevel server) || !isAlive() || !onGround() || !server.isDay()
+        if (!(level() instanceof ServerLevel server) || !isAlive() || !onGround() || LibDateUtils.isNight(server)
                 || !server.canSeeSky(blockPosition()) || !server.getFluidState(blockPosition()).isEmpty()
                 || !server.getBlockState(blockPosition()).canBeReplaced()) return;
         if (server.setBlockAndUpdate(blockPosition(), DecorativeBlocks.GARDEN_GNOME.get().defaultBlockState())) {

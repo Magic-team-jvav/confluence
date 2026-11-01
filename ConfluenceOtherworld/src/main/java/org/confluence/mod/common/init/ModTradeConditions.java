@@ -31,7 +31,7 @@ public final class ModTradeConditions {
     public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<GameEventCondition>> GAME_EVENT = TYPES.register("game_event", () -> GameEventCondition.CODEC);
     public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<GraveyardCondition>> GRAVEYARD = TYPES.register("graveyard", () -> GraveyardCondition.CODEC);
     public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<MoonPhaseCondition>> MOON_PHASE = TYPES.register("moon_phase", () -> MoonPhaseCondition.CODEC);
-    public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<WorldFlagCondition>> WORLD_FLAG = TYPES.register("world_flag", () -> WorldFlagCondition.CODEC);
+    public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<SecretFlagCondition>> WORLD_FLAG = TYPES.register("world_flag", () -> SecretFlagCondition.CODEC);
     public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<AndCondition>> AND = TYPES.register("and", () -> AndCondition.CODEC);
     public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<OrCondition>> OR = TYPES.register("or", () -> OrCondition.CODEC);
     public static final DeferredHolder<MapCodec<? extends TradeCondition>, MapCodec<NotCondition>> NOT = TYPES.register("not", () -> NotCondition.CODEC);

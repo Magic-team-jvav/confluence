@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -104,7 +105,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
 
     /// 判断玩家是否满足史莱姆的主动索敌条件；受击反击不经过此方法。
     protected boolean canProactivelyTargetPlayer(LivingEntity player) {
-        return Math.abs(player.getY() - getY()) <= 4.0 && (!passiveByDay || level().isNight() || getY() < OverworldUtils.getSurfaceY());
+        return Math.abs(player.getY() - getY()) <= 4.0 && (!passiveByDay || LibDateUtils.isNight(level()) || OverworldUtils.belowSurface(getY()));
     }
 
     @Override

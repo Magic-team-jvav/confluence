@@ -7,8 +7,8 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BasePotBlock;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.util.ModUtils;
 
 import java.util.function.IntSupplier;
 
@@ -29,7 +29,7 @@ public class PotBlocks {
     public static final DeferredBlock<BasePotBlock> CORRUPTION_POT = registerWithItem("corruption_pot", "蠕虫罐子", 1.6F, 365);
     public static final DeferredBlock<BasePotBlock> DUNGEON_POT = registerWithItem("dungeon_pot", "地牢罐子", 1.9F, 384);
     public static final DeferredBlock<BasePotBlock> UNDERWORLD_POT = registerWithItem("underworld_pot", "炎烬罐子", 2.1F, 365);
-    public static final DeferredBlock<BasePotBlock> LIHZAHRD_POT = registerWithItem("lihzahrd_pot", "神庙罐子", 4.0F, () -> KillBoard.INSTANCE.getGamePhase().isHardmode() ? 250 : 500);
+    public static final DeferredBlock<BasePotBlock> LIHZAHRD_POT = registerWithItem("lihzahrd_pot", "神庙罐子", 4.0F, () -> ModUtils.isHardmode() ? 250 : 500);
 
     public static DeferredBlock<BasePotBlock> registerWithItem(String id, float moneyRatio, IntSupplier invMoneyHoleChance) {
         DeferredBlock<BasePotBlock> object = BLOCKS.register(id, () -> new BasePotBlock(moneyRatio, invMoneyHoleChance, Block.box(2, 0, 2, 14, 12, 14)));

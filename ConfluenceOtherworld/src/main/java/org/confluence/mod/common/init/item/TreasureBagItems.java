@@ -10,6 +10,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.SecretFlagMatcher;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -32,11 +33,11 @@ public class TreasureBagItems {
         String difficulty = LibUtils.switchByDifficulty(level, "/classic", "/expert", "/master");
         long secretFlag = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
         String biome;
-        if (IMinecraftServer.equalsSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL) || !IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL)) {
+        if (SecretFlagMatcher.equalsSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL) || !SecretFlagMatcher.matchesSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL)) {
             biome = "_double_evil";
-        } else if (IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.THE_CORRUPTION)) {
+        } else if (SecretFlagMatcher.matchesSecretFlag(secretFlag, IWorldOptions.THE_CORRUPTION)) {
             biome = "_corruption";
-        } else if (IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.THE_CRIMSON)) {
+        } else if (SecretFlagMatcher.matchesSecretFlag(secretFlag, IWorldOptions.THE_CRIMSON)) {
             biome = "_crimson";
         } else {
             biome = "";

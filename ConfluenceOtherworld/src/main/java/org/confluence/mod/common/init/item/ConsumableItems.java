@@ -1,10 +1,7 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -20,13 +17,17 @@ import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModFluids;
+import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
 import org.confluence.mod.common.item.mana.RecallManaCrystalItem;
+import org.confluence.mod.util.OverworldUtils;
 
 import java.util.function.Supplier;
 
@@ -103,16 +104,10 @@ public class ConsumableItems {
 
     public static final DeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = registerItem("suspicious_looking_eye", "可疑眼球", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), level -> new EyeOfCthulhu(BossEntities.EYE_OF_CTHULHU.get(), level)));
     public static final DeferredItem<BossSummoningItem> SLIME_CROWN = registerItem("slime_crown", "史莱姆王冠", () -> new BossSummoningItem(player -> true, level -> new KingSlime(BossEntities.KING_SLIME.get(), level)));
-    public static final DeferredItem<BossSummoningItem> WORM_FOOD = registerItem("worm_food", "蠕虫诱饵", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level)));
-    public static final DeferredItem<BossSummoningItem> BLOODY_SPINE = registerItem("bloody_spine", "血腥脊椎", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level)));
-    public static final DeferredItem<BossSummoningItem> ABEEMINATION = registerItem("abeemination", "憎恶之蜂", () -> new BossSummoningItem(player -> {
-        Holder<Biome> biome = player.level().getBiome(player.blockPosition());
-        return biome.is(Tags.Biomes.IS_JUNGLE) || biome.is(Tags.Biomes.IS_LUSH);
-    }, level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level)));
-    public static final DeferredItem<BossSummoningItem> DEER_THING = registerItem("deer_thing", "鹿华", () -> new BossSummoningItem(player -> {
-        Holder<Biome> biome = player.level().getBiome(player.blockPosition());
-        return biome.is(Tags.Biomes.IS_SNOWY) || biome.is(Tags.Biomes.IS_ICY);
-    }, level -> new DeerClops(BossEntities.DEERCLOPS.get(), level)));
+    public static final DeferredItem<BossSummoningItem> WORM_FOOD = registerItem("worm_food", "蠕虫诱饵", () -> new BossSummoningItem(player -> OverworldUtils.isCorruption(player.level().getBiome(player.blockPosition())), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level)));
+    public static final DeferredItem<BossSummoningItem> BLOODY_SPINE = registerItem("bloody_spine", "血腥脊椎", () -> new BossSummoningItem(player -> OverworldUtils.isCrimson(player.level().getBiome(player.blockPosition())), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level)));
+    public static final DeferredItem<BossSummoningItem> ABEEMINATION = registerItem("abeemination", "憎恶之蜂", () -> new BossSummoningItem(player -> OverworldUtils.isJungle(player.level().getBiome(player.blockPosition())), level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level)));
+    public static final DeferredItem<BossSummoningItem> DEER_THING = registerItem("deer_thing", "鹿华", () -> new BossSummoningItem(player -> OverworldUtils.isSnowy(player.level().getBiome(player.blockPosition())), level -> new DeerClops(BossEntities.DEERCLOPS.get(), level)));
 
     public static final DeferredItem<CustomRarityItem> GOLDEN_LOCK_BOX = registerItem("golden_lock_box", "金锁盒", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN));
     public static final DeferredItem<CustomRarityItem> OBSIDIAN_LOCK_BOX = registerItem("obsidian_lock_box", "黑曜石锁盒", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN));

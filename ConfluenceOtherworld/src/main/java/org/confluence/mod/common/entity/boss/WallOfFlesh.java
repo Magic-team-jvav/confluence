@@ -538,7 +538,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
         for (Entity entity : wallParts) {
             if (!(entity instanceof WallOfFleshMouth mouth) || !mouth.isAlive() || mouth.getY() <= level().getMinBuildHeight())
                 continue;
-            if (level().dimension() == OverworldUtils.underworld() && mouth.getY() >= NETHER_GENERATION_HEIGHT * 2.0 / 3.0)
+            if (OverworldUtils.inUnderworld(level().dimension(), mouth.getY()) && mouth.getY() >= NETHER_GENERATION_HEIGHT * 2.0 / 3.0)
                 continue;
             double distance = mouth.distanceToSqr(living);
             if (distance < nearestDistance) {

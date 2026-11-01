@@ -32,6 +32,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -121,7 +122,7 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
 
             int sample = player.hasEffect(ModEffects.CRATE) ? 4 : 10;
             if (self.getInBlockState().getFluidState().is(FluidTags.WATER) && level.random.nextInt(sample) == 0) {
-                ResourceKey<LootTable> lootTable = IMinecraftServer.isHardmode(level.getServer()) ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
+                ResourceKey<LootTable> lootTable = ModUtils.isHardmode() ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
                 FishingSession session = of(self).confluence$getFishingSession();
                 ItemStack rod = session == null ? FishingSession.heldRod(player) : session.rod();
                 return level.getServer().reloadableRegistries().getLootTable(lootTable)

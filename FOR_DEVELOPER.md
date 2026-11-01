@@ -1,0 +1,7 @@
+游戏时间用LibDateUtils
+节日时间用DateUtils
+高度、群系、维度用OverworldUtils，且高度范围尽量用返回boolean的方法而不是返回int的方法
+游戏阶段用Killboard.INSTANCE.isDefeated衍生而不是Killboard.INSTANCE.getGamePhase衍生
+服务端游戏事件用GameEventSystem，客户端游戏事件用ClientGameEventSystem
+少用forge事件判断模组内实体，改用实体的类中判断
+困难模式用ModUtils.isHardmode判断

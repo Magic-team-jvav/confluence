@@ -14,6 +14,7 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.util.OverworldUtils;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class FailedSkullItem extends StandingAndWallBlockItem implements Equipab
         if (!level.isClientSide && stack.is(this) && slotId == 39) {
             if (entity instanceof Player player) {
                 player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 20, 0, false, false));
-                if (level.dimension() == Level.NETHER && !player.isCreative() && player.isAlive()) {
+                if (OverworldUtils.inUnderworld(level.dimension(), player.getY()) && !player.isCreative() && player.isAlive()) {
                     List<Piglin> piglinList = level.getEntitiesOfClass(Piglin.class, player.getBoundingBox().inflate(8));
                     for (Piglin piglin : piglinList) {
                         piglin.setTarget(player);

@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +18,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -27,7 +26,6 @@ import org.confluence.mod.common.entity.projectile.SkeletronSkullProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.item.common.TreasureBagItem;
 
 /// 骷髅王本体。
 ///
@@ -156,7 +154,7 @@ public class Skeletron extends BaseBoss {
             return;
         }
 
-        boolean enraged = level().isDay();
+        boolean enraged = LibDateUtils.isDay(level());
         boolean spinning = enraged || combatCycle >= stateParameters(CombatState.FLOATING).duration();
         setSpinning(spinning);
         updateStateAttributes(enraged ? CombatState.ENRAGED : spinning ? CombatState.SPINNING : CombatState.FLOATING);
@@ -584,19 +582,6 @@ public class Skeletron extends BaseBoss {
     @Override
     protected SoundEvent getDeathSound() {
         return ModSoundEvents.TR_ZOMBIE_DEATH.get();
-    }
-
-    @Override
-    public void die(DamageSource source) {
-        super.die(source);
-        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
-            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
-                KillBoard.INSTANCE.defeat(getType());
-                for (var player : getOnlineCombatParticipants()) {
-                    TreasureBagItem.createItemEntity(this, player);
-                }
-            }
-        }
     }
 
 }

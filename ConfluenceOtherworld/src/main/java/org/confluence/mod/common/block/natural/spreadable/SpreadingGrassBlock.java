@@ -33,7 +33,7 @@ public class SpreadingGrassBlock extends SpreadingBlock {
     private void tryGrowPlant(ServerLevel level, BlockPos above, RandomSource random) {
         Type spreadType = getSpreadType();
         if (spreadType == Type.JUNGLE) {
-            if (above.getY() <= OverworldUtils.getUndergroundY() && random.nextInt(SPORE_GROWTH_CHANCE) == 0) {
+            if (OverworldUtils.inCave(above.getY()) && random.nextInt(SPORE_GROWTH_CHANCE) == 0) {
                 level.setBlockAndUpdate(above, NatureBlocks.JUNGLE_SPORE.get().defaultBlockState());
             }
             return;

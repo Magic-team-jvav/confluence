@@ -7,12 +7,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.wind.WindMath;
 import org.confluence.mod.common.wind.WindState;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 
 /// 沙尘暴。
@@ -62,7 +61,7 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
     @Override
     public boolean canStart() {
         if (level == null) return false;
-        return requested || (strongWind() && level.random.nextInt(KillBoard.INSTANCE.getGamePhase().isHardmode() ? 14400 : 21600) == 0);
+        return requested || (strongWind() && level.random.nextInt(ModUtils.isHardmode() ? 14400 : 21600) == 0);
     }
 
     @Override
@@ -141,8 +140,8 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
 
     @Override
     public boolean inWindZone(Level level, BlockPos pos) {
-        return level.getBiome(pos).is(Tags.Biomes.IS_DESERT)
-                && pos.getY() >= OverworldUtils.getSurfaceY()
+        return OverworldUtils.isDesert(level.getBiome(pos))
+                && OverworldUtils.aboveSurface(pos.getY())
                 && level.canSeeSky(pos);
     }
 

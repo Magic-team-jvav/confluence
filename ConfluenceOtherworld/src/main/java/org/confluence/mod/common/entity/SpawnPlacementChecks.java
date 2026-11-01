@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.GamePhase;
@@ -27,7 +25,6 @@ import org.confluence.mod.common.entity.animal.Worm;
 import org.confluence.mod.common.entity.monster.WaterBoltMimic;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.SandstormGameEvent;
-import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
@@ -40,7 +37,7 @@ import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.wind.WindField;
 import org.confluence.mod.common.wind.WindMath;
 import org.confluence.mod.common.wind.WindState;
-import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -75,48 +72,45 @@ public final class SpawnPlacementChecks {
 
     /// 仙灵限定在地下层下半段与洞穴层，且位置不能露天。
     public static boolean checkFairySpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        int lowerUndergroundBoundary = (OverworldUtils.getSurfaceY() + OverworldUtils.getUndergroundY()) / 2;
-        return pos.getY() < lowerUndergroundBoundary && !level.canSeeSky(pos)
+        return OverworldUtils.inCave(pos.getY()) && !level.canSeeSky(pos)
                 && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 企鹅只在露天雪原地表生成，群系由候选表限定。
     public static boolean checkSurfacePenguinSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() >= OverworldUtils.getSurfaceY() && level.canSeeSky(pos)
+        return OverworldUtils.inSurface(pos.getY()) && level.canSeeSky(pos)
                 && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 虫子在浅层地下常驻，降雨时也允许出现在露天地表。
     public static boolean checkWormSpawn(EntityType<Worm> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel serverLevel)) return false;
-        int y = pos.getY();
-        int surfaceY = OverworldUtils.getSurfaceY();
-        if (y > surfaceY && y < OverworldUtils.getSpaceY() && ModUtils.isRainingAt(serverLevel, pos))
+        if (OverworldUtils.inSurface(pos.getY()) && ModUtils.isRainingAt(serverLevel, pos))
             return true;
-        return y > OverworldUtils.getUndergroundY() && y < surfaceY;
+        return OverworldUtils.inUnderground(pos.getY());
     }
 
     /// 宝石兔与宝石松鼠只在洞穴层生成。
     public static boolean checkCavernCritterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < OverworldUtils.getUndergroundY() && checkMobSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.inCave(pos.getY()) && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 地表日间小动物共用的时间与高度检查。
     public static boolean checkSurfaceDayCritterSpawn(EntityType<? extends Animal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof ServerLevel serverLevel && serverLevel.isDay()
-                && pos.getY() > OverworldUtils.getSurfaceY() && checkAnimalSpawnRules(type, level, spawnType, pos, random);
+        return level instanceof ServerLevel serverLevel && LibDateUtils.isDay(serverLevel)
+                && OverworldUtils.inSurface(pos.getY()) && checkAnimalSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 地狱小动物以主世界昼夜为准，白天才自然生成。
     public static boolean checkNetherDayCritterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof ServerLevel serverLevel && serverLevel.getServer().overworld().isDay()
+        return level instanceof ServerLevel serverLevel && LibDateUtils.isDay(serverLevel)
                 && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 瓢虫要求地表晴朗白天且风速达到大风天阈值（20 mph）。
     public static boolean checkLadybugSpawn(EntityType<? extends Animal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel serverLevel)) return false;
-        return windSpeedAt(serverLevel, pos) >= WindMath.WINDY_DAY_MIN
+        return windSpeedAt(serverLevel) >= WindMath.WINDY_DAY_MIN
                 && checkSurfaceDayCritterSpawn(type, level, spawnType, pos, random);
     }
 
@@ -126,7 +120,7 @@ public final class SpawnPlacementChecks {
     }
 
     /// 该位置当前的实际风速（m/s，含阵风）。方向随位置变化，所以风速也要在生成坐标处求。
-    public static float windSpeedAt(ServerLevel level, BlockPos pos) {
+    public static float windSpeedAt(Level level) {
         return WindState.INSTANCE.instantSpeed(level.getGameTime());
     }
 
@@ -135,7 +129,7 @@ public final class SpawnPlacementChecks {
         if (!(level instanceof ServerLevel world) || world.isRaining() || !checkSurfaceDayCritterSpawn(type, level, spawnType, pos, random))
             return false;
         if (isGraveyard(level, pos)) return false;
-        return windSpeedAt(world, pos) < WindMath.WINDY_DAY_MIN;
+        return windSpeedAt(world) < WindMath.WINDY_DAY_MIN;
     }
 
     /// 蝴蝶只在非臭虫日满足平静白天条件时生成。
@@ -162,27 +156,27 @@ public final class SpawnPlacementChecks {
 
     /// 两种夜行发光虫共用的晴朗、静风和无墓地条件。
     private static boolean checkGlowBugEnvironment(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!(level instanceof ServerLevel world) || !world.isNight() || world.isRaining()
-                || pos.getY() <= OverworldUtils.getSurfaceY() || !level.canSeeSky(pos))
+        if (!(level instanceof ServerLevel world) || LibDateUtils.isDay(world) || world.isRaining()
+                || OverworldUtils.belowSurface(pos.getY()) || !level.canSeeSky(pos))
             return false;
         if (isGraveyard(level, pos)) return false;
-        if (windSpeedAt(world, pos) >= WindMath.WINDY_DAY_MIN) return false;
+        if (windSpeedAt(world) >= WindMath.WINDY_DAY_MIN) return false;
         return checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
-    /// 松露虫只在地下发光蘑菇群系生成，困难模式门槛由注册处叠加。
+    /// 松露虫只会在地下地层及以下生成，并不会出现在地表发光蘑菇生物群系中，困难模式门槛由注册处叠加。
     public static boolean checkTruffleWormSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getBiome(pos).is(ModBiomes.GLOWING_MUSHROOM)
-                && pos.getY() < OverworldUtils.getSurfaceY() && !level.canSeeSky(pos)
+        return OverworldUtils.isMushroom(level.getBiome(pos))
+                && OverworldUtils.belowSurface(pos.getY()) && !level.canSeeSky(pos)
                 && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 七彩草蛉要求世纪之花后、指定夜间时段与局部区域数量上限。
     public static boolean checkPrismaticLacewingSpawn(EntityType<? extends Animal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel serverLevel)
-                || !KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.PLANTERA)
+                || !KillBoard.INSTANCE.isDefeated(BossEntities.PLANTERA.get())
                 || !LibDateUtils.isWithinDayTime(LibDateUtils._19$30, LibDateUtils._00$00, serverLevel)
-                || pos.getY() <= OverworldUtils.getSurfaceY()) return false;
+                || OverworldUtils.belowSurface(pos.getY())) return false;
         AABB populationArea = new AABB(pos).inflate(LACEWING_POPULATION_RADIUS, LACEWING_POPULATION_HEIGHT, LACEWING_POPULATION_RADIUS);
         return serverLevel.getEntities(type, populationArea, LivingEntity::isAlive).isEmpty()
                 && checkAnimalSpawnRules(type, level, spawnType, pos, random);
@@ -190,8 +184,7 @@ public final class SpawnPlacementChecks {
 
     /// 海洋等地表水生小动物（金鱼）要求地表高度的深水体。
     public static boolean checkSurfaceWaterMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        int y = pos.getY();
-        return y >= OverworldUtils.getSurfaceY() && y < OverworldUtils.getSpaceY() && hasDeepWater(level, pos);
+        return OverworldUtils.inSurface(pos.getY()) && hasDeepWater(level, pos);
     }
 
     // ===================== 地表敌怪基础规则 =====================
@@ -212,13 +205,12 @@ public final class SpawnPlacementChecks {
 
     /// 地表敌怪只允许在地表高度以上、太空高度以下生成。
     public static boolean checkGroundSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        int y = pos.getY();
-        return y >= OverworldUtils.getSurfaceY() && y < OverworldUtils.getSpaceY() && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.inSurface(pos.getY()) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 愤怒蒲公英要求晴朗有风白天、草地，且**该位置的风向**将其吹向玩家。
     public static boolean checkAngryDandelionSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!(level instanceof ServerLevel world) || !world.isDay() || world.isRaining() || !world.canSeeSky(pos)
+        if (!(level instanceof ServerLevel world) || LibDateUtils.isNight(world) || world.isRaining() || !level.canSeeSky(pos)
                 || !level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK)
                 || !checkGroundSpawn(type, level, spawnType, pos, random)) return false;
         WindState state = WindState.INSTANCE;
@@ -231,12 +223,12 @@ public final class SpawnPlacementChecks {
 
     /// 狼人只在满月的地表夜晚生成。
     public static boolean checkWerewolfSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof ServerLevel world && world.isNight() && world.getMoonPhase() == 0
+        return LibDateUtils.isNight(level.getLevel()) && level.getMoonPhase() == 0
                 && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
     public static boolean checkBelowSurfaceMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < OverworldUtils.getSurfaceY() && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.belowSurface(pos.getY()) && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 侏儒只在不露天的生命树结构内生成。
@@ -250,25 +242,24 @@ public final class SpawnPlacementChecks {
 
     /// 普通敌怪的宽松高度入口，适用于由候选群系另行限定环境的类型。
     public static boolean checkRoutineMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < OverworldUtils.getSpaceY() && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.belowSpace(pos.getY()) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 普通地牢敌怪仅在击败骷髅王后、地牢地下区域生成；此前由地牢守卫机制接管。
     public static boolean checkDungeonMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())
-                && pos.getY() < OverworldUtils.getSurfaceY() && !level.canSeeSky(pos)
+                && pos.getY() < DungeonStructure.getUpperBoundsFloor1() && !level.canSeeSky(pos)
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 不限昼夜的地表生物只检查高度与原版 Mob 基础条件。
     public static boolean checkSurfaceMobSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        int y = pos.getY();
-        return y >= OverworldUtils.getSurfaceY() && y < OverworldUtils.getSpaceY() && Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.inSurface(pos.getY()) && Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 白天地表敌怪使用 Mob 基础检查，避免原版怪物亮度门槛阻止生成。
     public static boolean checkSurfaceDayMobSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof Level world && world.isDay() && checkSurfaceMobSpawn(type, level, spawnType, pos, random);
+        return LibDateUtils.isDay(level.getLevel()) && checkSurfaceMobSpawn(type, level, spawnType, pos, random);
     }
 
     public static boolean checkGoblinScoutSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -277,7 +268,7 @@ public final class SpawnPlacementChecks {
 
     /// 普通僵尸只在地表夜晚生成，并执行统一敌怪基础检查。
     public static boolean checkZombieSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return !LibDateUtils.isDay(level.getLevel()) && pos.getY() >= OverworldUtils.getSurfaceY()
+        return LibDateUtils.isNight(level.getLevel()) && OverworldUtils.inSurface(pos.getY())
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
@@ -287,7 +278,7 @@ public final class SpawnPlacementChecks {
 
     /// 骷髅博士要求夜晚且脚下是丛林草。
     public static boolean checkDoctorBonesSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof ServerLevel world && world.isNight()
+        return LibDateUtils.isNight(level.getLevel())
                 && level.getBlockState(pos.below()).is(NatureBlocks.JUNGLE_GRASS_BLOCK.get())
                 && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
     }
@@ -315,21 +306,19 @@ public final class SpawnPlacementChecks {
     /// 普通食尸鬼只在未被邪恶或神圣转化的地下沙漠生成。
     public static boolean checkPureDesertUndergroundSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         var biome = level.getBiome(pos);
-        return !OverworldUtils.isCorruption(biome) && !OverworldUtils.isCrimson(biome) && !OverworldUtils.isHallow(biome)
+        return !OverworldUtils.isEvil(biome) && !OverworldUtils.isHallow(biome)
                 && checkDesertUndergroundMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     /// 光明拉弥亚与沙贼只在纯净或神圣地下沙漠生成。
     public static boolean checkPureOrHallowDesertUndergroundSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        var biome = level.getBiome(pos);
-        return !OverworldUtils.isCorruption(biome) && !OverworldUtils.isCrimson(biome)
+        return !OverworldUtils.isEvil(level.getBiome(pos))
                 && checkDesertUndergroundMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     /// 暗黑拉弥亚只在腐化或猩红地下沙漠生成。
     public static boolean checkEvilDesertUndergroundSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        var biome = level.getBiome(pos);
-        return (OverworldUtils.isCorruption(biome) || OverworldUtils.isCrimson(biome))
+        return OverworldUtils.isEvil(level.getBiome(pos))
                 && checkDesertUndergroundMonsterSpawn(type, level, spawnType, pos, random);
     }
 
@@ -369,19 +358,19 @@ public final class SpawnPlacementChecks {
 
     /// 木乃伊共用的沙漠、沙块和基础支撑检查，不施加夜晚限制。
     private static boolean checkMummyOnSand(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random, Block sand) {
-        return OverworldUtils.isDesert(level.getBiome(pos)) && pos.getY() < OverworldUtils.getSpaceY()
+        return OverworldUtils.isDesert(level.getBiome(pos)) && OverworldUtils.belowSpace(pos.getY())
                 && level.getBlockState(pos.below()).is(sand)
                 && Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 水生敌怪的通用规则要求双层水体，不使用陆生怪物的脚下支撑检查。
     public static boolean checkWaterMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < OverworldUtils.getSpaceY() && hasDeepWater(level, pos);
+        return OverworldUtils.belowSpace(pos.getY()) && hasDeepWater(level, pos);
     }
 
     /// 地下水母等敌怪要求地表以下且不露天的深水体。
     public static boolean checkUndergroundWaterMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < OverworldUtils.getSurfaceY() && !level.canSeeSky(pos) && hasDeepWater(level, pos);
+        return OverworldUtils.belowSurface(pos.getY()) && !level.canSeeSky(pos) && hasDeepWater(level, pos);
     }
 
     /// 猩红水生敌怪要求猩红群系与双层水体。
@@ -391,8 +380,7 @@ public final class SpawnPlacementChecks {
 
     /// 鮟鱇鱼要求洞穴水体，或丛林及繁茂洞穴水体。
     public static boolean checkAnglerFishSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        var biome = level.getBiome(pos);
-        return (pos.getY() < OverworldUtils.getUndergroundY() && !level.canSeeSky(pos) || biome.is(Tags.Biomes.IS_JUNGLE) || biome.is(Tags.Biomes.IS_LUSH))
+        return (OverworldUtils.inCave(pos.getY()) && !level.canSeeSky(pos) || OverworldUtils.isJungle(level.getBiome(pos)))
                 && checkWaterMonsterSpawn(type, level, spawnType, pos, random);
     }
 
@@ -409,14 +397,13 @@ public final class SpawnPlacementChecks {
     /// 挖掘者排除雪原/冰原（地下）与神圣（地表）。
     public static boolean checkDiggerSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         var biome = level.getBiome(pos);
-        boolean underground = pos.getY() >= OverworldUtils.getUndergroundY();
+        boolean underground = OverworldUtils.inUnderground(pos.getY());
         return !(underground ? OverworldUtils.isSnowy(biome) : OverworldUtils.isHallow(biome))
                 && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     public static boolean checkGiantWormSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        var biome = level.getBiome(pos);
-        return !OverworldUtils.isSnowy(biome) && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
+        return !OverworldUtils.isSnowy(level.getBiome(pos)) && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     public static boolean checkCorruptionWormSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -424,7 +411,7 @@ public final class SpawnPlacementChecks {
     }
 
     public static boolean checkHighLevelMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() >= OverworldUtils.getSpaceY() && pos.getY() < level.getMaxBuildHeight() && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.inSpace(pos.getY()) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     public static boolean checkArchWyvernSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -435,19 +422,18 @@ public final class SpawnPlacementChecks {
 
     /// 地下生物群系规则覆盖浅层地下到洞穴底部，不把 Y=0 误作下界（1.20 `:476`）。
     public static boolean checkUndergroundMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        int y = pos.getY();
-        return y >= OverworldUtils.getCaveY() && y < OverworldUtils.getSurfaceY()
+        return OverworldUtils.belowSurface(pos.getY())
                 && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 洞穴层敌怪要求低于地下与洞穴分界，且不能露天。
     public static boolean checkCaveMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < OverworldUtils.getUndergroundY() && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.inCave(pos.getY()) && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 地狱敌怪只在本模组映射的地狱维度生成。
     public static boolean checkNetherMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof Level world && world.dimension() == OverworldUtils.underworld() && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.inUnderworld(level.getLevel().dimension(), pos.getY()) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     /// 熔岩蝙蝠和红魔鬼要求至少击败一个机械 Boss。
@@ -457,7 +443,7 @@ public final class SpawnPlacementChecks {
 
     /// 夜晚地表敌怪要求夜间和地表高度。
     public static boolean checkSurfaceNightMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof Level world && world.isNight() && checkGroundSpawn(type, level, spawnType, pos, random);
+        return LibDateUtils.isNight(level.getLevel()) && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
     // ===================== 公共辅助 =====================
@@ -466,7 +452,7 @@ public final class SpawnPlacementChecks {
     public static <T extends Mob> SpawnPlacements.SpawnPredicate<T> hardmode(SpawnPlacements.SpawnPredicate<T> predicate) {
         // 包装既有规则而不是复制一份，确保开启困难模式只增加进度门槛，不改变环境语义。
         return (type, level, spawnType, pos, random) -> level instanceof ServerLevel serverLevel
-                && IMinecraftServer.isHardmode(serverLevel.getServer())
+                && ModUtils.isHardmode()
                 && predicate.test(type, level, spawnType, pos, random);
     }
 
@@ -493,14 +479,13 @@ public final class SpawnPlacementChecks {
 
     /// 丛林史莱姆沿用地表白天规则；即便群系带繁茂标签，也仍受地表高度约束。
     public static boolean checkJungleSurfaceDaySlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        var biome = level.getBiome(pos);
-        return (OverworldUtils.isJungle(biome) || biome.is(Tags.Biomes.IS_LUSH))
+        return OverworldUtils.isJungle(level.getBiome(pos))
                 && checkSurfaceDaySlimeSpawn(type, level, spawnType, pos, random);
     }
 
     /// 黄、红史莱姆限定在地表与洞穴分界之间的浅层地下。
     public static boolean checkShallowUndergroundSlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() >= OverworldUtils.getUndergroundY() && pos.getY() < OverworldUtils.getSurfaceY()
+        return OverworldUtils.inUnderground(pos.getY())
                 && level.getBrightness(LightLayer.SKY, pos) == 0
                 && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
     }
@@ -518,8 +503,7 @@ public final class SpawnPlacementChecks {
 
     /// 尖刺丛林史莱姆只在地下丛林对应群系生成。
     public static boolean checkJungleUndergroundSlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        var biome = level.getBiome(pos);
-        return (OverworldUtils.isJungle(biome) || biome.is(Tags.Biomes.IS_LUSH))
+        return (OverworldUtils.isJungle(level.getBiome(pos)))
                 && level.getBrightness(LightLayer.SKY, pos) == 0
                 && checkUndergroundMonsterSpawn(type, level, spawnType, pos, random);
     }
@@ -544,14 +528,14 @@ public final class SpawnPlacementChecks {
     /// 旧摇摇箱仅在骷髅王后、洞穴层的牢固地面出现。
     public static boolean checkOldShakingChestSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
         return KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())
-                && pos.getY() < OverworldUtils.getUndergroundY() && !level.canSeeSky(pos)
+                && OverworldUtils.inCave(pos.getY()) && !level.canSeeSky(pos)
                 && level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)
                 && canSpawnTownSlimeRescue(type, level, pos, NpcEntities.ELDER_SLIME.get());
     }
 
     /// 笨拙气球史莱姆仅在露天太空层出现。
     public static boolean checkClumsyBalloonSlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        return pos.getY() >= OverworldUtils.getSpaceY() && level.canSeeSky(pos)
+        return OverworldUtils.inSpace(pos.getY()) && level.canSeeSky(pos)
                 && canSpawnTownSlimeRescue(type, level, pos, NpcEntities.CLUMSY_SLIME.get());
     }
 
@@ -559,19 +543,19 @@ public final class SpawnPlacementChecks {
     /// 沙漠幽魂仅在困难模式的腐化或猩红地下沙漠生成。
     public static boolean checkDesertSpiritSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         var biome = level.getBiome(pos);
-        return biome.is(Tags.Biomes.IS_DESERT) && (OverworldUtils.isCorruption(biome) || OverworldUtils.isCrimson(biome))
+        return OverworldUtils.isDesert(biome) && (OverworldUtils.isCorruption(biome) || OverworldUtils.isCrimson(biome))
                 && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     /// 墙爬虫在洞穴蜘蛛窝生成，困难模式中进一步降低尝试成功率。
     public static boolean checkWallCreeperSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return (!IMinecraftServer.isHardmode(level.getLevel().getServer()) || random.nextInt(20) == 0)
+        return (!ModUtils.isHardmode() || random.nextInt(20) == 0)
                 && checkCaveMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     /// 符文巫师只在洞穴层的较深半段生成。
     public static boolean checkRuneWizardSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < (OverworldUtils.getUndergroundY() + level.getMinBuildHeight()) / 2
+        return OverworldUtils.inCave(pos.getY())
                 && checkCaveMonsterSpawn(type, level, spawnType, pos, random);
     }
 
@@ -583,7 +567,7 @@ public final class SpawnPlacementChecks {
     /// 愤怒雨云只在非雪原的露天地表雨天生成，且限制全世界同时存在数量。
     public static boolean checkAngryNimbusSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel world) || !world.isRaining() || !level.canSeeSky(pos)
-                || level.getBiome(pos).is(Tags.Biomes.IS_SNOWY) || level.getBiome(pos).is(Tags.Biomes.IS_ICY)
+                || OverworldUtils.isSnowy(level.getBiome(pos))
                 || !checkGroundSpawn(type, level, spawnType, pos, random)) return false;
         int count = 0;
         for (Entity entity : world.getAllEntities()) {
@@ -595,18 +579,18 @@ public final class SpawnPlacementChecks {
 
     /// 蚁狮在地下沙漠常驻，地表则要求白天和脚下沙块。
     public static boolean checkAntlionSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (pos.getY() < OverworldUtils.getSurfaceY())
+        if (OverworldUtils.belowSurface(pos.getY()))
             return !level.canSeeSky(pos) && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
-        return level instanceof Level world && world.isDay() && level.getBlockState(pos.below()).is(net.minecraft.tags.BlockTags.SAND)
+        return level instanceof ServerLevel serverLevel && LibDateUtils.isDay(serverLevel) && level.getBlockState(pos.below()).is(net.minecraft.tags.BlockTags.SAND)
                 && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
     /// 蚁狮马在地下沙漠常驻，困难模式前沙尘暴时也可到地表。
     public static boolean checkAntlionChargerSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!level.getBiome(pos).is(Tags.Biomes.IS_DESERT)) return false;
-        if (pos.getY() < OverworldUtils.getSurfaceY())
+        if (!OverworldUtils.isDesert(level.getBiome(pos))) return false;
+        if (OverworldUtils.belowSurface(pos.getY()))
             return checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
-        return !KillBoard.INSTANCE.getGamePhase().isHardmode()
+        return !ModUtils.isHardmode()
                 && checkSandstormSpawn(type, level, spawnType, pos, random);
     }
 
@@ -618,8 +602,8 @@ public final class SpawnPlacementChecks {
 
     /// 蚁狮蜂在地下沙漠常驻，地表仅在沙尘暴期间生成。
     public static boolean checkAntlionSwarmerSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!level.getBiome(pos).is(Tags.Biomes.IS_DESERT)) return false;
-        return pos.getY() < OverworldUtils.getSurfaceY()
+        if (!OverworldUtils.isDesert(level.getBiome(pos))) return false;
+        return OverworldUtils.belowSurface(pos.getY())
                 ? checkUndergroundMonsterSpawn(type, level, spawnType, pos, random)
                 : checkSandstormSpawn(type, level, spawnType, pos, random);
     }
@@ -627,16 +611,16 @@ public final class SpawnPlacementChecks {
     /// 沙尘暴敌怪要求事件进行中、露天地表和足够连续的沙块。
     public static boolean checkSandstormSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return SandstormGameEvent.INSTANCE.started()
-                && level.getBiome(pos).is(Tags.Biomes.IS_DESERT)
+                && OverworldUtils.isDesert(level.getBiome(pos))
                 && level.canSeeSky(pos) && level.getBlockState(pos.below()).is(BlockTags.SAND)
                 && checkGroundSpawn(type, level, spawnType, pos, random) && hasConnectedSand(level, pos);
     }
 
     /// 真菌球怪在地表蘑菇群系生成，困难模式后也可进入地下。
     public static boolean checkFungiBulbSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!level.getBiome(pos).is(ModBiomes.GLOWING_MUSHROOM) && !level.getBlockState(pos.below()).is(NatureBlocks.MUSHROOM_GRASS_BLOCK.get()))
+        if (!OverworldUtils.isMushroom(level.getBiome(pos)) && !level.getBlockState(pos.below()).is(NatureBlocks.MUSHROOM_GRASS_BLOCK.get()))
             return false;
-        if (pos.getY() < OverworldUtils.getSurfaceY() && (!KillBoard.INSTANCE.getGamePhase().isHardmode() || level.canSeeSky(pos)))
+        if (OverworldUtils.belowSurface(pos.getY()) && (!ModUtils.isHardmode() || level.canSeeSky(pos)))
             return false;
         return checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
     }
@@ -669,14 +653,12 @@ public final class SpawnPlacementChecks {
 
     /// 石巨人只在非雪原的石块地面洞穴生成。
     public static boolean checkRockGolemSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        var biome = level.getBiome(pos);
-        return level.getBlockState(pos.below()).is(Blocks.STONE) && !biome.is(Tags.Biomes.IS_SNOWY)
-                && !biome.is(Tags.Biomes.IS_ICY) && checkCaveMonsterSpawn(type, level, spawnType, pos, random);
+        return level.getBlockState(pos.below()).is(Blocks.STONE) && !OverworldUtils.isSnowy(level.getBiome(pos)) && checkCaveMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     /// 蒂姆只在深层洞穴生成，玩家穿法袍会提高出现机会。
     public static boolean checkTimSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (pos.getY() >= (OverworldUtils.getUndergroundY() + level.getMinBuildHeight()) / 2
+        if (!OverworldUtils.inCave(pos.getY())
                 || !checkCaveMonsterSpawn(type, level, spawnType, pos, random)) return false;
         var player = level.getNearestPlayer(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 128.0, false);
         if (player != null) {
@@ -690,14 +672,14 @@ public final class SpawnPlacementChecks {
 
     /// 墓穴爬虫在地下沙漠常驻，沙尘暴时可到地表。
     public static boolean checkTombCrawlerSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!level.getBiome(pos).is(Tags.Biomes.IS_DESERT)) return false;
-        return pos.getY() < OverworldUtils.getSurfaceY() ? checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random) : checkSandstormSpawn(type, level, spawnType, pos, random);
+        if (!OverworldUtils.isDesert(level.getBiome(pos))) return false;
+        return OverworldUtils.belowSurface(pos.getY()) ? checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random) : checkSandstormSpawn(type, level, spawnType, pos, random);
     }
 
     /// 冰雪精在地下冰雪群系或夜晚雪原地表生成。
     public static boolean checkIceElementalSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random)
-                || level instanceof Level world && world.isNight() && checkGroundSpawn(type, level, spawnType, pos, random);
+                || LibDateUtils.isNight(level.getLevel()) && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
     /// 冰雪巨人只在露天雪原暴雪期间生成，且同一世界限制数量。
@@ -712,7 +694,7 @@ public final class SpawnPlacementChecks {
 
     /// 恶魔眼只在地表夜晚生成，并处理新月时无遮挡高度条件。
     public static boolean checkDemonEyeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!(level instanceof Level world) || !checkGroundSpawn(type, level, spawnType, pos, random) || !world.isNight())
+        if (!(level instanceof Level world) || !checkGroundSpawn(type, level, spawnType, pos, random) || LibDateUtils.isDay(world))
             return false;
         if (world.getMoonPhase() == 4) return hasClearColumn(world, pos);
         return world.random.nextInt(99) < 80;
@@ -720,7 +702,7 @@ public final class SpawnPlacementChecks {
 
     /// 幻灵只在地表夜晚生成，新月时更常见。
     public static boolean checkWraithSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!(level instanceof Level world) || !world.isNight() || !checkGroundSpawn(type, level, spawnType, pos, random))
+        if (!(level instanceof Level world) || LibDateUtils.isDay(world) || !checkGroundSpawn(type, level, spawnType, pos, random))
             return false;
         return world.getMoonPhase() == 4 || random.nextInt(4) == 0;
     }
@@ -730,8 +712,7 @@ public final class SpawnPlacementChecks {
         if (!checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
             return false;
         }
-        int y = pos.getY();
-        boolean validAltitude = y >= level.getMinBuildHeight() && (y < OverworldUtils.getSurfaceY() || y < OverworldUtils.getSpaceY() && level instanceof Level world && world.isNight());
+        boolean validAltitude = OverworldUtils.inUnderground(pos.getY()) || (OverworldUtils.inSurface(pos.getY()) && LibDateUtils.isNight(level.getLevel()));
         return validAltitude && level instanceof Level world && hasClearColumn(world, pos);
     }
 
@@ -747,7 +728,7 @@ public final class SpawnPlacementChecks {
 
     /// 不限昼夜与地层的普通 Mob 在太空层以下执行基础检查。
     public static boolean checkRoutineMobSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return pos.getY() < OverworldUtils.getSpaceY() && Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+        return OverworldUtils.belowSpace(pos.getY()) && Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     private static boolean isGraveyard(ServerLevelAccessor level, BlockPos pos) {
@@ -802,8 +783,8 @@ public final class SpawnPlacementChecks {
     public static boolean checkMysticFrogSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
         if (NPCSpawner.INSTANCE.isNPCUnlocked(NpcEntities.MYSTIC_SLIME.get())
                 || level.getLevel().dimension() != OverworldUtils.dimension()
-                || !level.getBiome(pos).is(BiomeTags.IS_JUNGLE)
-                || pos.getY() < OverworldUtils.getSurfaceY()
+                || !OverworldUtils.isJungle(level.getBiome(pos))
+                || OverworldUtils.belowSurface(pos.getY())
                 || random.nextInt(30) != 0
                 || !Mob.checkMobSpawnRules(type, level, reason, pos, random)
         ) return false;

@@ -114,7 +114,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     }
 
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
-        if (level.dimension() != OverworldUtils.underworld() && !CommonConfigs.ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD.get()) {
+        if (!OverworldUtils.inUnderworld(level.dimension(), entity.getY()) && !CommonConfigs.ALLOW_FLESH_BOSSES_OUTSIDE_UNDERWORLD.get()) {
             if (entity instanceof ItemEntity) {
                 level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.confluence.guide_voo_doo_doll.fail").withStyle(ChatFormatting.RED), false);
             }

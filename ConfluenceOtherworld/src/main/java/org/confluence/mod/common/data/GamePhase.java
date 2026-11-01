@@ -46,6 +46,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
     }
 
     /// @see org.confluence.mod.mixed.IMinecraftServer#isHardmode
+    /// 仅用于common场景
     public boolean isHardmode() {
         return isAtLeast(WALL_OF_FLESH);
     }

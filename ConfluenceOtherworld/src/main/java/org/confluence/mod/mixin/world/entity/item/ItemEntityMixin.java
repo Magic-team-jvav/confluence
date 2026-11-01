@@ -21,7 +21,7 @@ import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.mod.common.recipe.ShimmerDecompositionInputs;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
-import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -136,7 +136,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
         if (sourceItem.getDamageValue() != 0) return;
         RegistryAccess registryAccess = source.level().registryAccess();
         MinecraftServer server = ((ServerLevel) source.level()).getServer();
-        boolean isHardmode = IMinecraftServer.isHardmode(server);
+        boolean isHardmode = ModUtils.isHardmode();
         RandomSource random = source.level().random;
         for (RecipeHolder<?> recipeHolder : server.getRecipeManager().getRecipes()) {
             Recipe<?> recipe = recipeHolder.value();

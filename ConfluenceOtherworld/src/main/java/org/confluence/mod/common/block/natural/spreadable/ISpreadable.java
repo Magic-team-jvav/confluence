@@ -24,6 +24,7 @@ import org.confluence.mod.common.data.saved.EnvironmentalMachines;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
@@ -57,7 +58,7 @@ public interface ISpreadable {
         }
         if (chance != 100 && (chance == 0 || randomSource.nextInt(100) >= chance)) return;
 
-        boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
+        boolean hardmode = ModUtils.isHardmode();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             if (!level.isLoaded(targetPos)) continue;
@@ -93,7 +94,7 @@ public interface ISpreadable {
     }
 
     default void spreadTree(ServerLevel level, BlockPos targetPos) {
-        boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
+        boolean hardmode = ModUtils.isHardmode();
         BlockState blockState = level.getBlockState(targetPos.above());
         if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
             Map<BlockPos, BlockState> map = searchFace(level, targetPos, new Hashtable<>(), 0);

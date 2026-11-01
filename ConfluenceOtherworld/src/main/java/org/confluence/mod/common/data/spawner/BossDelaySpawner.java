@@ -1,14 +1,11 @@
 package org.confluence.mod.common.data.spawner;
 
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
@@ -94,7 +91,7 @@ public enum BossDelaySpawner {
             BossDelaySpawner.INSTANCE.pushBoss(1350, BossEntities.EYE_OF_CTHULHU.get(), player1 -> {
                 // 天亮了说明这一夜已经过去，本次自然生成作废，避免残留队列一直压着后续夜晚的血月
                 if (!LibDateUtils.isNight(player1.level())) return BossDelaySpawner.CANCEL;
-                if (player1.getY() <= OverworldUtils.getSurfaceY() || !BossDelaySpawner.eyeOfCthulhuChecker(player1)) {
+                if (OverworldUtils.belowSurface(player1.getY()) || !BossDelaySpawner.eyeOfCthulhuChecker(player1)) {
                     return 20;
                 }
                 return BossDelaySpawner.SUCCESS;
@@ -132,11 +129,10 @@ public enum BossDelaySpawner {
     }
 
     public static boolean deerclopsChecker(ServerPlayer player) {
-        if (player.getY() < OverworldUtils.getSurfaceY()) return false;
+        if (!OverworldUtils.inSurface(player.getY())) return false;
         if (player.getMaxHealth() < 40 && player.getArmorValue() < 9) return false;
         ServerLevel level = player.serverLevel();
-        Holder<Biome> biome = level.getBiome(player.blockPosition());
-        if (!biome.is(Tags.Biomes.IS_SNOWY) && !biome.is(Tags.Biomes.IS_ICY)) return false;
+        if (!OverworldUtils.isSnowy(level.getBiome(player.blockPosition()))) return false;
         int amount = GameEventSystem.INSTANCE.getStartedEventAmount(true, false);
         if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
             return false;

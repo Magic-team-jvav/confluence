@@ -38,7 +38,7 @@ public class TheTongueEffect extends MobEffect {
         }
 
         Vec3 targetPosition = mouth.position().add(wall.getForwardVector().scale(45.0));
-        if (living.level().dimension() == OverworldUtils.underworld() && living.getY() < NETHER_GENERATION_HEIGHT && targetPosition.y >= NETHER_GENERATION_HEIGHT) {
+        if (OverworldUtils.inUnderworld(living.level().dimension(), living.getY()) && living.getY() < NETHER_GENERATION_HEIGHT && targetPosition.y >= NETHER_GENERATION_HEIGHT) {
             targetPosition = targetPosition.add(0.0, -15.0, 0.0);
         }
         if (living.position().distanceTo(mouth.position()) > EXECUTION_DISTANCE) {

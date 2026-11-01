@@ -1216,7 +1216,6 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(OpalLightIntegration.INSTANCE);
         event.registerReloadListener(BossBarStyles.INSTANCE);
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> BrainDissolveTexture.clearTextures());

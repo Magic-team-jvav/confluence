@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -10,8 +11,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,14 +27,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibEffects;
+import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.VisualNeuron;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
@@ -645,6 +655,54 @@ public class BrainOfCthulhu extends BaseBoss {
         return !isPhase2() || super.isInvulnerableTo(source);
     }
 
+    public static void applyContactDebuff(LivingEntity attacker, LivingEntity living) {
+        if (!(attacker.level() instanceof ServerLevel level) || !LibUtils.isAtLeastExpert(level))
+            return;
+        boolean master = LibUtils.isMaster(level);
+        Holder<MobEffect> debuff;
+        float min;
+        int i = attacker.getRandom().nextInt(81);
+        if (i < 11) {
+            debuff = MobEffects.POISON;
+            min = master ? 6.56F : 5.25F;
+        } else if (i < 22) {
+            debuff = MobEffects.BLINDNESS;
+            min = master ? 3.75F : 3.0F;
+        } else if (i < 24) {
+            debuff = ModEffects.CURSED;
+            min = master ? 0.94F : 0.75F;
+        } else if (i < 35) {
+            debuff = ModEffects.BLEEDING;
+            min = master ? 9.38F : 7.5F;
+        } else if (i < 37) {
+            debuff = LibEffects.CONFUSED;
+            min = master ? 1.88F : 1.5F;
+        } else if (i < 48) {
+            debuff = MobEffects.MOVEMENT_SLOWDOWN;
+            min = master ? 6.56F : 5.25F;
+        } else if (i < 59) {
+            debuff = MobEffects.WEAKNESS;
+            min = master ? 14.06F : 11.25F;
+        } else if (i < 70) {
+            debuff = ModEffects.SILENCED;
+            min = master ? 1.88F : 1.5F;
+        } else {
+            debuff = ModEffects.BROKEN_ARMOR;
+            min = master ? 12.19F : 9.75F;
+        }
+        living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
+    }
+
+
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean hit = super.doHurtTarget(target);
+        if (hit && target instanceof LivingEntity living && getRandom().nextFloat() < 0.3333F) {
+            applyContactDebuff(this, living);
+        }
+        return hit;
+    }
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean damaged = isPhase2() && super.hurt(source, amount);
@@ -853,6 +911,17 @@ public class BrainOfCthulhu extends BaseBoss {
             illusions[index] = null;
         }
         super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, serverLevel) || !MeteoriteTracker.INSTANCE.spawnAtNextNight && serverLevel.random.nextBoolean()) {
+                    MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
+                }
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                }
+            }
+        }
     }
 
     enum PhaseOneState {

@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,10 +22,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
-
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entity.PartHitTarget;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -37,9 +38,10 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.IncrementalCylinderDestruction;
 import org.jetbrains.annotations.Nullable;
-
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
@@ -759,4 +761,19 @@ public class HillOfFlesh extends BaseBoss {
     protected SoundEvent getHurtSound(DamageSource source) {
         return ModSoundEvents.WALL_OF_FLESH_HURT.get();
     }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                    AchievementUtils.awardAchievement(player, "still_hungry");
+                }
+            }
+        }
+    }
+
 }

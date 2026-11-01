@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,11 +18,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
+import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.util.AchievementUtils;
 
 /// 史莱姆王。
 ///
@@ -570,4 +575,21 @@ public class KingSlime extends BaseBoss {
             };
         }
     }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                    if (SlimeRainGameEvent.INSTANCE.started())
+                        AchievementUtils.awardAchievement(player, "sticky_situation");
+                }
+            }
+            SlimeRainGameEvent.INSTANCE.checkEnd(this);
+        }
+    }
+
 }

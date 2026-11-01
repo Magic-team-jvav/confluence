@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseMonster;
@@ -56,7 +57,7 @@ public final class DemonEyeSurroundAction extends BTNode {
     @Override
     public BTStatus execute() {
         LivingEntity target = mob.getTarget();
-        if (target == null || !target.isAlive() || !mob.level().isNight()) {
+        if (target == null || !target.isAlive() || LibDateUtils.isDay(mob.level())) {
             return BTStatus.SUCCESS;
         }
 

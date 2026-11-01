@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +38,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.client.particle.DestroyerDebrisParticle;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.WormSteering;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -50,6 +54,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -487,6 +493,19 @@ public class EaterOfWorlds extends BaseWormBoss {
             }
         }
         super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, serverLevel)
+                        || !MeteoriteTracker.INSTANCE.spawnAtNextNight && serverLevel.random.nextBoolean()) {
+                    MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
+                }
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                    AchievementUtils.awardAchievement(player, "worm_fodder");
+                }
+            }
+        }
     }
 
     private void spawnHeadDeathEater(DamageSource source) {

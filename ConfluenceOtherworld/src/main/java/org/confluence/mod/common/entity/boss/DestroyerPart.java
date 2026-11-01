@@ -202,13 +202,16 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
             boolean emitting = open && getParent().isAlive() && (getParent().getMode() == TheDestroyer.Mode.SKY || boost);
             int activeGroup = (getParent().tickCount / EXHAUST_GROUP_TICKS) % EXHAUST_GROUP_COUNT;
             boolean firing = emitting && (index / 2) % EXHAUST_GROUP_COUNT == activeGroup;
-            /// 1.5.1 不会更新 inactive 发射器的寿命表达式；在动画回调中显式开关已绑定的发射器。
             for (var ids : IPSAnimatableInstanceCache.of(cache).particlestorm$getCachedId().values()) {
+                boolean smokeEnabled = false;
                 for (int id : ids) {
                     ParticleEmitter emitter = MolangParticleEngine.INSTANCE.getEmitter(id);
                     if (emitter != null && !emitter.isRemoved()) {
-                        emitter.active = firing && !getParent().isSolid(emitter.getPosition());
-                        /// 1.5.1 的 steady 速率只在初始化时计算；重新应用现有组件以更新当前体节的喷流强度。
+                        boolean smoke = emitter.particleId.equals(Confluence.asResource("destroyer_smoke"));
+                        boolean allowed = !smoke || index % 6 == 1 && !smokeEnabled;
+                        if (smoke && allowed) smokeEnabled = true;
+                        // 烟雾持续留下轨迹；火焰等喷流仍按原分组交替。
+                        emitter.active = (smoke ? emitting : firing) && allowed && !getParent().isSolid(emitter.getPosition());
                         for (var component : emitter.getPreset().components) {
                             if (component instanceof EmitterRate.Steady rate) rate.apply(emitter);
                         }

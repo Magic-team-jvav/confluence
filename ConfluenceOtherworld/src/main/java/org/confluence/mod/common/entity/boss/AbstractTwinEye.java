@@ -18,6 +18,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.particle.TwinEyeLinkEmitter;
@@ -216,7 +217,7 @@ public abstract class AbstractTwinEye extends BaseBoss implements MoneyDropSourc
 
     @Override
     protected boolean shouldMaintainCombatTarget() {
-        return leavingTicks == 0 && !level().isDay();
+        return leavingTicks == 0 && LibDateUtils.isNight(level());
     }
 
     @Override

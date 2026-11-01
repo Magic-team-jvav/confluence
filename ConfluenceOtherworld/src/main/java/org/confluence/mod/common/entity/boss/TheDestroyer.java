@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -33,10 +34,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.DestroyerCameraShake;
 import org.confluence.mod.client.particle.DestroyerDebrisParticle;
 import org.confluence.mod.client.renderer.entity.DestroyerRenderer;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.WormSteering;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -46,6 +49,7 @@ import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultySca
 import org.confluence.mod.common.entity.projectile.DestroyerLaserProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -451,8 +455,14 @@ public class TheDestroyer extends BaseBoss {
             case SKY -> {
                 velocity = steer(velocity, target.getBoundingBox().getCenter().subtract(position()), SKY_SPEED);
                 float roll = entityData.get(ROLL);
-                entityData.set(ROLL, tickCount % SKY_ROLL_INTERVAL < SKY_ROLL_TICKS
-                        ? DestroyerBody.wrapRoll(roll + ROLL_SPEED) : DestroyerBody.followRoll(0, roll));
+                int beamTick = getBeamTick();
+                if (beamTick < 100) {
+                    entityData.set(ROLL, tickCount % SKY_ROLL_INTERVAL < SKY_ROLL_TICKS
+                            ? DestroyerBody.wrapRoll(roll + ROLL_SPEED) : DestroyerBody.followRoll(0, roll));
+                } else if (beamTick < 220) {
+                    // 蓄力时收正滚转，发射后保持姿态不再旋转。
+                    entityData.set(ROLL, DestroyerBody.followRoll(0, roll));
+                }
             }
             case GROUND -> tickGround(target, solidBefore);
         }
@@ -468,7 +478,7 @@ public class TheDestroyer extends BaseBoss {
         Vec3 previous = position();
         setPos(previous.add(velocity));
         setDeltaMovement(velocity);
-        if (getBeamTick() >= 100 && getBeamTick() < 420) {
+        if (getBeamTick() >= 100 && getBeamTick() < 220) {
             Vec3 desired = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()).normalize();
             beamAim = WormSteering.turn(getLookAngle(), desired, Math.toRadians(2));
             faceCombatDirection(beamAim, 2, 2);
@@ -652,9 +662,14 @@ public class TheDestroyer extends BaseBoss {
         return !level().getBlockState(pos).getCollisionShape(level(), pos).isEmpty();
     }
 
+    private boolean hasBeamUsesRemaining() {
+        int limit = LibUtils.switchByDifficulty(level(), 1, 2, 3, -1);
+        return limit < 0 || beamCount < limit;
+    }
+
     private boolean canStartBeam(LivingEntity target) {
         double distance = getBoundingBox().getCenter().distanceToSqr(target.getBoundingBox().getCenter());
-        return isAlive() && target.isAlive() && target.level() == level() && isMetal() && beamCount < 2
+        return isAlive() && target.isAlive() && target.level() == level() && isMetal() && hasBeamUsesRemaining()
                 && specialAttack == SpecialAttack.NONE && getMode() == Mode.SKY && isBeamAboveGround() && getBeamTick() < 0 && beamCooldown <= 0 && distance >= 12 * 12 && distance <= 20 * 20;
     }
 
@@ -667,13 +682,13 @@ public class TheDestroyer extends BaseBoss {
     private void startBeam() {
         entityData.set(BEAM_TICK, 0);
         beamAim = getLookAngle();
-        beamCount++;
+        if (beamCount < Integer.MAX_VALUE) beamCount++;
     }
 
     private void tickBeam(LivingEntity target) {
         int tick = getBeamTick();
         if (tick < 0) {
-            if (beamCount < 2 && beamCooldown > 0) beamCooldown--;
+            if (hasBeamUsesRemaining() && beamCooldown > 0) beamCooldown--;
             if (canStartBeam(target) && random.nextInt(200) == 0) startBeam();
             return;
         }
@@ -887,4 +902,18 @@ public class TheDestroyer extends BaseBoss {
         body.load(tag);
         entityData.set(BODY_POSE, body.createSnapshot());
     }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                }
+            }
+        }
+    }
+
 }

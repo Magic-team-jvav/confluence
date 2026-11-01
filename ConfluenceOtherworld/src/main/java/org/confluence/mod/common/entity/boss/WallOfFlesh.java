@@ -16,6 +16,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -36,6 +37,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.effect.harmful.HorrifiedEffect;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -47,6 +49,8 @@ import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultySca
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -192,6 +196,15 @@ public class WallOfFlesh extends BaseBoss implements IEntityWithComplexSpawn {
             prepareRewardSite(BlockPos.containing(anchor));
         }
         super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                    AchievementUtils.awardAchievement(player, "still_hungry");
+                }
+            }
+        }
     }
 
     /// 普通战利品也落到同一奖励点，不通过移动本体来重定位掉落。

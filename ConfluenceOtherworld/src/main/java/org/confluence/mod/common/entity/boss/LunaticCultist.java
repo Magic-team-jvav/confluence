@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -24,6 +26,8 @@ import org.confluence.mod.common.entity.projectile.CultistProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.util.AchievementUtils;
 
 /// 拜月教邪教徒——传送+弹幕+召唤幻影龙。
 public class LunaticCultist extends BaseBoss {
@@ -370,6 +374,20 @@ public class LunaticCultist extends BaseBoss {
     @Override
     protected SoundEvent getDeathSound() {
         return ModSoundEvents.LUNATIC_CULTIST_DEATH.get();
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                    AchievementUtils.awardAchievement(player, "obsessive_devotion");
+                }
+            }
+        }
     }
 
 }

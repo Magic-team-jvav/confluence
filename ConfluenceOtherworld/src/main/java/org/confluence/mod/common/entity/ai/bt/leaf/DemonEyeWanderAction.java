@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.ai.bt.leaf;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseMonster;
@@ -40,7 +41,7 @@ public final class DemonEyeWanderAction extends BTNode {
 
     @Override
     public BTStatus execute() {
-        if (mob.getTarget() != null || !mob.level().isNight() || targetPos == null || ticksLeft <= 0 || mob.position().distanceToSqr(targetPos) <= 2.25) {
+        if (mob.getTarget() != null || LibDateUtils.isDay(mob.level()) || targetPos == null || ticksLeft <= 0 || mob.position().distanceToSqr(targetPos) <= 2.25) {
             return BTStatus.SUCCESS;
         }
 

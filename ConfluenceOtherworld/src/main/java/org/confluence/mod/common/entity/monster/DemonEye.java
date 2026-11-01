@@ -15,6 +15,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -96,12 +97,12 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     // 白天离场时不能被共用索敌重新选回玩家或反击目标。
     @Override
     protected boolean usesSharedTargeting() {
-        return !level().isDay();
+        return LibDateUtils.isNight(level());
     }
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return !level().isDay() && super.canAttack(target);
+        return LibDateUtils.isNight(level()) && super.canAttack(target);
     }
 
     @Override

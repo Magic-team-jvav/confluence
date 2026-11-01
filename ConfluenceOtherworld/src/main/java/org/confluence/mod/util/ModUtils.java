@@ -8,7 +8,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -17,13 +16,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,8 +48,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.common.LibEffects;
-import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
@@ -64,22 +58,16 @@ import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.MoneyDropSource;
-import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
-import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.entity.BossEntities;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
@@ -163,39 +151,6 @@ public final class ModUtils {
         return state;
     }
 
-    public static void bossDeath(ServerLevel level, LivingEntity living) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return;
-
-        EntityType<?> type = living.getType();
-        if (living instanceof AbstractTwinEye eye) {
-            if (!eye.tryBeginDeathRewardSettlement()) return;
-            KillBoard.INSTANCE.defeat(BossEntities.RETINAZER.get());
-            KillBoard.INSTANCE.defeat(BossEntities.SPAZMATISM.get());
-        } else KillBoard.INSTANCE.defeat(type);
-        boolean isEaterOfWorlds = type == BossEntities.EATER_OF_WORLDS.get();
-        if (isEaterOfWorlds || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
-            if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
-                MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
-            } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
-                MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
-            }
-        }
-        boolean stickySituation = type == BossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
-        boolean is$WallOrHill$OfFlesh = type == BossEntities.WALL_OF_FLESH.get() || type == BossEntities.HILL_OF_FLESH.get();
-        ResourceKey<Level> dimension = living.level().dimension();
-        var participants = living instanceof AbstractTwinEye eye ? eye.getOnlineCombatParticipants() : level.players();
-        participants.stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
-            TreasureBagItem.createItemEntity(living, player);
-            if (isEaterOfWorlds) {
-                AchievementUtils.awardAchievement(player, "worm_fodder");
-            } else if (stickySituation) {
-                AchievementUtils.awardAchievement(player, "sticky_situation");
-            } else if (is$WallOrHill$OfFlesh) {
-                AchievementUtils.awardAchievement(player, "still_hungry");
-            }
-        });
-    }
-
     public static void enemyDropMoney(LivingEntity living, ServerLevel level, DamageSource damageSource) {
         double amount = getLivingBaseMoneyDrops(living, level);
 
@@ -238,47 +193,6 @@ public final class ModUtils {
                 ? LibUtils.getDifficultyId(level) * 0.375
                 : level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
         return Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
-    }
-
-    public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
-        if (attacker != null && LibUtils.isAtLeastExpert(level)) {
-            EntityType<?> type = attacker.getType();
-            if (type == MonsterEntities.VISUAL_NEURON.get() || (type == BossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
-                boolean master = LibUtils.isMaster(level);
-                Holder<MobEffect> debuff;
-                float min;
-                int i = attacker.getRandom().nextInt(81);
-                if (i < 11) {
-                    debuff = MobEffects.POISON;
-                    min = master ? 6.56F : 5.25F;
-                } else if (i < 22) {
-                    debuff = MobEffects.BLINDNESS;
-                    min = master ? 3.75F : 3.0F;
-                } else if (i < 24) {
-                    debuff = ModEffects.CURSED;
-                    min = master ? 0.94F : 0.75F;
-                } else if (i < 35) {
-                    debuff = ModEffects.BLEEDING;
-                    min = master ? 9.38F : 7.5F;
-                } else if (i < 37) {
-                    debuff = LibEffects.CONFUSED;
-                    min = master ? 1.88F : 1.5F;
-                } else if (i < 48) {
-                    debuff = MobEffects.MOVEMENT_SLOWDOWN;
-                    min = master ? 6.56F : 5.25F;
-                } else if (i < 59) {
-                    debuff = MobEffects.WEAKNESS;
-                    min = master ? 14.06F : 11.25F;
-                } else if (i < 70) {
-                    debuff = ModEffects.SILENCED;
-                    min = master ? 1.88F : 1.5F;
-                } else {
-                    debuff = ModEffects.BROKEN_ARMOR;
-                    min = master ? 12.19F : 9.75F;
-                }
-                living.addEffect(new MobEffectInstance(debuff, (int) ((attacker.getRandom().nextFloat() * min + min) * 20)));
-            }
-        }
     }
 
     /// 不可破坏物品无法附魔耐久与经验修补

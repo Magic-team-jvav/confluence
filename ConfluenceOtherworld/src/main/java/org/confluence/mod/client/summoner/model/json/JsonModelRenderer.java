@@ -18,17 +18,8 @@ import org.jetbrains.annotations.Nullable;
 /// 使用原生独立模型登记与方块图集提交天顶剑组件。
 public final class JsonModelRenderer {
 
-    public static ResourceLocation resourcePath(ResourceLocation modelId) {
-        return ResourceLocation.fromNamespaceAndPath(modelId.getNamespace(), "lyra_model/json/" + modelId.getPath() + "/" + fileName(modelId.getPath()));
-    }
-
     public static ModelResourceLocation standaloneLocation(ResourceLocation modelId) {
-        return ModelResourceLocation.standalone(resourcePath(modelId));
-    }
-
-    private static String fileName(String path) {
-        int slash = path.lastIndexOf('/');
-        return slash >= 0 ? path.substring(slash + 1) : path;
+        return ModelResourceLocation.standalone(modelId);
     }
 
     static boolean render(ModelResourceLocation modelLocation, PoseStack poseStack, MultiBufferSource bufferSource, int color, int packedLight) {

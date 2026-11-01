@@ -58,7 +58,7 @@ public class LifeFruitBlock extends Block {
     public static boolean canGrow(ServerLevel level, BlockState state, BlockPos pos, RandomSource random) {
         boolean isExpert = LibUtils.isAtLeastExpert(level);
         if (state.canBeReplaced() &&
-                pos.getY() < OverworldUtils.getSurfaceY() &&
+                OverworldUtils.belowSurface(pos.getY()) &&
                 random.nextInt(isExpert ? CLASSIC_CHANCE : CLASSIC_CHANCE * 5 / 4) == 0 &&
                 KillBoard.INSTANCE.isAnyMechBossDefeated()
         ) {

@@ -108,7 +108,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         surroundAction = new DemonEyeSurroundAction(this);
         BTNode night = new ConditionalSwitchNode(() -> getTarget() != null && getTarget().isAlive(), surroundAction, new DemonEyeWanderAction(this));
 
-        BTNode root = new ConditionalSwitchNode(() -> level().isDay(), new DemonEyeLeaveAction(this), night);
+        BTNode root = new ConditionalSwitchNode(() -> LibDateUtils.isDay(level()), new DemonEyeLeaveAction(this), night);
 
         return new BTRoot() {
             @Override
@@ -168,13 +168,13 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     @Override
     public void tick() {
         rebounded = false;
-        if (!level().isClientSide && level().isDay()) setTarget(null);
+        if (!level().isClientSide && LibDateUtils.isDay(level())) setTarget(null);
         super.tick();
         if (!level().isClientSide && tickCount % 20 == 0) applyVariantStats(getVariant());
         if (level().isClientSide) return;
-        if (level().isDay()) setTarget(null);
+        if (LibDateUtils.isDay(level())) setTarget(null);
         // 蓄势面向目标；实际移动和反弹完成后，飞行朝向只在这里更新。
-        if (isAlive() && (rebounded || level().isDay() || surroundAction == null || !surroundAction.isHovering())) {
+        if (isAlive() && (rebounded || LibDateUtils.isDay(level()) || surroundAction == null || !surroundAction.isHovering())) {
             faceCombatMovement(360.0F, 180.0F);
         }
     }

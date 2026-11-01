@@ -16,6 +16,7 @@ import org.confluence.mod.common.entity.npc.ai.NPCCombatActions;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.entity.projectile.NPCProjectileEffects;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.util.ModUtils;
 
 import java.util.Map;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class NpcEntities {
     public static final RegistryObject<EntityType<SimpleNPC>> DEMOLITIONIST = withAttributes(register("demolitionist", "爆破专家", ConsumableItems.GRENADE, NPCCombatActions.thrown(ConsumableItems.GRENADE::toStack, NPCProjectileEffects.EXPLOSIVE), builder -> builder.maxHealth(65).damage(6).attackRange(8).retreatRange(5).attackInterval(45)
                     .projectileSpeed(0.8)),
             () -> CreatureAttributeBuilder.npc().build());
-    public static final RegistryObject<EntityType<SimpleNPC>> ARMS_DEALER = withAttributes(register("arms_dealer", "军火商", npc -> NPCCombatActions.isHardmode() ? GunItems.MINISHARK.get() : GunItems.FLINTLOCK_PISTOL.get(), NPCCombatActions.ARMS_DEALER, builder -> builder.maxHealth(65).damage(7).attackRange(13).attackInterval(30).projectileSpeed(2)),
+    public static final RegistryObject<EntityType<SimpleNPC>> ARMS_DEALER = withAttributes(register("arms_dealer", "军火商", npc -> ModUtils.isHardmode() ? GunItems.MINISHARK.get() : GunItems.FLINTLOCK_PISTOL.get(), NPCCombatActions.ARMS_DEALER, builder -> builder.maxHealth(65).damage(7).attackRange(13).attackInterval(30).projectileSpeed(2)),
             () -> CreatureAttributeBuilder.npc().build());
 
     // 常驻城镇：染料商与油漆工
@@ -111,7 +112,7 @@ public class NpcEntities {
             () -> CreatureAttributeBuilder.npc().build());
 
     // 临时访客：旅商
-    public static final RegistryObject<EntityType<TravelingMerchantNPC>> TRAVELING_MERCHANT = withAttributes(register("traveling_merchant", "旅商", TravelingMerchantNPC::new, npc -> NPCCombatActions.isHardmode() ? Items.BOW : GunItems.FLINTLOCK_PISTOL.get(), NPCCombatActions.TRAVELING_MERCHANT, builder -> builder.maxHealth(65).damage(4).attackRange(12).attackInterval(25).projectileSpeed(2), 0.6F, 1.85F),
+    public static final RegistryObject<EntityType<TravelingMerchantNPC>> TRAVELING_MERCHANT = withAttributes(register("traveling_merchant", "旅商", TravelingMerchantNPC::new, npc -> ModUtils.isHardmode() ? Items.BOW : GunItems.FLINTLOCK_PISTOL.get(), NPCCombatActions.TRAVELING_MERCHANT, builder -> builder.maxHealth(65).damage(4).attackRange(12).attackInterval(25).projectileSpeed(2), 0.6F, 1.85F),
             () -> CreatureAttributeBuilder.npc().build());
 
     // 地下游商：骷髅商人

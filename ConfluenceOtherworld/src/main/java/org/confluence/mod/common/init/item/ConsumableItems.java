@@ -1,8 +1,6 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
@@ -17,17 +15,20 @@ import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModFluids;
+import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
 import org.confluence.mod.common.item.mana.RecallManaCrystalItem;
+import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
-import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.function.Supplier;
 
@@ -54,15 +55,15 @@ public class ConsumableItems {
     public static final PortDeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = registerItem("advanced_combat_techniques", "先进战斗技术", AdvancedCombatTechniquesItem::new);
     public static final PortDeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = registerItemWithEnglishName("advanced_combat_techniques_volume_two", "先进战斗技术：卷二", "Advanced Combat Techniques: Volume Two", AdvancedCombatTechniquesVolumeTwoItem::new);
     public static final PortDeferredItem<PeddlersSatchelItem> PEDDLERS_SATCHEL = registerItemWithEnglishName("peddlers_satchel", "商贩背包", "Peddler's Satchel", PeddlersSatchelItem::new);
-//    public static final PortDeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new EverBeneficialItem(ModRarity.BLUE, EverBeneficialItem.FALLEN_SOUL_CORE, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("fallen_soul_core", 1, ChatFormatting.GREEN)));
+    //    public static final PortDeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new EverBeneficialItem(ModRarity.BLUE, EverBeneficialItem.FALLEN_SOUL_CORE, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("fallen_soul_core", 1, ChatFormatting.GREEN)));
 
     public static final PortDeferredItem<ThrowableItem<BaseBombEntity>> BOMB = registerItem("bomb", "炸弹", () -> new ThrowableItem<>(0.8F, BaseBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = registerItem("bouncy_bomb", "弹力炸弹", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<StickyBombEntity>> STICKY_BOMB = registerItem("sticky_bomb", "粘性炸弹", () -> new ThrowableItem<>(0.8F, StickyBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<SmokeBombEntity>> SMOKE_BOMB = registerItem("smoke_bomb", "烟雾弹", () -> new ThrowableItem<>(0.8F, SmokeBombEntity::new));
-    public static final PortDeferredItem<ThrowableItem<SparkleSlimeBalloonProjectile>> SPARKLE_SLIME_BALLOON = registerItem("sparkle_slime_balloon", "闪耀史莱姆气球", () -> new ThrowableItem<>(0.8F, SparkleSlimeBalloonProjectile::new));
     public static final PortDeferredItem<ThrowableItem<BombFishEntity>> BOMB_FISH = registerItem("bomb_fish", "炸弹鱼", () -> new ThrowableItem<>(0.8F, BombFishEntity::new));
     public static final PortDeferredItem<ThrowableItem<ScarabBombEntity>> SCARAB_BOMB = registerItem("scarab_bomb", "甲虫炸弹", () -> new ThrowableItem<>(0.8F, ScarabBombEntity::new));
+    public static final PortDeferredItem<ThrowableItem<SparkleSlimeBalloonProjectile>> SPARKLE_SLIME_BALLOON = registerItem("sparkle_slime_balloon", "闪耀史莱姆气球", () -> new ThrowableItem<>(0.8F, SparkleSlimeBalloonProjectile::new));
     public static final PortDeferredItem<ThrowableItem<BaseDynamiteEntity>> DYNAMITE = registerItem("dynamite", "雷管", () -> new ThrowableItem<>(0.75F, BaseDynamiteEntity::new));
     public static final PortDeferredItem<ThrowableItem<BouncyDynamiteEntity>> BOUNCY_DYNAMITE = registerItem("bouncy_dynamite", "弹力雷管", () -> new ThrowableItem<>(0.75F, BouncyDynamiteEntity::new));
     public static final PortDeferredItem<ThrowableItem<StickyDynamiteEntity>> STICKY_DYNAMITE = registerItem("sticky_dynamite", "粘性雷管", () -> new ThrowableItem<>(0.75F, StickyDynamiteEntity::new));
@@ -106,19 +107,13 @@ public class ConsumableItems {
 
     public static final PortDeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = registerItem("suspicious_looking_eye", "可疑眼球", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), level -> new EyeOfCthulhu(BossEntities.EYE_OF_CTHULHU.get(), level)));
     public static final PortDeferredItem<BossSummoningItem> SLIME_CROWN = registerItem("slime_crown", "史莱姆王冠", () -> new BossSummoningItem(player -> true, level -> new KingSlime(BossEntities.KING_SLIME.get(), level)));
-    public static final PortDeferredItem<BossSummoningItem> WORM_FOOD = registerItem("worm_food", "蠕虫诱饵", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level)));
-    public static final PortDeferredItem<BossSummoningItem> BLOODY_SPINE = registerItem("bloody_spine", "血腥脊椎", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level)));
-    public static final PortDeferredItem<BossSummoningItem> ABEEMINATION = registerItem("abeemination", "憎恶之蜂", () -> new BossSummoningItem(player -> {
-        Holder<Biome> biome = player.level().getBiome(player.blockPosition());
-        return biome.is(PortTags.Biomes.IS_JUNGLE) || biome.is(PortTags.Biomes.IS_LUSH);
-    }, level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level)));
-    public static final PortDeferredItem<BossSummoningItem> DEER_THING = registerItem("deer_thing", "鹿华", () -> new BossSummoningItem(player -> {
-        Holder<Biome> biome = player.level().getBiome(player.blockPosition());
-        return biome.is(PortTags.Biomes.IS_SNOWY) || biome.is(PortTags.Biomes.IS_ICY);
-    }, level -> new DeerClops(BossEntities.DEERCLOPS.get(), level)));
+    public static final PortDeferredItem<BossSummoningItem> WORM_FOOD = registerItem("worm_food", "蠕虫诱饵", () -> new BossSummoningItem(player -> OverworldUtils.isCorruption(player.level().getBiome(player.blockPosition())), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level)));
+    public static final PortDeferredItem<BossSummoningItem> BLOODY_SPINE = registerItem("bloody_spine", "血腥脊椎", () -> new BossSummoningItem(player -> OverworldUtils.isCrimson(player.level().getBiome(player.blockPosition())), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level)));
+    public static final PortDeferredItem<BossSummoningItem> ABEEMINATION = registerItem("abeemination", "憎恶之蜂", () -> new BossSummoningItem(player -> OverworldUtils.isJungle(player.level().getBiome(player.blockPosition())), level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level)));
+    public static final PortDeferredItem<BossSummoningItem> DEER_THING = registerItem("deer_thing", "鹿华", () -> new BossSummoningItem(player -> OverworldUtils.isSnowy(player.level().getBiome(player.blockPosition())), level -> new DeerClops(BossEntities.DEERCLOPS.get(), level)));
 
-    public static final PortDeferredItem<CustomRarityItem> GOLDEN_LOCK_BOX = registerItem("golden_lock_box", "金锁盒", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN));
-    public static final PortDeferredItem<CustomRarityItem> OBSIDIAN_LOCK_BOX = registerItem("obsidian_lock_box", "黑曜石锁盒", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN));
+    public static final PortDeferredItem<CustomRarityItem> GOLDEN_LOCK_BOX = registerItem("golden_lock_box", "金锁盒", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN));
+    public static final PortDeferredItem<CustomRarityItem> OBSIDIAN_LOCK_BOX = registerItem("obsidian_lock_box", "黑曜石锁盒", () -> new CustomRarityItem(new Item.Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN));
 
     public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = registerItem("blood_tear", "血泪", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, BloodMoonGameEvent.KEY));
     public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = registerItem("goblin_battle_standard", "哥布林战旗", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, GoblinArmyGameEvent.KEY));

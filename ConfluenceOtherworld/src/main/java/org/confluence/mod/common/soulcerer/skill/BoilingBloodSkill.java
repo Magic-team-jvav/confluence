@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -23,7 +23,7 @@ public class BoilingBloodSkill extends SoulSkill {
 
     @Override
     public boolean canUse(ServerPlayer player, SoulSkillStack skillStack) {
-        return player.isCreative() || PlayerUtils.getSoul(player) >= 1.0F;
+        return player.isCreative() || SoulcererUtils.getSoul(player) >= 1.0F;
     }
 
     @Override
@@ -31,8 +31,8 @@ public class BoilingBloodSkill extends SoulSkill {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        float cost = Math.max(1.0F, PlayerUtils.getSoul(serverPlayer) * SoulSkillParameters.BOILING_BLOOD_SOUL_RATIO);
-        if (!PlayerUtils.consumeSoul(serverPlayer, cost)) {
+        float cost = Math.max(1.0F, SoulcererUtils.getSoul(serverPlayer) * SoulSkillParameters.BOILING_BLOOD_SOUL_RATIO);
+        if (!SoulcererUtils.consumeSoul(serverPlayer, cost)) {
             return;
         }
         serverPlayer.addEffect(new MobEffectInstance(effect.get(), SoulSkillParameters.BOILING_BLOOD_DURATION_TICKS, 0, false, true, true));

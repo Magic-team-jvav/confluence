@@ -9,9 +9,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.wind.WindMath;
 import org.confluence.mod.common.wind.WindState;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 
 /// 沙尘暴。
@@ -61,7 +61,7 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
     @Override
     public boolean canStart() {
         if (level == null) return false;
-        return requested || (strongWind() && level.random.nextInt(KillBoard.INSTANCE.getGamePhase().isHardmode() ? 14400 : 21600) == 0);
+        return requested || (strongWind() && level.random.nextInt(ModUtils.isHardmode() ? 14400 : 21600) == 0);
     }
 
     @Override
@@ -141,7 +141,7 @@ public enum SandstormGameEvent implements GameEvent, WindPushedEvent {
     @Override
     public boolean inWindZone(Level level, BlockPos pos) {
         return OverworldUtils.isDesert(level.getBiome(pos))
-                && pos.getY() >= OverworldUtils.getSurfaceY()
+                && OverworldUtils.aboveSurface(pos.getY())
                 && level.canSeeSky(pos);
     }
 

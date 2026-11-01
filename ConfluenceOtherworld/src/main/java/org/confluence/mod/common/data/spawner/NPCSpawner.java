@@ -58,18 +58,17 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.gameevent.PartyGameEvent;
 import org.confluence.mod.common.gameevent.SolarEclipseGameEvent;
+import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
-import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IStructureStart;
-import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.*;
@@ -458,7 +457,7 @@ public enum NPCSpawner implements IGlobalData {
         if (serverLevel.dimension() == OverworldUtils.dimension()) {
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
-            if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
+            if (ModSecretSeeds.DRUNK_WORLD.match(player.server)) {
                 if (!hasNPCAlive(region, NpcEntities.PARTY_GIRL.get())) {
                     spawnAtPos(serverLevel, pos, NpcEntities.PARTY_GIRL.get());
                 }
@@ -578,7 +577,7 @@ public enum NPCSpawner implements IGlobalData {
         ServerLevel level = player.serverLevel();
         if (level.canSeeSky(player.blockPosition()) || player.getY() >= level.getSeaLevel() - 8)
             return false;
-        boolean golfer = !isNPCUnlocked(NpcEntities.GOLFER.get()) && level.getBiome(player.blockPosition()).is(PortTags.Biomes.IS_DESERT);
+        boolean golfer = !isNPCUnlocked(NpcEntities.GOLFER.get()) && OverworldUtils.isDesert(level.getBiome(player.blockPosition()));
         EntityType<? extends BaseNPC> type = golfer ? NpcEntities.GOLFER.get() : NpcEntities.SKELETON_MERCHANT.get();
         Region region = new Region(player.blockPosition());
         if (isNpcAlreadyPresent(level, player.blockPosition(), type) || player.getRandom().nextInt(8) != 0)
@@ -590,7 +589,7 @@ public enum NPCSpawner implements IGlobalData {
             if (!level.isLoaded(candidate) || candidate.distSqr(player.blockPosition()) < 64 || level.canSeeSky(candidate)
                     || !level.getFluidState(candidate).isEmpty()
                     || !level.getBlockState(candidate.below()).isFaceSturdy(level, candidate.below(), Direction.UP)
-                    || golfer && !level.getBiome(candidate).is(PortTags.Biomes.IS_DESERT)) continue;
+                    || golfer && !OverworldUtils.isDesert(level.getBiome(candidate))) continue;
             npc.setPos(candidate.getBottomCenter());
             if (!level.noCollision(npc)) continue;
             npc.setShouldInteract(golfer);
@@ -604,7 +603,7 @@ public enum NPCSpawner implements IGlobalData {
 
     private boolean trySpawnTruffle(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.TRUFFLE.get())) {
-            if (IMinecraftServer.isHardmode(player.server)) {
+            if (ModUtils.isHardmode()) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.TRUFFLE.get());
             }
         }
@@ -613,7 +612,7 @@ public enum NPCSpawner implements IGlobalData {
 
     private boolean trySpawnWizard(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.WIZARD.get())) {
-            if (IMinecraftServer.isHardmode(player.server)) {
+            if (ModUtils.isHardmode()) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.WIZARD.get());
             }
         }
@@ -631,7 +630,7 @@ public enum NPCSpawner implements IGlobalData {
 
     /// 醉酒世界则会生成向导
     private boolean trySpawnPartyGirl(ServerPlayer player, BlockPos pos, Region region) {
-        if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
+        if (ModSecretSeeds.DRUNK_WORLD.match(player.server)) {
             if (!hasNPCAlive(region, NpcEntities.GUIDE.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.GUIDE.get());
             }
@@ -704,7 +703,7 @@ public enum NPCSpawner implements IGlobalData {
         Region playerRegion = new Region(playerPos);
         if (!isNpcAlreadyPresent(player.serverLevel(), playerPos, NpcEntities.ANGLER.get())) {
             Level level = player.serverLevel();
-            Pair<BlockPos, Holder<Biome>> closestBiome3d = player.serverLevel().findClosestBiome3d(biome -> biome.is(PortTags.Biomes.IS_OCEAN), playerPos, 64, 8, 64);
+            Pair<BlockPos, Holder<Biome>> closestBiome3d = player.serverLevel().findClosestBiome3d(OverworldUtils::isOcean, playerPos, 64, 8, 64);
             if (closestBiome3d != null) {
                 BaseNPC npc = NpcEntities.ANGLER.get().create(level);
                 if (npc != null) {
@@ -735,7 +734,7 @@ public enum NPCSpawner implements IGlobalData {
             long dx = candidate.getX() - playerPos.getX();
             long dz = candidate.getZ() - playerPos.getZ();
             if (dx * dx + dz * dz < 8 * 8
-                    || !level.getBiome(candidate).is(PortTags.Biomes.IS_OCEAN)
+                    || !OverworldUtils.isOcean(level.getBiome(candidate))
                     || !level.getFluidState(candidate.below()).is(FluidTags.WATER)
                     || !level.noCollision(npc, bounds.move(candidate.getBottomCenter()))) {
                 continue;

@@ -102,7 +102,7 @@ public enum HardmodeConvertor implements IGlobalData {
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
         CompletableFuture.supplyAsync(() -> {
             ServerLevel overworld = OverworldUtils.getLevel(server);
-            BlockPos startPos = server.overworld().getSharedSpawnPos().atY(overworld.getMinBuildHeight());
+            BlockPos startPos = overworld.getSharedSpawnPos().atY(overworld.getMinBuildHeight());
             int height = overworld.getMaxBuildHeight() - overworld.getMinBuildHeight(), startRadius = 32, thickness = 64;
             return generateConicalCylinder(startPos, height, startRadius, startRadius + height, thickness);
         }, Util.backgroundExecutor()).thenAccept(list -> {

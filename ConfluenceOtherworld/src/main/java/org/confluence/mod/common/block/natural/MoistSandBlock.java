@@ -138,7 +138,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
 
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (level.dimension() == OverworldUtils.underworld()) {
+        if (OverworldUtils.inUnderworld(level.dimension(), pos.getY())) {
             if (state.is(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get())) {
                 level.setBlock(pos, Blocks.RED_SAND.defaultBlockState(), 3);
             } else if (state.is(NatureBlocks.MOISTENED_SAND_BLOCK.get())) {

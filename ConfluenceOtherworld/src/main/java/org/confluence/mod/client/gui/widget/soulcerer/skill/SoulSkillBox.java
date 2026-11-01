@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,7 +157,7 @@ public class SoulSkillBox extends AbstractWidget {
             return;
         }
         guiGraphics.blitSprite(skillStack.getSoulSkill().getIcon(), x, y, SKILL_SIZE, SKILL_SIZE);
-        if (!PlayerUtils.isSoulSkillAvailable(Minecraft.getInstance().player, skillStack.getSoulSkill().getId())) {
+        if (!SoulcererUtils.isSoulSkillAvailable(Minecraft.getInstance().player, skillStack.getSoulSkill().getId())) {
             guiGraphics.fill(RenderType.guiOverlay(), x, y, x + SKILL_SIZE, y + SKILL_SIZE, UNAVAILABLE_OVERLAY_COLOR);
         }
         renderSkillCooldown(guiGraphics, skillStack.getCd(), skillStack.getMaxCd(), x, y);
@@ -180,11 +180,11 @@ public class SoulSkillBox extends AbstractWidget {
     /// 分别提供学习、当前可用与已装备状态的提示。
     public static List<Component> getSkillStateComponents(SoulSkillStack skillStack) {
         ResourceLocation id = skillStack.getSoulSkill().getId();
-        boolean learned = PlayerUtils.isSoulSkillLearned(Minecraft.getInstance().player, id);
-        boolean available = PlayerUtils.isSoulSkillAvailable(Minecraft.getInstance().player, id);
+        boolean learned = SoulcererUtils.isSoulSkillLearned(Minecraft.getInstance().player, id);
+        boolean available = SoulcererUtils.isSoulSkillAvailable(Minecraft.getInstance().player, id);
         List<Component> lines = new ArrayList<>();
         lines.add(Component.translatable(learned ? STATE_LEARNED : available ? STATE_TEMPORARY : STATE_LOCKED));
-        if (PlayerUtils.isSoulSkillEquipped(Minecraft.getInstance().player, id)) {
+        if (SoulcererUtils.isSoulSkillEquipped(Minecraft.getInstance().player, id)) {
             lines.add(Component.translatable(STATE_EQUIPPED));
             if (!available) {
                 lines.add(Component.translatable(STATE_UNAVAILABLE));

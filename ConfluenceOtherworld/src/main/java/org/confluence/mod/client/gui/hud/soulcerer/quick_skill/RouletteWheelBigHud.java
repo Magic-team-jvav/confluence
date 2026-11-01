@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import org.mesdag.portlib.client.PortDeltaTicker;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,9 +17,10 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     /// 按玩家槽位数量调整技能框并刷新技能内容。
     @Override
     public void update() {
-        int skillTotalNumber = PlayerUtils.getEquippedSoulSkillMaxNumber(player);
+        int skillTotalNumber = SoulcererUtils.getEquippedSoulSkillMaxNumber(player);
 
         if (skillTotalNumber <= 0) {
             boxList.clear();
@@ -124,7 +124,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
         }
 
         for (int i = 0; i < skillTotalNumber; i++) {
-            boxList.get(i).setSkill(PlayerUtils.getSkillStack(player, i));
+            boxList.get(i).setSkill(SoulcererUtils.getSkillStack(player, i));
         }
     }
 
@@ -159,7 +159,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
     private void draw(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
         Font font = getFont();
         Vec2 screenCenter = getScreenCenter();
-        int skillTotalNumber = PlayerUtils.getEquippedSoulSkillMaxNumber(player);
+        int skillTotalNumber = SoulcererUtils.getEquippedSoulSkillMaxNumber(player);
 
         if (skillTotalNumber <= 0) {
             return;
@@ -375,7 +375,7 @@ public class RouletteWheelBigHud extends BasicSoulQuickSkillHud {
      */
     private void renderCurrentSelectedSkillBox(GuiGraphics guiGraphics, PoseStack poseStack) {
         poseStack.pushPose();
-        int currentIndex = PlayerUtils.getCurrentSoulSkillIndex(player);
+        int currentIndex = SoulcererUtils.getCurrentSoulSkillIndex(player);
         if (boxList.size() > currentIndex) {
             SoulSkillBox soulSkillBox = boxList.get(currentIndex);
             if (soulSkillBox != null) {

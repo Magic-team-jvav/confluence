@@ -14,7 +14,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.vex_totem.VexTotemAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.vex_totem.VexTotemIdleGoal;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -82,7 +82,7 @@ public class VexTotemMinion extends MomentumMinion implements IEntityCollision<V
 
     @Override
     public boolean isAlive() {
-        return PlayerUtils.isSoulMode(owner);
+        return SoulcererUtils.isSoulMode(owner);
     }
 
     @Override

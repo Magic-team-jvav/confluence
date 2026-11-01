@@ -64,7 +64,7 @@ public final class TownPopulation {
         BlockPos pos = player.blockPosition();
         int residents = Math.min(count(level, pos), 3);
         if (residents == 0) return false;
-        double chance = enemySpawnChance(residents, level.dimension() == OverworldUtils.underworld(),
+        double chance = enemySpawnChance(residents, OverworldUtils.inUnderworld(level.dimension(), player.getY()),
                 ModBlockCounters.isGraveyard(level, pos), LibUtils.isAtLeastExpert(level));
         return level.random.nextDouble() >= chance;
     }
@@ -75,7 +75,7 @@ public final class TownPopulation {
                 || player.getMainHandItem().is(FunctionalBlocks.SHADOW_CANDLE.asItem())
                 || player.getOffhandItem().is(FunctionalBlocks.SHADOW_CANDLE.asItem())
                 || GameEventSystem.anyInvasionStarted()) return true;
-        return player.getY() >= OverworldUtils.getSurfaceY() && (BloodMoonGameEvent.INSTANCE.started()
+        return OverworldUtils.inSurface(player.getY()) && (BloodMoonGameEvent.INSTANCE.started()
                 || SolarEclipseGameEvent.INSTANCE.started() || SlimeRainGameEvent.INSTANCE.started());
     }
 
@@ -84,7 +84,7 @@ public final class TownPopulation {
         ServerLevel level = player.serverLevel();
         int residents = count(level, player.blockPosition());
         if (residents == 0) return 0;
-        return critterChance(residents, level.dimension() == OverworldUtils.underworld(),
+        return critterChance(residents, OverworldUtils.inUnderworld(level.dimension(), player.getY()),
                 ModBlockCounters.isGraveyard(level, player.blockPosition()), LibUtils.isAtLeastExpert(level));
     }
 

@@ -12,6 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.particle.CrossDustParticleOptions;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.init.item.FoodItems;
+import org.confluence.mod.util.OverworldUtils;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -26,8 +27,8 @@ public class Fireblossom extends BaseHerbBlock {
     }
 
     @Override
-    public boolean canBloom(ServerLevel level, BlockState state) {
-        if (level.dimensionType().natural()) {
+    public boolean canBloom(ServerLevel level, BlockState state, BlockPos pos) {
+        if (OverworldUtils.inUnderworld(level.dimension(), pos.getY())) {
             return LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(15, 45), LibDateUtils._19$30, level) && !level.isRaining();
         }
         return true;

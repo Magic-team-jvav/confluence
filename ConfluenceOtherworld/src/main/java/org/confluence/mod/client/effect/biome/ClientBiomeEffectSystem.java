@@ -36,7 +36,7 @@ public final class ClientBiomeEffectSystem {
 
     public static void registerEffects() {
         EFFECTS.put(ModBiomes.THE_HALLOW.location(), new BiomeSkyEffect(
-                holder -> holder.is(ModTags.Biomes.THE_HALLOW),
+                OverworldUtils::isHallow,
                 null,
                 TheHallowSkyRender::render
         ));

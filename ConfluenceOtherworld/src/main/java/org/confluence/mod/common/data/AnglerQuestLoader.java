@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluid;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.SecretFlagMatcher;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -112,9 +113,9 @@ public final class AnglerQuestLoader extends SimpleJsonResourceReloadListener {
             if (!anyDefeatedBosses.isEmpty() && anyDefeatedBosses.stream().noneMatch(board::isDefeated))
                 return false;
             long flags = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
-            if (worldEvil == WorldEvil.ANY || IMinecraftServer.equalsSecretFlag(flags, IWorldOptions.DOUBLE_EVIL))
+            if (worldEvil == WorldEvil.ANY || SecretFlagMatcher.equalsSecretFlag(flags, IWorldOptions.DOUBLE_EVIL))
                 return true;
-            return IMinecraftServer.matchesSecretFlag(flags, worldEvil == WorldEvil.CORRUPTION
+            return SecretFlagMatcher.matchesSecretFlag(flags, worldEvil == WorldEvil.CORRUPTION
                     ? IWorldOptions.THE_CORRUPTION : IWorldOptions.THE_CRIMSON);
         }
     }

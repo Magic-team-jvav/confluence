@@ -18,6 +18,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 
 import java.util.HashSet;
@@ -97,7 +98,7 @@ public enum PirateInvasionGameEvent implements GameEvent {
     public boolean canStart() {
         if (requested) return true;
         return level != null && LibDateUtils.getDayTime(level) == LibDateUtils._04$30
-                && KillBoard.INSTANCE.getGamePhase().isHardmode() && ConfluenceData.get(level).getRevealStep() >= 0
+                && ModUtils.isHardmode() && ConfluenceData.get(level).getRevealStep() >= 0
                 && !GameEventSystem.anyInvasionStarted() && level.players().stream().anyMatch(player -> player.getMaxHealth() >= 40)
                 && level.random.nextInt(KillBoard.INSTANCE.isDefeated(KEY) ? 50 : 30) == 0;
     }

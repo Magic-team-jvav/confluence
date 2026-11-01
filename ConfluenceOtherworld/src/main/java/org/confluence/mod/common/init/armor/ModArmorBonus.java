@@ -92,6 +92,11 @@ public final class ModArmorBonus {
     // endregion
 
     // region key
+    public static ArmorSetBonusKey WHITE_PUMPKIN_SET;
+    public static ArmorSetBonusKey SEEKER_SET;
+    public static ArmorSetBonusKey SOULDANCER_ROBE_SET;
+    public static ArmorSetBonusKey PHANTOM_SET;
+    public static ArmorSetBonusKey BLUE_HERMIT_SET;
     public static ArmorSetBonusKey NINJA_SET;
     public static ArmorSetBonusKey COLD_CRYSTAL_SET;
     public static ArmorSetBonusKey HEIM_SET;
@@ -133,23 +138,23 @@ public final class ModArmorBonus {
                     .build());
         });
         // 白南瓜套装：近战暴击回魂由 LivingEntityEvents.processCriticalDamage 结算，这里只保留套装识别与说明行
-        register("white_pumpkin_set", 1, WHITE_PUMPKIN_HELMET, WHITE_PUMPKIN_CHESTPLATE, WHITE_PUMPKIN_LEGGINGS, WHITE_PUMPKIN_BOOTS, key -> {
+        WHITE_PUMPKIN_SET = register("white_pumpkin_set", 1, WHITE_PUMPKIN_HELMET, WHITE_PUMPKIN_CHESTPLATE, WHITE_PUMPKIN_LEGGINGS, WHITE_PUMPKIN_BOOTS, key -> {
         });
         // 魂师套装：灵魂上限直接加在 ADDITIONAL_SOUL 属性上，SoulStorage 会实时读取
         register("hermit_set", 1, HERMIT_HELMET, HERMIT_CHESTPLATE, HERMIT_LEGGINGS, HERMIT_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.ADDITIONAL_SOUL, key.id, 20, PortAttributeModifier.Operation.ADD_VALUE));
         });
-        register("seeker_set", 2, SEEKER_HELLMET, SEEKER_CHESTPLATE, SEEKER_LEGGINGS, SEEKER_BOOTS, key -> {
+        SEEKER_SET = register("seeker_set", 2, SEEKER_HELLMET, SEEKER_CHESTPLATE, SEEKER_LEGGINGS, SEEKER_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(ConfluenceMagicLib.ADDITIONAL_SOUL, key.id, 40, PortAttributeModifier.Operation.ADD_VALUE));
         });
-        register("souldancer_robe_set", 2, SOULDANCER_HOOD, SOULDANCER_ROBE, Items.AIR, Items.AIR, key -> {
+        SOULDANCER_ROBE_SET = register("souldancer_robe_set", 2, SOULDANCER_HOOD, SOULDANCER_ROBE, Items.AIR, Items.AIR, key -> {
             // 收集灵魂后的限时增益由 PlayerUtils.tickSoulArmorSets 结算，这里只保留套装识别与说明行
         });
-        register("phantom_set", 1, PHANTOM_HELMET, PHANTOM_CHESTPLATE, PHANTOM_LEGGINGS, PHANTOM_BOOTS, key -> {
+        PHANTOM_SET = register("phantom_set", 1, PHANTOM_HELMET, PHANTOM_CHESTPLATE, PHANTOM_LEGGINGS, PHANTOM_BOOTS, key -> {
             key.of(SOUL$DROP, 1.0F); // 夜间再 +2 由 SoulCollectionEvent 监听补足
         });
         // 蓝隐匿者的耐药性削减由 PlayerUtils.onSoulSpent 结算，这里只保留套装识别与说明行
-        register("blue_hermit_set", 1, BLUE_HERMIT_HELMET, BLUE_HERMIT_CHESTPLATE, BLUE_HERMIT_LEGGINGS, BLUE_HERMIT_BOOTS, key -> {
+        BLUE_HERMIT_SET = register("blue_hermit_set", 1, BLUE_HERMIT_HELMET, BLUE_HERMIT_CHESTPLATE, BLUE_HERMIT_LEGGINGS, BLUE_HERMIT_BOOTS, key -> {
         });
         NINJA_SET = register("ninja_set", 1, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));

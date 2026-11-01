@@ -9,7 +9,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.DryadNPC;
 import org.confluence.mod.common.entity.projectile.*;
@@ -20,13 +19,14 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.BoomerangItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.util.ModUtils;
 
 import java.util.function.Supplier;
 
 /// 可由 NPC 注册项组合使用的独立自卫动作。
 public final class NPCCombatActions {
     /// 向导使用的箭矢攻击，困难模式自动点燃箭矢。
-    public static final NPCCombatProfile.Attack ARROW = (npc, target, values) -> shootArrow(npc, target, values, isHardmode());
+    public static final NPCCombatProfile.Attack ARROW = (npc, target, values) -> shootArrow(npc, target, values, ModUtils.isHardmode());
     /// 军火商在困难模式切换迷你鲨后使用较低的单发伤害。
     public static final NPCCombatProfile.Attack ARMS_DEALER = NPCCombatActions::armsDealerAttack;
     public static final NPCCombatProfile.Attack BULLET = NPCCombatActions::shootBullet;
@@ -58,11 +58,6 @@ public final class NPCCombatActions {
         };
     }
 
-    /// 返回当前世界进度是否已经进入困难模式，供注册项选择阶段武器。
-    public static boolean isHardmode() {
-        return KillBoard.INSTANCE.getGamePhase().isHardmode();
-    }
-
     /// 发射使用公共泰拉箭实体的箭矢；向导在困难模式下可将其点燃。
     private static void shootArrow(BaseNPC npc, LivingEntity target, NPCCombatProfile.Values values, boolean flaming) {
         AbstractArrow arrow = new BaseArrowEntity(ModEntities.BASE_ARROW.get(), npc, new ItemStack(Items.ARROW), npc.getMainHandItem());
@@ -79,7 +74,7 @@ public final class NPCCombatActions {
 
     /// 军火商困难模式前造成 24 基础伤害，困难模式后切换为 15 基础伤害。
     private static void armsDealerAttack(BaseNPC npc, LivingEntity target, NPCCombatProfile.Values values) {
-        float damage = isHardmode() ? values.damage() * 15.0F / 24.0F : values.damage();
+        float damage = ModUtils.isHardmode() ? values.damage() * 15.0F / 24.0F : values.damage();
         shootBullet(npc, target, damage, values.projectileSpeed());
     }
 
@@ -96,7 +91,7 @@ public final class NPCCombatActions {
 
     /// 旅商在困难模式前使用枪弹，进入困难模式后切换为不燃烧的弓矢攻击。
     private static void travelingMerchantAttack(BaseNPC npc, LivingEntity target, NPCCombatProfile.Values values) {
-        if (isHardmode()) shootArrow(npc, target, values, false);
+        if (ModUtils.isHardmode()) shootArrow(npc, target, values, false);
         else shootBullet(npc, target, values.damage(), values.projectileSpeed());
     }
 

@@ -19,6 +19,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -156,7 +157,7 @@ public class Skeletron extends BaseBoss {
             return;
         }
 
-        boolean enraged = level().isDay();
+        boolean enraged = LibDateUtils.isDay(level());
         boolean spinning = enraged || combatCycle >= stateParameters(CombatState.FLOATING).duration();
         setSpinning(spinning);
         updateStateAttributes(enraged ? CombatState.ENRAGED : spinning ? CombatState.SPINNING : CombatState.FLOATING);

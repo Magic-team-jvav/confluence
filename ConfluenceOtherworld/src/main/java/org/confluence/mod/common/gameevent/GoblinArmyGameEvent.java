@@ -20,9 +20,9 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.network.s2c.GoblinArmyProgressPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 
@@ -67,7 +67,7 @@ public enum GoblinArmyGameEvent implements GameEvent {
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_SORCERER.get(), 240, 1, 1),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4)
         );
-        if (IMinecraftServer.isHardmode(server)) {
+        if (ModUtils.isHardmode()) {
             entries.add(new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_WARLOCK.get(), 60, 1, 1));
         }
         this.spawnerData = PortEventHandler.postEventWithReturn(new GameEventSpawnerDataModificationEvent(KEY, level, entries.toArray(MobSpawnSettings.SpawnerData[]::new))).create();
@@ -130,7 +130,7 @@ public enum GoblinArmyGameEvent implements GameEvent {
                         player.getArmorValue() >= CommonConfigs.GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR.get()
                 ) {
                     int chance;
-                    boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
+                    boolean hardmode = ModUtils.isHardmode();
                     if (KillBoard.INSTANCE.isDefeated(KEY)) {
                         if (hardmode) {
                             chance = CommonConfigs.GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE.get();

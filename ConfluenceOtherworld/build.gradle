@@ -95,8 +95,6 @@ legacyForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-apply from: 'gradle/client-runtime-snapshot.gradle'
-
 configurations.configureEach {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }

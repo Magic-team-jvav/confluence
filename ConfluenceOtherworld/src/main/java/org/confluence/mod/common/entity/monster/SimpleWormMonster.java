@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.UUID;
 
@@ -166,12 +165,12 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     @Override
     public boolean isInsideActivityRegion(BlockPos pos) {
         return switch (role) {
-            case UNDERGROUND -> pos.getY() < OverworldUtils.getSurfaceY();
+            case UNDERGROUND -> OverworldUtils.belowSurface(pos.getY());
             case UNDERGROUND_DESERT ->
-                    level().getBiome(pos).is(PortTags.Biomes.IS_DESERT) && (pos.getY() < OverworldUtils.getSurfaceY() || SandstormGameEvent.INSTANCE.started());
+                    OverworldUtils.isDesert(level().getBiome(pos)) && (OverworldUtils.belowSurface(pos.getY()) || SandstormGameEvent.INSTANCE.started());
             case CORRUPTION -> isNearCorruption(pos);
-            case UNDERWORLD, BONE_SERPENT -> level().dimension() == OverworldUtils.underworld();
-            case FLYING -> pos.getY() >= OverworldUtils.getSurfaceY();
+            case UNDERWORLD, BONE_SERPENT -> OverworldUtils.inUnderworld(level().dimension(), pos.getY());
+            case FLYING -> OverworldUtils.aboveSurface(pos.getY());
         };
     }
 

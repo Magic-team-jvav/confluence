@@ -4,6 +4,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,10 +13,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
-import org.confluence.mod.util.OverworldUtils;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.util.OverworldUtils;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -88,7 +89,7 @@ public final class Crawdad extends BaseWarriorMonster {
 
     private boolean canUseClawAttack() {
         return onGround() && Math.abs(getDeltaMovement().y) < 0.01
-                && (getY() < OverworldUtils.getSurfaceY() || level().isNight());
+                && (OverworldUtils.belowSurface(getY()) || LibDateUtils.isNight(level()));
     }
 
     private void performClawHit() {

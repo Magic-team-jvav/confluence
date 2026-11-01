@@ -14,7 +14,7 @@ public record WorldFlagCondition(long flag) implements TradeCondition {
 
     @Override
     public boolean test(ServerPlayer player, BaseNPC npc) {
-        return IMinecraftServer.matchesSecretFlag(player.server, flag);
+        return IMinecraftServer.of(player.server).matchesSecretFlag(flag);
     }
 
     @Override

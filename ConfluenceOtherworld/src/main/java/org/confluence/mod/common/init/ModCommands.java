@@ -63,6 +63,7 @@ import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
@@ -304,7 +305,7 @@ public final class ModCommands {
                 .then(Commands.literal("soulSkill")
                         .then(Commands.literal("reset").executes(context -> {
                             ServerPlayer player = context.getSource().getPlayerOrException();
-                            PlayerUtils.resetSoulSkillEquip(player);
+                            SoulcererUtils.resetSoulSkillEquip(player);
                             context.getSource().sendSuccess(() -> Component.literal("Soul skill equipment has been reset"), true);
                             return 1;
                         }))
@@ -312,7 +313,7 @@ public final class ModCommands {
                                 .then(Commands.argument("count", IntegerArgumentType.integer(3, 6)).executes(context -> {
                                     ServerPlayer player = context.getSource().getPlayerOrException();
                                     int count = IntegerArgumentType.getInteger(context, "count");
-                                    PlayerUtils.setSoulSkillSlotCount(player, count);
+                                    SoulcererUtils.setSoulSkillSlotCount(player, count);
                                     context.getSource().sendSuccess(() -> Component.literal("Soul skill slots set to " + count), true);
                                     return 1;
                                 })))
@@ -320,7 +321,7 @@ public final class ModCommands {
                                 .then(Commands.argument("count", IntegerArgumentType.integer(0, SoulSkillParameters.MAX_RITUAL_COUNT)).executes(context -> {
                                     ServerPlayer player = context.getSource().getPlayerOrException();
                                     int count = IntegerArgumentType.getInteger(context, "count");
-                                    PlayerUtils.setSoulRitualCount(player, count);
+                                    SoulcererUtils.setSoulRitualCount(player, count);
                                     context.getSource().sendSuccess(() -> Component.literal("Soul ritual count set to " + count), true);
                                     return 1;
                                 })))

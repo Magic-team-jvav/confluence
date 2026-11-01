@@ -14,7 +14,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.soulcerer.skill.SoulSkill;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -43,13 +43,13 @@ public class SoulSkillBookItem extends CustomRarityItem {
         if (book == null) {
             return InteractionResultHolder.fail(stack);
         }
-        if (book.required() != null && !PlayerUtils.isSoulSkillLearned(serverPlayer, book.required())) {
+        if (book.required() != null && !SoulcererUtils.isSoulSkillLearned(serverPlayer, book.required())) {
             return InteractionResultHolder.fail(stack);
         }
-        if (PlayerUtils.isSoulBookGranted(serverPlayer, book)) {
-            PlayerUtils.applySoulBookReview(serverPlayer);
+        if (SoulcererUtils.isSoulBookGranted(serverPlayer, book)) {
+            SoulcererUtils.applySoulBookReview(serverPlayer);
             player.displayClientMessage(Component.translatable(REVIEW_MESSAGE), true);
-        } else if (PlayerUtils.grantSoulBook(serverPlayer, book)) {
+        } else if (SoulcererUtils.grantSoulBook(serverPlayer, book)) {
             String customMessage = SoulBooks.useMessageKey(book.id());
             player.displayClientMessage(customMessage == null
                     ? Component.translatable(LEARNED_MESSAGE, Component.translatable(SoulBooks.nameKey(book.id())))

@@ -170,7 +170,7 @@ public class ModDataProvider {
             HolderGetter<NoiseGeneratorSettings> noiseGeneratorSettings = context.lookup(Registries.NOISE_SETTINGS);
             Holder<NoiseGeneratorSettings> overworldNoiseGeneratorSettings = noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
             MultiNoiseBiomeSource overworldMultiNoiseBiomeSource = MultiNoiseBiomeSource.createFromPreset(multiNoiseBiomeSourceParameterList.getOrThrow(MultiNoiseBiomeSourceParameterLists.OVERWORLD));
-            LevelStem nether = new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.NETHER), new NoiseBasedChunkGenerator(
+            LevelStem nether = new LevelStem(dimensionType.getOrThrow(OverworldUtils.underworldType()), new NoiseBasedChunkGenerator(
                     MultiNoiseBiomeSource.createFromPreset(multiNoiseBiomeSourceParameterList.getOrThrow(MultiNoiseBiomeSourceParameterLists.NETHER)),
                     noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.NETHER)
             ));
@@ -180,7 +180,7 @@ public class ModDataProvider {
             ));
 
             context.register(THE_CORRUPTION, new WorldPreset(Map.of(
-                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
+                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(OverworldUtils.dimensionType()), new BannedBiomeNoiseBasedChunkGenerator(
                             overworldMultiNoiseBiomeSource,
                             overworldNoiseGeneratorSettings,
                             ModBiomes.THE_CRIMSON,
@@ -190,7 +190,7 @@ public class ModDataProvider {
                     LevelStem.END, end
             )));
             context.register(THE_CRIMSON, new WorldPreset(Map.of(
-                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
+                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(OverworldUtils.dimensionType()), new BannedBiomeNoiseBasedChunkGenerator(
                             overworldMultiNoiseBiomeSource,
                             overworldNoiseGeneratorSettings,
                             ModBiomes.THE_CORRUPTION,
@@ -1032,7 +1032,7 @@ public class ModDataProvider {
             register(context, DEEPSLATE_TITANIUM_ORE_STEP_1, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_TITANIUM_ORE_STEP_1), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
             register(context, DEEPSLATE_TITANIUM_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_TITANIUM_ORE_STEP_2), RarityFilter.onAverageOnceEvery(6), inSquare, heightRangeTriangle(-60, -40), biome);
             register(context, DEMONITE_ORE, configured.getOrThrow(ConfiguredFeatures.DEMONITE_ORE), SecretFlagPlacement.of(IWorldOptions.THE_CORRUPTION), count2, inSquare, heightRangeTriangle(-50, 30), biome);
-            register(context, GELSTONE_ORE, configured.getOrThrow(ConfiguredFeatures.GELSTONE_ORE), count5,inSquare, heightRangeTriangle(-52, 160), biome);
+            register(context, GELSTONE_ORE, configured.getOrThrow(ConfiguredFeatures.GELSTONE_ORE), count5, inSquare, heightRangeTriangle(-52, 160), biome);
             register(context, CHLOROPHYTE_ORE, configured.getOrThrow(ConfiguredFeatures.CHLOROPHYTE_ORE), CountPlacement.of(12), inSquare, heightRangeTriangle(-52, 160), biome);
             register(context, JADE_ORE, configured.getOrThrow(ConfiguredFeatures.JADE_ORE), inSquare, heightRangeTriangle(-52, 10), biome);
             register(context, LEAD_ORE, configured.getOrThrow(ConfiguredFeatures.LEAD_ORE), CountPlacement.of(8), inSquare, heightRangeTriangle(-24, 56), biome);

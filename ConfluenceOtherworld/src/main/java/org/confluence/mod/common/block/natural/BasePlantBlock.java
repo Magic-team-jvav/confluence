@@ -14,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
-import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.util.ModUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -76,7 +76,7 @@ public class BasePlantBlock extends BushBlock {
         BlockState after = super.updateShape(originState, facing, facingState, level, currentPos, facingPos);
         if (facing != Direction.DOWN) return after;
         ISpreadable.Type type = facingState.getBlock() instanceof ISpreadable sp ? sp.getSpreadType() : ISpreadable.Type.PURE;
-        BlockState transformResult = type.getNotNull(originState, KillBoard.INSTANCE.getGamePhase().isHardmode());  // 默认不转化，如果结果是摧毁则是写到表里面
+        BlockState transformResult = type.getNotNull(originState, ModUtils.isHardmode());  // 默认不转化，如果结果是摧毁则是写到表里面
         return transformResult.canSurvive(level, currentPos) ? transformResult : Blocks.AIR.defaultBlockState();
     }
 }

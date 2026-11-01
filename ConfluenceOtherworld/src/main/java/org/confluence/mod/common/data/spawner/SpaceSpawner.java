@@ -117,8 +117,8 @@ public class SpaceSpawner implements CustomSpawner {
 
         int count = 0;
         for (ServerPlayer player : level.players()) {
-            if (player.isSpectator() || player.isCreative() || player.getY() < OverworldUtils.getSpaceY()
-                    || TownPopulation.suppressesSpawn(player)) continue;
+            if (player.isSpectator() || player.isCreative() || OverworldUtils.belowSpace(player.getY()) || TownPopulation.suppressesSpawn(player))
+                continue;
             BlockPos pos = player.blockPosition();
             NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             for (int i = 0; i < 4; i++) {

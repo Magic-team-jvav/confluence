@@ -3,8 +3,8 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.world.level.block.Block;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BasePotBlock;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.util.ModUtils;
 import org.mesdag.portlib.registries.PortBlockRegistration;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -30,7 +30,7 @@ public class PotBlocks {
     public static final PortDeferredBlock<BasePotBlock> CORRUPTION_POT = registerWithItem("corruption_pot", "蠕虫罐子", 1.6F, 365);
     public static final PortDeferredBlock<BasePotBlock> DUNGEON_POT = registerWithItem("dungeon_pot", "地牢罐子", 1.9F, 384);
     public static final PortDeferredBlock<BasePotBlock> UNDERWORLD_POT = registerWithItem("underworld_pot", "炎烬罐子", 2.1F, 365);
-    public static final PortDeferredBlock<BasePotBlock> LIHZAHRD_POT = registerWithItem("lihzahrd_pot", "神庙罐子", 4.0F, () -> KillBoard.INSTANCE.getGamePhase().isHardmode() ? 250 : 500);
+    public static final PortDeferredBlock<BasePotBlock> LIHZAHRD_POT = registerWithItem("lihzahrd_pot", "神庙罐子", 4.0F, () -> ModUtils.isHardmode() ? 250 : 500);
 
     public static PortDeferredBlock<BasePotBlock> registerWithItem(String id, float moneyRatio, IntSupplier invMoneyHoleChance) {
         PortDeferredBlock<BasePotBlock> object = BLOCKS.register(id, () -> new BasePotBlock(moneyRatio, invMoneyHoleChance, Block.box(2, 0, 2, 14, 12, 14)));

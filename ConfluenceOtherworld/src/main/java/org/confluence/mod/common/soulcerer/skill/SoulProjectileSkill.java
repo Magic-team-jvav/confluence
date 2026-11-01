@@ -10,7 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.soulcerer.SoulBooks;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -76,10 +76,10 @@ public class SoulProjectileSkill extends SoulSkill {
             return;
         }
         /// 武器伤害按技能声明的比例计入（迷魂孢雾只吃 20%，其余技能默认全额）。
-        float weaponDamage = PlayerUtils.getWeaponSoulDamage(player) * weaponShare;
-        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack, weaponDamage);
+        float weaponDamage = SoulcererUtils.getWeaponSoulDamage(player) * weaponShare;
+        float damage = SoulcererUtils.getSoulSkillDamage(player, skillStack, weaponDamage);
         /// 引渡者：引魂系列弹幕额外弹射一次；技能自己也可以声明额外弹射次数（强力引魂 +1）。
-        int extraBounce = extraBounces + (PlayerUtils.isSoulBookLearned(player, SoulBooks.PSYCHOPOMP)
+        int extraBounce = extraBounces + (SoulcererUtils.isSoulBookLearned(player, SoulBooks.PSYCHOPOMP)
                 && skillStack.getSoulSkill().is(ModTags.SoulSkills.SOUL_LURE)
                 ? SoulSkillParameters.PSYCHOPOMP_SOUL_LURE_EXTRA_BOUNCE : 0);
         Vec3 eye = player.getEyePosition();
@@ -105,7 +105,7 @@ public class SoulProjectileSkill extends SoulSkill {
             player.level().addFreshEntity(projectile);
         }
         if (refundChance > 0.0F && random.nextFloat() < refundChance) {
-            PlayerUtils.adjustSoul(player, 1.0F);
+            SoulcererUtils.adjustSoul(player, 1.0F);
         }
         if (selfEffect != null && selfEffectTicks > 0) {
             player.addEffect(new MobEffectInstance(selfEffect.get(), selfEffectTicks));

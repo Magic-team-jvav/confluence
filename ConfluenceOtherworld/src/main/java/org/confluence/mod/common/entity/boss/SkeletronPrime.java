@@ -19,6 +19,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
@@ -138,7 +139,7 @@ public class SkeletronPrime extends BaseBoss {
             return;
         }
 
-        dayEnraged |= level().isDay();
+        dayEnraged |= LibDateUtils.isDay(level());
         int hoverTicks = stateParameters(CombatState.HOVERING).duration();
         int spinEnd = hoverTicks + stateParameters(CombatState.SPINNING).durationOr(NORMAL_SPIN_END_TICKS - NORMAL_HOVER_TICKS);
         combatCycle = (combatCycle + 1) % (spinEnd + COMBAT_CYCLE_TICKS - NORMAL_SPIN_END_TICKS);

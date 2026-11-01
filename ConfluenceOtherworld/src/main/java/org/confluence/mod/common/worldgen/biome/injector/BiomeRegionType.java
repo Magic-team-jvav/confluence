@@ -3,7 +3,6 @@ package org.confluence.mod.common.worldgen.biome.injector;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
@@ -96,8 +95,8 @@ public enum BiomeRegionType {
 
     @Nullable
     public static BiomeRegionType byDimensionType(Holder<DimensionType> type) {
-        if (type.is(BuiltinDimensionTypes.OVERWORLD)) return OVERWORLD;
-        if (type.is(BuiltinDimensionTypes.NETHER)) return NETHER;
+        if (type.is(OverworldUtils.dimensionType())) return OVERWORLD;
+        if (type.is(OverworldUtils.underworldType())) return NETHER;
         return null;
     }
 }

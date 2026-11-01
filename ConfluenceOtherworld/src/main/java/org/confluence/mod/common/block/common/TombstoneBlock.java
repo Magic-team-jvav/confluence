@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.common;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,12 +29,11 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -61,15 +59,17 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (!level.isClientSide && pos.getY() < OverworldUtils.getSurfaceY() && LibDateUtils.isNight(level)) {
-            RandomSource random = player.getRandom1211();
-            if (ModBlockCounters.isGraveyard(level, pos) && random.nextBoolean()) {
-                MonsterEntities.GHOST.get().spawn((ServerLevel) level, pos.offset(
-                        Mth.randomBetweenInclusive(random, -15, 15),
-                        Mth.randomBetweenInclusive(random, -15, 15),
-                        Mth.randomBetweenInclusive(random, -15, 15)
+        if (!level.isClientSide) {
+            RandomSource random = player.getRandom();
+            // 挖掉墓石有 12.5% / 25% / 50% 的几率
+            if (ModBlockCounters.isGraveyard(level, pos) && random.nextInt(LibUtils.switchByDifficulty(level, 8, 4, 2)) == 0) {
+                MonsterEntities.GHOST.get().spawn((ServerLevel) level, new BlockPos(
+                        LibMathUtils.randomFromTo(random, pos.getX(), 16, 32),
+                        LibMathUtils.randomFromTo(random, pos.getY(), 4, 8),
+                        LibMathUtils.randomFromTo(random, pos.getZ(), 16, 32)
                 ), MobSpawnType.MOB_SUMMONED);
             }
+
         }
     }
 

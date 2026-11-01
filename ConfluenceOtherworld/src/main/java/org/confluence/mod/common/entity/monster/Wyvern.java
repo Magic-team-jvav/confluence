@@ -30,12 +30,12 @@ public class Wyvern extends BaseWormMonster {
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        return target.getY() >= OverworldUtils.getSurfaceY() && super.canAttack(target);
+        return OverworldUtils.aboveSurface(target.getY()) && super.canAttack(target);
     }
 
     @Override
     public boolean isInsideActivityRegion(BlockPos pos) {
-        return pos.getY() >= OverworldUtils.getSurfaceY();
+        return OverworldUtils.aboveSurface(pos.getY());
     }
 
     @Override

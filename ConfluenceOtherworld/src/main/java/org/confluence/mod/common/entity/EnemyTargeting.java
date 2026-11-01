@@ -51,7 +51,7 @@ public final class EnemyTargeting {
                 && EnemyDamageRules.isEnemy(mob);
     }
 
-    public static @Nullable LivingEntity select(Mob mob, LivingEntity proposed) {
+    public static @Nullable LivingEntity select(Mob mob, @Nullable LivingEntity proposed) {
         LivingEntity current = mob.getTarget();
         if (proposed != null && !(proposed instanceof Player) && valid(mob, proposed))
             return proposed;
@@ -81,7 +81,7 @@ public final class EnemyTargeting {
     }
 
     /// 指定目标和反击共用关系校验，不主动搜索其他生物。
-    public static boolean allowsTarget(Mob mob, LivingEntity target) {
+    public static boolean allowsTarget(Mob mob, @Nullable LivingEntity target) {
         if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved())
             return false;
         if (target instanceof Player player && ((player.isCreative() && !isDeveloperTarget(mob, player)) || player.isSpectator()))
@@ -97,7 +97,7 @@ public final class EnemyTargeting {
         return source != destination && LibEntityUtils.allowsAttack(mob, target);
     }
 
-    public static boolean valid(Mob mob, LivingEntity target) {
+    public static boolean valid(Mob mob, @Nullable LivingEntity target) {
         if (target == null || target == mob || target.level() != mob.level() || !target.isAlive() || target.isRemoved() || !allowsTarget(mob, target) || !mob.canAttack(target) && !(target instanceof Player player && isDeveloperTarget(mob, player)))
             return false;
         if (target instanceof Player player && ((player.isCreative() && !isDeveloperTarget(mob, player)) || player.isSpectator()))

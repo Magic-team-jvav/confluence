@@ -22,6 +22,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -47,18 +48,22 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.SecretFlagMatcher;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.component.LootComponent;
-import org.confluence.mod.common.data.GamePhase;
+import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.MoneyDropSource;
 import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
 import org.confluence.mod.common.init.ModEffects;
@@ -66,13 +71,15 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
-import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.entity.living.PortLivingIncomingDamageEvent;
 
 import java.util.Map;
 import java.util.Set;
@@ -149,10 +156,10 @@ public final class ModUtils {
         if (living.hasEffect(ModEffects.MIDAS.get())) {
             amount *= Mth.nextDouble(living.getRandom1211(), 1.1, 1.49);
         }
-        if (IMinecraftServer.isHardmode(level.getServer())) {
+        if (ModUtils.isHardmode()) {
             amount *= 1.6;
         }
-        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.PLANTERA)) {
+        if (KillBoard.INSTANCE.isDefeated(BossEntities.PLANTERA.get())) {
             amount *= 1.5;
         }
         if (amount > 0 && damageSource instanceof AttachmentEntityDamageSource source && source.getOwner() != null && TCUtils.hasType(source.getOwner(), AccessoryItems.AUTO$GET$COIN)) {
@@ -301,5 +308,42 @@ public final class ModUtils {
     public static boolean shouldDisplayTeam() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         return server != null && !server.isSingleplayer();
+    }
+
+    public static boolean isHardmode() {
+        return SecretFlagMatcher.matchesSecretFlag(IWorldOptions.HARDMODE);
+    }
+
+    /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。
+    ///
+    /// 该入口位于护甲、抗性和暴击等后续减伤之前，因此普通近战、固定接触伤害以及
+    /// Boss 所有的弹幕共享完全相同的基础伤害倍率，不需要每个攻击类重复读取 JSON。
+    public static void applyBossDefinitionDamage(PortLivingIncomingDamageEvent event, LivingEntity victim, DamageSource source) {
+        Entity attacker = LibEntityUtils.getOwner(source);
+        if (attacker instanceof PartHitTarget part) {
+            attacker = part.encounterOwner();
+        }
+        if (attacker instanceof BossOwnedEntity owned) {
+            attacker = owned.getBossOwner();
+        }
+        if (!(attacker instanceof BaseBoss boss) || boss == victim) return;
+
+        double multiplier = CreatureDefinition.get(boss.getType()).boss().damageMultiplierOr(1.0D) * CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get();
+        if (multiplier != 1.0D) {
+            event.setAmount((float) Math.max(0.0D, event.getAmount() * multiplier));
+        }
+    }
+
+    // 把即将生成的生物替换成独立类型；位置、朝向与速度保持一致。
+    //
+    // 返回 null 表示创建失败，调用方需要退回到直接修改原生物的做法。
+    public static <T extends Mob> @Nullable T replaceSpawn(ServerLevel level, Mob original, EntityType<T> replacementType) {
+        T replacement = replacementType.create(level);
+        if (replacement == null) return null;
+        replacement.moveTo(original.getX(), original.getY(), original.getZ(), original.getYRot(), original.getXRot());
+        replacement.setYHeadRot(original.getYHeadRot());
+        replacement.yBodyRot = original.yBodyRot;
+        replacement.setDeltaMovement(original.getDeltaMovement());
+        return replacement;
     }
 }

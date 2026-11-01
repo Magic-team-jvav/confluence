@@ -15,6 +15,8 @@ import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyRules;
 import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultyScaling;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
@@ -521,10 +523,7 @@ public final class CreatureAttributeBuilder {
 
         /// 肉前、肉后、花后的基础值选择；只选当前阶段，不累计叠加。
         public static DynamicValue byWorldPhase(double early, double hardmode, double postPlantera) {
-            return value(mob -> {
-                GamePhase phase = KillBoard.INSTANCE.getGamePhase();
-                return phase.isAtLeast(GamePhase.PLANTERA) ? postPlantera : phase.isHardmode() ? hardmode : early;
-            });
+            return value(mob -> KillBoard.INSTANCE.isDefeated(BossEntities.PLANTERA.get()) ? postPlantera : ModUtils.isHardmode() ? hardmode : early);
         }
 
         /// 供移动速度等非属性倍率参数选择难度值；攻击与生命仍使用统一属性缩放。

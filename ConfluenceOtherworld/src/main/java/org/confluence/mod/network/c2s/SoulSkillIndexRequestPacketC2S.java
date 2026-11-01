@@ -1,15 +1,15 @@
 package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.ResourceLocation;
-import org.mesdag.portlib.network.IPortPacket;
+import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.SoulSkillIndexSyncPacketS2C;
 import org.confluence.mod.network.s2c.SoulSkillSyncPacketS2C;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record SoulSkillIndexRequestPacketC2S(int index) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("soulcerer_skill_index_request");
@@ -31,9 +31,9 @@ public record SoulSkillIndexRequestPacketC2S(int index) implements IPortPacket.C
     @Override
     public void work(ServerPlayer player) {
         if (Confluence.SOUL_SKILLS) {
-            PlayerUtils.setCurrentSoulSkillIndex(player, index);
-            boolean changed = PlayerUtils.refreshSoulSkills(player);
-            changed |= PlayerUtils.ensureHeldWeaponSkill(player);
+            SoulcererUtils.setCurrentSoulSkillIndex(player, index);
+            boolean changed = SoulcererUtils.refreshSoulSkills(player);
+            changed |= SoulcererUtils.ensureHeldWeaponSkill(player);
             if (changed) {
                 SoulSkillSyncPacketS2C.sendToClient(player);
             }

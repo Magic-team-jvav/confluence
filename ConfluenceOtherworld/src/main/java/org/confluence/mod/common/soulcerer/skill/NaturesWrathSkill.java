@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.soulcerer.SoulStingProjectile;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 /// 自然之惩戒：以扇形齐射多枚毒刺弹幕（外观复用黄蜂毒刺的模型与贴图）。
 public class NaturesWrathSkill extends SoulSkill {
@@ -25,8 +25,8 @@ public class NaturesWrathSkill extends SoulSkill {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
-        float weaponDamage = PlayerUtils.getWeaponSoulDamage(player) * getWeaponShare();
-        float damage = PlayerUtils.getSoulSkillDamage(player, skillStack, weaponDamage);
+        float weaponDamage = SoulcererUtils.getWeaponSoulDamage(player) * getWeaponShare();
+        float damage = SoulcererUtils.getSoulSkillDamage(player, skillStack, weaponDamage);
         Vec3 eye = player.getEyePosition();
         Vec3 look = player.getLookAngle();
         int count = SoulSkillParameters.NATURES_WRATH_COUNT;

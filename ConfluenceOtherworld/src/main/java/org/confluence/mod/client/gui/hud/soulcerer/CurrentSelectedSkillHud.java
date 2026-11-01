@@ -1,12 +1,12 @@
 package org.confluence.mod.client.gui.hud.soulcerer;
 
-import org.mesdag.portlib.client.PortDeltaTicker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.HumanoidArm;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
 import org.confluence.mod.client.gui.widget.soulcerer.skill.SoulSkillBox;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillStack;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 public class CurrentSelectedSkillHud extends BasicHudLayer {
     private HumanoidArm humanoidArm = HumanoidArm.RIGHT;
@@ -20,7 +20,7 @@ public class CurrentSelectedSkillHud extends BasicHudLayer {
     /// 绘制当前槽位的技能框。
     @Override
     protected void renderDrawLayer(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
-        if (!PlayerUtils.isHoldingSoulWeapon(player)) {
+        if (!SoulcererUtils.isHoldingSoulWeapon(player)) {
             return;
         }
         box.render(guiGraphics, 0, 0, deltaTracker.getRealtimeDeltaTicks());

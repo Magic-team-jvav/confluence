@@ -22,7 +22,7 @@ import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.mod.common.recipe.ShimmerDecompositionInputs;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
-import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortSingleRecipeInput;
@@ -138,7 +138,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
         if (sourceItem.getDamageValue() != 0) return;
         RegistryAccess registryAccess = source.level().registryAccess();
         MinecraftServer server = ((ServerLevel) source.level()).getServer();
-        boolean isHardmode = IMinecraftServer.isHardmode(server);
+        boolean isHardmode = ModUtils.isHardmode();
         RandomSource random = source.level().random;
         for (Recipe<?> recipe : server.getRecipeManager().getRecipes()) {
             if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) {

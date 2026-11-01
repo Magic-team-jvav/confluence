@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.wind.WindMath;
 import org.confluence.mod.common.wind.WindState;
@@ -58,14 +59,14 @@ public enum WindyDayGameEvent implements GameEvent {
     @Override
     public boolean canStart() {
         if (level == null) return false;
-        return requested || (level.isDay() && windSpeed() >= WindMath.WINDY_DAY_MIN);
+        return requested || (LibDateUtils.isDay(level) && windSpeed() >= WindMath.WINDY_DAY_MIN);
     }
 
     @Override
     public boolean canEnd() {
         if (level == null) return true;
         if (requested) return false;
-        return !level.isDay() || calmTicks > CALM_TOLERANCE;
+        return LibDateUtils.isNight(level) || calmTicks > CALM_TOLERANCE;
     }
 
     @Override

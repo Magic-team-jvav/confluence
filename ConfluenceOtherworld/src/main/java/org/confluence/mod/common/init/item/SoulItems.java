@@ -23,7 +23,7 @@ import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.item.soulcerer.*;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -77,7 +77,7 @@ public class SoulItems {
     public static boolean canFillSoulBottle(Player player) {
         if (player == null) return false;
         if (player.hasInfiniteMaterials()) return true;
-        return PlayerUtils.getSoul(player) >= SoulSkillParameters.SOUL_BOTTLE_SOUL_COST;
+        return SoulcererUtils.getSoul(player) >= SoulSkillParameters.SOUL_BOTTLE_SOUL_COST;
     }
 
     /// 手上的物品能不能当装魂的玻璃瓶用。
@@ -97,7 +97,7 @@ public class SoulItems {
                 serverPlayer.displayClientMessage(Component.translatable(
                         "message.confluence.soul_bottle.not_enough_soul",
                         String.format("%.0f", SoulSkillParameters.SOUL_BOTTLE_SOUL_COST),
-                        String.format("%.0f", PlayerUtils.getSoul(player))
+                        String.format("%.0f", SoulcererUtils.getSoul(player))
                 ), true);
             }
             return false;
@@ -115,7 +115,7 @@ public class SoulItems {
         ItemStack inHand = player.getItemInHand(hand);
         if (!isSoulBottleItem(inHand)) return;
         /// 创造模式不扣灵魂；生存模式直接扣当前灵魂值，不走技能与透支结算。
-        if (!player.hasInfiniteMaterials() && !PlayerUtils.consumeStoredSoul(player, SoulSkillParameters.SOUL_BOTTLE_SOUL_COST)) {
+        if (!player.hasInfiniteMaterials() && !SoulcererUtils.consumeStoredSoul(player, SoulSkillParameters.SOUL_BOTTLE_SOUL_COST)) {
             return;
         }
         Level level = player.level();

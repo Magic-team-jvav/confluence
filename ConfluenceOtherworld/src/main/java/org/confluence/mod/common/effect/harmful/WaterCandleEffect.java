@@ -28,7 +28,7 @@ public class WaterCandleEffect extends PortMobEffect {
     public void applyEffectTick(LivingEntity living, int amplifier) {
         AttributeInstance instance = living.getAttributes().getInstance(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER);
         if (instance != null) {
-            double amount = (amplifier + 1) * (living.getY() >= OverworldUtils.getSpaceY() ? 0.8 : 0.17);
+            double amount = (amplifier + 1) * (OverworldUtils.inSpace(living.getY()) ? 0.8 : 0.17);
             AttributeModifier modifier = instance.getModifier(uuid);
             if (modifier == null || modifier.getAmount() != amount) {
                 instance.addOrReplacePermanentModifier(new AttributeModifier(uuid, name, amount, AttributeModifier.Operation.ADDITION));

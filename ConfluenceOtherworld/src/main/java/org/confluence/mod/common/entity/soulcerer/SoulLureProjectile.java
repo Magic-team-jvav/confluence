@@ -31,7 +31,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.SwordProjectileAppearance;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -235,10 +235,10 @@ public class SoulLureProjectile extends Projectile {
         if (!(getOwner() instanceof Player player)) {
             return;
         }
-        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_PIERCE)) {
+        if (SoulcererUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_PIERCE)) {
             pierceRemaining += SoulSkillParameters.SOUL_CHANT_GUIDE_EXTRA_PIERCE;
         }
-        homing = PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_HOMING);
+        homing = SoulcererUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.LURE_HOMING);
     }
 
     @Override

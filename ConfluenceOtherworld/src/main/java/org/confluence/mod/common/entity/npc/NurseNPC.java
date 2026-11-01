@@ -42,7 +42,7 @@ public class NurseNPC extends BaseNPC {
         if (LibUtils.isAtLeastExpert(player.level())) cost *= 2L;
 
         KillBoard killBoard = KillBoard.INSTANCE;
-        if (killBoard.getGamePhase().isHardmode()) {
+        if (ModUtils.isHardmode()) {
             cost *= 60L;
         } else if (killBoard.isAnyDefeated(BossEntities.SKELETRON.get(), BossEntities.QUEEN_BEE.get())) {
             cost *= 25L;

@@ -20,7 +20,7 @@ public final class ModMiniBiomes {
             .builder(Confluence.asResource("granite_cave"))
             .priority(500)
             .window(48, 32)
-            .condition((level, pos) -> pos.getY() < OverworldUtils.getSurfaceY())
+            .condition((level, pos) -> OverworldUtils.belowSurface(pos.getY()))
             .threshold(60000, 126000)
             .count(ModBlockCounters.GRANITE, 1)
             .build();
@@ -30,7 +30,7 @@ public final class ModMiniBiomes {
             .builder(Confluence.asResource("marble_cave"))
             .priority(600)
             .window(32, 24)
-            .condition((level, pos) -> pos.getY() < OverworldUtils.getSurfaceY())
+            .condition((level, pos) -> OverworldUtils.belowSurface(pos.getY()))
             .threshold(6000, 20000)
             .count(ModBlockCounters.MARBLE, 1)
             .build();
@@ -39,7 +39,7 @@ public final class ModMiniBiomes {
             .builder(Confluence.asResource("spider_nest"))
             .priority(400)
             .window(16, 12)
-            .condition((level, pos) -> pos.getY() < OverworldUtils.getSurfaceY())
+            .condition((level, pos) -> OverworldUtils.belowSurface(pos.getY()))
             .threshold(150, 600)
             .count(ModBlockCounters.SPIDER_NEST, 1)
             .build();

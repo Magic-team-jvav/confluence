@@ -17,22 +17,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.AnglerQuestLoader;
 import org.confluence.mod.common.data.saved.AnglerData;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
-import org.confluence.mod.common.entity.fishing.FishingSession;
-import org.jetbrains.annotations.Nullable;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
 public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
@@ -123,7 +123,7 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
 
             int sample = player.hasEffect(ModEffects.CRATE) ? 4 : 10;
             if (self.getInBlockState().getFluidState().is(FluidTags.WATER) && level.random.nextInt(sample) == 0) {
-                ResourceLocation lootTable = IMinecraftServer.isHardmode(level.getServer()) ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
+                ResourceLocation lootTable = ModUtils.isHardmode() ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
                 FishingSession session = of(self).confluence$getFishingSession();
                 ItemStack rod = session == null ? FishingSession.heldRod(player) : session.rod();
                 return level.getServer().getLootData().getLootTable(lootTable)

@@ -31,6 +31,7 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 
@@ -194,7 +195,7 @@ public enum SlimeRainGameEvent implements GameEvent {
             if (KillBoard.INSTANCE.isDefeated(BossEntities.KING_SLIME.get())) { // 击败史莱姆王
                 invChance *= 2;
             }
-            if (KillBoard.INSTANCE.getGamePhase().isHardmode()) { // 困难模式
+            if (ModUtils.isHardmode()) { // 困难模式
                 invChance = invChance * 3 / 2;
             }
             return level.random.nextInt(invChance) == 0;

@@ -8,6 +8,7 @@ import org.confluence.lib.util.TaskScheduler;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +30,7 @@ public class TooEasy extends SecretSeed {
     }
 
     public static void setToHardmode(MinecraftServer server) {
-        if (ModSecretSeeds.TOO_EASY.match(server) && !KillBoard.INSTANCE.getGamePhase().isHardmode()) {
+        if (ModSecretSeeds.TOO_EASY.match(server) && !ModUtils.isHardmode()) {
             if (getScheduler(false) != null) return;
             getScheduler(true).schedule(() -> {
                 Component component = Component.translatable("message.confluence.too_easy.ready").withColor(GlobalColors.MESSAGE.get());

@@ -4,7 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 /// 灵魂激荡类技能：生成一圈向外扩散的冲击波。
 ///
@@ -31,7 +31,7 @@ public class SoulSurgeSkill extends SoulSkill {
     @Override
     public void use(Player player, SoulSkillStack skillStack) {
         if (player instanceof ServerPlayer serverPlayer) {
-            float damage = PlayerUtils.getSoulSkillDamage(player, skillStack);
+            float damage = SoulcererUtils.getSoulSkillDamage(player, skillStack);
             serverPlayer.level().addFreshEntity(new SpiritSurgeEntity(serverPlayer, damage, radius, verticalRange, surgeDuration, chainCount, chainDamage));
         }
     }

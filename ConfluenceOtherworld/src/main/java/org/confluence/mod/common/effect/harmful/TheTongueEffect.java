@@ -19,7 +19,6 @@ import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 public class TheTongueEffect extends PortMobEffect {
     private static final double EXECUTION_DISTANCE = 1000.0;
     private static final double RELEASE_DISTANCE = 9.0;
-    private static final double NETHER_GENERATION_HEIGHT = 128.0;
 
     public TheTongueEffect() {
         super(MobEffectCategory.HARMFUL, 0xAB1122);
@@ -42,7 +41,10 @@ public class TheTongueEffect extends PortMobEffect {
         }
 
         Vec3 targetPosition = mouth.position().add(wall.getForwardVector().scale(45.0));
-        if (living.level().dimension() == OverworldUtils.underworld() && living.getY() < NETHER_GENERATION_HEIGHT && targetPosition.y >= NETHER_GENERATION_HEIGHT) {
+        if (OverworldUtils.inUnderworld(living.level().dimension(), living.getY()) &&
+                living.getY() < OverworldUtils.getUnderworldGenerationHeight() &&
+                targetPosition.y >= OverworldUtils.getUnderworldGenerationHeight()
+        ) {
             targetPosition = targetPosition.add(0.0, -15.0, 0.0);
         }
         if (living.position().distanceTo(mouth.position()) > EXECUTION_DISTANCE) {

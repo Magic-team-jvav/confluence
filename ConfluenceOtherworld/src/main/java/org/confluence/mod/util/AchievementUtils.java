@@ -148,7 +148,7 @@ public final class AchievementUtils {
     }
 
     public static void aRareRealm(ServerPlayer player, long gameTime) {
-        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED) && gameTime % 40 == 3) {
+        if (IMinecraftServer.of(player.server).matchesSecretFlag(IWorldOptions.SECRET_SEED) && gameTime % 40 == 3) {
             awardAchievement(player, "a_rare_realm");
         }
     }

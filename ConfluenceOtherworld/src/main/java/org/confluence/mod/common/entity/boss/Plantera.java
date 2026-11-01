@@ -155,7 +155,7 @@ public class Plantera extends BaseBoss {
             if (getTarget() != null) {
                 if (distanceToSqr(getTarget()) > HOOK_SEARCH_RANGE * HOOK_SEARCH_RANGE
                         || !level().getBiome(getTarget().blockPosition()).is(BiomeTags.IS_JUNGLE)
-                        || getTarget().getY() >= OverworldUtils.getSurfaceY()) {
+                        || OverworldUtils.aboveSurface(getTarget().getY())) {
                     enrage();
                 }
                 tickProjectileAttacks();

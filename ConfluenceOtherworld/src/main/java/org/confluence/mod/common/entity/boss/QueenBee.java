@@ -386,7 +386,7 @@ public class QueenBee extends BaseBoss {
 
     public double enrageStrength() {
         return (level().getBiome(blockPosition()).is(BiomeTags.IS_JUNGLE) ? 0 : 1)
-                + (getY() >= OverworldUtils.getSurfaceY() ? 1 : 0) + (isFtw() ? 0.5 : 0);
+                + (OverworldUtils.aboveSurface(getY()) ? 1 : 0) + (isFtw() ? 0.5 : 0);
     }
 
     private CreatureDefinition.StateOverrides temperamentParameters() {
@@ -506,7 +506,7 @@ public class QueenBee extends BaseBoss {
         super.die(source);
         if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
-                KillBoard.INSTANCE.defeat(serverLevel.getServer(), getType());
+                KillBoard.INSTANCE.defeat(getType());
                 for (var player : getOnlineCombatParticipants()) {
                     TreasureBagItem.createItemEntity(this, player);
                 }

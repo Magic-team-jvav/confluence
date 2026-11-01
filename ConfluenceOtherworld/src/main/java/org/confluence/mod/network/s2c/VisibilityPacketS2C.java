@@ -81,7 +81,7 @@ public record VisibilityPacketS2C(byte mask) implements IPortPacket.S2C {
             visible = (extra.isDefault() && ExtraInventory.of(player).getVanityArmor(ExtraInventory.VANITY_HEAD_INDEX, false).is(VanityArmorItems.SUNGLASSES.get())) || extra.isTrue();
         }
         if (visible &&
-                player.getY() > OverworldUtils.getSurfaceY() &&
+                OverworldUtils.aboveSurface(player.getY()) &&
                 !ModSecretSeeds.DONT_DIG_UP.match(player.server) &&
                 !player.level().isRaining() &&
                 LibDateUtils.isWithinDayTime(

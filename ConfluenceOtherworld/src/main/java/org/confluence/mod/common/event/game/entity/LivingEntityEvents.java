@@ -13,52 +13,37 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.eventbus.api.Event;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
-import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibTags;
-import org.confluence.lib.common.entity.PartHitTarget;
 import org.confluence.lib.mixed.ILibMobEffectInstance;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.api.event.SoulCollectionEvent;
 import org.confluence.mod.api.event.SoulOverdraftEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
-import org.confluence.mod.api.item.ISoulBow;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.SoulStorage;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.data.map.AttackEffects;
-import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.DryadsBlessingEffect;
@@ -67,7 +52,6 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.EnemyTargeting;
-import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
@@ -80,13 +64,15 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.TownPopulation;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
-import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
 import org.confluence.mod.common.entity.yoyo.BaseYoyoProjectile;
 import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModBlockCounters;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
@@ -97,7 +83,6 @@ import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.common.HomingBeeItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
-import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.whip.WhipDamageSource;
@@ -117,7 +102,6 @@ import org.mesdag.portlib.diff.Diff;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.living.*;
-import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -133,8 +117,7 @@ public final class LivingEntityEvents {
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.HIGHEST, LivingEntityEvents::blockEnemyFriendlyFire);
         PortEventHandler.addListener(LivingEntityEvents::death);
-        PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::deathSoul);
-        PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::dropMoneyOnDeath);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::death$Lowest);
         PortEventHandler.addListener(PortEventPriority.LOWEST, DungeonSpirit::onDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
         PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
@@ -159,25 +142,6 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::toBeBestiaryEntry);
         PortEventHandler.addListener(LivingEntityEvents::armorPenetration);
         PortEventHandler.addListener(LivingEntityEvents::potionColorCalculation);
-        // 魂师：祈灵之刃贯穿、额外增伤与额外收魂，外加套装被动
-        PortEventHandler.addListener(LivingEntityEvents::soulKnifeReach);
-        PortEventHandler.addListener(LivingEntityEvents::soulKnifeBonusDamage);
-        PortEventHandler.addListener(LivingEntityEvents::soulKnifeExtraSoul);
-        PortEventHandler.addListener(LivingEntityEvents::soulBowBonusDamage);
-        PortEventHandler.addListener(LivingEntityEvents::soulBowExtraSoul);
-        PortEventHandler.addListener(LivingEntityEvents::seekerSetDamage);
-        PortEventHandler.addListener(LivingEntityEvents::soulDropBonus);
-        PortEventHandler.addListener(LivingEntityEvents::enduranceDamageReduction);
-        PortEventHandler.addListener(LivingEntityEvents::souldancerDamageReduction);
-        PortEventHandler.addListener(LivingEntityEvents::soulSkillSummonDamage);
-        PortEventHandler.addListener(LivingEntityEvents::boilingBloodHit);
-        PortEventHandler.addListener(LivingEntityEvents::soulSkillOnHurt);
-        PortEventHandler.addListener(LivingEntityEvents::bloodRageSoul);
-        // 魂师：收魂饰品加成、魂刀/弓命中回魂、主武器自带效果
-        PortEventHandler.addListener(LivingEntityEvents::soulCollectionAccessoryBonus);
-        PortEventHandler.addListener(LivingEntityEvents::soulWeaponHitSoul);
-        PortEventHandler.addListener(LivingEntityEvents::soulWeaponTraitsOnSkillHit);
-        PortEventHandler.addListener(LivingEntityEvents::brokenGlimmerHeal);
     }
 
     private static void death(LivingDeathEvent event) {
@@ -189,8 +153,8 @@ public final class LivingEntityEvents {
             if (victim instanceof Enemy && !(victim instanceof OwnedSummon)
                     && !(victim instanceof TheHungry hungry && hungry.isLootSuppressed())
                     && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
-                    && KillBoard.INSTANCE.getGamePhase().isHardmode()
-                    && level.getBiome(victim.blockPosition()).is(PortTags.Biomes.IS_OCEAN)
+                    && ModUtils.isHardmode()
+                    && OverworldUtils.isOcean(level.getBiome(victim.blockPosition()))
                     && victim.getRandom().nextInt(100) == 0) {
                 victim.spawnAtLocation(ConsumableItems.PIRATE_MAP.get());
             }
@@ -228,8 +192,9 @@ public final class LivingEntityEvents {
                     ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
 
-                if (npc.getType() == NpcEntities.GUIDE.get() && damageSource.is(DamageTypes.LAVA)) {
-                    GuideVooDooDollItem.summon(npc, level, npc.getRandom1211().nextBoolean(), () -> null);
+                // todo 改到Guide类内
+                if (npc.getType() == NpcEntities.GUIDE.get() && OverworldUtils.inUnderworld(level.dimension(), npc.getY()) && damageSource.is(DamageTypes.LAVA)) {
+                    GuideVooDooDollItem.summon(npc, level, npc.getRandom().nextBoolean(), () -> null);
                 }
             }
             if (victim.hasEffect(ModEffects.BLOOD_BUTCHERED.get())) {
@@ -237,26 +202,26 @@ public final class LivingEntityEvents {
             }
             DeathMotionPacketS2C.sendToAll(victim);
             NoTraps.entityDropsGrenade(victim);
+
+            if (!event.isCanceled() && event.getEntity() instanceof ServerPlayer player) {
+                PlayerUtils.dropMoney(player);
+            }
         }
     }
 
-    /// 在未取消的死亡结算后保留玩家灵魂，并处理击杀收魂。
-    private static void deathSoul(LivingDeathEvent event) {
+    private static void death$Lowest(LivingDeathEvent event) {
         LivingEntity victim = event.getEntity();
         if (victim instanceof ServerPlayer player) {
+            // 在未取消的死亡结算后保留玩家灵魂，并处理击杀收魂。
             SoulStorage.of(player).onDeath();
+            // 以防止玩家假死不停掉钱
+            PlayerUtils.dropMoney(player);
         }
-        PlayerUtils.collectSoul(victim, event.getSource());
-        /// 附魂印记：击杀带印记的敌人额外回 2 点灵魂（普通收魂照常结算，这是叠加的一份）。
+        SoulcererUtils.collectSoul(victim, event.getSource());
+        // 附魂印记：击杀带印记的敌人额外回 2 点灵魂（普通收魂照常结算，这是叠加的一份）。
         if (victim.hasEffect(ModEffects.SOUL_MARK.get())
                 && LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer killer) {
-            PlayerUtils.adjustSoul(killer, SoulSkillParameters.SOUL_MARK_KILL_SOUL);
-        }
-    }
-
-    private static void dropMoneyOnDeath(LivingDeathEvent event) {
-        if (!event.isCanceled() && event.getEntity() instanceof ServerPlayer player) {
-            PlayerUtils.dropMoney(player);
+            SoulcererUtils.adjustSoul(killer, SoulSkillParameters.SOUL_MARK_KILL_SOUL);
         }
     }
 
@@ -311,7 +276,7 @@ public final class LivingEntityEvents {
         }
         LivingEntity living = event.getEntity();
 
-        applyBossDefinitionDamage(event, living, damageSource);
+        ModUtils.applyBossDefinitionDamage(event, living, damageSource);
 
         if (living instanceof ServerPlayer player) {
             AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
@@ -319,265 +284,17 @@ public final class LivingEntityEvents {
         if (Immunity.getCause(event.getSource()) != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
-    }
 
-    /// 祈灵之刃：向前贯穿扁矩形范围，主目标仍由原版结算，这里只补打其余敌怪。
-    private static void soulKnifeReach(AttackEntityEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player) || !player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
-            return;
-        }
-        float scale = player.getAttackStrengthScale(0.5F);
-        if (scale < SoulSkillParameters.SPIRITWARD_BLADE_MIN_CHARGE) {
-            return;
-        }
-        Vec3 eye = player.getEyePosition();
-        AABB box = new AABB(eye, eye.add(player.getLookAngle().scale(SoulSkillParameters.SPIRITWARD_BLADE_REACH)))
-                .inflate(SoulSkillParameters.SPIRITWARD_BLADE_HALF_WIDTH, SoulSkillParameters.SPIRITWARD_BLADE_HALF_HEIGHT, SoulSkillParameters.SPIRITWARD_BLADE_HALF_WIDTH);
-        Entity primary = event.getTarget();
-        float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage().value()) * (0.2F + scale * scale * 0.8F);
-        DamageSource source = player.damageSources().playerAttack(player);
-        for (LivingEntity target : player.level().getEntitiesOfClass(LivingEntity.class, box,
-                entity -> entity != player && entity != primary && entity.isAlive() && !entity.isSpectator() && player.canAttack(entity))) {
-            target.hurt(source, damage);
-        }
-    }
-
-    /// 祈灵之刃：当前灵魂高于阈值时，持有者造成的近战伤害额外提升。
-    private static void soulKnifeBonusDamage(PortLivingIncomingDamageEvent event) {
-        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
-                || !player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
-            return;
-        }
-        if (PlayerUtils.getSoul(player) > SoulSkillParameters.SPIRITWARD_BLADE_SOUL_THRESHOLD) {
-            event.setAmount(event.getAmount() + SoulSkillParameters.SPIRITWARD_BLADE_DAMAGE_BONUS);
-        }
-    }
-
-    /// 祈灵之刃：用它击杀的敌怪额外收取灵魂。
-    private static void soulKnifeExtraSoul(SoulCollectionEvent event) {
-        if (event.getEntity().getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get())) {
-            event.setAmount(event.getAmount() + SoulSkillParameters.SPIRITWARD_BLADE_KILL_SOUL_BONUS);
-        }
-    }
-
-    /// 灵魂短弓 / 灵魂弓：当前灵魂高于阈值时，由它射出的箭矢额外提升伤害。
-    private static void soulBowBonusDamage(PortLivingIncomingDamageEvent event) {
-        if (!(event.getSource().getDirectEntity() instanceof AbstractArrow arrow)
-                || !(arrow.getOwner() instanceof ServerPlayer player)
-                || !(ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem()))) {
-            return;
-        }
-        if (PlayerUtils.getSoul(player) > SoulSkillParameters.SOUL_BOW_SOUL_THRESHOLD) {
-            event.setAmount(event.getAmount() + SoulSkillParameters.SOUL_BOW_DAMAGE_BONUS);
-        }
-    }
-
-    /// 灵魂短弓 / 灵魂弓：用它击杀的敌怪额外收取灵魂。
-    private static void soulBowExtraSoul(SoulCollectionEvent event) {
-        Player player = event.getEntity();
-        if (ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem())) {
-            event.setAmount(event.getAmount() + SoulSkillParameters.SOUL_BOW_KILL_SOUL_BONUS);
-        }
-    }
-
-    /// 束魂锁链 / 手环系列（灵魂手环、灵魂再生手环、通灵手环共用 `band_of_soul` 标记）/ 刻骨的记忆：
-    /// 每佩戴一种，每次收魂额外 +1 灵魂。
-    ///
-    /// 三种手环共用同一个 `ValueType.UnitType`，因此戴多只也只算一份加成。
-    private static void soulCollectionAccessoryBonus(SoulCollectionEvent event) {
-        Player player = event.getEntity();
-        float bonus = 0.0F;
-        if (TCUtils.hasType(player, AccessoryItems.SOUL$BINDING$CHAIN)) {
-            bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
-        }
-        if (TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL)) {
-            bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
-        }
-        if (TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
-            bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
-        }
-        if (bonus > 0.0F) {
-            event.setAmount(event.getAmount() + bonus);
-        }
-    }
-
-    /// 祈灵之刃 / 灵魂弓 / 灵魂短弓：攻击命中敌怪时有 50% 概率额外获得 1 点灵魂。
-    private static void soulWeaponHitSoul(PortLivingIncomingDamageEvent event) {
-        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player) || event.getEntity() == player) {
-            return;
-        }
-        boolean soulKnife = player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get());
-        boolean soulBow = ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem());
-        if (!soulKnife && !soulBow) {
-            return;
-        }
-        if (!PlayerUtils.isSoulMode(player) || player.getRandom().nextFloat() >= SoulSkillParameters.SOUL_WEAPON_HIT_SOUL_CHANCE) {
-            return;
-        }
-        PlayerUtils.adjustSoul(player, SoulSkillParameters.SOUL_WEAPON_HIT_SOUL);
-    }
-
-    /// 主武器自带效果里「技能命中」的那几条：星魄补一颗坠星、丛林的灯附带中毒、无分昼夜附带暗影焰；
-    /// 另外统一结算**附魂印记**的回魂：技能命中带印记的敌人回 1 魂。
-    ///
-    /// 只认灵魂伤害来源，因此普通近战 / 弓箭不会触发。
-    private static void soulWeaponTraitsOnSkillHit(PortLivingIncomingDamageEvent event) {
-        if (!event.getSource().is(LibDamageTypes.SOUL)) {
-            return;
-        }
-        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)) {
-            return;
-        }
-        LivingEntity victim = event.getEntity();
-        if (victim == player || !victim.isAlive()) {
-            return;
-        }
-        /// 附魂印记：这只敌人身上有印记，任何技能（灵魂伤害）打中它都回 1 魂。
-        if (victim.hasEffect(ModEffects.SOUL_MARK.get())) {
-            PlayerUtils.adjustSoul(player, SoulSkillParameters.SOUL_MARK_HIT_SOUL);
-        }
-        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.STAR_ON_SKILL_HIT)
-                && !isStarProjectile(event)
-                && player.getRandom().nextFloat() < SoulSkillParameters.STAR_SPIRIT_STAR_CHANCE) {
-            Vec3 center = victim.getBoundingBox().getCenter();
-            float damage = PlayerUtils.getSoulSkillDamage(player, ModSoulSkills.STAR_CALL.get().getStack());
-            SoulLureProjectile star = SoulLureProjectile.star(player,
-                    new Vec3(center.x, PlayerUtils.starCallSpawnY(player.level(), victim), center.z),
-                    new Vec3(0.0, -1.0, 0.0), damage, 2.0F, 0.0);
-            player.level().addFreshEntity(star);
-        }
-        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)) {
-            victim.addEffect(new MobEffectInstance(MobEffects.POISON, SoulSkillParameters.LIFE_SPLENDOR_POISON_TICKS, 0, false, true, true));
-        }
-        if (PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.SHADOWFLAME_ON_SKILL_HIT)) {
-            victim.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME.get(), SoulSkillParameters.DAY_AND_NIGHT_ALIKE_SHADOWFLAME_TICKS, 0, false, true, true));
-        }
-    }
-
-    /// 星魄的坠星本身也是灵魂伤害：它命中时不再触发星魄，避免自我循环。
-    private static boolean isStarProjectile(PortLivingIncomingDamageEvent event) {
-        return event.getSource().getDirectEntity() instanceof SoulLureProjectile lure && lure.isStarAppearance();
-    }
-
-    /// 残破微光：手持时获得灵魂，有 20% 概率回复 4 点生命。
-    ///
-    /// 「获得灵魂」走收魂事件（击杀结算），灵魂再生与灵魂手环的缓慢回复不受它影响。
-    private static void brokenGlimmerHeal(SoulCollectionEvent event) {
-        Player player = event.getEntity();
-        if (!PlayerUtils.holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.HEAL_ON_SOUL_GAIN)) {
-            return;
-        }
-        if (player.getRandom().nextFloat() < SoulSkillParameters.BROKEN_GLIMMER_HEAL_CHANCE) {
-            player.heal(SoulSkillParameters.BROKEN_GLIMMER_HEAL_AMOUNT);
-        }
-    }
-
-    /// 逐灵全套：当前灵魂高于阈值时造成的伤害提高。
-    private static void seekerSetDamage(PortLivingIncomingDamageEvent event) {
-        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
-                || !PlayerUtils.isWearingSeekerSet(player)
-                || PlayerUtils.getSoul(player) <= SoulSkillParameters.SEEKER_DAMAGE_SOUL_THRESHOLD) {
-            return;
-        }
-        event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.SEEKER_DAMAGE_BONUS));
-    }
-
-    /// 魂师套装：逐件与套装的灵魂掉落加成统一汇总，幻翼套在夜间再加。
-    private static void soulDropBonus(SoulCollectionEvent event) {
-        Player player = event.getEntity();
-        float bonus = ModArmorBonus.getValue(player, ModArmorBonus.SOUL$DROP);
-        if (PlayerUtils.isWearingPhantomSet(player) && player.level().isNight()) {
-            bonus += SoulSkillParameters.PHANTOM_NIGHT_SOUL_DROP_BONUS;
-        }
-        if (bonus > 0.0F) {
-            event.setAmount(event.getAmount() + bonus);
-        }
-        PlayerUtils.onSoulCollected(player, player.level().getGameTime());
-    }
-
-    /// 耐力效果：所受伤害降低 10%。
-    private static void enduranceDamageReduction(PortLivingIncomingDamageEvent event) {
-        if (event.getEntity().hasEffect(ModEffects.ENDURANCE.get())) {
-            event.setAmount(event.getAmount() * 0.9F);
-        }
-    }
-
-    /// 魂舞全套：收集灵魂后的限时减伤。
-    private static void souldancerDamageReduction(PortLivingIncomingDamageEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player
-                && player.level().getGameTime() < SoulStorage.of(player).getSouldancerBuffEnd()) {
-            event.setAmount(event.getAmount() * (1.0F - SoulSkillParameters.SOULDANCER_DAMAGE_REDUCTION));
-        }
-    }
-
-    /// 魂师召唤物被动：召唤物命中时概率回魂、耗魂换取增伤。
-    private static void soulSkillSummonDamage(PortLivingIncomingDamageEvent event) {
-        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer owner)) {
-            return;
-        }
-        Entity direct = event.getSource().getDirectEntity();
-        if (direct == owner || event.getEntity() == owner) {
-            return;
-        }
-        if (PlayerUtils.isPassiveSoulSkillActive(owner, ModSoulSkills.SOUL_DEVOUR.get())
-                && PlayerUtils.consumeSoul(owner, SoulSkillParameters.SOUL_DEVOUR_SOUL_COST)) {
-            event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.SOUL_DEVOUR_DAMAGE_BONUS));
-        }
-        if (PlayerUtils.isPassiveSoulSkillActive(owner, ModSoulSkills.SOUL_HARVEST.get())
-                && owner.getRandom().nextFloat() < SoulSkillParameters.SOUL_HARVEST_CHANCE) {
-            PlayerUtils.adjustSoul(owner, SoulSkillParameters.SOUL_HARVEST_SOUL);
-        }
-    }
-
-    /// 血液沸腾：把下一次近战攻击放大并消耗掉增益。
-    private static void boilingBloodHit(PortLivingIncomingDamageEvent event) {
-        if (!(event.getSource().getDirectEntity() instanceof ServerPlayer player) || !player.hasEffect(ModEffects.BOILING_BLOOD.get())) {
-            return;
-        }
-        event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.BOILING_BLOOD_DAMAGE_MULTIPLIER));
-        player.removeEffect(ModEffects.BOILING_BLOOD.get());
-    }
-
-    /// 灵魂缓冲把摔落伤害改成回复；生命归还记录期间失去的生命。
-    private static void soulSkillOnHurt(PortLivingIncomingDamageEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
-        }
-        if (event.getSource().is(DamageTypeTags.IS_FALL) && player.hasEffect(ModEffects.SOUL_BUFFER.get())) {
-            player.heal(event.getAmount() * SoulSkillParameters.SOUL_BUFFER_CONVERT_RATIO);
-            event.setCanceled(true);
-            return;
-        }
-        if (player.hasEffect(ModEffects.LIFE_RETURN.get())) {
-            SoulStorage storage = SoulStorage.of(player);
-            storage.setLifeReturnLost(storage.getLifeReturnLost() + event.getAmount());
-        }
-    }
-
-    /// 血怒：击杀额外收魂。
-    private static void bloodRageSoul(SoulCollectionEvent event) {
-        if (event.getEntity().hasEffect(ModEffects.BLOOD_RAGE.get())) {
-            event.setAmount(event.getAmount() + SoulSkillParameters.BLOOD_RAGE_KILL_SOUL_BONUS);
-        }
-    }
-
-    /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。    ///
-    /// 该入口位于护甲、抗性和暴击等后续减伤之前，因此普通近战、固定接触伤害以及
-    /// Boss 所有的弹幕共享完全相同的基础伤害倍率，不需要每个攻击类重复读取 JSON。
-    private static void applyBossDefinitionDamage(PortLivingIncomingDamageEvent event, LivingEntity victim, DamageSource source) {
-        Entity attacker = LibEntityUtils.getOwner(source);
-        if (attacker instanceof PartHitTarget part) {
-            attacker = part.encounterOwner();
-        }
-        if (attacker instanceof BossOwnedEntity owned) {
-            attacker = owned.getBossOwner();
-        }
-        if (!(attacker instanceof BaseBoss boss) || boss == victim) return;
-
-        double multiplier = CreatureDefinition.get(boss.getType()).boss().damageMultiplierOr(1.0D) * CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get();
-        if (multiplier != 1.0D) {
-            event.setAmount((float) Math.max(0.0D, event.getAmount() * multiplier));
-        }
+        SoulcererUtils.soulKnifeBonusDamage(event);
+        SoulcererUtils.soulBowBonusDamage(event);
+        SoulcererUtils.soulWeaponHitSoul(event);
+        SoulcererUtils.soulWeaponTraitsOnSkillHit(event);
+        SoulcererUtils.seekerSetDamage(event);
+        SoulcererUtils.enduranceDamageReduction(event);
+        SoulcererUtils.souldancerDamageReduction(event);
+        SoulcererUtils.soulSkillSummonDamage(event);
+        SoulcererUtils.boilingBloodHit(event);
+        SoulcererUtils.soulSkillOnHurt(event);
     }
 
     private static void damage$Pre(PortLivingDamageEvent.Pre event) {
@@ -640,7 +357,8 @@ public final class LivingEntityEvents {
         }
         @Nullable Entity attacker = damageSource.getEntity();
 
-        if (attacker instanceof Decayeder decayeder) decayeder.onDamageDealt(serverLevel, victim, damageSource);
+        if (attacker instanceof Decayeder decayeder)
+            decayeder.onDamageDealt(serverLevel, victim, damageSource);
 
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
@@ -674,7 +392,7 @@ public final class LivingEntityEvents {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
             // 白南瓜全套：近战暴击回复灵魂
             if (event.isCritical() && event.getDamageSource().getDirectEntity() == player
-                    && PlayerUtils.isWearingWhitePumpkinSet(player)) {
+                    && PlayerSpecialData.of(player).getArmorSetBonusKey() == ModArmorBonus.WHITE_PUMPKIN_SET) {
                 SoulStorage.of(player).receive(SoulSkillParameters.WHITE_PUMPKIN_CRIT_SOUL);
             }
         }
@@ -748,24 +466,24 @@ public final class LivingEntityEvents {
             drops.add(entity);
         }
         boolean isEnemy = living instanceof Enemy;
-        if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
+        if (ModUtils.isHardmode() &&
                 isEnemy &&
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
-                (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
+                (OverworldUtils.inCave(living.getY()) || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom1211().nextFloat() < (LibUtils.isAtLeastExpert(level) ? 0.36F : 0.2F)
         ) { // 掉落光明或暗影之魂
             Holder<Biome> biome = level.getBiome(living.blockPosition());
             ItemStack soul = ItemStack.EMPTY;
-            if (biome.is(ModTags.Biomes.THE_HALLOW)) {
+            if (OverworldUtils.isHallow(biome)) {
                 soul = MaterialItems.SOUL_OF_LIGHT.toStack();
-            } else if (biome.is(ModTags.Biomes.THE_CORRUPTION) || biome.is(ModTags.Biomes.THE_CRIMSON)) {
+            } else if (OverworldUtils.isEvil(biome)) {
                 soul = MaterialItems.SOUL_OF_NIGHT.toStack();
             }
             if (soul != ItemStack.EMPTY) {
                 drops.add(new ItemEntity(level, x, y, z, soul, 0, 0.02, 0));
             }
         }
-        if (isEnemy && level.dimension() == OverworldUtils.underworld() && living.getRandom1211().nextInt(400) == 0) { // 掉落喷流球
+        if (isEnemy && OverworldUtils.inUnderworld(level.dimension(), living.getY()) && living.getRandom1211().nextInt(400) == 0) { // 掉落喷流球
             drops.add(new ItemEntity(level, x, y, z, YoyoItems.CASCADE.toStack()));
         }
 
@@ -810,11 +528,10 @@ public final class LivingEntityEvents {
         EntityType<?> type = mob.getType();
         if (type == EntityType.ZOMBIE) {
             BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
-            Holder<Biome> biome = level.getBiome(blockPos);
             DifficultyInstance difficulty = event.getDifficulty();
-            if (biome.is(PortTags.Biomes.IS_ICY) || biome.is(PortTags.Biomes.IS_SNOWY)) {
+            if (OverworldUtils.isSnowy(level.getBiome(blockPos))) {
                 boolean pink = mob.getRandom1211().nextFloat() < 0.01F;
-                Mob replacement = replaceSpawn(level, mob, (pink ? MonsterEntities.PINK_FROZEN_ZOMBIE : MonsterEntities.FROZEN_ZOMBIE).get());
+                Mob replacement = ModUtils.replaceSpawn(level, mob, (pink ? MonsterEntities.PINK_FROZEN_ZOMBIE : MonsterEntities.FROZEN_ZOMBIE).get());
                 Mob equipped = replacement == null ? mob : replacement;
                 LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
                 LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
@@ -826,7 +543,7 @@ public final class LivingEntityEvents {
                     return;
                 }
             } else if (ModUtils.isRainingAt(level, blockPos)) {
-                Mob replacement = replaceSpawn(level, mob, MonsterEntities.RAINCOAT_ZOMBIE.get());
+                Mob replacement = ModUtils.replaceSpawn(level, mob, MonsterEntities.RAINCOAT_ZOMBIE.get());
                 Mob equipped = replacement == null ? mob : replacement;
                 LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
                 LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
@@ -836,7 +553,7 @@ public final class LivingEntityEvents {
                     return;
                 }
             } else if (mob.getRandom1211().nextFloat() < SLIME_ZOMBIE_CHANCE) {
-                Mob replacement = replaceSpawn(level, mob, MonsterEntities.SLIME_ZOMBIE.get());
+                Mob replacement = ModUtils.replaceSpawn(level, mob, MonsterEntities.SLIME_ZOMBIE.get());
                 if (replacement != null && level.addFreshEntity(replacement)) {
                     event.setSpawnCancelled(true);
                     return;
@@ -845,7 +562,7 @@ public final class LivingEntityEvents {
         } else if (type == EntityType.SKELETON) {
             DifficultyInstance difficulty = event.getDifficulty();
             if (!level.canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom1211().nextFloat() < 0.01F) {
-                Mob replacement = replaceSpawn(level, mob, MonsterEntities.UNDEAD_MINER.get());
+                Mob replacement = ModUtils.replaceSpawn(level, mob, MonsterEntities.UNDEAD_MINER.get());
                 Mob equipped = replacement == null ? mob : replacement;
                 LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
                 LibEntityUtils.setItemAndDropChance(equipped, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
@@ -881,19 +598,6 @@ public final class LivingEntityEvents {
                 BossMultiplayerEnhancement.apply(mob, true);
             }
         }
-    }
-
-    // 把即将生成的生物替换成独立类型；位置、朝向与速度保持一致。
-    //
-    // 返回 null 表示创建失败，调用方需要退回到直接修改原生物的做法。
-    private static <T extends Mob> @Nullable T replaceSpawn(ServerLevel level, Mob original, EntityType<T> replacementType) {
-        T replacement = replacementType.create(level);
-        if (replacement == null) return null;
-        replacement.moveTo(original.getX(), original.getY(), original.getZ(), original.getYRot(), original.getXRot());
-        replacement.setYHeadRot(original.getYHeadRot());
-        replacement.yBodyRot = original.yBodyRot;
-        replacement.setDeltaMovement(original.getDeltaMovement());
-        return replacement;
     }
 
     private static void useItem$Start(LivingEntityUseItemEvent.Start event) {
@@ -977,7 +681,7 @@ public final class LivingEntityEvents {
     private static void spawnClusterSize(PortSpawnClusterSizeEvent event) {
         if (BloodMoonGameEvent.INSTANCE.started()) {
             Mob mob = event.getEntity();
-            if (mob instanceof Enemy && mob.position().y > OverworldUtils.getSurfaceY()) {
+            if (mob instanceof Enemy && OverworldUtils.inSurface(mob.getY())) {
                 event.setSize(LibMathUtils.multiplyInt(event.getSize(), 2, mob.getRandom1211()));
             }
         }

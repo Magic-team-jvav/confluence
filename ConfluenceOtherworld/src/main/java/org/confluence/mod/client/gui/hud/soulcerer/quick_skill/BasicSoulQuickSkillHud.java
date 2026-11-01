@@ -1,11 +1,11 @@
 package org.confluence.mod.client.gui.hud.soulcerer.quick_skill;
 
-import org.mesdag.portlib.client.PortDeltaTicker;
 import net.minecraft.client.gui.GuiGraphics;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
+import org.mesdag.portlib.client.PortDeltaTicker;
 
 public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
     protected boolean active = false;
@@ -18,7 +18,7 @@ public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
     /// 准备技能显示数据并渲染快捷栏。
     @Override
     public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
-        if (!PlayerUtils.isHoldingSoulWeapon(getMinecraft().player)) {
+        if (!SoulcererUtils.isHoldingSoulWeapon(getMinecraft().player)) {
             return;
         }
         if (!isInit){

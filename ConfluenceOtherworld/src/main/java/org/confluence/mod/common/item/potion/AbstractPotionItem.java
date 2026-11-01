@@ -25,7 +25,7 @@ import org.confluence.mod.common.attachment.PlayerVoidVaultContainer;
 import org.confluence.mod.common.block.conversion.natural.MoistenConversionTable;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.storage.VoidBagItem;
-import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.util.ModUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -88,13 +88,13 @@ public abstract class AbstractPotionItem extends Item {
         Level level = context.getLevel();
         Player player = context.getPlayer();
         ItemStack stack = context.getItemInHand();
-        if (player instanceof ServerPlayer serverPlayer &&
+        if (player instanceof ServerPlayer &&
                 context.getClickedFace() != Direction.DOWN &&
                 stack.is(PotionItems.BOTTLED_WATER)
         ) {
             BlockPos pos = context.getClickedPos();
             BlockState source = level.getBlockState(pos);
-            BlockState target = MoistenConversionTable.INSTANCE.get(source, IMinecraftServer.isHardmode(serverPlayer.server));
+            BlockState target = MoistenConversionTable.INSTANCE.get(source, ModUtils.isHardmode());
             if (target != null) {
                 level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
                 player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));

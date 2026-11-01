@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 
 public class SoulLureSkill extends SoulSkill {
     public SoulLureSkill(ResourceLocation icon, ResourceLocation id) {
@@ -18,7 +18,7 @@ public class SoulLureSkill extends SoulSkill {
     @Override
     public void use(Player player, SoulSkillStack skillStack) {
         if (player instanceof ServerPlayer serverPlayer) {
-            SoulLureProjectile projectile = new SoulLureProjectile(serverPlayer, PlayerUtils.getSoulSkillDamage(player, skillStack));
+            SoulLureProjectile projectile = new SoulLureProjectile(serverPlayer, SoulcererUtils.getSoulSkillDamage(player, skillStack));
             projectile.setWeakHoming(true);
             player.level().addFreshEntity(projectile);
         } else if (player.level().isClientSide) {

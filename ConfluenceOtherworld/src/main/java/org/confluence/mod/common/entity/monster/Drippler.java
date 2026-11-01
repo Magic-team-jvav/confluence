@@ -5,6 +5,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
@@ -32,7 +33,7 @@ public final class Drippler extends BaseFlyingMonster {
             @Override
             protected BTNode createTree() {
                 return new ConditionalSwitchNode(
-                        () -> level().isDay(),
+                        () -> LibDateUtils.isDay(level()),
                         new DemonEyeLeaveAction(Drippler.this),
                         new DirectFloatingPursuitAction(Drippler.this, 2.0)
                 );
@@ -42,12 +43,12 @@ public final class Drippler extends BaseFlyingMonster {
 
     @Override
     protected boolean canTargetPlayer(LivingEntity target) {
-        return level().isNight();
+        return LibDateUtils.isNight(level());
     }
 
     @Override
     public void tick() {
-        if (!level().isClientSide && level().isDay()) setTarget(null);
+        if (!level().isClientSide && LibDateUtils.isDay(level())) setTarget(null);
         super.tick();
     }
 

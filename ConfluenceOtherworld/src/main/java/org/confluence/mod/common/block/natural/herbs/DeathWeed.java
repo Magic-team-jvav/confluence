@@ -37,7 +37,7 @@ public class DeathWeed extends BaseHerbBlock {
     }
 
     @Override
-    public boolean canBloom(ServerLevel level, BlockState state) {
+    public boolean canBloom(ServerLevel level, BlockState state, BlockPos pos) {
         return LibDateUtils.isNight(level) && (MoonPhase.FULL_MOON.match(level) || BloodMoonGameEvent.INSTANCE.started());
     }
 

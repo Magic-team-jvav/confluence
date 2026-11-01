@@ -1,17 +1,5 @@
 package org.confluence.mod.common.event.game.entity;
 
-import org.confluence.mod.common.init.ModSoundEvents;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.entity.MobSpawnType;
-import org.confluence.mod.common.init.entity.NpcEntities;
-import org.confluence.mod.common.entity.npc.TownSlimeNPC;
-import net.minecraftforge.event.entity.player.ItemFishedEvent;
-import org.confluence.mod.mixed.IFishingHook;
-import org.confluence.mod.common.init.item.FishingPoleItems;
-import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
-import org.confluence.mod.common.entity.fishing.FishingSession;
-import org.confluence.mod.common.data.saved.AnglerData;
-import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -22,14 +10,17 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.*;
@@ -51,10 +42,8 @@ import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
-import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
-import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
-import org.confluence.mod.api.event.MinecartAbilityEvent;
+import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.api.event.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -64,19 +53,24 @@ import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
+import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.entity.fishing.FishingSession;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
@@ -86,14 +80,12 @@ import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
-import org.confluence.mod.mixed.IAbstractMinecart;
-import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.mixed.*;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
@@ -138,6 +130,7 @@ public final class PlayerEvents {
         PortEventHandler.addListener(PlayerEvents::dismountOnMinecart);
         PortEventHandler.addListener(PortEventPriority.HIGHEST, PlayerEvents::getArmorSetBonus);
         PortEventHandler.addListener(PlayerEvents::customPickupRange);
+        PortEventHandler.addListener(PlayerEvents::soulCollection);
     }
 
     private static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
@@ -345,7 +338,7 @@ public final class PlayerEvents {
 
     /// 血月夜晚的水中捕获可替换为生物；仅成功生成时返回 true，失败则保留原鱼获。
     private static boolean tryCatchBloodMoonMob(ServerPlayer player, FishingHook hook, FishingSession session) {
-        if (!BloodMoonGameEvent.INSTANCE.started() || player.serverLevel().isDay()
+        if (!BloodMoonGameEvent.INSTANCE.started() || LibDateUtils.isDay(player.level())
                 || !hook.getInBlockState().getFluidState().is(FluidTags.WATER)) return false;
         boolean chumCaster = session != null && session.rod().is(FishingPoleItems.CHUM_CASTER.get());
         if (player.getRandom().nextInt(chumCaster ? 3 : 6) != 0) return false;
@@ -417,6 +410,7 @@ public final class PlayerEvents {
         if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL) || stack.is(ModTags.Items.YOYO)) {
             event.setCanceled(true);
         }
+        SoulcererUtils.soulKnifeReach(event);
     }
 
     private static void cloneE(PlayerEvent.Clone event) {
@@ -481,7 +475,7 @@ public final class PlayerEvents {
     private static void container$Close(PlayerContainerEvent.Close event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
-        if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
+        if (!server.matchesSecretFlag(IWorldOptions.HARDMODE)) return;
         Level level = player.level();
         if (level.getDifficulty() == Difficulty.PEACEFUL) return;
         if (event.getContainer() instanceof ChestMenu menu &&
@@ -506,8 +500,8 @@ public final class PlayerEvents {
                 }
             } else if (key.is(ToolItems.KEY_OF_NIGHT.get())) {
                 boolean summonCorruption;
-                if (server.confluence$matchesSecretFlag(IWorldOptions.DOUBLE_EVIL) && !server.confluence$equalsSecretFlag(IWorldOptions.DOUBLE_EVIL)) {
-                    summonCorruption = server.confluence$matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
+                if (server.matchesSecretFlag(IWorldOptions.DOUBLE_EVIL) && !server.equalsSecretFlag(IWorldOptions.DOUBLE_EVIL)) {
+                    summonCorruption = server.matchesSecretFlag(IWorldOptions.THE_CORRUPTION);
                 } else {
                     summonCorruption = (level.getGameTime() / 24000L) % 2 == 0;
                 }
@@ -663,5 +657,14 @@ public final class PlayerEvents {
         event.addRange(PlayerUtils.MANA_RANGE, TCUtils.getValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.PROVIDE_MANA));
         event.addRange(PlayerUtils.COIN_RANGE, TCUtils.getValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA(), stack -> stack.is(ModTags.Items.COINS));
         event.addRange(PlayerUtils.HEART_RANGE, ModEffects.getHeartReachRange(player), stack -> stack.is(ModTags.Items.PROVIDE_LIFE));
+    }
+
+    private static void soulCollection(SoulCollectionEvent event) {
+        SoulcererUtils.soulBowExtraSoul(event);
+        SoulcererUtils.soulKnifeExtraSoul(event);
+        SoulcererUtils.soulCollectionAccessoryBonus(event);
+        SoulcererUtils.brokenGlimmerHeal(event);
+        SoulcererUtils.soulDropBonus(event);
+        SoulcererUtils.bloodRageSoul(event);
     }
 }

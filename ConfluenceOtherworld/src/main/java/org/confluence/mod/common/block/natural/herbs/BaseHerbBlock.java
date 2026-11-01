@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
@@ -72,7 +73,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         return blocks != null && blocks.contains(groundState.getBlock());
     }
 
-    public boolean canBloom(ServerLevel world, BlockState state) {
+    public boolean canBloom(ServerLevel world, BlockState state, BlockPos pos) {
         return false;
     }
 
@@ -82,9 +83,9 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         if (!level.isAreaLoaded(pos, 1)) return;
         int i = getAge(state);
         if (i < getMaxAge()) {
-            if (net.minecraftforge.common.ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt((int) (25.0F / 0.7F) + 1) == 0)) {
+            if (ForgeHooks.onCropsGrowPre(level, pos, state, random.nextInt((int) (25.0F / 0.7F) + 1) == 0)) {
                 level.setBlockAndUpdate(pos, getStateForAge(i + 1));
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(level, pos, state);
+                ForgeHooks.onCropsGrowPost(level, pos, state);
             }
         }
     }
@@ -136,7 +137,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
             if (level1.getGameTime() % 20 == 2) { // 每秒判断能不能开花
                 int age = getAge(state1);
                 if (age < MAX_AGE - 1) return;
-                if (canBloom((ServerLevel) level1, state1)) {
+                if (canBloom((ServerLevel) level1, state1, pos)) {
                     if (age != MAX_AGE) {
                         level1.setBlockAndUpdate(pos, state1.setValue(AGE, MAX_AGE));
                     }

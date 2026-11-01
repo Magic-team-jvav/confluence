@@ -1,17 +1,17 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import org.mesdag.portlib.network.codec.PortStreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.resources.ResourceLocation;
-import org.mesdag.portlib.network.PortPacketDistributor;
-import org.mesdag.portlib.network.IPortPacket;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.soulcerer.ClientSoulHandler;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
+import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
+import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record SoulSkillIndexSyncPacketS2C(int index) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("soulcerer_skill_index_sync");
@@ -34,6 +34,6 @@ public record SoulSkillIndexSyncPacketS2C(int index) implements IPortPacket.S2C 
 
     /// 仅向指定玩家发送当前选中索引。
     public static void sendToClient(ServerPlayer player) {
-        PortPacketDistributor.sendToPlayer(player, new SoulSkillIndexSyncPacketS2C(PlayerUtils.getCurrentSoulSkillIndex(player)));
+        PortPacketDistributor.sendToPlayer(player, new SoulSkillIndexSyncPacketS2C(SoulcererUtils.getCurrentSoulSkillIndex(player)));
     }
 }

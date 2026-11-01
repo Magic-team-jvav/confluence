@@ -37,7 +37,7 @@ public final class TownCritterSpawner implements CustomSpawner {
             if (!player.isAlive() || player.isSpectator() || player.isCreative()) continue;
             double chance = TownPopulation.critterChance(player);
             if (chance <= 0 || level.random.nextDouble() >= chance) continue;
-            double capFactor = level.dimension() == OverworldUtils.underworld() ? 0.5 : 0.6;
+            double capFactor = OverworldUtils.inUnderworld(level.dimension(), player.getY()) ? 0.5 : 0.6;
             int cap = (int) (MobCategory.CREATURE.getMaxInstancesPerChunk() * capFactor);
             AABB area = new AABB(player.blockPosition()).inflate(ModMiniBiomes.TOWN.horizontalRadius(),
                     ModMiniBiomes.TOWN.verticalRadius(), ModMiniBiomes.TOWN.horizontalRadius());
@@ -58,7 +58,7 @@ public final class TownCritterSpawner implements CustomSpawner {
                     (int) (Math.sin(angle) * radius));
             if (!level.isLoaded(column)) continue;
             BlockPos pos;
-            if (level.dimension() != OverworldUtils.underworld() && player.getY() >= OverworldUtils.getSurfaceY()) {
+            if (!OverworldUtils.inUnderworld(level.dimension(), player.getY()) && OverworldUtils.inSurface(player.getY())) {
                 pos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, column);
             } else {
                 pos = findGround(level, column);

@@ -3,26 +3,23 @@ package org.confluence.mod.client.gui.hud;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraft.util.Mth;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.attachment.SoulStorage;
+import org.confluence.mod.util.SoulcererUtils;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.client.PortGuiLayer;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
-import org.confluence.mod.common.attachment.SoulStorage;
-import org.confluence.mod.util.PlayerUtils;
 
 import java.util.Locale;
 
 import static org.confluence.mod.client.event.ModClientSetups.LEGACY_SIZE;
-import static org.confluence.mod.util.ClientUtils.SOUL_TINT_BLUE;
-import static org.confluence.mod.util.ClientUtils.SOUL_TINT_GREEN;
-import static org.confluence.mod.util.ClientUtils.SOUL_TINT_RED;
-import static org.confluence.mod.util.ClientUtils.colorDraw;
+import static org.confluence.mod.util.ClientUtils.*;
 
 public class TerraStyleManaHud implements PortGuiLayer {
     private static final int[] MANA = new int[]{0x5a82e2, 0xa248d7};
@@ -67,7 +64,7 @@ public class TerraStyleManaHud implements PortGuiLayer {
         minecraft.getProfiler().push("terra_style_hud");
 
         /// 灵魂条与魔力条各有独立的样式开关，同一时间只会画其中一个。
-        if (PlayerUtils.isSoulMode(minecraft.player)) {
+        if (SoulcererUtils.isSoulMode(minecraft.player)) {
             ClientConfigs.soulStyle.render(guiGraphics, minecraft);
         } else {
             ClientConfigs.manaStyle.render(guiGraphics, minecraft);
@@ -78,12 +75,12 @@ public class TerraStyleManaHud implements PortGuiLayer {
 
     /// 读取当前资源模式对应的客户端真值。
     private static float getCurrentResource(Minecraft minecraft) {
-        return PlayerUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getCurrentSoul() : ClientPacketHandler.getCurrentMana();
+        return SoulcererUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getCurrentSoul() : ClientPacketHandler.getCurrentMana();
     }
 
     /// 读取当前资源模式对应的资源上限。
     private static int getMaxResource(Minecraft minecraft) {
-        return PlayerUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getMaxSoul() : ClientPacketHandler.getMaxMana();
+        return SoulcererUtils.isSoulMode(minecraft.player) ? SoulStorage.of(minecraft.player).getMaxSoul() : ClientPacketHandler.getMaxMana();
     }
 
     /// 精致样式的灵魂条：每 20 灵魂一格，自右上向下排布「魂器底座 + 骷髅」。
@@ -132,7 +129,7 @@ public class TerraStyleManaHud implements PortGuiLayer {
                 float currentMana = getCurrentResource(minecraft);
                 int maxMana = getMaxResource(minecraft);
                 /// 灵魂条走独立图元，不再用魔力条染色，避免把新的底座/骷髅一起染成青色。
-                if (PlayerUtils.isSoulMode(minecraft.player)) {
+                if (SoulcererUtils.isSoulMode(minecraft.player)) {
                     renderLegacySoulBar(guiGraphics, currentMana, maxMana, widthMana, heightMana);
                     return;
                 }
@@ -163,7 +160,7 @@ public class TerraStyleManaHud implements PortGuiLayer {
                 int resourceMax = getMaxResource(minecraft);
                 float currentMana = resourceCurrent / OVERLAY_RESOURCE_DIVISOR;
                 float maxMana = (float) resourceMax / OVERLAY_RESOURCE_DIVISOR;
-                boolean soulMode = PlayerUtils.isSoulMode(minecraft.player);
+                boolean soulMode = SoulcererUtils.isSoulMode(minecraft.player);
                 int widthMana = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.manaOffsetX;
                 int heightMana = guiGraphics.guiHeight() - ((ForgeGui) minecraft.gui).rightHeight + ClientConfigs.manaOffsetY;
                 ((ForgeGui) minecraft.gui).rightHeight += OVERLAY_HUD_SPACING;

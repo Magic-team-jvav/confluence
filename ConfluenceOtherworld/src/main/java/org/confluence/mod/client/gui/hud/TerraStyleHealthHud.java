@@ -15,18 +15,14 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.common.PermanentUpgrade;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.client.PortGuiLayer;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.SOUL_TINT_BLUE;
-import static org.confluence.mod.util.ClientUtils.SOUL_TINT_GREEN;
-import static org.confluence.mod.util.ClientUtils.SOUL_TINT_RED;
-import static org.confluence.mod.util.ClientUtils.colorDraw;
-import static org.confluence.mod.util.ClientUtils.draw;
+import static org.confluence.mod.util.ClientUtils.*;
 
 public class TerraStyleHealthHud implements PortGuiLayer {
     private static final int[] HEALTH = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
@@ -183,7 +179,7 @@ public class TerraStyleHealthHud implements PortGuiLayer {
                 ((ForgeGui) minecraft.gui).leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
                 /// 灵魂不足以支付下一次施法时，生命条染成灵魂条的淡蓝色，提示这一下会扣血。
-                boolean soulOverdraft = PlayerUtils.isSoulOverdraftPending(player);
+                boolean soulOverdraft = SoulcererUtils.isSoulOverdraftPending(player);
                 if (soulOverdraft) {
                     guiGraphics.setColor(SOUL_TINT_RED, SOUL_TINT_GREEN, SOUL_TINT_BLUE, 1.0F);
                 }

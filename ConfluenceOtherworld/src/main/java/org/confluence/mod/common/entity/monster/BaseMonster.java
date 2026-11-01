@@ -42,6 +42,7 @@ import org.confluence.mod.common.entity.monster.difficulty.CreatureDifficultySca
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -242,7 +243,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
 
     /// 在自己的实体基类仲裁目标，不修改原版 Mob；Boss 保留专用遭遇规则。
     @Override
-    public void setTarget(LivingEntity target) {
+    public void setTarget(@Nullable LivingEntity target) {
         super.setTarget(usesSharedTargeting() && EnemyTargeting.applies(this) ? EnemyTargeting.select(this, target) : target);
     }
 

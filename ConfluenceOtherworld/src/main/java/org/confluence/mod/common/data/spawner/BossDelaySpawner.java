@@ -1,13 +1,11 @@
 package org.confluence.mod.common.data.spawner;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.color.GlobalColors;
@@ -24,7 +22,6 @@ import org.confluence.mod.common.gameevent.LanternNightGameEvent;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,7 +41,6 @@ public enum BossDelaySpawner {
         while (iterator.hasNext()) l:{
             Delayed<BaseBoss> delayed = iterator.next();
             if (--delayed.delay >= 0) continue;
-            int retryDelay = Integer.MAX_VALUE;
             for (ServerPlayer player : level.players()) {
                 int state = delayed.predicate.applyAsInt(player);
                 if (state == SUCCESS) {
@@ -55,14 +51,11 @@ public enum BossDelaySpawner {
                     iterator.remove();
                     break l;
                 } else if (state != CONTINUE) {
-                    retryDelay = Math.min(retryDelay, state);
+                    delayed.delay = state;
+                    break l;
                 }
             }
-            if (retryDelay != Integer.MAX_VALUE) {
-                delayed.delay = retryDelay;
-            } else {
-                iterator.remove();
-            }
+            iterator.remove();
         }
     }
 
@@ -97,8 +90,12 @@ public enum BossDelaySpawner {
                 continue;
             }
             BossDelaySpawner.INSTANCE.pushBoss(1350, BossEntities.EYE_OF_CTHULHU.get(), player1 -> {
+                // 天亮了说明这一夜已经过去，本次自然生成作废，避免残留队列一直压着后续夜晚的血月
                 if (!LibDateUtils.isNight(player1.level())) return BossDelaySpawner.CANCEL;
-                return player1.getY() >= OverworldUtils.getSurfaceY() && BossDelaySpawner.eyeOfCthulhuChecker(player1) ? BossDelaySpawner.SUCCESS : 20;
+                if (OverworldUtils.belowSurface(player1.getY()) || !BossDelaySpawner.eyeOfCthulhuChecker(player1)) {
+                    return 20;
+                }
+                return BossDelaySpawner.SUCCESS;
             });
             level.getServer().getPlayerList().broadcastSystemMessage(
                     Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()),
@@ -133,11 +130,10 @@ public enum BossDelaySpawner {
     }
 
     public static boolean deerclopsChecker(ServerPlayer player) {
-        if (player.getY() < OverworldUtils.getSurfaceY()) return false;
+        if (!OverworldUtils.inSurface(player.getY())) return false;
         if (player.getMaxHealth() < 40 && player.getArmorValue() < 9) return false;
         ServerLevel level = player.serverLevel();
-        Holder<Biome> biome = level.getBiome(player.blockPosition());
-        if (!biome.is(PortTags.Biomes.IS_SNOWY) && !biome.is(PortTags.Biomes.IS_ICY)) return false;
+        if (!OverworldUtils.isSnowy(level.getBiome(player.blockPosition()))) return false;
         int amount = GameEventSystem.INSTANCE.getStartedEventAmount(true, false);
         if (amount != 0 && (amount != 1 || !BloodMoonGameEvent.INSTANCE.started())) {
             return false;

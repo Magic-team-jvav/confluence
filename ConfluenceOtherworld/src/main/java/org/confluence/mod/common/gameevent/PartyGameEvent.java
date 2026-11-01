@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.NpcEntities;
@@ -43,7 +44,7 @@ public enum PartyGameEvent implements GameEvent {
         if (level == null) return false;
         if (requested) return true;
         long day = Math.floorDiv(level.getDayTime(), 24000);
-        if (!level.isDay() || Math.floorMod(level.getDayTime(), 24000) > 100 || checkedDay == day)
+        if (LibDateUtils.isNight(level) || Math.floorMod(level.getDayTime(), 24000) > 100 || checkedDay == day)
             return false;
         checkedDay = day;
         if (cooldownDays > 0) {
@@ -64,7 +65,7 @@ public enum PartyGameEvent implements GameEvent {
 
     @Override
     public boolean canEnd() {
-        return ending || level == null || !level.isDay();
+        return ending || level == null || LibDateUtils.isNight(level);
     }
 
     @Override

@@ -236,7 +236,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
         if (!(head instanceof EaterOfWorlds eater) || !eater.isExpert() || isTail()) return;
         LivingEntity target = eater.getTarget();
         if (target == null || !target.isAlive() || !hasLineOfSight(target)) return;
-        if (!eater.isFtw() && getY() < OverworldUtils.getSurfaceY()) return;
+        if (!eater.isFtw() && OverworldUtils.belowSurface(getY())) return;
         if (random.nextInt(eater.isFtw() ? 150 : 300) == 0)
             eater.shootVileSpit(getBoundingBox().getCenter());
     }

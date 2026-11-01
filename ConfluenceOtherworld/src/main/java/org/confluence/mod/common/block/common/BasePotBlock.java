@@ -50,7 +50,6 @@ import org.confluence.mod.common.init.block.TorchBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
-import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -145,19 +144,19 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (summonHole(serverLevel, center)) return;
         if (dropGoldKey(serverLevel, blockPos, center)) return;
         if (ForTheWorthy.summonPoweredCreeper(serverLevel, blockPos)) return;
-        if (dropPotion(serverLevel, blockPos, center)) return;
+        if (dropPotion(serverLevel, center)) return;
         if (dropWormhole(serverLevel, center)) return;
         boolean flag = switch (serverLevel.random.nextInt(7)) {
             case 0 -> dropHeart(serverLevel, blockPos, center);
             case 1 -> dropTorch(serverLevel, blockPos, center);
             case 2 -> dropAmmo(serverLevel, center);
-            case 3 -> dropHeal(serverLevel, blockPos, center);
+            case 3 -> dropHeal(serverLevel, center);
             case 4 -> dropBomb(serverLevel, blockPos, center);
-            case 5 -> dropRope(serverLevel, blockPos, center);
-            case 6 -> dropMoney(serverLevel, blockPos, center);
+            case 5 -> dropRope(serverLevel, center);
+            case 6 -> dropMoney(serverLevel, center);
             default -> false;
         };
-        if (!flag) dropMoney(serverLevel, blockPos, center);
+        if (!flag) dropMoney(serverLevel, center);
     }
 
     private boolean summonHole(ServerLevel level, Vec3 center) {
@@ -191,11 +190,10 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return false;
     }
 
-    private boolean dropPotion(ServerLevel level, BlockPos blockPos, Vec3 center) {
+    private boolean dropPotion(ServerLevel level, Vec3 center) {
         if (level.random.nextInt(45) < (LibUtils.isAtLeastExpert(level) ? 2 : 1)) {
-            double y = center.y;
             Item item = null;
-            if (level.dimension() == OverworldUtils.underworld()) {
+            if (OverworldUtils.inUnderworld(level.dimension(), center.y)) {
                 item = switch (level.random.nextInt(14)) {
                     case 0 -> SPELUNKER_POTION.get();
                     case 1 -> FEATHERFALL_POTION.get();
@@ -212,10 +210,10 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 12 -> TITAN_POTION.get();
                     default -> null;
                 };
-                if (level.random.nextFloat() < 0.2F) {
+                if (level.random.nextInt(5) == 0) {
                     item = RECALL_POTION.get();
                 }
-            } else if (y <= OverworldUtils.getUndergroundY()) {
+            } else if (OverworldUtils.inCave(center.y)) {
                 item = switch (level.random.nextInt(15)) {
                     case 0 -> SPELUNKER_POTION.get();
                     case 1 -> FEATHERFALL_POTION.get();
@@ -232,7 +230,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 13 -> DANGERSENSE_POTION.get();
                     default -> RECALL_POTION.get();
                 };
-            } else if (y <= OverworldUtils.getSurfaceY()) {
+            } else if (OverworldUtils.inUnderground(center.y)) {
                 item = switch (level.random.nextInt(11)) {
                     case 0 -> REGENERATION_POTION.get();
                     case 1 -> SHINE_POTION.get();
@@ -244,7 +242,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 7 -> DANGERSENSE_POTION.get();
                     default -> RECALL_POTION.get();
                 };
-            } else if (y <= OverworldUtils.getSpaceY()) {
+            } else if (OverworldUtils.inSurface(center.y)) {
                 item = switch (level.random.nextInt(10)) {
                     case 0 -> IRON_SKIN_POTION.get();
                     case 1 -> SHINE_POTION.get();
@@ -287,7 +285,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             } else if (player.getInventory().hasAnyMatching(itemStack -> itemStack.getCount() < 20 && itemStack.is(ModTags.Items.TORCH))) {
                 return dropTorch(level, blockPos, center);
             } else {
-                return dropMoney(level, blockPos, center);
+                return dropMoney(level, center);
             }
         }
         return false;
@@ -327,10 +325,10 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         int amount = level.random.nextInt(10, 21);
         Item item;
         if (level.random.nextBoolean()) {
-            item = IMinecraftServer.isHardmode(level.getServer()) ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
-        } else if (level.dimension() == OverworldUtils.underworld()) {
+            item = ModUtils.isHardmode() ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
+        } else if (OverworldUtils.inUnderworld(level.dimension(), center.y)) {
             item = ArrowItems.HELLFIRE_ARROW.get();
-        } else if (IMinecraftServer.isHardmode(level.getServer())) {
+        } else if (ModUtils.isHardmode()) {
             if (level.random.nextBoolean()) {
                 item = ArrowItems.UNHOLY_ARROW.get();
             } else {
@@ -343,9 +341,9 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return true;
     }
 
-    private boolean dropHeal(ServerLevel level, BlockPos blockPos, Vec3 center) {
+    private boolean dropHeal(ServerLevel level, Vec3 center) {
         Item item;
-        if (level.dimension() == OverworldUtils.underworld() || IMinecraftServer.isHardmode(level.getServer())) {
+        if (OverworldUtils.inUnderworld(level.dimension(), center.y) || ModUtils.isHardmode()) {
             item = PotionItems.HEALING_POTION.get();
         } else {
             item = PotionItems.LESSER_HEALING_POTION.get();
@@ -365,30 +363,29 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         } else if (level.dimension() == OverworldUtils.dimension()) {
             item = ConsumableItems.BOMB.get();
         } else {
-            return dropRope(level, blockPos, center);
+            return dropRope(level, center);
         }
         LibEntityUtils.createItemEntity(item, level.random.nextInt(1, LibUtils.isAtLeastExpert(level) ? 5 : 8), center, level, 0);
         return true;
     }
 
-    private boolean dropRope(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.dimension() == OverworldUtils.underworld() || IMinecraftServer.isHardmode(level.getServer())) {
-            return dropMoney(level, blockPos, center);
+    private boolean dropRope(ServerLevel level, Vec3 center) {
+        if (OverworldUtils.inUnderworld(level.dimension(), center.y) || ModUtils.isHardmode()) {
+            return dropMoney(level, center);
         }
         LibEntityUtils.createItemEntity(ModBlocks.ROPE.asItem(), level.random.nextInt(20, 41), center, level, 0);
         return true;
     }
 
-    private boolean dropMoney(ServerLevel level, BlockPos blockPos, Vec3 center) {
+    private boolean dropMoney(ServerLevel level, Vec3 center) {
         if (!CommonConfigs.ENEMY_DROPS_MONEY.get()) return false;
         float random = level.random.nextFloat();
         float ratio = 1.0F;
-        double y = center.y;
-        if (y <= OverworldUtils.getUndergroundY()) {
+        if (OverworldUtils.inCave(center.y)) {
             ratio = 1.25F;
-        } else if (y <= OverworldUtils.getSurfaceY()) {
+        } else if (OverworldUtils.inUnderground(center.y)) {
             ratio = 0.75F;
-        } else if (y <= OverworldUtils.getSpaceY()) {
+        } else if (OverworldUtils.inSurface(center.y)) {
             ratio = 0.5F;
         } else if (random < 0.05F) {
             ratio = Mth.nextFloat(level.random, 1.5F, 2.0F);
@@ -431,7 +428,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);
-        ModUtils.dropMoney(amount, center.x, y, center.z, level);
+        ModUtils.dropMoney(amount, center.x, center.y, center.z, level);
         return true;
     }
 }

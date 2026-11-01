@@ -9,7 +9,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.OldManNPC;
 import org.confluence.mod.common.entity.npc.SkeletonMerchantNPC;
 import org.confluence.mod.common.entity.npc.TravelingMerchantNPC;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.util.OverworldUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -45,8 +45,7 @@ public record MoodEnvironment(List<BaseNPC> neighbors, int distantCount, Holder<
         }
         neighbors.sort(Comparator.comparingInt(BaseNPC::getId));
         Holder<Biome> biome = level.getBiome(owner.blockPosition());
-        boolean evilBiome = biome.is(ModTags.Biomes.THE_CORRUPTION) || biome.is(ModTags.Biomes.THE_CRIMSON);
-        return new MoodEnvironment(List.copyOf(neighbors), distantCount, biome, housing, evilBiome);
+        return new MoodEnvironment(List.copyOf(neighbors), distantCount, biome, housing, OverworldUtils.isEvil(biome));
     }
 
     private static BlockPos anchorOf(BaseNPC npc) {

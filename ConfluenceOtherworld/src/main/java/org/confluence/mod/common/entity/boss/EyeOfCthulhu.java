@@ -176,7 +176,7 @@ public class EyeOfCthulhu extends BaseBoss {
             return;
         }
 
-        if (getCombatState() == CombatState.LEAVING || level().isDay()) {
+        if (getCombatState() == CombatState.LEAVING || LibDateUtils.isDay(level())) {
             tickLeaving();
             return;
         }

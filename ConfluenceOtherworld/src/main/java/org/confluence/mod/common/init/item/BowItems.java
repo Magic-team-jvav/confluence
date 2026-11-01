@@ -68,6 +68,9 @@ public class BowItems {
     // 代达罗斯风暴弓
     public static final PortDeferredItem<DaedalusStormbow> DAEDALUS_STORM_BOW = registerItemWithEnglishName("daedalus_storm_bow", "代达罗斯风暴弓", "Daedalus Stormbow", () -> new DaedalusStormbow(12f, ModRarity.PURPLE));
 
+    // 血雨弓：发射方式同代达罗斯风暴弓，一根箭转化为 1–3 束血雨
+    public static final PortDeferredItem<BloodRainBow> BLOOD_RAIN_BOW = registerItemWithEnglishName("blood_rain_bow", "血雨弓", "Blood Rain Bow", () -> new BloodRainBow(2.4F, ModRarity.ORANGE));
+
     // 开发者弓
     public static final PortDeferredItem<DeveloperBow> DEVELOPER_BOW = registerItem("developer_bow", "开发者弓", DeveloperBow::new);
 

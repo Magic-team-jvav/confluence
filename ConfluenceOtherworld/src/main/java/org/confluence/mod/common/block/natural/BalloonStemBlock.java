@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -25,6 +26,13 @@ public class BalloonStemBlock extends SupStemBlock {
                         .instabreak()
                         .sound(SoundType.HARD_CROP)
                         .pushReaction(PushReaction.DESTROY));
+    }
+
+    /// 与其它空岛作物共用生长速度（+80%，种在雨中云上再 ×3）。
+    /// 长茎与结瓜走的是同一次随机刻判定，所以结果也会一起被雨中云加快。
+    @Override
+    protected float getStemGrowthSpeed(BlockState state, ServerLevel level, BlockPos pos) {
+        return BaseCropBlock.getSkylandGrowthSpeed(state, level, pos);
     }
 
     @Override

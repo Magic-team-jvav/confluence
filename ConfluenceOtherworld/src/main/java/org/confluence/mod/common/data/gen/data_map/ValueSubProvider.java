@@ -480,6 +480,7 @@ public final class ValueSubProvider {
                 .add(BowItems.COPPER_BOW, 70)
                 .add(BowItems.COPPER_SHORT_BOW, 60)
                 .add(BowItems.DAEDALUS_STORM_BOW, gold10 - gold2)
+                .add(BowItems.BLOOD_RAIN_BOW, gold10 - gold2)
                 .add(BowItems.DEMON_BOW, 3600)
                 .add(BowItems.GOLDEN_BOW, 1400)
                 .add(BowItems.GOLDEN_SHORT_BOW, 1380)

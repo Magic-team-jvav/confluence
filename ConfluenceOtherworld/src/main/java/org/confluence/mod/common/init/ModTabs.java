@@ -635,6 +635,17 @@ public final class ModTabs {
                         mural.accept(DecorativeBlocks.MURAL_BLOCK.get());
                         mural.accept(ModStacks.dungeonEbonyMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                         mural.accept(ModStacks.dungeonCrimsonMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.blueprintNetherPortal(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.blueprintSlime(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.blueprintEndPortal(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.blueprintTerraTree(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.blueprintCorruptedSpike(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.engineeringPlate(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.theDestroyerMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.retinazerMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.retinazerActiveMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.spazmatismMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        mural.accept(ModStacks.skeletronPrimeMural(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                         acceptAll(StatueBlocks.BLOCKS, output, "statue");
                     })
@@ -2027,6 +2038,7 @@ public final class ModTabs {
                         bow.accept(BowItems.HELLWING_BOW.get());
                         bow.accept(BowItems.SCAREBOW.get());
                         bow.accept(BowItems.DAEDALUS_STORM_BOW.get());
+                        bow.accept(BowItems.BLOOD_RAIN_BOW.get());
                         bow.accept(BowItems.DEVELOPER_BOW.get());
                         bow.accept(BowItems.WIND_STRING.get());
                         bow.accept(BowItems.ENCHANTED_BOW.get());

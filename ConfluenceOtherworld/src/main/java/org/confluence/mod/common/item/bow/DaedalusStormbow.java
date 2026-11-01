@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.bow;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -24,15 +25,22 @@ public class DaedalusStormbow extends BaseTerraBowItem {
     @Override
     public void onUseTick(Level level, LivingEntity owner, ItemStack weapon, int remainingUseDuration) {
         super.onUseTick(level, owner, weapon, remainingUseDuration);
-        if (!level.isClientSide && owner instanceof Player player && remainingUseDuration % 4 == 0) {
-            generation.genProjectile(player, weapon, 2f, () -> {
-                ItemStack itemstack = owner.getProjectile(weapon);
-                if (itemstack.isEmpty()) return null;
-                ItemStack ammo = itemstack.copyWithCount(1);
-                itemstack.shrink(1);
-                return createProjectile(owner.level(), owner, weapon, ammo, true);
-            });
+        if (level.isClientSide || !(owner instanceof Player player) || remainingUseDuration % 4 != 0) return;
+        ItemStack ammunition = owner.getProjectile(weapon);
+        if (ammunition.isEmpty()) return;
+        /// 一根箭可以被转化成一发或多发（血雨弓 1–3 束血雨），箭本身只扣一根。
+        ItemStack ammo = ammunition.copyWithCount(1);
+        int shots = getVolleySize(level.random);
+        if (shots <= 0) return;
+        for (int i = 0; i < shots; i++) {
+            generation.genProjectile(player, weapon, 2f, () -> createProjectile(owner.level(), owner, weapon, ammo, true));
         }
+        ammunition.shrink(1);
+    }
+
+    /// 单次触发消耗一根箭后射出几发；代达罗斯风暴弓固定 1 发。
+    protected int getVolleySize(RandomSource random) {
+        return 1;
     }
 
     @Override

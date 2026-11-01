@@ -29,7 +29,7 @@ public class ShovelItems {
     public static final PortDeferredItem<BaseShovelItem> PLATINUM_SHOVEL = registerItem("platinum_shovel", "铂金锹", () -> new BaseShovelItem(ModTiers.PLATINUM, 5.5f, 1, ModRarity.COMMON));
     public static final PortDeferredItem<BaseShovelItem> SHADOW_SHOVEL = registerItem("shadow_shovel", "暗影锹", () -> new BaseShovelItem(ModTiers.DEMONITE, 6f, 1, unbreakable(), ModRarity.BLUE));
     public static final PortDeferredItem<BaseShovelItem> MINER = registerItem("miner", "采掘者", () -> new BaseShovelItem(ModTiers.CRIMTANE, 6.5f, 1, unbreakable(), ModRarity.BLUE));
-    public static final PortDeferredItem<GraveDiggersShovel> GRAVE_DIGGERS_SHOVEL = registerItemWithEnglishName("grave_diggers_shovel", "掘墓者铲子", "Gravedigger's Shovel", () -> new GraveDiggersShovel(4.5f, 1, ModRarity.GREEN));
+    public static final PortDeferredItem<GraveDiggersShovel> GRAVE_DIGGERS_SHOVEL = registerItemWithEnglishName("grave_diggers_shovel", "掘墓者铲子", "Gravedigger's Shovel", () -> new GraveDiggersShovel(4.5f, 1, unbreakable(), ModRarity.GREEN));
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);

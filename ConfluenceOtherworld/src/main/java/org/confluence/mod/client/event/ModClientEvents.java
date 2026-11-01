@@ -410,6 +410,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DEVELOPER_ARROW.get(), TerraArrowRenderer::new);
         // 风与星系列
         event.registerEntityRenderer(WIND_ARROW.get(), TerraArrowRenderer::new);
+        // 血雨：箭矢结算 + 雨滴外观
+        event.registerEntityRenderer(BLOOD_RAIN_ARROW.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.BLOOD_RAIN));
         event.registerEntityRenderer(DUSK_DAWN.get(), NoopRenderer::new);
         event.registerEntityRenderer(WIND_BULLET.get(), NoopRenderer::new);
         event.registerEntityRenderer(STELLAR_STUDIES_PROJECTILE.get(), NoopRenderer::new);

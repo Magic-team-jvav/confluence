@@ -13,7 +13,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 /// 松手或中断使用后由施法端丢弃，真正的追踪坠星由 {@link org.confluence.mod.common.item.mana.StarMusicItem} 生成。
 public class StarMusicChargeEntity extends AbstractManaProjectile {
     /// 距离玩家头顶的高度。
-    private static final double HEAD_OFFSET = 1.6;
+    public static final double HEAD_OFFSET = 1.6;
 
     public StarMusicChargeEntity(EntityType<StarMusicChargeEntity> entityType, Level level) {
         super(entityType, level);
@@ -23,6 +23,13 @@ public class StarMusicChargeEntity extends AbstractManaProjectile {
 
     public StarMusicChargeEntity(LivingEntity living) {
         this(ModEntities.STAR_MUSIC_CHARGE.get(), living.level());
+    }
+
+    /// 聚星相对施法者的固定跟随偏移：脚部 + 身高 + 头顶那截高度。
+    ///
+    /// 跟随与渲染用同一份偏移，避免两边各写一套导致聚星落到脚边或偏到别处。
+    public static Vec3 followOffset(LivingEntity owner) {
+        return new Vec3(0.0, owner.getBbHeight() + HEAD_OFFSET, 0.0);
     }
 
     @Override
@@ -36,7 +43,13 @@ public class StarMusicChargeEntity extends AbstractManaProjectile {
             if (!level().isClientSide) discard();
             return;
         }
-        setPos(owner.getX(), owner.getY() + owner.getBbHeight() + HEAD_OFFSET, owner.getZ());
+        Vec3 offset = followOffset(owner);
+        setPos(owner.getX() + offset.x, owner.getY() + offset.y, owner.getZ() + offset.z);
+        /// 和钛金碎片屏障一样对齐旧坐标，但必须带上这段偏移：直接抄玩家的旧坐标会把头顶高度丢掉，
+        /// 插值一路从「头顶」滑到「脚边」。按施法者本刻的位移反推，任何固定偏移都能保持住。
+        this.xOld = getX() - (owner.getX() - owner.xOld);
+        this.yOld = getY() - (owner.getY() - owner.yOld);
+        this.zOld = getZ() - (owner.getZ() - owner.zOld);
         setDeltaMovement(Vec3.ZERO);
     }
 

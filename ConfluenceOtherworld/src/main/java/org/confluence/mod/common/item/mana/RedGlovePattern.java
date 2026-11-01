@@ -10,7 +10,10 @@ import java.util.function.BiFunction;
 /** Common/server-safe discharge geometry. Every transmitted line is also an attack line. */
 public final class RedGlovePattern {
     public static final double RANGE = 32, HALF_ANGLE = 20, HIT_RADIUS = 0.16;
-    public static final int RANDOM_TICKS = 3, PULSE_TICKS = 2;
+    /** 每次放电的间隔（tick）：伤害结算与线段下发同拍，客户端停留由 SNAPSHOT_LIFETIME_TICKS 决定。 */
+    public static final int CAST_TICKS = 2;
+    /** 每次放电随机生成 1–2 条主干。 */
+    public static final int MIN_TRUNKS = 1, MAX_TRUNKS = 2;
     public record Target(int id, Vec3 point, AABB bounds) {}
     public record Path(int depth, int parent, int rootIndex, List<Vec3> points) {
         public Path {
@@ -22,7 +25,9 @@ public final class RedGlovePattern {
     private record Root(int parent, int vertex, double cost) {}
     private RedGlovePattern() {}
 
-    public static int trunkCount(long seed) { return new SplittableRandom(seed).nextInt(5, 9); }
+    public static int trunkCount(long seed) {
+        return new SplittableRandom(seed).nextInt(MIN_TRUNKS, MAX_TRUNKS + 1);
+    }
 
     public static boolean inRange(Vec3 source, Vec3 look, Vec3 point) {
         Vec3 delta = point.subtract(source);
@@ -40,7 +45,7 @@ public final class RedGlovePattern {
                                     BiFunction<Vec3, Vec3, Vec3> normalAt) {
         List<Path> paths = new ArrayList<>();
         var random = new SplittableRandom(seed);
-        int count = random.nextInt(5, 9);
+        int count = random.nextInt(MIN_TRUNKS, MAX_TRUNKS + 1);
         Vec3 forward = look.normalize(), side = perpendicular(forward), up = forward.cross(side).normalize();
         double rotation = random.nextDouble(0, Math.PI * 2);
         for (int i = 0; i < count; i++) {
@@ -65,7 +70,7 @@ public final class RedGlovePattern {
             paths.add(new Path(0, -1, -1, points));
         }
         // A very narrow aperture can stop every random trunk right at the muzzle.
-        // Keep the same 5..8 count, but guide one existing trunk through a verified opening.
+        // Keep the same trunk count, but guide one existing trunk through a verified opening.
         if (paths.stream().noneMatch(path -> !roots(path.points).isEmpty())) {
             for (Target target : targets) {
                 if (target.point.distanceToSqr(source) < 1.0E-8 || !inRange(source, forward, target.point)
@@ -118,8 +123,8 @@ public final class RedGlovePattern {
             }
             if (branch != null) { paths.add(branch); if (branch.depth == 2) twigs++; }
         }
-        // Only two small terminal twigs for the entire cast; target coverage has priority.
-        for (int i = twigs; i < 2; i++) {
+        // Terminal twigs never outnumber the trunks, so a 1–2 bolt cast stays visibly 1–2 bolts.
+        for (int i = twigs; i < Math.min(2, count); i++) {
             int parentId = i % count;
             Path parent = paths.get(parentId);
             List<Integer> roots = roots(parent.points);
@@ -138,6 +143,18 @@ public final class RedGlovePattern {
                     seed + 601 + i, 0.07), clipper)));
         }
         return List.copyOf(paths);
+    }
+
+    /** 所有已下发线段的整体包围盒，按接触半径外扩，供沿路径取实体使用。 */
+    public static AABB bounds(List<Path> paths) {
+        double minX = Double.POSITIVE_INFINITY, minY = minX, minZ = minX;
+        double maxX = Double.NEGATIVE_INFINITY, maxY = maxX, maxZ = maxX;
+        for (Path path : paths) for (Vec3 point : path.points) {
+            minX = Math.min(minX, point.x); minY = Math.min(minY, point.y); minZ = Math.min(minZ, point.z);
+            maxX = Math.max(maxX, point.x); maxY = Math.max(maxY, point.y); maxZ = Math.max(maxZ, point.z);
+        }
+        if (minX > maxX) return new AABB(0, 0, 0, 0, 0, 0);
+        return new AABB(minX, minY, minZ, maxX, maxY, maxZ).inflate(HIT_RADIUS);
     }
 
     public static boolean intersects(List<Path> paths, AABB bounds) {

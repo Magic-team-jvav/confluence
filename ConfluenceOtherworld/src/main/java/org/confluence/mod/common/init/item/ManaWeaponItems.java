@@ -28,8 +28,8 @@ public class ManaWeaponItems {
     public static final PortDeferredItem<RedGloveItem> RED_GLOVE = registerItemWithEnglishName("red_glove", "红手套", "Red Glove", RedGloveItem::new);
     static {
         LANGUAGE_PROVIDERS.add(language -> language.add("tooltip.item.confluence.red_glove.0",
-                "Hold attack: 5–8 lightning trunks, up to 32 blocks; every branch deals magic damage.",
-                "按住攻击：释放5–8道闪电主干，射程32格；所有支干均造成魔法伤害。"));
+                "Hold attack: 1–2 lightning bolts every 2 ticks, up to 32 blocks; every branch deals magic damage.",
+                "按住攻击：每 2 tick 释放 1–2 道闪电，射程 32 格；所有支干均造成魔法伤害。"));
     }
 
     // 魔法武器数值参考为 原数值÷2 +5 为基础值

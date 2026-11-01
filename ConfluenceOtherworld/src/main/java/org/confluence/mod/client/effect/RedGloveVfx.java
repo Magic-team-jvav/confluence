@@ -93,7 +93,8 @@ public final class RedGloveVfx {
     }
     public static Map<String, Object> debugSnapshot() {
         return Map.of("receivedPackets", receivedPackets, "renderedFrames", renderedFrames,
-                "activeCasters", CASTS.size(), "activeSegments", CASTS.values().stream().flatMap(c -> c.batches.stream())
+                "activeCasters", CASTS.size(), "afterimages", AFTERIMAGES.size(),
+                "activeSegments", CASTS.values().stream().flatMap(c -> c.batches.stream())
                         .mapToInt(ArcSurgeLightning.Event::segmentCount).sum(), "submittedLights", submittedLights,
                 "rawClientServerClockDelta", clockDelta);
     }

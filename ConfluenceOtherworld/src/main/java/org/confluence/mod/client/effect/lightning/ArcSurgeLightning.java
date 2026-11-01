@@ -20,7 +20,8 @@ import java.util.function.BiFunction;
 
 /** Host adapter for the minecraft-lightning skill's full geometry/material/composite pipeline. */
 public final class ArcSurgeLightning {
-    public static final int SNAPSHOT_LIFETIME_TICKS = 5;
+    /** 一次放电的停留时间（tick）；期间最多与 3 次后续放电重叠。 */
+    public static final int SNAPSHOT_LIFETIME_TICKS = 6;
     private static final Gson GSON = new Gson();
     private static LightningRecipe appearance;
     private static long nextLightEvent = 1;

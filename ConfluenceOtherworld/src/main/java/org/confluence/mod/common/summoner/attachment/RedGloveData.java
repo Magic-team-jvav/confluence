@@ -29,8 +29,7 @@ import java.util.*;
 public final class RedGloveData {
     private final Player owner;
     private ItemStack active = ItemStack.EMPTY;
-    private long started, lastPulse = Long.MIN_VALUE, seed;
-    private long lastPoweredPulse = Long.MIN_VALUE, lastPattern = -1;
+    private long started, lastCast = Long.MIN_VALUE, seed;
     private int slot;
     private net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension;
     public RedGloveData(IPortAttachmentHolder holder) {
@@ -40,13 +39,13 @@ public final class RedGloveData {
     public void press(ItemStack stack) {
         if (!(owner instanceof ServerPlayer) || !(stack.getItem() instanceof RedGloveItem) || !active.isEmpty()) return;
         active = stack; slot = owner.getInventory().selected;
-        started = owner.level().getGameTime(); seed = owner.getRandom().nextLong(); lastPulse = Long.MIN_VALUE;
-        lastPoweredPulse = Long.MIN_VALUE; lastPattern = -1;
+        started = owner.level().getGameTime(); seed = owner.getRandom().nextLong();
+        lastCast = Long.MIN_VALUE;
         dimension = owner.level().dimension();
     }
     public void reset() {
-        active = ItemStack.EMPTY; lastPulse = Long.MIN_VALUE;
-        lastPoweredPulse = Long.MIN_VALUE; lastPattern = -1;
+        active = ItemStack.EMPTY;
+        lastCast = Long.MIN_VALUE;
     }
     public void tick() {
         if (active.isEmpty() || !(owner instanceof ServerPlayer player)) return;
@@ -56,22 +55,15 @@ public final class RedGloveData {
             reset(); return;
         }
         long now = owner.level().getGameTime();
-        boolean damagePulse = lastPulse == Long.MIN_VALUE || now - lastPulse >= RedGlovePattern.PULSE_TICKS;
-        long pattern = (now - started) / RedGlovePattern.RANDOM_TICKS;
-        if (!damagePulse && pattern == lastPattern) return;
-        if (damagePulse) lastPulse = now;
+        // 每 CAST_TICKS 放电一次；伤害结算与线段下发在同一拍完成。
+        if (lastCast != Long.MIN_VALUE && now - lastCast < RedGlovePattern.CAST_TICKS) return;
+        lastCast = now;
         // Restore the requested lava exception: it can be used there, but all rays still clip lava.
         Vec3 eye = player.getEyePosition(), look = player.getLookAngle();
         Vec3 source = player.level().clip(new ClipContext(eye, eye.add(look.scale(0.35)).add(0, -0.12, 0),
                 ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, player)).getLocation();
         if (blockedByFluid(player)) return;
-        if (damagePulse) {
-            if (!PlayerUtils.extractMana(player, active, () -> PrefixUtils.calculateManaCost(active, RedGloveItem.MANA_COST))) return;
-            lastPoweredPulse = now;
-        } else if (lastPoweredPulse == Long.MIN_VALUE || now - lastPoweredPulse >= RedGlovePattern.PULSE_TICKS) {
-            // A visual-only refresh must belong to an already paid discharge interval.
-            return;
-        }
+        if (!PlayerUtils.extractMana(player, active, () -> PrefixUtils.calculateManaCost(active, RedGloveItem.MANA_COST))) return;
         ServerLevel level = player.serverLevel();
         if (!level.getFluidState(BlockPos.containing(source)).isEmpty()) return;
         var clipper = (java.util.function.BiFunction<Vec3, Vec3, Vec3>) (a, b) -> level.clip(new ClipContext(
@@ -87,25 +79,24 @@ public final class RedGloveData {
                     && clipper.apply(source, point).distanceToSqr(point) < 1.0E-8)
                 identities.putIfAbsent(LibEntityUtils.dedupeIdentity(target).getUUID(), target);
         }
-        long patternSeed = seed + pattern * 104729L;
+        long castSeed = seed + (now - started) / RedGlovePattern.CAST_TICKS * 104729L;
         var points = identities.values().stream().map(e -> new RedGlovePattern.Target(e.getId(), e.getBoundingBox().getCenter(), e.getBoundingBox())).toList();
-        List<RedGlovePattern.Path> paths = RedGlovePattern.create(source, look, patternSeed, points, clipper, (a, b) -> {
+        List<RedGlovePattern.Path> paths = RedGlovePattern.create(source, look, castSeed, points, clipper, (a, b) -> {
             var direction = level.clip(new ClipContext(a, b, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, player)).getDirection();
             return new Vec3(direction.getStepX(), direction.getStepY(), direction.getStepZ());
         });
         Set<UUID> resolved = new HashSet<>();
-        // Acquisition needs a clear view; physical damage uses every actually traversed segment.
-        if (damagePulse) for (Entity recipient : targets) {
+        // 候选由实际线段包围盒发现，是否可打沿用原有敌对阵营策略；索敌列表不再限制伤害范围。
+        for (Entity recipient : LibEntityUtils.queryHitCandidates(level, player, RedGlovePattern.bounds(paths),
+                candidate -> Zenith.TARGETING.canAcquire(player, candidate))) {
             var living = LibEntityUtils.logicalLivingTarget(recipient);
-            if (living == null || !Zenith.TARGETING.canAcquire(player, recipient)
-                    || !RedGlovePattern.intersects(paths, recipient.getBoundingBox())
+            if (living == null || !RedGlovePattern.intersects(paths, recipient.getBoundingBox())
                     || !resolved.add(LibEntityUtils.dedupeIdentity(recipient).getUUID())) continue;
             var damage = LibDamageTypes.of(level, LibDamageTypes.MAGICAL_PROJECTILE, player, player);
             if (Immunity.hurt(item, recipient, living, damage, RedGloveItem.BASE_DAMAGE)) player.setLastHurtMob(living);
         }
-        if (damagePulse) player.awardStat(Stats.ITEM_USED.get(item));
-        RedGloveArcPacketS2C.send(player, source, patternSeed, paths);
-        lastPattern = pattern;
+        player.awardStat(Stats.ITEM_USED.get(item));
+        RedGloveArcPacketS2C.send(player, source, castSeed, paths);
     }
     private static boolean blockedByFluid(ServerPlayer player) {
         var box = player.getBoundingBox().deflate(1.0E-5);

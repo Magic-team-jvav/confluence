@@ -86,12 +86,7 @@ import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
-import org.confluence.mod.common.init.ModBlockCounters;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.init.ModSoulSkills;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
@@ -213,10 +208,6 @@ public final class LivingEntityEvents {
             }
             if (attacker != null && attacker.getType().is(ModTags.EntityTypes.CORRUPT)) {
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, victim);
-            }
-            if (victim instanceof BaseBoss boss && boss.shouldShowMessage()) {
-                ModUtils.bossDeath(level, boss);
-                SlimeRainGameEvent.INSTANCE.checkEnd(victim);
             }
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;
@@ -598,7 +589,6 @@ public final class LivingEntityEvents {
         if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         @Nullable Entity attacker = damageSource.getEntity();
 
-        ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
         ThornsEffect.onMobHurt(victim, damageSource, amount);
         DryadsBlessingEffect.reflectDamage(victim, damageSource, amount);
 

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseMonster;
@@ -29,7 +30,7 @@ public final class DemonEyeLeaveAction extends BTNode {
 
     @Override
     public BTStatus execute() {
-        if (!mob.level().isDay()) {
+        if (LibDateUtils.isNight(mob.level())) {
             return BTStatus.SUCCESS;
         }
         mob.setTarget(null);

@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,9 +16,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.projectile.TwinEyeProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -502,4 +506,19 @@ public class Spazmatism extends AbstractTwinEye {
         /// 巨焰发射后等待激光眼引爆。
         COMBO_WAIT
     }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(serverLevel.getServer(), BossEntities.RETINAZER.get());
+                KillBoard.INSTANCE.defeat(serverLevel.getServer(), BossEntities.SPAZMATISM.get());
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                }
+            }
+        }
+    }
+
 }

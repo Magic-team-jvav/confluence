@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -281,6 +282,14 @@ public class VisualNeuron extends BaseFlyingMonster implements BossOwnedEntity {
     private static double angleBetween(Vec3 first, Vec3 second) {
         if (first.lengthSqr() < 1.0E-6 || second.lengthSqr() < 1.0E-6) return 0.0;
         return Math.acos(Mth.clamp(first.normalize().dot(second.normalize()), -1.0, 1.0));
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean hit = super.doHurtTarget(target);
+        if (hit && target instanceof LivingEntity living)
+            BrainOfCthulhu.applyContactDebuff(this, living);
+        return hit;
     }
 
     @Override

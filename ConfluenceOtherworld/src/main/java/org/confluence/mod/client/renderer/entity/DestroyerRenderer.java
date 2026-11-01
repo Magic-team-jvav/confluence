@@ -23,6 +23,7 @@ import org.joml.Matrix4x3f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
+import org.mesdag.particlestorm.mixed.IPSEntity;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -123,12 +124,13 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             last = -1;
         }
         List<ParticleEmitter> emitters = BEAM_EMITTERS.computeIfAbsent(boss, ignored -> new ArrayList<>());
-        if (tick < 100 && tick != last) {
-            int index = Math.min(81, 81 - tick * 82 / 100);
-            if (index != Math.max(0, Math.min(81, 81 - last * 82 / 100))) {
-                Vec3 pos = boss.getBody().getPosition(index);
-                MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(boss.level(), pos, Confluence.asResource("destroyer_attack_lightning")));
-            }
+        for (int index = 0; index < TheDestroyer.SEGMENT_COUNT; index++) {
+            int trigger = (TheDestroyer.SEGMENT_COUNT - 1 - index) * 100 / (TheDestroyer.SEGMENT_COUNT - 1);
+            if (last >= trigger || tick < trigger) continue;
+            Entity section = boss.getBody().getSection(index);
+            ParticleEmitter lightning = new ParticleEmitter(boss.level(), section.position(), Confluence.asResource("destroyer_attack_lightning"));
+            lightning.attach(IPSEntity.of(section));
+            MolangParticleEngine.INSTANCE.addEmitter(lightning);
         }
         if (last < 100 && tick >= 100) {
             addBeamEmitter(boss, emitters, "ball");

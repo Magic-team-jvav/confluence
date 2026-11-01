@@ -392,7 +392,6 @@ public final class PlayerUtils {
     }
 
     /// 售出所得按面额发到背包。
-    ///
     public static boolean credit(Player player, long amount) {
         if (amount < 0) return false;
         giveCoins(player, amount);
@@ -401,9 +400,11 @@ public final class PlayerUtils {
 
     /// 从玩家背包的指定槽位卖出物品：槽位内容与卖出时不一致就整笔取消。
     public static boolean creditFromInventory(Player player, int slotIndex, ItemStack expected, long amount, boolean withPiggyBank) {
-        if (expected.isEmpty() || slotIndex < 0 || slotIndex >= player.getInventory().getContainerSize()) return false;
+        if (expected.isEmpty() || slotIndex < 0 || slotIndex >= player.getInventory().getContainerSize())
+            return false;
         ItemStack source = player.getInventory().getItem(slotIndex);
-        if (!ItemStack.isSameItemSameTags(source, expected) || source.getCount() < expected.getCount()) return false;
+        if (!ItemStack.isSameItemSameTags(source, expected) || source.getCount() < expected.getCount())
+            return false;
         source.shrink(expected.getCount());
         if (source.isEmpty()) player.getInventory().setItem(slotIndex, ItemStack.EMPTY);
         player.getInventory().setChanged();

@@ -1188,7 +1188,6 @@ public final class ModClientEvents {
     }
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(OpalLightIntegration.INSTANCE);
         event.registerReloadListener(BossBarStyles.INSTANCE);
         event.registerReloadListener((ResourceManagerReloadListener) manager -> BrainDissolveTexture.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());

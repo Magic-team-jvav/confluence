@@ -8,22 +8,6 @@
             ],
             "light_level": 10
         },
-        "confluence:mining_helmet": {
-            "color": [
-                1.0,
-                0.94901961,
-                0.75294118
-            ],
-            "light_level": 10
-        },
-        "confluence:falling_star": {
-            "color": [
-                1.0,
-                0.94117647,
-                0.60392157
-            ],
-            "light_level": 1
-        },
         "confluence:glowing_mushroom": {
             "color": [
                 0.33333333,

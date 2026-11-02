@@ -10,6 +10,7 @@
         "integration.curios.CuriosUtilMixinHooksMixin",
         "integration.geckolib.KeyFramesAdapterMixin",
         "integration.magiclib.LibKeyBindingsMixin",
+        "PortDamageContainerMixin",
         "integration.terracurio.AccessoriesAttachmentMixin",
         "integration.terracurio.DemonHeartMixin",
         "integration.terracurio.PlayerJumpPacketC2SMixin",

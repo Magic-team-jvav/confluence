@@ -22,6 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
 import org.confluence.lib.common.effect.HoneyEffect;
+import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
@@ -83,6 +84,11 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
+    }
+
+    @ModifyExpressionValue(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/ForgeHooks;onLivingDamage(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/damagesource/DamageSource;F)F", remap = false))
+    private float confluence$finalSoulHitDamage(float damage, @Local(argsOnly = true) DamageSource source) {
+        return SoulcererUtils.captureSoulHitDamage((LivingEntity) (Object) this, source, damage);
     }
 
     @WrapWithCondition(

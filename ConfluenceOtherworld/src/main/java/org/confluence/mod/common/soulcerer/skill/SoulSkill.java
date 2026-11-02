@@ -122,6 +122,15 @@ public class SoulSkill {
         return getBasicSoulCost();
     }
 
+    public float getSoulCost(Player player, SoulSkillStack skillStack) {
+        return getSoulCost(skillStack);
+    }
+
+    /// 内部扣费技能仍由 use 结算，主施放只保留原有零费用事件。
+    public boolean consumesSoulInternally() {
+        return false;
+    }
+
     /// 读取基础冷却时间，单位为 tick。
     public int getBasicCooldown() {
         return basicCooldown;
@@ -149,6 +158,11 @@ public class SoulSkill {
 
     /// 服务端判定通过后，在两端分别执行对应技能效果。
     public void use(Player player, SoulSkillStack skillStack) {
+    }
+
+    public boolean tryUse(ServerPlayer player, SoulSkillStack skillStack) {
+        use(player, skillStack);
+        return true;
     }
 
     /// 技能总览（C 键）与技能框的说明行；空技能不提供。

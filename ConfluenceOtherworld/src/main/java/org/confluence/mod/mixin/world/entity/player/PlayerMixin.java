@@ -1,5 +1,9 @@
 package org.confluence.mod.mixin.world.entity.player;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import org.confluence.mod.util.SoulcererUtils;
+import net.minecraft.world.damagesource.DamageSource;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +24,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Player.class)
 public abstract class PlayerMixin implements IPlayer {
+    @ModifyExpressionValue(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/ForgeHooks;onLivingDamage(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/damagesource/DamageSource;F)F", remap = false))
+    private float confluence$finalSoulHitDamage(float damage, @Local(argsOnly = true) DamageSource source) {
+        return SoulcererUtils.captureSoulHitDamage((LivingEntity) (Object) this, source, damage);
+    }
+
     @Unique
     private boolean confluence$voidSeaSwimming;
 

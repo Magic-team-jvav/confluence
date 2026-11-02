@@ -9,6 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import org.confluence.mod.api.item.ISoulBow;
+import org.confluence.mod.util.SoulcererUtils;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
@@ -85,6 +87,7 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
 
     @Override
     public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
+        arrow.getPersistentData().putBoolean(SoulcererUtils.SOUL_BOW_SOURCE_TAG, this instanceof ISoulBow);
         int multiShoot = getMultiShootCount();
         if (canMultiShoot(projectileStack)) {
             arrow.setBaseDamage(getFullDrawDamage() / multiShoot);

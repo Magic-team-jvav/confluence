@@ -121,6 +121,8 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(PortEventPriority.LOWEST, DungeonSpirit::onDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
         PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, true, SoulcererUtils::clearCanceledSoulDamage);
+        PortEventHandler.addListener(SoulcererUtils::soulPrefixKnockback);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::damage$Pre);
         PortEventHandler.addListener(LivingEntityEvents::damage$Post);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::processCriticalDamage);
@@ -287,8 +289,6 @@ public final class LivingEntityEvents {
 
         SoulcererUtils.soulKnifeBonusDamage(event);
         SoulcererUtils.soulBowBonusDamage(event);
-        SoulcererUtils.soulWeaponHitSoul(event);
-        SoulcererUtils.soulWeaponTraitsOnSkillHit(event);
         SoulcererUtils.seekerSetDamage(event);
         SoulcererUtils.enduranceDamageReduction(event);
         SoulcererUtils.souldancerDamageReduction(event);
@@ -334,6 +334,7 @@ public final class LivingEntityEvents {
     }
 
     private static void damage$Post(PortLivingDamageEvent.Post event) {
+        SoulcererUtils.commitSoulDamage(event);
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();

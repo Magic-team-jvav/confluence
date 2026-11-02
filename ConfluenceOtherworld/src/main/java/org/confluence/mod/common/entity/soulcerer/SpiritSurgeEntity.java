@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.soulcerer;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
+import org.confluence.mod.util.SoulcererUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -147,7 +148,8 @@ public class SpiritSurgeEntity extends Projectile {
         if (horizontal.lengthSqr() < 1.0E-4) {
             return;
         }
-        Vec3 direction = horizontal.normalize().scale(knockback);
+        double strength = owner instanceof LivingEntity living ? SoulcererUtils.getSoulKnockback(living, knockback) : knockback;
+        Vec3 direction = horizontal.normalize().scale(strength);
         target.push(direction.x, 0.35 * Math.min(1.0, knockback), direction.z);
         target.hurtMarked = true;
     }

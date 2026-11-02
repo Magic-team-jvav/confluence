@@ -9,6 +9,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.util.SoulcererUtils;
+import net.minecraft.world.entity.player.Player;
 import org.mesdag.portlib.attachment.PortAttachmentSyncHandler;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
@@ -340,7 +342,15 @@ public class SoulStorage implements IPortNBTSerializable<CompoundTag> {
     }
 
     /// 判断当前灵魂值是否低于上限。
-    public boolean canReceive() {return soulMode && currentSoul < getMaxSoul();}
+    public boolean canReceive() {
+        if (soulMode) {
+            return currentSoul < getMaxSoul();
+        }
+        if (owner instanceof Player player && SoulcererUtils.hasBandOfSoul(player)) {
+            return currentSoul < getMaxSoul();
+        }
+        return false;
+    }
 
     /// 接收灵魂增量，超过上限时取上限。
     public void receive(float additional) {

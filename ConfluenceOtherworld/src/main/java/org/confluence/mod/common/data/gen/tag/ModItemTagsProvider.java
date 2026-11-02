@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.gen.tag;
 
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -549,6 +551,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .addTags(PortTags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY).addTags(ModTags.Items.MANA_WEAPON);
+        var soulPrefixes = tag(ModTags.Items.PREFIX_SOUL_ONLY);
+        SoulItems.ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof SoulWeaponItem) {
+                soulPrefixes.add(item.get());
+            }
+        });
         IntrinsicTagAppender<Item> prefix_summon_only = tag(ModTags.Items.PREFIX_SUMMON_ONLY);
         SummonItems.ITEMS.getEntries().forEach(item -> prefix_summon_only.add(item.get()));
         IntrinsicTagAppender<Item> summoner_weapon = tag(ModTags.Items.SUMMONER_WEAPON);

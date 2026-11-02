@@ -43,7 +43,16 @@ public class SoulAssaultSkill extends SoulSkill {
 
     /// 增益期间的一次自动开火：至少要 1 点灵魂才能把灵魂转成子弹。
     public static void fireBurst(ServerPlayer player) {
-        int bullets = (int) Math.min(SoulSkillParameters.SOUL_ASSAULT_MAX_BULLETS, Math.floor(SoulcererUtils.getSoul(player)));
+        float soul = SoulcererUtils.getSoul(player);
+        if (soul < 1.0F) {
+            return;
+        }
+
+        int bullets = SoulSkillParameters.SOUL_ASSAULT_MAX_BULLETS;
+        while (bullets > 0 && SoulcererUtils.calculateSoulCost(player, bullets) > soul) {
+            bullets--;
+        }
+
         if (bullets <= 0 || !SoulcererUtils.consumeSoul(player, bullets)) {
             return;
         }

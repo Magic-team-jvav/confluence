@@ -27,15 +27,30 @@ public class BoilingBloodSkill extends SoulSkill {
     }
 
     @Override
+    public float getSoulCost(Player player, SoulSkillStack skillStack) {
+        return Math.max(1.0F, SoulcererUtils.getSoul(player) * SoulSkillParameters.BOILING_BLOOD_SOUL_RATIO);
+    }
+
+    @Override
+    public boolean consumesSoulInternally() {
+        return true;
+    }
+
+    @Override
     public void use(Player player, SoulSkillStack skillStack) {
-        if (!(player instanceof ServerPlayer serverPlayer)) {
-            return;
+        if (player instanceof ServerPlayer serverPlayer) {
+            tryUse(serverPlayer, skillStack);
         }
-        float cost = Math.max(1.0F, SoulcererUtils.getSoul(serverPlayer) * SoulSkillParameters.BOILING_BLOOD_SOUL_RATIO);
+    }
+
+    @Override
+    public boolean tryUse(ServerPlayer serverPlayer, SoulSkillStack skillStack) {
+        float cost = getSoulCost(serverPlayer, skillStack);
         if (!SoulcererUtils.consumeSoul(serverPlayer, cost)) {
-            return;
+            return false;
         }
         serverPlayer.addEffect(new MobEffectInstance(effect.get(), SoulSkillParameters.BOILING_BLOOD_DURATION_TICKS, 0, false, true, true));
+        return true;
     }
 
     @Override

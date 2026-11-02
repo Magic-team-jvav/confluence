@@ -82,8 +82,11 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
 
     protected final void setSpecialState(Enum<?> state, boolean enabled) {
         if (level().isClientSide) return;
-        if (enabled) activeStates.add(state);
-        else activeStates.remove(state);
+        if (enabled) {
+            activeStates.add(state);
+        } else if (!activeStates.remove(state)) {
+            return;
+        }
         applyStateAttributes(state, enabled);
     }
 

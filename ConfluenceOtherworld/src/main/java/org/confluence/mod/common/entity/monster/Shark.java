@@ -1,5 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,6 +23,9 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /// 鲨鱼以水中路径引导巡游和追击，推进与转向使用同一个游泳控制器。
 public class Shark extends BaseAquaticMonster {
@@ -68,7 +73,6 @@ public class Shark extends BaseAquaticMonster {
     private final class PatrolGoal extends AquaticRandomSwimmingGoal {
         private Path patrolPath;
         private int retryAt;
-        private int patrolAttempts;
 
         private PatrolGoal() {
             super(Shark.this, 0.6, 1);
@@ -84,18 +88,22 @@ public class Shark extends BaseAquaticMonster {
         protected Vec3 getPosition() {
             patrolPath = null;
             retryAt = tickCount + 10;
-            boolean forwardAttempt = patrolAttempts < 4;
-            patrolAttempts = (patrolAttempts + 1) % 8;
-            Vec3 candidate = forwardAttempt
-                    ? DefaultRandomPos.getPosTowards(Shark.this, 10, 3, position().add(getViewVector(1.0F).scale(8.0)), Math.PI / 2.0)
-                    : DefaultRandomPos.getPos(Shark.this, 6, 3);
-            if (candidate == null) return null;
-            Path path = getNavigation().createPath(candidate.x, candidate.y, candidate.z, 0);
+            Vec3 forward = position().add(getViewVector(1.0F).scale(8.0));
+            Set<BlockPos> candidates = new HashSet<>();
+            for (int attempt = 0; attempt < 8; attempt++) {
+                Vec3 candidate = attempt < 4
+                        ? DefaultRandomPos.getPosTowards(Shark.this, 10, 3, forward, Math.PI / 2.0)
+                        : DefaultRandomPos.getPos(Shark.this, 6, 3);
+                if (candidate == null || candidate.distanceToSqr(position()) < 4.0) continue;
+                BlockPos pos = BlockPos.containing(candidate);
+                if (level().getFluidState(pos).is(FluidTags.WATER)) candidates.add(pos);
+            }
+            if (candidates.isEmpty()) return null;
+            Path path = getNavigation().createPath(candidates, 0);
             if (path == null || !path.canReach() || path.getNodeCount() < 2) return null;
             Vec3 destination = path.getEntityPosAtNode(Shark.this, path.getNodeCount() - 1);
             if (destination.distanceToSqr(position()) < 4.0) return null;
             patrolPath = path;
-            patrolAttempts = 0;
             return destination;
         }
 

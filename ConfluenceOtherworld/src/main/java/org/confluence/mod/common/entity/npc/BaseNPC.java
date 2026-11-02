@@ -193,7 +193,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
         // 由于NPCHouseBehaviors#walkToHouse疑似不能触发，于是在tick里判断
         // 过远时传送回自己的出生点
-        if (spawnAtPos != null &&
+        if (!isLeashed() && spawnAtPos != null &&
                 (house == null || !house.contains(blockPosition())) &&
                 level().getGameTime() % 100 == 2 && level().players().stream().noneMatch(player -> player.distanceToSqr(this) < 32 * 32)
         ) {
@@ -626,7 +626,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     public boolean canBeLeashed() {
-        return false;
+        return !isLeashed();
     }
 
     @Override

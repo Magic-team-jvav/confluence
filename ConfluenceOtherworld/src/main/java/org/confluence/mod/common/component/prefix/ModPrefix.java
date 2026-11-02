@@ -70,6 +70,7 @@ public interface ModPrefix {
                 FLEETING = register("fleeting", 0, 0, 0, 0, 0.02F, 0, 1, 0.21F), // 快速
                 HASTY = register("hasty", 0, 0, 0, 0, 0.03F, 0, 1, 0.3225F), // 急速
                 QUICK = register("quick", 0, 0, 0, 0, 0.04F, 0, 2, 0.44F), // 迅捷
+                HAUNTING = register("haunting", 0, 0, 0, 0, 0, 0, 2, 0.48F),
                 ARCANE = register("arcane", 0, 0, 0, 0, 0, 20, 1, 0.3225F); // 奥秘
 
         @Override
@@ -147,6 +148,8 @@ public interface ModPrefix {
                     builder.put(LibAttributes.getRangedDamage(), modifier);
                 } else if (type == PrefixType.MAGIC) {
                     builder.put(LibAttributes.getMagicDamage(), modifier);
+                } else if (type == PrefixType.SOUL) {
+                    builder.put(LibAttributes.getSoulDamage(), modifier);
                 } else if (type == PrefixType.SUMMON) {
                     builder.put(LibAttributes.getSummonDamage(), modifier);
                 }
@@ -211,6 +214,8 @@ public interface ModPrefix {
                     builder.put(LibAttributes.getRangedDamage(), modifier);
                 } else if (type == PrefixType.MAGIC) {
                     builder.put(LibAttributes.getMagicDamage(), modifier);
+                } else if (type == PrefixType.SOUL) {
+                    builder.put(LibAttributes.getSoulDamage(), modifier);
                 } else if (type == PrefixType.SUMMON) {
                     builder.put(LibAttributes.getSummonDamage(), modifier);
                 }
@@ -494,6 +499,48 @@ public interface ModPrefix {
         private static void init() {}
     }
 
+    record Soul(String name, float attackDamage, float criticalChance, int soulCost,
+                float knockBack, int tier, float value) implements ModPrefix {
+        public static final Map<String, Soul> VALUES = ModPrefix.registerGroup("soul");
+        public static final ResourceLocation ID = Confluence.asResource("soul_prefix");
+        public static final Soul DYING = register("dying", -0.10F, 0, 1, -0.10F, -2, -0.50F),
+                STRUGGLING = register("struggling", 0.05F, 0.05F, 1, 0, -1, -0.10F),
+                NOBLE = register("noble", 0.05F, 0, 0, 0.10F, 1, 0.12F),
+                DEEP = register("deep", 0, 0.05F, 0, 0.05F, 1, 0.06F),
+                CUNNING = register("cunning", 0, 0, -1, -0.20F, 1, 0.46F),
+                FALLEN = register("fallen", -0.05F, -0.05F, 1, 0.20F, -2, -0.46F),
+                TRANSCENDENT = register("transcendent", 0.15F, 0.05F, -1, 0.10F, 2, 3.80F);
+
+        @Override
+        public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
+            var builder = ImmutableListMultimap.<Holder<Attribute>, AttributeModifier>builder();
+            if (attackDamage != 0) {
+                builder.put(LibAttributes.getSoulDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+            }
+            if (criticalChance != 0) {
+                builder.put(LibAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            }
+            if (knockBack != 0) {
+                builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_MULTIPLIED_TOTAL));
+            }
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0, 0);
+        }
+
+        @Override
+        public boolean canBeMercy() {return tier < 0;}
+
+        @Override
+        public ResourceLocation getModifierId() {return ID;}
+
+        private static Soul register(String name, float damage, float critical, int cost, float knockback, int tier, float value) {
+            Soul prefix = new Soul(name, damage, critical, cost, knockback, tier, value);
+            VALUES.put(name, prefix);
+            return prefix;
+        }
+
+        private static void init() {}
+    }
+
     Map<String, Map<String, ? extends ModPrefix>> GROUPS = new HashMap<>();
 
     static <T extends ModPrefix> Map<String, T> registerGroup(String name) {
@@ -600,6 +647,14 @@ public interface ModPrefix {
         map.put(95, Summon.EAGER);
         map.put(96, Summon.BALLISTIC);
         map.put(97, Summon.SCRAGGLING);
+        map.put(98, Accessory.HAUNTING);
+        map.put(99, Soul.DYING);
+        map.put(100, Soul.STRUGGLING);
+        map.put(101, Soul.NOBLE);
+        map.put(102, Soul.DEEP);
+        map.put(103, Soul.CUNNING);
+        map.put(104, Soul.FALLEN);
+        map.put(105, Soul.TRANSCENDENT);
     });
 
     static void initialize() {
@@ -610,5 +665,6 @@ public interface ModPrefix {
         Ranged.init();
         Magic.init();
         Summon.init();
+        Soul.init();
     }
 }

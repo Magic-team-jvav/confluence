@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.world.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -12,6 +13,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -46,11 +48,20 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
+import java.util.Stack;
 
 import static org.confluence.mod.common.util.VoidSeaConstants.*;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
+    @Shadow(remap = false)
+    protected Stack<DamageContainer> damageContainers;
+
+    @Override
+    public DamageContainer confluence$getCurrentDamageContainer() {
+        return damageContainers == null || damageContainers.empty() ? null : damageContainers.peek();
+    }
+
     @Shadow
     public abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 

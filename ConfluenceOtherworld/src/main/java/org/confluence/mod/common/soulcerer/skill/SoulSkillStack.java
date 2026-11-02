@@ -86,7 +86,7 @@ public class SoulSkillStack {
                     formatNumber(buff.durationTicks() / (float) SharedConstants.TICKS_PER_SECOND),
                     buff.effectName()).withStyle(ChatFormatting.GRAY));
         }
-        float soulCost = skill.getSoulCost(this);
+        float soulCost = live ? SoulcererUtils.getSoulSkillCost(player, this) : skill.getSoulCost(this);
         if (soulCost > 0.0F) {
             list.add(statLine("soul_cost", formatNumber(soulCost)));
         }

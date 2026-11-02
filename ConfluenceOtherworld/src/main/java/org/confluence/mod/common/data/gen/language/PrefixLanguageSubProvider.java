@@ -7,6 +7,16 @@ public final class PrefixLanguageSubProvider {
     private PrefixLanguageSubProvider() {}
 
     public static void addTranslations(TranslationConsumer language) {
+        language.add("prefix.confluence.dying", "Dying", "垂死");
+        language.add("prefix.confluence.struggling", "Struggling", "挣扎");
+        language.add("prefix.confluence.noble", "Noble", "高尚");
+        language.add("prefix.confluence.deep", "Deep", "幽深");
+        language.add("prefix.confluence.cunning", "Cunning", "狡猾");
+        language.add("prefix.confluence.fallen", "Fallen", "堕落");
+        language.add("prefix.confluence.transcendent", "Transcendent", "超脱");
+        language.add("prefix.confluence.haunting", "Haunting", "作祟");
+        language.add("prefix.confluence.tooltip.soul_cost", "%s soul cost", "%s 灵魂消耗");
+        language.add("prefix.confluence.tooltip.soul_chance", "soul gain chance", "灵魂获取概率");
         language.add("prefix.confluence.adept", "Adept", "精巧");
         language.add("prefix.confluence.agile", "Agile", "灵活");
         language.add("prefix.confluence.angry", "Angry", "愤怒");

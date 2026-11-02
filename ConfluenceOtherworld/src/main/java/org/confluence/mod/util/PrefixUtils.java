@@ -17,6 +17,7 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
@@ -30,53 +31,81 @@ public final class PrefixUtils {
     }
 
     public static boolean couldReforge(ItemStack stack) {
-        return !stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX) &&
-                (stack.is(ModTags.Items.SUMMONER_WEAPON) ||
-                        stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
-                        stack.is(ModTags.Items.PREFIX_MELEE_ONLY) ||
-                        stack.is(ModTags.Items.PREFIX_RANGED_ONLY) ||
-                        stack.is(ModTags.Items.PREFIX_MAGIC_ONLY) ||
-                        stack.is(ModTags.Items.PREFIX_SUMMON_ONLY) ||
-                        stack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY));
+        if (stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX)) {
+            return false;
+        }
+        if (stack.is(ModTags.Items.PREFIX_SOUL_ONLY)) {
+            return true;
+        }
+        if (stack.is(ModTags.Items.SUMMONER_WEAPON)) {
+            return true;
+        }
+        if (stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
+            return true;
+        }
+        if (stack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
+            return true;
+        }
+        if (stack.is(ModTags.Items.PREFIX_RANGED_ONLY)) {
+            return true;
+        }
+        if (stack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
+            return true;
+        }
+        if (stack.is(ModTags.Items.PREFIX_SUMMON_ONLY)) {
+            return true;
+        }
+        if (stack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
+            return true;
+        }
+        return false;
     }
 
     public static @Nullable PrefixComponent initPrefix(RandomSource random, ItemStack itemStack) {
-        if (random.nextFloat() < 0.75F) {
-            PrefixType prefixType = getPrefixType(itemStack);
-            if (prefixType != PrefixType.UNKNOWN) {
-                return createWithMercy(random, itemStack, prefixType);
-            }
-        } else {
+        if (!(random.nextFloat() < 0.75F)) {
             unknown(itemStack);
+            return null;
+        }
+        PrefixType prefixType = getPrefixType(itemStack);
+        if (prefixType != PrefixType.UNKNOWN) {
+            return createWithMercy(random, itemStack, prefixType);
         }
         return null;
     }
 
     public static @Nullable PrefixComponent best(RandomSource random, ItemStack itemStack) {
         PrefixType prefixType = getPrefixType(itemStack);
-        if (prefixType != PrefixType.UNKNOWN) {
-            ModPrefix modPrefix = prefixType.bestPrefix(random, itemStack);
-            if (modPrefix == null) {
-                unknown(itemStack);
-            } else {
-                return setAndUpdate(itemStack, prefixType, modPrefix);
-            }
+        if (prefixType == PrefixType.UNKNOWN) {
+            return null;
         }
+        ModPrefix modPrefix = prefixType.bestPrefix(random, itemStack);
+        if (modPrefix != null) {
+            return setAndUpdate(itemStack, prefixType, modPrefix);
+        }
+        unknown(itemStack);
         return null;
     }
 
     public static PrefixType getPrefixType(ItemStack itemStack) {
+        if (itemStack.is(ModTags.Items.PREFIX_SOUL_ONLY) && itemStack.getItem() instanceof SoulWeaponItem) {
+            return PrefixType.SOUL;
+        }
         if (itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
             return PrefixType.UNIVERSAL;
-        } else if (itemStack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
+        }
+        if (itemStack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
             return PrefixType.MELEE;
-        } else if (itemStack.is(ModTags.Items.PREFIX_RANGED_ONLY)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
+        }
+        if (itemStack.is(ModTags.Items.PREFIX_RANGED_ONLY)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
             return PrefixType.RANGED;
-        } else if (itemStack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
+        }
+        if (itemStack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
             return PrefixType.MAGIC;
-        } else if (itemStack.is(ModTags.Items.PREFIX_SUMMON_ONLY)) {
+        }
+        if (itemStack.is(ModTags.Items.PREFIX_SUMMON_ONLY)) {
             return PrefixType.SUMMON;
-        } else if (itemStack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
+        }
+        if (itemStack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
             return PrefixType.ACCESSORY;
         }
         return PrefixType.UNKNOWN;
@@ -115,14 +144,15 @@ public final class PrefixUtils {
     public static double heldItemContribution(ItemStack heldItem, double baseValue, Holder<Attribute> attribute) {
         double value = baseValue;
         PrefixComponent component = getPrefix(heldItem);
-        if (component != null) {
-            for (AttributeModifier modifier : component.modifiers().get().get(attribute)) {
-                value += switch (modifier.operation()) {
-                    case ADD_VALUE -> modifier.amount();
-                    case ADD_MULTIPLIED_BASE -> modifier.amount() * baseValue;
-                    case ADD_MULTIPLIED_TOTAL -> modifier.amount() * value;
-                };
-            }
+        if (component == null) {
+            return value;
+        }
+        for (AttributeModifier modifier : component.modifiers().get().get(attribute)) {
+            value += switch (modifier.operation()) {
+                case ADD_VALUE -> modifier.amount();
+                case ADD_MULTIPLIED_BASE -> modifier.amount() * baseValue;
+                case ADD_MULTIPLIED_TOTAL -> modifier.amount() * value;
+            };
         }
         return value;
     }

@@ -668,7 +668,6 @@ public final class PlayerEvents {
     public static void soulCollection(SoulCollectionEvent event) {
         SoulcererUtils.soulBowExtraSoul(event);
         SoulcererUtils.soulKnifeExtraSoul(event);
-        SoulcererUtils.soulCollectionAccessoryBonus(event);
         SoulcererUtils.brokenGlimmerHeal(event);
         SoulcererUtils.soulDropBonus(event);
         SoulcererUtils.bloodRageSoul(event);

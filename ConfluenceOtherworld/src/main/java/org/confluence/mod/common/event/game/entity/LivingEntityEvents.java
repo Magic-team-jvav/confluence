@@ -109,6 +109,11 @@ import static org.confluence.mod.util.PlayerUtils.receiveMana;
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class LivingEntityEvents {
     @SubscribeEvent
+    public static void livingKnockBack(LivingKnockBackEvent event) {
+        SoulcererUtils.soulDamageKnockback(event);
+    }
+
+    @SubscribeEvent
     public static void death(LivingDeathEvent event) {
         LivingEntity victim = event.getEntity();
         DamageSource damageSource = event.getSource();
@@ -209,6 +214,11 @@ public final class LivingEntityEvents {
         DamageIndicatorOptions.sendHealParticle(amount, level, living);
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST, receiveCanceled = true)
+    public static void clearCanceledSoulDamage(LivingIncomingDamageEvent event) {
+        SoulcererUtils.clearCanceledSoulDamage(event);
+    }
+
     @SubscribeEvent
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
@@ -244,8 +254,6 @@ public final class LivingEntityEvents {
 
         SoulcererUtils.soulKnifeBonusDamage(event);
         SoulcererUtils.soulBowBonusDamage(event);
-        SoulcererUtils.soulWeaponHitSoul(event);
-        SoulcererUtils.soulWeaponTraitsOnSkillHit(event);
         SoulcererUtils.seekerSetDamage(event);
         SoulcererUtils.enduranceDamageReduction(event);
         SoulcererUtils.souldancerDamageReduction(event);
@@ -291,6 +299,7 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDamage$Post(LivingDamageEvent.Post event) {
+        SoulcererUtils.commitSoulDamage(event);
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();

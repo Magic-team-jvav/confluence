@@ -14,6 +14,8 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.util.SoulcererUtils;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
@@ -354,7 +356,15 @@ public class SoulStorage implements INBTSerializable<CompoundTag> {
     }
 
     /// 判断当前灵魂值是否低于上限。
-    public boolean canReceive() {return soulMode && currentSoul < getMaxSoul();}
+    public boolean canReceive() {
+        if (soulMode) {
+            return currentSoul < getMaxSoul();
+        }
+        if (owner instanceof Player player && SoulcererUtils.hasBandOfSoul(player)) {
+            return currentSoul < getMaxSoul();
+        }
+        return false;
+    }
 
     /// 接收灵魂增量，超过上限时取上限。
     public void receive(float additional) {

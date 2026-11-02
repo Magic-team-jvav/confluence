@@ -7,6 +7,7 @@ import net.minecraft.SharedConstants;
 /// 约定：每个技能一段，段内第一行注释写中文技能名。`SOUL_COST` 为灵魂消耗，`COOLDOWN_TICKS` 为冷却，`DAMAGE` 为技能自身基数；
 /// 最终伤害仍要经过 `PlayerUtils.getSoulSkillDamage`（叠加武器、属性与被动）。
 public class SoulSkillParameters {
+    public static final float HAUNTING_SOUL_CHANCE = 0.06F;
     public static final float ACTIVE_DAMAGE = 5.0F;
     public static final float ACTIVE_SOUL_COST = 1.0F;
     public static final int ACTIVE_COOLDOWN_TICKS = SharedConstants.TICKS_PER_SECOND;

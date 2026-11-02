@@ -423,6 +423,7 @@ public final class ModTags {
         public static final TagKey<Item> PREFIX_RANGED_ONLY = register("prefix_ranged_only");
         public static final TagKey<Item> PREFIX_MAGIC_ONLY = register("prefix_magic_only");
         public static final TagKey<Item> PREFIX_SUMMON_ONLY = register("prefix_summon_only"); // 没有鞭子
+        public static final TagKey<Item> PREFIX_SOUL_ONLY = register("prefix_soul_only");
         public static final TagKey<Item> PREFIX_ACCESSORY_ONLY = register("prefix_accessory_only");
 
         public static final TagKey<Item> COBALT_ORE_SMELTING = common("cobalt_ore_smelting");

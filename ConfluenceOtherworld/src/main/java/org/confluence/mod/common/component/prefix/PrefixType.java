@@ -92,13 +92,14 @@ public enum PrefixType implements StringRepresentable {
     ACCESSORY("accessory") {
         @Override
         public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
-            return switch (random.nextInt(6)) {
+            return switch (random.nextInt(7)) {
                 case 0 -> Accessory.WARDING;
                 case 1 -> Accessory.ARCANE;
                 case 2 -> Accessory.LUCKY;
                 case 3 -> Accessory.MENACING;
                 case 4 -> Accessory.QUICK;
                 case 5 -> Accessory.VIOLENT;
+                case 6 -> Accessory.HAUNTING;
                 default -> null;
             };
         }
@@ -121,6 +122,12 @@ public enum PrefixType implements StringRepresentable {
 
         @Override
         public void updatePrefix(ModPrefix[] prefixes) {}
+    },
+    SOUL("universal", "soul") {
+        @Override
+        public ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
+            return Soul.TRANSCENDENT;
+        }
     };
 
     public static final Codec<PrefixType> CODEC = StringRepresentable.fromEnum(PrefixType::values);
@@ -196,7 +203,8 @@ public enum PrefixType implements StringRepresentable {
             case SUMMON -> prefix == Summon.FABLED;
             case ACCESSORY -> prefix == Accessory.WARDING || prefix == Accessory.ARCANE
                     || prefix == Accessory.LUCKY || prefix == Accessory.MENACING
-                    || prefix == Accessory.QUICK || prefix == Accessory.VIOLENT;
+                    || prefix == Accessory.QUICK || prefix == Accessory.VIOLENT || prefix == Accessory.HAUNTING;
+            case SOUL -> prefix == Soul.TRANSCENDENT;
             case UNKNOWN -> false;
         };
     }

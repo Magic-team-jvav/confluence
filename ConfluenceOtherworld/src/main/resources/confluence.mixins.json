@@ -25,6 +25,7 @@
         "integration.terracurio.PlayerJumpPacketC2SMixin",
         "integration.terracurio.StarClockEntityMixin",
         "integration.terrafurniture.TFPinWheelMixin",
+        "neoforge.common.DamageContainerMixin",
         "neoforge.common.data.DataMapProviderAccessor",
         "neoforge.common.loot.LootModifierManagerMixin",
         "neoforge.items.ItemStackHandlerMixin",

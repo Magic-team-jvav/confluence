@@ -27,6 +27,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -541,6 +542,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
                 .addTags(ModTags.Items.MANA_WEAPON);
+        IntrinsicTagAppender<Item> prefix_soul_only = tag(ModTags.Items.PREFIX_SOUL_ONLY);
+        SoulItems.ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof SoulWeaponItem) {
+                prefix_soul_only.add(item.get());
+            }
+        });
         IntrinsicTagAppender<Item> prefix_summon_only = tag(ModTags.Items.PREFIX_SUMMON_ONLY);
         SummonItems.ITEMS.getEntries().forEach(item -> prefix_summon_only.add(item.get()));
         tag(ModTags.Items.SUMMONER_WEAPON).addTags(ModTags.Items.PREFIX_SUMMON_ONLY);

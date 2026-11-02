@@ -29,7 +29,13 @@ import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.damagesource.DamageContainer;
+import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.IDamageContainer;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
+import org.confluence.lib.common.LibTags;
 import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibAttributes;
@@ -47,6 +53,10 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
+import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.component.prefix.PrefixType;
+import net.minecraft.world.damagesource.DamageTypes;
+import top.theillusivec4.curios.api.CuriosApi;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.boss.AbstractTwinEye;
 import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
@@ -111,6 +121,85 @@ public final class SoulcererUtils {
             new RitualUnlock(4, List.of(), ModSoulSkills.SOUL_CONTROL),
             new RitualUnlock(4, List.of(), ModSoulSkills.LIFE_RETURN)
     );
+
+    public static void clearCanceledSoulDamage(LivingIncomingDamageEvent event) {
+        if (event.isCanceled()) {
+            IDamageContainer.of(event.getContainer()).confluence$getSoulDamageState().clear();
+        }
+    }
+
+    public static void commitSoulDamage(LivingDamageEvent.Post event) {
+        LivingEntity victim = event.getEntity();
+        DamageContainer container = ILivingEntity.of(victim).confluence$getCurrentDamageContainer();
+        if (container == null || container.getSource() != event.getSource()) {
+            return;
+        }
+
+        SoulDamageState state = IDamageContainer.of(container).confluence$getSoulDamageState();
+        if (state.finalPositive) {
+            return;
+        }
+        SoulConsumptionPlan plan = state.plan;
+        MobEffectInstance effect = state.boilingBlood;
+        state.clear();
+        if (!(event.getNewDamage() > 0.0F)) {
+            return;
+        }
+
+        state.finalPositive = true;
+        if (plan != null && LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer owner) {
+            applySoulOverdraft(owner, plan.commit(owner));
+        }
+        if (effect != null && event.getSource().getDirectEntity() instanceof ServerPlayer player
+                && player.getEffect(ModEffects.BOILING_BLOOD) == effect) {
+            player.removeEffect(ModEffects.BOILING_BLOOD);
+        }
+        soulWeaponHitSoul(event);
+        soulWeaponTraitsOnSkillHit(event);
+    }
+
+    public static void soulDamageKnockback(LivingKnockBackEvent event) {
+        DamageContainer container = ILivingEntity.of(event.getEntity()).confluence$getCurrentDamageContainer();
+        if (container == null) {
+            return;
+        }
+
+        SoulDamageState state = IDamageContainer.of(container).confluence$getSoulDamageState();
+        DamageSource source = container.getSource();
+        if (!state.finalPositive || state.knockbackApplied
+                || source.is(LibTags.DamageTypes.SOUL_OVERDRAFT)
+                || !source.is(LibDamageTypes.SOUL)
+                || !(source.getEntity() instanceof LivingEntity owner)) {
+            return;
+        }
+
+        state.knockbackApplied = true;
+        event.setStrength((float) getSoulKnockback(owner, event.getStrength()));
+    }
+
+    public static class SoulDamageState {
+        private SoulConsumptionPlan plan;
+        private MobEffectInstance boilingBlood;
+        private boolean finalPositive;
+        private boolean knockbackApplied;
+
+        public void clear() {
+            plan = null;
+            boilingBlood = null;
+            finalPositive = false;
+            knockbackApplied = false;
+        }
+    }
+
+    private record SoulConsumptionPlan(float cost, float healthPerSoul) {
+        private float commit(ServerPlayer player) {
+            SoulStorage storage = SoulStorage.of(player);
+            float paidSoul = Math.min(storage.getCurrentSoul(), cost);
+            storage.extract(paidSoul);
+            onSoulSpent(player, paidSoul);
+            return (cost - paidSoul) * healthPerSoul;
+        }
+    }
 
     /// 根据可装备槽数补齐或裁剪灵魂技能槽位。
     public static void updateSoulSkillSlots(@Nullable Player player) {
@@ -199,7 +288,7 @@ public final class SoulcererUtils {
         if (stack.isEmpty() || stack.getSoulSkill().isPassive()) {
             return false;
         }
-        float soulCost = stack.getSoulSkill().getSoulCost(stack);
+        float soulCost = getSoulSkillCost(player, stack);
         return soulCost > 0.0F && getSoul(player) < soulCost;
     }
 
@@ -350,8 +439,7 @@ public final class SoulcererUtils {
     }
 
     public static void adjustSoul(Player player, float amount) {
-        /// 只有灵魂条生效时才累积灵魂；魔力模式下保留的旧值不应被技能/收魂事件改写。
-        if (!isSoulMode(player)) {
+        if (!isSoulMode(player) && !(amount > 0 && hasBandOfSoul(player))) {
             return;
         }
         setSoul(player, getSoul(player) + amount);
@@ -950,7 +1038,7 @@ public final class SoulcererUtils {
     /// 灵魂不足时**不触发**（也不走生命代偿），普通子弹照常打出。
     public static float applySoulAssaultGunBonus(ServerPlayer player, float damage) {
         if (!player.hasEffect(ModEffects.SOUL_ASSAULT)
-                || getSoul(player) < SoulSkillParameters.SOUL_ASSAULT_GUN_SOUL_COST
+                || getSoul(player) < calculateSoulCost(player, SoulSkillParameters.SOUL_ASSAULT_GUN_SOUL_COST)
                 || !consumeSoul(player, SoulSkillParameters.SOUL_ASSAULT_GUN_SOUL_COST)) {
             return damage;
         }
@@ -962,32 +1050,33 @@ public final class SoulcererUtils {
 
     /// 先扣可用灵魂，返回需在效果执行后结算的生命代偿；负值表示取消。
     private static float prepareSoulConsumption(ServerPlayer player, float amount) {
+        SoulConsumptionPlan plan = planSoulConsumption(player, amount);
+        return plan == null ? SOUL_CONSUMPTION_FAILED : plan.commit(player);
+    }
+
+    private static SoulConsumptionPlan planSoulConsumption(ServerPlayer player, float amount) {
         if (!isSoulMode(player)) {
-            return SOUL_CONSUMPTION_FAILED;
+            return null;
         }
         /// 灵魂透支：持续期间完全不消耗灵魂
         if (amount > 0.0F && isSoulSkillLearned(player, ModSoulSkills.SOUL_DRAIN.get().getId()) && player.hasEffect(ModEffects.SOUL_DRAIN)) {
-            return 0.0F;
+            return new SoulConsumptionPlan(0.0F, 0.0F);
         }
         /// 自然法则：概率不消耗灵魂
         if (amount > 0.0F && isPassiveSoulSkillActive(player, ModSoulSkills.LAW_OF_NATURE.get())
                 && player.getRandom().nextFloat() < SoulSkillParameters.LAW_OF_NATURE_FREE_CHANCE) {
-            return 0.0F;
+            return new SoulConsumptionPlan(0.0F, 0.0F);
         }
         SoulConsumeEvent event = NeoForge.EVENT_BUS.post(new SoulConsumeEvent(player, amount, HEALTH_PER_SOUL));
         if (event.isCanceled()) {
-            return SOUL_CONSUMPTION_FAILED;
+            return null;
         }
         /// 创造模式：照常发事件与走施法流程，但不扣灵魂、不结算生命代偿
         if (player.isCreative() || player.hasInfiniteMaterials()) {
-            return 0.0F;
+            return new SoulConsumptionPlan(0.0F, 0.0F);
         }
         float cost = Math.max(0.0F, event.getAmount());
-        SoulStorage storage = SoulStorage.of(player);
-        float paidSoul = Math.min(storage.getCurrentSoul(), cost);
-        storage.extract(paidSoul);
-        onSoulSpent(player, paidSoul);
-        return (cost - paidSoul) * Math.max(0.0F, event.getHealthPerSoul());
+        return new SoulConsumptionPlan(cost, Math.max(0.0F, event.getHealthPerSoul()));
     }
 
     /// 蓝隐匿者全套：每累计消耗 10 点灵魂，削减 3 秒耐药性剩余时长。
@@ -1070,7 +1159,7 @@ public final class SoulcererUtils {
     }
 
     public static boolean consumeSoul(ServerPlayer player, float amount) {
-        float healthCost = prepareSoulConsumption(player, amount);
+        float healthCost = prepareSoulConsumption(player, calculateSoulCost(player, amount));
         if (healthCost < 0.0F) {
             return false;
         }
@@ -1144,16 +1233,30 @@ public final class SoulcererUtils {
     /// 一次成功的单体施放：结算耗魂、冷却、两端效果与生命代偿；取消时返回 false。
     private static boolean castSoulSkill(ServerPlayer player, SoulSkillStack skillStack) {
         SoulSkill skill = skillStack.getSoulSkill();
-        float healthCost = prepareSoulConsumption(player, skill.getSoulCost(skillStack));
+        float healthCost = prepareSoulConsumption(player, skill.consumesSoulInternally() ? 0.0F : getSoulSkillCost(player, skillStack));
         if (healthCost < 0.0F) {
             return false;
         }
-        setSoulSkillCooldown(player, skill, skill.getCooldown(skillStack));
+        if (!skill.consumesSoulInternally()) {
+            setSoulSkillCooldown(player, skill, skill.getCooldown(skillStack));
+        }
         /// 记录本次施法时的武器灵魂伤害：魂引天星、灵魂突击这类延时/多段攻击之后换手也不掉伤害。
-        SoulStorage.of(player).setCastWeaponDamage(skill.getId(), getWeaponSoulDamage(player));
+        float weaponDamage = getWeaponSoulDamage(player);
+        if (!skill.consumesSoulInternally()) {
+            SoulStorage.of(player).setCastWeaponDamage(skill.getId(), weaponDamage);
+        }
         SoulSkillStack castStack = skillStack.copy();
-        SoulSkillSyncPacketS2C.sendToClient(player);
-        skill.use(player, skillStack);
+        if (!skill.consumesSoulInternally()) {
+            SoulSkillSyncPacketS2C.sendToClient(player);
+        }
+        if (!skill.tryUse(player, skillStack)) {
+            return false;
+        }
+        if (skill.consumesSoulInternally()) {
+            SoulStorage.of(player).setCastWeaponDamage(skill.getId(), weaponDamage);
+            setSoulSkillCooldown(player, skill, skill.getCooldown(skillStack));
+            SoulSkillSyncPacketS2C.sendToClient(player);
+        }
         SoulSkillUsePacketS2C.sendToClient(player, castStack);
         applySoulOverdraft(player, healthCost);
         return true;
@@ -1318,7 +1421,7 @@ public final class SoulcererUtils {
 
     /// 每秒按最终恢复比例结算一次，两个基础环境不叠加。
     public static void regenerateSoul(ServerPlayer player) {
-        if (!Confluence.SOUL_SKILLS || !isSoulMode(player)
+        if (!Confluence.SOUL_SKILLS || !(isSoulMode(player) || hasBandOfSoul(player))
                 || player.level().getGameTime() % SharedConstants.TICKS_PER_SECOND != 0) {
             return;
         }
@@ -1349,7 +1452,7 @@ public final class SoulcererUtils {
             return;
         }
         Entity owner = LibEntityUtils.getOwner(source);
-        if (!(owner instanceof ServerPlayer player) || !isSoulMode(player)) {
+        if (!(owner instanceof ServerPlayer player) || !(isSoulMode(player) || hasBandOfSoul(player))) {
             return;
         }
 
@@ -1546,7 +1649,7 @@ public final class SoulcererUtils {
         float volleyCost = SoulSkillParameters.STAR_CALL_VOLLEY_SOUL_COST;
         /// 只有显式给了轮次成本时才按轮扣魂并结算返还；默认 0，整轮免费。
         if (volleyCost > 0.0F) {
-            if (storage.getCurrentSoul() < volleyCost || !consumeSoul(player, volleyCost)) {
+            if (storage.getCurrentSoul() < calculateSoulCost(player, volleyCost) || !consumeSoul(player, volleyCost)) {
                 return;
             }
             if (player.getRandom().nextFloat() < SoulSkillParameters.STAR_CALL_REFUND_CHANCE) {
@@ -1680,7 +1783,10 @@ public final class SoulcererUtils {
     ///
     /// 三种手环共用同一个 `ValueType.UnitType`，因此戴多只也只算一份加成。
     public static void soulCollectionAccessoryBonus(SoulCollectionEvent event) {
-        Player player = event.getEntity();
+        event.setAmount(event.getAmount() + getSoulCollectionAccessoryBonus(event.getEntity()));
+    }
+
+    public static float getSoulCollectionAccessoryBonus(Player player) {
         float bonus = 0.0F;
         if (TCUtils.hasType(player, AccessoryItems.SOUL$BINDING$CHAIN)) {
             bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
@@ -1691,40 +1797,84 @@ public final class SoulcererUtils {
         if (TCUtils.hasType(player, AccessoryItems.MEMORY$OF$BONEBRAND)) {
             bonus += SoulSkillParameters.SOUL_COLLECTION_ACCESSORY_BONUS;
         }
-        if (bonus > 0.0F) {
-            event.setAmount(event.getAmount() + bonus);
+        return bonus;
+    }
+
+    /// 玩家攻击命中敌怪后，只进行一次联合概率判定。
+    public static void soulWeaponHitSoul(LivingDamageEvent.Post event) {
+        if (!Confluence.SOUL_SKILLS || event.getNewDamage() <= 0
+                || !(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)
+                || !EnemyDamageRules.isEnemy(event.getEntity()) || !SoulStorage.of(player).canReceive()) {
+            return;
+        }
+        Entity direct = event.getSource().getDirectEntity();
+        boolean blade = direct == player && event.getSource().is(DamageTypes.PLAYER_ATTACK)
+                && player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get());
+        boolean bow = direct instanceof AbstractArrow arrow && arrow.getWeaponItem() != null
+                && ISoulBow.isSoulBow(arrow.getWeaponItem());
+        float chance = Math.min(1.0F, (blade || bow ? SoulSkillParameters.SOUL_WEAPON_HIT_SOUL_CHANCE : 0.0F)
+                + getSoulHarvestHitChance(player, direct, event.getEntity()) + getSoulHitChanceBonus(player));
+        if (chance > 0 && player.getRandom().nextFloat() < chance) {
+            SoulStorage.of(player).receive(SoulSkillParameters.SOUL_WEAPON_HIT_SOUL
+                    + getSoulDropBonus(player));
         }
     }
 
-    /// 祈灵之刃 / 灵魂弓 / 灵魂短弓：攻击命中敌怪时有 50% 概率额外获得 1 点灵魂。
-    public static void soulWeaponHitSoul(LivingIncomingDamageEvent event) {
-        if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player) || event.getEntity() == player) {
-            return;
+    private static float getSoulHarvestHitChance(ServerPlayer player, @Nullable Entity direct, LivingEntity target) {
+        return direct != player && target != player && isPassiveSoulSkillActive(player, ModSoulSkills.SOUL_HARVEST.get())
+                ? SoulSkillParameters.SOUL_HARVEST_CHANCE : 0.0F;
+    }
+
+    public static float getSoulHitChanceBonus(Player player) {
+        return CuriosApi.getCuriosInventory(player).map(inventory -> {
+            int count = 0;
+            for (var group : inventory.getCurios().values()) {
+                for (int slot = 0; slot < group.getStacks().getSlots(); slot++) {
+                    var prefix = PrefixUtils.getPrefix(group.getStacks().getStackInSlot(slot));
+                    if (prefix != null && prefix.type() == PrefixType.ACCESSORY
+                            && prefix.name().equals(ModPrefix.Accessory.HAUNTING.name())) {
+                        count++;
+                    }
+                }
+            }
+            return count * SoulSkillParameters.HAUNTING_SOUL_CHANCE;
+        }).orElse(0.0F);
+    }
+
+    public static double getSoulKnockback(LivingEntity owner, double strength) {
+        if (strength <= 0 || !(owner.getMainHandItem().getItem() instanceof SoulWeaponItem)) {
+            return strength;
         }
-        boolean soulKnife = player.getMainHandItem().is(SoulItems.SPIRITWARD_BLADE.get());
-        boolean soulBow = ISoulBow.isSoulBow(player.getMainHandItem()) || ISoulBow.isSoulBow(player.getOffhandItem());
-        if (!soulKnife && !soulBow) {
-            return;
+        return strength * Math.max(0.0, PrefixUtils.heldItemContribution(owner.getMainHandItem(), 1.0, Attributes.ATTACK_KNOCKBACK));
+    }
+
+    public static float getSoulSkillCost(Player player, SoulSkillStack stack) {
+        return calculateSoulCost(player, stack.getSoulSkill().getSoulCost(player, stack));
+    }
+
+    public static float calculateSoulCost(Player player, float base) {
+        if (base <= 0 || !(player.getMainHandItem().getItem() instanceof SoulWeaponItem)) {
+            return base;
         }
-        if (!isSoulMode(player) || player.getRandom().nextFloat() >= SoulSkillParameters.SOUL_WEAPON_HIT_SOUL_CHANCE) {
-            return;
-        }
-        adjustSoul(player, SoulSkillParameters.SOUL_WEAPON_HIT_SOUL);
+        var prefix = PrefixUtils.getPrefix(player.getMainHandItem());
+        ModPrefix.Soul soul = prefix != null && prefix.type() == PrefixType.SOUL
+                ? ModPrefix.Soul.VALUES.get(prefix.name()) : null;
+        return soul == null ? base : Math.max(1.0F, base + soul.soulCost());
     }
 
     /// 主武器自带效果里「技能命中」的那几条：星魄补一颗坠星、丛林的灯附带中毒、无分昼夜附带暗影焰；
     /// 另外统一结算**附魂印记**的回魂：技能命中带印记的敌人回 1 魂。
     ///
     /// 只认灵魂伤害来源，因此普通近战 / 弓箭不会触发。
-    public static void soulWeaponTraitsOnSkillHit(LivingIncomingDamageEvent event) {
-        if (!event.getSource().is(LibDamageTypes.SOUL)) {
+    public static void soulWeaponTraitsOnSkillHit(LivingDamageEvent.Post event) {
+        if (event.getNewDamage() <= 0.0F || !event.getSource().is(LibDamageTypes.SOUL)) {
             return;
         }
         if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer player)) {
             return;
         }
         LivingEntity victim = event.getEntity();
-        if (victim == player || !victim.isAlive()) {
+        if (victim == player) {
             return;
         }
         /// 附魂印记：这只敌人身上有印记，任何技能（灵魂伤害）打中它都回 1 魂。
@@ -1741,16 +1891,16 @@ public final class SoulcererUtils {
                     new Vec3(0.0, -1.0, 0.0), damage, 2.0F, 0.0);
             player.level().addFreshEntity(star);
         }
-        if (holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)) {
+        if (victim.isAlive() && holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.POISON_ON_SKILL_HIT)) {
             victim.addEffect(new MobEffectInstance(MobEffects.POISON, SoulSkillParameters.LIFE_SPLENDOR_POISON_TICKS, 0, false, true, true));
         }
-        if (holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.SHADOWFLAME_ON_SKILL_HIT)) {
+        if (victim.isAlive() && holdsSoulWeaponTrait(player, SoulWeaponItem.Trait.SHADOWFLAME_ON_SKILL_HIT)) {
             victim.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, SoulSkillParameters.DAY_AND_NIGHT_ALIKE_SHADOWFLAME_TICKS, 0, false, true, true));
         }
     }
 
     /// 星魄的坠星本身也是灵魂伤害：它命中时不再触发星魄，避免自我循环。
-    private static boolean isStarProjectile(LivingIncomingDamageEvent event) {
+    private static boolean isStarProjectile(LivingDamageEvent.Post event) {
         return event.getSource().getDirectEntity() instanceof SoulLureProjectile lure && lure.isStarAppearance();
     }
 
@@ -1787,14 +1937,16 @@ public final class SoulcererUtils {
     /// 魂师套装：逐件与套装的灵魂掉落加成统一汇总，幻翼套在夜间再加。
     public static void soulDropBonus(SoulCollectionEvent event) {
         Player player = event.getEntity();
+        event.setAmount(event.getAmount() + getSoulDropBonus(player));
+        onSoulCollected(player, player.level().getGameTime());
+    }
+
+    public static float getSoulDropBonus(Player player) {
         float bonus = ModArmorBonus.getValue(player, ModArmorBonus.SOUL$DROP);
         if (PlayerSpecialData.of(player).getArmorSetBonusKey() == ModArmorBonus.PHANTOM_SET && LibDateUtils.isNight(player.level())) {
             bonus += SoulSkillParameters.PHANTOM_NIGHT_SOUL_DROP_BONUS;
         }
-        if (bonus > 0.0F) {
-            event.setAmount(event.getAmount() + bonus);
-        }
-        onSoulCollected(player, player.level().getGameTime());
+        return Math.max(0.0F, bonus) + getSoulCollectionAccessoryBonus(player);
     }
 
     /// 魂舞全套：收集灵魂后的限时减伤。
@@ -1805,7 +1957,7 @@ public final class SoulcererUtils {
         }
     }
 
-    /// 魂师召唤物被动：召唤物命中时概率回魂、耗魂换取增伤。
+    /// 魂师召唤物被动：耗魂换取增伤。
     public static void soulSkillSummonDamage(LivingIncomingDamageEvent event) {
         if (!(LibEntityUtils.getOwner(event.getSource()) instanceof ServerPlayer owner)) {
             return;
@@ -1814,13 +1966,13 @@ public final class SoulcererUtils {
         if (direct == owner || event.getEntity() == owner) {
             return;
         }
-        if (isPassiveSoulSkillActive(owner, ModSoulSkills.SOUL_DEVOUR.get())
-                && consumeSoul(owner, SoulSkillParameters.SOUL_DEVOUR_SOUL_COST)) {
+        if (isPassiveSoulSkillActive(owner, ModSoulSkills.SOUL_DEVOUR.get())) {
+            SoulConsumptionPlan plan = planSoulConsumption(owner, calculateSoulCost(owner, SoulSkillParameters.SOUL_DEVOUR_SOUL_COST));
+            if (plan == null) {
+                return;
+            }
+            IDamageContainer.of(event.getContainer()).confluence$getSoulDamageState().plan = plan;
             event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.SOUL_DEVOUR_DAMAGE_BONUS));
-        }
-        if (isPassiveSoulSkillActive(owner, ModSoulSkills.SOUL_HARVEST.get())
-                && owner.getRandom().nextFloat() < SoulSkillParameters.SOUL_HARVEST_CHANCE) {
-            adjustSoul(owner, SoulSkillParameters.SOUL_HARVEST_SOUL);
         }
     }
 
@@ -1829,8 +1981,9 @@ public final class SoulcererUtils {
         if (!(event.getSource().getDirectEntity() instanceof ServerPlayer player) || !player.hasEffect(ModEffects.BOILING_BLOOD)) {
             return;
         }
+        MobEffectInstance effect = player.getEffect(ModEffects.BOILING_BLOOD);
+        IDamageContainer.of(event.getContainer()).confluence$getSoulDamageState().boilingBlood = effect;
         event.setAmount(event.getAmount() * (1.0F + SoulSkillParameters.BOILING_BLOOD_DAMAGE_MULTIPLIER));
-        player.removeEffect(ModEffects.BOILING_BLOOD);
     }
 
     /// 灵魂缓冲把摔落伤害改成回复；生命归还记录期间失去的生命。

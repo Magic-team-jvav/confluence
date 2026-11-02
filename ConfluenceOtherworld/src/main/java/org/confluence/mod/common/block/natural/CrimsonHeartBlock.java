@@ -24,6 +24,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.entity.boss.BrainOfCthulhu;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
@@ -31,8 +33,6 @@ import org.confluence.mod.common.init.item.SpearItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.mod.common.entity.boss.BrainOfCthulhu;
-import org.confluence.mod.common.init.entity.BossEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class CrimsonHeartBlock extends Block {
@@ -68,21 +68,18 @@ public class CrimsonHeartBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(GunItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+            int drop = data.getEvilBrokenCount() == 0 ? 0 : level.random.nextInt(5);
+            ItemStack reward = switch (drop) {
+                case 0 -> GunItems.THE_UNDERTAKER.toStack();
+                case 1 -> LightPetItems.CRIMSON_HEART.toStack();
+                case 2 -> TCItems.PANIC_NECKLACE.toStack();
+                case 3 -> ManaWeaponItems.CRIMSON_ROD.toStack();
+                case 4 -> SpearItems.THE_ROTTED_FORK.toStack();
+                default -> throw new IllegalStateException("Unexpected evil orb drop: " + drop);
+            };
+            LibEntityUtils.createItemEntity(reward, center.x, center.y, center.z, level, 0);
+            if (drop == 0) {
                 LibEntityUtils.createItemEntity(GunItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(LightPetItems.CRIMSON_HEART.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(TCItems.PANIC_NECKLACE.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(ManaWeaponItems.CRIMSON_ROD.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(SpearItems.THE_ROTTED_FORK.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

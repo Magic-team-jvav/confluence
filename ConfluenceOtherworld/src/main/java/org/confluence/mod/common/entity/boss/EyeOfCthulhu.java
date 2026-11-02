@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,12 +18,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.DemonEye;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.item.common.TreasureBagItem;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
@@ -597,4 +600,17 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     public record AfterimageSnapshot(Vec3 position, float xRot, float yRot, int tick) {}
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
+            if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
+                KillBoard.INSTANCE.defeat(getType());
+                for (var player : getOnlineCombatParticipants()) {
+                    TreasureBagItem.createItemEntity(this, player);
+                }
+            }
+        }
+    }
 }

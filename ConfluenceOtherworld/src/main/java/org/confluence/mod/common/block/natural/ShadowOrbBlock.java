@@ -24,15 +24,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.FlailItems;
-import org.confluence.mod.common.init.item.GunItems;
-import org.confluence.mod.common.init.item.LightPetItems;
-import org.confluence.mod.common.init.item.ManaWeaponItems;
-import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.common.entity.boss.EaterOfWorlds;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class ShadowOrbBlock extends Block {
@@ -68,21 +64,18 @@ public class ShadowOrbBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(GunItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
+            int drop = data.getEvilBrokenCount() == 0 ? 0 : level.random.nextInt(5);
+            ItemStack reward = switch (drop) {
+                case 0 -> GunItems.MUSKET.toStack();
+                case 1 -> LightPetItems.SHADOW_ORB.toStack();
+                case 2 -> ManaWeaponItems.VILETHRON.toStack();
+                case 3 -> FlailItems.BALL_O_HURT.toStack();
+                case 4 -> AccessoryItems.BAND_OF_STARPOWER.toStack();
+                default -> throw new IllegalStateException("Unexpected evil orb drop: " + drop);
+            };
+            LibEntityUtils.createItemEntity(reward, center.x, center.y, center.z, level, 0);
+            if (drop == 0) {
                 LibEntityUtils.createItemEntity(GunItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(LightPetItems.SHADOW_ORB.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(ManaWeaponItems.VILETHRON.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(FlailItems.BALL_O_HURT.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

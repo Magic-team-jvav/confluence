@@ -38,6 +38,9 @@ public class DaedalusStormbow extends BaseTerraBowItem {
         ammunition.shrink(1);
     }
 
+    @Override
+    public void releaseUsing(ItemStack weapon, Level level, LivingEntity owner, int timeLeft) {}
+
     /// 单次触发消耗一根箭后射出几发；代达罗斯风暴弓固定 1 发。
     protected int getVolleySize(RandomSource random) {
         return 1;

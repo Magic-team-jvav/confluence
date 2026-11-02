@@ -78,6 +78,7 @@ public class Shark extends BaseAquaticMonster {
     private final class PatrolGoal extends AquaticRandomSwimmingGoal {
         private Path patrolPath;
         private int retryAt;
+        private int patrolAttempts;
 
         private PatrolGoal() {
             super(Shark.this, 0.6, 1);
@@ -92,21 +93,20 @@ public class Shark extends BaseAquaticMonster {
         @Override
         protected Vec3 getPosition() {
             patrolPath = null;
-            Vec3 forward = position().add(getViewVector(1.0F).scale(8.0));
-            for (int attempt = 0; attempt < 8; attempt++) {
-                Vec3 candidate = attempt < 4
-                        ? DefaultRandomPos.getPosTowards(Shark.this, 10, 3, forward, Math.PI / 2.0)
-                        : DefaultRandomPos.getPos(Shark.this, 6, 3);
-                if (candidate == null) continue;
-                Path path = getNavigation().createPath(candidate.x, candidate.y, candidate.z, 0);
-                if (path == null || !path.canReach() || path.getNodeCount() < 2) continue;
-                Vec3 destination = path.getEntityPosAtNode(Shark.this, path.getNodeCount() - 1);
-                if (destination.distanceToSqr(position()) < 4.0) continue;
-                patrolPath = path;
-                return destination;
-            }
             retryAt = tickCount + 10;
-            return null;
+            boolean forwardAttempt = patrolAttempts < 4;
+            patrolAttempts = (patrolAttempts + 1) % 8;
+            Vec3 candidate = forwardAttempt
+                    ? DefaultRandomPos.getPosTowards(Shark.this, 10, 3, position().add(getViewVector(1.0F).scale(8.0)), Math.PI / 2.0)
+                    : DefaultRandomPos.getPos(Shark.this, 6, 3);
+            if (candidate == null) return null;
+            Path path = getNavigation().createPath(candidate.x, candidate.y, candidate.z, 0);
+            if (path == null || !path.canReach() || path.getNodeCount() < 2) return null;
+            Vec3 destination = path.getEntityPosAtNode(Shark.this, path.getNodeCount() - 1);
+            if (destination.distanceToSqr(position()) < 4.0) return null;
+            patrolPath = path;
+            patrolAttempts = 0;
+            return destination;
         }
 
         @Override

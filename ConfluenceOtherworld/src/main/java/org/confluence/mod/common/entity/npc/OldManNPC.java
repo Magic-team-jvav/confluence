@@ -92,8 +92,8 @@ public class OldManNPC extends BaseNPC {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
-            InteractionResult commonResult = handleCommonInteraction(serverPlayer, hand);
-            if (commonResult != null) return commonResult;
+            if (hand == InteractionHand.OFF_HAND || !canStartInteraction(serverPlayer))
+                return InteractionResult.SUCCESS;
             recordInteraction(serverPlayer);
             PortPacketDistributor.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId()));
         }

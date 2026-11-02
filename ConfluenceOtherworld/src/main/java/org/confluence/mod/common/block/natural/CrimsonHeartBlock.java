@@ -68,21 +68,18 @@ public class CrimsonHeartBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            if (count == 0 || level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(GunItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+            int drop = data.getEvilBrokenCount() == 0 ? 0 : level.random.nextInt(5);
+            ItemStack reward = switch (drop) {
+                case 0 -> GunItems.THE_UNDERTAKER.toStack();
+                case 1 -> LightPetItems.CRIMSON_HEART.toStack();
+                case 2 -> TCItems.PANIC_NECKLACE.toStack();
+                case 3 -> ManaWeaponItems.CRIMSON_ROD.toStack();
+                case 4 -> SpearItems.THE_ROTTED_FORK.toStack();
+                default -> throw new IllegalStateException("Unexpected evil orb drop: " + drop);
+            };
+            LibEntityUtils.createItemEntity(reward, center.x, center.y, center.z, level, 0);
+            if (drop == 0) {
                 LibEntityUtils.createItemEntity(GunItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(LightPetItems.CRIMSON_HEART.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(TCItems.PANIC_NECKLACE.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(ManaWeaponItems.CRIMSON_ROD.toStack(), center.x, center.y, center.z, level, 0);
-            }
-            if (level.random.nextFloat() < 0.2F) {
-                LibEntityUtils.createItemEntity(SpearItems.THE_ROTTED_FORK.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

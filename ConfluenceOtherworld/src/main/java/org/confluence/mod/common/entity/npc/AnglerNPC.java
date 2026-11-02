@@ -173,7 +173,8 @@ public class AnglerNPC extends BaseNPC {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
-            if (!canStartInteraction(serverPlayer)) return InteractionResult.SUCCESS;
+            if (hand == InteractionHand.OFF_HAND || !canStartInteraction(serverPlayer))
+                return InteractionResult.SUCCESS;
             if (!isWakeUp()) {
                 initName();
                 recordInteraction(serverPlayer);
@@ -181,8 +182,6 @@ public class AnglerNPC extends BaseNPC {
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }
             initName();
-            InteractionResult commonResult = handleCommonInteraction(serverPlayer, hand);
-            if (commonResult != null) return commonResult;
             recordInteraction(serverPlayer);
 
             ServerLevel serverLevel = (ServerLevel) level();

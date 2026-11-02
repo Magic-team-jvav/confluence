@@ -33,7 +33,6 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -487,8 +486,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             initName();
-            InteractionResult commonResult = handleCommonInteraction(serverPlayer, hand);
-            if (commonResult != null) return commonResult;
+            if (hand == InteractionHand.OFF_HAND || !canStartInteraction(serverPlayer))
+                return InteractionResult.SUCCESS;
             recordInteraction(serverPlayer);
 
             var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
@@ -599,24 +598,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         setDeltaMovement(0.0D, motion.y, 0.0D);
     }
 
-    @Nullable
-    protected InteractionResult handleCommonInteraction(ServerPlayer player, InteractionHand hand) {
-        if (hand == InteractionHand.OFF_HAND || !canStartInteraction(player))
-            return InteractionResult.SUCCESS;
-        setCustomNameVisible(hasCustomName());
-        ItemStack held = player.getItemInHand(hand);
-        if (held.getItem() instanceof ArmorItem armor) {
-            swapEquipment(player, hand, armor.getEquipmentSlot());
-            return InteractionResult.SUCCESS;
-        }
-        if (player.isShiftKeyDown() && held.isEmpty()) {
-            removeLookedAtEquipment(player, hand);
-            return InteractionResult.PASS;
-        }
-        return null;
-    }
-
     protected void recordInteraction(ServerPlayer player) {
+        setCustomNameVisible(hasCustomName());
         refreshMood();
         interactingPlayer = player;
         dialogExpiresAt = tickCount + 60;
@@ -631,38 +614,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         if (hasCustomName()) return;
         String name = NPCNames.Loader.getInstance().getRandomName(getType(), getRandom1211());
         if (name != null) setCustomName(Component.literal(name));
-    }
-
-    private void swapEquipment(Player player, InteractionHand hand, EquipmentSlot slot) {
-        ItemStack npcItem = getItemBySlot(slot);
-        setItemSlot(slot, player.getItemInHand(hand));
-        player.setItemInHand(hand, npcItem);
-    }
-
-    private void removeLookedAtEquipment(Player player, InteractionHand hand) {
-        Vec3 start = player.getEyePosition();
-        getBoundingBox().clip(start, start.add(player.getViewVector(0.5F).scale(5))).ifPresent(hit -> {
-            double height = hit.y - getY();
-            if (height > 1.2) {
-                moveEquipmentToHand(player, hand, EquipmentSlot.HEAD);
-            } else if (height > 0.7) {
-                double edgeX = Math.max(hit.x - getBoundingBox().minX, getBoundingBox().maxX - hit.x);
-                double edgeZ = Math.max(hit.z - getBoundingBox().minZ, getBoundingBox().maxZ - hit.z);
-                if (Math.min(edgeX, edgeZ) <= 0.5)
-                    moveEquipmentToHand(player, hand, EquipmentSlot.CHEST);
-            } else if (height > 0.3) {
-                moveEquipmentToHand(player, hand, EquipmentSlot.LEGS);
-            } else {
-                moveEquipmentToHand(player, hand, EquipmentSlot.FEET);
-            }
-        });
-    }
-
-    private void moveEquipmentToHand(Player player, InteractionHand hand, EquipmentSlot slot) {
-        ItemStack equipped = getItemBySlot(slot);
-        if (equipped.isEmpty()) return;
-        player.setItemInHand(hand, equipped);
-        setItemSlot(slot, ItemStack.EMPTY);
     }
 
     // === 杂项 ===

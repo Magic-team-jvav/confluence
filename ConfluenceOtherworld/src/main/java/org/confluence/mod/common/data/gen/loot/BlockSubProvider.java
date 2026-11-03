@@ -325,6 +325,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(PACKED_DIRT.get());
         dropSelf(PUPIL_BLOCK.get());
         dropSelf(EYEBALL_BLOCK.get());
+        dropSelf(SPIDER_NEST_STONE.get());
         add(CRIMSTONE.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, COBBLED_CRIMSTONE));
         add(EBONSTONE.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, COBBLED_EBONSTONE));
         add(PEARLSTONE.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, COBBLED_PEARLSTONE));

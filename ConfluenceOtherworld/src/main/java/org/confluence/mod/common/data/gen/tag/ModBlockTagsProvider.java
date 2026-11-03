@@ -504,6 +504,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 GRANITE.get(),
                 MARBLE.get(),
+                NatureBlocks.SPIDER_NEST_STONE.get(),
 
                 TUFF_BOOTH.get(),
                 HEART_LANTERN.get(),

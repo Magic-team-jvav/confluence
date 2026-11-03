@@ -991,10 +991,6 @@ public class ModDataProvider {
         private static final CountPlacement count0_2$1_3 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 2).add(ConstantInt.of(1), 3).build()));
         private static final CountPlacement count1_5 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 4).add(ConstantInt.of(1), 1).build()));
         private static final CountPlacement count1_10 = CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(0), 9).add(ConstantInt.of(1), 1).build()));
-        // 按比例折算后的平均抽取次数不是整数，用两档权重拼出：
-        private static final CountPlacement countAvg6_4 = weightedCount(6, 3, 7, 2);    // 平均 6.4 = 8 × 0.8
-        private static final CountPlacement countAvg7_8 = weightedCount(7, 1, 8, 4);    // 平均 7.8 = 13 × 0.6
-        private static final CountPlacement countAvg15_6 = weightedCount(15, 2, 16, 3); // 平均 15.6 = 26 × 0.6
         private static final HeightRangePlacement heightRandom10_100 = HeightRangePlacement.uniform(
                 VerticalAnchor.absolute(10),
                 VerticalAnchor.absolute(100)
@@ -1049,7 +1045,7 @@ public class ModDataProvider {
             register(context, POWDER_SNOW_PATCH, configured.getOrThrow(ConfiguredFeatures.POWDER_SNOW_PATCH), RarityFilter.onAverageOnceEvery(2), inSquare, throughUnderground, biome);
             register(context, DESERT_FOSSIL, configured.getOrThrow(ConfiguredFeatures.DESERT_FOSSIL), count14, inSquare, bottomThroughTop, biome);
             register(context, FALLING_SAND_TRAP, configured.getOrThrow(ConfiguredFeatures.FALLING_SAND_TRAP), inSquare, bottomThroughUnderground, biome);
-            register(context, ANTLION_EGGS, configured.getOrThrow(ConfiguredFeatures.ANTLION_EGGS), CountPlacement.of(12), inSquare, bottomThroughUnderground, biome);
+            register(context, ANTLION_EGGS, configured.getOrThrow(ConfiguredFeatures.ANTLION_EGGS), CountPlacement.of(1), inSquare, bottomThroughUnderground, biome); // 蚁狮卵：每区块最多 1 个（原 12 个/区块堆在一起）
             register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(10), inSquare, surfaceBand(-110, -80), targetSturdyAllowedAir, biome); // 地下木箱：1/8 → 1/10，0.125 → 0.1 个/区块（削减至 0.8）
             register(context, FOREST_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.FOREST_DROOPING_VINE), CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.STONE), air, 12), ySpreadN1, biome);
             register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
@@ -1106,7 +1102,7 @@ public class ModDataProvider {
             register(context, CRIMSON_STALACTITE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_STALACTITE), CountPlacement.of(40), inSquare, bottomThroughUnderground, targetHangingAir, biome);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
-            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), countAvg15_6, inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome); // 发光蘑菇群系生命水晶：平均 26 → 15.6（削减至 0.6）
+            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(1), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome); // 发光蘑菇群系生命水晶：每区块最多 1 个（原 15.6/11 ≈ 1.42 个/区块，去簇后只能取 1 个/区块的上限）
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
             register(context, HUGE_LIFE_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.HUGE_LIFE_MUSHROOM_TREE), RarityFilter.onAverageOnceEvery(30), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
@@ -1115,7 +1111,7 @@ public class ModDataProvider {
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir, biome);
             register(context, ASH_GRASS, configured.getOrThrow(ConfiguredFeatures.ASH_GRASS), CountPlacement.of(20), inSquare, bottomThroughTop, biome);
             register(context, JUNGLE_ROSE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_ROSE), count4, inSquare, bottomThroughSurface, biome);
-            register(context, JUNGLE_SPORE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_SPORE), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(16), inSquare, oceanFloorBand(-110, -70), targetSturdyAllowedAir, biome);
+            register(context, JUNGLE_SPORE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_SPORE), CountPlacement.of(1), inSquare, oceanFloorBand(-110, -70), targetSturdyAllowedAir, biome); // 丛林孢子：每区块最多 1 个（原 16/11 ≈ 1.45 个/区块，去簇后取 1 个/区块的上限）
             register(context, JUNGLE_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_DROOPING_VINE), CountPlacement.of(90), inSquare, bottomThroughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
             register(context, JUNGLE_CATTAILS, configured.getOrThrow(ConfiguredFeatures.JUNGLE_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, UNDERGROUND_JUNGLE_GRASS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_GRASS), CountPlacement.of(125), inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1, biome);
@@ -1124,10 +1120,9 @@ public class ModDataProvider {
             register(context, NATURES_GIFT, configured.getOrThrow(ConfiguredFeatures.NATURES_GIFT), count3, inSquare, bottomThroughSurface, biome);
             register(context, NO_TRAPS_GRAVITATION_TRAP, configured.getOrThrow(ConfiguredFeatures.GRAVITATION_TRAP), noTraps, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12), biome);
             register(context, NO_TRAPS_PNEUMATIC_TRAP, configured.getOrThrow(ConfiguredFeatures.PNEUMATIC_TRAP), noTraps, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12), biome);
-            // 幽匿陷阱：平均 10 → 12.5 区块一次（生成率降至 80%）。原版 rarity 只能表达 1/整数，
-            // 所以用 rarity 25 + 每次 2 个来表达 2/25 = 0.08 个/区块。
+            // 幽匿陷阱：平均 12.5 区块一次 = 0.08 个/区块。摊平成每区块最多 1 次，用 0/1 权重表达 2/25。
             register(context, NO_TRAPS_SCULK_TRAP, configured.getOrThrow(ConfiguredFeatures.SCULK_TRAP),
-                    noTraps, RarityFilter.onAverageOnceEvery(25), CountPlacement.of(2), inSquare, bottomThroughUnderground,
+                    noTraps, scatterCount(2, 25), inSquare, bottomThroughUnderground,
                     EnvironmentScanPlacement.scanningFor(
                             Direction.DOWN,
                             BlockPredicate.solid(),
@@ -1140,7 +1135,7 @@ public class ModDataProvider {
             register(context, DART_TRAP, configured.getOrThrow(ConfiguredFeatures.DART_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, BOULDER_TRAP, configured.getOrThrow(ConfiguredFeatures.BOULDER_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(25), inSquare, throughCave, biome);
-            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), RarityFilter.onAverageOnceEvery(11), countAvg7_8, inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome); // 生命水晶：平均 13 → 7.8（削减至 0.6）
+            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), scatterCount(7, 10), inSquare, surfaceBand(-110, -70), targetSturdyAllowedAir, biome); // 生命水晶：每区块最多 1 个，平均 0.7 个/区块（原 7.8/11 ≈ 0.709，摊平去簇）
             register(context, WATER_CHESTS_ABOVE_30, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
                     RarityFilter.onAverageOnceEvery(16), inSquare, oceanFloorWG, yRange(30, 320),
                     BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.WATER)), biome
@@ -1149,7 +1144,7 @@ public class ModDataProvider {
                     RarityFilter.onAverageOnceEvery(8), CountOnEveryLayerPlacement.of(1), yRange(-64, 29),
                     BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.WATER)), biome
             );
-            register(context, ROLLING_CACTUS, configured.getOrThrow(ConfiguredFeatures.ROLLING_CACTUS), CountPlacement.of(22), inSquare, oceanFloorBand(-110, -30), targetSturdyAllowedAir, biome);
+            register(context, ROLLING_CACTUS, configured.getOrThrow(ConfiguredFeatures.ROLLING_CACTUS), CountPlacement.of(1), inSquare, oceanFloorBand(-110, -30), targetSturdyAllowedAir, biome); // 滚草：每区块最多 1 个（原 22 个/区块堆在一起）
             register(context, SILT_BLOCK, configured.getOrThrow(ConfiguredFeatures.SILT_BLOCK), count14, inSquare, bottomThroughTop, biome);
             register(context, SLUSH, configured.getOrThrow(ConfiguredFeatures.SLUSH), CountPlacement.of(10), inSquare, bottomThroughTop, biome);
             register(context, PALM_TREE, configured.getOrThrow(ModFeatures.Configured.PALM_TREE),
@@ -1170,10 +1165,11 @@ public class ModDataProvider {
             gemTree(context, SAPPHIRE_TREE, configured.getOrThrow(ModFeatures.Configured.SAPPHIRE_TREE), NatureBlocks.SAPPHIRE_SAPLING.get());
             gemTree(context, TOPAZ_TREE, configured.getOrThrow(ModFeatures.Configured.TOPAZ_TREE), NatureBlocks.TOPAZ_SAPLING.get());
 
-            evilAltar(context, CRIMSON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, 5);
-            evilAltar(context, CRIMSON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, 1);
-            evilAltar(context, DEMON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, 5);
-            evilAltar(context, DEMON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, 1);
+            // 邪恶祭坛：原「rarity 15 + 每次 13 或 65 个」会在同一区块堆出一片祭坛；摊平成每区块最多 1 个。
+            evilAltar(context, CRIMSON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, CountPlacement.of(1)); // 群系祭坛：每区块最多 1 个（原 65/15 ≈ 4.33 个/区块，去簇后取 1 个/区块的上限）
+            evilAltar(context, CRIMSON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, scatterCount(13, 15)); // 世界祭坛：每区块最多 1 个，平均 13/15 ≈ 0.87 个/区块
+            evilAltar(context, DEMON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, CountPlacement.of(1)); // 群系祭坛：每区块最多 1 个（原 65/15 ≈ 4.33 个/区块，去簇后取 1 个/区块的上限）
+            evilAltar(context, DEMON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, scatterCount(13, 15)); // 世界祭坛：每区块最多 1 个，平均 13/15 ≈ 0.87 个/区块
 
             pot(context, FOREST_POT, configured.getOrThrow(ConfiguredFeatures.FOREST_POT));
             pot(context, JUNGLE_POT, configured.getOrThrow(ConfiguredFeatures.JUNGLE_POT));
@@ -1182,14 +1178,14 @@ public class ModDataProvider {
             pot(context, UNDERGROUND_DESERT_POT, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_DESERT_POT));
             pot(context, TUNDRA_POT, configured.getOrThrow(ConfiguredFeatures.TUNDRA_POT));
 
-            chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(3), -110, -80); // 1/8 × 3 = 0.375
-            chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), RarityFilter.onAverageOnceEvery(6), CountPlacement.of(8), -80, -23); // 1/6 × 8 ≈ 1.33
-            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), RarityFilter.onAverageOnceEvery(6), countAvg6_4, -80, -23); // 1/6 × 6.4 ≈ 1.07（原 1/6 × 8 ≈ 1.33，削减至 0.8）
-            chest(context, CAVE_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_SANDSTONE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(2), -110, -80); // 1/8 × 2 = 0.25
-            chest(context, UNDERGROUND_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_SANDSTONE_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(4), -80, -23); // 1/8 × 4 = 0.5
-            chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), RarityFilter.onAverageOnceEvery(11), CountPlacement.of(20), -23, -2); // 1/11 × 20 ≈ 1.82
-            chest(context, CAVE_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_FROZEN_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(2), -110, -80); // 1/8 × 2 = 0.25
-            chest(context, UNDERGROUND_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_FROZEN_CHESTS), RarityFilter.onAverageOnceEvery(8), CountPlacement.of(4), -80, -23); // 1/8 × 4 = 0.5
+            chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), scatterCount(3, 8), -110, -80); // 每区块最多 1 个，平均 3/8 = 0.375 个/区块
+            chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), CountPlacement.of(1), -80, -23); // 每区块最多 1 个（原 1/6 × 8 ≈ 1.33 个/区块，去簇后取 1 个/区块的上限）
+            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), CountPlacement.of(1), -80, -23); // 每区块最多 1 个（原 6.4/6 ≈ 1.07 个/区块，取 1 个/区块上限，密度基本不变）
+            chest(context, CAVE_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_SANDSTONE_CHESTS), scatterCount(2, 8), -110, -80); // 每区块最多 1 个，平均 2/8 = 0.25 个/区块
+            chest(context, UNDERGROUND_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_SANDSTONE_CHESTS), scatterCount(4, 8), -80, -23); // 每区块最多 1 个，平均 4/8 = 0.5 个/区块
+            chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), CountPlacement.of(1), -23, -2); // 每区块最多 1 个（原 20/11 ≈ 1.82 个/区块，去簇后取 1 个/区块的上限）
+            chest(context, CAVE_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_FROZEN_CHESTS), scatterCount(2, 8), -110, -80); // 每区块最多 1 个，平均 2/8 = 0.25 个/区块
+            chest(context, UNDERGROUND_FROZEN_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_FROZEN_CHESTS), scatterCount(4, 8), -80, -23); // 每区块最多 1 个，平均 4/8 = 0.5 个/区块
 
         }
 
@@ -1201,16 +1197,16 @@ public class ModDataProvider {
             register(context, key, feature, RarityFilter.onAverageOnceEvery(10), biome, inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1, BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(saplingBlock.defaultBlockState(), Vec3i.ZERO)));
         }
 
-        private static void evilAltar(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, boolean corruption, int count) {
-            register(context, key, feature, SecretFlagPlacement.of(corruption ? IWorldOptions.THE_CORRUPTION : IWorldOptions.THE_CRIMSON), RarityFilter.onAverageOnceEvery(15), CountPlacement.of(count * 13), inSquare, surfaceBand(-110, -20), targetSturdyAllowedAir, biome);
+        private static void evilAltar(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, boolean corruption, CountPlacement count) {
+            register(context, key, feature, SecretFlagPlacement.of(corruption ? IWorldOptions.THE_CORRUPTION : IWorldOptions.THE_CRIMSON), count, inSquare, surfaceBand(-110, -20), targetSturdyAllowedAir, biome);
         }
 
-        private static void chest(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, RarityFilter rarity, CountPlacement count, int minInclusive, int maxInclusive) {
-            register(context, key, feature, rarity, count, inSquare, surfaceBand(minInclusive, maxInclusive), targetSturdyAllowedAir, biome);
+        private static void chest(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, CountPlacement count, int minInclusive, int maxInclusive) {
+            register(context, key, feature, count, inSquare, surfaceBand(minInclusive, maxInclusive), targetSturdyAllowedAir, biome);
         }
 
         private static void pot(BootstapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature) {
-            register(context, key, feature, CountPlacement.of(9), inSquare, surfaceBand(-110, -2), targetSturdyAllowedAir, biome);
+            register(context, key, feature, CountPlacement.of(1), inSquare, surfaceBand(-110, -2), targetSturdyAllowedAir, biome); // 罐子：每区块最多 1 个（原 9 个/区块堆在一起，去簇后只保留 1 个/区块的上限）
         }
 
         /// 用两档权重拼出小数的平均抽取次数，让「按比例削减」能落在整数抽取次数上。
@@ -1219,6 +1215,14 @@ public class ModDataProvider {
                     .add(ConstantInt.of(low), lowWeight)
                     .add(ConstantInt.of(high), highWeight)
                     .build()));
+        }
+
+        /// 去簇：每个区块最多只尝试 1 次，用 0/1 权重摊出「平均 chunks 个区块里 times 个」的概率。
+        /// 原来的「rarity 1/N + count M」会在同一个区块里一次性塞进 M 个地物，看上去就是一簇；
+        /// 摊平后平均密度不变，落点回到逐区块均匀分布，不再扎堆。
+        private static CountPlacement scatterCount(int times, int chunks) {
+            if (times >= chunks) return CountPlacement.of(1); // 密度已达 1 个/区块，只能取上限
+            return weightedCount(0, chunks - times, 1, times);
         }
 
         private static PlacementModifier surfaceBand(int minInclusive, int maxInclusive) {

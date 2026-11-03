@@ -60,6 +60,7 @@ import java.util.List;
 
 /// 毁灭者的战斗主体：负责 AI、生命及目标，身体轨迹与碰撞部件交给 DestroyerBody。
 public class TheDestroyer extends BaseBoss {
+    private static final EntityDataAccessor<Integer> SIDE_BEAM_SEED = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> BEAM_TICK = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<BlockState> DEBRIS_STATE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BLOCK_STATE);
     private static final EntityDataAccessor<BlockPos> DEBRIS_ORIGIN = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BLOCK_POS);
@@ -112,7 +113,7 @@ public class TheDestroyer extends BaseBoss {
     private static final int LASER_CYCLE = 180, LASER_STEP = 2;
     /// 激光初速和最大射程，单位格/tick、格。
     private static final float LASER_SPEED = 2.2F;
-    public static final double LASER_RANGE = 96.0;
+    public static final double LASER_RANGE = 192.0;
     /// 体节激光声音的最短间隔，单位 tick；齐射时共用一次声音。
     private static final int LASER_SOUND_INTERVAL = 4;
     /// 激光射击声音的音量与音调。
@@ -151,7 +152,7 @@ public class TheDestroyer extends BaseBoss {
     /// 包围攻击的总倒计时，包含追赶入场与收圈，单位 tick；240 tick 为 12 秒。
     private static final int COIL_DURATION = 240;
     /// 围圈初始和最终半径，单位格。
-    private static final double COIL_START_RADIUS = 28.0, COIL_END_RADIUS = 10.0;
+    private static final double COIL_START_RADIUS = 28.0, COIL_END_RADIUS = SEGMENT_SPACING * TURN_RADIUS_SEGMENTS;
     /// 盘绕沿圆周前进的速度，单位格/tick。
     private static final double COIL_SPEED = 2.4;
     /// 到达围圈入口的判定距离，单位格。
@@ -201,6 +202,8 @@ public class TheDestroyer extends BaseBoss {
 
     public int getBeamTick() {return entityData.get(BEAM_TICK);}
 
+    public int getSideBeamSeed() {return entityData.get(SIDE_BEAM_SEED);}
+
     public Vec3 beamOrigin() {return getBoundingBox().getCenter().add(getLookAngle().scale(10));}
 
     public enum Mode {
@@ -239,6 +242,7 @@ public class TheDestroyer extends BaseBoss {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(BEAM_TICK, -1);
+        builder.define(SIDE_BEAM_SEED, 0);
         builder.define(MODE, Mode.GROUND.ordinal());
         builder.define(DEBRIS_STATE, Blocks.AIR.defaultBlockState());
         builder.define(DEBRIS_ORIGIN, BlockPos.ZERO);
@@ -441,11 +445,12 @@ public class TheDestroyer extends BaseBoss {
             return;
         }
         tickBeam(target);
-        if (getBeamTick() < 0) updateMode(target);
+        if (getBeamTick() < 0 && specialAttack == SpecialAttack.NONE) updateMode(target);
         boolean solidBefore = isSolid(position());
         Vec3 previousVelocity = velocity;
         boolean ballistic = getMode() == Mode.GROUND && airborne;
         if (getBeamTick() == 100) finishSpecialAttack();
+        SpecialAttack previousSpecialAttack = specialAttack;
         boolean specialMovement = getBeamTick() >= 100 && getBeamTick() < 460 ? false : tickSpecialAttack(target);
         if (!specialMovement) switch (getMode()) {
             case UNDERGROUND -> {
@@ -472,7 +477,8 @@ public class TheDestroyer extends BaseBoss {
         } else if (getBeamTick() >= 220 && getBeamTick() < 460) {
             velocity = Vec3.ZERO;
         }
-        if (!ballistic)
+        boolean dashing = specialAttack == SpecialAttack.DASH || previousSpecialAttack == SpecialAttack.DASH;
+        if (!ballistic && !launching && !dashing)
             velocity = WormSteering.limit(previousVelocity.lengthSqr() > 1.0E-7 ? previousVelocity : getLookAngle(),
                     velocity, SEGMENT_SPACING * TURN_RADIUS_SEGMENTS, MAX_TURN_RADIANS);
         Vec3 previous = position();
@@ -482,9 +488,15 @@ public class TheDestroyer extends BaseBoss {
             Vec3 desired = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()).normalize();
             beamAim = WormSteering.turn(getLookAngle(), desired, Math.toRadians(2));
             faceCombatDirection(beamAim, 2, 2);
-        } else if (getBeamTick() < 100)
-            faceCombatDirection(specialAttack == SpecialAttack.DASH_WINDUP
-                ? target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()) : velocity, 180, 180);
+        } else if (getBeamTick() < 100) {
+            if (specialAttack == SpecialAttack.DASH_WINDUP) {
+                Vec3 targetDirection = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
+                Vec3 facing = WormSteering.turn(getLookAngle(), targetDirection, Math.toRadians(8));
+                faceCombatDirection(facing, 180, 180);
+            } else {
+                faceCombatDirection(velocity, 180, 180);
+            }
+        }
 
         boolean solidNow = isSolid(position());
         if (!specialMovement && getMode() == Mode.GROUND) {
@@ -528,8 +540,7 @@ public class TheDestroyer extends BaseBoss {
             case DASH_WINDUP -> {
                 velocity = velocity.scale(DASH_DRAG);
                 if (specialTicks >= DASH_WINDUP) {
-                    Vec3 direction = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
-                    dashDirection = direction.lengthSqr() < 1.0E-7 ? getLookAngle() : direction.normalize();
+                    dashDirection = getLookAngle();
                     velocity = dashDirection.scale(DASH_SPEED);
                     specialAttack = SpecialAttack.DASH;
                     specialTicks = 0;
@@ -554,12 +565,14 @@ public class TheDestroyer extends BaseBoss {
                 double formationTicks = Math.PI * 2 * COIL_START_RADIUS / COIL_SPEED;
                 double progress = Mth.clamp((COIL_DURATION - coilTicksRemaining - formationTicks) / (COIL_DURATION - formationTicks), 0, 1);
                 double radius = Mth.lerp(progress, COIL_START_RADIUS, COIL_END_RADIUS);
-                double step = COIL_SPEED / radius;
+                // 收圈时降低速度，使目标角速度不超过头部允许的转向速度。
+                double coilSpeed = Math.min(COIL_SPEED, radius * MAX_TURN_RADIANS * 0.9);
+                double step = coilSpeed / radius;
                 coilAngle += step;
                 Vec3 destination = coilCenter.add(Math.cos(coilAngle) * radius, 0, Math.sin(coilAngle) * radius);
                 velocity = destination.subtract(position());
-                if (velocity.lengthSqr() > COIL_SPEED * COIL_SPEED)
-                    velocity = velocity.normalize().scale(COIL_SPEED);
+                if (velocity.lengthSqr() > coilSpeed * coilSpeed)
+                    velocity = velocity.normalize().scale(coilSpeed);
             }
             default -> {}
         }
@@ -644,12 +657,12 @@ public class TheDestroyer extends BaseBoss {
         }
     }
 
-    /// 速度大小逐步变化，方向按转弯半径旋转，避免反向目标将速度抵消后直接掉头。
+    /// 计算巡航期望速度；统一由主运动流程限制转弯半径。
     static Vec3 steer(Vec3 current, Vec3 offset, double speed) {
         if (offset.lengthSqr() < 0.001) return current;
         double currentSpeed = current.length();
         double nextSpeed = currentSpeed + Mth.clamp(speed - currentSpeed, -STEERING, STEERING);
-        return WormSteering.limit(current, offset.normalize().scale(nextSpeed), SEGMENT_SPACING * TURN_RADIUS_SEGMENTS, MAX_TURN_RADIANS);
+        return offset.normalize().scale(nextSpeed);
     }
 
     void playVentOpeningSound(Vec3 position) {
@@ -680,6 +693,7 @@ public class TheDestroyer extends BaseBoss {
     }
 
     private void startBeam() {
+        entityData.set(SIDE_BEAM_SEED, random.nextInt());
         entityData.set(BEAM_TICK, 0);
         beamAim = getLookAngle();
         if (beamCount < Integer.MAX_VALUE) beamCount++;
@@ -705,6 +719,22 @@ public class TheDestroyer extends BaseBoss {
         entityData.set(BEAM_TICK, tick + 1);
         if (tick == 99) {
             level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.DESTROYER_TERRIFYING_LASER.get(), SoundSource.HOSTILE, 4.0F, 1.0F);
+        }
+        if (tick >= 100 && tick < 420) {
+            for (int ordinal = 0; ordinal < DestroyerSideBeams.COUNT; ordinal++) {
+                int sideStartTick = DestroyerSideBeams.startTick(this, ordinal);
+                if (tick < sideStartTick || tick >= sideStartTick + 200 || (tick - sideStartTick) % 10 != 0)
+                    continue;
+                Vec3 sideStart = DestroyerSideBeams.origin(this, ordinal, 1.0F);
+                if (isSolid(sideStart)) continue;
+                Vec3 sideEnd = sideStart.add(DestroyerSideBeams.direction(this, ordinal, 1.0F).scale(LASER_RANGE));
+                sideEnd = level().clip(new ClipContext(sideStart, sideEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getLocation();
+                for (Player player : level().getEntitiesOfClass(Player.class, new AABB(sideStart, sideEnd).inflate(0.75))) {
+                    if (canAttack(player) && (player.getBoundingBox().inflate(0.5).contains(sideStart)
+                            || player.getBoundingBox().inflate(0.5).clip(sideStart, sideEnd).isPresent()))
+                        player.hurt(damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+                }
+            }
         }
         if (tick < 220 || tick >= 420) return;
         Vec3 start = beamOrigin(), end = start.add(getLookAngle().scale(LASER_RANGE));

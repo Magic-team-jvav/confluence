@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.boss.DestroyerPart;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.joml.Matrix4x3f;
@@ -143,7 +144,6 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             addBeamEmitter(boss, emitters, "ball1");
             addBeamEmitter(boss, emitters, "round");
         }
-        if (last < 221 && tick >= 221) addBeamEmitter(boss, emitters, "laser");
         if (last < 420 && tick >= 420) {
             emitters.forEach(ParticleEmitter::remove);
             emitters.clear();
@@ -215,11 +215,14 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             if (!(entity instanceof TheDestroyer head) || head.isRemoved()) continue;
             EntityRenderer<?> entityRenderer = minecraft.getEntityRenderDispatcher().getRenderer(head);
             if (!(entityRenderer instanceof DestroyerRenderer<?> renderer)) continue;
+            DestroyerBeamRenderer.render(head, event.getPoseStack(), buffers, camera, partialTick);
             renderer.renderSection(head, event.getPoseStack(), buffers, event.getFrustum(), camera, partialTick);
             for (DestroyerPart part : head.getParts()) {
                 renderer.renderSection(part, event.getPoseStack(), buffers, event.getFrustum(), camera, partialTick);
             }
         }
+        buffers.endBatch(RenderStateShardAccessor.TRANSLUCENT_LASER);
+        buffers.endBatch(RenderStateShardAccessor.TRANSLUCENT_LASER_NO_CULL);
     }
 
     @SuppressWarnings("unchecked")

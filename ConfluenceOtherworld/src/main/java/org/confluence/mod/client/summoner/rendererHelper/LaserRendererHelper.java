@@ -6,8 +6,10 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import org.confluence.mod.client.summoner.LyraRenderTypes;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 /**
  * 激光/光柱渲染器（链式 MinionWeaponItemBuilder）。
@@ -202,5 +204,66 @@ public class LaserRendererHelper {
 
     private static float mix(float a, float b, float t) {
         return a + (b - a) * t;
+    }
+
+    /**
+     * 按三个坐标轴独立采样首尾顶点偏移；各层共用返回值。
+     */
+    public static float[][][] randomEndpointOffsets(int sides, float amplitude, java.util.random.RandomGenerator random) {
+        float[][][] offsets = new float[2][sides][3];
+        for (int endpoint = 0; endpoint < 2; endpoint++)
+            for (int side = 0; side < sides; side++)
+                for (int axis = 0; axis < 3; axis++)
+                    offsets[endpoint][side][axis] = (random.nextFloat() * 2.0F - 1.0F) * amplitude;
+        return offsets;
+    }
+
+    /**
+     * 绘制沿局部 +Y 轴延伸的棱台壳。偏移只作用于首尾，中间截面由端点线性插值。
+     * fadeLength 是末端渐隐的绝对长度；inverted 控制面片顶点顺序。
+     */
+    public static void renderPrismLayer(VertexConsumer buffer, Matrix4f matrix, float length, float visibleStart, float visibleEnd,
+                                        float startRadius, float endRadius, float[][][] offsets, float fadeLength,
+                                        int red, int green, int blue, int alpha, boolean inverted) {
+        Vector3f[] start = new Vector3f[offsets[0].length];
+        Vector3f[] end = new Vector3f[offsets[0].length];
+        for (int side = 0; side < start.length; side++) {
+            double angle = side * Math.PI * 2.0 / start.length;
+            float x = (float) Math.cos(angle), z = (float) Math.sin(angle);
+            start[side] = new Vector3f(x * startRadius + offsets[0][side][0], offsets[0][side][1], z * startRadius + offsets[0][side][2]);
+            end[side] = new Vector3f(x * endRadius + offsets[1][side][0], length + offsets[1][side][1], z * endRadius + offsets[1][side][2]);
+        }
+        // 只在渐变边界增加截面，末端渐变长度不随伸缩比例变化。
+        float fadeStart = Math.max(0.0F, visibleEnd - fadeLength);
+        if (visibleStart < fadeStart) {
+            drawSection(buffer, matrix, start, end, visibleStart / length, fadeStart / length, red, green, blue, alpha, alpha, inverted);
+        }
+        float fadeFrom = Math.max(visibleStart, fadeStart);
+        int fadeAlpha = Math.round(alpha * Mth.clamp((visibleEnd - fadeFrom) / fadeLength, 0.0F, 1.0F));
+        if (fadeFrom < visibleEnd) {
+            drawSection(buffer, matrix, start, end, fadeFrom / length, visibleEnd / length, red, green, blue, fadeAlpha, 0, inverted);
+        }
+    }
+
+    private static void drawSection(VertexConsumer buffer, Matrix4f matrix, Vector3f[] start, Vector3f[] end,
+                                    float from, float to, int red, int green, int blue, int fromAlpha, int toAlpha, boolean inverted) {
+        for (int side = 0; side < start.length; side++) {
+            int a = (side + (inverted ? 1 : 0)) % start.length;
+            int b = (side + (inverted ? 0 : 1)) % start.length;
+            interpolatedVertex(buffer, matrix, start[a], end[a], from, red, green, blue, fromAlpha);
+            interpolatedVertex(buffer, matrix, start[a], end[a], to, red, green, blue, toAlpha);
+            interpolatedVertex(buffer, matrix, start[b], end[b], to, red, green, blue, toAlpha);
+            interpolatedVertex(buffer, matrix, start[b], end[b], from, red, green, blue, fromAlpha);
+        }
+    }
+
+    private static void interpolatedVertex(VertexConsumer buffer, Matrix4f matrix, Vector3f start, Vector3f end,
+                                           float fraction, int red, int green, int blue, int alpha) {
+        vertex(buffer, matrix, Mth.lerp(fraction, start.x, end.x), Mth.lerp(fraction, start.y, end.y),
+                Mth.lerp(fraction, start.z, end.z), red, green, blue, alpha);
+    }
+
+    private static void vertex(VertexConsumer buffer, Matrix4f matrix, float x, float y, float z, int red, int green, int blue, int alpha) {
+        buffer.addVertex(matrix, x, y, z).setColor(red, green, blue, alpha);
     }
 }

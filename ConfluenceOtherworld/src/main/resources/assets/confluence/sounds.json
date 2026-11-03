@@ -2054,6 +2054,12 @@
       "confluence:item_deadly_sphere_staff"
     ]
   },
+    "destroyer_terrifying_laser": {
+        "sounds": [
+            "confluence:mob/destroyer_terrifying_laser"
+        ],
+        "subtitle": "confluence.subtitle.destroyer_terrifying_laser"
+    },
   "item_death_laser": {
     "subtitle": "confluence.subtitle.item_death_laser",
     "sounds": [

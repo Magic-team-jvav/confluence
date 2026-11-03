@@ -320,6 +320,7 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_CRYSTAL_SERPENT = register("item_crystal_serpent"); // 水晶蛇：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_DEADLY_SPHERE_STAFF = register("item_deadly_sphere_staff"); // 致命球法杖：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_DEATH_LASER = register("item_death_laser"); // 死亡激光：使用
+    public static final DeferredHolder<SoundEvent, SoundEvent> DESTROYER_TERRIFYING_LASER = register("destroyer_terrifying_laser"); // 毁灭者：蓄力激光
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_DEATH_SICKLE = register("item_death_sickle"); // 死神镰刀：使用
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_DREADNAUTILUS = register("item_dreadnautilus"); // 恐惧鹦鹉螺：使用（3 个变体）
     public static final DeferredHolder<SoundEvent, SoundEvent> ITEM_DRILL = register("item_drill"); // 钻头：使用

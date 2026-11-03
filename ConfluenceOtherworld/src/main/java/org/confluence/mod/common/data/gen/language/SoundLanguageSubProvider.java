@@ -246,6 +246,7 @@ public final class SoundLanguageSubProvider {
         language.add("confluence.subtitle.item_crystal_serpent", "Crystal Serpent: Use", "水晶蛇：使用");
         language.add("confluence.subtitle.item_deadly_sphere_staff", "Deadly Sphere Staff: Use", "致命球法杖：使用");
         language.add("confluence.subtitle.item_death_laser", "Death Laser: Use", "死亡激光：使用");
+        language.add("confluence.subtitle.destroyer_terrifying_laser", "The Destroyer: Terrifying Laser", "毁灭者：蓄力激光");
         language.add("confluence.subtitle.item_death_sickle", "Death Sickle: Use", "死神镰刀：使用");
         language.add("confluence.subtitle.item_dreadnautilus", "Dreadnautilus: Use", "恐惧鹦鹉螺：使用");
         language.add("confluence.subtitle.item_drill", "Drill: Use", "钻头：使用");

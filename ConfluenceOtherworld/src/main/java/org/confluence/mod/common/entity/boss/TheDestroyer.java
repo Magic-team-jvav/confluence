@@ -703,6 +703,9 @@ public class TheDestroyer extends BaseBoss {
             return;
         }
         entityData.set(BEAM_TICK, tick + 1);
+        if (tick == 99) {
+            level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.DESTROYER_TERRIFYING_LASER.get(), SoundSource.HOSTILE, 4.0F, 1.0F);
+        }
         if (tick < 220 || tick >= 420) return;
         Vec3 start = beamOrigin(), end = start.add(getLookAngle().scale(LASER_RANGE));
         BlockHitResult hit = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));

@@ -23,6 +23,10 @@ public class RenderStateShardAccessor extends RenderStateShard {
             RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
                     .setCullState(CULL).setLightmapState(NO_LIGHTMAP).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setWriteMaskState(COLOR_WRITE).createCompositeState(false));
+    public static final RenderType TRANSLUCENT_LASER_NO_CULL = RenderType.create("confluence_translucent_laser_no_cull", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, true,
+            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setCullState(NO_CULL).setLightmapState(NO_LIGHTMAP).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setWriteMaskState(COLOR_WRITE).createCompositeState(false));
     public static final RenderType HILL_OF_FLESH_BOUNDARY = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/gui/noise.png"));
     public static final RenderType TRAIL_RENDER_TYPE = RenderType.create(
             "trail_render_type",

@@ -216,10 +216,16 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             if (!(entity instanceof TheDestroyer head) || head.isRemoved()) continue;
             EntityRenderer<?> entityRenderer = minecraft.getEntityRenderDispatcher().getRenderer(head);
             if (!(entityRenderer instanceof DestroyerRenderer<?> renderer)) continue;
-            DestroyerBeamRenderer.render(head, event.getPoseStack(), buffers, camera, partialTick);
             renderer.renderSection(head, event.getPoseStack(), buffers, event.getFrustum(), camera, partialTick);
             for (DestroyerPart part : head.getParts()) {
                 renderer.renderSection(part, event.getPoseStack(), buffers, event.getFrustum(), camera, partialTick);
+            }
+        }
+        // 先提交身体模型的深度，再绘制只写颜色的半透明激光。
+        buffers.endBatch();
+        for (Entity entity : minecraft.level.entitiesForRendering()) {
+            if (entity instanceof TheDestroyer head && !head.isRemoved()) {
+                DestroyerBeamRenderer.render(head, event.getPoseStack(), buffers, camera, partialTick);
             }
         }
         buffers.endBatch(RenderStateShardAccessor.TRANSLUCENT_LASER);

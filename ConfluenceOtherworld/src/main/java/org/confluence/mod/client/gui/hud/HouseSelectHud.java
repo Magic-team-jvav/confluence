@@ -55,11 +55,11 @@ public class HouseSelectHud implements PortGuiLayer {
         a[8] = new GuiSprite(i, w, h, 104, 0, 11, 10);
         a[9] = new GuiSprite(i, w, h, 116, 0, 11, 9);
 
-        a[10] = null;
-        a[11] = null;
+        a[10] = new GuiSprite(i, w, h, 0, 15, 17, 21); // 巫师：npc_head 第二行第一个
+        a[11] = new GuiSprite(i, w, h, 59, 15, 11, 11); // 染料商：npc_head 第二行第五个
         a[12] = new GuiSprite(i, w, h, 31, 15, 15, 15);
         a[13] = null;
-        a[14] = new GuiSprite(i, w, h, 59, 15, 11, 11);
+        a[14] = new GuiSprite(i, w, h, 71, 15, 15, 10); // 派对女孩：npc_head 第二行第六个
         a[15] = null;
         a[16] = new GuiSprite(i, w, h, 99, 15, 10, 10);
         a[17] = new GuiSprite(i, w, h, 110, 15, 16, 12);

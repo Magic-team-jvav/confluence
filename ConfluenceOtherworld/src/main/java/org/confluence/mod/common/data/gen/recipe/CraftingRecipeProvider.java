@@ -1016,7 +1016,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(writer, SoulItems.SOUL_CONDUIT.toStack(), Ingredient.of(Items.LANTERN), Ingredient.of(SoulItems.FALLEN_SOUL_CORE));
         // 劫掠之火：1.20.1 没有不祥之瓶（1.21 新增），用同档的龙息替代
         shapeless(writer, SoulItems.PILLAGING_FLAME.toStack(), Ingredient.of(Items.EMERALD), Ingredient.of(MaterialItems.JADE), Ingredient.of(Items.DRAGON_BREATH), Ingredient.of(SoulItems.SOUL_CONDUIT));
-        shapeless(writer, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(SwordItems.STARFURY), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
+        shapeless(writer, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
 
         // 祈灵之刃：堕魂星核 + 铁短剑/铅短剑
         shapeless(writer, SoulItems.SPIRITWARD_BLADE.toStack(), Ingredient.of(SoulItems.FALLEN_SOUL_CORE), Ingredient.of(SwordItems.IRON_SHORT_SWORD, SwordItems.LEAD_SHORT_SWORD));
@@ -1046,16 +1046,19 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(Items.PHANTOM_MEMBRANE));        // 附魔弓：附魔剑 + 铂金/金弓，无序
         shapeless(writer, BowItems.ENCHANTED_BOW.toStack(),
                 Ingredient.of(SwordItems.ENCHANTED_SWORD), Ingredient.of(BowItems.PLATINUM_BOW, BowItems.GOLDEN_BOW));
-        // 星泣：星怒 + 金/铂金弓，无序
+        // 怒星核：星怒在工作台无序拆出，再无序装回，可逆
+        shapeless(writer, "", "_from_starfury", MaterialItems.STARFURY_CORE.toStack(), Ingredient.of(SwordItems.STARFURY));
+        shapeless(writer, "", "_from_starfury_core", SwordItems.STARFURY.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE));
+        // 星泣：怒星核 + 金/铂金弓，无序
         shapeless(writer, BowItems.STAR_WEEP.toStack(),
-                Ingredient.of(SwordItems.STARFURY), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
+                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
 
-        // 星乐：星怒 + 钻石/红玉法杖，无序
+        // 星乐：怒星核 + 钻石/红玉法杖，无序
         shapeless(writer, ManaWeaponItems.STAR_MUSIC.toStack(),
-                Ingredient.of(SwordItems.STARFURY), Ingredient.of(ManaWeaponItems.DIAMOND_STAFF, ManaWeaponItems.RUBY_STAFF));
-        // 星惧：星怒 + 钻石/红玉鞭，无序
+                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(ManaWeaponItems.DIAMOND_STAFF, ManaWeaponItems.RUBY_STAFF));
+        // 星惧：怒星核 + 钻石/红玉鞭，无序
         shapeless(writer, WhipItems.STAR_FEAR.toStack(),
-                Ingredient.of(SwordItems.STARFURY), Ingredient.of(WhipItems.DIAMOND_WHIP, WhipItems.RUBY_WHIP));
+                Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(WhipItems.DIAMOND_WHIP, WhipItems.RUBY_WHIP));
 
         // 灵魂头套 / 灵魂长袍：皮革帽子、长袍 + 魂瓶
         shaped(writer, PortShapedRecipePattern.of(Map.of(

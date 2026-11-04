@@ -14,6 +14,9 @@ public final class PrefixLanguageSubProvider {
         language.add("prefix.confluence.cunning", "Cunning", "狡猾");
         language.add("prefix.confluence.fallen", "Fallen", "堕落");
         language.add("prefix.confluence.transcendent", "Transcendent", "超脱");
+        language.add("prefix.confluence.resonance", "Resonance", "共鸣");
+        language.add("prefix.confluence.tremor", "Tremor", "震颤");
+        language.add("prefix.confluence.chaos", "Chaos", "混沌");
         language.add("prefix.confluence.haunting", "Haunting", "作祟");
         language.add("prefix.confluence.tooltip.soul_cost", "%s soul cost", "%s 灵魂消耗");
         language.add("prefix.confluence.tooltip.soul_chance", "soul gain chance", "灵魂获取概率");

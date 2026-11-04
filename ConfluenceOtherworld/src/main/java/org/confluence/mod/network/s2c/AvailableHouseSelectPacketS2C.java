@@ -46,7 +46,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
                     NpcEntities.MECHANIC.get(),
                     NpcEntities.GOBLIN_TINKERER.get(),
                     NpcEntities.WIZARD.get(),
-                    null,
+                    NpcEntities.DYE_TRADER.get(), // 染料商，头像取 npc_head 第二行第五个
                     NpcEntities.TRUFFLE.get(),
                     null,
                     NpcEntities.PARTY_GIRL.get(),

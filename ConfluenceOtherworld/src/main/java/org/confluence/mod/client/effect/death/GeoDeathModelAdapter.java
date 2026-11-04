@@ -2,7 +2,10 @@ package org.confluence.mod.client.effect.death;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.handler.DeathEffectManager;
@@ -27,11 +30,17 @@ import java.util.Collection;
 public final class GeoDeathModelAdapter {
     private GeoDeathModelAdapter() {}
 
+    public record RenderSnapshot(BakedGeoModel model, ResourceLocation texture,
+                                 RenderType renderType) {}
+
     public static void build(LivingEntity living, GeoAnimatable animatable, GeoEntityRenderer geoRenderer,
                              ClientLevel level, Vec3 entityPos, Vec3 deathMotion, float deathSpeed) {
 
         PoseStack poseStack = new PoseStack();
         BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
+        ResourceLocation texture = geoRenderer.getTextureLocation(living);
+        RenderType renderType = geoRenderer.getRenderType(animatable, texture, Minecraft.getInstance().renderBuffers().bufferSource(), 1.0F);
+        RenderSnapshot renderSnapshot = new RenderSnapshot(bakedGeoModel, texture, renderType);
         geoRenderer.preRender(poseStack, living, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
         poseStack.mulPose(Axis.XP.rotationDegrees(living.getXRot()));
         poseStack.mulPose(Axis.YP.rotationDegrees(-living.getYRot() + 180));
@@ -68,6 +77,7 @@ public final class GeoDeathModelAdapter {
             boneOffset.div(16);
             if (bone.getName().endsWith(ClientUtils.ENTIRE_BONE_SUFFIX)) {
                 DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, living, snapshotBone(bone, null), deathSpeed);
+                part.geoRenderData = renderSnapshot;
                 part.setPos(entityPos);
                 part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)));
                 DeathEffectManager.addPart(part);
@@ -78,6 +88,7 @@ public final class GeoDeathModelAdapter {
                     if (copyCube == null) continue;
 
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, living, copyCube, deathSpeed);
+                    part.geoRenderData = renderSnapshot;
 
                     float[] min = IGeoCube.of(copyCube).confluence$getMinCoords();
                     float[] max = IGeoCube.of(copyCube).confluence$getMaxCoords();

@@ -22,6 +22,7 @@ import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.client.DummyVertexConsumer;
+import org.confluence.mod.client.effect.death.GeoDeathModelAdapter;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
 import org.joml.Vector3f;
@@ -53,6 +54,9 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
         EntityRenderer<?> renderer = minecraft.getEntityRenderDispatcher().getRenderer(dying);
         // Geo生物
         if (renderer instanceof GeoEntityRenderer geoRenderer && dying instanceof GeoAnimatable animatable) {
+            if (!(entity.geoRenderData instanceof GeoDeathModelAdapter.RenderSnapshot snapshot))
+                return;
+            BakedGeoModel bakedGeoModel = snapshot.model();
             if (cube instanceof GeoCube geoCube) {
                 // 把计算Y轴中心放到前面，如果cube有问题就提前返回
                 GeoQuad[] twoQuads = new GeoQuad[2];
@@ -82,7 +86,6 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
 
                 poseStack.pushPose();
 
-                BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
                 geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
                 // GeoGeo的奇妙Y轴旋转
                 poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
@@ -107,8 +110,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 applyRandomRotation(entity, poseStack, partialTick);
                 poseStack.translate(0, -centerY, 0);
 
-                ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
-                RenderType renderType = geoRenderer.getRenderType(animatable, textureLocation, bufferSource, partialTick);
+                ResourceLocation textureLocation = snapshot.texture();
+                RenderType renderType = snapshot.renderType();
                 Color color = geoRenderer.getRenderColor(animatable, partialTick, packedLight);
                 geoRenderer.renderCube(poseStack, geoCube,
                         bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),
@@ -117,7 +120,6 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                         color.getRedFloat(), color.getGreenFloat(), color.getBlueFloat(), color.getAlphaFloat());
                 poseStack.popPose();
             } else if (cube instanceof GeoBone geoBone) {
-                BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
                 geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
                 // GeoGeo的奇妙Y轴旋转
 //                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
@@ -125,8 +127,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 // GeoGeo的奇妙Y轴偏移
 //                poseStack.translate(0, 0.01f, 0);
                 applyRandomRotation(entity, poseStack, partialTick);
-                ResourceLocation textureLocation = geoRenderer.getTextureLocation(dying);
-                RenderType renderType = geoRenderer.getRenderType(animatable, textureLocation, bufferSource, partialTick);
+                ResourceLocation textureLocation = snapshot.texture();
+                RenderType renderType = snapshot.renderType();
                 Color color = geoRenderer.getRenderColor(animatable, partialTick, packedLight);
                 geoRenderer.renderRecursively(poseStack, dying, geoBone, renderType, bufferSource,
                         bufferSource.getBuffer(renderType == null ? RenderType.entityCutoutNoCull(textureLocation) : renderType),

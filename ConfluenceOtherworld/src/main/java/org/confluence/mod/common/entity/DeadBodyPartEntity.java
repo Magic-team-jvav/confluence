@@ -24,6 +24,9 @@ public class DeadBodyPartEntity extends Entity {
     public final float deathYaw;
     public final float deathPitch;
     public final float entityScale;
+    /// 客户端死亡效果的渲染快照，不在服务端加载客户端渲染类。
+    @Nullable
+    public Object geoRenderData;
     public List<Vector3f> boneRots;
     public List<Vector3f> bonePivots;
     public Vector3f boneOffset;

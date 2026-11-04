@@ -1043,6 +1043,7 @@ public final class ModTabs {
                         crafting_materials.accept(MaterialItems.VIAL_OF_VENOM.get());
                         crafting_materials.accept(MaterialItems.BELL.get());
                         crafting_materials.accept(MaterialItems.HARP.get());
+                        crafting_materials.accept(MaterialItems.STARFURY_CORE.get());
                     })
                     .withTabsBefore(MECHANICAL.getId())
                     .build());

@@ -190,6 +190,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> ECTOPLASM = register("ectoplasm", "灵气", ModRarity.YELLOW);
     public static final DeferredItem<Item> FORBIDDEN_FRAGMENT = register("forbidden_fragment", "禁戒碎片", ModRarity.PINK);
     public static final DeferredItem<Item> FROST_CORE = register("frost_core", "寒霜核", ModRarity.PINK);
+    public static final DeferredItem<Item> STARFURY_CORE = register("starfury_core", "怒星核", ModRarity.GREEN);
     public static final DeferredItem<Item> TURTLE_SHELL = register("turtle_shell", "海龟壳", ModRarity.LIME);
     public static final DeferredItem<Item> MECHANICAL_WHEEL_PIECE = register("mechanical_wheel_piece", "机械车轮片", ModRarity.MASTER);
     public static final DeferredItem<Item> MECHANICAL_WAGON_PIECE = register("mechanical_wagon_piece", "机械车体片", ModRarity.MASTER);

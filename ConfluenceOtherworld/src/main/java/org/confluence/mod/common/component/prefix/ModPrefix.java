@@ -509,7 +509,10 @@ public interface ModPrefix {
                 DEEP = register("deep", 0, 0.05F, 0, 0.05F, 1, 0.06F),
                 CUNNING = register("cunning", 0, 0, -1, -0.20F, 1, 0.46F),
                 FALLEN = register("fallen", -0.05F, -0.05F, 1, 0.20F, -2, -0.46F),
-                TRANSCENDENT = register("transcendent", 0.15F, 0.05F, -1, 0.10F, 2, 3.80F);
+                TRANSCENDENT = register("transcendent", 0.15F, 0.05F, -1, 0.10F, 2, 3.80F),
+                RESONANCE = register("resonance", 0.15F, 0, 1, 0, 1, 0.20F), // 共鸣
+                TREMOR = register("tremor", -0.10F, 0.05F, 0, 0.10F, -1, -0.25F), // 震颤
+                CHAOS = register("chaos", -0.10F, 0.10F, 1, 0, 1, 0.25F); // 混沌
 
         @Override
         public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
@@ -655,6 +658,9 @@ public interface ModPrefix {
         map.put(103, Soul.CUNNING);
         map.put(104, Soul.FALLEN);
         map.put(105, Soul.TRANSCENDENT);
+        map.put(106, Soul.RESONANCE);
+        map.put(107, Soul.TREMOR);
+        map.put(108, Soul.CHAOS);
     });
 
     static void initialize() {

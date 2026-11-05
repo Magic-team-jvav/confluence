@@ -525,6 +525,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> repeater_crossbow_enchantable = tag(ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE);
         IntrinsicTagAppender<Item> tools_crossbow = tag(PortTags.Items.TOOLS_CROSSBOW);
         IntrinsicTagAppender<Item> tools_repeater = tag(ModTags.Items.TOOLS_REPEATER);
+        IntrinsicTagAppender<Item> prefix_ranged_only = tag(ModTags.Items.PREFIX_RANGED_ONLY);
 
         IntrinsicTagAppender<Item> yoyo = tag(ModTags.Items.YOYO);
         YoyoItems.ITEMS.getEntries().forEach(item -> yoyo.add(item.get()));
@@ -547,7 +548,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModTags.Items.WHIP
         );
         /*.add(Items.MACE)*/
-        tag(ModTags.Items.PREFIX_RANGED_ONLY)
+        prefix_ranged_only
                 .addTags(PortTags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY).addTags(ModTags.Items.MANA_WEAPON);
@@ -682,6 +683,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> tools_bows = tag(PortTags.Items.TOOLS_BOW);
         IntrinsicTagAppender<Item> bow_enchantable = tag(PortTags.Items.BOW_ENCHANTABLE);
+        Item[] soul_bow = {
+                BowItems.SOUL_BOW.get(),
+                BowItems.SOUL_SHORT_BOW.get()
+        };
+        for (Item value : soul_bow) {
+            durability_enchantable.add(value);
+            bow_enchantable.add(value);
+            ranged_weapon_tools.add(value);
+            tools_bows.add(value);
+            skip_using_slowdown.add(value);
+        }
         BowItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             durability_enchantable.add(value);
@@ -696,6 +708,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             crossbow_enchantable.add(value);
             tools_crossbow.add(value);
             ranged_weapon_tools.add(value);
+            prefix_ranged_only.add(value);
             if (value instanceof BaseTerraRepeaterItem) {
                 repeater_enchantable.add(value);
                 tools_repeater.add(value);
@@ -1672,7 +1685,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         // 祈灵之刃不参与 SwordItems 的注册循环，需要单独登记近战词缀
         tag(ModTags.Items.PREFIX_MELEE_ONLY).add(SoulItems.SPIRITWARD_BLADE.get());
         // 灵魂弓 / 灵魂短弓：显式挂到远程词缀，避免只依赖 c:tools/ranged_weapon 的间接登记
-        tag(ModTags.Items.PREFIX_RANGED_ONLY).add(
+        prefix_ranged_only.add(
                 BowItems.SOUL_BOW.get(),
                 BowItems.SOUL_SHORT_BOW.get()
         );
@@ -1691,6 +1704,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(PortTags.Items.CROSSBOW_ENCHANTABLE).addTag(
                 ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
+        );
+        prefix_ranged_only.addTag(
+                PortTags.Items.TOOLS_CROSSBOW
         );
 
         // 贴图缺失的物品（模型回退到占位图标 / 引用了不存在的贴图 / 完全没有模型）统一标记为 WIP。

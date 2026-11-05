@@ -922,8 +922,10 @@ public enum NPCSpawner implements IGlobalData {
             return DungeonStructure.iterateDungeon(level, player.chunkPosition(), structureStart -> {
                 if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(player.blockPosition())) {
                     for (StructurePiece piece : structureStart.getPieces()) {
-                        if (piece instanceof SimpleTemplatePiece templatePiece && templatePiece.templateName.endsWith("_dungeon_underground_2_2")) {
-                            BlockPos offset = templatePiece.templatePosition().offset(46, 6, -11);
+                        if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.UG.equals(templatePiece.templateName)) {
+                            // 机械师房间位于统一的地下地牢模板内。
+                            BlockPos offset = templatePiece.templatePosition().offset(119, 6, 58);
+                            if (!level.hasChunkAt(offset)) return false;
                             Region npcRegion = new Region(offset);
                             if (!hasNPCAlive(npcRegion, NpcEntities.MECHANIC.get())
                                     && !isNpcNearby(level, offset, NpcEntities.MECHANIC.get(), NPC_PRESENCE_CHECK_RADIUS)) {

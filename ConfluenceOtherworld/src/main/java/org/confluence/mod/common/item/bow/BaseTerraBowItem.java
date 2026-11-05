@@ -193,7 +193,7 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
                     terraArrow.fullPull = true;
                     fullPullAvailable = false;
                 }
-                shootProjectile(shooter, projectile, itemstackIndex, velocity * 2.0F, inaccuracy + getInaccuracy(), angleY, target);
+                shootProjectile(shooter, projectile, itemstackIndex, velocity, inaccuracy + getInaccuracy(), angleY, target);
                 var multiShootOffset = getMultiShootOffset(projectileIndex, multiShootCount);
                 if (multiShootOffset != null) {
                     transformAndApplyOffsetToProjectile(projectile, multiShootOffset);

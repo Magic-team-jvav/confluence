@@ -27,9 +27,9 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
-import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.potion.AbstractPotionItem;
+import org.confluence.mod.common.item.soulcerer.SoulWeaponItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
@@ -527,6 +527,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> tools_crossbow = tag(Tags.Items.TOOLS_CROSSBOW);
         IntrinsicTagAppender<Item> tools_repeater = tag(ModTags.Items.TOOLS_REPEATER);
         IntrinsicTagAppender<Item> repeater_crossbow = tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW);
+        IntrinsicTagAppender<Item> prefix_ranged_only = tag(ModTags.Items.PREFIX_RANGED_ONLY);
 
         IntrinsicTagAppender<Item> yoyo = tag(ModTags.Items.YOYO);
         YoyoItems.ITEMS.getEntries().forEach(item -> yoyo.add(item.get()));
@@ -537,7 +538,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
                 .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL)
                 .add(Items.MACE);
-        tag(ModTags.Items.PREFIX_RANGED_ONLY)
+        prefix_ranged_only
                 .addTags(Tags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
@@ -641,6 +642,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> tools_bows = tag(Tags.Items.TOOLS_BOW);
         IntrinsicTagAppender<Item> bow_enchantable = tag(ItemTags.BOW_ENCHANTABLE);
+        Item[] soul_bow = {
+                BowItems.SOUL_BOW.get(),
+                BowItems.SOUL_SHORT_BOW.get()
+        };
+        for (Item value : soul_bow) {
+            durability_enchantable.add(value);
+            bow_enchantable.add(value);
+            ranged_weapon_tools.add(value);
+            tools_bows.add(value);
+            skip_using_slowdown.add(value);
+        }
         BowItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             durability_enchantable.add(value);
@@ -654,6 +666,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             Item value = item.get();
             crossbow_enchantable.add(value);
             tools_crossbow.add(value);
+            prefix_ranged_only.add(value);
             if (value instanceof BaseTerraRepeaterItem) {
                 repeater_enchantable.add(value);
                 tools_repeater.add(value);
@@ -726,7 +739,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 WhipItems.WIND_WHIP.get(),
                 WhipItems.STAR_FEAR.get(),
                 ArrowItems.WIND_ARROW.get()
-        );        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
+        );
+        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
         WhipItems.ITEMS.getEntries().forEach(item -> whip.add(item.get()));
 
         IntrinsicTagAppender<Item> boomerang = tag(ModTags.Items.BOOMERANG);
@@ -1657,6 +1671,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(ItemTags.CROSSBOW_ENCHANTABLE).addTag(
                 ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
+        );
+        prefix_ranged_only.addTag(
+                Tags.Items.TOOLS_CROSSBOW
         );
         IntrinsicTagAppender<Item> short_sword = tag(ModTags.Items.SHORT_SWORD);
         for (DeferredHolder<Item, ? extends Item> holder : SwordItems.ITEMS.getEntries()) {

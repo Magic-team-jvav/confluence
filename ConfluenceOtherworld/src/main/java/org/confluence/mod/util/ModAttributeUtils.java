@@ -8,8 +8,8 @@ import net.neoforged.neoforge.common.NeoForgeConfig;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.confluence.mod.common.init.ModTags;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
@@ -25,7 +25,7 @@ public class ModAttributeUtils {
         } else if (prefix.type() == PrefixType.ACCESSORY) {
             accessory(event, prefix);
         }
-        if (event.getStack().getItem() instanceof SummonerWeaponItem<?>) {
+        if (event.getStack().is(ModTags.Items.SUMMONER_WEAPON)) {
             summoner(event, prefix);
         }
     }

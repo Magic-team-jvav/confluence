@@ -40,7 +40,6 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.gun.ManaGunItem;
-import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
@@ -71,7 +70,7 @@ public final class ItemEvents {
                 prefix.type() == PrefixType.ACCESSORY || // 通过curios的事件添加
                 prefix.modifiers().isEmpty()
         ) return;
-        if (itemStack.getItem() instanceof SummonerWeaponItem<?>) return;
+        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON)) return;
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Holder<Attribute> attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {

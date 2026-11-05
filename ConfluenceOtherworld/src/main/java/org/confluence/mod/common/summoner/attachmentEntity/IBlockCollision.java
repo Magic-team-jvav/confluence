@@ -75,6 +75,8 @@ public interface IBlockCollision<T extends AttachmentEntity & IMomentumAttachmen
                     collisionY ? resolveVelocity(velocity.y, motion.y, elasticity) : velocity.y,
                     collisionZ ? resolveVelocity(velocity.z, motion.z, elasticity) : velocity.z));
             if (collisionX || collisionY || collisionZ) {
+                /// 同步修正后的路径节点，避免 PlannedPath.advance() 用未修正位置覆盖碰撞结果。
+                entity.setPath(List.of(new PathNode(correctedPos, entity.getYaw(), entity.getPitch(), entity.getRoll())));
                 onBlockCollision(new CollisionContext(correctedPos, collisionX, collisionY, collisionZ, onGround));
             }
         }

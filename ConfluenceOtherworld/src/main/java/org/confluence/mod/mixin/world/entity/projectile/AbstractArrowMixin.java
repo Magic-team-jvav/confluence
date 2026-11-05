@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.lib.network.s2c.SetEntityDataPacketS2C;
@@ -17,16 +18,18 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractArrow.class)
 public abstract class AbstractArrowMixin implements IAbstractArrow {
     @Unique
-    private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
+    private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN, SetEntityDataPacketS2C.DATA_VEC3};
     @Unique
     private boolean confluence$isDisappearingOnGround;
     @Unique
@@ -35,12 +38,16 @@ public abstract class AbstractArrowMixin implements IAbstractArrow {
     @Override
     public void confluence$setData(byte dataId, Object o) {
         ILibExtraSyncedData.defaultSetData(confluence$self(), dataId, o);
-        this.confluence$damageNotAffectedBySpeedBonus = (boolean) o;
+        if (dataId == SetEntityDataPacketS2C.DATA_BOOLEAN) {
+            this.confluence$damageNotAffectedBySpeedBonus = (boolean) o;
+        } else if (dataId == SetEntityDataPacketS2C.DATA_VEC3 && confluence$self().level().isClientSide) {
+            confluence$self().setDeltaMovement((Vec3) o);
+        }
     }
 
     @Override
     public Object confluence$getData(byte dataId) {
-        return confluence$damageNotAffectedBySpeedBonus;
+        return dataId == SetEntityDataPacketS2C.DATA_VEC3 ? confluence$self().getDeltaMovement() : confluence$damageNotAffectedBySpeedBonus;
     }
 
     @Override
@@ -66,6 +73,24 @@ public abstract class AbstractArrowMixin implements IAbstractArrow {
     @Override
     public void confluence$setDisappearingOnGround(boolean value) {
         this.confluence$isDisappearingOnGround = value;
+    }
+
+    @Shadow
+    protected abstract boolean canHitEntity(Entity entity);
+
+    // 箭矢起点位于实体扩大的碰撞箱内时，原版射线检测会漏掉该实体。
+    @Inject(method = "findHitEntity", at = @At("HEAD"), cancellable = true)
+    private void confluence$hitOverlappingTarget(Vec3 start, Vec3 end, CallbackInfoReturnable<EntityHitResult> cir) {
+        AbstractArrow arrow = confluence$self();
+        if (arrow.tickCount > 1) return;
+        for (Entity target : arrow.level().getEntities(arrow, arrow.getBoundingBox().inflate(1.0), this::canHitEntity)) {
+            if (target.getBoundingBox().inflate(0.3).contains(start)
+                    && (target.getBoundingBox().contains(start)
+                    || target.getBoundingBox().getCenter().subtract(start).dot(end.subtract(start)) > 0.0)) {
+                cir.setReturnValue(new EntityHitResult(target, start));
+                return;
+            }
+        }
     }
 
     @ModifyVariable(method = "shoot", at = @At("HEAD"), argsOnly = true, ordinal = 0)

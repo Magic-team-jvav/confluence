@@ -9,8 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import org.confluence.mod.api.item.ISoulBow;
-import org.confluence.mod.util.SoulcererUtils;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
@@ -22,12 +20,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.api.item.ISoulBow;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.mesdag.portlib.wrapper.common.extensions.IPortLivingEntityExtension;
@@ -197,7 +197,7 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
                     terraArrow.fullPull = true;
                     fullPullAvailable = false;
                 }
-                shootProjectile(shooter, projectile, itemstackIndex, velocity * 2.0F, inaccuracy + getInaccuracy(), angleY, target);
+                shootProjectile(shooter, projectile, itemstackIndex, velocity, inaccuracy + getInaccuracy(), angleY, target);
                 var multiShootOffset = getMultiShootOffset(projectileIndex, multiShootCount);
                 if (multiShootOffset != null) {
                     transformAndApplyOffsetToProjectile(projectile, multiShootOffset);

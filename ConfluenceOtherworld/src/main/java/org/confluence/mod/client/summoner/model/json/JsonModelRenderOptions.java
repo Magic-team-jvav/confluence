@@ -3,15 +3,15 @@ package org.confluence.mod.client.summoner.model.json;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public final class JsonModelRenderOptions {
 
-    private final ModelResourceLocation model;
+    private final ResourceLocation model;
     private int color = -1;
     private int packedLight = LightTexture.FULL_BRIGHT;
 
-    public JsonModelRenderOptions(ModelResourceLocation model) {
+    public JsonModelRenderOptions(ResourceLocation model) {
         this.model = model;
     }
 

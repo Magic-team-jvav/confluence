@@ -231,7 +231,7 @@ public class Zenith extends AttachmentEntity implements IEntityCollision<Zenith>
         private final int color;
 
         RenderType(String textureName, int color) {
-            this.texture = Confluence.asResource("lyra_model/json/projectile/zenith/" + textureName + "/" + textureName);
+            this.texture = Confluence.asResource("item/projectile/zenith/" + textureName);
             this.color = color;
         }
 

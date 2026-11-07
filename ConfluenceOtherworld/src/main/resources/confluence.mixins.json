@@ -107,6 +107,7 @@
         "client.gui.components.toasts.ToastComponent$ToastInstanceMixin",
         "client.gui.screens.LevelLoadingScreenMixin",
         "client.gui.screens.advancements.AdvancementWidgetMixin",
+        "client.gui.screens.inventory.AbstractSignEditScreenMixin",
         "client.gui.screens.inventory.EffectRenderingInventoryScreenMixin",
         "client.gui.screens.inventory.InventoryScreenMixin",
         "client.gui.screens.worldselection.CreateWorldScreenMixin",

@@ -1680,6 +1680,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.MURAMASA.get(),
                 SwordItems.BLADETONGUE.get()
         );
+        // 刃弓：弓类武器，但走阔剑式的自动空挥与特殊横扫
+        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(BowItems.WAR_BOW.get());
         // 祈灵之刃：魂师副武器，自带自动挥舞
         tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(SoulItems.SPIRITWARD_BLADE.get());
         // 祈灵之刃不参与 SwordItems 的注册循环，需要单独登记近战词缀

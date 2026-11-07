@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -13,18 +14,22 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/// 战弓：左键横扫近战、右键拉弓远程都能用。
+/// 刃弓：左键横扫近战、右键拉弓远程都能用。
 ///
 /// 横扫沿用原版剑的判定：只有攻击条蓄满、站在地面且不在疾跑时才会触发（由 `Player#attack` 结算）。
 /// 原版把「能不能横扫」交给 `SWORD_SWEEP` 能力位，弓默认不具备，所以这里显式放开。
 ///
-/// 近战命中时有 50% 概率自动朝最近的敌人补上一箭。
-public class WarBowItem extends BaseTerraBowItem {
+/// 同时实现了 [ISpecialSweepWeapon]：蓄力条满时空挥也会打出阔剑式的扩大范围横扫，
+/// 横扫结算后照常参与「近战命中 50% 补一箭」的判定。
+public class WarBowItem extends BaseTerraBowItem implements ISpecialSweepWeapon {
     /// 自动补箭的搜索半径。
     private static final double AUTO_AIM_RANGE = 24.0;
     /// 触发自动补箭的概率。
@@ -35,7 +40,7 @@ public class WarBowItem extends BaseTerraBowItem {
     /// 无耐久：不掉耐久，也不需要修复。
     public WarBowItem(float baseDamage) {
         super(baseDamage, new Item.Properties()
-                .attributes(ModItems.createAttributes(ModTiers.IRON, 4.0F, -2.4F, ModItems.attributes(0.0, 0.0))));
+                .attributes(ModItems.createAttributes(ModTiers.IRON, 10.0F, -2.4F, ModItems.attributes(0.0, 0.0))));
     }
 
     @Override
@@ -43,8 +48,14 @@ public class WarBowItem extends BaseTerraBowItem {
         return toolAction == ToolActions.SWORD_SWEEP || super.canPerformAction(stack, toolAction);
     }
 
+    /// 横扫判定改用阔剑的扩大范围
     @Override
-    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+    public AABB getSweepHitBox(ItemStack stack, Player player, Entity target) {
+        return BaseSwordItem.getSpecialSweepArea(player);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.0").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.1").withStyle(ChatFormatting.GRAY));
@@ -54,10 +65,22 @@ public class WarBowItem extends BaseTerraBowItem {
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean result = super.hurtEnemy(stack, target, attacker);
-        if (attacker.level().isClientSide || !(attacker instanceof ServerPlayer player)) return result;
-        if (player.getRandom().nextFloat() >= AUTO_ARROW_CHANCE) return result;
-        shootAtNearest(player, stack);
+        if (attacker instanceof ServerPlayer player) {
+            tryAutoArrow(player, stack);
+        }
         return result;
+    }
+
+    /// 空挥的特殊横扫同样会参与补箭判定
+    @Override
+    public void onSpecialSweep(ServerPlayer player) {
+        tryAutoArrow(player, player.getMainHandItem());
+    }
+
+    private void tryAutoArrow(ServerPlayer player, ItemStack weapon) {
+        if (player.level().isClientSide || weapon.isEmpty()) return;
+        if (player.getRandom().nextFloat() >= AUTO_ARROW_CHANCE) return;
+        shootAtNearest(player, weapon);
     }
 
     /// 自动朝最近的敌人发射一支普通箭。

@@ -13,6 +13,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
+import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.PortLib;
@@ -62,6 +63,9 @@ public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
             player.sweepAttack();
             player.swing(InteractionHand.MAIN_HAND, false);
             player.resetAttackStrengthTicker();
+            if (player.getMainHandItem().getItem() instanceof ISpecialSweepWeapon weapon) {
+                weapon.onSpecialSweep(player);
+            }
         }
     }
 

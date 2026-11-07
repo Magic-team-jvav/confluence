@@ -34,9 +34,7 @@ public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
         super(rarity, DuskDawnItem::createProjectile, BASE_DAMAGE, MANA_COST, 6.0F, 16, 0.04);
         withTooltip(
                 Component.translatable("tooltip.item.confluence.dusk_dawn.0").withStyle(ChatFormatting.GRAY),
-                Component.translatable("tooltip.item.confluence.dusk_dawn.1").withStyle(ChatFormatting.GRAY),
-                Component.translatable("tooltip.item.confluence.dusk_dawn.2").withStyle(ChatFormatting.GRAY),
-                Component.translatable("tooltip.item.confluence.dusk_dawn.3").withStyle(ChatFormatting.GRAY)
+                Component.translatable("tooltip.item.confluence.dusk_dawn.1").withStyle(ChatFormatting.GRAY)
         );
     }
 

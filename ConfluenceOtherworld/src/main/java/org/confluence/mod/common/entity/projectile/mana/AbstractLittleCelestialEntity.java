@@ -19,6 +19,8 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.UUID;
+
 /// 昏晓的「小日光 / 小月光」共用的飞行 → 附着逻辑。
 ///
 /// 飞行阶段按玩家弹道直飞（只有宿主死亡后补发的那一发会追踪敌怪）；命中敌怪时先结算一次武器伤害，
@@ -30,7 +32,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
     /// 追踪范围
     protected static final double SEEK_RANGE = 20.0;
     /// 飞行速度（格/tick）
-    protected static final double SEEK_SPEED = 0.55;
+    public static final double SEEK_SPEED = 0.55;
     /// 悬停在宿主头顶的高度
     protected static final double HEAD_OFFSET = 0.45;
     /// 飞行阶段的兜底存在时间（tick）
@@ -42,6 +44,8 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
     private boolean inert;
     /// 是否自动索敌：玩家手动发射的弹幕只按玩家弹道直飞，不追踪
     private boolean homing;
+    /// 索敌时忽略的目标（例如极昼灼烧迸发的弹幕不想立刻回打宿主）
+    private @Nullable UUID seekExclude;
 
     protected AbstractLittleCelestialEntity(EntityType<? extends AbstractLittleCelestialEntity> entityType, Level level) {
         super(entityType, level);
@@ -71,6 +75,11 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         this.homing = homing;
     }
 
+    /// 让索敌忽略某个目标
+    public void setSeekExclude(@Nullable LivingEntity exclude) {
+        this.seekExclude = exclude == null ? null : exclude.getUUID();
+    }
+
     public boolean isAttached() {
         return entityData.get(DATA_HOST_ID) >= 0;
     }
@@ -92,8 +101,10 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         super.baseTick();
         LivingEntity host = getHost();
         if (host != null) {
-            followHost(host);
             if (!level().isClientSide) {
+                // 只在服务端跟随宿主；客户端的坐标由位置同步包驱动，渲染时再补偿差值，
+                // 避免“每刻传送”与同步包互相拉扯产生抖动
+                followHost(host);
                 this.attachedTicks++;
                 if (attachedTicks > getAttachedLifetime()) {
                     onExpire();
@@ -111,6 +122,11 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         if (homing) seekTarget();
         doSimpleMove();
         doAgeCheck(FLIGHT_LIFETIME);
+    }
+
+    /// 附着时模型锚点相对宿主脚底的高度；渲染器用它补偿位置同步带来的坐标滞后
+    public static double attachedAnchorY(LivingEntity host) {
+        return host.getBbHeight() + HEAD_OFFSET;
     }
 
     /// 附着期间本体不参与碰撞，只跟随宿主头顶
@@ -182,13 +198,18 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
 
     /// 飞行阶段：朝最近的敌怪头顶缓慢靠近
     protected void seekTarget() {
-        LivingEntity target = findNearestEnemy(null);
+        LivingEntity target = findNearestEnemy(resolveSeekExclude());
         if (target == null) return;
         Vec3 aim = target.position().add(0.0, target.getBbHeight(), 0.0);
         Vec3 offset = aim.subtract(position());
         if (offset.lengthSqr() > 1.0E-4) {
             setDeltaMovement(offset.normalize().scale(SEEK_SPEED));
         }
+    }
+
+    private @Nullable LivingEntity resolveSeekExclude() {
+        if (seekExclude == null) return null;
+        return level() instanceof ServerLevel serverLevel && serverLevel.getEntity(seekExclude) instanceof LivingEntity living ? living : null;
     }
 
     /// 找离自己最近的、可以命中的敌怪
@@ -251,6 +272,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         compound.putInt("AttachedTicks", attachedTicks);
         compound.putBoolean("Inert", inert);
         compound.putBoolean("Homing", homing);
+        if (seekExclude != null) compound.putUUID("SeekExclude", seekExclude);
     }
 
     @Override
@@ -260,6 +282,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         this.attachedTicks = compound.getInt("AttachedTicks");
         this.inert = compound.getBoolean("Inert");
         this.homing = compound.getBoolean("Homing");
+        this.seekExclude = compound.hasUUID("SeekExclude") ? compound.getUUID("SeekExclude") : null;
     }
 
     @Override

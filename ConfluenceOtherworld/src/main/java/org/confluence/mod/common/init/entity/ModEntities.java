@@ -135,7 +135,10 @@ public final class ModEntities {
     /// 星体研究汇编的弹幕（基础弹幕与五种附加效果弹幕共用）。
     public static final RegistryObject<EntityType<StellarStudiesProjectile>> STELLAR_STUDIES_PROJECTILE = registerWithEnglishName("stellar_studies_projectile", "星体研究汇编弹幕", "Stellar Studies Projectile", id -> EntityType.Builder.<StellarStudiesProjectile>of(StellarStudiesProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     /// 昏晓的弹幕。
-    public static final RegistryObject<EntityType<DuskDawnProjectile>> DUSK_DAWN = registerWithEnglishName("dusk_dawn", "昏晓弹幕", "Dusk and Dawn Projectile", id -> EntityType.Builder.<DuskDawnProjectile>of(DuskDawnProjectile::new, MobCategory.MISC).sized(0.8F, 0.8F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 昏晓的日光弹幕 / 小日光。
+    public static final RegistryObject<EntityType<LittleSunEntity>> LITTLE_SUN = registerWithEnglishName("little_sun", "小日光", "Little Sun", id -> EntityType.Builder.<LittleSunEntity>of(LittleSunEntity::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    /// 昏晓的月光弹幕 / 小月光。
+    public static final RegistryObject<EntityType<LittleMoonEntity>> LITTLE_MOON = registerWithEnglishName("little_moon", "小月光", "Little Moon", id -> EntityType.Builder.<LittleMoonEntity>of(LittleMoonEntity::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     /// 风页的风弹。
     public static final RegistryObject<EntityType<WindBulletProjectile>> WIND_BULLET = registerWithEnglishName("wind_bullet", "风弹", "Wind Bullet", id -> EntityType.Builder.<WindBulletProjectile>of(WindBulletProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     /// 通用的追踪坠星。

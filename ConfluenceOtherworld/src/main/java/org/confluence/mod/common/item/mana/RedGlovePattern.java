@@ -10,11 +10,12 @@ import java.util.function.BiFunction;
 /** Common/server-safe discharge geometry. Every transmitted line is also an attack line. */
 public final class RedGlovePattern {
     public static final double RANGE = 32, HALF_ANGLE = 20, HIT_RADIUS = 0.16;
-    /** 每次放电的间隔（tick）：伤害结算与线段下发同拍，客户端停留由 SNAPSHOT_LIFETIME_TICKS 决定。 */
+    /** 每次放电的间隔（tick）：伤害结算与线段下发同拍，客户端停留由 RED_GLOVE_LIFETIME_TICKS 决定。 */
     public static final int CAST_TICKS = 2;
     /** 每次放电随机生成 1–2 条主干。 */
     public static final int MIN_TRUNKS = 1, MAX_TRUNKS = 2;
     public record Target(int id, Vec3 point, AABB bounds) {}
+    /** depth selects the material band; parent/rootIndex retain an arbitrarily deep feeder hierarchy. */
     public record Path(int depth, int parent, int rootIndex, List<Vec3> points) {
         public Path {
             points = List.copyOf(points);
@@ -22,7 +23,6 @@ public final class RedGlovePattern {
                 throw new IllegalArgumentException("Invalid red glove path");
         }
     }
-    private record Root(int parent, int vertex, double cost) {}
     private RedGlovePattern() {}
 
     public static int trunkCount(long seed) {
@@ -80,67 +80,27 @@ public final class RedGlovePattern {
                 break;
             }
         }
-        int twigs = 0;
-        for (Target target : targets) {
-            if (!inRange(source, forward, target.point) || intersects(paths, target.bounds, 0)) continue;
-            if (!clear(source, target.point, clipper)) continue;
-            List<Root> roots = new ArrayList<>();
-            for (int p = 0; p < paths.size(); p++) {
-                Path parent = paths.get(p);
-                if (parent.depth > 1 || parent.depth == 1 && twigs >= 2) continue;
-                if (parent.depth == 1 && parent.points.get(parent.points.size() - 1).distanceTo(target.point) > 2.75) continue;
-                for (int vertex : roots(parent.points)) {
-                    Vec3 root = parent.points.get(vertex);
-                    roots.add(new Root(p, vertex, root.distanceTo(target.point) + (parent.depth == 0 ? 0.3 : 0)));
-                }
+        RedGloveSteinerTree.connect(paths, source, forward, seed, targets, clipper);
+        if (paths.size() == count) {
+            // Terminal twigs never outnumber the trunks, so a 1–2 bolt cast stays visibly 1–2 bolts.
+            for (int i = 0; i < Math.min(2, count); i++) {
+                int parentId = i % count;
+                Path parent = paths.get(parentId);
+                List<Integer> roots = roots(parent.points);
+                if (roots.isEmpty()) continue;
+                int vertex = selectBend(parent.points, roots, random);
+                Vec3 root = parent.points.get(vertex);
+                Vec3 tip = root.add(forward.scale(1.2)).add(side.scale(i % 2 == 0 ? 0.7 : -0.7)).add(up.scale(0.25));
+                var branchPoints = clipped(jagged(root, tip, 4, seed + 301 + i, 0.12), clipper);
+                int branchId = paths.size();
+                paths.add(new Path(1, parentId, vertex, branchPoints));
+                List<Integer> twigRoots = roots(branchPoints);
+                if (twigRoots.isEmpty()) continue;
+                int v = selectBend(branchPoints, twigRoots, random);
+                Vec3 a = branchPoints.get(v);
+                paths.add(new Path(2, branchId, v, clipped(jagged(a, a.add(up.scale(0.5)).add(forward.scale(0.4)), 4,
+                        seed + 601 + i, 0.07), clipper)));
             }
-            roots.sort(Comparator.comparingDouble(Root::cost));
-            Path branch = null;
-            for (Root root : roots) {
-                var parent = paths.get(root.parent);
-                Vec3 start = parent.points.get(root.vertex);
-                if (!clear(start, target.point, clipper)) continue;
-                List<Vec3> points = clipped(jagged(start, target.point, 8, seed ^ target.id, 0.17), clipper);
-                if (points.get(points.size() - 1).distanceToSqr(target.point) > 1.0E-8)
-                    points = clipped(straight(start, target.point, 8), clipper);
-                if (points.get(points.size() - 1).distanceToSqr(target.point) < 1.0E-8) {
-                    branch = new Path(parent.depth + 1, root.parent, root.vertex, points); break;
-                }
-            }
-            if (branch == null) {
-                // A doorway may hide every lateral junction. Follow the already-clear parent
-                // back to the source, then the verified source-to-target line; never tunnel.
-                Root root = roots.stream().filter(r -> paths.get(r.parent).depth == 0).findFirst().orElse(null);
-                if (root != null) {
-                    var parent = paths.get(root.parent);
-                    List<Vec3> route = new ArrayList<>();
-                    for (int i = root.vertex; i >= 0; i--) route.add(parent.points.get(i));
-                    route.addAll(straight(source, target.point, 8).subList(1, 9));
-                    var checked = clipped(route, clipper);
-                    if (checked.get(checked.size() - 1).distanceToSqr(target.point) < 1.0E-8)
-                        branch = new Path(1, root.parent, root.vertex, checked);
-                }
-            }
-            if (branch != null) { paths.add(branch); if (branch.depth == 2) twigs++; }
-        }
-        // Terminal twigs never outnumber the trunks, so a 1–2 bolt cast stays visibly 1–2 bolts.
-        for (int i = twigs; i < Math.min(2, count); i++) {
-            int parentId = i % count;
-            Path parent = paths.get(parentId);
-            List<Integer> roots = roots(parent.points);
-            if (roots.isEmpty()) continue;
-            int vertex = roots.get(roots.size() / 2);
-            Vec3 root = parent.points.get(vertex);
-            Vec3 tip = root.add(forward.scale(1.2)).add(side.scale(i % 2 == 0 ? 0.7 : -0.7)).add(up.scale(0.25));
-            var branchPoints = clipped(jagged(root, tip, 4, seed + 301 + i, 0.12), clipper);
-            int branchId = paths.size();
-            paths.add(new Path(1, parentId, vertex, branchPoints));
-            List<Integer> twigRoots = roots(branchPoints);
-            if (twigRoots.isEmpty()) continue;
-            int v = twigRoots.get(twigRoots.size() / 2);
-            Vec3 a = branchPoints.get(v);
-            paths.add(new Path(2, branchId, v, clipped(jagged(a, a.add(up.scale(0.5)).add(forward.scale(0.4)), 4,
-                    seed + 601 + i, 0.07), clipper)));
         }
         return List.copyOf(paths);
     }
@@ -188,6 +148,41 @@ public final class RedGlovePattern {
         return length;
     }
 
+    /** Favor bends among similarly reachable target connections; visibility checks still decide legality. */
+    static double rootCost(List<Vec3> points, int vertex, double distanceCost) {
+        double turn = bendStrength(points, vertex);
+        return distanceCost - 3 * turn / (turn + 0.04);
+    }
+
+    public static int selectBend(List<Vec3> points, int first, int last, SplittableRandom random) {
+        List<Integer> candidates = new ArrayList<>();
+        for (int i = first; i <= last; i++) candidates.add(i);
+        return selectBend(points, candidates, random);
+    }
+
+    public static int selectBend(List<Vec3> points, List<Integer> candidates, SplittableRandom random) {
+        if (candidates.isEmpty()) throw new IllegalArgumentException("Branch needs an interior junction");
+        double total = 0;
+        for (int index : candidates) total += bendWeight(points, index);
+        double choice = random.nextDouble() * total;
+        for (int index : candidates) {
+            choice -= bendWeight(points, index);
+            if (choice <= 0) return index;
+        }
+        return candidates.get(candidates.size() - 1);
+    }
+
+    private static double bendWeight(List<Vec3> points, int index) {
+        double turn = bendStrength(points, index);
+        return 0.000001 + turn * turn;
+    }
+
+    private static double bendStrength(List<Vec3> points, int index) {
+        Vec3 before = points.get(index).subtract(points.get(index - 1)).normalize();
+        Vec3 after = points.get(index + 1).subtract(points.get(index)).normalize();
+        return 1 - Math.max(-1, Math.min(1, before.dot(after)));
+    }
+
     private static boolean clear(Vec3 a, Vec3 b, BiFunction<Vec3, Vec3, Vec3> clipper) {
         return clipper.apply(a, b).distanceToSqr(b) < 1.0E-8;
     }
@@ -205,7 +200,7 @@ public final class RedGlovePattern {
         return List.copyOf(result);
     }
 
-    private static List<Vec3> jagged(Vec3 a, Vec3 b, int segments, long seed, double amplitude) {
+    public static List<Vec3> jagged(Vec3 a, Vec3 b, int segments, long seed, double amplitude) {
         var random = new SplittableRandom(seed);
         Vec3 axis = b.subtract(a).normalize(), side = perpendicular(axis), up = axis.cross(side).normalize();
         List<Vec3> result = new ArrayList<>(List.of(a, b));

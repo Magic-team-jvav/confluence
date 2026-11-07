@@ -48,6 +48,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.AfterimageHelper;
 import org.confluence.mod.client.effect.RedGloveVfx;
+import org.confluence.mod.client.effect.ThunderstrikeVfx;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.SpelunkerHelper;
@@ -116,6 +117,7 @@ import java.util.Optional;
 public final class GameClientEvents {
     public static void init() {
         ClientWeaponInputManager.init();
+        PortEventHandler.addListener((org.confluence.mod.api.event.ThunderstrikeVisualEvent event) -> ThunderstrikeVfx.receive(event.packet));
         PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::crosshairBowRelease);
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
         PortEventHandler.addListener((org.confluence.mod.api.event.RedGloveVisualEvent event) -> RedGloveVfx.receive(event.packet));
@@ -193,6 +195,7 @@ public final class GameClientEvents {
         if (event.phase != TickEvent.Phase.END) return;
         Minecraft minecraft = Minecraft.getInstance();
         RedGloveVfx.tick(minecraft);
+        ThunderstrikeVfx.tick(minecraft);
         WormDigSoundHandler.tick(minecraft);
         LocalPlayer player = minecraft.player;
 
@@ -257,6 +260,7 @@ public final class GameClientEvents {
     /// 释放所有会跨维度持有旧 ClientLevel/LocalPlayer 的客户端静态缓存。
     private static void clearClientWorldReferences() {
         RedGloveVfx.clear();
+        ThunderstrikeVfx.clear();
         HitMarkerHud.clear();
         CrosshairHud.clear();
         ClientBestiary.getInstance().clearLevel();
@@ -345,7 +349,7 @@ public final class GameClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         double scrollDeltaY = event.getScrollDeltaY();
-        if (LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
+        if (ThunderstrikeVfx.scroll(scrollDeltaY) || LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
             event.setCanceled(true);
         } else if (Confluence.SOUL_SKILLS) {
             if (ClientSoulHandler.scrollSoulSkills(scrollDeltaY)) {
@@ -417,6 +421,7 @@ public final class GameClientEvents {
     private static void renderLevelStage(RenderLevelStageEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
         RedGloveVfx.render(event);
+        ThunderstrikeVfx.render(event);
         BulletVfxManager.render(event);
         LocalPlayer player = minecraft.player;
         if (player == null) return;

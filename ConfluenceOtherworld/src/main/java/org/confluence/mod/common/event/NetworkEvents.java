@@ -19,6 +19,8 @@ public final class NetworkEvents {
     private static void registerPayloadHandlers(PortRegisterPayloadHandlersEvent event) {
         PortPayloadHandler handler = event.registrar("1");
 
+        handler.registerInGameC2S(ThunderstrikeRangePacketC2S.class, ThunderstrikeRangePacketC2S.ID, ThunderstrikeRangePacketC2S.STREAM_CODEC);
+        handler.registerInGameS2C(ThunderstrikePacketS2C.class, ThunderstrikePacketS2C.ID, ThunderstrikePacketS2C.STREAM_CODEC);
         // C2S
         handler.registerInGameC2S(SoulSkillUsePacketC2S.class, SoulSkillUsePacketC2S.ID, SoulSkillUsePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SoulSkillIndexRequestPacketC2S.class, SoulSkillIndexRequestPacketC2S.ID, SoulSkillIndexRequestPacketC2S.STREAM_CODEC);

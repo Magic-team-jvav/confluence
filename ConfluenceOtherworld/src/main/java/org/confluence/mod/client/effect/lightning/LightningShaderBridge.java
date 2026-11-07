@@ -36,7 +36,8 @@ public final class LightningShaderBridge {
         return net.minecraftforge.fml.ModList.get().isLoaded("oculus")||net.minecraftforge.fml.ModList.get().isLoaded("iris");
     }
     static boolean prepare(Runnable draw){
-        pending=null;
+        // Multiple weapons can submit during the same world pass; preserve every draw.
+        if(pending!=null){Runnable previous=pending;pending=()->{previous.run();draw.run();};return true;}
         int read=GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING),active=GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE);
         GlStateManager._activeTexture(GL13.GL_TEXTURE0);int texture=GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
         int[] vp=new int[4];GL11.glGetIntegerv(GL11.GL_VIEWPORT,vp);

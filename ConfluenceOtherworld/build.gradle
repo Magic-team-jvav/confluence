@@ -43,7 +43,21 @@ legacyForge {
             }
             if (project.hasProperty('redGloveProbe')) {
                 systemProperty 'confluence.redGlove.probe', 'true'
+                systemProperty 'confluence.redGlove.keepOpen', project.hasProperty('redGloveKeepOpen').toString()
                 gameDirectory = layout.projectDirectory.dir('run/red-glove-probe')
+            }
+            if (project.hasProperty('steinerProbe')) {
+                gameDirectory = layout.projectDirectory.dir('run/red-glove-steiner-probe')
+            }
+            if (project.hasProperty('thunderstrikeProbe')) {
+                systemProperty 'confluence.thunderstrike.probe', 'true'
+                systemProperty 'confluence.thunderstrike.keepOpen', project.hasProperty('thunderstrikeKeepOpen').toString()
+                systemProperty 'confluence.thunderstrike.chainRedGlove', project.hasProperty('thunderstrikeRedGloveProbe').toString()
+                if (project.hasProperty('thunderstrikeRedGloveProbe')) {
+                    systemProperty 'confluence.redGlove.probe', 'true'
+                    systemProperty 'confluence.redGlove.keepOpen', project.hasProperty('thunderstrikeKeepOpen').toString()
+                }
+                gameDirectory = layout.projectDirectory.dir('run/thunderstrike-probe')
             }
             if (project.hasProperty('arcSurgePreview')) {
                 gameDirectory = layout.projectDirectory.dir('run/arc-surge-preview')
@@ -86,7 +100,7 @@ legacyForge {
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
-            if (project.hasProperty('arcSurgeGpuProbe') || project.hasProperty('redGloveProbe') || project.hasProperty('arcSurgePreview')) {
+            if (project.hasProperty('arcSurgeGpuProbe') || project.hasProperty('redGloveProbe') || project.hasProperty('arcSurgePreview') || project.hasProperty('thunderstrikeProbe')) {
                 sourceSet(sourceSets.test)
             }
         }
@@ -410,15 +424,43 @@ tasks.register('checkArcSurgeLightning', JavaExec) {
     group = 'verification'
     description = 'Runs the migrated minecraft-lightning skill contracts and host geometry checks.'
     dependsOn tasks.named('testClasses')
-    classpath = sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath
+    classpath = (sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath).filter {
+        !it.name.contains('log4j-slf4j')
+    }
     mainClass = 'org.confluence.mod.client.effect.lightning.ArcSurgeLightningCheck'
+}
+
+tasks.register('compileThunderstrikeCheck', JavaCompile) {
+    source fileTree('src/main/java') {
+        include 'org/confluence/mod/common/item/mana/ThunderstrikePattern.java'
+        include 'org/confluence/mod/common/item/mana/RedGlovePattern.java'
+        include 'org/confluence/mod/common/item/mana/RedGloveSteinerTree.java'
+        include 'org/confluence/mod/util/ConductorArcPath.java'
+    }
+    source('src/test/java/org/confluence/mod/common/item/mana/ThunderstrikeCheck.java')
+    classpath = sourceSets.main.compileClasspath
+    destinationDirectory = layout.buildDirectory.dir('verification/thunderstrike')
+    options.compilerArgs.add('-proc:none')
+}
+
+tasks.register('checkThunderstrike', JavaExec) {
+    group = 'verification'
+    description = 'Checks ten-tick spark flight and shared server/client lightning geometry independently.'
+    dependsOn tasks.named('compileThunderstrikeCheck')
+    // Numerical checks need no game logging bridge (the development classpath mixes SLF4J versions).
+    classpath = files(layout.buildDirectory.dir('verification/thunderstrike')) + sourceSets.main.compileClasspath.filter {
+        !it.name.contains('log4j-slf4j')
+    }
+    mainClass = 'org.confluence.mod.common.item.mana.ThunderstrikeCheck'
 }
 
 tasks.register('checkRedGlovePattern', JavaExec) {
     group = 'verification'
     description = 'Checks authoritative red glove fan, target coverage, branch roots and collision geometry.'
     dependsOn tasks.named('testClasses')
-    classpath = sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath
+    classpath = (sourceSets.test.output + sourceSets.main.output + sourceSets.test.compileClasspath).filter {
+        !it.name.contains('log4j-slf4j')
+    }
     mainClass = 'org.confluence.mod.common.item.mana.RedGlovePatternCheck'
 }
 

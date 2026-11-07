@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 /// 昏晓的月光弹幕 / 小月光。
 ///
 /// 弹幕命中敌怪后变成挂在它头顶的小月光，持续 7 秒；每 2 秒朝附近敌怪（不含宿主）
-/// 射出一道月光射线，造成 80% 伤害。宿主死亡时，小月光瞄准附近的敌怪把自己再射出去。
+/// 射出一道月光射线，造成 80% 伤害。宿主被击杀时，小月光向附近的敌怪补发一发不再附着的弹幕。
 /// 同一敌怪头顶至多存在一个小月光，且与小日光互斥。
 public class LittleMoonEntity extends AbstractLittleCelestialEntity {
     /// 附着持续时间（7 秒）
@@ -89,10 +89,10 @@ public class LittleMoonEntity extends AbstractLittleCelestialEntity {
         discard();
     }
 
-    /// 宿主死亡：瞄准附近的敌怪把自身再射出去
+    /// 宿主死亡：瞄准附近的敌怪补发一发不再附着的月光弹幕
     @Override
     protected void onHostLost() {
-        fireAtNearest(null, false);
+        fireAtNearest(null, true);
     }
 
     @Override

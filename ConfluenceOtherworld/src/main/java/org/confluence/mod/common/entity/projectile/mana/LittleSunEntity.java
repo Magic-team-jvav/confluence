@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 /// 昏晓的日光弹幕 / 小日光。
 ///
 /// 弹幕命中敌怪后变成挂在它头顶的小日光，持续 10 秒；每秒对 5x5 范围内的敌怪造成
-/// 10% 伤害。宿主死亡时，小日光瞄准附近的敌怪补发一次「不带效果」的日光弹幕。
+/// 10% 伤害。宿主被击杀时，小日光向附近的敌怪补发一发不再附着的日光弹幕。
 /// 同一敌怪头顶至多存在一个小日光，且与小月光互斥。
 public class LittleSunEntity extends AbstractLittleCelestialEntity {
     /// 附着持续时间（10 秒）

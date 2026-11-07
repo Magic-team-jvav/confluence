@@ -2,11 +2,15 @@ package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.mana.AbstractLittleCelestialEntity;
 import org.confluence.mod.common.entity.projectile.mana.LittleMoonEntity;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
@@ -17,6 +21,13 @@ public class LittleMoonRenderer extends GeoEntityRenderer<LittleMoonEntity> {
 
     public LittleMoonRenderer(EntityRendererProvider.Context context) {
         super(context, new Model());
+        this.shadowRadius = 0.0F;
+    }
+
+    /// 外部剔除 + 自发光，与 {@link LittleSunRenderer} 一致
+    @Override
+    public RenderType getRenderType(LittleMoonEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return RenderStateShardAccessor.entityEmissiveCull(texture);
     }
 
     @Override

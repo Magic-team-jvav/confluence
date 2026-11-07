@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "confluence:item/dusk_dawn_display",
+    "textures": {
+      "layer0": "confluence:item/mana_staff/dusk_dawn"
+    }
+  },
+  "gui_light": "front",
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/dusk_dawn_inventory"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/dusk_dawn_inventory"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/dusk_dawn_inventory"
+      }
+    },
+    "head": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/dusk_dawn"
+      }
+    }
+  }
+}

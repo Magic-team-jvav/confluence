@@ -4,11 +4,16 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.mana.AbstractLittleCelestialEntity;
 import org.confluence.mod.common.entity.projectile.mana.LittleMoonEntity;
 import org.confluence.mod.common.entity.projectile.mana.LittleSunEntity;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
+
+import java.util.Optional;
 
 /// 昏晓：法师武器。
 ///
@@ -23,6 +28,7 @@ public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
     public static final int MANA_COST = 20;
     /// 下次是否发射月光弹幕（跟随玩家存档，服务端使用）
     private static final String NEXT_MOON_TAG = "ConfluenceDuskDawnNextMoon";
+    private TooltipComponent tooltipImage;
 
     public DuskDawnItem(ModRarity rarity) {
         super(rarity, DuskDawnItem::createProjectile, BASE_DAMAGE, MANA_COST, 6.0F, 16, 0.04);
@@ -31,6 +37,15 @@ public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
                 Component.translatable("tooltip.item.confluence.dusk_dawn.1").withStyle(ChatFormatting.GRAY),
                 Component.translatable("tooltip.item.confluence.dusk_dawn.2").withStyle(ChatFormatting.GRAY)
         );
+    }
+
+    /// 与裂天剑一致，在 tooltip 里额外画出大图预览（使用 HEAD 视角模型里的 24x 贴图）
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (tooltipImage == null) {
+            this.tooltipImage = AltImageComponent.of(stack.getItem());
+        }
+        return Optional.of(tooltipImage);
     }
 
     /// 日光 → 月光 → 日光…… 交替发射

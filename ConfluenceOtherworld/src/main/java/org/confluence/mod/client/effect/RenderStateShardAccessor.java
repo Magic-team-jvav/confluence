@@ -105,6 +105,23 @@ public class RenderStateShardAccessor extends RenderStateShard {
         return ENTITY_TRANSLUCENT_CULL_OVERLAY.apply(texture);
     }
 
+    // 半透明 + 自发光 + 背面剔除：原版 entityTranslucentEmissive 是不剔除的，这里补上剔除，
+    // 供负体积（外部朝内）模型的「外部剔除 + 发光」使用。
+    private static final Function<ResourceLocation, RenderType> ENTITY_EMISSIVE_CULL = Util.memoize(texture ->
+            RenderType.create("confluence_entity_emissive_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(CULL)
+                            .setWriteMaskState(COLOR_WRITE)
+                            .setOverlayState(OVERLAY)
+                            .createCompositeState(true)));
+
+    public static RenderType entityEmissiveCull(ResourceLocation texture) {
+        return ENTITY_EMISSIVE_CULL.apply(texture);
+    }
+
     private RenderStateShardAccessor() {
         super(null, null, null);
     }

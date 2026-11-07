@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.bow;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -11,6 +12,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
+
+import java.util.Optional;
 
 /// 极昼：射出的箭矢会对途径的敌人造成范围伤害，被箭矢击中的敌人则会持续受到更高的伤害。
 ///
@@ -23,10 +27,20 @@ public class PolarDayBowItem extends BaseTerraBowItem {
     private static final float SPLASH_FACTOR = 0.5F;
     /// 命中附加的极昼灼烧时长（tick）。
     private static final int MARK_DURATION = 120;
+    private TooltipComponent tooltipImage;
 
     /// 无耐久：不掉耐久，也不需要修复。
     public PolarDayBowItem(float baseDamage) {
         super(baseDamage, new Item.Properties());
+    }
+
+    /// 与裂天剑一致，在 tooltip 里额外画出大图预览（弓只取静态那一张，不需要蓄力多态）
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (tooltipImage == null) {
+            this.tooltipImage = AltImageComponent.of(stack.getItem());
+        }
+        return Optional.of(tooltipImage);
     }
 
     @Override

@@ -35,7 +35,8 @@ public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
         withTooltip(
                 Component.translatable("tooltip.item.confluence.dusk_dawn.0").withStyle(ChatFormatting.GRAY),
                 Component.translatable("tooltip.item.confluence.dusk_dawn.1").withStyle(ChatFormatting.GRAY),
-                Component.translatable("tooltip.item.confluence.dusk_dawn.2").withStyle(ChatFormatting.GRAY)
+                Component.translatable("tooltip.item.confluence.dusk_dawn.2").withStyle(ChatFormatting.GRAY),
+                Component.translatable("tooltip.item.confluence.dusk_dawn.3").withStyle(ChatFormatting.GRAY)
         );
     }
 

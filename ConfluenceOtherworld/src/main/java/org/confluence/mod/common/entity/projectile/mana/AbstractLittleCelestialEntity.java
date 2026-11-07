@@ -21,8 +21,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 昏晓的「小日光 / 小月光」共用的飞行 → 附着逻辑。
 ///
-/// 飞行阶段持续追踪最近的敌怪；命中敌怪后停在它头顶，按各自的节奏结算效果；
-/// 宿主死亡时补发一次弹幕（日光补发的是不带效果的弹幕，月光则把自身再射向下一个目标）。
+/// 飞行阶段按玩家弹道直飞（只有宿主死亡后补发的那一发会追踪敌怪）；命中敌怪时先结算一次武器伤害，
+/// 目标没被打死才停在它头顶，按各自的节奏结算效果。宿主被击杀时补发一发不再附着的弹幕。
 /// 同一敌怪头顶只会挂一个附着体，日光与月光互斥。
 public abstract class AbstractLittleCelestialEntity extends AbstractManaProjectile implements GeoAnimatable {
     private final AnimatableInstanceCache geckolibCache = GeckoLibUtil.createInstanceCache(this);
@@ -130,7 +130,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         Entity raw = result.getEntity();
         Entity entity = LibEntityUtils.dedupeIdentity(raw);
         if (inert) {
-            // 不带效果的弹幕：只打伤害
+            // 不再附着的补发弹幕：只结算一次武器伤害
             doHurtAndKnockback(entity, 0.0, 0.0);
             discard();
             return;
@@ -142,6 +142,11 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         }
         // 命中先结算一次武器伤害，无论接下来是附着还是触发已有附着
         doHurtAndKnockback(host, 0.0, 0.0);
+        if (!host.isAlive()) {
+            // 一发打死：不附着、也不触发。若它原本带着附着，交给附着自己处理宿主死亡
+            discard();
+            return;
+        }
         AbstractLittleCelestialEntity existing = findAttachment(level(), host);
         if (existing != null) {
             // 命中已有附着：只触发那个附着的效果，不刷新时长也不替换，附着结束后才能更换

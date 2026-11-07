@@ -33,6 +33,7 @@ public class LittleMoonRenderer extends GeoEntityRenderer<LittleMoonEntity> {
     @Override
     public void render(LittleMoonEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
+        LittleSunRenderer.alignToHost(entity, partialTick, poseStack);
         LittleSunRenderer.faceMovement(entity, entityYaw, partialTick, poseStack);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         poseStack.popPose();

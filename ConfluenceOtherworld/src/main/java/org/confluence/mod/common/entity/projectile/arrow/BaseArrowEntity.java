@@ -41,6 +41,7 @@ import org.mesdag.portlib.wrapper.world.entity.projectile.PortAbstractArrow;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortProjectileDeflection;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /// 泰拉箭矢的通用运行实体。
 ///
@@ -57,6 +58,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
     private final List<ArrowHitEffect> weaponHitEffects = new ArrayList<>();
     private final List<ArrowDamageModifier> damageModifiers = new ArrayList<>();
     private final List<Runnable> missCallbacks = new ArrayList<>();
+    private final List<Consumer<BaseArrowEntity>> tickEffects = new ArrayList<>();
     public boolean fullPull;
 
     private int autoDiscardTick;
@@ -272,6 +274,11 @@ public class BaseArrowEntity extends PortAbstractArrow {
         missCallbacks.add(callback);
     }
 
+    /// 每 tick 的服务端回调，供「箭矢自带光环」一类效果使用。
+    public final void addTickEffect(Consumer<BaseArrowEntity> effect) {
+        tickEffects.add(effect);
+    }
+
     @FunctionalInterface
     public interface ArrowHitEffect {
         void apply(LivingEntity owner, LivingEntity target, boolean fullPull);
@@ -294,6 +301,11 @@ public class BaseArrowEntity extends PortAbstractArrow {
         }
         if (!level().isClientSide && tickCount > autoDiscardTick) discard();
         super.tick();
+        if (!level().isClientSide && !tickEffects.isEmpty()) {
+            for (Consumer<BaseArrowEntity> effect : tickEffects) {
+                effect.accept(this);
+            }
+        }
         if (level().isClientSide && emitter == null) {
             ResourceLocation location = getParticleId();
             if (location != null) {
@@ -387,6 +399,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
         this.weaponHitEffects.clear();
         this.damageModifiers.clear();
         this.missCallbacks.clear();
+        this.tickEffects.clear();
         this.invalidRuntimeState = false;
     }
 

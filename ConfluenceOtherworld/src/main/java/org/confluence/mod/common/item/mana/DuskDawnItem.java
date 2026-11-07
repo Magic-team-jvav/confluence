@@ -21,8 +21,8 @@ import java.util.Optional;
 /// 日光弹幕命中后在敌怪头顶挂一个小日光：持续 10 秒，每秒对 5x5 范围内的敌怪造成 10% 伤害，
 /// 宿主死亡时再补发一次不带效果的日光弹幕。月光弹幕则挂一个小月光：持续 7 秒，
 /// 每 2 秒朝宿主之外的附近敌怪射出一道 80% 伤害的月光射线，宿主死亡时把自身再射出去。
-/// 一个敌怪头顶最多挂一个，且日光与月光互斥；异种弹幕命中已有附着时，
-/// 会立刻额外触发一次那个附着的效果。
+/// 一个敌怪头顶最多挂一个，且日光与月光互斥；再次命中只刷新已有附着（异种则直接替换），
+/// 弹幕本身不结算伤害。
 public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
     public static final float BASE_DAMAGE = 30.0F;
     public static final int MANA_COST = 20;
@@ -47,6 +47,10 @@ public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
         }
         return Optional.of(tooltipImage);
     }
+
+    /// 昏晓只在附着期间结算伤害；开火瞬间不再用射线补一次伤害，弹幕命中也不结算伤害
+    @Override
+    protected void rayTrace(ServerPlayer player, ItemStack stack, AbstractLittleCelestialEntity projectile) {}
 
     /// 日光 → 月光 → 日光…… 交替发射
     private static AbstractLittleCelestialEntity createProjectile(ServerPlayer player) {

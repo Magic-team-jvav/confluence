@@ -40,6 +40,8 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
 
     private int attachedTicks;
     private boolean inert;
+    /// 是否自动索敌：玩家手动发射的弹幕只按玩家弹道直飞，不追踪
+    private boolean homing;
 
     protected AbstractLittleCelestialEntity(EntityType<? extends AbstractLittleCelestialEntity> entityType, Level level) {
         super(entityType, level);
@@ -58,6 +60,15 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
 
     public void setInert(boolean inert) {
         this.inert = inert;
+    }
+
+    /// 飞行阶段是否自动追踪最近的敌怪；只有宿主死亡后补发的弹幕需要追踪
+    public boolean isHoming() {
+        return homing;
+    }
+
+    public void setHoming(boolean homing) {
+        this.homing = homing;
     }
 
     public boolean isAttached() {
@@ -97,7 +108,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
             if (!level().isClientSide) onHostLost();
             return;
         }
-        seekTarget();
+        if (homing) seekTarget();
         doSimpleMove();
         doAgeCheck(FLIGHT_LIFETIME);
     }
@@ -200,6 +211,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         LivingEntity target = findNearestEnemy(exclude);
         if (target != null) {
             AbstractLittleCelestialEntity child = createChild(inertChild);
+            child.setHoming(true);
             child.setPos(getX(), getY(), getZ());
             Vec3 direction = target.getBoundingBox().getCenter().subtract(position());
             if (direction.lengthSqr() > 1.0E-4) {
@@ -236,6 +248,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         compound.putInt("HostId", entityData.get(DATA_HOST_ID));
         compound.putInt("AttachedTicks", attachedTicks);
         compound.putBoolean("Inert", inert);
+        compound.putBoolean("Homing", homing);
     }
 
     @Override
@@ -244,6 +257,7 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
         entityData.set(DATA_HOST_ID, compound.getInt("HostId"));
         this.attachedTicks = compound.getInt("AttachedTicks");
         this.inert = compound.getBoolean("Inert");
+        this.homing = compound.getBoolean("Homing");
     }
 
     @Override

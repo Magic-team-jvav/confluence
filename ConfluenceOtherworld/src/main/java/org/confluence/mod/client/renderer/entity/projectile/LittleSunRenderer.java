@@ -3,12 +3,15 @@ package org.confluence.mod.client.renderer.entity.projectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.projectile.mana.AbstractLittleCelestialEntity;
 import org.confluence.mod.common.entity.projectile.mana.LittleSunEntity;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
@@ -19,6 +22,15 @@ public class LittleSunRenderer extends GeoEntityRenderer<LittleSunEntity> {
 
     public LittleSunRenderer(EntityRendererProvider.Context context) {
         super(context, new Model());
+        this.shadowRadius = 0.0F;
+    }
+
+    /// 外部剔除 + 自发光：默认的 entityCutoutNoCull 会让负体积外壳的外侧也画出来，
+    /// 这里换成带背面剔除的半透明自发光类型（原版 entityTranslucentEmissive 是不剔除的），
+    /// 只留朝内那层外壳并整体发亮。
+    @Override
+    public RenderType getRenderType(LittleSunEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        return RenderStateShardAccessor.entityEmissiveCull(texture);
     }
 
     @Override

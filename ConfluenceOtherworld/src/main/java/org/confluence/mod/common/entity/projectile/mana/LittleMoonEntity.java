@@ -46,6 +46,11 @@ public class LittleMoonEntity extends AbstractLittleCelestialEntity {
         if (ticks % RAY_INTERVAL == 0) ray(host);
     }
 
+    @Override
+    public void triggerEffect() {
+        ray(getHost());
+    }
+
     /// 朝宿主之外的最近敌怪射出一道月光射线（80% 伤害）
     public void ray(@Nullable LivingEntity host) {
         LivingEntity target = findNearestEnemy(host);

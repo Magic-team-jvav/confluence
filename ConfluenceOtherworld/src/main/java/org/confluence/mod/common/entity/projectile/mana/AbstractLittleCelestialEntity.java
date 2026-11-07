@@ -140,22 +140,16 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
             discard();
             return;
         }
+        // 命中先结算一次武器伤害，无论接下来是附着还是触发已有附着
+        doHurtAndKnockback(host, 0.0, 0.0);
         AbstractLittleCelestialEntity existing = findAttachment(level(), host);
         if (existing != null) {
-            // 命中已有附着：弹幕本身不结算任何伤害，同类只刷新持续时间，异类直接换成另一种
-            if (existing.getType() == getType()) {
-                existing.refreshAttachment();
-                discard();
-                return;
-            }
-            existing.discard();
+            // 命中已有附着：只触发那个附着的效果，不刷新时长也不替换，附着结束后才能更换
+            existing.triggerEffect();
+            discard();
+            return;
         }
         attachTo(host);
-    }
-
-    /// 刷新附着时间；不结算任何伤害
-    public void refreshAttachment() {
-        this.attachedTicks = 0;
     }
 
     /// 查找某个敌怪头顶已经挂着的附着体
@@ -233,6 +227,9 @@ public abstract class AbstractLittleCelestialEntity extends AbstractManaProjecti
 
     /// 附着期间每 tick 调用的效果结算（仅服务端）
     protected abstract void tickAttached(LivingEntity host, int ticks);
+
+    /// 被任意弹幕命中时立刻结算一次自身效果（日光 → 一次脉冲，月光 → 一次射线）
+    public abstract void triggerEffect();
 
     protected abstract void onAttached(LivingEntity host);
 

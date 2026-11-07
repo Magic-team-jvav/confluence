@@ -21,8 +21,8 @@ import java.util.Optional;
 /// 日光弹幕命中后在敌怪头顶挂一个小日光：持续 10 秒，每秒对 5x5 范围内的敌怪造成 10% 伤害，
 /// 宿主死亡时再补发一次不带效果的日光弹幕。月光弹幕则挂一个小月光：持续 7 秒，
 /// 每 2 秒朝宿主之外的附近敌怪射出一道 80% 伤害的月光射线，宿主死亡时把自身再射出去。
-/// 一个敌怪头顶最多挂一个，且日光与月光互斥；再次命中只刷新已有附着（异种则直接替换），
-/// 弹幕本身不结算伤害。
+/// 一个敌怪头顶最多挂一个，且日光与月光互斥；命中已有附着的敌怪时弹幕仍结算一次武器伤害，
+/// 但只会触发那个附着的效果（不刷新、不替换），附着结束后才能更换。
 public class DuskDawnItem extends ManaStaffItem<AbstractLittleCelestialEntity> {
     public static final float BASE_DAMAGE = 30.0F;
     public static final int MANA_COST = 20;

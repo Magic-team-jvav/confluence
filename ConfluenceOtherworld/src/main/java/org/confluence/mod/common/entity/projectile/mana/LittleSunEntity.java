@@ -49,11 +49,6 @@ public class LittleSunEntity extends AbstractLittleCelestialEntity {
         if (ticks % PULSE_INTERVAL == 0) pulse();
     }
 
-    @Override
-    public void triggerEffect() {
-        pulse();
-    }
-
     /// 一次 5x5 范围、10% 伤害的结算（服务端施加伤害，同时广播一圈粒子）
     public void pulse() {
         if (level() instanceof ServerLevel serverLevel) {

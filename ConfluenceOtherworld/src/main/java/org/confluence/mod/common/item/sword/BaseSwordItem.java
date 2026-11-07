@@ -27,6 +27,7 @@ import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.item.sword.SwordDefinition.Projectile;
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class BaseSwordItem extends SwordItem implements IWeaponTooltip {
+public class BaseSwordItem extends SwordItem implements IWeaponTooltip, ISpecialSweepWeapon {
     private final SwordDefinition definition;
     private @Nullable TooltipComponent tooltipImage;
 
@@ -169,6 +170,7 @@ public class BaseSwordItem extends SwordItem implements IWeaponTooltip {
         return amount;
     }
 
+    @Override
     public boolean hasSpecialSweep() {
         return definition.specialSweep();
     }

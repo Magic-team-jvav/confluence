@@ -19,6 +19,7 @@ import org.confluence.lib.network.IPacketC2S;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
+import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixin.server.level.ServerPlayerAccessor;
 import org.confluence.mod.util.PlayerUtils;
@@ -61,6 +62,9 @@ public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
             player.sweepAttack();
             player.swing(InteractionHand.MAIN_HAND, false);
+            if (player.getMainHandItem().getItem() instanceof ISpecialSweepWeapon weapon) {
+                weapon.onSpecialSweep(player);
+            }
         }
     }
 

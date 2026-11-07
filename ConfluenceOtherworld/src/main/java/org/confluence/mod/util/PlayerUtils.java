@@ -35,6 +35,7 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.data.MoonPhase;
@@ -546,7 +547,7 @@ public final class PlayerUtils {
         if (!player.isAutoSpinAttack()) {
             ItemStack stack = player.getMainHandItem();
             if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
-            return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.hasSpecialSweep();
+            return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof ISpecialSweepWeapon weapon && weapon.hasSpecialSweep();
         }
         return false;
     }

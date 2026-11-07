@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -15,7 +16,9 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.effect.harmful.PolarMarkEffect;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +89,17 @@ public class PolarDayBowItem extends BaseTerraBowItem {
             if (victim.hasEffect(ModEffects.POLAR_MARK)) continue;
             PolarMarkEffect.apply(victim, owner, getFullDrawDamage(), MARK_DURATION, 0);
         }
+    }
+
+    /// 原版箭会被建造成普通 Arrow，接不上模组箭矢的命中钩子（极昼灼烧就不会生效）；
+    /// 这里把原版箭换成通用箭实体，模组箭矢本身带钩子，保持原样。
+    @Override
+    public @Nullable BaseArrowEntity createCustomArrow(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
+        if (!ammo.is(Items.ARROW)) return null;
+        BaseArrowEntity arrow = new BaseArrowEntity(ModEntities.BASE_ARROW.get(), shooter, ammo.copyWithCount(1), weapon);
+        arrow.setPos(shooter.getX(), shooter.getEyeY() - 0.1, shooter.getZ());
+        arrow.setOwner(shooter);
+        return arrow;
     }
 
     @Override

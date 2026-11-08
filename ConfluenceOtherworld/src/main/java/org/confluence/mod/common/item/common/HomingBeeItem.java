@@ -24,7 +24,7 @@ import java.util.List;
 
 /// 归巢蜜蜂：戴在头盔处时，第一人称视角会有一只原版蜜蜂指向已绑定的蜂巢结构（见 `HomingBeeRenderer`）。
 ///
-/// 与地牢指南针同一套模型：**坐标只在获取时绑定一次**（从树妖处购买、或第一次戴到头上），
+/// 首次戴到头上时绑定坐标，
 /// 之后固定写在物品 NBT 的 `pos` 里；渲染只读 NBT，**运行时不做任何结构搜索**。
 /// 没绑定过坐标的蜜蜂只是不显示蜜蜂，不会在后台反复搜索。
 public class HomingBeeItem extends CustomRarityItem {
@@ -56,7 +56,7 @@ public class HomingBeeItem extends CustomRarityItem {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 
-    /// 一次性绑定最近的蜂巢：只在「从树妖处购买」和「第一次戴到头上」时调用。
+    /// 一次性绑定最近的蜂巢：戴到头上时调用。
     ///
     /// 已经绑定过（当前维度有坐标）就直接返回，坐标永不重算；没有蜂巢时按玩家移动距离节流，
     /// 避免在同一个位置反复做结构搜索。

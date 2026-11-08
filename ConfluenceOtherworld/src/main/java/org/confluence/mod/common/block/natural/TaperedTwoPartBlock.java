@@ -41,8 +41,6 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     protected static final VoxelShape TIP_SHAPE_UP = Block.box(5.0, 0.0, 5.0, 11.0, 11.0, 11.0);
     protected static final VoxelShape TIP_SHAPE_DOWN = Block.box(5.0, 5.0, 5.0, 11.0, 16.0, 11.0);
     protected static final VoxelShape BASE_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
-    /// 崩落补掉落时最多顺延处理的格数，防御性上限
-    private static final int MAX_ORPHAN_CHAIN = 64;
 
     public TaperedTwoPartBlock() {
         super(BlockBehaviour.Properties.of().strength(1.0f).pushReaction(PushReaction.DESTROY));
@@ -80,30 +78,20 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
         }
     }
 
-    /// 两格锥体（上半 + 下半）被玩家挖掉其中一格时，另一格会因为失去支撑而崩掉。
-    /// 这里让崩掉的每一格都按「玩家亲手挖掉它」的规则结算掉落，
-    /// 石笋 / 冰锥都只在精准采集下掉落：精准采集挖掉下半时上半也一起掉，普通工具则整串消失。
+    /// 玩家破坏支撑段时，沿锥尖方向按同一工具结算失去支撑部分的战利品。
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (!level.isClientSide) {
-            dropOrphanedTips(level, player, pos, state, tool);
-        }
-    }
-
-    /// 沿着锥尖方向把「靠刚被挖掉的那格撑着」的方块逐个结算掉落并移除。
-    /// 正常只会有一格（世界生成最多 2 格），玩家叠高时也能整串处理。
-    private void dropOrphanedTips(Level level, Player player, BlockPos pos, BlockState state, ItemStack tool) {
-        Direction dir = state.getValue(TIP_DIRECTION);
-        BlockPos orphanPos = pos.relative(dir);
-        for (int i = 0; i < MAX_ORPHAN_CHAIN; i++) {
-            BlockState orphan = level.getBlockState(orphanPos);
-            if (!orphan.is(this) || orphan.getValue(TIP_DIRECTION) != dir) return;
-            // 支撑位正是上一格；若它还撑得住（例如接在别的实心方块上）就到此为止
-            if (isValidTaperedPlacement(level, orphanPos, dir)) return;
-            Block.dropResources(orphan, level, orphanPos, level.getBlockEntity(orphanPos), player, tool);
-            level.destroyBlock(orphanPos, false);
-            orphanPos = orphanPos.relative(dir);
+        if (level.isClientSide) return;
+        Direction direction = state.getValue(TIP_DIRECTION);
+        BlockPos next = pos.relative(direction);
+        while (!level.isOutsideBuildHeight(next)) {
+            BlockState nextState = level.getBlockState(next);
+            if (!nextState.is(this) || nextState.getValue(TIP_DIRECTION) != direction || isValidTaperedPlacement(level, next, direction))
+                return;
+            Block.dropResources(nextState, level, next, level.getBlockEntity(next), player, tool);
+            level.destroyBlock(next, false);
+            next = next.relative(direction);
         }
     }
 

@@ -727,18 +727,19 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(HANGING_MYCELIUM.get());
         dropSelf(MYCELIAL_DIRT.get());
 
+        // 石笋 / 石锥 / 冰锥是同一类两格锥体：只在精准采集下掉落，普通工具挖掉后整串消失
         dropWhenSilkTouch(ICE_TAPERED_BLOCK.get());
         dropWhenSilkTouch(RED_ICE_TAPERED_BLOCK.get());
         dropWhenSilkTouch(PURPLE_ICE_TAPERED_BLOCK.get());
         dropWhenSilkTouch(PINK_ICE_TAPERED_BLOCK.get());
-        dropSelf(DESERT_TAPERED_BLOCK.get());
-        dropSelf(RED_DESERT_TAPERED_BLOCK.get());
-        dropSelf(MARBLE_TAPERED_BLOCK.get());
-        dropSelf(GRANITE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(DESERT_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(RED_DESERT_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(MARBLE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(GRANITE_TAPERED_BLOCK.get());
 
-        dropSelf(CORRUPT_TAPERED_BLOCK.get());
-        dropSelf(CRIMSON_TAPERED_BLOCK.get());
-        dropSelf(HALLOW_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(CORRUPT_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(CRIMSON_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(HALLOW_TAPERED_BLOCK.get());
 
         dropSelf(END_DIRT.get());
         dropSelf(END_MUD.get());

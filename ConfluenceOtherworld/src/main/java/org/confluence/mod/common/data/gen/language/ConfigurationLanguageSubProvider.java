@@ -313,7 +313,7 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.indicatorMode.particle", "Particle Info", "粒子信息");
         language.add("confluence.configuration.indicatorMode.virtual", "Virtual Info", "虚拟信息");
         language.add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion", "困难模式快速转换");
-        language.add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.", "启用后，转换至困难模式的过程将会加快并以完全卡顿的形式进行，请评估电脑性能斟酌打开此配置");
+        language.add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and happen as a complete server stall. Please assess your computer's performance before enabling this configuration.", "启用后，转换至困难模式的过程将会加快并以服务器完全阻塞的形式进行，请评估电脑性能斟酌打开此配置");
         language.add("confluence.configuration.kingSlimeLargeMinions", "King Slime Large Minions", "史莱姆王大型仆从");
         language.add("confluence.configuration.kingSlimeLargeMinions.tooltip", "Allow King Slime to summon large minions.", "允许史莱姆王召唤大型仆从。");
         language.add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon", "左侧药水效果标识");

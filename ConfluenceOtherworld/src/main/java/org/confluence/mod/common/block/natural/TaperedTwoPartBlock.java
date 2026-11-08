@@ -6,6 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -38,6 +41,8 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     protected static final VoxelShape TIP_SHAPE_UP = Block.box(5.0, 0.0, 5.0, 11.0, 11.0, 11.0);
     protected static final VoxelShape TIP_SHAPE_DOWN = Block.box(5.0, 5.0, 5.0, 11.0, 16.0, 11.0);
     protected static final VoxelShape BASE_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    /// 崩落补掉落时最多顺延处理的格数，防御性上限
+    private static final int MAX_ORPHAN_CHAIN = 64;
 
     public TaperedTwoPartBlock() {
         super(BlockBehaviour.Properties.of().strength(1.0f).pushReaction(PushReaction.DESTROY));
@@ -72,6 +77,33 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos)) {
             level.destroyBlock(pos, false);
+        }
+    }
+
+    /// 两格锥体（上半 + 下半）被玩家挖掉其中一格时，另一格会因为失去支撑而崩掉。
+    /// 这里让崩掉的每一格都按「玩家亲手挖掉它」的规则结算掉落，
+    /// 石笋 / 冰锥都只在精准采集下掉落：精准采集挖掉下半时上半也一起掉，普通工具则整串消失。
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (!level.isClientSide) {
+            dropOrphanedTips(level, player, pos, state, tool);
+        }
+    }
+
+    /// 沿着锥尖方向把「靠刚被挖掉的那格撑着」的方块逐个结算掉落并移除。
+    /// 正常只会有一格（世界生成最多 2 格），玩家叠高时也能整串处理。
+    private void dropOrphanedTips(Level level, Player player, BlockPos pos, BlockState state, ItemStack tool) {
+        Direction dir = state.getValue(TIP_DIRECTION);
+        BlockPos orphanPos = pos.relative(dir);
+        for (int i = 0; i < MAX_ORPHAN_CHAIN; i++) {
+            BlockState orphan = level.getBlockState(orphanPos);
+            if (!orphan.is(this) || orphan.getValue(TIP_DIRECTION) != dir) return;
+            // 支撑位正是上一格；若它还撑得住（例如接在别的实心方块上）就到此为止
+            if (isValidTaperedPlacement(level, orphanPos, dir)) return;
+            Block.dropResources(orphan, level, orphanPos, level.getBlockEntity(orphanPos), player, tool);
+            level.destroyBlock(orphanPos, false);
+            orphanPos = orphanPos.relative(dir);
         }
     }
 

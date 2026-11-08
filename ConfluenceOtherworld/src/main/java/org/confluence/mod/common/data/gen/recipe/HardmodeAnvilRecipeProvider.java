@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.level.ItemLike;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
@@ -720,6 +721,22 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 " b ",
                 " b "
         )));
+        // 晶光刃：对应颜色的陨石光剑 + 25 水晶碎块（困难模式砧 / 无序）
+        phasesaber(recipeOutput, SwordItems.WHITE_PHASESABER.toStack(), SwordItems.WHITE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.RED_PHASESABER.toStack(), SwordItems.RED_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.ORANGE_PHASESABER.toStack(), SwordItems.ORANGE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.YELLOW_PHASESABER.toStack(), SwordItems.YELLOW_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.GREEN_PHASESABER.toStack(), SwordItems.GREEN_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.BLUE_PHASESABER.toStack(), SwordItems.BLUE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.PURPLE_PHASESABER.toStack(), SwordItems.PURPLE_PHASEBLADE);
+        phasesaber(recipeOutput, SwordItems.PINK_PHASESABER.toStack(), SwordItems.PINK_PHASEBLADE);
+    }
+
+    /// 晶光刃：同色陨石光剑 + 25 水晶碎块，无序合成。
+    protected void phasesaber(RecipeOutput recipeOutput, ItemStack result, ItemLike phaseblade) {
+        hardmodeAnvil(recipeOutput, result,
+                AmountIngredient.of(25, MaterialItems.CRYSTAL_SHARDS),
+                Ingredient.of(phaseblade));
     }
 
     protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {

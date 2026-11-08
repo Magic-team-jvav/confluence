@@ -703,10 +703,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(MonsterEntities.FIRE_IMP.get(), LootTable.lootTable()
+                // 黑曜石玫瑰：5% 掉落，抢夺影响的是掉落率而非数量
                 .withPool(LootPool.lootPool()
-                        .add(PercentageLootEntry.independent(false,
-                                PercentageLootEntry.rule(5, LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE).apply(LootingBonusCountFunction.lootingBonusCount(registries)))
-                        ))
+                        .add(LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE).when(lootingScaledChance(registries, 0.05F)))
                 )
                 .withPool(LootPool.lootPool().when(afterSkeletronBehindWallOfFlesh)
                         .add(LootItem.lootTableItem(YoyoItems.CASCADE).when(lootingScaledChance(registries, 0.0025F)))

@@ -237,6 +237,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.WALL.toStack(), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
         skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
         skyMill(recipeOutput, DecorativeBlocks.MOON_PLATE.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.MOON_PLATE.FULL));
+        // 星怒相关：天磨也能做（与工作台同一套配方）
+        skyMill(recipeOutput, MaterialItems.STARFURY_CORE.toStack(), Ingredient.of(SwordItems.STARFURY));
+        skyMill(recipeOutput, SwordItems.STARFURY.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE));
+        skyMill(recipeOutput, BowItems.STAR_WEEP.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(BowItems.GOLDEN_BOW, BowItems.PLATINUM_BOW));
+        skyMill(recipeOutput, ManaWeaponItems.STAR_MUSIC.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(ManaWeaponItems.DIAMOND_STAFF, ManaWeaponItems.RUBY_STAFF));
+        skyMill(recipeOutput, WhipItems.STAR_FEAR.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(WhipItems.DIAMOND_WHIP, WhipItems.RUBY_WHIP));
+        skyMill(recipeOutput, SoulItems.STAR_SPIRIT.toStack(), Ingredient.of(MaterialItems.STARFURY_CORE), Ingredient.of(SoulItems.SOUL_CHANT_GUIDE));
 
         loom(recipeOutput, ModBlocks.SILK_ROPE.toStack(30), Ingredient.of(MaterialItems.SILK));
         loom(recipeOutput, MaterialItems.SILK.toStack(), Ingredient.of(Items.COBWEB));

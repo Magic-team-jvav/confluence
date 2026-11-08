@@ -23,9 +23,9 @@ import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class ManaWeaponItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
-    public static final DeferredItem<RedGloveItem> RED_GLOVE = registerItemWithEnglishName("red_glove", "红手套", "Red Glove", RedGloveItem::new);
+    public static final DeferredItem<RedGloveItem> ARC_SURGE = registerItemWithEnglishName("arc_surge", "电弧涌动", "Arc Surge", RedGloveItem::new);
     static {
-        LANGUAGE_PROVIDERS.add(language -> language.add("tooltip.item.confluence.red_glove.0",
+        LANGUAGE_PROVIDERS.add(language -> language.add("tooltip.item.confluence.arc_surge.0",
                 "Hold attack: 5–8 lightning trunks, up to 32 blocks; every branch deals magic damage.",
                 "按住攻击：释放5–8道闪电主干，射程32格；所有支干均造成魔法伤害。"));
     }

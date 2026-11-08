@@ -305,12 +305,13 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     // ---------- 泰拉的装备栏位（三套装备）：防御盾牌下面三个彩色方块，当前的高亮 ----------
-    private static final int LOADOUT_SIZE = 12;
+    /// 3 个 11 像素方块 + 2 个间隔 = 37，比 40 宽的这一列窄，右边不碰染料格的边框
+    private static final int LOADOUT_SIZE = 11;
     private static final int LOADOUT_GAP = 2;
     private static final int[] LOADOUT_COLORS = {0xFF3FA34D, 0xFF3F6FD0, 0xFF9A4FD0};
 
     private int loadoutX(int index) {
-        return leftPos + TerraInventoryLayout.TEAM_X + index * (LOADOUT_SIZE + LOADOUT_GAP);
+        return leftPos + TerraInventoryLayout.TEAM_X + 1 + index * (LOADOUT_SIZE + LOADOUT_GAP);
     }
 
     private int loadoutY() {
@@ -338,7 +339,8 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             guiGraphics.fill(x, y, x + LOADOUT_SIZE, y + LOADOUT_SIZE, color);
             guiGraphics.renderOutline(x, y, LOADOUT_SIZE, LOADOUT_SIZE, i == current ? 0xFFFFFFFF : hovered == i ? 0xFFF0C030 : 0xFF202020);
             String number = String.valueOf(i + 1);
-            guiGraphics.drawString(font, number, x + (LOADOUT_SIZE - font.width(number)) / 2 + 1, y + 2, i == current ? 0xFFFFFF : 0xC0C0C0, true);
+            // 数字居中：字形宽 = font.width - 1（最后一列是字距），高 7
+            guiGraphics.drawString(font, number, x + (LOADOUT_SIZE - (font.width(number) - 1) + 1) / 2, y + (LOADOUT_SIZE - 7 + 1) / 2, i == current ? 0xFFFFFF : 0xC0C0C0, true);
         }
         if (hovered >= 0 && menu.getCarried().isEmpty()) {
             List<Component> lines = new ArrayList<>();

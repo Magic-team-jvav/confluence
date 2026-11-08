@@ -443,7 +443,6 @@ public final class LivingEntityEvents {
         } else if (event.getSlot() == EquipmentSlot.HEAD) {
             VisibilityPacketS2C.sendSunglasses(player, event.getTo().is(VanityArmorItems.SUNGLASSES.get())
                     ? PortTriState.TRUE : PortTriState.FALSE, PortTriState.DEFAULT);
-            /// 归巢蜜蜂：第一次戴到头上时一次性绑定最近的蜂巢（与地牢指南针一样，坐标只绑定一次、之后不再搜索）
             if (event.getTo().getItem() instanceof HomingBeeItem) {
                 HomingBeeItem.bindHiveTarget(player, player.getItemBySlot(EquipmentSlot.HEAD));
             }

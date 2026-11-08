@@ -455,6 +455,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SPARKLE_SLIME_BALLOON.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(MAGIC_DAGGER.get(), MagicDaggerRenderer::new);
         event.registerEntityRenderer(CRYSTAL_STORM.get(), NoopRenderer::new);
+        event.registerEntityRenderer(THUNDERSTRIKE_SPARK.get(), NoopRenderer::new);
         event.registerEntityRenderer(CURSED_FLAMES.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLOWER_PETAL.get(), NoopRenderer::new);
         event.registerEntityRenderer(SKELETRON_SKULL.get(), SkullProjectileRenderer::new);

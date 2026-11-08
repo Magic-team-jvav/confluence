@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DynamicLightRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RedGloveVfx;
+import org.confluence.mod.client.effect.ThunderstrikeVfx;
 import org.confluence.mod.common.entity.animal.Fairy;
 import org.confluence.mod.common.entity.projectile.sword.PhasebladeProjectile;
 import org.confluence.mod.common.init.ModEffects;
@@ -83,7 +83,7 @@ public final class OpalLightIntegration {
         /// 单独采集附件与状态效果的位置；色彩仍从 JSON 读取。
         DynamicLights.registerCollector(Confluence.asResource("effects"), INSTANCE::collect);
         DynamicLights.registerCollector(Confluence.asResource("particle_emitters"), INSTANCE::collectParticleEmitters);
-        DynamicLights.registerCollector(Confluence.asResource("red_glove"), RedGloveVfx::collectLights);
+        DynamicLights.registerCollector(Confluence.asResource("thunderstrike"), ThunderstrikeVfx::collectLights);
     }
 
     public static boolean handlesEffect(ResourceLocation type) {

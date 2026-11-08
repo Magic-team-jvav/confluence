@@ -61,8 +61,10 @@ public final class NetworkEvents {
                 .playToClient(GunMuzzleFlashPacketS2C.TYPE, GunMuzzleFlashPacketS2C.STREAM_CODEC, GunMuzzleFlashPacketS2C::handle)
                 .playToClient(BulletImpactPacketS2C.TYPE, BulletImpactPacketS2C.STREAM_CODEC, BulletImpactPacketS2C::handle)
                 .playToClient(RedGloveArcPacketS2C.TYPE, RedGloveArcPacketS2C.STREAM_CODEC, RedGloveArcPacketS2C::handle)
+                .playToClient(ThunderstrikePacketS2C.TYPE, ThunderstrikePacketS2C.STREAM_CODEC, ThunderstrikePacketS2C::handle)
                 .playToClient(ShotFeedbackPacketS2C.TYPE, ShotFeedbackPacketS2C.STREAM_CODEC, ShotFeedbackPacketS2C::handle)
 
+                .playToServer(ThunderstrikeRangePacketC2S.TYPE, ThunderstrikeRangePacketC2S.STREAM_CODEC, ThunderstrikeRangePacketC2S::handle)
                 .playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle)
                 .playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle)
                 .playToServer(KeyRequestPacketC2S.TYPE, KeyRequestPacketC2S.STREAM_CODEC, KeyRequestPacketC2S::handle)

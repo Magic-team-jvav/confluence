@@ -20,7 +20,11 @@ import java.util.function.BiFunction;
 
 /** Host adapter for the minecraft-lightning skill's full geometry/material/composite pipeline. */
 public final class ArcSurgeLightning {
-    public static final int SNAPSHOT_LIFETIME_TICKS = 5;
+    /** Default dwell for other snapshot users, including Thunderstrike. */
+    public static final int SNAPSHOT_LIFETIME_TICKS = 6;
+    public static final int RED_GLOVE_HOLD_TICKS = 10;
+    public static final int RED_GLOVE_RETRACT_TICKS = 10;
+    public static final int RED_GLOVE_LIFETIME_TICKS = RED_GLOVE_HOLD_TICKS + RED_GLOVE_RETRACT_TICKS;
     private static final Gson GSON = new Gson();
     private static LightningRecipe appearance;
     private static long nextLightEvent = 1;
@@ -59,7 +63,18 @@ public final class ArcSurgeLightning {
         return new Event(channels, recipe);
     }
 
-    public record Frame(Event event, double age) {}
+    public record Frame(Event event, double age, Vec3 displacement) {
+        public Frame(Event event, double age) { this(event, age, Vec3.ZERO); }
+    }
+
+    public static Event createRedGlove(List<RedGlovePattern.Path> paths, long seed) throws IOException {
+        if (appearance == null) reload();
+        LightningRecipe recipe = LightningRecipe.parse(GSON.toJsonTree(appearance));
+        recipe.seed = (int) (seed ^ (seed >>> 32));
+        recipe.durationTicks = recipe.progressionTicks + RED_GLOVE_LIFETIME_TICKS;
+        recipe.maxSegments = paths.stream().mapToInt(p -> p.points().size() - 1).sum() + 1;
+        return new Event(new RedGloveMotion(paths), recipe);
+    }
 
     /** Draw the exact server damage polylines, without client-side random branches or reshaping. */
     public static Event createSnapshot(List<RedGlovePattern.Path> paths, long seed) throws IOException {
@@ -68,6 +83,25 @@ public final class ArcSurgeLightning {
     public static Event createSnapshot(List<RedGlovePattern.Path> paths, long seed, long lightBase) throws IOException {
         if (appearance == null) reload();
         LightningRecipe recipe = LightningRecipe.parse(GSON.toJsonTree(appearance));
+        return createSnapshot(paths, seed, lightBase, recipe, 1);
+    }
+
+    /** Dedicated blue appearance; shares the existing snapshot, MAX coverage and halo pipeline. */
+    public static Event createThunderstrike(Vec3 start, Vec3 end, long seed, Vec3 spreadAxis) {
+        LightningRecipe recipe = new LightningRecipe();
+        recipe.mode = "strike";
+        recipe.coreColor = "#ffffff";
+        recipe.glowColor = "#238cff";
+        recipe.strikeWidth = 0.045;
+        recipe.gradientEnabled = true;
+        recipe.gradientStart = "#409cff";
+        recipe.gradientEnd = "#8adaff";
+        recipe.gradientCoreMode = "vivid";
+        var paths = org.confluence.mod.common.item.mana.ThunderstrikePattern.paths(start, end, seed, spreadAxis);
+        return createSnapshot(paths, seed, nextLightEvent++ << 20, recipe, 1);
+    }
+
+    private static Event createSnapshot(List<RedGlovePattern.Path> paths, long seed, long lightBase, LightningRecipe recipe, double timeScale) {
         recipe.seed = (int) (seed ^ (seed >>> 32));
         // Snapshot rendering starts at the return stroke, skipping leader progression.
         recipe.durationTicks = recipe.progressionTicks + SNAPSHOT_LIFETIME_TICKS;
@@ -95,7 +129,7 @@ public final class ArcSurgeLightning {
                 (a, b) -> world == null ? a : world.clip(new net.minecraft.world.level.ClipContext(a, b,
                         net.minecraft.world.level.ClipContext.Block.COLLIDER,
                         net.minecraft.world.level.ClipContext.Fluid.ANY, player)).getLocation(), false);
-        return new Event(decorated, recipe, lightBase);
+        return new Event(decorated, recipe, lightBase, timeScale);
     }
 
     public static final class Event {
@@ -103,18 +137,38 @@ public final class ArcSurgeLightning {
         private final ArcSurgeNetwork geometry;
         private BoltGeometry sampled;
         private final long lightId;
+        private final double timeScale;
+        private RedGloveMotion motion;
+
+        private Event(RedGloveMotion motion, LightningRecipe recipe) {
+            this(BoltGeometry.sampled(recipe, List.of()), recipe, nextLightEvent++ << 20, 1);
+            this.motion = motion;
+            sampled = motion.sample(recipe, 0, Vec3.ZERO);
+        }
 
         private Event(List<Channel> channels, LightningRecipe recipe) {
             this.recipe = recipe;
             lightId = nextLightEvent++ << 20;
+            timeScale = 1;
             geometry = new ArcSurgeNetwork(channels, recipe);
         }
-        private Event(BoltGeometry snapshot, LightningRecipe recipe, long lightBase) {
+        private Event(BoltGeometry snapshot, LightningRecipe recipe, long lightBase, double timeScale) {
             this.recipe = recipe; geometry = null; sampled = snapshot; lightId = lightBase;
+            this.timeScale = timeScale;
         }
 
-        public double duration() { return recipe.durationTicks; }
+        public double duration() {
+            return motion != null ? RED_GLOVE_LIFETIME_TICKS
+                    : recipe.progressionTicks + (recipe.durationTicks - recipe.progressionTicks) * timeScale;
+        }
         public int segmentCount() { return sampled == null ? 0 : sampled.segments().size(); }
+        public List<RedGlovePattern.Path> particlePaths(Vec3 displacement) {
+            return motion == null ? List.of() : motion.particlePaths(displacement);
+        }
+        public boolean visibleAt(double age) {
+            if (motion != null) return age >= 0 && age < RED_GLOVE_LIFETIME_TICKS;
+            return new LightningEnvelope(recipe).brightness(age / timeScale + recipe.progressionTicks) > 0;
+        }
 
         public boolean reaches(Vec3 target) {
             return sampled != null && sampled.segments().stream().anyMatch(s -> s.b().distanceToSqr(target) < 1.0E-8);
@@ -126,7 +180,7 @@ public final class ArcSurgeLightning {
         public int collectLights(double age, DynamicLights.Sink sink, int limit) {
             if (sampled == null || limit <= 0) return 0;
             int submitted = 0;
-            for (var point : ArcSurgeLightSamples.sample(sampled, recipe, age)) {
+            for (var point : ArcSurgeLightSamples.sample(sampled, recipe, age / timeScale)) {
                 if (submitted >= limit) break;
                 sink.point(lightId | point.id(), point.position(),
                         OpalColor.of(point.red(), point.green(), point.blue()), point.brightness());
@@ -151,8 +205,13 @@ public final class ArcSurgeLightning {
         if (frames.isEmpty()) return;
         List<LightningRender.BoltDraw> draws = new ArrayList<>();
         for (Frame frame : frames) {
-            if (frame.event.sampled != null) draws.add(new LightningRender.BoltDraw(frame.event.sampled,
-                    frame.event.recipe, frame.age + frame.event.recipe.progressionTicks));
+            Event effect = frame.event;
+            if (effect.motion != null) {
+                // Fixed return-stroke material: disappearance is entirely geometric, with no fading tail.
+                draws.add(new LightningRender.BoltDraw(effect.motion.sample(effect.recipe, frame.age, frame.displacement),
+                        effect.recipe, effect.recipe.progressionTicks + 0.6));
+            } else if (effect.sampled != null) draws.add(new LightningRender.BoltDraw(effect.sampled,
+                    effect.recipe, frame.age / effect.timeScale + effect.recipe.progressionTicks));
         }
         PoseStack pose = new PoseStack();
         pose.last().pose().set(event.getPoseStack().last().pose());

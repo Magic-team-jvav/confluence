@@ -1,7 +1,6 @@
 package org.confluence.mod.network.s2c;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -12,6 +11,7 @@ import org.confluence.mod.common.item.mana.RedGlovePattern;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.network.IPacketS2C;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraft.network.codec.StreamCodec;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ public record RedGloveArcPacketS2C(ResourceLocation dimension, int casterId, lon
                                   List<RedGlovePattern.Path> paths) implements IPacketS2C {
     public static final Type<RedGloveArcPacketS2C> TYPE = Confluence.createType("red_glove_arc");
     public static final int BATCH_PATHS = 64;
-    public static final StreamCodec<RegistryFriendlyByteBuf, RedGloveArcPacketS2C> STREAM_CODEC = new StreamCodec<>() {
-        @Override public RedGloveArcPacketS2C decode(RegistryFriendlyByteBuf buffer) {
+    public static final StreamCodec<ByteBuf, RedGloveArcPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+        @Override public RedGloveArcPacketS2C decode(ByteBuf buffer) {
             int bytes = buffer.readUnsignedShort();
             if (bytes < 1 || bytes > 256) throw new IllegalArgumentException("Invalid dimension ID");
             byte[] utf = new byte[bytes]; buffer.readBytes(utf);
@@ -35,7 +35,9 @@ public record RedGloveArcPacketS2C(ResourceLocation dimension, int casterId, lon
             if (count > BATCH_PATHS) throw new IllegalArgumentException("Too many arc paths");
             List<RedGlovePattern.Path> paths = new ArrayList<>();
             for (int i = 0; i < count; i++) {
-                int depth = buffer.readUnsignedByte(), points = buffer.readUnsignedByte();
+                int depth = buffer.readUnsignedByte(), parent = buffer.readInt(), root = buffer.readInt();
+                if (parent < -1 || root < -1 || root > 95) throw new IllegalArgumentException("Invalid arc topology");
+                int points = buffer.readUnsignedByte();
                 if (points < 2 || points > 96) throw new IllegalArgumentException("Invalid arc points");
                 List<Vec3> line = new ArrayList<>();
                 for (int j = 0; j < points; j++) {
@@ -45,11 +47,11 @@ public record RedGloveArcPacketS2C(ResourceLocation dimension, int casterId, lon
                     if (!finite(relative) || relative.lengthSqr() > 40 * 40) throw new IllegalArgumentException("Invalid arc point");
                     line.add(point);
                 }
-                paths.add(new RedGlovePattern.Path(depth, -1, -1, line));
+                paths.add(new RedGlovePattern.Path(depth, parent, root, line));
             }
             return new RedGloveArcPacketS2C(dimension, casterId, tick, seed, origin, List.copyOf(paths));
         }
-        @Override public void encode(RegistryFriendlyByteBuf buffer, RedGloveArcPacketS2C packet) {
+        @Override public void encode(ByteBuf buffer, RedGloveArcPacketS2C packet) {
             byte[] dimension = packet.dimension.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8);
             if (dimension.length > 256 || packet.paths.size() > BATCH_PATHS) throw new IllegalArgumentException("Arc batch too large");
             buffer.writeShort(dimension.length); buffer.writeBytes(dimension);
@@ -58,7 +60,8 @@ public record RedGloveArcPacketS2C(ResourceLocation dimension, int casterId, lon
             buffer.writeDouble(packet.origin.x); buffer.writeDouble(packet.origin.y); buffer.writeDouble(packet.origin.z);
             buffer.writeByte(packet.paths.size());
             for (var path : packet.paths) {
-                buffer.writeByte(path.depth()); buffer.writeByte(path.points().size());
+                buffer.writeByte(path.depth()); buffer.writeInt(path.parent()); buffer.writeInt(path.rootIndex());
+                buffer.writeByte(path.points().size());
                 for (int i = 0; i < path.points().size(); i++) {
                     Vec3 point = path.points().get(i);
                     if (i == path.points().size() - 1) {

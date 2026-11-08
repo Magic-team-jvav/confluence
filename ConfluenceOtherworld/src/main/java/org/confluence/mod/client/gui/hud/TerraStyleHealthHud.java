@@ -24,6 +24,10 @@ import java.util.Locale;
 import static org.confluence.mod.util.ClientUtils.*;
 
 public class TerraStyleHealthHud implements LayeredDraw.Layer {
+    /// 泰拉界面下心形上方文字的高度
+    public static final int LABEL_HEIGHT = 10;
+    /// 上一帧 LEGACY 心形的下边缘（泰拉界面下食物条画在它下面）
+    public static int lastLegacyBottom = 20;
     private static final int[] HEALTH = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
     private static final int[] HEALTH_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x12f7dd, 0x1fab7f, 0xf7b60b};
     private static final int[] HEALTH_HIGH = new int[]{0xffb5b5, 0xd6e7eb, 0xbdced0, 0xd6eead, 0xeff4ce};
@@ -36,7 +40,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.healthStyle.render(guiGraphics, minecraft);
+        // 泰拉界面：右上角的泰拉式生命心（LEGACY），上方显示“生命：x/y”
+        (ClientConfigs.terrariaInterface ? Health.LEGACY : ClientConfigs.healthStyle).render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }
@@ -46,7 +51,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 int widthHealth = guiGraphics.guiWidth() - 128 + ClientConfigs.healthOffsetX;
-                int heightHealth = 4 + ClientConfigs.healthOffsetY;
+                int heightHealth = 4 + ClientConfigs.healthOffsetY + (ClientConfigs.terrariaInterface ? LABEL_HEIGHT : 0);
                 float maxHealth = 0.0F;
                 float currentHealth = 0.0F;
                 int heartBuff = 0;
@@ -69,8 +74,19 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 int countHeart = heartCount(maxHealth, lifeFruitHealth);
                 int countHeartAbsorptionHealth = (int) (absorptionHealth / 4.0F) + ((((int) absorptionHealth) % 4 == 0) ? 0 : 1);
                 int yLine = 4 + (int) (6.0F / (float) ((countHeart - 1) / 20 + (countHeartAbsorptionHealth - 1) / 20 + 1));
+                if (ClientConfigs.terrariaInterface) {
+                    // 泰拉的生命值：本模组 1 颗心 = 4 点原版生命 = 泰拉 20 点
+                    Component label = Component.translatable("gui.confluence.life", Math.round(currentHealth * 5), Math.round(maxHealth * 5));
+                    // 像泰拉一样居中于心形上方，但不能压到右边“魔力”的字
+                    int labelWidth = minecraft.font.width(label);
+                    int heartsWidth = Math.min(countHeart, 10) * 10;
+                    int labelRight = widthHealth + 100 - heartsWidth / 2 + labelWidth / 2;
+                    int manaLabelLeft = guiGraphics.guiWidth() - 3 - minecraft.font.width(Component.translatable("gui.confluence.mana"));
+                    labelRight = Math.min(labelRight, manaLabelLeft - 6);
+                    guiGraphics.drawString(minecraft.font, label, labelRight - labelWidth, heightHealth - LABEL_HEIGHT, 0xFFFFFF, true);
+                }
                 int heightToAbsorption = blit(heartBuff, maxHealth, currentHealth, lifeFruitHealth, guiGraphics, widthHealth, heightHealth, 0, yLine);
-                blit(0, countHeartAbsorptionHealth * 4, absorptionHealth, 0, guiGraphics, widthHealth, heightToAbsorption, 1, yLine);
+                lastLegacyBottom = blit(0, countHeartAbsorptionHealth * 4, absorptionHealth, 0, guiGraphics, widthHealth, heightToAbsorption, 1, yLine);
             }
 
             private static void blitHeart(GuiGraphics guiGraphics, int type, int typeHeart, float num, int x, int y, int heartBuff) {

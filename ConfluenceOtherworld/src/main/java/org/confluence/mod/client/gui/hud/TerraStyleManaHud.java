@@ -64,9 +64,10 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
 
         /// 灵魂条与魔力条各有独立的样式开关，同一时间只会画其中一个。
         if (SoulcererUtils.isSoulMode(minecraft.player)) {
-            ClientConfigs.soulStyle.render(guiGraphics, minecraft);
+            (ClientConfigs.terrariaInterface ? Soul.LEGACY : ClientConfigs.soulStyle).render(guiGraphics, minecraft);
         } else {
-            ClientConfigs.manaStyle.render(guiGraphics, minecraft);
+            // 泰拉界面：右侧竖排的魔力星（LEGACY），上方写“魔力”
+            (ClientConfigs.terrariaInterface ? Mana.LEGACY : ClientConfigs.manaStyle).render(guiGraphics, minecraft);
         }
 
         minecraft.getProfiler().pop();
@@ -124,7 +125,11 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 int widthMana = guiGraphics.guiWidth() - 21 + ClientConfigs.manaOffsetX;
-                int heightMana = 4 + ClientConfigs.manaOffsetY;
+                int heightMana = 4 + ClientConfigs.manaOffsetY + (ClientConfigs.terrariaInterface ? TerraStyleHealthHud.LABEL_HEIGHT : 0);
+                if (ClientConfigs.terrariaInterface && !SoulcererUtils.isSoulMode(minecraft.player)) {
+                    Component label = Component.translatable("gui.confluence.mana");
+                    guiGraphics.drawString(minecraft.font, label, guiGraphics.guiWidth() - 3 - minecraft.font.width(label), heightMana - TerraStyleHealthHud.LABEL_HEIGHT, 0xFFFFFF, true);
+                }
                 float currentMana = getCurrentResource(minecraft);
                 int maxMana = getMaxResource(minecraft);
                 /// 灵魂条走独立图元，不再用魔力条染色，避免把新的底座/骷髅一起染成青色。

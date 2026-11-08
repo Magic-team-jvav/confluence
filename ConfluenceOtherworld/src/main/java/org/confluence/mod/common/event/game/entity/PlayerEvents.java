@@ -109,6 +109,7 @@ public final class PlayerEvents {
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PermanentUpgrade.restore(player);
+        org.confluence.mod.network.s2c.LoadoutIndexPacketS2C.send(player, org.confluence.mod.common.menu.TerraLoadouts.current(player)); // 泰拉装备栏位
         PlayerUtils.syncSavedData(player);
         BoulderWorld.forceSetAccessory(player);
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
@@ -169,6 +170,16 @@ public final class PlayerEvents {
         }
 
         if (player.isCrouching()) return;
+
+        // 泰拉式合成：右键制作站打开泰拉背包，合成列表包含附近所有制作站的配方；潜行右键仍打开原来的界面
+        if (org.confluence.mod.common.menu.StationCrafting.isStation(blockState) && org.confluence.mod.network.c2s.TerraUiModePacketC2S.isTerrariaUi(player)) {
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.SUCCESS);
+            if (player instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                new org.confluence.mod.network.c2s.OpenMenuPacketC2S(org.confluence.mod.network.c2s.OpenMenuPacketC2S.EXTRA_INVENTORY, ItemStack.EMPTY).work(serverPlayer);
+            }
+            return;
+        }
 
         ItemStack itemStack = event.getItemStack();
 

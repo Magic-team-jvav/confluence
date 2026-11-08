@@ -225,7 +225,14 @@ public final class ModClientEvents {
         ResourceLocation foodHud = Confluence.asResource("food_hud");
         event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
 
+        event.registerAbove(VanillaGuiLayers.HOTBAR, Confluence.asResource("terra_hotbar"), new org.confluence.mod.client.gui.hud.TerraHotbarHud());
+        event.registerAbove(VanillaGuiLayers.AIR_LEVEL, Confluence.asResource("terra_breath"), new org.confluence.mod.client.gui.hud.TerraBreathHud());
+        event.registerAbove(VanillaGuiLayers.VEHICLE_HEALTH, Confluence.asResource("terra_mount_health"), new org.confluence.mod.client.gui.hud.TerraMountHud());
+        event.registerAbove(VanillaGuiLayers.EFFECTS, Confluence.asResource("terra_buffs"), new org.confluence.mod.client.gui.hud.TerraBuffHud());
+        event.registerAbove(VanillaGuiLayers.AIR_LEVEL, Confluence.asResource("terra_pickup_text"), new org.confluence.mod.client.gui.hud.TerraPickupTextHud());
         event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHud());
+        event.registerAboveAll(Confluence.asResource("terra_info"), new org.confluence.mod.client.gui.hud.TerraInfoHud());
+        event.registerAbove(VanillaGuiLayers.CAMERA_OVERLAYS, Confluence.asResource("terra_mob_health"), new org.confluence.mod.client.gui.hud.TerraMobHealthBars());
         event.registerBelow(VanillaGuiLayers.BOSS_OVERLAY, Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
 
         event.registerAbove(VanillaGuiLayers.SUBTITLE_OVERLAY, Confluence.asResource("card_horizontal_l_hud"), ClientSoulHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);

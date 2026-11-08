@@ -26,4 +26,6 @@ public final class ModDataComponentTypes {
     public static final Supplier<DataComponentType<ResourceLocation>> SOUL_SKILL = TYPES.registerComponentType("soulcerer_skill", builder -> builder.persistent(ResourceLocation.CODEC).networkSynchronized(ResourceLocation.STREAM_CODEC));
     /// 星体研究汇编已装订的书页数量。
     public static final Supplier<DataComponentType<Integer>> STELLAR_STUDIES_PAGES = TYPES.registerComponentType("stellar_studies_pages", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+    /// 泰拉的“收藏”（Alt+点击）：整理背包时不移动。
+    public static final Supplier<DataComponentType<net.minecraft.util.Unit>> FAVORITE = TYPES.registerComponentType("favorite", builder -> builder.persistent(net.minecraft.util.Unit.CODEC).networkSynchronized(net.minecraft.network.codec.StreamCodec.unit(net.minecraft.util.Unit.INSTANCE)));
 }

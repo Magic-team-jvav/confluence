@@ -93,6 +93,10 @@ public final class ClientConfigs {
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
+    /// 泰拉风格背包/快捷栏/箱子/合成；关闭后恢复原版界面（背包里的按钮可切换，会保存）
+    public static boolean terrariaInterface = true;
+    /// 泰拉界面下快捷栏下方的经验条（泰拉没有经验，可关）
+    public static boolean terrariaExperienceBar = true;
     public static boolean crosshairAnimation = true;
     public static List<? extends String> crosshairAnimationBlacklist = List.of();
     public static boolean bowCrosshairAnimation = true;
@@ -154,6 +158,8 @@ public final class ClientConfigs {
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
+    private static BooleanValue TERRARIA_INTERFACE;
+    private static BooleanValue TERRARIA_EXPERIENCE_BAR;
     private static BooleanValue CROSSHAIR_ANIMATION;
     private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
     private static BooleanValue BOW_CROSSHAIR_ANIMATION;
@@ -183,6 +189,12 @@ public final class ClientConfigs {
     private static BooleanValue WIND_SLANTS_RAIN_CLOUDS;
     private static BooleanValue BLIZZARD_AMBIENCE;
     private static BooleanValue MUTE_WARDEN_SOUND;
+
+    public static void setTerrariaInterface(boolean enabled) {
+        terrariaInterface = enabled;
+        TERRARIA_INTERFACE.set(enabled);
+        TERRARIA_INTERFACE.save();
+    }
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
@@ -221,6 +233,8 @@ public final class ClientConfigs {
         armorStyle = ARMOR_STYLE.get();
         terraStyleFood = TERRA_STYLE_FOOD.get();
         leftEffectIcon = LEFT_EFFECT_ICON.get();
+        terrariaInterface = TERRARIA_INTERFACE.get();
+        terrariaExperienceBar = TERRARIA_EXPERIENCE_BAR.get();
         crosshairAnimation = CROSSHAIR_ANIMATION.get();
         crosshairAnimationBlacklist = CROSSHAIR_ANIMATION_BLACKLIST.get();
         bowCrosshairAnimation = BOW_CROSSHAIR_ANIMATION.get();
@@ -347,6 +361,8 @@ public final class ClientConfigs {
                 builder.pop();
             }
             LEFT_EFFECT_ICON = builder.define("leftEffectIcon", true);
+            TERRARIA_INTERFACE = builder.define("terrariaInterface", true);
+            TERRARIA_EXPERIENCE_BAR = builder.define("terrariaExperienceBar", true);
             EXTRA_INVENTORY_BUTTON_OFFSET_X = builder.defineInRange("extraInventoryButtonOffsetX", 0, -256, 256);
             EXTRA_INVENTORY_BUTTON_OFFSET_Y = builder.defineInRange("extraInventoryButtonOffsetY", 0, -256, 256);
             builder.pop();

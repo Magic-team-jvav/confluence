@@ -24,13 +24,17 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
-        if (!ClientConfigs.terraStyleArmor) return;
+        // 泰拉界面：防御只在背包里显示（护饰品左侧的盾牌），平时屏幕上不显示
+        if (!ClientConfigs.terraStyleArmor || ClientConfigs.terrariaInterface) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
         LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
-        ClientConfigs.armorStyle.render(guiGraphics, minecraft);
+        // 泰拉界面：用泰拉式护盾（若玩家选的是原版位置的 OVERLAY，则换成横排的 LEGACY）
+        Armor style = ClientConfigs.armorStyle;
+        if (ClientConfigs.terrariaInterface && style == Armor.OVERLAY) style = Armor.LEGACY_HORIZONTAL;
+        style.render(guiGraphics, minecraft);
 
         minecraft.getProfiler().pop();
     }
@@ -71,6 +75,15 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
         };
 
         private static void draw(GuiGraphics guiGraphics, Minecraft minecraft, int type) {
+            drawAt(guiGraphics, minecraft, type, guiGraphics.guiWidth() - 26, guiGraphics.guiHeight() - 28);
+        }
+
+        /// 泰拉背包里的防御盾牌（23×25，数字在盾上）
+        public static void drawShield(GuiGraphics guiGraphics, Minecraft minecraft, int x, int y) {
+            drawAt(guiGraphics, minecraft, 1, x, y);
+        }
+
+        private static void drawAt(GuiGraphics guiGraphics, Minecraft minecraft, int type, int widthArmor, int heightArmor) {
             int armorNum = 0;
             int armorToughnessNum = 0;
             Player player = minecraft.player;
@@ -85,8 +98,6 @@ public class TerraStyleArmorHud implements LayeredDraw.Layer {
                 case 3 -> "-".repeat(Math.max(armor.length(), armorToughness.length()));
                 default -> "/";
             };
-            int widthArmor = guiGraphics.guiWidth() - 26;
-            int heightArmor = guiGraphics.guiHeight() - 28;
             int textWidthArmor = minecraft.font.width(Component.literal(armor));
             int textWidthArmorToughness = minecraft.font.width(Component.literal(armorToughness));
             int textWidth = minecraft.font.width(Component.literal(text));

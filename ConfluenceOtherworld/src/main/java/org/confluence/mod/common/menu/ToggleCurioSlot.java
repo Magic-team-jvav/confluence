@@ -17,10 +17,21 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 public class ToggleCurioSlot extends Slot implements IToggleSlot {
     public boolean isActive = true;
     private final Player player;
+    /// 时装饰品槽（Curios 的 cosmetic）：只改外观，不给属性
+    private boolean cosmetic;
 
     public ToggleCurioSlot(Player player, Container container, int slot, int x, int y) {
         super(container, slot, x, y);
         this.player = player;
+    }
+
+    public ToggleCurioSlot cosmetic() {
+        this.cosmetic = true;
+        return this;
+    }
+
+    public boolean isCosmetic() {
+        return cosmetic;
     }
 
     @Override
@@ -31,7 +42,7 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
     @Override
     public boolean mayPlace(ItemStack stack) {
         if (stack.getItem() instanceof BaseCurioItem baseCurioItem) {
-            return baseCurioItem.canEquip(new SlotContext(TerraCurio.CURIO_SLOT, player, getSlotIndex(), false, true), stack);
+            return baseCurioItem.canEquip(new SlotContext(TerraCurio.CURIO_SLOT, player, getSlotIndex(), cosmetic, true), stack);
         }
         return stack.is(TCTags.Items.ACCESSORY);
     }
@@ -56,7 +67,11 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
         private final IDynamicStackHandler handler;
 
         public WrappedContainer(ICurioStacksHandler handler) {
-            this.handler = handler.getStacks();
+            this(handler.getStacks());
+        }
+
+        public WrappedContainer(IDynamicStackHandler handler) {
+            this.handler = handler;
         }
 
         @Override

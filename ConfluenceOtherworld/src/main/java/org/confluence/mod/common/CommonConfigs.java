@@ -31,6 +31,9 @@ public final class CommonConfigs {
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
     public static BooleanValue TERRA_STYLE_EXPLOSION;
+    /// 泰拉没有饥饿：饱食度固定，食物改为立即回复少量生命
+    public static BooleanValue DISABLE_HUNGER;
+    public static ModConfigSpec.DoubleValue FOOD_HEAL_PER_NUTRITION;
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue VILLAGER_INVULNERABLE_TO_PLAYER;
@@ -233,6 +236,8 @@ public final class CommonConfigs {
             TERRA_STYLE_EXPLOSION = builder.define("terraStyleExplosion", true);
             TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
             STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
+            DISABLE_HUNGER = builder.comment("Terraria has no hunger: food level stays fixed, eating heals a little instead.").define("disableHunger", false);
+            FOOD_HEAL_PER_NUTRITION = builder.comment("Health restored per point of food nutrition when hunger is disabled.").defineInRange("foodHealPerNutrition", 0.5D, 0.0D, 10.0D);
             {
                 builder.push("AutomaticWeaponUse");
                 AUTO_SWING_ALL_SWORDS = builder.define("autoSwingAllSwords", false);

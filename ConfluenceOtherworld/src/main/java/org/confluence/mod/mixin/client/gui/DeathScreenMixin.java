@@ -32,6 +32,11 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
     private boolean hardcore;
     @Shadow
     private Component deathScore;
+    @Shadow
+    @Final
+    private Component causeOfDeath;
+    @Shadow
+    private Button exitToTitleButton;
 
     @Shadow
     protected abstract void exitToTitleScreen();
@@ -42,6 +47,17 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
     private int confluence$respawnWaitTime;
     @Unique
     private Component confluence$respawnTimeComponent = Component.empty();
+    @Unique
+    private boolean confluence$autoRespawned;
+    /// 泰拉的自动复活最少等 2 秒（服务端没给等待时间时）
+    @Unique
+    private static final int CONFLUENCE$MIN_AUTO_RESPAWN = 40;
+
+    /// 泰拉界面、非极限模式：泰拉式死亡画面（不变红、没有“重生”按钮，倒计时结束自动复活）
+    @Unique
+    private boolean confluence$terraria() {
+        return org.confluence.mod.client.ClientConfigs.terrariaInterface && !hardcore;
+    }
 
     @Override
     public void confluence$setDelayTicker(int ticker) {
@@ -67,9 +83,65 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
         return original;
     }
 
+    @Inject(method = "init", at = @At("TAIL"))
+    private void confluence$terrariaInit(CallbackInfo ci) {
+        if (!confluence$terraria()) return;
+        if (confluence$respawnButton != null) confluence$respawnButton.visible = false;
+        if (exitToTitleButton != null) exitToTitleButton.setY(height - 32);
+    }
+
+    @Inject(method = "renderBackground", at = @At("HEAD"), cancellable = true)
+    private void confluence$terrariaBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
+        if (!confluence$terraria()) return;
+        guiGraphics.fill(0, 0, width, height, 0x70000000); // 世界还看得见，只是暗下来
+        ci.cancel();
+    }
+
+    @Inject(method = "render", at = @At("HEAD"), cancellable = true)
+    private void confluence$terrariaRender(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
+        if (!confluence$terraria()) return;
+        super.render(guiGraphics, mouseX, mouseY, partialTick); // 背景（上面的暗色）+ 按钮
+        int center = width / 2;
+        int top = height / 2 - 50;
+        Component slain = Component.translatable("gui.confluence.death.slain");
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(center, top, 0.0F);
+        guiGraphics.pose().scale(2.5F, 2.5F, 1.0F);
+        guiGraphics.drawString(font, slain, -font.width(slain) / 2, 0, 0xD8D8D8, true);
+        guiGraphics.pose().popPose();
+        int y = top + 34;
+        if (causeOfDeath != null) {
+            guiGraphics.drawCenteredString(font, causeOfDeath, center, y, 0xFFFFFF);
+            y += 14;
+        }
+        if (deathScore != null) {
+            guiGraphics.drawCenteredString(font, deathScore, center, y, 0xFFFFFF);
+            y += 14;
+        }
+        int ticksLeft = Math.max(confluence$respawnWaitTime, CONFLUENCE$MIN_AUTO_RESPAWN) - delayTicker;
+        if (ticksLeft > 0 && !confluence$autoRespawned) {
+            String seconds = String.valueOf((ticksLeft + 19) / 20);
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(center, y + 10, 0.0F);
+            guiGraphics.pose().scale(2.0F, 2.0F, 1.0F);
+            guiGraphics.drawString(font, seconds, -font.width(seconds) / 2, 0, 0xFFFFFF, true);
+            guiGraphics.pose().popPose();
+        }
+        ci.cancel();
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void confluence$terrariaAutoRespawn(CallbackInfo ci) {
+        if (!confluence$terraria() || confluence$autoRespawned || confluence$respawnButton == null) return;
+        if (delayTicker >= Math.max(confluence$respawnWaitTime, CONFLUENCE$MIN_AUTO_RESPAWN)) {
+            confluence$autoRespawned = true;
+            confluence$respawnButton.onPress(); // 和点“重生”一样
+        }
+    }
+
     @Inject(method = "render", at = @At("HEAD"))
     public void render(CallbackInfo ci, @Local(argsOnly = true) GuiGraphics guiGraphics) {
-        if (confluence$respawnWaitTime >= delayTicker) {
+        if (confluence$respawnWaitTime >= delayTicker && !confluence$terraria()) {
             guiGraphics.drawCenteredString(font, confluence$respawnTimeComponent, width / 2, 120, 16777215);
         }
     }

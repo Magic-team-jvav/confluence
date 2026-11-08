@@ -658,6 +658,13 @@ public final class LivingEntityEvents {
             EnchantmentBehaviors.onHealingPotionUsed(player, (HealingPotionItem) itemStack.getItem());
         }
         RandomSource random = player.getRandom();
+        // 关闭饥饿时（泰拉）：食物立即回复少量生命
+        if (CommonConfigs.DISABLE_HUNGER.get()) {
+            net.minecraft.world.food.FoodProperties food = itemStack.getFoodProperties(player);
+            if (food != null && food.nutrition() > 0) {
+                player.heal((float) (food.nutrition() * CommonConfigs.FOOD_HEAL_PER_NUTRITION.get()));
+            }
+        }
         if (itemStack.is(FoodItems.GREEN_DUMPLING.get()) && random.nextInt(6) == 0) {
             player.addEffect(new MobEffectInstance(ModEffects.CHOKING, 2400));
         }

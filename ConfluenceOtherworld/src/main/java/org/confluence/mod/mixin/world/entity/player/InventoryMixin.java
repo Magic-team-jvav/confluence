@@ -41,6 +41,17 @@ public abstract class InventoryMixin {
     @Shadow
     protected abstract boolean hasRemainingSpaceForItem(ItemStack destination, ItemStack origin);
 
+    /// 收藏只是标记：拾取时照样往收藏的物品堆里叠加（与泰拉一致）
+    @com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation(method = "hasRemainingSpaceForItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isSameItemSameComponents(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;)Z"))
+    private boolean ignoreFavorite(ItemStack destination, ItemStack origin, com.llamalad7.mixinextras.injector.wrapoperation.Operation<Boolean> original) {
+        if (org.confluence.mod.common.menu.TerraInventoryActions.isFavorite(destination) && !org.confluence.mod.common.menu.TerraInventoryActions.isFavorite(origin)) {
+            ItemStack copy = destination.copy();
+            copy.remove(org.confluence.mod.common.init.ModDataComponentTypes.FAVORITE.get());
+            return original.call(copy, origin);
+        }
+        return original.call(destination, origin);
+    }
+
     @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private void add2Extra(CallbackInfoReturnable<Boolean> cir, @Local(argsOnly = true) ItemStack stack) {
         if (stack.is(ModTags.Items.COINS)) {

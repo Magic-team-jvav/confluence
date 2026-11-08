@@ -115,6 +115,7 @@ import org.confluence.mod.integration.opallight.OpalLightIntegration;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.util.AchievementUtils;
@@ -180,6 +181,7 @@ public final class GameClientEvents {
         }
 
         VoidSeaSwimEffects.tick(player);
+        org.confluence.mod.client.gui.container.TerraScreenMovement.tick(); // 泰拉：背包/箱子/商店开着也能走
 
         if (minecraft.gameMode != null && !minecraft.gameMode.isDestroying() && minecraft.options.keyAttack.isDown()) {
             ItemStack itemStack = player.getMainHandItem();
@@ -260,6 +262,8 @@ public final class GameClientEvents {
     public static void clientPlayerNetwork$LoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
         WeatherHandler.initialize(event.getPlayer());
         ClientWeaponInputManager.init();
+        // 服务端据此决定右键制作站时打开泰拉背包还是原来的界面
+        org.confluence.mod.network.c2s.TerraUiModePacketC2S.sendToServer(event.getPlayer(), ClientConfigs.terrariaInterface);
     }
 
     @SubscribeEvent
@@ -384,6 +388,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void customizeGuiOverlay$BossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event) {
         CustomBossBarRenderer.render(event);
+        org.confluence.mod.client.gui.hud.TerraBossBarLayout.onProgress(event);
     }
 
     @SubscribeEvent
@@ -397,6 +402,72 @@ public final class GameClientEvents {
                 (HouseSelectHud.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
         ) {
             event.setCanceled(true);
+        }
+        // 泰拉风格快捷栏在左上角（TerraHotbarHud），原版底部快捷栏和物品名不再显示；旁观模式保留原版
+        if (ClientConfigs.terrariaInterface && (VanillaGuiLayers.HOTBAR.equals(name) || VanillaGuiLayers.SELECTED_ITEM_NAME.equals(name))) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null && !player.isSpectator()) {
+                event.setCanceled(true);
+            }
+        }
+        // 关闭饥饿（泰拉）：不画饱食度；泰拉界面：原版底部经验条改由 TerraHotbarHud 画在快捷栏下方
+        if ((org.confluence.mod.common.CommonConfigs.DISABLE_HUNGER.get() && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
+                (ClientConfigs.terrariaInterface && (VanillaGuiLayers.EXPERIENCE_BAR.equals(name) || VanillaGuiLayers.EXPERIENCE_LEVEL.equals(name) ||
+                        VanillaGuiLayers.AIR_LEVEL.equals(name)))) { // 呼吸气泡改由 TerraBreathHud 画在准星上方
+            event.setCanceled(true);
+        }
+        // 状态效果图标：泰拉背包/箱子打开时不画（否则压在格子上）；左上角模式下挪到快捷栏下方
+        // 泰拉界面：增益栏改由 TerraBuffHud 画（带边框和剩余时间）
+        if (ClientConfigs.terrariaInterface && VanillaGuiLayers.EFFECTS.equals(name)) {
+            event.setCanceled(true);
+        }
+        if (VanillaGuiLayers.BOSS_OVERLAY.equals(name)) {
+            org.confluence.mod.client.gui.hud.TerraBossBarLayout.pre(event.getGuiGraphics());
+        }
+        // 泰拉界面：坐骑血量改由 TerraMountHud 画在右上角
+        if (ClientConfigs.terrariaInterface && VanillaGuiLayers.VEHICLE_HEALTH.equals(name)) {
+            event.setCanceled(true);
+        }
+        // 泰拉界面：动作栏文字（原版在底部快捷栏上方）下移到屏幕底部，有 Boss 血条时在血条上面
+        if (VanillaGuiLayers.OVERLAY_MESSAGE.equals(name) && !event.isCanceled() && org.confluence.mod.client.gui.hud.TerraBossBarLayout.active()) {
+            net.minecraft.client.gui.GuiGraphics guiGraphics = event.getGuiGraphics();
+            int vanillaTop = guiGraphics.guiHeight() - 72; // 原版：平移到 高度-68，文字在 -4
+            int target = org.confluence.mod.client.gui.hud.TerraBossBarLayout.barsTop(guiGraphics.guiHeight()) - 16;
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(0, target - vanillaTop, 0);
+            overlayMessageShifted = true;
+        }
+        // 信息饰品：泰拉界面下改由 TerraInfoHud 画在生命值下面
+        if (org.confluence.mod.client.gui.hud.TerraInfoHud.TERRA_CURIO_LAYER.equals(name) && org.confluence.mod.client.gui.hud.TerraInfoHud.active()) {
+            event.setCanceled(true);
+        }
+        if (VanillaGuiLayers.EFFECTS.equals(name) && !event.isCanceled()) {
+            Screen screen = Minecraft.getInstance().screen;
+            if (org.confluence.mod.client.gui.container.TerraScreenMovement.appliesTo(screen)) {
+                event.setCanceled(true);
+            } else if (ClientConfigs.leftEffectIcon && ClientConfigs.terrariaInterface) {
+                event.getGuiGraphics().pose().pushPose();
+                event.getGuiGraphics().pose().translate(0, org.confluence.mod.client.gui.hud.TerraHotbarHud.effectsOffsetY(), 0);
+                effectsShifted = true;
+            }
+        }
+    }
+
+    private static boolean effectsShifted = false;
+    private static boolean overlayMessageShifted = false;
+
+    @SubscribeEvent
+    public static void renderGuiOverlay$Post(RenderGuiLayerEvent.Post event) {
+        if (VanillaGuiLayers.BOSS_OVERLAY.equals(event.getName())) {
+            org.confluence.mod.client.gui.hud.TerraBossBarLayout.post(event.getGuiGraphics());
+        }
+        if (overlayMessageShifted && VanillaGuiLayers.OVERLAY_MESSAGE.equals(event.getName())) {
+            event.getGuiGraphics().pose().popPose();
+            overlayMessageShifted = false;
+        }
+        if (effectsShifted && VanillaGuiLayers.EFFECTS.equals(event.getName())) {
+            event.getGuiGraphics().pose().popPose();
+            effectsShifted = false;
         }
     }
 
@@ -431,6 +502,9 @@ public final class GameClientEvents {
         ModArmorBonus.addTooltip(event.getEntity(), stack, toolTip);
         DiggingPower.addTooltip(stack, holder, toolTip);
         ExtractinatorData.addTooltip(holder, toolTip);
+        if (org.confluence.mod.common.menu.TerraInventoryActions.isFavorite(stack)) {
+            toolTip.add(Component.translatable("tooltip.confluence.favorite").withStyle(ChatFormatting.GOLD));
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -479,6 +553,7 @@ public final class GameClientEvents {
             ClientBiomeEffectSystem.renderSky(player, event);
         } else if (stage == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
             WallOfFleshRenderer.renderWalls(event);
+            org.confluence.mod.client.gui.hud.TerraMobHealthBars.collect(event);
             DestroyerRenderer.renderDestroyers(event);
             TongueRenderer.renderFirstPerson(event, minecraft, player);
         } else if (stage == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
@@ -503,6 +578,47 @@ public final class GameClientEvents {
         if (Minecraft.getInstance().screen == null) {
             LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
         }
+    }
+
+    /// 泰拉风格背包：生存/冒险模式下按 E 直接打开泰拉背包，而不是原版背包。
+    /// 原版背包仍可通过泰拉背包里的按钮打开（配方书等）。
+    @SubscribeEvent
+    public static void screen$Opening(ScreenEvent.Opening event) {
+        // 泰拉风格箱子界面：原版箱子（含木桶、末影箱、矿车箱子等 ChestMenu）
+        if (!ClientConfigs.terrariaInterface) return; // 原版界面模式
+        if (event.getNewScreen() instanceof net.minecraft.client.gui.screens.inventory.ContainerScreen containerScreen
+                && containerScreen.getClass() == net.minecraft.client.gui.screens.inventory.ContainerScreen.class
+                && Minecraft.getInstance().player != null) {
+            event.setNewScreen(new org.confluence.mod.client.gui.container.TerraChestScreen<>(containerScreen.getMenu(), Minecraft.getInstance().player.getInventory(), containerScreen.getTitle(), containerScreen.getMenu().getRowCount()));
+            return;
+        }
+        // 猪猪存钱罐、虚空保险库：也用泰拉箱子界面（保险箱本来就是原版箱子菜单）；NPC 商店用泰拉商店界面
+        if (Minecraft.getInstance().player != null && event.getNewScreen() != null) {
+            net.minecraft.world.entity.player.Inventory inventory = Minecraft.getInstance().player.getInventory();
+            if (event.getNewScreen().getClass() == org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreen.class) {
+                var screen = (org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreen) event.getNewScreen();
+                event.setNewScreen(new org.confluence.mod.client.gui.container.npc_screen.TerraShopScreen(screen.getMenu(), inventory, screen.getTitle()));
+                return;
+            }
+            if (event.getNewScreen().getClass() == org.confluence.mod.client.gui.container.PiggyBankScreen.class) {
+                var screen = (org.confluence.mod.client.gui.container.PiggyBankScreen) event.getNewScreen();
+                event.setNewScreen(new org.confluence.mod.client.gui.container.TerraChestScreen<>(screen.getMenu(), inventory, screen.getTitle(), screen.getMenu().getRowCount()));
+                return;
+            }
+            if (event.getNewScreen().getClass() == org.confluence.mod.client.gui.container.VoidVaultScreen.class) {
+                var screen = (org.confluence.mod.client.gui.container.VoidVaultScreen) event.getNewScreen();
+                event.setNewScreen(new org.confluence.mod.client.gui.container.TerraChestScreen<>(screen.getMenu(), inventory, screen.getTitle(), org.confluence.mod.common.attachment.PlayerVoidVaultContainer.ROWS));
+                return;
+            }
+        }
+        if (event.getNewScreen() == null || event.getNewScreen().getClass() != InventoryScreen.class) return;
+        if (ExtraInventoryScreen.consumeAllowVanilla()) return;
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null || player.isSpectator()) return; // 创造模式也用泰拉背包，物品栏从背包里的按钮打开
+        event.setCanceled(true);
+        ItemStack stack = player.containerMenu.getCarried();
+        player.containerMenu.setCarried(ItemStack.EMPTY);
+        OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
     }
 
     @SubscribeEvent

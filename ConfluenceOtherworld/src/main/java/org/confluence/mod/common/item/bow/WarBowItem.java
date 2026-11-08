@@ -39,7 +39,7 @@ public class WarBowItem extends BaseTerraBowItem implements ISpecialSweepWeapon 
     /// 无耐久：不掉耐久，也不需要修复。
     public WarBowItem(float baseDamage) {
         super(baseDamage, new Item.Properties()
-                .attributes(ModItems.createAttributes(ModTiers.IRON, 10.0F, -2.4F, ModItems.attributes(0.0, 0.0))));
+                .attributes(ModItems.createAttributes(ModTiers.IRON, 4.0F, -2.4F, ModItems.attributes(0.0, 0.0))));
     }
 
     @Override
@@ -56,9 +56,9 @@ public class WarBowItem extends BaseTerraBowItem implements ISpecialSweepWeapon 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, context, tooltip, flag);
-        tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.0").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.1").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable("tooltip.item.confluence.war_bow.2", Math.round(AUTO_ARROW_CHANCE * 100.0F)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.item.confluence.blade_bow.0").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.item.confluence.blade_bow.1").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("tooltip.item.confluence.blade_bow.2", Math.round(AUTO_ARROW_CHANCE * 100.0F)).withStyle(ChatFormatting.GRAY));
     }
 
     @Override

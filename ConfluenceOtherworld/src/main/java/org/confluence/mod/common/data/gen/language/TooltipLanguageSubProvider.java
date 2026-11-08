@@ -777,9 +777,9 @@ language.add("tooltip.item.confluence.polar_day.1", "Hits upgrade it to level 2 
         language.add("tooltip.item.confluence.hunting_bow.1", "Summons prioritise hunted enemies and deal 50%% more damage to them", "召唤物会优先攻击被狩猎标记的敌人，并对其额外造成 50%% 伤害");
         language.add("tooltip.item.confluence.scarebow.0", "Holding it drives Harpies within %s blocks away", "手持时，%s 格内的鸟妖会停止攻击并远离你");
         language.add("tooltip.item.confluence.scarebow.1", "Its arrows deal %s extra damage to Harpies", "射出的箭矢对鸟妖额外造成 %s 点伤害");
-        language.add("tooltip.item.confluence.war_bow.0", "Left-click to strike in melee, right-click to draw and fire", "左键近战攻击，右键拉弓射箭");
-        language.add("tooltip.item.confluence.war_bow.1", "A fully charged melee hit sweeps nearby enemies, just like a sword", "攻击条蓄满时左键可打出与原版剑相同的横扫");
-        language.add("tooltip.item.confluence.war_bow.2", "Melee hits have a %s%% chance to loose an extra arrow at the nearest enemy", "近战命中时有 %s%% 概率自动朝最近的敌人补上一箭");
+        language.add("tooltip.item.confluence.blade_bow.0", "Left-click to strike in melee, right-click to draw and fire", "左键近战攻击，右键拉弓射箭");
+        language.add("tooltip.item.confluence.blade_bow.1", "A fully charged melee hit sweeps nearby enemies, just like a sword", "攻击条蓄满时左键可打出与原版剑相同的横扫");
+        language.add("tooltip.item.confluence.blade_bow.2", "Melee hits have a %s%% chance to loose an extra arrow at the nearest enemy", "近战命中时有 %s%% 概率自动朝最近的敌人补上一箭");
         language.add("tooltip.item.confluence.wind_page.0", "Releases three wind bolts that rise, then home in on the nearest enemy", "一次释放三发风弹，先向上飞再追踪最近的敌人");
         language.add("tooltip.item.confluence.wind_eye.0", "Creates a tornado that pulls in enemies; recasting removes the previous one, and only the first projectile fired into its core is absorbed", "制造持续吸附敌人的旋风；再次使用会移除上一道，只吸收第一枚打入中心的弹幕");
         language.add("tooltip.item.confluence.star_weep.0", "Arrows that miss an enemy are stored as falling-star charges (max 3); the next hit on an enemy drops that many non-homing falling stars, one every 0.5 seconds", "未命中敌怪的箭矢会累积为坠星协同（最多 3 层）；下一次命中敌怪时从敌人头上释放等量坠星，每 0.5 秒落下一颗且不会追踪");

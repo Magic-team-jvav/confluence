@@ -482,7 +482,7 @@ public final class ValueSubProvider {
                 .add(BowItems.ENCHANTED_BOW, gold1 + silver50)
                 .add(BowItems.STAR_WEEP, gold1 + silver50)
                 .add(BowItems.POLAR_DAY, gold2)
-                .add(BowItems.WAR_BOW, gold2 + gold1)
+                .add(BowItems.BLADE_BOW, gold2 + gold1)
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
                 .add(BowItems.HELLWING_BOW, gold2 + silver50)

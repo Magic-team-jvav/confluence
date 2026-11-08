@@ -89,7 +89,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.LUNARTEAR_ORE), MaterialItems.LUNARTEAR.toStack(), 2.0F, 100);
         cooking(writer, blasting, "blasting/", "", Ingredient.of(OreBlocks.DRAGONSAL_ORE), MaterialItems.DRAGONSAL.toStack(), 2.0F, 100);
-        cooking(writer, blasting, "blasting/", "", Ingredient.of(Items.GUNPOWDER), Items.BLAZE_POWDER.getDefaultInstance(), 2.0F, 100);
         // 熔炉
         RecipeSerializer<?> smelting = RecipeSerializer.SMELTING_RECIPE;
         cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 200);
@@ -154,8 +153,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(writer, smelting, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
 
         cooking(writer, smelting, "smelting/", "", Ingredient.of(Items.SOUL_SAND), DecorativeBlocks.SOUL_GLASS.toStack(), 0.1F, 200);
-
-        cooking(writer, smelting, "smelting/", "", Ingredient.of(Items.GUNPOWDER), Items.BLAZE_POWDER.getDefaultInstance(), 0.1F, 200);
 
         RecipeSerializer<?> smoking = RecipeSerializer.SMOKING_RECIPE;
         cooking(writer, smoking, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);

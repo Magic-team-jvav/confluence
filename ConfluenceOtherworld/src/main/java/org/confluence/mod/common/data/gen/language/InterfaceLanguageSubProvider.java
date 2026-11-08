@@ -155,6 +155,7 @@ public final class InterfaceLanguageSubProvider {
         language.add("confluence.trade_lock.drawer.position.title", "Position", "坐标");
         language.add("container.confluence.adamantite_forge", "Adamantite Forge", "精金熔炉");
         language.add("container.confluence.alchemy_table", "Alchemy Table", "炼药桌");
+        language.add("container.confluence.brewing_vial", "Brewing Vial", "炼药瓶");
         language.add("container.confluence.cauldron", "Cauldron", "大锅");
         language.add("container.confluence.chester", "Chester", "切斯特");
         language.add("container.confluence.cooking_pot", "Cooking Pot", "烹饪锅");

@@ -142,7 +142,8 @@ public class GoblinWarlock extends BaseMonster {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSoundEvents.GOBLIN_WARLOCK_DEATH.get();
+        // 所有哥布林共用通用死亡音效
+        return ModSoundEvents.ROUTINE_DEATH.get();
     }
 
 }

@@ -22,15 +22,15 @@ public class ManaCrystalItem extends CustomRarityItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        level.playSound(player, player.blockPosition().above(), ModSoundEvents.MANA_STAR_USE.get(), SoundSource.PLAYERS, 1, 1);
         ItemStack itemStack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
             ManaStorage manaStorage = ManaStorage.of(player);
-            if (manaStorage.addStar()) {
-                CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!player.hasInfiniteMaterials()) {
-                    itemStack.shrink(1);
-                }
+            // 已经到上限：不消耗、不播声音
+            if (!manaStorage.addStar()) return InteractionResultHolder.fail(itemStack);
+            level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.MANA_STAR_USE.get(), SoundSource.PLAYERS, 1, 1);
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
+            if (!player.hasInfiniteMaterials()) {
+                itemStack.shrink(1);
             }
             EverBeneficial everBeneficial;
             if (manaStorage.isStarMaximum() && (everBeneficial = EverBeneficial.of(serverPlayer)).isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum()) {

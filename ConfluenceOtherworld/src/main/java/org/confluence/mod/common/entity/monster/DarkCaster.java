@@ -105,7 +105,8 @@ public class DarkCaster extends BaseCasterMonster {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSoundEvents.TR_ZOMBIE_DEATH.get();
+        // 哥布林巫士和其他哥布林共用通用死亡音效
+        return profile == Profile.GOBLIN_SORCERER ? ModSoundEvents.ROUTINE_DEATH.get() : ModSoundEvents.TR_ZOMBIE_DEATH.get();
     }
 
 }

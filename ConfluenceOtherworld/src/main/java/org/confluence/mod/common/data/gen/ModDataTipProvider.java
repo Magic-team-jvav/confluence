@@ -452,6 +452,8 @@ public final class ModDataTipProvider implements DataProvider {
                 translate("tooltip.item.confluence.blend_o_matic.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, FunctionalBlocks.BOUNCY_BOULDER.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.wireable.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, FunctionalBlocks.BREWING_VIAL.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.brewing_vial.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.chlorophyte_extractinator.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
                 translate("tooltip.item.confluence.chlorophyte_extractinator.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),

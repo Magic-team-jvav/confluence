@@ -425,6 +425,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 COOKING_POT.get(),
                 HELLFORGE.get(),
                 ALCHEMY_TABLE.get(),
+                BREWING_VIAL.get(),
                 WEATHER_VANE.get(),
                 SOLIDIFIER.get(),
                 CAULDRON.get(),

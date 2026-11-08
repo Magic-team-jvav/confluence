@@ -467,16 +467,16 @@ public interface ModPrefix {
     ) implements ModPrefix {
         public static final Map<String, Summon> VALUES = ModPrefix.registerGroup("summon");
         public static final ResourceLocation ID = Confluence.asResource("summon_prefix");
-        public static final Summon FABLED = register("fabled", 0.15F, 10, 3, 0.15F, 2, 1.7481F), // 传说
-                LOYAL = register("loyal", 0.10F, 5, 3, 0.05F, 2, 0.8316F), // 忠诚
-                WORTHY = register("worthy", 0.15F, 8, 0, 0, 2, 0.6589F), // 英勇
+        public static final Summon FABLED = register("fabled", 0.15F, 5, 3, 0.15F, 2, 1.7481F), // 传说
+                LOYAL = register("loyal", 0.10F, 3, 3, 0.05F, 2, 0.8316F), // 忠诚
+                WORTHY = register("worthy", 0.15F, 4, 0, 0, 2, 0.6589F), // 英勇
                 FOCUSED = register("focused", 0.10F, 0, 3, 0, 1, 0.4376F), // 专注
-                EAGER = register("eager", 0, 25, 0, 0, 2, 0.8906F), // 热切
+                EAGER = register("eager", 0, 13, 0, 0, 2, 0.8906F), // 热切
                 BALLISTIC = register("ballistic", 0, 0, 5, 0, 1, 0.3225F), // 弹道
                 SCRAGGLING = register("scraggling", 0, 0, 0, 0.25F, 2, 0.5625F), // 虬结
                 PATIENT = register("patient", -0.05F, 0, 3, 0, 0, 0.0723F), // 耐心
                 RABID = register("rabid", 0.10F, 0, 0, -0.10F, 0, -0.0199F), // 狂暴
-                ILL_TEMPERED = register("ill_tempered", -0.05F, 10, 0, 0, 1, 0.1936F), // 暴躁
+                ILL_TEMPERED = register("ill_tempered", -0.05F, 5, 0, 0, 1, 0.1936F), // 暴躁
                 PETTY = register("petty", -0.30F, 0, 0, 0, -2, -0.51F), // 吝啬
                 FEEBLE = register("feeble", 0, 0, 0, -0.25F, -2, -0.4375F), // 虚弱
                 SKITTISH = register("skittish", -0.15F, 0, 0, -0.10F, -2, -0.4148F); // 胆小

@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
@@ -32,14 +34,22 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements Ge
     private final ResourceLocation texture;
     private final @Nullable ResourceLocation animation;
     private final boolean gunRenderer;
+    /// 是否对物品形态开启背面剔除（负尺寸外壳的模型需要，否则外层的反面也会被画出来）
+    private final boolean faceCulling;
     private GeoItemRenderer<T> renderer;
     private GunRenderer<T> activeGunRenderer;
 
     public SimpleGeoItemRenderer(ResourceLocation model, ResourceLocation texture, @Nullable ResourceLocation animation) {
+        this(model, texture, animation, false);
+    }
+
+    /// @param faceCulling 模型含负尺寸外壳时开启背面剔除，物品栏 / 手持只画朝外的一面
+    public SimpleGeoItemRenderer(ResourceLocation model, ResourceLocation texture, @Nullable ResourceLocation animation, boolean faceCulling) {
         this.model = model;
         this.texture = texture;
         this.animation = animation;
         this.gunRenderer = false;
+        this.faceCulling = faceCulling;
     }
 
     public SimpleGeoItemRenderer(DefaultedItemGeoModel<T> gunItemModel) {
@@ -47,6 +57,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements Ge
         this.texture = gunItemModel.getTextureResource(null);
         this.animation = gunItemModel.getAnimationResource(null);
         this.gunRenderer = true;
+        this.faceCulling = false;
     }
 
     ///
@@ -82,6 +93,14 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements Ge
             if (gunRenderer) {
                 activeGunRenderer = new GunRenderer<>(geoModel);
                 renderer = activeGunRenderer;
+            } else if (faceCulling) {
+                renderer = new GeoItemRenderer<>(geoModel) {
+                    @Override
+                    public RenderType getRenderType(T animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+                        // 负尺寸外壳在物品形态同样只保留朝外的一面
+                        return RenderType.entityCutout(texture);
+                    }
+                };
             } else {
                 renderer = new GeoItemRenderer<>(geoModel);
             }

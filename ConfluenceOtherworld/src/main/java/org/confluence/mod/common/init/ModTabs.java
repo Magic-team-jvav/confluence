@@ -840,6 +840,8 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
+                        misc_functional.accept(FunctionalBlocks.CLENTAMINATOR.get());
+                        misc_functional.accept(FunctionalBlocks.TERRAFORMER.get());
 
                         CreativeModeTab.Output torches = GroupItem.belongsTo("torches", output);
                         torches.accept(TorchBlocks.RED_TORCH.get());

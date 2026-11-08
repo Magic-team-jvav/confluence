@@ -369,7 +369,8 @@ public class BossConjuringBlock extends Block implements EntityBlock {
 
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-            consumer.accept(new SimpleGeoItemRenderer<BItem>(variant.geoModel(), variant.geoTexture(), variant.geoAnimation()));
+            // 灯塔灯头是负尺寸的同心外壳，物品形态也要开背面剔除，否则外层会连内层反面一起画出来
+            consumer.accept(new SimpleGeoItemRenderer<BItem>(variant.geoModel(), variant.geoTexture(), variant.geoAnimation(), variant == Variant.TWINS));
         }
 
         @Override

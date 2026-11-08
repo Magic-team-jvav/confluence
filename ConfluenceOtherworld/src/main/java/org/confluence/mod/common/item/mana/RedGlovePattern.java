@@ -47,11 +47,22 @@ public final class RedGlovePattern {
         var random = new SplittableRandom(seed);
         int count = random.nextInt(MIN_TRUNKS, MAX_TRUNKS + 1);
         Vec3 forward = look.normalize(), side = perpendicular(forward), up = forward.cross(side).normalize();
+        var visible = targets.stream().filter(t -> inRange(source, forward, t.point)
+                && clear(source, t.point, clipper)).toList();
+        if (!visible.isEmpty()) count = Math.min(count, visible.size());
+        var distribution = distributeTargets(source, forward, count, visible);
         double rotation = random.nextDouble(0, Math.PI * 2);
         for (int i = 0; i < count; i++) {
             double angle = rotation + i * Math.PI * 2 / count + random.nextDouble(-0.16, 0.16);
             double radius = Math.sqrt((i + 0.3 + random.nextDouble(0.4)) / count) * Math.tan(Math.toRadians(HALF_ANGLE));
             Vec3 direction = forward.add(side.scale(Math.cos(angle) * radius)).add(up.scale(Math.sin(angle) * radius)).normalize();
+            var group = distribution.groups.get(i);
+            if (!group.isEmpty()) {
+                Vec3 center = Vec3.ZERO;
+                for (Target target : group) center = center.add(target.point);
+                Vec3 aim = center.scale(1.0 / group.size()).subtract(source);
+                if (aim.lengthSqr() > 1.0E-10) direction = aim.normalize();
+            }
             Vec3 intended = source.add(direction.scale(RANGE)), hit = clipper.apply(source, intended);
             Vec3 normal = hit.distanceToSqr(intended) > 1.0E-8 ? normalAt.apply(source, intended) : Vec3.ZERO;
             List<Vec3> guide;
@@ -66,7 +77,20 @@ public final class RedGlovePattern {
                     guide.set(vertex, guide.get(vertex).add(offset));
                 }
             } else guide = jagged(source, intended, 32, seed + i * 7919L, 1.92);
+            if (!group.isEmpty() && count > 1 && normal.lengthSqr() < 0.5) {
+                // Separate the targeted channels before they reach the group; keep the seeded bends.
+                double lane = (i - (count - 1) * 0.5) * 3;
+                for (int vertex = 1; vertex < guide.size() - 1; vertex++) {
+                    double t = vertex / (double) (guide.size() - 1);
+                    guide.set(vertex, guide.get(vertex).add(distribution.axis.scale(lane * Math.sin(Math.PI * t))));
+                }
+            }
             List<Vec3> points = clipped(guide, clipper);
+            if (!group.isEmpty() && count > 1 && normal.lengthSqr() < 0.5) {
+                var foreign = visible.stream().filter(t -> !group.contains(t)).toList();
+                points = avoidForeignHits(source, intended, points, seed + i * 7919L, distribution.axis,
+                        (i - (count - 1) * 0.5) * 5, foreign, clipper);
+            }
             paths.add(new Path(0, -1, -1, points));
         }
         // A very narrow aperture can stop every random trunk right at the muzzle.
@@ -80,29 +104,68 @@ public final class RedGlovePattern {
                 break;
             }
         }
-        RedGloveSteinerTree.connect(paths, source, forward, seed, targets, clipper);
+        RedGloveSteinerTree.connect(paths, source, forward, seed, visible, clipper, distribution);
         if (paths.size() == count) {
-            // Terminal twigs never outnumber the trunks, so a 1–2 bolt cast stays visibly 1–2 bolts.
-            for (int i = 0; i < Math.min(2, count); i++) {
-                int parentId = i % count;
-                Path parent = paths.get(parentId);
-                List<Integer> roots = roots(parent.points);
-                if (roots.isEmpty()) continue;
+            // One short decorative branch; target connections above are never dropped.
+            Path parent = paths.get(0);
+            List<Integer> roots = roots(parent.points);
+            if (!roots.isEmpty()) {
                 int vertex = selectBend(parent.points, roots, random);
                 Vec3 root = parent.points.get(vertex);
-                Vec3 tip = root.add(forward.scale(1.2)).add(side.scale(i % 2 == 0 ? 0.7 : -0.7)).add(up.scale(0.25));
-                var branchPoints = clipped(jagged(root, tip, 4, seed + 301 + i, 0.12), clipper);
-                int branchId = paths.size();
-                paths.add(new Path(1, parentId, vertex, branchPoints));
-                List<Integer> twigRoots = roots(branchPoints);
-                if (twigRoots.isEmpty()) continue;
-                int v = selectBend(branchPoints, twigRoots, random);
-                Vec3 a = branchPoints.get(v);
-                paths.add(new Path(2, branchId, v, clipped(jagged(a, a.add(up.scale(0.5)).add(forward.scale(0.4)), 4,
-                        seed + 601 + i, 0.07), clipper)));
+                Vec3 tip = root.add(forward.scale(1.2)).add(side.scale(0.7)).add(up.scale(0.25));
+                var branchPoints = clipped(jagged(root, tip, 4, seed + 301, 0.12), clipper);
+                paths.add(new Path(1, 0, vertex, branchPoints));
             }
         }
         return List.copyOf(paths);
+    }
+
+    record TargetDistribution(Vec3 axis, List<List<Target>> groups) {}
+
+    /** Balanced contiguous angular groups keep nearby enemies together without one greedy tree taking all of them. */
+    static TargetDistribution distributeTargets(Vec3 source, Vec3 look, int count, List<Target> visible) {
+        Vec3 side = perpendicular(look), up = look.cross(side).normalize();
+        var sideRange = visible.stream().mapToDouble(t -> t.point.subtract(source).normalize().dot(side)).summaryStatistics();
+        var upRange = visible.stream().mapToDouble(t -> t.point.subtract(source).normalize().dot(up)).summaryStatistics();
+        // A tiny eye/target-height offset in a straight row must not turn the fan downward into the floor.
+        double verticalSpan = upRange.getMax() - upRange.getMin();
+        Vec3 axis = !visible.isEmpty() && verticalSpan > 0.015 && verticalSpan > sideRange.getMax() - sideRange.getMin()
+                ? up : side;
+        var ordered = visible.stream().sorted(Comparator
+                .comparingDouble((Target t) -> t.point.subtract(source).normalize().dot(axis))
+                .thenComparingDouble(t -> t.point.distanceToSqr(source)).thenComparingInt(Target::id)).toList();
+        List<List<Target>> groups = new ArrayList<>();
+        for (int i = 0; i < count; i++) groups.add(new ArrayList<>());
+        for (int i = 0; i < ordered.size(); i++) groups.get(i * count / ordered.size()).add(ordered.get(i));
+        return new TargetDistribution(axis, groups.stream().map(List::copyOf).toList());
+    }
+
+    /** Keep collision-bearing geometry away from other groups, rather than filtering their damage afterward. */
+    static List<Vec3> avoidForeignHits(Vec3 source, Vec3 tip, List<Vec3> initial, long seed, Vec3 axis, double bow,
+                                     List<Target> foreign, BiFunction<Vec3, Vec3, Vec3> clipper) {
+        List<Vec3> best = initial;
+        int bestHits = foreignHits(best, foreign);
+        double amplitude = Math.min(1.92, source.distanceTo(tip) * 0.06);
+        for (int attempt = 0; attempt < 6 && bestHits > 0; attempt++) {
+            var candidate = jagged(source, tip, 32, seed + (attempt + 1) * 65537L, amplitude);
+            for (int i = 1; i < candidate.size() - 1; i++)
+                candidate.set(i, candidate.get(i).add(axis.scale(bow * Math.sin(Math.PI * i / (candidate.size() - 1)))));
+            boolean visible = true;
+            for (int i = 1; i < candidate.size(); i++) if (!clear(candidate.get(i - 1), candidate.get(i), clipper)) {
+                visible = false; break;
+            }
+            if (!visible) continue;
+            int hits = foreignHits(candidate, foreign);
+            if (hits < bestHits) { best = List.copyOf(candidate); bestHits = hits; }
+        }
+        return best;
+    }
+
+    private static int foreignHits(List<Vec3> points, List<Target> foreign) {
+        var path = List.of(new Path(0, -1, -1, points));
+        int hits = 0;
+        for (Target target : foreign) if (intersects(path, target.bounds)) hits++;
+        return hits;
     }
 
     /** 所有已下发线段的整体包围盒，按接触半径外扩，供沿路径取实体使用。 */

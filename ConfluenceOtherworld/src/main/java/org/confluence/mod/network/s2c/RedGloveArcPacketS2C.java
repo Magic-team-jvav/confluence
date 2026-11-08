@@ -35,7 +35,9 @@ public record RedGloveArcPacketS2C(ResourceLocation dimension, int casterId, lon
             if (count > BATCH_PATHS) throw new IllegalArgumentException("Too many arc paths");
             List<RedGlovePattern.Path> paths = new ArrayList<>();
             for (int i = 0; i < count; i++) {
-                int depth = buffer.readUnsignedByte(), points = buffer.readUnsignedByte();
+                int depth = buffer.readUnsignedByte(), parent = buffer.readInt(), root = buffer.readInt();
+                if (parent < -1 || root < -1 || root > 95) throw new IllegalArgumentException("Invalid arc topology");
+                int points = buffer.readUnsignedByte();
                 if (points < 2 || points > 96) throw new IllegalArgumentException("Invalid arc points");
                 List<Vec3> line = new ArrayList<>();
                 for (int j = 0; j < points; j++) {
@@ -45,7 +47,7 @@ public record RedGloveArcPacketS2C(ResourceLocation dimension, int casterId, lon
                     if (!finite(relative) || relative.lengthSqr() > 40 * 40) throw new IllegalArgumentException("Invalid arc point");
                     line.add(point);
                 }
-                paths.add(new RedGlovePattern.Path(depth, -1, -1, line));
+                paths.add(new RedGlovePattern.Path(depth, parent, root, line));
             }
             return new RedGloveArcPacketS2C(dimension, casterId, tick, seed, origin, List.copyOf(paths));
         }
@@ -58,7 +60,8 @@ public record RedGloveArcPacketS2C(ResourceLocation dimension, int casterId, lon
             buffer.writeDouble(packet.origin.x); buffer.writeDouble(packet.origin.y); buffer.writeDouble(packet.origin.z);
             buffer.writeByte(packet.paths.size());
             for (var path : packet.paths) {
-                buffer.writeByte(path.depth()); buffer.writeByte(path.points().size());
+                buffer.writeByte(path.depth()); buffer.writeInt(path.parent()); buffer.writeInt(path.rootIndex());
+                buffer.writeByte(path.points().size());
                 for (int i = 0; i < path.points().size(); i++) {
                     Vec3 point = path.points().get(i);
                     if (i == path.points().size() - 1) {

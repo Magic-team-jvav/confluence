@@ -1,0 +1,23 @@
+{
+    "vertex": "confluence:terra_fullscreen",
+    "fragment": "confluence:terra_bloom_down",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "Sampler0"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "TexelSize",
+            "type": "float",
+            "count": 2,
+            "values": [
+                0.001,
+                0.001
+            ]
+        }
+    ]
+}

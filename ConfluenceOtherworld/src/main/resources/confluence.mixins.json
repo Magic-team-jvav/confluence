@@ -100,6 +100,7 @@
     ],
     "client": [
         "client.MinecraftMixin",
+        "client.renderer.GameRendererGraphicsMixin",
         "client.MouseHandlerMixin",
         "client.gui.DeathScreenMixin",
         "client.gui.GuiGraphicsMixin",

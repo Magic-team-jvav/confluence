@@ -144,6 +144,7 @@ public final class GameClientEvents {
     public static void registerShaders(RegisterShadersEvent event) {
         try {
             ModRenderer.register(event.getResourceProvider(), event::registerShader);
+            org.confluence.mod.client.graphics.TerraGraphics.register(event.getResourceProvider(), event::registerShader);
         } catch (IOException e) {
             Confluence.LOGGER.error("Failed to register shaders", e);
         }
@@ -481,6 +482,8 @@ public final class GameClientEvents {
             WallOfFleshRenderer.renderWalls(event);
             DestroyerRenderer.renderDestroyers(event);
             TongueRenderer.renderFirstPerson(event, minecraft, player);
+        } else if (stage == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
+            org.confluence.mod.client.graphics.TerraGraphics.captureDepth(); // 画质后处理：天空深度（画手前）
         } else if (stage == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             MartianOfficerRenderer.renderShields(event);
             PoseStack poseStack = event.getPoseStack();

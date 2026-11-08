@@ -36,6 +36,13 @@ public final class ClientConfigs {
 
     /// 风是否让雨雪倾斜、并驱动云层速度（纯视觉）。
     public static boolean windSlantsRainClouds = true;
+    /// Confluence 画质（后处理：泛光、对比度、饱和度、暗角）
+    public static boolean enhancedGraphics = true;
+    public static int bloomStrength = 35;
+    public static int bloomThreshold = 78;
+    public static int graphicsContrast = 106;
+    public static int graphicsSaturation = 112;
+    public static int graphicsVignette = 25;
     /// 暴风雪是否播放环境风声（露天与室内为两种音效）。
     public static boolean blizzardAmbience = true;
     /// 关闭监守者的全部音效（脚步、心跳、咆哮、音波等）。默认关闭。
@@ -154,6 +161,12 @@ public final class ClientConfigs {
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
+    private static BooleanValue ENHANCED_GRAPHICS;
+    private static IntValue BLOOM_STRENGTH;
+    private static IntValue BLOOM_THRESHOLD;
+    private static IntValue GRAPHICS_CONTRAST;
+    private static IntValue GRAPHICS_SATURATION;
+    private static IntValue GRAPHICS_VIGNETTE;
     private static BooleanValue CROSSHAIR_ANIMATION;
     private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
     private static BooleanValue BOW_CROSSHAIR_ANIMATION;
@@ -188,6 +201,12 @@ public final class ClientConfigs {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
         windSlantsRainClouds = WIND_SLANTS_RAIN_CLOUDS.get();
+        enhancedGraphics = ENHANCED_GRAPHICS.get();
+        bloomStrength = BLOOM_STRENGTH.get();
+        bloomThreshold = BLOOM_THRESHOLD.get();
+        graphicsContrast = GRAPHICS_CONTRAST.get();
+        graphicsSaturation = GRAPHICS_SATURATION.get();
+        graphicsVignette = GRAPHICS_VIGNETTE.get();
         blizzardAmbience = BLIZZARD_AMBIENCE.get();
         muteWardenSound = MUTE_WARDEN_SOUND.get();
 
@@ -386,6 +405,14 @@ public final class ClientConfigs {
         {
             // 风系统里**纯视听**的两项放这里；影响玩法的那几项（风速频率、局地风向偏差、
             // 沙尘暴/暴风雪的实体受力）属于服务端行为，留在 CommonConfigs。
+            builder.push("Graphics");
+            ENHANCED_GRAPHICS = builder.define("enhancedGraphics", true);
+            BLOOM_STRENGTH = builder.defineInRange("bloomStrength", 35, 0, 100);
+            BLOOM_THRESHOLD = builder.defineInRange("bloomThreshold", 78, 50, 100);
+            GRAPHICS_CONTRAST = builder.defineInRange("graphicsContrast", 106, 80, 130);
+            GRAPHICS_SATURATION = builder.defineInRange("graphicsSaturation", 112, 50, 150);
+            GRAPHICS_VIGNETTE = builder.defineInRange("graphicsVignette", 25, 0, 100);
+            builder.pop();
             builder.push("Weather");
             SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);
             WIND_SLANTS_RAIN_CLOUDS = builder.define("windSlantsRainClouds", true);

@@ -1,0 +1,33 @@
+{
+    "vertex": "confluence:terra_fullscreen",
+    "fragment": "confluence:terra_bloom_bright",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "Sampler0"
+        },
+        {
+            "name": "DepthSampler"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "Threshold",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.78
+            ]
+        },
+        {
+            "name": "SkyBloom",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.15
+            ]
+        }
+    ]
+}

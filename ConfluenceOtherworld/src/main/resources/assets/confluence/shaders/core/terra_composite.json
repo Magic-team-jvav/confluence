@@ -1,0 +1,75 @@
+{
+    "vertex": "confluence:terra_fullscreen",
+    "fragment": "confluence:terra_composite",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "Sampler0"
+        },
+        {
+            "name": "BloomSampler"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "BloomIntensity",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.35
+            ]
+        },
+        {
+            "name": "Contrast",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.06
+            ]
+        },
+        {
+            "name": "Saturation",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.12
+            ]
+        },
+        {
+            "name": "Vignette",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.25
+            ]
+        },
+        {
+            "name": "Tint",
+            "type": "float",
+            "count": 3,
+            "values": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "TintStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "Aspect",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.777
+            ]
+        }
+    ]
+}

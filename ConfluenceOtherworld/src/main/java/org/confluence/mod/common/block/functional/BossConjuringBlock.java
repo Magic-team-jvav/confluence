@@ -2,6 +2,8 @@ package org.confluence.mod.common.block.functional;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -398,7 +400,15 @@ public class BossConjuringBlock extends Block implements EntityBlock {
                             public ResourceLocation getAnimationResource(BItem item) {
                                 return item.variant.geoAnimation();
                             }
-                        });
+                        }) {
+                            @Override
+                            public RenderType getRenderType(BItem animatable, ResourceLocation texture, MultiBufferSource bufferSource, float partialTick) {
+                                /// 灯塔灯头是负尺寸的同心外壳，物品形态也要开背面剔除，否则外层会连内层反面一起画出来。
+                                return animatable.variant == Variant.TWINS
+                                        ? RenderType.entityCutout(texture)
+                                        : super.getRenderType(animatable, texture, bufferSource, partialTick);
+                            }
+                        };
                     }
                     return renderer;
                 }

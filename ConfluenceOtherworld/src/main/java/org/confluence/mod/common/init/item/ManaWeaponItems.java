@@ -26,8 +26,8 @@ public class ManaWeaponItems {
     public static final DeferredItem<RedGloveItem> ARC_SURGE = registerItemWithEnglishName("arc_surge", "电弧涌动", "Arc Surge", RedGloveItem::new);
     static {
         LANGUAGE_PROVIDERS.add(language -> language.add("tooltip.item.confluence.arc_surge.0",
-                "Hold attack: 5–8 lightning trunks, up to 32 blocks; every branch deals magic damage.",
-                "按住攻击：释放5–8道闪电主干，射程32格；所有支干均造成魔法伤害。"));
+                "Hold right-click: 5–8 lightning trunks, up to 32 blocks; every branch deals magic damage.",
+                "按住右键：释放5–8道闪电主干，射程32格；所有支干均造成魔法伤害。"));
     }
 
     // 魔法武器数值参考为 原数值÷2 +5 为基础值

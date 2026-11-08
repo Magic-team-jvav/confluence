@@ -52,7 +52,9 @@ public final class RedGloveData {
         if (active.isEmpty() || !(owner instanceof ServerPlayer player)) return;
         if (!owner.isAlive() || owner.isSpectator() || owner.getMainHandItem() != active
                 || owner.getInventory().selected != slot || owner.level().dimension() != dimension
-                || !(active.getItem() instanceof RedGloveItem item)) {
+                || !(active.getItem() instanceof RedGloveItem item)
+                // 右键按住才持续放电：松开右键、被中断或换手都会在下一次 tick 结束放电
+                || !owner.isUsingItem() || owner.getUseItem().getItem() != item) {
             reset(); return;
         }
         long now = owner.level().getGameTime();

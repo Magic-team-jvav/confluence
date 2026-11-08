@@ -18,6 +18,8 @@ public final class NetworkEvents {
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         event.registrar("1")
                 .playToClient(BrushingColorPacketS2C.TYPE, BrushingColorPacketS2C.STREAM_CODEC, BrushingColorPacketS2C::handle)
+                .playToClient(org.confluence.mod.network.s2c.CharacterNamePacketS2C.TYPE, org.confluence.mod.network.s2c.CharacterNamePacketS2C.STREAM_CODEC, org.confluence.mod.network.s2c.CharacterNamePacketS2C::handle)
+                .playToClient(org.confluence.mod.network.s2c.CharacterDiedPacketS2C.TYPE, org.confluence.mod.network.s2c.CharacterDiedPacketS2C.STREAM_CODEC, org.confluence.mod.network.s2c.CharacterDiedPacketS2C::handle)
                 .playToClient(org.confluence.mod.network.s2c.LoadoutIndexPacketS2C.TYPE, org.confluence.mod.network.s2c.LoadoutIndexPacketS2C.STREAM_CODEC, org.confluence.mod.network.s2c.LoadoutIndexPacketS2C::handle)
                 .playToClient(DeathMotionPacketS2C.TYPE, DeathMotionPacketS2C.STREAM_CODEC, DeathMotionPacketS2C::handle)
                 .playToClient(VisibilityPacketS2C.TYPE, VisibilityPacketS2C.STREAM_CODEC, VisibilityPacketS2C::handle)
@@ -74,6 +76,7 @@ public final class NetworkEvents {
                 .playToServer(TerraSlotActionPacketC2S.TYPE, TerraSlotActionPacketC2S.STREAM_CODEC, TerraSlotActionPacketC2S::handle)
                 .playToServer(org.confluence.mod.network.c2s.RenameContainerPacketC2S.TYPE, org.confluence.mod.network.c2s.RenameContainerPacketC2S.STREAM_CODEC, org.confluence.mod.network.c2s.RenameContainerPacketC2S::handle)
                 .playToServer(org.confluence.mod.network.c2s.SwitchLoadoutPacketC2S.TYPE, org.confluence.mod.network.c2s.SwitchLoadoutPacketC2S.STREAM_CODEC, org.confluence.mod.network.c2s.SwitchLoadoutPacketC2S::handle)
+                .playToServer(org.confluence.mod.network.c2s.CharacterInfoPacketC2S.TYPE, org.confluence.mod.network.c2s.CharacterInfoPacketC2S.STREAM_CODEC, org.confluence.mod.network.c2s.CharacterInfoPacketC2S::handle)
                 .playToServer(org.confluence.mod.network.c2s.CreativeItemPacketC2S.TYPE, org.confluence.mod.network.c2s.CreativeItemPacketC2S.STREAM_CODEC, org.confluence.mod.network.c2s.CreativeItemPacketC2S::handle)
                 .playToServer(SortInventoryPacketC2S.TYPE, SortInventoryPacketC2S.STREAM_CODEC, SortInventoryPacketC2S::handle)
                 .playToServer(ContainerActionPacketC2S.TYPE, ContainerActionPacketC2S.STREAM_CODEC, ContainerActionPacketC2S::handle)

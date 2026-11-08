@@ -110,6 +110,7 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PermanentUpgrade.restore(player);
         org.confluence.mod.network.s2c.LoadoutIndexPacketS2C.send(player, org.confluence.mod.common.menu.TerraLoadouts.current(player)); // 泰拉装备栏位
+        org.confluence.mod.common.character.TerraCharacterRules.onLoggedIn(player); // 泰拉式角色：在线玩家的角色名
         PlayerUtils.syncSavedData(player);
         BoulderWorld.forceSetAccessory(player);
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
@@ -398,6 +399,19 @@ public final class PlayerEvents {
         SoulcererUtils.soulKnifeReach(event);
     }
 
+    /// 泰拉式角色名：头顶、聊天显示角色名（账号名仍用于权限和存档）
+    @SubscribeEvent
+    public static void nameFormat(PlayerEvent.NameFormat event) {
+        net.minecraft.network.chat.Component name = org.confluence.mod.common.character.TerraCharacterRules.displayName(event.getEntity());
+        if (name != null) event.setDisplayname(name);
+    }
+
+    @SubscribeEvent
+    public static void tabListNameFormat(PlayerEvent.TabListNameFormat event) {
+        net.minecraft.network.chat.Component name = org.confluence.mod.common.character.TerraCharacterRules.displayName(event.getEntity());
+        if (name != null) event.setDisplayName(name);
+    }
+
     @SubscribeEvent
     public static void clone(PlayerEvent.Clone event) {
         Player old = event.getOriginal();
@@ -417,6 +431,7 @@ public final class PlayerEvents {
         PermanentUpgrade.restore(player);
 
         BoulderWorld.forceSetAccessory(player);
+        org.confluence.mod.common.character.TerraCharacterRules.onRespawn(player); // 硬核角色死后成为旁观者
         PlayerUtils.flushLocalData(player, player);
         SoulStorage.of(player).onRespawn();
         PlayerUtils.syncPlayerData(player);

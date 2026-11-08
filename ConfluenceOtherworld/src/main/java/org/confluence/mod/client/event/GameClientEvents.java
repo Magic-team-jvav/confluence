@@ -264,6 +264,11 @@ public final class GameClientEvents {
         ClientWeaponInputManager.init();
         // 服务端据此决定右键制作站时打开泰拉背包还是原来的界面
         org.confluence.mod.network.c2s.TerraUiModePacketC2S.sendToServer(event.getPlayer(), ClientConfigs.terrariaInterface);
+        // 泰拉式角色：把主菜单里选的角色（名字、难度）告诉服务端
+        var character = org.confluence.mod.client.character.CharacterStore.selected();
+        if (ClientConfigs.terrariaInterface && character != null && !character.dead) {
+            org.confluence.mod.network.c2s.CharacterInfoPacketC2S.sendToServer(character.id, character.name, character.difficulty);
+        }
     }
 
     @SubscribeEvent
@@ -293,6 +298,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         clearClientWorldReferences();
+        org.confluence.mod.common.character.TerraCharacterRules.CLIENT_NAMES.clear();
         DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();
@@ -630,6 +636,19 @@ public final class GameClientEvents {
             event.addListener(ExtraInventoryScreen.getExtraInventoryButton((EffectRenderingInventoryScreen<?>) screen, isInventoryScreen));
         }
 
+        // 泰拉式角色：“单人游戏”“多人游戏”先打开选择角色，选好后再进原版的世界/服务器列表
+        if (screen instanceof TitleScreen && ClientConfigs.terrariaInterface) {
+            for (GuiEventListener listener : List.copyOf(event.getListenersList())) {
+                if (listener instanceof net.minecraft.client.gui.components.Button original && original.active
+                        && original.getMessage().getContents() instanceof TranslatableContents contents
+                        && ("menu.singleplayer".equals(contents.getKey()) || "menu.multiplayer".equals(contents.getKey()))) {
+                    event.removeListener(original);
+                    event.addListener(net.minecraft.client.gui.components.Button.builder(original.getMessage(), button ->
+                                    Minecraft.getInstance().setScreen(new org.confluence.mod.client.gui.character.CharacterSelectScreen(screen, original::onPress)))
+                            .bounds(original.getX(), original.getY(), original.getWidth(), original.getHeight()).build());
+                }
+            }
+        }
         if (screen instanceof TitleScreen) {
             for (GuiEventListener listener : event.getListenersList()) {
                 if (listener instanceof AbstractWidget widget &&

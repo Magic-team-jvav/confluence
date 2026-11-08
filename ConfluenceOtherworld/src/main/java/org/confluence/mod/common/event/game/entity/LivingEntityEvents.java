@@ -186,6 +186,8 @@ public final class LivingEntityEvents {
             SoulStorage.of(player).onDeath();
             // 以防止玩家假死不停掉钱
             PlayerUtils.dropMoney(player);
+            // 泰拉式角色：硬核角色永久死亡
+            org.confluence.mod.common.character.TerraCharacterRules.onDeath(player);
         }
         SoulcererUtils.collectSoul(victim, event.getSource());
         /// 附魂印记：击杀带印记的敌人额外回 2 点灵魂（普通收魂照常结算，这是叠加的一份）。

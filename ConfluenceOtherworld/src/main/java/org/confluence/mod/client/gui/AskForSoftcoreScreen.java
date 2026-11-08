@@ -45,6 +45,9 @@ public class AskForSoftcoreScreen extends Screen {
     }
 
     public static void createAskingScreen() {
+        // 泰拉式角色自带难度，不再问整个世界要不要软核
+        var character = org.confluence.mod.client.character.CharacterStore.selected();
+        if (org.confluence.mod.client.ClientConfigs.terrariaInterface && character != null && !character.dead) return;
         Minecraft.getInstance().setScreen(new AskForSoftcoreScreen());
     }
 

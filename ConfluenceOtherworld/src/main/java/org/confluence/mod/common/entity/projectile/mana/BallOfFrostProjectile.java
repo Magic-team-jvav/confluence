@@ -50,5 +50,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
         if (doHurtAndKnockback(entity, 0.65, 0.2) && living != null) {
             living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE.get(), Mth.randomBetweenInclusive(living.getRandom1211(), 100, 280)));
         }
+        // 不穿透敌怪：命中一次即消失，弹射方块的逻辑保持不变
+        if (!level().isClientSide) discard();
     }
 }

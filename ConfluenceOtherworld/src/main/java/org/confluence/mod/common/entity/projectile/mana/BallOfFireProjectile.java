@@ -46,6 +46,8 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
                 living.setRemainingFireTicks(100);
             }
         }
+        // 不穿透敌怪：命中一次即消失，弹射方块的逻辑保持不变
+        if (!level().isClientSide) discard();
     }
 
     @Override

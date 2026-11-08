@@ -32,8 +32,8 @@ public class ManaWeaponItems {
                 "Shift + scroll to adjust aim distance. The spark attaches to enemies; blue lightning strikes after 0.5 seconds.",
                 "Shift + 滚轮调节落点距离；电火花吸附敌人，0.5 秒后引下蓝色闪电。"));
         LANGUAGE_PROVIDERS.add(language -> language.add("tooltip.item.confluence.arc_surge.0",
-                "Hold attack: 1–2 initial bolts every 2 ticks, up to 32 blocks; extra feeders connect distant enemies. Every branch deals magic damage.",
-                "按住攻击：每 2 tick 释放 1–2 道初始闪电，射程 32 格；远处敌人可引出额外上级电流，所有支干均造成魔法伤害。"));
+                "Hold right-click: 1–2 initial bolts every 2 ticks, up to 32 blocks; extra feeders connect distant enemies. Every branch deals magic damage.",
+                "按住右键：每 2 tick 释放 1–2 道初始闪电，射程 32 格；远处敌人可引出额外上级电流，所有支干均造成魔法伤害。"));
     }
 
     // 魔法武器数值参考为 原数值÷2 +5 为基础值

@@ -24,12 +24,12 @@ import java.util.List;
 
 /** Server-authoritative sustained mage weapon; visual assets are intentionally left for later. */
 public final class RedGloveItem extends CustomRarityItem implements ILeftClickStateItem, IWeaponTooltip, Immunity {
-    public static final float BASE_DAMAGE = 12;
-    public static final int MANA_COST = 2;
+    public static final float BASE_DAMAGE = 92;
+    public static final int MANA_COST = 18;
     public RedGloveItem() {
         super(new Properties().stacksTo(1), ModRarity.LIGHT_RED);
         addAttributeModifiers(builder -> builder.add(LibAttributes.getCriticalChance(),
-                new PortAttributeModifier(Confluence.asResource("red_glove"), 0.04, PortAttributeModifier.Operation.ADD_VALUE),
+                new PortAttributeModifier(Confluence.asResource("arc_surge"), 0.04, PortAttributeModifier.Operation.ADD_VALUE),
                 PortEquipmentSlotGroup.MAINHAND));
     }
     @Override public void onLeftClick(Player player, ItemStack stack) {
@@ -48,7 +48,7 @@ public final class RedGloveItem extends CustomRarityItem implements ILeftClickSt
     @Override public int confluence$getImmunityDuration(DamageSource source) { return 0; }
     @Override public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
         super.appendHoverText(stack, level, lines, flag);
-        lines.add(Component.translatable("tooltip.item.confluence.red_glove.0").withStyle(ChatFormatting.GRAY));
+        lines.add(Component.translatable("tooltip.item.confluence.arc_surge.0").withStyle(ChatFormatting.GRAY));
         lines.add(Component.translatable("tooltip.confluence.mana_cost", MANA_COST).withStyle(ChatFormatting.GRAY));
     }
 }

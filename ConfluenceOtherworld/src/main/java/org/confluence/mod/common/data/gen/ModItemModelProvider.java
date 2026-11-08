@@ -65,6 +65,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         skip.add(FunctionalBlocks.TERRAFORMER.get().asItem());
         withExistingParent("shadow_candle", "item/generated").texture("layer0", Confluence.asResource("item/tool/shadow_candle"));
         GunItems.BULLET_ITEMS.forEach(item -> {
+            // 占位子弹暂无贴图，跳过模型生成，避免贴图校验失败
+            if (item == GunItems.DUMMY_BULLET) return;
             String path = item.getId().getPath();
             withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));
         });
@@ -101,7 +103,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         /// 裂天剑：物品栏用 16x 的 sky_fracture_inventory，手持/预览用 24x 的 sky_fracture；
         /// 整套模型（含毁灭刃同款手持参数）由手写 JSON 持有（models/item/sky_fracture*.json）。
         skip.add(ManaWeaponItems.SKY_FRACTURE.get());
-        skip.add(ManaWeaponItems.RED_GLOVE.get()); // Weapon logic first; no model/texture is authored yet.
+        skip.add(ManaWeaponItems.ARC_SURGE.get()); // Weapon logic first; no model/texture is authored yet.
 
         separateModel(SwordItems.ICE_BLADE, templateReverse24x, "sword/");
         separateModel(SwordItems.MURAMASA, templateReverse24x, "sword/");

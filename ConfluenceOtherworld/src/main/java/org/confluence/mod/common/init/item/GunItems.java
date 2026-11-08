@@ -115,7 +115,7 @@ public class GunItems {
                     .withBehavior(BulletBehavior.LUMINITE_DAMAGE_DECAY)
                     .withImpactEffect(LUMINITE_IMPACT)));
 
-    public static final PortDeferredItem<BaseBullet> DUMMY_BULLET = registerItem("dummy_bullet", "占位子弹", () -> new BaseBullet.Dummy(new Item.Properties()));
+    public static final PortDeferredItem<BaseBullet> DUMMY_BULLET = registerBullet("dummy_bullet", "占位子弹", BaseBullet.Dummy::new);
 
     private static PortDeferredItem<BaseGun> registerGun(String name, Function<Item.Properties, BaseGun> factory) {
         PortDeferredItem<BaseGun> item = ITEMS.register(name, () -> factory.apply(new Item.Properties()));

@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.attachment.AttachmentSyncHandler;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -54,7 +55,7 @@ public class WhipMarkTracker {
     }
 
     public void tracker(LivingEntity target, SummonMarkInstance instance) {
-        if (owner != target) {
+        if (owner != target && (!(target instanceof Player) || LibEntityUtils.allowsAttack(owner, target))) {
             this.target = target;
             marks.put(instance.getType(), instance);
         }

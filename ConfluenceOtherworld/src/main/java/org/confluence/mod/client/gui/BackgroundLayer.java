@@ -428,6 +428,11 @@ public enum BackgroundLayer {
         enabled = true;
     }
 
+    /// 背景是否已初始化并在画（泰拉风格菜单用来决定要不要重新 initLayers）
+    public static boolean isEnabled() {
+        return enabled;
+    }
+
     public static void tickLayers() {
         if (enabled) {
             for (BackgroundLayer layer : LAYERS) {

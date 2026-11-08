@@ -117,7 +117,7 @@ public abstract class MinecraftMixin {
     @WrapOperation(method = "createTitle", at = @At(value = "INVOKE", target = "Ljava/lang/StringBuilder;toString()Ljava/lang/String;"))
     private String customTitle(StringBuilder instance, Operation<String> original) {
         if (ClientConfigs.customTitle > 0) {
-            if (confluence$currentTitle == null && screen instanceof TitleScreen) {
+            if (confluence$currentTitle == null && (screen instanceof TitleScreen || screen instanceof org.confluence.mod.client.gui.screen.TerraTitleScreen)) {
                 confluence$currentTitle = I18n.get("title.confluence.window." + (int) (Math.random() * ClientConfigs.customTitle));
             }
             if (confluence$currentTitle != null) {

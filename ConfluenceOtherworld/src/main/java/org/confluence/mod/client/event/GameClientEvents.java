@@ -594,6 +594,12 @@ public final class GameClientEvents {
     public static void screen$Opening(ScreenEvent.Opening event) {
         // 泰拉风格箱子界面：原版箱子（含木桶、末影箱、矿车箱子等 ChestMenu）
         if (!ClientConfigs.terrariaInterface) return; // 原版界面模式
+        // 泰拉风格主菜单（底部“经典菜单”可以在本次游戏里换回原版）
+        if (event.getNewScreen() != null && event.getNewScreen().getClass() == TitleScreen.class
+                && !org.confluence.mod.client.gui.screen.TerraTitleScreen.useVanilla()) {
+            event.setNewScreen(new org.confluence.mod.client.gui.screen.TerraTitleScreen());
+            return;
+        }
         if (event.getNewScreen() instanceof net.minecraft.client.gui.screens.inventory.ContainerScreen containerScreen
                 && containerScreen.getClass() == net.minecraft.client.gui.screens.inventory.ContainerScreen.class
                 && Minecraft.getInstance().player != null) {
@@ -650,6 +656,14 @@ public final class GameClientEvents {
                             .bounds(original.getX(), original.getY(), original.getWidth(), original.getHeight()).build());
                 }
             }
+        }
+        // 从“经典菜单”回到泰拉风格主菜单：右上角的按钮
+        if (screen.getClass() == TitleScreen.class && ClientConfigs.terrariaInterface && org.confluence.mod.client.gui.screen.TerraTitleScreen.useVanilla()) {
+            net.minecraft.network.chat.Component text = net.minecraft.network.chat.Component.translatable("gui.confluence.title.terraria");
+            int buttonWidth = Minecraft.getInstance().font.width(text) + 16;
+            event.addListener(net.minecraft.client.gui.components.Button.builder(text,
+                    button -> org.confluence.mod.client.gui.screen.TerraTitleScreen.returnFromVanilla(Minecraft.getInstance()))
+                    .bounds(screen.width - buttonWidth - 4, 4, buttonWidth, 20).build());
         }
         if (screen instanceof TitleScreen) {
             for (GuiEventListener listener : event.getListenersList()) {

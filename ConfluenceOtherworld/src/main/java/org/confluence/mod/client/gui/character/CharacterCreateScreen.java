@@ -256,7 +256,7 @@ public class CharacterCreateScreen extends net.minecraft.client.gui.screens.Scre
         guiGraphics.drawCenteredString(font, title, width / 2, 14, 0xFFFFFF);
         // 小人
         int px = previewX();
-        guiGraphics.fill(px - 45, nameY() - 4, px + 45, height - 40, 0x60000000);
+        org.confluence.mod.client.gui.screen.TerraMenuStyle.listPanel(guiGraphics, px - 45, nameY() - 4, px + 45, height - 40);
         CharacterPreview.render(guiGraphics, appearance, px, height - 54, 50.0F, yaw);
         guiGraphics.drawCenteredString(font, label("preview.hint"), px, height - 50, 0x909090);
         // 名字

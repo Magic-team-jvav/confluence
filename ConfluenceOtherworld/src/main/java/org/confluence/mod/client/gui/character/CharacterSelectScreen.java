@@ -140,10 +140,10 @@ public class CharacterSelectScreen extends Screen {
         guiGraphics.drawCenteredString(font, title, width / 2, 14, 0xFFFFFF);
         List<TerraCharacter> characters = CharacterStore.characters();
         int left = listLeft();
-        guiGraphics.fill(left - 2, listTop() - 2, left + LIST_WIDTH + 2, listBottom(), 0x80000000);
+        org.confluence.mod.client.gui.screen.TerraMenuStyle.listPanel(guiGraphics, left - 2, listTop() - 2, left + LIST_WIDTH + 2, listBottom());
         if (showPreview() && selected != null) {
             int previewX = width / 2 + 140;
-            guiGraphics.fill(previewX - 50, listTop() - 2, previewX + 50, listBottom(), 0x60000000);
+            org.confluence.mod.client.gui.screen.TerraMenuStyle.listPanel(guiGraphics, previewX - 50, listTop() - 2, previewX + 50, listBottom());
             CharacterPreview.render(guiGraphics, selected.appearance, previewX, listBottom() - 12, 48.0F, -25.0F);
         }
         if (characters.isEmpty()) {

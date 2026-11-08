@@ -240,6 +240,14 @@ public final class InterfaceLanguageSubProvider {
         language.add("gui.confluence.life", "Life: %s/%s", "生命值：%s/%s");
         language.add("gui.confluence.mana", "Mana", "魔力");
         language.add("gui.confluence.level", "Level %s", "等级 %s");
+        language.add("gui.confluence.title.terraria", "Terraria menu", "泰拉菜单");
+        language.add("gui.confluence.title.classic", "Classic menu", "经典菜单");
+        language.add("gui.confluence.title.quit", "Exit", "退出");
+        language.add("gui.confluence.title.options", "Settings", "设置");
+        language.add("gui.confluence.title.mods", "Mods", "模组");
+        language.add("gui.confluence.title.achievements", "Achievements", "成就");
+        language.add("gui.confluence.title.multiplayer", "Multiplayer", "多人游戏");
+        language.add("gui.confluence.title.singleplayer", "Single Player", "单人游戏");
         language.add("gui.confluence.character.hair_style.bald", "Bald", "光头");
         language.add("gui.confluence.character.hair_style.spiky", "Spiky", "刺头");
         language.add("gui.confluence.character.hair_style.ponytail", "Ponytail", "马尾");

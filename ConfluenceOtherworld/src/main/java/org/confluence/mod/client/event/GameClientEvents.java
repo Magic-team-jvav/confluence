@@ -267,7 +267,8 @@ public final class GameClientEvents {
         // 泰拉式角色：把主菜单里选的角色（名字、难度）告诉服务端
         var character = org.confluence.mod.client.character.CharacterStore.selected();
         if (ClientConfigs.terrariaInterface && character != null && !character.dead) {
-            org.confluence.mod.network.c2s.CharacterInfoPacketC2S.sendToServer(character.id, character.name, character.difficulty);
+            org.confluence.mod.network.c2s.CharacterInfoPacketC2S.sendToServer(character.id, character.name, character.difficulty,
+                    character.appearance == null ? "" : character.appearance.serialize());
         }
     }
 
@@ -299,6 +300,7 @@ public final class GameClientEvents {
     public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         clearClientWorldReferences();
         org.confluence.mod.common.character.TerraCharacterRules.CLIENT_NAMES.clear();
+        org.confluence.mod.common.character.TerraCharacterRules.CLIENT_LOOKS.clear();
         DeathEffectManager.reset();
         FlailHandler.reset();
         LeftClickItemHandler.reset();

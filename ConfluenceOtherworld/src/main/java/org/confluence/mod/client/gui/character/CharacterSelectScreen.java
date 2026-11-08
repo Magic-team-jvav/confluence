@@ -108,8 +108,13 @@ public class CharacterSelectScreen extends Screen {
         return height - 36;
     }
 
+    /// 屏幕够宽时列表靠左，右边画选中角色的小人
+    private boolean showPreview() {
+        return width >= 520;
+    }
+
     private int listLeft() {
-        return (width - LIST_WIDTH) / 2;
+        return showPreview() ? width / 2 - 200 : (width - LIST_WIDTH) / 2;
     }
 
     private int visibleRows() {
@@ -136,6 +141,11 @@ public class CharacterSelectScreen extends Screen {
         List<TerraCharacter> characters = CharacterStore.characters();
         int left = listLeft();
         guiGraphics.fill(left - 2, listTop() - 2, left + LIST_WIDTH + 2, listBottom(), 0x80000000);
+        if (showPreview() && selected != null) {
+            int previewX = width / 2 + 140;
+            guiGraphics.fill(previewX - 50, listTop() - 2, previewX + 50, listBottom(), 0x60000000);
+            CharacterPreview.render(guiGraphics, selected.appearance, previewX, listBottom() - 12, 48.0F, -25.0F);
+        }
         if (characters.isEmpty()) {
             guiGraphics.drawCenteredString(font, Component.translatable("gui.confluence.character.empty"), width / 2, listTop() + 12, 0xA0A0A0);
             return;

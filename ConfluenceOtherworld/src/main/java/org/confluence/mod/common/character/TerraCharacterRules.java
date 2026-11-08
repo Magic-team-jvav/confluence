@@ -24,11 +24,14 @@ public final class TerraCharacterRules {
     public static final byte MEDIUMCORE = 1;
     public static final byte HARDCORE = 2;
     public static final int MAX_NAME_LENGTH = 24;
+    public static final int MAX_APPEARANCE_LENGTH = 128;
     private static final String KEY = "confluence_character";
     /// 正在死亡/复活结算的玩家的难度（只在服务端线程上）
     private static final ThreadLocal<Byte> SCOPE = ThreadLocal.withInitial(() -> NONE);
     /// 客户端：其他玩家（和自己）的角色名
     public static final Map<UUID, String> CLIENT_NAMES = new ConcurrentHashMap<>();
+    /// 客户端：玩家的外观字符串（客户端据此生成皮肤）
+    public static final Map<UUID, String> CLIENT_LOOKS = new ConcurrentHashMap<>();
 
     private TerraCharacterRules() {}
 
@@ -55,6 +58,20 @@ public final class TerraCharacterRules {
         return name.isEmpty() ? null : name;
     }
 
+    public static String appearance(Player player) {
+        return data(player).getString("appearance");
+    }
+
+    /// 外观字符串只允许“v1;...”这种格式里的字符，太长或有别的字符就不要
+    private static String sanitizeAppearance(String appearance) {
+        if (appearance == null || appearance.length() > MAX_APPEARANCE_LENGTH) return "";
+        for (int i = 0; i < appearance.length(); i++) {
+            char c = appearance.charAt(i);
+            if (!(c == ';' || c == 'v' || (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))) return "";
+        }
+        return appearance;
+    }
+
     /// 名字只留可见字符，去掉格式代码
     public static String sanitize(String name) {
         String clean = name.replace("§", "").strip();
@@ -65,7 +82,7 @@ public final class TerraCharacterRules {
     }
 
     /// 客户端发来所选角色
-    public static void apply(ServerPlayer player, String id, String rawName, byte difficulty) {
+    public static void apply(ServerPlayer player, String id, String rawName, byte difficulty, String appearance) {
         String name = sanitize(rawName);
         if (id.isEmpty() || id.length() > 64 || name.isEmpty() || difficulty < SOFTCORE || difficulty > HARDCORE) return;
         CompoundTag tag = data(player);
@@ -78,6 +95,7 @@ public final class TerraCharacterRules {
         tag.putString("id", id);
         tag.putString("name", name);
         tag.putByte("difficulty", difficulty);
+        tag.putString("appearance", sanitizeAppearance(appearance));
         refreshName(player);
         // 硬核角色在这个世界已经死过：仍是旁观者
         if (tag.getBoolean("dead")) CharacterDiedPacketS2C.send(player, id);
@@ -86,14 +104,14 @@ public final class TerraCharacterRules {
     private static void refreshName(ServerPlayer player) {
         player.refreshDisplayName();
         player.refreshTabListName();
-        CharacterNamePacketS2C.sendToAll(player.server, player.getUUID(), name(player));
+        CharacterNamePacketS2C.sendToAll(player.server, player.getUUID(), name(player), appearance(player));
     }
 
     /// 新玩家进来：告诉他在线玩家的角色名
     public static void onLoggedIn(ServerPlayer player) {
         for (ServerPlayer other : player.server.getPlayerList().getPlayers()) {
             String name = name(other);
-            if (name != null) CharacterNamePacketS2C.send(player, other.getUUID(), name);
+            if (name != null) CharacterNamePacketS2C.send(player, other.getUUID(), name, appearance(other));
         }
     }
 

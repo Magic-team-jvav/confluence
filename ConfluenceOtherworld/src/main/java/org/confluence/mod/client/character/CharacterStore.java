@@ -28,6 +28,8 @@ public final class CharacterStore {
         public String name = "";
         /// TerraCharacterRules.SOFTCORE / MEDIUMCORE / HARDCORE
         public byte difficulty;
+        /// 外观；旧角色没有（null）时用启动器皮肤
+        public CharacterAppearance appearance;
         /// 硬核角色死后为 true，不能再用
         public boolean dead;
         public long created = System.currentTimeMillis();

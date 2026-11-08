@@ -2045,7 +2045,7 @@ public final class ModTabs {
                         bow.accept(BowItems.ENCHANTED_BOW.get());
                         bow.accept(BowItems.STAR_WEEP.get());
                         bow.accept(BowItems.POLAR_DAY.get());
-                        bow.accept(BowItems.WAR_BOW.get());
+                        bow.accept(BowItems.BLADE_BOW.get());
 
                         acceptAll(CrossbowItems.ITEMS, output, "crossbow");
                         acceptAll(ArrowItems.ITEMS, output, "arrow");

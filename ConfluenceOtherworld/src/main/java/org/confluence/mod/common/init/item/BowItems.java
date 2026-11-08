@@ -85,8 +85,8 @@ public class BowItems {
     public static final PortDeferredItem<EnchantedBowItem> ENCHANTED_BOW = registerItem("enchanted_bow", "附魔弓", () -> new EnchantedBowItem(4.5F));
     /// 星泣：未命中的箭累积成坠星，下一次命中时释放。无耐久。
     public static final PortDeferredItem<StarWeepBowItem> STAR_WEEP = registerItem("star_weep", "星泣", () -> new StarWeepBowItem(4.8F));
-    /// 战弓：左键横扫、右键射箭。无耐久。
-    public static final PortDeferredItem<WarBowItem> WAR_BOW = registerItem("war_bow", "战弓", () -> new WarBowItem(6.0F));
+    /// 刃弓：左键横扫、右键射箭。无耐久。无合成途径，只能通过其它方式获得。
+    public static final PortDeferredItem<WarBowItem> BLADE_BOW = registerItemWithEnglishName("blade_bow", "刃弓", "Blade Bow", () -> new WarBowItem(4.2F));
     /// 极昼：箭矢途经范围伤害，命中的敌人持续受创。无耐久。
     public static final PortDeferredItem<PolarDayBowItem> POLAR_DAY = registerItem("polar_day", "极昼", () -> new PolarDayBowItem(5.0F));
 

@@ -19,13 +19,13 @@ public class ArcaneCrystalItem extends CustomRarityItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        if (level.isClientSide) {
-            player.playSound(ModSoundEvents.TRANSMUTATION_USE.get());
-        }
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            if (ManaStorage.of(player).setArcaneCrystalUsed()) {
-                CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
+            // 已经用过：不消耗、不播声音
+            if (!ManaStorage.of(player).setArcaneCrystalUsed()) return InteractionResultHolder.fail(itemStack);
+            player.playSound(ModSoundEvents.TRANSMUTATION_USE.get());
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
+            if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
             }
         }

@@ -382,6 +382,8 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
+        /// 炼药瓶：玻璃瓶身有透明度，需要 cutout 才能正确镂空
+        ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.BREWING_VIAL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
     }
 

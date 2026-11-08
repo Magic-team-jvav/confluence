@@ -192,6 +192,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
+        event.register(ModMenuTypes.BREWING_VIAL.get(), BrewingVialScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
         event.register(ModMenuTypes.COOKING_POT.get(), CookingPotScreen::new);
         event.register(ModMenuTypes.SAWMILL.get(), SawmillScreen::new);

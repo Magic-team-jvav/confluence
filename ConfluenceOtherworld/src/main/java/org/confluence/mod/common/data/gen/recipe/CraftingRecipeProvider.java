@@ -192,6 +192,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(PotionItems.BOTTLE.get()),
                 Ingredient.of(Items.GLASS_BOTTLE)
         );
+        // 炼药瓶：四个玻璃瓶
+        shapeless(output, FunctionalBlocks.BREWING_VIAL.toStack(),
+                Ingredient.of(PotionItems.BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE)
+        );
         // 冰镇西瓜片 冰西瓜互换
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(FoodItems.ICE_MELON_SLICE)
@@ -1006,8 +1013,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, SoulItems.FALLEN_SOUL_CORE.toStack(), Ingredient.of(Items.BONE), Ingredient.of(Items.ROTTEN_FLESH), Ingredient.of(MaterialItems.FALLING_STAR));
 
         shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(NatureBlocks.POO));
-
-        shapeless(output, Items.BLAZE_ROD.getDefaultInstance(),  Ingredient.of(Items.BLAZE_POWDER),Ingredient.of(Items.BLAZE_POWDER));
 
         // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
         // 钱币

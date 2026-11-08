@@ -19,6 +19,7 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<HellforgeMenu>> HELLFORGE = TYPES.register("hellforge", () -> new MenuType<>(HellforgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<FletchingTableMenu>> FLETCHING_TABLE = TYPES.register("fletching_table", () -> new MenuType<>(FletchingTableMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<AlchemyTableMenu>> ALCHEMY_TABLE = TYPES.register("alchemy_table", () -> new MenuType<>(AlchemyTableMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<BrewingVialMenu>> BREWING_VIAL = TYPES.register("brewing_vial", () -> new MenuType<>(BrewingVialMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<ExtraInventoryMenu>> EXTRA_INVENTORY = TYPES.register("extra_inventory", () -> new MenuType<>(ExtraInventoryMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<CookingPotMenu>> COOKING_POT = TYPES.register("cooking_pot", () -> new MenuType<>(CookingPotMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<SawmillMenu>> SAWMILL = TYPES.register("sawmill", () -> new MenuType<>(SawmillMenu::new, FeatureFlags.VANILLA_SET));

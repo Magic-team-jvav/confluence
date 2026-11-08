@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import static org.confluence.mod.common.menu.AlchemyTableMenu.CORD;
 
 public class AlchemyTableScreen extends AbstractContainerScreen<AlchemyTableMenu> {
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/alchemy_table.png");
+    static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/alchemy_table.png");
 
     public AlchemyTableScreen(AlchemyTableMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -26,6 +26,11 @@ public class AlchemyTableScreen extends AbstractContainerScreen<AlchemyTableMenu
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+        renderTableBackground(guiGraphics, menu, leftPos, topPos, imageWidth, imageHeight);
+    }
+
+    /// 炼药桌与炼药瓶共用同一张背景图与空槽占位符，界面完全一致。
+    static void renderTableBackground(GuiGraphics guiGraphics, AlchemyTableMenu menu, int leftPos, int topPos, int imageWidth, int imageHeight) {
         guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         if (menu.input.getItem(0).isEmpty()) {
             guiGraphics.blit(BACKGROUND, leftPos + 80, topPos + 17, 178, 17, 16, 16);

@@ -3,6 +3,7 @@ package org.confluence.mod.client.gui;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -44,9 +45,9 @@ public class TombstoneEditScreen extends AbstractSignEditScreen {
     /// 墓碑上的死亡信息往往比一行长得多（原版编辑界面不换行，文字会超出背景）。
     /// 当任意一行超出最大宽度时，把所有行自动换行并缩放到羊皮纸区域内。
     /// 玩家手动输入的行不会超宽（输入时已限制），此时返回 false，走原版渲染（带光标）。
-    ///
-    /// @return 是否已经自行渲染
-    public static boolean renderWrappedText(GuiGraphics guiGraphics, Font font, SignBlockEntity sign, String[] messages, int color) {
+    @Override
+    protected void renderSignText(GuiGraphics guiGraphics) {
+        int color = text.hasGlowingText() ? text.getColor().getTextColor() : SignRenderer.getDarkColor(text);
         boolean overflow = false;
         for (String message : messages) {
             if (message != null && font.width(message) > sign.getMaxTextLineWidth()) {
@@ -54,7 +55,10 @@ public class TombstoneEditScreen extends AbstractSignEditScreen {
                 break;
             }
         }
-        if (!overflow) return false;
+        if (!overflow) {
+            super.renderSignText(guiGraphics);
+            return;
+        }
 
         int lineHeight = sign.getTextLineHeight();
         float scale = TEXT_SCALE.x();
@@ -72,7 +76,6 @@ public class TombstoneEditScreen extends AbstractSignEditScreen {
             guiGraphics.drawString(font, line, -font.width(line) / 2, i * lineHeight, color, false);
         }
         guiGraphics.pose().popPose();
-        return true;
     }
 
     private static List<FormattedCharSequence> wrap(Font font, String[] messages, float width) {

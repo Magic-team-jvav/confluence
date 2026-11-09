@@ -36,7 +36,9 @@ public class SpongeItem extends CustomRarityItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
-        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        // 任何液体都能瞄准（不只是源方块）：Flowing Fluids 之类的有限液体模组里浅水不再是源方块，否则吸收绵对不准；
+        // 原版里瞄准流动的水也更顺手，范围内的源方块和流动方块本来就一起吸掉
+        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
         if (hitResult.getType() == HitResult.Type.MISS || hitResult.getType() != HitResult.Type.BLOCK) {
             return InteractionResultHolder.pass(itemStack);
         }

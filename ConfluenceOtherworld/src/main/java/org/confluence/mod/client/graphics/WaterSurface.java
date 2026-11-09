@@ -26,6 +26,8 @@ public final class WaterSurface {
 
     private static float stillU0, stillV0, stillU1, stillV1, flowU0, flowV0, flowU1, flowV1;
     private static float sunX, sunY, sunZ, sunStrength, skyR, skyG, skyB, strength;
+    /// 灯笼在水面上的倒影：最近 4 个，(相对相机的位置, 强度)
+    private static final float[] POINTS = new float[16];
 
     private WaterSurface() {}
 
@@ -49,6 +51,15 @@ public final class WaterSurface {
             sunStrength = 0.3F * Mth.clamp((-y - 0.05F) / 0.2F, 0.0F, 1.0F) * (1.0F - rain);
         }
         sunZ = 0.0F;
+        java.util.Arrays.fill(POINTS, 0.0F);
+        PointLights.select(camera.getPosition());
+        float darkness = PointLights.darkness(level, partialTick);
+        for (int i = 0; i < PointLights.count; i++) {
+            POINTS[i * 4] = PointLights.x[i];
+            POINTS[i * 4 + 1] = PointLights.y[i];
+            POINTS[i * 4 + 2] = PointLights.z[i];
+            POINTS[i * 4 + 3] = darkness * PointLights.fade(i);
+        }
         Vec3 sky = level.getSkyColor(camera.getPosition(), partialTick);
         skyR = (float) sky.x;
         skyG = (float) sky.y;
@@ -75,12 +86,26 @@ public final class WaterSurface {
             uniform vec3 CfCameraOffset;
             uniform float CfTime;
             uniform float CfWaterFx;
+            uniform vec4 CfPoint0;
+            uniform vec4 CfPoint1;
+            uniform vec4 CfPoint2;
+            uniform vec4 CfPoint3;
+            uniform vec3 CfPointColor;
             in vec3 cfViewPos;
             in float cfSkyLight;
             in float cfTop;
 
             bool cfInRect(vec2 uv, vec4 r) {
                 return uv.x >= r.x && uv.x <= r.z && uv.y >= r.y && uv.y <= r.w;
+            }
+
+            // a lantern's reflection: sharp glint plus a soft warm streak, fading with distance
+            vec3 cfPointGlint(vec4 light, vec3 r) {
+                if (light.w <= 0.0) return vec3(0.0);
+                vec3 lv = light.xyz - cfViewPos;
+                float d2 = dot(lv, lv);
+                float rl = max(dot(r, lv * inversesqrt(d2)), 0.0);
+                return CfPointColor * (pow(rl, 180.0) * 2.5 + pow(rl, 16.0) * 0.3) * light.w / (1.0 + d2 * 0.015);
             }
 
             // Confluence water: Fresnel sky reflection, sun glint and small moving ripples (normal only)
@@ -111,6 +136,10 @@ public final class WaterSurface {
                 float spec = pow(max(dot(r, CfSunDir), 0.0), 220.0) * CfSunStrength * skyLight * up * CfWaterFx;
                 color.rgb += vec3(1.0, 0.95, 0.85) * spec * 2.0;
                 color.a = max(color.a, min(1.0, spec));
+                vec3 points = (cfPointGlint(CfPoint0, r) + cfPointGlint(CfPoint1, r) + cfPointGlint(CfPoint2, r) + cfPointGlint(CfPoint3, r))
+                        * up * CfWaterFx;
+                color.rgb += points;
+                color.a = max(color.a, min(1.0, dot(points, vec3(0.33))));
                 return color;
             }
             """;
@@ -129,7 +158,8 @@ public final class WaterSurface {
 
     /// 每个着色器自己的 uniform 位置（solid 里没有这些，位置是 -1，直接跳过）
     static final class Uniforms {
-        private final int still, flow, sunDir, sunStrengthLocation, skyColor, anchor, fx;
+        private final int still, flow, sunDir, sunStrengthLocation, skyColor, anchor, fx, pointColor;
+        private final int[] points = new int[4];
 
         Uniforms(ShaderInstance shader) {
             int id = shader.getId();
@@ -140,6 +170,8 @@ public final class WaterSurface {
             skyColor = GL20.glGetUniformLocation(id, "CfSkyColor");
             anchor = GL20.glGetUniformLocation(id, "CfAnchor");
             fx = GL20.glGetUniformLocation(id, "CfWaterFx");
+            pointColor = GL20.glGetUniformLocation(id, "CfPointColor");
+            for (int i = 0; i < 4; i++) points[i] = GL20.glGetUniformLocation(id, "CfPoint" + i);
         }
 
         void apply(int anchorX, int anchorY, int anchorZ) {
@@ -152,6 +184,10 @@ public final class WaterSurface {
             if (sunStrengthLocation >= 0) GL20.glUniform1f(sunStrengthLocation, sunStrength);
             if (skyColor >= 0) GL20.glUniform3f(skyColor, skyR, skyG, skyB);
             if (anchor >= 0) GL20.glUniform3f(anchor, anchorX, anchorY, anchorZ);
+            if (pointColor >= 0) GL20.glUniform3f(pointColor, PointLights.RED, PointLights.GREEN, PointLights.BLUE);
+            for (int i = 0; i < 4; i++) {
+                if (points[i] >= 0) GL20.glUniform4f(points[i], POINTS[i * 4], POINTS[i * 4 + 1], POINTS[i * 4 + 2], POINTS[i * 4 + 3]);
+            }
         }
     }
 }

@@ -125,7 +125,11 @@ public final class TerraEffects {
     private static void computeTarget(ClientLevel level, Camera camera, float partialTick) {
         float[] out = neutral();
         float strength = ClientConfigs.terrariaEffects / 100.0F;
-        if (strength <= 0.0F || camera.getFluidInCamera() != net.minecraft.world.level.material.FogType.NONE) {
+        net.minecraft.world.level.material.FogType fluid = camera.getFluidInCamera();
+        // 水下也保留群系的画面（否则出水时滤镜要从零重新淡入，有明显的延迟，水下反而比水面看得更清楚）；
+        // 岩浆、细雪里看不见东西，不加
+        boolean underwater = fluid == net.minecraft.world.level.material.FogType.WATER;
+        if (strength <= 0.0F || (fluid != net.minecraft.world.level.material.FogType.NONE && !underwater)) {
             keepColors(out);
             System.arraycopy(out, 0, target, 0, COUNT);
             return;
@@ -168,8 +172,9 @@ public final class TerraEffects {
         out[EDGE_G] = Math.min(acc.edgeG, 1.0F) * strength;
         out[EDGE_B] = Math.min(acc.edgeB, 1.0F) * strength;
         out[PULSE] = Math.min(acc.pulse, 0.6F) * strength;
-        out[DISTORTION] = Math.min(acc.distortion, 1.0F) * strength * ClientConfigs.heatDistortion / 100.0F;
-        out[HAZE] = Math.min(acc.haze, 0.8F) * strength;
+        // 水下：没有热浪；群系的雾减半（原版水下雾已经很浓）
+        out[DISTORTION] = underwater ? 0.0F : Math.min(acc.distortion, 1.0F) * strength * ClientConfigs.heatDistortion / 100.0F;
+        out[HAZE] = Math.min(acc.haze, 0.8F) * strength * (underwater ? 0.5F : 1.0F);
         if (acc.haze > 0.0F) {
             // 露天的雾随天色变暗（夜里的沙尘暴不该发亮）；地下的雾颜色本来就暗
             float daylight = Mth.lerp(openSky, 1.0F, level.getSkyDarken(partialTick));

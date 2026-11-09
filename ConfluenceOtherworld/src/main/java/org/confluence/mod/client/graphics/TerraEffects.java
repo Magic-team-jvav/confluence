@@ -137,7 +137,10 @@ public final class TerraEffects {
         Acc acc = new Acc();
         BlockPos pos = camera.getBlockPosition();
         double y = camera.getPosition().y;
-        float openSky = Mth.clamp(level.getBrightness(LightLayer.SKY, pos) / 15.0F * 1.5F - 0.25F, 0.0F, 1.0F);
+        // 水下按水面来判断：水每格都会减弱天空光，按相机算的话，腐化里的湖底会被当成“地下”，群系画面被冲淡
+        BlockPos skyPos = underwater ? waterSurface(level, pos) : pos;
+        float openSky = Mth.clamp(level.getBrightness(LightLayer.SKY, skyPos) / 15.0F * 1.5F - 0.25F, 0.0F, 1.0F);
+        if (underwater) y = Math.max(y, skyPos.getY() - 1.0);
         boolean overworld = level.dimension() == OverworldUtils.dimension();
         boolean night = Mth.cos(level.getTimeOfDay(partialTick) * Mth.TWO_PI) < 0.0F;
 
@@ -147,7 +150,7 @@ public final class TerraEffects {
             acc.haze(1.0F, 0.6F, 0.22F, 0.08F, 0.22F, 60.0F);
             acc.distortion += 0.7F;
         } else {
-            biomes(level, camera, acc, openSky, night);
+            biomes(level, camera, acc, openSky, night, underwater);
             if (overworld) {
                 depth(acc, y, openSky);
                 events(level, pos, acc, openSky);
@@ -172,16 +175,16 @@ public final class TerraEffects {
         out[EDGE_G] = Math.min(acc.edgeG, 1.0F) * strength;
         out[EDGE_B] = Math.min(acc.edgeB, 1.0F) * strength;
         out[PULSE] = Math.min(acc.pulse, 0.6F) * strength;
-        // 水下：没有热浪；群系的雾减半（原版水下雾已经很浓）
+        // 水下：没有热浪（已有水的晃动）；群系的雾和地面上一样浓，但起点近一倍多——水里看不到陆上雾积起来的那么远
         out[DISTORTION] = underwater ? 0.0F : Math.min(acc.distortion, 1.0F) * strength * ClientConfigs.heatDistortion / 100.0F;
-        out[HAZE] = Math.min(acc.haze, 0.8F) * strength * (underwater ? 0.5F : 1.0F);
+        out[HAZE] = Math.min(acc.haze, 0.8F) * strength;
         if (acc.haze > 0.0F) {
             // 露天的雾随天色变暗（夜里的沙尘暴不该发亮）；地下的雾颜色本来就暗
             float daylight = Mth.lerp(openSky, 1.0F, level.getSkyDarken(partialTick));
             out[HAZE_R] = acc.hazeR / acc.haze * daylight;
             out[HAZE_G] = acc.hazeG / acc.haze * daylight;
             out[HAZE_B] = acc.hazeB / acc.haze * daylight;
-            out[HAZE_DISTANCE] = acc.hazeDistance / acc.haze;
+            out[HAZE_DISTANCE] = acc.hazeDistance / acc.haze * (underwater ? 0.45F : 1.0F);
         }
         keepColors(out);
         System.arraycopy(out, 0, target, 0, COUNT);
@@ -213,7 +216,14 @@ public final class TerraEffects {
     }
 
     /// 玩家周围 5×5 个点（间隔 6 格）采样生物群系，近的权重大；没有特殊画面的群系也占权重，所以边界上逐渐变淡
-    private static void biomes(ClientLevel level, Camera camera, Acc acc, float openSky, boolean night) {
+    /// 相机所在水体上方的第一个方块（最多往上找 64 格）
+    private static BlockPos waterSurface(ClientLevel level, BlockPos from) {
+        BlockPos.MutableBlockPos cursor = from.mutable();
+        for (int i = 0; i < 64 && !level.getFluidState(cursor).isEmpty(); i++) cursor.move(0, 1, 0);
+        return cursor.immutable();
+    }
+
+    private static void biomes(ClientLevel level, Camera camera, Acc acc, float openSky, boolean night, boolean underwater) {
         BlockPos.MutableBlockPos sample = new BlockPos.MutableBlockPos();
         BlockPos center = camera.getBlockPosition();
         float total = 0.0F;
@@ -228,7 +238,8 @@ public final class TerraEffects {
                 // 所以除了相机高度，在地面上/下和原始地表高度也各取一次，取这一列里最“特殊”的那个（腐化优先）
                 int kind = classify(level.getBiome(sample.set(x, center.getY(), z)));
                 int ground = level.getHeight(Heightmap.Types.WORLD_SURFACE, x, z) - 1;
-                if (ground > level.getMinBuildHeight() && center.getY() >= ground - 6) {
+                // 水下时“地面”就是水面：深湖也算上面那个群系
+                if (ground > level.getMinBuildHeight() && center.getY() >= ground - (underwater ? 40 : 6)) {
                     kind = Math.min(kind, classify(level.getBiome(sample.set(x, ground, z))));
                     kind = Math.min(kind, classify(level.getBiome(sample.set(x, ground - 6, z))));
                     if (ground > seaLevel + 8) kind = Math.min(kind, classify(level.getBiome(sample.set(x, seaLevel + 4, z))));

@@ -22,8 +22,10 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.mesdag.opallight.OpalLightConfig;
+import org.mesdag.opallight.light.color.OpalColor;
 import org.mesdag.opallight.light.data.LightConditions;
 import org.mesdag.opallight.light.data.LightDataLoader;
+import org.mesdag.opallight.light.data.LightProfile;
 import org.mesdag.opallight.light.data.NamedLightDefinition;
 import org.mesdag.opallight.light.engine.DynamicLights;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
@@ -109,9 +111,30 @@ public final class OpalLightIntegration {
             var definition = data.getItemDefinition(stack, owner, owner != null && owner.isOnFire());
             return definition != null && definition.lightLevel() > 0;
         }
-        if (!(stack.getItem() instanceof BlockItem item)) return false;
-        var state = item.getBlock().defaultBlockState();
-        return state.getLightEmission() > 0 && data.getProfile(state) != null;
+        // 发光的方块物品（火把等）拿在手里或掉在地上时交给 Magic Lib，见 smoothBlockItem
+        return false;
+    }
+
+    /// 方块物品（火把等）拿在手里或掉在地上时，由 Magic Lib 的逐像素动态光照亮，位置平滑跟随实体。
+    /// OpalLight 的动态光按方块格子做泛洪传播，还要异步算完再重建网格，人一走光就一格一格地跳，
+    /// 所以这类物品不交给它（DynamicLightSourcesMixin 跳过）；放下的方块仍由 OpalLight 照出彩色光。
+    public static boolean smoothBlockItem(ItemStack stack) {
+        return stack.getItem() instanceof BlockItem && !LightDataLoader.INSTANCE.hasItemDefinition(stack.getItem());
+    }
+
+    /// 手持、掉落方块物品的光色：取 OpalLight 给这个方块登记的颜色（彩色火把），亮度归一到最亮分量为 1。
+    /// 没有登记或颜色会循环变化（彩虹火把）时返回 -1，按白光处理。
+    public static int itemLightColor(ItemStack stack) {
+        if (!OpalLightConfig.isEnabled() || !smoothBlockItem(stack) || !(stack.getItem() instanceof BlockItem item)) return -1;
+        LightProfile profile = LightDataLoader.INSTANCE.getProfile(item.getBlock().defaultBlockState());
+        if (profile == null || profile.animated() || profile.color() == null) return -1;
+        OpalColor color = profile.color();
+        float max = Math.max(color.r(), Math.max(color.g(), color.b()));
+        if (!(max > 0.0F)) return -1;
+        int r = Math.round(Math.max(0.0F, color.r()) / max * 255.0F);
+        int g = Math.round(Math.max(0.0F, color.g()) / max * 255.0F);
+        int b = Math.round(Math.max(0.0F, color.b()) / max * 255.0F);
+        return r << 16 | g << 8 | b;
     }
 
     private static boolean handlesEntity(Entity entity) {

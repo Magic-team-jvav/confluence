@@ -66,6 +66,7 @@ public final class ModDynamicLights {
                         && !(holder instanceof Player player && BasePhasebladeItem.isThrown(player, stack)) ? 12 : 0);
         DynamicLightRegister.registerItemFallback(stack -> !(stack.getItem() instanceof BlockItem)
                 && stack.is(ModTags.Items.PROVIDE_LIGHT) ? 10 : 0);
+        DynamicLightRegister.registerItemColor(OpalLightIntegration::itemLightColor);
         DynamicLightRegister.registerEquipment(EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD);
         DynamicLightRegister.registerEntity(Entity.class, DynamicLightProvider.entity(entity -> !(entity instanceof Projectile) && entity.isOnFire() ? 12 : 0));
         DynamicLightRegister.registerEntity(LivingEntity.class, DynamicLightProvider.entity(living -> (living.hasEffect(ModEffects.SHINE) || living.hasEffect(MobEffects.GLOWING))

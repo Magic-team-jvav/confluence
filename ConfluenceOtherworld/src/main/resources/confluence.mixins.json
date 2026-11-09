@@ -159,6 +159,7 @@
         "integration.journeymap.EffectMixin",
         "integration.lootbeamsrefork.ConfigHandlersMixin",
         "integration.magiclib.LibKeyBindingsMixin",
+        "integration.opallight.DynamicLightSourcesMixin",
         "integration.sodium.BlockOcclusionCacheMixin",
         "integration.sodium.BlockRendererMixin",
         "integration.sodium.ChunkBuilderMeshingTaskMixin",

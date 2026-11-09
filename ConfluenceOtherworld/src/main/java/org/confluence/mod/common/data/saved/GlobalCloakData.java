@@ -213,8 +213,8 @@ public enum GlobalCloakData implements IGlobalData {
         sourceBlock.explosionResistance = targetBlock.explosionResistance;
 
         sourceBlock.properties = targetBlock.properties;
-        sourceBlock.drops = null;
-        sourceBlock.lootTableSupplier = targetBlock.lootTableSupplier;
+//        sourceBlock.drops = null;
+//        sourceBlock.lootTableSupplier = targetBlock.lootTableSupplier;
     }
 
     public static void rollbackProperties(Block sourceBlock, Tuple<BlockBehaviour.Properties, Supplier<ResourceKey<LootTable>>> backup) {
@@ -229,7 +229,7 @@ public enum GlobalCloakData implements IGlobalData {
         sourceBlock.explosionResistance = properties.explosionResistance;
 
         sourceBlock.properties = properties;
-        sourceBlock.drops = null;
-        sourceBlock.lootTableSupplier = backup.getB();
+//        sourceBlock.drops = null;
+//        sourceBlock.lootTableSupplier = backup.getB();
     }
 }

@@ -36,9 +36,6 @@ public final class ConfluenceData extends SavedData {
     }
 
     public boolean increaseRevealStep() {
-        if (revealStep >= 8) {
-            this.revealStep = -1; // 允许再一轮敲
-        }
         BlockState[][] pairs = StepRevealingBlock.PAIRS.get();
         if (revealStep < pairs.length - 1) {
             GlobalCloakData.INSTANCE.reveal(pairs[++this.revealStep]);

@@ -907,9 +907,7 @@ public class BrainOfCthulhu extends BaseBoss {
         for (VisualNeuron neuron : findOwnedLoadedNeurons()) {
             neuron.discard();
         }
-        for (int index = 0; index < illusions.length; index++) {
-            illusions[index] = null;
-        }
+        Arrays.fill(illusions, null);
         super.die(source);
         if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {

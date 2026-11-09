@@ -163,6 +163,7 @@ public final class ModEvents {
                     WindState.INSTANCE,
                     GameEventSystem.INSTANCE,
                     HouseHandler.INSTANCE,
+                    AnglerData.INSTANCE,
                     MeteoriteTracker.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();

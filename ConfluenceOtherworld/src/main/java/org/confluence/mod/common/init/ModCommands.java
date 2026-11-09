@@ -52,6 +52,7 @@ import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.data.GameEventArgument;
 import org.confluence.mod.common.data.PrefixArgument;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -84,6 +85,11 @@ public final class ModCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))
+                .then(Commands.literal("gamePhase").then(Commands.literal("get").executes(context -> {
+                    String gamePhase = KillBoard.INSTANCE.getGamePhase().getSerializedName();
+                    context.getSource().sendSystemMessage(Component.literal("GamePhase: " + gamePhase));
+                    return 1;
+                })))
                 .then(Commands.literal("wind")
                         .then(Commands.literal("get").executes(ModCommands::windGet))
                         .then(Commands.literal("set")

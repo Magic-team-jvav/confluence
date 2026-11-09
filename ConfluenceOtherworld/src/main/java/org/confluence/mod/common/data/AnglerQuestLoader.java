@@ -98,15 +98,18 @@ public final class AnglerQuestLoader extends SimpleJsonResourceReloadListener {
     }
 
     /// 决定任务能否进入当天候选池；附属数据包也使用同一组门槛。
-    public record Availability(List<EntityType<?>> anyDefeatedBosses, WorldEvil worldEvil) {
-        public static final Availability ANY = new Availability(List.of(), WorldEvil.ANY);
+    public record Availability(GamePhase minPhase, List<EntityType<?>> anyDefeatedBosses,
+                               WorldEvil worldEvil) {
+        public static final Availability ANY = new Availability(GamePhase.BEFORE_SKELETRON, List.of(), WorldEvil.ANY);
         public static final Codec<Availability> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                GamePhase.CODEC.fieldOf("min_phase").forGetter(Availability::minPhase),
                 BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().fieldOf("any_defeated_bosses").forGetter(Availability::anyDefeatedBosses),
                 WorldEvil.CODEC.fieldOf("world_evil").forGetter(Availability::worldEvil)
         ).apply(instance, Availability::new));
 
         /// 双邪恶世界允许两侧任务；否则只允许与世界类型相符的任务。
         public boolean matches(ServerLevel level) {
+            if (!KillBoard.INSTANCE.getGamePhase().isAtLeast(minPhase)) return false;
             if (!anyDefeatedBosses.isEmpty() && anyDefeatedBosses.stream().noneMatch(KillBoard.INSTANCE::isDefeated)) {
                 return false;
             }

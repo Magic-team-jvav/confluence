@@ -233,8 +233,7 @@ public enum HardmodeConvertor implements IGlobalData {
     @Override
     public void decode(CompoundTag tag) {
         this.shouldContinue = false;
-        SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.get("sanctification"))
-                .ifSuccess(result -> this.sanctification = new LinkedList<>(result));
+        SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.get("sanctification")).ifSuccess(result -> this.sanctification = new LinkedList<>(result));
         this.started = tag.getBoolean("started");
         this.completed = tag.getBoolean("completed");
         this.shouldContinue = true;
@@ -243,8 +242,7 @@ public enum HardmodeConvertor implements IGlobalData {
     @Override
     public void encode(CompoundTag tag) {
         this.shouldContinue = false;
-        SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification)
-                .ifSuccess(nbt -> tag.put("sanctification", nbt));
+        SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification).ifSuccess(nbt -> tag.put("sanctification", nbt));
         tag.putBoolean("started", started);
         tag.putBoolean("completed", completed);
         this.shouldContinue = true;

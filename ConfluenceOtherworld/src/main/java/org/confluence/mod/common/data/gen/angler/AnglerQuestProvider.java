@@ -7,13 +7,13 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AnglerQuestLoader;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.QuestedFishes;
@@ -65,15 +65,14 @@ public class AnglerQuestProvider implements DataProvider {
         int surfaceMaxY = spaceY - 1;
         int undergroundMaxY = surfaceY - 1;
         int cavernMaxY = undergroundY - 1;
-        List<EntityType<?>> fleshBoss = List.of(BossEntities.WALL_OF_FLESH.get(), BossEntities.HILL_OF_FLESH.get());
-        AnglerQuestLoader.Availability hardmode = new AnglerQuestLoader.Availability(fleshBoss, AnglerQuestLoader.WorldEvil.ANY);
-        AnglerQuestLoader.Availability corruptionQuest = new AnglerQuestLoader.Availability(List.of(), AnglerQuestLoader.WorldEvil.CORRUPTION);
-        AnglerQuestLoader.Availability crimsonQuest = new AnglerQuestLoader.Availability(List.of(), AnglerQuestLoader.WorldEvil.CRIMSON);
-        AnglerQuestLoader.Availability hardmodeCorruption = new AnglerQuestLoader.Availability(fleshBoss, AnglerQuestLoader.WorldEvil.CORRUPTION);
-        AnglerQuestLoader.Availability hardmodeCrimson = new AnglerQuestLoader.Availability(fleshBoss, AnglerQuestLoader.WorldEvil.CRIMSON);
+        AnglerQuestLoader.Availability hardmode = availability(GamePhase.WALL_OF_FLESH);
+        AnglerQuestLoader.Availability corruptionQuest = availability(AnglerQuestLoader.WorldEvil.CORRUPTION);
+        AnglerQuestLoader.Availability crimsonQuest = availability(AnglerQuestLoader.WorldEvil.CRIMSON);
+        AnglerQuestLoader.Availability hardmodeCorruption = availability(GamePhase.WALL_OF_FLESH, AnglerQuestLoader.WorldEvil.CORRUPTION);
+        AnglerQuestLoader.Availability hardmodeCrimson = availability(GamePhase.WALL_OF_FLESH, AnglerQuestLoader.WorldEvil.CRIMSON);
 
         /// 天使鱼与云鱼在击败任意一个肉前主要 Boss 后才进入任务池。
-        AnglerQuestLoader.Availability afterAnyEarlyBoss = new AnglerQuestLoader.Availability(List.of(
+        AnglerQuestLoader.Availability afterAnyEarlyBoss = new AnglerQuestLoader.Availability(GamePhase.BEFORE_SKELETRON, List.of(
                 BossEntities.KING_SLIME.get(), BossEntities.EYE_OF_CTHULHU.get(), BossEntities.EATER_OF_WORLDS.get(),
                 BossEntities.BRAIN_OF_CTHULHU.get(), BossEntities.QUEEN_BEE.get(), BossEntities.SKELETRON.get(),
                 BossEntities.WALL_OF_FLESH.get(), BossEntities.HILL_OF_FLESH.get()
@@ -136,6 +135,18 @@ public class AnglerQuestProvider implements DataProvider {
 
     protected void add(List<AnglerQuestLoader.Entry> entries, ItemLike fish, AnglerQuestLoader.CatchCondition condition, AnglerQuestLoader.Availability availability) {
         entries.add(new AnglerQuestLoader.Entry(fish.asItem(), condition, availability));
+    }
+
+    protected AnglerQuestLoader.Availability availability(GamePhase minPhase) {
+        return new AnglerQuestLoader.Availability(minPhase, List.of(), AnglerQuestLoader.WorldEvil.ANY);
+    }
+
+    protected AnglerQuestLoader.Availability availability(AnglerQuestLoader.WorldEvil worldEvil) {
+        return availability(GamePhase.BEFORE_SKELETRON, worldEvil);
+    }
+
+    protected AnglerQuestLoader.Availability availability(GamePhase minPhase, AnglerQuestLoader.WorldEvil worldEvil) {
+        return new AnglerQuestLoader.Availability(minPhase, List.of(), worldEvil);
     }
 
     @Override

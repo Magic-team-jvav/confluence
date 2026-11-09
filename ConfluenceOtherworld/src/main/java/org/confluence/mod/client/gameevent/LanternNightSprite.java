@@ -178,8 +178,34 @@ final class LanternNightSprite {
         }
     }
 
+    /// 灯笼夜：玩家身边飘着的灯笼粒子（ThreeDimensionParticle 的 3D 模型粒子，由 ParticleStorm 的发射器生成）
+    /// 每个都发出暖橙色的光（Magic Lib 逐像素动态光），只有光、不画额外的光晕；最多 48 个。
+    /// 灯笼飘在玩家头顶 8～12 格，所以光的等级要够高才照得到地面
+    private static final int MAX_LIGHTS = 48;
+    private static final int LIGHT_LEVEL = 12;
+    private static final int LIGHT_COLOR = 0xFFB060;
+    private static final java.util.List<net.minecraft.world.phys.Vec3> LANTERNS = new java.util.ArrayList<>(MAX_LIGHTS);
+
+    static void collectLights(float partialTick) {
+        LANTERNS.clear();
+        ParticleEmitter current = emitter;
+        if (!started || current == null || current.isRemoved()) return;
+        var particles = MolangParticleEngine._getParticlesForEmitter(current);
+        if (particles == null || particles.isEmpty()) return;
+        for (var particle : particles) {
+            net.minecraft.client.particle.Particle self = particle.self();
+            if (self == null || !self.isAlive()) continue;
+            net.minecraft.world.phys.Vec3 position = self.getPos();
+            LANTERNS.add(position);
+            org.confluence.lib.client.DynamicLightDispatcher.INSTANCE.addLightSource(new org.confluence.lib.client.DynamicLightDispatcher.LightSource(
+                    position, LIGHT_LEVEL * 17, LIGHT_COLOR | org.confluence.lib.client.DynamicLightDispatcher.LightSource.TINTED));
+            if (LANTERNS.size() >= MAX_LIGHTS) break;
+        }
+    }
+
     static void reset() {
         SPRITES.clear();
+        LANTERNS.clear();
         started = false;
         globalAlpha = 0;
         globalY = -90;

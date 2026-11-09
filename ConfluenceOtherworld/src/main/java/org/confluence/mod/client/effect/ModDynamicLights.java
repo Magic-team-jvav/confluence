@@ -70,6 +70,7 @@ public final class ModDynamicLights {
         DynamicLightRegister.registerItemFallback(stack -> !(stack.getItem() instanceof BlockItem)
                 && stack.is(ModTags.Items.PROVIDE_LIGHT) ? 10 : 0);
         DynamicLightRegister.registerItemColor(OpalLightIntegration::itemLightColor);
+        DynamicLightRegister.addCollector(org.confluence.mod.client.gameevent.ClientGameEventSystem::collectLights);
         // OpalLight 数据里登记过的实体（发光生物、相位剑射弹）：亮度和颜色取自数据，由 Magic Lib 平滑照亮
         DynamicLightRegister.registerEntity(Entity.class, OpalLightIntegration::entityLight);
         DynamicLightRegister.registerEquipment(EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD);

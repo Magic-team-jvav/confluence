@@ -126,6 +126,11 @@ public final class ClientGameEventSystem {
         }
     }
 
+    /// 事件里的动态光源（灯笼夜的灯笼）；由 ModDynamicLights 注册成 Magic Lib 的采集器
+    public static void collectLights(float partialTick) {
+        LanternNightSprite.collectLights(partialTick);
+    }
+
     static float random() {
         return (float) Math.random();
     }

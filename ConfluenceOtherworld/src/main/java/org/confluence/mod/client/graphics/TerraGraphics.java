@@ -192,7 +192,9 @@ public final class TerraGraphics {
             bright.setSampler("Sampler0", sceneColor);
             bright.setSampler("DepthSampler", depth.getDepthTextureId());
             bright.safeGetUniform("Threshold").set(ClientConfigs.bloomThreshold / 100.0F);
-            bright.safeGetUniform("SkyBloom").set(0.15F);
+            // 天空只取一点泛光；灯笼夜天上的灯笼也画在“天空”里，那时让它们完整发光（夜空本身很暗，不会跟着亮）
+            bright.safeGetUniform("SkyBloom").set(org.confluence.mod.client.gameevent.ClientGameEventSystem.isEventStarted(
+                    org.confluence.mod.common.gameevent.LanternNightGameEvent.KEY) ? 0.75F : 0.15F);
             draw(bright);
             // 2) 逐级缩小
             for (int i = 1; i < LEVELS; i++) {

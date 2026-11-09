@@ -5,8 +5,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.TaskScheduler;
-import org.confluence.mod.common.data.GamePhase;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Contract;
@@ -36,7 +34,7 @@ public class TooEasy extends SecretSeed {
                 Component component = Component.translatable("message.confluence.too_easy.ready").withColor(GlobalColors.MESSAGE.get());
                 server.getPlayerList().broadcastSystemMessage(component, false);
             }, 500);
-            getScheduler(true).schedule(() -> KillBoard.INSTANCE.setGamePhase(server, GamePhase.WALL_OF_FLESH), 600);
+            getScheduler(true).schedule(ModUtils::prepareHardmode, 600);
         }
     }
 

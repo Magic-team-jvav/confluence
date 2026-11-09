@@ -513,7 +513,7 @@ public class Spazmatism extends AbstractTwinEye {
         if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
                 KillBoard.INSTANCE.defeat(BossEntities.RETINAZER.get());
-                KillBoard.INSTANCE.defeat(BossEntities.SPAZMATISM.get());
+                KillBoard.INSTANCE.defeat(getType());
                 for (var player : getOnlineCombatParticipants()) {
                     TreasureBagItem.createItemEntity(this, player);
                 }

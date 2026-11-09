@@ -10,7 +10,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
@@ -25,7 +24,7 @@ import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
-import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
+import org.confluence.mod.mixed.IInjectBiomeSource;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Vector3f;
 
@@ -45,16 +44,15 @@ public class CrimsonCaveStructure extends Structure {
 
     @Override
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
-        if (context.chunkGenerator().getBiomeSource() instanceof MultiNoiseBiomeSource multi) {
-            if (multi instanceof BannedBiomeMultiNoiseBiomeSource banned) {
-                if (banned.getBannedBiome() == ModBiomes.THE_CRIMSON) {
-                    return Optional.empty();
-                }
-            } else {
-                Pair<Holder<Biome>, Holder<Biome>> pair = IMultiNoiseBiomeSource.of(multi).confluence$getBiomePair();
+        if (context.chunkGenerator().getBiomeSource() instanceof IInjectBiomeSource injectSource) {
+            BannedBiomeMultiNoiseBiomeSource bannedSource = injectSource.confluence$getBannedBiomeSource();
+            if (bannedSource == null) {
+                Pair<Holder<Biome>, Holder<Biome>> pair = injectSource.confluence$getBiomePair();
                 if (pair != null && pair.getFirst() != null && OverworldUtils.isCrimson(pair.getFirst())) {
                     return Optional.empty();
                 }
+            } else if (bannedSource.getBannedBiome() == ModBiomes.THE_CRIMSON) {
+                return Optional.empty();
             }
         }
         ChunkPos startChunk = context.chunkPos();

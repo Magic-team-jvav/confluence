@@ -42,9 +42,6 @@ import org.confluence.mod.util.SoulcererUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class TickEvents {
-    /// 局地风向的同步间隔（tick）。载荷只有 3 个 float，4 包/秒/玩家。
-    private static final int WIND_SYNC_INTERVAL = 5;
-
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {
         ResourceKey<Level> dimension = event.getLevel().dimension();
@@ -71,7 +68,7 @@ public final class TickEvents {
         // 不需要 setDirty：WindState 是 IGlobalData，写进 level.dat，而 level.dat 在每次自动保存时
         // 由 saveAllChunks 无条件重写（dirty 门控只属于 SavedData，与它无关）。
         WindState.INSTANCE.tick(level);
-        if (level.getGameTime() % WIND_SYNC_INTERVAL == 0) {
+        if (level.getGameTime() % 5 == 0) {
             WindSpeedPacketS2C.sendToAll(level); // 局地风向逐玩家下发，约 4 包/秒
         }
 

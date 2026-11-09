@@ -55,7 +55,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -168,11 +167,10 @@ public final class PlayerUtils {
 
     /// 初始化数据到player客户端
     public static void syncSavedData(ServerPlayer player) {
-        ConfluenceData data = ConfluenceData.get(player.serverLevel());
         WindSpeedPacketS2C.sendToClient(player);
         KillBoardSyncPacketS2C.sendToClient(player);
         GlobalCloakSyncPacketS2C.sendToClient(player);
-        MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);
+        MeteoriteLocationPacketS2C.refreshMeteorCompass(player);
         BestiarySyncPacketS2C.syncEntries(player);
         ExtraInventorySyncPacketS2C.sendToClient(player, player);
         PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步

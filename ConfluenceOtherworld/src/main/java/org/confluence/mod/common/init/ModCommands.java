@@ -50,10 +50,8 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.data.GameEventArgument;
-import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.PrefixArgument;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -86,20 +84,6 @@ public final class ModCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))
-                .then(Commands.literal("gamePhase")
-                        .then(Commands.literal("get").executes(context -> {
-                            String gamePhase = KillBoard.INSTANCE.getGamePhase().getSerializedName();
-                            context.getSource().sendSystemMessage(Component.literal("GamePhase: " + gamePhase));
-                            return 1;
-                        }))
-                        .then(Commands.literal("set").then(Commands.argument("value", EnumArgument.enumArgument(GamePhase.class)).executes(context -> {
-                            GamePhase gamePhase = context.getArgument("value", GamePhase.class);
-                            ServerLevel serverLevel = context.getSource().getLevel();
-                            KillBoard.INSTANCE.setGamePhase(serverLevel.getServer(), gamePhase);
-                            context.getSource().sendSuccess(() -> Component.literal("Has been set to " + gamePhase.getSerializedName()), true);
-                            return 1;
-                        })))
-                )
                 .then(Commands.literal("wind")
                         .then(Commands.literal("get").executes(ModCommands::windGet))
                         .then(Commands.literal("set")
@@ -123,7 +107,7 @@ public final class ModCommands {
                         .then(Commands.argument("location", BlockPosArgument.blockPos()).then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
                             BlockPos location = BlockPosArgument.getBlockPos(context, "location");
                             int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
-                            ConfluenceData.get(context.getSource().getLevel()).setMeteorite(location, tickUntilLanding);
+                            MeteoriteTracker.INSTANCE.setMeteorite(location, tickUntilLanding);
                             return 1;
                         })))
                 )

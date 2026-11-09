@@ -1,7 +1,8 @@
 package org.confluence.mod.mixed;
 
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.levelgen.SurfaceRules;
+import org.confluence.mod.common.worldgen.BannedBiomeNoiseBasedChunkGenerator;
 import org.jetbrains.annotations.Nullable;
 
 /// 给 `NoiseBasedChunkGenerator` **实例**挂一份「已经按维度拼好的地表规则」。
@@ -17,10 +18,14 @@ import org.jetbrains.annotations.Nullable;
 ///
 /// 状态是**每实例**的：同一个 `NoiseGeneratorSettings` 被多个维度复用时不会互相污染，
 /// 也不存在 TerraBlender 那种「可变 regionType + surfaceRule() 懒记忆化」的时序陷阱。
-public interface INoiseBasedChunkGenerator {
-    void confluence$setSurfaceRules(@Nullable SurfaceRules.RuleSource rules);
+public interface IInjectChunkGenerator {
+    SurfaceRules.RuleSource confluence$getOriginalSurfaceRules();
 
-    static INoiseBasedChunkGenerator of(NoiseBasedChunkGenerator generator) {
-        return (INoiseBasedChunkGenerator) generator;
+    void confluence$setOverrideSurfaceRules(SurfaceRules.RuleSource rules);
+
+    BiomeSource confluence$getGenerationBiomeSource();
+
+    default @Nullable BannedBiomeNoiseBasedChunkGenerator confluence$getBannedGenerator() {
+        return this instanceof BannedBiomeNoiseBasedChunkGenerator generator ? generator : null;
     }
 }

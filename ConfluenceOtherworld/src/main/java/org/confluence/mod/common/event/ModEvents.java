@@ -8,13 +8,10 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -80,7 +77,10 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
-import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.DispenserRegistration;
+import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.wind.WindState;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 import org.confluence.mod.util.DateUtils;
@@ -161,8 +161,9 @@ public final class ModEvents {
                     Bestiary.INSTANCE,
                     GlobalCloakData.INSTANCE,
                     WindState.INSTANCE,
-                    GameEventSystem.INSTANCE
-//                    HouseHandler.INSTANCE
+                    GameEventSystem.INSTANCE,
+                    HouseHandler.INSTANCE,
+                    MeteoriteTracker.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();
             ModLoader.postEvent(new RegisterEvilMaterialReplacesEvent());

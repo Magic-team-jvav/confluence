@@ -452,7 +452,7 @@ public final class SpawnPlacementChecks {
     /// 为已有环境规则叠加困难模式门槛，避免复制环境判定。
     public static <T extends Mob> SpawnPlacements.SpawnPredicate<T> hardmode(SpawnPlacements.SpawnPredicate<T> predicate) {
         // 包装既有规则而不是复制一份，确保开启困难模式只增加进度门槛，不改变环境语义。
-        return (type, level, spawnType, pos, random) -> level instanceof ServerLevel serverLevel
+        return (type, level, spawnType, pos, random) -> level instanceof ServerLevel
                 && ModUtils.isHardmode()
                 && predicate.test(type, level, spawnType, pos, random);
     }

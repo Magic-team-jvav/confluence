@@ -72,7 +72,7 @@ public final class AnglerQuestLoader extends SimpleJsonResourceReloadListener {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BuiltInRegistries.ITEM.byNameCodec().fieldOf("fish").forGetter(Entry::fish),
                 CatchCondition.CODEC.fieldOf("condition").forGetter(Entry::condition),
-                Availability.CODEC.fieldOf("availability").forGetter(Entry::availability)
+                Availability.CODEC.lenientOptionalFieldOf("availability", Availability.ANY).forGetter(Entry::availability)
         ).apply(instance, Entry::new));
 
         public boolean canBeCaught(FishingHook hook) {
@@ -98,23 +98,22 @@ public final class AnglerQuestLoader extends SimpleJsonResourceReloadListener {
     }
 
     /// 决定任务能否进入当天候选池；附属数据包也使用同一组门槛。
-    public record Availability(GamePhase minPhase, List<EntityType<?>> anyDefeatedBosses,
-                               WorldEvil worldEvil) {
+    public record Availability(List<EntityType<?>> anyDefeatedBosses, WorldEvil worldEvil) {
+        public static final Availability ANY = new Availability(List.of(), WorldEvil.ANY);
         public static final Codec<Availability> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                GamePhase.CODEC.fieldOf("min_phase").forGetter(Availability::minPhase),
                 BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf().fieldOf("any_defeated_bosses").forGetter(Availability::anyDefeatedBosses),
                 WorldEvil.CODEC.fieldOf("world_evil").forGetter(Availability::worldEvil)
         ).apply(instance, Availability::new));
 
         /// 双邪恶世界允许两侧任务；否则只允许与世界类型相符的任务。
         public boolean matches(ServerLevel level) {
-            KillBoard board = KillBoard.INSTANCE;
-            if (!board.getGamePhase().isAtLeast(minPhase)) return false;
-            if (!anyDefeatedBosses.isEmpty() && anyDefeatedBosses.stream().noneMatch(board::isDefeated))
+            if (!anyDefeatedBosses.isEmpty() && anyDefeatedBosses.stream().noneMatch(KillBoard.INSTANCE::isDefeated)) {
                 return false;
+            }
             long flags = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
-            if (worldEvil == WorldEvil.ANY || SecretFlagMatcher.equalsSecretFlag(flags, IWorldOptions.DOUBLE_EVIL))
+            if (worldEvil == WorldEvil.ANY || SecretFlagMatcher.equalsSecretFlag(flags, IWorldOptions.DOUBLE_EVIL)) {
                 return true;
+            }
             return SecretFlagMatcher.matchesSecretFlag(flags, worldEvil == WorldEvil.CORRUPTION
                     ? IWorldOptions.THE_CORRUPTION : IWorldOptions.THE_CRIMSON);
         }

@@ -22,7 +22,7 @@ public class HardmodeConvertorItem extends CustomRarityItem {
             server.getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.hardmode_conversion.pass"), false);
             return InteractionResult.PASS;
         }
-        HardmodeConvertor.INSTANCE.start(server, true);
+        HardmodeConvertor.INSTANCE.start(server);
         return InteractionResult.CONSUME;
     }
 }

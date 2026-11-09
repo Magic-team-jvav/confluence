@@ -11,9 +11,10 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.GamePhase;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.spawner.BossDelaySpawner;
 import org.confluence.mod.common.init.entity.BossEntities;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 
@@ -76,7 +77,7 @@ public enum LanternNightGameEvent implements GameEvent {
                 canStart = true;
             } else if (DateUtils.isYuanXiao(DateUtils.getLunar())) {
                 canStart = true;
-            } else if (KillBoard.INSTANCE.getGamePhase().isGraduated() && level.random.nextInt(14) == 0) {
+            } else if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.MOON_LORD) && level.random.nextInt(14) == 0) {
                 this.cooldown = level.random.nextIntBetweenInclusive(120000, 240000); // 5-10天
                 canStart = true;
             }

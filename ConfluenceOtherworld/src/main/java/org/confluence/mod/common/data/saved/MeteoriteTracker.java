@@ -19,6 +19,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public enum MeteoriteTracker {
+public enum MeteoriteTracker implements IGlobalData {
     INSTANCE;
     public static final ResourceKey<ConfiguredFeature<?, ?>> METEORITE = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "meteorite");
 
@@ -55,7 +56,6 @@ public enum MeteoriteTracker {
             if (tickUntilLanding == 0) {
                 ChunkPos chunkPos = new ChunkPos(location);
                 place(level, chunkPos.x, chunkPos.z, new BlockPos(location));
-                ConfluenceData.get(level).setDirty();
             }
         }
     }
@@ -130,7 +130,6 @@ public enum MeteoriteTracker {
         this.location = landingPos;
         this.tickUntilLanding = landingTime;
         MeteoriteLocationPacketS2C.sendToAll(location, landingTime);
-        ConfluenceData.get(level).setDirty();
     }
 
     /// 陨石落地时覆盖的区块半径：1 表示 3×3 区块（与 [MeteoriteFeature.Config#radius()] 对应）。
@@ -169,21 +168,38 @@ public enum MeteoriteTracker {
         }
     }
 
-    public void deserialize(CompoundTag nbt) {
-        this.spawnAtNextNight = nbt.getBoolean("spawnAtNextNight");
-        this.location = NbtUtils.readBlockPos(nbt, "meteoriteLocation").orElse(BlockPos.ZERO);
-        this.tickUntilLanding = nbt.getInt("tickUtilMeteoriteLanding");
-    }
-
-    public void serialize(CompoundTag nbt) {
-        nbt.putBoolean("spawnAtNextNight", spawnAtNextNight);
-        nbt.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
-        nbt.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
-    }
-
     public static void spawnMeteor(ServerLevel level) {
         if (KillBoard.INSTANCE.isEvilDefeated() && level.random.nextInt(50) == 0) {
             INSTANCE.spawnAtNextNight = true;
         }
+    }
+
+    public void setMeteorite(BlockPos location, int tickUntilLanding) {
+        this.location = location;
+        this.tickUntilLanding = tickUntilLanding;
+        MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding);
+    }
+
+    public BlockPos getLocation() {
+        return location;
+    }
+
+    @Override
+    public void decode(CompoundTag tag) {
+        this.spawnAtNextNight = tag.getBoolean("spawnAtNextNight");
+        this.location = NbtUtils.readBlockPos(tag, "meteoriteLocation").orElse(BlockPos.ZERO);
+        this.tickUntilLanding = tag.getInt("tickUtilMeteoriteLanding");
+    }
+
+    @Override
+    public void encode(CompoundTag tag) {
+        tag.putBoolean("spawnAtNextNight", spawnAtNextNight);
+        tag.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
+        tag.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
+    }
+
+    @Override
+    public String serializeKey() {
+        return "confluence:meteorite_tracker";
     }
 }

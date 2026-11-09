@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -29,15 +28,11 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IDedicatedServer;
-import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 
@@ -86,14 +81,13 @@ public enum HardmodeConvertor implements IGlobalData {
         return completed;
     }
 
-    public void start(MinecraftServer server, boolean debug) {
+    public void start(MinecraftServer server) {
         if (started || completed) return;
         if (server instanceof IDedicatedServer dedicatedServer) {
             dedicatedServer.confluence$setOnHardmodeConversation(true);
         }
         this.shouldContinue = false;
         this.started = true;
-        print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
         CompletableFuture.supplyAsync(() -> {
             ServerLevel overworld = OverworldUtils.getLevel(server);
             BlockPos startPos = server.getWorldData().overworldData().getSpawnPos().atY(overworld.getMinBuildHeight());
@@ -102,61 +96,48 @@ public enum HardmodeConvertor implements IGlobalData {
         }, Util.backgroundExecutor()).thenAccept(list -> {
             this.sanctification = list;
             this.shouldContinue = true;
-            if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
-                print(server, Component.translatable("event.confluence.hardmode_conversion.instantly"), debug);
-            } else {
-                print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.sanctification", sanctification.size(), sanctification.size() / 4), debug);
-            }
-            print(server, Component.translatable("event.confluence.hardmode_conversion.started"), debug);
         });
     }
 
-    public void scheduleRefill(ServerLevel serverLevel) {
+    public void scheduleRefill(ServerLevel level) {
         if (completed || !shouldContinue) return;
         if (sanctification.isEmpty()) {
             if (started) {
                 this.completed = true;
-                MinecraftServer server = serverLevel.getServer();
+                MinecraftServer server = level.getServer();
                 if (server instanceof IDedicatedServer dedicatedServer) {
                     dedicatedServer.confluence$setOnHardmodeConversation(false);
                 }
-                KillBoard.INSTANCE.onUnlockHardmode(server);
-                SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                     AchievementUtils.awardAchievement(player, "its_hard");
                 }
-                print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
-                print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
-                print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
+                server.getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), false);
                 NeoForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;
         } else {
-            if (serverLevel.getServer() instanceof IDedicatedServer dedicatedServer && !dedicatedServer.confluence$isOnHardmodeConversation()) {
-                dedicatedServer.confluence$setOnHardmodeConversation(true);
+            if (level.getServer() instanceof IDedicatedServer server && !server.confluence$isOnHardmodeConversation()) {
+                server.confluence$setOnHardmodeConversation(true);
             }
             if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
-                Confluence.LOGGER.debug("Starting hardmode conversion ...");
-                Stopwatch stopwatch = Stopwatch.createStarted();
                 sanctification.removeIf(entry -> {
                     ChunkPos chunkPos = entry.getA();
 
-                    boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
-                    if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
-                    boolean refilled = refill(serverLevel, chunkPos, entry.getB());
-                    if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
+                    boolean noForceBefore = !level.getForcedChunks().contains(chunkPos.toLong());
+                    if (noForceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, true);
+                    boolean refilled = refill(level, chunkPos, entry.getB());
+                    if (noForceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, false);
 
                     return refilled;
                 });
-                Confluence.LOGGER.debug("Hardmode conversion took {}", stopwatch.stop());
-            } else if (serverLevel.getGameTime() % 5 == 0 && serverLevel.getServer().getPlayerList().getPlayers().stream().noneMatch(Entity::isRemoved)) {
+            } else if (level.getGameTime() % 5 == 0 && level.getServer().getPlayerList().getPlayers().stream().noneMatch(Entity::isRemoved)) {
                 Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
                 ChunkPos chunkPos = entry.getA();
 
-                boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
-                if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
-                boolean refilled = refill(serverLevel, chunkPos, entry.getB());
-                if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
+                boolean noForceBefore = !level.getForcedChunks().contains(chunkPos.toLong());
+                if (noForceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, true);
+                boolean refilled = refill(level, chunkPos, entry.getB());
+                if (noForceBefore) level.setChunkForced(chunkPos.x, chunkPos.z, false);
 
                 if (refilled) sanctification.removeFirst();
             }
@@ -247,10 +228,6 @@ public enum HardmodeConvertor implements IGlobalData {
             list.add(new Tuple<>(entry.getKey(), entry.getValue()));
         }
         return list;
-    }
-
-    private static void print(MinecraftServer server, Component component, boolean debug) {
-        if (debug) server.getPlayerList().broadcastSystemMessage(component, false);
     }
 
     @Override

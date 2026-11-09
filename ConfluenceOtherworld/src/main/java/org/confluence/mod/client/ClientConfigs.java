@@ -43,6 +43,11 @@ public final class ClientConfigs {
     public static int graphicsContrast = 106;
     public static int graphicsSaturation = 112;
     public static int graphicsVignette = 25;
+    public static int atmosphericFog = 50;
+    public static int lightShafts = 45;
+    public static int ambientParticles = 60;
+    public static int terrariaEffects = 80;
+    public static int heatDistortion = 50;
     /// 暴风雪是否播放环境风声（露天与室内为两种音效）。
     public static boolean blizzardAmbience = true;
     /// 关闭监守者的全部音效（脚步、心跳、咆哮、音波等）。默认关闭。
@@ -167,6 +172,11 @@ public final class ClientConfigs {
     private static IntValue GRAPHICS_CONTRAST;
     private static IntValue GRAPHICS_SATURATION;
     private static IntValue GRAPHICS_VIGNETTE;
+    private static IntValue ATMOSPHERIC_FOG;
+    private static IntValue LIGHT_SHAFTS;
+    private static IntValue AMBIENT_PARTICLES;
+    private static IntValue TERRARIA_EFFECTS;
+    private static IntValue HEAT_DISTORTION;
     private static BooleanValue CROSSHAIR_ANIMATION;
     private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
     private static BooleanValue BOW_CROSSHAIR_ANIMATION;
@@ -207,6 +217,11 @@ public final class ClientConfigs {
         graphicsContrast = GRAPHICS_CONTRAST.get();
         graphicsSaturation = GRAPHICS_SATURATION.get();
         graphicsVignette = GRAPHICS_VIGNETTE.get();
+        atmosphericFog = ATMOSPHERIC_FOG.get();
+        lightShafts = LIGHT_SHAFTS.get();
+        ambientParticles = AMBIENT_PARTICLES.get();
+        terrariaEffects = TERRARIA_EFFECTS.get();
+        heatDistortion = HEAT_DISTORTION.get();
         blizzardAmbience = BLIZZARD_AMBIENCE.get();
         muteWardenSound = MUTE_WARDEN_SOUND.get();
 
@@ -412,6 +427,11 @@ public final class ClientConfigs {
             GRAPHICS_CONTRAST = builder.defineInRange("graphicsContrast", 106, 80, 130);
             GRAPHICS_SATURATION = builder.defineInRange("graphicsSaturation", 112, 50, 150);
             GRAPHICS_VIGNETTE = builder.defineInRange("graphicsVignette", 25, 0, 100);
+            ATMOSPHERIC_FOG = builder.defineInRange("atmosphericFog", 50, 0, 100);
+            LIGHT_SHAFTS = builder.defineInRange("lightShafts", 45, 0, 100);
+            AMBIENT_PARTICLES = builder.defineInRange("ambientParticles", 60, 0, 100);
+            TERRARIA_EFFECTS = builder.defineInRange("terrariaEffects", 80, 0, 100);
+            HEAT_DISTORTION = builder.defineInRange("heatDistortion", 50, 0, 100);
             builder.pop();
             builder.push("Weather");
             SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);

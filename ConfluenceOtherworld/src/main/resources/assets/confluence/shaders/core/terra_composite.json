@@ -10,6 +10,15 @@
         },
         {
             "name": "BloomSampler"
+        },
+        {
+            "name": "DepthSampler"
+        },
+        {
+            "name": "HandDepthSampler"
+        },
+        {
+            "name": "RaysSampler"
         }
     ],
     "uniforms": [
@@ -69,6 +78,201 @@
             "count": 1,
             "values": [
                 1.777
+            ]
+        },
+        {
+            "name": "InvViewProj",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0,
+                0,
+                0,
+                0,
+                1.0,
+                0,
+                0,
+                0,
+                0,
+                1.0,
+                0,
+                0,
+                0,
+                0,
+                1.0
+            ]
+        },
+        {
+            "name": "CameraY",
+            "type": "float",
+            "count": 1,
+            "values": [
+                64.0
+            ]
+        },
+        {
+            "name": "FogColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.7,
+                0.8,
+                1.0
+            ]
+        },
+        {
+            "name": "AerialStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "AerialDistance",
+            "type": "float",
+            "count": 1,
+            "values": [
+                300.0
+            ]
+        },
+        {
+            "name": "GroundFog",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "FogBaseY",
+            "type": "float",
+            "count": 1,
+            "values": [
+                63.0
+            ]
+        },
+        {
+            "name": "RaysStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "RaysColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                1.0,
+                0.9,
+                0.7
+            ]
+        },
+        {
+            "name": "Exposure",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.0
+            ]
+        },
+        {
+            "name": "HazeColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.5,
+                0.5,
+                0.5
+            ]
+        },
+        {
+            "name": "Haze",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "HazeDistance",
+            "type": "float",
+            "count": 1,
+            "values": [
+                48.0
+            ]
+        },
+        {
+            "name": "Distortion",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "Time",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "ShadowColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "ShadowStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "HighlightColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "HighlightStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "EdgeColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "name": "Pulse",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
             ]
         }
     ]

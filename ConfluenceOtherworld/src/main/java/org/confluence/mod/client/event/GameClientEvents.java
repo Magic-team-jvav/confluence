@@ -160,6 +160,12 @@ public final class GameClientEvents {
         VoidSeaFilterRenderer.renderFog(event);
     }
 
+    /// 画质：原版地形雾的起点挪近一些，和天空衔接更柔和（其他效果改过的雾已取消事件，不会走到这里）
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void viewport$RenderFogSoft(ViewportEvent.RenderFog event) {
+        org.confluence.mod.client.graphics.TerraGraphics.softenFog(event);
+    }
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void viewport$RenderFogLavaShark(ViewportEvent.RenderFog event) {
         if (event.getCamera().getFluidInCamera() != FogType.LAVA ||
@@ -247,6 +253,7 @@ public final class GameClientEvents {
         DeathEffectManager.tick(minecraft.level);
         BackgroundLayer.tickLayers();
         WeatherHandler.handle();
+        org.confluence.mod.client.graphics.TerraAmbientParticles.tick(); // 画质：环境粒子
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -483,7 +490,7 @@ public final class GameClientEvents {
             DestroyerRenderer.renderDestroyers(event);
             TongueRenderer.renderFirstPerson(event, minecraft, player);
         } else if (stage == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
-            org.confluence.mod.client.graphics.TerraGraphics.captureDepth(); // 画质后处理：天空深度（画手前）
+            org.confluence.mod.client.graphics.TerraGraphics.captureDepth(event); // 画质后处理：天空深度（画手前）、相机、日月、雾
         } else if (stage == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             MartianOfficerRenderer.renderShields(event);
             PoseStack poseStack = event.getPoseStack();

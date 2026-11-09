@@ -1,0 +1,31 @@
+{
+    "vertex": "confluence:terra_fullscreen",
+    "fragment": "confluence:terra_rays",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "DepthSampler"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "SunPos",
+            "type": "float",
+            "count": 2,
+            "values": [
+                0.5,
+                0.5
+            ]
+        },
+        {
+            "name": "Aspect",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.777
+            ]
+        }
+    ]
+}

@@ -7,6 +7,9 @@ public final class ShaderPackDetector {
     private static Object api;
     private static Method inUse;
     private static boolean searched;
+    /// 结果缓存一秒：每帧会问好几次，反射调用没必要每次都做
+    private static boolean cached;
+    private static long checkedAt;
 
     private ShaderPackDetector() {}
 
@@ -24,10 +27,14 @@ public final class ShaderPackDetector {
             }
         }
         if (api == null || inUse == null) return false;
+        long now = System.nanoTime();
+        if (now - checkedAt < 1_000_000_000L) return cached;
+        checkedAt = now;
         try {
-            return (boolean) inUse.invoke(api);
+            cached = (boolean) inUse.invoke(api);
         } catch (ReflectiveOperationException e) {
-            return false;
+            cached = false;
         }
+        return cached;
     }
 }

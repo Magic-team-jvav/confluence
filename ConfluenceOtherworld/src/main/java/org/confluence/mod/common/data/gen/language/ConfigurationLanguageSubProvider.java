@@ -161,6 +161,16 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.graphicsSaturation.tooltip", "100 = vanilla.", "100 = 原版。");
         language.add("confluence.configuration.graphicsVignette", "Vignette", "暗角");
         language.add("confluence.configuration.graphicsVignette.tooltip", "Soft darkening of the screen corners. 0 turns it off.", "屏幕四角柔和变暗。0 为关闭。");
+        language.add("confluence.configuration.atmosphericFog", "Atmosphere", "大气雾");
+        language.add("confluence.configuration.atmosphericFog.tooltip", "Haze that thickens with distance in the sky colour, and low ground fog around sunrise. 0 turns it off.", "随距离变浓、带天空颜色的薄雾，以及日出前后贴地的晨雾。0 为关闭。");
+        language.add("confluence.configuration.lightShafts", "Light Shafts", "光束");
+        language.add("confluence.configuration.lightShafts.tooltip", "Beams from the sun (and faintly the moon) through leaves and around cliffs. 0 turns them off.", "太阳（夜里淡淡的月亮）穿过树叶、绕过山崖的光束。0 为关闭。");
+        language.add("confluence.configuration.ambientParticles", "Ambient Particles", "环境粒子");
+        language.add("confluence.configuration.ambientParticles.tooltip", "Fireflies, pollen, glowing spores, embers, sparkles and dust around you, depending on the biome. Also follows the vanilla Particles option.", "根据生物群系在你周围出现的萤火虫、花粉、发光孢子、火星、闪光和灰尘。也受原版“粒子”选项影响。");
+        language.add("confluence.configuration.terrariaEffects", "Terraria Screen Effects", "泰拉画面效果");
+        language.add("confluence.configuration.terrariaEffects.tooltip", "Colours the picture by biome, event and depth like Terraria: purple Corruption, red Crimson, bright Hallow, blue glowing mushrooms, Blood Moon and eclipse, sandstorm and blizzard haze, grey caverns, the Underworld. 0 turns it off.", "像泰拉瑞亚一样按生物群系、事件和深度给画面调色：腐化发紫、猩红发红、神圣明亮、发光蘑菇幽蓝，血月和日食，沙尘暴和暴风雪的浓雾，灰暗的洞穴，地狱。0 为关闭。");
+        language.add("confluence.configuration.heatDistortion", "Heat Haze", "热浪扭曲");
+        language.add("confluence.configuration.heatDistortion.tooltip", "Shimmering air in the Underworld and over a sunny desert. 0 turns it off.", "地狱和晴天沙漠远处空气的扭曲。0 为关闭。");
         language.add("confluence.configuration.Weather", "Weather", "天气");
         language.add("confluence.configuration.Weather.button", "Weather", "天气");
         language.add("confluence.configuration.Weather.tooltip", "Wind, storms and lightning settings.", "风、暴风雪、沙尘暴与闪电设置。");

@@ -175,6 +175,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.smoothFluids.tooltip", "Liquid surfaces glide to their new level instead of jumping block by block. Most noticeable with finite-liquid mods such as Flowing Fluids.", "液体表面平滑地变到新高度，不再一格一格地跳。配合 Flowing Fluids 这类有限液体模组效果最明显。");
         language.add("confluence.configuration.waterReflections", "Water Reflections", "水面反射");
         language.add("confluence.configuration.waterReflections.tooltip", "Sky reflection that grows at shallow angles, sun and moon glints and small moving ripples on water under the open sky. 0 turns it off.", "露天水面的天空反射（越斜看越明显）、日月高光和细小的流动波纹。0 为关闭。");
+        language.add("confluence.configuration.waterWaves", "Water Waves", "水面波浪");
+        language.add("confluence.configuration.waterWaves.tooltip", "A gentle swell on water: the surface itself rises and falls, higher with wind, rain and storms and on the ocean, calm in caves. 0 turns it off.", "水面的起伏：水面本身上下波动，有风、下雨、雷暴时和海上更高，洞穴里平静。0 为关闭。");
         language.add("confluence.configuration.underwaterLight", "Underwater Light", "水下光照");
         language.add("confluence.configuration.underwaterLight.tooltip", "Under water: light shafts from the surface, moving caustics on the bottom and walls, red light fading first with distance and a slight wobble. Weaker the deeper you are and away from the open sky. 0 turns it off.", "水下：从水面射下的光束、水底和壁上流动的焦散光纹、红光随距离先消失、轻微的晃动。越深、越远离露天越弱。0 为关闭。");
         language.add("confluence.configuration.Weather", "Weather", "天气");

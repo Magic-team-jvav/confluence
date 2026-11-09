@@ -50,6 +50,7 @@ public final class ClientConfigs {
     public static int heatDistortion = 50;
     public static boolean smoothFluids = true;
     public static int waterReflections = 70;
+    public static int waterWaves = 60;
     public static int underwaterLight = 70;
     /// 暴风雪是否播放环境风声（露天与室内为两种音效）。
     public static boolean blizzardAmbience = true;
@@ -182,6 +183,7 @@ public final class ClientConfigs {
     private static IntValue HEAT_DISTORTION;
     private static BooleanValue SMOOTH_FLUIDS;
     private static IntValue WATER_REFLECTIONS;
+    private static IntValue WATER_WAVES;
     private static IntValue UNDERWATER_LIGHT;
     private static BooleanValue CROSSHAIR_ANIMATION;
     private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
@@ -230,6 +232,7 @@ public final class ClientConfigs {
         heatDistortion = HEAT_DISTORTION.get();
         smoothFluids = SMOOTH_FLUIDS.get();
         waterReflections = WATER_REFLECTIONS.get();
+        waterWaves = WATER_WAVES.get();
         underwaterLight = UNDERWATER_LIGHT.get();
         blizzardAmbience = BLIZZARD_AMBIENCE.get();
         muteWardenSound = MUTE_WARDEN_SOUND.get();
@@ -443,6 +446,7 @@ public final class ClientConfigs {
             HEAT_DISTORTION = builder.defineInRange("heatDistortion", 50, 0, 100);
             SMOOTH_FLUIDS = builder.define("smoothFluids", true);
             WATER_REFLECTIONS = builder.defineInRange("waterReflections", 70, 0, 100);
+            WATER_WAVES = builder.defineInRange("waterWaves", 60, 0, 100);
             UNDERWATER_LIGHT = builder.defineInRange("underwaterLight", 70, 0, 100);
             builder.pop();
             builder.push("Weather");

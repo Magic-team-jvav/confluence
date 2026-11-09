@@ -376,9 +376,13 @@ public final class SmoothFluids {
         // translucent：顺带把相机相对位置和天空光传给片元着色器，水面反射和波纹用（见 WaterSurface）
         // cfTop：顶点在小数高度上（液面的边）为 1，在整数高度上（侧面的底边）为 0；顶面四个点都是 1，
         // 片元里插值后仍是 1，侧面会小于 1 —— 不用屏幕导数判断朝向，块与块的接缝处就不会出错
-        String outputs = translucent ? "out vec3 cfViewPos;\nout float cfSkyLight;\nout float cfTop;\n" : "";
-        String assign = translucent ? "\n    cfViewPos = pos;\n    cfSkyLight = float(UV2.y) / 240.0;"
-                + "\n    float cfFy = fract(pos.y + CfCameraOffset.y);\n    cfTop = (cfFy > 0.01 && cfFy < 0.998) ? 1.0 : 0.0;" : "";
+        // 波浪：在 cfTop 算完之后再把水面顶点抬起/压下（见 WaterSurface.WAVE_FUNCTIONS）
+        String outputs = translucent ? WaterSurface.WAVE_FUNCTIONS + "out vec3 cfViewPos;\nout float cfSkyLight;\nout float cfTop;\nout float cfWaveAmp;\n" : "";
+        String assign = translucent ? "\n    cfSkyLight = float(UV2.y) / 240.0;"
+                + "\n    float cfFy = fract(pos.y + CfCameraOffset.y);\n    cfTop = (cfFy > 0.01 && cfFy < 0.998) ? 1.0 : 0.0;"
+                + "\n    cfWaveAmp = cfWaveFactor(cfFy, cfTop, UV0);"
+                + "\n    pos.y += cfWaveHeight((pos + CfCameraOffset + CfAnchor).xz, CfTime) * cfWaveAmp;"
+                + "\n    cfViewPos = pos;" : "";
         return source.substring(0, main) + "#define CF_FLUID_WINDOW " + window + "\n" + FUNCTIONS + "\n" + outputs
                 + source.substring(main, position.end())
                 + "\n    pos.y += cfFluidLift(pos);" + assign + source.substring(position.end());

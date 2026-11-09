@@ -20,6 +20,7 @@
         "integration.irons_spell.AbstractSpellMixin",
         "integration.irons_spell.MagicManagerMixin",
         "integration.lootr.BlockReplacementMapMixin",
+        "integration.particlestorm.GeckoLibHelperMixin",
         "integration.terracurio.AccessoriesAttachmentMixin",
         "integration.terracurio.DemonHeartMixin",
         "integration.terracurio.PlayerJumpPacketC2SMixin",

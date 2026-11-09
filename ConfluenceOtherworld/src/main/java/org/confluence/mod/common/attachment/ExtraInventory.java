@@ -460,13 +460,17 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         accessoryDye.clear();
     }
 
+    /// 弹药栏优先（和泰拉瑞亚一样）：先找弹药栏，再用原版找到的（背包里的、创造模式默认的箭）；
+    /// 拿在手上的弹药仍然最优先（原版“手持弹药”的规则）。
+    /// 以前只有原版什么都没找到时才看弹药栏，所以背包里还有箭、或者在创造模式时，弹药栏里的箭永远用不上。
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {
-        if (projectile.isEmpty() && weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
-            Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
+        if (weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
+            if (!projectile.isEmpty() && (projectile == player.getOffhandItem() || projectile == player.getMainHandItem())) return projectile;
+            Predicate<ItemStack> predicate = weaponItem.getAllSupportedProjectiles(weapon);
             ExtraInventory extraInventory = of(player);
             for (int i = 0; i < SIZE_AMMO; i++) {
                 ItemStack ammo = extraInventory.getAmmo(i);
-                if (!predicate.test(ammo)) continue;
+                if (ammo.isEmpty() || !predicate.test(ammo)) continue;
                 extraInventory.setChanged();
                 return ammo;
             }

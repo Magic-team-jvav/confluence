@@ -305,6 +305,7 @@ public final class GameClientEvents {
         GunHandler.reset();
         WeatherHandler.reset();
         BlizzardAmbienceHandler.reset();
+        org.confluence.mod.client.graphics.SmoothFluids.clearWorld();
         MeteorLandingHandler.reset();
         LocalBrushData.reset();
         ClientPacketHandler.reset();
@@ -482,6 +483,7 @@ public final class GameClientEvents {
         SpelunkerHelper.renderLevel(event, player);
         RenderLevelStageEvent.Stage stage = event.getStage();
         if (stage == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            org.confluence.mod.client.graphics.SmoothFluids.prepareFrame(event.getCamera()); // 液体表面平滑：画地形前上传过渡数据
             MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);

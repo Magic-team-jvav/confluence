@@ -24,6 +24,7 @@ import java.io.IOException;
 /// 光束：太阳/月亮在屏幕上的位置附近，沿天空像素做径向累积，树叶和山崖挡住的地方形成光柱；
 /// 泰拉瑞亚式的生物群系/事件/深度画面（色调、浓雾、热浪扭曲）由 TerraEffects 算好，在合成里一起用上。
 /// 天空深度在 AFTER_LEVEL 时先复制下来（画手时深度会被清掉），泛光里天空只取一点点。
+/// 水下：从水面射下来的光束（单独一遍，1/4 分辨率）、水底和壁上的焦散光纹、按距离和深度的光吸收（红光先消失）、轻微的折射晃动。
 /// 开着光影包（Iris/Oculus）时整个跳过，交给光影包。
 public final class TerraGraphics {
     private static final ResourceLocation BRIGHT_ID = Confluence.asResource("terra_bloom_bright");
@@ -31,6 +32,7 @@ public final class TerraGraphics {
     private static final ResourceLocation UP_ID = Confluence.asResource("terra_bloom_up");
     private static final ResourceLocation COMPOSITE_ID = Confluence.asResource("terra_composite");
     private static final ResourceLocation RAYS_ID = Confluence.asResource("terra_rays");
+    private static final ResourceLocation UNDERWATER_ID = Confluence.asResource("terra_underwater");
     private static final ResourceLocation POINT_RAYS_ID = Confluence.asResource("terra_point_rays");
     /// 泛光金字塔层数：1/2、1/4、1/8、1/16、1/32
     private static final int LEVELS = 5;
@@ -40,12 +42,14 @@ public final class TerraGraphics {
     private static ShaderInstance up;
     private static ShaderInstance composite;
     private static ShaderInstance rays;
+    private static ShaderInstance underwater;
     private static ShaderInstance pointRays;
 
     /// 合成结果先画到这里，再整块拷回主画面（主画面的颜色和深度在合成时直接当贴图读，不必先复制）
     private static TextureTarget output;
     private static TextureTarget depth;
     private static TextureTarget raysTarget;
+    private static TextureTarget underwaterTarget;
     private static TextureTarget pointRaysTarget;
     /// 灯光光束：最多 4 个点光源在屏幕上的位置 (u, v, 深度, 强度) 和光晕半径
     private static final float[] POINT = new float[16];
@@ -67,6 +71,8 @@ public final class TerraGraphics {
     private static float aerialStrength, aerialDistance, groundFog, fogBaseY;
     /// 热浪扭曲用的时间（秒）
     private static float effectTime;
+    /// 水下：强度（0 = 不在水里）、水面相对相机的高度、光在水中前进的方向、光的颜色（已乘上日月和露天程度）、相机世界坐标（取模，给光纹用）
+    private static float underwaterStrength, surfaceRel, lightDirX, lightDirY, lightDirZ, uwR, uwG, uwB, cameraWorldX, cameraWorldZ;
 
     private TerraGraphics() {}
 
@@ -81,12 +87,13 @@ public final class TerraGraphics {
         consumer.register(new ShaderInstance(provider, UP_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> up = shader);
         consumer.register(new ShaderInstance(provider, COMPOSITE_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> composite = shader);
         consumer.register(new ShaderInstance(provider, RAYS_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> rays = shader);
+        consumer.register(new ShaderInstance(provider, UNDERWATER_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> underwater = shader);
         consumer.register(new ShaderInstance(provider, POINT_RAYS_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> pointRays = shader);
     }
 
     private static boolean active() {
         return ClientConfigs.enhancedGraphics && bright != null && down != null && up != null && composite != null && rays != null
-                && pointRays != null
+                && underwater != null && pointRays != null
                 && !ShaderPackDetector.shaderPackInUse();
     }
 
@@ -116,14 +123,19 @@ public final class TerraGraphics {
         aerialStrength = 0.0F;
         groundFog = 0.0F;
         raysStrength = 0.0F;
-        pointRaysActive = false;
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         if (level != null) TerraEffects.update(minecraft, level, camera, partialTick);
         boolean overworld = level != null && level.dimension() == net.minecraft.world.level.Level.OVERWORLD;
         boolean inAir = camera.getFluidInCamera() == net.minecraft.world.level.material.FogType.NONE;
-        if (level == null || !inAir) return;
+        underwaterStrength = 0.0F;
+        if (level == null) return;
         effectTime = (float) (Math.floorMod(level.getGameTime(), 72000L) + partialTick) / 20.0F;
         capturePointLights(level, camera, viewProj, partialTick);
+        if (camera.getFluidInCamera() == net.minecraft.world.level.material.FogType.WATER) {
+            captureUnderwater(level, camera, partialTick);
+            return;
+        }
+        if (!inAir) return;
         int skyLight = level.getBrightness(net.minecraft.world.level.LightLayer.SKY, camera.getBlockPosition());
         float openSky = skyLight / 15.0F;
         float rain = level.getRainLevel(partialTick);
@@ -186,6 +198,51 @@ public final class TerraGraphics {
             POINT_RADIUS[i] = net.minecraft.util.Mth.clamp(1.3F / Math.max(PointLights.distance[i], 1.0F), 0.012F, 0.25F);
             pointRaysActive = true;
         }
+    }
+
+    /// 相机在水里：找水面高度，算光的方向和强度。水每深一格天空光就少一级，所以越深、越是在洞里，光束和光纹越弱
+    private static void captureUnderwater(net.minecraft.client.multiplayer.ClientLevel level, net.minecraft.client.Camera camera, float partialTick) {
+        float strength = ClientConfigs.underwaterLight / 100.0F;
+        if (strength <= 0.0F) return;
+        net.minecraft.world.phys.Vec3 position = camera.getPosition();
+        net.minecraft.core.BlockPos.MutableBlockPos pos = camera.getBlockPosition().mutable();
+        double surface = position.y + 64.0;
+        for (int i = 0; i < 64; i++) {
+            var fluid = level.getFluidState(pos);
+            if (!fluid.is(net.minecraft.tags.FluidTags.WATER)) {
+                surface = pos.getY();
+                break;
+            }
+            if (!level.getFluidState(pos.above()).is(net.minecraft.tags.FluidTags.WATER)) {
+                surface = pos.getY() + fluid.getHeight(level, pos);
+                break;
+            }
+            pos.move(net.minecraft.core.Direction.UP);
+        }
+        surfaceRel = (float) (surface - position.y);
+        float exposure = level.getBrightness(net.minecraft.world.level.LightLayer.SKY, camera.getBlockPosition()) / 15.0F;
+        float rain = level.getRainLevel(partialTick);
+        float angle = level.getTimeOfDay(partialTick) * net.minecraft.util.Mth.TWO_PI;
+        float sunX = -net.minecraft.util.Mth.sin(angle), sunY = net.minecraft.util.Mth.cos(angle);
+        boolean sunUp = sunY > -0.05F;
+        float dirX = sunUp ? sunX : -sunX, dirY = Math.abs(sunY);
+        float light = (sunUp ? net.minecraft.util.Mth.clamp((sunY + 0.05F) / 0.25F, 0.0F, 1.0F) : 0.25F) * (1.0F - rain * 0.6F);
+        // 光进入水里会折向竖直方向（折射），所以光柱比太阳本身陡得多
+        float lx = -dirX * 0.45F, ly = -Math.max(dirY, 0.35F);
+        float length = net.minecraft.util.Mth.sqrt(lx * lx + ly * ly);
+        lightDirX = lx / length;
+        lightDirY = ly / length;
+        lightDirZ = 0.0F;
+        float intensity = light * exposure * exposure;
+        // 水质随群系变化：光的颜色、吸收、清澈度、自发光（见 UnderwaterMood）
+        UnderwaterMood.update(level, camera, exposure < 0.1F);
+        float night = sunUp ? 1.0F : 0.6F;
+        uwR = UnderwaterMood.get(0) * intensity * night;
+        uwG = UnderwaterMood.get(1) * intensity * night;
+        uwB = UnderwaterMood.get(2) * intensity * (sunUp ? 1.0F : 0.8F);
+        cameraWorldX = (float) (position.x % 4096.0);
+        cameraWorldZ = (float) (position.z % 4096.0);
+        underwaterStrength = strength;
     }
 
     /// 原版地形雾的起点往近处挪一些，远处和天空衔接得更柔和（只改普通地形雾，不碰水下、岩浆和其他效果改过的雾）
@@ -280,6 +337,22 @@ public final class TerraGraphics {
             draw(pointRays);
         }
 
+        // 水下光束（1/4 分辨率）
+        boolean underwaterRays = underwaterStrength > 0.0F && uwB > 0.01F;
+        if (underwaterStrength <= 0.0F) UnderwaterMood.reset();
+        if (underwaterRays) {
+            underwaterTarget = ensureLinear(underwaterTarget, Math.max(1, width / 4), Math.max(1, height / 4));
+            underwaterTarget.bindWrite(true);
+            underwater.setSampler("DepthSampler", depth.getDepthTextureId());
+            underwater.safeGetUniform("InvViewProj").set(INV_VIEW_PROJ);
+            underwater.safeGetUniform("SurfaceY").set(surfaceRel);
+            underwater.safeGetUniform("LightDir").set(lightDirX, lightDirY, lightDirZ);
+            underwater.safeGetUniform("CameraWorld").set(cameraWorldX, 0.0F, cameraWorldZ);
+            underwater.safeGetUniform("Time").set(effectTime);
+            underwater.safeGetUniform("Clarity").set(UnderwaterMood.get(6));
+            draw(underwater);
+        }
+
         // 4) 合成到 output，再整块拷回主画面（glBlitFramebuffer，比画一遍全屏便宜）
         output = ensure(output, width, height, false);
         output.bindWrite(true);
@@ -297,6 +370,17 @@ public final class TerraGraphics {
         composite.safeGetUniform("HazeDistance").set(Math.max(4.0F, TerraEffects.get(TerraEffects.HAZE_DISTANCE)));
         composite.safeGetUniform("Distortion").set(TerraEffects.get(TerraEffects.DISTORTION));
         composite.safeGetUniform("Time").set(effectTime);
+        composite.safeGetUniform("Underwater").set(underwaterStrength);
+        composite.safeGetUniform("SurfaceY").set(surfaceRel);
+        composite.safeGetUniform("UnderwaterLight").set(uwR, uwG, uwB);
+        composite.safeGetUniform("UnderwaterTint").set(UnderwaterMood.get(0), UnderwaterMood.get(1), UnderwaterMood.get(2));
+        composite.safeGetUniform("UnderwaterAbsorb").set(UnderwaterMood.get(3), UnderwaterMood.get(4), UnderwaterMood.get(5));
+        composite.safeGetUniform("UnderwaterClarity").set(UnderwaterMood.get(6));
+        composite.safeGetUniform("UnderwaterGlow").set(UnderwaterMood.get(7), UnderwaterMood.get(8), UnderwaterMood.get(9));
+        composite.safeGetUniform("LightDir").set(lightDirX, lightDirY, lightDirZ);
+        composite.safeGetUniform("CameraWorld").set(cameraWorldX, 0.0F, cameraWorldZ);
+        composite.setSampler("UnderwaterSampler", underwaterRays ? underwaterTarget.getColorTextureId() : blackTexture());
+        composite.setSampler("PointRaysSampler", pointRaysActive ? pointRaysTarget.getColorTextureId() : blackTexture());
         composite.safeGetUniform("ShadowColor").set(TerraEffects.get(TerraEffects.SHADOW_R), TerraEffects.get(TerraEffects.SHADOW_G), TerraEffects.get(TerraEffects.SHADOW_B));
         composite.safeGetUniform("ShadowStrength").set(TerraEffects.get(TerraEffects.SHADOW));
         composite.safeGetUniform("HighlightColor").set(TerraEffects.get(TerraEffects.HIGHLIGHT_R), TerraEffects.get(TerraEffects.HIGHLIGHT_G), TerraEffects.get(TerraEffects.HIGHLIGHT_B));
@@ -307,7 +391,6 @@ public final class TerraGraphics {
         composite.setSampler("DepthSampler", depth.getDepthTextureId());
         composite.setSampler("HandDepthSampler", sceneDepth);
         composite.setSampler("RaysSampler", shafts ? raysTarget.getColorTextureId() : blackTexture());
-        composite.setSampler("PointRaysSampler", pointRaysActive ? pointRaysTarget.getColorTextureId() : blackTexture());
         composite.safeGetUniform("InvViewProj").set(INV_VIEW_PROJ);
         composite.safeGetUniform("CameraY").set(cameraY);
         composite.safeGetUniform("FogColor").set(fogR, fogG, fogB);

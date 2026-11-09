@@ -1,0 +1,81 @@
+{
+    "vertex": "confluence:terra_fullscreen",
+    "fragment": "confluence:terra_underwater",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "DepthSampler"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "InvViewProj",
+            "type": "matrix4x4",
+            "count": 16,
+            "values": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ]
+        },
+        {
+            "name": "SurfaceY",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "LightDir",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                -1.0,
+                0.0
+            ]
+        },
+        {
+            "name": "CameraWorld",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "name": "Time",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "Clarity",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.0
+            ]
+        }
+    ]
+}

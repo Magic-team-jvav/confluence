@@ -39,6 +39,44 @@ uniform vec3 HighlightColor;   // luminance-normalised
 uniform float HighlightStrength;
 uniform vec3 EdgeColor;
 uniform float Pulse;
+// underwater: caustics, absorption, refraction wobble, light shafts
+uniform float Underwater;          // 0 = camera not in water
+uniform float SurfaceY;            // water surface relative to the camera
+uniform vec3 UnderwaterLight;      // light colour * sun/moon * open sky
+uniform vec3 LightDir;             // direction light travels in the water
+uniform vec3 CameraWorld;          // camera world x/z (wrapped)
+uniform sampler2D UnderwaterSampler;
+uniform vec3 UnderwaterTint;       // colour of light in this biome's water (halo, local lights)
+uniform vec3 UnderwaterAbsorb;     // per-block absorption of red, green, blue
+uniform float UnderwaterClarity;   // 1 = clear ocean, lower = murky
+uniform vec3 UnderwaterGlow;       // self-lit caustics (glowing mushroom water)
+
+vec2 cfHash2(vec2 p) {
+    return fract(sin(vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)))) * 43758.5453);
+}
+
+// caustic network: bright where two moving cell centres are equally close (cell borders)
+float cfCaustic(vec2 p, float t) {
+    vec2 cell = floor(p);
+    vec2 f = fract(p);
+    float d1 = 8.0;
+    float d2 = 8.0;
+    for (int y = -1; y <= 1; y++) {
+        for (int x = -1; x <= 1; x++) {
+            vec2 o = vec2(float(x), float(y));
+            vec2 h = cfHash2(cell + o);
+            vec2 pt = o + 0.5 + 0.38 * sin(t * 0.8 + 6.2831 * h);
+            float d = length(pt - f);
+            if (d < d1) {
+                d2 = d1;
+                d1 = d;
+            } else if (d < d2) {
+                d2 = d;
+            }
+        }
+    }
+    return pow(1.0 - smoothstep(0.0, 0.22, d2 - d1), 2.5);
+}
 
 in vec2 texCoord;
 out vec4 fragColor;
@@ -58,10 +96,11 @@ void main() {
     // world distance of this pixel (sky = far away)
     float dist = 100000.0;
     float y = CameraY + 1000.0;
-    bool needWorld = AerialStrength > 0.0 || GroundFog > 0.0 || Haze > 0.0 || Distortion > 0.0;
+    vec3 rel = vec3(0.0);
+    bool needWorld = AerialStrength > 0.0 || GroundFog > 0.0 || Haze > 0.0 || Distortion > 0.0 || Underwater > 0.0;
     if (!sky && needWorld) {
         vec4 p = InvViewProj * vec4(texCoord * 2.0 - 1.0, worldDepth * 2.0 - 1.0, 1.0);
-        vec3 rel = p.xyz / p.w;
+        rel = p.xyz / p.w;
         dist = length(rel);
         y = CameraY + rel.y;
     }
@@ -74,6 +113,11 @@ void main() {
         vec2 offset = vec2(wave * 0.0016, sin(texCoord.x * 60.0 + Time * 3.0) * 0.0007) * Distortion * far;
         uv = clamp(texCoord + offset, vec2(0.0005), vec2(0.9995));
     }
+    // underwater: everything wobbles a little, as seen through moving water
+    if (Underwater > 0.0) {
+        vec2 wobble = vec2(sin(texCoord.y * 38.0 + Time * 2.1), cos(texCoord.x * 33.0 + Time * 1.7)) * 0.0012 * Underwater;
+        uv = clamp(uv + wobble, vec2(0.0005), vec2(0.9995));
+    }
     vec3 scene = texture(Sampler0, uv).rgb;
 
     // atmosphere: only on world pixels (not sky, not the hand)
@@ -81,6 +125,30 @@ void main() {
         float aerial = (1.0 - exp(-dist / AerialDistance)) * AerialStrength;
         float ground = GroundFog * (1.0 - exp(-dist / 40.0)) * exp(-max(y - FogBaseY, 0.0) / 9.0);
         scene = mix(scene, FogColor, clamp(aerial + ground, 0.0, 0.85));
+    }
+    // underwater light: caustics on surfaces below the water line, red light absorbed first, shafts in the water
+    if (Underwater > 0.0) {
+        // local lights (torches, glowing blocks, a torch in hand) light the water too; they matter most
+        // where little sky light reaches, so in sunny shallows the caustics are not doubled
+        float localWeight = 1.0 - clamp(max(UnderwaterLight.r, max(UnderwaterLight.g, UnderwaterLight.b)) * 1.5, 0.0, 1.0);
+        if (!sky && !hand) {
+            float below = SurfaceY - rel.y;
+            if (below > 0.0) {
+                vec2 q = (rel.xz + CameraWorld.xz - LightDir.xz / max(-LightDir.y, 0.2) * below) * 0.55;
+                float c = cfCaustic(q, Time) * 0.7 + cfCaustic(q * 1.9 + 3.1, Time * 1.3) * 0.3;
+                float fade = exp(-dist * 0.05 / UnderwaterClarity) * exp(-below * 0.04 / UnderwaterClarity);
+                float sharp = clamp(UnderwaterClarity, 0.3, 1.3);
+                float lum = dot(scene, vec3(0.2126, 0.7152, 0.0722));
+                vec3 local = UnderwaterTint * smoothstep(0.08, 0.5, lum) * 0.9 * localWeight;
+                scene += scene * c * (UnderwaterLight * 1.8 + local) * fade * sharp * Underwater;
+                scene += c * UnderwaterGlow * exp(-dist * 0.04) * Underwater;
+            }
+            vec3 transmit = exp(-min(dist, 64.0) * UnderwaterAbsorb * Underwater);
+            scene *= mix(vec3(1.0), transmit, 0.6);
+        }
+        scene += texture(UnderwaterSampler, texCoord).r * UnderwaterLight * Underwater;
+        // light scatters in water: bright sources get a wide, water-tinted halo (uses the bloom chain)
+        scene += texture(BloomSampler, uv).rgb * UnderwaterTint * 0.9 * Underwater;
     }
     // close haze of storms and evil biomes (also hides the sky)
     if (!hand && Haze > 0.0) {

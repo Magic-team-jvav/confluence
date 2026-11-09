@@ -48,6 +48,9 @@ public final class ClientConfigs {
     public static int ambientParticles = 60;
     public static int terrariaEffects = 80;
     public static int heatDistortion = 50;
+    public static boolean smoothFluids = true;
+    public static int waterReflections = 70;
+    public static int underwaterLight = 70;
     /// 暴风雪是否播放环境风声（露天与室内为两种音效）。
     public static boolean blizzardAmbience = true;
     /// 关闭监守者的全部音效（脚步、心跳、咆哮、音波等）。默认关闭。
@@ -177,6 +180,9 @@ public final class ClientConfigs {
     private static IntValue AMBIENT_PARTICLES;
     private static IntValue TERRARIA_EFFECTS;
     private static IntValue HEAT_DISTORTION;
+    private static BooleanValue SMOOTH_FLUIDS;
+    private static IntValue WATER_REFLECTIONS;
+    private static IntValue UNDERWATER_LIGHT;
     private static BooleanValue CROSSHAIR_ANIMATION;
     private static ConfigValue<List<? extends String>> CROSSHAIR_ANIMATION_BLACKLIST;
     private static BooleanValue BOW_CROSSHAIR_ANIMATION;
@@ -222,6 +228,9 @@ public final class ClientConfigs {
         ambientParticles = AMBIENT_PARTICLES.get();
         terrariaEffects = TERRARIA_EFFECTS.get();
         heatDistortion = HEAT_DISTORTION.get();
+        smoothFluids = SMOOTH_FLUIDS.get();
+        waterReflections = WATER_REFLECTIONS.get();
+        underwaterLight = UNDERWATER_LIGHT.get();
         blizzardAmbience = BLIZZARD_AMBIENCE.get();
         muteWardenSound = MUTE_WARDEN_SOUND.get();
 
@@ -432,6 +441,9 @@ public final class ClientConfigs {
             AMBIENT_PARTICLES = builder.defineInRange("ambientParticles", 60, 0, 100);
             TERRARIA_EFFECTS = builder.defineInRange("terrariaEffects", 80, 0, 100);
             HEAT_DISTORTION = builder.defineInRange("heatDistortion", 50, 0, 100);
+            SMOOTH_FLUIDS = builder.define("smoothFluids", true);
+            WATER_REFLECTIONS = builder.defineInRange("waterReflections", 70, 0, 100);
+            UNDERWATER_LIGHT = builder.defineInRange("underwaterLight", 70, 0, 100);
             builder.pop();
             builder.push("Weather");
             SHOW_WIND_PARTICLES = builder.defineInRange("showWindParticles", 90, 0, 100);

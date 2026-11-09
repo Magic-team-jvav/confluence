@@ -103,6 +103,9 @@
     "client": [
         "client.MinecraftMixin",
         "client.renderer.GameRendererGraphicsMixin",
+        "client.renderer.LevelFluidSmoothingMixin",
+        "client.renderer.ProgramFluidSmoothingMixin",
+        "client.renderer.ShaderInstanceFluidSmoothingMixin",
         "client.MouseHandlerMixin",
         "client.gui.DeathScreenMixin",
         "client.gui.GuiGraphicsMixin",

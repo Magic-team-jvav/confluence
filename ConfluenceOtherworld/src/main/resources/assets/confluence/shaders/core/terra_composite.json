@@ -21,6 +21,9 @@
             "name": "RaysSampler"
         },
         {
+            "name": "UnderwaterSampler"
+        },
+        {
             "name": "PointRaysSampler"
         }
     ],
@@ -275,6 +278,90 @@
             "type": "float",
             "count": 1,
             "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "Underwater",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "SurfaceY",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "UnderwaterLight",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "name": "LightDir",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                -1.0,
+                0.0
+            ]
+        },
+        {
+            "name": "CameraWorld",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "name": "UnderwaterTint",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.6,
+                0.85,
+                1.0
+            ]
+        },
+        {
+            "name": "UnderwaterAbsorb",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.08,
+                0.03,
+                0.022
+            ]
+        },
+        {
+            "name": "UnderwaterClarity",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.0
+            ]
+        },
+        {
+            "name": "UnderwaterGlow",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                0.0,
                 0.0
             ]
         }

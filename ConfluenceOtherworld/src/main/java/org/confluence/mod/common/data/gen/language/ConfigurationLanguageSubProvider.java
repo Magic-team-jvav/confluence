@@ -171,6 +171,12 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.terrariaEffects.tooltip", "Colours the picture by biome, event and depth like Terraria: purple Corruption, red Crimson, bright Hallow, blue glowing mushrooms, Blood Moon and eclipse, sandstorm and blizzard haze, grey caverns, the Underworld. 0 turns it off.", "像泰拉瑞亚一样按生物群系、事件和深度给画面调色：腐化发紫、猩红发红、神圣明亮、发光蘑菇幽蓝，血月和日食，沙尘暴和暴风雪的浓雾，灰暗的洞穴，地狱。0 为关闭。");
         language.add("confluence.configuration.heatDistortion", "Heat Haze", "热浪扭曲");
         language.add("confluence.configuration.heatDistortion.tooltip", "Shimmering air in the Underworld and over a sunny desert. 0 turns it off.", "地狱和晴天沙漠远处空气的扭曲。0 为关闭。");
+        language.add("confluence.configuration.smoothFluids", "Smooth Liquids", "平滑液体");
+        language.add("confluence.configuration.smoothFluids.tooltip", "Liquid surfaces glide to their new level instead of jumping block by block. Most noticeable with finite-liquid mods such as Flowing Fluids.", "液体表面平滑地变到新高度，不再一格一格地跳。配合 Flowing Fluids 这类有限液体模组效果最明显。");
+        language.add("confluence.configuration.waterReflections", "Water Reflections", "水面反射");
+        language.add("confluence.configuration.waterReflections.tooltip", "Sky reflection that grows at shallow angles, sun and moon glints and small moving ripples on water under the open sky. 0 turns it off.", "露天水面的天空反射（越斜看越明显）、日月高光和细小的流动波纹。0 为关闭。");
+        language.add("confluence.configuration.underwaterLight", "Underwater Light", "水下光照");
+        language.add("confluence.configuration.underwaterLight.tooltip", "Under water: light shafts from the surface, moving caustics on the bottom and walls, red light fading first with distance and a slight wobble. Weaker the deeper you are and away from the open sky. 0 turns it off.", "水下：从水面射下的光束、水底和壁上流动的焦散光纹、红光随距离先消失、轻微的晃动。越深、越远离露天越弱。0 为关闭。");
         language.add("confluence.configuration.Weather", "Weather", "天气");
         language.add("confluence.configuration.Weather.button", "Weather", "天气");
         language.add("confluence.configuration.Weather.tooltip", "Wind, storms and lightning settings.", "风、暴风雪、沙尘暴与闪电设置。");

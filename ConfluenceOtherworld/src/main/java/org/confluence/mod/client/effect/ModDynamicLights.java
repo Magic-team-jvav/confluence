@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.confluence.lib.client.DynamicLightProvider;
 import org.confluence.lib.client.DynamicLightRegister;
@@ -61,12 +62,16 @@ public final class ModDynamicLights {
         DynamicLightRegister.registerItem(MaterialItems.SOUL_OF_BRIGHT.get(), 3);
         DynamicLightRegister.registerItem(MaterialItems.SOUL_OF_VOIGHT.get(), 3);
         DynamicLightRegister.registerItem(Items.LAVA_BUCKET, 15);
+        // OpalLight 数据里登记过的物品，亮度以数据为准（在相位剑规则之前，返回 -1 表示没登记、继续往下）
+        DynamicLightRegister.registerItemOverride(Item.class, OpalLightIntegration::itemLightLevel);
         DynamicLightRegister.registerItemOverride(BasePhasebladeItem.class, (stack, holder, projectile) ->
                 !projectile && BasePhasebladeItem.isTurnOn(stack)
                         && !(holder instanceof Player player && BasePhasebladeItem.isThrown(player, stack)) ? 12 : 0);
         DynamicLightRegister.registerItemFallback(stack -> !(stack.getItem() instanceof BlockItem)
                 && stack.is(ModTags.Items.PROVIDE_LIGHT) ? 10 : 0);
         DynamicLightRegister.registerItemColor(OpalLightIntegration::itemLightColor);
+        // OpalLight 数据里登记过的实体（发光生物、相位剑射弹）：亮度和颜色取自数据，由 Magic Lib 平滑照亮
+        DynamicLightRegister.registerEntity(Entity.class, OpalLightIntegration::entityLight);
         DynamicLightRegister.registerEquipment(EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD);
         DynamicLightRegister.registerEntity(Entity.class, DynamicLightProvider.entity(entity -> !(entity instanceof Projectile) && entity.isOnFire() ? 12 : 0));
         DynamicLightRegister.registerEntity(LivingEntity.class, DynamicLightProvider.entity(living -> (living.hasEffect(ModEffects.SHINE) || living.hasEffect(MobEffects.GLOWING))

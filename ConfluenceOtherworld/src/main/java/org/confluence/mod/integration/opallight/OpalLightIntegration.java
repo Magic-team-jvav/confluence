@@ -7,12 +7,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.Mth;
+import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.lib.client.DynamicLightRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ThunderstrikeVfx;
@@ -23,6 +24,7 @@ import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.mesdag.opallight.OpalLightConfig;
 import org.mesdag.opallight.light.color.OpalColor;
+import org.mesdag.opallight.light.data.DynamicLightDefinition;
 import org.mesdag.opallight.light.data.LightConditions;
 import org.mesdag.opallight.light.data.LightDataLoader;
 import org.mesdag.opallight.light.data.LightProfile;
@@ -45,8 +47,6 @@ public final class OpalLightIntegration {
     private final Map<ClientLevel, WorldSources> worlds = new WeakHashMap<>();
 
     private static final class WorldSources {
-        private final Map<UUID, Long> attachmentIds = new HashMap<>();
-        private final Set<UUID> activeAttachments = new HashSet<>();
         private long phaseTick = Long.MIN_VALUE;
         private final Map<UUID, EnumSet<BasePhasebladeItem.PhaseColor>> thrownColors = new HashMap<>();
     }
@@ -55,15 +55,12 @@ public final class OpalLightIntegration {
         return worlds.computeIfAbsent(level, ignored -> new WorldSources());
     }
 
-    private long nextId = Long.MIN_VALUE;
-
     private OpalLightIntegration() {}
 
     public static void register() {
         LightDataLoader.registerNamedSection("attachments");
         LightDataLoader.registerNamedSection("effects");
         LightDataLoader.registerNamedSection("particles");
-        DynamicLightRegister.suppressItemLightWhen(OpalLightIntegration::handlesItem);
         DynamicLightRegister.suppressEntityLightWhen(OpalLightIntegration::handlesEntity);
         LightConditions.registerItem(Confluence.asResource("phaseblade_available"), value -> {
             boolean expected = value.getAsBoolean();
@@ -80,8 +77,8 @@ public final class OpalLightIntegration {
             var variant = Fairy.Variant.valueOf(value.getAsString().toUpperCase(Locale.ROOT));
             return (stack, entity) -> entity instanceof Fairy fairy && fairy.getVariant() == variant;
         });
-        /// 单独采集附件与状态效果的位置；色彩仍从 JSON 读取。
-        DynamicLights.registerCollector(Confluence.asResource("effects"), INSTANCE::collect);
+        /// 附件与状态效果（光辉、发光）会跟着实体移动：交给 Magic Lib 每帧平滑照亮，色彩和亮度仍从 JSON 读取。
+        DynamicLightRegister.addCollector(INSTANCE::collectSmooth);
         DynamicLights.registerCollector(Confluence.asResource("particle_emitters"), INSTANCE::collectParticleEmitters);
         DynamicLights.registerCollector(Confluence.asResource("thunderstrike"), ThunderstrikeVfx::collectLights);
     }
@@ -103,32 +100,84 @@ public final class OpalLightIntegration {
                 : living.hasEffect(MobEffects.GLOWING) && handlesEffect(GLOWING);
     }
 
-    private static boolean handlesItem(ItemStack stack, Entity owner) {
-        if (!OpalLightConfig.isEnabled()) return false;
-        if (stack.isEmpty()) return false;
+    /// 光照的分工（保证同一样东西拿在手里、扔出去、放下来时光一致）：
+    /// - 会动的光源 —— 手持/掉落物品、射弹、生物、附件、状态效果 —— 一律由 Magic Lib 的逐像素动态光照亮，位置平滑跟随；
+    ///   OpalLight 的动态光按方块格子做泛洪传播、异步计算，人一走光就一格一格地跳，所以不交给它（DynamicLightSourcesMixin 跳过）。
+    /// - 亮度和颜色只有一个来源：OpalLight 的 JSON 数据（物品、实体、效果、方块的颜色）；没有登记的才用 ModDynamicLights 里的固定值。
+    /// - 放下的方块、展示框里的物品、一次性的闪光（枪口、爆炸、命中）仍由 OpalLight 照。
+    public static boolean smoothItem(ItemStack stack) {
+        return !stack.isEmpty();
+    }
+
+    /// 手持、掉落物品的亮度：OpalLight 给这个物品登记了就用登记的亮度（条件不满足时为 0，例如相位剑关着或已经扔出去），
+    /// 否则返回 -1，交给 ModDynamicLights 里的固定亮度和方块自身的发光等级。
+    public static int itemLightLevel(ItemStack stack, Entity holder, boolean projectile) {
+        if (!OpalLightConfig.isEnabled() || stack.isEmpty() || projectile) return -1;
+        LightDataLoader data = LightDataLoader.INSTANCE;
+        if (!data.hasItemDefinition(stack.getItem())) return -1;
+        DynamicLightDefinition definition = data.getItemDefinition(stack, holder, holder != null && holder.isOnFire());
+        return definition == null ? 0 : Math.max(0, definition.lightLevel());
+    }
+
+    /// 手持、掉落物品的光色：先看 OpalLight 给物品登记的颜色（岩浆桶、灵魂、相位剑），
+    /// 再看方块物品对应方块的颜色（彩色火把）；亮度归一到最亮分量为 1，颜色循环变化的按当前时刻取色。
+    /// 没有登记时返回 -1，按原版的暖白光处理。
+    public static int itemLightColor(ItemStack stack, Entity holder) {
+        if (!OpalLightConfig.isEnabled() || stack.isEmpty()) return -1;
         LightDataLoader data = LightDataLoader.INSTANCE;
         if (data.hasItemDefinition(stack.getItem())) {
-            var definition = data.getItemDefinition(stack, owner, owner != null && owner.isOnFire());
-            return definition != null && definition.lightLevel() > 0;
+            // 和亮度用同一个持有者判断条件：相位剑的“可用”条件没有持有者时不成立，取不到颜色
+            DynamicLightDefinition definition = data.getItemDefinition(stack, holder, holder != null && holder.isOnFire());
+            return definition == null ? -1 : definitionColor(definition, 0.0F);
         }
-        // 发光的方块物品（火把等）拿在手里或掉在地上时交给 Magic Lib，见 smoothBlockItem
-        return false;
+        if (!(stack.getItem() instanceof BlockItem item)) return -1;
+        return profileColor(data.getProfile(item.getBlock().defaultBlockState()), 0.0F);
     }
 
-    /// 方块物品（火把等）拿在手里或掉在地上时，由 Magic Lib 的逐像素动态光照亮，位置平滑跟随实体。
-    /// OpalLight 的动态光按方块格子做泛洪传播，还要异步算完再重建网格，人一走光就一格一格地跳，
-    /// 所以这类物品不交给它（DynamicLightSourcesMixin 跳过）；放下的方块仍由 OpalLight 照出彩色光。
-    public static boolean smoothBlockItem(ItemStack stack) {
-        return stack.getItem() instanceof BlockItem && !LightDataLoader.INSTANCE.hasItemDefinition(stack.getItem());
+    /// 实体自身的光（生物、相位剑射弹等，OpalLight 的 entities 数据）：位置按 partialTick 插值，亮度和颜色取自数据
+    public static DynamicLightDispatcher.LightSource entityLight(Entity entity, float partialTick) {
+        if (!OpalLightConfig.isEnabled() || entity.isRemoved() || entity.isSpectator()) return null;
+        DynamicLightDefinition definition = LightDataLoader.INSTANCE.getEntityDefinition(entity);
+        if (definition == null || definition.lightLevel() <= 0) return null;
+        int color = definitionColor(definition, partialTick);
+        double x = Mth.lerp(partialTick, entity.xo, entity.getX());
+        double y = Mth.lerp(partialTick, entity.yo, entity.getY());
+        double z = Mth.lerp(partialTick, entity.zo, entity.getZ());
+        // 和 OpalLight 取点一致：生物在眼睛下方一点，其他在包围盒中间
+        y += entity instanceof LivingEntity ? entity.getEyeHeight() - 0.3 : entity.getBbHeight() * 0.5;
+        return light(new Vec3(x, y, z), definition.lightLevel(), color);
     }
 
-    /// 手持、掉落方块物品的光色：取 OpalLight 给这个方块登记的颜色（彩色火把），亮度归一到最亮分量为 1。
-    /// 没有登记或颜色会循环变化（彩虹火把）时返回 -1，按白光处理。
-    public static int itemLightColor(ItemStack stack) {
-        if (!OpalLightConfig.isEnabled() || !smoothBlockItem(stack) || !(stack.getItem() instanceof BlockItem item)) return -1;
-        LightProfile profile = LightDataLoader.INSTANCE.getProfile(item.getBlock().defaultBlockState());
-        if (profile == null || profile.animated() || profile.color() == null) return -1;
-        OpalColor color = profile.color();
+    private static DynamicLightDispatcher.LightSource light(Vec3 position, int level, int color) {
+        int rgb = color < 0 ? DynamicLightDispatcher.LightSource.WHITE : color | DynamicLightDispatcher.LightSource.TINTED;
+        return new DynamicLightDispatcher.LightSource(position, Mth.clamp(level, 0, 15) * 17, rgb);
+    }
+
+    private static int definitionColor(DynamicLightDefinition definition, float partialTick) {
+        return definition.cycle().isPresent() ? cycleColor(definition.cycle().get(), partialTick) : normalized(definition.color());
+    }
+
+    private static int profileColor(LightProfile profile, float partialTick) {
+        if (profile == null) return -1;
+        return profile.animated() && profile.cycle() != null ? cycleColor(profile.cycle(), partialTick) : normalized(profile.color());
+    }
+
+    /// 和 OpalLight 一样：在颜色列表里按时间循环，相邻两色线性过渡
+    private static int cycleColor(LightDataLoader.CyclePattern cycle, float partialTick) {
+        List<OpalColor> colors = cycle.colors();
+        if (colors == null || colors.isEmpty()) return -1;
+        ClientLevel level = Minecraft.getInstance().level;
+        double time = level == null ? 0.0 : level.getGameTime() + partialTick;
+        int period = Math.max(1, cycle.periodTicks());
+        double position = (time % period) / period * colors.size();
+        int index = Mth.floor(position) % colors.size();
+        float t = (float) (position - Mth.floor(position));
+        OpalColor a = colors.get(index), b = colors.get((index + 1) % colors.size());
+        return normalized(OpalColor.of(Mth.lerp(t, a.r(), b.r()), Mth.lerp(t, a.g(), b.g()), Mth.lerp(t, a.b(), b.b())));
+    }
+
+    private static int normalized(OpalColor color) {
+        if (color == null) return -1;
         float max = Math.max(color.r(), Math.max(color.g(), color.b()));
         if (!(max > 0.0F)) return -1;
         int r = Math.round(Math.max(0.0F, color.r()) / max * 255.0F);
@@ -141,7 +190,6 @@ public final class OpalLightIntegration {
         if (!OpalLightConfig.isEnabled()) return false;
         var definition = LightDataLoader.INSTANCE.getEntityDefinition(entity);
         if (definition != null && definition.lightLevel() > 0) return true;
-        if (entity instanceof ItemEntity item && handlesItem(item.getItem(), entity)) return true;
         return false;
     }
 
@@ -182,25 +230,28 @@ public final class OpalLightIntegration {
         return true;
     }
 
-    private void collect(ClientLevel level, DynamicLights.Sink sink) {
-        var world = world(level);
-        world.activeAttachments.clear();
+    /// 每帧（Magic Lib 采集光源时）：召唤物附件和带光辉/发光效果的生物
+    private void collectSmooth(float partialTick) {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level == null || !OpalLightConfig.isEnabled()) return;
         for (Player player : level.players()) {
             if (player.isRemoved() || player.isSpectator()) continue;
             for (var attachment : player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache()) {
                 NamedLightDefinition source = source("attachments", attachment.getType().location());
-                if (source == null || attachment.isRemove()) continue;
-                UUID uuid = attachment.getUuid();
-                world.activeAttachments.add(uuid);
-                long id = world.attachmentIds.computeIfAbsent(uuid, ignored -> nextId++);
-                sink.point(id, attachment.getRenderNode(1.0F).pos(), source.profile(), source.lightLevel());
+                if (source == null || source.lightLevel() <= 0 || attachment.isRemove()) continue;
+                DynamicLightDispatcher.INSTANCE.addLightSource(light(attachment.getRenderNode(partialTick).pos(),
+                        source.lightLevel(), profileColor(source.profile(), partialTick)));
             }
         }
-        world.attachmentIds.keySet().retainAll(world.activeAttachments);
-        Entity local = Minecraft.getInstance().player;
-        if (local != null && local.level() == level) collectEntity(local, sink);
         for (Entity entity : level.entitiesForRendering()) {
-            if (entity != local) collectEntity(entity, sink);
+            if (!(entity instanceof LivingEntity living) || entity.isRemoved() || entity.isSpectator()) continue;
+            NamedLightDefinition source = living.hasEffect(ModEffects.SHINE) ? source("effects", SHINE)
+                    : living.hasEffect(MobEffects.GLOWING) ? source("effects", GLOWING) : null;
+            if (source == null || source.lightLevel() <= 0) continue;
+            Vec3 position = new Vec3(Mth.lerp(partialTick, entity.xo, entity.getX()),
+                    Mth.lerp(partialTick, entity.yo, entity.getY()) + entity.getEyeHeight() - 0.3,
+                    Mth.lerp(partialTick, entity.zo, entity.getZ()));
+            DynamicLightDispatcher.INSTANCE.addLightSource(light(position, source.lightLevel(), profileColor(source.profile(), partialTick)));
         }
     }
 
@@ -214,18 +265,6 @@ public final class OpalLightIntegration {
             NamedLightDefinition source = source("particles", emitter.particleId);
             if (source == null || source.lightLevel() <= 0) continue;
             sink.point(entry.getIntKey(), emitter.getPosition(), source.profile(), source.lightLevel());
-        }
-    }
-
-    private void collectEntity(Entity entity, DynamicLights.Sink sink) {
-        if (entity.isRemoved() || entity.isSpectator()) return;
-        long id = (long) entity.getId() << 32;
-        if (entity instanceof LivingEntity living) {
-            NamedLightDefinition source = living.hasEffect(ModEffects.SHINE) ? source("effects", SHINE)
-                    : living.hasEffect(MobEffects.GLOWING) ? source("effects", GLOWING) : null;
-            if (source != null) {
-                sink.point(id, new Vec3(entity.getX(), entity.getEyeY() - 0.3, entity.getZ()), source.profile(), source.lightLevel());
-            }
         }
     }
 

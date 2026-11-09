@@ -131,6 +131,11 @@ public final class ClientGameEventSystem {
         LanternNightSprite.collectLights(partialTick);
     }
 
+    /// 这一帧的灯笼位置（画质的灯光光束和水面倒影用）
+    public static List<net.minecraft.world.phys.Vec3> lanternLights() {
+        return LanternNightSprite.lights();
+    }
+
     static float random() {
         return (float) Math.random();
     }

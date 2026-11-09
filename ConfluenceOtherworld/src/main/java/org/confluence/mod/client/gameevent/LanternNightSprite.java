@@ -186,6 +186,10 @@ final class LanternNightSprite {
     private static final int LIGHT_COLOR = 0xFFB060;
     private static final java.util.List<net.minecraft.world.phys.Vec3> LANTERNS = new java.util.ArrayList<>(MAX_LIGHTS);
 
+    static java.util.List<net.minecraft.world.phys.Vec3> lights() {
+        return java.util.Collections.unmodifiableList(LANTERNS);
+    }
+
     static void collectLights(float partialTick) {
         LANTERNS.clear();
         ParticleEmitter current = emitter;

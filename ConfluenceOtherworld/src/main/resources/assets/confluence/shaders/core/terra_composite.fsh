@@ -15,6 +15,7 @@ uniform float Aspect;
 uniform sampler2D DepthSampler;      // world depth, captured before the hand is drawn
 uniform sampler2D HandDepthSampler;  // depth after the hand pass (hand pixels differ from world depth)
 uniform sampler2D RaysSampler;       // light shafts (half resolution)
+uniform sampler2D PointRaysSampler;  // rays from bright point lights (lanterns), already coloured
 uniform mat4 InvViewProj;
 uniform float CameraY;
 uniform vec3 FogColor;
@@ -88,6 +89,7 @@ void main() {
     }
     // light shafts (also over the hand: light in the air in front of it)
     if (RaysStrength > 0.0) scene += texture(RaysSampler, texCoord).r * RaysStrength * RaysColor;
+    scene += texture(PointRaysSampler, texCoord).rgb;
     if (BloomIntensity > 0.0) scene += texture(BloomSampler, uv).rgb * BloomIntensity;
     vec3 color = shoulder(scene * Exposure);
 

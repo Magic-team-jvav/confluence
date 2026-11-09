@@ -31,6 +31,7 @@ public final class TerraGraphics {
     private static final ResourceLocation UP_ID = Confluence.asResource("terra_bloom_up");
     private static final ResourceLocation COMPOSITE_ID = Confluence.asResource("terra_composite");
     private static final ResourceLocation RAYS_ID = Confluence.asResource("terra_rays");
+    private static final ResourceLocation POINT_RAYS_ID = Confluence.asResource("terra_point_rays");
     /// 泛光金字塔层数：1/2、1/4、1/8、1/16、1/32
     private static final int LEVELS = 5;
 
@@ -39,11 +40,18 @@ public final class TerraGraphics {
     private static ShaderInstance up;
     private static ShaderInstance composite;
     private static ShaderInstance rays;
+    private static ShaderInstance pointRays;
 
     /// 合成结果先画到这里，再整块拷回主画面（主画面的颜色和深度在合成时直接当贴图读，不必先复制）
     private static TextureTarget output;
     private static TextureTarget depth;
     private static TextureTarget raysTarget;
+    private static TextureTarget pointRaysTarget;
+    /// 灯光光束：最多 4 个点光源在屏幕上的位置 (u, v, 深度, 强度) 和光晕半径
+    private static final float[] POINT = new float[16];
+    private static final float[] POINT_RADIUS = new float[4];
+    private static final org.joml.Vector4f POINT_CLIP = new org.joml.Vector4f();
+    private static boolean pointRaysActive;
     private static final TextureTarget[] DOWN = new TextureTarget[LEVELS];
     private static final TextureTarget[] UP = new TextureTarget[LEVELS];
     private static boolean depthCaptured;
@@ -73,10 +81,12 @@ public final class TerraGraphics {
         consumer.register(new ShaderInstance(provider, UP_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> up = shader);
         consumer.register(new ShaderInstance(provider, COMPOSITE_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> composite = shader);
         consumer.register(new ShaderInstance(provider, RAYS_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> rays = shader);
+        consumer.register(new ShaderInstance(provider, POINT_RAYS_ID, DefaultVertexFormat.BLIT_SCREEN), shader -> pointRays = shader);
     }
 
     private static boolean active() {
         return ClientConfigs.enhancedGraphics && bright != null && down != null && up != null && composite != null && rays != null
+                && pointRays != null
                 && !ShaderPackDetector.shaderPackInUse();
     }
 
@@ -106,12 +116,14 @@ public final class TerraGraphics {
         aerialStrength = 0.0F;
         groundFog = 0.0F;
         raysStrength = 0.0F;
+        pointRaysActive = false;
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         if (level != null) TerraEffects.update(minecraft, level, camera, partialTick);
         boolean overworld = level != null && level.dimension() == net.minecraft.world.level.Level.OVERWORLD;
         boolean inAir = camera.getFluidInCamera() == net.minecraft.world.level.material.FogType.NONE;
         if (level == null || !inAir) return;
         effectTime = (float) (Math.floorMod(level.getGameTime(), 72000L) + partialTick) / 20.0F;
+        capturePointLights(level, camera, viewProj, partialTick);
         int skyLight = level.getBrightness(net.minecraft.world.level.LightLayer.SKY, camera.getBlockPosition());
         float openSky = skyLight / 15.0F;
         float rain = level.getRainLevel(partialTick);
@@ -149,6 +161,30 @@ public final class TerraGraphics {
             raysR = 0.55F;
             raysG = 0.65F;
             raysB = 0.9F;
+        }
+    }
+
+    /// 灯光光束：最近的 4 个灯笼投到屏幕上；在屏幕外太远、在相机后面的不要。天越黑越强
+    private static void capturePointLights(net.minecraft.client.multiplayer.ClientLevel level, net.minecraft.client.Camera camera,
+                                           org.joml.Matrix4f viewProj, float partialTick) {
+        pointRaysActive = false;
+        java.util.Arrays.fill(POINT, 0.0F);
+        float strength = ClientConfigs.lightShafts / 100.0F;
+        if (strength <= 0.0F) return;
+        PointLights.select(camera.getPosition());
+        float darkness = PointLights.darkness(level, partialTick);
+        for (int i = 0; i < PointLights.count; i++) {
+            org.joml.Vector4f clip = viewProj.transform(POINT_CLIP.set(PointLights.x[i], PointLights.y[i], PointLights.z[i], 1.0F));
+            if (clip.w <= 0.05F) continue;
+            float u = clip.x / clip.w * 0.5F + 0.5F, v = clip.y / clip.w * 0.5F + 0.5F;
+            if (u < -0.3F || u > 1.3F || v < -0.3F || v > 1.3F) continue;
+            POINT[i * 4] = u;
+            POINT[i * 4 + 1] = v;
+            POINT[i * 4 + 2] = Math.min(clip.z / clip.w * 0.5F + 0.5F, 0.99999F);
+            POINT[i * 4 + 3] = strength * darkness * PointLights.fade(i);
+            // 越远光晕在屏幕上越小
+            POINT_RADIUS[i] = net.minecraft.util.Mth.clamp(1.3F / Math.max(PointLights.distance[i], 1.0F), 0.012F, 0.25F);
+            pointRaysActive = true;
         }
     }
 
@@ -229,6 +265,21 @@ public final class TerraGraphics {
             rays.safeGetUniform("Aspect").set(width / (float) height);
             draw(rays);
         }
+        // 灯光光束（1/4 分辨率）
+        if (pointRaysActive) {
+            pointRaysTarget = ensureLinear(pointRaysTarget, Math.max(1, width / 4), Math.max(1, height / 4));
+            pointRaysTarget.bindWrite(true);
+            pointRays.setSampler("DepthSampler", depth.getDepthTextureId());
+            pointRays.safeGetUniform("Light0").set(POINT[0], POINT[1], POINT[2], POINT[3]);
+            pointRays.safeGetUniform("Light1").set(POINT[4], POINT[5], POINT[6], POINT[7]);
+            pointRays.safeGetUniform("Light2").set(POINT[8], POINT[9], POINT[10], POINT[11]);
+            pointRays.safeGetUniform("Light3").set(POINT[12], POINT[13], POINT[14], POINT[15]);
+            pointRays.safeGetUniform("Radius").set(POINT_RADIUS[0], POINT_RADIUS[1], POINT_RADIUS[2], POINT_RADIUS[3]);
+            pointRays.safeGetUniform("Color").set(PointLights.RED, PointLights.GREEN, PointLights.BLUE);
+            pointRays.safeGetUniform("Aspect").set(width / (float) height);
+            draw(pointRays);
+        }
+
         // 4) 合成到 output，再整块拷回主画面（glBlitFramebuffer，比画一遍全屏便宜）
         output = ensure(output, width, height, false);
         output.bindWrite(true);
@@ -256,6 +307,7 @@ public final class TerraGraphics {
         composite.setSampler("DepthSampler", depth.getDepthTextureId());
         composite.setSampler("HandDepthSampler", sceneDepth);
         composite.setSampler("RaysSampler", shafts ? raysTarget.getColorTextureId() : blackTexture());
+        composite.setSampler("PointRaysSampler", pointRaysActive ? pointRaysTarget.getColorTextureId() : blackTexture());
         composite.safeGetUniform("InvViewProj").set(INV_VIEW_PROJ);
         composite.safeGetUniform("CameraY").set(cameraY);
         composite.safeGetUniform("FogColor").set(fogR, fogG, fogB);

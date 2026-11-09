@@ -46,7 +46,6 @@ import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.BrushData;
-import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.command.GameEventArgument;
 import org.confluence.mod.common.data.command.PrefixArgument;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -81,20 +80,11 @@ public final class ModCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))
-                .then(Commands.literal("gamePhase")
-                        .then(Commands.literal("get").executes(context -> {
-                            String gamePhase = KillBoard.INSTANCE.getGamePhase().getSerializedName();
-                            context.getSource().sendSystemMessage(Component.literal("GamePhase: " + gamePhase));
-                            return 1;
-                        }))
-                        .then(Commands.literal("set").then(Commands.argument("value", EnumArgument.enumArgument(GamePhase.class)).executes(context -> {
-                            GamePhase gamePhase = context.getArgument("value", GamePhase.class);
-                            ServerLevel serverLevel = context.getSource().getLevel();
-                            KillBoard.INSTANCE.setGamePhase(serverLevel.getServer(), gamePhase);
-                            context.getSource().sendSuccess(() -> Component.literal("Has been set to " + gamePhase.getSerializedName()), true);
-                            return 1;
-                        })))
-                )
+                .then(Commands.literal("gamePhase").then(Commands.literal("get").executes(context -> {
+                    String gamePhase = KillBoard.INSTANCE.getGamePhase().getSerializedName();
+                    context.getSource().sendSystemMessage(Component.literal("GamePhase: " + gamePhase));
+                    return 1;
+                })))
                 .then(Commands.literal("wind")
                         .then(Commands.literal("get").executes(ModCommands::windGet))
                         .then(Commands.literal("set")
@@ -118,7 +108,7 @@ public final class ModCommands {
                         .then(Commands.argument("location", BlockPosArgument.blockPos()).then(Commands.argument("tickUntilLanding", IntegerArgumentType.integer(0)).executes(context -> {
                             BlockPos location = BlockPosArgument.getBlockPos(context, "location");
                             int tickUntilLanding = IntegerArgumentType.getInteger(context, "tickUntilLanding");
-                            ConfluenceData.get(context.getSource().getLevel()).setMeteorite(location, tickUntilLanding);
+                            MeteoriteTracker.INSTANCE.setMeteorite(location, tickUntilLanding);
                             return 1;
                         })))
                 )
@@ -415,7 +405,7 @@ public final class ModCommands {
     /// （负值天然合法，不必再约定"负风速 = 反向"）。`set 0 0` 就是强制静风。
     ///
     /// @param ticks 强制风持续的 **tick** 数（20 tick = 1 秒）。传 {@link Integer#MAX_VALUE} 表示本局一直有效，
-    ///                           由 `/confluence wind stop` 解除。参数名带 `Ticks` 是为了让 Brigadier 的用法提示自己说明单位。
+    ///                                        由 `/confluence wind stop` 解除。参数名带 `Ticks` 是为了让 Brigadier 的用法提示自己说明单位。
     private static int windSet(CommandContext<CommandSourceStack> context, int ticks) {
         float x = FloatArgumentType.getFloat(context, "x");
         float z = FloatArgumentType.getFloat(context, "z");

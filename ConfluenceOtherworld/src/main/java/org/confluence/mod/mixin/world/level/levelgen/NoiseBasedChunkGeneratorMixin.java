@@ -3,10 +3,12 @@ package org.confluence.mod.mixin.world.level.levelgen;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
@@ -14,24 +16,39 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
-import org.confluence.mod.mixed.INoiseBasedChunkGenerator;
+import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.mod.mixed.IInjectChunkGenerator;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NoiseBasedChunkGenerator.class)
-public abstract class NoiseBasedChunkGeneratorMixin implements INoiseBasedChunkGenerator {
+public abstract class NoiseBasedChunkGeneratorMixin implements IInjectChunkGenerator, SelfGetter<NoiseBasedChunkGenerator> {
+    @Shadow
+    public abstract Holder<NoiseGeneratorSettings> generatorSettings();
+
     /// 由 [org.confluence.mod.common.worldgen.biome.injector.ConfluenceBiomeInjector#install] 在服务器启动时写入，之后只读。
     @Unique
     @Nullable
     private SurfaceRules.RuleSource confluence$surfaceRules;
 
     @Override
-    public void confluence$setSurfaceRules(SurfaceRules.RuleSource rules) {
+    public SurfaceRules.RuleSource confluence$getOriginalSurfaceRules() {
+        return generatorSettings().value().surfaceRule();
+    }
+
+    @Override
+    public void confluence$setOverrideSurfaceRules(SurfaceRules.RuleSource rules) {
         this.confluence$surfaceRules = rules;
+    }
+
+    @Override
+    public BiomeSource confluence$getGenerationBiomeSource() {
+        return confluence$self().getBiomeSource();
     }
 
     @Inject(method = "doCreateBiomes", at = @At("RETURN"))

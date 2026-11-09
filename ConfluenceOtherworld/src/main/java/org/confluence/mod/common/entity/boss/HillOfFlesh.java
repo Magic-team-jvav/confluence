@@ -767,7 +767,7 @@ public class HillOfFlesh extends BaseBoss {
         super.die(source);
         if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
-                KillBoard.INSTANCE.defeat(serverLevel.getServer(), getType());
+                KillBoard.INSTANCE.defeat(getType());
                 for (var player : getOnlineCombatParticipants()) {
                     TreasureBagItem.createItemEntity(this, player);
                     AchievementUtils.awardAchievement(player, "still_hungry");

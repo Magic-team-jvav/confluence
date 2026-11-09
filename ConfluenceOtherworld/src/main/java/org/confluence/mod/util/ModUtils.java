@@ -60,6 +60,8 @@ import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.MoneyDropSource;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -71,10 +73,13 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_furniture.TerraFurniture;
@@ -312,6 +317,15 @@ public final class ModUtils {
 
     public static boolean isHardmode() {
         return SecretFlagMatcher.matchesSecretFlag(IWorldOptions.HARDMODE);
+    }
+
+    public static void prepareHardmode() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) return;
+        IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+        SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
+        GlobalCloakData.INSTANCE.reveal(OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState());
+        HardmodeConvertor.INSTANCE.start(server);
     }
 
     /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。

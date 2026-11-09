@@ -42,14 +42,6 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
         return name().toLowerCase(Locale.ROOT);
     }
 
-    public boolean isHardmode() {
-        return isAtLeast(WALL_OF_FLESH);
-    }
-
-    public boolean isGraduated() {
-        return isAtLeast(MOON_LORD);
-    }
-
     /// 判断阶段是否高于other
     public boolean isAboveThan(GamePhase other) {
         return getOrder() > other.getOrder();

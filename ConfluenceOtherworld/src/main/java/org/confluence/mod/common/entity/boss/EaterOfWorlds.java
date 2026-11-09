@@ -495,7 +495,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         super.die(source);
         if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
-                KillBoard.INSTANCE.defeat(serverLevel.getServer(), getType());
+                KillBoard.INSTANCE.defeat(getType());
                 if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, serverLevel)
                         || !MeteoriteTracker.INSTANCE.spawnAtNextNight && serverLevel.random.nextBoolean()) {
                     MeteoriteTracker.INSTANCE.spawnAtNextNight = true;

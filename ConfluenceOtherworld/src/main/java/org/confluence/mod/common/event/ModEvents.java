@@ -4,11 +4,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -49,7 +46,6 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.DispenserRegistration;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.wind.WindState;
@@ -145,7 +141,8 @@ public final class ModEvents {
                     WindState.INSTANCE,
                     GameEventSystem.INSTANCE,
                     HouseHandler.INSTANCE,
-                    AnglerData.INSTANCE
+                    AnglerData.INSTANCE,
+                    MeteoriteTracker.INSTANCE
             );
             GlobalCloakData.INSTANCE.initialize();
             PortEventHandler.postEvent(new RegisterEvilMaterialReplacesEvent());

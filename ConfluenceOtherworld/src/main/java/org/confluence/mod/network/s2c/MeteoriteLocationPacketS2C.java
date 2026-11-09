@@ -5,8 +5,10 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -36,13 +38,14 @@ public record MeteoriteLocationPacketS2C(
     /// @param location         陨石坐标，等于[0, 0, 0]是无效的
     /// @param tickUntilLanding 落地时间，小于等于0将只刷新指南针
     public static void sendToAll(BlockPos location, int tickUntilLanding) {
-        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null && !BlockPos.ZERO.equals(location)) {
+        if (ServerLifecycleHooks.getCurrentServer() != null && !BlockPos.ZERO.equals(location)) {
             PortPacketDistributor.sendToAllPlayers(new MeteoriteLocationPacketS2C(location, tickUntilLanding));
         }
     }
 
-    public static void sendToClient(ServerPlayer player, BlockPos location, int tickUntilLanding) {
-        if (BlockPos.ZERO.equals(location)) return;
-        PortPacketDistributor.sendToPlayer(player, new MeteoriteLocationPacketS2C(location, tickUntilLanding));
+    public static void refreshMeteorCompass(ServerPlayer player) {
+        BlockPos pos = MeteoriteTracker.INSTANCE.getLocation();
+        if (BlockPos.ZERO.equals(pos)) return;
+        PortPacketDistributor.sendToPlayer(player, new MeteoriteLocationPacketS2C(pos, 0));
     }
 }

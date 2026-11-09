@@ -802,8 +802,8 @@ public class Retinazer extends AbstractTwinEye {
         super.die(source);
         if (level() instanceof ServerLevel serverLevel && !isAlive() && shouldShowMessage()) {
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
-                KillBoard.INSTANCE.defeat(serverLevel.getServer(), BossEntities.RETINAZER.get());
-                KillBoard.INSTANCE.defeat(serverLevel.getServer(), BossEntities.SPAZMATISM.get());
+                KillBoard.INSTANCE.defeat(getType());
+                KillBoard.INSTANCE.defeat(BossEntities.SPAZMATISM.get());
                 for (var player : getOnlineCombatParticipants()) {
                     TreasureBagItem.createItemEntity(this, player);
                 }

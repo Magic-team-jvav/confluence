@@ -1,5 +1,6 @@
 package org.confluence.mod.common.worldgen.biome.injector;
 
+import com.google.common.base.Suppliers;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
@@ -10,39 +11,25 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.biome.TheEndBiomeSource;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
-import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeNoiseBasedChunkGenerator;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.mod.common.worldgen.biome.*;
-import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
-import org.confluence.mod.mixed.INoiseBasedChunkGenerator;
+import org.confluence.mod.mixed.IInjectBiomeSource;
+import org.confluence.mod.mixed.IInjectChunkGenerator;
 import org.confluence.mod.util.OverworldUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
-/// Confluence Biome Injector —— 自研群系添加器的公共入口，取代 TerraBlender。
-///
-/// 用法：
-///
-/// 1. {@link #bootstrap()} 在 `FMLCommonSetupEvent` 里登记区域；
-/// 2. {@link #install(MinecraftServer)} 在 `ServerAboutToStartEvent` 里按 `LevelStem`
-///    建表并挂到对应的 `BiomeSource` 实例上；
-/// 3. 地表规则用 {@link #addSurfaceRules} 登记，在 `NoiseBasedChunkGenerator#buildSurface`
-///    与 `#applyCarvers` 处按维度类别拼到真正的原版规则源上。
-///
-/// 与 TerraBlender 的对照见各子类文档；关键差异是不共享全局索引、不复制原版规则、
-/// 不使用占位群系、不往共享的数据包注册表对象上挂可变状态。
 public final class ConfluenceBiomeInjector {
     private static final List<BiomeRegion> OVERWORLD_REGIONS = new ArrayList<>();
     private static final List<BiomeRegion> NETHER_REGIONS = new ArrayList<>();
@@ -63,13 +50,15 @@ public final class ConfluenceBiomeInjector {
 
         NETHER_REGIONS.add(new AshForestRegion());
         NETHER_REGIONS.add(new AshWastelandRegion());
-}
+
+        Confluence.LOGGER.info("Registered {} overworld biome regions and {} nether biome regions", OVERWORLD_REGIONS.size(), NETHER_REGIONS.size());
+    }
 
     public static List<BiomeRegion> regionsOf(BiomeRegionType type) {
         bootstrap();
         return switch (type) {
-            case OVERWORLD -> OVERWORLD_REGIONS;
-            case NETHER -> NETHER_REGIONS;
+            case OVERWORLD -> List.copyOf(OVERWORLD_REGIONS);
+            case NETHER -> List.copyOf(NETHER_REGIONS);
         };
     }
 
@@ -94,23 +83,22 @@ public final class ConfluenceBiomeInjector {
 
             // 地表规则：按维度类别把本模组规则拼到真正的原版规则源上，再挂到生成器实例。
             // 注入点（NoiseBasedChunkGeneratorMixin）只做替换，不需要自己判断维度。
-            if (stem.generator() instanceof NoiseBasedChunkGenerator noiseGenerator) {
+            if (stem.generator() instanceof IInjectChunkGenerator injectGenerator) {
                 SurfaceRuleRegistry.Category category = SurfaceRuleRegistry.categoryOf(dimensionType);
                 if (category != null) {
-                    SurfaceRules.RuleSource vanilla = noiseGenerator.generatorSettings().value().surfaceRule();
-                    INoiseBasedChunkGenerator.of(noiseGenerator).confluence$setSurfaceRules(SurfaceRuleRegistry.compose(category, vanilla));
+                    SurfaceRules.RuleSource vanilla = injectGenerator.confluence$getOriginalSurfaceRules();
+                    injectGenerator.confluence$setOverrideSurfaceRules(SurfaceRuleRegistry.compose(category, vanilla));
                 }
-            }
-
-            BiomeSource source = stem.generator().getBiomeSource();
-            if (source instanceof MultiNoiseBiomeSource multiNoise) {
-                BiomeRegionType type = BiomeRegionType.byDimensionType(dimensionType);
-                if (type == null) {
-                    continue;
+                BiomeSource source = injectGenerator.confluence$getGenerationBiomeSource();
+                if (source instanceof IInjectBiomeSource injectSource) {
+                    BiomeRegionType type = BiomeRegionType.byDimensionType(dimensionType);
+                    if (type == null) {
+                        continue;
+                    }
+                    handlers.put(source, createRegionHandler(type, seed, biomeRegistry, injectSource, injectGenerator, allowEvilRemap));
+                } else if (source instanceof TheEndBiomeSource) {
+                    handlers.put(source, TheEndBiomeHolder.handler());
                 }
-                handlers.put(source, createRegionHandler(type, seed, biomeRegistry, multiNoise, stem.generator(), allowEvilRemap));
-            } else if (source instanceof TheEndBiomeSource) {
-                handlers.put(source, TheEndBiomeHolder.handler());
             }
         }
 
@@ -121,21 +109,24 @@ public final class ConfluenceBiomeInjector {
         BiomeSourceInjector.uninstall();
     }
 
-    private static BiomeSourceHandler createRegionHandler(BiomeRegionType type, long seed, Registry<Biome> biomeRegistry, MultiNoiseBiomeSource source, ChunkGenerator generator, boolean allowEvilRemap) {
+    private static BiomeSourceHandler createRegionHandler(BiomeRegionType type, long seed, Registry<Biome> biomeRegistry, IInjectBiomeSource injectSource, IInjectChunkGenerator injectGenerator, boolean allowEvilRemap) {
         ResourceKey<Biome> from = null;
         ResourceKey<Biome> to = null;
 
-        if (generator instanceof BannedBiomeNoiseBasedChunkGenerator banned) {
+        BannedBiomeNoiseBasedChunkGenerator bannedGenerator = injectGenerator.confluence$getBannedGenerator();
+        if (bannedGenerator == null) {
+            if (type == BiomeRegionType.OVERWORLD && allowEvilRemap) {
+                Pair<Holder<Biome>, Holder<Biome>> pair = injectSource.confluence$getBiomePair();
+                if (pair != null && pair.getFirst() != null && pair.getSecond() != null) {
+                    from = pair.getFirst().unwrapKey().orElse(null);
+                    to = pair.getSecond().unwrapKey().orElse(null);
+                }
+            }
+        } else {
             // 自建世界预设里显式声明了「禁止哪个、换成哪个」，直接用它，
             // 不需要再靠 BannedBiomeMultiNoiseBiomeSource 在查询时换。
-            from = banned.bannedBiome;
-            to = banned.targetBiome;
-        } else if (type == BiomeRegionType.OVERWORLD && allowEvilRemap) {
-            Pair<Holder<Biome>, Holder<Biome>> pair = IMultiNoiseBiomeSource.of(source).confluence$getBiomePair();
-            if (pair != null && pair.getFirst() != null && pair.getSecond() != null) {
-                from = pair.getFirst().unwrapKey().orElse(null);
-                to = pair.getSecond().unwrapKey().orElse(null);
-            }
+            from = bannedGenerator.bannedBiome;
+            to = bannedGenerator.targetBiome;
         }
 
         UnaryOperator<ResourceKey<Biome>> remap = UnaryOperator.identity();
@@ -147,7 +138,7 @@ public final class ConfluenceBiomeInjector {
             // 所以「被换掉」的那个用 /locate biome 一定找不到 —— 这是设计如此，不是 bug。
         }
 
-        RegionBiomeHandler.PostProcessor post = type == BiomeRegionType.OVERWORLD ? new OverworldPostProcessor(source) : null;
+        RegionBiomeHandler.PostProcessor post = type == BiomeRegionType.OVERWORLD ? new OverworldPostProcessor(Suppliers.memoize(injectSource::confluence$getJungleBiomes)) : null;
         return new RegionBiomeHandler(BiomeRegionTable.build(type, seed, biomeRegistry, regionsOf(type), remap), post);
     }
 
@@ -168,11 +159,11 @@ public final class ConfluenceBiomeInjector {
     /// 主世界的收尾替换：「不是蜜蜂」密种把非特定群系换成丛林群系，以及出生点附近的
     /// 邪恶群系保护。原先这些逻辑散在 `OverworldUtils#replaceBiome` 与 TB 的注入里。
     private static final class OverworldPostProcessor implements RegionBiomeHandler.PostProcessor {
-        private final MultiNoiseBiomeSource source;
+        private final Supplier<List<Holder<Biome>>> jungleGetter;
         private volatile List<Holder<Biome>> jungle;
 
-        OverworldPostProcessor(MultiNoiseBiomeSource source) {
-            this.source = source;
+        OverworldPostProcessor(Supplier<List<Holder<Biome>>> jungleGetter) {
+            this.jungleGetter = jungleGetter;
         }
 
         @Override
@@ -181,12 +172,7 @@ public final class ConfluenceBiomeInjector {
         }
 
         private List<Holder<Biome>> jungle() {
-            List<Holder<Biome>> cached = this.jungle;
-            if (cached == null) {
-                cached = source.possibleBiomes().stream().filter(OverworldUtils::isJungle).toList();
-                this.jungle = cached;
-            }
-            return cached;
+            return jungleGetter.get();
         }
     }
 }

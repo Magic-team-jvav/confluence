@@ -29,6 +29,7 @@ import org.confluence.mod.common.block.functional.terraform.Solution;
 import org.confluence.mod.common.block.natural.BaseDroopingPlantsHeadBlock;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -199,7 +200,7 @@ public enum EnvironmentalMachines implements IGlobalData {
     }
 
     // 拆除时同时失效覆盖索引，剩余库存仍由方块交还玩家。
-    public State remove(ServerLevel level, BlockPos pos) {
+    public @Nullable State remove(ServerLevel level, BlockPos pos) {
         State state = machines.remove(new Key(level.dimension(), pos));
         if (state != null) coverage.remove(level.dimension());
         return state;
@@ -232,7 +233,7 @@ public enum EnvironmentalMachines implements IGlobalData {
     }
 
     // 只查询目标区块的候选机器；范围重叠时选择距离最近的有效机器，同距按坐标排序。
-    public Solution solutionAt(ServerLevel level, BlockPos pos) {
+    public @Nullable Solution solutionAt(ServerLevel level, BlockPos pos) {
         List<Key> candidates = coverage(level.dimension()).get(ChunkPos.asLong(pos.getX() >> 4, pos.getZ() >> 4));
         if (candidates == null) return null;
         Key selected = null;

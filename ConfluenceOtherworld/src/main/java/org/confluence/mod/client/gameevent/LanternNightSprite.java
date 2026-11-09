@@ -5,9 +5,11 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WeatherHandler;
@@ -84,7 +86,10 @@ final class LanternNightSprite {
     }
 
     static void renderLanternNight(LocalPlayer player, RenderLevelStageEvent event) {
-        if (player.level().dimension() != OverworldUtils.dimension()) return;
+        ResourceKey<Level> dimension = player.level().dimension();
+        if (dimension != OverworldUtils.dimension() || OverworldUtils.inUnderworld(dimension, player.getY())) {
+            return;
+        }
         float partialTick = event.getPartialTick();
         float rainLevel = player.level().getRainLevel(partialTick);
         if (rainLevel > 1 - Mth.EPSILON) return;

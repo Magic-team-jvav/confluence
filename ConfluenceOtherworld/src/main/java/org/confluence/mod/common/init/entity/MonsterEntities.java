@@ -18,7 +18,6 @@ import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.entity.monster.CreatureAttributeBuilder.DynamicValue.byWorldPhase;
 
 /// 怪物注册层（1.20.1 分叉后架构的 `common/init/entity/MonsterEntities`）。
@@ -1531,43 +1530,43 @@ public final class MonsterEntities {
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseSlime>> registerSlime(String registryId, String chineseName, boolean passiveByDay, int size) {
         DeferredHolder<EntityType<?>, EntityType<BaseSlime>> entry = registerSlime(registryId, passiveByDay, size, false);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseSlime>> registerSlime(String registryId, String chineseName, boolean passiveByDay, int size, boolean honeyConvertible) {
         DeferredHolder<EntityType<?>, EntityType<BaseSlime>> entry = registerEntity(registryId, EntityType.Builder.<BaseSlime>of((entityType, level) -> new BaseSlime(entityType, level, passiveByDay, size, honeyConvertible), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerEntity(String registryId, String chineseName, EntityType.Builder<T> builder) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = ENTITIES.register(registryId, id -> builder.build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float w, float h) {
         DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> entry = registerLand(registryId, w, h, BaseWarriorMonster.LandSoundProfile.ROUTINE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<MeleeSkeleton>> registerSkeleton(String registryId, String chineseName, float w, float h) {
         DeferredHolder<EntityType<?>, EntityType<MeleeSkeleton>> entry = registerSkeleton(registryId, w, h, MeleeSkeleton.BehaviorProfile.BLOOD_MOON_DOORS);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<MeleeSkeleton>> registerSkeleton(String registryId, String chineseName, float width, float height, MeleeSkeleton.BehaviorProfile behaviorProfile) {
         DeferredHolder<EntityType<?>, EntityType<MeleeSkeleton>> entry = registerEntity(registryId, EntityType.Builder.<MeleeSkeleton>of((type, level) -> new MeleeSkeleton(type, level, false, behaviorProfile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<GoblinMonster>> registerGoblinLand(String registryId, String chineseName, float width, float height, ItemStack defaultMainHand, BaseWarriorMonster.LandAnimationProfile animationProfile) {
         DeferredHolder<EntityType<?>, EntityType<GoblinMonster>> entry = registerGoblinLand(registryId, width, height, defaultMainHand, animationProfile, GoblinMonster.DoorBehavior.NONE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1575,43 +1574,43 @@ public final class MonsterEntities {
         DeferredHolder<EntityType<?>, EntityType<GoblinMonster>> entry = registerEntity(registryId, EntityType.Builder.<GoblinMonster>of(
                 (type, level) -> new GoblinMonster(type, level, defaultMainHand, animationProfile, doorBehavior),
                 MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<JellyFish>> registerJellyFish(String registryId, String chineseName, JellyFish.Profile profile) {
         DeferredHolder<EntityType<?>, EntityType<JellyFish>> entry = registerEntity(registryId, EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, profile), MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<Snatcher>> registerSnatcher(String registryId, String chineseName, Snatcher.Profile profile) {
         DeferredHolder<EntityType<?>, EntityType<Snatcher>> entry = registerEntity(registryId, EntityType.Builder.<Snatcher>of((type, level) -> new Snatcher(type, level, profile), MobCategory.MONSTER).sized(1.0F, 1.0F).fireImmune().clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<ChargingMonster>> registerCharger(String registryId, String chineseName, float width, float height, double chargeSpeed, int windupTicks) {
         DeferredHolder<EntityType<?>, EntityType<ChargingMonster>> entry = registerEntity(registryId, EntityType.Builder.<ChargingMonster>of((type, level) -> new ChargingMonster(type, level, chargeSpeed, windupTicks), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> registerHumanoidLand(String registryId, String chineseName, float width, float height, ItemStack defaultMainHand) {
         DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> entry = registerHumanoidLand(registryId, width, height, defaultMainHand, BaseWarriorMonster.LandSoundProfile.ROUTINE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> registerHumanoidLand(String registryId, String chineseName, float width, float height, ItemStack defaultMainHand, BaseWarriorMonster.LandSoundProfile soundProfile) {
         DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> entry = registerHumanoidLand(registryId, width, height, defaultMainHand, soundProfile, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> registerHumanoidLand(String registryId, String chineseName, float width, float height, ItemStack defaultMainHand, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.LandAnimationProfile animationProfile) {
         DeferredHolder<EntityType<?>, EntityType<HumanoidWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<HumanoidWarriorMonster>of((type, level) -> new HumanoidWarriorMonster(type, level, defaultMainHand, soundProfile, animationProfile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1619,25 +1618,25 @@ public final class MonsterEntities {
         DeferredHolder<EntityType<?>, EntityType<FlyingFishMonster>> entry = registerEntity(registryId, EntityType.Builder.<FlyingFishMonster>of(
                 (type, level) -> new FlyingFishMonster(type, level, pursuitProfile, 0.2),
                 MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> registerAcceleratingLand(String registryId, String chineseName, float width, float height, double pursuitSpeedBonus, double meleeSpeed, boolean ignoreLightPathCost, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile) {
         DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> entry = registerAcceleratingLand(registryId, width, height, pursuitSpeedBonus, meleeSpeed, ignoreLightPathCost, animationProfile, soundProfile, BaseWarriorMonster.DoorBehavior.NONE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> registerAcceleratingLand(String registryId, String chineseName, float width, float height, double pursuitSpeedBonus, double meleeSpeed, boolean ignoreLightPathCost, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.DoorBehavior doorBehavior) {
         DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<BaseWarriorMonster>of((type, level) -> new BaseWarriorMonster(type, level, pursuitSpeedBonus, animationProfile, soundProfile, meleeSpeed, ignoreLightPathCost, doorBehavior), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile) {
         DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> entry = registerJumpingLand(registryId, width, height, profile, BaseWarriorMonster.LandAnimationProfile.WALK_ONLY);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1648,44 +1647,44 @@ public final class MonsterEntities {
                         (type, level) -> new JumpingWarriorMonster(
                                 type, level, profile, animationProfile),
                         MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile) {
         DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> entry = registerJumpingLand(registryId, width, height, profile, animationProfile, soundProfile, 1.0);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, double meleeSpeed) {
         DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<JumpingWarriorMonster>of((type, level) -> new JumpingWarriorMonster(type, level, profile, animationProfile, soundProfile, meleeSpeed), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, double meleeSpeed, boolean mummy) {
         DeferredHolder<EntityType<?>, EntityType<JumpingWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<JumpingWarriorMonster>of((type, level) -> new JumpingWarriorMonster(type, level, profile, animationProfile, soundProfile, meleeSpeed, mummy), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<DarkCaster>> registerCaster(String registryId, String chineseName, float width, float height, DarkCaster.Profile profile) {
         DeferredHolder<EntityType<?>, EntityType<DarkCaster>> entry = registerEntity(registryId, EntityType.Builder.<DarkCaster>of((type, level) -> new DarkCaster(type, level, profile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseWormPart>> registerWormSegment(String registryId, String chineseName) {
         DeferredHolder<EntityType<?>, EntityType<BaseWormPart>> entry = registerEntity(registryId, EntityType.Builder.of(BaseWormPart::new, MobCategory.MISC)
                 .sized(1.5F, 1.5F).clientTrackingRange(10).updateInterval(1).noSave());
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<SimpleWormMonster>> registerWorm(String registryId, String chineseName, int segments, float width, float height, SimpleWormMonster.Role role, Supplier<EntityType<BaseWormPart>> segmentType) {
         DeferredHolder<EntityType<?>, EntityType<SimpleWormMonster>> entry = registerEntity(registryId, EntityType.Builder.<SimpleWormMonster>of((type, level) -> new SimpleWormMonster(type, level, segments, role, segmentType.get()), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10).updateInterval(1));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1693,31 +1692,31 @@ public final class MonsterEntities {
         DeferredHolder<EntityType<?>, EntityType<SimpleWormMonster>> entry = registerEntity(registryId, EntityType.Builder.<SimpleWormMonster>of(
                         (type, level) -> new SimpleWormMonster(type, level, role, anatomy, segmentType.get()), MobCategory.MONSTER)
                 .sized(width, height).clientTrackingRange(10).updateInterval(1));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.LandSoundProfile soundProfile) {
         DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> entry = registerLand(registryId, width, height, soundProfile, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.0, false);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.LandAnimationProfile animationProfile, double meleeSpeed, boolean ignoreLightPathCost) {
         DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> entry = registerLand(registryId, width, height, soundProfile, animationProfile, meleeSpeed, ignoreLightPathCost, BaseWarriorMonster.DoorBehavior.NONE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.LandAnimationProfile animationProfile, double meleeSpeed, boolean ignoreLightPathCost, BaseWarriorMonster.DoorBehavior doorBehavior) {
         DeferredHolder<EntityType<?>, EntityType<BaseWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<BaseWarriorMonster>of((type, level) -> new BaseWarriorMonster(type, level, 0.0, animationProfile, soundProfile, meleeSpeed, ignoreLightPathCost, doorBehavior), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerEntityWithEnglishName(String registryId, String chineseName, String englishName, EntityType.Builder<T> builder) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = ENTITIES.register(registryId, id -> builder.build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

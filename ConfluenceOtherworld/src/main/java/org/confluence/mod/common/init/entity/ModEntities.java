@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.entity;
 
 import com.google.common.collect.Iterables;
-
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -12,7 +11,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
 import org.confluence.lib.common.entitiy.EmptyEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.*;
@@ -56,7 +54,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
@@ -424,19 +421,19 @@ public final class ModEntities {
 
     private static <E extends BaseMinecartEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerMinecart(String registryId, String chineseName, EntityType.EntityFactory<E> factory) {
         DeferredHolder<EntityType<?>, EntityType<E>> entry = ENTITIES.register(registryId, id -> EntityType.Builder.of(factory, MobCategory.MISC).sized(0.98F, 0.7F).passengerAttachments(0.1875F).clientTrackingRange(8).build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <E extends AbstractHookEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerHook(String registryId, String chineseName, EntityType.EntityFactory<E> supplier) {
         DeferredHolder<EntityType<?>, EntityType<E>> entry = registerHook(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <E extends BaseBombEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerBomb(String registryId, String chineseName, EntityType.EntityFactory<E> supplier, float size) {
         DeferredHolder<EntityType<?>, EntityType<E>> entry = ENTITIES.register(registryId, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(size, size).clientTrackingRange(4).updateInterval(10).fireImmune().build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -448,25 +445,25 @@ public final class ModEntities {
                 .noSummon()
                 .noSave()
                 .build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerEntityType(String registryId, String chineseName, Function<ResourceLocation, EntityType<T>> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = ENTITIES.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <E extends AbstractHookEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerHookWithEnglishName(String registryId, String chineseName, String englishName, EntityType.EntityFactory<E> supplier) {
         DeferredHolder<EntityType<?>, EntityType<E>> entry = registerHook(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerEntityTypeWithEnglishName(String registryId, String chineseName, String englishName, Function<ResourceLocation, EntityType<T>> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = ENTITIES.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

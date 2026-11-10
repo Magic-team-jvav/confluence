@@ -10,15 +10,10 @@ import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.item.common.CursedFlameItem;
-import org.confluence.mod.common.item.common.GelItem;
-import org.confluence.mod.common.item.common.LostEnchantedPageItem;
-import org.confluence.mod.common.item.common.MushroomItem;
-import org.confluence.mod.common.item.common.VoidCrystalItem;
+import org.confluence.mod.common.item.common.*;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -212,49 +207,49 @@ public class MaterialItems {
 
     private static DeferredItem<Item> register(String registryId, String chineseName) {
         DeferredItem<Item> entry = ITEMS.register(registryId, () -> new Item(new Item.Properties()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<Item> register(String registryId, String chineseName, ModRarity rarity) {
         DeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<Item> registerItemSimple(String registryId, String chineseName, Item.Properties properties) {
         DeferredItem<Item> entry = ITEMS.registerSimpleItem(registryId, properties);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<Item> registerItemSimple(String registryId, String chineseName) {
         DeferredItem<Item> entry = ITEMS.registerSimpleItem(registryId);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName) {
         DeferredItem<Item> entry = ITEMS.register(registryId, () -> new Item(new Item.Properties()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static DeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName, ModRarity rarity) {
         DeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

@@ -17,7 +17,6 @@ import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 /// 小动物（动物）注册层（1.20.1 分叉后架构的 `common/init/entity/CritterEntities`）。
 ///
@@ -210,19 +209,19 @@ public final class CritterEntities {
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = register(registryId, factory, 0.4F, 0.5F, 8);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerInsect(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = registerCompact(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerCompact(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = register(registryId, factory, 0.5F, 0.3F, 8);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -231,31 +230,31 @@ public final class CritterEntities {
                 .sized(width, height)
                 .clientTrackingRange(trackingRange)
                 .build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerHostile(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = ENTITIES.register(registryId, id -> EntityType.Builder.of(factory, MobCategory.MONSTER).sized(0.4F, 0.5F).clientTrackingRange(10).build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerHostileCompact(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = ENTITIES.register(registryId, id -> EntityType.Builder.of(factory, MobCategory.MONSTER).sized(0.5F, 0.3F).clientTrackingRange(10).build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> registerEntityType(String registryId, String chineseName, Function<ResourceLocation, EntityType<T>> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = ENTITIES.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> DeferredHolder<EntityType<?>, EntityType<T>> registerInsectWithEnglishName(String registryId, String chineseName, String englishName, EntityType.EntityFactory<T> factory) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = registerCompact(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

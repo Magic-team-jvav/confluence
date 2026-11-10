@@ -12,7 +12,6 @@ import org.confluence.mod.util.ModUtils;
 
 import java.util.function.IntSupplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class PotBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -43,13 +42,13 @@ public class PotBlocks {
 
     private static DeferredBlock<BasePotBlock> registerWithItem(String registryId, String chineseName, float moneyRatio, IntSupplier invMoneyHoleChance) {
         DeferredBlock<BasePotBlock> entry = registerWithItem(registryId, moneyRatio, invMoneyHoleChance);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredBlock<BasePotBlock> registerWithItem(String registryId, String chineseName, float moneyRatio, int invMoneyHoleChance) {
         DeferredBlock<BasePotBlock> entry = registerWithItem(registryId, moneyRatio, () -> invMoneyHoleChance);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

@@ -7,7 +7,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class QuestedFishes {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -60,13 +59,13 @@ public class QuestedFishes {
 
     private static DeferredItem<Item> register(String registryId, String chineseName) {
         DeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName) {
         DeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

@@ -5,7 +5,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.common.IconItem;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class IconItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -32,7 +31,7 @@ public class IconItems {
 
     private static DeferredItem<IconItem> register(String registryId, String chineseName) {
         DeferredItem<IconItem> entry = ITEMS.register(registryId, IconItem::new);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

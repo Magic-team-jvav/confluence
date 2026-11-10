@@ -11,7 +11,6 @@ import org.confluence.mod.common.item.common.BasePickaxeItem;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.item.ModItems.attributes;
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 
@@ -52,7 +51,7 @@ public class PickaxeItems {
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

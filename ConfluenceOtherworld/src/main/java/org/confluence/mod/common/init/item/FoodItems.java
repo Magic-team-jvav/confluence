@@ -29,7 +29,6 @@ import java.util.function.Supplier;
 
 import static net.minecraft.world.item.Items.BOWL;
 import static net.minecraft.world.item.Items.GLASS_BOTTLE;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.item.food.ModFoodProperties.hasEffectProperties;
 
 public class FoodItems {
@@ -295,7 +294,7 @@ public class FoodItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -304,13 +303,13 @@ public class FoodItems {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().rarity(rarity).stackTo(64).food(foodProperties.get()).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<BaseFoodItem> registerDrinkingFood(String registryId, String chineseName, ModRarity rarity, Supplier<FoodProperties> foodProperties, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType) {
         DeferredItem<BaseFoodItem> entry = registerDrinkingFood(registryId, rarity, foodProperties, duration, useAnim, drinkingSoundType, eatingSoundType, builder -> {});
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -325,13 +324,13 @@ public class FoodItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -340,13 +339,13 @@ public class FoodItems {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().rarity(rarity).stackTo(64).food(foodProperties.get()).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static DeferredItem<BaseFoodItem> registerDrinkingFoodWithEnglishName(String registryId, String chineseName, String englishName, ModRarity rarity, Supplier<FoodProperties> foodProperties, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType) {
         DeferredItem<BaseFoodItem> entry = registerDrinkingFood(registryId, rarity, foodProperties, duration, useAnim, drinkingSoundType, eatingSoundType, builder -> {});
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
@@ -361,7 +360,7 @@ public class FoodItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

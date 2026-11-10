@@ -21,7 +21,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 
 import java.util.function.Consumer;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class ArmorItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -1277,7 +1276,7 @@ public class ArmorItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1287,7 +1286,7 @@ public class ArmorItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

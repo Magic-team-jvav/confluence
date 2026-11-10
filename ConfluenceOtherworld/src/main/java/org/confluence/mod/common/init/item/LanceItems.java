@@ -7,7 +7,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.common.BaseLanceItem;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class LanceItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -25,7 +24,7 @@ public class LanceItems {
                 baseAttackDamage,
                 baseKnockback
         ));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

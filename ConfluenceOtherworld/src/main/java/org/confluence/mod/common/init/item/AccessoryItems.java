@@ -40,7 +40,6 @@ import java.util.function.Supplier;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
 import static org.confluence.lib.common.component.ModRarity.*;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.of;
 import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.units;
 
@@ -240,19 +239,19 @@ public class AccessoryItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <I extends BaseCurioItem> DeferredItem<I> registerDirectly(String registryId, String chineseName, Function<String, I> function) {
         DeferredItem<I> entry = ITEMS.register(registryId, () -> function.apply(registryId));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -262,13 +261,13 @@ public class AccessoryItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <I extends BaseCurioItem> DeferredItem<I> registerDirectlyWithEnglishName(String registryId, String chineseName, String englishName, Function<String, I> function) {
         DeferredItem<I> entry = ITEMS.register(registryId, () -> function.apply(registryId));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

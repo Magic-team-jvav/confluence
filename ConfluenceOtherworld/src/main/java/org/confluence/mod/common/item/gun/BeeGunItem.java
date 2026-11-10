@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BeeGunItem extends ManaGunItem {
-    public BeeGunItem(Properties properties) {
-        super(properties, 4, 4.6f, 1, 0.01f, 0.04f, 2, 1.5F, ModRarity.GREEN, 5);
+    public BeeGunItem() {
+        super(new Properties(), 4, 4.6f, 1, 0.01f, 0.04f, 2, 1.5F, ModRarity.GREEN, 5);
     }
 
     public List<Projectile> createProjectiles(ServerPlayer player) {

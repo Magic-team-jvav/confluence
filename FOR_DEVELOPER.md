@@ -10,7 +10,9 @@
 # 对于相同事件，在一个逻辑端内不要有重复的事件订阅
 - 已经有一个death(LivingDeathEvent event)了，就不许出现deathSoul(LivingDeathEvent event)
 
-# 不要有单独的事件注册总线，全部集中到一个类里订阅，且方法名必须满足：fooBar$Post(FooBarEvent.Post event)
+# 不要有单独的事件注册总线，全部集中到一个类里订阅
+- 方法名必须满足：fooBar$Post(FooBarEvent.Post event)
+- 如果注册的事件用了EventPriority，那就写成fooBar\$Post\$\<EventPriority in BigCamelCase\>(FooBarEvent.Post event)
 - 如果类名里有Living，就不用写livingDeath可以写death
 
 事件订阅类里不要写非事件订阅方法，如各类工具方法

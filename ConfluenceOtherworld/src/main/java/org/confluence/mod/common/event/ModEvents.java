@@ -65,10 +65,7 @@ import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.entity.TargetingIntegration;
 import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModBiomes;
-import org.confluence.mod.common.init.ModFluids;
-import org.confluence.mod.common.init.ModGunProperties;
-import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.CreatureSpawnPlacements;
@@ -78,7 +75,6 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.DispenserRegistration;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.wind.WindState;
@@ -168,7 +164,7 @@ public final class ModEvents {
             );
             GlobalCloakData.INSTANCE.initialize();
             ModLoader.postEvent(new RegisterEvilMaterialReplacesEvent());
-            DispenserRegistration.boostrap();
+            ModDispenserBehaviors.boostrap();
         });
     }
 

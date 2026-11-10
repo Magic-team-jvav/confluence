@@ -13,7 +13,16 @@ import org.confluence.mod.util.OverworldUtils;
 public final class ModMiniBiomes {
     private ModMiniBiomes() {}
 
-    public static void init() {}
+    public static void init() {
+        MiniBiome.register(SHIMMER);
+        MiniBiome.register(TOWN);
+        MiniBiome.register(BEE_HIVE);
+        MiniBiome.register(SPIDER_NEST);
+        MiniBiome.register(GRANITE_CAVE);
+        MiniBiome.register(MARBLE_CAVE);
+        MiniBiome.register(METEORITE);
+        MiniBiome.register(GRAVEYARD);
+    }
 
     /// 花岗岩洞按专属材料计数，保留人工构建的可能。
     public static final MiniBiomeType GRANITE_CAVE = MiniBiomeType
@@ -88,15 +97,4 @@ public final class ModMiniBiomes {
             .threshold(NPCSpawner.TOWN_NPC_THRESHOLD, 8)
             .provider((level, pos) -> level instanceof ServerLevel serverLevel ? TownPopulation.count(serverLevel, pos) : 0)
             .build();
-
-    static {
-        MiniBiome.register(SHIMMER);
-        MiniBiome.register(TOWN);
-        MiniBiome.register(BEE_HIVE);
-        MiniBiome.register(SPIDER_NEST);
-        MiniBiome.register(GRANITE_CAVE);
-        MiniBiome.register(MARBLE_CAVE);
-        MiniBiome.register(METEORITE);
-        MiniBiome.register(GRAVEYARD);
-    }
 }

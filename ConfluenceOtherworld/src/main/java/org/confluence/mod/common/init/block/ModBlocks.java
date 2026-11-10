@@ -37,7 +37,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.STONE;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public final class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -152,43 +151,43 @@ public final class ModBlocks {
 
     private static DeferredBlock<TombstoneBlock> registerTombstone(String registryId, String chineseName, boolean isGolden) {
         DeferredBlock<TombstoneBlock> entry = registerTombstone(registryId, isGolden);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String registryId, String chineseName, Supplier<B> block) {
         DeferredBlock<B> entry = registerWithItem(registryId, block, new Item.Properties());
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String registryId, String chineseName, Supplier<B> block, Function<B, BlockItem> item) {
         DeferredBlock<B> entry = registerWithItem(registryId, block, item);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String registryId, String chineseName, Supplier<B> block, Item.Properties properties) {
         DeferredBlock<B> entry = registerWithItem(registryId, block, properties);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String registryId, String chineseName, Supplier<B> block) {
         DeferredBlock<B> entry = BLOCKS.register(registryId, block);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Block> DeferredBlock<T> registerBlock(String registryId, String chineseName, Supplier<T> factory) {
         DeferredBlock<T> entry = BLOCKS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<B> block) {
         DeferredBlock<B> entry = BLOCKS.register(registryId, block);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

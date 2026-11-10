@@ -12,7 +12,6 @@ import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CrateBlockItem;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class CrateBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -55,7 +54,7 @@ public class CrateBlocks {
 
     private static DeferredBlock<Block> register(String registryId, String chineseName, ResourceKey<LootTable> lootTable) {
         DeferredBlock<Block> entry = register(registryId, lootTable);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

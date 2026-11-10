@@ -10,12 +10,14 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.consumer.Consumer3;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.client.summoner.SummonerClientEvents;
@@ -45,7 +47,6 @@ import java.util.function.Consumer;
 @Mod(Confluence.MODID)
 public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
-    public static final List<Consumer<TranslationConsumer>> LANGUAGE_PROVIDERS = new ArrayList<>();
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
@@ -146,5 +147,19 @@ public final class Confluence {
 
     public static <P extends IPacket> CustomPacketPayload.Type<P> createType(String id) {
         return new CustomPacketPayload.Type<>(asResource(id));
+    }
+
+    private static final List<Consumer<TranslationConsumer>> LANGUAGE_PROVIDERS = new ArrayList<>();
+
+    public static void addLanguageProvider(Consumer<TranslationConsumer> consumer) {
+        if (DatagenModLoader.isRunningDataGen()) {
+            LANGUAGE_PROVIDERS.add(consumer);
+        }
+    }
+
+    public static void forEachLanguageProvider(Consumer3<String, String, String> consumer3) {
+        for (Consumer<TranslationConsumer> provider : LANGUAGE_PROVIDERS) {
+            provider.accept(consumer3::accept);
+        }
     }
 }

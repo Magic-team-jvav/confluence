@@ -9,7 +9,6 @@ import org.confluence.mod.common.item.crossbow.IRandomCount;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class CrossbowItems {
     public static void init() {}
@@ -48,13 +47,13 @@ public class CrossbowItems {
 
     private static <I extends BaseTerraRepeaterItem> DeferredItem<I> register(String registryId, String chineseName, Supplier<I> supplier) {
         DeferredItem<I> entry = ITEMS.register(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<BaseTerraRepeaterItem> register(String registryId, String chineseName, float damage, BaseTerraRepeaterItem.ModifyArrowBuilder bowModifyArrowBuilder, BaseTerraRepeaterItem.Builder repeaterBuilder) {
         DeferredItem<BaseTerraRepeaterItem> entry = register(registryId, () -> new BaseTerraRepeaterItem(damage, bowModifyArrowBuilder, repeaterBuilder));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

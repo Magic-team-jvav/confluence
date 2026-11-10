@@ -49,7 +49,6 @@ import java.util.function.Supplier;
 import static net.minecraft.world.item.Item.BASE_ATTACK_DAMAGE_ID;
 import static net.minecraft.world.item.Item.BASE_ATTACK_SPEED_ID;
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 @SuppressWarnings("unused")
 public final class ModItems {
@@ -257,25 +256,25 @@ public final class ModItems {
 
     private static <T extends Item> DeferredItem<T> registerHidden(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = HIDDEN.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         DeferredItem<T> entry = ITEMS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<Item> registerItemSimple(String registryId, String chineseName, Item.Properties properties) {
         DeferredItem<Item> entry = ITEMS.registerSimpleItem(registryId, properties);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerHiddenWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         DeferredItem<T> entry = HIDDEN.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

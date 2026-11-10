@@ -11,7 +11,6 @@ import org.confluence.mod.common.init.ModBoatTypes;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 @SuppressWarnings("all")
 public class BoatItems {
@@ -67,13 +66,13 @@ public class BoatItems {
 
     private static DeferredItem<BoatItem> boat(String registryId, String chineseName, Supplier<Boat.Type> type) {
         DeferredItem<BoatItem> entry = BOAT_ITEMS.register(registryId, () -> new BoatItem(false, type.get(), new Item.Properties().stacksTo(1)));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<BoatItem> chestBoat(String registryId, String chineseName, Supplier<Boat.Type> type) {
         DeferredItem<BoatItem> entry = CHEST_BOAT_ITEMS.register(registryId, () -> new BoatItem(true, type.get(), new Item.Properties().stacksTo(1)));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

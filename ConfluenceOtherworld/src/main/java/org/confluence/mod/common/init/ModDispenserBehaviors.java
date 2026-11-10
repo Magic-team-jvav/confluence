@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init.item;
+package org.confluence.mod.common.init;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.dispenser.*;
@@ -13,11 +13,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.SpongeItem;
 
 import java.util.stream.Stream;
 
-public class DispenserRegistration {
+public class ModDispenserBehaviors {
     public static void boostrap() {
         DispenserBlock.registerBehavior(SpawnEggItems.THE_TWINS_SPAWN_EGG.get(), new OptionalDispenseItemBehavior() {
             @Override

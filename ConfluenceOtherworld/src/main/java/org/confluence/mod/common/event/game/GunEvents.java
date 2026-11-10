@@ -1,8 +1,6 @@
 package org.confluence.mod.common.event.game;
 
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
@@ -14,8 +12,6 @@ import org.confluence.mod.network.s2c.BulletImpactPacketS2C;
 
 import java.util.List;
 
-///
-///
 public final class GunEvents {
     @SubscribeEvent
     public static void createProjectile(GunEvent.ProjectileCreation event) {

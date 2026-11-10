@@ -36,7 +36,6 @@ import java.util.function.Supplier;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Confluence.MODID);
@@ -244,25 +243,25 @@ public final class ModEffects {
 
     private static <T extends MobEffect> DeferredHolder<MobEffect, T> registerEffect(String registryId, String chineseName, Supplier<T> factory) {
         DeferredHolder<MobEffect, T> entry = EFFECTS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends MobEffect> DeferredHolder<MobEffect, T> registerEffect(String registryId, String chineseName, Function<ResourceLocation, T> factory) {
         DeferredHolder<MobEffect, T> entry = EFFECTS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends MobEffect> DeferredHolder<MobEffect, T> registerEffectWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         DeferredHolder<MobEffect, T> entry = EFFECTS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <T extends MobEffect> DeferredHolder<MobEffect, T> registerEffectWithEnglishName(String registryId, String chineseName, String englishName, Function<ResourceLocation, T> factory) {
         DeferredHolder<MobEffect, T> entry = EFFECTS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

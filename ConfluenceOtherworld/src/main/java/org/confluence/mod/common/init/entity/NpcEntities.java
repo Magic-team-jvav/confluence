@@ -23,7 +23,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
 
 public class NpcEntities {
@@ -205,25 +204,25 @@ public class NpcEntities {
 
     private static DeferredHolder<EntityType<?>, EntityType<SimpleNPC>> register(String registryId, String chineseName, Supplier<? extends Item> weapon, NPCCombatProfile.Attack attack, Consumer<NPCCombatProfile.Builder> settings) {
         DeferredHolder<EntityType<?>, EntityType<SimpleNPC>> entry = register(registryId, SimpleNPC::new, ignored -> weapon.get(), attack, settings, 0.6F, 1.85F);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredHolder<EntityType<?>, EntityType<SimpleNPC>> register(String registryId, String chineseName, Function<BaseNPC, Item> weapon, NPCCombatProfile.Attack attack, Consumer<NPCCombatProfile.Builder> settings) {
         DeferredHolder<EntityType<?>, EntityType<SimpleNPC>> entry = register(registryId, SimpleNPC::new, weapon, attack, settings, 0.6F, 1.85F);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends BaseNPC> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryId, String chineseName, NPCFactory<T> factory, Supplier<? extends Item> weapon, NPCCombatProfile.Attack attack, Consumer<NPCCombatProfile.Builder> settings, float width, float height) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = register(registryId, factory, ignored -> weapon.get(), attack, settings, width, height);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends BaseNPC> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryId, String chineseName, NPCFactory<T> factory, Function<BaseNPC, Item> weapon, NPCCombatProfile.Attack attack, Consumer<NPCCombatProfile.Builder> settings, float width, float height) {
         DeferredHolder<EntityType<?>, EntityType<T>> entry = register(registryId, factory, weapon, attack, settings, width, height);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

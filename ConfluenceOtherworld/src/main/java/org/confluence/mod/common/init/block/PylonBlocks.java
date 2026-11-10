@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class PylonBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -56,13 +55,13 @@ public class PylonBlocks {
 
     private static DeferredBlock<BasePylonBlock> register(String registryId, String chineseName, BlockBehaviour.Properties properties, BasePylonBlock.Survive survive) {
         DeferredBlock<BasePylonBlock> entry = register(registryId, properties, survive);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredBlock<BasePylonBlock> register(String registryId, String chineseName, DyeColor dyeColor, BasePylonBlock.Survive survive) {
         DeferredBlock<BasePylonBlock> entry = register(registryId, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(dyeColor).lightLevel(state -> 10), survive);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

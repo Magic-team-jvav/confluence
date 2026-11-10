@@ -14,7 +14,6 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.TwinEyeSpawnEggItem;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public final class SpawnEggItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -322,7 +321,7 @@ public final class SpawnEggItems {
 
     private static DeferredItem<TwinEyeSpawnEggItem> registerTwins(String chineseName) {
         DeferredItem<TwinEyeSpawnEggItem> entry = ITEMS.register("the_twins_spawn_egg", TwinEyeSpawnEggItem::new);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -330,25 +329,25 @@ public final class SpawnEggItems {
 
     private static DeferredItem<DeferredSpawnEggItem> register(DeferredHolder<EntityType<?>, ? extends EntityType<? extends Mob>> type, String chineseName, int bc, int hc) {
         DeferredItem<DeferredSpawnEggItem> entry = ITEMS.register(type.getId().getPath() + "_spawn_egg", () -> new DeferredSpawnEggItem(type, bc, hc, new Item.Properties()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<DeferredSpawnEggItem> register(DeferredHolder<EntityType<?>, ? extends EntityType<? extends Mob>> type, String chineseName) {
         DeferredItem<DeferredSpawnEggItem> entry = register(type, 0xFFFFFF, 0xFFFFFF);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<DeferredSpawnEggItem> registerWithEnglishName(DeferredHolder<EntityType<?>, ? extends EntityType<? extends Mob>> type, String chineseName, String englishName, int bc, int hc) {
         DeferredItem<DeferredSpawnEggItem> entry = ITEMS.register(type.getId().getPath() + "_spawn_egg", () -> new DeferredSpawnEggItem(type, bc, hc, new Item.Properties()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static DeferredItem<DeferredSpawnEggItem> registerWithEnglishName(DeferredHolder<EntityType<?>, ? extends EntityType<? extends Mob>> type, String chineseName, String englishName) {
         DeferredItem<DeferredSpawnEggItem> entry = register(type, 0xFFFFFF, 0xFFFFFF);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

@@ -7,7 +7,6 @@ import org.confluence.mod.common.item.fishing.*;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class FishingPoleItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -27,13 +26,13 @@ public class FishingPoleItems {
 
     private static DeferredItem<AbstractFishingPole> register(String registryId, String chineseName, Supplier<AbstractFishingPole> supplier) {
         DeferredItem<AbstractFishingPole> entry = ITEMS.register(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static DeferredItem<AbstractFishingPole> registerWithEnglishName(String registryId, String chineseName, String englishName, Supplier<AbstractFishingPole> supplier) {
         DeferredItem<AbstractFishingPole> entry = ITEMS.register(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

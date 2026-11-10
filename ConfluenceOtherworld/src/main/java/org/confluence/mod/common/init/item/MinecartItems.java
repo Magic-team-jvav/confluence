@@ -16,7 +16,6 @@ import org.confluence.mod.common.item.common.BaseMinecartItem;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.entity.minecart.BaseMinecartEntity.*;
 
 @SuppressWarnings("unchecked")
@@ -96,19 +95,19 @@ public class MinecartItems {
 
     private static DeferredItem<BaseMinecartItem> registerGeneric(String registryId, String chineseName, Abilities<GenericMinecartEntity> abilities, Variant variant) {
         DeferredItem<BaseMinecartItem> entry = ITEMS.registerItem(registryId, properties -> new BaseMinecartItem(properties, ModRarity.BLUE, abilities, (level, x, y, z, abilities1) -> new GenericMinecartEntity(level, x, y, z, abilities1, variant)));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerItemWithProperties(String registryId, String chineseName, Function<Item.Properties, T> factory) {
         DeferredItem<T> entry = ITEMS.registerItem(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> DeferredItem<T> registerItemWithPropertiesWithEnglishName(String registryId, String chineseName, String englishName, Function<Item.Properties, T> factory) {
         DeferredItem<T> entry = ITEMS.registerItem(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

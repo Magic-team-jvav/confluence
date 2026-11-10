@@ -5,7 +5,7 @@
             "identifier": "confluence:destroyer_attack_round",
             "basic_render_parameters": {
                 "material": "particles_add",
-                "texture": "confluence:destroyer_attack/bomb_round"
+                "texture": "confluence:bomb_round"
             }
         },
         "components": {

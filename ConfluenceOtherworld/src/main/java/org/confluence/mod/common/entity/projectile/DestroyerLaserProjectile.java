@@ -4,6 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,6 +29,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 public final class DestroyerLaserProjectile extends Projectile {
     /// 激光最长寿命，单位 tick。
     private static final int LIFETIME = 60;
+    private static final EntityDataAccessor<Boolean> SMALL_LASER = SynchedEntityData.defineId(DestroyerLaserProjectile.class, EntityDataSerializers.BOOLEAN);
     private float damage;
 
     public DestroyerLaserProjectile(EntityType<? extends DestroyerLaserProjectile> type, Level level) {super(type, level);}
@@ -34,6 +38,7 @@ public final class DestroyerLaserProjectile extends Projectile {
         if (owner.level().isClientSide || aim.distanceToSqr(origin) < 0.001) return;
         DestroyerLaserProjectile laser = new DestroyerLaserProjectile(ModEntities.DESTROYER_LASER.get(), owner.level());
         laser.setOwner(owner);
+        laser.entityData.set(SMALL_LASER, owner instanceof TheDestroyer destroyer && destroyer.isMetal());
         laser.setPos(origin);
         if (owner instanceof Mob mob) {
             ProjectileOverrides overrides = ProjectileOverrides.get(mob, laser.getType());
@@ -80,6 +85,8 @@ public final class DestroyerLaserProjectile extends Projectile {
         updateRotation();
     }
 
+    public boolean isSmallLaser() {return entityData.get(SMALL_LASER);}
+
     @Override
     protected boolean canHitEntity(Entity entity) {
         if (!(entity instanceof LivingEntity target) || entity instanceof TheDestroyer || entity instanceof TheDestroyerProbe)
@@ -88,11 +95,12 @@ public final class DestroyerLaserProjectile extends Projectile {
     }
 
     @Override
-    protected void defineSynchedData() {}
+    protected void defineSynchedData() {entityData.define(SMALL_LASER, false);}
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putBoolean("SmallLaser", isSmallLaser());
         tag.putFloat("Damage", damage);
         tag.putInt("Age", tickCount);
     }
@@ -100,6 +108,7 @@ public final class DestroyerLaserProjectile extends Projectile {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        entityData.set(SMALL_LASER, tag.getBoolean("SmallLaser"));
         damage = tag.getFloat("Damage");
         tickCount = tag.getInt("Age");
     }

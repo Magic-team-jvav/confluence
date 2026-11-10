@@ -465,7 +465,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(HILL_LAVA_PILLAR.get(), NoopRenderer::new);
         event.registerEntityRenderer(WALL_OF_FLESH_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xDD52FF, 0xA238DD, 0x6E09A6));
         event.registerEntityRenderer(HILL_FIRE_BOUND.get(), NoopRenderer::new);
-        event.registerEntityRenderer(DESTROYER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xB5FFF0, 0x33E2DF));
+        event.registerEntityRenderer(DESTROYER_LASER.get(), DestroyerLaserRenderer::new);
         event.registerEntityRenderer(PRIME_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFF0000, 0x8E0000, 0x4D0000));
         event.registerEntityRenderer(PLANTERA_SEED.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_THORN_BALL.get(), NoopRenderer::new);
@@ -781,7 +781,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SKELETRON_HAND.get(), SkeletronBossHandRenderer::new);
         event.registerEntityRenderer(BossEntities.DUNGEON_GUARDIAN.get(), DungeonGuardianRenderer::new);
         event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron"), true, 1.0F, 0.0F));
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), DestroyerProbeRenderer::new);
         event.registerEntityRenderer(BossEntities.RETINAZER.get(), TwinEyeDissolveRenderer::retinazer);
         event.registerEntityRenderer(BossEntities.SPAZMATISM.get(), TwinEyeDissolveRenderer::spazmatism);
         // 双子魔眼控制实体只负责生命周期，两只眼睛实体仍各自独立渲染。

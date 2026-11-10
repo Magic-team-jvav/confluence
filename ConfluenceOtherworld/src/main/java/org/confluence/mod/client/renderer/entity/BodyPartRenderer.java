@@ -25,6 +25,7 @@ import org.confluence.lib.client.DummyVertexConsumer;
 import org.confluence.mod.client.effect.death.GeoDeathModelAdapter;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
+import org.joml.Matrix3f;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.*;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -121,6 +122,10 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 poseStack.popPose();
             } else if (cube instanceof GeoBone geoBone) {
                 geoRenderer.preRender(poseStack, dying, bakedGeoModel, null, null, false, 1, 0, 0, 0, 0, 0, 0);
+                if (snapshot.localTransform() != null) {
+                    poseStack.last().pose().mul(snapshot.localTransform());
+                    poseStack.last().normal().mul(new Matrix3f(snapshot.localTransform()));
+                }
                 // GeoGeo的奇妙Y轴旋转
 //                poseStack.mulPose(Axis.YP.rotationDegrees(-entity.deathYaw + 180));
 //                poseStack.mulPose(Axis.XP.rotationDegrees(entity.deathPitch));

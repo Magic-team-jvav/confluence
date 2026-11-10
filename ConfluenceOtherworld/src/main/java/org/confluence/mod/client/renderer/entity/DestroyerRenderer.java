@@ -25,6 +25,7 @@ import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.entity.boss.DestroyerPart;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.util.ClientUtils;
 import org.joml.Matrix4f;
 import org.joml.Matrix4x3f;
@@ -37,6 +38,7 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.model.GeoModel;
 
 import java.util.ArrayList;
@@ -79,7 +81,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             public ResourceLocation getModelResource(T entity) {
                 TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
-                if (!head.isMetal()) {
+                if (head.isPhaseOneSection(entity instanceof DestroyerPart part ? part.getIndex() : 0)) {
                     if (entity instanceof DestroyerPart part)
                         return phase1Model(part.isTail() ? "tail" : part.getIndex() % 2 == 0 ? "connector" : "body");
                     return phase1Model("head");
@@ -92,7 +94,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             public ResourceLocation getTextureResource(T t) {
                 TheDestroyer head = t instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) t;
-                return head.isMetal() ? TEXTURE : PHASE1_TEXTURE;
+                return head.isPhaseOneSection(t instanceof DestroyerPart part ? part.getIndex() : 0) ? PHASE1_TEXTURE : TEXTURE;
             }
 
             @Override
@@ -104,7 +106,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             protected ResourceLocation getTextureResource(T entity) {
                 TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
-                return head.isMetal() ? GLOW_TEXTURE : PHASE1_GLOW_TEXTURE;
+                return head.isPhaseOneSection(entity instanceof DestroyerPart part ? part.getIndex() : 0) ? PHASE1_GLOW_TEXTURE : GLOW_TEXTURE;
             }
         });
         addRenderLayer(new EntityGlowingGeoLayer<>(this) {
@@ -114,8 +116,8 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             public void render(PoseStack poses, T entity, BakedGeoModel model, RenderType type, MultiBufferSource buffers, VertexConsumer buffer, float partialTick, int light, int overlay) {
                 TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
-                if (!head.isMetal()) return;
                 int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
+                if (head.isPhaseOneSection(index)) return;
                 int tick = head.getBeamTick();
                 float elapsed = tick + partialTick - (81 - index) * 100.0F / 82.0F;
                 float alpha = tick < 0 ? 0 : Math.max(0, 1.0F - elapsed / 30.0F);
@@ -126,27 +128,44 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         });
     }
 
-    /// 一阶段专用外壳脱落；每个 exp 分组作为完整尸体，活体立即切换为二阶段。
+    /// 每次只拆分当前体节的外壳，保持从头到尾的爆裂顺序。
     @SuppressWarnings("unchecked")
-    public static void spawnPhaseShells(TheDestroyer boss) {
-        if (!(boss.level() instanceof ClientLevel level)) return;
+    public static void spawnPhaseShell(TheDestroyer boss, int index) {
+        if (!(boss.level() instanceof ClientLevel level) || index >= TheDestroyer.SEGMENT_COUNT - 1)
+            return;
         EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(boss);
         if (!(renderer instanceof DestroyerRenderer<?>)) return;
         DestroyerRenderer<TheDestroyer> geoRenderer = (DestroyerRenderer<TheDestroyer>) renderer;
-        DeathEffectManager.spawnFragments(boss, TheDestroyer.SEGMENT_COUNT, () -> {
+        String section = index == 0 ? "head" : index % 2 == 0 ? "connector" : "body";
+        BakedGeoModel model = geoRenderer.getGeoModel().getBakedModel(phase1Model(section));
+        GeoBone bone = model.getBone(ClientUtils.DEATH_BONE_NAME).orElse(null);
+        if (bone == null) return;
+        DeathEffectManager.spawnFragments(boss, bone.getCubes().size(), () -> {
             Vec3 motion = boss.getDeltaMovement();
-            for (int index = 0; index < TheDestroyer.SEGMENT_COUNT - 1 && DeathEffectManager.canAddPart(); index++) {
-                String section = index == 0 ? "head" : index % 2 == 0 ? "connector" : "body";
-                BakedGeoModel model = geoRenderer.getGeoModel().getBakedModel(phase1Model(section));
-                GeoBone bone = model.getBone(ClientUtils.DEATH_BONE_NAME).orElse(null);
-                if (bone == null) continue;
-                GeoBone shell = GeoDeathModelAdapter.snapshotBone(bone, null);
-                shell.setHidden(false);
-                RenderType renderType = geoRenderer.getRenderType(boss, PHASE1_TEXTURE, Minecraft.getInstance().renderBuffers().bufferSource(), 1.0F);
-                float centerZ = index == 0 ? 0 : index % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z;
+            RenderType renderType = geoRenderer.getRenderType(boss, PHASE1_TEXTURE, Minecraft.getInstance().renderBuffers().bufferSource(), 1.0F);
+            float centerZ = index == 0 ? 0 : index % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z;
+            for (GeoCube cube : bone.getCubes()) {
+                if (!DeathEffectManager.canAddPart()) break;
+                GeoCube copy = IGeoCube.of(cube).confluence$getCopy();
+                if (copy == null) continue;
+                float[] min = IGeoCube.of(copy).confluence$getMinCoords();
+                float[] max = IGeoCube.of(copy).confluence$getMaxCoords();
+                float x = (min[0] + max[0]) * 0.5F, y = min[1], z = (min[2] + max[2]) * 0.5F;
+                GeoBone fragment = GeoDeathModelAdapter.snapshotBone(bone, null);
+                fragment.getCubes().clear();
+                fragment.getChildBones().clear();
+                fragment.setPivotX(0);
+                fragment.setPivotY(0);
+                fragment.setPivotZ(0);
+                fragment.setPosX(0);
+                fragment.setPosY(0);
+                fragment.setPosZ(0);
+                fragment.setHidden(false);
+                fragment.getCubes().add(copy);
                 Matrix4f transform = new Matrix4f().translation(0, TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE), 0)
-                        .rotate(boss.getBody().getRenderRotation(index, 1.0F)).translate(0, -MODEL_CENTER_Y, -centerZ);
-                DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, boss, shell, (float) motion.length());
+                        .rotate(boss.getBody().getRenderRotation(index, 1.0F)).translate(-0.0F, -MODEL_CENTER_Y, -centerZ)
+                        .translate(x, y, z);
+                DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, boss, fragment, (float) motion.length());
                 part.geoRenderData = new GeoDeathModelAdapter.RenderSnapshot(model, PHASE1_TEXTURE, renderType, transform);
                 part.setPos(boss.getBody().getRenderPosition(index, 1.0F));
                 part.setDeltaMovement(motion.scale(0.3).offsetRandom(level.random, 0.15F));
@@ -246,7 +265,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
         rotate.accept(head.getBody().getRenderRotation(index, partialTick));
         float centerZ = entity instanceof DestroyerPart part
-                ? part.isTail() ? (head.isMetal() ? TAIL_CENTER_Z : PHASE1_TAIL_CENTER_Z) : part.getIndex() % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z
+                ? part.isTail() ? (head.isPhaseOneSection(index) ? PHASE1_TAIL_CENTER_Z : TAIL_CENTER_Z) : part.getIndex() % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z
                 : 0;
         z.accept(-centerZ);
     }
@@ -296,16 +315,13 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         poses.pushPose();
         poses.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
         BakedGeoModel baked = getGeoModel().getBakedModel(getGeoModel().getModelResource((T) entity));
-        GeoBone death = baked.getBone("_death").orElse(null);
         GeoBone probe = entity instanceof DestroyerPart part
                 ? baked.getBone(part.isTail() ? "probe_3" : part.getIndex() % 2 == 0 ? "probe_2" : "probe_1").orElse(null) : null;
-        if (death != null) death.setHidden(true);
         if (probe != null) probe.setHidden(head.isProbeReleased(index));
         try {
             super.render((T) entity, entity.getYRot(), partialTick, poses, buffers,
                     Minecraft.getInstance().getEntityRenderDispatcher().getPackedLightCoords(entity, partialTick));
         } finally {
-            if (death != null) death.setHidden(false);
             if (probe != null) probe.setHidden(false);
         }
         if (Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes()) {

@@ -55,6 +55,7 @@ import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.confluence.mod.common.entity.monster.Decayeder;
 import org.confluence.mod.common.entity.monster.DungeonSpirit;
 import org.confluence.mod.common.entity.monster.TheHungry;
@@ -338,6 +339,8 @@ public final class LivingEntityEvents {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
         LivingEntity victim = event.getEntity();
+        if (victim instanceof Player player && !victim.level().isClientSide)
+            TheDestroyer.recordPlayerDamage(player);
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
         SwordItems.afterSuccessfulDamage(damageSource, damageSource.getEntity(), victim);

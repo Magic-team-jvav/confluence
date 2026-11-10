@@ -16,22 +16,6 @@
             ],
             "light_level": 10
         },
-        "confluence:gun_muzzle": {
-            "color": [
-                1.0,
-                0.82745098,
-                0.57254902
-            ],
-            "light_level": 10
-        },
-        "confluence:magic_muzzle": {
-            "color": [
-                0.54901961,
-                0.96078431,
-                0.46666667
-            ],
-            "light_level": 8
-        },
         "confluence:explosion": {
             "color": [
                 1.0,

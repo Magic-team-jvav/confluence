@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
@@ -39,8 +38,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
 
 
-    private DemonEyeSurroundAction surroundAction;
-    private boolean rebounded;
     private boolean variantLoadedFromSave;
 
     public DemonEye(EntityType<? extends DemonEye> type, Level level) {
@@ -70,31 +67,31 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     /// 再交给原版击退公式处理，保持伤害来源、附魔和其他模组施加的击退语义。
     @Override
     public void knockback(double strength, double x, double z) {
-        super.knockback(strength * (getVariant().isLarge() ? 1.5 : 2.0),
-                x, z);
+        super.knockback(strength * (getVariant().isLarge() ? 1.5 : 2.0), x, z);
     }
 
     @Override
     protected Vec3 reboundVelocity(Vec3 requested, Vec3 allowed) {
         Vec3 rebound = requested;
         if (allowed.x != requested.x) {
-            rebound = new Vec3(requested.x < 0.0 ? 0.22 : -0.22, rebound.y, rebound.z);
+            rebound = new Vec3(Math.copySign(Math.max(Math.abs(requested.x) * 0.5D, 0.375D), -requested.x), rebound.y, rebound.z);
         }
         if (allowed.y != requested.y) {
-            boolean movingDown = requested.y < 0.0;
-            rebound = new Vec3(rebound.x, movingDown ? Mth.clamp(-requested.y, 0.1, 0.22) : Mth.clamp(-requested.y, -0.22, -0.1), rebound.z);
+            rebound = new Vec3(rebound.x, Math.copySign(Math.max(Math.abs(requested.y) * 0.5D, 0.1875D), -requested.y), rebound.z);
         }
         if (allowed.z != requested.z) {
-            rebound = new Vec3(rebound.x, rebound.y, requested.z < 0.0 ? 0.3 : -0.3);
-        }
-        if (!allowed.equals(requested)) {
-            rebounded = true;
-            if (surroundAction != null) surroundAction.onCollision();
+            rebound = new Vec3(rebound.x, rebound.y, Math.copySign(Math.max(Math.abs(requested.z) * 0.5D, 0.375D), -requested.z));
         }
         return rebound;
     }
 
     // 白天离场时不能被共用索敌重新选回玩家或反击目标。
+    @Override
+    public boolean shouldDiscardFriction() {
+        // 泰拉的追击不会每刻叠加地面生物的空气阻力，保留冲过目标后的飞行惯性。
+        return super.shouldDiscardFriction() || (getTarget() != null && LibDateUtils.isNight(level()));
+    }
+
     @Override
     protected boolean usesSharedTargeting() {
         return LibDateUtils.isNight(level());
@@ -107,7 +104,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
     @Override
     protected BTRoot createBT() {
-        surroundAction = new DemonEyeSurroundAction(this);
+        DemonEyeSurroundAction surroundAction = new DemonEyeSurroundAction(this);
         BTNode night = new ConditionalSwitchNode(() -> getTarget() != null && getTarget().isAlive(), surroundAction, new DemonEyeWanderAction(this));
 
         BTNode root = new ConditionalSwitchNode(() -> LibDateUtils.isDay(level()), new DemonEyeLeaveAction(this), night);
@@ -170,13 +167,12 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
     @Override
     public void tick() {
-        rebounded = false;
         if (!level().isClientSide && LibDateUtils.isDay(level())) setTarget(null);
         super.tick();
         if (!level().isClientSide && tickCount % 20 == 0) applyVariantStats(getVariant());
         if (level().isClientSide) return;
         if (LibDateUtils.isDay(level())) setTarget(null);
-        if (isAlive() && (surroundAction == null || !surroundAction.isHovering())) {
+        if (isAlive()) {
             faceCombatMovement(360.0F, 180.0F);
         }
     }

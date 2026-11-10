@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.common.init.gun.GunSounds;
-import org.confluence.mod.network.s2c.GunMuzzleFlashPacketS2C;
 import org.confluence.mod.util.ModGunUtils;
 
 /// 服务端统一校验开火条件、消耗弹药并设置冷却。
@@ -32,7 +31,6 @@ public final class ShootingService {
         player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(),
                 GunSounds.getSound(gunStack), SoundSource.PLAYERS, 1.0F, 1.0F);
         gun.fireAnimator(gunStack, player);
-        GunMuzzleFlashPacketS2C.send(player);
         consumeAmmo(player, gun, gunStack, selectedAmmo);
         int cooldown = Math.max(0, useEvent.getCooldowns());
         if (cooldown > 0) player.getCooldowns().addCooldown(gun, cooldown);

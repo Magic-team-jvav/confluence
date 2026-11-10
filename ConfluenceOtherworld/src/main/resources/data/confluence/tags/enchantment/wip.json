@@ -1,0 +1,29 @@
+{
+  "values": [
+    "confluence:food_reserve",
+    "confluence:reckless",
+    "confluence:soul_conduit",
+    "confluence:soul_bind",
+    "confluence:beast_inspire",
+    "confluence:deflect",
+    "confluence:potion_shield",
+    "confluence:selfless_sacrifice",
+    "confluence:surprise_gift",
+    "confluence:death_bargain",
+    "confluence:soul_haste",
+    "confluence:speed_synergy",
+    "confluence:artifact_synergy",
+    "confluence:critical_strike",
+    "confluence:vigorous",
+    "confluence:soul_resonance",
+    "confluence:void_strike",
+    "confluence:flanking_strike",
+    "confluence:stun",
+    "confluence:soul_siphon",
+    "confluence:burst_bowstring",
+    "confluence:cooldown_shot",
+    "confluence:multi_charge",
+    "confluence:rapid_charge",
+    "confluence:super_charge"
+  ]
+}

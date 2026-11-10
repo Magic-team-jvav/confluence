@@ -138,7 +138,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(DUAL_FLASH_LIGHTHOUSE.get());
         dropSelf(PHANTOM_BASE_STATION.get());
         dropSelf(ALCHEMY_TABLE.get());
-        dropSelf(BREWING_VIAL.get());
+        /// 炼药瓶改成用玻璃瓶放置，破坏后回收成玻璃瓶。
+        dropOther(BREWING_VIAL.get(), PotionItems.BOTTLE.get());
         dropSelf(LEAD_ANVIL.get());
         dropSelf(CHIPPED_LEAD_ANVIL.get());
         dropSelf(DAMAGED_LEAD_ANVIL.get());

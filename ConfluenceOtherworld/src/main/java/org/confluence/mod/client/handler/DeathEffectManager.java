@@ -20,6 +20,7 @@ public final class DeathEffectManager {
     private static ClientLevel currentLevel;
     private static List<DeadBodyPartEntity> building;
     private static int reservedParts;
+    private static int buildingLimit = MAX_PARTS_PER_DEATH;
     private static int nextEntityId = -1;
 
     private DeathEffectManager() {}
@@ -45,7 +46,7 @@ public final class DeathEffectManager {
         try {
             DeathAnimUtils.livingDeath(living);
             if (!parts.isEmpty()) {
-                pending.add(new DeathEffect(living, List.copyOf(parts)));
+                pending.add(new DeathEffect(living, List.copyOf(parts), true));
                 reservedParts += parts.size();
             }
         } catch (RuntimeException exception) {
@@ -57,8 +58,31 @@ public final class DeathEffectManager {
         }
     }
 
+    /// 批量生成不替换原实体的模型碎片，调用方负责提供模型和姿态。
+    public static void spawnFragments(LivingEntity source, int limit, Runnable createParts) {
+        if (!(source.level() instanceof ClientLevel level) || level != Minecraft.getInstance().level || building != null)
+            return;
+        useLevel(level);
+        active.removeIf(DeadBodyPartEntity::isRemoved);
+        List<DeadBodyPartEntity> parts = new ArrayList<>();
+        building = parts;
+        buildingLimit = Math.max(0, limit);
+        try {
+            createParts.run();
+            if (!parts.isEmpty()) {
+                pending.add(new DeathEffect(source, List.copyOf(parts), false));
+                reservedParts += parts.size();
+            }
+        } catch (RuntimeException exception) {
+            Confluence.LOGGER.warn("Failed to create model fragments for {}", source.getType(), exception);
+        } finally {
+            building = null;
+            buildingLimit = MAX_PARTS_PER_DEATH;
+        }
+    }
+
     public static boolean canAddPart() {
-        return building != null && building.size() < MAX_PARTS_PER_DEATH
+        return building != null && building.size() < buildingLimit
                 && active.size() + reservedParts + building.size() < MAX_ACTIVE_PARTS;
     }
 
@@ -72,7 +96,8 @@ public final class DeathEffectManager {
         active.removeIf(DeadBodyPartEntity::isRemoved);
         try {
             for (DeathEffect effect : pending) {
-                if (ClientConfigs.goreEffect.isInvalidFor(effect.source(), null)) continue;
+                if (effect.removeSource() && ClientConfigs.goreEffect.isInvalidFor(effect.source(), null))
+                    continue;
                 List<DeadBodyPartEntity> added = new ArrayList<>();
                 try {
                     for (DeadBodyPartEntity part : effect.parts()) {
@@ -81,7 +106,7 @@ public final class DeathEffectManager {
                         if (level.getEntity(part.getId()) == part) added.add(part);
                     }
                     // 只有实际加入客户端世界的碎片才能替换原实体。
-                    if (!added.isEmpty() && effect.source().level() == level)
+                    if (effect.removeSource() && !added.isEmpty() && effect.source().level() == level)
                         effect.source().discard();
                     active.addAll(added);
                 } catch (RuntimeException exception) {
@@ -119,5 +144,6 @@ public final class DeathEffectManager {
         currentLevel = null;
     }
 
-    private record DeathEffect(LivingEntity source, List<DeadBodyPartEntity> parts) {}
+    private record DeathEffect(LivingEntity source, List<DeadBodyPartEntity> parts,
+                               boolean removeSource) {}
 }

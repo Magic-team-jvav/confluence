@@ -122,7 +122,7 @@ public final class BossEntities {
                     .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.damage(19))
                     .build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<TheDestroyerProbe>> THE_DESTROYER_PROBE = withAttributes(registerEntity("the_destroyer_probe", "毁灭者探测器", EntityType.Builder.of(TheDestroyerProbe::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10)),
+    public static final DeferredHolder<EntityType<?>, EntityType<TheDestroyerProbe>> THE_DESTROYER_PROBE = withAttributes(registerEntity("the_destroyer_probe", "毁灭者探测器", EntityType.Builder.of(TheDestroyerProbe::new, MobCategory.MONSTER).sized(2.0F, 2.0F).eyeHeight(1.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(78).armor(9).armorToughness(4).attackDamage(21).followRange(64)
                     .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.damage(23))
                     .build());

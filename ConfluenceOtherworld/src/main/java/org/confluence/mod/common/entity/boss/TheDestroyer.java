@@ -69,6 +69,7 @@ public class TheDestroyer extends BaseBoss {
     private static final EntityDataAccessor<Float> ROLL = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> SHELL_OPEN = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<CompoundTag> BODY_POSE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.COMPOUND_TAG);
+    private static final EntityDataAccessor<CompoundTag> PROBE_STATE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.COMPOUND_TAG);
     /// Wiki 标准长度：头部、80 节身体和尾部，共 82 节。
     public static final int SEGMENT_COUNT = 82;
     /// 身体中轴的总长度，单位格；按 Wiki 的 239 格长度配置。
@@ -119,9 +120,9 @@ public class TheDestroyer extends BaseBoss {
     /// 激光射击声音的音量与音调。
     private static final float LASER_SOUND_VOLUME = 0.7F, LASER_SOUND_PITCH = 1.0F;
     /// 探针检查间隔、同时存活上限；每个身体节最多放出一枚。
-    private static final int PROBE_INTERVAL = 20, MAX_ACTIVE_PROBES = 16;
-    /// 缺血比例映射的每次释放概率：满血 4%，濒死 40%。
-    private static final float PROBE_BASE_CHANCE = 0.04F, PROBE_HEALTH_CHANCE = 0.36F;
+    private static final int MAX_ACTIVE_PROBES = 16;
+    /// 每次体节有效受击时释放探测器的概率。
+    private static final float PROBE_RELEASE_CHANCE = 0.04F;
     /// 头部入土声音与近距离震屏的间隔，单位 tick。
     private static final int DIG_INTERVAL = 10;
     /// 地下震屏为半秒/7 格，穿出或进入地面为一秒/14 格。
@@ -129,6 +130,7 @@ public class TheDestroyer extends BaseBoss {
     public static final double DIG_SHAKE_RADIUS = 7.0, CROSS_SHAKE_RADIUS = 14.0;
     public static final byte DIG_EVENT = 70, CROSS_EVENT = 71;
     private static final byte DEBRIS_EVENT = 73;
+    private static final byte PHASE_SHELL_EVENT = 74;
     /// 出土方块飞散的最短触发间隔，单位 tick，防止贴着地表反复穿越时堆积。
     private static final int DEBRIS_INTERVAL = 10;
     /// 地下移动时从头部中心向上检查的最大距离，单位格；只掀起此范围内表层的视觉方块。
@@ -161,7 +163,7 @@ public class TheDestroyer extends BaseBoss {
     private final BitSet releasedProbes = new BitSet(SEGMENT_COUNT);
     private final List<TheDestroyerProbe> probes = new ArrayList<>();
     private Mode candidateMode = Mode.GROUND;
-    private int candidateTicks, groundTicks, launchTicks, laserTicks, laserCursor = -1, probeTicks;
+    private int candidateTicks, groundTicks, launchTicks, laserTicks, laserCursor = -1;
     private boolean launching, airborne, wasSolid, terrainInitialized, alternateVolley;
     private Vec3 velocity = Vec3.ZERO;
     private float previousRoll, displayedRoll, launchRoll;
@@ -203,6 +205,19 @@ public class TheDestroyer extends BaseBoss {
     public int getBeamTick() {return entityData.get(BEAM_TICK);}
 
     public int getSideBeamSeed() {return entityData.get(SIDE_BEAM_SEED);}
+
+    /// 按体节同步已脱离的探测器，供客户端单独隐藏对应模型组。
+    public boolean isProbeReleased(int index) {
+        long[] bits = entityData.get(PROBE_STATE).getLongArray("Released");
+        int word = index >>> 6;
+        return word < bits.length && (bits[word] & (1L << (index & 63))) != 0;
+    }
+
+    private void syncReleasedProbes() {
+        CompoundTag tag = new CompoundTag();
+        tag.putLongArray("Released", releasedProbes.toLongArray());
+        entityData.set(PROBE_STATE, tag);
+    }
 
     public Vec3 beamOrigin() {return getBoundingBox().getCenter().add(getLookAngle().scale(10));}
 
@@ -250,6 +265,7 @@ public class TheDestroyer extends BaseBoss {
         builder.define(ROLL, 0.0F);
         builder.define(SHELL_OPEN, false);
         builder.define(BODY_POSE, new CompoundTag());
+        builder.define(PROBE_STATE, new CompoundTag());
     }
 
     public DestroyerBody getBody() {return body;}
@@ -486,8 +502,8 @@ public class TheDestroyer extends BaseBoss {
         setDeltaMovement(velocity);
         if (getBeamTick() >= 100 && getBeamTick() < 220) {
             Vec3 desired = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()).normalize();
-            beamAim = WormSteering.turn(getLookAngle(), desired, Math.toRadians(2));
-            faceCombatDirection(beamAim, 2, 2);
+            beamAim = WormSteering.turn(getLookAngle(), desired, Math.toRadians(6));
+            faceCombatDirection(beamAim, 6, 6);
         } else if (getBeamTick() < 100) {
             if (specialAttack == SpecialAttack.DASH_WINDUP) {
                 Vec3 targetDirection = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
@@ -516,7 +532,6 @@ public class TheDestroyer extends BaseBoss {
         body.update();
         attackContact(previous);
         tickLasers(target);
-        tickProbes();
     }
 
     /// 特殊攻击只接管自己的运动阶段，出土抛物线结束前不会插入新攻击。
@@ -596,6 +611,7 @@ public class TheDestroyer extends BaseBoss {
             case HARD -> HARD_THRESHOLD;
         };
         if (!isMetal() && getHealth() <= getMaxHealth() * threshold) {
+            level().broadcastEntityEvent(this, PHASE_SHELL_EVENT);
             entityData.set(METAL, true);
             broadcastPhaseTransition();
         }
@@ -788,26 +804,19 @@ public class TheDestroyer extends BaseBoss {
         }
     }
 
-    private void tickProbes() {
-        if (getMode() == Mode.UNDERGROUND || getMode() == Mode.GROUND && !airborne) return;
-        if (++probeTicks < PROBE_INTERVAL) return;
-        probeTicks = 0;
-        probes.removeIf(p -> !p.isAlive() || p.isRemoved());
-        if (probes.size() >= MAX_ACTIVE_PROBES) return;
-        float missing = 1 - getHealth() / getMaxHealth();
-        if (random.nextFloat() >= PROBE_BASE_CHANCE + missing * PROBE_HEALTH_CHANCE) return;
-        int start = 1 + random.nextInt(SEGMENT_COUNT - 2);
-        for (int n = 0; n < SEGMENT_COUNT - 2; n++) {
-            int i = 1 + (start - 1 + n) % (SEGMENT_COUNT - 2);
-            if (releasedProbes.get(i) || isSolid(body.getPosition(i))) continue;
-            TheDestroyerProbe probe = new TheDestroyerProbe(BossEntities.THE_DESTROYER_PROBE.get(), level());
-            probe.attach(this, body.getPosition(i));
-            if (level().addFreshEntity(probe)) {
-                probes.add(probe);
-                addSubEntity(probe);
-                releasedProbes.set(i);
-            }
+    /// 体节受击后独立尝试释放，一节只会释放一次。
+    void tryReleaseProbe(DestroyerPart part) {
+        int index = part.getIndex();
+        if (!isAlive() || index <= 0 || part.isTail() || releasedProbes.get(index) || random.nextFloat() >= PROBE_RELEASE_CHANCE)
             return;
+        probes.removeIf(probe -> !probe.isAlive() || probe.isRemoved());
+        if (probes.size() >= MAX_ACTIVE_PROBES) return;
+        TheDestroyerProbe probe = new TheDestroyerProbe(BossEntities.THE_DESTROYER_PROBE.get(), level());
+        probe.attach(this, part.position());
+        if (level().addFreshEntity(probe)) {
+            probes.add(probe);
+            releasedProbes.set(index);
+            syncReleasedProbes();
         }
     }
 
@@ -879,7 +888,9 @@ public class TheDestroyer extends BaseBoss {
 
     @Override
     public void handleEntityEvent(byte event) {
-        if (level().isClientSide && event < 0 && -event < SEGMENT_COUNT) {
+        if (level().isClientSide && event == PHASE_SHELL_EVENT) {
+            DestroyerRenderer.spawnPhaseShells(this);
+        } else if (level().isClientSide && event < 0 && -event < SEGMENT_COUNT) {
             body.getParts()[-event - 1].emitHurtSparks();
         } else if (level().isClientSide && event == DEBRIS_EVENT) {
             DestroyerDebrisParticle.spawn(entityData.get(DEBRIS_ORIGIN), entityData.get(DEBRIS_STATE));
@@ -925,6 +936,7 @@ public class TheDestroyer extends BaseBoss {
         entityData.set(ROLL, tag.getFloat("DestroyerRoll"));
         releasedProbes.clear();
         releasedProbes.or(BitSet.valueOf(tag.getLongArray("DestroyerProbes")));
+        syncReleasedProbes();
         airborne = tag.getBoolean("DestroyerAirborne");
         launching = tag.getBoolean("DestroyerLaunching");
         groundTicks = tag.getInt("DestroyerGroundTicks");

@@ -27,20 +27,24 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
 public final class GeoDeathModelAdapter {
     private GeoDeathModelAdapter() {}
 
+    /// 模型碎片的材质和可选局部姿态；普通死亡碎片使用默认姿态。
     public record RenderSnapshot(BakedGeoModel model, ResourceLocation texture,
-                                 RenderType renderType) {}
+                                 RenderType renderType, Matrix4f localTransform) {
+        public RenderSnapshot(BakedGeoModel model, ResourceLocation texture, RenderType renderType) {
+            this(model, texture, renderType, null);
+        }
+    }
 
-    public static void build(LivingEntity living, GeoAnimatable animatable, GeoEntityRenderer geoRenderer,
+    public static <T extends LivingEntity & GeoAnimatable> void build(T living, GeoEntityRenderer<T> geoRenderer,
                              ClientLevel level, Vec3 entityPos, Vec3 deathMotion, float deathSpeed) {
 
         PoseStack poseStack = new PoseStack();
-        BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(animatable, geoRenderer));
+        BakedGeoModel bakedGeoModel = geoRenderer.getGeoModel().getBakedModel(geoRenderer.getGeoModel().getModelResource(living, geoRenderer));
         ResourceLocation texture = geoRenderer.getTextureLocation(living);
-        RenderType renderType = geoRenderer.getRenderType(animatable, texture, Minecraft.getInstance().renderBuffers().bufferSource(), 1.0F);
+        RenderType renderType = geoRenderer.getRenderType(living, texture, Minecraft.getInstance().renderBuffers().bufferSource(), 1.0F);
         RenderSnapshot renderSnapshot = new RenderSnapshot(bakedGeoModel, texture, renderType);
         geoRenderer.preRender(poseStack, living, bakedGeoModel, null, null, false, 1, 0, 0, 0);
         poseStack.mulPose(Axis.XP.rotationDegrees(living.getXRot()));
@@ -147,7 +151,7 @@ public final class GeoDeathModelAdapter {
         collection.removeAll(toRemove);
     }
 
-    private static GeoBone snapshotBone(GeoBone source, GeoBone parent) {
+    public static GeoBone snapshotBone(GeoBone source, GeoBone parent) {
         GeoBone copy = new GeoBone(parent, source.getName(), source.getMirror(), source.getInflate(), source.shouldNeverRender(), source.getReset());
         copy.setPosX(source.getPosX());
         copy.setPosY(source.getPosY());

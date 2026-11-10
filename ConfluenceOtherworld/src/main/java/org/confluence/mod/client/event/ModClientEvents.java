@@ -463,7 +463,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(HILL_LAVA_PILLAR.get(), NoopRenderer::new);
         event.registerEntityRenderer(WALL_OF_FLESH_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xDD52FF, 0xA238DD, 0x6E09A6));
         event.registerEntityRenderer(HILL_FIRE_BOUND.get(), NoopRenderer::new);
-        event.registerEntityRenderer(DESTROYER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xB5FFF0, 0x33E2DF));
+        event.registerEntityRenderer(DESTROYER_LASER.get(), DestroyerLaserRenderer::new);
         event.registerEntityRenderer(PRIME_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFF0000, 0x8E0000, 0x4D0000));
         event.registerEntityRenderer(PLANTERA_SEED.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_THORN_BALL.get(), NoopRenderer::new);
@@ -745,7 +745,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GIANT_SHELLY.get(), c -> new GeoNormalRenderer<>(c, new VariantTextureGeoModel<>(Confluence.asResource("geo/entity/giant_shelly.geo.json"), Confluence.asResource("animations/entity/giant_shelly.animation.json"), shelly -> Confluence.asResource(shelly.getVariant() == 0 ? "textures/entity/giant_shelly/purple.png" : "textures/entity/giant_shelly/yellow.png"))));
         event.registerEntityRenderer(MonsterEntities.CRAWDAD.get(), c -> new GeoNormalRenderer<>(c, new VariantTextureGeoModel<>(Confluence.asResource("geo/entity/crawdad.geo.json"), Confluence.asResource("animations/entity/crawdad.animation.json"), crawdad -> Confluence.asResource(crawdad.getVariant() == 0 ? "textures/entity/crawdad/blue.png" : "textures/entity/crawdad/red.png"))));
         event.registerEntityRenderer(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), MissingModelRenderer::new); // todo 专用模型
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron"), true, 1.0F, 0.0F));
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), DestroyerProbeRenderer::new);
         event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), QueenBeeRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhuRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_FAKE.get(), BrainFakeRenderer::new);

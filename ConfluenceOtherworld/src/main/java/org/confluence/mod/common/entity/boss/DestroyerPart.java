@@ -135,6 +135,7 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
         if (level().isClientSide || !isAttackable() || amount <= 0 || isInvulnerableTo(source)
                 || EnemyDamageRules.blocks(this, source)) return false;
         boolean result = getParent().hurtFromPart(this, source, amount);
+        if (result) getParent().tryReleaseProbe(this);
         int age = getParent().tickCount;
         if (result && age - lastSparkTick >= HURT_SPARK_INTERVAL) {
             lastSparkTick = age;

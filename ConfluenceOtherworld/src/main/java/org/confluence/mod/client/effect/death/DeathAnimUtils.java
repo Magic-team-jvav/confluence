@@ -134,7 +134,7 @@ public final class DeathAnimUtils {
         float deathSpeed = (float) deathMotion.length();
         Vec3 entityPos = living.position();
         if (living instanceof GeoAnimatable animatable && renderer instanceof GeoEntityRenderer geoRenderer) {
-            GeoDeathModelAdapter.build(living, animatable, geoRenderer, level, entityPos, deathMotion, deathSpeed);
+            GeoDeathModelAdapter.build((LivingEntity & GeoAnimatable) living, geoRenderer, level, entityPos, deathMotion, deathSpeed);
         } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
             VanillaDeathModelAdapter.build(living, livingRenderer, level, entityPos, deathMotion, deathSpeed);
         }

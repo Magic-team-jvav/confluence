@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.boss;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -17,13 +18,13 @@ import org.confluence.mod.common.entity.projectile.DestroyerLaserProjectile;
 import org.jetbrains.annotations.Nullable;
 
 /// 毁灭者释放的独立飞行敌怪。
-public final class TheDestroyerProbe extends BaseMonster {
+public final class TheDestroyerProbe extends BaseMonster implements BossOwnedEntity {
     private static final double FLIGHT_SPEED = 1.125, ACCELERATION = 0.028125;
     private static final double SEPARATION_DISTANCE = 4.0, SEPARATION_SPEED = 0.4;
     private static final int SHOT_INTERVAL = 40;
     private static final double ATTACK_RANGE = 64.0;
     private static final float LASER_SPEED = 2.2F;
-    private @Nullable TheDestroyer owner;
+    private final BossOwnerTracker<TheDestroyer> ownerTracker = new BossOwnerTracker<>(TheDestroyer.class);
     private Vec3 flight = Vec3.ZERO;
     private int shotTimer;
 
@@ -38,10 +39,12 @@ public final class TheDestroyerProbe extends BaseMonster {
     }
 
     public void attach(TheDestroyer owner, Vec3 position) {
-        this.owner = owner;
         setPos(position);
-        setTarget(owner.getTarget());
+        ownerTracker.bind(this, owner);
     }
+
+    @Override
+    public @Nullable TheDestroyer getBossOwner() {return ownerTracker.resolve(this);}
 
     @Override
     public int getMaxHeadYRot() {return 180;}
@@ -72,10 +75,16 @@ public final class TheDestroyerProbe extends BaseMonster {
         };
     }
 
+    @Override
+    public void tick() {
+        if (!level().isClientSide) {
+            TheDestroyer owner = ownerTracker.tickDependent(this, true, 100);
+            if (owner != null && getTarget() != owner.getTarget()) setTarget(owner.getTarget());
+        }
+        super.tick();
+    }
+
     private void tickFlight() {
-        if (owner != null && (owner.isRemoved() || !owner.isAlive() || owner.level() != level()))
-            owner = null;
-        if (owner != null) setTarget(owner.getTarget());
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive() || target.isRemoved() || target.level() != level() || !canAttack(target)) {
             flight = flight.scale(0.95);
@@ -134,6 +143,24 @@ public final class TheDestroyerProbe extends BaseMonster {
 
     @Override
     public boolean removeWhenFarAway(double distance) {
-        return owner == null || !owner.isAlive() ? super.removeWhenFarAway(distance) : false;
+        return ownerTracker.getOwnerUUID() == null && super.removeWhenFarAway(distance);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        ownerTracker.save(tag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        ownerTracker.load(tag);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        ownerTracker.unbind(this);
+        super.remove(reason);
     }
 }

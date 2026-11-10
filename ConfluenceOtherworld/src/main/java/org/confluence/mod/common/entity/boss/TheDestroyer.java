@@ -54,9 +54,9 @@ import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /// 毁灭者的战斗主体：负责 AI、生命及目标，身体轨迹与碰撞部件交给 DestroyerBody。
 public class TheDestroyer extends BaseBoss {
@@ -87,8 +87,9 @@ public class TheDestroyer extends BaseBoss {
     public static final float BODY_HEIGHT = 25.0F / 16.0F * MODEL_SCALE;
     /// 可受击碰撞箱相对身体尺寸的倍率，保留原有接触伤害范围。
     public static final float HITBOX_SCALE = 1.5F;
-    /// 简单、普通、困难的剩余生命比例阈值；进入二阶段后不回退。
-    private static final float EASY_THRESHOLD = 0.4F, NORMAL_THRESHOLD = 0.5F, HARD_THRESHOLD = 0.6F;
+    private static final int BEAM_BASE_COOLDOWN = 100, BEAM_UNHURT_TICKS = 400;
+    private static final double BEAM_ADVANCE_SPEED = 0.6;
+    private static final Map<Player, Long> PLAYER_DAMAGE_COUNTS = new WeakHashMap<>();
     /// 玩家低于当地地表多少格时进入地下模式。
     private static final double UNDERGROUND_DEPTH = 12.0;
     /// 玩家高于当地地表多少格时进入天空模式；退出阈值较低，避免模式抖动。
@@ -119,10 +120,6 @@ public class TheDestroyer extends BaseBoss {
     private static final int LASER_SOUND_INTERVAL = 4;
     /// 激光射击声音的音量与音调。
     private static final float LASER_SOUND_VOLUME = 0.7F, LASER_SOUND_PITCH = 1.0F;
-    /// 探针检查间隔、同时存活上限；每个身体节最多放出一枚。
-    private static final int MAX_ACTIVE_PROBES = 16;
-    /// 每次体节有效受击时释放探测器的概率。
-    private static final float PROBE_RELEASE_CHANCE = 0.04F;
     /// 头部入土声音与近距离震屏的间隔，单位 tick。
     private static final int DIG_INTERVAL = 10;
     /// 地下震屏为半秒/7 格，穿出或进入地面为一秒/14 格。
@@ -161,7 +158,7 @@ public class TheDestroyer extends BaseBoss {
     private static final double COIL_ARRIVAL_RANGE = 2.5;
     private final DestroyerBody body;
     private final BitSet releasedProbes = new BitSet(SEGMENT_COUNT);
-    private final List<TheDestroyerProbe> probes = new ArrayList<>();
+    private int clientShellCursor = -1;
     private Mode candidateMode = Mode.GROUND;
     private int candidateTicks, groundTicks, launchTicks, laserTicks, laserCursor = -1;
     private boolean launching, airborne, wasSolid, terrainInitialized, alternateVolley;
@@ -199,7 +196,10 @@ public class TheDestroyer extends BaseBoss {
     private int lastLaserSoundTick = -LASER_SOUND_INTERVAL;
     private double coilAngle;
 
-    private int beamCooldown = 200, beamCount;
+    private int beamCooldown = BEAM_BASE_COOLDOWN, beamCount, beamUnhurtTicks;
+    private LivingEntity beamTimerTarget;
+    private long beamTargetDamageCount;
+    private int lastHitProbeIndex = 1;
     private Vec3 beamAim = Vec3.ZERO;
 
     public int getBeamTick() {return entityData.get(BEAM_TICK);}
@@ -314,7 +314,13 @@ public class TheDestroyer extends BaseBoss {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) DestroyerRenderer.tickBeamEffects(this);
+        if (level().isClientSide) {
+            DestroyerRenderer.tickBeamEffects(this);
+            if (clientShellCursor >= 0 && isMetal()) {
+                DestroyerRenderer.spawnPhaseShell(this, clientShellCursor++);
+                if (clientShellCursor >= SEGMENT_COUNT) clientShellCursor = -1;
+            }
+        }
         if (!level().isClientSide && !isRemoved()) entityData.set(BODY_POSE, body.createSnapshot());
     }
 
@@ -392,6 +398,11 @@ public class TheDestroyer extends BaseBoss {
 
     public boolean isMetal() {return entityData.get(METAL);}
 
+    /// 阶段转换时按体节依次切换模型。
+    public boolean isPhaseOneSection(int index) {
+        return !isMetal() || clientShellCursor >= 0 && index >= clientShellCursor;
+    }
+
     public boolean isShellOpen() {return entityData.get(SHELL_OPEN);}
 
     public float getRoll(float partialTick) {
@@ -454,7 +465,10 @@ public class TheDestroyer extends BaseBoss {
         body.initializeTrail();
         if (target == null || !target.isAlive() || target.isRemoved() || target.level() != level()) {
             finishSpecialAttack();
+            if (getBeamTick() >= 0) beamCooldown = BEAM_BASE_COOLDOWN;
             entityData.set(BEAM_TICK, -1);
+            beamTimerTarget = null;
+            beamUnhurtTicks = 0;
             velocity = Vec3.ZERO;
             setDeltaMovement(Vec3.ZERO);
             body.update();
@@ -491,7 +505,8 @@ public class TheDestroyer extends BaseBoss {
             float slowdown = Mth.clamp((getBeamTick() - 100) / 120.0F, 0, 1);
             velocity = velocity.scale(1.0F - slowdown);
         } else if (getBeamTick() >= 220 && getBeamTick() < 460) {
-            velocity = Vec3.ZERO;
+            Vec3 direction = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
+            velocity = direction.lengthSqr() < 1.0E-7 ? getLookAngle().scale(BEAM_ADVANCE_SPEED) : direction.normalize().scale(BEAM_ADVANCE_SPEED);
         }
         boolean dashing = specialAttack == SpecialAttack.DASH || previousSpecialAttack == SpecialAttack.DASH;
         if (!ballistic && !launching && !dashing)
@@ -504,6 +519,8 @@ public class TheDestroyer extends BaseBoss {
             Vec3 desired = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()).normalize();
             beamAim = WormSteering.turn(getLookAngle(), desired, Math.toRadians(6));
             faceCombatDirection(beamAim, 6, 6);
+        } else if (getBeamTick() >= 220 && getBeamTick() < 460) {
+            faceCombatDirection(velocity, 180, 180);
         } else if (getBeamTick() < 100) {
             if (specialAttack == SpecialAttack.DASH_WINDUP) {
                 Vec3 targetDirection = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
@@ -605,16 +622,18 @@ public class TheDestroyer extends BaseBoss {
     }
 
     private void updateStage() {
-        float threshold = switch (level().getDifficulty()) {
-            case PEACEFUL, EASY -> EASY_THRESHOLD;
-            case NORMAL -> NORMAL_THRESHOLD;
-            case HARD -> HARD_THRESHOLD;
-        };
+        float threshold = phaseTwoThreshold();
+        if (!isMetal()) releaseProbesForHealth(lastHitProbeIndex);
         if (!isMetal() && getHealth() <= getMaxHealth() * threshold) {
+            if (releasedProbes.cardinality() < SEGMENT_COUNT - 2) return;
             level().broadcastEntityEvent(this, PHASE_SHELL_EVENT);
             entityData.set(METAL, true);
             broadcastPhaseTransition();
         }
+    }
+
+    private float phaseTwoThreshold() {
+        return LibUtils.switchByDifficulty(level(), 0.5F, 0.5F, 0.5F, 2.0F / 3.0F);
     }
 
     private void updateMode(LivingEntity target) {
@@ -715,21 +734,43 @@ public class TheDestroyer extends BaseBoss {
         if (beamCount < Integer.MAX_VALUE) beamCount++;
     }
 
+    /// 由实际伤害事件记录，不依赖伤害来源或受击动画。
+    public static void recordPlayerDamage(Player player) {
+        PLAYER_DAMAGE_COUNTS.merge(player, 1L, Long::sum);
+    }
+
     private void tickBeam(LivingEntity target) {
         int tick = getBeamTick();
         if (tick < 0) {
-            if (hasBeamUsesRemaining() && beamCooldown > 0) beamCooldown--;
-            if (canStartBeam(target) && random.nextInt(200) == 0) startBeam();
+            if (beamTimerTarget != target) {
+                beamTimerTarget = target;
+                beamUnhurtTicks = 0;
+                beamTargetDamageCount = target instanceof Player player ? PLAYER_DAMAGE_COUNTS.getOrDefault(player, 0L) : 0;
+            }
+            long damageCount = target instanceof Player player ? PLAYER_DAMAGE_COUNTS.getOrDefault(player, 0L) : 0;
+            if (damageCount != beamTargetDamageCount) {
+                beamTargetDamageCount = damageCount;
+                beamUnhurtTicks = 0;
+            }
+            if (beamCooldown > 0) {
+                beamCooldown--;
+                beamUnhurtTicks = 0;
+                return;
+            }
+            float threshold = LibUtils.switchByDifficulty(level(), 0.25F, 1.0F / 3.0F, 0.5F, 2.0F / 3.0F);
+            if (target instanceof Player && getHealth() < getMaxHealth() * threshold) {
+                beamUnhurtTicks = Math.min(BEAM_UNHURT_TICKS, beamUnhurtTicks + 1);
+            } else beamUnhurtTicks = 0;
+            if (canStartBeam(target) && (beamUnhurtTicks >= BEAM_UNHURT_TICKS || random.nextInt(200) == 0)) {
+                beamUnhurtTicks = 0;
+                startBeam();
+            }
             return;
         }
-        if (tick >= 460) {
+        if (tick >= 460 || tick >= 219 && tick < 420 && (getMode() != Mode.SKY || !isBeamAboveGround())) {
             entityData.set(BEAM_TICK, -1);
-            beamCooldown = 300;
-            return;
-        }
-        if (tick >= 219 && tick < 420 && (getMode() != Mode.SKY || !isBeamAboveGround())) {
-            entityData.set(BEAM_TICK, -1);
-            beamCooldown = 300;
+            beamCooldown = BEAM_BASE_COOLDOWN;
+            beamUnhurtTicks = 0;
             return;
         }
         entityData.set(BEAM_TICK, tick + 1);
@@ -804,20 +845,43 @@ public class TheDestroyer extends BaseBoss {
         }
     }
 
-    /// 体节受击后独立尝试释放，一节只会释放一次。
+    /// 根据一阶段已损失的生命比例释放，并优先选择受击体节附近。
     void tryReleaseProbe(DestroyerPart part) {
-        int index = part.getIndex();
-        if (!isAlive() || index <= 0 || part.isTail() || releasedProbes.get(index) || random.nextFloat() >= PROBE_RELEASE_CHANCE)
-            return;
-        probes.removeIf(probe -> !probe.isAlive() || probe.isRemoved());
-        if (probes.size() >= MAX_ACTIVE_PROBES) return;
-        TheDestroyerProbe probe = new TheDestroyerProbe(BossEntities.THE_DESTROYER_PROBE.get(), level());
-        probe.attach(this, part.position());
-        if (level().addFreshEntity(probe)) {
-            probes.add(probe);
-            releasedProbes.set(index);
-            syncReleasedProbes();
+        lastHitProbeIndex = part.getIndex();
+        if (!isMetal()) releaseProbesForHealth(lastHitProbeIndex);
+    }
+
+    private void releaseProbesForHealth(int hitIndex) {
+        int count = SEGMENT_COUNT - 2;
+        float progress = Mth.clamp((1.0F - getHealth() / getMaxHealth()) / (1.0F - phaseTwoThreshold()), 0.0F, 1.0F);
+        int desired = Math.min(count, (int) Math.floor(progress * count + 1.0E-4F));
+        int missing = desired - releasedProbes.cardinality();
+        if (missing <= 0) return;
+        DestroyerPart[] parts = body.getParts();
+        boolean changed = false;
+        for (int distance = 0; distance <= count && missing > 0; distance++) {
+            int left = hitIndex - distance, right = hitIndex + distance;
+            if (left >= 1 && left <= count && releaseProbe(parts[left - 1])) {
+                missing--;
+                changed = true;
+            }
+            if (distance > 0 && missing > 0 && right >= 1 && right <= count && releaseProbe(parts[right - 1])) {
+                missing--;
+                changed = true;
+            }
         }
+        if (changed) syncReleasedProbes();
+    }
+
+    private boolean releaseProbe(DestroyerPart part) {
+        int index = part.getIndex();
+        if (!isAlive() || index <= 0 || part.isTail() || releasedProbes.get(index)) return false;
+        TheDestroyerProbe probe = new TheDestroyerProbe(BossEntities.THE_DESTROYER_PROBE.get(), level());
+        probe.setPos(part.position());
+        if (!level().addFreshEntity(probe)) return false;
+        probe.attach(this, part.position());
+        releasedProbes.set(index);
+        return true;
     }
 
     private void tickHeadTerrain(Vec3 previous, boolean solid) {
@@ -889,7 +953,7 @@ public class TheDestroyer extends BaseBoss {
     @Override
     public void handleEntityEvent(byte event) {
         if (level().isClientSide && event == PHASE_SHELL_EVENT) {
-            DestroyerRenderer.spawnPhaseShells(this);
+            clientShellCursor = 0;
         } else if (level().isClientSide && event < 0 && -event < SEGMENT_COUNT) {
             body.getParts()[-event - 1].emitHurtSparks();
         } else if (level().isClientSide && event == DEBRIS_EVENT) {
@@ -930,7 +994,7 @@ public class TheDestroyer extends BaseBoss {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         beamCount = tag.getInt("DestroyerBeamCount");
-        beamCooldown = tag.contains("DestroyerBeamCooldown") ? tag.getInt("DestroyerBeamCooldown") : 200;
+        beamCooldown = tag.contains("DestroyerBeamCooldown") ? tag.getInt("DestroyerBeamCooldown") : BEAM_BASE_COOLDOWN;
         entityData.set(METAL, tag.getBoolean("DestroyerMetal"));
         entityData.set(MODE, Mth.clamp(tag.getInt("DestroyerMode"), 0, Mode.values().length - 1));
         entityData.set(ROLL, tag.getFloat("DestroyerRoll"));

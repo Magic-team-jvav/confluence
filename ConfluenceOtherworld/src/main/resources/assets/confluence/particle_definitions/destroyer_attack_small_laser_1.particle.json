@@ -26,6 +26,7 @@
                 "per_render_expression": "v.size = (1 - (v.particle_age / v.particle_lifetime)) * 0.25;"
             },
             "minecraft:particle_lifetime_expression": {
+                "expiration_expression": "variable.laser_active < 0.5",
                 "max_lifetime": "math.random(0.1,0.2)"
             },
             "minecraft:particle_initial_speed": "math.random(4, 20)",

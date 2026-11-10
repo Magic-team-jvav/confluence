@@ -54,6 +54,7 @@ public final class DestroyerLaserRenderer extends EntityRenderer<DestroyerLaserP
         for (int i = 0; i < EFFECTS.length; i++) {
             ParticleEmitter emitter = new ParticleEmitter(laser.level(), laser.position(), Confluence.asResource(EFFECTS[i]));
             emitter.attachEntity(laser);
+            emitter.getVars().setValue("variable.laser_active", instance -> laser.isRemoved() ? 0.0F : 1.0F);
             // ParticleStorm 的形状方向不会随局部矩阵旋转，尾迹使用世界空间的反向速度。
             emitter.getVars().setValue("variable.laser_dx", instance -> (float) -laser.getDeltaMovement().normalize().x);
             emitter.getVars().setValue("variable.laser_dy", instance -> (float) -laser.getDeltaMovement().normalize().y);

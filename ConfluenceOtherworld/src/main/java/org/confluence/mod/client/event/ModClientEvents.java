@@ -259,6 +259,7 @@ public final class ModClientEvents {
     }
 
     private static void registerEntityLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(FireworksRocketModel.LAYER_LOCATION, FireworksRocketModel::createBodyLayer);
         event.registerLayerDefinition(BaseSlimeModel.INNER_LAYER, BaseSlimeModel::createInnerBodyLayer);
         event.registerLayerDefinition(BaseSlimeModel.OUTER_LAYER, BaseSlimeModel::createOuterBodyLayer);
         event.registerLayerDefinition(BaseBombEntityModel.LAYER_LOCATION, BaseBombEntityModel::createBodyLayer);
@@ -371,6 +372,7 @@ public final class ModClientEvents {
         // 引魂弹幕平时由粒子风暴渲染，魂引天星改用星怒坠星的交叉面片
         event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), SoulLureProjectileRenderer::new);
         event.registerEntityRenderer(SOUL_STING.get(), SoulStingProjectileRenderer::new);
+        event.registerEntityRenderer(FIREWORKS_ROCKET.get(), FireworksRocketRenderer::new);
         event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);

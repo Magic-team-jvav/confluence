@@ -235,6 +235,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(BaitItems.ITEMS, "bait/"));
         customModels.add(createDir(ConsumableItems.ITEMS, "consumable/"));
         customModels.add(createDir(FoodItems.ITEMS, "food/", "seed/"));
+        /// 法器贴图统一放在 `item/artifact/` 下；还没有贴图的法器会自动落到占位图标。
+        customModels.add(createDir(SoulItems.ITEMS, "artifact/"));
         customModels.add(createDir(HookItems.ITEMS, "hook/"));
         customModels.add(createDir(IconItems.ITEMS, "icon/"));
         customModels.add(createDir(LightPetItems.ITEMS, "light_pet/"));

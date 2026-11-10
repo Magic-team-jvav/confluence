@@ -12,6 +12,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -53,6 +54,7 @@ import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
@@ -71,6 +73,7 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBlockCounters;
+import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
@@ -118,6 +121,7 @@ public final class LivingEntityEvents {
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.HIGHEST, LivingEntityEvents::blockEnemyFriendlyFire);
         PortEventHandler.addListener(LivingEntityEvents::death);
+        PortEventHandler.addListener(LivingEntityEvents::jump);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::death$Lowest);
         PortEventHandler.addListener(PortEventPriority.LOWEST, DungeonSpirit::onDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
@@ -279,6 +283,9 @@ public final class LivingEntityEvents {
         }
         LivingEntity living = event.getEntity();
 
+        /// 附魔：虚空强袭增伤、偏转闪避投射物、舍己为人治疗队友
+        event.setAmount(EnchantmentBehaviors.incomingDamage(event, living, event.getAmount()));
+
         ModUtils.applyBossDefinitionDamage(event, living, damageSource);
 
         if (living instanceof ServerPlayer player) {
@@ -317,6 +324,8 @@ public final class LivingEntityEvents {
             amount = ManaSicknessEffect.process(player, damageSource, amount);
             amount = AbstractEnemyBannerBlock.processAttacker(player, victim, amount);
         }
+        /// 附魔：法器协同 / 精力充沛 / 莽撞 / 万兽鼓舞的召唤物加伤
+        amount = EnchantmentBehaviors.attackerDamage(attacker, damageSource, victim, amount);
         if (victim instanceof ServerPlayer player) {
             amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);
             amount = PlayerUtils.applyTerraFire(damageSource, amount);
@@ -376,6 +385,8 @@ public final class LivingEntityEvents {
             ModArmorBonus.onAttacked(player, damageSource, victim);
             LucyTheAxe.onDamageLiving(player, victim);
             StarSteelSword.tryDropManaStar(victim, player);
+            /// 附魔：眩晕 / 灵魂虹吸 / 虚空强袭 / 回击
+            EnchantmentBehaviors.afterAttack(player, victim, damageSource);
         }
     }
 
@@ -394,6 +405,8 @@ public final class LivingEntityEvents {
             event.setCritical(shot.getRandom1211().nextFloat() < shot.getCriticalChance());
         } else if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
+            /// 附魔：致命一击 / 灵魂共振的暴击倍率
+            EnchantmentBehaviors.criticalDamage(player, event);
             // 白南瓜全套：近战暴击回复灵魂
             if (event.isCritical() && event.getDamageSource().getDirectEntity() == player
                     && PlayerSpecialData.of(player).getArmorSetBonusKey() == ModArmorBonus.WHITE_PUMPKIN_SET) {
@@ -409,7 +422,22 @@ public final class LivingEntityEvents {
                 event.setPortResult(PortMobEffectEvent.Applicable.PortResult.DO_NOT_APPLY);
             }
         }
+        /// 登山套装：被敌怪赋予负面效果时有 20% 概率免疫
+        if (event.getResult() == MobEffectEvent.Applicable.Result.DEFAULT
+                && event.getEntity() instanceof Player player
+                && ModArmorBonus.isArmorSet(player, ModArmorBonus.CLIMBING_SET)
+                && event.getEffectInstance().getEffect().getCategory() == MobEffectCategory.HARMFUL
+                && player.getRandom().nextFloat() < 0.2F) {
+            event.setPortResult(PortMobEffectEvent.Applicable.PortResult.DO_NOT_APPLY);
+        }
         SweetSword.applyEffects(event);
+    }
+
+    /// 记录起跳时刻，供「跳跃后 3 秒」类套装效果结算。
+    public static void jump(LivingEvent.LivingJumpEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            player.getPersistentData().putLong(ModArmorBonus.LAST_JUMP_TAG, player.level().getGameTime());
+        }
     }
 
     private static void mobEffect$Added(MobEffectEvent.Added event) {
@@ -423,6 +451,11 @@ public final class LivingEntityEvents {
             Object2IntMap<MobEffect> value = ModArmorBonus.getValue(player, ModArmorBonus.ENHANCE$EFFECT$DURATION);
             int extraDuration = value.getInt(instance.getEffect());
             instance.duration += extraDuration;
+            /// 演艺家礼服全套：正面效果时长 +30%
+            float beneficialBonus = ModArmorBonus.getValue(player, ModArmorBonus.BENEFICIAL$EFFECT$DURATION);
+            if (beneficialBonus > 0.0F && instance.getEffect().isBeneficial()) {
+                instance.duration = Math.round(instance.duration * (1.0F + beneficialBonus));
+            }
         }
     }
 
@@ -488,6 +521,11 @@ public final class LivingEntityEvents {
         }
         if (isEnemy && OverworldUtils.inUnderworld(level.dimension(), living.getY()) && living.getRandom1211().nextInt(400) == 0) { // 掉落喷流球
             drops.add(new ItemEntity(level, x, y, z, YoyoItems.CASCADE.toStack()));
+        }
+        /// 附魔「死亡交易」：本次死亡不掉落任何物品，触发后移除该附魔
+        if (living instanceof ServerPlayer serverPlayer && EnchantmentBehaviors.triggerDeathBargain(serverPlayer)) {
+            event.setCanceled(true);
+            return;
         }
 
         for (ItemEntity entity : drops) {
@@ -607,6 +645,7 @@ public final class LivingEntityEvents {
         LivingEntity living = event.getEntity();
         if (!living.level().isClientSide && living.hasEffect(ModEffects.CHOKING.get())) {
             ItemStack itemStack = event.getItem();
+
             if (itemStack.getFoodProperties(living) != null) {
                 event.setCanceled(true);
                 living.sendSystemMessage(Component.translatable("message.confluence.choking"));
@@ -617,6 +656,12 @@ public final class LivingEntityEvents {
     private static void useItem$Finish(LivingEntityUseItemEvent.Finish event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         ItemStack itemStack = event.getItem();
+        /// 治疗药水：交给套装效果结算（腐根 / 黑斑）
+        if (itemStack.getItem() instanceof HealingPotionItem) {
+            ModArmorBonus.onHealingPotionUsed(player, ((HealingPotionItem) itemStack.getItem()).getHealAmount());
+            /// 附魔：食物储备 / 万兽鼓舞 / 药水护盾 / 惊喜礼物
+            EnchantmentBehaviors.onHealingPotionUsed(player, (HealingPotionItem) itemStack.getItem());
+        }
         RandomSource random = player.getRandom1211();
         if (itemStack.is(FoodItems.GREEN_DUMPLING.get()) && random.nextInt(6) == 0) {
             player.addEffect(new MobEffectInstance(ModEffects.CHOKING.get(), 2400));

@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.EntityHitResult;
@@ -35,6 +36,8 @@ import org.confluence.mod.common.entity.npc.OldManNPC;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.common.entity.projectile.FireworksRocketProjectile;
+import org.confluence.mod.common.soulcerer.artifact.ArtifactEffects;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
@@ -64,6 +67,14 @@ public final class EntityEvents {
     /// {@code addFreshEntity} 路径。
     private static void joinLevel(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
+        /// 烟火之箭：被法器标记的下一支箭整支替换成烟花火箭射弹（箭矢本身不再存在）。
+        if (!event.isCanceled() && !event.loadedFromDisk() && entity instanceof AbstractArrow arrow
+                && arrow.getOwner() instanceof ServerPlayer owner && !arrow.level().isClientSide
+                && ArtifactEffects.takeFireworkPayload(owner)) {
+            event.setCanceled(true);
+            arrow.discard();
+            arrow.level().addFreshEntity(new FireworksRocketProjectile(arrow));
+        }
         if (!event.isCanceled() && entity instanceof LivingEntity living) {
             if (CreatureDifficultyScaling.isManaged(living)) {
                 GamePhase2AttributeModifiers.applyModifiers(living, !event.loadedFromDisk());

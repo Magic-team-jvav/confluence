@@ -55,7 +55,6 @@ public class DecorativeBlocks {
     public static final PortDeferredBlock<Block> WOOD_STONE_SLATTED_BLOCKS = registerWithCopy("wood_stone_slatted_blocks", "木石板条块", OAK_PLANKS);
 
     public static final PortDeferredBlock<PooBlock> POO_BLOCK = registerWithItem("poo_block", "臭臭块", () -> new PooBlock(BlockBehaviour.Properties.copy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
-    public static final PortDeferredBlock<AntlionEggBlock> ANTLION_EGGS = registerWithItem("antlion_eggs", "蚁狮卵", () -> new AntlionEggBlock(BlockBehaviour.Properties.of().strength(0).sound(SoundType.BONE_BLOCK).noLootTable()));
     public static final PortDeferredBlock<GardenGnomeBlock> GARDEN_GNOME = registerWithItem("garden_gnome", "花园侏儒", () -> new GardenGnomeBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(0.5F).noOcclusion()));
     public static final RegistryObject<BlockEntityType<GardenGnomeBlock.BEntity>> GARDEN_GNOME_ENTITY = ModBlocks.BLOCK_ENTITIES.register("garden_gnome", () -> BlockEntityType.Builder.of(GardenGnomeBlock.BEntity::new, GARDEN_GNOME.get()).build(DSL.remainderType()));
 

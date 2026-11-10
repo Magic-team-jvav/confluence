@@ -36,6 +36,11 @@ public class HealingPotionItem extends AbstractPotionItem {
         PotionSicknessEffect.addTo(living, sickNessDuration);
     }
 
+    /// 该药水的治疗量（供「队友回复 20% 治疗量」类套装效果读取）。
+    public int getHealAmount() {
+        return amount;
+    }
+
     public static void use(Player player) {
         if (player.hasEffect(ModEffects.POTION_SICKNESS.get())) return;
         float required = player.getMaxHealth() - player.getHealth();

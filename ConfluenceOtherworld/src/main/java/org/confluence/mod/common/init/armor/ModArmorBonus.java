@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +17,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -40,6 +44,7 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.type.EnhanceEffectDuration;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.util.SoulcererUtils;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
@@ -51,6 +56,7 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.confluence.mod.common.init.item.ArmorItems.*;
@@ -89,6 +95,9 @@ public final class ModArmorBonus {
     public static final ValueType.IntegerType DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA = ValueType.IntegerType.of(Confluence.asResource("durability_repair_amount_per_second_in_lava"), IntegerValue.GET_MAX, 0);
     public static final ValueType.IntegerType FORTUNE = ValueType.IntegerType.of(Confluence.asResource("fortune"), AS_ENCHANTMENT_INT_CR, 0);
     public static final ValueType<Object2IntMap<MobEffect>, EnhanceEffectDuration> ENHANCE$EFFECT$DURATION = ValueType.create(Confluence.asResource("enhance_effect_duration"), EnhanceEffectDuration.MERGE, EnhanceEffectDuration.CODEC, Object2IntMaps.emptyMap(), EnhanceEffectDuration::new);
+    /// 灵魂收集概率加成（0.20 = 收魂时 20% 概率额外收 1 魂）
+    public static final ValueType.FloatType SOUL$COLLECT$CHANCE = ValueType.FloatType.of(Confluence.asResource("soul_collect_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
+    public static final ValueType.FloatType BENEFICIAL$EFFECT$DURATION = ValueType.FloatType.of(Confluence.asResource("beneficial_effect_duration"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
     // endregion
 
     // region key
@@ -100,6 +109,23 @@ public final class ModArmorBonus {
     public static ArmorSetBonusKey NINJA_SET;
     public static ArmorSetBonusKey COLD_CRYSTAL_SET;
     public static ArmorSetBonusKey HEIM_SET;
+    public static ArmorSetBonusKey EMBER_ROBE_SET;
+    public static ArmorSetBonusKey HIGHLAND_SET;
+    public static ArmorSetBonusKey REINFORCED_MAIL_SET;
+    public static ArmorSetBonusKey CLIMBING_SET;
+    public static ArmorSetBonusKey VERDANT_ROBE_SET;
+    public static ArmorSetBonusKey BLACK_SPOT_SET;
+    public static ArmorSetBonusKey ROOT_ROT_SET;
+    public static ArmorSetBonusKey WOLF_SET;
+    private static final String WOLF_BUFF_END = "confluence.wolf_buff_end";
+    private static final ResourceLocation WOLF_ATTACK_ID = Confluence.asResource("wolf_pack_attack");
+    private static final ResourceLocation WOLF_SPEED_ID = Confluence.asResource("wolf_pack_speed");
+
+    /// 起跳时刻（世界时间）与「跳跃后 3 秒」的窗口刻数。
+    public static final String LAST_JUMP_TAG = "confluence.armor_last_jump";
+    private static final int JUMP_WINDOW_TICKS = 60;
+    private static final ResourceLocation HIGHLAND_JUMP_SPEED_ID = Confluence.asResource("highland_jump_speed");
+    private static final ResourceLocation HEAVY_JUMP_SLOW_ID = Confluence.asResource("reinforced_mail_jump_slow");
     // endregion
 
     @SuppressWarnings("all")
@@ -309,11 +335,119 @@ public final class ModArmorBonus {
         register("hunters", 1, HUNERS_HELMET, HUNERS_CHESTPLATE, HUNERS_LEGGINGS, HUNERS_BOOTS, key -> {
             key.of(HURT$ENEMY$AWARD$EFFECTS, List.of(new MobEffectInstanceData(ModEffects.HUNTER, 100)));
         });
+        register("archers_set", 1, ARCHERS_HELMET, ARCHERS_CHESTPLATE, ARCHERS_LEGGINGS, ARCHERS_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getRangedVelocity(), key.id, 0.05,
+PortAttributeModifier.Operation
+.ADD_MULTIPLIED_TOTAL));
+        });
+        register("mercenary_set", 2, MERCENARY_HELMET, MERCENARY_CHESTPLATE, MERCENARY_LEGGINGS, MERCENARY_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(Attributes.MOVEMENT_SPEED, key.id, -0.30,
+PortAttributeModifier.Operation
+.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getAttackDamage(), key.id, 0.20,
+PortAttributeModifier.Operation
+.ADD_MULTIPLIED_TOTAL)
+                    .build());
+        });
+        register("renegade_set", 3, RENEGADE_HELMET, RENEGADE_CHESTPLATE, RENEGADE_LEGGINGS, RENEGADE_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(Attributes.MOVEMENT_SPEED, key.id, -0.15,
+PortAttributeModifier.Operation
+.ADD_MULTIPLIED_TOTAL)
+                    .add(LibAttributes.getAttackDamage(), key.id, 0.20,
+PortAttributeModifier.Operation
+.ADD_MULTIPLIED_TOTAL)
+                    .add(Attributes.ATTACK_SPEED, key.id, 0.30,
+PortAttributeModifier.Operation
+.ADD_MULTIPLIED_TOTAL)
+                    .build());
+        });
+        REINFORCED_MAIL_SET = register("reinforced_mail_set", 3, REINFORCED_MAIL_HELMET, REINFORCED_MAIL_CHESTPLATE, REINFORCED_MAIL_LEGGINGS, REINFORCED_MAIL_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getDodgeChance(), key.id, 0.05,
+PortAttributeModifier.Operation
+.ADD_VALUE));
+            key.of(TCItems.INJURY$FREE, 0.07F);
+        });
+        CLIMBING_SET = register("climbing_set", 3, CLIMBING_HELMET, CLIMBING_CHESTPLATE, CLIMBING_LEGGINGS, CLIMBING_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(Attributes.KNOCKBACK_RESISTANCE, key.id, 0.75,
+PortAttributeModifier.Operation
+.ADD_VALUE)
+                    .add(Attributes.STEP_HEIGHT, key.id, 0.5,
+PortAttributeModifier.Operation
+.ADD_VALUE)
+                    .build());
+        });
+        WOLF_SET = register("wolf_set", 2, WOLF_HELMET, WOLF_CHESTPLATE, WOLF_LEGGINGS, WOLF_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getAttackDamage(), key.id, 0.11,
+PortAttributeModifier.Operation
+.ADD_MULTIPLIED_TOTAL));
+        });
+        EMBER_ROBE_SET = register("ember_robe_set", 1, EMBER_HAT, EMBER_ROBE, EMBER_LEGGINGS, EMBER_BOOTS, key -> {
+            /// 常驻狱火由 ModArmorBonus#afterTick 刷新，这里只保留套装识别与说明行
+        });
+        register("entertainers_garb_set", 1, ENTERTAINERS_GARB_HAT, ENTERTAINERS_GARB_SHIRT, ENTERTAINERS_GARB_PANTS, ENTERTAINERS_GARB_SHOES, key -> {
+            key.of(BENEFICIAL$EFFECT$DURATION, 0.30F);
+        });
+        HIGHLAND_SET = register("highland_set", 2, HIGHLAND_HELMET, HIGHLAND_CHESTPLATE, HIGHLAND_LEGGINGS, HIGHLAND_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.JUMP_STRENGTH, key.id, 0.2, PortAttributeModifier.Operation.ADD_VALUE));
+        });
+        VERDANT_ROBE_SET = register("verdant_robe_set", 2, VERDANT_HAT, VERDANT_ROBE, VERDANT_LEGGINGS, VERDANT_BOOTS, key -> {
+            key.of(SOUL$COLLECT$CHANCE, 0.20F);
+        });
+        BLACK_SPOT_SET = register("black_spot_set", 4, BLACK_SPOT_HELMET, BLACK_SPOT_CHESTPLATE, BLACK_SPOT_LEGGINGS, BLACK_SPOT_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(LibAttributes.getArtifactCooldownReduction(), key.id, 0.10, PortAttributeModifier.Operation.ADD_VALUE));
+        });
+        ROOT_ROT_SET = register("root_rot_set", 2, ROOT_ROT_HELMET, ROOT_ROT_CHESTPLATE, ROOT_ROT_LEGGINGS, ROOT_ROT_BOOTS, key -> {
+        });
 
         /// todo 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
 
         PortEventHandler.postEvent(new RegisterArmorSetBonusEvent(ModArmorBonus::register));
+    }
+
+    /// 按条件维护一条瞬态属性修饰符（条件失效自动摘除）。
+    private static void applyTransient(ServerPlayer player, Attribute attribute, ResourceLocation id, double value, PortAttributeModifier.Operation operation, boolean active) {
+        AttributeInstance instance = player.getAttribute(attribute);
+        if (instance == null) {
+            return;
+        }
+        UUID uuid = PortAttributeModifier.rl2uuid(id);
+        if (active) {
+            if (instance.getModifier(uuid) == null) {
+                instance.addTransientModifier(new AttributeModifier(uuid, id.toString(), value, operation.unwrap()));
+            }
+        } else if (instance.getModifier(uuid) != null) {
+            instance.removeModifier(uuid);
+        }
+    }
+
+    /// 使用治疗药水时：腐根 / 黑斑全套重置法器冷却，黑斑另给周围玩家和自己回饱和。
+    /// @param healAmount 本次喝下的治疗药水的治疗量
+    public static void onHealingPotionUsed(ServerPlayer player, int healAmount) {
+        if (isArmorSet(player, WOLF_SET)) {
+            player.getPersistentData().putLong(WOLF_BUFF_END, player.level().getGameTime() + 600);
+        }
+        boolean blackSpot = isArmorSet(player, BLACK_SPOT_SET);
+        if (!blackSpot && !isArmorSet(player, ROOT_ROT_SET)) {
+            return;
+        }
+        SoulcererUtils.resetSoulArtifactCooldowns(player);
+        /// 队友回复 20% 药水治疗量，且不会产生耐药性（队友没有喝药，自然不会获得）
+        float allyHeal = healAmount * 0.2F;
+        if (allyHeal > 0.0F) {
+            for (Player other : player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(16.0), p -> p != player)) {
+                other.heal(allyHeal);
+            }
+        }
+        if (blackSpot) {
+            player.getFoodData().setSaturation(player.getFoodData().getSaturationLevel() + 4.0F);
+            for (Player other : player.level().getEntitiesOfClass(Player.class, player.getBoundingBox().inflate(16.0), p -> p != player)) {
+                other.getFoodData().setSaturation(other.getFoodData().getSaturationLevel() + 4.0F);
+            }
+        }
     }
 
     private static Consumer<ArmorSetBonusKey> armor(double value) {
@@ -501,6 +635,18 @@ public final class ModArmorBonus {
         if (gameTime % 80 == 0 && isArmorSet(player, HEIM_SET)) {
             player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1, false, false));
         }
+        if (gameTime % 40 == 0 && isArmorSet(player, EMBER_ROBE_SET) && !player.hasEffect(ModEffects.INFERNO)) {
+            player.addEffect(new MobEffectInstance(ModEffects.INFERNO.get(), 200, 0, false, false));
+        }
+        /// 跳跃后 3 秒：高地加速，强化链甲减速
+        long lastJump = player.getPersistentData().getLong(LAST_JUMP_TAG);
+        boolean justJumped = lastJump > 0L && gameTime - lastJump < JUMP_WINDOW_TICKS;
+        applyTransient(player, Attributes.MOVEMENT_SPEED, HIGHLAND_JUMP_SPEED_ID, 0.15, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, justJumped && isArmorSet(player, HIGHLAND_SET));
+        applyTransient(player, Attributes.MOVEMENT_SPEED, HEAVY_JUMP_SLOW_ID, -0.15, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, justJumped && isArmorSet(player, REINFORCED_MAIL_SET));
+        /// 狼甲：喝治疗药水后 30 秒的野性之力（攻击 +7%、移速 +10%）
+        boolean wolfBuff = player.getPersistentData().getLong(WOLF_BUFF_END) > gameTime;
+        applyTransient(player, LibAttributes.getAttackDamage().value(), WOLF_ATTACK_ID, 0.07, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, wolfBuff);
+        applyTransient(player, Attributes.MOVEMENT_SPEED, WOLF_SPEED_ID, 0.10, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, wolfBuff);
         if (gameTime % 20 == 0 && player.isInLava()) drapsil:{
             int amount = getValue(player, DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA);
             if (amount <= 0) break drapsil;

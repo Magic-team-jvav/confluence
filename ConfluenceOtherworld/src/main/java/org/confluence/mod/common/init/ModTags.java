@@ -453,6 +453,10 @@ public final class ModTags {
 
         public static final TagKey<Item> REPEATER_ENCHANTABLE = register("enchantable/repeater");
         public static final TagKey<Item> REPEATER_CROSSBOW_ENCHANTABLE = common("enchantable/repeater_crossbow");
+        /// 通用武器：武器通用附魔（法器协同、致命一击、精力充沛、灵魂共振、虚空强袭）的可用物品集合。
+        public static final TagKey<Item> GENERAL_WEAPON_ENCHANTABLE = register("enchantable/general_weapon");
+        /// 近战武器：近战专用附魔（回击、眩晕、灵魂虹吸）的可用物品集合。
+        public static final TagKey<Item> MELEE_WEAPON_ENCHANTABLE = register("enchantable/melee_weapon");
 
         public static final TagKey<Item> GUN = register("gun");
         public static final TagKey<Item> MANUAL_GUN = register("manual_gun");

@@ -36,6 +36,8 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     private static final String CD_TAG = "cd";
     private static final String MAX_CD_TAG = "maxCd";
     private static final String SKILL_COOLDOWNS_TAG = "skillCooldowns";
+    private static final String ARTIFACT_COOLDOWNS_TAG = "artifactCooldowns";
+    private static final String ITEM_ID_TAG = "item";
     private static final String TEMPORARY_SKILLS_TAG = "temporarySkills";
     private static final String AVAILABLE_SKILLS_TAG = "availableSkills";
     /// 刻骨的记忆当前放行的技能。
@@ -63,6 +65,8 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
     /// 只提供被动效果的技能书记录（如引渡者、灵魂回响）。
     private final Set<ResourceLocation> learnedSoulBooks = new HashSet<>();
     private final Map<ResourceLocation, SoulSkillStack> skillCooldowns = new HashMap<>();
+    /// 法器冷却：物品 ID → 剩余刻数。存在玩家附件里，退出存档后照样保留。
+    private final Map<ResourceLocation, Integer> artifactCooldowns = new HashMap<>();
     private final Set<ResourceLocation> temporarySkills = new HashSet<>();
     private final Set<ResourceLocation> availableSkills = new HashSet<>();
     /// 刻骨的记忆：一次只放行一个“只由武器临时提供”的技能，使用技能后重掷。
@@ -126,6 +130,14 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
             cooldowns.add(entry);
         }
         nbt.put(SKILL_COOLDOWNS_TAG, cooldowns);
+        ListTag artifactCooldownsTag = new ListTag();
+        for (Map.Entry<ResourceLocation, Integer> entry : artifactCooldowns.entrySet()) {
+            CompoundTag item = new CompoundTag();
+            item.putString(ITEM_ID_TAG, entry.getKey().toString());
+            item.putInt(CD_TAG, entry.getValue());
+            artifactCooldownsTag.add(item);
+        }
+        nbt.put(ARTIFACT_COOLDOWNS_TAG, artifactCooldownsTag);
         return nbt;
     }
 
@@ -186,6 +198,16 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
         }
         temporarySkills.clear();
         availableSkills.clear();
+        artifactCooldowns.clear();
+        ListTag artifactCooldownsTag = nbt.getList(ARTIFACT_COOLDOWNS_TAG, Tag.TAG_COMPOUND);
+        for (int i = 0; i < artifactCooldownsTag.size(); i++) {
+            CompoundTag entry = artifactCooldownsTag.getCompound(i);
+            ResourceLocation itemId = ResourceLocation.tryParse(entry.getString(ITEM_ID_TAG));
+            int cd = entry.getInt(CD_TAG);
+            if (itemId != null && cd > 0) {
+                artifactCooldowns.put(itemId, cd);
+            }
+        }
     }
 
     /// 同步技能状态及临时可用性，不包含当前索引。
@@ -226,6 +248,11 @@ public class SoulSkillStorage implements IPortNBTSerializable<CompoundTag> {
 
     public Map<ResourceLocation, SoulSkillStack> getSkillCooldowns() {
         return skillCooldowns;
+    }
+
+    /// 法器冷却（物品 ID → 剩余刻数），可直接修改，由魂师工具类统一推进。
+    public Map<ResourceLocation, Integer> getArtifactCooldowns() {
+        return artifactCooldowns;
     }
 
     public Set<ResourceLocation> getTemporarySkills() {

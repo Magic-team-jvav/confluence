@@ -196,6 +196,15 @@ public final class ModEffects {
     public static final RegistryObject<TheTongueEffect> THE_TONGUE = registerEffect("the_tongue", "狂卷之舌", TheTongueEffect::new);
     public static final RegistryObject<HorrifiedEffect> HORRIFIED = registerEffect("horrified", "惊恐", HorrifiedEffect::new);
     public static final RegistryObject<CrimsonStormEffect> CRIMSON_STORM = registerEffect("crimson_storm", "猩红风暴", CrimsonStormEffect::new);
+    /// 眩晕（附魔「眩晕」赋予）：移速、攻击伤害、攻速全部压到 0，表现为既不能移动也不能攻击。
+    public static final RegistryObject<MobEffect> STUN = registerWithEnglishName("stun", "眩晕", "Stun", id -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFFD24A)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, -1.0, ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.JUMP_STRENGTH, id, -1.0, ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.ATTACK_DAMAGE, id, -1.0, ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.ATTACK_SPEED, id, -1.0, ADD_MULTIPLIED_TOTAL));
+    /// 虚空强袭（附魔「虚空强袭」与虚空液体赋予）：5 秒内受到的伤害从 3%/6%/9% 线性爬到 15%/30%/50%，
+    /// 具体倍率在 `EnchantmentBehaviors#voidStrikeAmplify` 里按剩余时长结算，这里只负责挂状态与图标。
+    public static final RegistryObject<MobEffect> VOID_STRIKE = registerEffectWithEnglishName("void_strike", "虚空强袭", "Void Strike", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x6A2FA0));
 
     // 药剂
     public static final RegistryObject<FlaskEffect> WEAPON_IMBUE_FIRE = registerEffectWithEnglishName("weapon_imbue_fire", "武器灌注：火焰", "Weapon Imbue: Fire", FlaskOfFireEffect::new);

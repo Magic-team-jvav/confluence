@@ -80,6 +80,8 @@ public final class ModTabs {
                         natural_environment.accept(NatureBlocks.MARBLE);
                         natural_environment.accept(NatureBlocks.MARBLE_TAPERED_BLOCK);
                         natural_environment.accept(NatureBlocks.SPIDER_NEST_STONE);
+                        natural_environment.accept(NatureBlocks.PINE_SAPLING);
+                        natural_environment.accept(NatureBlocks.POO);
 
                         CreativeModeTab.Output corruption = GroupItem.belongsTo("corruption", output);
                         corruption.accept(NatureBlocks.CORRUPT_GRASS_BLOCK);
@@ -167,6 +169,7 @@ public final class ModTabs {
                         desert.accept(NatureBlocks.SAND_LAYER_BLOCK);
                         desert.accept(NatureBlocks.RED_SAND_LAYER_BLOCK);
                         desert.accept(NatureBlocks.DESERT_FOSSIL);
+                        desert.accept(NatureBlocks.ANTLION_EGGS);
 
                         CreativeModeTab.Output ocean = GroupItem.belongsTo("ocean", output);
                         ocean.accept(NatureBlocks.DIATOMACEOUS);
@@ -209,6 +212,7 @@ public final class ModTabs {
                         end.accept(NatureBlocks.LUNAR_CORAL);
                         end.accept(NatureBlocks.LUNAR_CORAL_FAN);
                         end.accept(NatureBlocks.SILVER_GRASS);
+                        end.accept(NatureBlocks.DREAM_BUBBLE);
                         end.accept(NatureBlocks.TALL_SILVER_GRASS);
                         end.accept(NatureBlocks.WITHERED_SEA_SILK);
                         end.accept(NatureBlocks.VOID_CRYSTAL_BLOCK);
@@ -461,6 +465,13 @@ public final class ModTabs {
                         tin_bricks.accept(DecorativeBlocks.CHISELED_TIN_BRICKS.get());
                         tin_bricks.accept(DecorativeBlocks.TIN_TILES.get());
 
+                        /// 黑曜石砖：与 1.21.1 对齐，整组（含雕纹 / 光滑 / 细砖 / 门）
+                        CreativeModeTab.Output obsidian_bricks = GroupItem.belongsTo(DecorativeBlocks.OBSIDIAN_BRICKS.id, output);
+                        obsidian_bricks.accept(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.get());
+                        obsidian_bricks.accept(DecorativeBlocks.SMOOTH_OBSIDIAN.get());
+                        obsidian_bricks.accept(DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.get());
+                        obsidian_bricks.accept(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get());
+
                         CreativeModeTab.Output iron_bricks = GroupItem.belongsTo(DecorativeBlocks.IRON_BRICKS.id, output);
                         iron_bricks.accept(DecorativeBlocks.CHISELED_IRON_BRICKS.get());
 
@@ -537,6 +548,9 @@ public final class ModTabs {
                         special_building.accept(DecorativeBlocks.SWORD_IN_STONE.get());
                         special_building.accept(DecorativeBlocks.REMAINS_BLOCK.get());
                         special_building.accept(DecorativeBlocks.POO_BLOCK.get());
+                        special_building.accept(DecorativeBlocks.CHISELED_OAK_PLANKS.get());
+                        special_building.accept(DecorativeBlocks.CHISELED_SPRUCE_PLANKS.get());
+                        special_building.accept(DecorativeBlocks.GARDEN_GNOME.get());
                         special_building.accept(DecorativeBlocks.FLOATING_WHEAT_BALE.get());
                         special_building.accept(DecorativeBlocks.CARVED_WHITE_PUMPKIN.get());
                         special_building.accept(DecorativeBlocks.JOHNNY_O_LANTERN.get());
@@ -585,6 +599,8 @@ public final class ModTabs {
                         doors.accept(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.get());
                         doors.accept(DecorativeBlocks.CHRISTMAS_PINE_DOOR.get());
                         doors.accept(DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.get());
+                        doors.accept(DecorativeBlocks.SKYWARE_DOOR.get());
+                        doors.accept(DecorativeBlocks.SKYWARE_GLASS_DOOR.get());
 
                         CreativeModeTab.Output boss_relics = GroupItem.belongsTo("boss_relics", output);
                         boss_relics.accept(DecorativeBlocks.KING_SLIME_RELIC.get());
@@ -782,6 +798,8 @@ public final class ModTabs {
                         storage.accept(ChestBlocks.UNIVERSE_CHEST.get());
                         storage.accept(ChestBlocks.HALLOWED_CHEST.get());
                         storage.accept(ChestBlocks.MECHANIC_SAFE_CHEST.get());
+                        storage.accept(ChestBlocks.GOLDEN_CHEST.get());
+                        storage.accept(ChestBlocks.DEATH_GOLDEN_CHEST.get());
                         storage.accept(FunctionalBlocks.PIGGY_BANK.get());
                         storage.accept(FunctionalBlocks.SAFE.get());
                         storage.accept(FunctionalBlocks.VOID_VAULT.get());
@@ -815,6 +833,7 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.TUFF_BOOTH.get());
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
+                        misc_functional.accept(FunctionalBlocks.SHADOW_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
 
                         CreativeModeTab.Output torches = GroupItem.belongsTo("torches", output);
@@ -976,6 +995,7 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.VORTEX_FRAGMENT.get());
                         monster_drops.accept(MaterialItems.NEBULA_FRAGMENT.get());
                         monster_drops.accept(MaterialItems.STARDUST_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.TURTLE_SHELL.get());
 
                         CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
                         plants_herbs.accept(MaterialItems.WATERLEAF.get());
@@ -989,6 +1009,10 @@ public final class ModTabs {
                         plants_herbs.accept(MaterialItems.SPORE_ROOT.get());
                         plants_herbs.accept(MaterialItems.FLOATING_WHEAT_HEADS.get());
                         plants_herbs.accept(MaterialItems.WEAVING_CLOUD_COTTON.get());
+                        plants_herbs.accept(MaterialItems.LIFE_MUSHROOM.get());
+                        plants_herbs.accept(MaterialItems.GLOWING_MUSHROOM.get());
+                        plants_herbs.accept(MaterialItems.VICIOUS_MUSHROOM.get());
+                        plants_herbs.accept(MaterialItems.VILE_MUSHROOM.get());
 
                         CreativeModeTab.Output crafting_materials = GroupItem.belongsTo("crafting_materials", output);
                         crafting_materials.accept(MaterialItems.PEARLWOOD_STICK.get());
@@ -1241,6 +1265,7 @@ public final class ModTabs {
                         buckets_liquids.accept(ToolItems.HONEY_ABSORBANT_SPONGE.get());
                         buckets_liquids.accept(ToolItems.LAVA_ABSORBANT_SPONGE.get());
                         buckets_liquids.accept(ToolItems.ULTRA_ABSORBANT_SPONGE.get());
+                        buckets_liquids.accept(ToolItems.VOID_BUCKET.get());
 
                         CreativeModeTab.Output nets = GroupItem.belongsTo("nets", output);
                         nets.accept(ToolItems.BUG_NET.get());
@@ -1276,6 +1301,8 @@ public final class ModTabs {
                         utility_tools.accept(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get());
                         utility_tools.accept(ModItems.SCRYING_ORB.get());
                         utility_tools.accept(ModItems.ENEMY_BANNER.get());
+                        utility_tools.accept(ConsumableItems.GLOWSTICK.get());
+                        utility_tools.accept(ConsumableItems.STICKY_GLOWSTICK.get());
                     })
                     .withTabsBefore(FOOD_AND_POTIONS.getId())
                     .build());
@@ -1864,6 +1891,22 @@ public final class ModTabs {
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_CHESTPLATE.get());
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_LEGGINGS.get());
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_BOOTS.get());
+
+                        /// 盔甲附魔书（暂不开放附魔台，只能从创造栏或战利品取得）
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FOOD_RESERVE.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.RECKLESS.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_CONDUIT.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_BIND.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BEAST_LORD.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BEAST_INSPIRE.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARTIFACT_COOLDOWN.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.DEFLECT.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.POTION_SHIELD.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SELFLESS_SACRIFICE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SURPRISE_GIFT.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.DEATH_BARGAIN.get(), 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_HASTE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SPEED_SYNERGY.get(), 3));
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
     public static final RegistryObject<CreativeModeTab> WARRIORS = TABS.register("warriors",
@@ -1992,6 +2035,15 @@ public final class ModTabs {
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_TURBINE.get(), 2));
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.WHIP_SWEEP.get(), 2));
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MULTI_BOOMERANG.get(), 3));
+                        /// 武器通用与近战附魔书
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARTIFACT_SYNERGY.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.CRITICAL_STRIKE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.VIGOROUS.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_RESONANCE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.VOID_STRIKE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLANKING_STRIKE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.STUN.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_SIPHON.get(), 3));
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());
@@ -2058,6 +2110,13 @@ public final class ModTabs {
                         gun.accept(ManaWeaponItems.SPACE_GUN);
                         CreativeModeTab.Output bullet = GroupItem.belongsTo("bullet", output);
                         GunItems.BULLET_ITEMS.forEach(bullet::accept);
+
+                        /// 弓弩附魔书
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BURST_BOWSTRING.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.COOLDOWN_SHOT.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MULTI_CHARGE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.RAPID_CHARGE.get(), 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SUPER_CHARGE.get(), 3));
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
@@ -2116,6 +2175,7 @@ public final class ModTabs {
                         soulcerer_secondary_weapons.accept(BowItems.SOUL_SHORT_BOW.get());
                         soulcerer_secondary_weapons.accept(BowItems.SOUL_BOW.get());
                         CreativeModeTab.Output soulcerer_artifacts = GroupItem.belongsTo("soulcerer_artifacts", output);
+                        SoulItems.ARTIFACTS.forEach(item -> soulcerer_artifacts.accept(item.get()));
                         CreativeModeTab.Output soulcerer_skill_books = GroupItem.belongsTo("soulcerer_skill_books", output);
                         soulcerer_skill_books.accept(SoulItems.SOUL_SKILL_BOOK.get());
                         for (SoulBooks.Definition book : SoulBooks.all()) {

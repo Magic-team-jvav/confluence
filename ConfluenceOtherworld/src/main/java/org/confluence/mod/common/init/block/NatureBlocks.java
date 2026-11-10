@@ -453,6 +453,9 @@ public class NatureBlocks {
 
     public static final PortDeferredBlock<PooBlock> POO = registerWithItem("poo", "臭臭", () -> new PooBlock(BlockBehaviour.Properties.copy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
 
+    /// 蚁狮卵：沙漠环境方块，被攻击/破坏/箭矢命中时孵出蚁狮幼虫。
+    public static final PortDeferredBlock<AntlionEggBlock> ANTLION_EGGS = registerWithItem("antlion_eggs", "蚁狮卵", () -> new AntlionEggBlock(BlockBehaviour.Properties.of().strength(0).sound(SoundType.BONE_BLOCK).noLootTable()));
+
     // 丛林
     public static final PortDeferredBlock<JungleGrassBlock> JUNGLE_GRASS_BLOCK = registerWithItem("jungle_grass_block", "丛林草方块", () -> new JungleGrassBlock(ISpreadable.Type.JUNGLE, BlockBehaviour.Properties.copy(GRASS_BLOCK).mapColor(MapColor.COLOR_GREEN)));
     public static final PortDeferredBlock<ThornBlock> JUNGLE_THORN = registerWithItem("jungle_thorn", "丛林荆棘", () -> new ThornBlock(3.4f, () -> MOSS_BLOCK));

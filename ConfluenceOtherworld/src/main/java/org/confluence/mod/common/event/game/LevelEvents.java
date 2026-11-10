@@ -9,6 +9,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -24,6 +25,7 @@ import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.data.spawner.MeteoriteSpawner;
 import org.confluence.mod.common.data.spawner.SpaceSpawner;
 import org.confluence.mod.common.data.spawner.TownCritterSpawner;
@@ -118,6 +120,7 @@ public final class LevelEvents {
             BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, state, pos);
             BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
             LucyTheAxe.onDestroyBlock(serverPlayer, state);
+            MeteoriteTracker.INSTANCE.markUnavailable(ChunkPos.asLong(pos));
         }
     }
 

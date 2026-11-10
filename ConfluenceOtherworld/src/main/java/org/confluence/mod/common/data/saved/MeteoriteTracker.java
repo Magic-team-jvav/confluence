@@ -2,6 +2,7 @@ package org.confluence.mod.common.data.saved;
 
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -10,12 +11,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ChunkHolder;
-import net.minecraft.server.level.ChunkMap;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.confluence.lib.color.GlobalColors;
@@ -25,7 +24,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.worldgen.feature.MeteoriteFeature;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,8 +36,10 @@ public enum MeteoriteTracker implements IGlobalData {
 
     private transient boolean shouldGenerate = true;
     public boolean spawnAtNextNight = false;
-    @NotNull BlockPos location = BlockPos.ZERO;
-    int tickUntilLanding = 0;
+    private BlockPos location = BlockPos.ZERO;
+    private int tickUntilLanding = 0;
+
+    private final LongSet unavailableChunks = new LongOpenHashSet();
 
     public void tick(ServerLevel level) {
         if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
@@ -108,12 +108,13 @@ public enum MeteoriteTracker implements IGlobalData {
             }
             x += xStep;
             z += zStep;
-        } while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34);
+        } while (isUnAvailableChunk(chunkMap, x, z));
         // 获取能放陨石的区块
         BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos();
         LongSet forcedChunks = level.getForcedChunks();
+        boolean liquidSurface;
         do {
-            while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34) {
+            while (isUnAvailableChunk(chunkMap, x, z)) {
                 if (level.random.nextBoolean()) x += xStep;
                 else z += zStep;
             }
@@ -122,15 +123,28 @@ public enum MeteoriteTracker implements IGlobalData {
             int bx = SectionPos.sectionToBlockCoord(x, 7);
             int bz = SectionPos.sectionToBlockCoord(z, 7);
             landingPos.set(bx, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz), bz);
+            liquidSurface = !level.getBlockState(landingPos).getFluidState().isEmpty();
+
             if (requires) level.setChunkForced(x, z, false);
-            x += xStep;
-            z += zStep;
-        } while (!level.getBlockState(landingPos).getFluidState().isEmpty());
+            if (liquidSurface) {
+                x += xStep;
+                z += zStep;
+            }
+        } while (liquidSurface);
 
         this.shouldGenerate = true;
         this.location = landingPos;
         this.tickUntilLanding = landingTime;
+        markUnavailable(ChunkPos.asLong(x, z));
         MeteoriteLocationPacketS2C.sendToAll(location, landingTime);
+    }
+
+    private boolean isUnAvailableChunk(ChunkMap chunkMap, int x, int z) {
+        long pos = ChunkPos.asLong(x, z);
+        ChunkHolder chunkHolder;
+        return unavailableChunks.contains(pos)
+                && (chunkHolder = chunkMap.getVisibleChunkIfPresent(pos)) != null
+                && chunkHolder.getTicketLevel() >= ChunkLevel.byStatus(ChunkStatus.FEATURES);
     }
 
     /// 陨石落地时覆盖的区块半径：1 表示 3×3 区块（与 [MeteoriteFeature.Config#radius()] 对应）。
@@ -187,11 +201,19 @@ public enum MeteoriteTracker implements IGlobalData {
         return location;
     }
 
+    public void markUnavailable(long pos) {
+        unavailableChunks.add(pos);
+    }
+
     @Override
     public void decode(CompoundTag tag) {
         this.spawnAtNextNight = tag.getBoolean("spawnAtNextNight");
         this.location = Objects.requireNonNullElse(NbtUtils.readBlockPos(tag.getCompound("meteoriteLocation")), BlockPos.ZERO);
         this.tickUntilLanding = tag.getInt("tickUtilMeteoriteLanding");
+        unavailableChunks.clear();
+        for (long pos : tag.getLongArray("unavailableChunks")) {
+            markUnavailable(pos);
+        }
     }
 
     @Override
@@ -199,10 +221,20 @@ public enum MeteoriteTracker implements IGlobalData {
         tag.putBoolean("spawnAtNextNight", spawnAtNextNight);
         tag.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
         tag.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
+        tag.putLongArray("unavailableChunks", unavailableChunks.longStream().toArray());
     }
 
     @Override
     public String serializeKey() {
         return "confluence:meteorite_tracker";
+    }
+
+    @Override
+    public void clear() {
+        this.shouldGenerate = true;
+        this.spawnAtNextNight = false;
+        this.location = BlockPos.ZERO;
+        this.tickUntilLanding = 0;
+        unavailableChunks.clear();
     }
 }

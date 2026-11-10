@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class StatueBlocks {
@@ -268,31 +267,31 @@ public class StatueBlocks {
 
     private static PortDeferredBlock<StatueBlock> register(String registryId, String chineseName) {
         PortDeferredBlock<StatueBlock> entry = register(registryId);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredBlock<BehaviourStatueBlock> registerBehaviour(String registryId, String chineseName, BehaviourStatueBlock.Behaviour behaviour) {
         PortDeferredBlock<BehaviourStatueBlock> entry = registerBehaviour(registryId, behaviour);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredBlock<BehaviourStatueBlock> registerSimpleSummon(String registryId, String chineseName, boolean noDrops, Function<Level, Entity> factory) {
         PortDeferredBlock<BehaviourStatueBlock> entry = registerSimpleSummon(registryId, noDrops, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredBlock<StatueBlock> registerWithEnglishName(String registryId, String chineseName, String englishName) {
         PortDeferredBlock<StatueBlock> entry = register(registryId);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredBlock<BehaviourStatueBlock> registerBehaviourWithEnglishName(String registryId, String chineseName, String englishName, BehaviourStatueBlock.Behaviour behaviour) {
         PortDeferredBlock<BehaviourStatueBlock> entry = registerBehaviour(registryId, behaviour);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

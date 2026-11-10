@@ -97,7 +97,6 @@ public class StellarStudiesProjectile extends AbstractManaProjectile {
 
     private void initEmitter(ParticleEmitter particleEmitter) {
         particleEmitter.attachEntity(this);
-        particleEmitter.hideOutline = true;
         particleEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
         MolangParticleEngine.INSTANCE.addEmitter(particleEmitter);
     }

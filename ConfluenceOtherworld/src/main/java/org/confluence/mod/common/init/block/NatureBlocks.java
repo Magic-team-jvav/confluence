@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import static net.minecraft.world.level.block.Blocks.*;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.*;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.LOST_PAPER_BLOCK;
 
@@ -893,25 +892,25 @@ public class NatureBlocks {
 
     private static <B extends Block> PortDeferredBlock<B> registerWithoutItem(String registryId, String chineseName, Supplier<B> block) {
         PortDeferredBlock<B> entry = BLOCKS.register(registryId, block);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> PortDeferredBlock<B> registerWithItem(String registryId, String chineseName, Supplier<B> block) {
         PortDeferredBlock<B> entry = registerWithItem(registryId, block);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> PortDeferredBlock<B> registerWithItem(String registryId, String chineseName, Supplier<B> block, Function<B, BlockItem> function) {
         PortDeferredBlock<B> entry = registerWithItem(registryId, block, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> PortDeferredBlock<B> registerWithoutItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<B> block) {
         PortDeferredBlock<B> entry = BLOCKS.register(registryId, block);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

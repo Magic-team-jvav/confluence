@@ -11,7 +11,6 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.IntSupplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class PotBlocks {
     public static void init() {}
@@ -44,13 +43,13 @@ public class PotBlocks {
 
     private static PortDeferredBlock<BasePotBlock> registerWithItem(String registryId, String chineseName, float moneyRatio, IntSupplier invMoneyHoleChance) {
         PortDeferredBlock<BasePotBlock> entry = registerWithItem(registryId, moneyRatio, invMoneyHoleChance);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredBlock<BasePotBlock> registerWithItem(String registryId, String chineseName, float moneyRatio, int invMoneyHoleChance) {
         PortDeferredBlock<BasePotBlock> entry = registerWithItem(registryId, moneyRatio, () -> invMoneyHoleChance);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

@@ -28,7 +28,6 @@ import org.mesdag.portlib.wrapper.common.PortEffectCures;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.item.Items.BOWL;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.item.food.ModFoodProperties.hasEffectProperties;
 
 public class FoodItems {
@@ -298,7 +297,7 @@ public class FoodItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -307,13 +306,13 @@ public class FoodItems {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().rarity(rarity).stackTo(64).food(foodProperties.get()).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseFoodItem> registerDrinkingFood(String registryId, String chineseName, ModRarity rarity, Supplier<FoodProperties> foodProperties, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType) {
         PortDeferredItem<BaseFoodItem> entry = registerDrinkingFood(registryId, rarity, foodProperties, duration, useAnim, drinkingSoundType, eatingSoundType, builder -> {});
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -328,13 +327,13 @@ public class FoodItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -343,13 +342,13 @@ public class FoodItems {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().rarity(rarity).stackTo(64).food(foodProperties.get()).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseFoodItem> registerDrinkingFoodWithEnglishName(String registryId, String chineseName, String englishName, ModRarity rarity, Supplier<FoodProperties> foodProperties, int duration, UseAnim useAnim, SoundEvent drinkingSoundType, SoundEvent eatingSoundType) {
         PortDeferredItem<BaseFoodItem> entry = registerDrinkingFood(registryId, rarity, foodProperties, duration, useAnim, drinkingSoundType, eatingSoundType, builder -> {});
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
@@ -364,7 +363,7 @@ public class FoodItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

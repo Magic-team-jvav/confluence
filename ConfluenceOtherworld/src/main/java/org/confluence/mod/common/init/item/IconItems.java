@@ -6,7 +6,6 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class IconItems {
     public static void init() {}
@@ -35,7 +34,7 @@ public class IconItems {
 
     private static PortDeferredItem<IconItem> register(String registryId, String chineseName) {
         PortDeferredItem<IconItem> entry = ITEMS.register(registryId, IconItem::new);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

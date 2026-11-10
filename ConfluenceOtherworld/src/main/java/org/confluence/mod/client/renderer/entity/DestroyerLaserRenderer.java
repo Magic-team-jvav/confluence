@@ -69,7 +69,6 @@ public final class DestroyerLaserRenderer extends EntityRenderer<DestroyerLaserP
                     });
                 }
             }
-            emitter.hideOutline = true;
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
             result[i] = emitter;
         }

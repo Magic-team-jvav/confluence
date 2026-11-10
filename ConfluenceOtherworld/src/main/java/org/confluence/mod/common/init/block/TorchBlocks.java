@@ -16,7 +16,6 @@ import org.mesdag.portlib.registries.PortBlockRegistration;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 /// 泰拉瑞亚的火把。全部由注册信息推导资源：直立与墙挂共用一张 `block/torch/<名字>` 纹理，
 /// 彩光颜色在 {@code ModOpalDataProvider} 中登记。
@@ -63,7 +62,7 @@ public class TorchBlocks {
 
     private static PortDeferredBlock<TorchBlock> register(String registryId, String chineseName, MapColor mapColor) {
         PortDeferredBlock<TorchBlock> entry = register(registryId, mapColor);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

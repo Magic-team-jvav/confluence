@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.data.loading.DatagenModLoader;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -16,6 +17,7 @@ import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.consumer.Consumer3;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
@@ -55,7 +57,6 @@ import java.util.function.Consumer;
 @Mod(Confluence.MODID)
 public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
-    public static final List<Consumer<TranslationConsumer>> LANGUAGE_PROVIDERS = new ArrayList<>();
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
@@ -176,5 +177,19 @@ public final class Confluence {
 
     public static <T> TagKey<T> asTagKey(ResourceKey<Registry<T>> registryKey, String path) {
         return TagKey.create(registryKey, asResource(path));
+    }
+
+    private static final List<Consumer<TranslationConsumer>> LANGUAGE_PROVIDERS = new ArrayList<>();
+
+    public static void addLanguageProvider(Consumer<TranslationConsumer> consumer) {
+        if (DatagenModLoader.isRunningDataGen()) {
+            LANGUAGE_PROVIDERS.add(consumer);
+        }
+    }
+
+    public static void forEachLanguageProvider(Consumer3<String, String, String> consumer3) {
+        for (Consumer<TranslationConsumer> provider : LANGUAGE_PROVIDERS) {
+            provider.accept(consumer3::accept);
+        }
     }
 }

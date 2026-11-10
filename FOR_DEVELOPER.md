@@ -19,3 +19,5 @@
 事件的订阅位置要看该事件继承自什么类，如果是PlayerEvent，就必须在PlayerEvents订阅
 
 套装奖励见ModArmorBonus，判断玩家有没有套装奖励见PlayerSpecialData.of(player).getArmorSetBonusKey()
+
+对于已存在的旧列表式代码，不允许把列表式的新增代码插到列表头

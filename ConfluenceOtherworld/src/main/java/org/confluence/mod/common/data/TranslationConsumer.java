@@ -48,11 +48,21 @@ public interface TranslationConsumer {
         add(effect.getDescriptionId(), english, chinese);
     }
 
-    default void addTooltip(Item item, String english, String chinese) {
-        add("tooltip." + item.getDescriptionId() + ".0", english, chinese);
+    default void addTooltip(Item item, int index, String english, String chinese) {
+        add("tooltip." + item.getDescriptionId() + "." + index, english, chinese);
     }
 
-    default void addTooltip(MobEffect effect, String english, String chinese) {
-        add("tooltip." + effect.getDescriptionId() + ".0", english, chinese);
+    default void addTooltip(Item item, String[] english, String[] chinese) {
+        if (english.length != chinese.length) {
+            throw new IllegalArgumentException();
+        }
+        String base = "tooltip." + item.getDescriptionId() + ".";
+        for (int i = 0; i < english.length; i++) {
+            add(base + i, english[i], chinese[i]);
+        }
+    }
+
+    default void addTooltip(MobEffect effect, int index, String english, String chinese) {
+        add("tooltip." + effect.getDescriptionId() + "." + index, english, chinese);
     }
 }

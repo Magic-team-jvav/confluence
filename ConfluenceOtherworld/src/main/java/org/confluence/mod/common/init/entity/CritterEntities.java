@@ -19,7 +19,6 @@ import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
 
 import java.util.function.Function;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
 
 public class CritterEntities {
@@ -164,19 +163,19 @@ public class CritterEntities {
 
     private static <T extends Mob> RegistryObject<EntityType<T>> register(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         RegistryObject<EntityType<T>> entry = register(registryId, factory, 0.4F, 0.5F, 8);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> RegistryObject<EntityType<T>> registerInsect(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         RegistryObject<EntityType<T>> entry = registerCompact(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> RegistryObject<EntityType<T>> registerCompact(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         RegistryObject<EntityType<T>> entry = register(registryId, factory, 0.5F, 0.3F, 8);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -186,27 +185,27 @@ public class CritterEntities {
                         .sized(width, height)
                         .clientTrackingRange(trackingRange)
                         .build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> RegistryObject<EntityType<T>> registerHostile(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId,
                 id -> EntityType.Builder.of(factory, MobCategory.MONSTER).sized(0.4F, 0.5F).clientTrackingRange(10).build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Mob> RegistryObject<EntityType<T>> registerHostileCompact(String registryId, String chineseName, EntityType.EntityFactory<T> factory) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId,
                 id -> EntityType.Builder.of(factory, MobCategory.MONSTER).sized(0.5F, 0.3F).clientTrackingRange(10).build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntityType(String registryId, String chineseName, Function<ResourceLocation, EntityType<T>> factory) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

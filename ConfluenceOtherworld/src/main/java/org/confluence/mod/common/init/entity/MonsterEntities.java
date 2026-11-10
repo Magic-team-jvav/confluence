@@ -19,7 +19,6 @@ import org.confluence.mod.common.entity.monster.slime.*;
 import org.confluence.mod.common.entity.npc.TownSlimeRescue;
 import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.entity.monster.CreatureAttributeBuilder.DynamicValue.byWorldPhase;
 import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
 
@@ -1403,20 +1402,20 @@ public class MonsterEntities {
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(String registryId, String chineseName, EntityType.Builder<T> builder) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId, id -> builder.build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseWormPart>> registerWormSegment(String registryId, String chineseName) {
         RegistryObject<EntityType<BaseWormPart>> entry = registerEntity(registryId, EntityType.Builder.of(BaseWormPart::new, MobCategory.MISC)
                 .sized(1.5F, 1.5F).clientTrackingRange(10).updateInterval(1).noSave());
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<SimpleWormMonster>> registerWorm(String registryId, String chineseName, int segments, float width, float height, SimpleWormMonster.Role role, java.util.function.Supplier<EntityType<BaseWormPart>> segmentType) {
         RegistryObject<EntityType<SimpleWormMonster>> entry = registerEntity(registryId, EntityType.Builder.<SimpleWormMonster>of((type, level) -> new SimpleWormMonster(type, level, segments, role, segmentType.get()), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10).updateInterval(1));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1424,37 +1423,37 @@ public class MonsterEntities {
         RegistryObject<EntityType<SimpleWormMonster>> entry = registerEntity(registryId, EntityType.Builder.<SimpleWormMonster>of(
                         (type, level) -> new SimpleWormMonster(type, level, role, anatomy, segmentType.get()), MobCategory.MONSTER)
                 .sized(width, height).clientTrackingRange(10).updateInterval(1));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<DarkCaster>> registerCaster(String registryId, String chineseName, float width, float height, DarkCaster.Profile profile) {
         RegistryObject<EntityType<DarkCaster>> entry = registerEntity(registryId, EntityType.Builder.<DarkCaster>of((type, level) -> new DarkCaster(type, level, profile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<JellyFish>> registerJellyFish(String registryId, String chineseName, JellyFish.Profile profile) {
         RegistryObject<EntityType<JellyFish>> entry = registerEntity(registryId, EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, profile), MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<Snatcher>> registerSnatcher(String registryId, String chineseName, Snatcher.Profile profile) {
         RegistryObject<EntityType<Snatcher>> entry = registerEntity(registryId, EntityType.Builder.<Snatcher>of((type, level) -> new Snatcher(type, level, profile), MobCategory.MONSTER).sized(1.0F, 1.0F).fireImmune().clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<MeleeSkeleton>> registerSkeleton(String registryId, String chineseName, float w, float h) {
         RegistryObject<EntityType<MeleeSkeleton>> entry = registerSkeleton(registryId, w, h, MeleeSkeleton.BehaviorProfile.BLOOD_MOON_DOORS);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<MeleeSkeleton>> registerSkeleton(String registryId, String chineseName, float width, float height, MeleeSkeleton.BehaviorProfile behaviorProfile) {
         RegistryObject<EntityType<MeleeSkeleton>> entry = registerEntity(registryId, EntityType.Builder.<MeleeSkeleton>of((type, level) -> new MeleeSkeleton(type, level, false, behaviorProfile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1462,61 +1461,61 @@ public class MonsterEntities {
         RegistryObject<EntityType<FlyingFishMonster>> entry = registerEntity(registryId, EntityType.Builder.<FlyingFishMonster>of(
                 (type, level) -> new FlyingFishMonster(type, level, pursuitProfile, 0.2),
                 MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<ChargingMonster>> registerCharger(String registryId, String chineseName, float width, float height, double chargeSpeed, int windupTicks) {
         RegistryObject<EntityType<ChargingMonster>> entry = registerEntity(registryId, EntityType.Builder.<ChargingMonster>of((type, level) -> new ChargingMonster(type, level, chargeSpeed, windupTicks), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float w, float h) {
         RegistryObject<EntityType<BaseWarriorMonster>> entry = registerLand(registryId, w, h, BaseWarriorMonster.LandSoundProfile.ROUTINE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.LandSoundProfile soundProfile) {
         RegistryObject<EntityType<BaseWarriorMonster>> entry = registerLand(registryId, width, height, soundProfile, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.0, false);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.LandAnimationProfile animationProfile, double meleeSpeed, boolean ignoreLightPathCost) {
         RegistryObject<EntityType<BaseWarriorMonster>> entry = registerLand(registryId, width, height, soundProfile, animationProfile, meleeSpeed, ignoreLightPathCost, BaseWarriorMonster.DoorBehavior.NONE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseWarriorMonster>> registerLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.LandAnimationProfile animationProfile, double meleeSpeed, boolean ignoreLightPathCost, BaseWarriorMonster.DoorBehavior doorBehavior) {
         RegistryObject<EntityType<BaseWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<BaseWarriorMonster>of((type, level) -> new BaseWarriorMonster(type, level, 0.0, animationProfile, soundProfile, meleeSpeed, ignoreLightPathCost, doorBehavior), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<HumanoidWarriorMonster>> registerHumanoidLand(String registryId, String chineseName, float width, float height, net.minecraft.world.item.ItemStack defaultMainHand) {
         RegistryObject<EntityType<HumanoidWarriorMonster>> entry = registerHumanoidLand(registryId, width, height, defaultMainHand, BaseWarriorMonster.LandSoundProfile.ROUTINE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<HumanoidWarriorMonster>> registerHumanoidLand(String registryId, String chineseName, float width, float height, net.minecraft.world.item.ItemStack defaultMainHand, BaseWarriorMonster.LandSoundProfile soundProfile) {
         RegistryObject<EntityType<HumanoidWarriorMonster>> entry = registerHumanoidLand(registryId, width, height, defaultMainHand, soundProfile, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<HumanoidWarriorMonster>> registerHumanoidLand(String registryId, String chineseName, float width, float height, net.minecraft.world.item.ItemStack defaultMainHand, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.LandAnimationProfile animationProfile) {
         RegistryObject<EntityType<HumanoidWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<HumanoidWarriorMonster>of((type, level) -> new HumanoidWarriorMonster(type, level, defaultMainHand, soundProfile, animationProfile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<GoblinMonster>> registerGoblinLand(String registryId, String chineseName, float width, float height, net.minecraft.world.item.ItemStack defaultMainHand, BaseWarriorMonster.LandAnimationProfile animationProfile) {
         RegistryObject<EntityType<GoblinMonster>> entry = registerGoblinLand(registryId, width, height, defaultMainHand, animationProfile, GoblinMonster.DoorBehavior.NONE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1524,25 +1523,25 @@ public class MonsterEntities {
         RegistryObject<EntityType<GoblinMonster>> entry = registerEntity(registryId, EntityType.Builder.<GoblinMonster>of(
                 (type, level) -> new GoblinMonster(type, level, defaultMainHand, animationProfile, doorBehavior),
                 MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseWarriorMonster>> registerAcceleratingLand(String registryId, String chineseName, float width, float height, double pursuitSpeedBonus, double meleeSpeed, boolean ignoreLightPathCost, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile) {
         RegistryObject<EntityType<BaseWarriorMonster>> entry = registerAcceleratingLand(registryId, width, height, pursuitSpeedBonus, meleeSpeed, ignoreLightPathCost, animationProfile, soundProfile, BaseWarriorMonster.DoorBehavior.NONE);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseWarriorMonster>> registerAcceleratingLand(String registryId, String chineseName, float width, float height, double pursuitSpeedBonus, double meleeSpeed, boolean ignoreLightPathCost, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, BaseWarriorMonster.DoorBehavior doorBehavior) {
         RegistryObject<EntityType<BaseWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<BaseWarriorMonster>of((type, level) -> new BaseWarriorMonster(type, level, pursuitSpeedBonus, animationProfile, soundProfile, meleeSpeed, ignoreLightPathCost, doorBehavior), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile) {
         RegistryObject<EntityType<JumpingWarriorMonster>> entry = registerJumpingLand(registryId, width, height, profile, BaseWarriorMonster.LandAnimationProfile.WALK_ONLY);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1553,43 +1552,43 @@ public class MonsterEntities {
                         (type, level) -> new JumpingWarriorMonster(
                                 type, level, profile, animationProfile),
                         MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile) {
         RegistryObject<EntityType<JumpingWarriorMonster>> entry = registerJumpingLand(registryId, width, height, profile, animationProfile, soundProfile, 1.0);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, double meleeSpeed) {
         RegistryObject<EntityType<JumpingWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<JumpingWarriorMonster>of((type, level) -> new JumpingWarriorMonster(type, level, profile, animationProfile, soundProfile, meleeSpeed), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<JumpingWarriorMonster>> registerJumpingLand(String registryId, String chineseName, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, double meleeSpeed, boolean mummy) {
         RegistryObject<EntityType<JumpingWarriorMonster>> entry = registerEntity(registryId, EntityType.Builder.<JumpingWarriorMonster>of((type, level) -> new JumpingWarriorMonster(type, level, profile, animationProfile, soundProfile, meleeSpeed, mummy), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseSlime>> registerSlime(String registryId, String chineseName, boolean passiveByDay, int size) {
         RegistryObject<EntityType<BaseSlime>> entry = registerSlime(registryId, passiveByDay, size, false);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static RegistryObject<EntityType<BaseSlime>> registerSlime(String registryId, String chineseName, boolean passiveByDay, int size, boolean honeyConvertible) {
         RegistryObject<EntityType<BaseSlime>> entry = registerEntity(registryId, EntityType.Builder.<BaseSlime>of((entityType, level) -> new BaseSlime(entityType, level, passiveByDay, size, honeyConvertible), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntityWithEnglishName(String registryId, String chineseName, String englishName, EntityType.Builder<T> builder) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId, id -> builder.build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

@@ -9,7 +9,6 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 /// 以木箭MC4伤，TR5伤为起点，TR伤害每+1，MC伤害+0.2
 public class ArrowItems {
@@ -31,7 +30,7 @@ public class ArrowItems {
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class ChestBlocks {
@@ -122,19 +121,19 @@ public class ChestBlocks {
 
     private static PortDeferredBlock<BaseChestBlock> registerNormal(String registryId, String chineseName, @Nullable Predicate<ItemStack> predicate) {
         PortDeferredBlock<BaseChestBlock> entry = registerNormal(registryId, predicate);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredBlock<DeathChestBlock> registerDeath(String registryId, String chineseName) {
         PortDeferredBlock<DeathChestBlock> entry = registerDeath(registryId);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> PortDeferredBlock<B> registerWithItem(String registryId, String chineseName, com.google.common.base.Supplier<B> supplier) {
         PortDeferredBlock<B> entry = registerWithItem(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

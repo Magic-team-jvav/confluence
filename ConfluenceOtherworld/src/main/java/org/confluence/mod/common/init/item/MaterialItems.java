@@ -18,7 +18,6 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class MaterialItems {
     public static void init() {}
@@ -213,49 +212,49 @@ public class MaterialItems {
 
     private static PortDeferredItem<Item> register(String registryId, String chineseName) {
         PortDeferredItem<Item> entry = register(registryId, new Item.Properties());
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> register(String registryId, String chineseName, ModRarity rarity) {
         PortDeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> register(String registryId, String chineseName, Item.Properties properties) {
         PortDeferredItem<Item> entry = ITEMS.register(registryId, () -> new Item(properties));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName) {
         PortDeferredItem<Item> entry = register(registryId, new Item.Properties());
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName, ModRarity rarity) {
         PortDeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName, Item.Properties properties) {
         PortDeferredItem<Item> entry = ITEMS.register(registryId, () -> new Item(properties));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

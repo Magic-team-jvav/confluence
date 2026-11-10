@@ -10,7 +10,6 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class BoomerangItems {
     public static void init() {}
@@ -30,13 +29,13 @@ public class BoomerangItems {
 
     private static PortDeferredItem<BoomerangItem> register(String registryId, String chineseName, float damage, float flySpeed, float backSpeed, int forwardTicks, int cooldown, int maxCount, int penetration, boolean fire, int durability) {
         PortDeferredItem<BoomerangItem> entry = ITEMS.register(registryId, () -> new BoomerangItem(new BoomerangItem.Settings(damage, flySpeed, backSpeed, forwardTicks, cooldown, maxCount, penetration, fire, durability > 0 ? new Item.Properties().durability(durability).stacksTo(1) : new Item.Properties().stacksTo(1))));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

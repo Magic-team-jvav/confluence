@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 /// 允许空挥的剑都属于特殊横扫剑。
 /// 允许自动挥舞的剑都属于特殊横扫剑，但特殊横扫不一定代表自动挥舞。
@@ -297,13 +296,13 @@ public class SwordItems {
 
     private static PortDeferredItem<BaseSwordItem> register(String registryId, String chineseName, Supplier<BaseSwordItem> supplier) {
         PortDeferredItem<BaseSwordItem> entry = ITEMS.register(registryId, supplier::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseSwordItem> register(String registryId, String chineseName, Tier tier, int rawDamage, float rawSpeed, Supplier<SwordDefinition.Builder> modifierBuilder) {
         PortDeferredItem<BaseSwordItem> entry = register(registryId, tier, rawDamage, rawSpeed, ModRarity.WHITE, modifierBuilder);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -315,25 +314,25 @@ public class SwordItems {
             }
             return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, builder);
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseSwordItem> registerWithEnglishName(String registryId, String chineseName, String englishName, Supplier<BaseSwordItem> supplier) {
         PortDeferredItem<BaseSwordItem> entry = ITEMS.register(registryId, supplier::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseSwordItem> registerWithEnglishName(String registryId, String chineseName, String englishName, Tier tier, int rawDamage, float rawSpeed, Supplier<SwordDefinition.Builder> modifierBuilder) {
         PortDeferredItem<BaseSwordItem> entry = register(registryId, tier, rawDamage, rawSpeed, ModRarity.WHITE, modifierBuilder);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
@@ -345,7 +344,7 @@ public class SwordItems {
             }
             return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, builder);
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

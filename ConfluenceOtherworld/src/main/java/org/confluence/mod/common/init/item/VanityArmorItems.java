@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class VanityArmorItems {
     public static void init() {}
@@ -155,25 +154,25 @@ public class VanityArmorItems {
             COLORED_DYE_ITEMS.add(item);
             return item;
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String registryId, String chineseName, String geoName, ArmorItem.Type type, ModRarity rarity) {
         PortDeferredItem<BaseVanityArmorItem> entry = ITEMS.register(registryId, () -> new BaseVanityArmorItem(geoName, type, rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String registryId, String chineseName, ArmorItem.Type type, ModRarity rarity) {
         PortDeferredItem<BaseVanityArmorItem> entry = ITEMS.register(registryId, () -> new BaseVanityArmorItem("vanity_armor/" + registryId, type, rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmor(String registryId, String chineseName, String geoName, ArmorMaterial material, ArmorItem.Type type, Item.Properties properties, ModRarity rarity) {
         PortDeferredItem<BaseVanityArmorItem> entry = ITEMS.register(registryId, () -> new BaseVanityArmorItem(geoName, material, type, properties, rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -183,31 +182,31 @@ public class VanityArmorItems {
             consumer.accept(id, builder);
             return new BaseVanityArmorItem(geoName, material, type, new Item.Properties().attributes(builder.build()), rarity);
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmorWithEnglishName(String registryId, String chineseName, String englishName, String geoName, ArmorItem.Type type, ModRarity rarity) {
         PortDeferredItem<BaseVanityArmorItem> entry = ITEMS.register(registryId, () -> new BaseVanityArmorItem(geoName, type, rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmorWithEnglishName(String registryId, String chineseName, String englishName, ArmorItem.Type type, ModRarity rarity) {
         PortDeferredItem<BaseVanityArmorItem> entry = ITEMS.register(registryId, () -> new BaseVanityArmorItem("vanity_armor/" + registryId, type, rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseVanityArmorItem> registerVanityArmorWithEnglishName(String registryId, String chineseName, String englishName, String geoName, ArmorMaterial material, ArmorItem.Type type, Item.Properties properties, ModRarity rarity) {
         PortDeferredItem<BaseVanityArmorItem> entry = ITEMS.register(registryId, () -> new BaseVanityArmorItem(geoName, material, type, properties, rarity));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
@@ -217,7 +216,7 @@ public class VanityArmorItems {
             consumer.accept(id, builder);
             return new BaseVanityArmorItem(geoName, material, type, new Item.Properties().attributes(builder.build()), rarity);
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.function.Function;
 
 import static net.minecraft.world.level.block.Blocks.LANTERN;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class FunctionalBlocks {
@@ -272,31 +271,31 @@ public class FunctionalBlocks {
 
     private static <B extends Block> PortDeferredBlock<B> registerWithItem(String registryId, String chineseName, Supplier<B> supplier) {
         PortDeferredBlock<B> entry = registerWithItem(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> PortDeferredBlock<B> registerWithItem(String registryId, String chineseName, Supplier<B> supplier, Function<B, BlockItem> function) {
         PortDeferredBlock<B> entry = registerWithItem(registryId, supplier, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block & EntityBlock & INetworkBlock> PortDeferredBlock<B> registerWithEntity(String registryId, String chineseName, Supplier<B> supplier) {
         PortDeferredBlock<B> entry = registerWithEntity(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block & EntityBlock & INetworkBlock> PortDeferredBlock<B> registerWithEntity(String registryId, String chineseName, Supplier<B> supplier, Function<B, BlockItem> function) {
         PortDeferredBlock<B> entry = registerWithEntity(registryId, supplier, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block & EntityBlock> PortDeferredBlock<B> registerGeoBoulder(String registryId, String chineseName, Supplier<B> supplier, Function<B, BlockItem> function) {
         PortDeferredBlock<B> entry = registerGeoBoulder(registryId, supplier, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -311,43 +310,43 @@ public class FunctionalBlocks {
                         .pushReaction(PushReaction.DESTROY), (float) 50, effectData),
                 block -> new EffectiveCandleBlock.BItem(block, ModRarity.BLUE, effectData)
         );
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Block> PortDeferredBlock<T> registerBlock(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredBlock<T> entry = BLOCKS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <B extends Block> PortDeferredBlock<B> registerWithItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<B> supplier) {
         PortDeferredBlock<B> entry = registerWithItem(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <B extends Block> PortDeferredBlock<B> registerWithItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<B> supplier, Function<B, BlockItem> function) {
         PortDeferredBlock<B> entry = registerWithItem(registryId, supplier, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <B extends Block & EntityBlock & INetworkBlock> PortDeferredBlock<B> registerWithEntityWithEnglishName(String registryId, String chineseName, String englishName, Supplier<B> supplier) {
         PortDeferredBlock<B> entry = registerWithEntity(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <B extends Block & EntityBlock & INetworkBlock> PortDeferredBlock<B> registerWithEntityWithEnglishName(String registryId, String chineseName, String englishName, Supplier<B> supplier, Function<B, BlockItem> function) {
         PortDeferredBlock<B> entry = registerWithEntity(registryId, supplier, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <B extends Block & EntityBlock> PortDeferredBlock<B> registerGeoBoulderWithEnglishName(String registryId, String chineseName, String englishName, Supplier<B> supplier, Function<B, BlockItem> function) {
         PortDeferredBlock<B> entry = registerGeoBoulder(registryId, supplier, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

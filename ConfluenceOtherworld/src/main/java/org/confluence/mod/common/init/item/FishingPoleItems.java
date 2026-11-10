@@ -7,7 +7,6 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class FishingPoleItems {
     public static void init() {}
@@ -29,13 +28,13 @@ public class FishingPoleItems {
 
     private static PortDeferredItem<AbstractFishingPole> register(String registryId, String chineseName, Supplier<AbstractFishingPole> supplier) {
         PortDeferredItem<AbstractFishingPole> entry = ITEMS.register(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<AbstractFishingPole> registerWithEnglishName(String registryId, String chineseName, String englishName, Supplier<AbstractFishingPole> supplier) {
         PortDeferredItem<AbstractFishingPole> entry = ITEMS.register(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

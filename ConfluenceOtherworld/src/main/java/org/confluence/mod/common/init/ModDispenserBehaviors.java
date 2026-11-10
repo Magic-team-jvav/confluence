@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init.item;
+package org.confluence.mod.common.init;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
@@ -15,11 +15,14 @@ import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.boss.TwinEyeEncounter;
+import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.SpawnEggItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.SpongeItem;
 
 import java.util.stream.Stream;
 
-public class DispenserRegistration {
+public class ModDispenserBehaviors {
     private static final DefaultDispenseItemBehavior REMAINDER_DISPENSER = new DefaultDispenseItemBehavior();
 
     /// 注册本模组液体工具在发射器中的交互行为。

@@ -12,7 +12,6 @@ import org.mesdag.portlib.registries.PortBlockRegistration;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class CrateBlocks {
     public static void init() {}
@@ -57,7 +56,7 @@ public class CrateBlocks {
 
     private static PortDeferredBlock<Block> register(String registryId, String chineseName, ResourceLocation lootTable) {
         PortDeferredBlock<Block> entry = register(registryId, lootTable);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

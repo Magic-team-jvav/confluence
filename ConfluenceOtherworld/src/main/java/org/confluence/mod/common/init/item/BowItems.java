@@ -13,7 +13,6 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 /// 弓箭位置修正参考[ArrowInBowRenderer]
 public class BowItems {
@@ -101,32 +100,32 @@ public class BowItems {
 
     private static PortDeferredItem<BaseTerraBowItem> register(String registryId, String chineseName, Supplier<BaseTerraBowItem> supplier) {
         PortDeferredItem<BaseTerraBowItem> entry = ITEMS.register(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseTerraBowItem> register(String registryId, String chineseName, float damage, int durability) {
         PortDeferredItem<BaseTerraBowItem> entry = register(registryId, () -> new BaseTerraBowItem(damage, new Item.Properties().durability(durability)));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     /// 注册有耐久、并在铁砧里可用对应材质锭修复的弓
     private static PortDeferredItem<BaseTerraBowItem> register(String registryId, String chineseName, float damage, int durability, Ingredient repair) {
         PortDeferredItem<BaseTerraBowItem> entry = register(registryId, () -> new BaseTerraBowItem(damage, new Item.Properties().durability(durability), repair));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

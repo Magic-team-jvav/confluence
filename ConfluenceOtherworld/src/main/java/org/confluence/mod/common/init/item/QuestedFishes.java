@@ -8,7 +8,6 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class QuestedFishes {
     public static void init() {}
@@ -63,13 +62,13 @@ public class QuestedFishes {
 
     private static PortDeferredItem<Item> register(String registryId, String chineseName) {
         PortDeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> registerWithEnglishName(String registryId, String chineseName, String englishName) {
         PortDeferredItem<Item> entry = ITEMS.register(registryId, () -> new CustomRarityItem(new Item.Properties().fireResistant(), ModRarity.QUEST));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

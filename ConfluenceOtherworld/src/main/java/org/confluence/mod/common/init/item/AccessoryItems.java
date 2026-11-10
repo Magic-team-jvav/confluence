@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import org.confluence.lib.ConfluenceMagicLib;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -10,6 +9,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -32,7 +32,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.confluence.lib.common.component.ModRarity.*;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.units;
 import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_VALUE;
@@ -232,19 +231,19 @@ public class AccessoryItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <I extends BaseCurioItem> PortDeferredItem<I> registerDirectly(String registryId, String chineseName, Function<String, I> function) {
         PortDeferredItem<I> entry = ITEMS.register(registryId, () -> function.apply(registryId));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -254,13 +253,13 @@ public class AccessoryItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <I extends BaseCurioItem> PortDeferredItem<I> registerDirectlyWithEnglishName(String registryId, String chineseName, String englishName, Function<String, I> function) {
         PortDeferredItem<I> entry = ITEMS.register(registryId, () -> function.apply(registryId));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

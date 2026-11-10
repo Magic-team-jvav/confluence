@@ -25,15 +25,14 @@ import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
-import org.mesdag.portlib.wrapper.common.PortEffectCure;
 import org.confluence.mod.common.effect.soulcerer.EnhancedSoulEffect;
 import org.confluence.mod.common.effect.soulcerer.GoOverEffect;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
+import org.mesdag.portlib.wrapper.common.PortEffectCure;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.*;
 
 public final class ModEffects {
@@ -230,7 +229,7 @@ public final class ModEffects {
 
     private static <T extends MobEffect> RegistryObject<T> register(String registryId, String chineseName, Function<ResourceLocation, T> function) {
         RegistryObject<T> entry = PortDeferredRegisterExtension.register(EFFECTS, registryId, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -247,19 +246,19 @@ public final class ModEffects {
     }
     private static <T extends MobEffect> RegistryObject<T> registerEffect(String registryId, String chineseName, Supplier<T> factory) {
         RegistryObject<T> entry = EFFECTS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends MobEffect> RegistryObject<T> registerWithEnglishName(String registryId, String chineseName, String englishName, Function<ResourceLocation, T> function) {
         RegistryObject<T> entry = PortDeferredRegisterExtension.register(EFFECTS, registryId, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <T extends MobEffect> RegistryObject<T> registerEffectWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         RegistryObject<T> entry = EFFECTS.register(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

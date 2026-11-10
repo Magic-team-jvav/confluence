@@ -17,7 +17,6 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.entity.minecart.BaseMinecartEntity.*;
 
 @SuppressWarnings("unchecked")
@@ -99,19 +98,19 @@ public class MinecartItems {
 
     private static PortDeferredItem<BaseMinecartItem> registerGeneric(String registryId, String chineseName, Abilities<GenericMinecartEntity> abilities, Variant variant) {
         PortDeferredItem<BaseMinecartItem> entry = ITEMS.register(registryId, () -> new BaseMinecartItem(new Item.Properties(), ModRarity.BLUE, abilities, (level, x, y, z, abilities1) -> new GenericMinecartEntity(level, x, y, z, abilities1, variant)));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItemWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

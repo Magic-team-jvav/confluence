@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.item.gun.definition.BulletImpactEffect.*;
 
 public class GunItems {
@@ -131,31 +130,31 @@ public class GunItems {
 
     private static PortDeferredItem<BaseGun> registerGun(String registryId, String chineseName, Function<Item.Properties, BaseGun> factory) {
         PortDeferredItem<BaseGun> entry = registerGun(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseBullet> registerBullet(String registryId, String chineseName, Function<Item.Properties, BaseBullet> function) {
         PortDeferredItem<BaseBullet> entry = registerBullet(registryId, 99, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseBullet> registerBullet(String registryId, String chineseName, int maxStackSize, Function<Item.Properties, BaseBullet> function) {
         PortDeferredItem<BaseBullet> entry = registerBullet(registryId, maxStackSize, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<BaseGun> registerGunWithEnglishName(String registryId, String chineseName, String englishName, Function<Item.Properties, BaseGun> factory) {
         PortDeferredItem<BaseGun> entry = registerGun(registryId, factory);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

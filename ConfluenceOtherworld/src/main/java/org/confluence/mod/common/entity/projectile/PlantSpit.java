@@ -34,7 +34,6 @@ public final class PlantSpit extends StraightMonsterProjectile {
         } else if (emitter == null) {
             emitter = new ParticleEmitter(level(), position(), Confluence.asResource("cursed_flames"));
             emitter.attachEntity(this);
-            emitter.hideOutline = true;
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }

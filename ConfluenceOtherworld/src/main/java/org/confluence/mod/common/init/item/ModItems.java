@@ -45,7 +45,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 @SuppressWarnings("unused")
 public final class ModItems {
@@ -256,31 +255,31 @@ public final class ModItems {
 
     private static <T extends Item> PortDeferredItem<T> registerHidden(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = HIDDEN.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> registerHiddenSimple(String registryId, String chineseName, Item.Properties properties) {
         PortDeferredItem<Item> entry = HIDDEN.registerSimpleItem(registryId, properties);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerItem(String registryId, String chineseName, Supplier<T> factory) {
         PortDeferredItem<T> entry = ITEMS.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<Item> registerItemSimple(String registryId, String chineseName, Item.Properties properties) {
         PortDeferredItem<Item> entry = ITEMS.registerSimpleItem(registryId, properties);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Item> PortDeferredItem<T> registerHiddenWithEnglishName(String registryId, String chineseName, String englishName, Supplier<T> factory) {
         PortDeferredItem<T> entry = HIDDEN.register(registryId, factory::get);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

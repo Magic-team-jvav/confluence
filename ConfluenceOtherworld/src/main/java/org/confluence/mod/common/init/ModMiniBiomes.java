@@ -11,9 +11,16 @@ import org.confluence.mod.util.OverworldUtils;
 /// 多个环境标记可以同时成立；优先级只服务于需要唯一表现的消费方，不用于抹掉刷怪条件。
 /// 范围单位为方块，计数以 4 格单元裁切；以下范围是初始参数，需按实际洞穴和人工场景标定。
 public final class ModMiniBiomes {
-    private ModMiniBiomes() {}
-
-    public static void init() {}
+    public static void init() {
+        MiniBiome.register(SHIMMER);
+        MiniBiome.register(TOWN);
+        MiniBiome.register(BEE_HIVE);
+        MiniBiome.register(SPIDER_NEST);
+        MiniBiome.register(GRANITE_CAVE);
+        MiniBiome.register(MARBLE_CAVE);
+        MiniBiome.register(METEORITE);
+        MiniBiome.register(GRAVEYARD);
+    }
 
     /// 花岗岩洞按专属材料计数，保留人工构建的可能。
     public static final MiniBiomeType GRANITE_CAVE = MiniBiomeType
@@ -89,15 +96,4 @@ public final class ModMiniBiomes {
             .provider((level, pos) -> level instanceof ServerLevel serverLevel
                     ? TownPopulation.count(serverLevel, pos) : 0)
             .build();
-
-    static {
-        MiniBiome.register(SHIMMER);
-        MiniBiome.register(TOWN);
-        MiniBiome.register(BEE_HIVE);
-        MiniBiome.register(SPIDER_NEST);
-        MiniBiome.register(GRANITE_CAVE);
-        MiniBiome.register(MARBLE_CAVE);
-        MiniBiome.register(METEORITE);
-        MiniBiome.register(GRAVEYARD);
-    }
 }

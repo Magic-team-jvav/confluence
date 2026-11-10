@@ -27,7 +27,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        Confluence.LANGUAGE_PROVIDERS.forEach(provider -> provider.accept(this::addTranslation));
+        Confluence.forEachLanguageProvider(this::addTranslation);
         ItemGroupLanguageSubProvider.addTranslations(this::addTranslation);
         ItemLanguageSubProvider.addTranslations(this::addTranslation);
         EntityLanguageSubProvider.addTranslations(this::addTranslation);

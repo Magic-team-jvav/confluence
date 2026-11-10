@@ -13,7 +13,6 @@ import org.confluence.mod.common.entity.boss.*;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.entity.monster.CreatureAttributeBuilder.DynamicValue.*;
 import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
 
@@ -239,13 +238,13 @@ public final class BossEntities {
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(String registryId, String chineseName, EntityType.Builder<T> builder) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId, id -> builder.build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntityWithEnglishName(String registryId, String chineseName, String englishName, EntityType.Builder<T> builder) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId, id -> builder.build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

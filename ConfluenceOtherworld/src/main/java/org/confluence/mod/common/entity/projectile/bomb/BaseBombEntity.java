@@ -115,7 +115,6 @@ public class BaseBombEntity extends ThrowableItemProjectile {
         if (emitter == null || emitter.isRemoved()) {
             this.emitter = new ParticleEmitter(level(), position(), getLeadParticle());
             emitter.attachEntity(this);
-            emitter.hideOutline = true;
             emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, DIAMETER, 0));
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }

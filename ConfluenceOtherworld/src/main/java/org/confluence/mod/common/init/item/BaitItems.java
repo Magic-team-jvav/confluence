@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static org.confluence.lib.common.component.ModRarity.*;
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class BaitItems {
     public static void init() {}
@@ -86,19 +85,19 @@ public class BaitItems {
 
     private static PortDeferredItem<BaitItem> register(String registryId, String chineseName, ModRarity rarity, float bonus) {
         PortDeferredItem<BaitItem> entry = register(registryId, rarity, bonus, () -> null, entity -> {});
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> PortDeferredItem<BaitItem> register(String registryId, String chineseName, ModRarity rarity, float bonus, @Nullable Supplier<? extends EntityType<T>> supplier) {
         PortDeferredItem<BaitItem> entry = register(registryId, rarity, bonus, supplier, entity -> {});
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> PortDeferredItem<BaitItem> register(String registryId, String chineseName, ModRarity rarity, float bonus, @Nullable Supplier<? extends EntityType<T>> supplier, Consumer<T> consumer) {
         PortDeferredItem<BaitItem> entry = ITEMS.register(registryId, () -> new BaitItem(rarity, bonus, supplier, (Consumer<Entity>) consumer));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 }

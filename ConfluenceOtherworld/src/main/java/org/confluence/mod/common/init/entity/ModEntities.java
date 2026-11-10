@@ -39,12 +39,12 @@ import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProject
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
+import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
+import org.confluence.mod.common.entity.soulcerer.SoulStingProjectile;
+import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
 import org.confluence.mod.common.entity.storage.ChesterEntity;
 import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
 import org.confluence.mod.common.entity.yoyo.*;
-import org.confluence.mod.common.entity.soulcerer.SoulLureProjectile;
-import org.confluence.mod.common.entity.soulcerer.SpiritSurgeEntity;
-import org.confluence.mod.common.entity.soulcerer.SoulStingProjectile;
 import org.confluence.mod.common.soulcerer.skill.SoulSkillParameters;
 
 import java.util.LinkedHashMap;
@@ -53,7 +53,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public final class ModEntities {
     private static final Map<Supplier<? extends EntityType<? extends LivingEntity>>, Supplier<CreatureAttributeBuilder.Definition>> ATTRIBUTES = new LinkedHashMap<>();
@@ -727,19 +726,19 @@ public final class ModEntities {
                 .sized(0.98F, 0.7F)
                 .clientTrackingRange(8)
                 .build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <E extends AbstractHookEntity> RegistryObject<EntityType<E>> registerHook(String registryId, String chineseName, EntityType.EntityFactory<E> supplier) {
         RegistryObject<EntityType<E>> entry = registerHook(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <E extends BaseBombEntity> RegistryObject<EntityType<E>> registerBomb(String registryId, String chineseName, EntityType.EntityFactory<E> supplier, float size) {
         RegistryObject<EntityType<E>> entry = register(registryId, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(size, size).clientTrackingRange(4).updateInterval(10).fireImmune().build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -751,25 +750,25 @@ public final class ModEntities {
                 .noSummon()
                 .noSave()
                 .build(id.toString()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String registryId, String chineseName, Function<ResourceLocation, EntityType<T>> function) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static <E extends AbstractHookEntity> RegistryObject<EntityType<E>> registerHookWithEnglishName(String registryId, String chineseName, String englishName, EntityType.EntityFactory<E> supplier) {
         RegistryObject<EntityType<E>> entry = registerHook(registryId, supplier);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerWithEnglishName(String registryId, String chineseName, String englishName, Function<ResourceLocation, EntityType<T>> function) {
         RegistryObject<EntityType<T>> entry = PortDeferredRegisterExtension.register(ENTITIES, registryId, function);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

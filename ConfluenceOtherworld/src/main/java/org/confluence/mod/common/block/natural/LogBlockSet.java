@@ -40,7 +40,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 import static org.confluence.mod.common.init.block.ModBlocks.registerWithoutItem;
 
@@ -579,7 +578,7 @@ public class LogBlockSet {
 
         public LogBlockSet build(BiConsumer<LogBlockSet, TranslationConsumer> translations) {
             LogBlockSet set = build();
-            LANGUAGE_PROVIDERS.add(language -> translations.accept(set, language));
+            Confluence.addLanguageProvider(language -> translations.accept(set, language));
             return set;
         }
 

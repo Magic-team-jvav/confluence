@@ -21,7 +21,6 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 
 import java.util.function.Consumer;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public class ArmorItems {
     public static void init() {
@@ -1265,7 +1264,7 @@ public class ArmorItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -1275,7 +1274,7 @@ public class ArmorItems {
             consumer.accept(builder);
             return builder.build();
         });
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

@@ -15,7 +15,6 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-import static org.confluence.mod.Confluence.LANGUAGE_PROVIDERS;
 
 public final class SpawnEggItems {
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
@@ -323,7 +322,7 @@ public final class SpawnEggItems {
 
     private static PortDeferredItem<TwinEyeSpawnEggItem> registerTwins(String chineseName) {
         PortDeferredItem<TwinEyeSpawnEggItem> entry = ITEMS.register("the_twins_spawn_egg", TwinEyeSpawnEggItem::new);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
@@ -331,25 +330,25 @@ public final class SpawnEggItems {
 
     private static PortDeferredItem<ForgeSpawnEggItem> register(RegistryObject<? extends EntityType<? extends Mob>> type, String chineseName, int bc, int hc) {
         PortDeferredItem<ForgeSpawnEggItem> entry = ITEMS.register(type.getId().getPath() + "_spawn_egg", () -> new ForgeSpawnEggItem(type, bc, hc, new Item.Properties()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<ForgeSpawnEggItem> register(RegistryObject<? extends EntityType<? extends Mob>> type, String chineseName) {
         PortDeferredItem<ForgeSpawnEggItem> entry = register(type, 0xFFFFFF, 0xFFFFFF);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), chineseName));
         return entry;
     }
 
     private static PortDeferredItem<ForgeSpawnEggItem> registerWithEnglishName(RegistryObject<? extends EntityType<? extends Mob>> type, String chineseName, String englishName, int bc, int hc) {
         PortDeferredItem<ForgeSpawnEggItem> entry = ITEMS.register(type.getId().getPath() + "_spawn_egg", () -> new ForgeSpawnEggItem(type, bc, hc, new Item.Properties()));
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 
     private static PortDeferredItem<ForgeSpawnEggItem> registerWithEnglishName(RegistryObject<? extends EntityType<? extends Mob>> type, String chineseName, String englishName) {
         PortDeferredItem<ForgeSpawnEggItem> entry = register(type, 0xFFFFFF, 0xFFFFFF);
-        LANGUAGE_PROVIDERS.add(language -> language.add(entry.get(), englishName, chineseName));
+        Confluence.addLanguageProvider(language -> language.add(entry.get(), englishName, chineseName));
         return entry;
     }
 }

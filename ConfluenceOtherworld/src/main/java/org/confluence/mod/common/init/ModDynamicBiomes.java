@@ -28,9 +28,7 @@ public final class ModDynamicBiomes {
     /// 强制触发本类的静态初始化，完成规则与优先级注册。
     ///
     /// 必须在**任何世界加载之前**调用（与 {@link ModBlockCounters#init()} 一起）。
-    public static void init() {}
-
-    static {
+    public static void init() {
         ModBlockCounters.init(); // 计数器先注册：计数数组长度在第一个 section 创建时固化
 
         // 可蔓延（邪恶 / 神圣）群系：区块净化时回滚到备份的纯净群系

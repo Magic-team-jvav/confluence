@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.lightning.ArcSurgeLightning;
 import org.confluence.mod.common.item.mana.ThunderstrikeItem;
@@ -13,7 +14,6 @@ import org.confluence.mod.network.s2c.ThunderstrikePacketS2C;
 import org.mesdag.opallight.light.engine.DynamicLights;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,6 @@ public final class ThunderstrikeVfx {
         var target = ThunderstrikeItem.target(mc.player);
         if (preview == null || preview.isRemoved()) {
             preview = new ParticleEmitter(level, target, Confluence.asResource("thunderstrike_preview"));
-            preview.hideOutline = true;
             MolangParticleEngine.INSTANCE.addEmitter(preview);
         }
         preview.setPos(target);
@@ -76,7 +75,6 @@ public final class ThunderstrikeVfx {
         if (STRIKES.size() >= 64) STRIKES.remove(0);
         STRIKES.add(new Strike(ArcSurgeLightning.createThunderstrike(packet.start(), packet.end(), packet.seed(), packet.spreadAxis()), ticks));
         var flash = new ParticleEmitter(level, packet.end(), Confluence.asResource("thunderstrike_impact"));
-        flash.hideOutline = true;
         if (IMPACTS.size() >= 64) IMPACTS.remove(0).remove();
         IMPACTS.add(flash);
         MolangParticleEngine.INSTANCE.addEmitter(flash);

@@ -308,7 +308,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             flameEmitter = new ParticleEmitter(level(), getBoundingBox().getCenter(), Confluence.asResource("ball_of_fire_trail"),
                     new MolangExp("variable.flail_head_radius", radius));
             flameEmitter.attachEntity(this);
-            flameEmitter.hideOutline = true;
             flameEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
             MolangParticleEngine.INSTANCE.addEmitter(flameEmitter);
         }

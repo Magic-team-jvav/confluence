@@ -122,7 +122,6 @@ public class AccumulatingEnergyEntity extends Entity {
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("accumulating_energy"));
             emitter.attachEntity(this);
-            emitter.hideOutline = true;
             emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, 0.5F, 0));
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }

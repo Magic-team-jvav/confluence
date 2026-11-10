@@ -162,7 +162,6 @@ public class BossConjuringBlock extends Block implements EntityBlock {
 
     private static void spawnEmitter(Level level, Vec3 pos, ResourceLocation particle) {
         ParticleEmitter emitter = new ParticleEmitter(level, pos, particle);
-        emitter.hideOutline = true;
         MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 
@@ -315,7 +314,6 @@ public class BossConjuringBlock extends Block implements EntityBlock {
         void ensureBeacon(Level level, Vec3 pos) {
             if (beacon == null || beacon.isRemoved()) {
                 beacon = new ParticleEmitter(level, pos, Variant.TWINS.particle());
-                beacon.hideOutline = true;
                 MolangParticleEngine.INSTANCE.addEmitter(beacon);
             }
             beacon.active = true;

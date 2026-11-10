@@ -189,7 +189,6 @@ public class BoomerangProjectile extends Projectile {
         ParticleEmitter emitter = boomerang.createRuneEmitter(this, getRune());
         if (emitter == null) return;
         emitter.attachEntity(this);
-        emitter.hideOutline = true;
         emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
         MolangParticleEngine.INSTANCE.addEmitter(emitter);
         this.runeEmitter = emitter;

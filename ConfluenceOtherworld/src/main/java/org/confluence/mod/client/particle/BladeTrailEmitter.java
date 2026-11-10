@@ -26,7 +26,6 @@ public final class BladeTrailEmitter extends ParticleEmitter {
         this.shape = components.stream().filter(EmitterShape.class::isInstance).map(EmitterShape.class::cast).findFirst().orElseThrow();
         this.components = components.stream().filter(component -> !(component instanceof EmitterShape)).toList();
         attachEntity(projectile);
-        hideOutline = true;
     }
 
     @Override

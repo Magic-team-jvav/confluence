@@ -188,7 +188,6 @@ public class Spazmatism extends AbstractTwinEye {
             // 直接复用现有火焰，附着实体后以局部变换将发射器移到发射口。
             comboChargeEmitter = new ParticleEmitter(level(), position(), Confluence.asResource("twins_flame_charge"));
             comboChargeEmitter.attachEntity(this);
-            comboChargeEmitter.hideOutline = true;
             comboChargeEmitter.setLocalSpace(new Matrix4x3f());
             MolangParticleEngine.INSTANCE.addEmitter(comboChargeEmitter);
         }

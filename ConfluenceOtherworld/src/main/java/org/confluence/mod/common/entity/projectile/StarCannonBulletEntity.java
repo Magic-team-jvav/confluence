@@ -28,7 +28,6 @@ public class StarCannonBulletEntity extends CustomBulletEntity implements Immuni
         if (level().isClientSide && emitter == null) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
             emitter.attachEntity(this);
-            emitter.hideOutline = true;
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }

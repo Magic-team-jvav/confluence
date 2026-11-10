@@ -107,7 +107,6 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
             if (waterEmitter == null || waterEmitter.isRemoved()) {
                 waterEmitter = new ParticleEmitter(level(), position(), Confluence.asResource("water_stream"));
                 waterEmitter.attachEntity(this);
-                waterEmitter.hideOutline = true;
                 waterEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
                 MolangParticleEngine.INSTANCE.addEmitter(waterEmitter);
             }

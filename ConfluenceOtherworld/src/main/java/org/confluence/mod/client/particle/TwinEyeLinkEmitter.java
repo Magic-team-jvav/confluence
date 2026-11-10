@@ -27,7 +27,6 @@ public final class TwinEyeLinkEmitter extends ParticleEmitter {
             instance.getVars().setValue("variable.link_t", new Variable("variable.link_t", fraction));
             return fraction;
         });
-        hideOutline = true;
     }
 
     @Override

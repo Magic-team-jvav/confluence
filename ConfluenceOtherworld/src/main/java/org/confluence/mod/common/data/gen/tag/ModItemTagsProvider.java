@@ -762,6 +762,35 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         SummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 
+        /// 附魔可用性标签只做聚合，具体物品归属仍由各自的分类标签决定，避免每个附魔各写一长串。
+        tag(ModTags.Items.GENERAL_WEAPON_ENCHANTABLE).addTags(
+                ItemTags.SWORDS,
+                ItemTags.AXES,
+                ModTags.Items.SPEAR,
+                ModTags.Items.TOOLS_LANCE,
+                ModTags.Items.YOYO,
+                ModTags.Items.BOOMERANG,
+                ModTags.Items.FLAIL,
+                ModTags.Items.WHIP,
+                ModTags.Items.MANA_WEAPON,
+                ModTags.Items.SUMMONER_WEAPON,
+                ModTags.Items.PREFIX_SOUL_ONLY,
+                ItemTags.BOW_ENCHANTABLE,
+                ItemTags.CROSSBOW_ENCHANTABLE,
+                ModTags.Items.GUN,
+                ModTags.Items.REPEATER_ENCHANTABLE
+        );
+        tag(ModTags.Items.MELEE_WEAPON_ENCHANTABLE).addTags(
+                ItemTags.SWORDS,
+                ItemTags.AXES,
+                ModTags.Items.SPEAR,
+                ModTags.Items.TOOLS_LANCE,
+                ModTags.Items.YOYO,
+                ModTags.Items.BOOMERANG,
+                ModTags.Items.FLAIL,
+                ModTags.Items.WHIP
+        );
+
         copy(ModTags.Blocks.COINS, ModTags.Items.COINS);
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
                 MaterialItems.RAW_COBALT.get(),

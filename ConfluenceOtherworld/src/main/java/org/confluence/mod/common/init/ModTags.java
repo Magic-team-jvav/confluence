@@ -464,6 +464,10 @@ public final class ModTags {
         public static final TagKey<Item> AUTO_ATTACK_BLACKLIST = register("auto_attack_blacklist"); // 自动挥舞黑名单
 
         public static final TagKey<Item> REPEATER_ENCHANTABLE = register("enchantable/repeater");
+        /// 通用武器：武器通用附魔（法器协同、致命一击、精力充沛、灵魂共振、虚空强袭）的可用物品集合。
+        public static final TagKey<Item> GENERAL_WEAPON_ENCHANTABLE = register("enchantable/general_weapon");
+        /// 近战武器：近战专用附魔（回击、眩晕、灵魂虹吸）的可用物品集合。
+        public static final TagKey<Item> MELEE_WEAPON_ENCHANTABLE = register("enchantable/melee_weapon");
         public static final TagKey<Item> REPEATER_CROSSBOW_ENCHANTABLE = common("enchantable/repeater_crossbow");
 
         private static TagKey<Item> common(String name) {
@@ -536,6 +540,11 @@ public final class ModTags {
         public static final TagKey<Enchantment> MANA_AFFECTIVE_EXCLUSIVE = register("mana_affective_exclusive");
         public static final TagKey<Enchantment> MAGIC_ATTACK_EXCLUSIVE = register("magic_attack_exclusive");
         public static final TagKey<Enchantment> FLAIL_EXCLUSIVE = register("flail_exclusive");
+        public static final TagKey<Enchantment> BEAST_EXCLUSIVE = register("beast_exclusive");
+        /// 食物储备 ↔ 惊喜礼物：两者都在使用治疗药水时结算，互斥避免一次喝药重复触发。
+        public static final TagKey<Enchantment> FOOD_RESERVE_EXCLUSIVE = register("food_reserve_exclusive");
+        /// 多级蓄力 ↔ 超级蓄力。
+        public static final TagKey<Enchantment> CHARGE_EXCLUSIVE = register("charge_exclusive");
 
         private static TagKey<Enchantment> register(String id) {
             return Confluence.asTagKey(Registries.ENCHANTMENT, id);

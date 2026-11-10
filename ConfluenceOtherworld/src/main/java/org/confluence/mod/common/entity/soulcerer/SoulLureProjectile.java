@@ -282,24 +282,32 @@ public class SoulLureProjectile extends Projectile {
         HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (!level().isClientSide && hit.getType() != HitResult.Type.MISS) {
             setPos(hit.getLocation());
-            if (hit instanceof EntityHitResult entityHit && entityHit.getEntity() instanceof LivingEntity victim
-                    && hitEntities.add(LibEntityUtils.dedupeIdentity(victim).getUUID())) {
-                victim.hurt(LibDamageTypes.soul(level(), this, getOwner()), damage);
-                applySoulMark(victim);
-                /// 引魂激荡：命中位置再来一发灵魂激荡，**不消耗灵魂**。
-                spawnSurgeAt(victim);
-                /// 颂魂指引：还有穿透次数就继续沿原方向飞。
-                if (pierceRemaining > 0) {
-                    pierceRemaining--;
-                    advanceOneStep();
-                    return;
-                }
-                /// 引魂弹幕：从被打中的敌怪朝下一个敌怪弹射。
-                if (bouncesRemaining > 0) {
-                    bouncesRemaining--;
-                    spawnBounce(victim);
-                    discard();
-                    return;
+            /// 多部件 Boss（血肉墙 / 血肉山）的「绿框」部位是 PartEntity，不是 LivingEntity。
+            /// 旧写法用 `instanceof LivingEntity` 过滤命中对象，打到部位时会整段跳过结算并让弹幕直接消散，
+            /// 表现就是"完全打不出伤害"。现在改成：伤害落在**实际受击对象**（部位会把伤害转给本体），
+            /// LivingEntity 只用于去重、状态与索敌——与 `SoulStingProjectile` / `SwordProjectile` 同一套写法。
+            if (hit instanceof EntityHitResult entityHit) {
+                Entity rawVictim = entityHit.getEntity();
+                LivingEntity victim = LibEntityUtils.effectTarget(rawVictim);
+                if (victim != null && hitEntities.add(LibEntityUtils.dedupeIdentity(rawVictim).getUUID())) {
+                    rawVictim.hurt(LibDamageTypes.soul(level(), this, getOwner()), damage);
+                    /// 附魂印记是 MobEffectInstance，只能挂在生命主体上。
+                    applySoulMark(victim);
+                    /// 引魂激荡：命中位置再来一发灵魂激荡，**不消耗灵魂**。
+                    spawnSurgeAt(rawVictim);
+                    /// 颂魂指引：还有穿透次数就继续沿原方向飞。
+                    if (pierceRemaining > 0) {
+                        pierceRemaining--;
+                        advanceOneStep();
+                        return;
+                    }
+                    /// 引魂弹幕：从被打中的敌怪朝下一个敌怪弹射。
+                    if (bouncesRemaining > 0) {
+                        bouncesRemaining--;
+                        spawnBounce(rawVictim);
+                        discard();
+                        return;
+                    }
                 }
             }
             applyAoeDamage();
@@ -402,11 +410,14 @@ public class SoulLureProjectile extends Projectile {
     /// 索敌：半径内最近的、尚未被这一发弹幕打过的敌怪。
     private @Nullable LivingEntity findNextTarget(Vec3 from, double radius, @Nullable Entity exclude) {
         AABB box = new AABB(from, from).inflate(radius);
+        /// exclude 可能是 Boss 的部位：用去重身份比较，避免弹射立刻又绕回同一个本体。
+        Entity excludeIdentity = exclude == null ? null : LibEntityUtils.dedupeIdentity(exclude);
         LivingEntity best = null;
         double bestDistance = Double.MAX_VALUE;
         for (Entity candidate : LibEntityUtils.queryHitCandidates(level(), this, box, this::canHitEntity)) {
             LivingEntity living = LibEntityUtils.logicalLivingTarget(candidate);
-            if (living == null || living == exclude || !EnemyDamageRules.isEnemy(living)) continue;
+            if (living == null || !EnemyDamageRules.isEnemy(living)) continue;
+            if (exclude != null && (living == exclude || LibEntityUtils.dedupeIdentity(living) == excludeIdentity)) continue;
             double distance = candidate.getBoundingBox().getCenter().distanceToSqr(from);
             if (distance < bestDistance) {
                 bestDistance = distance;

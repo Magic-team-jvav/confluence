@@ -334,4 +334,40 @@ public class SoulSkillParameters {
     /// 祈灵之刃 / 灵魂弓 / 灵魂短弓：命中敌怪时获得灵魂的概率与数量。
     public static final float SOUL_WEAPON_HIT_SOUL_CHANCE = 0.5F;
     public static final float SOUL_WEAPON_HIT_SOUL = 1.0F;
+
+    // ===== 法器 =====
+    /// 迅捷之靴：3 秒内移速 +30%，冷却 3 秒，消耗 2 魂。
+    public static final float SWIFT_BOOTS_SOUL_COST = 2.0F;
+    public static final int SWIFT_BOOTS_COOLDOWN_TICKS = 3 * SharedConstants.TICKS_PER_SECOND;
+    public static final int SWIFT_BOOTS_DURATION_TICKS = 3 * SharedConstants.TICKS_PER_SECOND;
+    public static final float SWIFT_BOOTS_SPEED_BONUS = 0.30F;
+    /// 浮流之羽：沿视线冲刺一小段距离，冷却 3 秒，消耗 2 魂。
+    public static final float LIGHT_FEATHER_SOUL_COST = 2.0F;
+    public static final int LIGHT_FEATHER_COOLDOWN_TICKS = 3 * SharedConstants.TICKS_PER_SECOND;
+    /// 冲刺速度（格/刻）：与克苏鲁之盾同一套「只看朝向、不看俯仰」的用法，但距离更短。
+    /// 克苏鲁之盾是 1.6（地面）/ 1.2（空中），浮流之羽取更小的值。
+    public static final double LIGHT_FEATHER_DASH_SPEED_GROUND = 0.525;
+    public static final double LIGHT_FEATHER_DASH_SPEED_AIR = 0.425;
+    /// 冲刺时固定的向上分量：克苏鲁之盾是 0（完全水平），浮流之羽要略高一点。
+    public static final double LIGHT_FEATHER_CLIMB = 0.225;
+    /// 烟火之箭：下一次弓箭额外携带一枚大范围烟火箭，冷却 30 秒，消耗 10 魂。
+    public static final float FIREWORKS_ARROW_SOUL_COST = 10.0F;
+    public static final int FIREWORKS_ARROW_COOLDOWN_TICKS = 30 * SharedConstants.TICKS_PER_SECOND;
+    /// 烟火箭爆心伤害：吃远程伤害加成（箭矢伤害源），范围见 {@link #FIREWORKS_ARROW_RADIUS}。
+    public static final float FIREWORKS_ARROW_DAMAGE = 12.0F;
+    public static final double FIREWORKS_ARROW_RADIUS = 6.0;
+    /// 雷霆之杖：自动锁定准星附近的敌怪，预警后落下真正的泰拉闪电（MC 闪电），冷却 40 秒，消耗 10 魂。
+    public static final float LIGHTNING_ROD_SOUL_COST = 10.0F;
+    public static final int LIGHTNING_ROD_COOLDOWN_TICKS = 40 * SharedConstants.TICKS_PER_SECOND;
+    /// 闪电本身的伤害（写进 LightningBolt 的 `setDamage`）。
+    public static final float LIGHTNING_ROD_DAMAGE = 30.0F;
+    /// 索敌与射线最大距离。
+    public static final double LIGHTNING_ROD_RANGE = 40.0;
+    /// 索敌最大角度（度），与星怒的 `AboveFallenGeneration` 同一量级。
+    public static final float LIGHTNING_ROD_MAX_ANGLE = 30.0F;
+    /// 预警粒子持续刻数：结束时才真正落雷。
+    public static final int LIGHTNING_ROD_WINDUP_TICKS = 10;
+    /// 零食箩筐：随机获得面包 / 熟牛排 / 熟猪排 / 苹果 / 熟鱼之一，固定消耗 2 魂，冷却 35 秒。
+    public static final float SNACK_BASKET_SOUL_COST = 2.0F;
+    public static final int SNACK_BASKET_COOLDOWN_TICKS = 35 * SharedConstants.TICKS_PER_SECOND;
 }

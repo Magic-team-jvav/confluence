@@ -25,7 +25,9 @@ import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.entity.mount.MountManager;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
+import org.confluence.mod.common.soulcerer.artifact.ArtifactEffects;
 import org.confluence.mod.common.item.whip.WhipSession;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.common.wind.WindState;
@@ -101,6 +103,10 @@ public final class TickEvents {
             SoulcererUtils.regenerateSoul(player);
             SoulcererUtils.tickSoulArmorSets(player, gameTime);
             SoulcererUtils.tickSoulSkillStates(player, gameTime);
+            SoulcererUtils.tickSoulArtifactCooldowns(player);
+            ArtifactEffects.tick(player);
+            /// 附魔：药水护盾 / 灵魂促行 / 速度协同 / 莽撞 / 精力充沛 / 爆裂弓弦
+            EnchantmentBehaviors.tick(player);
             ExtraInventory.of(player).sync(player);
             MountManager.validate(player);
             YoyoSession.of(player).tick(player);
@@ -128,6 +134,8 @@ public final class TickEvents {
     @SubscribeEvent
     public static void entityTick$Post(EntityTickEvent.Post event) {
         Immunity.tick(event.getEntity());
+        /// 虚空液体：浸泡在其中的生物持续获得「虚空强袭」
+        EnchantmentBehaviors.voidLiquidTick(event.getEntity());
         // 平时（含大风天）第一行就返回：风不影响实体，只有沙尘暴/暴风雪激活时才会走到下面
         GameEventSystem.INSTANCE.pushEventWind(event.getEntity());
     }

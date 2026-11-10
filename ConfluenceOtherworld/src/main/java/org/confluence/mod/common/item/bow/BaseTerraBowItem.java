@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.bow;
 
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -23,10 +24,13 @@ import net.neoforged.neoforge.event.EventHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
+import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IAbstractArrow;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.SoulcererUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 
@@ -135,7 +139,12 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
         List<ItemStack> projectiles = draw(stack, ammunition, player);
         if (level instanceof ServerLevel serverLevel && !projectiles.isEmpty()) {
             float velocity = this instanceof ShortBowItem shortBow ? power * shortBow.getVelocityMultiplier() : power * 3.0F;
-            shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, chargeTicks >= 16, power, null);
+            shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, chargeTicks >= 16, getChargePower(stack, power, chargeTicks), null);
+            /// 冷却射击：满蓄力射击缩短法器冷却 1/2/3 秒
+            int cooldownShot = EnchantmentUtils.getLevel(stack, ModEnchantments.COOLDOWN_SHOT);
+            if (cooldownShot > 0 && power >= 1.0F && player instanceof ServerPlayer serverPlayer) {
+                SoulcererUtils.reduceSoulArtifactCooldowns(serverPlayer, cooldownShot * 20);
+            }
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS,
                 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F);
@@ -147,7 +156,20 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
             player.getCooldowns().addCooldown(offHandItem.getItem(), 5);
     }
 
+    /// 多级蓄力：满蓄力之后每多蓄 1 秒算一轮，每轮伤害再翻一倍，最多 2/3/4 轮。
+    protected float getChargePower(ItemStack stack, float power, int chargeTicks) {
+        int multiCharge = EnchantmentUtils.getLevel(stack, ModEnchantments.MULTI_CHARGE);
+        if (multiCharge <= 0 || power < 1.0F) return power;
+        int extraRounds = Math.min(multiCharge, Math.max(0, (chargeTicks - 20) / 20));
+        return power * (1 + extraRounds);
+    }
+
     protected float getPowerForCharge(ItemStack stack, int chargeTicks) {
+        /// 快速蓄力：把蓄力时间缩短 10%/20%/30%，等价于放慢蓄力刻数的消耗。
+        int rapidCharge = EnchantmentUtils.getLevel(stack, ModEnchantments.RAPID_CHARGE);
+        if (rapidCharge > 0) {
+            chargeTicks = Math.round(chargeTicks / (1.0F - 0.1F * rapidCharge));
+        }
         if (this instanceof ShortBowItem shortBow)
             return shortBow.getShortPowerForTime(chargeTicks);
         if (stack.is(ModTags.Items.FAST_BOW)) return getFastBowPowerForTime(chargeTicks);
@@ -174,6 +196,14 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
         float initialAngleOffset = (float) ((projectileItems.size() - 1) % 2) * angleIncrement / 2.0F;
         float signFactor = 1.0F;
         boolean fullPullAvailable = fullPull;
+
+        /// 超级蓄力：满蓄力射击提升 20%/40%/60% 伤害
+        if (fullPull) {
+            int superCharge = EnchantmentUtils.getLevel(weapon, ModEnchantments.SUPER_CHARGE);
+            if (superCharge > 0) {
+                chargePower *= 1.0F + 0.2F * superCharge;
+            }
+        }
 
         for (int itemstackIndex = 0; itemstackIndex < projectileItems.size(); ++itemstackIndex) {
             ItemStack itemstack = projectileItems.get(itemstackIndex);

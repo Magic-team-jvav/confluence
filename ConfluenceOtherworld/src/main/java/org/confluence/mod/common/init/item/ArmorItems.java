@@ -237,18 +237,22 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> BLACK_SPOT_HELMET = register("black_spot_helmet", "黑斑头盔", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/black_spot_armor")
             .rarity(ModRarity.ORANGE)
-            .fiveClassesDamage(0.05));
+            .fiveClassesDamage(0.05)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BLACK_SPOT_CHESTPLATE = register("black_spot_chestplate", "黑斑胸甲", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/black_spot_armor")
             .rarity(ModRarity.ORANGE)
-            .criticalChance(0.05));
+            .criticalChance(0.05)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BLACK_SPOT_LEGGINGS = register("black_spot_leggings", "黑斑护腿", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/black_spot_armor")
-            .rarity(ModRarity.ORANGE));
+            .rarity(ModRarity.ORANGE)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BLACK_SPOT_BOOTS = register("black_spot_boots", "黑斑靴子", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/black_spot_armor")
             .rarity(ModRarity.ORANGE)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> ENTERTAINERS_GARB_HAT = register("entertainers_garb_hat", "演艺家帽", ModArmorMaterials.ENTERTAINERS_GARB_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/entertainers_garb_armor")
@@ -421,94 +425,114 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> EVOCATION_HAT = register("evocation_hat", "唤魔帽", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/evocation_robe_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> EVOCATION_ROBE = register("evocation_robe", "唤魔长袍", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/evocation_robe_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> EVOCATION_LEGGINGS = register("evocation_leggings", "唤魔护腿", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/evocation_robe_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> EVOCATION_BOOTS = register("evocation_boots", "唤魔靴子", ModArmorMaterials.EVOCATION_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/evocation_robe_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> VERDANT_HAT = register("verdant_hat", "碧绿帽", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/verdant_robe_armor")
             .rarity(ModRarity.ORANGE)
-            .criticalChance(0.03));
+            .criticalChance(0.03)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> VERDANT_ROBE = register("verdant_robe", "碧绿长袍", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/verdant_robe_armor")
             .rarity(ModRarity.ORANGE)
-            .magicDamage(0.05));
+            .magicDamage(0.05)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> VERDANT_LEGGINGS = register("verdant_leggings", "碧绿护腿", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/verdant_robe_armor")
             .rarity(ModRarity.ORANGE)
             .criticalChance(0.03)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> VERDANT_BOOTS = register("verdant_boots", "碧绿靴子", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/verdant_robe_armor")
             .rarity(ModRarity.ORANGE)
             .magicDamage(0.05)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> EMBER_HAT = register("ember_hat", "余烬帽", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/ember_robe_armor")
             .rarity(ModRarity.ORANGE)
-            .criticalChance(0.06));
+            .criticalChance(0.06)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> EMBER_ROBE = register("ember_robe", "余烬长袍", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/ember_robe_armor")
             .rarity(ModRarity.ORANGE)
-            .magicDamage(0.08));
+            .magicDamage(0.08)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> EMBER_LEGGINGS = register("ember_leggings", "余烬护腿", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/ember_robe_armor")
             .rarity(ModRarity.ORANGE)
             .criticalChance(0.06)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> EMBER_BOOTS = register("ember_boots", "余烬靴子", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/ember_robe_armor")
             .rarity(ModRarity.ORANGE)
             .magicDamage(0.08)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> BATTLE_COLLAR = register("battle_collar", "战斗衣领", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .meleeDamage(0.07));
+            .meleeDamage(0.07)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BATTLE_ROBE = register("battle_robe", "战袍", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .meleeDamage(0.07));
+            .meleeDamage(0.07)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BATTLE_LEGGINGS = register("battle_leggings", "战斗护腿", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BATTLE_BOOTS = register("battle_boots", "战斗靴子", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> SPLENDID_COLLAR = register("splendid_collar", "华丽衣领", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .meleeDamage(0.07)
-            .magicDamage(0.08));
+            .magicDamage(0.08)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> SPLENDID_ROBE = register("splendid_robe", "华丽长袍", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .meleeDamage(0.07)
-            .magicDamage(0.08));
+            .magicDamage(0.08)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> SPLENDID_LEGGINGS = register("splendid_leggings", "华丽护腿", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .criticalChance(0.04));
+            .criticalChance(0.04)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> SPLENDID_BOOTS = register("splendid_boots", "华丽靴子", ModArmorMaterials.SPLENDID_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/splendid_robe_armor")
             .rarity(ModRarity.ORANGE)
             .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .criticalChance(0.04));
+            .criticalChance(0.04)
+            .attribute(LibAttributes.getArtifactCooldownReduction(), 0.10, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> ARCHERS_HELMET = register("archers_helmet", "弓箭手头盔", ModArmorMaterials.ARCHERS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/archers_armor")

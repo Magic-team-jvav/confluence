@@ -34,6 +34,7 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.heim_set.0", "Grant you 4 health of absorption, and grant it again every 5 seconds", "赋予4点生命值的伤害吸收，每隔5秒钟再次赋予");
         language.add("armor_set_bonus.confluence.hermit_set.0", "Increase maximum soul capacity by 20", "灵魂上限增加20");
         language.add("armor_set_bonus.confluence.hunters_set.0", "Applies Hunt effect to struck enemies", "为击中的敌人附加狩猎效果");
+        language.add("armor_set_bonus.confluence.hunters.0", "Applies Hunt effect to struck enemies", "为击中的敌人附加狩猎效果");
         language.add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs", "魔力消耗降低16%");
         language.add("armor_set_bonus.confluence.lead_set.0", "+1 Armor", "+1 护甲值");
         language.add("armor_set_bonus.confluence.meteor_set.0", "Space Gun magic consumption reduced to 0", "太空枪魔力消耗降低为0");
@@ -89,5 +90,23 @@ public final class ArmorBonusLanguageSubProvider {
         language.add("armor_set_bonus.confluence.tungsten_set.0", "+1 Armor", "+1 护甲值");
         language.add("armor_set_bonus.confluence.white_pumpkin_set.0", "Melee critical hits restore 3 Soul Points", "近战暴击会回复3点灵魂值");
         language.add("armor_set_bonus.when_applied", "Set Bonus:", "套装奖励：");
+        language.add("armor_set_bonus.confluence.black_spot_set.0", "Using a healing potion resets artifact cooldowns", "使用治疗药水重置法器冷却");
+        language.add("armor_set_bonus.confluence.black_spot_set.1", "10% reduced artifact cooldowns", "法器冷却降低10%");
+        language.add("armor_set_bonus.confluence.black_spot_set.2", "Healing potions grant 4 saturation to you and nearby allies", "使用治疗药水时为你与周围队友回复4点饱和");
+        language.add("armor_set_bonus.confluence.root_rot_set.0", "Using a healing potion resets artifact cooldowns", "使用治疗药水重置法器冷却");
+        language.add("armor_set_bonus.confluence.root_rot_set.1", "Nearby allies are healed for 20% of the healing and gain no potion sickness", "队友回复20%治疗量且不会产生耐药性");
+        language.add("armor_set_bonus.confluence.verdant_robe_set.0", "20% chance to collect an extra soul", "20%概率额外收集1点灵魂");
+        language.add("armor_set_bonus.confluence.verdant_robe_set.1", "After collecting a soul: 5% critical chance and 7% magic damage for 10 seconds", "收集灵魂后10秒内提升5%暴击和7%魔法伤害");
+        language.add("armor_set_bonus.confluence.highland_set.0", "Jump boost", "跳跃提升");
+        language.add("armor_set_bonus.confluence.highland_set.1", "15% increased movement speed for 3 seconds after jumping", "跳跃后3秒提升移速15%");
+        language.add("armor_set_bonus.confluence.mercenary_set.0", "30% reduced movement speed", "移动速度降低30%");
+        language.add("armor_set_bonus.confluence.mercenary_set.1", "20% increased melee damage", "近战伤害提高20%");
+        language.add("armor_set_bonus.confluence.renegade_set.0", "15% reduced movement speed", "移动速度降低15%");
+        language.add("armor_set_bonus.confluence.renegade_set.1", "20% increased melee damage", "近战伤害提高20%");
+        language.add("armor_set_bonus.confluence.renegade_set.2", "30% increased melee speed", "近战攻速提高30%");
+        language.add("armor_set_bonus.confluence.wolf_set.0", "11% increased attack damage", "攻击伤害提高11%");
+        language.add("armor_set_bonus.confluence.wolf_set.1", "Healing potions grant 7% attack and 10% movement speed for 30 seconds", "使用治疗药水后30秒内提升7%攻击和10%移速");
+        language.add("armor_set_bonus.confluence.ember_robe_set.0", "Permanent Inferno", "常驻狱火");
+        language.add("armor_set_bonus.confluence.entertainers_garb_set.0", "30% longer beneficial effects", "正面效果时长延长30%");
     }
 }

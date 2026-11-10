@@ -78,6 +78,7 @@ import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sword.StarSteelSword;
@@ -670,6 +671,9 @@ public final class PlayerEvents {
         SoulcererUtils.soulKnifeExtraSoul(event);
         SoulcererUtils.brokenGlimmerHeal(event);
         SoulcererUtils.soulDropBonus(event);
+        SoulcererUtils.verdantSoulChance(event);
         SoulcererUtils.bloodRageSoul(event);
+        /// 附魔：灵魂疏导 / 束魂 / 灵魂促行 / 灵魂共振 / 灵魂虹吸
+        EnchantmentBehaviors.onSoulCollected(event);
     }
 }

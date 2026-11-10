@@ -82,6 +82,7 @@ import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
 import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.natural.PalmLeaves;
@@ -2209,6 +2210,43 @@ public class ModDataProvider {
                             EquipmentSlotGroup.MAINHAND
                     ))
             );
+            register(context, ModEnchantments.BEAST_LORD, Enchantment.enchantment(
+                            Enchantment.definition(
+                                    item.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
+                                    2,
+                                    3,
+                                    Enchantment.dynamicCost(10, 8),
+                                    Enchantment.dynamicCost(18, 8),
+                                    4,
+                                    EquipmentSlotGroup.CHEST
+                            ))
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.BEAST_EXCLUSIVE))
+                    .withEffect(
+                            EnchantmentEffectComponents.ATTRIBUTES,
+                            new EnchantmentAttributeEffect(
+                                    Confluence.asResource("enchantment.beast_lord"),
+                                    LibAttributes.getSummonDamage(),
+                                    LevelBasedValue.perLevel(0.04F, 0.02F),
+                                    AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+            );
+            register(context, ModEnchantments.ARTIFACT_COOLDOWN, Enchantment.enchantment(
+                            Enchantment.definition(
+                                    item.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
+                                    2,
+                                    3,
+                                    Enchantment.dynamicCost(10, 8),
+                                    Enchantment.dynamicCost(18, 8),
+                                    4,
+                                    EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET
+                            ))
+                    .withEffect(
+                            EnchantmentEffectComponents.ATTRIBUTES,
+                            new EnchantmentAttributeEffect(
+                                    Confluence.asResource("enchantment.artifact_cooldown"),
+                                    ConfluenceMagicLib.ARTIFACT_COOLDOWN_REDUCTION,
+                                    LevelBasedValue.perLevel(0.09F),
+                                    AttributeModifier.Operation.ADD_VALUE))
+            );
             register(context, ModEnchantments.SUMMONER_PACT, Enchantment.enchantment(
                             Enchantment.definition(
                                     item.getOrThrow(ItemTags.HEAD_ARMOR_ENCHANTABLE),
@@ -2227,6 +2265,67 @@ public class ModDataProvider {
                                     LevelBasedValue.perLevel(1, 0.5F),
                                     AttributeModifier.Operation.ADD_VALUE))
             );
+
+            // region 新增附魔
+            // 只登记附魔书与效果，暂不开放附魔台：1.21 的附魔台只提供 `#minecraft:in_enchanting_table` 里的附魔，
+            // 本模组附魔默认不在该标签内，因此天然无法通过附魔台获得。
+            HolderSet<Item> anyArmor = item.getOrThrow(ItemTags.ARMOR_ENCHANTABLE);
+            HolderSet<Item> chestArmor = item.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE);
+            HolderSet<Item> legArmor = item.getOrThrow(ItemTags.LEG_ARMOR_ENCHANTABLE);
+            HolderSet<Item> footArmor = item.getOrThrow(ItemTags.FOOT_ARMOR_ENCHANTABLE);
+            HolderSet<Item> generalWeapon = item.getOrThrow(ModTags.Items.GENERAL_WEAPON_ENCHANTABLE);
+            HolderSet<Item> meleeWeapon = item.getOrThrow(ModTags.Items.MELEE_WEAPON_ENCHANTABLE);
+            HolderSet<Item> bow = item.getOrThrow(ItemTags.BOW_ENCHANTABLE);
+            HolderSet<Item> bowOrCrossbow = new OrHolderSet<>(bow, item.getOrThrow(ItemTags.CROSSBOW_ENCHANTABLE));
+
+            register(context, ModEnchantments.FOOD_RESERVE, definition(anyArmor, 1,
+                    EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET)
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.FOOD_RESERVE_EXCLUSIVE)));
+            register(context, ModEnchantments.RECKLESS, definition(anyArmor, 1,
+                    EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET));
+            register(context, ModEnchantments.SOUL_CONDUIT, definition(chestArmor, 3, EquipmentSlotGroup.CHEST));
+            register(context, ModEnchantments.SOUL_BIND, definition(chestArmor, 3, EquipmentSlotGroup.CHEST));
+            register(context, ModEnchantments.BEAST_INSPIRE, definition(chestArmor, 1, EquipmentSlotGroup.CHEST)
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.BEAST_EXCLUSIVE)));
+            register(context, ModEnchantments.DEFLECT, definition(anyArmor, 3,
+                    EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET)
+                    .exclusiveWith(enchantment.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE)));
+            register(context, ModEnchantments.POTION_SHIELD, definition(chestArmor, 3, EquipmentSlotGroup.CHEST));
+            register(context, ModEnchantments.SELFLESS_SACRIFICE, definition(anyArmor, 3,
+                    EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET));
+            register(context, ModEnchantments.SURPRISE_GIFT, definition(anyArmor, 1,
+                    EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET)
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.FOOD_RESERVE_EXCLUSIVE)));
+            register(context, ModEnchantments.DEATH_BARGAIN, definition(legArmor, 1, EquipmentSlotGroup.LEGS)
+                    .exclusiveWith(enchantment.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE)));
+            register(context, ModEnchantments.SOUL_HASTE, definition(footArmor, 3, EquipmentSlotGroup.FEET));
+            register(context, ModEnchantments.SPEED_SYNERGY, definition(footArmor, 3, EquipmentSlotGroup.FEET));
+
+            register(context, ModEnchantments.ARTIFACT_SYNERGY, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.CRITICAL_STRIKE, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.VIGOROUS, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.SOUL_RESONANCE, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.VOID_STRIKE, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.FLANKING_STRIKE, definition(meleeWeapon, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.STUN, definition(meleeWeapon, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.SOUL_SIPHON, definition(meleeWeapon, 3, EquipmentSlotGroup.MAINHAND));
+
+            register(context, ModEnchantments.BURST_BOWSTRING, definition(bowOrCrossbow, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.COOLDOWN_SHOT, definition(bow, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.MULTI_CHARGE, definition(bow, 3, EquipmentSlotGroup.MAINHAND)
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.CHARGE_EXCLUSIVE)));
+            register(context, ModEnchantments.RAPID_CHARGE, definition(bow, 3, EquipmentSlotGroup.MAINHAND));
+            register(context, ModEnchantments.SUPER_CHARGE, definition(bow, 3, EquipmentSlotGroup.MAINHAND)
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.CHARGE_EXCLUSIVE)));
+            // endregion
+        }
+
+        /// 统一的附魔定义：权重 2、铁砧代价 4、花费 10+8 / 18+8，与既有的万兽之王、冷却保持一致。
+        private static Enchantment.Builder definition(HolderSet<Item> supportedItems, int maxLevel, EquipmentSlotGroup... slots) {
+            return Enchantment.enchantment(Enchantment.definition(
+                    supportedItems, 2, maxLevel,
+                    Enchantment.dynamicCost(10, 8), Enchantment.dynamicCost(18, 8), 4, slots
+            ));
         }
 
         private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {

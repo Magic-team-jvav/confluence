@@ -39,6 +39,70 @@ public final class ModEnchantments {
     /** 涡轮 — 连枷专属附魔，挥舞越久伤害和速度越高 */
     public static final ResourceKey<Enchantment> FLAIL_TURBINE = Confluence.asResourceKey(Registries.ENCHANTMENT, "flail_turbine");
 
+    public static final ResourceKey<Enchantment> BEAST_LORD = Confluence.asResourceKey(Registries.ENCHANTMENT, "beast_lord");
+
+    public static final ResourceKey<Enchantment> ARTIFACT_COOLDOWN = Confluence.asResourceKey(Registries.ENCHANTMENT, "artifact_cooldown");
+
+    // region 盔甲附魔
+
+    /// 食物储备：使用治疗药水获得随机食物。
+    public static final ResourceKey<Enchantment> FOOD_RESERVE = Confluence.asResourceKey(Registries.ENCHANTMENT, "food_reserve");
+    /// 莽撞：不提供防御，护甲值转化为近战伤害。
+    public static final ResourceKey<Enchantment> RECKLESS = Confluence.asResourceKey(Registries.ENCHANTMENT, "reckless");
+    /// 灵魂疏导：收集灵魂时回复生命。
+    public static final ResourceKey<Enchantment> SOUL_CONDUIT = Confluence.asResourceKey(Registries.ENCHANTMENT, "soul_conduit");
+    /// 束魂：提升生物死亡时的灵魂获取概率。
+    public static final ResourceKey<Enchantment> SOUL_BIND = Confluence.asResourceKey(Registries.ENCHANTMENT, "soul_bind");
+    /// 万兽鼓舞：使用治疗药水时提升召唤物伤害。
+    public static final ResourceKey<Enchantment> BEAST_INSPIRE = Confluence.asResourceKey(Registries.ENCHANTMENT, "beast_inspire");
+    /// 偏转：概率闪避投射物。
+    public static final ResourceKey<Enchantment> DEFLECT = Confluence.asResourceKey(Registries.ENCHANTMENT, "deflect");
+    /// 药水护盾：使用治疗药水后短时间获得防御。
+    public static final ResourceKey<Enchantment> POTION_SHIELD = Confluence.asResourceKey(Registries.ENCHANTMENT, "potion_shield");
+    /// 舍己为人：自身受到攻击时治疗周围队友。
+    public static final ResourceKey<Enchantment> SELFLESS_SACRIFICE = Confluence.asResourceKey(Registries.ENCHANTMENT, "selfless_sacrifice");
+    /// 惊喜礼物：使用治疗药水时随机获得奖励。
+    public static final ResourceKey<Enchantment> SURPRISE_GIFT = Confluence.asResourceKey(Registries.ENCHANTMENT, "surprise_gift");
+    /// 死亡交易（护腿）：本次死亡不掉落物品，触发后移除。
+    public static final ResourceKey<Enchantment> DEATH_BARGAIN = Confluence.asResourceKey(Registries.ENCHANTMENT, "death_bargain");
+    /// 灵魂促行（靴子）：收集灵魂后短时间提升移速。
+    public static final ResourceKey<Enchantment> SOUL_HASTE = Confluence.asResourceKey(Registries.ENCHANTMENT, "soul_haste");
+    /// 速度协同（靴子）：使用法器后短时间提升移速。
+    public static final ResourceKey<Enchantment> SPEED_SYNERGY = Confluence.asResourceKey(Registries.ENCHANTMENT, "speed_synergy");
+
+    // endregion
+
+    // region 武器附魔
+
+    /// 法器协同：使用法器后强化下一次攻击。
+    public static final ResourceKey<Enchantment> ARTIFACT_SYNERGY = Confluence.asResourceKey(Registries.ENCHANTMENT, "artifact_synergy");
+    /// 致命一击：提升暴击伤害倍率。
+    public static final ResourceKey<Enchantment> CRITICAL_STRIKE = Confluence.asResourceKey(Registries.ENCHANTMENT, "critical_strike");
+    /// 精力充沛：跳跃/冲刺/纵向位移叠层，强化下一次攻击。
+    public static final ResourceKey<Enchantment> VIGOROUS = Confluence.asResourceKey(Registries.ENCHANTMENT, "vigorous");
+    /// 灵魂共振：收集灵魂后短时间提升暴击伤害。
+    public static final ResourceKey<Enchantment> SOUL_RESONANCE = Confluence.asResourceKey(Registries.ENCHANTMENT, "soul_resonance");
+    /// 虚空强袭：给目标叠加「虚空强袭」易伤。
+    public static final ResourceKey<Enchantment> VOID_STRIKE = Confluence.asResourceKey(Registries.ENCHANTMENT, "void_strike");
+    /// 回击（近战）：攻击后立刻回满攻速条。
+    public static final ResourceKey<Enchantment> FLANKING_STRIKE = Confluence.asResourceKey(Registries.ENCHANTMENT, "flanking_strike");
+    /// 眩晕（近战）：概率使敌人短暂失去移动与攻击能力。
+    public static final ResourceKey<Enchantment> STUN = Confluence.asResourceKey(Registries.ENCHANTMENT, "stun");
+    /// 灵魂虹吸（近战）：命中敌人提升灵魂获取概率。
+    public static final ResourceKey<Enchantment> SOUL_SIPHON = Confluence.asResourceKey(Registries.ENCHANTMENT, "soul_siphon");
+    /// 爆裂弓弦（弓/弩）：位移后自动向周围敌人发射箭矢。
+    public static final ResourceKey<Enchantment> BURST_BOWSTRING = Confluence.asResourceKey(Registries.ENCHANTMENT, "burst_bowstring");
+    /// 冷却射击（弓）：满蓄力射击缩短法器冷却。
+    public static final ResourceKey<Enchantment> COOLDOWN_SHOT = Confluence.asResourceKey(Registries.ENCHANTMENT, "cooldown_shot");
+    /// 多级蓄力（弓）：满蓄力后可继续蓄力多轮。
+    public static final ResourceKey<Enchantment> MULTI_CHARGE = Confluence.asResourceKey(Registries.ENCHANTMENT, "multi_charge");
+    /// 快速蓄力（弓）：减少蓄力时间。
+    public static final ResourceKey<Enchantment> RAPID_CHARGE = Confluence.asResourceKey(Registries.ENCHANTMENT, "rapid_charge");
+    /// 超级蓄力（弓）：满蓄力射击提升伤害。
+    public static final ResourceKey<Enchantment> SUPER_CHARGE = Confluence.asResourceKey(Registries.ENCHANTMENT, "super_charge");
+
+    // endregion
+
     public static final ResourceKey<Enchantment> MULTI_BOOMERANG = Confluence.asResourceKey(Registries.ENCHANTMENT, "multi_boomerang");
 
     public static final class EffectComponentTypes {

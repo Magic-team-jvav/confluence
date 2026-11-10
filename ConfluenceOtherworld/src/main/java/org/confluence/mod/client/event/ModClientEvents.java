@@ -329,6 +329,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(SlimeSpikeProjectileModel.LAYER_LOCATION, SlimeSpikeProjectileModel::createBodyLayer);
         event.registerLayerDefinition(CrownOfKingSlimeModel.LAYER_LOCATION, CrownOfKingSlimeModel::createBodyLayer);
         event.registerLayerDefinition(TerraprismaModel.LAYER_LOCATION, TerraprismaModel::createBodyLayer);
+        event.registerLayerDefinition(FireworksRocketModel.LAYER_LOCATION, FireworksRocketModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -371,6 +372,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BASE_MANA_STAFF.get(), NoopRenderer::new);
         event.registerEntityRenderer(SOUL_LURE_PROJECTILE.get(), SoulLureProjectileRenderer::new);
         event.registerEntityRenderer(SOUL_STING.get(), SoulStingProjectileRenderer::new);
+        event.registerEntityRenderer(FIREWORKS_ROCKET.get(), FireworksRocketRenderer::new);
         event.registerEntityRenderer(SPIRIT_SURGE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILETHRON.get(), VilethronProjectileRenderer::new);
         event.registerEntityRenderer(CRYSTAL_VILE_SHARD.get(), CrystalVileShardProjectileRenderer::new);

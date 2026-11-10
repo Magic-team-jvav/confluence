@@ -155,6 +155,8 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<NightEdgeProjectile>> NIGHTS_EDGE = registerEntityType("nights_edge", "永夜刃射弹", id -> EntityType.Builder.of(NightEdgeProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownPhasebladeProjectile>> PHASEBLADE_PROJECTILE = registerEntityType("phaseblade_projectile", "晶光刃射弹", id -> EntityType.Builder.of(ThrownPhasebladeProjectile::new, MobCategory.MISC).sized(0.55F, 0.55F).clientTrackingRange(10).updateInterval(1).noSave().noSummon().build(id.toString()));
     public static final DeferredHolder<EntityType<?>, EntityType<ThrownPhasesaberProjectile>> PHASESABER_PROJECTILE = registerEntityType("phasesaber_projectile", "晶光剑射弹", id -> EntityType.Builder.of(ThrownPhasesaberProjectile::new, MobCategory.MISC).sized(0.55F, 0.55F).clientTrackingRange(10).updateInterval(1).noSave().noSummon().build(id.toString()));
+    /// 烟火之箭的烟花火箭射弹：只作为实体存在，没有对应物品。
+    public static final DeferredHolder<EntityType<?>, EntityType<FireworksRocketProjectile>> FIREWORKS_ROCKET = registerEntityType("fireworks_rocket", "烟花火箭射弹", id -> EntityType.Builder.<FireworksRocketProjectile>of(FireworksRocketProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(8).updateInterval(1).noSave().noSummon().build(id.toString()));
 
     /// 弓箭
     public static final DeferredHolder<EntityType<?>, EntityType<BaseArrowEntity>> BASE_ARROW = registerEntityType("arrow", "泰拉箭", id -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));

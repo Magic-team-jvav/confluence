@@ -4,6 +4,7 @@ import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -53,6 +54,7 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.attachment.SoulSkillStorage;
 import org.confluence.mod.common.attachment.SoulStorage;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -85,6 +87,9 @@ public final class SoulcererUtils {
     private static final ResourceLocation SOULDANCER_SPEED_ID = Confluence.asResource("souldancer_set_speed");
     private static final ResourceLocation SOUL_ROBE_SET_SOUL_DAMAGE_ID = Confluence.asResource("soul_robe_set_soul_damage");
     private static final ResourceLocation STAR_LINK_MAGIC_ID = Confluence.asResource("star_link_magic");
+    private static final ResourceLocation VERDANT_CRIT_ID = Confluence.asResource("verdant_soul_crit");
+    private static final ResourceLocation VERDANT_MAGIC_ID = Confluence.asResource("verdant_soul_magic");
+    private static final String VERDANT_BUFF_END = "confluence.verdant_soul_buff_end";
     private static final float HEALTH_PER_SOUL = 4.0F;
     private static final float SOUL_CONSUMPTION_FAILED = -1.0F;
     private static final float ENVIRONMENT_SOUL_RECOVERY_RATIO = 0.05F;
@@ -488,6 +493,18 @@ public final class SoulcererUtils {
     /// 是否佩戴灵魂手环系列（灵魂手环 / 灵魂再生手环 / 通灵手环共用同一标记）。
     public static boolean hasBandOfSoul(@Nullable Player player) {
         return player != null && TCUtils.hasType(player, AccessoryItems.BAND$OF$SOUL);
+    }
+
+    /// 法器只在魂条下生效：已处于魂条直接放行；佩戴灵魂手环系列时像主武器那样自动把
+    /// 当前资源条切成灵魂条（两条数值都不清空）；都没有则不满足使用条件。
+    public static boolean ensureSoulModeForArtifact(ServerPlayer player) {
+        if (isSoulMode(player)) {
+            return true;
+        }
+        if (!hasBandOfSoul(player)) {
+            return false;
+        }
+        return switchSoulMode(player, true);
     }
 
     /// 兑换比例尚未定义，保留入口供后续机制实现。
@@ -1118,10 +1135,22 @@ public final class SoulcererUtils {
                 && player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.SOUL_ROBE.get());
     }
 
+    /// 碧绿长袍全套：收魂时按概率额外收 1 魂。
+    public static void verdantSoulChance(SoulCollectionEvent event) {
+        Player player = event.getEntity();
+        float chance = ModArmorBonus.getValue(player, ModArmorBonus.SOUL$COLLECT$CHANCE);
+        if (chance > 0.0F && player.getRandom().nextFloat() < chance) {
+            event.setAmount(event.getAmount() + 1.0F);
+        }
+    }
+
     /// 收集灵魂时刷新魂舞限时增益。
     public static void onSoulCollected(Player player, long gameTime) {
         if (PlayerSpecialData.of(player).getArmorSetBonusKey() == ModArmorBonus.SOULDANCER_ROBE_SET) {
             SoulStorage.of(player).setSouldancerBuffEnd(gameTime + SoulSkillParameters.SOULDANCER_BUFF_DURATION_TICKS);
+        }
+        if (PlayerSpecialData.of(player).getArmorSetBonusKey() == ModArmorBonus.VERDANT_ROBE_SET) {
+            player.getPersistentData().putLong(VERDANT_BUFF_END, gameTime + 200);
         }
     }
 
@@ -1132,6 +1161,10 @@ public final class SoulcererUtils {
         applyTransientModifier(player, Attributes.MOVEMENT_SPEED, SOULDANCER_SPEED_ID, SoulSkillParameters.SOULDANCER_SPEED_BONUS, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, active);
         /// 灵魂长袍套（头套 + 长袍）：套装效果，灵魂伤害 +5%（与单件的 +5% 叠加）
         applyTransientModifier(player, LibAttributes.getSoulDamage(), SOUL_ROBE_SET_SOUL_DAMAGE_ID, SoulSkillParameters.SOUL_ROBE_SET_SOUL_DAMAGE_BONUS, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, isWearingSoulRobeSet(player));
+        /// 碧绿长袍全套：收魂后 10 秒 +5% 暴击、+7% 魔法伤害
+        boolean verdant = player.getPersistentData().getLong(VERDANT_BUFF_END) > gameTime;
+        applyTransientModifier(player, LibAttributes.getCriticalChance(), VERDANT_CRIT_ID, 0.05, AttributeModifier.Operation.ADD_VALUE, verdant);
+        applyTransientModifier(player, LibAttributes.getMagicDamage(), VERDANT_MAGIC_ID, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, verdant);
     }
 
     private static void applyTransientModifier(Player player, Holder<Attribute> attribute, ResourceLocation id, double value, AttributeModifier.Operation operation, boolean active) {
@@ -1369,24 +1402,97 @@ public final class SoulcererUtils {
         return false;
     }
 
-    /// 以物品栏格数统计正在冷却的法器，数量不按堆叠个数计算。
+    /// 正在冷却的法器数量：按物品 ID 统计，不按堆叠个数，也不要求物品还在背包里。
     public static int countCoolingSoulArtifacts(Player player) {
         int count = 0;
-        Inventory inventory = player.getInventory();
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (stack.getItem() instanceof SoulArtifactItem && player.getCooldowns().isOnCooldown(stack.getItem())) {
+        for (Map.Entry<ResourceLocation, Integer> entry : SoulSkillStorage.of(player).getArtifactCooldowns().entrySet()) {
+            if (entry.getValue() > 0 && BuiltInRegistries.ITEM.get(entry.getKey()) instanceof SoulArtifactItem) {
                 count++;
             }
         }
         return count;
     }
 
+    /// 法器剩余冷却刻数：0 表示可用。冷却存在玩家附件里，退出存档不会丢失。
+    public static int getSoulArtifactCooldown(@Nullable Player player, Item item) {
+        if (player == null) {
+            return 0;
+        }
+        return Math.max(0, SoulSkillStorage.of(player).getArtifactCooldowns()
+                .getOrDefault(BuiltInRegistries.ITEM.getKey(item), 0));
+    }
+
+    /// 写入法器冷却：附件里记剩余刻数（存档保留），同时进原版冷却表以显示物品栏冷却动画。
+    public static void setSoulArtifactCooldown(ServerPlayer player, Item item, int ticks) {
+        if (ticks <= 0) {
+            return;
+        }
+        SoulSkillStorage.of(player).getArtifactCooldowns().put(BuiltInRegistries.ITEM.getKey(item), ticks);
+        player.getCooldowns().addCooldown(item, ticks);
+    }
+
+    /// 清空全部法器冷却（附件记录 + 原版冷却动画），供腐根 / 黑斑全套重置用。
+    public static void resetSoulArtifactCooldowns(ServerPlayer player) {
+        SoulSkillStorage.of(player).getArtifactCooldowns().clear();
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item instanceof SoulArtifactItem) {
+                player.getCooldowns().removeCooldown(item);
+            }
+        }
+    }
+
+    /// 冷却射击：把全部法器的剩余冷却刻数减掉 ticks（到 0 的直接清掉）。
+    public static void reduceSoulArtifactCooldowns(ServerPlayer player, int ticks) {
+        if (ticks <= 0) {
+            return;
+        }
+        Map<ResourceLocation, Integer> cooldowns = SoulSkillStorage.of(player).getArtifactCooldowns();
+        Iterator<Map.Entry<ResourceLocation, Integer>> iterator = cooldowns.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<ResourceLocation, Integer> entry = iterator.next();
+            int remaining = entry.getValue() - ticks;
+            if (remaining <= 0) {
+                iterator.remove();
+                player.getCooldowns().removeCooldown(BuiltInRegistries.ITEM.get(entry.getKey()));
+                continue;
+            }
+            entry.setValue(remaining);
+            player.getCooldowns().addCooldown(BuiltInRegistries.ITEM.get(entry.getKey()), remaining);
+        }
+    }
+
+    /// 每刻推进法器冷却。读档后原版冷却表是空的，这里按剩余刻数把动画补回去。
+    public static void tickSoulArtifactCooldowns(ServerPlayer player) {
+        Map<ResourceLocation, Integer> cooldowns = SoulSkillStorage.of(player).getArtifactCooldowns();
+        if (cooldowns.isEmpty()) {
+            return;
+        }
+        Iterator<Map.Entry<ResourceLocation, Integer>> iterator = cooldowns.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<ResourceLocation, Integer> entry = iterator.next();
+            int remaining = entry.getValue() - 1;
+            if (remaining <= 0) {
+                iterator.remove();
+                continue;
+            }
+            entry.setValue(remaining);
+            Item item = BuiltInRegistries.ITEM.get(entry.getKey());
+            if (!player.getCooldowns().isOnCooldown(item)) {
+                player.getCooldowns().addCooldown(item, remaining);
+            }
+        }
+    }
+
     public static boolean tryUseSoulArtifact(ServerPlayer player, ItemStack stack) {
-        if (!Confluence.SOUL_SKILLS || !isSoulMode(player) || !(stack.getItem() instanceof SoulArtifactItem artifact)
-                || player.getCooldowns().isOnCooldown(stack.getItem())
+        if (!Confluence.SOUL_SKILLS || !(stack.getItem() instanceof SoulArtifactItem artifact)
+                || getSoulArtifactCooldown(player, stack.getItem()) > 0
                 || countCoolingSoulArtifacts(player) >= SoulSkillParameters.MAX_COOLING_SOUL_ARTIFACT_SLOTS
                 || !artifact.canUse(player, stack)) {
+            return false;
+        }
+        /// 法器只在灵魂条下可用；佩戴灵魂手环系列时会自动切换，否则给出提示而不是静默失败。
+        if (!ensureSoulModeForArtifact(player)) {
+            player.displayClientMessage(Component.translatable("message.confluence.artifact.need_soul_mode"), true);
             return false;
         }
         float healthCost = prepareSoulConsumption(player, artifact.getSoulCost(stack));
@@ -1394,11 +1500,22 @@ public final class SoulcererUtils {
             return false;
         }
         /// 冰冷魂戒：法器冷却同样缩短
-        int cooldown = getSoulCooldownTicks(player, artifact.getCooldown(stack));
-        player.getCooldowns().addCooldown(stack.getItem(), cooldown);
+        setSoulArtifactCooldown(player, stack.getItem(), getSoulArtifactCooldownTicks(player, artifact.getCooldown(stack)));
         artifact.useArtifact(player, stack);
         applySoulOverdraft(player, healthCost);
+        /// 附魔：法器协同（强化下一击）与速度协同（限时移速）
+        EnchantmentBehaviors.onArtifactUsed(player);
         return true;
+    }
+
+    /// 法器冷却：先按技能那套「分魂驾驭 / 冰冷魂戒 / 松露灯」修正，再乘「法器冷却减免」属性。
+    public static int getSoulArtifactCooldownTicks(Player player, int ticks) {
+        int base = getSoulCooldownTicks(player, ticks);
+        if (base <= 0) {
+            return base;
+        }
+        double reduction = Mth.clamp(player.getAttributeValue(LibAttributes.getArtifactCooldownReduction()), 0.0, 1.0);
+        return (int) Math.max(1L, Math.round(base * (1.0 - reduction)));
     }
 
     /// 统一结算「分魂驾驭延长」与「冰冷魂戒 / 松露灯缩短」后的灵魂技能冷却。

@@ -10,6 +10,8 @@ public final class TooltipLanguageSubProvider {
 
     public static void addTranslations(TranslationConsumer language) {
 
+        // ===== 法器 =====
+
         language.add("attribute.name.repeater.arrow_capacity", "Arrow Capacity", "箭矢容量");
         language.add("attribute.name.repeater.attack_speed", "Arrow Speed", "矢速度");
         language.add("attribute.name.repeater.concurrency_count", "Concurrency Count", "并发射击个数");
@@ -19,28 +21,82 @@ public final class TooltipLanguageSubProvider {
         language.add("attribute.name.repeater.torrent_count", "Torrent Count", "连发射击个数");
         language.add("enchantment.confluence.arcane_protection", "Arcane Protection", "奥术防护");
         language.add("enchantment.confluence.arcane_protection.desc", "The mana drawn when taking damage is the value of the maximum mana value multiplied by a certain ratio, and the damage canceled is the value of the product of the damage taken by that ratio", "受到伤害时抽取的魔力为最大魔力值乘积一定比率的值，抵消的伤害为受到的伤害乘积该比率的值");
+        language.add("enchantment.confluence.artifact_cooldown", "Artifact Cooldown", "冷却");
+        language.add("enchantment.confluence.artifact_cooldown.desc", "Reduces artifact cooldowns by 9%/18%/27%", "降低法器冷却时间9%/18%/27%");
+        language.add("enchantment.confluence.artifact_synergy", "Artifact Synergy", "法器协同");
+        language.add("enchantment.confluence.artifact_synergy.desc", "Using an artifact empowers your next hit by 40%/60%/80%, cannot stack", "使用法器后强化你的下一击40%/60%/80%伤害，不可叠加");
+        language.add("enchantment.confluence.beast_inspire", "Beast Inspire", "万兽鼓舞");
+        language.add("enchantment.confluence.beast_inspire.desc", "Using a healing potion grants your summons +2 damage", "使用治疗药水会给予召唤物+2伤害");
+        language.add("enchantment.confluence.beast_lord", "Beast Lord", "万兽之王");
+        language.add("enchantment.confluence.beast_lord.desc", "Increases summon damage by 2%/4%/6%", "提升召唤伤害2%/4%/6%");
+        language.add("enchantment.confluence.burst_bowstring", "Burst Bowstring", "爆裂弓弦");
+        language.add("enchantment.confluence.burst_bowstring.desc", "Moving or jumping 7 blocks fires an arrow dealing 40% weapon damage at 1/2 nearby enemies", "跳跃或移动7格后自动向周围的1/2名敌人发射一根只有当前武器40%伤害的箭");
         language.add("enchantment.confluence.celestial_absorption", "Celestial Absorption", "天穹纳元");
         language.add("enchantment.confluence.celestial_absorption.desc", "Magic weapons that deal magic damage have a chance to drop stars", "使用魔法类武器造成魔法伤害时有概率掉落星星");
+        language.add("enchantment.confluence.cooldown_shot", "Cooldown Shot", "冷却射击");
+        language.add("enchantment.confluence.cooldown_shot.desc", "A fully charged shot reduces artifact cooldowns by 1/2/3 seconds", "蓄力完毕的弓箭射击会减少法器1/2/3秒冷却");
+        language.add("enchantment.confluence.critical_strike", "Critical Strike", "致命一击");
+        language.add("enchantment.confluence.critical_strike.desc", "Increases your critical damage to 2/2.2/2.4 times", "提升你的暴击伤害为2/2.2/2.4倍伤害");
+        language.add("enchantment.confluence.death_bargain", "Death Bargain", "死亡交易");
+        language.add("enchantment.confluence.death_bargain.desc", "You do not drop items on this death, the enchantment is removed after triggering", "本次死亡后不掉落物品，触发后移除该附魔");
+        language.add("enchantment.confluence.deflect", "Deflect", "偏转");
+        language.add("enchantment.confluence.deflect.desc", "4%/6%/8% chance to dodge projectiles", "4%/6%/8%概率闪避投射物");
         language.add("enchantment.confluence.efficient_magic", "Efficient Magic", "高效魔能");
         language.add("enchantment.confluence.efficient_magic.desc", "The less mana, the less mana is consumed", "魔力值越少，魔力消耗越少");
         language.add("enchantment.confluence.flail_turbine", "Turbine", "涡轮");
         language.add("enchantment.confluence.flail_turbine.desc", "The longer it spins, the higher the damage and spin speed", "越转越强");
         language.add("enchantment.confluence.flail_wind_burst", "Wind Burst", "风暴锤");
         language.add("enchantment.confluence.flail_wind_burst.desc", "Hitting an enemy unleashes a wind burst that knocks back nearby enemies", "击中敌人时生成风暴击飞敌人");
+        language.add("enchantment.confluence.flanking_strike", "Flanking Strike", "回击");
+        language.add("enchantment.confluence.flanking_strike.desc", "Attacks instantly refill the attack strength bar (5/4/3s cooldown)", "攻击后立刻使攻速条回满（冷却5/4/3秒）");
+        language.add("enchantment.confluence.food_reserve", "Food Reserve", "食物储备");
+        language.add("enchantment.confluence.food_reserve.desc", "Using a healing potion grants a random food (60s cooldown)", "使用治疗药水会获得随机食物（60秒冷却）");
         language.add("enchantment.confluence.mana_mending", "Mana Mending", "魔力修补");
         language.add("enchantment.confluence.mana_mending.desc", "When the mana used once exceeds the threshold, the item's durability is restored, and the amount recovered is rounded down to the amount above the threshold", "一次使用的魔力超过阈值时恢复物品耐久，恢复的量为超过阈值的量向下取整");
         language.add("enchantment.confluence.mana_regeneration", "Mana Regeneration", "魔力再生");
         language.add("enchantment.confluence.mana_regeneration.desc", "Increases the amount of mana that naturally regenerates", "提升魔力自然再生时的量");
         language.add("enchantment.confluence.multi_boomerang", "Multi Shoot Boomerang", "影分身");
         language.add("enchantment.confluence.multi_boomerang.desc", "Fires an additional boomerang", "额外发射一个回旋镖");
+        language.add("enchantment.confluence.multi_charge", "Multi Charge", "多级蓄力");
+        language.add("enchantment.confluence.multi_charge.desc", "A fully charged bow can charge 2/3/4 more rounds, each round doubles the damage", "弓箭蓄力完毕后还能蓄力2/3/4轮，每蓄完一轮提升一倍伤害");
         language.add("enchantment.confluence.mystic_surge", "Mystic Surge", "秘能激涌");
         language.add("enchantment.confluence.mystic_surge.desc", "The higher the remaining mana ratio, the higher the attack", "剩余魔力比值越高攻击力越高");
+        language.add("enchantment.confluence.potion_shield", "Potion Shield", "药水护盾");
+        language.add("enchantment.confluence.potion_shield.desc", "Gain 4 armor for 3/5/7 seconds after using a healing potion", "使用治疗药水后的3/5/7秒内获得4防御");
+        language.add("enchantment.confluence.rapid_charge", "Rapid Charge", "快速蓄力");
+        language.add("enchantment.confluence.rapid_charge.desc", "Reduces bow charge time by 10%/20%/30%", "减少弓箭10%/20%/30%蓄力时间");
+        language.add("enchantment.confluence.reckless", "Reckless", "莽撞");
+        language.add("enchantment.confluence.reckless.desc", "Provides no defense and converts (armor value/10)% of it into melee damage", "不提供防御，将护甲值的(X/10)%转化为近战伤害");
+        language.add("enchantment.confluence.selfless_sacrifice", "Selfless Sacrifice", "舍己为人");
+        language.add("enchantment.confluence.selfless_sacrifice.desc", "Taking a hit heals nearby allies for 1/3/5 health", "自身受到攻击会治疗周围的队友固定值1/3/5点生命值");
         language.add("enchantment.confluence.soothed_mana", "Soothed Mana", "魔症缓释");
         language.add("enchantment.confluence.soothed_mana.desc", "Reduces the duration of Mana Sickness", "减小魔力病持续时间");
+        language.add("enchantment.confluence.soul_bind", "Soul Bind", "束魂");
+        language.add("enchantment.confluence.soul_bind.desc", "Increases the soul gain chance on mob death by 5%/10%/15%", "提升生物死亡时灵魂获取概率5%/10%/15%");
+        language.add("enchantment.confluence.soul_conduit", "Soul Conduit", "灵魂疏导");
+        language.add("enchantment.confluence.soul_conduit.desc", "Collected souls restore 1/2/3 health", "获取的灵魂可以为你回复1/2/3生命值");
+        language.add("enchantment.confluence.soul_haste", "Soul Haste", "灵魂促行");
+        language.add("enchantment.confluence.soul_haste.desc", "15% movement speed for 3/5/7 seconds after collecting a soul", "获取灵魂后3/5/7秒内提升15%移速");
+        language.add("enchantment.confluence.soul_resonance", "Soul Resonance", "灵魂共振");
+        language.add("enchantment.confluence.soul_resonance.desc", "Critical damage becomes 2.2/2.4/2.6 times for 3/6/9 seconds after collecting a soul", "获取灵魂后3/6/9秒内，提升你的暴击伤害为2.2/2.4/2.6倍");
+        language.add("enchantment.confluence.soul_siphon", "Soul Siphon", "灵魂虹吸");
+        language.add("enchantment.confluence.soul_siphon.desc", "Hitting enemies increases the soul gain chance by 3%/5%/8%", "击中敌人提升3%/5%/8%灵魂获取概率");
+        language.add("enchantment.confluence.speed_synergy", "Speed Synergy", "速度协同");
+        language.add("enchantment.confluence.speed_synergy.desc", "20% movement speed for 1/2/3 seconds after using an artifact", "使用法器后1/2/3秒内提升20%移速");
         language.add("enchantment.confluence.spell_desperation", "Spell Desperation", "逆魔狂暴");
         language.add("enchantment.confluence.spell_desperation.desc", "The lower the remaining mana ratio, the higher the attack", "剩余魔力比值越低攻击力越高");
+        language.add("enchantment.confluence.stun", "Stun", "眩晕");
+        language.add("enchantment.confluence.stun.desc", "5%/10%/15% chance to stun the enemy for 2 seconds, the enemy cannot be stunned again within 10 seconds", "5%/10%/15%概率在攻击敌人时让敌人眩晕2秒（眩晕后10秒不可再被眩晕）");
         language.add("enchantment.confluence.summoner_pact", "Summoner's Pact", "召唤师契约");
         language.add("enchantment.confluence.summoner_pact.desc", "Increases minion capacity", "提高仆从容量");
+        language.add("enchantment.confluence.super_charge", "Super Charge", "超级蓄力");
+        language.add("enchantment.confluence.super_charge.desc", "Fully charged shots deal 20%/40%/60% more damage", "蓄力完毕的射击提升20%/40%/60%伤害");
+        language.add("enchantment.confluence.surprise_gift", "Surprise Gift", "惊喜礼物");
+        language.add("enchantment.confluence.surprise_gift.desc", "Using a healing potion randomly grants a heart, a mana star, experience, or 1 soul", "使用治疗药水随机生成红心/魔力星/经验值，或获得1点灵魂");
+        language.add("enchantment.confluence.vigorous", "Vigorous", "精力充沛");
+        language.add("enchantment.confluence.vigorous.desc", "Jumping, sprinting or vertical movement grants 1 stack per 7 blocks, up to 15 stacks, each stack grants the next attack +10%", "跳跃、冲刺或纵向移动每7格叠加1层精力充沛，至多15层，每层使下一次攻击额外提高10%");
+        language.add("enchantment.confluence.void_strike", "Void Strike", "虚空强袭");
+        language.add("enchantment.confluence.void_strike.desc", "Applies Void Strike: damage taken ramps from 3%/6%/9% to 15%/30%/50% over 5 seconds", "给予目标虚空强袭：5秒内受到的伤害逐渐增加，从3%/6%/9%提升至15%/30%/50%");
         language.add("enchantment.confluence.whip_sweep", "Whip Sweep", "横扫之鞭");
         language.add("enchantment.confluence.whip_sweep.desc", "Chance to deal a wide area of damage", "概率造成大范围伤害");
         language.add("lore.confluence.meteor_diary", "It's a very thin book, but it seems to have a faint glow.", "很薄的书，但似乎有些荧荧微光。");
@@ -786,5 +842,14 @@ language.add("tooltip.item.confluence.polar_day.1", "Hits upgrade it to level 2 
         language.add("tooltip.item.confluence.star_weep.0", "Arrows that miss an enemy are stored as falling-star charges (max 3); the next hit on an enemy drops that many non-homing falling stars, one every 0.5 seconds", "未命中敌怪的箭矢会累积为坠星协同（最多 3 层）；下一次命中敌怪时从敌人头上释放等量坠星，每 0.5 秒落下一颗且不会追踪");
         language.add("tooltip.item.confluence.star_music.0", "Hold to gather a star; release to burst into homing falling stars. More uses mean more stars, and the 20th use triggers a critical starfall", "长按凝聚坠星，松手爆开成追踪坠星；使用次数越多星数越多，第 20 次触发临界星雨");
         //        add("tooltip.item.confluence.fallen_soul_core.0", "以天上的星辰通灵，右键切换魔法类型");
+        language.add("tooltip.confluence.artifact.soul_cost", "Costs %s Soul", "消耗 %s 灵魂");
+        language.add("tooltip.confluence.artifact.cooldown", "Cooldown: %s s", "冷却：%s 秒");
+        language.add("tooltip.confluence.artifact.soul_mode_required", "Requires the Soul bar (a Band of Soul switches automatically)", "需处于灵魂条状态（佩戴灵魂手环可自动切换）");
+        language.add("tooltip.item.confluence.boots_of_swiftness.0", "Right-click: +30% movement speed for 3 seconds.", "右键：3 秒内移动速度 +30%。");
+        language.add("tooltip.item.confluence.light_feather.0", "Right-click: dash horizontally (ignores pitch) a shorter distance than the Shield of Cthulhu, with a small climb.", "右键：沿朝向水平冲刺（不看俯仰角），距离短于克苏鲁之盾，并带一点向上爬升。");
+        language.add("tooltip.item.confluence.fireworks_arrow.0", "Right-click: your next arrow becomes a firework rocket.", "右键：下一支箭整支替换为烟花火箭射弹。");
+        language.add("tooltip.item.confluence.lightning_rod.0", "Right-click: lock onto the enemy near your crosshair, then Terra lightning strikes after a warning.", "右键：自动锁定准星附近的敌怪，预警后落下泰拉闪电。");
+        language.add("tooltip.item.confluence.snack_basket.0", "Right-click: receive Bread, Steak, Cooked Porkchop, Apple or Cooked Fish at random.", "右键：随机获得面包 / 熟牛排 / 熟猪排 / 苹果 / 熟鱼之一。");
+        language.add("message.confluence.artifact.need_soul_mode", "Artifacts require the Soul bar", "需处于灵魂条状态才能使用法器");
     }
 }

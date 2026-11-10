@@ -1,11 +1,13 @@
 package org.confluence.mod.util;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
@@ -17,6 +19,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEnchantments;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,26 @@ import static net.minecraft.world.item.enchantment.Enchantment.*;
 import static net.minecraft.world.item.enchantment.EnchantmentHelper.runIterationOnItem;
 
 public final class EnchantmentUtils {
+    /// 玩家身上参与附魔判定的格子：四件盔甲 + 主副手。
+    private static final EquipmentSlot[] PLAYER_SLOTS = {
+            EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET,
+            EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND
+    };
+
+    /// 取玩家身上某附魔的最高等级，没有则 0。
+    public static int getLevel(Player player, ResourceKey<Enchantment> key) {
+        int level = 0;
+        for (EquipmentSlot slot : PLAYER_SLOTS) {
+            level = Math.max(level, getLevel(player.getItemBySlot(slot), key));
+        }
+        return level;
+    }
+
+    /// 取单件物品上某附魔的等级，没有则 0。
+    public static int getLevel(@Nullable ItemStack stack, ResourceKey<Enchantment> key) {
+        return LibEnchantmentUtils.getEnchantmentLevel(key, stack);
+    }
+
     public static float processManaRegeneration(ServerPlayer player) {
         MutableFloat value = new MutableFloat(1);
         for (EquipmentSlot slot : LibEnchantmentUtils.SlotGroups.ARMOR_N_MAINHAND) {

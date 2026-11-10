@@ -115,7 +115,24 @@ public class SoulItems {
             LIFE_SPLENDOR, List.of(ModSoulSkills.LAW_OF_NATURE.get().getId())
     );
 
-    /// 注册魂师物品，不登记尚未定义的具体法器。
+    // ===== 法器：放在 1/2/3 快捷栏时按对应数字键直接使用 =====
+    /// 迅捷之靴：3 秒内移速 +15%，冷却 3 秒，消耗 2 魂。
+    public static final DeferredItem<SwiftBootsItem> BOOTS_OF_SWIFTNESS = registerItem("boots_of_swiftness", "迅捷之靴", () -> new SwiftBootsItem(new Item.Properties(), ModRarity.BLUE));
+    /// 浮流之羽：向前冲刺一小段距离，冷却 3 秒，消耗 2 魂。
+    public static final DeferredItem<LightFeatherItem> LIGHT_FEATHER = registerItem("light_feather", "浮流之羽", () -> new LightFeatherItem(new Item.Properties(), ModRarity.BLUE));
+    /// 烟火之箭：下一次弓箭额外携带一枚大范围烟火箭，冷却 30 秒，消耗 10 魂。
+    public static final DeferredItem<FireworksArrowItem> FIREWORKS_ARROW = registerItem("fireworks_arrow", "烟火之箭", () -> new FireworksArrowItem(new Item.Properties(), ModRarity.GREEN));
+    /// 雷霆之杖：在瞄准位置召唤一道泰拉雷电，冷却 40 秒，消耗 60 魂。
+    public static final DeferredItem<LightningRodItem> LIGHTNING_ROD = registerItem("lightning_rod", "雷霆之杖", () -> new LightningRodItem(new Item.Properties(), ModRarity.ORANGE));
+    /// 零食箩筐：随机获得一种食物，按食物品质扣 0~10 魂，冷却 35 秒。
+    public static final DeferredItem<SnackBasketItem> SNACK_BASKET = registerItem("snack_basket", "零食箩筐", () -> new SnackBasketItem(new Item.Properties(), ModRarity.GREEN));
+
+    /// 全部法器，创造栏分组与模型生成都从这里取，避免每加一件法器改两处。
+    public static final List<DeferredItem<? extends Item>> ARTIFACTS = List.of(
+            BOOTS_OF_SWIFTNESS, LIGHT_FEATHER, FIREWORKS_ARROW, LIGHTNING_ROD, SNACK_BASKET
+    );
+
+    /// 注册魂师物品，法器同样登记在 {@link #ITEMS} 内。
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

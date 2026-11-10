@@ -84,6 +84,8 @@ public final class ModTabs {
                         natural_environment.accept(NatureBlocks.SMALL_STONE_PILES);
                         natural_environment.accept(NatureBlocks.SMALL_GRANITE_PILES);
                         natural_environment.accept(NatureBlocks.SMALL_MARBLE_PILES);
+                        natural_environment.accept(NatureBlocks.PINE_SAPLING);
+                        natural_environment.accept(NatureBlocks.POO);
 
                         CreativeModeTab.Output corruption = GroupItem.belongsTo("corruption", output);
                         corruption.accept(NatureBlocks.CORRUPT_GRASS_BLOCK);
@@ -223,6 +225,7 @@ public final class ModTabs {
                         end.accept(NatureBlocks.LUNAR_CORAL);
                         end.accept(NatureBlocks.LUNAR_CORAL_FAN);
                         end.accept(NatureBlocks.SILVER_GRASS);
+                        end.accept(NatureBlocks.DREAM_BUBBLE);
                         end.accept(NatureBlocks.TALL_SILVER_GRASS);
                         end.accept(NatureBlocks.WITHERED_SEA_SILK);
                         end.accept(NatureBlocks.VOID_CRYSTAL_BLOCK);
@@ -521,6 +524,7 @@ public final class ModTabs {
                         obsidian_bricks.accept(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.get());
                         obsidian_bricks.accept(DecorativeBlocks.SMOOTH_OBSIDIAN.get());
                         obsidian_bricks.accept(DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.get());
+                        obsidian_bricks.accept(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get());
 
                         CreativeModeTab.Output marble_bricks = GroupItem.belongsTo(DecorativeBlocks.MARBLE_BRICKS.id, output);
                         marble_bricks.accept(DecorativeBlocks.MARBLE_COLUMN.get());
@@ -561,6 +565,9 @@ public final class ModTabs {
                         special_building.accept(DecorativeBlocks.SWORD_IN_STONE.get());
                         special_building.accept(DecorativeBlocks.REMAINS_BLOCK.get());
                         special_building.accept(DecorativeBlocks.POO_BLOCK.get());
+                        special_building.accept(DecorativeBlocks.CHISELED_OAK_PLANKS.get());
+                        special_building.accept(DecorativeBlocks.CHISELED_SPRUCE_PLANKS.get());
+                        special_building.accept(DecorativeBlocks.GARDEN_GNOME.get());
                         special_building.accept(DecorativeBlocks.FLOATING_WHEAT_BALE.get());
                         special_building.accept(DecorativeBlocks.CARVED_WHITE_PUMPKIN.get());
                         special_building.accept(DecorativeBlocks.JOHNNY_O_LANTERN.get());
@@ -610,6 +617,8 @@ public final class ModTabs {
                         doors.accept(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.get());
                         doors.accept(DecorativeBlocks.CHRISTMAS_PINE_DOOR.get());
                         doors.accept(DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.get());
+                        doors.accept(DecorativeBlocks.SKYWARE_DOOR.get());
+                        doors.accept(DecorativeBlocks.SKYWARE_GLASS_DOOR.get());
 
                         CreativeModeTab.Output boss_relics = GroupItem.belongsTo("boss_relics", output);
                         boss_relics.accept(DecorativeBlocks.KING_SLIME_RELIC.get());
@@ -807,6 +816,8 @@ public final class ModTabs {
                         storage.accept(ChestBlocks.UNIVERSE_CHEST.get());
                         storage.accept(ChestBlocks.HALLOWED_CHEST.get());
                         storage.accept(ChestBlocks.MECHANIC_SAFE_CHEST.get());
+                        storage.accept(ChestBlocks.GOLDEN_CHEST.get());
+                        storage.accept(ChestBlocks.DEATH_GOLDEN_CHEST.get());
                         storage.accept(FunctionalBlocks.PIGGY_BANK.get());
                         storage.accept(FunctionalBlocks.SAFE.get());
                         storage.accept(FunctionalBlocks.VOID_VAULT.get());
@@ -840,6 +851,7 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.TUFF_BOOTH.get());
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
+                        misc_functional.accept(FunctionalBlocks.SHADOW_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
                         misc_functional.accept(FunctionalBlocks.CLENTAMINATOR.get());
                         misc_functional.accept(FunctionalBlocks.TERRAFORMER.get());
@@ -1005,6 +1017,7 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.VORTEX_FRAGMENT.get());
                         monster_drops.accept(MaterialItems.NEBULA_FRAGMENT.get());
                         monster_drops.accept(MaterialItems.STARDUST_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.TURTLE_SHELL.get());
 
                         CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
                         plants_herbs.accept(MaterialItems.WATERLEAF.get());
@@ -1018,6 +1031,10 @@ public final class ModTabs {
                         plants_herbs.accept(MaterialItems.SPORE_ROOT.get());
                         plants_herbs.accept(MaterialItems.FLOATING_WHEAT_HEADS.get());
                         plants_herbs.accept(MaterialItems.WEAVING_CLOUD_COTTON.get());
+                        plants_herbs.accept(MaterialItems.LIFE_MUSHROOM.get());
+                        plants_herbs.accept(MaterialItems.GLOWING_MUSHROOM.get());
+                        plants_herbs.accept(MaterialItems.VICIOUS_MUSHROOM.get());
+                        plants_herbs.accept(MaterialItems.VILE_MUSHROOM.get());
 
                         CreativeModeTab.Output crafting_materials = GroupItem.belongsTo("crafting_materials", output);
                         crafting_materials.accept(MaterialItems.PEARLWOOD_STICK.get());
@@ -1269,6 +1286,7 @@ public final class ModTabs {
                         buckets_liquids.accept(ToolItems.HONEY_ABSORBANT_SPONGE.get());
                         buckets_liquids.accept(ToolItems.LAVA_ABSORBANT_SPONGE.get());
                         buckets_liquids.accept(ToolItems.ULTRA_ABSORBANT_SPONGE.get());
+                        buckets_liquids.accept(ToolItems.VOID_BUCKET.get());
 
                         CreativeModeTab.Output nets = GroupItem.belongsTo("nets", output);
                         nets.accept(ToolItems.BUG_NET.get());
@@ -1304,6 +1322,8 @@ public final class ModTabs {
                         utility_tools.accept(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get());
                         utility_tools.accept(ModItems.SCRYING_ORB.get());
                         utility_tools.accept(ModItems.ENEMY_BANNER.get());
+                        utility_tools.accept(ConsumableItems.GLOWSTICK.get());
+                        utility_tools.accept(ConsumableItems.STICKY_GLOWSTICK.get());
                     })
                     .withTabsBefore(FOOD_AND_POTIONS.getId())
                     .build());
@@ -1890,6 +1910,23 @@ public final class ModTabs {
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_CHESTPLATE.get());
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_LEGGINGS.get());
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_BOOTS.get());
+
+                        /// 盔甲附魔书（暂不开放附魔台，只能从创造栏或战利品取得）
+                        HolderLookup.RegistryLookup<Enchantment> armorEnchantments = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.FOOD_RESERVE, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.RECKLESS, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_CONDUIT, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_BIND, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.BEAST_LORD, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.BEAST_INSPIRE, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.ARTIFACT_COOLDOWN, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.DEFLECT, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.POTION_SHIELD, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SELFLESS_SACRIFICE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SURPRISE_GIFT, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.DEATH_BARGAIN, 1));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_HASTE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SPEED_SYNERGY, 3));
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
 
@@ -1908,6 +1945,15 @@ public final class ModTabs {
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 2));
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.WHIP_SWEEP, 2));
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MULTI_BOOMERANG, 3));
+                        /// 武器通用与近战附魔书
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.ARTIFACT_SYNERGY, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CRITICAL_STRIKE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.VIGOROUS, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOUL_RESONANCE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.VOID_STRIKE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLANKING_STRIKE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.STUN, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOUL_SIPHON, 3));
 
                         CreativeModeTab.Output short_swords = GroupItem.belongsTo("short_swords", output);
                         short_swords.accept(SwordItems.COPPER_SHORT_SWORD.get());
@@ -2088,6 +2134,14 @@ public final class ModTabs {
                         gun.accept(ManaWeaponItems.SPACE_GUN);
                         CreativeModeTab.Output bullet = GroupItem.belongsTo("bullet", output);
                         GunItems.BULLET_ITEMS.forEach(bullet::accept);
+
+                        /// 弓弩附魔书
+                        HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.BURST_BOWSTRING, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.COOLDOWN_SHOT, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MULTI_CHARGE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.RAPID_CHARGE, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SUPER_CHARGE, 3));
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
@@ -2120,6 +2174,7 @@ public final class ModTabs {
                         acceptAll(SummonItems.ITEMS, output);
                         acceptAll(WhipItems.ITEMS, output);
                         acceptAll(LightPetItems.ITEMS, output);
+                        acceptAll(PetItems.ITEMS, output);
                         acceptAll(MountItems.ITEMS, output);
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SUMMONER_PACT, 3));
@@ -2148,6 +2203,7 @@ public final class ModTabs {
                         soulcerer_secondary_weapons.accept(BowItems.SOUL_SHORT_BOW.get());
                         soulcerer_secondary_weapons.accept(BowItems.SOUL_BOW.get());
                         CreativeModeTab.Output soulcerer_artifacts = GroupItem.belongsTo("soulcerer_artifacts", output);
+                        SoulItems.ARTIFACTS.forEach(item -> soulcerer_artifacts.accept(item.get()));
                         CreativeModeTab.Output soulcerer_skill_books = GroupItem.belongsTo("soulcerer_skill_books", output);
                         soulcerer_skill_books.accept(SoulItems.SOUL_SKILL_BOOK.get());
                         for (SoulBooks.Definition book : SoulBooks.all()) {

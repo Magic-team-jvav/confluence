@@ -35,6 +35,8 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     private static final String CD_TAG = "cd";
     private static final String MAX_CD_TAG = "maxCd";
     private static final String SKILL_COOLDOWNS_TAG = "skillCooldowns";
+    private static final String ARTIFACT_COOLDOWNS_TAG = "artifactCooldowns";
+    private static final String ITEM_ID_TAG = "item";
     private static final String TEMPORARY_SKILLS_TAG = "temporarySkills";
     private static final String AVAILABLE_SKILLS_TAG = "availableSkills";
     private static final String LEARNED_SOUL_BOOKS_TAG = "learnedSoulBooks";
@@ -61,6 +63,8 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
     private final List<SoulSkillStack> equippedSkills = NonNullList.createWithCapacity(DEFAULT_EQUIPPED_SOUL_SKILL_COUNT);
     private final Map<ResourceLocation, SoulSkill> unlockedSkills = new HashMap<>(DEFAULT_EQUIPPED_SOUL_SKILL_COUNT);
     private final Map<ResourceLocation, SoulSkillStack> skillCooldowns = new HashMap<>();
+    /// 法器冷却：物品 ID → 剩余刻数。存在玩家附件里，退出存档后照样保留。
+    private final Map<ResourceLocation, Integer> artifactCooldowns = new HashMap<>();
     private final Set<ResourceLocation> temporarySkills = new HashSet<>();
     private final Set<ResourceLocation> availableSkills = new HashSet<>();
     private final Set<ResourceLocation> learnedSoulBooks = new HashSet<>();
@@ -121,6 +125,14 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
             cooldowns.add(entry);
         }
         nbt.put(SKILL_COOLDOWNS_TAG, cooldowns);
+        ListTag artifactCooldownsTag = new ListTag();
+        for (Map.Entry<ResourceLocation, Integer> entry : artifactCooldowns.entrySet()) {
+            CompoundTag item = new CompoundTag();
+            item.putString(ITEM_ID_TAG, entry.getKey().toString());
+            item.putInt(CD_TAG, entry.getValue());
+            artifactCooldownsTag.add(item);
+        }
+        nbt.put(ARTIFACT_COOLDOWNS_TAG, artifactCooldownsTag);
         nbt.put(LEARNED_SOUL_BOOKS_TAG, serializeSkillIds(learnedSoulBooks));
         if (memoryOfBonebrandSkill != null) {
             nbt.putString(MEMORY_OF_BONEBRAND_TAG, memoryOfBonebrandSkill.toString());
@@ -182,6 +194,16 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
         }
         temporarySkills.clear();
         availableSkills.clear();
+        artifactCooldowns.clear();
+        ListTag artifactCooldownsTag = nbt.getList(ARTIFACT_COOLDOWNS_TAG, Tag.TAG_COMPOUND);
+        for (int i = 0; i < artifactCooldownsTag.size(); i++) {
+            CompoundTag entry = artifactCooldownsTag.getCompound(i);
+            ResourceLocation itemId = ResourceLocation.tryParse(entry.getString(ITEM_ID_TAG));
+            int cd = entry.getInt(CD_TAG);
+            if (itemId != null && cd > 0) {
+                artifactCooldowns.put(itemId, cd);
+            }
+        }
         deserializeSkillIds(nbt.getList(LEARNED_SOUL_BOOKS_TAG, Tag.TAG_STRING), learnedSoulBooks);
         memoryOfBonebrandSkill = nbt.contains(MEMORY_OF_BONEBRAND_TAG, Tag.TAG_STRING)
                 ? ResourceLocation.tryParse(nbt.getString(MEMORY_OF_BONEBRAND_TAG)) : null;
@@ -225,6 +247,11 @@ public class SoulSkillStorage implements INBTSerializable<CompoundTag> {
 
     public Map<ResourceLocation, SoulSkillStack> getSkillCooldowns() {
         return skillCooldowns;
+    }
+
+    /// 法器冷却（物品 ID → 剩余刻数），可直接修改，由魂师工具类统一推进。
+    public Map<ResourceLocation, Integer> getArtifactCooldowns() {
+        return artifactCooldowns;
     }
 
     public Set<ResourceLocation> getTemporarySkills() {

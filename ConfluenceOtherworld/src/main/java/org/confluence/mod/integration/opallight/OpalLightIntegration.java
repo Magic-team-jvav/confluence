@@ -31,8 +31,6 @@ import java.util.*;
 
 public final class OpalLightIntegration {
     public static final OpalLightIntegration INSTANCE = new OpalLightIntegration();
-    public static final ResourceLocation GUN_MUZZLE = Confluence.asResource("gun_muzzle");
-    public static final ResourceLocation MAGIC_MUZZLE = Confluence.asResource("magic_muzzle");
     public static final ResourceLocation EXPLOSION = Confluence.asResource("explosion");
     public static final ResourceLocation SILVER_IMPACT = Confluence.asResource("silver_impact");
     public static final ResourceLocation CRYSTAL_IMPACT = Confluence.asResource("crystal_impact");

@@ -5,7 +5,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.common.init.gun.GunSounds;
-import org.confluence.mod.network.s2c.GunMuzzleFlashPacketS2C;
 import org.confluence.mod.util.ModGunUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 
@@ -31,7 +30,6 @@ public final class ShootingService {
         if (projectileCount <= 0) return false;
         player.serverLevel().playSound(null, player.getX(), player.getY(), player.getZ(), GunSounds.getSound(gunStack), SoundSource.PLAYERS, 1.0F, 1.0F);
         gun.fireAnimator(gunStack, player);
-        GunMuzzleFlashPacketS2C.send(player);
         consumeAmmo(player, gun, gunStack, selectedAmmo);
         int cooldown = Math.max(0, useEvent.getCooldowns());
         if (cooldown > 0) player.getCooldowns().addCooldown(gun, cooldown);

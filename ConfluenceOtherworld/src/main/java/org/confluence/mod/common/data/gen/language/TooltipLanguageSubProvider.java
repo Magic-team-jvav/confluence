@@ -382,7 +382,7 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "'Contains offensive and defensive fighting techniques, volume two!'", "“包含攻防战斗技术，卷二！”");
         language.addTooltip(ConsumableItems.AEGIS_APPLE.get(), 0, "Permanently increases defense", "永久提高防御力");
         language.add("tooltip.item.confluence.alchemy_table.0", "33% chance to not consume potion crafting ingredients", "33%几率不消耗药水的制作材料");
-        language.add("tooltip.item.confluence.brewing_vial.0", "Same potion recipes as the Alchemy Table, but ingredients are always consumed", "炼药配方与炼药桌相同，但材料必定消耗");
+        language.add("tooltip.item.confluence.brewing_vial.0", "Potions can be crafted with recipes", "可通过配方制作药水");
         language.addTooltip(PotionItems.ALE.get(), 0, "Minor improvements to melee stats & lowered defense'Down the hatch!'", "近战属性小幅提升、防御力降低“干杯！”");
         language.addTooltip(ArmorItems.AMBER_ROBE.get(), 0, "Increases maximum mana by 60", "最大魔力增加60");
         language.add("tooltip.item.confluence.amber_robe.1", "13% reduced mana cost", "魔力消耗降低13%");

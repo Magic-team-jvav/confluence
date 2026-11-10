@@ -771,7 +771,6 @@ public final class ModTabs {
                         crafting_stations.accept(FunctionalBlocks.ADAMANTITE_FORGE.get());
                         crafting_stations.accept(FunctionalBlocks.TITANIUM_FORGE.get());
                         crafting_stations.accept(FunctionalBlocks.ALCHEMY_TABLE.get());
-                        crafting_stations.accept(FunctionalBlocks.BREWING_VIAL.get());
                         crafting_stations.accept(FunctionalBlocks.SAWMILL.get());
                         crafting_stations.accept(FunctionalBlocks.LOOM.get());
                         crafting_stations.accept(FunctionalBlocks.DYE_VAT.get());

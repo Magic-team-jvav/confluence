@@ -192,13 +192,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(PotionItems.BOTTLE.get()),
                 Ingredient.of(Items.GLASS_BOTTLE)
         );
-        // 炼药瓶：四个玻璃瓶
-        shapeless(output, FunctionalBlocks.BREWING_VIAL.toStack(),
-                Ingredient.of(PotionItems.BOTTLE),
-                Ingredient.of(PotionItems.BOTTLE),
-                Ingredient.of(PotionItems.BOTTLE),
-                Ingredient.of(PotionItems.BOTTLE)
-        );
+        // 炼药瓶：不再提供合成配方，改为用玻璃瓶右键直接放置
         // 冰镇西瓜片 冰西瓜互换
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(FoodItems.ICE_MELON_SLICE)

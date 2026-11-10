@@ -6,6 +6,7 @@ import net.minecraft.data.tags.EnchantmentTagsProvider;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModTags;
@@ -87,6 +88,34 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
         );
         tag(EnchantmentTags.ARMOR_EXCLUSIVE).add(ModEnchantments.ARCANE_PROTECTION);
 
-
+        /// 新一轮附魔还没定稿：附魔书共用 `minecraft:enchanted_book` 一个物品，物品标签区分不了具体是哪一本，
+        /// 所以用附魔标签 `confluence:wip` 标记，`WipNotDisplayOutput` 读到该标签就跳过（开发环境仍然显示）。
+        tag(LibTags.Enchantments.WIP).add(
+                ModEnchantments.FOOD_RESERVE,
+                ModEnchantments.RECKLESS,
+                ModEnchantments.SOUL_CONDUIT,
+                ModEnchantments.SOUL_BIND,
+                ModEnchantments.BEAST_INSPIRE,
+                ModEnchantments.DEFLECT,
+                ModEnchantments.POTION_SHIELD,
+                ModEnchantments.SELFLESS_SACRIFICE,
+                ModEnchantments.SURPRISE_GIFT,
+                ModEnchantments.DEATH_BARGAIN,
+                ModEnchantments.SOUL_HASTE,
+                ModEnchantments.SPEED_SYNERGY,
+                ModEnchantments.ARTIFACT_SYNERGY,
+                ModEnchantments.CRITICAL_STRIKE,
+                ModEnchantments.VIGOROUS,
+                ModEnchantments.SOUL_RESONANCE,
+                ModEnchantments.VOID_STRIKE,
+                ModEnchantments.FLANKING_STRIKE,
+                ModEnchantments.STUN,
+                ModEnchantments.SOUL_SIPHON,
+                ModEnchantments.BURST_BOWSTRING,
+                ModEnchantments.COOLDOWN_SHOT,
+                ModEnchantments.MULTI_CHARGE,
+                ModEnchantments.RAPID_CHARGE,
+                ModEnchantments.SUPER_CHARGE
+        );
     }
 }

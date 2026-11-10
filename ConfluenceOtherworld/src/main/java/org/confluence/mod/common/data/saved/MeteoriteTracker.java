@@ -82,7 +82,6 @@ public enum MeteoriteTracker implements IGlobalData {
         // 获取未被加载的区块
         int x = 0, z = 0;
         List<ServerPlayer> players = new ArrayList<>(level.players());
-        ChunkHolder chunkHolder;
         ChunkMap chunkMap = level.getChunkSource().chunkMap;
         do {
             if (!players.isEmpty()) {

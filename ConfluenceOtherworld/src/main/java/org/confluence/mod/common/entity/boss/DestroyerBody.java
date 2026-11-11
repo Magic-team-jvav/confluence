@@ -42,9 +42,6 @@ public final class DestroyerBody {
     private PathNode[] previousClientPoses, currentClientPoses;
     private double clientPoseTime, playbackTime, lastRenderTime = Double.NaN;
     private float renderFraction;
-    private final Quaternionf[] cachedRotations = new Quaternionf[TheDestroyer.SEGMENT_COUNT];
-    private final Vec3[] cachedRenderPositions = new Vec3[TheDestroyer.SEGMENT_COUNT];
-    private double rotationSampleTime = Double.NaN;
 
     private record ClientPose(int tick, PathNode[] nodes) {}
 
@@ -186,7 +183,6 @@ public final class DestroyerBody {
             previousClientPoses = currentClientPoses = nodes;
         }
         clientPoses.addLast(new ClientPose(snapshotTick, nodes));
-        rotationSampleTime = Double.NaN;
         while (clientPoses.size() > CLIENT_SNAPSHOT_LIMIT) clientPoses.removeFirst();
         clientPoseTime = head.level().getGameTime();
     }
@@ -220,20 +216,7 @@ public final class DestroyerBody {
     public Vec3 getRenderPosition(int index, float partialTick) {
         if (!hasClientSnapshot()) return getPosition(index);
         float fraction = interpolation(partialTick);
-        resetRenderCache();
-        Vec3 position = cachedRenderPositions[index];
-        if (position == null) {
-            position = previousClientPoses[index].pos().lerp(currentClientPoses[index].pos(), fraction);
-            cachedRenderPositions[index] = position;
-        }
-        return position;
-    }
-
-    private void resetRenderCache() {
-        if (rotationSampleTime == lastRenderTime) return;
-        java.util.Arrays.fill(cachedRotations, null);
-        java.util.Arrays.fill(cachedRenderPositions, null);
-        rotationSampleTime = lastRenderTime;
+        return previousClientPoses[index].pos().lerp(currentClientPoses[index].pos(), fraction);
     }
 
     public Quaternionf getRenderRotation(int index, float partialTick) {
@@ -242,13 +225,7 @@ public final class DestroyerBody {
             return new PathNode(section.position(), section.getYRot() - 180, -section.getXRot(), getRoll(index)).toQuaternion();
         }
         float fraction = interpolation(partialTick);
-        resetRenderCache();
-        Quaternionf rotation = cachedRotations[index];
-        if (rotation == null) {
-            rotation = previousClientPoses[index].toQuaternion().slerp(currentClientPoses[index].toQuaternion(), fraction);
-            cachedRotations[index] = rotation;
-        }
-        return new Quaternionf(rotation);
+        return previousClientPoses[index].toQuaternion().slerp(currentClientPoses[index].toQuaternion(), fraction);
     }
 
     void save(CompoundTag tag) {

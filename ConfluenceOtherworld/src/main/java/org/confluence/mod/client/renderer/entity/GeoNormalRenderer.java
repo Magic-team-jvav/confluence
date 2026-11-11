@@ -26,13 +26,15 @@ import software.bernie.geckolib.cache.object.GeoCube;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRenderer<T> {
     protected final boolean rotateAlongPitch;
     protected final float modelScale;
     protected final float modelOffsetY;
     protected float motionAnimThreshold = 0.01F;
-    private BakedGeoModel cullingModel;
-    private boolean needsFaceCulling;
+    private final Map<BakedGeoModel, Boolean> cullingModels = new WeakHashMap<>();
     private boolean cutout;
     public GeoNormalRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
         this(context, path, false, 1.0F, 0.0F);
@@ -77,6 +79,11 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         super.render(entity, yaw, partialTick, poseStack, buffers, light);
     }
 
+    protected final void renderWithSampledLight(T entity, float yaw, float partialTick, PoseStack poseStack,
+                                                MultiBufferSource buffers, int packedLight) {
+        super.render(entity, yaw, partialTick, poseStack, buffers, packedLight);
+    }
+
     @Override
     public RenderType getRenderType(T entity, ResourceLocation texture, @Nullable MultiBufferSource buffers, float partialTick) {
         if (cutout) return RenderType.entityCutout(texture);
@@ -96,11 +103,8 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
     /// 按烘焙模型缓存负尺寸检测；模型变体切换或资源重载后重新检查。
     protected final boolean hasNegativeCubes(T entity) {
         BakedGeoModel model = getGeoModel().getBakedModel(getGeoModel().getModelResource(entity));
-        if (model != cullingModel) {
-            cullingModel = model;
-            needsFaceCulling = model.topLevelBones().stream().anyMatch(GeoNormalRenderer::needsFaceCulling);
-        }
-        return needsFaceCulling;
+        return cullingModels.computeIfAbsent(model,
+                baked -> baked.topLevelBones().stream().anyMatch(GeoNormalRenderer::needsFaceCulling));
     }
 
     /// 仅由跨方块的长模型或分段实体显式启用，普通实体沿用原版单点光照。

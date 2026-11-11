@@ -16,7 +16,7 @@ public final class StartupConfigs {
 
         builder.push("Paints");
         PAINTS_REPLACE_TEXTURE = builder.define("paintsReplaceTexture", false);
-        BANNED_MOD_FOR_PAINTS = builder.defineList("bannedModForPaints", DEFAULT_BANNED_MOD, o -> o instanceof String s && !s.contains(":"));
+        BANNED_MOD_FOR_PAINTS = builder.defineListAllowEmpty("bannedModForPaints", DEFAULT_BANNED_MOD, () -> "modid", o -> o instanceof String s && !s.contains(":"));
         builder.pop();
 
         FORCE_ALLOW_WIP_ITEMS_DISPLAY_IN_CREATIVE_MODE_TAB = builder.define("forceAllowWipItemsDisplayInCreativeModeTab", false);

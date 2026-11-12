@@ -1,5 +1,6 @@
 package org.confluence.mod.common.event;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -10,6 +11,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.Items;
@@ -85,6 +87,7 @@ import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValu
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.confluence.mod.Confluence.MODID;
@@ -108,17 +111,17 @@ public final class ModEvents {
             }
 
             if (!LibUtils.isModLoaded("attributefix")) {
-                if (Attributes.ARMOR.value() instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
-                }
-                if (Attributes.ARMOR_TOUGHNESS.value() instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
-                }
-                if (Attributes.MAX_HEALTH.value() instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
-                }
-                if (LibAttributes.getAttackDamage().value() instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
+                List<Holder<Attribute>> attributes = List.of(
+                        Attributes.ARMOR,
+                        Attributes.ARMOR_TOUGHNESS,
+                        Attributes.MAX_HEALTH,
+                        LibAttributes.getAttackDamage(),
+                        Attributes.ATTACK_SPEED
+                );
+                for (Holder<Attribute> attribute : attributes) {
+                    if (attribute.value() instanceof RangedAttribute rangedAttribute) {
+                        rangedAttribute.maxValue = 65536;
+                    }
                 }
             }
         });

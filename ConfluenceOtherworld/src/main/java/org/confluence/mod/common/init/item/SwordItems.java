@@ -53,7 +53,7 @@ public class SwordItems {
     // 铂金以上剑参考数值为 泰拉wiki中的伤害÷2后 + 2为基础值
     // 普通短剑
     public static final DeferredItem<BaseSwordItem> COPPER_SHORT_SWORD = registerWithEnglishName("copper_short_sword", "铜短剑", "Copper Shortsword", ModTiers.COPPER, 2, 3, ModRarity.WHITE, () -> SwordDefinition.builder()
-                    .withoutSweep());
+            .withoutSweep());
     public static final DeferredItem<BaseSwordItem> TIN_SHORT_SWORD = registerWithEnglishName("tin_short_sword", "锡短剑", "Tin Shortsword", ModTiers.TIN, 2, 3, () -> SwordDefinition.builder().withoutSweep());
     public static final DeferredItem<BaseSwordItem> IRON_SHORT_SWORD = registerWithEnglishName("iron_short_sword", "铁短剑", "Iron Shortsword", ModTiers.IRON, 4, 3, () -> SwordDefinition.builder().withoutSweep());
     public static final DeferredItem<BaseSwordItem> LEAD_SHORT_SWORD = registerWithEnglishName("lead_short_sword", "铅短剑", "Lead Shortsword", ModTiers.LEAD, 4, 3, () -> SwordDefinition.builder().withoutSweep());
@@ -62,17 +62,17 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> GOLDEN_SHORT_SWORD = register("golden_short_sword", "金短剑", ModTiers.GOLD, 6, 3, () -> SwordDefinition.builder().withoutSweep());
     public static final DeferredItem<BaseSwordItem> PLATINUM_SHORT_SWORD = registerWithEnglishName("platinum_short_sword", "铂金短剑", "Platinum Shortsword", ModTiers.PLATINUM, 7, 3, () -> SwordDefinition.builder().withoutSweep());
     public static final DeferredItem<BaseSwordItem> BREATHING_REED = register("breathing_reed", "芦苇呼吸管", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, () -> SwordDefinition.builder()
-                    .withoutSweep());
+            .withoutSweep());
     public static final DeferredItem<BaseSwordItem> GLADIUS = register("gladius", "罗马短剑", ModTiers.UNBREAKABLE, 6, 3, () -> SwordDefinition.builder().withoutSweep());
     /// 大马林鱼刺剑：短剑定位的蓄力刺剑，1 段基础伤害 + 最多 8 段蓄力，满段后拆成多段命中。
     public static final DeferredItem<BaseSwordItem> MARLIN_SPIKE_SWORD = register("marlin_spike_sword", "大马林鱼刺剑", () -> new MarlinSpikeSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 14, 2.2F,
             SwordDefinition.builder().withoutSweep().tooltip().tooltip()));
     public static final DeferredItem<BaseSwordItem> UMBRELLA = register("umbrella", "伞", () -> new UmbrellaSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, SwordDefinition.builder()
-                    .withoutSweep()
-                    .unbreakable()));
+            .withoutSweep()
+            .unbreakable()));
     public static final DeferredItem<BaseSwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", "悲剧雨伞", () -> new UmbrellaSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, SwordDefinition.builder()
-                    .withoutSweep()
-                    .unbreakable()));
+            .withoutSweep()
+            .unbreakable()));
 
     // 普通宽剑 默认横扫*1.5
     public static final DeferredItem<BaseSwordItem> CACTUS_SWORD = register("cactus_sword", "仙人掌剑", ModTiers.CACTUS, 5, 1.6F, SwordDefinition::builder);
@@ -89,109 +89,109 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", "铂金宽剑", ModTiers.PLATINUM, 8, 1.6F, SwordDefinition::builder);
     public static final DeferredItem<BaseSwordItem> MURAMASA = register("muramasa", "村正", MuramasaItem::new);
     public static final DeferredItem<BaseSwordItem> COBALT_SWORD = register("cobalt_sword", "钴剑", ModTiers.UNBREAKABLE, 25, 2.4F, ModRarity.LIGHT_RED, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage());
+            .specialSweep(0.8F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
+            .tooltipImage());
     public static final DeferredItem<BaseSwordItem> PALLADIUM_SWORD = register("palladium_sword", "钯金剑", ModTiers.UNBREAKABLE, 29, 2.6F, ModRarity.LIGHT_RED, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage());
+            .specialSweep(0.8F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
+            .tooltipImage());
     public static final DeferredItem<BaseSwordItem> MYTHRIL_SWORD = register("mythril_sword", "秘银剑", ModTiers.UNBREAKABLE, 30, 2.6F, ModRarity.LIGHT_RED, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage());
+            .specialSweep(0.8F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
+            .tooltipImage());
     public static final DeferredItem<BaseSwordItem> ORICHALCUM_SWORD = register("orichalcum_sword", "山铜剑", ModTiers.UNBREAKABLE, 34, 2.4F, ModRarity.LIGHT_RED, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage());
+            .specialSweep(0.8F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
+            .tooltipImage());
     public static final DeferredItem<BaseSwordItem> ADAMANTITE_SWORD = register("adamantite_sword", "精金剑", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage());
+            .specialSweep(0.8F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
+            .tooltipImage());
     public static final DeferredItem<BaseSwordItem> TITANIUM_SWORD = register("titanium_sword", "钛金剑", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage());
+            .specialSweep(0.8F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
+            .tooltipImage());
     /// 舌锋剑：困难模式阔剑，命中敌怪后向前方随机角度射出灵液流。
     public static final DeferredItem<BaseSwordItem> BLADETONGUE = registerWithEnglishName("bladetongue", "舌锋剑", "Bladetongue", BladetongueItem::new);
 
     public static final DeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", "假剑", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, SwordDefinition::builder);
     public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", "糖棒剑", ModTiers.CANDY_CANE, 5, 1.8F, () -> SwordDefinition.builder()
-                    .specialSweep(0.5F)
-                    .tooltipImage());
+            .specialSweep(0.5F)
+            .tooltipImage());
     public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", "猎鹰刃", () -> new MomentumSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 6, 1.8F,
-                    SwordDefinition.builder().specialSweep(0.5F)));
+            SwordDefinition.builder().specialSweep(0.5F)));
     public static final DeferredItem<BaseSwordItem> ZOMBIE_ARM = register("zombie_arm", "僵尸臂", ModTiers.UNBREAKABLE, 5, 2.4F, () -> SwordDefinition.builder().specialSweep(0.5F));
     public static final DeferredItem<BaseSwordItem> MANDIBLE_BLADE = register("mandible_blade", "颌骨剑", ModTiers.UNBREAKABLE, 6, 2.4F, () -> SwordDefinition.builder().specialSweep(0.8F));
     public static final DeferredItem<BaseSwordItem> BONE_SWORD = register("bone_sword", "骨剑", ModTiers.UNBREAKABLE, 7, 2.4F, ModRarity.ORANGE, () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .tooltipImage());
+            .specialSweep(0.8F)
+            .tooltipImage());
     public static final DeferredItem<BaseSwordItem> STYLISH_SCISSORS = register("stylish_scissors", "时尚剪刀", ModTiers.UNBREAKABLE, 5, 2.2F, ModRarity.GREEN, () -> SwordDefinition.builder().specialSweep(0.8F));
     public static final DeferredItem<BaseSwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", "异域弯刀", () -> new MomentumSwordItem(ModTiers.UNBREAKABLE, ModRarity.GREEN, 7, 2.3F,
-                    SwordDefinition.builder().specialSweep(0.8F)));
+            SwordDefinition.builder().specialSweep(0.8F)));
     public static final DeferredItem<BaseSwordItem> KATANA = register("katana", "武士刀", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, () -> SwordDefinition.builder().specialSweep(0.8F));
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
     public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", "泰拉魔刃", ModTiers.UNBREAKABLE, 7, 7, ModRarity.ORANGE, () -> SwordDefinition.builder()
-                    .specialSweep(0.0F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, -1.4F, AttributeModifier.Operation.ADD_VALUE));
+            .specialSweep(0.0F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, -1.4F, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", "毁灭刃", BreakerBladeItem::new);
 
     // 效果剑
     public static final DeferredItem<BaseSwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", "紫挥棒鱼", () -> new EffectSwordItem(ModTiers.UNBREAKABLE, ModRarity.WHITE, 15, 0.5F, SwordDefinition.builder()
-                    .tooltipImage()
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)
-                    .specialSweep(0.8F), LibEffects.CONFUSED, 40, 1, 0.5F));
+            .tooltipImage()
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)
+            .specialSweep(0.8F), LibEffects.CONFUSED, 40, 1, 0.5F));
     public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = registerWithEnglishName("lights_bane", "魔光剑", "Light's Bane", LightsBaneItem::new);
     public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", "血腥屠刀", () -> new EffectSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 14, 1.3F, SwordDefinition.builder()
-                    .tooltipImage()
-                    .specialSweep(0.8F), ModEffects.BLOOD_BUTCHERED, 180, 4, 1.0F));
+            .tooltipImage()
+            .specialSweep(0.8F), ModEffects.BLOOD_BUTCHERED, 180, 4, 1.0F));
     public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", "火山", VolcanoItem::new);
     public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", "蝙蝠棍", BatBatItem::new);
     public static final DeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", "触手钉锤", () -> new EffectSwordItem(ModTiers.UNBREAKABLE, ModRarity.GREEN, 13, 2.0F,
-                    SwordDefinition.builder().specialSweep(0.8F), ModEffects.TENTACLE_SPIKES, 180, 4, 1.0F));
+            SwordDefinition.builder().specialSweep(0.8F), ModEffects.TENTACLE_SPIKES, 180, 4, 1.0F));
     public static final DeferredItem<BaseSwordItem> BEE_KEEPER = register("bee_keeper", "养蜂人", BeeKeeperItem::new);
 
     // 弹幕剑
     public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", "冰雪刃", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.BLUE, () -> SwordDefinition.builder()
-                    .projectile(new Projectile(1.0F, 0.6F, 0.9F, 40, 0.0F, 15,
-                            ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
-                            new SwordProjectileAppearance.Model(Confluence.asResource("ice_blade_sword_projectile"),
-                                    Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1.0F, 0.0F, 0.0F, 0.0F,
-                                    SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
-                            List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("ball_of_frost_trail")))))
-                    .tooltipImage()
-                    .specialSweep(0.8F));
+            .projectile(new Projectile(1.0F, 0.6F, 0.9F, 40, 0.0F, 15,
+                    ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
+                    new SwordProjectileAppearance.Model(Confluence.asResource("ice_blade_sword_projectile"),
+                            Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1.0F, 0.0F, 0.0F, 0.0F,
+                            SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
+                    List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("ball_of_frost_trail")))))
+            .tooltipImage()
+            .specialSweep(0.8F));
     public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", "星怒", ModTiers.UNBREAKABLE, 14, 2.0F, ModRarity.GREEN, () -> SwordDefinition.builder()
-                    .projectile(new Projectile(1.5F, 2.0F, 0.9F, 100, 0.0F, 15,
-                            ModSoundEvents.STAR.getId(), ModEntities.STAR_FURY.getId(), Optional.empty(),
-                            new AboveFallenGeneration(30.0F, 30.0F, 10.0F, 1.0F, 20.0F, 5.0F),
-                            STAR_FURY_APPEARANCE))
-                    .specialSweep(0.8F));
+            .projectile(new Projectile(1.5F, 2.0F, 0.9F, 100, 0.0F, 15,
+                    ModSoundEvents.STAR.getId(), ModEntities.STAR_FURY.getId(), Optional.empty(),
+                    new AboveFallenGeneration(30.0F, 30.0F, 10.0F, 1.0F, 20.0F, 5.0F),
+                    STAR_FURY_APPEARANCE))
+            .specialSweep(0.8F));
     public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", "附魔剑", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE, () -> SwordDefinition.builder()
-                    .projectile(new Projectile(1.0F, 0.8F, 0.9F, 40, 0.0F, 10,
-                            ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
-                            new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
-                                    Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
-                                    SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
-                            List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("falling_star")))))
-                    .specialSweep(0.8F));
+            .projectile(new Projectile(1.0F, 0.8F, 0.9F, 40, 0.0F, 10,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
+                    new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
+                            Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
+                            SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
+                    List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("falling_star")))))
+            .specialSweep(0.8F));
     public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = registerWithEnglishName("blade_of_grass", "草剑", "Blade of Grass", BladeOfGrassItem::new);
     public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = registerWithEnglishName("nights_edge", "永夜刃", "Night's Edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, () -> SwordDefinition.builder()
-                    .projectile(new Projectile(1.0F, 0.8F, 0.9F, 20, 0.0F, 10,
-                            ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 20.0F),
-                            new SwordProjectileAppearance.Item(0.8F, SwordProjectileAppearance.Transform.OWNER_SWING,
-                                    Optional.of(Confluence.asResource("nights_edge")))))
-                    .tooltipImage()
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
-                    .specialSweep(0.8F));
+            .projectile(new Projectile(1.0F, 0.8F, 0.9F, 20, 0.0F, 10,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 20.0F),
+                    new SwordProjectileAppearance.Item(0.8F, SwordProjectileAppearance.Transform.OWNER_SWING,
+                            Optional.of(Confluence.asResource("nights_edge")))))
+            .tooltipImage()
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE)
+            .specialSweep(0.8F));
     public static final DeferredItem<BaseSwordItem> WAFFLES_IRON = registerWithEnglishName("waffles_iron", "华夫饼烘烤模", "Waffle's Iron", () -> new EffectSwordItem(ModTiers.UNBREAKABLE, ModRarity.PINK, 27, 2.5F,
-                    SwordDefinition.builder().projectile(new Projectile(1.0F, 0.8F, 1.0F, 60, 0.06F, 10,
-                            ModSoundEvents.ITEM_WAFFLE_IRON.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
-                            new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/waffle.png"),
-                                    0xFFFFFFFF, 1.0F, 0.0F, 0))).tooltipImage(),
-                    ModEffects.HELLFIRE, 100, 0, 1.0F / 3.0F));
+            SwordDefinition.builder().projectile(new Projectile(1.0F, 0.8F, 1.0F, 60, 0.06F, 10,
+                    ModSoundEvents.ITEM_WAFFLE_IRON.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
+                    new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/waffle.png"),
+                            0xFFFFFFFF, 1.0F, 0.0F, 0))).tooltipImage(),
+            ModEffects.HELLFIRE, 100, 0, 1.0F / 3.0F));
 
     // 陨石光剑
     public static final DeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", "红陨石光剑", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.RED));
@@ -224,29 +224,29 @@ public class SwordItems {
     });
 
     // 特殊剑
-    public static final DeferredItem<BaseSwordItem> CROWBAR = register("crowbar", "撬棍", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER, () -> SwordDefinition.builder()
-                    .specialSweep(1.0F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, -1, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredItem<BaseSwordItem> CROWBAR = register("crowbar", "撬棍", ModTiers.UNBREAKABLE, 333, 3, ModRarity.MASTER, () -> SwordDefinition.builder()
+            .specialSweep(1.0F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, -1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", "开发者剑", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, () -> SwordDefinition.builder()
-                    .specialSweep(1.0F)
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 7, AttributeModifier.Operation.ADD_VALUE)
-                    .tooltipImage()
-                    .projectile(new Projectile(1.0F, 0.3F, 1.0F, 50, 0.0F, 20,
-                            ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
-                            Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8F, 0.2F, Optional.empty(), 0.1)), ForwardGeneration.of(0.0F, 0.0F),
-                            new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
-                                    Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
-                                    SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT))));
+            .specialSweep(1.0F)
+            .attribute(Attributes.ENTITY_INTERACTION_RANGE, 7, AttributeModifier.Operation.ADD_VALUE)
+            .tooltipImage()
+            .projectile(new Projectile(1.0F, 0.3F, 1.0F, 50, 0.0F, 20,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
+                    Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8F, 0.2F, Optional.empty(), 0.1)), ForwardGeneration.of(0.0F, 0.0F),
+                    new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
+                            Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
+                            SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT))));
 
     // 赞助者物品
     public static final DeferredItem<BaseSwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword", "断裂的糖果剑", () -> new SweetSword(ModTiers.UNBREAKABLE, ModRarity.EXPERT, 2, 1, SwordDefinition.builder()));
     public static final DeferredItem<BaseSwordItem> SWEET_SWORD = register("sweet_sword", "糖果剑", () -> new SweetSword(ModTiers.UNBREAKABLE, ModRarity.EXPERT, 6, 2, SwordDefinition.builder()
-                    .properties(p -> {
-                        FoodProperties properties = new FoodProperties(1, 1.0F, false, 2.0F,
-                                Optional.of(BROKEN_SWEET_SWORD.toStack()),
-                                List.of(new FoodProperties.PossibleEffect(() -> new MobEffectInstance(ModEffects.DELICIOUS, 200), 1.0F)));
-                        p.food(properties);
-                    })));
+            .properties(p -> {
+                FoodProperties properties = new FoodProperties(1, 1.0F, false, 2.0F,
+                        Optional.of(BROKEN_SWEET_SWORD.toStack()),
+                        List.of(new FoodProperties.PossibleEffect(() -> new MobEffectInstance(ModEffects.DELICIOUS, 200), 1.0F)));
+                p.food(properties);
+            })));
 
     public static final DeferredItem<BaseSwordItem> STAR_STEEL_SWORD = register("star_steel_sword", "星钢剑", StarSteelSword::new);
 

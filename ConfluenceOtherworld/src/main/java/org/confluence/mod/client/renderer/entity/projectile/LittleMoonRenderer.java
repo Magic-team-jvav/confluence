@@ -1,6 +1,7 @@
 package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -35,7 +36,8 @@ public class LittleMoonRenderer extends GeoEntityRenderer<LittleMoonEntity> {
         poseStack.pushPose();
         LittleSunRenderer.alignToHost(entity, partialTick, poseStack);
         LittleSunRenderer.faceMovement(entity, entityYaw, partialTick, poseStack);
-        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        /// 满亮渲染：不跟随世界光照，免得日光/月光在暗处被压暗。
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, LightTexture.FULL_BRIGHT);
         poseStack.popPose();
     }
 

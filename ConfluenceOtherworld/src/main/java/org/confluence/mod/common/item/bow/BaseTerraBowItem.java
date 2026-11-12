@@ -133,6 +133,8 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
         int chargeTicks = getUseDuration(stack) - timeLeft;
         chargeTicks = ForgeEventFactory.onArrowLoose(stack, level, player, chargeTicks, hasAmmunition || player.hasInfiniteMaterials());
         if (chargeTicks < 0) return;
+        /// 快速蓄力在这里统一放大蓄力刻数：射击伤害、满蓄力判定、HUD 与模型动画都读同一份结果。
+        chargeTicks = EnchantmentUtils.applyRapidCharge(stack, chargeTicks);
         float power = getPowerForCharge(stack, chargeTicks);
         if (power < 0.1F) return;
         if (!hasAmmunition) {
@@ -143,11 +145,6 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
         if (level instanceof ServerLevel serverLevel && !projectiles.isEmpty()) {
             float velocity = this instanceof ShortBowItem shortBow ? power * shortBow.getVelocityMultiplier() : power * 3.0F;
             shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, chargeTicks >= 16, getChargePower(stack, power, chargeTicks), null);
-            /// 冷却射击：满蓄力射击缩短法器冷却 1/2/3 秒
-            int cooldownShot = EnchantmentUtils.getLevel(stack, ModEnchantments.COOLDOWN_SHOT.get());
-            if (cooldownShot > 0 && power >= 1.0F && player instanceof ServerPlayer serverPlayer) {
-                SoulcererUtils.reduceSoulArtifactCooldowns(serverPlayer, cooldownShot * 20);
-            }
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS,
                 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F);
@@ -168,11 +165,6 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
     }
 
     protected float getPowerForCharge(ItemStack stack, int chargeTicks) {
-        /// 快速蓄力：把蓄力时间缩短 10%/20%/30%，等价于放慢蓄力刻数的消耗。
-        int rapidCharge = EnchantmentUtils.getLevel(stack, ModEnchantments.RAPID_CHARGE.get());
-        if (rapidCharge > 0) {
-            chargeTicks = Math.round(chargeTicks / (1.0F - 0.1F * rapidCharge));
-        }
         if (this instanceof ShortBowItem shortBow)
             return shortBow.getShortPowerForTime(chargeTicks);
         if (stack.is(ModTags.Items.FAST_BOW)) return getFastBowPowerForTime(chargeTicks);
@@ -181,9 +173,31 @@ public class BaseTerraBowItem extends BowItem implements IWeaponTooltip {
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
-        if (hasFullPullHitEffect() && getUseDuration(stack, entity) - remainingUseDuration == 16 && level.isClientSide) {
-            level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), ModSoundEvents.BOW_COOLDOWN_RECOVERY.get(), entity.getSoundSource(), 1.0F, 1.0F, false);
+        /// 满蓄力音效也跟着快速蓄力提前，否则玩家听到的"拉满"时刻会和实际能满蓄力的时刻错开。
+        int rawTicks = getUseDuration(stack) - remainingUseDuration;
+        int usedTicks = EnchantmentUtils.applyRapidCharge(stack, rawTicks);
+        if (level.isClientSide) {
+            /// 用「上一刻还没到 16、这一刻到了」来判断，快速蓄力越高跨过 16 的跨度越大，不能用 == 16。
+            if (hasFullPullHitEffect() && usedTicks >= 16 && EnchantmentUtils.applyRapidCharge(stack, rawTicks - 1) < 16) {
+                level.playLocalSound(entity.getX(), entity.getY(), entity.getZ(), ModSoundEvents.BOW_COOLDOWN_RECOVERY.get(), entity.getSoundSource(), 1.0F, 1.0F, false);
+            }
+            return;
         }
+        /// 多级蓄力：蓄到该等级的最大轮数就自动松弦，玩家按住右键即可，不用自己掐时间。
+        if (entity instanceof Player player && shouldAutoRelease(stack, player, usedTicks)) {
+            player.releaseUsingItem();
+        }
+    }
+
+    /// 多级蓄力的满轮刻数 = 20 × (1 + 等级)，即 2/3/4 轮；没有该附魔时不自动发射。
+    ///
+    /// 刻数用的是「快速蓄力放大后」的值，两个附魔叠加时自动发射也会同步提前。
+    private static boolean shouldAutoRelease(ItemStack stack, Player player, int usedTicks) {
+        int level = EnchantmentUtils.getLevel(stack, ModEnchantments.MULTI_CHARGE.get());
+        if (level <= 0) return false;
+        if (usedTicks < 20 * (1 + level)) return false;
+        /// 没箭（也不是创造模式）就别反复起手，交给 releaseUsing 里原有的判定。
+        return player.hasInfiniteMaterials() || !player.getProjectile(stack).isEmpty();
     }
 
     @Override

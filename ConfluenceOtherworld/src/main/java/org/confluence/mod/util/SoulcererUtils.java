@@ -1292,26 +1292,6 @@ public final class SoulcererUtils {
         }
     }
 
-    /// 冷却射击：把全部法器的剩余冷却刻数减掉 ticks（到 0 的直接清掉）。
-    public static void reduceSoulArtifactCooldowns(ServerPlayer player, int ticks) {
-        if (ticks <= 0) {
-            return;
-        }
-        Map<ResourceLocation, Integer> cooldowns = SoulSkillStorage.of(player).getArtifactCooldowns();
-        Iterator<Map.Entry<ResourceLocation, Integer>> iterator = cooldowns.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<ResourceLocation, Integer> entry = iterator.next();
-            int remaining = entry.getValue() - ticks;
-            if (remaining <= 0) {
-                iterator.remove();
-                player.getCooldowns().removeCooldown(BuiltInRegistries.ITEM.get(entry.getKey()));
-                continue;
-            }
-            entry.setValue(remaining);
-            player.getCooldowns().addCooldown(BuiltInRegistries.ITEM.get(entry.getKey()), remaining);
-        }
-    }
-
     /// 每刻推进法器冷却。读档后原版冷却表是空的，这里按剩余刻数把动画补回去。
     public static void tickSoulArtifactCooldowns(ServerPlayer player) {
         Map<ResourceLocation, Integer> cooldowns = SoulSkillStorage.of(player).getArtifactCooldowns();

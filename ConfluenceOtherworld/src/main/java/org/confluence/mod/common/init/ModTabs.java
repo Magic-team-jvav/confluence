@@ -753,6 +753,8 @@ public final class ModTabs {
                         crafting_stations.accept(FunctionalBlocks.ADAMANTITE_FORGE.get());
                         crafting_stations.accept(FunctionalBlocks.TITANIUM_FORGE.get());
                         crafting_stations.accept(FunctionalBlocks.ALCHEMY_TABLE.get());
+                        /// 工匠作坊按需求并入制作站分类（泰拉饰品页那边不再分组）。
+                        crafting_stations.accept(TCItems.WORKSHOP);
                         crafting_stations.accept(FunctionalBlocks.SAWMILL.get());
                         crafting_stations.accept(FunctionalBlocks.LOOM.get());
                         crafting_stations.accept(FunctionalBlocks.DYE_VAT.get());
@@ -1112,7 +1114,7 @@ public final class ModTabs {
                         boss_event_summons.accept(ConsumableItems.PIRATE_MAP.get());
                         boss_event_summons.accept(FunctionalBlocks.EARTHSHAKER_DEVICE.get());
                         boss_event_summons.accept(FunctionalBlocks.DUAL_FLASH_LIGHTHOUSE.get());
-                        boss_event_summons.accept(FunctionalBlocks.PHANTOM_BASE_STATION.get());
+                        // boss_event_summons.accept(FunctionalBlocks.PHANTOM_BASE_STATION.get());
 
                         CreativeModeTab.Output environment_items = GroupItem.belongsTo("environment_items", output);
                         environment_items.accept(ConsumableItems.HOLY_WATER.get());
@@ -1891,21 +1893,29 @@ public final class ModTabs {
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_LEGGINGS.get());
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_BOOTS.get());
 
-                        /// 盔甲附魔书（暂不开放附魔台，只能从创造栏或战利品取得）
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FOOD_RESERVE.get(), 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.RECKLESS.get(), 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_CONDUIT.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_BIND.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BEAST_LORD.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BEAST_INSPIRE.get(), 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARTIFACT_COOLDOWN.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.DEFLECT.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.POTION_SHIELD.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SELFLESS_SACRIFICE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SURPRISE_GIFT.get(), 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.DEATH_BARGAIN.get(), 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_HASTE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SPEED_SYNERGY.get(), 3));
+                        /// 盔甲附魔书（统一排在最后，按能附着的部位排布；暂不开放附魔台，只能从创造栏或战利品取得）
+                        CreativeModeTab.Output armorEnchantmentBooks = GroupItem.belongsTo("armor_enchantments", output);
+                        // 头盔
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SUMMONER_PACT.get(), 3));
+                        // 胸甲
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_CONDUIT.get(), 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_BIND.get(), 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BEAST_LORD.get(), 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BEAST_INSPIRE.get(), 1));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.POTION_SHIELD.get(), 3));
+                        // 护腿
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.DEATH_BARGAIN.get(), 1));
+                        // 靴子
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_HASTE.get(), 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SPEED_SYNERGY.get(), 3));
+                        // 任意部位
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARCANE_PROTECTION.get(), 4));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARTIFACT_COOLDOWN.get(), 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.DEFLECT.get(), 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FOOD_RESERVE.get(), 1));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.RECKLESS.get(), 1));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SELFLESS_SACRIFICE.get(), 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SURPRISE_GIFT.get(), 1));
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
     public static final RegistryObject<CreativeModeTab> WARRIORS = TABS.register("warriors",
@@ -2027,22 +2037,19 @@ public final class ModTabs {
                         acceptAll(LanceItems.ITEMS, output, "lance");
                         acceptAll(FlailItems.ITEMS, output, "flail");
 
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_WIND_BURST.get(), 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_WIND_BURST.get(), 2));
+                        /// 附魔书：统一排在最后；不足 3 种的分类不单独成组
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_WIND_BURST.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_TURBINE.get(), 1));
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLAIL_TURBINE.get(), 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.WHIP_SWEEP.get(), 2));
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MULTI_BOOMERANG.get(), 3));
-                        /// 武器通用与近战附魔书
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARTIFACT_SYNERGY.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.CRITICAL_STRIKE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.VIGOROUS.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_RESONANCE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.VOID_STRIKE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLANKING_STRIKE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.STUN.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_SIPHON.get(), 3));
+                        CreativeModeTab.Output weaponEnchantments = GroupItem.belongsTo("weapon_enchantments", output);
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.CRITICAL_STRIKE.get(), 3));
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.VIGOROUS.get(), 3));
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_RESONANCE.get(), 3));
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.VOID_STRIKE.get(), 3));
+                        CreativeModeTab.Output meleeEnchantments = GroupItem.belongsTo("melee_enchantments", output);
+                        meleeEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.FLANKING_STRIKE.get(), 3));
+                        meleeEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.STUN.get(), 3));
+                        meleeEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOUL_SIPHON.get(), 3));
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());
@@ -2104,18 +2111,17 @@ public final class ModTabs {
 
                         CreativeModeTab.Output gun = GroupItem.belongsTo("gun", output);
                         GunItems.GUN_ITEMS.forEach(gun::accept);
-                        acceptAll(GunItems.ITEMS, gun);
                         gun.accept(ManaWeaponItems.BEE_GUN);
                         gun.accept(ManaWeaponItems.SPACE_GUN);
                         CreativeModeTab.Output bullet = GroupItem.belongsTo("bullet", output);
                         GunItems.BULLET_ITEMS.forEach(bullet::accept);
 
-                        /// 弓弩附魔书
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BURST_BOWSTRING.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.COOLDOWN_SHOT.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MULTI_CHARGE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.RAPID_CHARGE.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SUPER_CHARGE.get(), 3));
+                        /// 弓弩附魔书：统一排在最后
+                        CreativeModeTab.Output rangedEnchantments = GroupItem.belongsTo("ranged_enchantments", output);
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.BURST_BOWSTRING.get(), 3));
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MULTI_CHARGE.get(), 3));
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.RAPID_CHARGE.get(), 3));
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SUPER_CHARGE.get(), 3));
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
@@ -2126,14 +2132,18 @@ public final class ModTabs {
                         output = new WipNotDisplayOutput(output);
 
                         acceptAll(ManaWeaponItems.ITEMS, output);
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MANA_REGENERATION.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.EFFICIENT_MAGIC.get(), 1));
+
+                        /// 附魔书：统一排在最后
+                        /// 魔法武器（奥术防护是纯盔甲附魔，已放到盔甲页）
+                        CreativeModeTab.Output magicEnchantments = GroupItem.belongsTo("magic_enchantments", output);
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MANA_REGENERATION.get(), 3));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.EFFICIENT_MAGIC.get(), 1));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.CELESTIAL_ABSORPTION.get(), 2));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOOTHED_MANA.get(), 2));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SPELL_DESPERATION.get(), 2));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MYSTIC_SURGE.get(), 2));
+                        /// 通用附魔（魔力修补：任一有耐久值的物品；只有一种，暂不单独成组）
                         output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MANA_MENDING.get(), 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.CELESTIAL_ABSORPTION.get(), 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SOOTHED_MANA.get(), 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.ARCANE_PROTECTION.get(), 4));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SPELL_DESPERATION.get(), 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.MYSTIC_SURGE.get(), 2));
                     })
                     .withTabsBefore(RANGERS.getId())
                     .build());
@@ -2148,7 +2158,9 @@ public final class ModTabs {
                         acceptAll(LightPetItems.ITEMS, output);
                         acceptAll(PetItems.ITEMS, output);
                         acceptAll(MountItems.ITEMS, output);
-                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.SUMMONER_PACT.get(), 3));
+
+                        /// 附魔书：统一排在最后（召唤师契约是头盔附魔，已放到盔甲页）；只有一种，暂不单独成组
+                        output.accept(LibEnchantmentUtils.enchantedBook(ModEnchantments.WHIP_SWEEP.get(), 2));
                     })
                     .withTabsBefore(MAGES.getId())
                     .build());

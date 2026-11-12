@@ -2,27 +2,12 @@ package org.confluence.mod.network.c2s;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.decoration.ArmorStand;
-import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
-import org.confluence.mod.api.item.ISpecialSweepWeapon;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.util.PlayerUtils;
-import org.mesdag.portlib.PortLib;
-import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 
 public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
     INSTANCE;
@@ -37,35 +22,8 @@ public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
     @Override
     public void work(ServerPlayer player) {
         if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
-            float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage());
-            if (player.getAttackStrengthScale(0.5F) < 1.0F - Mth.EPSILON) return;
-            float baseDamage = 1.0F + (float) player.getAttributeValue(PortLib.SWEEPING_DAMAGE_RATIO) * damage;
-            PlayerAboutToEmptyTargetSweepEvent event = PortEventHandler.postEventWithReturn(new PlayerAboutToEmptyTargetSweepEvent(player, baseDamage));
-            if (event.isCanceled()) return;
-            float attackDamage = event.getAttackDamage();
-            DamageSource source = player.damageSources().playerAttack(player);
-            double entityReachSq = Mth.square(player.entityInteractionRange());
-            for (Entity target : LibEntityUtils.areaTargets(player.level(), player, BaseSwordItem.getSpecialSweepArea(player), candidate -> {
-                LivingEntity living = LibEntityUtils.effectTarget(candidate);
-                return living != null && LibEntityUtils.allowsAttack(player, candidate)
-                        && (!(living instanceof ArmorStand stand) || !stand.isMarker())
-                        && player.distanceToSqr(candidate) < entityReachSq;
-            })) {
-                LivingEntity living = LibEntityUtils.effectTarget(target);
-                if (living != null)
-                    living.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
-                float amount = attackDamage;
-                target.hurt(source, amount);
-                IPortEnchantmentHelperExtension.doPostAttackEffects(player.serverLevel(), target, source);
-            }
-
-            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
-            player.sweepAttack();
-            player.swing(InteractionHand.MAIN_HAND, false);
-            player.resetAttackStrengthTicker();
-            if (player.getMainHandItem().getItem() instanceof ISpecialSweepWeapon weapon) {
-                weapon.onSpecialSweep(player);
-            }
+            /// 空挥：原版横扫伤害公式、要求满蓄力、挥完重置蓄力。
+            PlayerUtils.performSweep(player, 0.0F, 1.0F, true);
         }
     }
 

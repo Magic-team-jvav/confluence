@@ -31,6 +31,9 @@ public final class EnchantmentUtils {
             EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND
     };
 
+    /// 快速蓄力各等级减少的蓄力时间比例，下标即等级（0 为占位）。
+    private static final float[] RAPID_CHARGE_REDUCTION = {0.0F, 0.30F, 0.50F, 0.80F};
+
     /// 取玩家身上某附魔的最高等级，没有则 0。
     public static int getLevel(Player player, Enchantment enchantment) {
         int level = 0;
@@ -43,6 +46,32 @@ public final class EnchantmentUtils {
     /// 取单件物品上某附魔的等级，没有则 0。
     public static int getLevel(@Nullable ItemStack stack, Enchantment enchantment) {
         return LibEnchantmentUtils.getEnchantmentLevel(enchantment, stack);
+    }
+
+    /// 快速蓄力：按等级减少 30%/50%/80% 的蓄力时间。
+    ///
+    /// 所有判断蓄力程度的地方（射击结算、满蓄力判定、HUD、模型拉弓动画）都必须走这个入口，
+    /// 否则只有伤害变了、视觉上完全看不出区别。
+    public static int applyRapidCharge(@Nullable ItemStack stack, int chargeTicks) {
+        float multiplier = rapidChargeMultiplier(stack);
+        if (multiplier == 1.0F) return chargeTicks;
+        return Math.round(chargeTicks * multiplier);
+    }
+
+    /// 快速蓄力：按等级减少 30%/50%/80% 的蓄力时间。
+    ///
+    /// 所有判断蓄力程度的地方（射击结算、满蓄力判定、HUD、模型拉弓动画）都必须走这个入口，
+    /// 否则只有伤害变了、视觉上完全看不出区别。
+    public static float applyRapidCharge(@Nullable ItemStack stack, float chargeTicks) {
+        return chargeTicks * rapidChargeMultiplier(stack);
+    }
+
+    /// 快速蓄力的「已蓄力刻数」放大倍率：减少 30%/50%/80% 蓄力时间等价于把刻数放大 1/0.7、1/0.5、1/0.2。
+    private static float rapidChargeMultiplier(@Nullable ItemStack stack) {
+        int level = getLevel(stack, ModEnchantments.RAPID_CHARGE.get());
+        if (level <= 0) return 1.0F;
+        float reduction = RAPID_CHARGE_REDUCTION[Math.min(level, RAPID_CHARGE_REDUCTION.length - 1)];
+        return 1.0F / (1.0F - reduction);
     }
 
     public static float processManaRegeneration(ServerPlayer player) {

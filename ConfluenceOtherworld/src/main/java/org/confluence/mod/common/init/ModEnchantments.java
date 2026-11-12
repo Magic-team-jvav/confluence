@@ -81,8 +81,6 @@ public final class ModEnchantments {
     /// 速度协同：使用法器后短时间提升移速。
     public static final RegistryObject<Enchantment> SPEED_SYNERGY = simple("speed_synergy", EnchantmentCategory.ARMOR_FEET, new EquipmentSlot[]{EquipmentSlot.FEET}, 3);
 
-    /// 法器协同：使用法器后强化下一次攻击。
-    public static final RegistryObject<Enchantment> ARTIFACT_SYNERGY = simple("artifact_synergy", Categories.GENERAL_WEAPON, LibEnchantmentUtils.SlotGroups.MAINHAND, 3);
     /// 致命一击：提升暴击伤害倍率。
     public static final RegistryObject<Enchantment> CRITICAL_STRIKE = simple("critical_strike", Categories.GENERAL_WEAPON, LibEnchantmentUtils.SlotGroups.MAINHAND, 3);
     /// 精力充沛：位移叠层强化下一次攻击。
@@ -100,8 +98,6 @@ public final class ModEnchantments {
 
     /// 爆裂弓弦：位移后自动向周围敌人发射箭矢。
     public static final RegistryObject<Enchantment> BURST_BOWSTRING = simple("burst_bowstring", Categories.BOW_OR_CROSSBOW, LibEnchantmentUtils.SlotGroups.MAINHAND, 3);
-    /// 冷却射击：满蓄力射击缩短法器冷却。
-    public static final RegistryObject<Enchantment> COOLDOWN_SHOT = simple("cooldown_shot", EnchantmentCategory.BOW, LibEnchantmentUtils.SlotGroups.MAINHAND, 3);
     /// 多级蓄力：满蓄力后可继续蓄力多轮。
     public static final RegistryObject<Enchantment> MULTI_CHARGE = simple("multi_charge", EnchantmentCategory.BOW, LibEnchantmentUtils.SlotGroups.MAINHAND, 3,
             oneOf("multi_charge", "super_charge"));

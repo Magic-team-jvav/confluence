@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -7,6 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -16,10 +19,20 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class BestiaryItem extends CustomRarityItem {
     public BestiaryItem() {
         super(new Properties().stacksTo(1), ModRarity.MASTER);
+    }
+
+    /// 右键生物即可把对应条目直接补全（`killedByCount += 100` 足够顶到完全解锁）。
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, level, tooltipComponents, tooltipFlag);
+        tooltipComponents.add(Component.translatable("tooltip.item.confluence.bestiary.0").withStyle(ChatFormatting.GRAY));
     }
 
     @Override

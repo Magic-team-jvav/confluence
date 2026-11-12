@@ -1,5 +1,6 @@
 package org.confluence.mod.common.enchantment;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,6 +26,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.SoulCollectionEvent;
 import org.confluence.mod.common.attachment.SoulStorage;
@@ -36,6 +38,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.util.EnchantmentUtils;
+import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.event.entity.living.PortLivingIncomingDamageEvent;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
@@ -52,6 +55,13 @@ import java.util.UUID;
 ///
 /// 状态一律放在玩家/生物的持久数据里，键统一以 `confluence.enchant.` 开头：
 /// 这样退出存档、跨维度都不会丢，也不需要额外注册附件类型。
+/// 附魔效果的公共结算类。
+///
+/// 这里**只放效果本身**，事件订阅一律写在各自的事件类里（{@code LivingEntityEvents} / {@code PlayerEvents} /
+/// {@code TickEvents}），避免出现第二套事件总线。
+///
+/// 状态一律放在玩家/生物的持久数据里，键统一以 `confluence.enchant.` 开头：
+/// 这样退出存档、跨维度都不会丢，也不需要额外注册附件类型。
 public final class EnchantmentBehaviors {
     // region 键与常量
 
@@ -60,13 +70,13 @@ public final class EnchantmentBehaviors {
     private static final String SOUL_RESONANCE_UNTIL = "confluence.enchant.soul_resonance_until";
     private static final String SOUL_SIPHON_UNTIL = "confluence.enchant.soul_siphon_until";
     private static final String SPEED_SYNERGY_UNTIL = "confluence.enchant.speed_synergy_until";
-    private static final String ARTIFACT_SYNERGY_READY = "confluence.enchant.artifact_synergy_ready";
     private static final String BEAST_INSPIRE_UNTIL = "confluence.enchant.beast_inspire_until";
     private static final String VIGOROUS_STACKS = "confluence.enchant.vigorous_stacks";
     private static final String VIGOROUS_PROGRESS = "confluence.enchant.vigorous_progress";
     private static final String BURST_PROGRESS = "confluence.enchant.burst_progress";
     private static final String FOOD_RESERVE_READY_AT = "confluence.enchant.food_reserve_ready_at";
-    private static final String FLANKING_STRIKE_READY_AT = "confluence.enchant.flanking_strike_ready_at";
+    /// 回击的空挥重入闸：横扫命中的伤害事件会回到 `afterAttack`，靠它断开连锁。
+    private static final String FLANKING_STRIKE_SWEEPING = "confluence.enchant.flanking_strike_sweeping";
     private static final String RECKLESS_CANCELLED_ARMOR = "confluence.enchant.reckless_cancelled_armor";
     private static final String LAST_X = "confluence.enchant.last_x";
     private static final String LAST_Y = "confluence.enchant.last_y";
@@ -78,12 +88,12 @@ public final class EnchantmentBehaviors {
     private static final ResourceLocation SPEED_SYNERGY_SPEED_ID = Confluence.asResource("enchantment.speed_synergy");
     private static final ResourceLocation RECKLESS_ARMOR_ID = Confluence.asResource("enchantment.reckless");
 
-    /// 精力充沛：每 7 格位移叠 1 层，最多 15 层，每层下一次攻击 +10%。
-    private static final double VIGOR_BLOCKS_PER_STACK = 7.0;
+    /// 精力充沛：每 14 格位移叠 1 层，最多 15 层，每层下一次攻击 +10%。
+    private static final double VIGOR_BLOCKS_PER_STACK = 14.0;
     private static final int VIGOR_MAX_STACKS = 15;
     private static final float VIGOR_DAMAGE_PER_STACK = 0.1F;
-    /// 爆裂弓弦：位移 7 格后自动射击。
-    private static final double BURST_BLOCKS = 7.0;
+    /// 爆裂弓弦：位移 14 格后自动射击。
+    private static final double BURST_BLOCKS = 14.0;
     private static final double BURST_RANGE = 12.0;
     /// 食物储备冷却 60 秒。
     private static final int FOOD_RESERVE_COOLDOWN_TICKS = 60 * 20;
@@ -240,9 +250,9 @@ public final class EnchantmentBehaviors {
 
     // endregion
 
-    // region 攻击侧（法器协同 / 精力充沛 / 莽撞 / 万兽鼓舞）
+    // region 攻击侧（精力充沛 / 莽撞 / 万兽鼓舞 / 虚空强袭）
 
-    /// 攻击伤害结算：万兽鼓舞的召唤物加伤、法器协同、精力充沛、莽撞。
+    /// 攻击伤害结算：万兽鼓舞的召唤物加伤、精力充沛、莽撞。
     /// @return 结算后的伤害
     public static float attackerDamage(@Nullable Entity attacker, DamageSource damageSource, LivingEntity victim, float amount) {
         if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
@@ -252,19 +262,11 @@ public final class EnchantmentBehaviors {
             amount += 2.0F;
         }
         if (!(attacker instanceof ServerPlayer player) || player == victim) return amount;
-        amount = artifactSynergy(player, amount);
         amount = vigorous(player, amount);
         return reckless(player, amount);
     }
 
-    private static float artifactSynergy(ServerPlayer player, float amount) {
-        if (!player.getPersistentData().getBoolean(ARTIFACT_SYNERGY_READY)) return amount;
-        int level = EnchantmentUtils.getLevel(player, ModEnchantments.ARTIFACT_SYNERGY.get());
-        if (level <= 0) return amount;
-        player.getPersistentData().remove(ARTIFACT_SYNERGY_READY);
-        return amount * (1.0F + 0.2F * (level + 1));
-    }
-
+    /// 精力充沛：消耗全部层数，每层 +10% 伤害。
     private static float vigorous(ServerPlayer player, float amount) {
         int stacks = player.getPersistentData().getInt(VIGOROUS_STACKS);
         if (stacks <= 0) return amount;
@@ -285,22 +287,28 @@ public final class EnchantmentBehaviors {
     }
 
     /// 命中后的结算：眩晕、灵魂虹吸、虚空强袭、回击。
-    public static void afterAttack(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
-        boolean melee = damageSource.getDirectEntity() == player;
+    ///
+    /// 近战判定走 [LibTags.DamageTypes#AS_MELEE_ATTACK]，这样剑投出的投射物之类也算近战。
+    ///
+    /// @param originalDamage 这次命中减伤前交给 [LivingEntity#hurt] 的伤害，回击按它的 50% 结算
+    public static void afterAttack(ServerPlayer player, LivingEntity victim, DamageSource damageSource, float originalDamage) {
+        /// 回击自己扫出去的那一波不再触发命中附魔，否则同一次挥砍会把眩晕/虹吸再骰一遍。
+        if (player.getPersistentData().getBoolean(FLANKING_STRIKE_SWEEPING)) return;
         voidStrike(player, victim);
-        if (!melee) return;
+        if (!damageSource.is(LibTags.DamageTypes.AS_MELEE_ATTACK) && damageSource.getDirectEntity() != player) return;
         stun(player, victim);
         soulSiphon(player);
-        flankingStrike(player);
+        flankingStrike(player, originalDamage);
     }
 
+    /// 虚空强袭：命中叠加固定 5 秒的易伤。可见粒子交给原版药水效果（`visible = true`）。
     private static void voidStrike(ServerPlayer player, LivingEntity victim) {
         int level = EnchantmentUtils.getLevel(player, ModEnchantments.VOID_STRIKE.get());
         if (level <= 0) return;
-        victim.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE.get(), VOID_STRIKE_DURATION_TICKS, level - 1, false, false, true));
+        victim.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE.get(), VOID_STRIKE_DURATION_TICKS, level - 1, false, true, true));
     }
 
-    /// 眩晕：5%/10%/15% 概率，Boss 免疫；眩晕后 10 秒不可再被眩晕。
+    /// 眩晕：5%/10%/15% 概率，Boss 免疫；眩晕后 10 秒不可再被眩晕。可见粒子交给原版药水效果。
     private static void stun(ServerPlayer player, LivingEntity victim) {
         int level = EnchantmentUtils.getLevel(player, ModEnchantments.STUN.get());
         if (level <= 0) return;
@@ -309,23 +317,36 @@ public final class EnchantmentBehaviors {
         if (victim.getPersistentData().getLong(STUN_IMMUNE_UNTIL) > gameTime) return;
         if (player.getRandom().nextFloat() >= 0.05F * level) return;
         victim.getPersistentData().putLong(STUN_IMMUNE_UNTIL, gameTime + STUN_IMMUNE_TICKS);
-        victim.addEffect(new MobEffectInstance(ModEffects.STUN.get(), STUN_DURATION_TICKS, 0, false, false, true));
+        victim.addEffect(new MobEffectInstance(ModEffects.STUN.get(), STUN_DURATION_TICKS, 0, false, true, true));
     }
 
+    /// 灵魂虹吸：命中后 5 秒内提升灵魂获取概率 3%/5%/8%。
     private static void soulSiphon(ServerPlayer player) {
         int level = EnchantmentUtils.getLevel(player, ModEnchantments.SOUL_SIPHON.get());
         if (level <= 0) return;
         setUntil(player, SOUL_SIPHON_UNTIL, gameTime(player), SOUL_SIPHON_DURATION_TICKS);
     }
 
-    /// 回击：攻击后立刻回满攻速条，冷却 5/4/3 秒。
-    private static void flankingStrike(ServerPlayer player) {
-        int level = EnchantmentUtils.getLevel(player, ModEnchantments.FLANKING_STRIKE.get());
-        if (level <= 0) return;
-        long gameTime = gameTime(player);
-        if (player.getPersistentData().getLong(FLANKING_STRIKE_READY_AT) > gameTime) return;
-        player.getPersistentData().putLong(FLANKING_STRIKE_READY_AT, gameTime + (6 - level) * 20L);
-        player.resetAttackStrengthTicker();
+    /// 回击：50% 概率再扫一刀，范围用剑自带的 [横扫范围][BaseSwordItem#getSpecialSweepArea]，
+    /// 伤害是这次命中减伤前伤害的 50%，照常走伤害管线（[PlayerUtils#performSweep]），
+    /// 所以武器自身的命中效果也会触发。
+    ///
+    /// 主目标自己也在横扫范围里，所以它会先吃原伤害、再吃 50% 的第二段（20 → 20 + 10）。
+    ///
+    /// `FLANKING_STRIKE_SWEEPING` 是重入闸：横扫命中的伤害事件会再次回到 `afterAttack`，
+    /// 没有它就会无限连锁。
+    private static void flankingStrike(ServerPlayer player, float originalDamage) {
+        if (originalDamage <= 0.0F) return;
+        if (EnchantmentUtils.getLevel(player, ModEnchantments.FLANKING_STRIKE.get()) <= 0) return;
+        if (player.getRandom().nextFloat() >= 0.5F) return;
+        CompoundTag data = player.getPersistentData();
+        data.putBoolean(FLANKING_STRIKE_SWEEPING, true);
+        try {
+            /// 蓄力已经被主伤害那一刀重置，所以不要求满蓄力、也不重置。
+            PlayerUtils.performSweep(player, originalDamage * 0.5F, 0.0F, false);
+        } finally {
+            data.remove(FLANKING_STRIKE_SWEEPING);
+        }
     }
 
     // endregion
@@ -398,16 +419,12 @@ public final class EnchantmentBehaviors {
 
     // endregion
 
-    // region 法器（法器协同 / 速度协同）
+    // region 法器（速度协同）
 
     public static void onArtifactUsed(ServerPlayer player) {
-        long gameTime = gameTime(player);
-        if (EnchantmentUtils.getLevel(player, ModEnchantments.ARTIFACT_SYNERGY.get()) > 0) {
-            player.getPersistentData().putBoolean(ARTIFACT_SYNERGY_READY, true);
-        }
         int level = EnchantmentUtils.getLevel(player, ModEnchantments.SPEED_SYNERGY.get());
         if (level > 0) {
-            setUntil(player, SPEED_SYNERGY_UNTIL, gameTime, level * 20);
+            setUntil(player, SPEED_SYNERGY_UNTIL, gameTime(player), level * 20);
         }
     }
 
@@ -523,7 +540,7 @@ public final class EnchantmentBehaviors {
         data.putInt(VIGOROUS_STACKS, stacks);
     }
 
-    /// 爆裂弓弦：手上拿着附魔弓弩时，每累计 7 格位移向最近的 1/2 个敌人射一支 40% 伤害的箭。
+    /// 爆裂弓弦：手上拿着附魔弓时，每累计 14 格位移向最近的 1/2 个敌人射一支 40% 伤害的箭。
     private static void burstBowstring(ServerPlayer player, double distance) {
         var data = player.getPersistentData();
         ItemStack held = player.getMainHandItem();
@@ -568,7 +585,7 @@ public final class EnchantmentBehaviors {
         if (!(entity instanceof LivingEntity living) || living.level().isClientSide) return;
         if (living.hasEffect(ModEffects.VOID_STRIKE.get())) return;
         if (living.getFluidTypeHeight(ModFluids.VOID.type().get()) <= 0.0) return;
-        living.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE.get(), VOID_STRIKE_DURATION_TICKS, 0, false, false, true));
+        living.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE.get(), VOID_STRIKE_DURATION_TICKS, 0, false, true, true));
     }
 
     // endregion

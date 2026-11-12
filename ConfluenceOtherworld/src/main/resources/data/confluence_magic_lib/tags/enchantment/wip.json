@@ -12,7 +12,6 @@
     "confluence:death_bargain",
     "confluence:soul_haste",
     "confluence:speed_synergy",
-    "confluence:artifact_synergy",
     "confluence:critical_strike",
     "confluence:vigorous",
     "confluence:soul_resonance",
@@ -21,7 +20,6 @@
     "confluence:stun",
     "confluence:soul_siphon",
     "confluence:burst_bowstring",
-    "confluence:cooldown_shot",
     "confluence:multi_charge",
     "confluence:rapid_charge",
     "confluence:super_charge"

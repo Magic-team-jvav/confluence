@@ -74,8 +74,6 @@ public final class ModEnchantments {
 
     // region 武器附魔
 
-    /// 法器协同：使用法器后强化下一次攻击。
-    public static final ResourceKey<Enchantment> ARTIFACT_SYNERGY = Confluence.asResourceKey(Registries.ENCHANTMENT, "artifact_synergy");
     /// 致命一击：提升暴击伤害倍率。
     public static final ResourceKey<Enchantment> CRITICAL_STRIKE = Confluence.asResourceKey(Registries.ENCHANTMENT, "critical_strike");
     /// 精力充沛：跳跃/冲刺/纵向位移叠层，强化下一次攻击。
@@ -92,8 +90,6 @@ public final class ModEnchantments {
     public static final ResourceKey<Enchantment> SOUL_SIPHON = Confluence.asResourceKey(Registries.ENCHANTMENT, "soul_siphon");
     /// 爆裂弓弦（弓/弩）：位移后自动向周围敌人发射箭矢。
     public static final ResourceKey<Enchantment> BURST_BOWSTRING = Confluence.asResourceKey(Registries.ENCHANTMENT, "burst_bowstring");
-    /// 冷却射击（弓）：满蓄力射击缩短法器冷却。
-    public static final ResourceKey<Enchantment> COOLDOWN_SHOT = Confluence.asResourceKey(Registries.ENCHANTMENT, "cooldown_shot");
     /// 多级蓄力（弓）：满蓄力后可继续蓄力多轮。
     public static final ResourceKey<Enchantment> MULTI_CHARGE = Confluence.asResourceKey(Registries.ENCHANTMENT, "multi_charge");
     /// 快速蓄力（弓）：减少蓄力时间。

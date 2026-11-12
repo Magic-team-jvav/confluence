@@ -106,6 +106,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
@@ -614,6 +615,11 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void playerInteract$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         Player player = event.getEntity();
+        /// 刃弓的左键是近战攻击，创造模式下不该顺手把准星对着的方块挖掉。
+        if (player.isCreative() && player.getMainHandItem().is(BowItems.BLADE_BOW)) {
+            event.setCanceled(true);
+            return;
+        }
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }

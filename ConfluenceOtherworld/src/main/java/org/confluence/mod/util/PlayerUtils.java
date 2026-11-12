@@ -6,27 +6,35 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
@@ -35,6 +43,7 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
 import org.confluence.mod.api.item.ISpecialSweepWeapon;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
@@ -55,9 +64,11 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.mixin.server.level.ServerPlayerAccessor;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
@@ -548,6 +559,66 @@ public final class PlayerUtils {
             return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof ISpecialSweepWeapon weapon && weapon.hasSpecialSweep();
         }
         return false;
+    }
+
+    /// 结算一次横扫（服务端）。空挥和回击附魔共用这一套判定，扫到的目标都算"剑自带的范围伤害"：
+    /// 同一个 [范围][BaseSwordItem#getSpecialSweepArea]、同样走伤害管线（[EnchantmentHelper#doPostAttackEffects]），
+    /// 所以武器自身的命中效果也会照常触发。
+    ///
+    /// @param player           挥扫的玩家
+    /// @param damage           固定伤害；`<= 0` 表示用原版横扫的伤害公式
+    /// @param requiredStrength 需要的最低攻击蓄力：空挥要求满蓄力 1，回击是命中之后的追加所以传 0
+    /// @param resetStrength    是否重置攻击蓄力，只有真正挥空时才该重置
+    /// @param enchantedDamage  是否再走一遍附魔加伤：空挥走原版流程；回击的伤害本身取自主伤害，不能再叠一次
+    public static void performSweep(ServerPlayer player, float damage, float requiredStrength, boolean resetStrength, boolean enchantedDamage) {
+        if (player.getAttackStrengthScale(0.5F) < requiredStrength - Mth.EPSILON) return;
+        float baseDamage = damage;
+        if (baseDamage <= 0.0F) {
+            float attackDamage = (float) player.getAttributeValue(LibAttributes.getAttackDamage());
+            baseDamage = 1.0F + (float) player.getAttributeValue(Attributes.SWEEPING_DAMAGE_RATIO) * attackDamage;
+        }
+        PlayerAboutToEmptyTargetSweepEvent event = NeoForge.EVENT_BUS.post(new PlayerAboutToEmptyTargetSweepEvent(player, baseDamage));
+        if (event.isCanceled()) return;
+        float amount = event.getAttackDamage();
+        DamageSource source = player.damageSources().playerAttack(player);
+        double entityReachSq = Mth.square(player.entityInteractionRange());
+        for (Entity target : LibEntityUtils.areaTargets(player.level(), player, BaseSwordItem.getSpecialSweepArea(player), candidate -> {
+            LivingEntity living = LibEntityUtils.effectTarget(candidate);
+            return living != null && LibEntityUtils.allowsAttack(player, candidate)
+                    && (!(living instanceof ArmorStand stand) || !stand.isMarker())
+                    && player.distanceToSqr(candidate) < entityReachSq;
+        })) {
+            LivingEntity living = LibEntityUtils.effectTarget(target);
+            if (living != null)
+                living.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
+            hurtBySweep(player, target, source, amount, enchantedDamage);
+            EnchantmentHelper.doPostAttackEffects(player.serverLevel(), target, source);
+        }
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1.0F, 1.0F);
+        player.sweepAttack();
+        player.swing(InteractionHand.MAIN_HAND, false);
+        if (resetStrength) player.resetAttackStrengthTicker();
+        if (player.getMainHandItem().getItem() instanceof ISpecialSweepWeapon weapon) weapon.onSpecialSweep(player);
+    }
+
+    /// 横扫对单个目标的伤害结算。
+    ///
+    /// 回击要打的目标刚被这一刀打中，而 [LivingEntity#hurt] 在 `invulnerableTime > 10`
+    /// 且伤害不高于 `lastHurt` 时会直接返回 false：同一刻的第二次命中会被受击无敌帧吃掉，
+    /// 所以这里临时放行无敌帧，命中后把无敌帧按原样还回去。
+    private static void hurtBySweep(ServerPlayer player, Entity target, DamageSource source, float amount, boolean enchantedDamage) {
+        float applied = enchantedDamage ? ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, amount, source) : amount;
+        if (!(target instanceof LivingEntity living) || living.invulnerableTime <= 10) {
+            target.hurt(source, applied);
+            return;
+        }
+        int invulnerableTime = living.invulnerableTime;
+        living.invulnerableTime = 0;
+        try {
+            living.hurt(source, applied);
+        } finally {
+            living.invulnerableTime = invulnerableTime;
+        }
     }
 
     public static boolean shouldSkipConsumeAmmo(Player player) {

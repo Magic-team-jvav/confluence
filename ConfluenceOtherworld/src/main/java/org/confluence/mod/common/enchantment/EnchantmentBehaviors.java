@@ -1,6 +1,7 @@
 package org.confluence.mod.common.enchantment;
 
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,6 +28,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
+import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.SoulCollectionEvent;
 import org.confluence.mod.common.attachment.SoulStorage;
@@ -38,6 +40,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.util.EnchantmentUtils;
+import org.confluence.mod.util.PlayerUtils;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -57,13 +60,13 @@ public final class EnchantmentBehaviors {
     private static final String SOUL_RESONANCE_UNTIL = "confluence.enchant.soul_resonance_until";
     private static final String SOUL_SIPHON_UNTIL = "confluence.enchant.soul_siphon_until";
     private static final String SPEED_SYNERGY_UNTIL = "confluence.enchant.speed_synergy_until";
-    private static final String ARTIFACT_SYNERGY_READY = "confluence.enchant.artifact_synergy_ready";
     private static final String BEAST_INSPIRE_UNTIL = "confluence.enchant.beast_inspire_until";
     private static final String VIGOROUS_STACKS = "confluence.enchant.vigorous_stacks";
     private static final String VIGOROUS_PROGRESS = "confluence.enchant.vigorous_progress";
     private static final String BURST_PROGRESS = "confluence.enchant.burst_progress";
     private static final String FOOD_RESERVE_READY_AT = "confluence.enchant.food_reserve_ready_at";
-    private static final String FLANKING_STRIKE_READY_AT = "confluence.enchant.flanking_strike_ready_at";
+    /// 回击的空挥重入闸：横扫命中的伤害事件会回到 `afterAttack`，靠它断开连锁。
+    private static final String FLANKING_STRIKE_SWEEPING = "confluence.enchant.flanking_strike_sweeping";
     private static final String RECKLESS_CANCELLED_ARMOR = "confluence.enchant.reckless_cancelled_armor";
     private static final String LAST_X = "confluence.enchant.last_x";
     private static final String LAST_Y = "confluence.enchant.last_y";
@@ -75,12 +78,12 @@ public final class EnchantmentBehaviors {
     private static final ResourceLocation SPEED_SYNERGY_SPEED_ID = Confluence.asResource("enchantment.speed_synergy");
     private static final ResourceLocation RECKLESS_ARMOR_ID = Confluence.asResource("enchantment.reckless");
 
-    /// 精力充沛：每 7 格位移叠 1 层，最多 15 层，每层下一次攻击 +10%。
-    private static final double VIGOR_BLOCKS_PER_STACK = 7.0;
+    /// 精力充沛：每 14 格位移叠 1 层，最多 15 层，每层下一次攻击 +10%。
+    private static final double VIGOR_BLOCKS_PER_STACK = 14.0;
     private static final int VIGOR_MAX_STACKS = 15;
     private static final float VIGOR_DAMAGE_PER_STACK = 0.1F;
-    /// 爆裂弓弦：位移 7 格后自动射击。
-    private static final double BURST_BLOCKS = 7.0;
+    /// 爆裂弓弦：位移 14 格后自动射击。
+    private static final double BURST_BLOCKS = 14.0;
     private static final double BURST_RANGE = 12.0;
     /// 食物储备冷却 60 秒。
     private static final int FOOD_RESERVE_COOLDOWN_TICKS = 60 * 20;
@@ -244,7 +247,7 @@ public final class EnchantmentBehaviors {
 
     // endregion
 
-    // region 攻击侧（法器协同 / 精力充沛 / 莽撞 / 万兽鼓舞 / 虚空强袭）
+    // region 攻击侧（精力充沛 / 莽撞 / 万兽鼓舞 / 虚空强袭）
 
     /// 攻击伤害结算：法器协同、精力充沛、莽撞、万兽鼓舞的召唤物加伤。
     /// @return 结算后的伤害
@@ -259,18 +262,8 @@ public final class EnchantmentBehaviors {
         }
         if (!(attacker instanceof ServerPlayer player)) return amount;
         if (player == victim) return amount;
-        amount = artifactSynergy(player, amount);
         amount = vigorous(player, amount);
         return reckless(player, amount);
-    }
-
-    /// 法器协同：使用法器后强化下一次攻击 40%/60%/80%，不可叠加。
-    private static float artifactSynergy(ServerPlayer player, float amount) {
-        if (!player.getPersistentData().getBoolean(ARTIFACT_SYNERGY_READY)) return amount;
-        int level = EnchantmentUtils.getLevel(player, ModEnchantments.ARTIFACT_SYNERGY);
-        if (level <= 0) return amount;
-        player.getPersistentData().remove(ARTIFACT_SYNERGY_READY);
-        return amount * (1.0F + 0.2F * (level + 1));
     }
 
     /// 精力充沛：消耗全部层数，每层 +10% 伤害。
@@ -295,23 +288,28 @@ public final class EnchantmentBehaviors {
     }
 
     /// 命中后的结算：眩晕、灵魂虹吸、虚空强袭、回击。
-    public static void afterAttack(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
-        boolean melee = damageSource.getDirectEntity() == player;
+    ///
+    /// 近战判定走 [LibTags.DamageTypes#AS_MELEE_ATTACK]，这样剑投出的投射物之类也算近战。
+    ///
+    /// @param originalDamage 这次命中减伤前交给 [LivingEntity#hurt] 的伤害，回击按它的 50% 结算
+    public static void afterAttack(ServerPlayer player, LivingEntity victim, DamageSource damageSource, float originalDamage) {
+        /// 回击自己扫出去的那一波不再触发命中附魔，否则同一次挥砍会把眩晕/虹吸再骰一遍。
+        if (player.getPersistentData().getBoolean(FLANKING_STRIKE_SWEEPING)) return;
         voidStrike(player, victim);
-        if (!melee) return;
+        if (!damageSource.is(LibTags.DamageTypes.AS_MELEE_ATTACK) && damageSource.getDirectEntity() != player) return;
         stun(player, victim);
         soulSiphon(player);
-        flankingStrike(player);
+        flankingStrike(player, originalDamage);
     }
 
-    /// 虚空强袭：命中叠加固定 5 秒的易伤。
+    /// 虚空强袭：命中叠加固定 5 秒的易伤。可见粒子交给原版药水效果（`visible = true`）。
     private static void voidStrike(ServerPlayer player, LivingEntity victim) {
         int level = EnchantmentUtils.getLevel(player, ModEnchantments.VOID_STRIKE);
         if (level <= 0) return;
-        victim.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE, VOID_STRIKE_DURATION_TICKS, level - 1, false, false, true));
+        victim.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE, VOID_STRIKE_DURATION_TICKS, level - 1, false, true, true));
     }
 
-    /// 眩晕：5%/10%/15% 概率，Boss 免疫；眩晕后 10 秒不可再被眩晕。
+    /// 眩晕：5%/10%/15% 概率，Boss 免疫；眩晕后 10 秒不可再被眩晕。可见粒子交给原版药水效果。
     private static void stun(ServerPlayer player, LivingEntity victim) {
         int level = EnchantmentUtils.getLevel(player, ModEnchantments.STUN);
         if (level <= 0) return;
@@ -320,7 +318,7 @@ public final class EnchantmentBehaviors {
         if (victim.getPersistentData().getLong(STUN_IMMUNE_UNTIL) > gameTime) return;
         if (player.getRandom().nextFloat() >= 0.05F * level) return;
         victim.getPersistentData().putLong(STUN_IMMUNE_UNTIL, gameTime + STUN_IMMUNE_TICKS);
-        victim.addEffect(new MobEffectInstance(ModEffects.STUN, STUN_DURATION_TICKS, 0, false, false, true));
+        victim.addEffect(new MobEffectInstance(ModEffects.STUN, STUN_DURATION_TICKS, 0, false, true, true));
     }
 
     /// 灵魂虹吸：命中后 5 秒内提升灵魂获取概率 3%/5%/8%。
@@ -330,14 +328,27 @@ public final class EnchantmentBehaviors {
         setUntil(player, SOUL_SIPHON_UNTIL, gameTime(player), SOUL_SIPHON_DURATION_TICKS);
     }
 
-    /// 回击：攻击后立刻回满攻速条，冷却 5/4/3 秒。
-    private static void flankingStrike(ServerPlayer player) {
-        int level = EnchantmentUtils.getLevel(player, ModEnchantments.FLANKING_STRIKE);
-        if (level <= 0) return;
-        long gameTime = gameTime(player);
-        if (player.getPersistentData().getLong(FLANKING_STRIKE_READY_AT) > gameTime) return;
-        player.getPersistentData().putLong(FLANKING_STRIKE_READY_AT, gameTime + (6 - level) * 20L);
-        player.resetAttackStrengthTicker();
+    /// 回击：50% 概率再扫一刀，范围用剑自带的 [横扫范围][BaseSwordItem#getSpecialSweepArea]，
+    /// 伤害是这次命中减伤前伤害的 50%，照常走伤害管线（[EnchantmentHelper#doPostAttackEffects]），
+    /// 所以武器自身的命中效果也会触发。
+    ///
+    /// 主目标自己也在横扫范围里，所以它会先吃原伤害、再吃 50% 的第二段（20 → 20 + 10）。
+    ///
+    /// `FLANKING_STRIKE_SWEEPING` 是重入闸：横扫命中的伤害事件会再次回到 `afterAttack`，
+    /// 没有它就会无限连锁。
+    private static void flankingStrike(ServerPlayer player, float originalDamage) {
+        if (originalDamage <= 0.0F) return;
+        if (EnchantmentUtils.getLevel(player, ModEnchantments.FLANKING_STRIKE) <= 0) return;
+        if (player.getRandom().nextFloat() >= 0.5F) return;
+        CompoundTag data = player.getPersistentData();
+        data.putBoolean(FLANKING_STRIKE_SWEEPING, true);
+        try {
+            /// 蓄力已经被主伤害那一刀重置，所以不要求满蓄力、也不重置；
+            /// 伤害取自主伤害，不再叠一遍附魔加伤。
+            PlayerUtils.performSweep(player, originalDamage * 0.5F, 0.0F, false, false);
+        } finally {
+            data.remove(FLANKING_STRIKE_SWEEPING);
+        }
     }
 
     // endregion
@@ -362,7 +373,7 @@ public final class EnchantmentBehaviors {
 
     // endregion
 
-    // region 灵魂（灵魂疏导 / 束魂 / 灵魂促行 / 灵魂共振）
+    // region 灵魂（灵魂疏导 / 束魂 / 灵魂促行 / 灵魂共振 / 灵魂虹吸）
 
     /// 收集灵魂时结算：额外获取概率、回血、限时增益。
     public static void onSoulCollected(SoulCollectionEvent event) {
@@ -418,17 +429,13 @@ public final class EnchantmentBehaviors {
 
     // endregion
 
-    // region 法器（法器协同 / 速度协同）
+    // region 法器（速度协同）
 
-    /// 使用法器成功后：登记法力协同标记与速度协同窗口。
+    /// 使用法器成功后：登记速度协同窗口。
     public static void onArtifactUsed(ServerPlayer player) {
-        long gameTime = gameTime(player);
-        if (EnchantmentUtils.getLevel(player, ModEnchantments.ARTIFACT_SYNERGY) > 0) {
-            player.getPersistentData().putBoolean(ARTIFACT_SYNERGY_READY, true);
-        }
         int level = EnchantmentUtils.getLevel(player, ModEnchantments.SPEED_SYNERGY);
         if (level > 0) {
-            setUntil(player, SPEED_SYNERGY_UNTIL, gameTime, level * 20);
+            setUntil(player, SPEED_SYNERGY_UNTIL, gameTime(player), level * 20);
         }
     }
 
@@ -594,7 +601,7 @@ public final class EnchantmentBehaviors {
         if (!(entity instanceof LivingEntity living) || living.level().isClientSide) return;
         if (living.hasEffect(ModEffects.VOID_STRIKE)) return;
         if (living.getFluidTypeHeight(ModFluids.VOID.type().get()) <= 0.0) return;
-        living.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE, VOID_STRIKE_DURATION_TICKS, 0, false, false, true));
+        living.addEffect(new MobEffectInstance(ModEffects.VOID_STRIKE, VOID_STRIKE_DURATION_TICKS, 0, false, true, true));
     }
 
     // endregion

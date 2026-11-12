@@ -698,18 +698,19 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 " b ",
                 "b b"
         )));
+        // TODO 暂时禁用机械骷髅王基站（phantom_base_station）
         // 基站：地牢魔骨 x30、铁锭/铅锭 x5、光明之魂 x3、暗影之魂 x3
-        hardmodeAnvil(recipeOutput, FunctionalBlocks.PHANTOM_BASE_STATION.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(3, ConsumableItems.DUNGEON_DEMON_BONE),
-                'b', AmountIngredient.of(5, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
-                'c', AmountIngredient.of(3, MaterialItems.SOUL_OF_LIGHT),
-                'd', AmountIngredient.of(3, MaterialItems.SOUL_OF_NIGHT)
-        ), List.of(
-                "   b",
-                "aaaa",
-                "acda",
-                "aaaa"
-        )));
+        // hardmodeAnvil(recipeOutput, FunctionalBlocks.PHANTOM_BASE_STATION.toStack(), ShapedRecipePattern.of(Map.of(
+        //         'a', AmountIngredient.of(3, ConsumableItems.DUNGEON_DEMON_BONE),
+        //         'b', AmountIngredient.of(5, Items.IRON_INGOT, MaterialItems.LEAD_INGOT),
+        //         'c', AmountIngredient.of(3, MaterialItems.SOUL_OF_LIGHT),
+        //         'd', AmountIngredient.of(3, MaterialItems.SOUL_OF_NIGHT)
+        // ), List.of(
+        //         "   b",
+        //         "aaaa",
+        //         "acda",
+        //         "aaaa"
+        // )));
         // 震地锤：腐肉/椎骨 x6、铁锭/铅锭 x5、暗影之魂 x6
         hardmodeAnvil(recipeOutput, FunctionalBlocks.EARTHSHAKER_DEVICE.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(3, MaterialItems.ROTTEN_CHUNK, MaterialItems.VERTEBRA),

@@ -771,6 +771,8 @@ public final class ModTabs {
                         crafting_stations.accept(FunctionalBlocks.ADAMANTITE_FORGE.get());
                         crafting_stations.accept(FunctionalBlocks.TITANIUM_FORGE.get());
                         crafting_stations.accept(FunctionalBlocks.ALCHEMY_TABLE.get());
+                        /// 工匠作坊按需求并入制作站分类（泰拉饰品页那边不再分组）。
+                        crafting_stations.accept(TCItems.WORKSHOP);
                         crafting_stations.accept(FunctionalBlocks.SAWMILL.get());
                         crafting_stations.accept(FunctionalBlocks.LOOM.get());
                         crafting_stations.accept(FunctionalBlocks.DYE_VAT.get());
@@ -1133,7 +1135,8 @@ public final class ModTabs {
                         boss_event_summons.accept(ConsumableItems.PIRATE_MAP.get());
                         boss_event_summons.accept(FunctionalBlocks.EARTHSHAKER_DEVICE.get());
                         boss_event_summons.accept(FunctionalBlocks.DUAL_FLASH_LIGHTHOUSE.get());
-                        boss_event_summons.accept(FunctionalBlocks.PHANTOM_BASE_STATION.get());
+                        // TODO 暂时禁用机械骷髅王基站
+                        // boss_event_summons.accept(FunctionalBlocks.PHANTOM_BASE_STATION.get());
 
                         CreativeModeTab.Output environment_items = GroupItem.belongsTo("environment_items", output);
                         environment_items.accept(ConsumableItems.HOLY_WATER.get());
@@ -1910,22 +1913,30 @@ public final class ModTabs {
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_LEGGINGS.get());
                         mushroom_set.accept(VanityArmorItems.MUSHROOM_BOOTS.get());
 
-                        /// 盔甲附魔书（暂不开放附魔台，只能从创造栏或战利品取得）
+                        /// 盔甲附魔书（统一排在最后，按能附着的部位排布；暂不开放附魔台，只能从创造栏或战利品取得）
                         HolderLookup.RegistryLookup<Enchantment> armorEnchantments = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.FOOD_RESERVE, 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.RECKLESS, 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_CONDUIT, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_BIND, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.BEAST_LORD, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.BEAST_INSPIRE, 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.ARTIFACT_COOLDOWN, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.DEFLECT, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.POTION_SHIELD, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SELFLESS_SACRIFICE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SURPRISE_GIFT, 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.DEATH_BARGAIN, 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_HASTE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SPEED_SYNERGY, 3));
+                        CreativeModeTab.Output armorEnchantmentBooks = GroupItem.belongsTo("armor_enchantments", output);
+                        // 头盔
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SUMMONER_PACT, 3));
+                        // 胸甲
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_CONDUIT, 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_BIND, 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.BEAST_LORD, 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.BEAST_INSPIRE, 1));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.POTION_SHIELD, 3));
+                        // 护腿
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.DEATH_BARGAIN, 1));
+                        // 靴子
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SOUL_HASTE, 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SPEED_SYNERGY, 3));
+                        // 任意部位
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.ARCANE_PROTECTION, 4));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.ARTIFACT_COOLDOWN, 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.DEFLECT, 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.FOOD_RESERVE, 1));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.RECKLESS, 1));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SELFLESS_SACRIFICE, 3));
+                        armorEnchantmentBooks.accept(LibEnchantmentUtils.enchantedBook(armorEnchantments, ModEnchantments.SURPRISE_GIFT, 1));
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
 
@@ -1934,25 +1945,6 @@ public final class ModTabs {
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
-
-                        ///附魔书
-                        HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 1));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.WHIP_SWEEP, 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MULTI_BOOMERANG, 3));
-                        /// 武器通用与近战附魔书
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.ARTIFACT_SYNERGY, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CRITICAL_STRIKE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.VIGOROUS, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOUL_RESONANCE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.VOID_STRIKE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLANKING_STRIKE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.STUN, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOUL_SIPHON, 3));
 
                         CreativeModeTab.Output short_swords = GroupItem.belongsTo("short_swords", output);
                         short_swords.accept(SwordItems.COPPER_SHORT_SWORD.get());
@@ -2066,6 +2058,21 @@ public final class ModTabs {
                         acceptAll(SpearItems.ITEMS, output, "spear");
                         acceptAll(LanceItems.ITEMS, output, "lance");
                         acceptAll(FlailItems.ITEMS, output, "flail");
+
+                        /// 附魔书：统一排在最后；不足 3 种的分类不单独成组
+                        HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_WIND_BURST, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLAIL_TURBINE, 2));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MULTI_BOOMERANG, 3));
+                        CreativeModeTab.Output weaponEnchantments = GroupItem.belongsTo("weapon_enchantments", output);
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CRITICAL_STRIKE, 3));
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.VIGOROUS, 3));
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOUL_RESONANCE, 3));
+                        weaponEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.VOID_STRIKE, 3));
+                        CreativeModeTab.Output meleeEnchantments = GroupItem.belongsTo("melee_enchantments", output);
+                        meleeEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.FLANKING_STRIKE, 3));
+                        meleeEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.STUN, 3));
+                        meleeEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOUL_SIPHON, 3));
                     })
                     .withTabsBefore(ARMORS.getId())
                     .build());
@@ -2128,19 +2135,18 @@ public final class ModTabs {
 
                         CreativeModeTab.Output gun = GroupItem.belongsTo("gun", output);
                         GunItems.GUN_ITEMS.forEach(gun::accept);
-                        acceptAll(GunItems.ITEMS, gun);
                         gun.accept(ManaWeaponItems.BEE_GUN);
                         gun.accept(ManaWeaponItems.SPACE_GUN);
                         CreativeModeTab.Output bullet = GroupItem.belongsTo("bullet", output);
                         GunItems.BULLET_ITEMS.forEach(bullet::accept);
 
-                        /// 弓弩附魔书
+                        /// 弓弩附魔书：统一排在最后
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.BURST_BOWSTRING, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.COOLDOWN_SHOT, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MULTI_CHARGE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.RAPID_CHARGE, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SUPER_CHARGE, 3));
+                        CreativeModeTab.Output rangedEnchantments = GroupItem.belongsTo("ranged_enchantments", output);
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.BURST_BOWSTRING, 3));
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MULTI_CHARGE, 3));
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.RAPID_CHARGE, 3));
+                        rangedEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SUPER_CHARGE, 3));
                     })
                     .withTabsBefore(WARRIORS.getId())
                     .build());
@@ -2152,15 +2158,19 @@ public final class ModTabs {
                         output = new WipNotDisplayOutput(output);
 
                         acceptAll(ManaWeaponItems.ITEMS, output);
+
+                        /// 附魔书：统一排在最后
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_REGENERATION, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.EFFICIENT_MAGIC, 1));
+                        /// 魔法武器（奥术防护是纯盔甲附魔，已放到盔甲页）
+                        CreativeModeTab.Output magicEnchantments = GroupItem.belongsTo("magic_enchantments", output);
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_REGENERATION, 3));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.EFFICIENT_MAGIC, 1));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CELESTIAL_ABSORPTION, 2));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOOTHED_MANA, 2));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SPELL_DESPERATION, 2));
+                        magicEnchantments.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MYSTIC_SURGE, 2));
+                        /// 通用附魔（魔力修补：任一有耐久值的物品；只有一种，暂不单独成组）
                         output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_MENDING, 3));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.CELESTIAL_ABSORPTION, 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SOOTHED_MANA, 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.ARCANE_PROTECTION, 4));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SPELL_DESPERATION, 2));
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MYSTIC_SURGE, 2));
                     })
                     .withTabsBefore(RANGERS.getId())
                     .build());
@@ -2175,8 +2185,10 @@ public final class ModTabs {
                         acceptAll(LightPetItems.ITEMS, output);
                         acceptAll(PetItems.ITEMS, output);
                         acceptAll(MountItems.ITEMS, output);
+
+                        /// 附魔书：统一排在最后（召唤师契约是头盔附魔，已放到盔甲页）；只有一种，暂不单独成组
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
-                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SUMMONER_PACT, 3));
+                        output.accept(LibEnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.WHIP_SWEEP, 2));
                     })
                     .withTabsBefore(MAGES.getId())
                     .build());

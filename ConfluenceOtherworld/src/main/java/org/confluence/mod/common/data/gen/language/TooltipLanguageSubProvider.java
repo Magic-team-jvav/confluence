@@ -23,8 +23,6 @@ public final class TooltipLanguageSubProvider {
         language.add("enchantment.confluence.arcane_protection.desc", "The mana drawn when taking damage is the value of the maximum mana value multiplied by a certain ratio, and the damage canceled is the value of the product of the damage taken by that ratio", "受到伤害时抽取的魔力为最大魔力值乘积一定比率的值，抵消的伤害为受到的伤害乘积该比率的值");
         language.add("enchantment.confluence.artifact_cooldown", "Artifact Cooldown", "冷却");
         language.add("enchantment.confluence.artifact_cooldown.desc", "Reduces artifact cooldowns by 9%/18%/27%", "降低法器冷却时间9%/18%/27%");
-        language.add("enchantment.confluence.artifact_synergy", "Artifact Synergy", "法器协同");
-        language.add("enchantment.confluence.artifact_synergy.desc", "Using an artifact empowers your next hit by 40%/60%/80%, cannot stack", "使用法器后强化你的下一击40%/60%/80%伤害，不可叠加");
         language.add("enchantment.confluence.beast_inspire", "Beast Inspire", "万兽鼓舞");
         language.add("enchantment.confluence.beast_inspire.desc", "Using a healing potion grants your summons +2 damage", "使用治疗药水会给予召唤物+2伤害");
         language.add("enchantment.confluence.beast_lord", "Beast Lord", "万兽之王");
@@ -33,8 +31,6 @@ public final class TooltipLanguageSubProvider {
         language.add("enchantment.confluence.burst_bowstring.desc", "Moving or jumping 7 blocks fires an arrow dealing 40% weapon damage at 1/2 nearby enemies", "跳跃或移动7格后自动向周围的1/2名敌人发射一根只有当前武器40%伤害的箭");
         language.add("enchantment.confluence.celestial_absorption", "Celestial Absorption", "天穹纳元");
         language.add("enchantment.confluence.celestial_absorption.desc", "Magic weapons that deal magic damage have a chance to drop stars", "使用魔法类武器造成魔法伤害时有概率掉落星星");
-        language.add("enchantment.confluence.cooldown_shot", "Cooldown Shot", "冷却射击");
-        language.add("enchantment.confluence.cooldown_shot.desc", "A fully charged shot reduces artifact cooldowns by 1/2/3 seconds", "蓄力完毕的弓箭射击会减少法器1/2/3秒冷却");
         language.add("enchantment.confluence.critical_strike", "Critical Strike", "致命一击");
         language.add("enchantment.confluence.critical_strike.desc", "Increases your critical damage to 2/2.2/2.4 times", "提升你的暴击伤害为2/2.2/2.4倍伤害");
         language.add("enchantment.confluence.death_bargain", "Death Bargain", "死亡交易");
@@ -64,7 +60,7 @@ public final class TooltipLanguageSubProvider {
         language.add("enchantment.confluence.potion_shield", "Potion Shield", "药水护盾");
         language.add("enchantment.confluence.potion_shield.desc", "Gain 4 armor for 3/5/7 seconds after using a healing potion", "使用治疗药水后的3/5/7秒内获得4防御");
         language.add("enchantment.confluence.rapid_charge", "Rapid Charge", "快速蓄力");
-        language.add("enchantment.confluence.rapid_charge.desc", "Reduces bow charge time by 10%/20%/30%", "减少弓箭10%/20%/30%蓄力时间");
+        language.add("enchantment.confluence.rapid_charge.desc", "Reduces bow charge time by 30%/50%/80%", "减少弓箭30%/50%/80%蓄力时间");
         language.add("enchantment.confluence.reckless", "Reckless", "莽撞");
         language.add("enchantment.confluence.reckless.desc", "Provides no defense and converts (armor value/10)% of it into melee damage", "不提供防御，将护甲值的(X/10)%转化为近战伤害");
         language.add("enchantment.confluence.selfless_sacrifice", "Selfless Sacrifice", "舍己为人");
@@ -417,6 +413,7 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.item.confluence.bei_dou_boomerang.4", "Dark Green: Poison IV / Gray Purple: Wither IV", "深绿：中毒 IV／灰紫：凋零 IV");
         language.add("tooltip.item.confluence.bei_dou_boomerang.5", "Dark Brownish Red: Instant Damage VII", "深红棕：瞬间伤害 VII");
         language.add("tooltip.item.confluence.bewitching_table.0", "Right click to have more minions", "右键点击可拥有更多仆从");
+        language.addTooltip(ModItems.BESTIARY.get(), 0, "Right-click a creature to unlock its complete entry", "右键生物可获取解锁对应的完全条目");
         language.addTooltip(ToolItems.BINOCULARS.get(), 0, "Expand the FOV when in use, and adjust the zoom with the mouse wheel", "使用时扩大视野，鼠标滚轮可调整缩放");
         language.addTooltip(AccessoryItems.BLACK_COUNTERWEIGHT.get(), 0, "Throws a counterweight on yoyo hits; counterweights do not stack", "悠悠球命中后掷出平衡锤；不与其他平衡锤重复叠加");
         language.addTooltip(AccessoryItems.BLACK_YOYO_STRING.get(), 0, "Increases yoyo range by 25% + 2 blocks and spin duration by 50%", "增加悠悠球射程 25% + 2 格，滞空时间增加 50%");

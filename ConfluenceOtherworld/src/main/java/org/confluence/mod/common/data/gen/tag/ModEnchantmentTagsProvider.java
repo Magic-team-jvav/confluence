@@ -48,7 +48,6 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.DEATH_BARGAIN,
                 ModEnchantments.SOUL_HASTE,
                 ModEnchantments.SPEED_SYNERGY,
-                ModEnchantments.ARTIFACT_SYNERGY,
                 ModEnchantments.CRITICAL_STRIKE,
                 ModEnchantments.VIGOROUS,
                 ModEnchantments.SOUL_RESONANCE,
@@ -57,7 +56,6 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.STUN,
                 ModEnchantments.SOUL_SIPHON,
                 ModEnchantments.BURST_BOWSTRING,
-                ModEnchantments.COOLDOWN_SHOT,
                 ModEnchantments.MULTI_CHARGE,
                 ModEnchantments.RAPID_CHARGE,
                 ModEnchantments.SUPER_CHARGE
@@ -103,7 +101,6 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.DEATH_BARGAIN,
                 ModEnchantments.SOUL_HASTE,
                 ModEnchantments.SPEED_SYNERGY,
-                ModEnchantments.ARTIFACT_SYNERGY,
                 ModEnchantments.CRITICAL_STRIKE,
                 ModEnchantments.VIGOROUS,
                 ModEnchantments.SOUL_RESONANCE,
@@ -112,7 +109,6 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.STUN,
                 ModEnchantments.SOUL_SIPHON,
                 ModEnchantments.BURST_BOWSTRING,
-                ModEnchantments.COOLDOWN_SHOT,
                 ModEnchantments.MULTI_CHARGE,
                 ModEnchantments.RAPID_CHARGE,
                 ModEnchantments.SUPER_CHARGE

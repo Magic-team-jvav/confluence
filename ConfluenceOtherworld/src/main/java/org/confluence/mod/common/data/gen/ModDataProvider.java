@@ -2301,7 +2301,6 @@ public class ModDataProvider {
             register(context, ModEnchantments.SOUL_HASTE, definition(footArmor, 3, EquipmentSlotGroup.FEET));
             register(context, ModEnchantments.SPEED_SYNERGY, definition(footArmor, 3, EquipmentSlotGroup.FEET));
 
-            register(context, ModEnchantments.ARTIFACT_SYNERGY, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
             register(context, ModEnchantments.CRITICAL_STRIKE, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
             register(context, ModEnchantments.VIGOROUS, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
             register(context, ModEnchantments.SOUL_RESONANCE, definition(generalWeapon, 3, EquipmentSlotGroup.MAINHAND));
@@ -2311,7 +2310,6 @@ public class ModDataProvider {
             register(context, ModEnchantments.SOUL_SIPHON, definition(meleeWeapon, 3, EquipmentSlotGroup.MAINHAND));
 
             register(context, ModEnchantments.BURST_BOWSTRING, definition(bowOrCrossbow, 3, EquipmentSlotGroup.MAINHAND));
-            register(context, ModEnchantments.COOLDOWN_SHOT, definition(bow, 3, EquipmentSlotGroup.MAINHAND));
             register(context, ModEnchantments.MULTI_CHARGE, definition(bow, 3, EquipmentSlotGroup.MAINHAND)
                     .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.CHARGE_EXCLUSIVE)));
             register(context, ModEnchantments.RAPID_CHARGE, definition(bow, 3, EquipmentSlotGroup.MAINHAND));

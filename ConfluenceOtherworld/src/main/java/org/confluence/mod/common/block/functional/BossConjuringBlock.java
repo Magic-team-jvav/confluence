@@ -60,10 +60,11 @@ public class BossConjuringBlock extends Block implements EntityBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     /// 预热时长：20 秒。
     public static final int WINDUP_TICKS = 400;
+    // TODO 暂时禁用机械骷髅王基站（phantom_base_station），恢复时把下面几项与 Variant.SKELETON_PRIME 一起放出来
     /// 广播基站每隔一个动画循环（1 秒）放一次声响特效。
-    private static final int ANTENNA_INTERVAL = 20;
+    // private static final int ANTENNA_INTERVAL = 20;
     /// 天线动画到达最高点的 tick（0.625 秒处）。
-    private static final int ANTENNA_PEAK_TICK = 12;
+    // private static final int ANTENNA_PEAK_TICK = 12;
     /// 地震锤一次砸地动画的时长（0.7083 秒）。
     private static final int EARTHSHAKER_INTERVAL = 14;
     /// 召唤时把多远的玩家登记为遭遇参与者。
@@ -71,12 +72,12 @@ public class BossConjuringBlock extends Block implements EntityBlock {
 
     public static final VoxelShape EARTHSHAKER_SHAPE = box(1.0, 0.0, 1.0, 15.0, 14.0, 15.0);
     public static final VoxelShape LIGHTHOUSE_SHAPE = box(1.0, 0.0, 1.0, 15.0, 15.0, 15.0);
-    public static final VoxelShape BASE_STATION_SHAPE = box(2.0, 0.0, 5.0, 14.0, 14.0, 11.0);
+    // public static final VoxelShape BASE_STATION_SHAPE = box(2.0, 0.0, 5.0, 14.0, 14.0, 11.0);
 
     /// 灯头中心（模型像素换算到方块坐标）。
     private static final Vec3 LAMP_HEAD = new Vec3(0.5, 0.906, 0.5);
     /// 天线顶端：模型 x/z 中心为 (−2.5, 1.5) 像素，激活动画最高点再抬升 8 像素。
-    private static final Vec3 ANTENNA_TIP = new Vec3(0.5 - 2.5 / 16.0, (14.0 + 8.0) / 16.0, 0.5 + 1.5 / 16.0);
+    // private static final Vec3 ANTENNA_TIP = new Vec3(0.5 - 2.5 / 16.0, (14.0 + 8.0) / 16.0, 0.5 + 1.5 / 16.0);
     /// 地震锤贴地位置。
     private static final Vec3 GROUND_CENTER = new Vec3(0.5, 0.04, 0.5);
 
@@ -145,15 +146,15 @@ public class BossConjuringBlock extends Block implements EntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    /// 客户端表现：灯塔常驻旋转光、广播基站每秒一次声响、地震锤每轮砸地一次震荡波。
+    /// 客户端表现：灯塔常驻旋转光、地震锤每轮砸地一次震荡波。
     private void clientEffects(BEntity entity, Level level, BlockPos pos) {
         Vec3 origin = Vec3.atLowerCornerOf(pos);
         int age = entity.clientAge();
         switch (variant) {
             case TWINS -> entity.ensureBeacon(level, origin.add(LAMP_HEAD));
-            case SKELETON_PRIME -> {
-                if (age % ANTENNA_INTERVAL == ANTENNA_PEAK_TICK) spawnEmitter(level, origin.add(ANTENNA_TIP), variant.particle());
-            }
+            // case SKELETON_PRIME -> {
+            //     if (age % ANTENNA_INTERVAL == ANTENNA_PEAK_TICK) spawnEmitter(level, origin.add(ANTENNA_TIP), variant.particle());
+            // }
             case DESTROYER -> {
                 if (age % EARTHSHAKER_INTERVAL == 0) spawnEmitter(level, origin.add(GROUND_CENTER), variant.particle());
             }
@@ -165,14 +166,15 @@ public class BossConjuringBlock extends Block implements EntityBlock {
         MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 
-    /// 三个装置的差异全部收进枚举：资源名、粒子与召唤逻辑。
+    /// 装置的差异全部收进枚举：资源名、粒子与召唤逻辑。
     public enum Variant {
         /// 地震锤 → 毁灭者。
         DESTROYER("earthshaker_device", "earthshaker_shockwave", "tooltip.confluence.earthshaker_device"),
         /// “灯塔”装置 → 双子魔眼。
-        TWINS("dual_flash_lighthouse", "dual_flash_beacon", "tooltip.confluence.dual_flash_lighthouse"),
-        /// “屠杀”广播基站-66.6MHz → 机械骷髅王。
-        SKELETON_PRIME("phantom_base_station", "phantom_sound_wave", "tooltip.confluence.phantom_base_station");
+        TWINS("dual_flash_lighthouse", "dual_flash_beacon", "tooltip.confluence.dual_flash_lighthouse");
+        // TODO 暂时禁用机械骷髅王基站，恢复时把上面 TWINS 末尾的 `;` 改回 `,` 并放出来
+        // /// “屠杀”广播基站-66.6MHz → 机械骷髅王。
+        // SKELETON_PRIME("phantom_base_station", "phantom_sound_wave", "tooltip.confluence.phantom_base_station");
 
         private final String path;
         private final String particle;
@@ -216,7 +218,7 @@ public class BossConjuringBlock extends Block implements EntityBlock {
             return switch (this) {
                 case TWINS -> TwinEyeEncounter.summon(level, pos, summoner);
                 case DESTROYER -> summonSingle(level, BossEntities.THE_DESTROYER.get(), pos.add(0, 2.0, 0), summoner);
-                case SKELETON_PRIME -> summonSingle(level, BossEntities.SKELETRON_PRIME.get(), pos.add(0, 3.0, 0), summoner);
+                // case SKELETON_PRIME -> summonSingle(level, BossEntities.SKELETRON_PRIME.get(), pos.add(0, 3.0, 0), summoner);
             };
         }
 

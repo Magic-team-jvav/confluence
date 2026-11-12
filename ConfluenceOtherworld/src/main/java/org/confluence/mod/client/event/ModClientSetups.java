@@ -53,6 +53,7 @@ import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
@@ -413,8 +414,8 @@ public final class ModClientSetups {
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
-        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
-        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / BowItem.MAX_DRAW_DURATION : 0.0F;
+        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? EnchantmentUtils.applyRapidCharge(itemStack, (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks())) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
+        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? EnchantmentUtils.applyRapidCharge(itemStack, (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks())) / BowItem.MAX_DRAW_DURATION : 0.0F;
         ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
         ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
 

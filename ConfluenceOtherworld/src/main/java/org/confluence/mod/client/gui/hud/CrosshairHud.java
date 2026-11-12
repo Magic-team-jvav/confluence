@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.attachment.LeftClickCooldowns;
 import org.confluence.mod.common.component.RepeaterContents;
@@ -127,7 +128,8 @@ public class CrosshairHud {
             return;
         }
 
-        int usedTicks = stack.getUseDuration(player) - remainingTicks;
+        /// 快速蓄力：按放大后的蓄力刻数算 power，和实际射出的伤害保持一致。
+        int usedTicks = EnchantmentUtils.applyRapidCharge(stack, stack.getUseDuration(player) - remainingTicks);
         float power = stack.getItem() instanceof ShortBowItem shortBow ? shortBow.getShortPowerForTime(usedTicks)
                 : stack.is(ModTags.Items.FAST_BOW) ? BaseTerraBowItem.getFastBowPowerForTime(usedTicks) : BowItem.getPowerForTime(usedTicks);
         if (power >= 0.1f && (player.hasInfiniteMaterials() || !player.getProjectile(stack).isEmpty())) {
@@ -148,6 +150,10 @@ public class CrosshairHud {
                 duration = CrossbowItem.getChargeDuration(stack, player);
             } else {
                 duration = stack.getItem() instanceof ShortBowItem ? ShortBowItem.MAX_DRAW_DURATION : BowItem.MAX_DRAW_DURATION;
+            }
+            /// 快速蓄力：蓄力条按缩短后的时间填充。
+            if (stack.getItem() instanceof BowItem) {
+                usedTicks = EnchantmentUtils.applyRapidCharge(stack, usedTicks);
             }
             return Mth.clamp(usedTicks / Math.max(1, duration), 0f, 1f);
         }

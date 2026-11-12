@@ -27,6 +27,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.angler_wear", "Angler Outfit", "渔夫套装");
         language.add("itemGroup.confluence.archaeologists_set", "Archaeologist Set", "考古学家套装");
         language.add("itemGroup.confluence.archers_armor", "Archers Armor", "弓箭手盔甲");
+        language.add("itemGroup.confluence.armor_enchantments", "Armor Enchantments", "盔甲附魔");
         language.add("itemGroup.confluence.arrow", "Arrows", "箭");
         language.add("itemGroup.confluence.ash", "Ash Wood", "灰烬木");
         language.add("itemGroup.confluence.ash_armor", "Ash Armor", "灰烬盔甲");
@@ -45,6 +46,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.boat", "Boat", "船");
         language.add("itemGroup.confluence.bombs_explosives", "Bombs & Explosives", "炸弹与爆炸物");
         language.add("itemGroup.confluence.boomerang", "Boomerang", "回旋镖");
+        language.add("itemGroup.confluence.boomerang_enchantments", "Boomerang Enchantments", "回旋镖附魔");
         language.add("itemGroup.confluence.boss_entity", "Boss", "Boss");
         language.add("itemGroup.confluence.boss_event_summons", "Boss & Event Summons", "Boss，事件召唤物");
         language.add("itemGroup.confluence.boss_relics", "Boss Relics", "Boss 遗物");
@@ -104,6 +106,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.fey", "Fey Wood", "仙灵木");
         language.add("itemGroup.confluence.fishing_pole", "Fishing Pole", "钓鱼竿");
         language.add("itemGroup.confluence.flail", "Flails", "连枷");
+        language.add("itemGroup.confluence.flail_enchantments", "Flail Enchantments", "连枷附魔");
         language.add("itemGroup.confluence.fleshification_ores", "Crimson Ores", "血化矿石");
         language.add("itemGroup.confluence.forest_entity", "Forest", "森林生物");
         language.add("itemGroup.confluence.fossil_armor", "Fossil Armor", "化石盔甲");
@@ -112,6 +115,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.garden_shears", "Garden Shears", "园艺剪");
         language.add("itemGroup.confluence.gaze", "Gaze Wood", "垂眸木");
         language.add("itemGroup.confluence.gem_blocks", "Gem Blocks", "宝石块");
+        language.add("itemGroup.confluence.general_enchantments", "General Enchantments", "通用附魔");
         language.add("itemGroup.confluence.gladiator_armor", "Gladiator Armor", "角斗士盔甲");
         language.add("itemGroup.confluence.glass", "Glass", "玻璃");
         language.add("itemGroup.confluence.gloom_obsidian_bricks", "Gloom Obsidian Bricks", "黯虚黑曜石砖");
@@ -153,9 +157,11 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.living", "Living Wood", "生命木");
         language.add("itemGroup.confluence.living_mahogany", "Living Mahogany Wood", "生命红木");
         language.add("itemGroup.confluence.loot_gifts", "Loot & Gifts", "战利品与礼物");
+        language.add("itemGroup.confluence.magic_enchantments", "Magic Weapon Enchantments", "魔法武器附魔");
         language.add("itemGroup.confluence.magic_robes", "Magic Robes", "魔法长袍");
         language.add("itemGroup.confluence.marble_bricks", "Marble Bricks", "大理石砖");
         language.add("itemGroup.confluence.martian_entity", "Martian", "火星暴乱");
+        language.add("itemGroup.confluence.melee_enchantments", "Melee Weapon Enchantments", "近战武器附魔");
         language.add("itemGroup.confluence.mercenary_armor", "Mercenary Armor", "雇佣兵盔甲");
         language.add("itemGroup.confluence.metal_materials", "Metal Materials", "金属材料");
         language.add("itemGroup.confluence.meteor_armor", "Meteor Armor", "陨石盔甲");
@@ -218,6 +224,7 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.quested_fish", "Quest Fish", "任务鱼");
         language.add("itemGroup.confluence.rain_wear", "Rain Coat", "雨衣套装");
         language.add("itemGroup.confluence.rainbow_gel_bricks", "Gel Bricks", "凝胶砖");
+        language.add("itemGroup.confluence.ranged_enchantments", "Ranged Weapon Enchantments", "远程武器附魔");
         language.add("itemGroup.confluence.raw_ore_blocks", "Raw Ore Blocks", "粗矿石块");
         language.add("itemGroup.confluence.red_sandstone_bricks", "Red Sandstone Bricks", "红砂岩砖");
         language.add("itemGroup.confluence.redstone_circuit_traps", "Redstone Traps", "红石电路机关");
@@ -284,6 +291,8 @@ public final class ItemGroupLanguageSubProvider {
         language.add("itemGroup.confluence.vines", "Vines", "藤蔓");
         language.add("itemGroup.confluence.void", "Void Wood", "虚空木");
         language.add("itemGroup.confluence.wand", "Wands", "魔杖");
+        language.add("itemGroup.confluence.weapon_enchantments", "General Weapon Enchantments", "武器通用附魔");
+        language.add("itemGroup.confluence.whip_enchantments", "Whip Enchantments", "鞭子附魔");
         language.add("itemGroup.confluence.white_pumpkin_armor", "White Pumpkin Armor", "白南瓜盔甲");
         language.add("itemGroup.confluence.wiring_tools", "Wiring Tools", "电路工具");
         language.add("itemGroup.confluence.wolf_armor", "Wolf Armor", "狼套装");

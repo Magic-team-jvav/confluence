@@ -351,7 +351,7 @@ public final class LivingEntityEvents {
             LucyTheAxe.onDamageLiving(player, victim);
             StarSteelSword.tryDropManaStar(victim, player);
             /// 附魔：眩晕 / 灵魂虹吸 / 虚空强袭 / 回击
-            EnchantmentBehaviors.afterAttack(player, victim, damageSource);
+            EnchantmentBehaviors.afterAttack(player, victim, damageSource, event.getOriginalDamage());
         }
     }
 

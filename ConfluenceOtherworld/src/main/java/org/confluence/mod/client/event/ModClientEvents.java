@@ -337,6 +337,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
         // 纯 ParticleStorm 粒子表现的逻辑实体：本体不渲染，但必须登记渲染器（分发器不判空）
         event.registerEntityRenderer(SEABED_WATER_COLUMN.get(), InvisibleEntityRenderer::new); // 海床崩裂者水柱
+        event.registerEntityRenderer(FALLING_TREE.get(), org.confluence.mod.client.renderer.entity.FallingTreeRenderer::new); // 伐木时倒下的树
         event.registerEntityRenderer(OPAL_STAFF_PROJECTILE.get(), InvisibleEntityRenderer::new); // 欧泊法杖洪流弹幕
         event.registerEntityRenderer(ICHOR_STREAM.get(), InvisibleEntityRenderer::new); // 舌锋剑灵液流
         event.registerEntityRenderer(MURAMASA_SLASH.get(), InvisibleEntityRenderer::new); // 村正刀光

@@ -31,6 +31,8 @@ public final class CommonConfigs {
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
     public static BooleanValue TERRA_STYLE_EXPLOSION;
+    /// 泰拉式伐木：斧头砍树干，砍口以上整棵树倒下（潜行只砍一格）
+    public static BooleanValue TREE_FELLING;
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue VILLAGER_INVULNERABLE_TO_PLAYER;
@@ -233,6 +235,7 @@ public final class CommonConfigs {
             TERRA_STYLE_EXPLOSION = builder.define("terraStyleExplosion", true);
             TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
             STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
+            TREE_FELLING = builder.comment("Chopping a tree trunk with an axe fells the whole tree above the cut, like in Terraria. Sneak to chop a single block.").define("treeFelling", true);
             {
                 builder.push("AutomaticWeaponUse");
                 AUTO_SWING_ALL_SWORDS = builder.define("autoSwingAllSwords", false);

@@ -42,6 +42,7 @@
         "world.DifficultyMixin",
         "world.damagesource.DamageSourceMixin",
         "world.entity.EntityAccessor",
+        "world.entity.EntityFallingTreeCollisionMixin",
         "world.entity.EntityMixin",
         "world.entity.EntityType$BuilderAccessor",
         "world.entity.EntityTypeMixin",

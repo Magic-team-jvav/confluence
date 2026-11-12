@@ -318,6 +318,8 @@ public final class ConfigurationLanguageSubProvider {
         language.add("confluence.configuration.kingSlimeLargeMinions.tooltip", "Allow King Slime to summon large minions.", "允许史莱姆王召唤大型仆从。");
         language.add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon", "左侧药水效果标识");
         language.add("confluence.configuration.leftEffectIcon.tooltip", "When enabled, potion effect icons are displayed on the left side of the screen.", "开启后，药水效果图标显示屏幕左侧");
+        language.add("confluence.configuration.treeFelling", "Tree Felling", "整棵伐木");
+        language.add("confluence.configuration.treeFelling.tooltip", "Like Terraria: chopping a trunk with an axe brings down the whole tree above the cut; it falls and breaks into drops. Sneak to chop one block. Living trees and log buildings are never felled.", "与泰拉一致：用斧头砍树干，砍口以上的整棵树倒下并碎成掉落物。潜行时只砍一格。生命树和原木建筑不会被整棵伐倒。");
         language.add("confluence.configuration.manaOffsetX", "Mana Offset X", "魔力值X轴偏移");
         language.add("confluence.configuration.manaOffsetY", "Mana Offset Y", "魔力值Y轴偏移");
         language.add("confluence.configuration.manaStyle", "Mana Style", "魔力值样式");

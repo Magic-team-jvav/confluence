@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -85,17 +86,17 @@ public final class ModEvents {
             }
 
             if (!LibUtils.isModLoaded("attributefix")) {
-                if (Attributes.ARMOR instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
-                }
-                if (Attributes.ARMOR_TOUGHNESS instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
-                }
-                if (Attributes.MAX_HEALTH instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
-                }
-                if (LibAttributes.getAttackDamage().get() instanceof RangedAttribute rangedAttribute) {
-                    rangedAttribute.maxValue = 65536;
+                Attribute[] attributes = {
+                        Attributes.ARMOR,
+                        Attributes.ARMOR_TOUGHNESS,
+                        Attributes.MAX_HEALTH,
+                        LibAttributes.getAttackDamage().get(),
+                        Attributes.ATTACK_SPEED
+                };
+                for (Attribute attribute : attributes) {
+                    if (attribute instanceof RangedAttribute rangedAttribute) {
+                        rangedAttribute.maxValue = 65536;
+                    }
                 }
             }
 

@@ -9,6 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.wind.WindField;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.mod.common.worldgen.biome.injector.ConfluenceBiomeInjector;
 import org.confluence.mod.util.OverworldUtils;
@@ -44,6 +45,7 @@ public final class ServerEvents {
         }
         ConfluenceBiomeInjector.uninstall();
         OverworldUtils.close();
+        WindField.reset();
     }
 
     public static void serverStopped(ServerStoppedEvent event) {

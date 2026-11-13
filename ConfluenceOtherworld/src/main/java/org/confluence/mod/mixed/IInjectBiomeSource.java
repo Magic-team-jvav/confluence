@@ -13,12 +13,26 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
+import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceHandler;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public interface IInjectBiomeSource {
+    /// 把处理器直接挂到 `BiomeSource` 实例上，而不是只存在按实例身份索引的注册表里。
+    ///
+    /// 原因：TerraBlender 的 `MixinNoiseBasedChunkGenerator` 会把
+    /// `fillBiomesFromNoise` 的第一个参数换成 `MultiNoiseBiomeSource#clone()`
+    /// （`Object.clone()` 浅拷贝，再换掉参数表），而 `BiomeSourceInjector` 是按
+    /// **实例身份**索引的 —— clone 查不到任何处理器，于是写进区块的群系是纯原版，
+    /// 建面时 `SurfaceRules#isBiome` 读的就是这份区块数据，本模组的地表规则会整段失效。
+    ///
+    /// `Object.clone()` 会复制全部实例字段，所以把处理器存成字段就能原样穿过 clone。
+    void confluence$setHandler(@Nullable BiomeSourceHandler handler);
+
+    @Nullable BiomeSourceHandler confluence$getHandler();
+
     @Nullable Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair();
 
     default @Nullable Pair<Holder<Biome>, Holder<Biome>> confluence$createBiomePair() {

@@ -95,7 +95,15 @@ public final class ConfluenceBiomeInjector {
                     if (type == null) {
                         continue;
                     }
-                    handlers.put(source, createRegionHandler(type, seed, biomeRegistry, injectSource, injectGenerator, allowEvilRemap));
+                    BiomeSourceHandler handler = createRegionHandler(type, seed, biomeRegistry, injectSource, injectGenerator, allowEvilRemap);
+                    handlers.put(source, handler);
+                    // TerraBlender 的 MixinNoiseBasedChunkGenerator 会 clone 这个 source 再拿去
+                    // `fillBiomesFromNoise`（见 BiomeSourceInjector 的注释）。clone 在按实例身份
+                    // 索引的注册表里查不到处理器，会把原版群系写进区块；而建面时
+                    // `SurfaceRules#isBiome` 读的就是区块里存下来的群系。
+                    // 把处理器再写一份到实例字段上，`Object.clone()` 会连带复制，
+                    // clone 因此仍能命中，地表规则不会因为装了 TerraBlender 而失效。
+                    injectSource.confluence$setHandler(handler);
                 } else if (source instanceof TheEndBiomeSource) {
                     handlers.put(source, TheEndBiomeHolder.handler());
                 }

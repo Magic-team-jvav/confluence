@@ -350,9 +350,6 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     @Nullable
     public net.minecraft.resources.ResourceLocation getProjTexture() { return null; }
 
-    @Nullable
-    public net.minecraft.client.model.geom.ModelLayerLocation getModelLayer() { return null; }
-
     public float getSpinRotation(float partialTick) {
         return Mth.lerp(partialTick, rotate.old, rotate.neo);
     }

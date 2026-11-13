@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.spear;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -274,10 +273,6 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     /// 弹射物模型纹理，默认 null（无模型）。
     @Nullable
     public ResourceLocation getProjTexture() {return null;}
-
-    /// 弹射物模型层，默认没有模型。
-    @Nullable
-    public ModelLayerLocation getModelLayer() {return null;}
 
     /// 飞行轴自旋角度，默认是 0。
     public float getSpinRotation(float partialTick) {

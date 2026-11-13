@@ -1,5 +1,6 @@
 package org.confluence.mod.common.summoner;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -91,9 +92,9 @@ public final class SummonerEvents {
         });
         NeoForge.EVENT_BUS.addListener((LivingHealEvent event) -> {
             LivingEntity living = event.getEntity();
+            if (!(living.level() instanceof ServerLevel level) || !level.getServer().isSameThread()) return;
             float amount = DamageIndicatorOptions.effectiveHealAmount(event.getAmount(), living);
-            Level level = living.level();
-            if (!level.isClientSide() && amount >= 0.01) {
+            if (amount >= 0.01F) {
                 Vec3 pos = living.getBoundingBox().getCenter();
                 Vec3 velocity = new Vec3(0, 2, 0).offsetRandom(level.getRandom(), 0.5F).subtract(Vec3.ZERO).scale(0.4);
                 InfoData.record(level, amount, pos, velocity, InfoData.Type.HEAL);

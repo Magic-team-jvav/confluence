@@ -83,7 +83,6 @@ public record DamageIndicatorOptions(
     }
 
     public static void sendHealParticle(float amount, ServerLevel level, LivingEntity living) {
-        if (!living.isAddedToLevel() || !level.getServer().isSameThread()) return;
         amount = effectiveHealAmount(amount, living);
         if (amount > 0) {
             double y = living.getBoundingBoxForCulling().maxY;

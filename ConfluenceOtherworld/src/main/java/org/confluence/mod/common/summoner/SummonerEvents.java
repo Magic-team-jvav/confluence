@@ -92,7 +92,10 @@ public final class SummonerEvents {
         });
         NeoForge.EVENT_BUS.addListener((LivingHealEvent event) -> {
             LivingEntity living = event.getEntity();
-            if (!(living.level() instanceof ServerLevel level) || !level.getServer().isSameThread()) return;
+            if (!living.isAddedToLevel() ||
+                    !(living.level() instanceof ServerLevel level) ||
+                    !level.getServer().isSameThread()
+            ) return;
             float amount = DamageIndicatorOptions.effectiveHealAmount(event.getAmount(), living);
             if (amount >= 0.01F) {
                 Vec3 pos = living.getBoundingBox().getCenter();

@@ -53,6 +53,7 @@ import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
+import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
@@ -73,8 +74,6 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBlockCounters;
-import org.confluence.mod.common.item.potion.HealingPotionItem;
-import org.confluence.mod.common.enchantment.EnchantmentBehaviors;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
@@ -88,6 +87,7 @@ import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.common.HomingBeeItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
+import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.whip.WhipDamageSource;
@@ -198,7 +198,10 @@ public final class LivingEntityEvents {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
-        if (!(living.level() instanceof ServerLevel level)) return;
+        if (!living.isAddedToLevel() ||
+                !(living.level() instanceof ServerLevel level) ||
+                !level.getServer().isSameThread()
+        ) return;
         float amount = event.getAmount();
 
         if (living instanceof Player player) {

@@ -1,9 +1,10 @@
 package org.confluence.mod.mixin.world.entity.player;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import org.confluence.mod.util.SoulcererUtils;
-import net.minecraft.world.damagesource.DamageSource;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,8 +14,10 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.util.SoulcererUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,6 +30,22 @@ public abstract class PlayerMixin implements IPlayer {
     @ModifyExpressionValue(method = "actuallyHurt", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/ForgeHooks;onLivingDamage(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/damagesource/DamageSource;F)F", remap = false))
     private float confluence$finalSoulHitDamage(float damage, @Local(argsOnly = true) DamageSource source) {
         return SoulcererUtils.captureSoulHitDamage((LivingEntity) (Object) this, source, damage);
+    }
+
+    // 投出的剑仍占据快捷栏，但近战处理使用空手物品。
+    @ModifyExpressionValue(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getMainHandItem()Lnet/minecraft/world/item/ItemStack;"))
+    private ItemStack confluence$attackStack(ItemStack stack) {
+        return BasePhasebladeItem.heldStack(stack);
+    }
+
+    @WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getKnockbackBonus(Lnet/minecraft/world/entity/LivingEntity;)I"))
+    private int confluence$attackKnockback(LivingEntity entity, Operation<Integer> original) {
+        return BasePhasebladeItem.isThrown(entity.getMainHandItem()) ? 0 : original.call(entity);
+    }
+
+    @WrapOperation(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getFireAspect(Lnet/minecraft/world/entity/LivingEntity;)I"))
+    private int confluence$attackFireAspect(LivingEntity entity, Operation<Integer> original) {
+        return BasePhasebladeItem.isThrown(entity.getMainHandItem()) ? 0 : original.call(entity);
     }
 
     @Unique

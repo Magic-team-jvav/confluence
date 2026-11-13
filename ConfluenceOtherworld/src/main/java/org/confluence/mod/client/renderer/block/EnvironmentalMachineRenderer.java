@@ -93,13 +93,6 @@ public final class EnvironmentalMachineRenderer extends GeoBlockRenderer<Environ
         });
     }
 
-    @Override
-    public void defaultRender(PoseStack pose, EnvironmentalMachineBlock.BEntity entity, MultiBufferSource source,
-                              RenderType type, VertexConsumer buffer, float yaw, float partialTick, int light) {
-        if (entity.isBase)
-            super.defaultRender(pose, entity, source, type, buffer, yaw, partialTick, light);
-    }
-
     // 贴图只有全透明和不透明像素；使用带背面剔除的裁切渲染，保留负体积且避免透明面排序穿插。
     @Override
     public RenderType getRenderType(EnvironmentalMachineBlock.BEntity entity, ResourceLocation texture, MultiBufferSource buffers, float partialTick) {

@@ -11,14 +11,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.VariantHolder;
-
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.util.OverworldUtils;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
@@ -28,8 +27,18 @@ import java.util.function.IntFunction;
 public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Squirrel.class, EntityDataSerializers.INT);
     public static final String VARIANT_KEY = "Variant";
+    private static final VariantSpawnProfile<Variant> CAVE_VARIANTS = VariantSpawnProfile.<Variant>builder()
+            .add(Variant.AMBER, 1)
+            .add(Variant.AMETHYST, 1)
+            .add(Variant.DIAMOND, 1)
+            .add(Variant.EMERALD, 1)
+            .add(Variant.RUBY, 1)
+            .add(Variant.SAPPHIRE, 1)
+            .add(Variant.TOPAZ, 1)
+            .build();
     private static final VariantSpawnProfile<Variant> SPAWN_VARIANTS = VariantSpawnProfile.<Variant>builder()
-            .add(Variant.NORMAL, 399)
+            .add(Variant.NORMAL, 199)
+            .add(Variant.RED, 200)
             .add(Variant.GOLD, 1)
             .build();
     public Squirrel(EntityType<? extends Squirrel> type, Level level) {
@@ -79,7 +88,7 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(SPAWN_VARIANTS.select(random));
+        setVariant((OverworldUtils.inCave(blockPosition().getY()) ? CAVE_VARIANTS : SPAWN_VARIANTS).select(random));
     }
 
     @Override

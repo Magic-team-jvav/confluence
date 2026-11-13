@@ -48,8 +48,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             Map.entry("female_angler_spawn_egg", "angler_spawn_egg"),
             Map.entry("giant_antlion_swarmer_spawn_egg", "giant_antlion_spawn_egg"),
             Map.entry("granite_elemental_spawn_egg", "grantite_elemental_spawn_egg"),
-            Map.entry("little_hornet_spawn_egg", "hornet_spawn_egg"),
-            Map.entry("red_squirrel_spawn_egg", "squirrel_spawn_egg"));
+            Map.entry("little_hornet_spawn_egg", "hornet_spawn_egg"));
     private final ModelFile itemGenerated = new ModelFile.UncheckedModelFile(ResourceLocation.withDefaultNamespace("item/generated"));
     private final Set<Item> skip = new HashSet<>();
 

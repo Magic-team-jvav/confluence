@@ -59,7 +59,7 @@ public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
                         AABB.ofSize(player.position(), 128.0D, 128.0D, 128.0D),
                         yoyo -> !yoyo.isDetached() && !yoyo.isCounterweight() && yoyo.belongsTo(player) && yoyo.represents(itemStack)).isEmpty();
             } else if (itemStack.getItem() instanceof BasePhasebladeItem) {
-                return !BasePhasebladeItem.isThrown(player, itemStack);
+                return !BasePhasebladeItem.isThrown(itemStack);
             }
         }
         return true;

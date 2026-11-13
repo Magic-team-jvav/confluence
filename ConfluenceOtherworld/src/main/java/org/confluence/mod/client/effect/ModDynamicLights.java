@@ -63,7 +63,7 @@ public final class ModDynamicLights {
         DynamicLightRegister.registerItem(Items.LAVA_BUCKET, 15);
         DynamicLightRegister.registerItemOverride(BasePhasebladeItem.class, (stack, holder, projectile) ->
                 !projectile && BasePhasebladeItem.isTurnOn(stack)
-                        && !(holder instanceof Player player && BasePhasebladeItem.isThrown(player, stack)) ? 12 : 0);
+                        && !(holder instanceof Player && BasePhasebladeItem.isThrown(stack)) ? 12 : 0);
         DynamicLightRegister.registerItemFallback(stack -> !(stack.getItem() instanceof BlockItem)
                 && stack.is(ModTags.Items.PROVIDE_LIGHT) ? 10 : 0);
         DynamicLightRegister.registerEquipment(EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND, EquipmentSlot.HEAD);

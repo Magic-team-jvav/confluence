@@ -1546,8 +1546,8 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(CritterEntities.FAIRY.get(), 3, 1, 1),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.OLD_SHAKING_CHEST.get(), 1, 1, 1),
                             new MobSpawnSettings.SpawnerData(CritterEntities.GOLDFISH.get(), 10, 1, 3),
-                            new MobSpawnSettings.SpawnerData(CritterEntities.JEWEL_BUNNY.get(), 2, 1, 1),
-                            new MobSpawnSettings.SpawnerData(CritterEntities.JEWEL_SQUIRREL.get(), 2, 1, 1)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BUNNY.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 2, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_highlevel"), new ForgeBiomeModifiers.AddSpawnsBiomeModifier(
@@ -1565,9 +1565,8 @@ public class ModDataProvider {
                     biome.getOrThrow(PortTags.Biomes.IS_FOREST),
                     List.of(
                             new MobSpawnSettings.SpawnerData(CritterEntities.BUNNY.get(), 10, 1, 2),
-                            new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 20, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.CLOUD_SHEEP.get(), 2, 2, 3),
-                            new MobSpawnSettings.SpawnerData(CritterEntities.RED_SQUIRREL.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.DUCK.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.BIRD.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(CritterEntities.BLUE_JAY.get(), 10, 1, 2),

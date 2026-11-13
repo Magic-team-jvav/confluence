@@ -117,8 +117,6 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> SPIKED_SLIME_SPAWN_EGG = register(MonsterEntities.SPIKED_SLIME, "尖刺史莱姆刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> GREEN_DUMPLING_SLIME_SPAWN_EGG = register(MonsterEntities.GREEN_DUMPLING_SLIME, "青团史莱姆刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> SQUIRREL_SPAWN_EGG = register(CritterEntities.SQUIRREL, "松鼠刷怪蛋");
-    public static final PortDeferredItem<ForgeSpawnEggItem> RED_SQUIRREL_SPAWN_EGG = register(CritterEntities.RED_SQUIRREL, "红松鼠刷怪蛋");
-    public static final PortDeferredItem<ForgeSpawnEggItem> JEWEL_SQUIRREL_SPAWN_EGG = register(CritterEntities.JEWEL_SQUIRREL, "宝石松鼠刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> GLOWING_MOOSHROOM_SPAWN_EGG = register(CritterEntities.GLOWING_MOOSHROOM, "发光哞菇刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> CLOUD_SHEEP_SPAWN_EGG = register(CritterEntities.CLOUD_SHEEP, "飘飘羊刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> CLUCKSHROOM_SPAWN_EGG = register(CritterEntities.CLUCKSHROOM, "红色咯菇刷怪蛋");
@@ -127,7 +125,6 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> PENGUIN_SPAWN_EGG = register(CritterEntities.PENGUIN, "企鹅刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> MYSTIC_FROG_SPAWN_EGG = register(CritterEntities.MYSTIC_FROG, "神秘青蛙刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> GOLDFISH_SPAWN_EGG = register(CritterEntities.GOLDFISH, "金鱼刷怪蛋");
-    public static final PortDeferredItem<ForgeSpawnEggItem> JEWEL_BUNNY_SPAWN_EGG = register(CritterEntities.JEWEL_BUNNY, "宝石兔刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> EXPLOSIVE_BUNNY_SPAWN_EGG = register(CritterEntities.EXPLOSIVE_BUNNY, "爆炸兔刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> HOSTILE_BUNNY_SPAWN_EGG = register(CritterEntities.HOSTILE_BUNNY, "敌对兔兔刷怪蛋");
     public static final PortDeferredItem<ForgeSpawnEggItem> DUCK_SPAWN_EGG = register(CritterEntities.DUCK, "鸭子刷怪蛋");

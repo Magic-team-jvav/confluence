@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.item.PhasebladeModel;
@@ -51,6 +52,13 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
                 renderLightning(poses, item, buffers, partialTick, overlay);
             }
         });
+    }
+
+    @Override
+    public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack poses, MultiBufferSource buffers, int light, int overlay) {
+        if ((context == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || context == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND) && BasePhasebladeItem.isThrown(stack))
+            return;
+        super.renderByItem(stack, context, poses, buffers, light, overlay);
     }
 
     private void renderLightning(PoseStack poses, BasePhasebladeItem item, MultiBufferSource buffers, float partialTick, int overlay) {

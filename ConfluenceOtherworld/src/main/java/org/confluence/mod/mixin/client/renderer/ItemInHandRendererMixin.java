@@ -26,10 +26,16 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemInHandRenderer.class)
 public abstract class ItemInHandRendererMixin {
+    @ModifyVariable(method = "renderArmWithItem", at = @At("HEAD"), argsOnly = true)
+    private ItemStack confluence$heldStack(ItemStack stack) {
+        return BasePhasebladeItem.heldStack(stack);
+    }
+
     @Shadow
     protected abstract void renderPlayerArm(PoseStack poseStack, MultiBufferSource buffer, int packedLight, float equippedProgress, float swingProgress, HumanoidArm side);
 
@@ -45,11 +51,7 @@ public abstract class ItemInHandRendererMixin {
             @Local(argsOnly = true) int combinedLight,
             @Local HumanoidArm humanoidarm
     ) {
-        if (stack.getItem() instanceof BasePhasebladeItem && BasePhasebladeItem.isThrown(player, stack)) {
-            if (!player.isInvisible()) {
-                renderPlayerArm(poseStack, buffer, combinedLight, equippedProgress, 0.0F, humanoidarm);
-            }
-        } else if (stack.is(SwordItems.ZOMBIE_ARM)) {
+        if (stack.is(SwordItems.ZOMBIE_ARM)) {
             if (!player.isInvisible()) {
                 renderPlayerArm(poseStack, buffer, combinedLight, equippedProgress, swingProgress, humanoidarm);
             }

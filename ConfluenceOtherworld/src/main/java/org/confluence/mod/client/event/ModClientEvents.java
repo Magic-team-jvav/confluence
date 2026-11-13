@@ -606,15 +606,12 @@ public final class ModClientEvents {
         // penguin.bbmodel 的三个变种共用模型和动画，差异仅在贴图。
         event.registerEntityRenderer(MonsterEntities.CORRUPT_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/corrupt_penguin.png"), Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.VICIOUS_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/vicious_penguin.png"), Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
-        event.registerEntityRenderer(CritterEntities.JEWEL_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.BIRD.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.BLUE_JAY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.CARDINAL.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.SQUIRREL.get(), CritterRenderer::new);
-        event.registerEntityRenderer(CritterEntities.RED_SQUIRREL.get(), CritterRenderer::new);
-        event.registerEntityRenderer(CritterEntities.JEWEL_SQUIRREL.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.DUCK.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.CRAB.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.WORM.get(), CritterRenderer::new);
@@ -1197,6 +1194,7 @@ public final class ModClientEvents {
 
     private static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(BossBarStyles.INSTANCE);
+        event.registerReloadListener((ResourceManagerReloadListener) manager -> DestroyerRenderer.clearDestroyerMeshes());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> BrainDissolveTexture.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());

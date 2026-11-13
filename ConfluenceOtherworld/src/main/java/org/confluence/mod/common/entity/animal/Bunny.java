@@ -19,7 +19,6 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-
 import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -29,6 +28,7 @@ import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -49,6 +49,15 @@ public class Bunny extends Rabbit implements GeoEntity {
     private static final RawAnimation WATCH_2 = RawAnimation.begin().thenPlay("watch_2");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final VariantSpawnProfile<Variant> CAVE_VARIANTS = VariantSpawnProfile.<Variant>builder()
+            .add(Variant.AMBER, 1)
+            .add(Variant.AMETHYST, 1)
+            .add(Variant.DIAMOND, 1)
+            .add(Variant.EMERALD, 1)
+            .add(Variant.RUBY, 1)
+            .add(Variant.SAPPHIRE, 1)
+            .add(Variant.TOPAZ, 1)
+            .build();
     private static final VariantSpawnProfile<Variant> SPAWN_VARIANTS = VariantSpawnProfile.<Variant>builder()
             .add(Variant.NORMAL, 399)
             .add(Variant.GOLD, 1)
@@ -88,7 +97,7 @@ public class Bunny extends Rabbit implements GeoEntity {
     }
 
     protected void initializeSpawnVariant() {
-        setBunnyVariant(SPAWN_VARIANTS.select(random));
+        setBunnyVariant((OverworldUtils.inCave(blockPosition().getY()) ? CAVE_VARIANTS : SPAWN_VARIANTS).select(random));
     }
 
     @Override
@@ -197,7 +206,12 @@ public class Bunny extends Rabbit implements GeoEntity {
 
     @Override
     public @Nullable Bunny getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-        return CritterEntities.BUNNY.get().create(level);
+        Bunny child = CritterEntities.BUNNY.get().create(level);
+        if (child != null && switch (getBunnyVariant()) {
+            case AMETHYST, TOPAZ, SAPPHIRE, EMERALD, RUBY, AMBER, DIAMOND -> true;
+            default -> false;
+        }) child.setBunnyVariant(CAVE_VARIANTS.select(random));
+        return child;
     }
 
     public enum Variant implements IVariant {

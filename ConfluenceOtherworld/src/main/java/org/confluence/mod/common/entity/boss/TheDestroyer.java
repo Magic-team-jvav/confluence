@@ -146,7 +146,6 @@ public class TheDestroyer extends BaseBoss {
     /// 直线冲刺速度，单位格/tick；起步后不再追踪目标。
     private static final double DASH_SPEED = 3.2;
     /// 蓄势时每 tick 保留的速度比例。
-    private static final double DASH_DRAG = 0.85;
     /// 包围攻击的总倒计时，包含追赶入场与收圈，单位 tick；240 tick 为 12 秒。
     private static final int COIL_DURATION = 240;
     /// 围圈初始和最终半径，单位格。
@@ -574,7 +573,6 @@ public class TheDestroyer extends BaseBoss {
         specialTicks++;
         switch (specialAttack) {
             case DASH_WINDUP -> {
-                velocity = velocity.scale(DASH_DRAG);
                 if (specialTicks >= DASH_WINDUP) {
                     dashDirection = getLookAngle();
                     velocity = dashDirection.scale(DASH_SPEED);
@@ -854,14 +852,15 @@ public class TheDestroyer extends BaseBoss {
     /// 根据一阶段已损失的生命比例释放，并优先选择受击体节附近。
     void tryReleaseProbe(DestroyerPart part) {
         lastHitProbeIndex = part.getIndex();
-        if (!isMetal()) releaseProbesForHealth(lastHitProbeIndex);
     }
 
     private void releaseProbesForHealth(int hitIndex) {
         int count = SEGMENT_COUNT - 2;
         float progress = Mth.clamp((1.0F - getHealth() / getMaxHealth()) / (1.0F - phaseTwoThreshold()), 0.0F, 1.0F);
         int desired = Math.min(count, (int) Math.floor(progress * count + 1.0E-4F));
-        int missing = desired - releasedProbes.cardinality();
+        // 欠发数量由血量和已释放记录决定，每两刻最多弹出一个。
+        if ((tickCount & 1) != 0) return;
+        int missing = Math.min(1, desired - releasedProbes.cardinality());
         if (missing <= 0) return;
         DestroyerPart[] parts = body.getParts();
         boolean changed = false;

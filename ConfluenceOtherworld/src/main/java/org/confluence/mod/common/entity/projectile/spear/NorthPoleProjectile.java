@@ -1,8 +1,5 @@
 package org.confluence.mod.common.entity.projectile.spear;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,27 +15,6 @@ import org.confluence.mod.common.init.entity.ModEntities;
 public class NorthPoleProjectile extends SpearProjectile {
     /// 子弹射物生成间隔（tick）。
     private static final int SUB_SPAWN_INTERVAL = 5;
-
-    /// 模型层定义（暂用风暴长矛模型）。
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(Confluence.asResource("north_pole_projectile"), "main");
-
-    /// 模型网格定义（暂用风暴长矛模型网格）。
-    public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create()
-                .texOffs(12, 10).addBox(-1.0F, -1.0F, -8.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(-0.01F))
-                .texOffs(0, 16).addBox(-1.0F, -1.0F, 4.0F, 2.0F, 2.0F, 4.0F, new CubeDeformation(-0.01F)), PartPose.ZERO);
-        bone.addOrReplaceChild("cube_ml_r1", CubeListBuilder.create()
-                        .texOffs(0, 10).addBox(-1.0F, 2.0659F, -0.5303F, 2.0F, 2.0F, 4.0F, CubeDeformation.NONE)
-                        .texOffs(12, 16).addBox(-1.0F, -4.1213F, -3.5355F, 2.0F, 2.0F, 4.0F, CubeDeformation.NONE),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.7854F, 0.0F, 0.0F));
-        bone.addOrReplaceChild("cube_mm_r1", CubeListBuilder.create()
-                        .texOffs(0, 0).addBox(-1.0F, -0.5858F, -4.0F, 2.0F, 2.0F, 8.0F, new CubeDeformation(-0.01F)),
-                PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, -0.7854F, 0.0F, 0.0F));
-        return LayerDefinition.create(meshdefinition, 32, 32);
-    }
 
     private int subSpawnTimer = 0;
 
@@ -98,11 +74,6 @@ public class NorthPoleProjectile extends SpearProjectile {
     @Override
     public net.minecraft.resources.ResourceLocation getProjTexture() {
         return Confluence.asResource("textures/entity/storm_spear_shot_projectile.png");
-    }
-
-    @Override
-    public ModelLayerLocation getModelLayer() {
-        return LAYER_LOCATION;
     }
 
     @Override

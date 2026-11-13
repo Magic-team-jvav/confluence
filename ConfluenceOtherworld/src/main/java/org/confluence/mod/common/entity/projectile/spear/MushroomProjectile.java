@@ -12,7 +12,6 @@ import org.confluence.mod.Confluence;
 /// <h1>蘑菇弹射物</h1>
 /// 自旋悬浮弹射物，可穿墙，单次命中后销毁，无击退。
 public class MushroomProjectile extends SpearProjectile {
-
     public MushroomProjectile(EntityType<? extends MushroomProjectile> entityType, Level level) {
         super(entityType, level);
         this.knockBack = 0.0f;
@@ -63,5 +62,4 @@ public class MushroomProjectile extends SpearProjectile {
     public net.minecraft.resources.ResourceLocation getProjTexture() {
         return Confluence.asResource("textures/entity/mushroom_projectile.png");
     }
-
 }

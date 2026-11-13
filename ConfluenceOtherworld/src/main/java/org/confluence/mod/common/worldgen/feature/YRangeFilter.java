@@ -1,4 +1,4 @@
-package org.confluence.mod.common.worldgen;
+package org.confluence.mod.common.worldgen.feature;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -6,14 +6,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
-import net.minecraft.world.level.levelgen.placement.PlacementModifier;
+import net.minecraft.world.level.levelgen.placement.PlacementFilter;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import org.confluence.mod.common.init.ModFeatures;
 
-import java.util.stream.Stream;
-
-
-public class YRangeFilter extends PlacementModifier {
+public class YRangeFilter extends PlacementFilter {
     public static final MapCodec<YRangeFilter> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("min_inclusive").forGetter(YRangeFilter::minInclusive),
             Codec.INT.fieldOf("max_inclusive").forGetter(YRangeFilter::maxInclusive)
@@ -40,9 +37,8 @@ public class YRangeFilter extends PlacementModifier {
     }
 
     @Override
-    public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos) {
-        int y = pos.getY();
-        return minInclusive <= y && y <= maxInclusive ? Stream.of(pos) : Stream.empty();
+    protected boolean shouldPlace(PlacementContext context, RandomSource random, BlockPos pos) {
+        return minInclusive <= pos.getY() && pos.getY() <= maxInclusive;
     }
 
     @Override

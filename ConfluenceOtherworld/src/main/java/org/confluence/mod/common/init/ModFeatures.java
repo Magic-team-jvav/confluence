@@ -22,9 +22,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.worldgen.DepthBandPlacement;
-import org.confluence.mod.common.worldgen.SecretFlagPlacement;
-import org.confluence.mod.common.worldgen.YRangeFilter;
 import org.confluence.mod.common.worldgen.feature.*;
 import org.jetbrains.annotations.Nullable;
 

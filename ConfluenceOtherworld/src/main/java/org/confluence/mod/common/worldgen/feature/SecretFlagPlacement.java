@@ -1,4 +1,4 @@
-package org.confluence.mod.common.worldgen;
+package org.confluence.mod.common.worldgen.feature;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

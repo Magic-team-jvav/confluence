@@ -13,12 +13,17 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
+import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceHandler;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public interface IInjectBiomeSource {
+    void confluence$setHandler(@Nullable BiomeSourceHandler handler);
+
+    @Nullable BiomeSourceHandler confluence$getHandler();
+
     @Nullable Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair();
 
     default @Nullable Pair<Holder<Biome>, Holder<Biome>> confluence$createBiomePair() {

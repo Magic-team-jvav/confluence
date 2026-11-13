@@ -1,6 +1,7 @@
 package org.confluence.mod.common.worldgen.biome.injector;
 
 import net.minecraft.world.level.biome.BiomeSource;
+import org.confluence.mod.mixed.IInjectBiomeSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -20,7 +21,11 @@ public final class BiomeSourceInjector {
 
     @Nullable
     public static BiomeSourceHandler handlerOf(BiomeSource source) {
-        return handlers.get(source);
+        BiomeSourceHandler handler = handlers.get(source);
+        if (handler == null && source instanceof IInjectBiomeSource injectBiomeSource) {
+            handler = injectBiomeSource.confluence$getHandler();
+        }
+        return handler;
     }
 
     public static boolean isInstalled() {

@@ -95,7 +95,9 @@ public final class ConfluenceBiomeInjector {
                     if (type == null) {
                         continue;
                     }
-                    handlers.put(source, createRegionHandler(type, seed, biomeRegistry, injectSource, injectGenerator, allowEvilRemap));
+                    BiomeSourceHandler handler = createRegionHandler(type, seed, biomeRegistry, injectSource, injectGenerator, allowEvilRemap);
+                    handlers.put(source, handler);
+                    injectSource.confluence$setHandler(handler);
                 } else if (source instanceof TheEndBiomeSource) {
                     handlers.put(source, TheEndBiomeHolder.handler());
                 }

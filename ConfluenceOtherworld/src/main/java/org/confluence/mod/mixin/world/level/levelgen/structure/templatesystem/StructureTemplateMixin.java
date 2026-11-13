@@ -16,6 +16,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -161,6 +162,7 @@ public abstract class StructureTemplateMixin {
             @Share("brushData") LocalRef<Map<ChunkPos, BrushData>> brushData,
             @Share("droplets") LocalRef<Map<ChunkPos, Map<BlockPos, ParticleOptions>>> droplets
     ) {
+        if (!(serverLevel instanceof WorldGenRegion) && !(serverLevel instanceof ServerLevel)) return;
         for (Map.Entry<ChunkPos, BrushData> entry : brushData.get().entrySet()) {
             BrushingColorPacketS2C.sendToPlayersTrackingChunk(serverLevel.getLevel(), entry.getKey(), entry.getValue(), true);
         }

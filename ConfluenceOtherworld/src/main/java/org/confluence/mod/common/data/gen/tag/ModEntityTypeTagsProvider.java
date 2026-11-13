@@ -294,12 +294,12 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         );
         tag(ModTags.EntityTypes.TOWN_CRITTERS).add(
                 CritterEntities.BUNNY.get(), CritterEntities.BIRD.get(), CritterEntities.BLUE_JAY.get(), CritterEntities.CARDINAL.get(),
-                CritterEntities.SQUIRREL.get(), CritterEntities.RED_SQUIRREL.get(), CritterEntities.DUCK.get(), CritterEntities.PENGUIN.get(),
+                CritterEntities.SQUIRREL.get(), CritterEntities.DUCK.get(), CritterEntities.PENGUIN.get(),
                 CritterEntities.BUTTERFLY.get(), CritterEntities.GRASSHOPPER.get(), CritterEntities.STINKBUG.get(),
                 CritterEntities.FIREFLY.get(), CritterEntities.LIGHTNING_BUG.get(), CritterEntities.DRAGONFLY.get(), CritterEntities.LADYBUG.get(),
                 CritterEntities.GOLDFISH.get(), CritterEntities.SCORPION.get(), CritterEntities.GRUBBY.get(), CritterEntities.SLUGGY.get(),
                 CritterEntities.BUGGY.get(), CritterEntities.MYSTIC_FROG.get(), CritterEntities.WORM.get(), CritterEntities.MAGGOT.get(),
-                CritterEntities.JEWEL_BUNNY.get(), CritterEntities.JEWEL_SQUIRREL.get(), CritterEntities.FAIRY.get(), CritterEntities.FEALING.get(),
+                CritterEntities.FAIRY.get(), CritterEntities.FEALING.get(),
                 CritterEntities.HELL_BUTTERFLY.get(), CritterEntities.MAGMA_SNAIL.get()
         );
     }

@@ -341,7 +341,7 @@ public enum EnvironmentalMachines implements IGlobalData {
             if (chunk == null) continue;
             int localX = level.random.nextInt(CHUNK_WIDTH);
             int localZ = level.random.nextInt(CHUNK_WIDTH);
-            int surface = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, localX, localZ) - 1;
+            int surface = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, localX, localZ);
             int y = i < ACTIVE_SAMPLES_PER_TICK * 2 / 3
                     ? surface - level.random.nextInt(4)
                     : level.random.nextIntBetweenInclusive(level.getMinBuildHeight(), Math.max(level.getMinBuildHeight(), surface));
@@ -439,11 +439,9 @@ public enum EnvironmentalMachines implements IGlobalData {
 
     public static void sync(ServerLevel level, BlockPos pos) {
         if (!level.hasChunkAt(pos)) return;
-        for (BlockPos part : List.of(pos, pos.above())) {
-            if (level.getBlockEntity(part) instanceof EnvironmentalMachineBlock.BEntity entity) {
-                entity.refresh();
-                level.sendBlockUpdated(part, entity.getBlockState(), entity.getBlockState(), 2);
-            }
+        if (level.getBlockEntity(pos) instanceof EnvironmentalMachineBlock.BEntity entity) {
+            entity.refresh();
+            level.sendBlockUpdated(pos, entity.getBlockState(), entity.getBlockState(), 2);
         }
     }
 

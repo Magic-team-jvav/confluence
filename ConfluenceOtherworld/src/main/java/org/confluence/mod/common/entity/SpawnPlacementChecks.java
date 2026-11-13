@@ -91,6 +91,12 @@ public final class SpawnPlacementChecks {
         return OverworldUtils.inUnderground(pos.getY());
     }
 
+    public static boolean checkSurfaceOrCavernCritterSpawn(EntityType<? extends Animal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return OverworldUtils.inCave(pos.getY())
+                ? checkCavernCritterSpawn(type, level, spawnType, pos, random)
+                : checkAnimalSpawnRules(type, level, spawnType, pos, random);
+    }
+
     /// 宝石兔与宝石松鼠只在洞穴层生成。
     public static boolean checkCavernCritterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return OverworldUtils.inCave(pos.getY()) && checkMobSpawnRules(type, level, spawnType, pos, random);

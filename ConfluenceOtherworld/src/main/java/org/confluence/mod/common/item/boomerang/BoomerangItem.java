@@ -69,6 +69,7 @@ public class BoomerangItem extends Item implements ILeftClickStateItem, IWeaponT
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (hand == InteractionHand.OFF_HAND) return InteractionResultHolder.fail(stack);
         if (player instanceof ServerPlayer serverPlayer) {
             throwBoomerang(serverPlayer, hand);
         }

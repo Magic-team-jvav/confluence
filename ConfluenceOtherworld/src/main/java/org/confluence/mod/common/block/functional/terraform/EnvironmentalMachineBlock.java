@@ -21,14 +21,17 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.PushReaction;
@@ -37,8 +40,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
-import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.mod.client.renderer.block.EnvironmentalMachineRenderer;
@@ -59,7 +60,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 // 玩家和漏斗共用逐槽库存；允许跨槽混装，混装会停机并在尝试启动时引发事故。
-public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVerticalTwoPartBlock implements EntityBlock {
+public class EnvironmentalMachineBlock extends Block implements EntityBlock {
     private static final int SLOT_COUNT = EnvironmentalMachines.SLOT_COUNT;
     private static final float MODEL_UNITS = 16;
     private static final float BLOCK_STRENGTH = 3.5F;
@@ -118,12 +119,22 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
     public EnvironmentalMachineBlock(boolean world) {
         super(Properties.of().strength(BLOCK_STRENGTH).dynamicShape().noOcclusion().pushReaction(PushReaction.BLOCK));
         this.world = world;
+        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.HORIZONTAL_FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return state.getValue(PART) == StateProperties.VerticalTwoPart.BASE
-                ? MACHINE_SHAPES[state.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue()] : Shapes.empty();
+        return MACHINE_SHAPES[state.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue()];
     }
 
     @Override
@@ -145,12 +156,10 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
         return InteractionResult.SUCCESS;
     }
 
-    // 三个插入口位置固定，上下两半都以底座坐标计算。
     private static int slot(BlockState state, BlockPos pos, BlockHitResult hit) {
-        BlockPos base = state.getValue(PART) == StateProperties.VerticalTwoPart.BASE ? pos : pos.below();
-        double x = (hit.getLocation().x - base.getX()) * MODEL_UNITS;
-        double y = (hit.getLocation().y - base.getY()) * MODEL_UNITS;
-        double z = (hit.getLocation().z - base.getZ()) * MODEL_UNITS;
+        double x = (hit.getLocation().x - pos.getX()) * MODEL_UNITS;
+        double y = (hit.getLocation().y - pos.getY()) * MODEL_UNITS;
+        double z = (hit.getLocation().z - pos.getZ()) * MODEL_UNITS;
         Direction front = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         for (int slot = 0; slot < SLOT_COUNT; slot++) {
             AABB bounds = tankBounds(front, slot).inflate(HIT_TOLERANCE);
@@ -163,24 +172,19 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
     private void interact(Level level, BlockPos pos, Player player, ItemStack stack, int slot) {
         if (!(level instanceof ServerLevel server) || !(level.getBlockEntity(pos) instanceof BEntity entity))
             return;
-        // 上半部的命中也统一使用底座库存，避免存入和取出操作落在不同方块实体上。
-        if (!entity.isBase) {
-            if (!(level.getBlockEntity(entity.basePos()) instanceof BEntity base)) return;
-            entity = base;
-        }
         if (!entity.stillValid(player) || !player.mayBuild()) return;
         if (slot < 0) {
             if (stack.isEmpty() && !player.isShiftKeyDown()) {
                 var data = entity.data();
                 if (!data.enabled && data.hasMixedSolutions()) {
-                    failMixedSolutions(server, entity.basePos(), player);
+                    failMixedSolutions(server, pos, player);
                     return;
                 }
                 if (data.setEnabled(!data.enabled, level.getDayTime())) {
                     entity.setChanged();
                     if (data.enabled && data.solution == Solution.GREEN && player instanceof ServerPlayer serverPlayer)
                         AchievementUtils.awardAchievement(serverPlayer, "and_good_riddance");
-                    level.playSound(null, entity.basePos(), SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, SWITCH_VOLUME, data.enabled ? SWITCH_ON_PITCH : SWITCH_OFF_PITCH);
+                    level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, SWITCH_VOLUME, data.enabled ? SWITCH_ON_PITCH : SWITCH_OFF_PITCH);
                     player.displayClientMessage(Component.translatable(data.enabled ? "message.confluence.environmental_machine.enabled" : "message.confluence.environmental_machine.disabled"), true);
                 }
             }
@@ -276,12 +280,11 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState replacement, boolean moving) {
         if (state.is(replacement.getBlock())) return;
         if (level instanceof ServerLevel server) {
-            BlockPos basePos = state.getValue(PART) == StateProperties.VerticalTwoPart.BASE ? pos : pos.below();
-            var data = EnvironmentalMachines.INSTANCE.remove(server, basePos);
+            var data = EnvironmentalMachines.INSTANCE.remove(server, pos);
             if (data != null) {
                 for (int slot = 0; slot < SLOT_COUNT; slot++) {
                     if (data.slotSolutions[slot] != null && data.slots[slot] > 0)
-                        popResource(level, basePos, new ItemStack(data.slotSolutions[slot].item(), data.slots[slot]));
+                        popResource(level, pos, new ItemStack(data.slotSolutions[slot].item(), data.slots[slot]));
                 }
             }
         }
@@ -290,7 +293,6 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
     public static class BEntity extends BlockEntity implements GeoBlockEntity, WorldlyContainer {
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-        public final boolean isBase;
         public Solution solution;
         public final Solution[] slotSolutions = new Solution[SLOT_COUNT];
         public boolean mixedSolutions;
@@ -303,15 +305,13 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
         public BEntity(BlockPos pos, BlockState state) {
             super(FunctionalBlocks.ENVIRONMENTAL_MACHINE_ENTITY.get(), pos, state);
-            isBase = state.getValue(PART) == StateProperties.VerticalTwoPart.BASE;
             rangeChunks = ((EnvironmentalMachineBlock) state.getBlock()).world
                     ? EnvironmentalMachines.DEFAULT_TERRAFORMER_RANGE_CHUNKS : EnvironmentalMachines.DEFAULT_CLENTAMINATOR_RANGE_CHUNKS;
         }
 
-        public BlockPos basePos() {return isBase ? worldPosition : worldPosition.below();}
 
         public EnvironmentalMachines.State data() {
-            return EnvironmentalMachines.INSTANCE.get((ServerLevel) level, basePos(), ((EnvironmentalMachineBlock) getBlockState().getBlock()).world);
+            return EnvironmentalMachines.INSTANCE.get((ServerLevel) level, worldPosition, ((EnvironmentalMachineBlock) getBlockState().getBlock()).world);
         }
 
         public void refresh() {
@@ -344,7 +344,7 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
             super.setChanged();
             if (level instanceof ServerLevel server) {
                 data().inventoryChanged(level.getDayTime());
-                EnvironmentalMachines.sync(server, basePos());
+                EnvironmentalMachines.sync(server, worldPosition);
             }
         }
 
@@ -359,7 +359,6 @@ public class EnvironmentalMachineBlock extends HorizontalDirectionalWithVertical
 
         @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-            if (!isBase) return;
             for (int slot = 0; slot < SLOT_COUNT; slot++) {
                 int index = slot;
                 String side = SLOT_NAMES[slot];

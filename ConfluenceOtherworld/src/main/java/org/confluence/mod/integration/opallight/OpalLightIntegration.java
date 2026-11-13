@@ -126,7 +126,7 @@ public final class OpalLightIntegration {
         if (!(entity instanceof Player player) || !(stack.getItem() instanceof BasePhasebladeItem blade))
             return true;
         if (!(player.level() instanceof ClientLevel level))
-            return !BasePhasebladeItem.isThrown(player, stack);
+            return !BasePhasebladeItem.isThrown(stack);
         var world = world(level);
         long tick = level.getGameTime();
         if (world.phaseTick != tick) {

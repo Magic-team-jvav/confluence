@@ -5,6 +5,7 @@ import com.google.common.collect.Streams;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.RecipeBookCategories;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -123,6 +124,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.paint.PaintItem;
+import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
@@ -133,6 +135,7 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.api.geckolib.RegisterLocatorPreTransformerEvent;
+import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
@@ -915,15 +918,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(CritterEntities.PENGUIN.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.MYSTIC_FROG.get(), c -> new GeoNormalRenderer<>(c, new MysticFrogModel(c)));
         event.registerEntityRenderer(CritterEntities.GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/animal/goldfish.png"), Confluence.asResource("animations/entity/animal/goldfish.animation.json")), false, 1.0F, 0.1875F));
-        event.registerEntityRenderer(CritterEntities.JEWEL_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.BIRD.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.BLUE_JAY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.CARDINAL.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.SQUIRREL.get(), CritterRenderer::new);
-        event.registerEntityRenderer(CritterEntities.RED_SQUIRREL.get(), CritterRenderer::new);
-        event.registerEntityRenderer(CritterEntities.JEWEL_SQUIRREL.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.DUCK.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.CRAB.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.WORM.get(), CritterRenderer::new);
@@ -1065,7 +1065,12 @@ public final class ModClientEvents {
         )).filter(Objects::nonNull).map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         for (DeferredHolder<Item, ? extends Item> holder : SwordItems.ITEMS.getEntries()) {
-            if (SwordItems.isShortSword(holder)) {
+            if (holder.get() instanceof BasePhasebladeItem blade) {
+                event.registerItem(new SimpleClientItemExtensions()
+                        .armPose((entity, hand, stack) -> BasePhasebladeItem.isThrown(stack) ? HumanoidModel.ArmPose.EMPTY : null)
+                        .customRenderer((minecraft, stack, context, poses, buffers, light, overlay) ->
+                                GeoRenderProvider.of(blade).getGeoItemRenderer().renderByItem(stack, context, poses, buffers, light, overlay)), blade);
+            } else if (SwordItems.isShortSword(holder)) {
                 event.registerItem(ShortSwordInHandRenderer.INSTANCE, holder.get());
             }
         }
@@ -1225,6 +1230,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener(BossBarStyles.INSTANCE);
+        event.registerReloadListener((ResourceManagerReloadListener) manager -> DestroyerRenderer.clearConnectorBuffers());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener((ResourceManagerReloadListener) manager -> BrainDissolveTexture.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());

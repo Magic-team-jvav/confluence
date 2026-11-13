@@ -349,7 +349,23 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void registerBestiaryKey(RegisterBestiaryKeyEvent event) {
-        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + bunny.getBunnyVariant().getSerializedName());
+        event.register(CritterEntities.BUNNY.get(), (type, bunny) -> {
+            var variant = bunny.getBunnyVariant();
+            return switch (variant) {
+                case NORMAL -> type.getDescriptionId();
+                case GOLD, AMBER, AMETHYST, DIAMOND, EMERALD, RUBY, SAPPHIRE, TOPAZ ->
+                        "entity.confluence.jewel_bunny." + variant.getSerializedName();
+                default -> type.getDescriptionId() + '.' + variant.getSerializedName();
+            };
+        });
+        event.register(CritterEntities.SQUIRREL.get(), (type, squirrel) -> {
+            var variant = squirrel.getVariant();
+            return switch (variant) {
+                case AMBER, AMETHYST, DIAMOND, EMERALD, RUBY, SAPPHIRE, TOPAZ ->
+                        "entity.confluence.jewel_squirrel." + variant.getSerializedName();
+                default -> type.getDescriptionId() + '.' + variant.getSerializedName();
+            };
+        });
         event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> {
             String key = type.getDescriptionId() + '.';
             return key + eye.getVariant().getSerializedName();

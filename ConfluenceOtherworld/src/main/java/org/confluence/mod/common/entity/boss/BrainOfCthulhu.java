@@ -224,7 +224,7 @@ public class BrainOfCthulhu extends BaseBoss {
         return target != null && target.isAlive() ? target : null;
     }
 
-    /// 第一阶段依次执行靠近、惯性淡出、重新定位和淡入靠近。
+    /// 第一阶段依次执行靠近、惯性淡出、重新定位和淡入。
     /// 飞眼怪不会随本体瞬移，而是继续追逐更新后的编队位置，形成跨越玩家的大范围扫掠轨迹。
     private void tickPhaseOneCycle(List<VisualNeuron> loadedNeurons) {
         switch (phaseOneState) {
@@ -251,7 +251,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 }
             }
             case FADING_IN -> {
-                tickPhaseOneMovement(2.0);
+                setDeltaMovement(Vec3.ZERO);
                 if (++phaseOneStateTicks >= PHASE1_FADE_IN_TICKS) {
                     enterPhaseOneState(PhaseOneState.APPROACHING);
                 }
@@ -411,13 +411,21 @@ public class BrainOfCthulhu extends BaseBoss {
                 }
             }
             case FADING_IN -> {
-                Vec3 destination = target.position().add(0.0, 1.0, 0.0);
-                Vec3 offset = destination.subtract(position());
-                if (offset.lengthSqr() > 2.0 && hurtTime == 0) {
-                    setDeltaMovement(offset.normalize().scale(PHASE_TWO_REPOSITION_SPEED));
-                }
+                setDeltaMovement(Vec3.ZERO);
                 lookAtTarget(target);
                 if (++phaseTwoStateTicks >= PHASE2_FADE_IN_TICKS) {
+                    enterPhaseTwoState(PhaseTwoState.APPROACHING);
+                }
+            }
+            case APPROACHING -> {
+                Vec3 offset = target.position().add(0.0, 1.0, 0.0).subtract(position());
+                if (offset.lengthSqr() > 16.0 && hurtTime == 0) {
+                    setDeltaMovement(offset.normalize().scale(PHASE_TWO_REPOSITION_SPEED));
+                } else if (hurtTime == 0) {
+                    setDeltaMovement(Vec3.ZERO);
+                }
+                lookAtTarget(target);
+                if (++phaseTwoStateTicks >= PHASE2_STALK_TICKS || offset.lengthSqr() <= 16.0) {
                     enterPhaseTwoState(PhaseTwoState.STALKING);
                 }
             }
@@ -548,12 +556,14 @@ public class BrainOfCthulhu extends BaseBoss {
     }
 
     private void doTeleport() {
+        setDeltaMovement(Vec3.ZERO);
         double minimumRadius = isExpert() ? 7.0 : 9.0;
         teleportAroundTarget(minimumRadius, minimumRadius + 1.0, 0.0, Math.PI, 0.0, 16);
     }
 
     /// 第二阶段在玩家较远处重新显现，并保留安全碰撞检查，避免传送进方块或贴到玩家脸上。
     private void doPhaseTwoTeleport() {
+        setDeltaMovement(Vec3.ZERO);
         teleportAroundTarget(10.0, 11.0, Math.PI * 0.35, Math.PI * 0.65, 2.0, 24);
     }
 
@@ -958,7 +968,9 @@ public class BrainOfCthulhu extends BaseBoss {
         /// 传送前逐渐隐去。
         FADING_OUT(3),
         /// 传送到新位置后逐渐显现。
-        FADING_IN(4);
+        FADING_IN(4),
+        /// 显形完成后接近目标，再进入追踪状态。
+        APPROACHING(5);
 
         private final int id;
 
@@ -972,6 +984,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 case 2 -> DASHING;
                 case 3 -> FADING_OUT;
                 case 4 -> FADING_IN;
+                case 5 -> APPROACHING;
                 default -> TRANSFORMING;
             };
         }

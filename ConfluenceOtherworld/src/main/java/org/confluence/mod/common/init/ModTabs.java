@@ -2336,15 +2336,12 @@ public final class ModTabs {
                         forest.accept(SpawnEggItems.CLOUD_SHEEP_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.CLUCKSHROOM_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.SQUIRREL_SPAWN_EGG.get());
-                        forest.accept(SpawnEggItems.JEWEL_SQUIRREL_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.BUNNY_SPAWN_EGG.get());
-                        forest.accept(SpawnEggItems.JEWEL_BUNNY_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.EXPLOSIVE_BUNNY_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.DUCK_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.BIRD_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.BLUE_JAY_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.CARDINAL_SPAWN_EGG.get());
-                        forest.accept(SpawnEggItems.RED_SQUIRREL_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.HOSTILE_BUNNY_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.GNOME_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.GOLDFISH_SPAWN_EGG.get());

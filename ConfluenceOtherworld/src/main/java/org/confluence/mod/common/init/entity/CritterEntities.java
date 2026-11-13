@@ -57,8 +57,6 @@ public final class CritterEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Squirrel>> SQUIRREL = withAttributes(register("squirrel", "松鼠", Squirrel::new),
             () -> CreatureAttributeBuilder.critter().maxHealth(10).movementSpeed(0.2).safeFallDistance(6).build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<RedSquirrel>> RED_SQUIRREL = withAttributes(register("red_squirrel", "红松鼠", RedSquirrel::new),
-            () -> CreatureAttributeBuilder.critter().maxHealth(10).movementSpeed(0.2).safeFallDistance(6).build());
 
     // 地表与森林：蝴蝶、蚱蜢与臭虫
     public static final DeferredHolder<EntityType<?>, EntityType<Butterfly>> BUTTERFLY = withAttributes(registerInsect("butterfly", "蝴蝶", Butterfly::new),
@@ -133,11 +131,7 @@ public final class CritterEntities {
             () -> CreatureAttributeBuilder.insect().build());
 
     // 地下与洞穴：宝石兔与宝石松鼠
-    public static final DeferredHolder<EntityType<?>, EntityType<JewelBunny>> JEWEL_BUNNY = withAttributes(register("jewel_bunny", "宝石兔", JewelBunny::new),
-            () -> CreatureAttributeBuilder.rabbit().jumpStrength(0.6).safeFallDistance(6).build());
 
-    public static final DeferredHolder<EntityType<?>, EntityType<JewelSquirrel>> JEWEL_SQUIRREL = withAttributes(register("jewel_squirrel", "宝石松鼠", JewelSquirrel::new),
-            () -> CreatureAttributeBuilder.critter().maxHealth(10).movementSpeed(0.2).safeFallDistance(6).build());
 
     // 地下与洞穴：飞灵
     public static final DeferredHolder<EntityType<?>, EntityType<Fealing>> FEALING = withAttributes(registerInsectWithEnglishName("fealing", "飞灵", "Flying Spirit", Fealing::new),

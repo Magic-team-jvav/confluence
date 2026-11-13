@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.sword;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -20,7 +21,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
@@ -94,10 +97,36 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
         return tag != null && tag.contains(TURN_ON_KEY, Tag.TAG_BYTE) && tag.getBoolean(TURN_ON_KEY);
     }
 
-    public static boolean isThrown(Player player, ItemStack stack) {
-        return !player.level().getEntitiesOfClass(PhasebladeProjectile.class,
-                AABB.ofSize(player.position(), 256.0, 256.0, 256.0),
-                projectile -> projectile.belongsTo(player) && projectile.represents(stack)).isEmpty();
+    private static final String PROJECTILE_KEY = "ThrownProjectile";
+
+    public static boolean isThrown(ItemStack stack) {
+        if (!(stack.getItem() instanceof BasePhasebladeItem)) return false;
+        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
+        return tag != null && tag.hasUUID(PROJECTILE_KEY);
+    }
+
+    public static ItemStack heldStack(ItemStack stack) {
+        return isThrown(stack) ? ItemStack.EMPTY : stack;
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ItemAbility ability) {
+        return !isThrown(stack) && super.canPerformAction(stack, ability);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+        return isThrown(stack) ? ItemStack.EMPTY.getDestroySpeed(state) : super.getDestroySpeed(stack, state);
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(ItemStack stack, BlockState state) {
+        return !isThrown(stack) && super.isCorrectToolForDrops(stack, state);
+    }
+
+    @Override
+    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
+        return isThrown(player.getMainHandItem()) || super.canAttackBlock(state, level, pos, player);
     }
 
     @Override
@@ -108,8 +137,10 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
         if (player instanceof ServerPlayer serverPlayer) {
             var active = serverPlayer.serverLevel().getEntitiesOfClass(PhasebladeProjectile.class,
                     AABB.ofSize(player.position(), 256.0, 256.0, 256.0), projectile -> projectile.belongsTo(player));
-            if (active.stream().anyMatch(projectile -> projectile.represents(stack))) {
-                active.stream().filter(projectile -> projectile.represents(stack)).forEach(PhasebladeProjectile::recall);
+            CompoundTag data = LibUtils.getItemStackNbtIfPresent(stack);
+            if (data != null && data.hasUUID(PROJECTILE_KEY)) {
+                if (serverPlayer.serverLevel().getEntity(data.getUUID(PROJECTILE_KEY)) instanceof PhasebladeProjectile thrown && thrown.belongsTo(player))
+                    thrown.recall();
             } else {
                 PhasebladeProjectile projectile = this instanceof Phasesaber
                         ? ModEntities.PHASESABER_PROJECTILE.get().create(serverPlayer.serverLevel())
@@ -117,8 +148,11 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
                 if (projectile != null) {
                     projectile.configure(player, stack, (float) player.getAttributeValue(LibAttributes.getAttackDamage()),
                             (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
-                    if (level.addFreshEntity(projectile))
+                    if (level.addFreshEntity(projectile)) {
+                        LibUtils.updateItemStackNbt(stack, tag -> tag.putUUID(PROJECTILE_KEY, projectile.getUUID()));
+                        stack.set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
                         active.forEach(PhasebladeProjectile::recall);
+                    }
                 }
             }
         }
@@ -158,8 +192,12 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
         if (level.isClientSide || !(level instanceof ServerLevel serverLevel) || !(entity instanceof Player player))
             return;
 
+        CompoundTag data = LibUtils.getItemStackNbtIfPresent(stack);
+        if (data != null && data.hasUUID(PROJECTILE_KEY) && !(serverLevel.getEntity(data.getUUID(PROJECTILE_KEY)) instanceof PhasebladeProjectile)) {
+            LibUtils.updateItemStackNbt(stack, tag -> tag.remove(PROJECTILE_KEY));
+        }
         boolean shouldBeOn = selected && player.getMainHandItem() == stack;
-        ItemAttributeModifiers modifiers = shouldBeOn ? turnOnModifiers : turnOffModifiers;
+        ItemAttributeModifiers modifiers = isThrown(stack) ? ItemAttributeModifiers.EMPTY : shouldBeOn ? turnOnModifiers : turnOffModifiers;
         if (!modifiers.equals(stack.get(DataComponents.ATTRIBUTE_MODIFIERS))) {
             stack.set(DataComponents.ATTRIBUTE_MODIFIERS, modifiers);
         }
@@ -172,6 +210,7 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
 
     @Override
     public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        if (isThrown(stack)) return ItemAttributeModifiers.EMPTY;
         return isTurnOn(stack) ? turnOnModifiers : turnOffModifiers;
     }
 

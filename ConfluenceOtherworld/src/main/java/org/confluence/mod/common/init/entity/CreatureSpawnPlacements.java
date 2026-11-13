@@ -25,18 +25,16 @@ public final class CreatureSpawnPlacements {
         group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkTruffleWormSpawn), CritterEntities.TRUFFLE_WORM);
         group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkAnimalSpawnRules,
                 CritterEntities.CLOUD_SHEEP,
-                CritterEntities.BUNNY,
                 CritterEntities.EXPLOSIVE_BUNNY, CritterEntities.HOSTILE_BUNNY,
                 CritterEntities.BIRD, CritterEntities.BLUE_JAY, CritterEntities.CARDINAL,
-                CritterEntities.SQUIRREL, CritterEntities.RED_SQUIRREL,
                 CritterEntities.DUCK,
                 CritterEntities.GLOWING_SNAIL, CritterEntities.GRUBBY,
                 CritterEntities.MAGGOT, CritterEntities.SLUGGY,
                 CritterEntities.SNAIL, CritterEntities.SCORPION,
                 CritterEntities.GRASSHOPPER);
         event.register(CritterEntities.CRAB.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SpawnPlacementChecks::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkCavernCritterSpawn,
-                CritterEntities.JEWEL_BUNNY, CritterEntities.JEWEL_SQUIRREL);
+        group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkSurfaceOrCavernCritterSpawn,
+                CritterEntities.BUNNY, CritterEntities.SQUIRREL);
         group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkSurfaceDayCritterSpawn,
                 CritterEntities.DRAGONFLY);
         group(event, SpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkButterflySpawn, CritterEntities.BUTTERFLY);

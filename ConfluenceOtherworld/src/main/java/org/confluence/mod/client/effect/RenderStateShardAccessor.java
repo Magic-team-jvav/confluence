@@ -65,15 +65,24 @@ public class RenderStateShardAccessor extends RenderStateShard {
             });
 
     // 使用原版实体自发光着色器读取叠色，保留 eyes 的加色混合、剔除和只写颜色行为。
-    private static final Function<ResourceLocation, RenderType> ENTITY_GLOW = Util.memoize(texture ->
-            RenderType.create("confluence_entity_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+    private static final Function<ResourceLocation, RenderType> ENTITY_GLOW = Util.memoize(texture -> createEntityGlow(texture, NO_LAYERING));
+    private static final Function<ResourceLocation, RenderType> DESTROYER_GLOW = Util.memoize(texture -> createEntityGlow(texture, POLYGON_OFFSET_LAYERING));
+
+    public static RenderType destroyerGlow(ResourceLocation texture) {
+        return DESTROYER_GLOW.apply(texture);
+    }
+
+    private static RenderType createEntityGlow(ResourceLocation texture, LayeringStateShard layering) {
+        return RenderType.create("confluence_entity_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
                     RenderType.CompositeState.builder()
                             .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
                             .setTextureState(new TextureStateShard(texture, false, false))
                             .setTransparencyState(ADDITIVE_TRANSPARENCY)
                             .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
                             .setOverlayState(OVERLAY)
-                            .createCompositeState(false)));
+                            .setLayeringState(layering)
+                            .createCompositeState(false));
+    }
 
     private static final Function<ResourceLocation, RenderType> ENTITY_UNSHADED_GLOW = Util.memoize(texture ->
             RenderType.create("confluence_entity_unshaded_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,

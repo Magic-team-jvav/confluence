@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 /// 毁灭者释放的独立飞行敌怪。
 public final class TheDestroyerProbe extends BaseMonster implements BossOwnedEntity {
     private static final double FLIGHT_SPEED = 1.125, ACCELERATION = 0.028125;
-    private static final double SEPARATION_DISTANCE = 4.0, SEPARATION_SPEED = 0.4;
+    private static final double SEPARATION_DISTANCE = 6.0, SEPARATION_SPEED = 0.4;
     private static final int SHOT_INTERVAL = 40;
     private static final double ATTACK_RANGE = 64.0;
     private static final float LASER_SPEED = 2.2F;
@@ -60,6 +60,11 @@ public final class TheDestroyerProbe extends BaseMonster implements BossOwnedEnt
     protected boolean hasEntityContactAttack() {return true;}
 
     @Override
+    public boolean canAttack(LivingEntity target) {
+        return !(target instanceof TheDestroyerProbe || target instanceof TheDestroyer) && super.canAttack(target);
+    }
+
+    @Override
     protected BTRoot createBT() {
         return new BTRoot() {
             @Override
@@ -95,13 +100,17 @@ public final class TheDestroyerProbe extends BaseMonster implements BossOwnedEnt
         // 朝目标中心追踪，保留惯性以形成自然的掠过和回转。
         Vec3 center = position().add(0, getBbHeight() * 0.5, 0);
         Vec3 aim = target.position().add(0, target.getBbHeight() * 0.5, 0);
-        Vec3 offset = aim.subtract(center);
+        // 按个体分配环绕位置，射击仍瞄准目标本身。
+        double orbitAngle = getId() * 2.399963229728653;
+        Vec3 offset = aim.add(8 * Math.cos(orbitAngle), 2, 8 * Math.sin(orbitAngle)).subtract(center);
         Vec3 desired = offset.lengthSqr() < 1.0E-6 ? Vec3.ZERO : offset.normalize().scale(FLIGHT_SPEED * Math.min(1.0, offset.length() / SEPARATION_DISTANCE));
         Vec3 separation = Vec3.ZERO;
         for (TheDestroyerProbe other : level().getEntitiesOfClass(TheDestroyerProbe.class,
                 getBoundingBox().inflate(SEPARATION_DISTANCE), other -> other != this && other.isAlive())) {
             Vec3 away = position().subtract(other.position());
-            double distance = away.length();
+            double distanceSquared = away.lengthSqr();
+            if (distanceSquared >= SEPARATION_DISTANCE * SEPARATION_DISTANCE) continue;
+            double distance = Math.sqrt(distanceSquared);
             if (distance < 1.0E-6) {
                 // 同位置出生时给双方相反方向，避免零向量无法分离。
                 double angle = (Math.min(getId(), other.getId()) * 2.399963229728653) % (Math.PI * 2);

@@ -1568,7 +1568,9 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(MonsterEntities.CLINGER.get(), 15, 1, 1),
                             new MobSpawnSettings.SpawnerData(CritterEntities.FAIRY.get(), 3, 1, 1),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.OLD_SHAKING_CHEST.get(), 1, 1, 1),
-                            new MobSpawnSettings.SpawnerData(CritterEntities.GOLDFISH.get(), 10, 1, 3)
+                            new MobSpawnSettings.SpawnerData(CritterEntities.GOLDFISH.get(), 10, 1, 3),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.BUNNY.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(CritterEntities.SQUIRREL.get(), 2, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_highlevel"), new BiomeModifiers.AddSpawnsBiomeModifier(

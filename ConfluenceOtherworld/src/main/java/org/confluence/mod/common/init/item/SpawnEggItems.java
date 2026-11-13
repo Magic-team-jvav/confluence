@@ -116,8 +116,6 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> SPIKED_SLIME_SPAWN_EGG = register(MonsterEntities.SPIKED_SLIME, "尖刺史莱姆刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> GREEN_DUMPLING_SLIME_SPAWN_EGG = register(MonsterEntities.GREEN_DUMPLING_SLIME, "青团史莱姆刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> SQUIRREL_SPAWN_EGG = register(CritterEntities.SQUIRREL, "松鼠刷怪蛋");
-    public static final DeferredItem<DeferredSpawnEggItem> RED_SQUIRREL_SPAWN_EGG = register(CritterEntities.RED_SQUIRREL, "红松鼠刷怪蛋");
-    public static final DeferredItem<DeferredSpawnEggItem> JEWEL_SQUIRREL_SPAWN_EGG = register(CritterEntities.JEWEL_SQUIRREL, "宝石松鼠刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> GLOWING_MOOSHROOM_SPAWN_EGG = register(CritterEntities.GLOWING_MOOSHROOM, "发光哞菇刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> CLOUD_SHEEP_SPAWN_EGG = register(CritterEntities.CLOUD_SHEEP, "飘飘羊刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> CLUCKSHROOM_SPAWN_EGG = register(CritterEntities.CLUCKSHROOM, "红色咯菇刷怪蛋");
@@ -126,7 +124,6 @@ public final class SpawnEggItems {
     public static final DeferredItem<DeferredSpawnEggItem> PENGUIN_SPAWN_EGG = register(CritterEntities.PENGUIN, "企鹅刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> MYSTIC_FROG_SPAWN_EGG = register(CritterEntities.MYSTIC_FROG, "神秘青蛙刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> GOLDFISH_SPAWN_EGG = register(CritterEntities.GOLDFISH, "金鱼刷怪蛋");
-    public static final DeferredItem<DeferredSpawnEggItem> JEWEL_BUNNY_SPAWN_EGG = register(CritterEntities.JEWEL_BUNNY, "宝石兔刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> EXPLOSIVE_BUNNY_SPAWN_EGG = register(CritterEntities.EXPLOSIVE_BUNNY, "爆炸兔刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> HOSTILE_BUNNY_SPAWN_EGG = register(CritterEntities.HOSTILE_BUNNY, "敌对兔兔刷怪蛋");
     public static final DeferredItem<DeferredSpawnEggItem> DUCK_SPAWN_EGG = register(CritterEntities.DUCK, "鸭子刷怪蛋");

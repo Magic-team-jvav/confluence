@@ -1,17 +1,20 @@
 package org.confluence.mod.mixin.world.entity.player;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.mixed.IPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,6 +30,11 @@ public abstract class PlayerMixin implements IPlayer {
     private BaseFlailEntity confluence$flailEntity;
     @Unique
     private boolean confluence$voidSeaSwimming;
+
+    @ModifyReturnValue(method = "getWeaponItem", at = @At("RETURN"))
+    private ItemStack confluence$meleeWeapon(ItemStack stack) {
+        return BasePhasebladeItem.heldStack(stack);
+    }
 
     @Override
     @Deprecated

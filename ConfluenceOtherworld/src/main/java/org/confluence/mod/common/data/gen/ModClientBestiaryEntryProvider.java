@@ -100,7 +100,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .variant(CritterEntities.BUNNY, Bunny.Variant.SLIMED, builder -> builder.order(4500).rarity(4).background(SURFACE_SUN).filters(FilterEntry.SURFACE, FilterEntry.HALLOWEEN, FilterEntry.DAYTIME))
                 /// 兔兔 （圣诞节）
                 .variant(CritterEntities.BUNNY, Bunny.Variant.XMAS, builder -> builder.order(4600).rarity(4).background(SURFACE_SUN).filters(FilterEntry.SURFACE, FilterEntry.CHRISTMAS, FilterEntry.DAYTIME))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 4, Bunny.Variant.GOLD, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 4, Bunny.Variant.GOLD, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.BIRD, builder -> builder.order(4800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.BLUE_JAY, builder -> builder.order(4900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.CARDINAL, builder -> builder.order(5000).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
@@ -114,8 +114,8 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 /// 金鱼
                 /// 金金鱼
                 .numberedVariant(CritterEntities.SQUIRREL, 0, Squirrel.Variant.NORMAL, builder -> builder.order(5900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .numberedVariant(CritterEntities.RED_SQUIRREL, "entity.confluence.squirrel", 1, Squirrel.Variant.RED, builder -> builder.order(6000).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 1, Squirrel.Variant.GOLD, builder -> builder.order(6100).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
+                .numberedVariant(CritterEntities.SQUIRREL, 1, Squirrel.Variant.RED, builder -> builder.order(6000).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .numberedVariant(CritterEntities.SQUIRREL, 2, Squirrel.Variant.GOLD, builder -> builder.order(6100).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 /// 老鼠
                 /// 金老鼠
                 .add(EntityType.FROG, builder -> builder.order(6400).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
@@ -161,20 +161,20 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .numberedVariant(CritterEntities.FAIRY, 2, Fairy.Variant.BLUE, builder -> builder.order(9000).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
                 /// 大鼠
                 .add(CritterEntities.MAGGOT, builder -> builder.order(9200).rarity(1).background(GRAVEYARD).filters(FilterEntry.GRAVEYARD))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 2, Squirrel.Variant.AMETHYST, builder -> builder.order(9300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 7, Squirrel.Variant.TOPAZ, builder -> builder.order(9400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 6, Squirrel.Variant.SAPPHIRE, builder -> builder.order(9500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 4, Squirrel.Variant.EMERALD, builder -> builder.order(9600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 5, Squirrel.Variant.RUBY, builder -> builder.order(9700).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 3, Squirrel.Variant.DIAMOND, builder -> builder.order(9800).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_SQUIRREL, 0, Squirrel.Variant.AMBER, builder -> builder.order(9900).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 1, Bunny.Variant.AMETHYST, builder -> builder.order(10000).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 7, Bunny.Variant.TOPAZ, builder -> builder.order(10100).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 6, Bunny.Variant.SAPPHIRE, builder -> builder.order(10200).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 3, Bunny.Variant.EMERALD, builder -> builder.order(10300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 5, Bunny.Variant.RUBY, builder -> builder.order(10400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 2, Bunny.Variant.DIAMOND, builder -> builder.order(10500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .numberedVariant(CritterEntities.JEWEL_BUNNY, 0, Bunny.Variant.AMBER, builder -> builder.order(10600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.SQUIRREL, "entity.confluence.jewel_squirrel", 2, Squirrel.Variant.AMETHYST, builder -> builder.order(9300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.SQUIRREL, "entity.confluence.jewel_squirrel", 7, Squirrel.Variant.TOPAZ, builder -> builder.order(9400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.SQUIRREL, "entity.confluence.jewel_squirrel", 6, Squirrel.Variant.SAPPHIRE, builder -> builder.order(9500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.SQUIRREL, "entity.confluence.jewel_squirrel", 4, Squirrel.Variant.EMERALD, builder -> builder.order(9600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.SQUIRREL, "entity.confluence.jewel_squirrel", 5, Squirrel.Variant.RUBY, builder -> builder.order(9700).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.SQUIRREL, "entity.confluence.jewel_squirrel", 3, Squirrel.Variant.DIAMOND, builder -> builder.order(9800).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.SQUIRREL, "entity.confluence.jewel_squirrel", 0, Squirrel.Variant.AMBER, builder -> builder.order(9900).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 1, Bunny.Variant.AMETHYST, builder -> builder.order(10000).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 7, Bunny.Variant.TOPAZ, builder -> builder.order(10100).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 6, Bunny.Variant.SAPPHIRE, builder -> builder.order(10200).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 3, Bunny.Variant.EMERALD, builder -> builder.order(10300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 5, Bunny.Variant.RUBY, builder -> builder.order(10400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 2, Bunny.Variant.DIAMOND, builder -> builder.order(10500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .numberedVariant(CritterEntities.BUNNY, "entity.confluence.jewel_bunny", 0, Bunny.Variant.AMBER, builder -> builder.order(10600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
                 .add(CritterEntities.SNAIL, builder -> builder.order(10700).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
                 .add(CritterEntities.TRUFFLE_WORM, builder -> builder.order(10800).rarity(3).background(GLOWING_MUSHROOM).filters(FilterEntry.UNDERGROUND_MUSHROOM))
                 .add(CritterEntities.PENGUIN, builder -> builder.order(10900).rarity(1).background(SNOW).filters(FilterEntry.SNOW))
@@ -857,7 +857,13 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
         }
 
         public <E extends Enum<E> & IVariant> Builder numberedVariant(IHolderExtension<EntityType<?>> holder, String typeKey, int displayVariant, E entityVariant, Consumer<ClientBestiary.Entry.Builder> consumer) {
-            return add(holder, typeKey, Integer.toString(displayVariant), consumer.andThen(builder -> builder.entityNbt(entityVariant::serialize)));
+            String key = typeKey + '.' + entityVariant.getSerializedName();
+            ClientBestiary.Entry.Builder builder = ClientBestiary.Entry.builderc(holder.getDelegate().value(), key);
+            consumer.accept(builder);
+            builder.entityNbt(entityVariant::serialize);
+            builder.description(Component.translatable("bestiary." + typeKey + '.' + displayVariant + ".desc"));
+            map.put(key, builder.build());
+            return this;
         }
 
         public Builder demonEyeVariant(DemonEye.Variant variant, Consumer<ClientBestiary.Entry.Builder> consumer) {

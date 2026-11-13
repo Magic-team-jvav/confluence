@@ -958,12 +958,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )
                 )
         );
-        add(CritterEntities.RED_SQUIRREL.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
-                        )
-                )
-        );
         add(CritterEntities.CARDINAL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)

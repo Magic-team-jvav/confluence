@@ -2,9 +2,9 @@ package org.confluence.mod.common.summoner.particle;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.TickEvent;
 import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
-import org.mesdag.portlib.event.tick.PortLevelTickEvent;
 import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public final class SummonerParticleData {
     /**
      * 将本 tick 累积的粒子打包发送给同维度玩家。
      */
-    public static void tick(PortLevelTickEvent.Post event) {
-        Level level = event.getLevel();
+    public static void tick(TickEvent.LevelTickEvent event) {
+        Level level = event.level;
         if (!level.isClientSide()) {
             SummonerParticleData data = level.getData(SummonerAttachmentTypes.BATCHED_PARTICLES);
             if (!data.entries.isEmpty()) {

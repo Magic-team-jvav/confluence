@@ -1,11 +1,15 @@
 package org.confluence.mod.common.summoner;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -19,10 +23,6 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkInstance;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.entity.living.PortLivingDamageEvent;
-import org.mesdag.portlib.event.entity.living.PortLivingDeathEvent;
-import org.mesdag.portlib.event.entity.living.PortLivingHealEvent;
-import org.mesdag.portlib.event.tick.PortLevelTickEvent;
-import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
 
 import java.util.List;
 
@@ -30,12 +30,14 @@ import java.util.List;
 public final class SummonerEvents {
 
     public static void init() {
-        PortEventHandler.addListener((PortLevelTickEvent.Post event) -> {
+        PortEventHandler.addListener((TickEvent.LevelTickEvent event) -> {
+            if (event.phase != TickEvent.Phase.END) return;
             SummonerParticleData.tick(event);
             InfoData.tick(event);
         });
-        PortEventHandler.addListener((PortPlayerTickEvent.Post event) -> {
-            Player player = event.getEntity();
+        PortEventHandler.addListener((TickEvent.PlayerTickEvent event) -> {
+            if (event.phase != TickEvent.Phase.END) return;
+            Player player = event.player;
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE).tick();
                 serverPlayer.getData(SummonerAttachmentTypes.ZENITH_DATA).tick();
@@ -93,17 +95,20 @@ public final class SummonerEvents {
                 InfoData.record(level, event.getNewDamage(), pos, velocity, libSource.confluence$isCritical() ? InfoData.Type.CRITICAL : InfoData.Type.DAMAGE);
             }
         });
-        PortEventHandler.addListener((PortLivingHealEvent event) -> {
+        PortEventHandler.addListener((LivingHealEvent event) -> {
             LivingEntity living = event.getEntity();
+            if (!living.isAddedToWorld() ||
+                    !(living.level() instanceof ServerLevel level) ||
+                    !level.getServer().isSameThread()
+            ) return;
             float amount = DamageIndicatorOptions.effectiveHealAmount(event.getAmount(), living);
-            Level level = living.level();
-            if (!level.isClientSide() && amount >= 0.01) {
+            if (amount >= 0.01F) {
                 Vec3 pos = living.getBoundingBox().getCenter();
                 Vec3 velocity = new Vec3(0, 2, 0).offsetRandom(level.getRandom(), 0.5F).subtract(Vec3.ZERO).scale(0.4);
                 InfoData.record(level, amount, pos, velocity, InfoData.Type.HEAL);
             }
         });
-        PortEventHandler.addListener((PortLivingDeathEvent event) -> {
+        PortEventHandler.addListener((LivingDeathEvent event) -> {
             LivingEntity target = event.getEntity();
             DamageSource eventSource = event.getSource();
             if (target.level().isClientSide() && eventSource instanceof AttachmentEntityDamageSource damageSource) {

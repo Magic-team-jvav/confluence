@@ -4,12 +4,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.TickEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.info.NumberInfo;
 import org.confluence.mod.client.info.TextInfo;
 import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
-import org.mesdag.portlib.event.tick.PortLevelTickEvent;
 import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.ArrayList;
@@ -36,7 +36,8 @@ public final class InfoData {
         Vec3 eye = player.getEyePosition();
         for (SummonerBatchedInfoPayload.Number entry : numbers) {
             // 只有虚拟模式才接收数值：粒子模式的数字由原版指示粒子显示，关闭模式两者都不显示
-            if (!(entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator).isVirtual()) continue;
+            if (!(entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator).isVirtual())
+                continue;
             NumberInfo info = new NumberInfo(entry.type(), entry.amount(), entry.pos(), entry.velocity());
             if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
                 infoData.numbers.add(info);
@@ -73,8 +74,8 @@ public final class InfoData {
     public final List<NumberInfo> numbers = new ArrayList<>();
     public final List<TextInfo> texts = new ArrayList<>();
 
-    public static void tick(PortLevelTickEvent.Post event) {
-        Level level = event.getLevel();
+    public static void tick(TickEvent.LevelTickEvent event) {
+        Level level = event.level;
         InfoData data = level.getData(SummonerAttachmentTypes.INFO);
         if (level.isClientSide()) {
             data.numbers.removeIf(NumberInfo::tick);

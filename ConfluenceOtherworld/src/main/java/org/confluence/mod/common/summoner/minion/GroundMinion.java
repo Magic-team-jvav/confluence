@@ -151,6 +151,9 @@ public abstract class GroundMinion extends MomentumMinion implements IBlockColli
                     collisionX ? resolveVelocity(velocity.x, motion.x, elasticity) : velocity.x,
                     collisionY ? resolveVelocity(velocity.y, motion.y, elasticity) : velocity.y,
                     collisionZ ? resolveVelocity(velocity.z, motion.z, elasticity) : velocity.z));
+            if (collisionX || collisionY || collisionZ || stepped) {
+                entity.setPath(List.of(entity.currentPathNode));
+            }
             if (collisionX || collisionY || collisionZ) {
                 onBlockCollision(new CollisionContext(correctedPos, collisionX, collisionY, collisionZ, onGround));
             }

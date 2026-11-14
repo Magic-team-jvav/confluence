@@ -39,7 +39,7 @@ public enum PrefixType implements StringRepresentable {
     MELEE("universal", "common", "melee") {
         @Override
         public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack stack) {
-            if (stack.is(ItemTags.SWORDS)) return Melee.LEGENDARY;
+            if (stack.is(ItemTags.SWORDS) || stack.is(ModTags.Items.WHIP)) return Melee.LEGENDARY;
             if (stack.is(YoyoItems.TERRARIAN)) {
                 return Melee.LEGENDARY2;
             }
@@ -195,7 +195,7 @@ public enum PrefixType implements StringRepresentable {
         return switch (this) {
             case UNIVERSAL -> stack.is(YoyoItems.TERRARIAN) ? prefix == Melee.LEGENDARY2
                     : prefix == Universal.GODLY || prefix == Universal.DEMONIC;
-            case MELEE -> stack.is(ItemTags.SWORDS) ? prefix == Melee.LEGENDARY
+            case MELEE -> stack.is(ItemTags.SWORDS) || stack.is(ModTags.Items.WHIP) ? prefix == Melee.LEGENDARY
                     : stack.is(YoyoItems.TERRARIAN) ? prefix == Melee.LEGENDARY2
                     : prefix == Universal.GODLY || prefix == Universal.DEMONIC;
             case RANGED -> prefix == (hasKnockback(stack) ? Ranged.UNREAL : Universal.DEMONIC);

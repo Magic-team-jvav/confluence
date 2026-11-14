@@ -70,7 +70,7 @@ public final class ItemEvents {
                 prefix.type() == PrefixType.ACCESSORY || // 通过curios的事件添加
                 prefix.modifiers().isEmpty()
         ) return;
-        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON)) return;
+        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON) && !itemStack.is(ModTags.Items.WHIP)) return;
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Holder<Attribute> attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {

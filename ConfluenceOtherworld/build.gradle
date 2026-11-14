@@ -247,12 +247,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.slf4j:slf4j-api:2.0.0'
-    testImplementation 'org.apache.logging.log4j:log4j-core:2.19.0'
-    def lightningCheckOs = System.getProperty('os.name').toLowerCase(Locale.ROOT)
-    def lightningCheckNatives = lightningCheckOs.contains('win') ? 'natives-windows' : lightningCheckOs.contains('mac') ? 'natives-macos' : 'natives-linux'
-    if (System.getProperty('os.arch') in ['aarch64', 'arm64']) lightningCheckNatives += '-arm64'
-    testImplementation "org.lwjgl:lwjgl:3.3.1:${lightningCheckNatives}"
     projectName.forEach { name ->
         modImplementation(project(":" + name))
         if ("PortLib" != name) {

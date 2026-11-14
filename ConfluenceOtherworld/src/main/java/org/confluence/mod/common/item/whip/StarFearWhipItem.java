@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.whip;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.common.entity.projectile.mana.StarFearStarEntity;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
@@ -16,7 +17,7 @@ public final class StarFearWhipItem extends BaseWhipItem {
     private static final float DROP_CHANCE = 0.10F;
 
     public StarFearWhipItem(Supplier<? extends SummonMarkType> summonMarkType) {
-        super("star_fear", 22.0F, 0.6F, 2.0F, 15, summonMarkType);
+        super("star_fear", ModRarity.GREEN, 22.0F, 0.6F, 2.0F, 15, summonMarkType);
     }
 
     @Override

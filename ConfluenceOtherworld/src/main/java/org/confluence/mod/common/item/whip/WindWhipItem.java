@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.whip;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 
 import java.util.function.Supplier;
@@ -17,7 +18,7 @@ public final class WindWhipItem extends BaseWhipItem {
     private static final float MAX_BONUS = 0.75F;
 
     public WindWhipItem(Supplier<? extends SummonMarkType> summonMarkType) {
-        super("wind_whip", 18.0F, 0.225F, 2.0F, 15, summonMarkType);
+        super("wind_whip", ModRarity.GREEN, 18.0F, 0.225F, 2.0F, 15, summonMarkType);
     }
 
     @Override

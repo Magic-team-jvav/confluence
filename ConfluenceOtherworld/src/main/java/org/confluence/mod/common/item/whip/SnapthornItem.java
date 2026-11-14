@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.whip;
 import java.util.function.Supplier;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
@@ -12,7 +13,7 @@ public final class SnapthornItem extends BaseWhipItem {
     public static final float TAG_DAMAGE = 3.0F;
 
     public SnapthornItem(Supplier<? extends SummonMarkType> summonMarkType) {
-        super("snapthorn", 15F, 0.7F, 1.85F, 15, summonMarkType);
+        super("snapthorn", ModRarity.ORANGE, 15F, 0.7F, 1.85F, 15, summonMarkType);
     }
 
     @Override

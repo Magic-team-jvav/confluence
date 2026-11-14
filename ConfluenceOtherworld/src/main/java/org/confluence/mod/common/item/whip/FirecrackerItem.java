@@ -16,6 +16,7 @@ import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.common.init.ModEffects;
@@ -33,7 +34,7 @@ public final class FirecrackerItem extends BaseWhipItem {
     public static final float TAG_DAMAGE = 0.0F;
     private static final List<Blast> BLASTS = new ArrayList<>();
     public FirecrackerItem(Supplier<? extends SummonMarkType> summonMarkType) {
-        super("firecracker", 34F, 0.5F, 1.85F, 15, summonMarkType);
+        super("firecracker", ModRarity.LIGHT_RED, 34F, 0.5F, 1.85F, 15, summonMarkType);
     }
 
     @Override

@@ -1157,6 +1157,19 @@ public final class ModDataTipProvider implements DataProvider {
                 translate("tooltip.item.confluence.day_and_night_alike.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         add(root, SoulItems.TRUFFLE_LANTERN.get(), entry(vbox(0,
                 translate("tooltip.item.confluence.truffle_lantern.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        // 鞭子命中后的特殊效果；纯数值鞭子没有特殊效果，不生成条目。
+        add(root, WhipItems.SWAMP_WHIP.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.swamp_whip.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, WhipItems.SNAPTHORN.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.snapthorn.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.snapthorn.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, WhipItems.FIRECRACKER.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.firecracker.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320)),
+                translate("tooltip.item.confluence.firecracker.1", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, WhipItems.WIND_WHIP.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.wind_whip.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
+        add(root, WhipItems.STAR_FEAR.get(), entry(vbox(0,
+                translate("tooltip.item.confluence.star_fear.0", textOptions().color(ChatFormatting.GRAY.getName()).maxWidth(320))), Map.of(), false, true));
         return root;
     }
 }

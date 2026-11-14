@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.whip;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 
@@ -11,7 +12,7 @@ public final class SwampWhipItem extends BaseWhipItem {
     public static final float TAG_DAMAGE = 2.0F;
 
     public SwampWhipItem(Supplier<? extends SummonMarkType> summonMarkType) {
-        super("swamp_whip", 13F, 0.6F, 1.6F, 15, summonMarkType);
+        super("swamp_whip", ModRarity.GREEN, 13F, 0.6F, 1.6F, 15, summonMarkType);
     }
 
     @Override

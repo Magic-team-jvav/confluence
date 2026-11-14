@@ -8,6 +8,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
+import org.confluence.mod.util.ModUtils;
 
 public class HardmodeConvertorItem extends CustomRarityItem {
     public HardmodeConvertorItem() {
@@ -23,7 +24,7 @@ public class HardmodeConvertorItem extends CustomRarityItem {
             server.getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.hardmode_conversion.pass"), false);
             return InteractionResult.PASS;
         }
-        HardmodeConvertor.INSTANCE.start(server);
+        ModUtils.prepareHardmode();
         return InteractionResult.CONSUME;
     }
 }

@@ -1,8 +1,6 @@
 package org.confluence.mod.integration.jei.category;
 
 import com.google.common.collect.Lists;
-import com.mojang.blaze3d.systems.RenderSystem;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotDrawable;
@@ -12,68 +10,27 @@ import mezz.jei.api.gui.placement.VerticalAlignment;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.gui.widgets.IScrollGridWidget;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.mesdag.portlib.datamap.PortDataMapType;
-import org.mesdag.portlib.diff.mixin.CapabilityProviderAccessor;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCategory.IngredientPair> {
     public static final RecipeType<IngredientPair> EXTRACTINATOR = new RecipeType<>(Confluence.asResource("extractinator"), IngredientPair.class);
     public static final RecipeType<IngredientPair> CHLOROPHYTE_EXTRACTINATOR = new RecipeType<>(Confluence.asResource("chlorophyte_extractinator"), IngredientPair.class);
-    private static final IIngredientRenderer<ItemStack> INGREDIENT_RENDERER = new IIngredientRenderer<>() {
-        private static final DecimalFormat FORMAT;
-
-        static {
-            FORMAT = new DecimalFormat("#.####");
-            FORMAT.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
-        }
-
-        @Override
-        public void render(GuiGraphics guiGraphics, ItemStack ingredient) {
-            RenderSystem.enableDepthTest();
-            guiGraphics.renderFakeItem(ingredient, 0, 0);
-            RenderSystem.disableBlend();
-        }
-
-        @SuppressWarnings("removal")
-        @Override
-        public List<Component> getTooltip(ItemStack ingredient, TooltipFlag tooltipFlag) {
-            if (ingredient instanceof DataItemStack data) {
-                Minecraft minecraft = Minecraft.getInstance();
-                Player player = minecraft.player;
-                List<Component> lines = Lists.newArrayList(ingredient.getTooltipLines(player, tooltipFlag));
-                lines.add(1, data.min == data.max
-                        ? Component.translatable("tooltip.jei.count_exact", data.min)
-                        : Component.translatable("tooltip.jei.count_range", data.min, data.max));
-                lines.add(2, Component.translatable("tooltip.jei.drop_chance", FORMAT.format(data.chance * 100)));
-                return lines;
-
-            }
-            return List.of();
-        }
-    };
     private final RecipeType<IngredientPair> recipeType;
     private final Component title;
     private final IDrawable icon;
@@ -118,13 +75,7 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
             for (ExtractinatorData.Entry entry : pool.entries) {
                 if (entry.isEmpty()) continue;
                 builder.addOutputSlot()
-                        .addIngredientsUnsafe(List.of(new DataItemStack(
-                                entry.item(),
-                                entry.minCount() * pool.minRoll,
-                                entry.maxCount() * pool.maxRoll,
-                                (float) entry.getWeight().asInt() / pool.totalWeight
-                        )))
-                        .setCustomRenderer(VanillaTypes.ITEM_STACK, INGREDIENT_RENDERER)
+                        .addItemStack(entry.item().getDefaultInstance())
                         .setStandardSlotBackground();
             }
         }
@@ -155,31 +106,6 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
     }
 
     public record IngredientPair(ItemStack ingredient, ExtractinatorData data) {}
-
-    public static class DataItemStack extends ItemStack {
-        public final int min;
-        public final int max;
-        public final float chance;
-
-        public DataItemStack(ItemStack original, int min, int max, float chance) {
-            super(original.getItem(), original.getCount(), ((CapabilityProviderAccessor) original).callSerializeCaps());
-            this.min = min;
-            this.max = max;
-            this.chance = chance;
-        }
-
-        public DataItemStack(Item item, int min, int max, float chance) {
-            super(item);
-            this.min = min;
-            this.max = max;
-            this.chance = chance;
-        }
-
-        @Override
-        public ItemStack copy() {
-            return new DataItemStack(getItem(), min, max, chance);
-        }
-    }
 
     @Override
     public ResourceLocation getRegistryName(IngredientPair recipe) {

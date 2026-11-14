@@ -8,9 +8,11 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
@@ -148,7 +150,7 @@ public interface ModPrefix {
             if (attackDamage != 0.0F) {
                 AttributeModifier modifier = createModifier(attackDamage, ADD_MULTIPLIED_TOTAL);
                 if (type == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage().value(), modifier);
+                    builder.put(stack.is(ModTags.Items.WHIP) ? LibAttributes.getSummonDamage().value() : LibAttributes.getAttackDamage().value(), modifier);
                 } else if (type == PrefixType.RANGED) {
                     builder.put(LibAttributes.getRangedDamage().value(), modifier);
                 } else if (type == PrefixType.MAGIC) {
@@ -216,7 +218,7 @@ public interface ModPrefix {
             if (attackDamage != 0.0F) {
                 AttributeModifier modifier = createModifier(attackDamage, ADD_MULTIPLIED_TOTAL);
                 if (type == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage().value(), modifier);
+                    builder.put(stack.is(ModTags.Items.WHIP) ? LibAttributes.getSummonDamage().value() : LibAttributes.getAttackDamage().value(), modifier);
                 } else if (type == PrefixType.RANGED) {
                     builder.put(LibAttributes.getRangedDamage().value(), modifier);
                 } else if (type == PrefixType.MAGIC) {
@@ -291,7 +293,7 @@ public interface ModPrefix {
         public PrefixComponent createComponent(PrefixType type, ItemStack stack) {
             ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                builder.put(stack.is(ModTags.Items.WHIP) ? LibAttributes.getSummonDamage().value() : LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
@@ -300,7 +302,7 @@ public interface ModPrefix {
                 builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
             }
             if (size != 0.0F) {
-                builder.put(Attributes.ENTITY_INTERACTION_RANGE.value(), createModifier(size, ADD_MULTIPLIED_TOTAL));
+                builder.put(stack.is(ModTags.Items.WHIP) ? ConfluenceMagicLib.WHIP_RANGE.get() : Attributes.ENTITY_INTERACTION_RANGE.value(), createModifier(size, ADD_MULTIPLIED_TOTAL));
             }
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));

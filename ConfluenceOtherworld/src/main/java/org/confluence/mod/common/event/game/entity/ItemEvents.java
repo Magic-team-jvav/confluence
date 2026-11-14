@@ -92,7 +92,7 @@ public final class ItemEvents {
                 || prefix.type() == PrefixType.ACCESSORY // 通过curios的事件添加
                 || prefix.modifiers().isEmpty()) return;
         /// 召唤武器不给玩家加成，词缀的加成由召唤物自己持有，避免主手词缀与召唤物词缀重复生效
-        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON)) return;
+        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON) && !itemStack.is(ModTags.Items.WHIP)) return;
         for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Attribute attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {

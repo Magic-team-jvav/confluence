@@ -202,6 +202,13 @@ public final class TooltipLanguageSubProvider {
         language.add("tooltip.confluence.earthshaker_device.line1", "Use to summon the Destroyer; it only appears at night", "右键使用以召唤毁灭者，它只在夜间出没");
         language.add("tooltip.confluence.earthshaker_device.line2", "It can be placed on the ground during the day. When night falls, the oscillation waves it produces will lure in a mechanical worm capable of destroying the world", "在白天时可放置在地上，夜晚来临时其产生的特定频率的震荡波会引来一条足以摧毁世界的机械蠕虫");
         language.add("tooltip.confluence.earthshaker_device.quote", "\"Once it is placed, be sure to get away from it as soon as possible\"", "“放下后务必尽快远离它”");
+        language.add("tooltip.item.confluence.swamp_whip.0", "Slows the target for 2 seconds on hit", "命中后使目标减速 2 秒");
+        language.add("tooltip.item.confluence.snapthorn.0", "Grants Jungle's Fury for 3 seconds on hit (whip speed +12%)", "命中后获得 3 秒丛林之怒（挥鞭速度 +12%）");
+        language.add("tooltip.item.confluence.snapthorn.1", "20% chance to poison the target for 3 seconds", "20% 概率使目标中毒 3 秒");
+        language.add("tooltip.item.confluence.firecracker.0", "Inflicts Hellfire on the target for 4 seconds", "命中后使目标陷入 4 秒狱炎");
+        language.add("tooltip.item.confluence.firecracker.1", "When a summon hits the marked target it detonates: 2.75x damage in a 6-block cube around the hit, consuming the mark", "召唤物攻击带标记的目标时会引爆：以命中点为中心 6 格范围内造成 2.75 倍伤害，并消耗标记");
+        language.add("tooltip.item.confluence.wind_whip.0", "Deals 6.25% more damage per block of height difference, up to +75% at 12 blocks", "与目标的高度差每 1 格提高 6.25% 伤害，最高 +75%（12 格）");
+        language.add("tooltip.item.confluence.star_fear.0", "10% chance on hit to knock out a falling star; catching it grants Star Harvest for 5 minutes (+1 minion slot)", "命中时有 10% 概率冒出一颗坠星，接住它可获得 5 分钟摘星（仆从栏位 +1）");
         language.add("tooltip.confluence.phantom_base_station.line1", "Use to summon Skeletron Prime; it only appears at night", "右键使用以召唤机械骷髅王，它只在夜间出没");
         language.add("tooltip.confluence.phantom_base_station.line2", "It can be placed on the ground during the day. When night falls, the electromagnetic signal it broadcasts will draw in a bloodthirsty metal skull", "在白天时可放置在地上，夜晚来临时其传出的电磁波信号会引来一颗嗜血成性的金属骷髅头");
         language.add("tooltip.confluence.phantom_base_station.quote", "\"Advisory: make absolutely sure your radio cannot receive this frequency, otherwise the consequences are yours to bear\"", "“忠告：请务必确保您的收音机不会接收到这个频段的信号，否则后果自负”");

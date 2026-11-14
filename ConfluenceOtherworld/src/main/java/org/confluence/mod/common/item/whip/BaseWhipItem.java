@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.item.IWeaponTooltip;
 import org.confluence.mod.api.whip.WhipAppearance;
@@ -43,14 +44,14 @@ public class BaseWhipItem extends Item implements IWeaponTooltip {
     private final Supplier<? extends SummonMarkType> summonMarkType;
     private final WhipAppearance appearance;
 
-    public BaseWhipItem(String name, float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends SummonMarkType> summonMarkType) {
+    public BaseWhipItem(String name, ModRarity rarity, float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends SummonMarkType> summonMarkType) {
         // 默认外观沿用 1.21 的十六像素分段模型。
-        this(baseDamage, attackSpeedModifier, range, hitCooldownTicks, summonMarkType,
+        this(baseDamage, rarity, attackSpeedModifier, range, hitCooldownTicks, summonMarkType,
                 WhipAppearance.segments(WhipSegment.fixedSpacing(Confluence.asResource("item/whip/" + name), 16)));
     }
 
-    public BaseWhipItem(float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends SummonMarkType> summonMarkType, WhipAppearance appearance) {
-        super(createProperties(attackSpeedModifier, range));
+    public BaseWhipItem(float baseDamage, ModRarity rarity, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends SummonMarkType> summonMarkType, WhipAppearance appearance) {
+        super(createProperties(attackSpeedModifier, range, rarity));
         this.baseDamage = baseDamage;
         this.durationTicks = Math.max(1, (int) (80.0 / (4.0 * (1.0 + attackSpeedModifier))));
         this.hitCooldownTicks = hitCooldownTicks;
@@ -58,12 +59,12 @@ public class BaseWhipItem extends Item implements IWeaponTooltip {
         this.appearance = Objects.requireNonNull(appearance);
     }
 
-    private static Properties createProperties(float attackSpeedModifier, float range) {
+    private static Properties createProperties(float attackSpeedModifier, float range, ModRarity rarity) {
         PortItemAttributeModifiers attributes = PortItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_SPEED, new PortAttributeModifier(Confluence.asResource("whip_attack_speed_modifier"), attackSpeedModifier, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE), PortEquipmentSlotGroup.MAINHAND)
                 .add(ConfluenceMagicLib.WHIP_RANGE, new PortAttributeModifier(Confluence.asResource("whip_range_modifier"), range, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE), PortEquipmentSlotGroup.MAINHAND)
                 .build();
-        return new Properties().stacksTo(1).unbreakable().attributes(attributes);
+        return new Properties().stacksTo(1).unbreakable().attributes(attributes).component(ConfluenceMagicLib.MOD_RARITY, rarity);
     }
 
     public SummonMarkType getSummonMarkType() {

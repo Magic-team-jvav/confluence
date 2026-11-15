@@ -38,7 +38,7 @@ public final class DestroyerProbeRenderer extends GeoNormalRenderer<TheDestroyer
 
     @Override
     protected float getRenderYaw(TheDestroyerProbe probe, float partialTick) {
-        return Mth.rotLerp(partialTick, probe.yHeadRotO, probe.yHeadRot);
+        return Mth.rotLerp(partialTick, probe.yRotO, probe.getYRot());
     }
 
     @Override

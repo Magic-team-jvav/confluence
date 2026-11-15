@@ -285,6 +285,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(BeenadeEntityModel.LAYER_LOCATION, BeenadeEntityModel::createBodyLayer);
         event.registerLayerDefinition(TitaniumShardsProjectileModel.LAYER_LOCATION, TitaniumShardsProjectileModel::createBodyLayer);
         event.registerLayerDefinition(SlimeSpikeProjectileModel.LAYER_LOCATION, SlimeSpikeProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(CrystalSpikeProjectileModel.LAYER_LOCATION, CrystalSpikeProjectileModel::createBodyLayer);
         event.registerLayerDefinition(HarpyFeatherProjectileModel.LAYER_LOCATION, HarpyFeatherProjectileModel::createBodyLayer);
         event.registerLayerDefinition(HornetStingerProjectileModel.LAYER_LOCATION, HornetStingerProjectileModel::createBodyLayer);
         event.registerLayerDefinition(BeeProjectileModel.LAYER_LOCATION, BeeProjectileModel::createBodyLayer);
@@ -772,6 +773,7 @@ public final class ModClientEvents {
         // Boss
         event.registerEntityRenderer(BossEntities.KING_SLIME.get(), KingSlimeRenderer::new);
         event.registerEntityRenderer(BossEntities.CROWN_OF_KING_SLIME_MODEL.get(), CrownOfKingSlimeModelRenderer::new);
+
         event.registerEntityRenderer(BossEntities.EYE_OF_CTHULHU.get(), EyeOfCthulhuRenderer::new);
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), BossWormPartRenderer::new);
@@ -782,6 +784,16 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SKELETRON.get(), SkeletronBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_HAND.get(), SkeletronBossHandRenderer::new);
         event.registerEntityRenderer(BossEntities.DUNGEON_GUARDIAN.get(), DungeonGuardianRenderer::new);
+
+        // 神圣之地：史莱姆女皇、随从与凝胶弹幕
+        event.registerEntityRenderer(BossEntities.QUEEN_SLIME.get(), QueenSlimeRenderer::new);
+        event.registerEntityRenderer(BossEntities.CRYSTAL_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "crystal_slime", 2.0F));
+        event.registerEntityRenderer(BossEntities.BOUNCY_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "bouncy_slime", 2.0F));
+        event.registerEntityRenderer(BossEntities.HEAVENLY_SLIME.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "heavenly_slime", 2.0F));
+        event.registerEntityRenderer(BossEntities.ROYAL_GEL.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "queen_slime_projectile", 1.0F));
+        event.registerEntityRenderer(BossEntities.CRYSTAL_SPIKE.get(), CrystalSpikeProjectileRenderer::new);
+        event.registerEntityRenderer(BossEntities.BOUNCY_GEL.get(), ctx -> new RoyalSlimeRenderer<>(ctx, "bouncy_gel", 1.0F));
+
         event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
         event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), DestroyerProbeRenderer::new);
         event.registerEntityRenderer(BossEntities.RETINAZER.get(), TwinEyeDissolveRenderer::retinazer);

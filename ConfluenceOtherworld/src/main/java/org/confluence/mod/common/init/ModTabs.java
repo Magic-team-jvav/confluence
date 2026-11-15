@@ -2499,6 +2499,7 @@ public final class ModTabs {
                         boss.accept(SpawnEggItems.SPAZMATISM_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.THE_TWINS_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get());
+                        boss.accept(SpawnEggItems.QUEEN_SLIME_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.THE_DESTROYER_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.PLANTERA_SPAWN_EGG.get());
                         boss.accept(SpawnEggItems.LUNATIC_CULTIST_SPAWN_EGG.get());

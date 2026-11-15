@@ -19,10 +19,16 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 
 public class SlimeSpikeEntity extends AbstractHurtingProjectile {
+    // 水晶尖刺的存活刻数上限，也是发射时计算预计落点的时间上限。
+    public static final int CRYSTAL_LIFETIME = 80;
+    // 水晶尖刺每刻损失的竖直速度（格/刻²），预判和实际飞行共用此值。
+    public static final double CRYSTAL_GRAVITY = 0.108 / 4;
+    // 其他史莱姆尖刺的存活刻数上限。
     private static final int MAX_AGE = 30;
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(SlimeSpikeEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_HAS_GRAVITY = SynchedEntityData.defineId(SlimeSpikeEntity.class, EntityDataSerializers.BOOLEAN);
@@ -109,12 +115,12 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
     public void tick() {
         super.tick();
         if (entityData.get(DATA_HAS_GRAVITY)) {
-            setDeltaMovement(getDeltaMovement().add(0.0, -0.108, 0.0));
+            setDeltaMovement(getDeltaMovement().add(0.0, getType() == BossEntities.CRYSTAL_SPIKE.get() ? -CRYSTAL_GRAVITY : -0.108, 0.0));
         }
         if (level().isClientSide) {
             level().addParticle(ParticleTypes.CRIT, getX(), getY(), getZ(), 0, 0, 0);
         }
-        if (tickCount > MAX_AGE) {
+        if (tickCount > (getType() == BossEntities.CRYSTAL_SPIKE.get() ? CRYSTAL_LIFETIME : MAX_AGE)) {
             discard();
         }
     }
@@ -131,6 +137,11 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
 
     public Variant getVariant() {
         return Variant.values()[entityData.get(DATA_VARIANT)];
+    }
+
+    @Override
+    protected float getInertia() {
+        return getType() == BossEntities.CRYSTAL_SPIKE.get() ? 1.0F : super.getInertia();
     }
 
     private int scaledDuration(int classicTicks) {

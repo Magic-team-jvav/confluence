@@ -38,10 +38,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PlayMessages;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.effect.harmful.HorrifiedEffect;
+import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -57,6 +60,9 @@ import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.ParticleStorm;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
 import java.util.*;
 
@@ -202,7 +208,27 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
             if (serverLevel.getDifficulty() != Difficulty.PEACEFUL && tryBeginDeathRewardSettlement()) {
                 KillBoard.INSTANCE.defeat(getType());
                 for (var player : getOnlineCombatParticipants()) {
-                    TreasureBagItem.createItemEntity(this, player);
+                    TreasureBagItemEntity bag = TreasureBagItem.createItemEntity(this, player);
+                    if (bag != null) {
+                        Vec3 start = player.getEyePosition();
+                        Vec3 delta = bag.position().subtract(start);
+                        Vec3 axis = delta.normalize();
+                        Vec3 reference = Math.abs(axis.y) < 0.9 ? new Vec3(0, 1, 0) : new Vec3(1, 0, 0);
+                        Vec3 side = axis.cross(reference).normalize();
+                        Vec3 up = axis.cross(side);
+                        MolangExp direction = new MolangExp(Map.of(
+                                "variable.target_x", Double.toString(delta.x),
+                                "variable.target_y", Double.toString(delta.y),
+                                "variable.target_z", Double.toString(delta.z),
+                                "variable.side_x", Double.toString(side.x),
+                                "variable.side_y", Double.toString(side.y),
+                                "variable.side_z", Double.toString(side.z),
+                                "variable.up_x", Double.toString(up.x),
+                                "variable.up_y", Double.toString(up.y),
+                                "variable.up_z", Double.toString(up.z)));
+                        EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(Confluence.asResource("wall_of_flesh_bag_guide"), start.toVector3f(), direction, -1);
+                        ParticleStorm.CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
+                    }
                     AchievementUtils.awardAchievement(player, "still_hungry");
                 }
             }

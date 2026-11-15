@@ -96,7 +96,7 @@ public class TombstoneBoulderEntity extends BoulderEntity {
     public static @Nullable BlockState selectTombstone(LivingEntity living) {
         boolean isGolden;
         if (living instanceof Player player) {
-            isGolden = PlayerUtils.getMoney(player, true) >= 100 * 100 * 10;
+            isGolden = PlayerUtils.getMoney(player, false) >= 100 * 100 * 10;
         } else if (living instanceof BaseNPC && living.level().getLevelData().isHardcore()) {
             isGolden = false;
         } else {

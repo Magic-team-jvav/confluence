@@ -12,6 +12,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.*;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
+import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
 import static org.confluence.mod.common.entity.monster.CreatureAttributeBuilder.DynamicValue.*;
 import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
@@ -143,6 +144,23 @@ public final class BossEntities {
                     .state(AbstractTwinEye.Form.TRANSFORMED, state -> state.armor(13).attackDamage(34).attribute(Attributes.ARMOR_TOUGHNESS, 5))
                     .projectile(ModEntities.SPAZMATISM_FLAME, projectile -> projectile.damage(when(mob -> ((Spazmatism) mob).isTransformed(), 29, 23)))
                     .build());
+
+    // 神圣之地：史莱姆女皇、三种随从与凝胶弹幕
+    public static final RegistryObject<EntityType<QueenSlime>> QUEEN_SLIME = withAttributes(registerEntity("queen_slime", "史莱姆女皇", EntityType.Builder.of(QueenSlime::new, MobCategory.MONSTER).sized(6.0F, 6.0F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.boss().maxHealth(7488).armor(12).armorToughness(6).attackDamage(32).followRange(128).build());
+
+    public static final RegistryObject<EntityType<QueenSlimeMinion>> CRYSTAL_SLIME = withAttributes(registerEntity("crystal_slime", "水晶史莱姆", EntityType.Builder.of(QueenSlimeMinion::new, MobCategory.MONSTER).sized(1.04F, 1.04F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.slime().maxHealth(59).armor(16).armorToughness(7).attackDamage(21).followRange(QueenSlimeMinion.FOLLOW_RANGE).build());
+
+    public static final RegistryObject<EntityType<QueenSlimeMinion>> BOUNCY_SLIME = withAttributes(registerEntity("bouncy_slime", "弹力史莱姆", EntityType.Builder.of(QueenSlimeMinion::new, MobCategory.MONSTER).sized(1.04F, 1.04F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.slime().maxHealth(59).armor(16).armorToughness(7).attackDamage(21).followRange(QueenSlimeMinion.FOLLOW_RANGE).build());
+
+    public static final RegistryObject<EntityType<QueenSlimeMinion>> HEAVENLY_SLIME = withAttributes(registerEntity("heavenly_slime", "飞翔史莱姆", EntityType.Builder.of(QueenSlimeMinion::new, MobCategory.MONSTER).sized(1.04F, 1.04F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.slime().maxHealth(47).armor(14).armorToughness(6).attackDamage(26).followRange(QueenSlimeMinion.FOLLOW_RANGE).build());
+
+    public static final RegistryObject<EntityType<RoyalGel>> ROYAL_GEL = registerEntity("royal_gel", "女皇凝胶", EntityType.Builder.of(RoyalGel::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(12).updateInterval(1));
+    public static final RegistryObject<EntityType<SlimeSpikeEntity>> CRYSTAL_SPIKE = registerEntity("crystal_spike", "水晶尖刺", EntityType.Builder.of(SlimeSpikeEntity::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(12).updateInterval(1));
+    public static final RegistryObject<EntityType<RoyalGel>> BOUNCY_GEL = registerEntity("bouncy_gel", "弹力凝胶", EntityType.Builder.of(RoyalGel::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(12).updateInterval(1));
 
     // 机械 Boss：毁灭者、体节与探测怪
     public static final RegistryObject<EntityType<TheDestroyer>> THE_DESTROYER = withAttributes(registerEntity("the_destroyer", "毁灭者", EntityType.Builder.of(TheDestroyer::new, MobCategory.MONSTER).sized(TheDestroyer.BODY_WIDTH * TheDestroyer.HITBOX_SCALE, TheDestroyer.BODY_HEIGHT * TheDestroyer.HITBOX_SCALE).clientTrackingRange(32).updateInterval(1)),

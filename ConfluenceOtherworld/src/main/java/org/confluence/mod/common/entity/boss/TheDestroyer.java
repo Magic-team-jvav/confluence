@@ -35,7 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.DestroyerCameraShake;
+import org.confluence.mod.client.effect.CameraShake;
 import org.confluence.mod.client.particle.DestroyerDebrisParticle;
 import org.confluence.mod.client.renderer.entity.DestroyerRenderer;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -121,9 +121,10 @@ public class TheDestroyer extends BaseBoss {
     private static final float LASER_SOUND_VOLUME = 0.7F, LASER_SOUND_PITCH = 1.0F;
     /// 头部入土声音与近距离震屏的间隔，单位 tick。
     private static final int DIG_INTERVAL = 10;
-    /// 地下震屏为半秒/7 格，穿出或进入地面为一秒/14 格。
+    /// 地下震屏为半秒/14 格，穿出或进入地面为一秒/28 格。
+    private static final float SHAKE_ANGLE = 2.4F;
     public static final int DIG_SHAKE_TICKS = 10, CROSS_SHAKE_TICKS = 20;
-    public static final double DIG_SHAKE_RADIUS = 7.0, CROSS_SHAKE_RADIUS = 14.0;
+    public static final double DIG_SHAKE_RADIUS = 14.0, CROSS_SHAKE_RADIUS = 28.0;
     public static final byte DIG_EVENT = 70, CROSS_EVENT = 71;
     private static final byte DEBRIS_EVENT = 73;
     private static final byte PHASE_SHELL_EVENT = 74;
@@ -445,7 +446,7 @@ public class TheDestroyer extends BaseBoss {
     @Override
     public void travel(Vec3 input) {
         if (!level().isClientSide && isDisengageRetreating()) {
-            setPos(position().add(getDeltaMovement()));
+            moveAlongTrajectory(getDeltaMovement());
             body.update();
         }
     }
@@ -482,9 +483,7 @@ public class TheDestroyer extends BaseBoss {
         if (getBeamTick() < 0 && specialAttack == SpecialAttack.NONE) updateMode(target);
         boolean solidBefore = isSolid(position());
         Vec3 previousVelocity = velocity;
-        boolean ballistic = getMode() == Mode.GROUND && airborne;
         if (getBeamTick() == 100) finishSpecialAttack();
-        SpecialAttack previousSpecialAttack = specialAttack;
         boolean specialMovement = getBeamTick() >= 100 && getBeamTick() < 460 ? false : tickSpecialAttack(target);
         if (!specialMovement) switch (getMode()) {
             case UNDERGROUND -> {
@@ -512,12 +511,8 @@ public class TheDestroyer extends BaseBoss {
             Vec3 direction = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
             velocity = direction.lengthSqr() < 1.0E-7 ? getLookAngle().scale(BEAM_ADVANCE_SPEED) : direction.normalize().scale(BEAM_ADVANCE_SPEED);
         }
-        boolean dashing = specialAttack == SpecialAttack.DASH || previousSpecialAttack == SpecialAttack.DASH;
-        if (!ballistic && !launching && !dashing)
-            velocity = WormSteering.limit(previousVelocity.lengthSqr() > 1.0E-7 ? previousVelocity : getLookAngle(),
-                    velocity, SEGMENT_SPACING * TURN_RADIUS_SEGMENTS, MAX_TURN_RADIANS);
         Vec3 previous = position();
-        setPos(previous.add(velocity));
+        moveAlongTrajectory(previousVelocity, velocity);
         setDeltaMovement(velocity);
         if (getBeamTick() >= 100 && getBeamTick() < 220) {
             Vec3 desired = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter()).normalize();
@@ -695,6 +690,17 @@ public class TheDestroyer extends BaseBoss {
     }
 
     /// 计算巡航期望速度；统一由主运动流程限制转弯半径。
+    /// 所有头部位移都经过相同的转弯半径和角速度限制。
+    private void moveAlongTrajectory(Vec3 desired) {
+        moveAlongTrajectory(velocity, desired);
+    }
+
+    private void moveAlongTrajectory(Vec3 previous, Vec3 desired) {
+        Vec3 heading = previous.lengthSqr() > 1.0E-7 ? previous : getLookAngle();
+        velocity = WormSteering.limit(heading, desired, SEGMENT_SPACING * TURN_RADIUS_SEGMENTS, MAX_TURN_RADIANS);
+        setPos(position().add(velocity));
+    }
+
     static Vec3 steer(Vec3 current, Vec3 offset, double speed) {
         if (offset.lengthSqr() < 0.001) return current;
         double currentSpeed = current.length();
@@ -968,9 +974,9 @@ public class TheDestroyer extends BaseBoss {
                     Confluence.asResource("mechanical_boss_hurt_spark"),
                     new MolangExp("variable.radius", Math.max(getBbWidth(), getBbHeight()) / 2.0F)));
         } else if (level().isClientSide && (event == DIG_EVENT || event == CROSS_EVENT)) {
-            DestroyerCameraShake.start(this,
+            CameraShake.start(level(), getBoundingBox().getCenter(),
                     event == DIG_EVENT ? DIG_SHAKE_RADIUS : CROSS_SHAKE_RADIUS,
-                    event == DIG_EVENT ? DIG_SHAKE_TICKS : CROSS_SHAKE_TICKS);
+                    event == DIG_EVENT ? DIG_SHAKE_TICKS : CROSS_SHAKE_TICKS, SHAKE_ANGLE);
         } else super.handleEntityEvent(event);
     }
 

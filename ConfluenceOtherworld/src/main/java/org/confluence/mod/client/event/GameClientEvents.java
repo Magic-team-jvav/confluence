@@ -5,6 +5,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -23,6 +24,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -30,6 +32,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -37,6 +40,7 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import org.confluence.lib.api.event.OnGatherEffectScreenTooltipsEvent;
+import org.confluence.lib.api.event.RenderSelectedItemNameEvent;
 import org.confluence.lib.client.color.ExpertColorAnimation;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
@@ -46,12 +50,7 @@ import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
-import org.confluence.mod.client.effect.AfterimageHelper;
-import org.confluence.mod.client.effect.RedGloveVfx;
-import org.confluence.mod.client.effect.ThunderstrikeVfx;
-import org.confluence.mod.client.effect.EctoMistHelper;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
-import org.confluence.mod.client.effect.SpelunkerHelper;
+import org.confluence.mod.client.effect.*;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
@@ -86,11 +85,11 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
-import org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
@@ -118,10 +117,8 @@ import java.util.Optional;
 public final class GameClientEvents {
     public static void init() {
         ClientWeaponInputManager.init();
-        PortEventHandler.addListener((org.confluence.mod.api.event.ThunderstrikeVisualEvent event) -> ThunderstrikeVfx.receive(event.packet));
-        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::crosshairBowRelease);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::livingEntityUseItem$Stop);
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
-        PortEventHandler.addListener((org.confluence.mod.api.event.RedGloveVisualEvent event) -> RedGloveVfx.receive(event.packet));
         PortEventHandler.addListener(GameClientEvents::clientTick$Post);
         PortEventHandler.addListener(GameClientEvents::playerTick$Post);
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingIn);
@@ -132,6 +129,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::renderGuiLayer$Pre);
         PortEventHandler.addListener(GameClientEvents::customizeGuiOverlay$BossEventProgress);
         PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::renderTooltip$GatherComponents);
+        PortEventHandler.addListener(GameClientEvents::renderSelectedItemName);
         PortEventHandler.addListener(GameClientEvents::itemToolTip);
         PortEventHandler.addListener(PortEventPriority.LOWEST, WeaponTooltip::update);
         PortEventHandler.addListener(PortEventPriority.LOW, GameClientEvents::addAttributeTooltips);
@@ -144,7 +142,6 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::geoRender$Entity$Post);
         PortEventHandler.addListener(GameClientEvents::renderPlayer$Pre);
         PortEventHandler.addListener(GameClientEvents::renderArm);
-//        PortEventHandler.addListener(GameClientEvents::npc$Dialog);
         PortEventHandler.addListener(GameClientEvents::onGatherEffectScreenTooltips);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickEmpty);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickBlock);
@@ -152,10 +149,11 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::playerEmptyAutoAttack);
         PortEventHandler.addListener(GameClientEvents::afterFlushArmorSetBonus);
         PortEventHandler.addListener(GameClientEvents::bullet$ImpactEffect);
-        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::viewport$RenderFog);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::viewport$RenderFog$Lowest);
         PortEventHandler.addListener(GameClientEvents::viewport$ComputeFogColor);
-        PortEventHandler.addListener(GameClientEvents::viewport$VoidSeaRenderFog);
+        PortEventHandler.addListener(GameClientEvents::viewport$RenderFog);
         PortEventHandler.addListener(GameClientEvents::level$Unload);
+        PortEventHandler.addListener(GameClientEvents::playSound);
     }
 
     private static void customizeGuiOverlay$BossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event) {
@@ -185,7 +183,7 @@ public final class GameClientEvents {
 
         EctoMistHelper.tick(minecraft, player);
 
-        RenderStateShardAccessor.GLINT_RAINBOW.setGlintColor(ExpertColorAnimation.INSTANCE.getRed(), ExpertColorAnimation.INSTANCE.getGreen(), ExpertColorAnimation.INSTANCE.getBlue());
+        ModClientSetups.GLINT_RAINBOW.setGlintColor(ExpertColorAnimation.INSTANCE.getRed(), ExpertColorAnimation.INSTANCE.getGreen(), ExpertColorAnimation.INSTANCE.getBlue());
 
         if (ExtraInventoryScreen.teamCooldown > 0) {
             --ExtraInventoryScreen.teamCooldown;
@@ -237,7 +235,7 @@ public final class GameClientEvents {
         WeatherHandler.handle();
     }
 
-    private static void crosshairBowRelease(LivingEntityUseItemEvent.Stop event) {
+    private static void livingEntityUseItem$Stop(LivingEntityUseItemEvent.Stop event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player != null && event.getEntity() == player) {
             CrosshairHud.onBowRelease(player, event.getItem(), event.getDuration());
@@ -388,6 +386,13 @@ public final class GameClientEvents {
         }
     }
 
+    private static void renderSelectedItemName(RenderSelectedItemNameEvent event) {
+        PrefixComponent prefix = PrefixUtils.getPrefix(event.getStack());
+        if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
+            event.setOverride(prefix.getName().setStyle(event.getOverride().getStyle()).append(Component.translatable("confluence.prefix_separator")).append(event.getOverride()));
+        }
+    }
+
     private static void itemToolTip(ItemTooltipEvent event) {
         List<Component> toolTip = event.getToolTip();
         ItemStack stack = event.getItemStack();
@@ -481,16 +486,6 @@ public final class GameClientEvents {
 //                }
 //            }
 //        }
-
-//  todo      if (screen instanceof DialogScreen) {
-//            LocalPlayer player = Minecraft.getInstance().player;
-//            if (player != null) {
-//                @Nullable ITradeHolder holder = IPlayer.of(player).confluence$getTradeHolder();
-//                if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()) {
-//                    event.addListener(WithForgeTradeScreen.createReforgeButton(screen.width * 2 / 3, screen.height / 2 + 25));
-//                }
-//            }
-//        }
     }
 
     private static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
@@ -517,25 +512,6 @@ public final class GameClientEvents {
         if (ZombieArmRenderer.getInstance().renderHand(renderer, event.getPoseStack(), event.getMultiBufferSource(),
                 event.getPackedLight(), player, event.getArm())) event.setCanceled(true);
     }
-
-//  todo  private static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
-//        LocalPlayer player = Minecraft.getInstance().player;
-//        if (player == null) return;
-//        EntityType<?> type = event.getNPC().getType();
-//        if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
-//            event.setNeoDialog(Component.translatable("dialogs.confluence.guide.jei_check"));
-//            ModClientSetups.guideCheckedJEI = true;
-//        } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom1211().nextInt(25) == 0) {
-//            StatsCounter stats = player.getStats();
-//            for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
-//                int value = stats.getValue(stat);
-//                if (value >= 50) {
-//                    event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
-//                    break;
-//                }
-//            }
-//        }
-//    }
 
     private static void onGatherEffectScreenTooltips(OnGatherEffectScreenTooltipsEvent event) {
         MobEffect effect = event.getEffect();
@@ -602,24 +578,36 @@ public final class GameClientEvents {
     }
 
     private static void viewport$RenderFog(ViewportEvent.RenderFog event) {
-        if (event.getCamera().getFluidInCamera() != FogType.LAVA ||
-                !(event.getCamera().getEntity().getVehicle() instanceof RideableLavaSharkMountEntity)
-        ) return;
-        event.setNearPlaneDistance(0.0F);
-        event.setFarPlaneDistance(32.0F);
-        event.setFogShape(FogShape.SPHERE);
-        event.setCanceled(true);
+        VoidSeaFilterRenderer.renderFog(event);
+    }
+
+    private static void viewport$RenderFog$Lowest(ViewportEvent.RenderFog event) {
+        Camera camera = event.getCamera();
+        if (camera.getFluidInCamera() == FogType.LAVA) {
+            Entity vehicle = camera.getEntity().getVehicle();
+            if (vehicle != null && vehicle.getType() == ModEntities.RIDEABLE_LAVA_SHARK.get()) {
+                event.setNearPlaneDistance(0.0F);
+                event.setFarPlaneDistance(32.0F);
+                event.setFogShape(FogShape.SPHERE);
+                event.setCanceled(true);
+            }
+        }
     }
 
     private static void viewport$ComputeFogColor(ViewportEvent.ComputeFogColor event) {
         VoidSeaFilterRenderer.computeFogColor(event);
     }
 
-    private static void viewport$VoidSeaRenderFog(ViewportEvent.RenderFog event) {
-        VoidSeaFilterRenderer.renderFog(event);
-    }
-
     private static void bullet$ImpactEffect(BulletEvent.ImpactEffectEvent event) {
         BulletVfxManager.play(event.getEffect(), event.getPosition());
+    }
+
+    private static void playSound(PlaySoundEvent event) {
+        if (event.getSound() != null && ClientConfigs.isWardenSoundDisabled()) {
+            ResourceLocation location = event.getSound().getLocation();
+            if (ResourceLocation.DEFAULT_NAMESPACE.equals(location.getNamespace()) && location.getPath().startsWith("entity.warden")) {
+                event.setSound(null);
+            }
+        }
     }
 }

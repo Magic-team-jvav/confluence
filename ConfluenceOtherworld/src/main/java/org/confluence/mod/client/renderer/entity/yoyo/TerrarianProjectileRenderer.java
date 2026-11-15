@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.object.Color;
@@ -40,7 +40,7 @@ public final class TerrarianProjectileRenderer extends GeoEntityRenderer<Terrari
 
     @Override
     public RenderType getRenderType(TerrarianProjectile projectile, ResourceLocation texture, @Nullable MultiBufferSource buffers, float partialTick) {
-        return RenderStateShardAccessor.entityGlow(texture);
+        return ModRenderTypes.entityGlow(texture);
     }
 
     @Override

@@ -11,7 +11,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.entity.PartHitTarget;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.model.entity.GeoNormalModel;
 import org.confluence.mod.common.entity.boss.BaseWormBoss;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
@@ -83,7 +83,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         RenderType type = super.getRenderType(entity, texture, buffers, partialTick);
         if (type == RenderType.entityCutoutNoCull(texture) || type == RenderType.entityTranslucent(texture)) {
             if (hasNegativeCubes(entity))
-                return type == RenderType.entityTranslucent(texture) ? RenderStateShardAccessor.entityTranslucentCullOverlay(texture) : RenderType.entityCutout(texture);
+                return type == RenderType.entityTranslucent(texture) ? ModRenderTypes.entityTranslucentCullOverlay(texture) : RenderType.entityCutout(texture);
         }
         return type;
     }

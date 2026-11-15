@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.model.item.PhasebladeModel;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.sword.Phasesaber;
@@ -34,7 +34,7 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
         addRenderLayer(new AutoGlowingGeoLayer<>(this) {
             @Override
             protected RenderType getRenderType(BasePhasebladeItem item) {
-                return RenderStateShardAccessor.EYES.apply(item.emissiveResource(), RenderType.TRANSLUCENT_TRANSPARENCY);
+                return ModRenderTypes.EYES.apply(item.emissiveResource(), RenderType.TRANSLUCENT_TRANSPARENCY);
             }
 
             @Override

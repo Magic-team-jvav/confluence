@@ -185,7 +185,7 @@ public final class ThunderstrikeProjectile extends AbstractManaProjectile {
             }
         }
         PortPacketDistributor.sendToPlayersNear(level().dimension(), null, end.x, end.y, end.z, 128,
-                new ThunderstrikePacketS2C(start, end, seed, spreadAxis));
+                new ThunderstrikePacketS2C(start.toVector3f(), end.toVector3f(), seed, spreadAxis.toVector3f()));
         level().playSound(null, end.x, end.y, end.z, SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.PLAYERS, 1, 1.2F);
     }
 

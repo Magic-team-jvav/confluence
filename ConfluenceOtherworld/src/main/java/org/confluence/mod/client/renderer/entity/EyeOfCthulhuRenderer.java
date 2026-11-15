@@ -1,7 +1,6 @@
 package org.confluence.mod.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -9,11 +8,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.entity.boss.EyeOfCthulhu;
-
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 /// 残影只重绘模型，复用本帧骨骼姿态，不重复执行动画和附加渲染层。
@@ -33,7 +30,7 @@ public final class EyeOfCthulhuRenderer extends BossGeoRenderer<EyeOfCthulhu> {
         BakedGeoModel model = getGeoModel().getBakedModel(getGeoModel().getModelResource(entity));
         ResourceLocation texture = getTextureLocation(entity);
         RenderType type = hasNegativeCubes(entity)
-                ? RenderStateShardAccessor.entityTranslucentCullOverlay(texture) : RenderType.entityTranslucent(texture);
+                ? ModRenderTypes.entityTranslucentCullOverlay(texture) : RenderType.entityTranslucent(texture);
         Vec3 current = entity.getPosition(partialTick);
         try {
             for (EyeOfCthulhu.AfterimageSnapshot snapshot : snapshots) {

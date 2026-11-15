@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.lightning.ArcSurgeLightning;
@@ -73,8 +74,8 @@ public final class ThunderstrikeVfx {
         if (level != mc.level) { clear(); level = mc.level; }
         // Bound visual work even when many players cast together.
         if (STRIKES.size() >= 64) STRIKES.remove(0);
-        STRIKES.add(new Strike(ArcSurgeLightning.createThunderstrike(packet.start(), packet.end(), packet.seed(), packet.spreadAxis()), ticks));
-        var flash = new ParticleEmitter(level, packet.end(), Confluence.asResource("thunderstrike_impact"));
+        STRIKES.add(new Strike(ArcSurgeLightning.createThunderstrike(new Vec3(packet.start()), new Vec3(packet.end()), packet.seed(), new Vec3(packet.spreadAxis())), ticks));
+        var flash = new ParticleEmitter(level, new Vec3(packet.end()), Confluence.asResource("thunderstrike_impact"));
         if (IMPACTS.size() >= 64) IMPACTS.remove(0).remove();
         IMPACTS.add(flash);
         MolangParticleEngine.INSTANCE.addEmitter(flash);

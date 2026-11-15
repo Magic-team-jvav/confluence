@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.Entity;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
@@ -20,7 +20,7 @@ public class EntityGlowingGeoLayer<T extends Entity & GeoEntity> extends AutoGlo
 
     @Override
     protected RenderType getRenderType(T entity) {
-        return RenderStateShardAccessor.entityGlow(getTextureResource(entity));
+        return ModRenderTypes.entityGlow(getTextureResource(entity));
     }
 
     @Override

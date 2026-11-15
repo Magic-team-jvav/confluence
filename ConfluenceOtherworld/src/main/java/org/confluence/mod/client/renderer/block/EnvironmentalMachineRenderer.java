@@ -16,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.renderer.ModRenderTypes;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.block.functional.terraform.EnvironmentalMachineBlock;
 import org.confluence.mod.common.block.functional.terraform.Solution;
 import org.confluence.mod.common.data.saved.EnvironmentalMachines;

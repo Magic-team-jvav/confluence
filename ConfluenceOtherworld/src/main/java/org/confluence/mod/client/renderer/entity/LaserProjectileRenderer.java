@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.GeckoLibCache;
@@ -113,7 +113,7 @@ public final class LaserProjectileRenderer<T extends Entity> extends EntityRende
         poseStack.mulPose(new Quaternionf().rotationTo(new Vector3f(0.0F, 0.0F, 1.0F), direction.normalize().toVector3f()));
         poseStack.scale(radius * 32.0F / 3.0F, radius * 32.0F / 3.0F, length * 16.0F / 29.0F);
         poseStack.translate(0.0, -11.0 / 16.0, 0.0);
-        VertexConsumer consumer = buffers.getBuffer(opacity < 0 ? RenderStateShardAccessor.LASER : RenderStateShardAccessor.TRANSLUCENT_LASER);
+        VertexConsumer consumer = buffers.getBuffer(opacity < 0 ? ModRenderTypes.LASER : ModRenderTypes.TRANSLUCENT_LASER);
         int layer = 0;
         for (GeoCube cube : bone.getCubes()) {
             int color = switch (layer++) {

@@ -19,7 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.effect.death.GeoDeathModelAdapter;
 import org.confluence.mod.client.handler.DeathEffectManager;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
@@ -587,8 +587,8 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             if (!head.isRemoved())
                 DestroyerBeamRenderer.render(head, event.getPoseStack(), buffers, camera, partialTick);
         }
-        buffers.endBatch(RenderStateShardAccessor.TRANSLUCENT_LASER);
-        buffers.endBatch(RenderStateShardAccessor.TRANSLUCENT_LASER_NO_CULL);
+        buffers.endBatch(ModRenderTypes.TRANSLUCENT_LASER);
+        buffers.endBatch(ModRenderTypes.TRANSLUCENT_LASER_NO_CULL);
     }
 
     @SuppressWarnings("unchecked")

@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.renderer.entity.GeoNegativeVolumeRenderer;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.mesdag.portlib.diff.Diff;
@@ -45,6 +45,6 @@ public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRendere
 
     @Override
     protected RenderType getGlowRenderType(CrystalVileShardProjectile animatable, ResourceLocation texture) {
-        return RenderStateShardAccessor.EYES.apply(texture, RenderType.TRANSLUCENT_TRANSPARENCY);
+        return ModRenderTypes.EYES.apply(texture, RenderType.TRANSLUCENT_TRANSPARENCY);
     }
 }

@@ -21,7 +21,7 @@ public final class ColoredGlintContext {
     }
 
     public static ColoredGlintContext create(String name, float red, float green, float blue) {
-        return RenderStateShardAccessor.create(name, red, green, blue);
+        return ModRenderTypes.create(name, red, green, blue);
     }
 
     public static ColoredGlintContext create(String name, int rgb) {

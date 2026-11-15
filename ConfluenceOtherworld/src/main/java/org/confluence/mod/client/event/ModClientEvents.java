@@ -23,6 +23,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -55,6 +56,7 @@ import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.effect.voidsea.VoidSeaFilterRenderer;
 import org.confluence.mod.client.effect.voidsea.VoidSeaRenderSettings;
+import org.confluence.mod.client.effect.voidsea.VoidSeaRenderer;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
@@ -79,7 +81,6 @@ import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.client.particle.*;
-import org.confluence.mod.client.renderer.ModRenderer;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
@@ -1229,9 +1230,12 @@ public final class ModClientEvents {
 
     private static void registerShaders(RegisterShadersEvent event) {
         try {
-            ModRenderer.register(event.getResourceProvider(), event::registerShader);
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), CustomBossBarRenderer::setShader);
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("trade_item_outline"), DefaultVertexFormat.POSITION_TEX_COLOR), NPCTradeItemOutline::setShader);
+            ResourceProvider provider = event.getResourceProvider();
+            event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shader -> VoidSeaRenderer.voidSeaShader = shader);
+            event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea_submerged_surface"), DefaultVertexFormat.POSITION), shader -> VoidSeaRenderer.voidSeaSubmergedSurfaceShader = shader);
+            event.registerShader(new ShaderInstance(provider, Confluence.asResource("void_sea_refraction"), DefaultVertexFormat.POSITION), shader -> VoidSeaFilterRenderer.voidSeaRefractionShader = shader);
+            event.registerShader(new ShaderInstance(provider, Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), CustomBossBarRenderer::setShader);
+            event.registerShader(new ShaderInstance(provider, Confluence.asResource("trade_item_outline"), DefaultVertexFormat.POSITION_TEX_COLOR), NPCTradeItemOutline::setShader);
         } catch (IOException e) {
             Confluence.LOGGER.error("Failed to register shader", e);
         }

@@ -7,9 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.mana.AbstractLittleCelestialEntity;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.entity.projectile.mana.LittleMoonEntity;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
@@ -28,7 +26,7 @@ public class LittleMoonRenderer extends GeoEntityRenderer<LittleMoonEntity> {
     /// 外部剔除 + 自发光，与 {@link LittleSunRenderer} 一致
     @Override
     public RenderType getRenderType(LittleMoonEntity animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderStateShardAccessor.entityEmissiveCull(texture);
+        return ModRenderTypes.entityEmissiveCull(texture);
     }
 
     @Override

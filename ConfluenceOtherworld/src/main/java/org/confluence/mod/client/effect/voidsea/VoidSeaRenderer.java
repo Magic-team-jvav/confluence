@@ -12,14 +12,15 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import org.confluence.mod.client.renderer.ModRenderTypes;
-import org.confluence.mod.client.renderer.ModRenderer;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.common.util.VoidSeaHelper;
 import org.joml.Matrix4f;
 
 import static org.confluence.mod.client.effect.voidsea.VoidSeaConstants.*;
 
 public class VoidSeaRenderer {
+    public static ShaderInstance voidSeaShader;
+    public static ShaderInstance voidSeaSubmergedSurfaceShader;
     private static TextureTarget sceneDepth;
 
     public static void render(RenderLevelStageEvent event, Minecraft minecraft, LocalPlayer player) {
@@ -48,7 +49,7 @@ public class VoidSeaRenderer {
     }
 
     private static void drawSea(Matrix4f viewMatrix, Vec3 cameraPosition, float renderY, float radius, float gameTime) {
-        ShaderInstance shader = ModRenderer.getVoidSeaShader();
+        ShaderInstance shader = voidSeaShader;
         if (shader == null) {
             return;
         }
@@ -115,7 +116,7 @@ public class VoidSeaRenderer {
     }
 
     private static void renderSubmergedSurface(RenderLevelStageEvent event, Minecraft minecraft, Vec3 cameraPosition, float renderY) {
-        ShaderInstance shader = ModRenderer.getVoidSeaSubmergedSurfaceShader();
+        ShaderInstance shader = voidSeaSubmergedSurfaceShader;
         if (shader == null) {
             return;
         }

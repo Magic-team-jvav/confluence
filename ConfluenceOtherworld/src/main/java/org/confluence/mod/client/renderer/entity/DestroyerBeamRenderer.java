@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.effect.ModRenderTypes;
 import org.confluence.mod.client.summoner.rendererHelper.LaserRendererHelper;
 import org.confluence.mod.common.entity.boss.DestroyerSideBeams;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
@@ -102,10 +102,10 @@ public final class DestroyerBeamRenderer {
 
     private static void drawBeam(MultiBufferSource buffers, Matrix4f matrix, float length, float visibleStart, float visibleEnd,
                                  float startRadius, float endRadius, float[][][] offsets) {
-        VertexConsumer outer = buffers.getBuffer(RenderStateShardAccessor.TRANSLUCENT_LASER);
+        VertexConsumer outer = buffers.getBuffer(ModRenderTypes.TRANSLUCENT_LASER);
         LaserRendererHelper.renderPrismLayer(outer, matrix, length, visibleStart, visibleEnd, startRadius, endRadius, offsets, FADE_LENGTH, 255, 0, 0, 125, true);
         LaserRendererHelper.renderPrismLayer(outer, matrix, length, visibleStart, visibleEnd, startRadius * (2.0F / 3.0F), endRadius * (2.0F / 3.0F), offsets, FADE_LENGTH, 255, 110, 110, 185, true);
-        VertexConsumer core = buffers.getBuffer(RenderStateShardAccessor.TRANSLUCENT_LASER_NO_CULL);
+        VertexConsumer core = buffers.getBuffer(ModRenderTypes.TRANSLUCENT_LASER_NO_CULL);
         LaserRendererHelper.renderPrismLayer(core, matrix, length, visibleStart, visibleEnd, startRadius * (0.53F / 1.35F), endRadius * (0.53F / 1.35F), offsets, FADE_LENGTH, 255, 255, 255, 255, false);
     }
 

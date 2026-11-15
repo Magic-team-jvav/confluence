@@ -484,7 +484,7 @@ public class Spazmatism extends AbstractTwinEye {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {return ModSoundEvents.METAL_HURT.get();}
+    protected SoundEvent getHurtSound(DamageSource source) {return ModSoundEvents.MECHANICAL_BOSS_HURT.get();}
 
     @Override
     protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}

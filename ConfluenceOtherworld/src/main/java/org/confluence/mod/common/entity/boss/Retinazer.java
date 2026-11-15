@@ -680,7 +680,7 @@ public class Retinazer extends AbstractTwinEye {
             laser.configure(this, origin, direction.scale(LASER_SPEED), (float) getAttributeValue(Attributes.ATTACK_DAMAGE), LASER_LIFETIME);
             serverLevel.addFreshEntity(laser);
             muzzleFlash(false);
-            playSound(ModSoundEvents.ITEM_DEATH_LASER.get(), 0.6F, 1.2F);
+            playSound(ModSoundEvents.MECHANICAL_BOSS_SMALL_LASER.get(), 0.6F, 1.2F);
         }
     }
 
@@ -760,7 +760,7 @@ public class Retinazer extends AbstractTwinEye {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {return ModSoundEvents.METAL_HURT.get();}
+    protected SoundEvent getHurtSound(DamageSource source) {return ModSoundEvents.MECHANICAL_BOSS_HURT.get();}
 
     @Override
     protected SoundEvent getDeathSound() {return ModSoundEvents.METAL_DEATH.get();}

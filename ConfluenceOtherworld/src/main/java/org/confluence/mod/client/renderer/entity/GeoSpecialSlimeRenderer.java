@@ -40,6 +40,10 @@ public class GeoSpecialSlimeRenderer<T extends Entity & GeoEntity> extends GeoNo
         super(context, model);
     }
 
+    public GeoSpecialSlimeRenderer(EntityRendererProvider.Context context, GeoModel<T> model, float modelScale) {
+        super(context, model, false, modelScale, 0.0F);
+    }
+
     @Override
     public void actuallyRender(PoseStack poses, T entity, BakedGeoModel model, RenderType renderType,
                                MultiBufferSource buffers, VertexConsumer buffer, boolean reRender, float partialTick,

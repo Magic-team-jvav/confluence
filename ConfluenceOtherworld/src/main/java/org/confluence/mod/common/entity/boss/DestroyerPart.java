@@ -139,7 +139,7 @@ public final class DestroyerPart extends PartEntity<TheDestroyer> implements Bos
         int age = getParent().tickCount;
         if (result && age - lastSparkTick >= HURT_SPARK_INTERVAL) {
             lastSparkTick = age;
-            playSound(ModSoundEvents.METAL_HURT.get(), 1.0F, 1.0F);
+            playSound(ModSoundEvents.MECHANICAL_BOSS_HURT.get(), 1.0F, 1.0F);
             /// 负事件编号表示实际受击体节；事件仍通过已追踪的头部发送。
             level().broadcastEntityEvent(getParent(), (byte) -index);
         }

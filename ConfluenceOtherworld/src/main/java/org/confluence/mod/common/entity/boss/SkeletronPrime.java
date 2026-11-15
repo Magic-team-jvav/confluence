@@ -418,7 +418,7 @@ public class SkeletronPrime extends BaseBoss {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSoundEvents.METAL_HURT.get();
+        return ModSoundEvents.MECHANICAL_BOSS_HURT.get();
     }
 
     @Override

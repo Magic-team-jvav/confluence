@@ -76,6 +76,7 @@ public class TreasureBagItems {
             }
         }
     });
+    public static final DeferredItem<TreasureBagItem> QUEEN_SLIME_TREASURE_BAG = registerItem("queen_slime_treasure_bag", "史莱姆女皇宝藏袋", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/queen_slime"), ModRarity.PINK));
     public static final DeferredItem<TreasureBagItem> THE_TWINS_TREASURE_BAG = registerItem("the_twins_treasure_bag", "双子魔眼宝藏袋", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/the_twins"), ModRarity.PINK));
     public static final DeferredItem<TreasureBagItem> SKELETRON_PRIME_TREASURE_BAG = registerItem("skeletron_prime_treasure_bag", "机械骷髅王宝藏袋", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron_prime"), ModRarity.PINK));
     public static final DeferredItem<TreasureBagItem> THE_DESTROYER_TREASURE_BAG = registerItem("the_destroyer_treasure_bag", "毁灭者宝藏袋", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/the_destroyer"), ModRarity.PINK));

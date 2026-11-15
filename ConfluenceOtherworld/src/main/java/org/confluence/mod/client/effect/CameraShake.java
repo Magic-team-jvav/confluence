@@ -4,18 +4,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
-import net.neoforged.neoforge.event.level.LevelEvent;
-import org.confluence.mod.Confluence;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /// 按震源距离和剩余时间衰减相机偏角。
-@EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
 public final class CameraShake {
     private record Pulse(float angle, long endTick, int duration) {}
 
@@ -34,15 +28,11 @@ public final class CameraShake {
         pulses.add(new Pulse(angle, level.getGameTime() + ticks, ticks));
     }
 
-    @SubscribeEvent
-    public static void levelUnload(LevelEvent.Unload event) {
-        if (event.getLevel() == shakeLevel) {
-            shakeLevel = null;
-            pulses.clear();
-        }
+    public static void clear() {
+        shakeLevel = null;
+        pulses.clear();
     }
 
-    @SubscribeEvent
     public static void cameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft client = Minecraft.getInstance();
         if (client.level == null || client.level != shakeLevel || client.player == null) {

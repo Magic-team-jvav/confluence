@@ -20,14 +20,9 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.ModRenderTypes;
-import org.confluence.mod.client.effect.death.GeoDeathModelAdapter;
-import org.confluence.mod.client.handler.DeathEffectHandler;
-import org.confluence.mod.common.entity.DeadBodyPartEntity;
+import org.confluence.mod.client.handler.DestroyerShellEffectHandler;
 import org.confluence.mod.common.entity.boss.DestroyerPart;
 import org.confluence.mod.common.entity.boss.TheDestroyer;
-import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.integration.geckolib.IGeoCube;
-import org.confluence.mod.util.ClientUtils;
 import org.joml.Matrix4f;
 import org.joml.Matrix4x3f;
 import org.joml.Quaternionf;
@@ -47,21 +42,25 @@ import java.util.function.Consumer;
 
 /// 由世界渲染事件绘制同一份整链快照，头部所在区段未加载时也能绘制可见体节。
 public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNormalRenderer<T> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/boss/destroyer.png");
+    private static final ResourceLocation PHASE2_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_phase2.png");
     private static final ResourceLocation PHASE1_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_phase1.png");
     private static final ResourceLocation PHASE1_GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_phase1_glow.png");
-    private static final ResourceLocation BLUE_GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_glow_blue.png");
-    private static final ResourceLocation GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_glow.png");
+    private static final ResourceLocation PHASE2_BLUE_GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_phase2_glow_blue.png");
+    private static final ResourceLocation PHASE2_GLOW_TEXTURE = Confluence.asResource("textures/entity/boss/destroyer_phase2_glow.png");
     private static final ResourceLocation ANIMATION = Confluence.asResource("animations/entity/boss/destroyer.animation.json");
-    private static final ResourceLocation HEAD = model("head"), BODY = model("body"), CONNECTOR = model("connector"), TAIL = model("tail");
-
-    private static final ResourceLocation PHASE1_HEAD = phase1Model("head"), PHASE1_BODY = phase1Model("body"), PHASE1_CONNECTOR = phase1Model("connector"), PHASE1_TAIL = phase1Model("tail");
+    private static final ResourceLocation PHASE1_MODEL = Confluence.asResource("geo/entity/boss/destroyer_phase1.geo.json");
+    private static final ResourceLocation PHASE2_MODEL = Confluence.asResource("geo/entity/boss/destroyer_phase2.geo.json");
 
     // 各材质独占缓冲，同一帧内所有体节共用，待本体写入深度后提交。
     private static final MultiBufferSource.BufferSource BODY_BATCH = MultiBufferSource.immediate(new ByteBufferBuilder(65536));
     private static final MultiBufferSource.BufferSource PHASE1_GLOW_BATCH = MultiBufferSource.immediate(new ByteBufferBuilder(65536));
     private static final MultiBufferSource.BufferSource GLOW_BATCH = MultiBufferSource.immediate(new ByteBufferBuilder(65536));
     private static final MultiBufferSource.BufferSource BLUE_GLOW_BATCH = MultiBufferSource.immediate(new ByteBufferBuilder(65536));
+
+    // 每节同时弹出的装甲片上限。
+    private static final int SHELL_FRAGMENTS_PER_SEGMENT = 25;
+    // 装甲片向外弹出的速度系数。
+    private static final float SHELL_BURST_SPEED = 8.0F;
 
     private static final float MODEL_CENTER_Y = 14.0F / 16.0F;
     private static final float BODY_CENTER_Z = 35.61025F / 16.0F;
@@ -87,20 +86,14 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             public ResourceLocation getModelResource(T entity) {
                 TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
-                if (head.isPhaseOneSection(entity instanceof DestroyerPart part ? part.getIndex() : 0)) {
-                    if (entity instanceof DestroyerPart part)
-                        return part.isTail() ? PHASE1_TAIL : part.getIndex() % 2 == 0 ? PHASE1_CONNECTOR : PHASE1_BODY;
-                    return PHASE1_HEAD;
-                }
-                if (entity instanceof DestroyerPart part)
-                    return part.isTail() ? TAIL : part.getIndex() % 2 == 0 ? CONNECTOR : BODY;
-                return HEAD;
+                int index = entity instanceof DestroyerPart part ? part.getIndex() : 0;
+                return head.isPhaseOneSection(index) ? PHASE1_MODEL : PHASE2_MODEL;
             }
 
             @Override
             public ResourceLocation getTextureResource(T t) {
                 TheDestroyer head = t instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) t;
-                return head.isPhaseOneSection(t instanceof DestroyerPart part ? part.getIndex() : 0) ? PHASE1_TEXTURE : TEXTURE;
+                return head.isPhaseOneSection(t instanceof DestroyerPart part ? part.getIndex() : 0) ? PHASE1_TEXTURE : PHASE2_TEXTURE;
             }
 
             @Override
@@ -117,7 +110,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             @Override
             protected ResourceLocation getTextureResource(T entity) {
                 TheDestroyer head = entity instanceof DestroyerPart part ? part.getParent() : (TheDestroyer) entity;
-                return head.isPhaseOneSection(entity instanceof DestroyerPart part ? part.getIndex() : 0) ? PHASE1_GLOW_TEXTURE : GLOW_TEXTURE;
+                return head.isPhaseOneSection(entity instanceof DestroyerPart part ? part.getIndex() : 0) ? PHASE1_GLOW_TEXTURE : PHASE2_GLOW_TEXTURE;
             }
 
             @Override
@@ -163,7 +156,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             }
 
             @Override
-            protected ResourceLocation getTextureResource(T entity) {return BLUE_GLOW_TEXTURE;}
+            protected ResourceLocation getTextureResource(T entity) {return PHASE2_BLUE_GLOW_TEXTURE;}
 
             @Override
             public void render(PoseStack poses, T entity, BakedGeoModel model, RenderType type, MultiBufferSource buffers, VertexConsumer buffer, float partialTick, int light, int overlay) {
@@ -175,7 +168,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
                 float alpha = tick < 0 ? 0 : Math.max(0, 1.0F - elapsed / 30.0F);
                 if (elapsed < 0 || alpha <= 0) return;
                 RenderType glow = getRenderType(entity);
-                activeMask = glowMask(BLUE_GLOW_TEXTURE);
+                activeMask = glowMask(PHASE2_BLUE_GLOW_TEXTURE);
                 try {
                     getRenderer().reRender(model, poses, BLUE_GLOW_BATCH, entity, glow, BLUE_GLOW_BATCH.getBuffer(glow), partialTick, LightTexture.FULL_BRIGHT, overlay, ((int) (alpha * 255) << 24) | 0xFFFFFF);
                 } finally {
@@ -194,7 +187,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
     private Matrix4f glowAnchor;
     private final List<BodyPiece> glowPieces = new ArrayList<>();
 
-    private record BodyKey(ResourceLocation model, boolean probeReleased) {}
+    private record BodyKey(ResourceLocation model, boolean probeReleased, boolean connector) {}
 
     private static final class BodyDraw {
         final Matrix4f pose = new Matrix4f();
@@ -217,7 +210,6 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
 
     private record BodyMesh(VertexBuffer buffer) {}
 
-    private static final Map<BakedGeoModel, Optional<GeoBone>> PROBE_BONES = new IdentityHashMap<>();
     private static final Map<BodyKey, BodyMesh> BODY_MESHES = new HashMap<>();
     private static final Map<BodyKey, BodyMesh> GLOW_MESHES = new HashMap<>();
     private static final Map<RenderType, Map<BodyMesh, BodyBatch>> GLOW_DRAWS = new HashMap<>();
@@ -238,7 +230,6 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         GLOW_MESHES.values().forEach(mesh -> mesh.buffer().close());
         GLOW_MESHES.clear();
         GLOW_DRAWS.clear();
-        PROBE_BONES.clear();
         BODY_DRAWS.clear();
         CONNECTOR_BUFFERS.values().forEach(VertexBuffer::close);
         CONNECTOR_BUFFERS.clear();
@@ -275,7 +266,7 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
     // 身体深度提交后统一绘制连接节的常亮层；每节只提供自己的骨骼矩阵。
     private static void drawConnectorGlow() {
         if (!hasConnectorDraws) return;
-        RenderType type = ModRenderTypes.destroyerGlow(GLOW_TEXTURE);
+        RenderType type = ModRenderTypes.destroyerGlow(PHASE2_GLOW_TEXTURE);
         type.setupRenderState();
         try {
             var shader = RenderSystem.getShader();
@@ -529,50 +520,22 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
 
     }
 
-    /// 每次只拆分当前体节的外壳，保持从头到尾的爆裂顺序。
+    /// 阶段转换时记录每节外壳的姿态，由专用效果绘制装甲片。
     @SuppressWarnings("unchecked")
     public static void spawnPhaseShell(TheDestroyer boss, int index) {
-        if (!(boss.level() instanceof ClientLevel level) || index >= TheDestroyer.SEGMENT_COUNT - 1)
+        if (!(boss.level() instanceof ClientLevel level) || index >= TheDestroyer.SEGMENT_COUNT)
             return;
         EntityRenderer<?> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(boss);
         if (!(renderer instanceof DestroyerRenderer<?>)) return;
         DestroyerRenderer<TheDestroyer> geoRenderer = (DestroyerRenderer<TheDestroyer>) renderer;
-        String section = index == 0 ? "head" : index % 2 == 0 ? "connector" : "body";
-        BakedGeoModel model = geoRenderer.getGeoModel().getBakedModel(phase1Model(section));
-        GeoBone bone = model.getBone(ClientUtils.DEATH_BONE_NAME).orElse(null);
+        boolean tail = index == TheDestroyer.SEGMENT_COUNT - 1;
+        if (tail) return;
+        BakedGeoModel model = geoRenderer.getGeoModel().getBakedModel(PHASE1_MODEL);
+        String boneName = index == 0 ? "exp_firstPhase_2" : index % 2 == 0 ? "exp_firstPhase_3" : "exp_firstPhase_1";
+        GeoBone bone = model.getBone(boneName).orElse(null);
         if (bone == null) return;
-        DeathEffectHandler.spawnFragments(boss, bone.getCubes().size(), () -> {
-            Vec3 motion = boss.getDeltaMovement();
-            RenderType renderType = geoRenderer.getRenderType(boss, PHASE1_TEXTURE, Minecraft.getInstance().renderBuffers().bufferSource(), 1.0F);
-            float centerZ = index == 0 ? 0 : index % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z;
-            for (GeoCube cube : bone.getCubes()) {
-                if (!DeathEffectHandler.canAddPart()) break;
-                GeoCube copy = IGeoCube.of(cube).confluence$getCopy();
-                if (copy == null) continue;
-                float[] min = IGeoCube.of(copy).confluence$getMinCoords();
-                float[] max = IGeoCube.of(copy).confluence$getMaxCoords();
-                float x = (min[0] + max[0]) * 0.5F, y = min[1], z = (min[2] + max[2]) * 0.5F;
-                GeoBone fragment = GeoDeathModelAdapter.snapshotBone(bone, null);
-                fragment.getCubes().clear();
-                fragment.getChildBones().clear();
-                fragment.setPivotX(0);
-                fragment.setPivotY(0);
-                fragment.setPivotZ(0);
-                fragment.setPosX(0);
-                fragment.setPosY(0);
-                fragment.setPosZ(0);
-                fragment.setHidden(false);
-                fragment.getCubes().add(copy);
-                Matrix4f transform = new Matrix4f().translation(0, TheDestroyer.BODY_HEIGHT / (2.0F * TheDestroyer.MODEL_SCALE), 0)
-                        .rotate(boss.getBody().getRenderRotation(index, 1.0F)).translate(-0.0F, -MODEL_CENTER_Y, -centerZ)
-                        .translate(x, y, z);
-                DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, boss, fragment, (float) motion.length());
-                part.geoRenderData = new GeoDeathModelAdapter.RenderSnapshot(model, PHASE1_TEXTURE, renderType, transform);
-                part.setPos(boss.getBody().getRenderPosition(index, 1.0F));
-                part.setDeltaMovement(motion.scale(0.3).offsetRandom(level.random, 1.6F));
-                DeathEffectHandler.addPart(part);
-            }
-        });
+        float centerZ = index == 0 ? 0 : index % 2 == 0 ? CONNECTOR_CENTER_Z : BODY_CENTER_Z;
+        DestroyerShellEffectHandler.spawn(boss, geoRenderer, bone.getCubes(), index, centerZ, SHELL_FRAGMENTS_PER_SEGMENT, SHELL_BURST_SPEED);
     }
 
     private static final Map<TheDestroyer, Integer> BEAM_LAST_TICK = new WeakHashMap<>();
@@ -635,14 +598,6 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         MolangParticleEngine.INSTANCE.addEmitter(emitter);
     }
 
-    private static ResourceLocation phase1Model(String section) {
-        return Confluence.asResource("geo/entity/boss/destroyer_phase1_" + section + ".geo.json");
-    }
-
-    private static ResourceLocation model(String section) {
-        return Confluence.asResource("geo/entity/boss/destroyer_" + section + ".geo.json");
-    }
-
     /// 头部与每个体节分别采样相邻格点光照，平滑跨越明暗边界。
     @Override
     protected boolean usesInterpolatedLight(T entity) {
@@ -695,6 +650,8 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
                 renderer.renderSection(part, event.getPoseStack(), BODY_BATCH, event.getFrustum(), camera, partialTick);
             }
         }
+        DestroyerShellEffectHandler.render(event.getPoseStack(), buffers, event.getFrustum(), camera, partialTick);
+        buffers.endBatch(DestroyerShellEffectHandler.RENDER_TYPE);
         // 先提交身体模型的深度，再绘制只写颜色的半透明激光。
         if (destroyers.isEmpty()) return;
         BODY_BATCH.endBatch();
@@ -722,6 +679,19 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         boolean visible = frustum.isVisible(entity.getBoundingBox().move(position.x - entity.getX(),
                 position.y - entity.getY(), position.z - entity.getZ()).inflate(TheDestroyer.BODY_WIDTH * 2.0));
         if (!visible) return;
+        boolean phaseOne = head.isPhaseOneSection(index);
+        BakedGeoModel sectionModel = getGeoModel().getBakedModel(phaseOne ? PHASE1_MODEL : PHASE2_MODEL);
+        String selected = index == 0 ? "bone3" : index == TheDestroyer.SEGMENT_COUNT - 1 ? "group2" : index % 2 == 0 ? "group3" : "group";
+        String[] sections = phaseOne ? new String[]{"bone3", "group", "group3", "group2"} : new String[]{"bone3", "group", "group3", "group2", "group4", "group5", "group6"};
+        List<GeoBone> hiddenSections = new ArrayList<>();
+        for (String name : sections) {
+            if (name.equals(selected)) continue;
+            sectionModel.getBone(name).ifPresent(bone -> {
+                bone.setHidden(true);
+                bone.setChildrenHidden(true);
+                hiddenSections.add(bone);
+            });
+        }
         poses.pushPose();
         poses.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
         ResourceLocation modelResource = getGeoModel().getModelResource((T) entity);
@@ -729,16 +699,14 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
         GeoBone probe = null;
         if (entity instanceof DestroyerPart part) {
             BakedGeoModel baked = getGeoModel().getBakedModel(modelResource);
-            var bone = PROBE_BONES.get(baked);
-            if (bone == null) {
-                bone = baked.getBone(part.isTail() ? "probe_3" : index % 2 == 0 ? "probe_2" : "probe_1");
-                PROBE_BONES.put(baked, bone);
+            probe = baked.getBone(part.isTail() ? "probe_3" : index % 2 == 0 ? "probe_2" : "probe_1").orElse(null);
+            if (probe != null) {
+                probe.setHidden(released);
+                probe.setChildrenHidden(released);
             }
-            probe = bone.orElse(null);
-            if (probe != null) probe.setHidden(released);
         }
         if (BODY_VBO && entity instanceof DestroyerPart part && !part.isTail()) {
-            activeBodyKey = new BodyKey(modelResource, released);
+            activeBodyKey = new BodyKey(modelResource, released, index % 2 == 0);
             cachedBody = BODY_MESHES.get(activeBodyKey);
             activeBodyType = getRenderType((T) entity, getGeoModel().getTextureResource((T) entity), buffers, partialTick);
             bodyAnchor = null;
@@ -765,7 +733,14 @@ public final class DestroyerRenderer<T extends Entity & GeoEntity> extends GeoNo
             activeBodyType = null;
             bodyAnchor = null;
             bodyPieces.clear();
-            if (probe != null) probe.setHidden(false);
+            if (probe != null) {
+                probe.setHidden(false);
+                probe.setChildrenHidden(false);
+            }
+            for (GeoBone bone : hiddenSections) {
+                bone.setHidden(false);
+                bone.setChildrenHidden(false);
+            }
         }
         if (Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes()) {
             LevelRenderer.renderLineBox(poses, buffers.getBuffer(RenderType.lines()),
